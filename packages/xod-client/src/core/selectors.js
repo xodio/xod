@@ -30,11 +30,21 @@ export const hasUnsavedChanges = createSelector(
 //
 
 export const getPatchForHelpbox = createSelector(
-  [Project.getProject, ProjectBrowser.getSelectedPatchPath],
-  (project, selectedPatchPath) => R.compose(
-    R.chain(XP.getPatchByPath(R.__, project)),
-    Maybe
-  )(selectedPatchPath)
+  [
+    Project.getProject,
+    ProjectBrowser.getSelectedPatchPath,
+    Editor.isSuggesterVisible,
+    Editor.getSuggesterHighlightedPatchPath,
+  ],
+  (project, selectedPatchPath, suggesterVisible, suggesterPatchPath) => {
+    if (suggesterVisible && suggesterPatchPath) {
+      return XP.getPatchByPath(suggesterPatchPath, project);
+    }
+    return R.compose(
+      R.chain(XP.getPatchByPath(R.__, project)),
+      Maybe
+    )(selectedPatchPath);
+  }
 );
 export const getPatchForQuickHelp = createSelector(
   [Project.getProject, Editor.getSelection, Project.getCurrentPatchNodes],

@@ -1,3 +1,4 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,12 +7,15 @@ import Autosuggest from 'react-autosuggest';
 import Highlighter from 'react-highlight-words';
 import regExpEscape from 'escape-string-regexp';
 
-import { isAmong } from 'xod-func-tools';
+import { isAmong, noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../utils/constants';
+import { triggerUpdateHelpboxPositionViaSuggester } from '../../editor/utils';
 import SuggesterContainer from './SuggesterContainer';
 
 const getSuggestionValue = ({ item }) => item.path;
+
+const getSuggestionIndex = R.uncurryN(2, suggestion => R.findIndex(R.equals(suggestion)));
 
 class Suggester extends React.Component {
   constructor(props) {
@@ -20,17 +24,27 @@ class Suggester extends React.Component {
     this.state = {
       value: '',
       suggestions: [],
+      mouseInteraction: true,
     };
+
+    // `mouseInteraction` is about can User interact with
+    // suggestions using mouse or not. It avoid bug when
+    // User scrolls suggestions using keyboard and dont
+    // touching mouse at all.
+    // It will be turned on when User moves mouse
+    // over SuggesterContainer.
 
     this.input = null;
 
     this.renderItem = this.renderItem.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onItemMouseOver = this.onItemMouseOver.bind(this);
+    this.onContainerMouseMove = this.onContainerMouseMove.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
     this.onSuggestionHighlighted = this.onSuggestionHighlighted.bind(this);
-    this.storeInputReference = this.storeInputReference.bind(this);
+    this.storeRef = this.storeRef.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +52,23 @@ class Suggester extends React.Component {
       // A hack to avoid typing "i" into input when pressing Hotkey
       setTimeout(() => {
         this.input.focus();
-        this.props.onInitialFocus();
       }, 1);
     }
   }
 
-  onChange(e, { newValue, method }) {
-    if (isAmong(['up', 'down', 'click'], method)) return;
+  componentDidUpdate() {
+    if (R.isEmpty(this.state.suggestions)) {
+      this.props.hideHelpbox();
+    }
+  }
 
+  onChange(e, { newValue, method }) {
+    if (isAmong(['up', 'down'], method)) {
+      this.setState({
+        mouseInteraction: false,
+      });
+      return;
+    }
     this.setState({ value: newValue });
   }
 
@@ -73,8 +96,27 @@ class Suggester extends React.Component {
 
   onSuggestionHighlighted({ suggestion }) {
     if (suggestion) {
+      this.autosuggest.updateHighlightedSuggestion(
+        null,
+        getSuggestionIndex(suggestion, this.state.suggestions)
+      );
+      this.props.showHelpbox();
       this.props.onHighlight(getSuggestionValue(suggestion));
+      setTimeout(triggerUpdateHelpboxPositionViaSuggester, 1);
     }
+  }
+
+  onItemMouseOver(suggestion) {
+    return () => {
+      if (this.state.mouseInteraction) {
+        this.onSuggestionHighlighted({ suggestion });
+      }
+    };
+  }
+  onContainerMouseMove() {
+    this.setState({
+      mouseInteraction: true,
+    });
   }
 
   getSuggestions(value) {
@@ -85,20 +127,27 @@ class Suggester extends React.Component {
     return index.search(regExpEscape(inputValue));
   }
 
-  storeInputReference(autosuggest) {
+  storeRef(autosuggest) {
     if (autosuggest !== null) {
+      this.autosuggest = autosuggest;
       this.input = autosuggest.input;
     }
   }
 
-  renderItem({ item }, { isHighlighted }) {
+  renderItem(suggestion, { isHighlighted }) {
     const cls = classNames('Suggester-item', {
       'is-highlighted': isHighlighted,
     });
     const value = regExpEscape(this.state.value);
+    const { item } = suggestion;
 
     return (
-      <div className={cls}>
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+        role="button"
+        className={cls}
+        onClick={() => this.onSelect(item.path)}
+        onMouseOver={this.onItemMouseOver(suggestion)}
+      >
         <Highlighter
           className="path"
           searchWords={[value]}
@@ -130,9 +179,9 @@ class Suggester extends React.Component {
       type: 'search',
     };
 
-    const cls = `Suggester ${this.props.addClassName}`;
+    const cls = `Suggester ${this.props.extraClassName}`;
     return (
-      <div className={cls}>
+      <div className={cls} id="Suggester">
         <Autosuggest
           suggestions={suggestions}
           value={value}
@@ -146,11 +195,15 @@ class Suggester extends React.Component {
           onSuggestionHighlighted={this.onSuggestionHighlighted}
           renderSuggestion={this.renderItem}
           renderSuggestionsContainer={({ containerProps, children }) => (
-            <SuggesterContainer containerProps={containerProps}>
+            <SuggesterContainer
+              containerProps={containerProps}
+              onScroll={triggerUpdateHelpboxPositionViaSuggester}
+              onMouseMove={this.onContainerMouseMove}
+            >
               {children}
             </SuggesterContainer>
           )}
-          ref={this.storeInputReference}
+          ref={this.storeRef}
         />
       </div>
     );
@@ -158,19 +211,21 @@ class Suggester extends React.Component {
 }
 
 Suggester.defaultProps = {
-  addClassName: '',
-  onBlur: () => {},
-  onHighlight: () => {},
-  onInitialFocus: () => {},
+  extraClassName: '',
+  onBlur: noop,
+  onHighlight: noop,
+  showHelpbox: noop,
+  hideHelpbox: noop,
 };
 
 Suggester.propTypes = {
-  addClassName: PropTypes.string,
+  extraClassName: PropTypes.string,
   index: PropTypes.object,
   onAddNode: PropTypes.func.isRequired,
   onHighlight: PropTypes.func,
   onBlur: PropTypes.func,
-  onInitialFocus: PropTypes.func,
+  showHelpbox: PropTypes.func,
+  hideHelpbox: PropTypes.func,
 };
 
 export default Suggester;
