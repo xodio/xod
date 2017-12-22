@@ -8,66 +8,84 @@
   display: block;
   list-style: none;
   box-sizing: border-box;
+  height: 40px;
   padding: 1px;
   margin: 0;
 
-  background: $color-tabs-unactive-background;
-  border-top: 1px solid #3e3e3e;
-  border-bottom: 1px solid #3e3e3e;
+  background: $color-tabs-active-background;
 
-  li {
-    display: inline-block;
-    padding: 0;
-    margin: 0 7px 0 0;
+  &--codeEditor {
+    position: relative;
+    top: 0;
+  }
+  &--debugger {
+    background: $color-tabs-debugger-background;
   }
 
-  li:nth-child(1) button:before { display: none; }
+  li {
+    float: left;
+    padding: 0;
+    margin: 8px;
+    height: 21px;
+  }
 
   button {
-    &:after, &:before {
+    position: relative;
+    display: inline-block;
+    background: $coal;
+    border: none;
+    color: $chalk;
+    outline: none;
+    cursor: pointer;
+
+    box-sizing: border-box;
+    min-width: 21px;
+    height: 21px;
+    padding: 0 8px;
+
+    .hint {
+      font-size: $font-size-s;
+      opacity: .5;
+      margin-left: .5em;
+    }
+
+    &:after {
       display: block;
       content: '';
       position: absolute;
       top: 0;
-    }
-    &:before {
-      border-top: 12px solid $sidebar-color-bg-even;
-      border-bottom: 12px solid $sidebar-color-bg-even;
-      border-left: 6px solid transparent;
-      border-right: 0;
-      left: -6px;
-    }
-    &:after {
-      border-top: 12px solid transparent;
-      border-bottom: 12px solid transparent;
-      border-left: 6px solid $sidebar-color-bg-even;
+
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 6px solid $coal;
       border-right: 0;
       right: -6px;
     }
 
-    position: relative;
-    display: inline-block;
-    background: $sidebar-color-bg-even;
-    border: none;
-    color: $chalk;
-    outline: none;
+    &.back-button {
+      background: transparent url('../assets/icons/back.svg') no-repeat 4px center;
+      margin-right: -8px; // compensate big margin
+      border-radius: 50%;
+      margin-left: 3px;
+      &:before { display: none }
+      &:after { display: none }
 
-    height: 24px;
-    padding: 0 8px;
-
-    &:hover {
-      background: $input-option-highlighted;
-      &:before {
-        border-top-color: $input-option-highlighted;
-        border-bottom-color: $input-option-highlighted;
+      &:hover {
+        background: rgba(255,255,255,.1) url('../assets/icons/back.svg') no-repeat 4px center !important;
       }
+    }
+
+    &:not(.is-active):hover {
+      background: rgba(255,255,255,.1);
+      color: $color-tabs-hover-text;
       &:after {
-        border-left-color: $input-option-highlighted;
+        border-left-color: rgba(255,255,255,.1);
       }
     }
 
     &.is-active {
-      color: $color-canvas-selected;
+      color: $color-canvas-selected !important;
+      cursor: default !important;
     }
     &.is-tail {
       color: $button-border-color;

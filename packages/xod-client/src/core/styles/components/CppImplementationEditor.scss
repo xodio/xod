@@ -19,29 +19,6 @@
     flex-flow: column;
   }
 
-  .toolbar {
-    $bg-color: #546E7A;
-    $fg-color: lighten($color: $bg-color, $amount: 50%);
-
-    border-top: 1px solid #3e3e3e;
-    border-bottom: 1px solid #3e3e3e;
-    background-color: $bg-color;
-    color: $fg-color;
-    padding: 10px;
-
-    .back-button {
-      background: transparent;
-      border: 1px solid $fg-color;
-      outline: none;
-      color: $fg-color;
-      padding: 10px;
-    }
-
-    .title {
-      padding-left: 8px;
-    }
-  }
-
   .editor {
     display: flex;
     flex-grow: 1;
