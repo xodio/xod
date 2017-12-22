@@ -16,6 +16,15 @@
 
   transition: opacity 0.1s;
 
+  &--rightSided {
+    .pointer {
+      left: auto !important;
+      right: -7px;
+      &:before {
+        transform: rotate(135deg) !important;
+      }
+    }
+  }
   &--hidden {
     opacity: 0;
     pointer-events: none;

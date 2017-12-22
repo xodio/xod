@@ -302,6 +302,7 @@ const calculateHelpboxPosition = (container, item) => {
   return {
     isVisible: elVisible,
     top: Math.ceil(elBox.top),
+    left: Math.ceil(elBox.left),
     right: Math.ceil(elBox.right),
   };
 };

@@ -33,7 +33,9 @@ class Helpbox extends React.Component {
       top: 0,
       left: 0,
       pointerTop: 0,
+      width: 0,
       height: 0,
+      rightSided: false,
     };
 
     this.updateRef = this.updateRef.bind(this);
@@ -51,7 +53,10 @@ class Helpbox extends React.Component {
       this.props.actions.hideHelpbox();
       return;
     }
-    if (prevState.height !== this.helpboxRef.clientHeight) {
+    if (
+      prevState.height !== this.helpboxRef.clientHeight ||
+      prevState.width !== this.helpboxRef.clientWidth
+    ) {
       this.triggerUpdatePosition();
     }
   }
@@ -59,15 +64,19 @@ class Helpbox extends React.Component {
     window.removeEventListener(UPDATE_HELPBOX_POSITION, this.onUpdatePosition);
   }
   onUpdatePosition(event) {
-    this.setState({
-      isVisible: event.detail.isVisible,
-    });
+    const windowWidth = window.innerWidth;
+    const elWidth = this.helpboxRef.clientWidth;
+
+    const rightSided = (event.detail.right + elWidth) >= windowWidth;
 
     const top = event.detail.top;
-    // set `right` property to `left` constant, cause
-    // `right` is a position of right side of target element,
-    // so it will be left side of helpbox
-    const left = event.detail.right;
+    // if helpbox refers to element that closer to the right side and
+    // helpbox could not fit window — it will be switched to "rightSide"
+    // mode, that means that pointer will be translated to the right side
+    // and helpbox will be positioned at the left side of referred element
+    // E.G. ProjectBrowser at the left side — Helpbox is not "rightSided" helpbox
+    //      ProjectBrowser at the right side — Helpbox "rightSided"
+    const left = (rightSided) ? (event.detail.left - elWidth) : event.detail.right;
 
     const windowHeight = window.innerHeight;
     const elHeight = this.helpboxRef.clientHeight;
@@ -76,10 +85,13 @@ class Helpbox extends React.Component {
     const newPointer = isFitWindow ? 0 : top - newTop;
 
     this.setState({
+      isVisible: event.detail.isVisible,
       left,
       top: newTop,
       pointerTop: newPointer,
       height: elHeight,
+      width: elWidth,
+      rightSided,
     });
   }
   getHelpboxOffset() {
@@ -115,6 +127,7 @@ class Helpbox extends React.Component {
 
     const cls = cn('Helpbox', {
       'Helpbox--hidden': isHidden,
+      'Helpbox--rightSided': this.state.rightSided,
     });
 
     return (
