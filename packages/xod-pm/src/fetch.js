@@ -19,9 +19,9 @@ import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName
 // =============================================================================
 
 // :: (b -> c) -> (() => Promise a b) -> Promise a c
-const retryExcept404 = retryOrFail(
+const retryExceptAny400 = retryOrFail(
   [500, 1000, 2000, 3000],
-  res => (res.status && res.status === 404),
+  res => (res.status && res.status >= 400 && res.status < 500),
 );
 
 // =============================================================================
@@ -33,67 +33,80 @@ const retryExcept404 = retryOrFail(
 // LibData :: { owner: String, name: String, version: String }
 
 // :: URL -> LibName -> Promise LibData Error
-export const fetchLibData = R.curry((swaggerUrl, libQuery) =>
-  getSwaggerClient(swaggerUrl)
+export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
+  const fetchFn = (swagger, params) => {
+    const tryFn = () => swagger.apis.Library.getOrgLib({
+      libname: params.name,
+      orgname: params.owner,
+    });
+
+    return tryFn()
+      .catch(
+        retryExceptAny400(
+          rejectFetchResult({
+            message: MSG.cantFindLibrary(params),
+            errorCode: ERR_CODES.CANT_FIND_LIB_BY_NAME,
+            request: libQuery,
+            params,
+          }),
+          tryFn
+        )
+      )
+      .then(R.prop('obj'))
+      .then(rejectUnexistingVersion(params))
+      .then(R.assoc('requestParams', params));
+  };
+
+
+  return getSwaggerClient(swaggerUrl)
     .then(swagger =>
       R.compose(
         unfoldMaybeLibQuery(
-          params => swagger.apis.Library.getOrgLib({
-            libname: params.name,
-            orgname: params.owner,
-          })
-          .catch(
-            retryExcept404(
-                rejectFetchResult({
-                  message: MSG.cantFindLibrary(params),
-                  errorCode: ERR_CODES.CANT_FIND_LIB_BY_NAME,
-                  request: libQuery,
-                  params,
-                }),
-              () => fetchLibData(swaggerUrl, libQuery)
-            )
-          )
-          .then(R.prop('obj'))
-          .then(rejectUnexistingVersion(params))
-          .then(R.assoc('requestParams', params))
+          params => fetchFn(swagger, params)
         ),
         parseLibQuery
       )(libQuery)
-    )
-);
+    );
+});
 
 // :: URL -> LibName -> Promise Project Error
-export const fetchLibrary = R.curry((swaggerUrl, libQuery) =>
-  getSwaggerClient(swaggerUrl)
+export const fetchLibrary = R.curry((swaggerUrl, libQuery) => {
+  const fetchFn = (swagger, params) => {
+    const tryFn = () => swagger.apis.Version.getLibVersionXodball({
+      libname: params.name,
+      orgname: params.owner,
+      semver_or_latest: params.version,
+    });
+
+    return tryFn()
+      .catch(
+        retryExceptAny400(
+          rejectFetchResult({
+            message: MSG.cantFindLibVersion(params),
+            errorCode: ERR_CODES.CANT_GET_LIB_XODBALL,
+            request: libQuery,
+            params,
+          }),
+          tryFn
+        )
+      )
+      .then(R.prop('obj'))
+      .then(xodball =>
+        R.compose(eitherToPromise, fromXodballData)(xodball)
+          .catch(rejectWithCode(ERR_CODES.INVALID_XODBALL))
+      );
+  };
+
+  return getSwaggerClient(swaggerUrl)
     .then(swagger =>
       R.compose(
         unfoldMaybeLibQuery(
-          params => swagger.apis.Version.getLibVersionXodball({
-            libname: params.name,
-            orgname: params.owner,
-            semver_or_latest: params.version,
-          })
-            .catch(
-              retryExcept404(
-                rejectFetchResult({
-                  message: MSG.cantFindLibVersion(params),
-                  errorCode: ERR_CODES.CANT_GET_LIB_XODBALL,
-                  request: libQuery,
-                  params,
-                }),
-                () => fetchLibrary(swaggerUrl, libQuery)
-              )
-            )
-            .then(R.prop('obj'))
-            .then(xodball =>
-              R.compose(eitherToPromise, fromXodballData)(xodball)
-                .catch(rejectWithCode(ERR_CODES.INVALID_XODBALL))
-            )
+          params => fetchFn(swagger, params)
         ),
         parseLibQuery
       )(libQuery)
-    )
-);
+    );
+});
 
 // :: URL -> [LibName] -> [LibName] -> Map LibName Project -> Promise Map LibName Project Error
 export const fetchLibsReqursively = R.curry(
