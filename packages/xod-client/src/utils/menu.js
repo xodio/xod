@@ -132,7 +132,7 @@ const rawItems = {
   },
   toggleDebugger: {
     key: 'toggleDebugger',
-    label: 'Toggle Debugger',
+    label: 'Toggle Deployment Pane',
     command: COMMAND.TOGGLE_DEBUGGER,
   },
   toggleAccountPane: {

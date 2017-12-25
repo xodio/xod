@@ -1,20 +1,12 @@
 import * as AT from './actionTypes';
 
-export const showDebugger = () => ({
-  type: AT.SHOW_DEBUGGER_PANEL,
-});
-
-export const hideDebugger = () => ({
-  type: AT.HIDE_DEBUGGER_PANEL,
-});
-
 export const toggleDebugger = () => ({
   type: AT.TOGGLE_DEBUGGER_PANEL,
 });
 
-export const addMessagesToDebuggerLog = message => ({
+export const addMessagesToDebuggerLog = messages => ({
   type: AT.DEBUGGER_LOG_ADD_MESSAGES,
-  payload: message,
+  payload: messages,
 });
 
 export const clearDebuggerLog = () => ({

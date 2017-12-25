@@ -25,10 +25,8 @@ export default (state, action) => {
   switch (action.type) {
     case UPLOAD:
     case UPLOAD_TO_ARDUINO: {
-      if (action.meta.status === 'deleted') {
-        return hideOnePopup(POPUP_ID.UPLOADING, state);
-      } else if (action.meta.status !== 'failed') {
-        return showOnlyPopup(POPUP_ID.UPLOADING, {}, state);
+      if (action.meta.status === 'started') {
+        return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
       }
       return state;
     }

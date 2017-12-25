@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 import {
   getCurrentTabId,
@@ -24,6 +25,11 @@ export const getLog = R.compose(
   getDebuggerState
 );
 
+export const getUploadLog = R.compose(
+  R.prop('uploadLog'),
+  getDebuggerState
+);
+
 export const getDebuggerNodeIdsMap = R.compose(
   R.prop('nodeIdsMap'),
   getDebuggerState
@@ -31,6 +37,12 @@ export const getDebuggerNodeIdsMap = R.compose(
 
 export const getWatchNodeValues = R.compose(
   R.prop('watchNodeValues'),
+  getDebuggerState
+);
+
+export const getUploadProgress = R.compose(
+  Maybe,
+  R.prop('uploadProgress'),
   getDebuggerState
 );
 

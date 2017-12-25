@@ -24,7 +24,7 @@
     "doc:fz": "cd docs && make",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/*/test-func --ext js,jsx --max-warnings 0",
-    "start:electron": "lerna run start --scope xod-client-electron",
+    "start:electron": "lerna run start --scope xod-client-electron --stream",
     "start:spectron-repl": "./tools/spectron-repl",
     "storybook": "lerna run storybook --stream --scope xod-client",
     "test": "XOD_HM_DEF=true lerna run test",

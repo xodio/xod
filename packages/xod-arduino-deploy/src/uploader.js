@@ -140,11 +140,22 @@ export const upload = R.curry(
 export const buildAndUpload = R.curry(
   (sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, portName, builderToolDir) =>
     build(sketchFilePath, fqbn, packagesDir, librariesDir, buildDir, builderToolDir)
-      .then((res) => {
-        if (res.exitCode !== 0) {
-          return Promise.reject(Object.assign(new Error(res.stderr), res));
+      .then((buildResult) => {
+        if (buildResult.exitCode !== 0) {
+          return Promise.reject(Object.assign(new Error(buildResult.stderr), buildResult));
         }
 
-        return upload(sketchFilePath, fqbn, packagesDir, buildDir, portName);
+        return upload(sketchFilePath, fqbn, packagesDir, buildDir, portName)
+          .then((uploadResult) => {
+            if (uploadResult.exitCode !== 0) {
+              return Promise.reject(Object.assign(new Error(uploadResult.stderr), uploadResult));
+            }
+
+            return {
+              exitCode: uploadResult.exitCode,
+              stdout: [buildResult.stdout, uploadResult.stdout].join('\n'),
+              stderr: [buildResult.stderr, uploadResult.stderr].join('\n'),
+            };
+          });
       })
 );
