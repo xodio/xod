@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import CodeMirror from 'react-codemirror';
-import 'codemirror/mode/clike/clike';
+import ReactCodeMirror from 'react-codemirror';
+import '../codemirrorXodMode';
+
+// See comments below
+let codeMirror = null;
+let refreshed = false;
 
 const CppImplementationEditor = ({
   patchPath,
@@ -15,10 +19,36 @@ const CppImplementationEditor = ({
   const options = {
     lineNumbers: true,
     readOnly: isInDebuggerTab,
-    mode: 'text/x-c++src',
+    mode: 'text/x-c++xod',
     theme: 'xod',
     indentUnit: 4,
+    extraKeys: {
+      Tab: (CM) => {
+        if (CM.somethingSelected()) {
+          const sel = CM.getSelection('\n');
+          // Indent only if there are multiple lines selected, or if the selection spans a full line
+          if (sel.length > 0 && (sel.indexOf('\n') > -1 || sel.length === CM.getLine(CM.getCursor().line).length)) {
+            CM.indentSelection('add');
+            return;
+          }
+        }
+
+        if (CM.options.indentWithTabs) {
+          CM.execCommand('insertTab');
+        } else {
+          CM.execCommand('insertSoftTab');
+        }
+      },
+      'Shift-Tab': CM => CM.indentSelection('subtract'),
+    },
   };
+
+  if (codeMirror && !refreshed) {
+    // A necessary evil to correctly position the cursor
+    // on the first run and not to wrap the entire component in a class
+    codeMirror.getCodeMirror().refresh();
+    refreshed = true;
+  }
 
   return (
     <div
@@ -53,10 +83,11 @@ const CppImplementationEditor = ({
         </li>
       </ul>
       <div className="editor">
-        <CodeMirror
+        <ReactCodeMirror
           value={source}
           onChange={onChange}
           options={options}
+          ref={(el) => { codeMirror = codeMirror || el; }}
         />
       </div>
     </div>
