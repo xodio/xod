@@ -9,7 +9,7 @@ import { drillDown } from '../actions';
 import { getRenerableBreadcrumbChunks, getBreadcrumbActiveIndex } from '../../editor/selectors';
 
 const Breadcrumbs = ({ chunks, activeIndex, actions }) => (
-  <ul className="Breadcrumbs">
+  <ul className="Breadcrumbs Breadcrumbs--debugger">
     {chunks.map((chunk, i) => {
       const cls = classNames('Breadcrumbs-chunk-button', {
         'is-active': (i === activeIndex),

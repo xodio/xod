@@ -143,6 +143,7 @@ class Editor extends React.Component {
           onChange={onChange}
           isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
           onClose={this.props.actions.closeImplementationEditor}
+          patchPath={this.props.currentPatchPath}
         />
       );
     });
