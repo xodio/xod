@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] General user interface facelift. Updated icons, reduced visual noise,
+  more accurate accents. Better messages and the main menu.
+* [ide] Make panels dockable. Now you can tweak location of any sidebar panel:
+  dock it to the left or right, hide, resize.
+* [ide] The project browser, quick search suggester, and selected node got own
+  help boxes. All available with H key as it was before.
+* [ide] Introduce deploy pane. Now all output during upload and debug messages
+  go here.
+* [ide] Improve syntax highlighting in the embedded code editor. Match XOD C++
+  node API symbols, inttypes, and few Arduino built-in functions.
+
+### Bug fixes
+
+* [nodes] Fix wrong description of `xod/core/pulse-on-false` (thanks @awgrover)
+
 <a name="0.16.1"></a>
 ## 0.16.1 (2017-12-13)
 
