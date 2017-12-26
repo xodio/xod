@@ -22,7 +22,7 @@
   "dependencies": {
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
-    "swagger-client": "^3.0.13",
+    "swagger-client": "^3.4.3",
     "xod-func-tools": "^0.16.0",
     "xod-project": "^0.16.0"
   },
