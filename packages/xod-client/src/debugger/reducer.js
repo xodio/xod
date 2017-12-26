@@ -158,7 +158,10 @@ export default (state = initialState, action) => {
       )(state);
     }
     case DEBUGGER_LOG_CLEAR:
-      return R.assoc('log', [], state);
+      return R.compose(
+        R.assoc('log', []),
+        R.assoc('uploadLog', [])
+      )(state);
     case DEBUG_SESSION_STARTED:
       return R.compose(
         addMessageToLog(action.payload.message),
