@@ -15,11 +15,10 @@ void evaluate(Context ctx) {
     }
 
     auto line = getValue<input_LINE>(ctx);
-    if (line) {
-        for (auto it = line->iterate(); it; ++it)
-            Serial.write((char)*it);
-        Serial.write('\r');
-        Serial.write('\n');
-        Serial.flush();
-    }
+
+    for (auto it = line->iterate(); it; ++it)
+        Serial.write((char)*it);
+    Serial.write('\r');
+    Serial.write('\n');
+    Serial.flush();
 }
