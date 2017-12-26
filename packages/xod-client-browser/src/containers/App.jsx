@@ -267,8 +267,9 @@ class App extends client.App {
         />
         <client.Editor
           size={this.state.size}
+          onUploadClick={this.onUpload}
+          onUploadAndDebugClick={this.onUpload}
         />
-        <client.SnackBar />
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
           onClose={this.hideInstallAppPopup}

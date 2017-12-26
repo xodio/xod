@@ -1,7 +1,7 @@
 .debug-session-stop-button {
   z-index: 10;
   position: absolute;
-  top: 33px;
+  top: 3px;
   right: 3px;
 
   padding: 8px 15px 10px 15px;
@@ -13,88 +13,126 @@
 }
 
 .Debugger {
-  position: absolute;
-  z-index: 10;
   bottom: 0;
-  height: 196px;
+  height: 220px;
   width: 100%;
+  border-top: 2px solid $chrome-outlines;
 
   color: $sidebar-color-text;
 
-  .caption {
-    position: relative;
-    display: block;
-    box-sizing: border-box;
-    height: 20px;
-    width: 120px;
-    margin-left: 2em;
-    margin-top: -20px;
-
-    padding: 4px 8px;
-    cursor: default;
-
-    background: $sidebar-color-bg;
-    border-top-right-radius: 2px;
-    border-top-left-radius: 2px;
-
-    .close-button {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      padding: 0;
-
-      position: absolute;
-      top: 2px;
-      right: 2px;
-
-      background: none;
-      border: none;
-      font-size: 1.4em;
-      line-height: 0;
-      color: $sidebar-color-text;
-
-      &:hover {
-        color: $sidebar-color-text-hover;
-      }
-    }
-    .title {
-      vertical-align: middle;
-    }
-    .status {
-      font-size: $font-size-s;
-      margin-right: 0.5em;
-    }
+  &.isCollapsed {
+    height: 24px;
   }
 
-  .clear-log-button {
-    position: absolute;
-    top: 2px;
-    right: 22px;
-    z-index: 3;
+  .titlebar {
+    background-color: $coal-bright;
 
-    border: 0;
-    background: $sidebar-color-bg;
-    color: $sidebar-color-text;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 
-    padding: 2px 4px;
+    .expander {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
-    &:hover {
-      color: $sidebar-color-text-hover;
-      background: $sidebar-color-bg-hover;
+      .title {
+        margin-left: 7px;
+        color: $light-grey-bright;
+      }
+  
+      .progress {
+        
+        padding-left: 14px;
+  
+        .progress-trail {
+          width: 150px;
+          height: 7px;
+          border-radius: 7px;
+  
+          background-color: $dark;
+          overflow: hidden;
+  
+          .progress-line {
+            height: 7px;
+            background-color: $green;
+          }
+        }
+      }
+    }
+
+
+    @mixin deploymentPanelButton() {
+      box-sizing: border-box;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 1;
+      background: none;
+      border-radius: 0;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: #ccc;
+
+      &:hover {
+        color: #ccc;
+        background: #444;
+      }
+    }
+
+    .quick-upload-button {
+      @include deploymentPanelButton();
+      @extend .icon-quick-upload;
+    }
+    .debug-button {
+      @include deploymentPanelButton();
+      @extend .icon-debug;
+    }
+    .filter-button {
+      @include deploymentPanelButton();
+      @extend .icon-filter;
+    }
+    .clear-log-button {
+      @include deploymentPanelButton();
+      @extend .icon-clear-log;
+    }
+    .close-button {
+      @include deploymentPanelButton();
+
+      &::before {
+        line-height: 24px;
+        opacity: 0.4;
+      }
     }
   }
 
   .container {
     display: block;
-    height: 180px;
-    padding: 8px;
+    height: 196px;
 
     background: $sidebar-color-bg;
     border-left: 1px solid $color-canvas-background;
   }
 
   .log {
-    max-height: 180px;
+    max-height: 196px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      opacity: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(white, 0.35);
+      border-radius: 3px;
+    }
 
     pre {
       margin: 0;
@@ -142,8 +180,6 @@
         display: inline-block;
         color: $color-comment-text;
         font-family: $font-family-mono;
-
-        white-space: nowrap;
       }
     }
 

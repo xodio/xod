@@ -184,7 +184,6 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const DebuggerContainer = (this.props.isDebuggerVisible) ? <Debugger /> : null;
     const BreadcrumbsContainer = R.pathEq(['currentTab', 'id'], DEBUGGER_TAB_ID, this.props)
       ? <Breadcrumbs />
       : null;
@@ -214,12 +213,17 @@ class Editor extends React.Component {
           onFocus={this.onWorkareaFocus}
         >
           <Tabs />
-          {DebugSessionStopButton}
-          {this.renderOpenedPatchTab()}
-          {BreadcrumbsContainer}
-          {this.renderOpenedImplementationEditorTabs()}
-          {DebuggerContainer}
-          <SnackBar />
+          <div className="Workarea-inner">
+            {DebugSessionStopButton}
+            {this.renderOpenedPatchTab()}
+            {BreadcrumbsContainer}
+            {this.renderOpenedImplementationEditorTabs()}
+            <SnackBar />
+          </div>
+          <Debugger
+            onUploadClick={this.props.onUploadClick}
+            onUploadAndDebugClick={this.props.onUploadAndDebugClick}
+          />
         </FocusTrap>
         <Sidebar
           id={SIDEBAR_IDS.RIGHT}
@@ -245,13 +249,14 @@ Editor.propTypes = {
   implEditorTabs: PropTypes.array,
   patchesIndex: PropTypes.object,
   isHelpboxVisible: PropTypes.bool,
-  isDebuggerVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
   suggesterPlacePosition: PropTypes.object,
   isLibSuggesterVisible: PropTypes.bool,
   defaultNodePosition: PropTypes.object.isRequired,
   stopDebuggerSession: PropTypes.func,
+  onUploadClick: PropTypes.func.isRequired,
+  onUploadAndDebugClick: PropTypes.func.isRequired,
   actions: PropTypes.shape({
     updatePatchImplementation: PropTypes.func.isRequired,
     closeImplementationEditor: PropTypes.func.isRequired,
@@ -285,7 +290,6 @@ const mapStateToProps = R.applySpec({
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
   isLibSuggesterVisible: EditorSelectors.isLibSuggesterVisible,
   isHelpboxVisible: EditorSelectors.isHelpboxVisible,
-  isDebuggerVisible: DebuggerSelectors.isDebuggerVisible,
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });

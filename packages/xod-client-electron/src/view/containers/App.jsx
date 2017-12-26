@@ -27,7 +27,6 @@ import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
-import PopupUploadProject from '../../upload/components/PopupUploadProject';
 import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
 import { REDUCER_STATUS } from '../../projects/constants';
 import { SaveProgressBar } from '../components/SaveProgressBar';
@@ -35,6 +34,7 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 import * as MESSAGES from '../../shared/messages';
+import UPLOAD_MESSAGES from '../../upload/messages';
 import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import { subscribeAutoUpdaterEvents } from '../autoupdate';
@@ -83,6 +83,7 @@ class App extends client.App {
     this.getSelectedBoard = this.getSelectedBoard.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
+    this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
@@ -188,6 +189,10 @@ class App extends client.App {
     this.props.actions.uploadToArduinoConfig();
   }
 
+  onUploadToArduinoAndDebugClicked() {
+    this.props.actions.uploadToArduinoConfig(true);
+  }
+
   onUploadToArduino(board, port, cloud, debug, processActions = null) {
     const proc = (processActions !== null) ? processActions : this.props.actions.uploadToArduino();
     const eitherTProject = this.transformProjectForTranspiler(debug);
@@ -219,6 +224,9 @@ class App extends client.App {
       }
       if (payload.success) {
         proc.success(payload.message);
+
+        this.props.actions.addConfirmation({ title: UPLOAD_MESSAGES.SUCCESS });
+
         if (debug) {
           foldEither(
             error => this.props.actions.addError(
@@ -625,19 +633,11 @@ class App extends client.App {
         listPorts={this.listPorts}
         compileLimitLeft={this.props.compileLimitLeft}
         updateCompileLimit={this.props.actions.updateCompileLimit}
+        initialDebugAfterUpload={this.props.popupsData.uploadToArduinoConfig.debugAfterUpload}
         onBoardChanged={this.onArduinoTargetBoardChange}
         onPortChanged={this.onSerialPortChange}
         onUpload={this.onUploadToArduino}
         onClose={this.onUploadConfigClose}
-      />
-    ) : null;
-  }
-  renderPopupUploadProcess() {
-    return (this.props.popups.uploadProject) ? (
-      <PopupUploadProject
-        isVisible
-        upload={this.props.upload}
-        onClose={this.onUploadPopupClose}
       />
     ) : null;
   }
@@ -653,10 +653,11 @@ class App extends client.App {
         <client.Editor
           size={this.state.size}
           stopDebuggerSession={() => debuggerIPC.sendStopDebuggerSession(ipcRenderer)}
+          onUploadClick={this.onUploadToArduinoClicked}
+          onUploadAndDebugClick={this.onUploadToArduinoAndDebugClicked}
         />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
-        {this.renderPopupUploadProcess()}
         {this.renderPopupProjectPreferences()}
         {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
@@ -761,7 +762,6 @@ const mapStateToProps = R.applySpec({
     switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
     createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE),
     uploadToArduinoConfig: client.getPopupVisibility(client.POPUP_ID.UPLOADING_CONFIG),
-    uploadProject: client.getPopupVisibility(client.POPUP_ID.UPLOADING),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
     projectPreferences: client.getPopupVisibility(
       client.POPUP_ID.EDITING_PROJECT_PREFERENCES
@@ -771,6 +771,7 @@ const mapStateToProps = R.applySpec({
   popupsData: {
     projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
     createWorkspace: client.getPopupData(client.POPUP_ID.CREATING_WORKSPACE),
+    uploadToArduinoConfig: client.getPopupData(client.POPUP_ID.UPLOADING_CONFIG),
     switchWorkspace: client.getPopupData(client.POPUP_ID.SWITCHING_WORKSPACE),
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
     publishingProject: client.getPopupData(client.POPUP_ID.PUBLISHING_PROJECT),
@@ -787,6 +788,7 @@ const mapDispatchToProps = dispatch => ({
       switchWorkspace: settingsActions.switchWorkspace,
       openProject: client.openProject,
       saveAll: actions.saveAll,
+      addConfirmation: client.addConfirmation,
       uploadToArduino: uploadActions.uploadToArduino,
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,

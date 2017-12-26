@@ -192,7 +192,7 @@ const deployToArduino = ({
         return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
       }
       sendSuccess(
-        [result.stderr, result.stdout].join('\n\n'),
+        [result.stdout, result.stderr].join('\n\n'),
         100
       )();
 

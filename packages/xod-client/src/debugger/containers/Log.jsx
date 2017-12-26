@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Infinite from 'react-infinite';
 
-import { getLog } from '../selectors';
+import { getLog, getUploadLog } from '../selectors';
 import SystemMessage from '../components/SystemMessage';
 import ErrorMessage from '../components/ErrorMessage';
 import LogMessage from '../components/LogMessage';
@@ -24,23 +24,31 @@ const renderLogMessage = (messageData, idx) => R.compose(
   ])
 )(messageData);
 
-const Log = ({ log }) => (
+const Log = ({ log, uploadLog, rejectedMessageTypes }) => (
   <Infinite
     className="log"
     elementHeight={19}
-    containerHeight={180}
+    containerHeight={196}
     displayBottomUpwards
   >
-    {log.map(renderLogMessage)}
+    {
+      uploadLog
+        .concat(log)
+        .filter(msg => !rejectedMessageTypes.includes(msg.type))
+        .map(renderLogMessage)
+    }
   </Infinite>
 );
 
 Log.propTypes = {
   log: PropTypes.arrayOf(PropTypes.object),
+  uploadLog: PropTypes.arrayOf(PropTypes.object),
+  rejectedMessageTypes: PropTypes.arrayOf(PropTypes.string),
 };
 
 const mapStateToProps = R.applySpec({
   log: getLog,
+  uploadLog: getUploadLog,
 });
 
 export default connect(mapStateToProps, {})(Log);

@@ -30,9 +30,11 @@ export const uploadToArduino = () => (dispatch) => {
   };
 };
 
-export const uploadToArduinoConfig = () => ({
+export const uploadToArduinoConfig = (debugAfterUpload = false) => ({
   type: OPEN_UPLOAD_CONFIG,
-  payload: {},
+  payload: {
+    debugAfterUpload,
+  },
 });
 
 export const hideUploadConfigPopup = () => ({

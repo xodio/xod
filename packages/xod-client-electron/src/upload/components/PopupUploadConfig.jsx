@@ -22,7 +22,7 @@ class PopupUploadConfig extends React.Component {
       boards: null,
       ports: null,
       doCompileInCloud: false,
-      debugAfterUpload: false,
+      debugAfterUpload: props.initialDebugAfterUpload,
     };
 
     this.onClose = this.onClose.bind(this);
@@ -305,6 +305,7 @@ class PopupUploadConfig extends React.Component {
 
 PopupUploadConfig.propTypes = {
   isVisible: PropTypes.bool,
+  initialDebugAfterUpload: PropTypes.bool,
   selectedPort: PropTypes.object,
   compileLimitLeft: PropTypes.number,
   updateCompileLimit: PropTypes.func,
@@ -319,6 +320,7 @@ PopupUploadConfig.propTypes = {
 
 PopupUploadConfig.defaultProps = {
   isVisible: false,
+  initialDebugAfterUpload: false,
 };
 
 export default PopupUploadConfig;

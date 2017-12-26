@@ -5,6 +5,7 @@ import {
 } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import Debugger from '../src/debugger/containers/Debugger';
 import DebuggerReducer from '../src/debugger/reducer';
@@ -57,6 +58,51 @@ const addError = (store) => {
   }]));
 };
 
+const addUploadingLog = (store) => {
+  store.dispatch({
+    type: 'UPLOAD',
+    meta: {
+      status: 'started',
+    },
+  });
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: 'Project was successfully transpiled. Searching for device...',
+      percentage: 10,
+      id: 1,
+    },
+    meta: {
+      status: 'progressed',
+    },
+  });
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: 'Port with connected Arduino was found. Installing toolchains...',
+      percentage: 15,
+      id: 1,
+    },
+    meta: {
+      status: 'progressed',
+    },
+  });
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: 'Toolchain is installed. Uploading...',
+      percentage: 30,
+      id: 1,
+    },
+    meta: {
+      status: 'progressed',
+    },
+  });
+};
+
 const startDebugSession = (store) => {
   store.dispatch(startDebuggerSession({
     type: 'system',
@@ -85,7 +131,75 @@ const idle = () => {
   storiesOf('Debugger', module)
     .addDecorator(story => <Provider store={store}>{story()}</Provider>)
     .add('idle', () => (
-      <Debugger />
+      <Debugger
+        onUploadClick={action('onUploadClick')}
+        onUploadAndDebugClick={action('onUploadAndDebugClick')}
+      />
+    ));
+};
+
+const uploading = () => {
+  const store = createStore();
+  addUploadingLog(store);
+
+  storiesOf('Debugger', module)
+    .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+    .add('uploading', () => (
+      <Debugger
+        onUploadClick={action('onUploadClick')}
+        onUploadAndDebugClick={action('onUploadAndDebugClick')}
+      />
+    ));
+};
+
+const uploadingSuccess = () => {
+  const store = createStore();
+  addUploadingLog(store);
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: '\nConnecting to programmer: .\nFound programmer: Id = "CATERIN"; type = S\n    Software Version = 1.0; No Hardware Version given.\nProgrammer supports auto addr increment.\nProgrammer supports buffered memory access with buffersize=128 bytes.\n\nProgrammer supports the following devices:\n    Device code: 0x44\n\navrdude: AVR device initialized and ready to accept instructions\n\nReading | ################################################## | 100% 0.00s\n\navrdude: Device signature = 0x1e9587 (probably m32u4)\navrdude: reading input file "/Users/user/Library/Application Support/xod-client-electron/upload-temp/build/xod-arduino-sketch.cpp.hex"\navrdude: writing flash (6884 bytes):\n\nWriting | ################################################## | 100% 0.53s\n\navrdude: 6884 bytes of flash written\navrdude: verifying flash memory against /Users/user/Library/Application Support/xod-client-electron/upload-temp/build/xod-arduino-sketch.cpp.hex:\navrdude: load data flash data from input file /Users/user/Library/Application Support/xod-client-electron/upload-temp/build/xod-arduino-sketch.cpp.hex:\navrdude: input file /Users/user/Library/Application Support/xod-client-electron/upload-temp/build/xod-arduino-sketch.cpp.hex contains 6884 bytes\navrdude: reading on-chip flash data:\n\nReading | ################################################## | 100% 0.07s\n\navrdude: verifying ...\navrdude: 6884 bytes of flash verified\n\navrdude done.  Thank you.\n\n\n\n',
+      id: 1,
+    },
+    meta: {
+      status: 'succeeded',
+    },
+  });
+
+  storiesOf('Debugger', module)
+    .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+    .add('uploading sussess', () => (
+      <Debugger
+        onUploadClick={action('onUploadClick')}
+        onUploadAndDebugClick={action('onUploadAndDebugClick')}
+      />
+    ));
+};
+
+const uploadingFail = () => {
+  const store = createStore();
+  addUploadingLog(store);
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: 'Error occured during uploading: Some horrible stuff happened',
+      percentage: 30,
+      id: 1,
+    },
+    meta: {
+      status: 'failed',
+    },
+  });
+
+  storiesOf('Debugger', module)
+    .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+    .add('uploading fail', () => (
+      <Debugger
+        onUploadClick={action('onUploadClick')}
+        onUploadAndDebugClick={action('onUploadAndDebugClick')}
+      />
     ));
 };
 
@@ -100,7 +214,10 @@ const running = () => {
     .add('running', () => (
       <div>
         <LogLength />
-        <Debugger />
+        <Debugger
+          onUploadClick={action('onUploadClick')}
+          onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        />
       </div>
     ));
 };
@@ -112,4 +229,7 @@ const running = () => {
 // =============================================================================
 
 idle();
+uploading();
+uploadingSuccess();
+uploadingFail();
 running();

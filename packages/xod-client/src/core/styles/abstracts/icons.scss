@@ -32,3 +32,16 @@
 .icon-account {
   @include icon('../assets/icons/account.svg');
 }
+
+.icon-quick-upload {
+  @include icon('../assets/icons/quick-upload.svg');
+}
+.icon-debug {
+  @include icon('../assets/icons/debug.svg');
+}
+.icon-filter {
+  @include icon('../assets/icons/filter.svg');
+}
+.icon-clear-log {
+  @include icon('../assets/icons/clear-log.svg');
+}

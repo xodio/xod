@@ -25,15 +25,19 @@ export default (state, action) => {
   switch (action.type) {
     case UPLOAD:
     case UPLOAD_TO_ARDUINO: {
-      if (action.meta.status === 'deleted') {
-        return hideOnePopup(POPUP_ID.UPLOADING, state);
-      } else if (action.meta.status !== 'failed') {
-        return showOnlyPopup(POPUP_ID.UPLOADING, {}, state);
+      if (action.meta.status === 'started') {
+        return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
       }
       return state;
     }
     case OPEN_UPLOAD_CONFIG:
-      return showOnlyPopup(POPUP_ID.UPLOADING_CONFIG, {}, state);
+      return showOnlyPopup(
+        POPUP_ID.UPLOADING_CONFIG,
+        {
+          debugAfterUpload: action.payload.debugAfterUpload,
+        },
+        state
+      );
     case CLOSE_UPLOAD_CONFIG:
       return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
 
