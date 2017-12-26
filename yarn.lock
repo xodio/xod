@@ -9000,9 +9000,9 @@ react-reflex@^2.0.11:
     prop-types "^15.5.8"
     react-measure "^2.0.2"
 
-"react-skylight@git+https://github.com/xodio/react-skylight.git":
+"react-skylight@git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967":
   version "0.4.2"
-  resolved "git+https://github.com/xodio/react-skylight.git#b5579d39572d57259721c0af290fd3286dde451c"
+  resolved "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967"
   dependencies:
     prop-types "^15.5.10"
 

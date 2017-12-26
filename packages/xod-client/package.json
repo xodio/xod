@@ -45,7 +45,7 @@
     "react-infinite": "^0.12.1",
     "react-redux": "^4.0.6",
     "react-reflex": "^2.0.11",
-    "react-skylight": "git+https://github.com/xodio/react-skylight.git",
+    "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",
     "react-sortable-hoc": "0.6.7",
     "recompose": "^0.25.0",
     "redux": "^3.0.5",
