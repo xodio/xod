@@ -26,7 +26,7 @@
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.12.1",
     "source-map-support": "^0.4.15",
-    "swagger-client": "^3.0.13",
+    "swagger-client": "^3.4.3",
     "xod-arduino": "^0.16.1",
     "xod-fs": "^0.16.0",
     "xod-func-tools": "^0.16.0",
