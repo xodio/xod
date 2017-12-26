@@ -47,10 +47,8 @@
     right: 3px;
     opacity: 0;
     z-index: 1;
-    transition: opacity 0.4s ease-out;
     padding: 6px 0;
     box-sizing: border-box;
-    will-change: opacity;
     pointer-events: none;
 
     &.custom-scrollbar-rtl {
