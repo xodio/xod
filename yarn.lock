@@ -8539,7 +8539,7 @@ promise@^7.0.1, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, "prop-types@^0.14.9 || ^15.3.0", prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
+prop-types@15.x, "prop-types@^0.14.9 || ^15.3.0 || ^16.0.0", prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -8815,11 +8815,11 @@ rc@^1.1.2, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"react-autolink-text2@git+https://github.com/xodio/react-autolink-text.git#npm":
-  version "3.0.0"
-  resolved "git+https://github.com/xodio/react-autolink-text.git#33add8d3e13d88561c8be57efcce83555a48e509"
+react-autolink-text2@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-autolink-text2/-/react-autolink-text2-3.2.0.tgz#f0df734d0463fde0b8505a66c581bd16eb129cd8"
   dependencies:
-    prop-types "^0.14.9 || ^15.3.0"
+    prop-types "^0.14.9 || ^15.3.0 || ^16.0.0"
 
 "react-autosuggest@git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e":
   version "9.3.2"
