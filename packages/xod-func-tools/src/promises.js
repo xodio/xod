@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 /**
  * Like `R.tap` but works with Promises.

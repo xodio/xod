@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import path from 'path';
 import fs from 'fs-extra';
 import * as XF from 'xod-func-tools';

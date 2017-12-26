@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { STATUS } from '../utils/constants';
 
 export const getProccesses = R.prop('processes');

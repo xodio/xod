@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import { explodeMaybe, notNil, reduceEither, isAmong, mapIndexed } from 'xod-func-tools';
 
@@ -336,8 +336,15 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   );
 });
 
+
+// :: Patch -> String
+const pinsMemoizer = R.compose(
+  JSON.stringify.bind(JSON),
+  listNodes
+);
+
 // :: Patch -> StrMap Pins
-const computePins = R.memoize(patch =>
+const computePins = R.memoizeWith(pinsMemoizer, patch =>
   R.compose(
     R.indexBy(Pin.getPinKey),
     R.unnest,

@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import path from 'path';
 import fse from 'fs-extra';
 import fetch from 'node-fetch';

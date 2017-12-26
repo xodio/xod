@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   const sizes = {

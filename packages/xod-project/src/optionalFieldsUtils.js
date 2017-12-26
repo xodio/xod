@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { subtractObject } from 'xod-func-tools';
 
 import { def } from './types';

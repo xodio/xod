@@ -12,7 +12,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "fs-extra": "^4.0.2",
-    "hm-def": "^0.2.0",
+    "hm-def": "^0.2.1",
     "json-stable-stringify": "^1.0.1",
     "ramda": "^0.24.1",
     "recursive-copy": "^2.0.6",

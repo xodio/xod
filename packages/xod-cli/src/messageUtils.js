@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import R from 'ramda';
+import * as R from 'ramda';
 import clc from 'cli-color';
 
 function write(msg) {

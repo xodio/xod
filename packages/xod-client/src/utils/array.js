@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { mapIndexed } from 'xod-func-tools';
 
 // :: [{...}] -> [{..., index: N}] -- sets each element in array a property 'index'

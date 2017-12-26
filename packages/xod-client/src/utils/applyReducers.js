@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 const applyReducers = (reducers, state, action, context) => {
   let hasChanged = false;

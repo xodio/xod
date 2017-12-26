@@ -1,5 +1,5 @@
 import os from 'os';
-import R from 'ramda';
+import * as R from 'ramda';
 import path from 'path';
 
 export const isWindows = (os.platform() === 'win32');

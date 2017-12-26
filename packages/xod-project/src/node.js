@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import * as Pin from './pin';
 import * as Utils from './utils';
 import * as Tools from './func-tools';

@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import Fuse from 'fuse.js';
 import { getBaseName } from 'xod-project';
 

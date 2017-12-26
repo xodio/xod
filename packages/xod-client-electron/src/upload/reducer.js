@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import {
   SELECT_SERIAL_PORT,
 } from '../upload/actionTypes';

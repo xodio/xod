@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import * as XP from 'xod-project';
 import { explodeEither } from 'xod-func-tools';
 import { getLibName } from 'xod-pm';

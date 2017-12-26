@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 import initialState from './state';
 import { POPUP_ID } from './constants';

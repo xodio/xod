@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 import { editorLens } from '../editor/selectors';
 import { currentTabLens, selectionLens } from '../editor/reducer';

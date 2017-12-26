@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import swaggerClient from 'swagger-client';
 import { Maybe } from 'ramda-fantasy';
 import {

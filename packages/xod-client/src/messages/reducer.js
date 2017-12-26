@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { MESSAGE_ADD, MESSAGE_DELETE } from './actionTypes';
 import { getNewId } from './selectors';
 

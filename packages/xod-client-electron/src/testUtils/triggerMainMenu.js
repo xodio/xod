@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 function findMenuItem([itemLabel, ...restLabels], tpl) {
   if (R.isNil(tpl)) {

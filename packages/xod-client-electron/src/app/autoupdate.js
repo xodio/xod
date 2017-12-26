@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { errorToPlainObject } from './utils';
 import {
   APP_UPDATE_AVAILABLE,

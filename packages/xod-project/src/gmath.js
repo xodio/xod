@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
 import { ERROR } from './constants';

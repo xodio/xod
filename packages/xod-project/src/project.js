@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 import { explodeMaybe, notEmpty, isAmong } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';

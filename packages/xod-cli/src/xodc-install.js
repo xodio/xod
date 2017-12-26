@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import * as xodFs from 'xod-fs';
 import { fetchLibData, fetchLibsWithDependencies } from 'xod-pm';
 import * as messages from './messageUtils';

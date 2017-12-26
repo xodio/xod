@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
