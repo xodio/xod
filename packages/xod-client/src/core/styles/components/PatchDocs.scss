@@ -134,6 +134,7 @@ $PinInfo-padding-bottom: 10px;
   &--minimal {
     width: 100%;
     max-width: 100%;
+    min-width: auto;
     display: block;
 
     .input-pins-container {
