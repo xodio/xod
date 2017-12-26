@@ -433,21 +433,20 @@ span.CodeMirror-selectedtext { background: none; }
 .cm-s-xod .cm-operator { color: $chalk-bright; }
 .cm-s-xod .cm-variable-2 { color: $apricot-light; }
 .cm-s-xod .cm-variable-3, .cm-s-xod .cm-type { color: $apricot-light; }
-.cm-s-xod .cm-builtin { color: $apricot-light; }
+.cm-s-xod .cm-builtin { color: $blueberry; }
 .cm-s-xod .cm-atom { color: $red-bright; }
 .cm-s-xod .cm-number { color: $red-bright; }
-.cm-s-xod .cm-def { color: #77A0FF; }
+.cm-s-xod .cm-def { color: $blueberry; }
 .cm-s-xod .cm-string { color: $apricot-light; }
 .cm-s-xod .cm-string-2 { color: $apricot-light; }
 .cm-s-xod .cm-comment { color: $light-grey-bright; }
 .cm-s-xod .cm-variable { color: $chalk; }
-.cm-s-xod .cm-tag { color: $emerald; }
+.cm-s-xod .cm-tag { color: $emerald-light; }
 .cm-s-xod .cm-meta { color: $emerald; }
-.cm-s-xod .cm-attribute { color: #77A0FF; }
-.cm-s-xod .cm-property { color: #77A0FF; }
+.cm-s-xod .cm-attribute { color: $blueberry; }
+.cm-s-xod .cm-property { color: $blueberry; }
 .cm-s-xod .cm-qualifier { color: $apricot-light; }
 .cm-s-xod .cm-variable-3, .cm-s-xod .cm-type { color: $apricot-light; }
-.cm-s-xod .cm-tag { color: $emerald; }
 .cm-s-xod .cm-error {
   color: $white;
   background-color: $red;
