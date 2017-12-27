@@ -222,6 +222,52 @@ const running = () => {
     ));
 };
 
+const longMessages = () => {
+  const store = createStore();
+
+  const errorMessage = [
+    'Error occured during uploading:',
+    'Here goes some stacktrace with very long lines\n',
+    'command /Users/user/xod/very-long-path/verylongpath/very-long-path/verylongpath/verylongpath/verylongpath/verylongpath/verylongpath/gcc',
+    'can\'t find file /Users/user/xod/verylongpath/verylongpath/verylongpath/verylongpath/verylongpath/verylongpath/verylongpath/verylongpath/file.cpp',
+  ].join('\n')
+
+  store.dispatch({
+    type: 'UPLOAD',
+    payload: {
+      message: errorMessage,
+      percentage: 30,
+      id: 1,
+    },
+    meta: {
+      status: 'failed',
+    },
+  });
+  for (let i = 0; i < 300; i++) {
+    addMessages(store);
+
+    if (i % 10 === 0) {
+      store.dispatch(addMessagesToDebuggerLog([{
+        type: 'error',
+        message: errorMessage,
+        stack: 'And it could have a stack trace...',
+      }]));
+    }
+  }
+
+  storiesOf('Debugger', module)
+    .addDecorator(story => <Provider store={store}>{story()}</Provider>)
+    .add('long messages', () => (
+      <div>
+        <LogLength />
+        <Debugger
+          onUploadClick={action('onUploadClick')}
+          onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        />
+      </div>
+    ));
+};
+
 // =============================================================================
 //
 // Run stories
@@ -233,3 +279,4 @@ uploading();
 uploadingSuccess();
 uploadingFail();
 running();
+longMessages();

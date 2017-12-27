@@ -140,13 +140,12 @@
 
     .line {
       display: block;
-      height: 15px;
       margin: 0;
       padding: 2px;
-      overflow: hidden;
 
       font-family: $font-family-mono;
       font-size: $font-size-m;
+      word-break: break-all;
 
       &:hover {
         background-color: $sidebar-color-bg-even;

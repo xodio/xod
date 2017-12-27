@@ -84,6 +84,11 @@ const updateWatchNodeValues = R.curry(
 
 const showDebuggerPane = R.assoc('isVisible', true);
 
+const splitMessage = R.compose(
+  R.reject(R.isEmpty),
+  R.split('\n')
+);
+
 // =============================================================================
 //
 // Reducer
@@ -119,8 +124,7 @@ export default (state = initialState, action) => {
         const messages = R.compose(
           R.append(createSystemMessage(MSG.SUCCES)),
           R.map(createFlasherMessage),
-          R.reject(R.isEmpty),
-          R.split('\n')
+          splitMessage,
         )(payload.message);
 
         return R.compose(
@@ -131,8 +135,7 @@ export default (state = initialState, action) => {
       if (status === UPLOAD_STATUS.FAILED) {
         const messages = R.compose(
           R.map(createErrorMessage),
-          R.reject(R.isEmpty),
-          R.split('\n')
+          splitMessage
         )(payload.message);
 
         return R.compose(
