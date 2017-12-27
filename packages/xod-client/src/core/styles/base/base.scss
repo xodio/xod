@@ -15,9 +15,13 @@ body, html {
   cursor: default;
 }
 
-input, select, textarea {
+input, textarea {
   user-select: auto;
   cursor: text;
+}
+select {
+  user-select: auto;
+  cursor: default;
 }
 
 *:focus {

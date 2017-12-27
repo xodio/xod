@@ -52,6 +52,7 @@
     }
     &.project {
       cursor: pointer;
+      * { cursor: pointer; }
     }
 
     p {

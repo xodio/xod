@@ -12,6 +12,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     outline: none;
+    cursor: pointer;
   }
 
   &.isOpen &__label {

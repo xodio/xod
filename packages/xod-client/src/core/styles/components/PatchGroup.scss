@@ -58,6 +58,8 @@
     @include collapsibleBlock();
     cursor: pointer;
 
+    * { cursor: pointer; }
+
     &:after {
       font-family: 'FontAwesome';
       content: '\f0da';
