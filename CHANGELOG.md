@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Fix help panel content overflow.
+* [ide] Fix quick search help box text moire (best noticable on Windows).
+* [ide] Fix background size for a view when no patches are open.
+* [ide] Fix cursor shapes for various UI elements.
+* [ide] Fix long lines truncation in the deployment log.
+* [ide] Fix aliasing of IDE desktop icon on Windows.
+
 <a name="0.17.0"></a>
 ## 0.17.0 (2017-12-26)
 
