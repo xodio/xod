@@ -33,7 +33,7 @@
     "react-fa": "^5.0.0",
     "react-hotkeys": "^0.10.0",
     "react-redux": "^4.4.5",
-    "react-skylight": "git+https://github.com/xodio/react-skylight.git",
+    "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "serialport": "^4.0.7",
