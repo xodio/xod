@@ -129,7 +129,13 @@ export const patchToNodeProps = (patch) => {
 };
 
 export const isPatchDeadTerminal = R.compose(
-  R.equals(XP.PIN_TYPE.DEAD),
-  XP.getTerminalDataType,
-  XP.getPatchPath
+  R.ifElse(
+    XP.isTerminalPatchPath,
+    R.compose(
+      R.equals(XP.PIN_TYPE.DEAD),
+      XP.getTerminalDataType
+    ),
+    R.F
+  ),
+  XP.getPatchPath,
 );

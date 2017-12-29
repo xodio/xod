@@ -10,13 +10,11 @@ import {
   addLinksPositioning,
   addPoints,
 } from './nodeLayout';
-import { SELECTION_ENTITY_TYPE, TAB_TYPES } from '../editor/constants';
+import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 import {
   getSelection,
   getCurrentPatchPath,
-  getCurrentTabId,
   getLinkingPin,
-  getTabs,
 } from '../editor/selectors';
 import { isPatchDeadTerminal } from '../project/utils';
 
@@ -129,7 +127,10 @@ export const getCurrentPatchNodes = createSelector(
 // :: State -> Maybe Patch
 export const getCurrentPatch = createSelector(
   [getCurrentPatchPath, getProject],
-  XP.getPatchByPath
+  (patchPath, project) => {
+    if (patchPath === null) return Maybe.Nothing();
+    return XP.getPatchByPath(patchPath, project);
+  }
 );
 
 // :: Project -> RenderableNode -> RenderableNode
@@ -223,36 +224,6 @@ export const getLinkGhost = createSelector(
     };
   }
 );
-
-
-//
-// Tabs
-//
-
-// :: State -> EditorTabs
-export const getPreparedTabs = createSelector(
-  [getCurrentTabId, getProject, getTabs],
-  (currentTabId, project, tabs) =>
-    R.map(
-      (tab) => {
-        const patchPath = tab.patchPath;
-
-        const label = (tab.type === TAB_TYPES.DEBUGGER) ?
-          'Debugger' :
-          XP.getBaseName(patchPath);
-
-        return R.merge(
-          tab,
-          {
-            label,
-            isActive: (currentTabId === tab.id),
-          }
-        );
-      },
-      tabs
-    )
-);
-
 
 //
 // Inspector

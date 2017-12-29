@@ -5,7 +5,7 @@ import { mapIndexed } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { SIDEBAR_IDS } from './constants';
+import { SIDEBAR_IDS, TAB_TYPES } from './constants';
 
 const getProject = R.prop('project'); // Problem of cycle imports...
 
@@ -33,7 +33,7 @@ export const getCurrentTabId = R.pipe(
 
 export const getCurrentTab = createSelector(
   [getCurrentTabId, getTabs],
-  (currentTabId, tabs) => R.propOr(null, currentTabId, tabs)
+  R.propOr(null)
 );
 
 export const getCurrentTabType = createSelector(
@@ -50,6 +50,29 @@ export const getCurrentPatchPath = createSelector(
 export const getCurrentPatchOffset = createSelector(
   getCurrentTab,
   R.propOr(DEFAULT_PANNING_OFFSET, 'offset')
+);
+
+// :: State -> EditorTabs
+export const getPreparedTabs = createSelector(
+  [getCurrentTabId, getTabs],
+  (currentTabId, tabs) => R.map(
+    (tab) => {
+      const patchPath = tab.patchPath;
+
+      const label = (tab.type === TAB_TYPES.DEBUGGER) ?
+        'Debugger' :
+        XP.getBaseName(patchPath);
+
+      return R.merge(
+        tab,
+        {
+          label,
+          isActive: (currentTabId === tab.id),
+        }
+      );
+    },
+    tabs
+  )
 );
 
 // selection

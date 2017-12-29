@@ -10,7 +10,6 @@ import {
 
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
-import * as ProjectSelectors from '../../project/selectors';
 import * as UserSelectors from '../../user/selectors';
 import { assocIndexes, indexById } from '../../utils/array';
 import deepSCU from '../../utils/deepSCU';
@@ -147,7 +146,7 @@ Tabs.propTypes = {
 };
 
 const mapStateToProps = R.applySpec({
-  tabs: ProjectSelectors.getPreparedTabs,
+  tabs: Selectors.getPreparedTabs,
   panels: Selectors.getAllPanelsSettings,
   userAuthorised: UserSelectors.isAuthorized,
 });

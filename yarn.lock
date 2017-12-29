@@ -5489,18 +5489,18 @@ highlight.js@^9.1.0, highlight.js@^9.3.0:
   version "9.12.0"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
-hm-def@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/hm-def/-/hm-def-0.2.1.tgz#234a04a4a2ce9ce3ec27b37c019a898dc364ab58"
+hm-def@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/hm-def/-/hm-def-0.3.2.tgz#b3139c274daa8d8d17a23b8429ff54165bb4f554"
   dependencies:
-    hm-parser "^0.1.4"
+    hm-parser "^0.1.5"
     ramda "^0.24.1"
     ramda-fantasy "^0.8.0"
-    sanctuary-def "^0.9.0"
+    sanctuary-def "^0.14.0"
 
-hm-parser@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/hm-parser/-/hm-parser-0.1.4.tgz#a326f425ef3eacea46057f5cf7bd60e53e3d4283"
+hm-parser@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/hm-parser/-/hm-parser-0.1.5.tgz#d0ceae90f74bf1a8200789730b29c2a273e986eb"
   dependencies:
     nearley "^2.7.12"
     ramda "^0.24.1"
@@ -9569,37 +9569,24 @@ safe-json-parse@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/safe-json-parse/-/safe-json-parse-1.0.1.tgz#3e76723e38dfdda13c9b1d29a1e07ffee4b30b57"
 
-sanctuary-def@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/sanctuary-def/-/sanctuary-def-0.12.1.tgz#bb9b2ad9407b1519d1ee61fd293b24e86a2044b3"
+sanctuary-def@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/sanctuary-def/-/sanctuary-def-0.14.0.tgz#cebbec591f5a9b211b34b4b942999d6534010fa8"
   dependencies:
-    sanctuary-type-classes "6.0.x"
+    sanctuary-type-classes "7.1.x"
     sanctuary-type-identifiers "2.0.x"
 
-sanctuary-def@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/sanctuary-def/-/sanctuary-def-0.9.0.tgz#a54bc330ec955d0ef47752317a01657db6d4760e"
-  dependencies:
-    sanctuary-type-classes "2.0.x"
-    sanctuary-type-identifiers "1.0.x"
-
-sanctuary-type-classes@2.0.x:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/sanctuary-type-classes/-/sanctuary-type-classes-2.0.1.tgz#06b6cfd78e3e8d85cd93f5c2d7b08796b68d1e74"
+sanctuary-type-classes@7.1.x:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/sanctuary-type-classes/-/sanctuary-type-classes-7.1.1.tgz#084bbd3168d72e60a059f6f78f5b7e391e68ffbb"
   dependencies:
     sanctuary-type-identifiers "1.0.x"
 
-sanctuary-type-classes@6.0.x:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/sanctuary-type-classes/-/sanctuary-type-classes-6.0.0.tgz#1db3f8c1247de018471e978fe4956a03eb62f464"
-  dependencies:
-    sanctuary-type-identifiers "1.0.x"
-
-sanctuary-type-identifiers@1.0.x, sanctuary-type-identifiers@^1.0.0:
+sanctuary-type-identifiers@1.0.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/sanctuary-type-identifiers/-/sanctuary-type-identifiers-1.0.0.tgz#e8f359f006cb5e624cfb8464603fc114608bde9f"
 
-sanctuary-type-identifiers@2.0.x:
+sanctuary-type-identifiers@2.0.x, sanctuary-type-identifiers@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/sanctuary-type-identifiers/-/sanctuary-type-identifiers-2.0.1.tgz#fc524cf6dd92cebfcbb0dd9509eff193159a20ed"
 

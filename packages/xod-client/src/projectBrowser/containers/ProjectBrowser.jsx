@@ -123,7 +123,11 @@ class ProjectBrowser extends React.Component {
 
   getCollectPropsFn(patchPath) {
     const { currentPatchPath } = this.props;
-    const canAdd = currentPatchPath !== patchPath;
+    const canAdd = (
+      currentPatchPath !== null &&
+      currentPatchPath !== patchPath
+    );
+
     return () => ({
       patchPath,
       canAdd,

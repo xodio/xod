@@ -136,7 +136,7 @@ export const AliasType = R.curry(
 export const Map = BinaryType(
   pkgName, dUrl,
   'Map',
-  x => typeof x === 'object',
+  R.is(Object),
   R.keys,
   R.values
 );
@@ -185,11 +185,11 @@ export const $Either = $.BinaryType(
 //-----------------------------------------------------------------------------
 
 export const env = $.env.concat([
-  Map,
-  Pair,
+  Map($.Unknown, $.Unknown),
+  Pair($.Unknown, $.Unknown),
   $Promise,
-  $Either,
-  $Maybe,
+  $Either($.Unknown, $.Unknown),
+  $Maybe($.Unknown),
 ]);
 
 export const def = HMDef.create({

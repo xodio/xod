@@ -126,7 +126,7 @@ export const getLinkPinKeys = R.juxt([
  * @returns {function}
  */
 const isGetterEqualTo = def(
-  'isGetterEqualTo :: (b -> a) -> (a -> Boolean)',
+  'isGetterEqualTo :: (b -> a) -> (a -> b -> Boolean)',
   getter => R.useWith(R.equals, [
     R.identity,
     getter,

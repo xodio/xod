@@ -1,11 +1,21 @@
 import { assert } from 'chai';
 
 import {
+  isAmong,
   uniqLists,
   swap,
 } from '../src/lists';
 
 describe('lists', () => {
+  describe('isAmong', () => {
+    it('returns true if list contains value', () => {
+      assert.isTrue(isAmong([1, 2, 3], 2));
+    });
+    it('returns false if list does not contains value', () => {
+      assert.isFalse(isAmong([1, 2, 3], 9));
+    });
+  });
+
   describe('uniqLists()', () => {
     it('returns filtered list', () => {
       assert.deepEqual(

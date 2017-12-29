@@ -135,7 +135,7 @@ export const maybeToPromise = R.curry(
  * upsertLinks = reduceEither(assocLink, patch, [link0, link1, link2]);
  */
 export const reduceM = def(
-  'reduceM :: (b -> m b) -> (b -> a -> m b) -> b -> [a] -> m b',
+  'reduceM :: (b -> m b) -> (b -> a -> m b) -> b -> [a] -> m c',
   (m, fn, initial, list) => R.reduce(
     (acc, a) => R.chain(val => fn(val, a), acc),
     m(initial),

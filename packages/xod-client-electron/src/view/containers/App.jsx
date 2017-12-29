@@ -463,11 +463,11 @@ class App extends client.App {
   getKeyMap() { // eslint-disable-line class-methods-use-this
     const commandsBoundToNativeMenu = R.compose(
       R.reject(R.anyPass([
+        R.isNil,
+        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil),
         isAmong([ // still listen to these
           client.COMMAND.SELECT_ALL,
         ]),
-        R.isNil,
-        R.pipe(R.prop(R.__, client.ELECTRON_ACCELERATOR), R.isNil),
       ])),
       R.map(R.prop('command')),
       R.values

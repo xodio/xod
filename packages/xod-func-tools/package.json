@@ -13,11 +13,11 @@
     "test": "mocha test/**/*.spec.js"
   },
   "dependencies": {
-    "hm-def": "^0.2.1",
+    "hm-def": "^0.3.2",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
-    "sanctuary-def": "^0.9.0",
-    "sanctuary-type-identifiers": "^1.0.0"
+    "sanctuary-def": "^0.14.0",
+    "sanctuary-type-identifiers": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^4.1.0"
