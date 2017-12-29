@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 const BASE_SIZE_UNIT = 17;
 

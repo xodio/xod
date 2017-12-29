@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import isDevelopment from 'electron-is-dev';
 
 export const IS_DEV = (isDevelopment || process.env.NODE_ENV === 'development');

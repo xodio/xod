@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { ERROR_CODES as XFS_EC } from 'xod-fs';
 
 // import COMPILATION_ERRORS using path to file to prevent importing the whole package,

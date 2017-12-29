@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';

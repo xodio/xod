@@ -1,5 +1,5 @@
 import path from 'path';
-import R from 'ramda';
+import * as R from 'ramda';
 import * as XP from 'xod-project';
 
 import { def } from './types';

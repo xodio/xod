@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import os from 'os';
 import fse from 'fs-extra';
 import { resolve, join as pjoin } from 'path';

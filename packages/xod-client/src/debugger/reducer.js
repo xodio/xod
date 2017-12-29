@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { renameKeys, invertMap } from 'xod-func-tools';
 
 import {

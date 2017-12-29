@@ -1,6 +1,6 @@
 import path from 'path';
 import { resolvePath } from 'xod-fs';
-import R from 'ramda';
+import * as R from 'ramda';
 import electronSettings from 'electron-settings';
 
 // =============================================================================

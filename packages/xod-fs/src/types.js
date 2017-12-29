@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import {

@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
 import { explode, explodeMaybe, explodeEither, catMaybies } from 'xod-func-tools';

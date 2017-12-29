@@ -1,7 +1,7 @@
 /* eslint-disable react/forbid-prop-types */
 
 import fs from 'fs';
-import R from 'ramda';
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { explode } from 'xod-func-tools';
 import { listMissingLibraryNames } from 'xod-project';
 import { parseLibQuery } from 'xod-pm';

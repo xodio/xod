@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import * as Utils from './utils';
 import { def } from './types';
 

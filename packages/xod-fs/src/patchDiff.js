@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { getPatchPath } from 'xod-project';
 import { isAmong } from 'xod-func-tools';
 

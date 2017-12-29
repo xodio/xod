@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import path from 'path';
 import cpp from 'child-process-promise';
 import fse from 'fs-extra';

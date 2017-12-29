@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
 // :: String -> Boolean
 export const isValidVersion = R.test(

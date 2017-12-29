@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import client from 'xod-client';
 
 import { UPLOAD } from './actionTypes';

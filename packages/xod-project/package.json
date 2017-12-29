@@ -15,7 +15,7 @@
     "test:watch": "yarn run test --watch"
   },
   "dependencies": {
-    "hm-def": "^0.2.0",
+    "hm-def": "^0.2.1",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.9.0",

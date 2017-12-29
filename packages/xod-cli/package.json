@@ -20,7 +20,7 @@
   "dependencies": {
     "cli-color": "^1.1.0",
     "docopt": "^0.6.2",
-    "hm-def": "^0.2.0",
+    "hm-def": "^0.2.1",
     "inquirer": "^3.2.0",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",

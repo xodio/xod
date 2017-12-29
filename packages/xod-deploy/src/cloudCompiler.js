@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import path from 'path';
 import { outputFile } from 'fs-extra';
 import WebSocket from 'ws';

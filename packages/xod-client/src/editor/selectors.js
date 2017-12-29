@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 import { mapIndexed } from 'xod-func-tools';

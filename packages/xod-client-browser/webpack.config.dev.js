@@ -1,11 +1,13 @@
 const path = require('path');
-const validate = require('webpack-validator');
+/* eslint-disable import/no-extraneous-dependencies */
 const merge = require('webpack-merge');
-
+/* eslint-enable import/no-extraneous-dependencies */
 const baseConfig = require('./webpack.config.js');
+
 const pkgpath = subpath => path.join(__dirname, subpath);
 
-const config = merge.smart(baseConfig, {
+module.exports = merge.smart(baseConfig, {
+  devtool: 'eval-source-map',
   output: {
     publicPath: 'http://localhost:8080/',
   },
@@ -14,7 +16,6 @@ const config = merge.smart(baseConfig, {
     host: 'localhost',
     port: 8080,
     contentBase: pkgpath('dist'),
+    compress: true,
   },
 });
-
-module.exports = validate(config);

@@ -1,5 +1,5 @@
 import HMDef from 'hm-def';
-import R from 'ramda';
+import * as R from 'ramda';
 import $ from 'sanctuary-def';
 
 import * as XF from 'xod-func-tools';

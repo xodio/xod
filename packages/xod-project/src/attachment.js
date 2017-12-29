@@ -1,4 +1,4 @@
-import R from 'ramda';
+import * as R from 'ramda';
 import { def } from './types';
 import { IMPL_FILENAME } from './constants';
 
