@@ -33,5 +33,9 @@ module.exports = merge.smart(getBaseConfig(__dirname), {
       'process.env.XOD_FORUM_DOMAIN': JSON.stringify('https://forum.xod.io/'),
       'process.env.XOD_UTM_SOURCE': JSON.stringify('ide-desktop'),
     }),
+    // Workaround to remove iconv warning:
+    // "Critical dependency: the request of a dependency is an expression"
+    // See: https://github.com/andris9/encoding/issues/16
+    new webpack.NormalModuleReplacementPlugin(/iconv-loader$/, 'node-noop'),
   ],
 });
