@@ -710,8 +710,8 @@ class App extends client.App {
                 </p>
                 <p>
                   After download, we will automatically install it and
-                  relaunch the application.<br />
-                  It could take up for few minutes.
+                  restart the application.<br />
+                  It could take up to a few minutes.
                 </p>
                 <p>
                   Keep calm and brew a tea.
