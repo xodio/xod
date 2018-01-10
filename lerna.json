@@ -1,5 +1,6 @@
 {
   "lerna": "2.2.0",
+  "loglevel": "silent",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "packages": [
