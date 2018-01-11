@@ -107,6 +107,8 @@ export default class App extends React.Component {
   }
 
   renderPopupCreateNewProject() {
+    if (!this.props.popups.createProject) return null;
+
     return (
       <PopupPrompt
         title="Create new project"

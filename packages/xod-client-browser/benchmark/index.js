@@ -1,8 +1,14 @@
-const path = require('path');
-const puppeteer = require('puppeteer');
+import path from 'path';
+import puppeteer from 'puppeteer';
 
-const { startServer, stopServer, PORT } = require('./staticServer');
-const { getBoundingClientRect, getCenterPositon, drag } = require('./puppeteerUtils');
+import { startServer, stopServer, PORT } from '../tools/staticServer';
+import getBoundingClientRect from '../test-func/utils/getBoundingClientRect';
+import getCenterPositon from '../test-func/utils/getCenterPositon';
+
+import ProjectBrowser from '../test-func/pageObjects/ProjectBrowser';
+import PromptPopup from '../test-func/pageObjects/PromptPopup';
+import PatchGroupItemContextMenu from '../test-func/pageObjects/PatchGroupItemContextMenu';
+import { getSelectedNodes } from '../test-func/pageObjects/Node';
 
 const getTracingResultsPath = name => path.resolve(__dirname, `./tracing-results/${name}.json`);
 
@@ -30,19 +36,16 @@ const height = 850;
 
   // create a new patch
   const patchName = 'my-test-patch';
-  await page.click('.ProjectBrowser button[title="Add patch"]');
-  await page.type('.PopupPrompt input[type=text]', patchName);
-  await page.click('.PopupPrompt button[type=submit]');
 
-  // open a patch group in project browser
-  const libname = 'xod/core';
-  await page.click(`.patch-group-trigger[data-id="${libname}"]`);
-  await page.waitFor(400); // wait for an animation to finish
+  const projectBrowser = await ProjectBrowser.findOnPage(page);
+  projectBrowser.clickCreatePatch();
 
-  const nodeToAdd = 'add';
-  // select a patch in project browser
-  await page.click(`.PatchGroupItem[data-id="${nodeToAdd}"] .PatchGroupItem__label`);
-  await page.waitFor('.PatchGroupItem.isSelected');
+  const popup = await PromptPopup.waitOnPage(page);
+  await popup.typeText(patchName);
+  await popup.clickConfirm();
+
+  const pbItem = await projectBrowser.scrollToPatchGroupItem('xod/core', 'add');
+  await pbItem.click();
 
   // placing nodes
   const COLS = 14;
@@ -61,22 +64,17 @@ const height = 850;
     }
 
     for (let row = ROWS; row >= 0; row -= 1) {
-      // open contextmenu
-      await page.click('.PatchGroupItem.isSelected .contextmenu', { button: 'right' });
-      await page.waitFor(100); // wait for fade In of contextmenu
-      await page.waitForSelector('.ContextMenu--PatchGroupItem');
-      // press 'Place' button
-      await page.click('.ContextMenu--PatchGroupItem .react-contextmenu-item[data-id="place"]');
+      await pbItem.rightClickContextMenuTrigger();
+      const contextMenu = await PatchGroupItemContextMenu.findOnPage(page);
+      await contextMenu.clickPlace();
 
-      await page.waitForSelector('.Node.is-selected');
-      const nodeElementHandle = await page.$('.Node.is-selected');
-      const createdNodeId = await page.evaluate(el => el.id, nodeElementHandle);
-      nodeIds.push(createdNodeId);
+      const [placedNode] = await getSelectedNodes(page);
+      const { width: placedNodeWidth } = await placedNode.getBoundingClientRect();
+      const placedNodeId = await placedNode.getId();
+      nodeIds.push(placedNodeId);
 
-      // move a node
-      const nodeRect = await getBoundingClientRect(page, nodeElementHandle);
-      await nodeElementHandle.dispose(); // when we begin dragging original DOM element disappears
-      await drag(page, getCenterPositon(nodeRect), { x: nodeRect.width * col, y: 102 * row });
+      await placedNode.drag(placedNodeWidth * col, 102 * row);
+
       await waitForSelectingMode(page);
       await page.keyboard.press('Escape');
     }

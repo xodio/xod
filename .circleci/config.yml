@@ -72,7 +72,7 @@ jobs:
   #--------------------------------------------------------------------
   verify-linux:
     docker:
-      - image: xodio/cci-node:9.2-v1
+      - image: xodio/cci-node:9.2-v2
     environment:
       DISPLAY: ":99.0"
     steps:
@@ -109,7 +109,7 @@ jobs:
   #--------------------------------------------------------------------
   dist-linux:
     docker:
-      - image: xodio/cci-node:9.2-v1
+      - image: xodio/cci-node:9.2-v2
     environment:
       NODE_ENV: production
     steps:

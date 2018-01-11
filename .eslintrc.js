@@ -60,6 +60,7 @@ module.exports = {
         '**/xod-client-electron/**/*.jsx',
         '**/xod-client/stories/*.jsx',
         '**/xod-client-browser/tools/*.js',
+        '**/xod-client-browser/test-func/*.js',
         '**/xod-client-browser/benchmark/*.js'
       ]
     }],
