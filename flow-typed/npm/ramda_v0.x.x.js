@@ -1874,6 +1874,10 @@ declare module ramda {
     x: (...args: Array<any>) => *,
     y: (...args: Array<any>) => *
   ): (...args: Array<any>) => *;
+  declare function either<T>(
+    x: UnaryPredicateFn<T>,
+    y: UnaryPredicateFn<T>
+  ): UnaryPredicateFn<T>;
 
   declare function ifElse<A, B, C>(
     cond: (...args: Array<A>) => boolean,
