@@ -16,6 +16,8 @@ import {
 import { UPLOAD_STATUS, UPLOAD_MSG_TYPE } from './constants';
 import * as MSG from './messages';
 
+import { createSystemMessage, createFlasherMessage, createErrorMessage } from './utils';
+
 import initialState from './state';
 
 const MAX_LOG_MESSAGES = 1000;
@@ -25,19 +27,6 @@ const MAX_LOG_MESSAGES = 1000;
 // Utils
 //
 // =============================================================================
-
-const createSystemMessage = message => ({
-  type: UPLOAD_MSG_TYPE.SYSTEM,
-  message,
-});
-const createFlasherMessage = message => ({
-  type: UPLOAD_MSG_TYPE.FLASHER,
-  message,
-});
-const createErrorMessage = message => ({
-  type: UPLOAD_MSG_TYPE.ERROR,
-  message,
-});
 
 const overDebugLog = R.over(R.lensProp('log'));
 const overUploadLog = R.over(R.lensProp('uploadLog'));
