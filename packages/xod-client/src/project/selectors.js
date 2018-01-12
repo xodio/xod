@@ -3,6 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
+import { foldMaybe } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -27,32 +28,35 @@ export const projectLens = R.lensProp('project');
 // Patch
 //
 
+// :: (Patch -> a) -> Project -> Maybe PatchPath -> a
+const getIndexedPatchEntitiesBy = R.curry(
+  (getter, project, maybePatchPath) => foldMaybe(
+    {},
+    R.compose(
+      R.indexBy(R.prop('id')),
+      getter,
+      XP.getPatchByPathUnsafe(R.__, project)
+    ),
+    maybePatchPath
+  )
+);
+
 // :: State -> StrMap Comment
 export const getCurrentPatchComments = createSelector(
   [getProject, getCurrentPatchPath],
-  (project, currentPatchPath) => {
-    if (!currentPatchPath) return {};
-
-    return R.compose(
-      R.indexBy(R.prop('id')),
-      XP.listComments,
-      XP.getPatchByPathUnsafe(currentPatchPath)
-    )(project);
-  }
+  getIndexedPatchEntitiesBy(XP.listComments)
 );
 
 // :: State -> StrMap Link
 export const getCurrentPatchLinks = createSelector(
   [getProject, getCurrentPatchPath],
-  (project, currentPatchPath) => {
-    if (!currentPatchPath) return {};
+  getIndexedPatchEntitiesBy(XP.listLinks)
+);
 
-    return R.compose(
-      R.indexBy(R.prop('id')),
-      XP.listLinks,
-      XP.getPatchByPathUnsafe(currentPatchPath)
-    )(project);
-  }
+// :: State -> StrMap Node
+export const getCurrentPatchNodes = createSelector(
+  [getProject, getCurrentPatchPath],
+  getIndexedPatchEntitiesBy(XP.listNodes)
 );
 
 // returns object with a shape { nodeId: { pinKey: Boolean } }
@@ -110,27 +114,13 @@ const mergePinDataFromPatch = R.curry(
   )(node, curPatch, project)
 );
 
-// :: State -> StrMap Node
-export const getCurrentPatchNodes = createSelector(
-  [getProject, getCurrentPatchPath],
-  (project, currentPatchPath) => {
-    if (!currentPatchPath) return {};
-
-    return R.compose(
-      R.indexBy(R.prop('id')),
-      XP.listNodes,
-      XP.getPatchByPathUnsafe(currentPatchPath)
-    )(project);
-  }
-);
-
 // :: State -> Maybe Patch
 export const getCurrentPatch = createSelector(
   [getCurrentPatchPath, getProject],
-  (patchPath, project) => {
-    if (patchPath === null) return Maybe.Nothing();
-    return XP.getPatchByPath(patchPath, project);
-  }
+  (patchPath, project) => R.chain(
+    XP.getPatchByPath(R.__, project),
+    patchPath
+  )
 );
 
 // :: Project -> RenderableNode -> RenderableNode
@@ -147,21 +137,20 @@ const addDeadFlag = R.curry(
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
   [R.equals, R.equals, R.equals, R.equals],
-  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
-    Maybe.maybe(
-      {},
-      currentPatch => R.map(
-        R.compose(
-          addDeadFlag(project),
-          addNodePositioning,
-          assocPinIsConnected(connectedPins),
-          assocNodeIdToPins,
-          mergePinDataFromPatch(project, currentPatch)
-        ),
-        currentPatchNodes
+  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) => foldMaybe(
+    {},
+    currentPatch => R.map(
+      R.compose(
+        addDeadFlag(project),
+        addNodePositioning,
+        assocPinIsConnected(connectedPins),
+        assocNodeIdToPins,
+        mergePinDataFromPatch(project, currentPatch)
       ),
-      maybeCurrentPatch
-    )
+      currentPatchNodes
+    ),
+    maybeCurrentPatch
+  )
 );
 
 // :: State -> StrMap RenderableLink

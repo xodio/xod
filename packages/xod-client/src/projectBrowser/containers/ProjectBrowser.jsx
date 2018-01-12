@@ -13,8 +13,9 @@ import {
   getLibraryName,
   isPathLocal,
   getBaseName,
+  PatchPath,
 } from 'xod-project';
-import { isAmong } from 'xod-func-tools';
+import { isAmong, notEquals, $Maybe, foldMaybe } from 'xod-func-tools';
 
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
@@ -82,10 +83,12 @@ class ProjectBrowser extends React.Component {
   }
 
   onAddNode(patchPath) {
-    this.props.actions.addNode(
-      patchPath,
-      this.props.defaultNodePosition,
-      this.props.currentPatchPath
+    this.props.currentPatchPath.map(
+      curPatchPath => this.props.actions.addNode(
+        patchPath,
+        this.props.defaultNodePosition,
+        curPatchPath
+      )
     );
   }
 
@@ -122,10 +125,10 @@ class ProjectBrowser extends React.Component {
   }
 
   getCollectPropsFn(patchPath) {
-    const { currentPatchPath } = this.props;
-    const canAdd = (
-      currentPatchPath !== null &&
-      currentPatchPath !== patchPath
+    const canAdd = foldMaybe(
+      false,
+      notEquals(patchPath),
+      this.props.currentPatchPath
     );
 
     return () => ({
@@ -174,6 +177,12 @@ class ProjectBrowser extends React.Component {
       selectedPatchPath,
     } = this.props;
 
+    const isOpen = foldMaybe(
+      false,
+      R.equals(path),
+      currentPatchPath
+    );
+
     const {
       switchPatch,
       setSelection,
@@ -188,7 +197,7 @@ class ProjectBrowser extends React.Component {
         patchPath={path}
         dead={dead}
         label={getBaseName(path)}
-        isOpen={path === currentPatchPath}
+        isOpen={isOpen}
         onDoubleClick={() => switchPatch(path)}
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
@@ -335,7 +344,7 @@ ProjectBrowser.displayName = 'ProjectBrowser';
 
 ProjectBrowser.propTypes = {
   projectName: PropTypes.string.isRequired,
-  currentPatchPath: PropTypes.string,
+  currentPatchPath: sanctuaryPropType($Maybe(PatchPath)),
   selectedPatchPath: PropTypes.string,
   selectedPatchLabel: PropTypes.string.isRequired,
   localPatches: sanctuaryPropType($.Array(Patch)),

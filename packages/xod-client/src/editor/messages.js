@@ -16,3 +16,8 @@ export const clipboardMissingPatchPasteError = missingPatches => composeMessage(
 
 export const LIB_SUGGESTER_TYPE_TO_BEGIN = 'Type owner/libname to find a library';
 export const LIB_SUGGESTER_NOTHING_FOUND = 'No library found';
+
+export const NO_PATCH_TO_TRANSPILE = composeMessage(
+  'No patch opened',
+  'Open a patch to upload and try again'
+);

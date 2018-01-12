@@ -173,8 +173,6 @@ const mapStateToProps = R.applySpec({
   comments: ProjectSelectors.getRenderableComments,
   selection: EditorSelectors.getSelection,
   linkingPin: EditorSelectors.getLinkingPin,
-  patchPath: EditorSelectors.getCurrentPatchPath,
-  tabType: EditorSelectors.getCurrentTabType,
   ghostLink: ProjectSelectors.getLinkGhost,
   offset: EditorSelectors.getCurrentPatchOffset,
   focusedArea: EditorSelectors.getFocusedArea,

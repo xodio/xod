@@ -13,7 +13,7 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project, fromXodball } from 'xod-project';
-import { foldEither, isAmong } from 'xod-func-tools';
+import { foldEither, isAmong, explodeMaybe } from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
 import packageJson from '../../../package.json';
@@ -215,10 +215,16 @@ class App extends client.App {
               client.composeMessage(error.message)
             ),
             (nodeIdsMap) => {
+              if (this.props.currentPatchPath.isNothing) return;
+              const currentPatchPath = explodeMaybe(
+                'Imposible error: currentPatchPath is Nothing',
+                this.props.currentPatchPath
+              );
+
               this.props.actions.startDebuggerSession(
                 createSystemMessage('Debug session started'),
                 nodeIdsMap,
-                this.props.currentPatchPath
+                currentPatchPath
               );
               debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
             },
