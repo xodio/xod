@@ -28,10 +28,6 @@
  *
  =============================================================================*/
 
-#define NODE_COUNT          18
-#define DEFER_NODE_COUNT    1
-#define MAX_OUTPUT_COUNT    1
-
 // Uncomment to turn on debug of the program
 //#define XOD_DEBUG
 
@@ -91,7 +87,7 @@ template<typename T> class Cursor {
 template<typename T> class NilCursor : public Cursor<T> {
   public:
     virtual bool isValid() const { return false; }
-    virtual bool value(T* out) const { return false; }
+    virtual bool value(T*) const { return false; }
     virtual void next() { }
 };
 
@@ -549,322 +545,87 @@ namespace xod {
 //----------------------------------------------------------------------------
 // Type definitions
 //----------------------------------------------------------------------------
-#define NO_NODE                 ((NodeId)-1)
-
 typedef double Number;
 typedef bool Logic;
-
-#if NODE_COUNT < 256
-typedef uint8_t NodeId;
-#elif NODE_COUNT < 65536
-typedef uint16_t NodeId;
-#else
-typedef uint32_t NodeId;
-#endif
-
-/*
- * Context is a handle passed to each node `evaluate` function. Currently, it’s
- * alias for NodeId but likely will be changed in future to support list
- * lifting and other features
- */
-typedef NodeId Context;
-
-/*
- * LSB of a dirty flag shows whether a particular node is dirty or not
- * Other bits shows dirtieness of its particular outputs:
- * - 1-st bit for 0-th output
- * - 2-nd bit for 1-st output
- * - etc
- *
- * An outcome limitation is that a native node must not have more than 7 output
- * pins.
- */
+typedef unsigned long TimeMs;
 typedef uint8_t DirtyFlags;
 
-typedef unsigned long TimeMs;
-typedef void (*EvalFuncPtr)(Context ctx);
+//----------------------------------------------------------------------------
+// Global variables
+//----------------------------------------------------------------------------
 
-/*
- * Each input stores a reference to its upstream node so that we can get values
- * on input pins. Having a direct pointer to the value is not enough because we
- * want to know dirty’ness as well. So we have to use this structure instead of
- * a pointer.
- */
-struct UpstreamPinRef {
-    // Upstream node ID
-    NodeId nodeId;
-    // Index of the upstream node’s output.
-    // Use 3 bits as it just enough to store values 0..7
-    uint16_t pinIndex : 3;
-    // Byte offset in a storage of the upstream node where the actual pin value
-    // is stored
-    uint16_t storageOffset : 13;
-};
+TimeMs g_transactionTime;
 
-/*
- * Input descriptor is a metaprogramming structure used to enforce an
- * input’s type and store its wiring data location as a zero-RAM constant.
- *
- * A specialized descriptor is required by `getValue` function. Every
- * input of every type node gets its own descriptor in generated code that
- * can be accessed as input_FOO. Where FOO is a pin identifier.
- */
-template<typename ValueT_, size_t wiringOffset>
-struct InputDescriptor {
-    typedef ValueT_ ValueT;
-    enum {
-        WIRING_OFFSET = wiringOffset
-    };
-};
+//----------------------------------------------------------------------------
+// Metaprogramming utilities
+//----------------------------------------------------------------------------
 
-/*
- * Output descriptor serve the same purpose as InputDescriptor but for
- * outputs.
- *
- * In addition to wiring data location it keeps storage data location (where
- * actual value is stored) and own zero-based index among outputs of a particular
- * node
- */
-template<typename ValueT_, size_t wiringOffset, size_t storageOffset, uint8_t index>
-struct OutputDescriptor {
-    typedef ValueT_ ValueT;
-    enum {
-        WIRING_OFFSET = wiringOffset,
-        STORAGE_OFFSET = storageOffset,
-        INDEX = index
-    };
+template<typename T> struct always_false {
+    enum { value = 0 };
 };
 
 //----------------------------------------------------------------------------
 // Forward declarations
 //----------------------------------------------------------------------------
-extern void* const g_storages[NODE_COUNT];
-extern const void* const g_wiring[NODE_COUNT];
-extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
-// TODO: replace with a compact list
-extern TimeMs g_schedule[NODE_COUNT];
-
-void clearTimeout(NodeId nid);
-bool isTimedOut(NodeId nid);
+TimeMs transactionTime();
+void runTransaction(bool firstRun);
 
 //----------------------------------------------------------------------------
 // Engine (private API)
 //----------------------------------------------------------------------------
 
-TimeMs g_transactionTime;
+namespace detail {
 
-void* getStoragePtr(NodeId nid, size_t offset) {
-    return (uint8_t*)pgm_read_ptr(&g_storages[nid]) + offset;
+template<typename NodeT>
+bool isTimedOut(const NodeT* node) {
+    TimeMs t = node->timeoutAt;
+    // TODO: deal with uint32 overflow
+    return t && t < transactionTime();
 }
 
-template<typename T>
-T getStorageValue(NodeId nid, size_t offset) {
-    return *reinterpret_cast<T*>(getStoragePtr(nid, offset));
+// Marks timed out node dirty. Do not reset timeoutAt here to give
+// a chance for a node to get a reasonable result from `isTimedOut`
+// later during its `evaluate`
+template<typename NodeT>
+void checkTriggerTimeout(NodeT* node) {
+    node->isNodeDirty |= isTimedOut(node);
 }
 
-void* getWiringPgmPtr(NodeId nid, size_t offset) {
-    return (uint8_t*)pgm_read_ptr(&g_wiring[nid]) + offset;
+template<typename NodeT>
+void clearTimeout(NodeT* node) {
+    node->timeoutAt = 0;
 }
 
-template<typename T>
-T getWiringValue(NodeId nid, size_t offset) {
-    T result;
-    memcpy_P(&result, getWiringPgmPtr(nid, offset), sizeof(T));
-    return result;
+template<typename NodeT>
+void clearStaleTimeout(NodeT* node) {
+    if (isTimedOut(node))
+        clearTimeout(node);
 }
 
-bool isOutputDirty(NodeId nid, uint8_t index) {
-    return g_dirtyFlags[nid] & (1 << (index + 1));
-}
-
-bool isInputDirtyImpl(NodeId nid, size_t wiringOffset) {
-    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
-    if (ref.nodeId == NO_NODE)
-        return false;
-
-    return isOutputDirty(ref.nodeId, ref.pinIndex);
-}
-
-template<typename InputT>
-bool isInputDirty(NodeId nid) {
-    return isInputDirtyImpl(nid, InputT::WIRING_OFFSET);
-}
-
-void markPinDirty(NodeId nid, uint8_t index) {
-    g_dirtyFlags[nid] |= 1 << (index + 1);
-}
-
-void markNodeDirty(NodeId nid) {
-    g_dirtyFlags[nid] |= 0x1;
-}
-
-bool isNodeDirty(NodeId nid) {
-    return g_dirtyFlags[nid] & 0x1;
-}
-
-template<typename T>
-T getOutputValueImpl(NodeId nid, size_t storageOffset) {
-    return getStorageValue<T>(nid, storageOffset);
-}
-
-template<typename T>
-T getInputValueImpl(NodeId nid, size_t wiringOffset) {
-    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
-    if (ref.nodeId == NO_NODE)
-        return (T)0;
-
-    return getOutputValueImpl<T>(ref.nodeId, ref.storageOffset);
-}
-
-template<typename T>
-struct always_false {
-    enum { value = 0 };
-};
-
-// GetValue -- classical trick for partial function (API `xod::getValue`)
-// template specialization
-template<typename InputOutputT>
-struct GetValue {
-    static typename InputOutputT::ValueT getValue(Context ctx) {
-        static_assert(
-                always_false<InputOutputT>::value,
-                "You should provide an input_XXX or output_YYY argument " \
-                "in angle brackets of getValue"
-                );
-
-    }
-};
-
-template<typename ValueT, size_t wiringOffset>
-struct GetValue<InputDescriptor<ValueT, wiringOffset>> {
-    static ValueT getValue(Context ctx) {
-        return getInputValueImpl<ValueT>(ctx, wiringOffset);
-    }
-};
-
-template<typename ValueT, size_t wiringOffset, size_t storageOffset, uint8_t index>
-struct GetValue<OutputDescriptor<ValueT, wiringOffset, storageOffset, index>> {
-    static ValueT getValue(Context ctx) {
-        return getOutputValueImpl<ValueT>(ctx, storageOffset);
-    }
-};
-
-template<typename T>
-void emitValueImpl(
-        NodeId nid,
-        size_t storageOffset,
-        size_t wiringOffset,
-        uint8_t index,
-        T value) {
-
-    // Store new value and make the node itself dirty
-    T* storedValue = reinterpret_cast<T*>(getStoragePtr(nid, storageOffset));
-    *storedValue = value;
-    markPinDirty(nid, index);
-
-    // Notify downstream nodes about changes
-    // NB: linked nodes array is in PGM space
-    const NodeId* pDownstreamNid = getWiringValue<const NodeId*>(nid, wiringOffset);
-    NodeId downstreamNid = pgm_read_nodeid(pDownstreamNid);
-
-    while (downstreamNid != NO_NODE) {
-        markNodeDirty(downstreamNid);
-        downstreamNid = pgm_read_nodeid(pDownstreamNid++);
-    }
-}
-
-void evaluateNode(NodeId nid) {
-    XOD_TRACE_F("eval #");
-    XOD_TRACE_LN(nid);
-    EvalFuncPtr eval = getWiringValue<EvalFuncPtr>(nid, 0);
-    eval(nid);
-}
-
-void runTransaction() {
-    g_transactionTime = millis();
-
-    XOD_TRACE_F("Transaction started, t=");
-    XOD_TRACE_LN(g_transactionTime);
-
-    // defer-* nodes are always at the very bottom of the graph,
-    // so no one will recieve values emitted by them.
-    // We must evaluate them before everybody else
-    // to give them a chance to emit values.
-    for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
-        if (isTimedOut(nid)) {
-            evaluateNode(nid);
-            // Clear node dirty flag, so it will evaluate
-            // on "regular" pass only if it has a dirty input.
-            // We must save dirty output flags,
-            // or 'isInputDirty' will not work correctly in "downstream" nodes.
-            g_dirtyFlags[nid] &= ~0x1;
-            clearTimeout(nid);
-        }
-    }
-
-    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
-        if (isNodeDirty(nid)) {
-            evaluateNode(nid);
-
-            // If the schedule is stale, clear timeout so that
-            // the node would not be marked dirty again in idle
-            if (isTimedOut(nid))
-                clearTimeout(nid);
-        }
-    }
-
-    // Clear dirtieness for all nodes and pins
-    memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
-
-    XOD_TRACE_F("Transaction completed, t=");
-    XOD_TRACE_LN(millis());
-}
-
-void idle() {
-    // Mark timed out nodes dirty. Do not reset schedule here to give
-    // a chance for a node to get a reasonable result from `isTimedOut`
-    TimeMs now = millis();
-    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
-        TimeMs t = g_schedule[nid];
-        if (t && t < now)
-            markNodeDirty(nid);
-    }
-}
+} // namespace detail
 
 //----------------------------------------------------------------------------
 // Public API (can be used by native nodes’ `evaluate` functions)
 //----------------------------------------------------------------------------
 
-template<typename InputOutputT>
-typename InputOutputT::ValueT getValue(Context ctx) {
-    return GetValue<InputOutputT>::getValue(ctx);
-}
-
-template<typename OutputT>
-void emitValue(NodeId nid, typename OutputT::ValueT value) {
-    emitValueImpl(
-            nid,
-            OutputT::STORAGE_OFFSET,
-            OutputT::WIRING_OFFSET,
-            OutputT::INDEX,
-            value);
-}
-
 TimeMs transactionTime() {
     return g_transactionTime;
 }
 
-void setTimeout(NodeId nid, TimeMs timeout) {
-    g_schedule[nid] = transactionTime() + timeout;
+template<typename ContextT>
+void setTimeout(ContextT* ctx, TimeMs timeout) {
+    ctx->_node->timeoutAt = transactionTime() + timeout;
 }
 
-void clearTimeout(NodeId nid) {
-    g_schedule[nid] = 0;
+template<typename ContextT>
+void clearTimeout(ContextT* ctx) {
+    detail::clearTimeout(ctx->_node);
 }
 
-bool isTimedOut(NodeId nid) {
-    return g_schedule[nid] && g_schedule[nid] < transactionTime();
+template<typename ContextT>
+bool isTimedOut(const ContextT* ctx) {
+    return detail::isTimedOut(ctx->_node);
 }
 
 } // namespace xod
@@ -879,11 +640,12 @@ void setup() {
     DEBUG_SERIAL.begin(115200);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
+
+    xod::runTransaction(true);
 }
 
 void loop() {
-    xod::idle();
-    xod::runTransaction();
+    xod::runTransaction(false);
 }
 
 /*=============================================================================
@@ -912,34 +674,101 @@ struct State {
     LiquidCrystal* lcd;
 };
 
-struct Storage {
+struct Node {
     State state;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_RS;
-    UpstreamPinRef input_EN;
-    UpstreamPinRef input_D4;
-    UpstreamPinRef input_D5;
-    UpstreamPinRef input_D6;
-    UpstreamPinRef input_D7;
-    UpstreamPinRef input_L1;
-    UpstreamPinRef input_L2;
+struct input_RS { };
+struct input_EN { };
+struct input_D4 { };
+struct input_D5 { };
+struct input_D6 { };
+struct input_D7 { };
+struct input_L1 { };
+struct input_L2 { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_RS> { using T = Number; };
+template<> struct ValueType<input_EN> { using T = Number; };
+template<> struct ValueType<input_D4> { using T = Number; };
+template<> struct ValueType<input_D5> { using T = Number; };
+template<> struct ValueType<input_D6> { using T = Number; };
+template<> struct ValueType<input_D7> { using T = Number; };
+template<> struct ValueType<input_L1> { using T = XString; };
+template<> struct ValueType<input_L2> { using T = XString; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_RS;
+    Number _input_EN;
+    Number _input_D4;
+    Number _input_D5;
+    Number _input_D6;
+    Number _input_D7;
+    XString _input_L1;
+    XString _input_L2;
+
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2" \
+            "");
 }
 
-using input_RS = InputDescriptor<Number, offsetof(Wiring, input_RS)>;
-using input_EN = InputDescriptor<Number, offsetof(Wiring, input_EN)>;
-using input_D4 = InputDescriptor<Number, offsetof(Wiring, input_D4)>;
-using input_D5 = InputDescriptor<Number, offsetof(Wiring, input_D5)>;
-using input_D6 = InputDescriptor<Number, offsetof(Wiring, input_D6)>;
-using input_D7 = InputDescriptor<Number, offsetof(Wiring, input_D7)>;
-using input_L1 = InputDescriptor<XString, offsetof(Wiring, input_L1)>;
-using input_L2 = InputDescriptor<XString, offsetof(Wiring, input_L2)>;
+template<> Number getValue<input_RS>(Context ctx) {
+    return ctx->_input_RS;
+}
+template<> Number getValue<input_EN>(Context ctx) {
+    return ctx->_input_EN;
+}
+template<> Number getValue<input_D4>(Context ctx) {
+    return ctx->_input_D4;
+}
+template<> Number getValue<input_D5>(Context ctx) {
+    return ctx->_input_D5;
+}
+template<> Number getValue<input_D6>(Context ctx) {
+    return ctx->_input_D6;
+}
+template<> Number getValue<input_D7>(Context ctx) {
+    return ctx->_input_D7;
+}
+template<> XString getValue<input_L1>(Context ctx) {
+    return ctx->_input_L1;
+}
+template<> XString getValue<input_L2>(Context ctx) {
+    return ctx->_input_L2;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "");
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
     lcd->setCursor(0, lineIndex);
@@ -981,24 +810,77 @@ namespace xod__core__defer_boolean {
 struct State {
 };
 
-struct Storage {
+struct Node {
     State state;
+    TimeMs timeoutAt;
     Logic output_OUT;
+
+    union {
+        struct {
+            bool isOutputDirty_OUT : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_IN;
-    const NodeId* output_OUT;
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Logic; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Logic _input_IN;
+
+    bool _isInputDirty_IN;
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
 }
 
-using input_IN = InputDescriptor<Logic, offsetof(Wiring, input_IN)>;
+template<> Logic getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
 
-using output_OUT = OutputDescriptor<Logic, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            " input_IN");
+    return false;
+}
+
+template<> bool isInputDirty<input_IN>(Context ctx) {
+    return ctx->_isInputDirty_IN;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
+    ctx->_node->isOutputDirty_OUT = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
@@ -1024,28 +906,93 @@ struct State {
   TimeMs nextTrig;
 };
 
-struct Storage {
+struct Node {
     State state;
+    TimeMs timeoutAt;
     Logic output_TICK;
+
+    union {
+        struct {
+            bool isOutputDirty_TICK : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_EN;
-    UpstreamPinRef input_IVAL;
-    UpstreamPinRef input_RST;
-    const NodeId* output_TICK;
+struct input_EN { };
+struct input_IVAL { };
+struct input_RST { };
+struct output_TICK { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_EN> { using T = Logic; };
+template<> struct ValueType<input_IVAL> { using T = Number; };
+template<> struct ValueType<input_RST> { using T = Logic; };
+template<> struct ValueType<output_TICK> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Logic _input_EN;
+    Number _input_IVAL;
+    Logic _input_RST;
+
+    bool _isInputDirty_EN;
+    bool _isInputDirty_RST;
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_EN input_IVAL input_RST" \
+            " output_TICK");
 }
 
-using input_EN = InputDescriptor<Logic, offsetof(Wiring, input_EN)>;
-using input_IVAL = InputDescriptor<Number, offsetof(Wiring, input_IVAL)>;
-using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
+template<> Logic getValue<input_EN>(Context ctx) {
+    return ctx->_input_EN;
+}
+template<> Number getValue<input_IVAL>(Context ctx) {
+    return ctx->_input_IVAL;
+}
+template<> Logic getValue<input_RST>(Context ctx) {
+    return ctx->_input_RST;
+}
+template<> Logic getValue<output_TICK>(Context ctx) {
+    return ctx->_node->output_TICK;
+}
 
-using output_TICK = OutputDescriptor<Logic, offsetof(Wiring, output_TICK), offsetof(Storage, output_TICK), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            " input_EN input_RST");
+    return false;
+}
+
+template<> bool isInputDirty<input_EN>(Context ctx) {
+    return ctx->_isInputDirty_EN;
+}
+template<> bool isInputDirty<input_RST>(Context ctx) {
+    return ctx->_isInputDirty_RST;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_TICK");
+}
+
+template<> void emitValue<output_TICK>(Context ctx, Logic val) {
+    ctx->_node->output_TICK = val;
+    ctx->_node->isOutputDirty_TICK = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     State* state = getState(ctx);
@@ -1083,28 +1030,92 @@ namespace xod__core__count {
 struct State {
 };
 
-struct Storage {
+struct Node {
     State state;
     Number output_OUT;
+
+    union {
+        struct {
+            bool isOutputDirty_OUT : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_STEP;
-    UpstreamPinRef input_INC;
-    UpstreamPinRef input_RST;
-    const NodeId* output_OUT;
+struct input_STEP { };
+struct input_INC { };
+struct input_RST { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_STEP> { using T = Number; };
+template<> struct ValueType<input_INC> { using T = Logic; };
+template<> struct ValueType<input_RST> { using T = Logic; };
+template<> struct ValueType<output_OUT> { using T = Number; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_STEP;
+    Logic _input_INC;
+    Logic _input_RST;
+
+    bool _isInputDirty_INC;
+    bool _isInputDirty_RST;
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_STEP input_INC input_RST" \
+            " output_OUT");
 }
 
-using input_STEP = InputDescriptor<Number, offsetof(Wiring, input_STEP)>;
-using input_INC = InputDescriptor<Logic, offsetof(Wiring, input_INC)>;
-using input_RST = InputDescriptor<Logic, offsetof(Wiring, input_RST)>;
+template<> Number getValue<input_STEP>(Context ctx) {
+    return ctx->_input_STEP;
+}
+template<> Logic getValue<input_INC>(Context ctx) {
+    return ctx->_input_INC;
+}
+template<> Logic getValue<input_RST>(Context ctx) {
+    return ctx->_input_RST;
+}
+template<> Number getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
 
-using output_OUT = OutputDescriptor<Number, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            " input_INC input_RST");
+    return false;
+}
+
+template<> bool isInputDirty<input_INC>(Context ctx) {
+    return ctx->_isInputDirty_INC;
+}
+template<> bool isInputDirty<input_RST>(Context ctx) {
+    return ctx->_isInputDirty_RST;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Number val) {
+    ctx->_node->output_OUT = val;
+    ctx->_node->isOutputDirty_OUT = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     Number count = getValue<output_OUT>(ctx);
@@ -1124,29 +1135,80 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__greater {
 
+#pragma XOD dirtieness disable
+
 struct State {
 };
 
-struct Storage {
+struct Node {
     State state;
     Logic output_GT;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_LHS;
-    UpstreamPinRef input_RHS;
-    const NodeId* output_GT;
+struct input_LHS { };
+struct input_RHS { };
+struct output_GT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_LHS> { using T = Number; };
+template<> struct ValueType<input_RHS> { using T = Number; };
+template<> struct ValueType<output_GT> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_LHS;
+    Number _input_RHS;
+
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_LHS input_RHS" \
+            " output_GT");
 }
 
-using input_LHS = InputDescriptor<Number, offsetof(Wiring, input_LHS)>;
-using input_RHS = InputDescriptor<Number, offsetof(Wiring, input_RHS)>;
+template<> Number getValue<input_LHS>(Context ctx) {
+    return ctx->_input_LHS;
+}
+template<> Number getValue<input_RHS>(Context ctx) {
+    return ctx->_input_RHS;
+}
+template<> Logic getValue<output_GT>(Context ctx) {
+    return ctx->_node->output_GT;
+}
 
-using output_GT = OutputDescriptor<Logic, offsetof(Wiring, output_GT), offsetof(Storage, output_GT), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_GT");
+}
+
+template<> void emitValue<output_GT>(Context ctx, Logic val) {
+    ctx->_node->output_GT = val;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     auto lhs = getValue<input_LHS>(ctx);
@@ -1161,30 +1223,77 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_number_to_string {
 
+#pragma XOD dirtieness disable
+
 struct State {
     char str[16];
     CStringView view;
     State() : view(str) { }
 };
 
-struct Storage {
+struct Node {
     State state;
     XString output_OUT;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_IN;
-    const NodeId* output_OUT;
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Number; };
+template<> struct ValueType<output_OUT> { using T = XString; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_IN;
+
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
 }
 
-using input_IN = InputDescriptor<Number, offsetof(Wiring, input_IN)>;
+template<> Number getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> XString getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
 
-using output_OUT = OutputDescriptor<XString, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, XString val) {
+    ctx->_node->output_OUT = val;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     auto state = getState(ctx);
@@ -1204,24 +1313,71 @@ struct State {
   bool state = false;
 };
 
-struct Storage {
+struct Node {
     State state;
     Logic output_OUT;
+
+    union {
+        struct {
+            bool isOutputDirty_OUT : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
 };
 
-struct Wiring {
-    EvalFuncPtr eval;
-    UpstreamPinRef input_IN;
-    const NodeId* output_OUT;
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Logic; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Logic _input_IN;
+
 };
 
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
 }
 
-using input_IN = InputDescriptor<Logic, offsetof(Wiring, input_IN)>;
+template<> Logic getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
 
-using output_OUT = OutputDescriptor<Logic, offsetof(Wiring, output_OUT), offsetof(Storage, output_OUT), 0>;
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
+    ctx->_node->isOutputDirty_OUT = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
 
 void evaluate(Context ctx) {
     State* state = getState(ctx);
@@ -1235,532 +1391,284 @@ void evaluate(Context ctx) {
 
 } // namespace xod__core__cast_boolean_to_pulse
 
-//-----------------------------------------------------------------------------
-// xod/core/constant_number implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_number {
-
-struct State {};
-
-struct Storage {
-    State state;
-    Number output_VAL;
-};
-
-struct Wiring {
-    EvalFuncPtr eval;
-    const NodeId* output_VAL;
-};
-
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
-}
-
-using output_VAL = OutputDescriptor<Number, offsetof(Wiring, output_VAL), offsetof(Storage, output_VAL), 0>;
-
-void evaluate(Context ctx) {
-}
-
-} // namespace xod__core__constant_number
-
-//-----------------------------------------------------------------------------
-// xod/core/constant_string implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_string {
-
-struct State {};
-
-struct Storage {
-    State state;
-    XString output_VAL;
-};
-
-struct Wiring {
-    EvalFuncPtr eval;
-    const NodeId* output_VAL;
-};
-
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
-}
-
-using output_VAL = OutputDescriptor<XString, offsetof(Wiring, output_VAL), offsetof(Storage, output_VAL), 0>;
-
-void evaluate(Context ctx) {
-}
-
-} // namespace xod__core__constant_string
-
-//-----------------------------------------------------------------------------
-// xod/core/constant_boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__constant_boolean {
-
-struct State {
-};
-
-struct Storage {
-    State state;
-    Logic output_VAL;
-};
-
-struct Wiring {
-    EvalFuncPtr eval;
-    const NodeId* output_VAL;
-};
-
-State* getState(NodeId nid) {
-    return reinterpret_cast<State*>(getStoragePtr(nid, 0));
-}
-
-using output_VAL = OutputDescriptor<Logic, offsetof(Wiring, output_VAL), offsetof(Storage, output_VAL), 0>;
-
-void evaluate(Context ctx) {
-}
-
-} // namespace xod__core__constant_boolean
-
 } // namespace xod
+
 
 /*=============================================================================
  *
  *
- * Program graph
+ * Main loop components
  *
  *
  =============================================================================*/
 
 namespace xod {
 
-    //-------------------------------------------------------------------------
-    // Dynamic data
-    //-------------------------------------------------------------------------
+// Define/allocate persistent storages (state, timeout, output data) for all nodes
 
-    // Storage of #0 xod/core/cast_boolean_to_pulse
-    constexpr Logic node_0_output_OUT = false;
-    xod__core__cast_boolean_to_pulse::Storage storage_0 = {
-        { }, // state
-        node_0_output_OUT
+constexpr Logic node_0_output_OUT = false;
+xod__core__cast_boolean_to_pulse::Node node_0 = {
+    xod__core__cast_boolean_to_pulse::State(), // state default
+    node_0_output_OUT, // output OUT default
+    false, // OUT dirty
+    true // node itself dirty
+};
 
-    };
+constexpr Number node_1_output_VAL = 10;
 
-    // Storage of #1 xod/core/constant_number
-    constexpr Number node_1_output_VAL = 10;
-    xod__core__constant_number::Storage storage_1 = {
-        { }, // state
-        node_1_output_VAL
+constexpr Number node_2_output_VAL = 12;
 
-    };
+constexpr Number node_3_output_VAL = 11;
 
-    // Storage of #2 xod/core/constant_number
-    constexpr Number node_2_output_VAL = 12;
-    xod__core__constant_number::Storage storage_2 = {
-        { }, // state
-        node_2_output_VAL
+constexpr Number node_4_output_VAL = 9;
 
-    };
+constexpr Number node_5_output_VAL = 8;
 
-    // Storage of #3 xod/core/constant_number
-    constexpr Number node_3_output_VAL = 11;
-    xod__core__constant_number::Storage storage_3 = {
-        { }, // state
-        node_3_output_VAL
+constexpr Number node_6_output_VAL = 13;
 
-    };
+constexpr XString node_7_output_VAL = XString();
 
-    // Storage of #4 xod/core/constant_number
-    constexpr Number node_4_output_VAL = 9;
-    xod__core__constant_number::Storage storage_4 = {
-        { }, // state
-        node_4_output_VAL
+constexpr Number node_8_output_VAL = 1;
 
-    };
+constexpr Logic node_9_output_VAL = true;
 
-    // Storage of #5 xod/core/constant_number
-    constexpr Number node_5_output_VAL = 8;
-    xod__core__constant_number::Storage storage_5 = {
-        { }, // state
-        node_5_output_VAL
+constexpr Number node_10_output_VAL = 1;
 
-    };
+constexpr Number node_11_output_VAL = 10;
 
-    // Storage of #6 xod/core/constant_number
-    constexpr Number node_6_output_VAL = 13;
-    xod__core__constant_number::Storage storage_6 = {
-        { }, // state
-        node_6_output_VAL
+constexpr Logic node_12_output_TICK = false;
+xod__core__clock::Node node_12 = {
+    xod__core__clock::State(), // state default
+    0, // timeoutAt
+    node_12_output_TICK, // output TICK default
+    false, // TICK dirty
+    true // node itself dirty
+};
 
-    };
+constexpr Number node_13_output_OUT = 0;
+xod__core__count::Node node_13 = {
+    xod__core__count::State(), // state default
+    node_13_output_OUT, // output OUT default
+    true, // OUT dirty
+    true // node itself dirty
+};
 
-    // Storage of #7 xod/core/constant_string
-    constexpr XString node_7_output_VAL = XString();
-    xod__core__constant_string::Storage storage_7 = {
-        { }, // state
-        node_7_output_VAL
+constexpr Logic node_14_output_GT = false;
+xod__core__greater::Node node_14 = {
+    xod__core__greater::State(), // state default
+    node_14_output_GT, // output GT default
+    true // node itself dirty
+};
 
-    };
+constexpr XString node_15_output_OUT = XString();
+xod__core__cast_number_to_string::Node node_15 = {
+    xod__core__cast_number_to_string::State(), // state default
+    node_15_output_OUT, // output OUT default
+    true // node itself dirty
+};
 
-    // Storage of #8 xod/core/constant_number
-    constexpr Number node_8_output_VAL = 1;
-    xod__core__constant_number::Storage storage_8 = {
-        { }, // state
-        node_8_output_VAL
+xod__common_hardware__text_lcd_16x2::Node node_16 = {
+    xod__common_hardware__text_lcd_16x2::State(), // state default
+    true // node itself dirty
+};
 
-    };
+constexpr Logic node_17_output_OUT = false;
+xod__core__defer_boolean::Node node_17 = {
+    xod__core__defer_boolean::State(), // state default
+    0, // timeoutAt
+    node_17_output_OUT, // output OUT default
+    true, // OUT dirty
+    true // node itself dirty
+};
 
-    // Storage of #9 xod/core/constant_boolean
-    constexpr Logic node_9_output_VAL = true;
-    xod__core__constant_boolean::Storage storage_9 = {
-        { }, // state
-        node_9_output_VAL
+void runTransaction(bool firstRun) {
+    g_transactionTime = millis();
 
-    };
+    XOD_TRACE_F("Transaction started, t=");
+    XOD_TRACE_LN(g_transactionTime);
 
-    // Storage of #10 xod/core/constant_number
-    constexpr Number node_10_output_VAL = 1;
-    xod__core__constant_number::Storage storage_10 = {
-        { }, // state
-        node_10_output_VAL
+    // Check for timeouts
+    detail::checkTriggerTimeout(&node_12);
+    detail::checkTriggerTimeout(&node_17);
 
-    };
+    // defer-* nodes are always at the very bottom of the graph, so no one will
+    // recieve values emitted by them. We must evaluate them before everybody
+    // else to give them a chance to emit values.
+    //
+    // If trigerred, keep only output dirty, not the node itself, so it will
+    // evaluate on the regular pass only if it pushed a new value again.
+    {
+        if (node_17.isNodeDirty) {
+            XOD_TRACE_F("Trigger defer node #");
+            XOD_TRACE_LN(17);
 
-    // Storage of #11 xod/core/constant_number
-    constexpr Number node_11_output_VAL = 10;
-    xod__core__constant_number::Storage storage_11 = {
-        { }, // state
-        node_11_output_VAL
+            xod__core__defer_boolean::ContextObject ctxObj;
+            ctxObj._node = &node_17;
+            ctxObj._isInputDirty_IN = false;
 
-    };
+            xod__core__defer_boolean::evaluate(&ctxObj);
 
-    // Storage of #12 xod/core/clock
-    constexpr Logic node_12_output_TICK = false;
-    xod__core__clock::Storage storage_12 = {
-        { }, // state
-        node_12_output_TICK
+            // mark downstream nodes dirty
+            node_0.isNodeDirty |= node_17.isOutputDirty_OUT;
 
-    };
+            node_17.isNodeDirty = false;
+            detail::clearTimeout(&node_17);
+        }
+    }
 
-    // Storage of #13 xod/core/count
-    constexpr Number node_13_output_OUT = 0;
-    xod__core__count::Storage storage_13 = {
-        { }, // state
-        node_13_output_OUT
+    // Evaluate all dirty nodes
+    { // xod__core__cast_boolean_to_pulse #0
+        if (node_0.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(0);
 
-    };
+            xod__core__cast_boolean_to_pulse::ContextObject ctxObj;
+            ctxObj._node = &node_0;
 
-    // Storage of #14 xod/core/greater
-    constexpr Logic node_14_output_GT = false;
-    xod__core__greater::Storage storage_14 = {
-        { }, // state
-        node_14_output_GT
+            // copy data from upstream nodes into context
+            ctxObj._input_IN = node_17.output_OUT;
 
-    };
+            xod__core__cast_boolean_to_pulse::evaluate(&ctxObj);
 
-    // Storage of #15 xod/core/cast_number_to_string
-    constexpr XString node_15_output_OUT = XString();
-    xod__core__cast_number_to_string::Storage storage_15 = {
-        { }, // state
-        node_15_output_OUT
+            // mark downstream nodes dirty
+            node_13.isNodeDirty |= node_0.isOutputDirty_OUT;
+        }
+    }
+    { // xod__core__clock #12
+        if (node_12.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(12);
 
-    };
+            xod__core__clock::ContextObject ctxObj;
+            ctxObj._node = &node_12;
 
-    // Storage of #16 xod/common_hardware/text_lcd_16x2
+            // copy data from upstream nodes into context
+            ctxObj._input_EN = node_9_output_VAL;
+            ctxObj._input_IVAL = node_8_output_VAL;
 
-    xod__common_hardware__text_lcd_16x2::Storage storage_16 = {
-        { }, // state
-    };
+            ctxObj._isInputDirty_RST = false;
+            ctxObj._isInputDirty_EN = firstRun;
 
-    // Storage of #17 xod/core/defer_boolean
-    constexpr Logic node_17_output_OUT = false;
-    xod__core__defer_boolean::Storage storage_17 = {
-        { }, // state
-        node_17_output_OUT
+            xod__core__clock::evaluate(&ctxObj);
 
-    };
+            // mark downstream nodes dirty
+            node_13.isNodeDirty |= node_12.isOutputDirty_TICK;
+        }
+    }
+    { // xod__core__count #13
+        if (node_13.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(13);
 
-    DirtyFlags g_dirtyFlags[NODE_COUNT] = {
-        DirtyFlags(253),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(253),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255),
-        DirtyFlags(255)
-    };
+            xod__core__count::ContextObject ctxObj;
+            ctxObj._node = &node_13;
 
-    TimeMs g_schedule[NODE_COUNT] = { 0 };
+            // copy data from upstream nodes into context
+            ctxObj._input_STEP = node_10_output_VAL;
+            ctxObj._input_INC = node_12.output_TICK;
+            ctxObj._input_RST = node_0.output_OUT;
 
-    //-------------------------------------------------------------------------
-    // Static (immutable) data
-    //-------------------------------------------------------------------------
+            ctxObj._isInputDirty_INC = node_12.isOutputDirty_TICK;
+            ctxObj._isInputDirty_RST = node_0.isOutputDirty_OUT;
 
-    // Wiring of #0 xod/core/cast_boolean_to_pulse
-    const NodeId outLinks_0_OUT[] PROGMEM = { 13, NO_NODE };
-    const xod__core__cast_boolean_to_pulse::Wiring wiring_0 PROGMEM = {
-        &xod__core__cast_boolean_to_pulse::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(17),
-            xod__core__defer_boolean::output_OUT::INDEX,
-            xod__core__defer_boolean::output_OUT::STORAGE_OFFSET }, // input_IN
-        // outputs (NodeId list binding)
-        outLinks_0_OUT // output_OUT
-    };
+            xod__core__count::evaluate(&ctxObj);
 
-    // Wiring of #1 xod/core/constant_number
-    const NodeId outLinks_1_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_1 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_1_VAL // output_VAL
-    };
+            // mark downstream nodes dirty
+            node_14.isNodeDirty |= node_13.isOutputDirty_OUT;
+            node_15.isNodeDirty |= node_13.isOutputDirty_OUT;
+        }
+    }
+    { // xod__core__greater #14
+        if (node_14.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(14);
 
-    // Wiring of #2 xod/core/constant_number
-    const NodeId outLinks_2_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_2 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_2_VAL // output_VAL
-    };
+            xod__core__greater::ContextObject ctxObj;
+            ctxObj._node = &node_14;
 
-    // Wiring of #3 xod/core/constant_number
-    const NodeId outLinks_3_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_3 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_3_VAL // output_VAL
-    };
+            // copy data from upstream nodes into context
+            ctxObj._input_LHS = node_13.output_OUT;
+            ctxObj._input_RHS = node_11_output_VAL;
 
-    // Wiring of #4 xod/core/constant_number
-    const NodeId outLinks_4_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_4 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_4_VAL // output_VAL
-    };
+            xod__core__greater::evaluate(&ctxObj);
 
-    // Wiring of #5 xod/core/constant_number
-    const NodeId outLinks_5_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_5 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_5_VAL // output_VAL
-    };
+            // mark downstream nodes dirty
+            node_17.isNodeDirty = true;
+        }
+    }
+    { // xod__core__cast_number_to_string #15
+        if (node_15.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(15);
 
-    // Wiring of #6 xod/core/constant_number
-    const NodeId outLinks_6_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_6 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_6_VAL // output_VAL
-    };
+            xod__core__cast_number_to_string::ContextObject ctxObj;
+            ctxObj._node = &node_15;
 
-    // Wiring of #7 xod/core/constant_string
-    const NodeId outLinks_7_VAL[] PROGMEM = { 16, NO_NODE };
-    const xod__core__constant_string::Wiring wiring_7 PROGMEM = {
-        &xod__core__constant_string::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_7_VAL // output_VAL
-    };
+            // copy data from upstream nodes into context
+            ctxObj._input_IN = node_13.output_OUT;
 
-    // Wiring of #8 xod/core/constant_number
-    const NodeId outLinks_8_VAL[] PROGMEM = { 12, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_8 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_8_VAL // output_VAL
-    };
+            xod__core__cast_number_to_string::evaluate(&ctxObj);
 
-    // Wiring of #9 xod/core/constant_boolean
-    const NodeId outLinks_9_VAL[] PROGMEM = { 12, NO_NODE };
-    const xod__core__constant_boolean::Wiring wiring_9 PROGMEM = {
-        &xod__core__constant_boolean::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_9_VAL // output_VAL
-    };
+            // mark downstream nodes dirty
+            node_16.isNodeDirty = true;
+        }
+    }
+    { // xod__common_hardware__text_lcd_16x2 #16
+        if (node_16.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(16);
 
-    // Wiring of #10 xod/core/constant_number
-    const NodeId outLinks_10_VAL[] PROGMEM = { 13, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_10 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_10_VAL // output_VAL
-    };
+            xod__common_hardware__text_lcd_16x2::ContextObject ctxObj;
+            ctxObj._node = &node_16;
 
-    // Wiring of #11 xod/core/constant_number
-    const NodeId outLinks_11_VAL[] PROGMEM = { 14, NO_NODE };
-    const xod__core__constant_number::Wiring wiring_11 PROGMEM = {
-        &xod__core__constant_number::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        // outputs (NodeId list binding)
-        outLinks_11_VAL // output_VAL
-    };
+            // copy data from upstream nodes into context
+            ctxObj._input_RS = node_5_output_VAL;
+            ctxObj._input_EN = node_4_output_VAL;
+            ctxObj._input_D4 = node_1_output_VAL;
+            ctxObj._input_D5 = node_3_output_VAL;
+            ctxObj._input_D6 = node_2_output_VAL;
+            ctxObj._input_D7 = node_6_output_VAL;
+            ctxObj._input_L1 = node_15.output_OUT;
+            ctxObj._input_L2 = node_7_output_VAL;
 
-    // Wiring of #12 xod/core/clock
-    const NodeId outLinks_12_TICK[] PROGMEM = { 13, NO_NODE };
-    const xod__core__clock::Wiring wiring_12 PROGMEM = {
-        &xod__core__clock::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(9),
-            xod__core__constant_boolean::output_VAL::INDEX,
-            xod__core__constant_boolean::output_VAL::STORAGE_OFFSET }, // input_EN
-        { NodeId(8),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_IVAL
-        { NO_NODE, 0, 0 }, // input_RST
-        // outputs (NodeId list binding)
-        outLinks_12_TICK // output_TICK
-    };
+            xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
-    // Wiring of #13 xod/core/count
-    const NodeId outLinks_13_OUT[] PROGMEM = { 14, 15, NO_NODE };
-    const xod__core__count::Wiring wiring_13 PROGMEM = {
-        &xod__core__count::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(10),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_STEP
-        { NodeId(12),
-            xod__core__clock::output_TICK::INDEX,
-            xod__core__clock::output_TICK::STORAGE_OFFSET }, // input_INC
-        { NodeId(0),
-            xod__core__cast_boolean_to_pulse::output_OUT::INDEX,
-            xod__core__cast_boolean_to_pulse::output_OUT::STORAGE_OFFSET }, // input_RST
-        // outputs (NodeId list binding)
-        outLinks_13_OUT // output_OUT
-    };
+            // mark downstream nodes dirty
+        }
+    }
+    { // xod__core__defer_boolean #17
+        if (node_17.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(17);
 
-    // Wiring of #14 xod/core/greater
-    const NodeId outLinks_14_GT[] PROGMEM = { 17, NO_NODE };
-    const xod__core__greater::Wiring wiring_14 PROGMEM = {
-        &xod__core__greater::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(13),
-            xod__core__count::output_OUT::INDEX,
-            xod__core__count::output_OUT::STORAGE_OFFSET }, // input_LHS
-        { NodeId(11),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_RHS
-        // outputs (NodeId list binding)
-        outLinks_14_GT // output_GT
-    };
+            xod__core__defer_boolean::ContextObject ctxObj;
+            ctxObj._node = &node_17;
 
-    // Wiring of #15 xod/core/cast_number_to_string
-    const NodeId outLinks_15_OUT[] PROGMEM = { 16, NO_NODE };
-    const xod__core__cast_number_to_string::Wiring wiring_15 PROGMEM = {
-        &xod__core__cast_number_to_string::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(13),
-            xod__core__count::output_OUT::INDEX,
-            xod__core__count::output_OUT::STORAGE_OFFSET }, // input_IN
-        // outputs (NodeId list binding)
-        outLinks_15_OUT // output_OUT
-    };
+            // copy data from upstream nodes into context
+            ctxObj._input_IN = node_14.output_GT;
 
-    // Wiring of #16 xod/common_hardware/text_lcd_16x2
-    const xod__common_hardware__text_lcd_16x2::Wiring wiring_16 PROGMEM = {
-        &xod__common_hardware__text_lcd_16x2::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(5),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_RS
-        { NodeId(4),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_EN
-        { NodeId(1),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D4
-        { NodeId(3),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D5
-        { NodeId(2),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D6
-        { NodeId(6),
-            xod__core__constant_number::output_VAL::INDEX,
-            xod__core__constant_number::output_VAL::STORAGE_OFFSET }, // input_D7
-        { NodeId(15),
-            xod__core__cast_number_to_string::output_OUT::INDEX,
-            xod__core__cast_number_to_string::output_OUT::STORAGE_OFFSET }, // input_L1
-        { NodeId(7),
-            xod__core__constant_string::output_VAL::INDEX,
-            xod__core__constant_string::output_VAL::STORAGE_OFFSET }, // input_L2
-        // outputs (NodeId list binding)
-    };
+            ctxObj._isInputDirty_IN = true;
 
-    // Wiring of #17 xod/core/defer_boolean
-    const NodeId outLinks_17_OUT[] PROGMEM = { 0, NO_NODE };
-    const xod__core__defer_boolean::Wiring wiring_17 PROGMEM = {
-        &xod__core__defer_boolean::evaluate,
-        // inputs (UpstreamPinRef’s initializers)
-        { NodeId(14),
-            xod__core__greater::output_GT::INDEX,
-            xod__core__greater::output_GT::STORAGE_OFFSET }, // input_IN
-        // outputs (NodeId list binding)
-        outLinks_17_OUT // output_OUT
-    };
+            xod__core__defer_boolean::evaluate(&ctxObj);
 
-    // PGM array with pointers to PGM wiring information structs
-    const void* const g_wiring[NODE_COUNT] PROGMEM = {
-        &wiring_0,
-        &wiring_1,
-        &wiring_2,
-        &wiring_3,
-        &wiring_4,
-        &wiring_5,
-        &wiring_6,
-        &wiring_7,
-        &wiring_8,
-        &wiring_9,
-        &wiring_10,
-        &wiring_11,
-        &wiring_12,
-        &wiring_13,
-        &wiring_14,
-        &wiring_15,
-        &wiring_16,
-        &wiring_17
-    };
+            // mark downstream nodes dirty
+            node_0.isNodeDirty |= node_17.isOutputDirty_OUT;
+        }
+    }
 
-    // PGM array with pointers to RAM-located storages
-    void* const g_storages[NODE_COUNT] PROGMEM = {
-        &storage_0,
-        &storage_1,
-        &storage_2,
-        &storage_3,
-        &storage_4,
-        &storage_5,
-        &storage_6,
-        &storage_7,
-        &storage_8,
-        &storage_9,
-        &storage_10,
-        &storage_11,
-        &storage_12,
-        &storage_13,
-        &storage_14,
-        &storage_15,
-        &storage_16,
-        &storage_17
-    };
+    // Clear dirtieness and timeouts for all nodes and pins
+    node_0.dirtyFlags = 0;
+    node_12.dirtyFlags = 0;
+    node_13.dirtyFlags = 0;
+    node_14.dirtyFlags = 0;
+    node_15.dirtyFlags = 0;
+    node_16.dirtyFlags = 0;
+    node_17.dirtyFlags = 0;
+    detail::clearStaleTimeout(&node_12);
+    detail::clearStaleTimeout(&node_17);
+
+    XOD_TRACE_F("Transaction completed, t=");
+    XOD_TRACE_LN(millis());
 }
+
+} // namespace xod
