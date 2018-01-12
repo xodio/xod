@@ -183,6 +183,7 @@
         display: inline-block;
         color: $color-comment-text;
         font-family: $font-family-mono;
+        white-space: pre-wrap;
       }
     }
 
