@@ -7,6 +7,7 @@ import { noop } from '../../utils/ramda';
 const PatchGroup = ({ name, children, type, onClose }) => (
   <Collapsible
     classParentString="PatchGroup"
+    data-id={name} // TODO: leave only a single data-id.
     trigger={
       <span className="patch-group-trigger" data-id={name}>{name}</span>
     }

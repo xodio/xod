@@ -105,7 +105,7 @@ class Node extends React.Component {
           {this.renderBody()}
           {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
         </g>
-        <g className="pins">
+        <g className="pins" id={`nodePins_${id}`}>
           {pinsArr.map(pin =>
             <g key={pin.key}>
               {isTerminalNode ? null : (

@@ -22,6 +22,7 @@ const Pin = (props) => {
   return (
     <g
       className={cls}
+      title={props.label}
       id={props.keyName}
     >
       <circle
@@ -45,6 +46,7 @@ const Pin = (props) => {
 
 Pin.propTypes = {
   keyName: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   type: PropTypes.string,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,

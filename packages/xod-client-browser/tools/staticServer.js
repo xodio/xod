@@ -20,4 +20,5 @@ module.exports = {
   PORT,
   startServer,
   stopServer,
+  SERVER_URL: `http://localhost:${PORT}`,
 };
