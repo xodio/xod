@@ -6,9 +6,8 @@ import { def } from './types';
  * Function to extract value from `Either` by providing a function
  * to handle the types of values contained in both `Left` and `Right`.
  *
- * This is hack to prevent errors on using `Either.either` with
- * cross-package Eithers (`Either.either` checks for instanceof and
- * it has other constuctors for some reason).
+ * This is adapter to move easily from `ramda-fantasy` to another
+ * package providing Eithers.
  *
  * @private
  * @function foldEither
@@ -18,20 +17,14 @@ import { def } from './types';
  * @returns {*}
  * @throws Error
  */
-export const foldEither = def(
-  'foldEither :: (a -> c) -> (b -> c) -> Either a b -> c',
-  (leftFn, rightFn, eitherObject) => (
-    eitherObject.isLeft ? leftFn(eitherObject.value) : rightFn(eitherObject.value)
-  )
-);
+export const foldEither = Either.either;
 
 /**
  * Function to extract value from `Maybe` by providing
  * a default value for `Nothing` and function to handle `Just`.
  *
- * This is hack to prevent errors on using `Maybe.maybe` with
- * cross-package Maybies (`Maybe.maybe` checks for instanceof and
- * it has other constuctors for some reason).
+ * This is adapter to move easily from `ramda-fantasy` to another
+ * package providing Maybies.
  *
  * @private
  * @function foldMaybe
@@ -41,12 +34,7 @@ export const foldEither = def(
  * @returns {*}
  * @throws Error
  */
-export const foldMaybe = def(
-  'foldMaybe :: b -> (a -> b) -> Maybe a -> b',
-  (nothingVal, justFn, maybeObject) => (
-    maybeObject.isJust ? justFn(maybeObject.value) : nothingVal
-  )
-);
+export const foldMaybe = Maybe.maybe;
 
 /**
  * DEPRECATED: Use of this function lead to meaningless error messages that
