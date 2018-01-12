@@ -23,7 +23,9 @@ const PinInfo = ({ type, label, description }) => (
       <span className="label">{label}</span>
       <span className={cn('type', type)}>{type}</span>
     </div>
-    <div className="description">{description}</div>
+    <div className="description">
+      <span>{description}</span>
+    </div>
   </div>
 );
 
@@ -141,9 +143,15 @@ const PatchDocs = ({ patch, minimal }) => {
 
   return (
     <div className={cls}>
-      <div className="baseName">{baseName}</div>
-      <div className="nodeType">{nodeType}</div>
-      <div className="description">{description}</div>
+      <div className="baseName">
+        <span>{baseName}</span>
+      </div>
+      <div className="nodeType">
+        <span>{nodeType}</span>
+      </div>
+      <div className="description">
+        <span>{description}</span>
+      </div>
       <div className={containerCls} style={{ paddingLeft: distanceToFirstPin }}>
         {inputPins.length > 0 && [
           minimal && (
