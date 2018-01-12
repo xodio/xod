@@ -33,7 +33,7 @@ const pkgpath = (pkgDir, subpath) => path.join(pkgDir, subpath);
 const assetsPath = fs.realpathSync(findup('node_modules/xod-client/src/core/assets'));
 const fontAwesomePath = fs.realpathSync(findup('node_modules/font-awesome'));
 
-const isDev = (
+const IS_DEV = (
   !process.env.NODE_ENV ||
   process.env.NODE_ENV === 'development'
 );
@@ -131,7 +131,8 @@ module.exports = pkgDir => ({
     new CopyWebpackPlugin([
       { from: findup('node_modules/xod-client/src/core/assets/index.html') },
     ]),
-    (isDev &&
+  ].concat(
+    IS_DEV ? [] : [
       new UglifyJSPlugin({
         sourceMap: true,
         parallel: true,
@@ -142,7 +143,7 @@ module.exports = pkgDir => ({
             webkit: true,
           },
         },
-      })
-    ),
-  ],
+      }),
+    ]
+  ),
 });
