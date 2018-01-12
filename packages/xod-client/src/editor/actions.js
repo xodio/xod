@@ -312,16 +312,19 @@ const getClipboardEntities = (state) => {
 };
 
 export const copyEntities = event => (dispatch, getState) => {
-  if (isInput(document.activeElement)) return;
+  // If user clicked somewhere on Patch (select Node or something else
+  // except editing comment node) activeElement will be <div />
+  // with className `PatchWrapper`.
+  if (document.activeElement.className === 'PatchWrapper') {
+    const state = getState();
 
-  const state = getState();
-
-  // linter confuses array and a Maybe
-  // eslint-disable-next-line array-callback-return
-  getClipboardEntities(state).map((entities) => {
-    event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
-    event.preventDefault();
-  });
+    // linter confuses array and a Maybe
+    // eslint-disable-next-line array-callback-return
+    getClipboardEntities(state).map((entities) => {
+      event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
+      event.preventDefault();
+    });
+  }
 };
 
 export const pasteEntities = event => (dispatch, getState) => {
