@@ -37,6 +37,9 @@
     .PatchDocs {
       padding: 12px;
     }
+
+    * { user-select: text; }
+    span { cursor: text; }
   }
 
   .pointer {

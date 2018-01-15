@@ -5,10 +5,8 @@
 
   &-content {
     padding: 6px;
-    & * {
-      user-select: text;
-      cursor: text;
-    }
+    * { user-select: text; }
+    span { cursor: text; }
   }
 
   .no-selection {
