@@ -1,5 +1,5 @@
 
-#pragma XOD disable dirty values
+#pragma XOD dirtieness disable
 
 struct State {
 };
