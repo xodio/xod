@@ -337,8 +337,11 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }
   const onClose = () => {
     clearInterval(intervalId);
     onCloseCb(() => {
-      const closeConnectionErr = new Error('Lost connection with the device.');
-      event.sender.send(EVENTS.DEBUG_SESSION, [createErrorMessage(closeConnectionErr)]);
+      const errorMessage = R.compose(
+        R.omit('stack'), // Lost connection is not a big deal, we don't want a stacktrace here
+        createErrorMessage
+      )(new Error(MESSAGES.DEBUG_LOST_CONNECTION));
+      event.sender.send(EVENTS.DEBUG_SESSION, [errorMessage]);
     });
     event.sender.send(EVENTS.STOP_DEBUG_SESSION, createSystemMessage('Debug session stopped'));
   };

@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import contextMenu from 'electron-context-menu';
 import * as EVENTS from '../shared/events';
 import {
   listBoardsHandler,
@@ -68,6 +69,8 @@ function createWindow() {
 
   // Open the DevTools.
   // win.webContents.openDevTools();
+
+  contextMenu({ window: win });
 
   const { webContents } = win;
 

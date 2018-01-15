@@ -121,6 +121,10 @@
   .log {
     max-height: 196px;
 
+    * {
+      user-select: text;
+    }
+
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -146,6 +150,7 @@
       font-family: $font-family-mono;
       font-size: $font-size-m;
       word-break: break-all;
+      user-select: text;
 
       &:hover {
         background-color: $sidebar-color-bg-even;
@@ -154,22 +159,21 @@
       & > * {
         margin-right: 2px;
         margin-left: 2px;
+
+        cursor: text;
       }
       & > *:nth(0) {
         margin-left: 0;
       }
       .prefix {
-        opacity: 0.5;
-        cursor: default;
+        color: $chalk-light;
       }
       .timestamp {
         color: $color-datatype-number;
-        cursor: default;
       }
       .nodeId {
         text-decoration: underline;
         color: $color-datatype-boolean;
-        cursor: default;
 
         &:hover {
           text-decoration: none;
@@ -179,6 +183,7 @@
         display: inline-block;
         color: $color-comment-text;
         font-family: $font-family-mono;
+        white-space: pre-wrap;
       }
     }
 

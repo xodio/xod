@@ -19,6 +19,7 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
+    "electron-context-menu": "^0.9.1",
     "electron-is-dev": "^0.2.0",
     "electron-log": "^2.2.7",
     "electron-settings": "^3.0.14",
