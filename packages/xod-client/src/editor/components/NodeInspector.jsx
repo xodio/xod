@@ -105,9 +105,11 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
   return (
     <div className="Inspector-content">
-      <div className="inspectorTitle">Node: <span className="nodeName">{baseName}</span></div>
-
       {nodeHelpIcon}
+
+      <div className="inspectorTitle">
+        <span className="nodeName">{baseName}</span>
+      </div>
 
       <div className="nodeType">{type}</div>
 
