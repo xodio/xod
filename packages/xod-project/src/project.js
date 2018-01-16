@@ -404,6 +404,17 @@ export const validatePatchContents = def(
       R.chain(
         R.compose(
           type => R.compose(
+            e => e.bimap(
+              (err) => {
+                // We have to mutate Error in this case to mark it as
+                // dead refference Error. In this case later, in flatten.js
+                // or other places we could wrap it with DeadRefErrorMessage.
+                // eslint-disable-next-line no-param-reassign
+                err.deadRef = true;
+                return err;
+              },
+              R.identity
+            ),
             Tools.errOnNothing(
               Utils.formatString(
                 CONST.ERROR.TYPE_NOT_FOUND,
