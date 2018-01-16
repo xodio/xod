@@ -14,7 +14,16 @@ import { getTokens } from 'xod-arduino';
   CodeMirror.defineMode('xodCpp', (config, parserConfig) => {
     xodOverlay = CodeMirror.simpleMode(config, {
       mode: { spec: CodeMirror.modes.clike },
-      start: getTokens(),
+      start: getTokens().concat(
+        [
+          { regex: /\/\/.*/, token: 'comment' },
+          { regex: /\/\*/, token: 'comment', next: 'comment' },
+        ]
+      ),
+      comment: [
+        { regex: /.*?\*\//, token: 'comment', next: 'start' },
+        { regex: /.*/, token: 'comment' },
+      ],
     });
     return CodeMirror.overlayMode(
       CodeMirror.getMode(config, parserConfig.backdrop || 'text/x-c++src'),
