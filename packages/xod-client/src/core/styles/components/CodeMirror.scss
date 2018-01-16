@@ -416,42 +416,47 @@ span.CodeMirror-selectedtext { background: none; }
   font-size: $font-size-m;
   font-weight: 400;
 }
-.cm-s-xod .CodeMirror-gutters {
-  background: $blackberry-shadow;
-  color: $emerald;
-  border: none;
-}
-.cm-s-xod .CodeMirror-guttermarker, .cm-s-xod .CodeMirror-guttermarker-subtle, .cm-s-xod .CodeMirror-linenumber { color: $emerald; }
-.cm-s-xod .CodeMirror-cursor { border-left: 1px solid $white; }
-.cm-s-xod div.CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
-.cm-s-xod.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
-.cm-s-xod .CodeMirror-line::selection, .cm-s-xod .CodeMirror-line > span::selection, .cm-s-xod .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
-.cm-s-xod .CodeMirror-line::-moz-selection, .cm-s-xod .CodeMirror-line > span::-moz-selection, .cm-s-xod .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
+.cm-s-xod {
+  .CodeMirror-gutters {
+    background: $blackberry-shadow;
+    color: $emerald;
+    border: none;
+  }
+  .CodeMirror-guttermarker, .CodeMirror-guttermarker-subtle, .CodeMirror-linenumber { color: $emerald; }
+  .CodeMirror-cursor { border-left: 1px solid $white; }
+  div.CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
+  .cm-s-xod.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
+  .CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
+  .CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
 
-.cm-s-xod .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0); }
-.cm-s-xod .cm-keyword { color: #E67CDC; }
-.cm-s-xod .cm-operator { color: $chalk-bright; }
-.cm-s-xod .cm-variable-2 { color: $apricot-light; }
-.cm-s-xod .cm-variable-3, .cm-s-xod .cm-type { color: $apricot-light; }
-.cm-s-xod .cm-builtin { color: $blueberry; }
-.cm-s-xod .cm-atom { color: $red-bright; }
-.cm-s-xod .cm-number { color: $red-bright; }
-.cm-s-xod .cm-def { color: $blueberry; }
-.cm-s-xod .cm-string { color: $apricot-light; }
-.cm-s-xod .cm-string-2 { color: $apricot-light; }
-.cm-s-xod .cm-comment { color: $light-grey-bright; }
-.cm-s-xod .cm-variable { color: $chalk; }
-.cm-s-xod .cm-tag { color: $emerald-light; }
-.cm-s-xod .cm-meta { color: $emerald; }
-.cm-s-xod .cm-attribute { color: $blueberry; }
-.cm-s-xod .cm-property { color: $blueberry; }
-.cm-s-xod .cm-qualifier { color: $apricot-light; }
-.cm-s-xod .cm-variable-3, .cm-s-xod .cm-type { color: $apricot-light; }
-.cm-s-xod .cm-error {
-  color: $white;
-  background-color: $red;
-}
-.cm-s-xod .CodeMirror-matchingbracket {
-  text-decoration: underline;
-  color: white !important;
+  .CodeMirror-activeline-background { background: rgba(0, 0, 0, 0); }
+  .cm-keyword { color: #E67CDC; }
+  .cm-operator { color: $chalk-bright; }
+  .cm-variable-2 { color: $apricot-light; }
+  .cm-variable-3, .cm-type { color: $apricot-light; }
+  .cm-builtin { color: $blueberry; }
+  .cm-atom { color: $red-bright; }
+  .cm-number { color: $red-bright; }
+  .cm-def { color: $blueberry; }
+  .cm-string { color: $apricot-light; }
+  .cm-string-2 { color: $apricot-light; }
+  .cm-comment { color: $light-grey-bright; }
+  .cm-variable { color: $chalk; }
+  .cm-tag { color: $emerald-light; }
+  .cm-meta { color: $emerald; }
+  .cm-attribute { color: $blueberry; }
+  .cm-property { color: $blueberry; }
+  .cm-qualifier { color: $apricot-light; }
+  .cm-variable-3, .cm-type { color: $apricot-light; }
+  .cm-error {
+    color: $white;
+    background-color: $red;
+  }
+  .cm-trailingspace {
+    border-bottom: 1px dotted $red;
+  }
+  .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important;
+  }
 }

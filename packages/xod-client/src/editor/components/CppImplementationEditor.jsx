@@ -40,7 +40,12 @@ const CppImplementationEditor = ({
         }
       },
       'Shift-Tab': CM => CM.indentSelection('subtract'),
+      'Ctrl-/': 'toggleComment',
+      'Cmd-/': 'toggleComment',
     },
+    showTrailingSpace: true,
+    autoCloseBrackets: true,
+    autoClearEmptyLines: true,
   };
 
   if (codeMirror && !refreshed) {
