@@ -599,9 +599,9 @@ const editorReducer = (state = {}, action) => {
       const currentPatchPath = currentTab.patchPath;
       const currentOffset = currentTab.offset;
       return R.compose(
+        setTabOffset(currentOffset, DEBUGGER_TAB_ID),
         drillDown(action.payload.patchPath, null),
         R.assoc('currentTabId', DEBUGGER_TAB_ID),
-        setTabOffset(currentOffset, DEBUGGER_TAB_ID),
         addTabWithProps(DEBUGGER_TAB_ID, TAB_TYPES.DEBUGGER, currentPatchPath)
       )(state);
     }
