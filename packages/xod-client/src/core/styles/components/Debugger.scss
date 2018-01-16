@@ -1,9 +1,4 @@
 .debug-session-stop-button {
-  z-index: 10;
-  position: absolute;
-  top: 3px;
-  right: 3px;
-
   padding: 8px 15px 10px 15px;
 
   .fa {
@@ -41,19 +36,19 @@
         margin-left: 7px;
         color: $light-grey-bright;
       }
-  
+
       .progress {
-        
+
         padding-left: 14px;
-  
+
         .progress-trail {
           width: 150px;
           height: 7px;
           border-radius: 7px;
-  
+
           background-color: $dark;
           overflow: hidden;
-  
+
           .progress-line {
             height: 7px;
             background-color: $green;

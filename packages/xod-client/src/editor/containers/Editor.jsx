@@ -208,27 +208,23 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const BreadcrumbsContainer = foldMaybe(
+    const debuggerBreadcrumbs = foldMaybe(
       null,
-      R.ifElse(
-        R.propEq('id', DEBUGGER_TAB_ID),
-        () => <Breadcrumbs />,
-        R.always(null)
+      tab => (
+        (tab.id === DEBUGGER_TAB_ID && this.props.isDebugSessionRunning)
+        ? (
+          <Breadcrumbs>
+            <button
+              className="debug-session-stop-button Button Button--light"
+              onClick={this.props.stopDebuggerSession}
+            >
+              <Icon name="stop" /> Stop debug
+            </button>
+          </Breadcrumbs>
+        ) : null
       ),
       this.props.currentTab
     );
-
-    const DebugSessionStopButton = (
-      this.props.isDebugSessionRunning &&
-      this.props.stopDebuggerSession
-    ) ? (
-      <button
-        className="debug-session-stop-button Button Button--light"
-        onClick={this.props.stopDebuggerSession}
-      >
-        <Icon name="stop" /> Stop debug
-      </button>
-    ) : null;
 
     return (
       <HotKeys handlers={this.getHotkeyHandlers()} className="Editor" id="Editor">
@@ -243,10 +239,9 @@ class Editor extends React.Component {
           onFocus={this.onWorkareaFocus}
         >
           <Tabs />
+          {debuggerBreadcrumbs}
           <div className="Workarea-inner">
-            {DebugSessionStopButton}
             {this.renderOpenedPatchTab()}
-            {BreadcrumbsContainer}
             {this.renderOpenedImplementationEditorTabs()}
             <SnackBar />
           </div>
