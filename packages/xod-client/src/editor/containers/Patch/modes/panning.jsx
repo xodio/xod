@@ -133,6 +133,8 @@ const panningMode = {
               linkingPin={api.props.linkingPin}
             />
           </g>
+          {/* It's an overlay <rect> to disable hovering effects on patch contents */}
+          <rect x="0" y="0" width="100%" height="100%" fill="transparent" stroke="none" />
         </PatchSVG>
       </HotKeys>
     );
