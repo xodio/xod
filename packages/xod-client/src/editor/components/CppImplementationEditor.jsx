@@ -46,6 +46,7 @@ const CppImplementationEditor = ({
     showTrailingSpace: true,
     autoCloseBrackets: true,
     autoClearEmptyLines: true,
+    scrollbarStyle: 'overlay',
   };
 
   if (codeMirror && !refreshed) {

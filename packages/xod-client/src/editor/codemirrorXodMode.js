@@ -6,6 +6,7 @@ import 'codemirror/mode/clike/clike';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/trailingspace';
 import 'codemirror/addon/comment/comment';
+import 'codemirror/addon/scroll/simplescrollbars';
 
 import { getTokens } from 'xod-arduino';
 

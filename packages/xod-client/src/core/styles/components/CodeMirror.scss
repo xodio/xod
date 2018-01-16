@@ -459,4 +459,35 @@ span.CodeMirror-selectedtext { background: none; }
     text-decoration: underline;
     color: white !important;
   }
+
+  // Copy from https://codemirror.net/addon/scroll/simplescrollbars.css
+  // with little tuning of scrollbar color
+  .CodeMirror-overlayscroll .CodeMirror-scrollbar-filler, .CodeMirror-overlayscroll .CodeMirror-gutter-filler {
+    display: none;
+  }
+  .CodeMirror-overlayscroll-horizontal div, .CodeMirror-overlayscroll-vertical div {
+    position: absolute;
+    background: rgba(white, .35);
+    border-radius: 3px;
+  }
+  .CodeMirror-overlayscroll-horizontal, .CodeMirror-overlayscroll-vertical {
+    position: absolute;
+    z-index: 6;
+  }
+  .CodeMirror-overlayscroll-horizontal {
+    bottom: 0; left: 0;
+    height: 6px;
+  }
+  .CodeMirror-overlayscroll-horizontal div {
+    bottom: 0;
+    height: 100%;
+  }
+  .CodeMirror-overlayscroll-vertical {
+    right: 0; top: 0;
+    width: 6px;
+  }
+  .CodeMirror-overlayscroll-vertical div {
+    right: 0;
+    width: 100%;
+  }
 }
