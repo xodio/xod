@@ -26,6 +26,12 @@
       width: 100%;
       height: auto;
     }
+    .CodeMirror-line, .CodeMirror-line * {
+      cursor: text;
+    }
+    .CodeMirror-linenumber {
+      cursor: default;
+    }
   }
 
   &.isInDebuggerTab {
