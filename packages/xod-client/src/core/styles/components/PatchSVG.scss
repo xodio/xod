@@ -7,10 +7,12 @@
   }
 
   &.isInPanningMode {
-    cursor: move;
-    cursor: grab;
- 
-    &.isPanning {
+    * {
+      cursor: move;
+      cursor: grab;
+    }
+
+    &.isPanning * {
       cursor: grabbing;
     }
   }
