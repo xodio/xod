@@ -2,7 +2,7 @@
 
 const getTokens = () => [
   {
-    regex: /\b((?:input|output)_[A-Z0-9-_]+)\b/gm,
+    regex: /\b((?:input|output)_[A-Za-z0-9-_]+)\b/gm,
     token: 'tag',
   },
   {
