@@ -1,5 +1,5 @@
 $node-height: 93px;
-$label-width: 28px;
+$label-width: 30px;
 $PinInfo-padding-bottom: 10px;
 
 .PatchDocs {
@@ -32,7 +32,7 @@ $PinInfo-padding-bottom: 10px;
     .type {
       display: inline-block;
       font-family: $font-family-normal;
-      font-size: 12px;
+      font-size: $font-size-m;
       font-weight: 700;
 
       &.boolean { color: $color-datatype-boolean }
@@ -45,7 +45,7 @@ $PinInfo-padding-bottom: 10px;
       margin-left: $label-width;
       padding-top: 3px;
       font-family: $font-family-normal;
-      font-size: 12px;
+      font-size: $font-size-m;
       font-weight: 300;
       color: $sidebar-color-text;
     }
@@ -114,6 +114,7 @@ $PinInfo-padding-bottom: 10px;
     font-family: $font-family-condensed;
     font-size: $font-size-l;
     color: $color-canvas-selected;
+    word-break: break-word;
   }
 
   .nodeType {
@@ -125,7 +126,7 @@ $PinInfo-padding-bottom: 10px;
   & > .description {
     padding-top: 7px;
     font-family: $font-family-normal;
-    font-size: 12px;
+    font-size: $font-size-m;
     font-weight: 300;
     color: $sidebar-color-text;
     padding-bottom: 1em;
@@ -139,6 +140,7 @@ $PinInfo-padding-bottom: 10px;
 
     .input-pins-container {
       padding-top: 0;
+      min-height: 0;
     }
     .input-pin {
       border: none;
@@ -149,6 +151,10 @@ $PinInfo-padding-bottom: 10px;
     }
     .output-pin {
       border: none;
+
+      &.last-pin {
+        min-height: 0;
+      }
     }
     .pin-info {
       top: 0;
@@ -161,7 +167,7 @@ $PinInfo-padding-bottom: 10px;
     }
     .pin-title {
       display: block;
-      color: $light-grey;
+      color: $sidebar-color-subtitle;
       margin-bottom: 0.25em;
     }
     & > .description {

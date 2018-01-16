@@ -18,26 +18,30 @@
 
   .inspectorTitle {
     font-size: $font-size-m;
+    font-family: $font-family-condensed;
     margin: 6px 0;
-    color: $input-color-border; // TODO: separate color?
+    color: $sidebar-color-subtitle;
     cursor: default;
 
     .nodeName, .patchName {
-      color: $color-canvas-selected; // TODO: separate color?
+      font-size: $font-size-l;
+      color: $color-canvas-selected;
+      word-break: break-word;
     }
   }
 
   .nodeType {
     color: $sidebar-color-text;
-    font-size: $font-size-s;
+    font-size: $font-size-m;
+    font-family: $font-family-condensed;
     cursor: default;
   }
 
   .nodeHelp {
     display: block;
-    position: absolute;
-    top: 7px;
-    right: 7px;
+    float: right;
+    margin-top: 3px;
+
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -53,7 +57,7 @@
     display: block;
     width: 24px;
     height: 24px;
-    background: url(../assets/icons/guide.svg) no-repeat 4px 4px;
+    background: url(../assets/icons/guide.svg) no-repeat 3px 4px;
     background-size: 16px 16px;
     cursor: pointer;
   }
@@ -130,9 +134,19 @@
   line-height: 0;
   vertical-align: baseline;
 
-  &.HintWidget, label {
-    line-height: $font-size-xl;
+  label {
+    line-height: $font-size-l;
     display: block;
+  }
+  &.HintWidget {
+    display: block;
+    font-family: $font-family-normal;
+    font-size: $font-size-m;
+    font-weight: 300;
+    line-height: 1.2;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
   }
 }
 
@@ -169,7 +183,7 @@
 
 .DescriptionWidget {
   label {
-    color: $input-color-border; // TODO
+    color: $sidebar-color-subtitle;
   }
 
   .inspectorTextInput {

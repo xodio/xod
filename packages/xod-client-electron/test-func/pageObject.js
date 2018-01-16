@@ -199,7 +199,7 @@ function assertLibsNotFound(client) {
 
 function assertLibraryFound(client) {
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.Suggester-item--library', 5000)
+    findLibSuggester(client).waitForExist('.Suggester-item--library', 10000)
   );
 }
 
@@ -216,14 +216,14 @@ function assertLibSuggesterHidden(client) {
 function assertProjectBrowserHasInstallingLib(client, libName) {
   const selector = '.PatchGroup--installing';
   return assert.eventually.equal(
-    client.waitForExist(selector)
+    client.waitForExist(selector, 10000)
       .then(() => client.element('.PatchGroup--installing').getText('.name')),
     libName
   );
 }
 
 function waitUntilLibraryInstalled(client) {
-  return findProjectBrowser(client).waitForExist('.PatchGroup--installing', 5000, true);
+  return findProjectBrowser(client).waitForExist('.PatchGroup--installing', 10000, true);
 }
 
 //-----------------------------------------------------------------------------

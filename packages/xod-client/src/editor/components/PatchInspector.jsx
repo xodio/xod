@@ -33,7 +33,9 @@ class PatchInspector extends React.PureComponent {
 
     return (
       <div className="Inspector-content">
-        <div className="inspectorTitle">Patch: <span className="patchName">{baseName}</span></div>
+        <div className="inspectorTitle">
+          <span className="patchName">{baseName}</span>
+        </div>
 
         <PatchDescriptionWidget
           key={patchPath}
