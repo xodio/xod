@@ -20,11 +20,11 @@
   "dependencies": {
     "cli-color": "^1.1.0",
     "docopt": "^0.6.2",
-    "hm-def": "^0.2.1",
+    "hm-def": "^0.3.2",
     "inquirer": "^3.2.0",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
-    "sanctuary-def": "^0.12.1",
+    "sanctuary-def": "^0.14.0",
     "source-map-support": "^0.4.15",
     "swagger-client": "^3.4.3",
     "xod-arduino": "^0.17.0",

@@ -114,7 +114,7 @@ export const AnyPatchChange = OneOfType('AnyPatchChange', [AddedPatchChange, Mod
 const env = xpEnv.concat([
   $Buffer,
   Path,
-  XodFile,
+  XodFile($.Unknown),
   AnyXodFile,
   PatchFile,
   AttachmentFile,

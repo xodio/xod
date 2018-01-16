@@ -1,6 +1,9 @@
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { foldEither } from 'xod-func-tools';
+import $ from 'sanctuary-def';
+import { Either } from 'ramda-fantasy';
+import { foldMaybe, foldEither, $Maybe } from 'xod-func-tools';
 import {
   Project,
   getProjectName,
@@ -23,9 +26,15 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
+import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
 import composeMessage from '../../messages/composeMessage';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(this);
+  }
   componentDidMount() {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
@@ -34,14 +43,20 @@ export default class App extends React.Component {
   }
 
   onShowCodeArduino() {
-    const eitherTProject = this.transformProjectForTranspiler();
-    const eitherCode = eitherTProject.map(transpile);
-
-    return foldEither(
-      error => this.props.actions.addError(composeMessage(error.message)),
-      this.props.actions.showCode,
-      eitherCode
-    );
+    return R.compose(
+      foldEither(
+        R.compose(
+          this.props.actions.addError,
+          R.when(
+            R.is(Error),
+            err => composeMessage(err.message),
+          )
+        ),
+        this.props.actions.showCode
+      ),
+      R.map(transpile),
+      this.transformProjectForTranspiler
+    )();
   }
 
   onExport() {
@@ -66,9 +81,12 @@ export default class App extends React.Component {
   }
 
   transformProjectForTranspiler(debug = false) {
-    const { project, currentPatchPath } = this.props;
     const transformFn = (debug) ? transformProjectWithDebug : transformProject;
-    return transformFn(project, currentPatchPath);
+    return foldMaybe(
+      Either.Left(NO_PATCH_TO_TRANSPILE),
+      curPatchPath => transformFn(this.props.project, curPatchPath),
+      this.props.currentPatchPath
+    );
   }
 
   renderPopupShowCode() {
@@ -135,7 +153,7 @@ export default class App extends React.Component {
 App.propTypes = {
   project: sanctuaryPropType(Project),
   user: PropTypes.object,
-  currentPatchPath: PropTypes.string,
+  currentPatchPath: sanctuaryPropType($Maybe($.String)),
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
   actions: PropTypes.shape({

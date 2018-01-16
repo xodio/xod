@@ -216,65 +216,72 @@ export const addNode = (typeId, position, patchPath) => (dispatch) => {
 
 export const updateNodeProperty =
   (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    const patchPath = getCurrentPatchPath(getState());
-
-    dispatch({
-      type: ActionType.NODE_UPDATE_PROPERTY,
-      payload: {
-        id: nodeId,
-        kind: propKind,
-        key: propKey,
-        value: propValue,
-        patchPath,
-      },
-    });
+    getCurrentPatchPath(getState()).map(
+      patchPath => dispatch({
+        type: ActionType.NODE_UPDATE_PROPERTY,
+        payload: {
+          id: nodeId,
+          kind: propKind,
+          key: propKey,
+          value: propValue,
+          patchPath,
+        },
+      })
+    );
   };
 
 //
 // Link
 //
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  const patchPath = getCurrentPatchPath(getState());
-
-  dispatch({
-    type: ActionType.LINK_ADD,
-    payload: {
-      patchPath,
-      pins: [pin1, pin2],
-    },
-  });
+  getCurrentPatchPath(getState()).map(
+    patchPath => dispatch({
+      type: ActionType.LINK_ADD,
+      payload: {
+        patchPath,
+        pins: [pin1, pin2],
+      },
+    })
+  );
 };
 
 //
 // Comment
 //
 export const addComment = () => (dispatch, getState) =>
-  dispatch({ // TODO: where to provide initial size, position and content?
-    type: ActionType.COMMENT_ADD,
-    payload: {
-      patchPath: getCurrentPatchPath(getState()),
-    },
-  });
+  getCurrentPatchPath(getState()).map(
+    // TODO: where to provide initial size, position and content?
+    patchPath => dispatch({
+      type: ActionType.COMMENT_ADD,
+      payload: {
+        patchPath,
+      },
+    })
+  );
 
 export const resizeComment = (id, size) => (dispatch, getState) =>
-  dispatch({
-    type: ActionType.COMMENT_RESIZE,
-    payload: {
-      id,
-      size,
-      patchPath: getCurrentPatchPath(getState()),
-    },
-  });
+  getCurrentPatchPath(getState()).map(
+    patchPath => dispatch({
+      type: ActionType.COMMENT_RESIZE,
+      payload: {
+        id,
+        size,
+        patchPath,
+      },
+    })
+  );
 
 export const editComment = (id, content) => (dispatch, getState) =>
-  dispatch({
-    type: ActionType.COMMENT_SET_CONTENT,
-    payload: {
-      id,
-      content,
-      patchPath: getCurrentPatchPath(getState()),
-    },
-  });
+  getCurrentPatchPath(getState()).map(
+    patchPath => dispatch({
+      type: ActionType.COMMENT_SET_CONTENT,
+      payload: {
+        id,
+        content,
+        patchPath,
+      },
+    })
+  );
 
 export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
   type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,

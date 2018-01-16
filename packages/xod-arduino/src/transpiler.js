@@ -310,9 +310,7 @@ const getNodeDirtyFlags = def(
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Map NodeId String -> Project -> [TNode]',
   (entryPath, patches, nodeIdsMap, project) => R.compose(
-    R.sortBy(
-      R.compose(toInt, R.prop('id'))
-    ),
+    R.sortBy(R.prop('id')),
     R.map(R.applySpec({
       id: R.compose(toInt, Project.getNodeId),
       originalId: R.compose(reverseLookup(R.__, nodeIdsMap), Project.getNodeId),

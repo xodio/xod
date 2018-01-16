@@ -46,7 +46,7 @@ const Pin = (props) => {
 
 Pin.propTypes = {
   keyName: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,

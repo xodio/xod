@@ -201,7 +201,11 @@ export const renderProgram = def(
 );
 export const renderProject = def(
   'renderProject :: TProject -> String',
-  (project) => {
+  (originalProject) => {
+    // HACK: We have to clone TProject to prevent mutating
+    // of original TProject by Handlebars templates.
+    const project = R.clone(originalProject);
+
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
     const program = renderProgram(project.nodes);

@@ -1,11 +1,11 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
-import { mapIndexed } from 'xod-func-tools';
+import { mapIndexed, foldMaybe } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import { SIDEBAR_IDS } from './constants';
+import { SIDEBAR_IDS, TAB_TYPES } from './constants';
 
 const getProject = R.prop('project'); // Problem of cycle imports...
 
@@ -28,35 +28,64 @@ export const getImplEditorTabs = R.pipe(
 
 export const getCurrentTabId = R.pipe(
   getEditor,
-  R.prop('currentTabId')
+  R.prop('currentTabId'),
+  Maybe
 );
 
 export const getCurrentTab = createSelector(
   [getCurrentTabId, getTabs],
-  (currentTabId, tabs) => R.propOr(null, currentTabId, tabs)
-);
-
-export const getCurrentTabType = createSelector(
-  getCurrentTab,
-  R.propOr(null, 'type')
+  (maybeTabId, tabs) => maybeTabId.chain(
+    R.compose(
+      Maybe,
+      R.prop(R.__, tabs)
+    )
+  )
 );
 
 export const getCurrentPatchPath = createSelector(
   getCurrentTab,
-  // TODO: check if tab exists, and has the 'right' type?
-  R.propOr(null, 'patchPath')
+  R.map(R.prop('patchPath'))
 );
 
 export const getCurrentPatchOffset = createSelector(
   getCurrentTab,
-  R.propOr(DEFAULT_PANNING_OFFSET, 'offset')
+  foldMaybe(
+    DEFAULT_PANNING_OFFSET,
+    R.prop('offset')
+  )
+);
+
+// :: State -> EditorTabs
+export const getPreparedTabs = createSelector(
+  [getCurrentTabId, getTabs],
+  (maybeCurrentTabId, tabs) => {
+    const currentTabId = foldMaybe(null, R.identity, maybeCurrentTabId);
+    return R.map(
+      (tab) => {
+        const patchPath = tab.patchPath;
+
+        const label = (tab.type === TAB_TYPES.DEBUGGER) ?
+          'Debugger' :
+          XP.getBaseName(patchPath);
+
+        return R.merge(
+          tab,
+          {
+            label,
+            isActive: (currentTabId === tab.id),
+          }
+        );
+      },
+      tabs
+    );
+  }
 );
 
 // selection
 
 export const getSelection = R.pipe(
   getCurrentTab,
-  R.propOr([], 'selection')
+  foldMaybe([], R.propOr([], 'selection'))
 );
 
 export const getSelectionByTypes = createSelector(
@@ -77,7 +106,7 @@ export const getSelectionByTypes = createSelector(
 
 export const getLinkingPin = R.pipe(
   getCurrentTab,
-  R.propOr(null, 'linkingPin')
+  foldMaybe(null, R.propOr(null, 'linkingPin'))
 );
 
 export const hasSelection = createSelector(
@@ -151,9 +180,9 @@ export const isLibSuggesterVisible = R.pipe(
 //
 // debugger breadcrumbs
 //
-export const getBreadcrumbs = R.compose(
-  R.propOr([], 'breadcrumbs'),
-  getCurrentTab
+export const getBreadcrumbs = R.pipe(
+  getCurrentTab,
+  foldMaybe({}, R.propOr({}, 'breadcrumbs'))
 );
 
 export const getBreadcrumbChunks = R.compose(
@@ -191,7 +220,7 @@ export const getRenerableBreadcrumbChunks = createSelector(
           R.isEmpty,
           R.always(patchName)
         ),
-        Maybe.maybe(
+        foldMaybe(
           patchName,
           XP.getNodeLabel
         ),

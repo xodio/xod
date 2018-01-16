@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
+import { foldMaybe } from 'xod-func-tools';
 import { createSelector } from 'reselect';
 import {
   getCurrentTabId,
@@ -48,37 +49,42 @@ export const getUploadProgress = R.compose(
 
 export const getWatchNodeValuesForCurrentPatch = createSelector(
   [getCurrentTabId, getWatchNodeValues, getBreadcrumbChunks, getBreadcrumbActiveIndex],
-  (tabId, nodeValues, chunks, activeIndex) => {
-    if (tabId !== DEBUGGER_TAB_ID) return {};
+  (maybeTabId, nodeValues, chunks, activeIndex) =>
+    foldMaybe(
+      {},
+      (tabId) => {
+        if (tabId !== DEBUGGER_TAB_ID) return {};
 
-    const nodeIdPath = R.compose(
-      R.join('~'),
-      R.append(''),
-      R.map(R.prop('nodeId')),
-      R.tail, // remove first cause it's entry patch without any nodeId
-      R.take(activeIndex + 1)
-    )(chunks);
+        const nodeIdPath = R.compose(
+          R.join('~'),
+          R.append(''),
+          R.map(R.prop('nodeId')),
+          R.tail, // remove first cause it's entry patch without any nodeId
+          R.take(activeIndex + 1)
+        )(chunks);
 
-    return R.compose(
-      R.fromPairs,
-      R.when(
-        () => (activeIndex !== 0),
-        R.map(
-          R.over(
-            R.lensIndex(0),
-            R.replace(nodeIdPath, '')
-          )
-        )
-      ),
-      R.filter(R.compose(
-        R.ifElse(
-          () => (activeIndex === 0),
-          R.complement(R.contains)('~'),
-          R.startsWith(nodeIdPath),
-        ),
-        R.nth(0)
-      )),
-      R.toPairs
-    )(nodeValues);
-  }
+        return R.compose(
+          R.fromPairs,
+          R.when(
+            () => (activeIndex !== 0),
+            R.map(
+              R.over(
+                R.lensIndex(0),
+                R.replace(nodeIdPath, '')
+              )
+            )
+          ),
+          R.filter(R.compose(
+            R.ifElse(
+              () => (activeIndex === 0),
+              R.complement(R.contains)('~'),
+              R.startsWith(nodeIdPath),
+            ),
+            R.nth(0)
+          )),
+          R.toPairs
+        )(nodeValues);
+      },
+      maybeTabId
+    )
 );

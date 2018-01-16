@@ -1,7 +1,9 @@
 import * as R from 'ramda';
 import React from 'react';
+import $ from 'sanctuary-def';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+import { $Maybe, explodeMaybe, foldMaybe } from 'xod-func-tools';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
@@ -19,6 +21,7 @@ import * as EditorSelectors from '../selectors';
 
 import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { FOCUS_AREAS, DEBUGGER_TAB_ID, TAB_TYPES, IMPL_TEMPLATE, SIDEBAR_IDS } from '../constants';
 
 import Patch from './Patch';
@@ -61,10 +64,12 @@ class Editor extends React.Component {
     const position = this.props.suggesterPlacePosition || this.props.defaultNodePosition;
 
     this.hideSuggester();
-    this.props.actions.addNode(
-      patchPath,
-      position,
-      this.props.currentPatchPath
+    this.props.currentPatchPath.map(
+      currentPatchPath => this.props.actions.addNode(
+        patchPath,
+        position,
+        currentPatchPath
+      )
     );
   }
 
@@ -80,8 +85,8 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.UNDO]: () => this.props.actions.undo(this.props.currentPatchPath),
-      [COMMAND.REDO]: () => this.props.actions.redo(this.props.currentPatchPath),
+      [COMMAND.UNDO]: () => this.props.currentPatchPath.map(this.props.actions.undo),
+      [COMMAND.REDO]: () => this.props.currentPatchPath.map(this.props.actions.redo),
       [COMMAND.HIDE_HELPBOX]: () => this.props.actions.hideHelpbox(),
       [COMMAND.TOGGLE_HELP]: this.toggleHelp,
       [COMMAND.INSERT_NODE]: (event) => {
@@ -108,54 +113,69 @@ class Editor extends React.Component {
   renderOpenedPatchTab() {
     const { currentTab, currentPatchPath } = this.props;
 
-    if (currentTab === null) return <NoPatch />;
+    return foldMaybe(
+      <NoPatch />,
+      (tab) => {
+        // Do not render <Patch /> component if opened tab
+        // is in EditingCppImplementation mode.
+        if (tab.isEditingCppImplementation) return null;
 
-    if (!currentTab.isEditingCppImplementation) {
-      return (
-        <Patch
-          ref={(el) => { this.patchRef = el; }}
-          patchPath={currentPatchPath}
-          size={this.patchSize}
-          onDoubleClick={this.showSuggester}
-        />
-      );
-    }
-
-    return null;
+        // If we reached here, we're sure that tab contains
+        // all the necessary data and just explode them up
+        // to pass it into <Patch />
+        const curPatchPath = explodeMaybe(
+          'Current tab should contain PatchPath to render <Patch /> component, but its not. \n' +
+          `Check it out: ${JSON.stringify(tab, null, 2)}`,
+          currentPatchPath
+        );
+        return (
+          <Patch
+            ref={(el) => { this.patchRef = el; }}
+            patchPath={curPatchPath}
+            tabType={tab.type}
+            size={this.patchSize}
+            onDoubleClick={this.showSuggester}
+          />
+        );
+      },
+      currentTab
+    );
   }
 
   renderOpenedImplementationEditorTabs() {
-    const { currentTab } = this.props;
+    return foldMaybe(
+      null,
+      (currentTab) => {
+        const tabs = this.props.implEditorTabs.map(({ id, type, patchPath }) => {
+          const patch = XP.getPatchByPathUnsafe(patchPath, this.props.project);
+          const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
 
-    if (!currentTab) return null;
+          const onChange = src => this.updatePatchImplementationDebounced(patchPath, src);
 
-    const tabs = this.props.implEditorTabs.map(({ id, type, patchPath }) => {
-      const patch = XP.getPatchByPathUnsafe(patchPath, this.props.project);
-      const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
+          return (
+            <CppImplementationEditor
+              key={id}
+              isActive={id === currentTab.id}
+              source={source}
+              onChange={onChange}
+              isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+              onClose={this.props.actions.closeImplementationEditor}
+              patchPath={this.props.currentPatchPath}
+            />
+          );
+        });
 
-      const onChange = src => this.updatePatchImplementationDebounced(patchPath, src);
-
-      return (
-        <CppImplementationEditor
-          key={id}
-          isActive={id === currentTab.id}
-          source={source}
-          onChange={onChange}
-          isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
-          onClose={this.props.actions.closeImplementationEditor}
-          patchPath={this.props.currentPatchPath}
-        />
-      );
-    });
-
-    return (
-      <div
-        className={cn('CppImplementationEditors', {
-          hidden: currentTab && !currentTab.isEditingCppImplementation,
-        })}
-      >
-        {tabs}
-      </div>
+        return (
+          <div
+            className={cn('CppImplementationEditors', {
+              hidden: currentTab && !currentTab.isEditingCppImplementation,
+            })}
+          >
+            {tabs}
+          </div>
+        );
+      },
+      this.props.currentTab
     );
   }
 
@@ -184,9 +204,15 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const BreadcrumbsContainer = R.pathEq(['currentTab', 'id'], DEBUGGER_TAB_ID, this.props)
-      ? <Breadcrumbs />
-      : null;
+    const BreadcrumbsContainer = foldMaybe(
+      null,
+      R.ifElse(
+        R.propEq('id', DEBUGGER_TAB_ID),
+        () => <Breadcrumbs />,
+        R.always(null)
+      ),
+      this.props.currentTab
+    );
 
     const DebugSessionStopButton = (
       this.props.isDebugSessionRunning &&
@@ -243,9 +269,9 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   size: PropTypes.object.isRequired,
-  currentPatchPath: PropTypes.string,
+  currentPatchPath: sanctuaryPropType($Maybe(XP.PatchPath)),
   project: PropTypes.object,
-  currentTab: PropTypes.object,
+  currentTab: sanctuaryPropType($Maybe($.Object)),
   implEditorTabs: PropTypes.array,
   patchesIndex: PropTypes.object,
   isHelpboxVisible: PropTypes.bool,

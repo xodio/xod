@@ -3,6 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm';
+import { foldMaybe, explodeMaybe } from 'xod-func-tools';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -165,28 +166,30 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
 export const deleteSelection = () => (dispatch, getState) => {
   const state = getState();
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
   const selection = Selectors.getSelection(state);
 
-  dispatch(bulkDeleteNodesAndComments(
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-    currentPatchPath
-  ));
+  Selectors.getCurrentPatchPath(state).map(
+    currentPatchPath => dispatch(bulkDeleteNodesAndComments(
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+      currentPatchPath
+    ))
+  );
 };
 
 export const moveSelection = deltaPosition => (dispatch, getState) => {
   const state = getState();
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
   const selection = Selectors.getSelection(state);
 
-  dispatch(bulkMoveNodesAndComments(
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-    getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-    deltaPosition,
-    currentPatchPath
-  ));
+  Selectors.getCurrentPatchPath(state).map(
+    currentPatchPath => dispatch(bulkMoveNodesAndComments(
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+      deltaPosition,
+      currentPatchPath
+    ))
+  );
 };
 
 export const setCurrentPatchOffset = newOffset => ({
@@ -203,16 +206,20 @@ export const switchPatchUnsafe = patchPath => ({
 
 export const switchPatch = patchPath => (dispatch, getState) => {
   const state = getState();
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
 
-  if (currentPatchPath === patchPath) { return; }
+  const isSamePatchPath = foldMaybe(
+    false,
+    R.equals(patchPath),
+    Selectors.getCurrentPatchPath(state)
+  );
+
+  if (isSamePatchPath) return;
+
+  dispatch(switchPatchUnsafe(patchPath));
 
   const tabs = Selectors.getTabs(state);
   const tab = getTabByPatchPath(patchPath, tabs);
   const isOpeningNewTab = !tab;
-
-  dispatch(switchPatchUnsafe(patchPath));
-
   if (isOpeningNewTab) {
     const project = ProjectSelectors.getProject(state);
     const offset = getInitialPatchOffset(patchPath, project);
@@ -303,12 +310,13 @@ const getClipboardEntities = (state) => {
   const selection = Selectors.getSelection(state);
   if (R.isEmpty(selection)) return Maybe.Nothing();
 
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
-  return R.compose(
-    R.map(currentPatch => getEntitiesToCopy(currentPatch, selection)),
-    XP.getPatchByPath(currentPatchPath),
-    ProjectSelectors.getProject
-  )(state);
+  return Selectors.getCurrentPatchPath(state).chain(
+    currentPatchPath => R.compose(
+      R.map(currentPatch => getEntitiesToCopy(currentPatch, selection)),
+      XP.getPatchByPath(currentPatchPath),
+      ProjectSelectors.getProject
+    )(state)
+  );
 };
 
 export const copyEntities = event => (dispatch, getState) => {
@@ -331,7 +339,14 @@ export const pasteEntities = event => (dispatch, getState) => {
   if (isInput(document.activeElement)) return;
 
   const state = getState();
-  const currentPatchPath = Selectors.getCurrentPatchPath(state);
+  const maybeCurrentPatchPath = Selectors.getCurrentPatchPath(state);
+  if (maybeCurrentPatchPath.isNothing) return;
+
+  const currentPatchPath = explodeMaybe(
+    'Imposible error: No currentPatchPath for paste entities',
+    maybeCurrentPatchPath
+  );
+
   const pastedString = event.clipboardData.getData(getClipboardDataType());
 
   let copiedEntities;
@@ -371,9 +386,9 @@ export const pasteEntities = event => (dispatch, getState) => {
   // If pasted entities are equal to currently selected entities
   // paste them in roughly the same location as original with a light offset.
   // Otherwise, just stick them to the top left of the viewport
-  const currentPatch = XP.getPatchByPathUnsafe(currentPatchPath);
+  const currentPatch = XP.getPatchByPathUnsafe(currentPatchPath, project);
   const defaultNewPosition = Selectors.getDefaultNodePlacePosition(state);
-  const newPosition = Maybe.maybe(
+  const newPosition = foldMaybe(
     defaultNewPosition,
     R.ifElse(
       R.eqBy(
