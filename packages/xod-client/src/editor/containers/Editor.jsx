@@ -151,6 +151,10 @@ class Editor extends React.Component {
           const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
 
           const onChange = src => this.updatePatchImplementationDebounced(patchPath, src);
+          const currentPatchPath = explodeMaybe(
+            'No currentPatchPath, but currentTab exists',
+            this.props.currentPatchPath
+          );
 
           return (
             <CppImplementationEditor
@@ -160,7 +164,7 @@ class Editor extends React.Component {
               onChange={onChange}
               isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
               onClose={this.props.actions.closeImplementationEditor}
-              patchPath={this.props.currentPatchPath}
+              patchPath={currentPatchPath}
             />
           );
         });
