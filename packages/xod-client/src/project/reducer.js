@@ -5,6 +5,7 @@ import { getLibName } from 'xod-pm';
 
 import * as AT from './actionTypes';
 import { PASTE_ENTITIES, INSTALL_LIBRARIES_COMPLETE } from '../editor/actionTypes';
+import { IMPL_TEMPLATE } from '../editor/constants';
 
 import {
   addPoints,
@@ -278,7 +279,16 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath), // TODO: can we have a situation where patch does not exist?
-        XP.assocNode(newNode),
+        R.compose(
+          XP.assocNode(newNode),
+          R.when(
+            R.both(
+              () => typeId === XP.NOT_IMPLEMENTED_IN_XOD_PATH,
+              R.complement(XP.hasImpl)
+            ),
+            XP.setImpl(IMPL_TEMPLATE)
+          )
+        ),
         state
       );
     }
