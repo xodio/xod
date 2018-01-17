@@ -477,6 +477,30 @@ describe('Flatten', () => {
             },
           },
         },
+        '@/foo': {
+          nodes: {
+            a: {
+              id: 'a',
+              type: '@/empty',
+            },
+            b: {
+              id: 'b',
+              type: '@/empty',
+            },
+          },
+        },
+        '@/empty': {
+          nodes: {
+            noNativeImpl: {
+              id: 'noNativeImpl',
+              position: { x: 100, y: 100 },
+              type: 'xod/patch-nodes/not-implemented-in-xod',
+            },
+          },
+          attachments: [
+            Attachment.createImplAttachment('// ok'),
+          ],
+        },
         'xod/core/or': {
           nodes: {
             in1: {
@@ -525,15 +549,15 @@ describe('Flatten', () => {
       );
     });
     it('should ignore not referred patches', () => {
-      const flatProject = flatten(project, 'xod/core/or');
+      const flatProject = flatten(project, '@/foo');
 
       expect(flatProject.isRight).to.be.true();
       Helper.expectEither(
         (newProject) => {
           expect(R.keys(newProject.patches))
-            .to.be.deep.equal(['xod/core/or']);
-          expect(newProject.patches['xod/core/or'])
-            .to.be.deep.equal(project.patches['xod/core/or']);
+            .to.be.deep.equal(['@/empty', '@/foo']);
+          expect(newProject.patches['@/foo'])
+            .to.be.deep.equal(project.patches['@/foo']);
         },
         flatProject
       );
@@ -1949,28 +1973,13 @@ describe('Flatten', () => {
       });
     });
     describe('patch not implemented in xod as an entry point', () => {
-      it('should not be a valid entry point if it has no defined implementation', () => {
-        const flatProject = flatten(project, '@/no-impl');
+      it('should not be accepted', () => {
+        const flatProject = flatten(project, 'xod/core/or');
         expect(flatProject.isLeft).to.be.true();
         Helper.expectErrorMessage(
           expect,
           flatProject,
-          formatString(
-            CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-            { patchPath: '@/no-impl' }
-          )
-        );
-      });
-      it('shoud be a valid entry point if it has required implementation', () => {
-        const flatProject = flatten(project, 'xod/core/or');
-
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (newProject) => {
-            expect(newProject.patches['xod/core/or'])
-              .to.be.deep.equal(project.patches['xod/core/or']);
-          },
-          flatProject
+          CONST.ERROR.CPP_AS_ENTRY_POINT,
         );
       });
     });
