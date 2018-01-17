@@ -14,6 +14,7 @@ import {
   snapNodePositionToSlots,
 } from './nodeLayout';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
+import { isNotImplementedInXodNode } from './utils';
 
 // TODO: rewrite this?
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
@@ -261,6 +262,22 @@ export default (state = {}, action) => {
           XP.upsertLinks(entities.links),
           XP.upsertComments(entities.comments),
           XP.upsertNodes(entities.nodes),
+          R.unless(
+            () => R.isNil(entities.impl),
+            R.compose(
+              (patch) => {
+                const existingNiixNode = R.compose(
+                  R.find(isNotImplementedInXodNode),
+                  XP.listNodes
+                )(patch);
+
+                return existingNiixNode
+                  ? XP.dissocNode(existingNiixNode, patch)
+                  : patch;
+              },
+              XP.setImpl(entities.impl)
+            )
+          )
         ),
         state
       );
