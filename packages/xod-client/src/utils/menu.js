@@ -12,12 +12,12 @@ const rawItems = {
   },
   newProject: {
     key: 'newProject',
-    label: 'New Project',
+    label: 'New Project...',
     command: COMMAND.NEW_PROJECT,
   },
   openProject: {
     key: 'openProject',
-    label: 'Open Project',
+    label: 'Open Project...',
     command: COMMAND.OPEN_PROJECT,
   },
   saveAll: {
@@ -27,33 +27,37 @@ const rawItems = {
   },
   renameProject: {
     key: 'renameProject',
-    label: 'Rename Project',
+    label: 'Rename Project...',
     command: COMMAND.RENAME_PROJECT,
   },
   selectWorkspace: {
     key: 'selectWorkspace',
-    label: 'Select Workspace',
+    label: 'Select Workspace...',
   },
   importProject: {
     key: 'importProject',
-    label: 'Import Project',
+    label: 'Import Project...',
   },
   exportProject: {
     key: 'exportProject',
-    label: 'Export Project',
+    label: 'Export Project...',
   },
   newPatch: {
     key: 'newPatch',
-    label: 'New Patch',
+    label: 'New Patch...',
     command: COMMAND.ADD_PATCH,
   },
   addLibrary: {
     key: 'addLibrary',
-    label: 'Add Library',
+    label: 'Add Library...',
   },
   publish: {
     key: 'publish',
-    label: 'Publish Library',
+    label: 'Publish Library...',
+  },
+  exit: {
+    key: 'exit',
+    label: 'Exit',
   },
 
   edit: {
@@ -96,7 +100,7 @@ const rawItems = {
   },
   projectPreferences: {
     key: 'projectPreferences',
-    label: 'Project preferences',
+    label: 'Project Preferences',
   },
   insertComment: {
     key: 'insertComment',
@@ -104,7 +108,7 @@ const rawItems = {
   },
   insertNode: {
     key: 'insertNode',
-    label: 'Insert Node',
+    label: 'Insert Node...',
     command: COMMAND.INSERT_NODE,
   },
 
@@ -114,11 +118,11 @@ const rawItems = {
   },
   showCodeForArduino: {
     key: 'showCodeForArduino',
-    label: 'Show Code For Arduino',
+    label: 'Show Code for Arduino',
   },
   uploadToArduino: {
     key: 'uploadToArduino',
-    label: 'Upload to Arduino',
+    label: 'Upload to Arduino...',
   },
 
   view: {

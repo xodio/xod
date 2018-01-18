@@ -400,6 +400,12 @@ class App extends client.App {
       submenu,
     } = client.menu;
 
+    // macOS makes Quit item automatically
+    const exitItems = process.platform === 'darwin' ? [] : [
+      items.separator,
+      onClick(items.exit, () => remoteElectron.getCurrentWindow().close()),
+    ];
+
     return [
       submenu(
         items.file,
@@ -417,6 +423,7 @@ class App extends client.App {
           items.separator,
           onClick(items.addLibrary, this.props.actions.showLibSuggester),
           onClick(items.publish, this.props.actions.requestPublishProject),
+          ...exitItems,
         ]
       ),
       submenu(
@@ -456,7 +463,7 @@ class App extends client.App {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
           onClick(items.shortcuts, () => {
-            shell.openExternal(client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu'));
+            shell.openExternal(client.getUtmSiteUrl('/docs/reference/shortcuts/', 'docs', 'menu'));
           }),
           onClick(items.forum, () => {
             shell.openExternal(client.getUtmForumUrl('menu'));

@@ -169,7 +169,7 @@ describe('creating blink patch', () => {
     const menubar = await Menubar.findOnPage(page);
 
     await menubar.clickTopLevelItem('Deploy');
-    await menubar.clickMenuItem('Show Code For Arduino');
+    await menubar.clickMenuItem('Show Code for Arduino');
 
     const codePopup = await TranspiledCodePopup.waitOnPage(page);
     const code = await codePopup.getCode();

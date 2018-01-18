@@ -19,7 +19,7 @@ describe('Test FS things', () => {
 
   describe('Add library in the IDE', () => {
     it('opens an "Add Library" suggester', () =>
-      ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Add Library'])
+      ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Add Library...'])
         .then(() => ide.page.assertLibSuggesterShown())
     );
 
