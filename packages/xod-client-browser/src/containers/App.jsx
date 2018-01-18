@@ -181,7 +181,6 @@ class App extends client.App {
           onClick(items.newPatch, this.props.actions.createPatch),
           items.separator,
           onClick(items.addLibrary, this.props.actions.showLibSuggester),
-          items.separator,
           onClick(items.publish, this.props.actions.requestPublishProject),
         ]
       ),
@@ -231,7 +230,7 @@ class App extends client.App {
           },
           items.separator,
           link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
-          link(items.shortcuts, { href: client.getUtmSiteUrl('/docs/guide/shortcuts/', 'docs', 'menu') }),
+          link(items.shortcuts, { href: client.getUtmSiteUrl('/docs/reference/shortcuts/', 'docs', 'menu') }),
           link(items.forum, { href: client.getUtmForumUrl('menu') }),
         ]
       ),
