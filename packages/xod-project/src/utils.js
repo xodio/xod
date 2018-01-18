@@ -1,10 +1,12 @@
 import * as R from 'ramda';
 import shortid from 'shortid';
+import { foldEither } from 'xod-func-tools';
+import { Either } from 'ramda-fantasy';
 
 import * as Node from './node';
 import * as CONST from './constants';
-import { formatDeadReferencesFound } from './messages';
 import { def } from './types';
+
 
 /**
  * Replace placeholders with replacements.
@@ -31,25 +33,82 @@ export const formatString = R.curry((template, replacements) =>
   )(replacements)
 );
 
-/**
- * Updates Error message of Left value by wrapping it with
- * dead reference error message. Right value will be passed unchanged.
- *
- * @param {PatchPath} patchPath
- * @param {Either} either Either Error a
- * @returns {Either} Either Error a
- */
-export const wrapDeadRefErrorMessage = R.curry(
-  (patchPath, either) => either.bimap(
-    (error) => {
-      // Error message updated by mutation to prevent creating new stack trace.
-      // eslint-disable-next-line no-param-reassign
-      error.message = formatDeadReferencesFound(patchPath, error.message);
-      return error;
-    },
-    R.identity
+// -----------------------------------------------------------------------------
+//
+// Dead reference errors
+//
+// -----------------------------------------------------------------------------
+
+// DeadRefError — is an Error with additional properties '@@type' and 'path'
+// that is needed for creating a proper error message.
+
+// :: Error -> Boolean
+export const isDeadRefError = R.both(
+  R.is(Error),
+  R.propEq('@@type', 'DeadRefError')
+);
+
+// :: DeadRefError -> String
+export const getDeadRefErrorReason = R.ifElse(
+  isDeadRefError,
+  err => `${err.path.reverse().join(' -> ')}: ${err.message}.`,
+  (x) => {
+    throw new Error(`Expected Error with @@type "DeadRefError", but got ${typeof x} "x"`);
+  }
+);
+
+// :: String -> PatchPath -> DeadRefError
+const createDeadRefError = R.curry(
+  (message, patchPath) => {
+    const err = new Error(message);
+    err['@@type'] = 'DeadRefError';
+    err.path = patchPath;
+    err.title = 'Patch contains dead references';
+    return err;
+  }
+);
+
+// :: DeadRefError -> DeadRefError
+const addPathIntoDeadRefError = R.curry(
+  (patchPath, err) => {
+    // eslint-disable-next-line no-param-reassign
+    err.path = R.append(patchPath, err.path);
+    return err;
+  }
+);
+
+// :: PatchPath -> Either a b -> Either a b
+export const maybeComposeDeadRefError = R.uncurryN(2,
+  patchPath => foldEither(
+    R.compose(
+      Either.Left,
+      R.when(
+        isDeadRefError,
+        addPathIntoDeadRefError(patchPath)
+      )
+    ),
+    Either.of,
   )
 );
+
+// :: PatchPath -> Either Error Patch -> Either DeadRefError Patch
+export const composeDeadRefError = R.uncurryN(2,
+  patchPath => foldEither(
+    R.compose(
+      Either.Left,
+      R.ifElse(
+        isDeadRefError,
+        // update DeadRefError
+        addPathIntoDeadRefError(patchPath),
+        // wrap into DeadRefError
+        err => createDeadRefError(err.message, [patchPath])
+      )
+    ),
+    Either.of
+  )
+);
+
+// -----------------------------------------------------------------------------
 
 /**
  * Contains resulting value or error

@@ -10,7 +10,7 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
-import { formatString, wrapDeadRefErrorMessage } from './utils';
+import { formatString, composeDeadRefError, maybeComposeDeadRefError } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
@@ -117,6 +117,7 @@ const extractLeafPatchRecursive = R.curry(
   (recursiveFn, project, node) => R.compose(
     path => R.compose(
       R.chain(recursiveFn(project, path)),
+      composeDeadRefError(path),
       errOnNothing(
         formatString(
           CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
@@ -160,10 +161,8 @@ export const extractLeafPatches = def(
       [
         R.T,
         R.compose(
-          R.tap(a => console.log('after (extractLeafPatchesFromNodes)', a)),
-          R.map(wrapDeadRefErrorMessage(path)),
-          R.tap(a => console.log('before (extractLeafPatchesFromNodes)', a)),
-          extractLeafPatchesFromNodes(extractLeafPatches, project)
+          R.map(maybeComposeDeadRefError(path)),
+          extractLeafPatchesFromNodes(extractLeafPatches, project),
         ),
       ],
     ])(patch)

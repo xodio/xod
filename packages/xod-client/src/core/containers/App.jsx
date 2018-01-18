@@ -10,6 +10,7 @@ import {
   toXodball,
   isValidIdentifier,
   IDENTIFIER_RULES,
+  isDeadRefError,
 } from 'xod-project';
 import {
   transformProject,
@@ -26,7 +27,7 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
-import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
+import { NO_PATCH_TO_TRANSPILE, deadRefErrorMessage } from '../../editor/messages';
 import composeMessage from '../../messages/composeMessage';
 
 export default class App extends React.Component {
@@ -45,13 +46,27 @@ export default class App extends React.Component {
   onShowCodeArduino() {
     return R.compose(
       foldEither(
-        R.compose(
-          this.props.actions.addError,
-          R.when(
+        R.cond([
+          [
+            isDeadRefError,
+            err => this.props.actions.addError(
+              deadRefErrorMessage(err),
+              true
+            ),
+          ],
+          [
             R.is(Error),
-            err => composeMessage(err.message),
-          )
-        ),
+            err => this.props.actions.addError(
+              composeMessage(err.message)
+            ),
+          ],
+          [
+            R.T,
+            (x) => {
+              throw Error(`Expected Either.Left Error, but got just ${typeof x} "${x}"`);
+            },
+          ],
+        ]),
         this.props.actions.showCode
       ),
       R.map(transpile),

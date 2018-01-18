@@ -42,6 +42,7 @@
     "react-highlight-words": "^0.8.1",
     "react-hotkeys": "^0.10.0",
     "react-infinite": "^0.12.1",
+    "react-nl2br": "^0.4.0",
     "react-redux": "^4.0.6",
     "react-reflex": "^2.0.11",
     "react-remarkable": "^1.1.3",

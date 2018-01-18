@@ -1,3 +1,4 @@
+import { getDeadRefErrorReason } from 'xod-project';
 import composeMessage from '../messages/composeMessage';
 
 export const PATCH_FOR_NODE_IS_MISSING = 'Patch for this node is missing.';
@@ -20,4 +21,12 @@ export const LIB_SUGGESTER_NOTHING_FOUND = 'No library found';
 export const NO_PATCH_TO_TRANSPILE = composeMessage(
   'No patch opened',
   'Open a patch to upload and try again'
+);
+
+export const deadRefErrorMessage = err => composeMessage(
+  err.title,
+  [
+    getDeadRefErrorReason(err),
+    'Fix or delete them to continue.',
+  ].join('\n')
 );
