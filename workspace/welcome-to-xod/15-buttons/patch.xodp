@@ -4,7 +4,7 @@
       "content": "`PORT` — a digital port on the Arduino that the button is connected to\n`PRS` — returns true value when the button is pressed and false otherwise",
       "id": "H1IQRsAKW",
       "position": {
-        "x": 374,
+        "x": 408,
         "y": 102
       },
       "size": {
@@ -21,7 +21,7 @@
       },
       "size": {
         "height": 663,
-        "width": 306
+        "width": 340
       }
     }
   ],
@@ -32,7 +32,7 @@
       },
       "id": "S13FKPEFb",
       "position": {
-        "x": 272,
+        "x": 306,
         "y": 204
       },
       "type": "xod/common-hardware/led"
@@ -43,7 +43,7 @@
       },
       "id": "rkRFKDVF-",
       "position": {
-        "x": 272,
+        "x": 306,
         "y": 102
       },
       "type": "xod/common-hardware/button"

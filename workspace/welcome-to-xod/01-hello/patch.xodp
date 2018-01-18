@@ -9,7 +9,7 @@
       },
       "size": {
         "height": 663,
-        "width": 306
+        "width": 340
       }
     }
   ],
@@ -21,7 +21,7 @@
       },
       "id": "SkjpJD4F-",
       "position": {
-        "x": 340,
+        "x": 374,
         "y": 204
       },
       "type": "xod/common-hardware/led"

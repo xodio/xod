@@ -4,7 +4,7 @@
       "content": "`PORT` assigns the number of the Arduino’s digital port to be used.\n`LUM` controls the brightness (value is between 0 and 1).",
       "id": "BJ7AzfhK-",
       "position": {
-        "x": 408,
+        "x": 442,
         "y": 204
       },
       "size": {
@@ -21,7 +21,7 @@
       },
       "size": {
         "height": 357,
-        "width": 306
+        "width": 340
       }
     }
   ],
@@ -33,7 +33,7 @@
       },
       "id": "B1I7-DEYW",
       "position": {
-        "x": 306,
+        "x": 340,
         "y": 204
       },
       "type": "xod/common-hardware/led"
