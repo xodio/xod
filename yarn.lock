@@ -548,6 +548,13 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argparse@~0.1.15:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-0.1.16.tgz#cfd01e0fbba3d6caed049fbd758d40f65196f57c"
+  dependencies:
+    underscore "~1.7.0"
+    underscore.string "~2.4.0"
+
 arr-diff@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/arr-diff/-/arr-diff-2.0.0.tgz#8f3b827f955a8bd669697e4a4256ac3ceae356cf"
@@ -746,6 +753,10 @@ atob@^2.0.0, atob@^2.0.3:
 atob@~1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-1.1.3.tgz#95f13629b12c3a51a5d215abdce2aa9f32f80773"
+
+autolinker@~0.15.0:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/autolinker/-/autolinker-0.15.3.tgz#342417d8f2f3461b14cf09088d5edf8791dc9832"
 
 autoprefixer@^6.3.1, autoprefixer@^6.5.1:
   version "6.7.7"
@@ -8537,7 +8548,7 @@ promise@^7.0.1, promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, "prop-types@^0.14.9 || ^15.3.0 || ^16.0.0", prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
+prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -8807,12 +8818,6 @@ rc@^1.1.2, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-autolink-text2@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/react-autolink-text2/-/react-autolink-text2-3.2.0.tgz#f0df734d0463fde0b8505a66c581bd16eb129cd8"
-  dependencies:
-    prop-types "^0.14.9 || ^15.3.0 || ^16.0.0"
-
 "react-autosuggest@git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e":
   version "9.3.2"
   resolved "git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e"
@@ -8991,6 +8996,12 @@ react-reflex@^2.0.11:
     lodash.throttle "^4.1.1"
     prop-types "^15.5.8"
     react-measure "^2.0.2"
+
+react-remarkable@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-remarkable/-/react-remarkable-1.1.3.tgz#6ef3861812d806fbf747cc1d1e151ee3172130a6"
+  dependencies:
+    remarkable "^1.x"
 
 "react-skylight@git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967":
   version "0.4.2"
@@ -9402,6 +9413,13 @@ remark@^8.0.0:
     remark-parse "^4.0.0"
     remark-stringify "^4.0.0"
     unified "^6.0.0"
+
+remarkable@^1.x:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/remarkable/-/remarkable-1.7.1.tgz#aaca4972100b66a642a63a1021ca4bac1be3bff6"
+  dependencies:
+    argparse "~0.1.15"
+    autolinker "~0.15.0"
 
 remote-origin-url@0.4.0:
   version "0.4.0"
@@ -10893,9 +10911,17 @@ unc-path-regex@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
 
+underscore.string@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/underscore.string/-/underscore.string-2.4.0.tgz#8cdd8fbac4e2d2ea1e7e2e8097c42f442280f85b"
+
 underscore@~1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.4.4.tgz#61a6a32010622afa07963bf325203cf12239d604"
+
+underscore@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.7.0.tgz#6bbaf0877500d36be34ecaa584e0db9fef035209"
 
 unherit@^1.0.4:
   version "1.1.0"

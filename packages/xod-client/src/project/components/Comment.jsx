@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import AutoLinkText from 'react-autolink-text2';
+import Markdown from 'react-remarkable';
 import classNames from 'classnames';
 
 import { noop } from '../../utils/ramda';
@@ -9,7 +9,12 @@ import { noop } from '../../utils/ramda';
 import { NODE_CORNER_RADIUS } from '../nodeLayout';
 
 const HANDLE_SIZE = 12;
-const linkProps = { target: '_blank', rel: 'nofollow noopener' };
+
+// see https://github.com/jonschlinkert/remarkable#options
+const remarkableOptions = {
+  breaks: true,
+  linkify: true,
+};
 
 class Comment extends React.Component {
   constructor(props) {
@@ -179,9 +184,9 @@ class Comment extends React.Component {
               />
             ) : (
               <div className="content viewer">
-                <AutoLinkText
-                  text={content}
-                  linkProps={linkProps}
+                <Markdown
+                  options={remarkableOptions}
+                  source={content}
                 />
               </div>
             )}
