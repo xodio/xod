@@ -1,3 +1,6 @@
+
+#pragma XOD dirtieness disable
+
 struct State {
     char str[16];
     CStringView view;

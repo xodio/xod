@@ -106,322 +106,87 @@ namespace xod {
 //----------------------------------------------------------------------------
 // Type definitions
 //----------------------------------------------------------------------------
-#define NO_NODE                 ((NodeId)-1)
-
 typedef double Number;
 typedef bool Logic;
-
-#if NODE_COUNT < 256
-typedef uint8_t NodeId;
-#elif NODE_COUNT < 65536
-typedef uint16_t NodeId;
-#else
-typedef uint32_t NodeId;
-#endif
-
-/*
- * Context is a handle passed to each node `evaluate` function. Currently, it’s
- * alias for NodeId but likely will be changed in future to support list
- * lifting and other features
- */
-typedef NodeId Context;
-
-/*
- * LSB of a dirty flag shows whether a particular node is dirty or not
- * Other bits shows dirtieness of its particular outputs:
- * - 1-st bit for 0-th output
- * - 2-nd bit for 1-st output
- * - etc
- *
- * An outcome limitation is that a native node must not have more than 7 output
- * pins.
- */
+typedef unsigned long TimeMs;
 typedef uint8_t DirtyFlags;
 
-typedef unsigned long TimeMs;
-typedef void (*EvalFuncPtr)(Context ctx);
+//----------------------------------------------------------------------------
+// Global variables
+//----------------------------------------------------------------------------
 
-/*
- * Each input stores a reference to its upstream node so that we can get values
- * on input pins. Having a direct pointer to the value is not enough because we
- * want to know dirty’ness as well. So we have to use this structure instead of
- * a pointer.
- */
-struct UpstreamPinRef {
-    // Upstream node ID
-    NodeId nodeId;
-    // Index of the upstream node’s output.
-    // Use 3 bits as it just enough to store values 0..7
-    uint16_t pinIndex : 3;
-    // Byte offset in a storage of the upstream node where the actual pin value
-    // is stored
-    uint16_t storageOffset : 13;
-};
+TimeMs g_transactionTime;
 
-/*
- * Input descriptor is a metaprogramming structure used to enforce an
- * input’s type and store its wiring data location as a zero-RAM constant.
- *
- * A specialized descriptor is required by `getValue` function. Every
- * input of every type node gets its own descriptor in generated code that
- * can be accessed as input_FOO. Where FOO is a pin identifier.
- */
-template<typename ValueT_, size_t wiringOffset>
-struct InputDescriptor {
-    typedef ValueT_ ValueT;
-    enum {
-        WIRING_OFFSET = wiringOffset
-    };
-};
+//----------------------------------------------------------------------------
+// Metaprogramming utilities
+//----------------------------------------------------------------------------
 
-/*
- * Output descriptor serve the same purpose as InputDescriptor but for
- * outputs.
- *
- * In addition to wiring data location it keeps storage data location (where
- * actual value is stored) and own zero-based index among outputs of a particular
- * node
- */
-template<typename ValueT_, size_t wiringOffset, size_t storageOffset, uint8_t index>
-struct OutputDescriptor {
-    typedef ValueT_ ValueT;
-    enum {
-        WIRING_OFFSET = wiringOffset,
-        STORAGE_OFFSET = storageOffset,
-        INDEX = index
-    };
+template<typename T> struct always_false {
+    enum { value = 0 };
 };
 
 //----------------------------------------------------------------------------
 // Forward declarations
 //----------------------------------------------------------------------------
-extern void* const g_storages[NODE_COUNT];
-extern const void* const g_wiring[NODE_COUNT];
-extern DirtyFlags g_dirtyFlags[NODE_COUNT];
 
-// TODO: replace with a compact list
-extern TimeMs g_schedule[NODE_COUNT];
-
-void clearTimeout(NodeId nid);
-bool isTimedOut(NodeId nid);
+TimeMs transactionTime();
+void runTransaction(bool firstRun);
 
 //----------------------------------------------------------------------------
 // Engine (private API)
 //----------------------------------------------------------------------------
 
-TimeMs g_transactionTime;
+namespace detail {
 
-void* getStoragePtr(NodeId nid, size_t offset) {
-    return (uint8_t*)pgm_read_ptr(&g_storages[nid]) + offset;
+template<typename NodeT>
+bool isTimedOut(const NodeT* node) {
+    TimeMs t = node->timeoutAt;
+    // TODO: deal with uint32 overflow
+    return t && t < transactionTime();
 }
 
-template<typename T>
-T getStorageValue(NodeId nid, size_t offset) {
-    return *reinterpret_cast<T*>(getStoragePtr(nid, offset));
+// Marks timed out node dirty. Do not reset timeoutAt here to give
+// a chance for a node to get a reasonable result from `isTimedOut`
+// later during its `evaluate`
+template<typename NodeT>
+void checkTriggerTimeout(NodeT* node) {
+    node->isNodeDirty |= isTimedOut(node);
 }
 
-void* getWiringPgmPtr(NodeId nid, size_t offset) {
-    return (uint8_t*)pgm_read_ptr(&g_wiring[nid]) + offset;
+template<typename NodeT>
+void clearTimeout(NodeT* node) {
+    node->timeoutAt = 0;
 }
 
-template<typename T>
-T getWiringValue(NodeId nid, size_t offset) {
-    T result;
-    memcpy_P(&result, getWiringPgmPtr(nid, offset), sizeof(T));
-    return result;
+template<typename NodeT>
+void clearStaleTimeout(NodeT* node) {
+    if (isTimedOut(node))
+        clearTimeout(node);
 }
 
-bool isOutputDirty(NodeId nid, uint8_t index) {
-    return g_dirtyFlags[nid] & (1 << (index + 1));
-}
-
-bool isInputDirtyImpl(NodeId nid, size_t wiringOffset) {
-    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
-    if (ref.nodeId == NO_NODE)
-        return false;
-
-    return isOutputDirty(ref.nodeId, ref.pinIndex);
-}
-
-template<typename InputT>
-bool isInputDirty(NodeId nid) {
-    return isInputDirtyImpl(nid, InputT::WIRING_OFFSET);
-}
-
-void markPinDirty(NodeId nid, uint8_t index) {
-    g_dirtyFlags[nid] |= 1 << (index + 1);
-}
-
-void markNodeDirty(NodeId nid) {
-    g_dirtyFlags[nid] |= 0x1;
-}
-
-bool isNodeDirty(NodeId nid) {
-    return g_dirtyFlags[nid] & 0x1;
-}
-
-template<typename T>
-T getOutputValueImpl(NodeId nid, size_t storageOffset) {
-    return getStorageValue<T>(nid, storageOffset);
-}
-
-template<typename T>
-T getInputValueImpl(NodeId nid, size_t wiringOffset) {
-    UpstreamPinRef ref = getWiringValue<UpstreamPinRef>(nid, wiringOffset);
-    if (ref.nodeId == NO_NODE)
-        return (T)0;
-
-    return getOutputValueImpl<T>(ref.nodeId, ref.storageOffset);
-}
-
-template<typename T>
-struct always_false {
-    enum { value = 0 };
-};
-
-// GetValue -- classical trick for partial function (API `xod::getValue`)
-// template specialization
-template<typename InputOutputT>
-struct GetValue {
-    static typename InputOutputT::ValueT getValue(Context ctx) {
-        static_assert(
-                always_false<InputOutputT>::value,
-                "You should provide an input_XXX or output_YYY argument " \
-                "in angle brackets of getValue"
-                );
-
-    }
-};
-
-template<typename ValueT, size_t wiringOffset>
-struct GetValue<InputDescriptor<ValueT, wiringOffset>> {
-    static ValueT getValue(Context ctx) {
-        return getInputValueImpl<ValueT>(ctx, wiringOffset);
-    }
-};
-
-template<typename ValueT, size_t wiringOffset, size_t storageOffset, uint8_t index>
-struct GetValue<OutputDescriptor<ValueT, wiringOffset, storageOffset, index>> {
-    static ValueT getValue(Context ctx) {
-        return getOutputValueImpl<ValueT>(ctx, storageOffset);
-    }
-};
-
-template<typename T>
-void emitValueImpl(
-        NodeId nid,
-        size_t storageOffset,
-        size_t wiringOffset,
-        uint8_t index,
-        T value) {
-
-    // Store new value and make the node itself dirty
-    T* storedValue = reinterpret_cast<T*>(getStoragePtr(nid, storageOffset));
-    *storedValue = value;
-    markPinDirty(nid, index);
-
-    // Notify downstream nodes about changes
-    // NB: linked nodes array is in PGM space
-    const NodeId* pDownstreamNid = getWiringValue<const NodeId*>(nid, wiringOffset);
-    NodeId downstreamNid = pgm_read_nodeid(pDownstreamNid);
-
-    while (downstreamNid != NO_NODE) {
-        markNodeDirty(downstreamNid);
-        downstreamNid = pgm_read_nodeid(pDownstreamNid++);
-    }
-}
-
-void evaluateNode(NodeId nid) {
-    XOD_TRACE_F("eval #");
-    XOD_TRACE_LN(nid);
-    EvalFuncPtr eval = getWiringValue<EvalFuncPtr>(nid, 0);
-    eval(nid);
-}
-
-void runTransaction() {
-    g_transactionTime = millis();
-
-    XOD_TRACE_F("Transaction started, t=");
-    XOD_TRACE_LN(g_transactionTime);
-
-    // defer-* nodes are always at the very bottom of the graph,
-    // so no one will recieve values emitted by them.
-    // We must evaluate them before everybody else
-    // to give them a chance to emit values.
-    for (NodeId nid = NODE_COUNT - DEFER_NODE_COUNT; nid < NODE_COUNT; ++nid) {
-        if (isTimedOut(nid)) {
-            evaluateNode(nid);
-            // Clear node dirty flag, so it will evaluate
-            // on "regular" pass only if it has a dirty input.
-            // We must save dirty output flags,
-            // or 'isInputDirty' will not work correctly in "downstream" nodes.
-            g_dirtyFlags[nid] &= ~0x1;
-            clearTimeout(nid);
-        }
-    }
-
-    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
-        if (isNodeDirty(nid)) {
-            evaluateNode(nid);
-
-            // If the schedule is stale, clear timeout so that
-            // the node would not be marked dirty again in idle
-            if (isTimedOut(nid))
-                clearTimeout(nid);
-        }
-    }
-
-    // Clear dirtieness for all nodes and pins
-    memset(g_dirtyFlags, 0, sizeof(g_dirtyFlags));
-
-    XOD_TRACE_F("Transaction completed, t=");
-    XOD_TRACE_LN(millis());
-}
-
-void idle() {
-    // Mark timed out nodes dirty. Do not reset schedule here to give
-    // a chance for a node to get a reasonable result from `isTimedOut`
-    TimeMs now = millis();
-    for (NodeId nid = 0; nid < NODE_COUNT; ++nid) {
-        TimeMs t = g_schedule[nid];
-        if (t && t < now)
-            markNodeDirty(nid);
-    }
-}
+} // namespace detail
 
 //----------------------------------------------------------------------------
 // Public API (can be used by native nodes’ `evaluate` functions)
 //----------------------------------------------------------------------------
 
-template<typename InputOutputT>
-typename InputOutputT::ValueT getValue(Context ctx) {
-    return GetValue<InputOutputT>::getValue(ctx);
-}
-
-template<typename OutputT>
-void emitValue(NodeId nid, typename OutputT::ValueT value) {
-    emitValueImpl(
-            nid,
-            OutputT::STORAGE_OFFSET,
-            OutputT::WIRING_OFFSET,
-            OutputT::INDEX,
-            value);
-}
-
 TimeMs transactionTime() {
     return g_transactionTime;
 }
 
-void setTimeout(NodeId nid, TimeMs timeout) {
-    g_schedule[nid] = transactionTime() + timeout;
+template<typename ContextT>
+void setTimeout(ContextT* ctx, TimeMs timeout) {
+    ctx->_node->timeoutAt = transactionTime() + timeout;
 }
 
-void clearTimeout(NodeId nid) {
-    g_schedule[nid] = 0;
+template<typename ContextT>
+void clearTimeout(ContextT* ctx) {
+    detail::clearTimeout(ctx->_node);
 }
 
-bool isTimedOut(NodeId nid) {
-    return g_schedule[nid] && g_schedule[nid] < transactionTime();
+template<typename ContextT>
+bool isTimedOut(const ContextT* ctx) {
+    return detail::isTimedOut(ctx->_node);
 }
 
 } // namespace xod
@@ -436,9 +201,10 @@ void setup() {
     DEBUG_SERIAL.begin(115200);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
+
+    xod::runTransaction(true);
 }
 
 void loop() {
-    xod::idle();
-    xod::runTransaction();
+    xod::runTransaction(false);
 }

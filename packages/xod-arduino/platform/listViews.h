@@ -30,7 +30,7 @@ template<typename T> class Cursor {
 template<typename T> class NilCursor : public Cursor<T> {
   public:
     virtual bool isValid() const { return false; }
-    virtual bool value(T* out) const { return false; }
+    virtual bool value(T*) const { return false; }
     virtual void next() { }
 };
 
