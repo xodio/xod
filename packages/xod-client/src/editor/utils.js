@@ -1,6 +1,7 @@
 import * as R from 'ramda';
-
+import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
+import { foldMaybe } from 'xod-func-tools';
 
 import {
   addPoints,
@@ -10,7 +11,7 @@ import {
   sizeToPoint,
   subtractPoints,
 } from '../project/nodeLayout';
-
+import { isNotImplementedInXodNode } from '../project/utils';
 import {
   SELECTION_ENTITY_TYPE,
   PANEL_IDS,
@@ -53,7 +54,14 @@ export const getSelectedEntityIdsOfType = R.curry((entityType, selection) => R.c
 // :: SELECTION_ENTITY_TYPE -> String -> SelectionEntity
 export const createSelectionEntity = R.curry((entityType, id) => ({ entity: entityType, id }));
 
-// :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> [SelectionEntity]
+/**
+  :: {
+    nodes :: [Node],
+    links :: [Link],
+    comments :: [Comment],
+    impl :: String?
+  } -> [SelectionEntity]
+ */
 export const getNewSelection = R.compose(
   R.unnest,
   R.values,
@@ -70,7 +78,8 @@ export const getNewSelection = R.compose(
       id => ({ entity: SELECTION_ENTITY_TYPE.LINK, id }),
       XP.getLinkId
     )),
-  })
+  }),
+  R.dissoc('impl'),
 );
 
 // :: ClipboardEntities -> Position
@@ -181,6 +190,13 @@ export const getEntitiesToCopy = R.curry((patch, selection) => {
   const nodeIds = getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection);
   const nodes = R.map(R.flip(XP.getNodeByIdUnsafe)(patch), nodeIds);
 
+  const impl = R.compose(
+    foldMaybe(null, R.identity), // besause the end result must be serializable
+    R.chain(() => XP.getImpl(patch)),
+    Maybe,
+    R.find(isNotImplementedInXodNode),
+  )(nodes);
+
   const selectedNodeIdPairs = R.xprod(nodeIds, nodeIds);
   // we completely ignore what links are selected and just
   // copy all the links between selected nodes
@@ -201,6 +217,7 @@ export const getEntitiesToCopy = R.curry((patch, selection) => {
     nodes,
     links,
     comments,
+    impl,
   };
 });
 

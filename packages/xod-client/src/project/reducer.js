@@ -5,6 +5,7 @@ import { getLibName } from 'xod-pm';
 
 import * as AT from './actionTypes';
 import { PASTE_ENTITIES, INSTALL_LIBRARIES_COMPLETE } from '../editor/actionTypes';
+import { IMPL_TEMPLATE } from '../editor/constants';
 
 import {
   addPoints,
@@ -13,6 +14,7 @@ import {
   snapNodePositionToSlots,
 } from './nodeLayout';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
+import { isNotImplementedInXodNode } from './utils';
 
 // TODO: rewrite this?
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
@@ -260,6 +262,22 @@ export default (state = {}, action) => {
           XP.upsertLinks(entities.links),
           XP.upsertComments(entities.comments),
           XP.upsertNodes(entities.nodes),
+          R.unless(
+            () => R.isNil(entities.impl),
+            R.compose(
+              (patch) => {
+                const existingNiixNode = R.compose(
+                  R.find(isNotImplementedInXodNode),
+                  XP.listNodes
+                )(patch);
+
+                return existingNiixNode
+                  ? XP.dissocNode(existingNiixNode, patch)
+                  : patch;
+              },
+              XP.setImpl(entities.impl)
+            )
+          )
         ),
         state
       );
@@ -278,7 +296,16 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath), // TODO: can we have a situation where patch does not exist?
-        XP.assocNode(newNode),
+        R.compose(
+          XP.assocNode(newNode),
+          R.when(
+            R.both(
+              () => typeId === XP.NOT_IMPLEMENTED_IN_XOD_PATH,
+              R.complement(XP.hasImpl)
+            ),
+            XP.setImpl(IMPL_TEMPLATE)
+          )
+        ),
         state
       );
     }

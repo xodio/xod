@@ -139,3 +139,8 @@ export const isPatchDeadTerminal = R.compose(
   ),
   XP.getPatchPath,
 );
+
+export const isNotImplementedInXodNode = R.compose(
+  R.equals(XP.NOT_IMPLEMENTED_IN_XOD_PATH),
+  XP.getNodeType,
+);

@@ -82,15 +82,20 @@ const isLeafPatchWithImplsOrTerminal = def(
   ])
 );
 
+const isPatchNotImplementedInXod = def(
+  'isPatchNotImplementedInXod :: Patch -> Boolean',
+  R.compose(
+    R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+    R.map(Node.getNodeType),
+    Patch.listNodes
+  )
+);
+
 const isLeafPatchWithoutImpls = def(
   'isLeafPatchWithoutImpls :: Patch -> Boolean',
   R.both(
     R.complement(Patch.hasImpl),
-    R.compose(
-      R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-      R.map(Node.getNodeType),
-      Patch.listNodes
-    )
+    isPatchNotImplementedInXod
   )
 );
 
@@ -907,24 +912,12 @@ const flattenProject = def(
     )(patch)
 );
 
-/**
- * If for some reason we choose a patch that is not implemented in XOD
- * as an entry point(in most cases such patches will be leaf patches),
- * check that it at least has required implementations.
- */
-const checkEntryPatchImplementations = def(
-  'checkEntryPatchImplementations :: Patch -> Either Error Patch',
+const checkEntryPatchIsNative = def(
+  'checkEntryPatchIsNative :: Patch -> Either Error Patch',
   patch =>
     R.ifElse(
-      isLeafPatchWithoutImpls,
-      err(
-        formatString(
-          CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
-          {
-            patchPath: Patch.getPatchPath(patch),
-          }
-        )
-      ),
+      isPatchNotImplementedInXod,
+      err(CONST.ERROR.CPP_AS_ENTRY_POINT),
       Either.of
     )(patch)
 );
@@ -992,7 +985,7 @@ export default def(
       R.chain(project =>
         R.compose(
           R.chain(flattenProject(project, path)),
-          R.chain(checkEntryPatchImplementations),
+          R.chain(checkEntryPatchIsNative),
           errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
           Project.getPatchByPath(path)
         )(project)

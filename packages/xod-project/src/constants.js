@@ -38,6 +38,7 @@ export const ERROR = {
   LOOPS_DETECTED: 'The program has a cycle path. Use xod/core/defer-* nodes to break the cycle',
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'No implementation for {patchPath} found.',
+  CPP_AS_ENTRY_POINT: 'Can’t use patch not implemented in XOD as entry point',
   CAST_PATCH_NOT_FOUND: 'Casting patch "{patchPath}" is not found in the project',
   // .xodball format
   NOT_A_JSON: 'File that you try to load is not in a JSON format',

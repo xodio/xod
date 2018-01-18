@@ -394,7 +394,7 @@ export const pasteEntities = event => (dispatch, getState) => {
       R.eqBy(
         R.compose( // check if selection is structurally the same as copied entities
           R.map(R.map(R.omit('id'))),
-          R.dissoc('links'),
+          R.omit(['links', 'impl']),
           resetClipboardEntitiesPosition
         ),
         copiedEntities
