@@ -41,15 +41,12 @@ export const formatString = R.curry((template, replacements) =>
  */
 export const wrapDeadRefErrorMessage = R.curry(
   (patchPath, either) => either.bimap(
-    R.when(
-      R.prop('deadRef'),
-      (error) => {
-        // Error message updated by mutation to prevent creating new stack trace.
-        // eslint-disable-next-line no-param-reassign
-        error.message = formatDeadReferencesFound(patchPath, error.message);
-        return error;
-      }
-    ),
+    (error) => {
+      // Error message updated by mutation to prevent creating new stack trace.
+      // eslint-disable-next-line no-param-reassign
+      error.message = formatDeadReferencesFound(patchPath, error.message);
+      return error;
+    },
     R.identity
   )
 );

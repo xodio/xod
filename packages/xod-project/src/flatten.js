@@ -154,12 +154,17 @@ export const extractLeafPatches = def(
               CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
               { patchPath: Patch.getPatchPath(patch) }
             )
-          ),
+          )
         ),
       ],
       [
         R.T,
-        extractLeafPatchesFromNodes(extractLeafPatches, project),
+        R.compose(
+          R.tap(a => console.log('after (extractLeafPatchesFromNodes)', a)),
+          R.map(wrapDeadRefErrorMessage(path)),
+          R.tap(a => console.log('before (extractLeafPatchesFromNodes)', a)),
+          extractLeafPatchesFromNodes(extractLeafPatches, project)
+        ),
       ],
     ])(patch)
 );
@@ -980,17 +985,12 @@ const checkEntryPatchIsNative = def(
  */
 export default def(
   'flatten :: Project -> PatchPath -> Either Error Project',
-  (inputProject, path) =>
+  (project, path) =>
     R.compose(
-      R.chain(project =>
-        R.compose(
-          R.chain(flattenProject(project, path)),
-          R.chain(checkEntryPatchIsNative),
-          errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
-          Project.getPatchByPath(path)
-        )(project)
-      ),
-      wrapDeadRefErrorMessage(path),
-      Project.validateProject
-    )(inputProject)
+      R.chain(Project.validateProject),
+      R.chain(flattenProject(project, path)),
+      R.chain(checkEntryPatchIsNative),
+      errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
+      Project.getPatchByPath(path)
+    )(project)
 );
