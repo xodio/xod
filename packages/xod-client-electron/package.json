@@ -55,7 +55,7 @@
     "cpx": "^1.5.0",
     "devtron": "^1.3.0",
     "electron": "1.6.11",
-    "electron-builder": "git+https://github.com/xodio/electron-builder#monorepo-fix-npm",
+    "electron-builder": "git+https://github.com/xodio/electron-builder#81bb2e786be4659d85e32b995de83bdb98bea128",
     "electron-devtools-installer": "^2.2.1",
     "electron-mocha": "^3.4.0",
     "fsp": "^0.1.2"
@@ -90,6 +90,10 @@
       "target": [
         "nsis"
       ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false
     },
     "fileAssociations": [
       {
