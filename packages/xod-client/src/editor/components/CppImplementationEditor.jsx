@@ -63,31 +63,33 @@ const CppImplementationEditor = ({
         isInDebuggerTab,
       })}
     >
-      <ul className="Breadcrumbs Breadcrumbs--codeEditor">
-        <li>
-          <button className="back-button" onClick={onClose} />
-        </li>
-        <li>
-          <button
-            className="Breadcrumbs-chunk-button"
-            onClick={onClose}
-          >
-            {patchPath}
-          </button>
-        </li>
-        <li>
-          <button
-            className="Breadcrumbs-chunk-button is-tail is-active"
-          >
-            C++ implementation
-            {isInDebuggerTab && (
-              <span className="hint">
-                read only
-              </span>
-            )}
-          </button>
-        </li>
-      </ul>
+      <div className="Breadcrumbs Breadcrumbs--codeEditor">
+        <ul>
+          <li>
+            <button className="back-button" onClick={onClose} />
+          </li>
+          <li>
+            <button
+              className="Breadcrumbs-chunk-button"
+              onClick={onClose}
+            >
+              {patchPath}
+            </button>
+          </li>
+          <li>
+            <button
+              className="Breadcrumbs-chunk-button is-tail is-active"
+            >
+              C++ implementation
+              {isInDebuggerTab && (
+                <span className="hint">
+                  read only
+                </span>
+              )}
+            </button>
+          </li>
+        </ul>
+      </div>
       <div className="editor">
         <ReactCodeMirror
           value={source}
