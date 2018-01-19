@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Good! Now, let’s upload your patch with the `led` node to the Arduino!\n\n## Instructions\n\n1. Assemble the scheme according to the picture at https://goo.gl/dRWtKS, and connect the Arduino to your computer.\n\n2. Upload your first program. To do this, select Deploy → Upload to Arduino from the main menu.\n\nTo upload programs to the Arduino, you will need to install the desktop version of XOD. The browser version does not have permission to access the USB ports. Although you’re still able to upload XOD programs even from the browser version if you have the original Arduino IDE installed. Learn how at https://goo.gl/dRWtKS\n\nIf you did it the right way, you will see the LED turn on. Great! Proceed to the next lesson, patch `03-inspector`.",
+      "content": "Good! Now, let’s upload your patch with the `led` node to the Arduino!\n\n## Instructions\n\n1. Assemble a circuit according to the [scheme](https://goo.gl/dRWtKS), and connect the Arduino to your computer.\n\n2. Upload your first program. To do this, select Deploy → Upload to Arduino from the main menu.\n\nTo upload programs to the Arduino, you will need to install the desktop version of XOD. The browser version does not have permission to access the USB ports. Although you’re still able to upload XOD programs even from the browser version if you have the original Arduino IDE installed ([learn how](https://goo.gl/dRWtKS)).\n\nIf you did it the right way, you will see the LED turn on. Great! Proceed to the next lesson, patch `03-inspector`.",
       "id": "Hy8uMWjtZ",
       "position": {
         "x": -136,

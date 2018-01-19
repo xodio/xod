@@ -1,10 +1,10 @@
 {
   "comments": [
     {
-      "content": "`PORT` — a digital port on the Arduino that the button is connected to\n`PRS` — returns true value when the button is pressed and false otherwise",
+      "content": "- `PORT` — a digital port on the Arduino that the button is connected to\n- `PRS` — returns true value when the button is pressed and false otherwise",
       "id": "H1IQRsAKW",
       "position": {
-        "x": 408,
+        "x": 374,
         "y": 102
       },
       "size": {
@@ -13,15 +13,15 @@
       }
     },
     {
-      "content": "So, buttons!\n\nWe have already added the `button` node from `xod/common-hardware`. The `button` node has a purple output pin called the `PRS`. This pin returns a new type of data: *boolean*.\n\nBoolean data can have either of two values: true or false. In our case, the `button` node returns a value of `false` when idle and `true` while the button is being pressed.\n\nGood news, in XOD boolean and number data types are compatible. Here are two rules of datacasting:\n\n* Boolean-to-number: if you send a boolean false to a numeric (green) input, it will be interpreted as a numeric 0; if you send a boolean true, it will be interpreted as a numeric 1.\n* Number-to-boolean: if you send any numeric value except 0 to a boolean (purple) input; it will be interpreted as true, and if you send 0, it will be interpreted as false.\n\n## Instructions\n\n1. Assemble a circuit as on https://goo.gl/euz896\n\n2. Set the `PORT` value.\n\n3. Link the `PRS` pin to the `LUM` pin.\n\n4. Upload your patch.\n\nWhen you press the button the `button` node sets the `PRS` pin to `true`, the `led` node (`LUM` pin) interprets it as 1, and the LED turns on at full brightness.",
+      "content": "So, buttons!\n\nWe have already added the `button` node from `xod/common-hardware`. The `button` node has a purple output pin called the `PRS`. This pin returns a new type of data: *boolean*.\n\nBoolean data can have either of two values: true or false. In our case, the `button` node returns a value of `false` when idle and `true` while the button is being pressed.\n\nGood news, in XOD boolean and number data types are compatible. Here are two rules of datacasting:\n\n* Boolean-to-number: if you send a boolean false to a numeric (green) input, it will be interpreted as a numeric 0; if you send a boolean true, it will be interpreted as a numeric 1.\n* Number-to-boolean: if you send any numeric value except 0 to a boolean (purple) input; it will be interpreted as true, and if you send 0, it will be interpreted as false.\n\n## Instructions\n\n1. Assemble the [circuit with a button and LED](https://goo.gl/euz896).\n\n2. Set the `PORT` value.\n\n3. Link the `PRS` pin to the `LUM` pin.\n\n4. Upload your patch.\n\nWhen you press the button the `button` node sets the `PRS` pin to `true`, the `led` node (`LUM` pin) interprets it as 1, and the LED turns on at full brightness.",
       "id": "r1BpRoRt-",
       "position": {
         "x": -68,
         "y": 0
       },
       "size": {
-        "height": 663,
-        "width": 340
+        "height": 765,
+        "width": 306
       }
     }
   ],
@@ -32,7 +32,7 @@
       },
       "id": "S13FKPEFb",
       "position": {
-        "x": 306,
+        "x": 272,
         "y": 204
       },
       "type": "xod/common-hardware/led"
@@ -43,7 +43,7 @@
       },
       "id": "rkRFKDVF-",
       "position": {
-        "x": 306,
+        "x": 272,
         "y": 102
       },
       "type": "xod/common-hardware/button"

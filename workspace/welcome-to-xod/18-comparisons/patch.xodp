@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "`LHS` and `RHS` are the input for the values to compare\n`LT` returns `true` if LHS < RHS and `false` otherwise.",
+      "content": "- `LHS` and `RHS` are the input for the values to compare\n- `LT` returns `true` if LHS < RHS and `false` otherwise.",
       "id": "B1XVTkyc-",
       "position": {
         "x": 374,
@@ -13,7 +13,7 @@
       }
     },
     {
-      "content": "`LHS` and `RHS` are input pins for numeric values to compare\n`GT` returns `true` if LHS > RHS and `false` otherwise.",
+      "content": "- `LHS` and `RHS` are input pins for numeric values to compare\n- `GT` returns `true` if LHS > RHS and `false` otherwise.",
       "id": "BJBXpkJq-",
       "position": {
         "x": 374,
