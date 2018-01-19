@@ -91,6 +91,20 @@
         "nsis"
       ]
     },
+    "fileAssociations": [
+      {
+        "ext": "xod",
+        "description": "XOD Project Manifest"
+      },
+      {
+        "ext": "xodp",
+        "description": "XOD Patch"
+      },
+      {
+        "ext": "xodball",
+        "description": "XOD Packed Project"
+      }
+    ],
     "publish": [
       {
         "provider": "generic",
