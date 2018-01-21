@@ -3,9 +3,8 @@ dist/
 .tmp/
 doc/_build
 *.orig
+*.log
 .dir-locals.el
-npm-debug.log
-lerna-debug.log
 
 node_modules/
 
