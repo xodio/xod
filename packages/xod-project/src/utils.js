@@ -91,7 +91,7 @@ export const maybeComposeDeadRefError = R.uncurryN(2,
   )
 );
 
-// :: PatchPath -> Either Error Patch -> Either DeadRefError Patch
+// :: PatchPath -> Either Error a -> Either DeadRefError a
 export const composeDeadRefError = R.uncurryN(2,
   patchPath => foldEither(
     R.compose(
