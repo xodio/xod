@@ -1,0 +1,81 @@
+{
+  "comments": [
+    {
+      "content": "Let’s make a funky watch hand. Now we have everything to do this.\n\nThe clock will be the servo. Using the `count` node, we will change its rotation from 0° to 180° in one minute.\n\n## Instructions\n\n1. In the `clock` node, set the value of `IVAL` to `1` second.\n\n2. In the `count` node, set `STEP` to `0.017`. This means that every time the pulse arrives on the `INC` pin (in our case, once per second), the node will increase the number on the output by 0.017. For the servo node, this is approximately 3°.\n\n3. Upload the patch to the Arduino.\n\nYou will see that the servo is “ticking” every second. In one minute, it will reach 180°.",
+      "id": "SJsjJ53gz",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    },
+    {
+      "content": "The `count` node works as a simple counter. Each time it receives a pulse, it increases the number that it gives out, in increments of the `STEP` pin.",
+      "id": "SyqK15nxf",
+      "position": {
+        "x": 476,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "r1VYXX4q-",
+      "input": {
+        "nodeId": "SkddQ749Z",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "r1xdmX4qW",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "rksvMdSc-",
+      "input": {
+        "nodeId": "Hy_vm7E9b",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "SkddQ749Z",
+        "pinKey": "r1yhZRd8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "S1vGmu6Gb": 9
+      },
+      "id": "Hy_vm7E9b",
+      "position": {
+        "x": 306,
+        "y": 306
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "id": "SkddQ749Z",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "r1xdmX4qW",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "type": "xod/core/clock"
+    }
+  ]
+}

@@ -47,16 +47,4 @@ The circuit is the same as for the previous lesson.
 
 Now, the servo will turn at a speed of 18° per second (0.1 = 18°).
 
-<div class="ui segment note">
-<span class="ui ribbon label">The<br/>End</span>
-<p>
-Congratulations! You’ve completed the crash-course tutorial. Now you are
-officially a Xoder. Welcome on board!
-</p>
-<p>
-Actually, the tutorial is not ready 100% yet and will grow.  Meantime, read <a
-href="/docs/guide/">guide</a> articles to learn XOD better and feel free to ask
-any questions and give feedback on our <a
-href="https://forum.xod.io">forum</a>.
-</p>
-</div>
+[Next lesson →](../21-pulses/)
