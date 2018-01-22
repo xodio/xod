@@ -1,15 +1,15 @@
 {
   "comments": [
     {
-      "content": "It’s a `multiply` node.\n`X` and `Y` - numbers to multiply\n`PROD` - product of the `X` and `Y`",
+      "content": "It’s a `multiply` node.\n- `X` and `Y` - numbers to multiply\n- `PROD` - product of the `X` and `Y`",
       "id": "BJj5fP6YZ",
       "position": {
         "x": 510,
         "y": 102
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 153,
+        "width": 272
       }
     },
     {

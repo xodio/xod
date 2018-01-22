@@ -13,7 +13,7 @@
       }
     },
     {
-      "content": "Boolean values are cool. You can use them to construct complex logic systems. In XOD, you will find a lot of nodes for this purpose. All of them are located in `xod/core`.\n\n## Instructions\n\n1. Assemble a circuit with two buttons and a LED as shown at https://goo.gl/ts9EdE\n\n2. Upload the patch to the Arduino.\n\nThe `and` node returns `false` until both buttons are pressed. The not node inverts the value from the `and` node, so the `LUM` pin receives its true value (1). Thus, the LED turns on.\n\nPressing one of the buttons changes nothing. The LED will turn off only when the `LUM` pin receives false (0). This will happen only if the `not` node receives the true value, which is possible only if both buttons are pressed at the same time.",
+      "content": "Boolean values are cool. You can use them to construct complex logic systems. In XOD, you will find a lot of nodes for this purpose. All of them are located in `xod/core`.\n\n## Instructions\n\n1. Assemble a [circuit with two buttons and a LED](https://goo.gl/ts9EdE).\n\n2. Upload the patch to the Arduino.\n\nThe `and` node returns `false` until both buttons are pressed. The not node inverts the value from the `and` node, so the `LUM` pin receives its true value (1). Thus, the LED turns on.\n\nPressing one of the buttons changes nothing. The LED will turn off only when the `LUM` pin receives false (0). This will happen only if the `not` node receives the true value, which is possible only if both buttons are pressed at the same time.",
       "id": "H1YyvTRt-",
       "position": {
         "x": -34,

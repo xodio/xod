@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "`X` — the input value that needs to be transformed\n`Smin` — the lower bound of the input range\n`Smax` — the upper bound of the input range\n`Tmin` — the lower bound of the transformed value\n`Tmax` — the upper bound of the transformed value\n`Xm` — the mapped (transformed) value",
+      "content": "- `X` — the input value that needs to be transformed\n- `Smin` — the lower bound of the input range\n- `Smax` — the upper bound of the input range\n- `Tmin` — the lower bound of the transformed value\n- `Tmax` — the upper bound of the transformed value\n- `Xm` — the mapped (transformed) value",
       "id": "rJ082K6KZ",
       "position": {
         "x": 510,
@@ -13,7 +13,7 @@
       }
     },
     {
-      "content": "If you have finished the previous experiment, you will have noticed that the thermometer node returns an output temperature value to the `Tc` pin in degrees Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is 0°, 1 is 180°).\n\nThe practical task is to make the servo rotate smoothly from 0 to 90°, reflecting a temperature change from 20°C to 50°C.\n\nYou can actually do this using a few math nodes, but we have a special node for such cases. This node is called the `map-range` node.\n\n## Instructions\n\n1. Connect a TMP36 thermometer to the Arduino as shown at https://goo.gl/gFxjpg\n\n2. Link the `Tc` pin to the `X` pin on the `map-range` node.\n\n3. Define the input range. In our case, it will be numbers from 20 to 50. Open the Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.\n\n4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.\n\n5. Link the `Xm` output to the `VAL` servo input.\n\nTry to heat the thermometer with a hot object (e.g. a paper knife heaten with a lightfire). At a temperature of 35°C (half the input range), the servo should rotate to 45°, which is half the output range.",
+      "content": "If you have finished the previous experiment, you will have noticed that the thermometer node returns an output temperature value to the `Tc` pin in degrees Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is 0°, 1 is 180°).\n\nThe practical task is to make the servo rotate smoothly from 0 to 90°, reflecting a temperature change from 20°C to 50°C.\n\nYou can actually do this using a few math nodes, but we have a special node for such cases. This node is called the `map-range` node.\n\n## Instructions\n\n1. Connect a TMP36 thermometer to the Arduino as shown on the [scheme](https://goo.gl/gFxjpg).\n\n2. Link the `Tc` pin to the `X` pin on the `map-range` node.\n\n3. Define the input range. In our case, it will be numbers from 20 to 50. Open the Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.\n\n4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.\n\n5. Link the `Xm` output to the `VAL` servo input.\n\nTry to heat the thermometer with a hot object (e.g. a paper knife heaten with a lightfire). At a temperature of 35°C (half the input range), the servo should rotate to 45°, which is half the output range.",
       "id": "rJ1d3KptZ",
       "position": {
         "x": -34,
