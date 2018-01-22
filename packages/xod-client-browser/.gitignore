@@ -4,5 +4,5 @@ node_modules/*
 xod.iml
 dist/
 .tmp/
-initialProject.json
+tutorialProject.json
 benchmark/tracing-results/*.json

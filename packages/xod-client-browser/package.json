@@ -3,11 +3,11 @@
   "version": "0.17.1",
   "description": "XOD project: Client browser application",
   "scripts": {
-    "build:initial-project": "node ./tools/loadInitialProject.js",
-    "build": "yarn run build:initial-project && webpack --colors",
+    "build:tutorial-project": "node ./tools/loadTutorialProject.js",
+    "build": "yarn run build:tutorial-project && webpack --colors",
     "benchmark": "node -r babel-register ./benchmark/index.js",
     "test-func": "mocha test-func/bootstrap.js --opts test-func/mocha.opts test-func/**/*.spec.js",
-    "dev": "yarn run build:initial-project && webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
+    "dev": "yarn run build:tutorial-project && webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",

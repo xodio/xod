@@ -46,7 +46,7 @@ class App extends client.App {
       [client.COMMAND.RENAME_PROJECT]: this.props.actions.requestRenameProject,
     };
 
-    props.actions.openProject(props.initialProject);
+    props.actions.openProject(props.tutorialProject);
     props.actions.fetchGrant();
   }
 
@@ -297,7 +297,7 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   project: client.sanctuaryPropType(XP.Project),
   actions: PropTypes.object,
-  initialProject: PropTypes.object.isRequired,
+  tutorialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
 });
