@@ -13,6 +13,9 @@ const rawItems = {
     label: 'Open Project...',
     command: COMMAND.OPEN_PROJECT,
   },
+  openTutorialProject: {
+    label: 'Open Tutorial Project',
+  },
   saveAll: {
     label: 'Save All',
     command: COMMAND.SAVE_ALL,

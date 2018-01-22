@@ -23,12 +23,15 @@ import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as PopupConstants from './popups/constants';
 
+
 import popupsReducer, { showOnlyPopup, hideOnePopup } from './popups/reducer';
 
 import * as siteLinkUtils from './utils/urls';
 import * as BrowserUtils from './utils/browser';
 import * as MenuUtils from './utils/menu';
 import sanctuaryPropType from './utils/sanctuaryPropType';
+import * as urlActions from './core/urlActions';
+import * as coreMessages from './core/messages';
 
 import App from './core/containers/App';
 import Root from './core/containers/Root';
@@ -72,6 +75,8 @@ export * from './utils/urls';
 export * from './popups/constants';
 export { lowercaseKebabMask } from './utils/inputFormatting';
 export { default as sanctuaryPropType } from './utils/sanctuaryPropType';
+export * from './core/urlActions';
+export const Messages = coreMessages;
 
 export { default as PopupShowCode } from './utils/components/PopupShowCode';
 export { default as PopupAlert } from './utils/components/PopupAlert';
@@ -118,6 +123,7 @@ export default Object.assign({
   SAVE_ALL,
   INSTALL_LIBRARIES_COMPLETE,
   MESSAGE_BUTTON_CLICKED,
+  Messages: coreMessages,
 },
   UserSelectors,
   EditorSelectors,
@@ -141,5 +147,6 @@ export default Object.assign({
   BrowserUtils,
   PopupConstants,
 
-  siteLinkUtils
+  siteLinkUtils,
+  urlActions
 );

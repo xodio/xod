@@ -85,6 +85,7 @@ class App extends client.App {
 
     this.onLoadProject = this.onLoadProject.bind(this);
     this.onSelectProject = this.onSelectProject.bind(this);
+    this.onOpenTutorialProject = this.onOpenTutorialProject.bind(this);
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
@@ -144,6 +145,23 @@ class App extends client.App {
       (event, error) => {
         console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(formatError(error));
+      }
+    );
+
+    this.urlActions = {
+      // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
+      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
+    };
+    ipcRenderer.on(
+      EVENTS.XOD_URL_CLICKED,
+      (event, { actionName, params }) => {
+        const action = this.urlActions[actionName];
+
+        if (action) {
+          action(params);
+        } else {
+          this.props.actions.addError(client.Messages.invalidUrlActionName(actionName));
+        }
       }
     );
 
@@ -261,8 +279,12 @@ class App extends client.App {
     this.showPopupProjectSelection();
   }
 
-  onSelectProject(projectMeta) { // eslint-disable-line
+  onSelectProject(projectMeta) { // eslint-disable-line class-methods-use-this
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
+  }
+
+  onOpenTutorialProject() { // eslint-disable-line class-methods-use-this
+    ipcRenderer.send(EVENTS.OPEN_BUNDLED_PROJECT, 'welcome-to-xod');
   }
 
   onLoadProject(project) {
@@ -377,7 +399,7 @@ class App extends client.App {
     );
   }
 
-  onArduinoTargetBoardChange(board) { // eslint-disable-line
+  onArduinoTargetBoardChange(board) { // eslint-disable-line class-methods-use-this
     ipcRenderer.send(EVENTS.SET_SELECTED_BOARD, board);
   }
 
@@ -459,6 +481,7 @@ class App extends client.App {
             label: `Version: ${packageJson.version}`,
           },
           items.separator,
+          onClick(items.openTutorialProject, this.onOpenTutorialProject),
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
@@ -489,7 +512,7 @@ class App extends client.App {
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
   }
 
-  getSelectedBoard() { // eslint-disable-line
+  getSelectedBoard() { // eslint-disable-line class-methods-use-this
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.GET_SELECTED_BOARD);
       ipcRenderer.once(EVENTS.GET_SELECTED_BOARD, (event, response) => {
@@ -608,7 +631,7 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
-  listBoards() { // eslint-disable-line
+  listBoards() { // eslint-disable-line class-methods-use-this
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_BOARDS);
       ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
@@ -617,7 +640,7 @@ class App extends client.App {
       });
     });
   }
-  listPorts() { // eslint-disable-line
+  listPorts() { // eslint-disable-line class-methods-use-this
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
       ipcRenderer.once(EVENTS.LIST_PORTS, (event, response) => {
@@ -792,7 +815,7 @@ const mapDispatchToProps = dispatch => ({
       switchWorkspace: settingsActions.switchWorkspace,
       openProject: client.openProject,
       saveAll: actions.saveAll,
-      addConfirmation: client.addConfirmation,
+      openTutorial: actions.openTutorial,
       uploadToArduino: uploadActions.uploadToArduino,
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,

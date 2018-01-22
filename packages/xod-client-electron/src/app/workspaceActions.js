@@ -339,6 +339,20 @@ export const subscribeToSelectProject = ipcMain => ipcMain.on(
   (event, projectMeta) => emitSelectProject(ipcSender(event), projectMeta)
 );
 
+export const subscribeToOpenBundledProject = ipcMain => ipcMain.on(
+  EVENTS.OPEN_BUNDLED_PROJECT,
+  (event, projectName) => {
+    const pathToBundledWorkspace = getPathToBundledWorkspace();
+    const projectPath = path.join(pathToBundledWorkspace, projectName);
+
+    return onSelectProject(
+      ipcSender(event),
+      () => Promise.resolve(pathToBundledWorkspace),
+      { path: projectPath }
+    );
+  }
+);
+
 // onOpenProject
 export const subscribeToOpenProject = ipcMain => ipcMain.on(
   EVENTS.OPEN_PROJECT,
@@ -375,6 +389,7 @@ export const subscribeToWorkspaceEvents = R.tap(R.compose(
     subscribeToSelectProject,
     subscribeToSelectProjectEvent,
     subscribeToOpenProject,
+    subscribeToOpenBundledProject,
     subscribeToCreateProject,
     subscribeToCreateWorkspace,
     subscribeToSwitchWorkspace,
