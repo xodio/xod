@@ -1,12 +1,14 @@
 .idea/
-dist/
 .tmp/
-doc/_build
+.merlin
+
+node_modules/
+packages/*/dist/
+packages/*/lib/
+
 *.orig
 *.log
 .dir-locals.el
-
-node_modules/
 
 coverage/
 .nyc_output/

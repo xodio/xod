@@ -98,6 +98,16 @@
   dependencies:
     jest "^22.0.4"
 
+"@glennsl/bs-revamp@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@glennsl/bs-revamp/-/bs-revamp-0.1.1.tgz#a246f44779229863b8e4b29cdd4919a1e8e85e78"
+  dependencies:
+    "@glennsl/rebase" "^0.2.0"
+
+"@glennsl/rebase@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@glennsl/rebase/-/rebase-0.2.0.tgz#dc1d99296dd7f7c47c90b5a4518dd598a71bedfa"
+
 "@google-cloud/common@^0.13.0":
   version "0.13.5"
   resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-0.13.5.tgz#b90599f29ce957b366adea8d7c0c3f3593d981ca"

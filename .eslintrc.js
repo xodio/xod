@@ -44,6 +44,12 @@ module.exports = {
     URLSearchParams: true,
   },
 
+  settings: {
+    // Ignore “No named exports found in module” when re-exporting
+    // ReasonML generated code
+    'import/ignore': ['_Js']
+  },
+
   rules: {
     'prettier/prettier': 'error',
     'xod-fp/max-composition-depth': ['error', {
