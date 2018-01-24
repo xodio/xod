@@ -1,14 +1,14 @@
-// xodc transpile [--output=<filename>] <input> <path>
-import fs from 'fs';
+// xodc transpile [--output=<filename>] [--workspace=<dir>] <input> <path>
 import path from 'path';
 import { map, identity } from 'ramda';
 
 import { foldEither } from 'xod-func-tools';
-import { loadProject, readJSON, writeFile } from 'xod-fs';
+import { loadProject, writeFile } from 'xod-fs';
 import { transformProject, transpile } from 'xod-arduino';
 import * as msg from './messageUtils';
+import { getWorkspacePath } from './utils';
 
-const bundledLibs = path.resolve(__dirname, '../__lib__');
+const bundledWorkspace = path.resolve(__dirname, '..');
 
 const showErrorAndExit = (err) => {
   msg.error(err);
@@ -17,38 +17,11 @@ const showErrorAndExit = (err) => {
 
 export default (input, patchPath, program) => {
   const output = program.output;
-  const extension = path.extname(input);
+  const workspaces = [getWorkspacePath(program.workspace), bundledWorkspace];
   const filename = path.basename(input);
-
   msg.notice(`Transpiling ${filename} ...`);
 
-  new Promise((resolve, reject) => {
-    const stat = fs.statSync(input);
-    let isDirectory = stat.isDirectory();
-    let dir = path.resolve(input);
-
-    if (stat.isFile()) {
-      if (extension === '.xodball') {
-        readJSON(input)
-          .then(resolve)
-          .catch(reject);
-      }
-      if (filename === 'project.xod') {
-        dir = path.dirname(dir);
-        isDirectory = true;
-      }
-    }
-
-    if (isDirectory) {
-      loadProject([bundledLibs], dir)
-        .then(resolve)
-        .catch(reject);
-    }
-
-    if (!stat.isFile() && !isDirectory) {
-      reject(new Error(`Unexpected input "${input}"`));
-    }
-  })
+  loadProject(workspaces, input)
     .then(project => transformProject(project, patchPath))
     .then(map(transpile))
     .then(eitherCode =>

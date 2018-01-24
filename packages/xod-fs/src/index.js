@@ -24,6 +24,7 @@ export * from './utils';
 export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
+  isWorkspaceDir,
 } from './find';
 
 export * from './constants';
