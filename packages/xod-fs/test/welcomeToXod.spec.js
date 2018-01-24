@@ -11,7 +11,7 @@ describe('welcome-to-xod', () => {
   const projectPath = 'welcome-to-xod';
 
   it('should load as a valid project', () =>
-    loadProjectWithLibs([], projectPath, workspace)
+    loadProjectWithLibs([workspace], path.resolve(workspace, projectPath))
       .then(({ project, libs }) => {
         const packed = pack(project, libs);
         assert.isAtLeast(

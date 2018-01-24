@@ -12,7 +12,7 @@ describe('xod-patch-search/index', () => {
   const workspace = path.resolve(__dirname, '../../../workspace');
   const getProjectPath = projectName => path.resolve(workspace, projectName);
 
-  before(() => loadProject(getProjectPath('welcome-to-xod'))
+  before(() => loadProject([workspace], getProjectPath('welcome-to-xod'))
     .then(listPatches)
     .then(createIndexData)
     .then((iData) => {

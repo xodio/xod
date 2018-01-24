@@ -40,7 +40,7 @@ export default (input, patchPath, program) => {
     }
 
     if (isDirectory) {
-      loadProject(dir, [bundledLibs])
+      loadProject([bundledLibs], dir)
         .then(resolve)
         .catch(reject);
     }

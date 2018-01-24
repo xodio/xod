@@ -32,12 +32,36 @@ export const expandHomeDir = (pathToResolve) => {
   return path.join(homedir, pathToResolve.slice(2));
 };
 
+export const isDirectory = def(
+  'isDirectory :: Path -> Boolean',
+  (pathToCheck) => {
+    let stats;
+    try { stats = fs.statSync(pathToCheck); } catch (error) { stats = null; }
+    return (stats && stats.isDirectory());
+  }
+);
+
+export const isBasename = def(
+  'isBasename :: String -> Path -> Boolean',
+  (basename, filePath) => R.compose(
+    R.equals(basename),
+    path.basename
+  )(filePath)
+);
+
+export const isExtname = def(
+  'isExtname :: String -> Path -> Boolean',
+  (extname, filePath) => R.compose(
+    R.equals(extname),
+    path.extname
+  )(filePath)
+);
+
 export const isProjectFile = def(
   'isProjectFile :: AnyXodFile -> Boolean',
   R.pipe(
     R.prop('path'),
-    path.basename,
-    R.equals('project.xod')
+    isBasename('project.xod')
   )
 );
 
@@ -45,8 +69,7 @@ export const isPatchFile = def(
   'isProjectFile :: AnyXodFile -> Boolean',
   R.pipe(
     R.prop('path'),
-    path.basename,
-    R.equals('patch.xodp')
+    isBasename('patch.xodp')
   )
 );
 

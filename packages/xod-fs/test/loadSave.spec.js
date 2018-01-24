@@ -25,7 +25,7 @@ describe('Load/Save roundtrip', () => {
   it('preserves project files byte-by-byte', async () => {
     // load fixture project
     const emptyProject = defaultizeProject({});
-    const project = await loadProject(fixture('workspace/awesome-project'));
+    const project = await loadProject([fixture('workspace')], fixture('workspace/awesome-project'));
 
     // save it to a brand-new workspace
     const tmpDirPrefix = path.join(os.tmpdir(), 'xod-fs-test-');

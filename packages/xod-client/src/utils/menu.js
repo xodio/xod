@@ -30,9 +30,9 @@ const rawItems = {
     label: 'Rename Project...',
     command: COMMAND.RENAME_PROJECT,
   },
-  selectWorkspace: {
-    key: 'selectWorkspace',
-    label: 'Select Workspace...',
+  switchWorkspace: {
+    key: 'switchWorkspace',
+    label: 'Switch Workspace...',
   },
   importProject: {
     key: 'importProject',
