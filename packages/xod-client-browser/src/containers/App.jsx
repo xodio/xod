@@ -218,6 +218,9 @@ class App extends client.App {
             items.toggleAccountPane,
             () => this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
           ),
+          items.separator,
+          onClick(items.panToOrigin, this.props.actions.setCurrentPatchOffsetToOrigin),
+          onClick(items.panToCenter, this.props.actions.setCurrentPatchOffsetToCenter),
         ]
       ),
       submenu(

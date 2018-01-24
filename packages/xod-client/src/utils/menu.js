@@ -143,6 +143,16 @@ const rawItems = {
     key: 'toggleAccountPane',
     label: 'Toggle Account Pane',
   },
+  panToOrigin: {
+    key: 'panToOrigin',
+    label: 'Pan to Origin',
+    command: COMMAND.PAN_TO_ORIGIN,
+  },
+  panToCenter: {
+    key: 'panToCenter',
+    label: 'Pan to Center',
+    command: COMMAND.PAN_TO_CENTER,
+  },
 
   help: {
     key: 'help',

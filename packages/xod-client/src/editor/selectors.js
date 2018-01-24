@@ -123,6 +123,14 @@ export const getDraggedPreviewSize = R.pipe(
 );
 
 //
+// size of the patch workarea
+//
+export const getPatchWorkareaSize = R.compose(
+  R.prop('patchWorkareaSize'),
+  getEditor
+);
+
+//
 // dragging a patch from project browser
 //
 export const getDefaultNodePlacePosition = createSelector(

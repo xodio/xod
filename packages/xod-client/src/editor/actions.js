@@ -46,6 +46,7 @@ import {
 import {
   getBBoxTopLeftPosition,
   getBoundingBoxSize,
+  getBoundingBox,
   getEntitiesToCopy,
   getTabByPatchPath,
   getSelectedEntityIdsOfType,
@@ -54,7 +55,7 @@ import {
 } from './utils';
 import { isInput, isEdge } from '../utils/browser';
 import { getPmSwaggerUrl } from '../utils/urls';
-import { addPoints } from '../project/nodeLayout';
+import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
 
@@ -192,10 +193,58 @@ export const moveSelection = deltaPosition => (dispatch, getState) => {
   );
 };
 
+export const patchWorkareaResized = (width, height) => ({
+  type: ActionType.PATCH_WORKAREA_RESIZED,
+  payload: { width, height },
+});
+
 export const setCurrentPatchOffset = newOffset => ({
   type: ActionType.SET_CURRENT_PATCH_OFFSET,
   payload: newOffset,
 });
+
+const setPatchOffsetByEntitiesBoundingBox = getDesiredOffset => (dispatch, getState) => {
+  const state = getState();
+  const maybeCurrentPatchPath = Selectors.getCurrentPatchPath(state);
+  if (maybeCurrentPatchPath.isNothing) return;
+
+  const currentPatchPath = explodeMaybe(
+    'Imposible error: No currentPatchPath to autopan',
+    maybeCurrentPatchPath
+  );
+  const project = ProjectSelectors.getProject(state);
+  const currentPatch = XP.getPatchByPathUnsafe(currentPatchPath, project);
+
+  const entitiesBoundingBox = getBoundingBox(
+    currentPatch,
+    project,
+    {
+      nodes: XP.listNodes(currentPatch),
+      comments: XP.listComments(currentPatch),
+    }
+  );
+
+  const patchBoundingRect = Selectors.getPatchWorkareaSize(state);
+
+  R.compose(
+    dispatch,
+    setCurrentPatchOffset,
+    getDesiredOffset
+  )(entitiesBoundingBox, patchBoundingRect);
+};
+
+export const setCurrentPatchOffsetToOrigin = () =>
+  setPatchOffsetByEntitiesBoundingBox(
+    entitiesBB => subtractPoints(DEFAULT_PANNING_OFFSET, entitiesBB)
+  );
+
+export const setCurrentPatchOffsetToCenter = () =>
+  setPatchOffsetByEntitiesBoundingBox(
+    (entitiesBB, patchBB) => ({
+      x: ((patchBB.width - entitiesBB.width) / 2) - entitiesBB.x,
+      y: ((patchBB.height - entitiesBB.height) / 2) - entitiesBB.y,
+    })
+  );
 
 export const switchPatchUnsafe = patchPath => ({
   type: ActionType.EDITOR_SWITCH_PATCH,

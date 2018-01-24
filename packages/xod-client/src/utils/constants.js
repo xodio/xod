@@ -11,6 +11,9 @@ export const COMMAND = {
   TOGGLE_HELP: 'toggleHelp',
   TOGGLE_DEBUGGER: 'toggleDebugger',
 
+  PAN_TO_ORIGIN: 'panToOrigin',
+  PAN_TO_CENTER: 'panToCenter',
+
   ADD_PATCH: 'addPatch',
   RENAME: 'rename',
   DELETE: 'delete',
@@ -39,6 +42,7 @@ export const HOTKEY = {
 
   [COMMAND.NEW_PROJECT]: 'ctrl+shift+n',
   [COMMAND.RENAME_PROJECT]: 'ctrl+shift+r',
+
   [COMMAND.ADD_PATCH]: 'ctrl+n',
   [COMMAND.RENAME]: 'ctrl+r',
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
@@ -49,6 +53,9 @@ export const HOTKEY = {
   [COMMAND.TOGGLE_HELP]: ['h'],
   [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
   [COMMAND.INSERT_NODE]: ['i'],
+
+  [COMMAND.PAN_TO_ORIGIN]: ['home'],
+  [COMMAND.PAN_TO_CENTER]: ['ctrl+home', 'command+home'],
 };
 
 export const ELECTRON_ACCELERATOR = {
@@ -76,6 +83,9 @@ export const ELECTRON_ACCELERATOR = {
 
   [COMMAND.HIDE_HELPBOX]: 'Escape',
   [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',
+
+  [COMMAND.PAN_TO_ORIGIN]: 'Home',
+  [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+Home',
 };
 
 export const KEYCODE = {

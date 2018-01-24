@@ -209,6 +209,23 @@ The shortcuts in the table below are active when the patch board is in focus.
     </tr>
     <tr>
       <td>
+        <span class="ui label">Home</span>
+      </td>
+      <td>
+        Pan to Origin
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="ui blue label">Ctrl+Home</span> |
+        <span class="ui grey label">⌘ Home</span>
+      </td>
+      <td>
+        Pan to Center
+      </td>
+    </tr>
+    <tr>
+      <td>
         <span class="ui blue label">Ctrl+Shift+=</span> |
         <span class="ui grey label">⌘ +</span>
       </td>
