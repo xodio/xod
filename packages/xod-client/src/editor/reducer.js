@@ -547,6 +547,12 @@ const editorReducer = (state = {}, action) => {
       return R.assoc('draggedPreviewSize', action.payload, state);
 
     //
+    // size of the patch workarea
+    //
+    case EAT.PATCH_WORKAREA_RESIZED:
+      return R.assoc('patchWorkareaSize', action.payload, state);
+
+    //
     // focused area
     //
     case EAT.SET_FOCUSED_AREA:

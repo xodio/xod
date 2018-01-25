@@ -516,6 +516,15 @@ class App extends client.App {
           () => this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
         ),
         { type: 'separator' },
+        client.menu.onClick(
+          client.menu.items.panToOrigin,
+          this.props.actions.setCurrentPatchOffsetToOrigin
+        ),
+        client.menu.onClick(
+          client.menu.items.panToCenter,
+          this.props.actions.setCurrentPatchOffsetToCenter
+        ),
+        { type: 'separator' },
         { role: 'reload' },
         { role: 'toggledevtools' },
         { type: 'separator' },

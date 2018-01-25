@@ -232,6 +232,8 @@ App.actions = {
   cutEntities: actions.cutEntities,
   copyEntities: actions.copyEntities,
   pasteEntities: actions.pasteEntities,
+  setCurrentPatchOffsetToOrigin: actions.setCurrentPatchOffsetToOrigin,
+  setCurrentPatchOffsetToCenter: actions.setCurrentPatchOffsetToCenter,
   showLibSuggester: actions.showLibSuggester,
   toggleAccountPane: actions.toggleAccountPane,
   fetchGrant: actions.fetchGrant,

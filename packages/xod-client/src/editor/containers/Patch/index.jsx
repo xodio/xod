@@ -6,6 +6,7 @@ import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ReactResizeDetector from 'react-resize-detector';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -139,6 +140,11 @@ class Patch extends React.Component {
         className={cn('PatchWrapper-container', currentMode)}
         ref={(r) => { this.dropTargetRootRef = r; }}
       >
+        <ReactResizeDetector
+          handleWidth
+          handleHeight
+          onResize={this.props.actions.patchWorkareaResized}
+        />
         {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
       </div>
     );
@@ -203,6 +209,7 @@ const mapDispatchToProps = dispatch => ({
     switchPatch: EditorActions.switchPatch,
     drillDown: DebuggerActions.drillDown,
     openImplementationEditor: EditorActions.openImplementationEditor,
+    patchWorkareaResized: EditorActions.patchWorkareaResized,
   }, dispatch),
 });
 

@@ -150,6 +150,18 @@ export const getBoundingBoxSize = R.curry((currentPatch, project, entities) =>
   )(entities)
 );
 
+// :: Patch -> Projct -> ClipboardEntities -> { x, y, width, height }
+export const getBoundingBox = R.curry((currentPatch, project, entities) => {
+  const topLeft = getBBoxTopLeftPosition(entities);
+  const bottomRight = getBBoxBottomRightPosition(currentPatch, project, entities);
+
+  return {
+    ...topLeft,
+    width: bottomRight.x - topLeft.x,
+    height: bottomRight.y - topLeft.y,
+  };
+});
+
 /*
   Make this point (0,0)
   |

@@ -22,6 +22,7 @@ export default {
       offset: DEFAULT_PANNING_OFFSET,
     },
   },
+  patchWorkareaSize: { width: 0, height: 0 },
   libSuggesterVisible: false,
   panels: {
     [PANEL_IDS.PROJECT_BROWSER]: {

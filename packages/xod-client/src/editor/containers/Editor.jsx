@@ -93,6 +93,8 @@ class Editor extends React.Component {
         if (isInputTarget(event)) return;
         this.showSuggester(null);
       },
+      [COMMAND.PAN_TO_ORIGIN]: this.props.actions.panToOrigin,
+      [COMMAND.PAN_TO_CENTER]: this.props.actions.panToCenter,
     };
   }
 
@@ -300,6 +302,8 @@ Editor.propTypes = {
     togglePanelAutohide: PropTypes.func.isRequired,
     hideHelpbox: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
+    panToOrigin: PropTypes.func.isRequired,
+    panToCenter: PropTypes.func.isRequired,
   }),
 };
 
@@ -340,6 +344,8 @@ const mapDispatchToProps = dispatch => ({
     togglePanelAutohide: Actions.togglePanelAutohide,
     hideHelpbox: Actions.hideHelpbox,
     showHelpbox: Actions.showHelpbox,
+    panToOrigin: Actions.setCurrentPatchOffsetToOrigin,
+    panToCenter: Actions.setCurrentPatchOffsetToCenter,
   }, dispatch),
 });
 

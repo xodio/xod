@@ -41,6 +41,11 @@ class App extends client.App {
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
+    this.hotkeyHandlers = {
+      [client.COMMAND.NEW_PROJECT]: this.onRequestCreateProject,
+      [client.COMMAND.RENAME_PROJECT]: this.props.actions.requestRenameProject,
+    };
+
     props.actions.openProject(props.initialProject);
     props.actions.fetchGrant();
   }
@@ -218,6 +223,9 @@ class App extends client.App {
             items.toggleAccountPane,
             () => this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
           ),
+          items.separator,
+          onClick(items.panToOrigin, this.props.actions.setCurrentPatchOffsetToOrigin),
+          onClick(items.panToCenter, this.props.actions.setCurrentPatchOffsetToCenter),
         ]
       ),
       submenu(
@@ -254,7 +262,11 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys keyMap={client.HOTKEY} id="App">
+      <HotKeys
+        id="App"
+        keyMap={client.HOTKEY}
+        handlers={this.hotkeyHandlers}
+      >
         <EventListener
           target={window}
           onResize={this.onResize}
