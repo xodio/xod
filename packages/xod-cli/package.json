@@ -34,7 +34,7 @@
     "xod-project": "^0.17.0"
   },
   "devDependencies": {
-    "chai": "^4.0.0",
+    "chai": "^4.1.2",
     "child-process-promise": "^2.2.1",
     "cpx": "^1.5.0",
     "fs-extra": "^4.0.2"

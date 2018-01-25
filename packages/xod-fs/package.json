@@ -22,7 +22,7 @@
     "xod-project": "^0.17.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.1.2",
     "chai-as-promised": "^6.0.0",
     "dir-compare": "^1.4.0",
     "shelljs": "^0.7.7"

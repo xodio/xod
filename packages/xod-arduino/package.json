@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
-    "chai": "^3.5.0",
+    "chai": "^4.1.2",
     "dirty-chai": "^1.2.2",
     "xod-fs": "^0.17.0"
   }
