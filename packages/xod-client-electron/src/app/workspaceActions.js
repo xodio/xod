@@ -4,7 +4,6 @@ import path from 'path';
 
 import * as XP from 'xod-project';
 import {
-  resolveLibPath,
   spawnWorkspaceFile,
   spawnDefaultProject,
   saveAll,
@@ -33,7 +32,6 @@ import * as EVENTS from '../shared/events';
 
 
 export const getPathToBundledWorkspace = () => path.resolve(__dirname, '../workspace');
-export const getPathToBundledLibs = () => resolveLibPath(getPathToBundledWorkspace());
 
 // =============================================================================
 //
@@ -202,6 +200,13 @@ export const saveLibraries = R.curry(
     })
 );
 
+// :: Path -> Project
+export const loadProjectByPath = pathToOpen => R.composeP(
+  loadProject(R.__, pathToOpen),
+  R.append(getPathToBundledWorkspace()),
+  loadWorkspacePath
+)();
+
 // =============================================================================
 //
 // Handlers
@@ -230,7 +235,7 @@ export const onOpenProject = R.curry(
 // :: (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
   (send, pathGetter, projectMeta) => pathGetter()
-    .then(() => loadProject(getFilePath(projectMeta), [getPathToBundledLibs()]))
+    .then(() => loadProject([getPathToBundledWorkspace()], getFilePath(projectMeta)))
     .then(requestShowProject(send))
     .catch(R.ifElse(
       R.prop('errorCode'),

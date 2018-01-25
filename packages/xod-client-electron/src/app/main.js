@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
+
 import * as EVENTS from '../shared/events';
 import {
   listBoardsHandler,
@@ -13,7 +14,7 @@ import {
   stopDebugSessionHandler,
 } from './arduinoActions';
 import * as settings from './settings';
-import { errorToPlainObject, IS_DEV } from './utils';
+import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
 import * as WA from './workspaceActions';
 import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
 
@@ -42,6 +43,8 @@ if (IS_DEV) {
 // Application main process
 //
 // =============================================================================
+
+const getFileToOpen = getFilePathToOpen(app);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -171,9 +174,14 @@ const onReady = () => {
 
   createWindow();
   win.webContents.on('did-finish-load', () => {
-    WA.prepareWorkspaceOnLaunch((eventName, data) => {
-      win.webContents.send(eventName, data);
-    });
+    getFileToOpen()
+      .then(WA.loadProjectByPath)
+      .then(project => win.webContents.send(EVENTS.REQUEST_SHOW_PROJECT, project))
+      .catch(err => win.webContents.send(EVENTS.ERROR, err));
+
+    WA.prepareWorkspaceOnLaunch(
+      (eventName, data) => win.webContents.send(eventName, data)
+    );
 
     subscribeOnAutoUpdaterEvents(
       (eventName, data) => win.webContents.send(eventName, data),

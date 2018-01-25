@@ -1,5 +1,6 @@
 import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import * as XP from 'xod-project';
 
 import path from 'path';
 import R from 'ramda';
@@ -67,7 +68,7 @@ describe('Loader', () => {
 
   describe('loadProjectWithLibs', () => {
     it('should return project with libs', () =>
-      Loader.loadProjectWithLibs([], projectPath, workspace)
+      Loader.loadProjectWithLibs([workspace], path.resolve(workspace, projectPath))
         .then(({ project, libs }) => {
           const quxPatch = R.find(R.pathEq(['content', 'path'], '@/qux'), project);
           assert.isDefined(quxPatch);
@@ -87,10 +88,45 @@ describe('Loader', () => {
         const okProject = path.resolve(brokenWorkspace, './ok-project');
 
         return expectRejectedWithCode(
-          Loader.loadProjectWithLibs([], okProject, brokenWorkspace),
+          Loader.loadProjectWithLibs([brokenWorkspace], okProject),
           ERROR_CODES.INVALID_FILE_CONTENTS
         );
       }
+    );
+  });
+
+  describe('loadProject', () => {
+    const assertPatchPaths = project => assert.includeMembers(
+      XP.listPatchPaths(project),
+      [
+        '@/main',
+        '@/qux',
+        '@/empty-local-patch',
+        'xod/core/led',
+        'xod/core/and',
+        'xod/core/pot',
+      ]
+    );
+
+    it('loads Project by provided path to project.xod file', () =>
+      Loader.loadProject([workspace], path.resolve(workspace, projectPath, 'project.xod'))
+        .then(assertPatchPaths)
+    );
+    it('loads Project by provided path to patch.xodp file', () =>
+      Loader.loadProject([workspace], path.resolve(workspace, projectPath, 'qux/patch.xodp'))
+        .then(assertPatchPaths)
+    );
+    it('loads Project by provided path to XOD project directory', () =>
+      Loader.loadProject([workspace], path.resolve(workspace, projectPath))
+        .then(assertPatchPaths)
+    );
+    it('loads Project by provided path to directory inside XOD project', () =>
+      Loader.loadProject([workspace], path.resolve(workspace, projectPath, 'qux'))
+        .then(assertPatchPaths)
+    );
+    it('loads Project by provided path to some.xodball file', () =>
+      Loader.loadProject([workspace], path.resolve(workspace, '../some.xodball'))
+        .then(assertPatchPaths)
     );
   });
 });

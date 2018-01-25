@@ -14,7 +14,7 @@ function getParentDirectories(path) {
   return loop(resolve(process.cwd(), path), []);
 }
 
-function isWorkspaceDir(path) {
+export function isWorkspaceDir(path) {
   try {
     const xodworkspace = resolve(process.cwd(), path, '.xodworkspace');
     return statSync(xodworkspace).isFile();

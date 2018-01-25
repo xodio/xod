@@ -25,10 +25,10 @@ XOD project: Command Line Interface
 
 Usage:
   xodc pack <projectDir> <output>
-  xodc unpack <xodball> <workspace>
-  xodc transpile [--output=<filename>] <input> <path>
+  xodc unpack <xodball> <dirPath>
+  xodc transpile [--output=<filename>] [--workspace=<dir>] <input> <patchPath>
   xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
-  xodc install --swagger=<swagger> <libUri> [<path>]
+  xodc install [--swagger=<swagger>] [--workspace=<dir>] <libUri>
 
 Commands:
   pack                  Pack project directory into xodball.
@@ -43,10 +43,13 @@ Options:
 `;
 
 const programs = {
-  pack: o => pack(o['<projectDir>'], o['<output>']),
-  unpack: o => unpack(o['<xodball>'], o['<workspace>']),
-  transpile: o => transpile(o['<input>'], o['<path>'], {
+  pack: o => pack(o['<projectDir>'], o['<output>'], {
+    workspace: o['--workspace'],
+  }),
+  unpack: o => unpack(o['<xodball>'], o['<dirPath>']),
+  transpile: o => transpile(o['<input>'], o['<patchPath>'], {
     output: o['--output'],
+    workspace: o['--workspace'],
   }),
   publish: o => publish(
     o['--swagger'] || PM_SWAGGER_URL,
@@ -55,7 +58,7 @@ const programs = {
   install: o => install(
     o['--swagger'] || PM_SWAGGER_URL,
     o['<libUri>'],
-    o['<path>'] || '.'),
+    o['--workspace']),
 };
 
 // Running command

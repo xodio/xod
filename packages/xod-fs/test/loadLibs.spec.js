@@ -36,4 +36,34 @@ describe('Library loader', () => {
       ]);
     })
   );
+
+  it('loads libraries from bundled workspace and ./fixtures/workspace with highest priority', () => {
+    const bundledLibDir = resolveLibPath(path.resolve(__dirname, '../../../workspace'));
+    return loadLibs([libDir, bundledLibDir]).then((libs) => {
+      const libPatchPaths = R.keys(libs);
+
+      // Check that libs is loaded
+      assert.includeMembers(libPatchPaths, [
+        // from fixture workspace
+        'user/utils/test',
+        'user/with-omitted-optionals/empty-lib-patch',
+        'user/with-omitted-optionals/optional-node-fields-omitted',
+        'xod/core/and',
+        'xod/core/led',
+        'xod/core/pot',
+        'xod/core/test',
+        'xod/math/test',
+        // from bundled workspace
+        'xod/bits/dec-to-bcd',
+        'xod/bits/shift-left',
+      ]);
+
+      // Check that libs, that exists in fixture workspace,
+      // does not loaded from bundled workspace
+      assert.notIncludeMembers(libPatchPaths, [
+        'xod/core/buffer',
+        'xod/core/absolute',
+      ]);
+    });
+  });
 });

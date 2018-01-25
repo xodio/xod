@@ -20,7 +20,7 @@ describe('xod-arduino transpiler', () => {
         'utf-8'
       );
 
-      return loadProject(wsPath(projName))
+      return loadProject([wsPath()], wsPath(projName))
         .then(transformProject(R.__, '@/main'))
         .then(R.map(transpile))
         .then(explode)
@@ -37,7 +37,7 @@ describe('xod-arduino transpiler', () => {
 
   it('returns error for non-existing-patch entry point',
     () =>
-      loadProject(wsPath('blink'))
+      loadProject([wsPath()], wsPath('blink'))
         .then(transformProject(R.__, '@/non-existing-patch'))
         .then(R.map(transpile))
         .then(result => assert.ok(result.isLeft))
@@ -45,7 +45,7 @@ describe('xod-arduino transpiler', () => {
 
   it('returns error if some native node has more than 7 outputs',
     () =>
-      loadProject(wsPath('faulty'))
+      loadProject([wsPath()], wsPath('faulty'))
         .then(transformProject(R.__, '@/too-many-outputs-main'))
         .then(R.map(transpile))
         .then(foldEither(
@@ -58,7 +58,7 @@ describe('xod-arduino transpiler', () => {
   );
 
   it('sorts nodes topologically', () =>
-    loadProject(wsPath('blink'))
+    loadProject([wsPath()], wsPath('blink'))
       .then(R.pipe(
         transformProject(R.__, '@/main'),
         explodeEither,
@@ -94,7 +94,7 @@ describe('getNodeIdsMap', () => {
       SyeDNFBWZ: '5',
     };
 
-    return loadProject(wsPath('blink'))
+    return loadProject([wsPath()], wsPath('blink'))
       .then(transformProject(R.__, '@/main'))
       .then(R.map(getNodeIdsMap))
       .then(explode)

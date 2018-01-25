@@ -1,24 +1,23 @@
-// unpack <xodball> <workspace>   Unpack xodball into new project directory in the workspace
+// unpack <xodball> <dirPath>   Unpack xodball into new project directory in the workspace
 
 import path from 'path';
-import { arrangeByFiles, save, readJSON } from 'xod-fs';
+import { loadProject, saveProjectEntirely } from 'xod-fs';
+import { setProjectName } from 'xod-project';
 import * as msg from './messageUtils';
 
-export default (xodball, workspace) => {
+export default (xodball, dir) => {
   const xodballPath = path.resolve(xodball);
-  const workspacePath = path.resolve(workspace);
+  const newProjectName = path.basename(dir);
+  const dirPath = path.resolve(dir, '..');
 
   msg.notice(`Unpacking ${xodballPath}`);
-  msg.notice(`into ${workspacePath} ...`);
+  msg.notice(`into ${dirPath} ...`);
 
-  let projectName = '<UNTITLED PROJECT>';
-
-  readJSON(xodballPath)
-    .then((project) => { projectName = project.meta.name; return project; })
-    .then(arrangeByFiles)
-    .then(save(workspacePath))
+  loadProject([], xodballPath)
+    .then(setProjectName(newProjectName))
+    .then(saveProjectEntirely(dirPath))
     .then(() => {
-      msg.success(`Successfully unpacked "${projectName}"`);
+      msg.success('Done!');
       process.exit(0);
     })
     .catch((err) => {

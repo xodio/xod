@@ -414,7 +414,7 @@ class App extends client.App {
           onClick(items.openProject, this.onOpenProjectClicked),
           onClick(items.saveAll, this.onSaveAll),
           onClick(items.renameProject, this.props.actions.requestRenameProject),
-          onClick(items.selectWorkspace, this.showPopupSetWorkspace),
+          onClick(items.switchWorkspace, this.showPopupSetWorkspace),
           items.separator,
           onClick(items.importProject, this.onImportClicked),
           onClick(items.exportProject, this.onExport),
