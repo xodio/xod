@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-
 import fs from 'fs';
 import * as R from 'ramda';
 import React from 'react';
@@ -57,17 +55,11 @@ class App extends client.App {
 
     this.state = R.clone(defaultState);
 
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onResize = this.onResize.bind(this);
-
-    this.listBoards = this.listBoards.bind(this);
-    this.listPorts = this.listPorts.bind(this);
-    this.getSelectedBoard = this.getSelectedBoard.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
-    this.onArduinoTargetBoardChange = this.onArduinoTargetBoardChange.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onImportClicked = this.onImportClicked.bind(this);
@@ -84,8 +76,6 @@ class App extends client.App {
     this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
 
     this.onLoadProject = this.onLoadProject.bind(this);
-    this.onSelectProject = this.onSelectProject.bind(this);
-    this.onOpenTutorialProject = this.onOpenTutorialProject.bind(this);
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
@@ -150,7 +140,7 @@ class App extends client.App {
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
-      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
+      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.constructor.onOpenTutorialProject,
     };
     ipcRenderer.on(
       EVENTS.XOD_URL_CLICKED,
@@ -279,11 +269,11 @@ class App extends client.App {
     this.showPopupProjectSelection();
   }
 
-  onSelectProject(projectMeta) { // eslint-disable-line class-methods-use-this
+  static onSelectProject(projectMeta) {
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
   }
 
-  onOpenTutorialProject() { // eslint-disable-line class-methods-use-this
+  static onOpenTutorialProject() {
     ipcRenderer.send(EVENTS.OPEN_BUNDLED_PROJECT, 'welcome-to-xod');
   }
 
@@ -380,7 +370,7 @@ class App extends client.App {
     this.props.actions.hideUploadConfigPopup();
   }
 
-  onKeyDown(event) { // eslint-disable-line class-methods-use-this
+  static onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -399,7 +389,7 @@ class App extends client.App {
     );
   }
 
-  onArduinoTargetBoardChange(board) { // eslint-disable-line class-methods-use-this
+  static onArduinoTargetBoardChange(board) {
     ipcRenderer.send(EVENTS.SET_SELECTED_BOARD, board);
   }
 
@@ -481,7 +471,7 @@ class App extends client.App {
             label: `Version: ${packageJson.version}`,
           },
           items.separator,
-          onClick(items.openTutorialProject, this.onOpenTutorialProject),
+          onClick(items.openTutorialProject, this.constructor.onOpenTutorialProject),
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
@@ -496,7 +486,7 @@ class App extends client.App {
     ];
   }
 
-  getKeyMap() { // eslint-disable-line class-methods-use-this
+  static getKeyMap() {
     const commandsBoundToNativeMenu = R.compose(
       R.reject(R.anyPass([
         R.isNil,
@@ -512,7 +502,7 @@ class App extends client.App {
     return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
   }
 
-  getSelectedBoard() { // eslint-disable-line class-methods-use-this
+  static getSelectedBoard() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.GET_SELECTED_BOARD);
       ipcRenderer.once(EVENTS.GET_SELECTED_BOARD, (event, response) => {
@@ -631,7 +621,7 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
-  listBoards() { // eslint-disable-line class-methods-use-this
+  static listBoards() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_BOARDS);
       ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
@@ -640,7 +630,7 @@ class App extends client.App {
       });
     });
   }
-  listPorts() { // eslint-disable-line class-methods-use-this
+  static listPorts() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
       ipcRenderer.once(EVENTS.LIST_PORTS, (event, response) => {
@@ -654,14 +644,14 @@ class App extends client.App {
     return (this.props.popups.uploadToArduinoConfig) ? (
       <PopupUploadConfig
         isVisible
-        getSelectedBoard={this.getSelectedBoard}
+        getSelectedBoard={this.constructor.getSelectedBoard}
         selectedPort={this.props.selectedPort}
-        listBoards={this.listBoards}
-        listPorts={this.listPorts}
+        listBoards={this.constructor.listBoards}
+        listPorts={this.constructor.listPorts}
         compileLimitLeft={this.props.compileLimitLeft}
         updateCompileLimit={this.props.actions.updateCompileLimit}
         initialDebugAfterUpload={this.props.popupsData.uploadToArduinoConfig.debugAfterUpload}
-        onBoardChanged={this.onArduinoTargetBoardChange}
+        onBoardChanged={this.constructor.onArduinoTargetBoardChange}
         onPortChanged={this.onSerialPortChange}
         onUpload={this.onUploadToArduino}
         onClose={this.onUploadConfigClose}
@@ -671,11 +661,11 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys keyMap={this.getKeyMap()} id="App">
+      <HotKeys keyMap={this.constructor.getKeyMap()} id="App">
         <EventListener
           target={window}
           onResize={this.onResize}
-          onKeyDown={this.onKeyDown}
+          onKeyDown={this.constructor.onKeyDown}
         />
         <client.Editor
           size={this.state.size}
@@ -698,7 +688,7 @@ class App extends client.App {
         <PopupProjectSelection
           projects={this.props.popupsData.projectSelection}
           isVisible={this.props.popups.projectSelection}
-          onSelect={this.onSelectProject}
+          onSelect={this.constructor.onSelectProject}
           onClose={this.hideAllPopups}
           onSwitchWorkspace={this.showPopupSetWorkspace}
           onCreateNewProject={this.props.actions.requestCreateProject}

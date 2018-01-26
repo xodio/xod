@@ -29,7 +29,6 @@ class App extends client.App {
       workspace: '',
     };
 
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.onDocumentClick = this.onDocumentClick.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
@@ -118,7 +117,7 @@ class App extends client.App {
     this.props.actions.openProject(this.props.tutorialProject);
   }
 
-  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
+  static onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -144,7 +143,7 @@ class App extends client.App {
     );
   }
 
-  onCloseApp(event) { // eslint-disable-line class-methods-use-this
+  onCloseApp(event) {
     let message = true;
 
     if (this.props.hasUnsavedChanges) {
@@ -310,7 +309,7 @@ class App extends client.App {
         <EventListener
           target={window}
           onResize={this.onResize}
-          onKeyDown={this.onKeyDown}
+          onKeyDown={this.constructor.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
