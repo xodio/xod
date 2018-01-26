@@ -1,0 +1,62 @@
+{
+  "comments": [
+    {
+      "content": "Many tasks require you to set a specific frequency for the pulse generation.\n\nFor this, we need a new node `clock`. It can produce pulse signals at time intervals specified by the `IVAL` pin. This way, we can control the frequency of data collection from our sensors.\n\n## Instructions\n\n1. Set the `IVAL` pin in the `clock` node to `2`. This means that it will send a pulse every two seconds.\n\n2. Connect the `TICK` pin to the `UPD` pin on the pot node.\n\n3. Upload the patch to the Arduino.\n\nSlowly turn the potentiometer knob. You will see that the readings are being taken and the servo reacts to them every two seconds.",
+      "id": "r1zzTtngM",
+      "position": {
+        "x": -34,
+        "y": 102
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1fHXXNqb",
+      "input": {
+        "nodeId": "By-NXQVqW",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "ByUpzmN5W",
+        "pinKey": "SyBtREhlW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "S1vGmu6Gb": 9
+      },
+      "id": "By-NXQVqW",
+      "position": {
+        "x": 306,
+        "y": 510
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "id": "ByUpzmN5W",
+      "label": "pot",
+      "position": {
+        "x": 306,
+        "y": 408
+      },
+      "type": "xod/core/analog-input"
+    },
+    {
+      "boundValues": {
+        "B13SCNhl-": 2
+      },
+      "id": "rk_NQmEqb",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/clock"
+    }
+  ]
+}

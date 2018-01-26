@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "content": "You can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\nLet’s do a classic experiment: blink the LED.\n\n## Instructions\n\n1. Assemble a [circuit with the LED](https://xod.io/docs/tutorial/24-flip-flop/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_24). Do not forget to specify the desired port in the `PORT` pin.\n2. Set the flashing frequency in seconds using `IVAL`.\n3. Upload the patch to the Arduino.\n\nThe LED will now turn on and off at the frequency you've chosen.\nTry to control the flashing speed of the LED with a potentiometer. To do this, connect the output of a pot node to the `IVAL` pin.",
+      "id": "Hy-l49nxf",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 459,
+        "width": 306
+      }
+    },
+    {
+      "content": "Each time a pulse arrives at the `TGL` pin, the node toggles the boolean value on the `MEM` pin from `false` to `true` and vice versa.",
+      "id": "SJVeV52ez",
+      "position": {
+        "x": 510,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJcrQYS5W",
+      "input": {
+        "nodeId": "HyNvOmN5b",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "ByXLOXV9W",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "Bk73s9rcb",
+      "input": {
+        "nodeId": "HyA_GKr9W",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "HyNvOmN5b",
+        "pinKey": "HkyxURuSPyW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundValues": {
+        "B13SCNhl-": 1
+      },
+      "id": "ByXLOXV9W",
+      "position": {
+        "x": 340,
+        "y": 102
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundValues": {
+        "B1oqkTnIb": 11
+      },
+      "id": "HyA_GKr9W",
+      "position": {
+        "x": 340,
+        "y": 306
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "HyNvOmN5b",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "type": "xod/core/flip-flop"
+    }
+  ]
+}
