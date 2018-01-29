@@ -23,7 +23,7 @@
         "x": 10,
         "y": 16
       },
-      "type": "xod/core/constant-number"
+      "type": "@/constant-number"
     },
     {
       "id": "rJpy6in8-",

@@ -47,7 +47,7 @@
         "x": 10,
         "y": 120
       },
-      "type": "xod/core/not"
+      "type": "@/not"
     }
   ]
 }

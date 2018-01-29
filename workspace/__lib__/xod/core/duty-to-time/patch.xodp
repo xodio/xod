@@ -94,7 +94,7 @@
         "x": 102,
         "y": 204
       },
-      "type": "xod/core/multiply"
+      "type": "@/multiply"
     },
     {
       "id": "S1jHo0FJf",
@@ -120,7 +120,7 @@
         "x": 0,
         "y": 306
       },
-      "type": "xod/core/subtract"
+      "type": "@/subtract"
     }
   ]
 }
