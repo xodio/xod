@@ -3,11 +3,11 @@
   "version": "0.17.1",
   "description": "XOD project: Client browser application",
   "scripts": {
-    "build:initial-project": "node ./tools/loadInitialProject.js",
-    "build": "yarn run build:initial-project && webpack --colors",
+    "build:tutorial-project": "node ./tools/loadTutorialProject.js",
+    "build": "yarn run build:tutorial-project && webpack --colors",
     "benchmark": "node -r babel-register ./benchmark/index.js",
     "test-func": "mocha test-func/bootstrap.js --opts test-func/mocha.opts test-func/**/*.spec.js",
-    "dev": "yarn run build:initial-project && webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
+    "dev": "yarn run build:tutorial-project && webpack-dev-server --watch --colors --inline --hot --config webpack.config.dev.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
@@ -22,6 +22,7 @@
     "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
+    "url-parse": "^1.2.0",
     "xod-arduino": "^0.17.0",
     "xod-client": "^0.17.1",
     "xod-func-tools": "^0.17.0",

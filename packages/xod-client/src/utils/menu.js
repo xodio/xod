@@ -2,172 +2,136 @@ import * as R from 'ramda';
 import { HOTKEY, ELECTRON_ACCELERATOR, COMMAND } from './constants';
 
 const rawItems = {
-  separator: {
-    type: 'separator',
-  },
-
   file: {
-    key: 'file',
     label: 'File',
   },
   newProject: {
-    key: 'newProject',
     label: 'New Project...',
     command: COMMAND.NEW_PROJECT,
   },
   openProject: {
-    key: 'openProject',
     label: 'Open Project...',
     command: COMMAND.OPEN_PROJECT,
   },
+  openTutorialProject: {
+    label: 'Open Tutorial Project',
+  },
   saveAll: {
-    key: 'saveAll',
     label: 'Save All',
     command: COMMAND.SAVE_ALL,
   },
   renameProject: {
-    key: 'renameProject',
     label: 'Rename Project...',
     command: COMMAND.RENAME_PROJECT,
   },
   switchWorkspace: {
-    key: 'switchWorkspace',
     label: 'Switch Workspace...',
   },
   importProject: {
-    key: 'importProject',
     label: 'Import Project...',
   },
   exportProject: {
-    key: 'exportProject',
     label: 'Export Project...',
   },
   newPatch: {
-    key: 'newPatch',
     label: 'New Patch...',
     command: COMMAND.ADD_PATCH,
   },
   addLibrary: {
-    key: 'addLibrary',
     label: 'Add Library...',
   },
   publish: {
-    key: 'publish',
     label: 'Publish Library...',
   },
   exit: {
-    key: 'exit',
     label: 'Exit',
   },
 
   edit: {
-    key: 'edit',
     label: 'Edit',
   },
   undo: {
-    key: 'undo',
     label: 'Undo',
     command: COMMAND.UNDO,
   },
   redo: {
-    key: 'redo',
     label: 'Redo',
     command: COMMAND.REDO,
   },
   cut: {
-    key: 'cut',
     label: 'Cut',
     role: 'cut',
     command: COMMAND.CUT,
   },
   copy: {
-    key: 'copy',
     label: 'Copy',
     command: COMMAND.COPY,
     role: 'copy',
   },
   paste: {
-    key: 'paste',
     label: 'Paste',
     command: COMMAND.PASTE,
     role: 'paste',
   },
   selectall: {
-    key: 'selectall',
     label: 'Select All',
     command: COMMAND.SELECT_ALL,
     role: 'selectall',
   },
   projectPreferences: {
-    key: 'projectPreferences',
     label: 'Project Preferences',
   },
   insertComment: {
-    key: 'insertComment',
     label: 'Insert Comment',
   },
   insertNode: {
-    key: 'insertNode',
     label: 'Insert Node...',
     command: COMMAND.INSERT_NODE,
   },
 
   deploy: {
-    key: 'deploy',
     label: 'Deploy',
   },
   showCodeForArduino: {
-    key: 'showCodeForArduino',
     label: 'Show Code for Arduino',
   },
   uploadToArduino: {
-    key: 'uploadToArduino',
     label: 'Upload to Arduino...',
   },
 
   view: {
-    key: 'view',
     label: 'View',
   },
   toggleHelp: {
-    key: 'toggleHelp',
     label: 'Toggle Helpbar',
     command: COMMAND.TOGGLE_HELP,
   },
   toggleDebugger: {
-    key: 'toggleDebugger',
     label: 'Toggle Deployment Pane',
     command: COMMAND.TOGGLE_DEBUGGER,
   },
   toggleAccountPane: {
-    key: 'toggleAccountPane',
     label: 'Toggle Account Pane',
   },
   panToOrigin: {
-    key: 'panToOrigin',
     label: 'Pan to Origin',
     command: COMMAND.PAN_TO_ORIGIN,
   },
   panToCenter: {
-    key: 'panToCenter',
     label: 'Pan to Center',
     command: COMMAND.PAN_TO_CENTER,
   },
 
   help: {
-    key: 'help',
     label: 'Help',
   },
   documentation: {
-    key: 'documentation',
     label: 'Documentation',
   },
   shortcuts: {
-    key: 'shortcuts',
     label: 'Shortcuts',
   },
   forum: {
-    key: 'forum',
     label: 'Forum',
   },
 };
@@ -183,8 +147,12 @@ const assignHotkeys = menuItem => R.when(
   menuItem
 );
 
-// TODO: also add keys automatically?
-export const items = R.map(assignHotkeys, rawItems);
+export const items = R.compose(
+  // separator item is secial and sould not have `key` or hotkey-related props
+  R.assoc('separator', { type: 'separator' }),
+  R.map(assignHotkeys),
+  R.mapObjIndexed((menuItem, key) => R.assoc('key', key, menuItem))
+)(rawItems);
 
 /** add click handler to menu item */
 export const onClick = R.flip(R.assoc('click'));

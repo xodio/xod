@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import urlParse from 'url-parse';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import EventListener from 'react-event-listener';
@@ -8,7 +9,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 import client from 'xod-client';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, notNil } from 'xod-func-tools';
 
 import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -28,11 +29,12 @@ class App extends client.App {
       workspace: '',
     };
 
-    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onImportChange = this.onImportChange.bind(this);
+    this.onOpenTutorial = this.onOpenTutorial.bind(this);
     this.onImport = this.onImport.bind(this);
     this.onExport = this.onExport.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
@@ -46,8 +48,38 @@ class App extends client.App {
       [client.COMMAND.RENAME_PROJECT]: this.props.actions.requestRenameProject,
     };
 
-    props.actions.openProject(props.initialProject);
+    this.urlActions = {
+      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorial,
+    };
+
+    document.addEventListener('click', this.onDocumentClick);
+
+    props.actions.openProject(props.tutorialProject);
     props.actions.fetchGrant();
+  }
+
+  onDocumentClick(e) {
+    if (R.allPass([
+      notNil,
+      R.propEq('tagName', 'A'),
+      R.propEq('protocol', client.URL_ACTION_PROTOCOL),
+    ])(e.target)) {
+      const url = urlParse(e.target.href, true);
+
+      if (url.hostname !== client.URL_ACTION_PREFIX) return;
+
+      e.preventDefault();
+
+      const actionName = url.pathname;
+      const params = url.query;
+      const action = this.urlActions[actionName];
+
+      if (action) {
+        action(params);
+      } else {
+        this.props.actions.addError(client.Messages.invalidUrlActionName(actionName));
+      }
+    }
   }
 
   onResize() {
@@ -79,7 +111,13 @@ class App extends client.App {
     reader.readAsText(file);
   }
 
-  onKeyDown(event) {  // eslint-disable-line class-methods-use-this
+  onOpenTutorial() {
+    if (!this.confirmUnsavedChanges()) return;
+
+    this.props.actions.openProject(this.props.tutorialProject);
+  }
+
+  static onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
 
     if (!client.isInputTarget(event) && keyCode === client.KEYCODE.BACKSPACE) {
@@ -105,7 +143,7 @@ class App extends client.App {
     );
   }
 
-  onCloseApp(event) { // eslint-disable-line class-methods-use-this
+  onCloseApp(event) {
     let message = true;
 
     if (this.props.hasUnsavedChanges) {
@@ -237,6 +275,7 @@ class App extends client.App {
             label: `Version: ${packageJson.version}`,
           },
           items.separator,
+          onClick(items.openTutorialProject, this.onOpenTutorial),
           link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
           link(items.shortcuts, { href: client.getUtmSiteUrl('/docs/reference/shortcuts/', 'docs', 'menu') }),
           link(items.forum, { href: client.getUtmForumUrl('menu') }),
@@ -270,7 +309,7 @@ class App extends client.App {
         <EventListener
           target={window}
           onResize={this.onResize}
-          onKeyDown={this.onKeyDown}
+          onKeyDown={this.constructor.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
         <client.Toolbar
@@ -297,7 +336,7 @@ class App extends client.App {
 App.propTypes = R.merge(client.App.propTypes, {
   project: client.sanctuaryPropType(XP.Project),
   actions: PropTypes.object,
-  initialProject: PropTypes.object.isRequired,
+  tutorialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
 });

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Root } from 'xod-client';
 
 import App from './containers/App';
-import initialProject from '../initialProject.json';
+import tutorialProject from '../tutorialProject.json';
 
 if (process.env.WHY_DID_YOU_UPDATE) {
   // silence no-extraneous-dependencies and global-require warnings
@@ -17,7 +17,7 @@ if (process.env.WHY_DID_YOU_UPDATE) {
 
 ReactDOM.render(
   <Root>
-    <App initialProject={initialProject} />
+    <App tutorialProject={tutorialProject} />
   </Root>,
   document.getElementById('root')
 );

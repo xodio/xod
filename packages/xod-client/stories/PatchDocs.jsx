@@ -7,25 +7,25 @@ import '../src/core/styles/main.scss';
 import PatchDocs from '../src/editor/components/PatchDocs';
 
 // TODO: fragile import
-import initialProject from '../../xod-client-browser/initialProject.json';
+import tutorialProject from '../../xod-client-browser/tutorialProject.json';
 
 const emptyProject = XP.createProject();
 
 storiesOf('PatchDocs', module)
   .add('ordinary node (flip-flop)', () => (
-    <PatchDocs patch={initialProject.patches['xod/core/flip-flop']} />
+    <PatchDocs patch={tutorialProject.patches['xod/core/flip-flop']} />
   ))
   .add('relatively large node (map-range)', () => (
-    <PatchDocs patch={initialProject.patches['xod/core/map-range']} />
+    <PatchDocs patch={tutorialProject.patches['xod/core/map-range']} />
   ))
   .add('big node, no outputs (text-lcd-16x2)', () => (
-    <PatchDocs patch={initialProject.patches['xod/common-hardware/text-lcd-16x2']} />
+    <PatchDocs patch={tutorialProject.patches['xod/common-hardware/text-lcd-16x2']} />
   ))
   .add('no inputs (boot)', () => (
-    <PatchDocs patch={initialProject.patches['xod/core/boot']} />
+    <PatchDocs patch={tutorialProject.patches['xod/core/boot']} />
   ))
   .add('no pin descriptions (add)', () => (
-    <PatchDocs patch={initialProject.patches['xod/core/add']} />
+    <PatchDocs patch={tutorialProject.patches['xod/core/add']} />
   ))
   .add('input terminal', () => (
     <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/input-pulse', emptyProject)} />
