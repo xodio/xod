@@ -3823,9 +3823,9 @@ ejs@^2.5.7, ejs@~2.5.6:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-2.5.7.tgz#cc872c168880ae3c7189762fd5ffc00896c9518a"
 
-"electron-builder@git+https://github.com/xodio/electron-builder#81bb2e786be4659d85e32b995de83bdb98bea128":
-  version "19.34.2"
-  resolved "git+https://github.com/xodio/electron-builder#81bb2e786be4659d85e32b995de83bdb98bea128"
+"electron-builder@git+https://github.com/xodio/electron-builder#390724e57468c57424287d47f4b932f959f9c75d":
+  version "19.55.3"
+  resolved "git+https://github.com/xodio/electron-builder#390724e57468c57424287d47f4b932f959f9c75d"
   dependencies:
     "7zip-bin" "^2.2.4"
     app-package-builder "1.0.3"
