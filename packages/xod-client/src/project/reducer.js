@@ -13,7 +13,7 @@ import {
   slotPositionToPixels,
   snapNodePositionToSlots,
 } from './nodeLayout';
-import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from './constants';
+import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY, MAIN_PATCH_PATH } from './constants';
 import { isNotImplementedInXodNode } from './utils';
 
 // TODO: rewrite this?
@@ -79,8 +79,6 @@ export default (state = {}, action) => {
     // Project
     //
     case AT.PROJECT_CREATE: {
-      const { name, mainPatchPath } = action.payload;
-
       const oldLocalPatchesPaths = R.compose(
         R.map(XP.getPatchPath),
         XP.listLocalPatches
@@ -90,8 +88,8 @@ export default (state = {}, action) => {
 
       return R.compose(
         explodeEither,
-        XP.assocPatch(mainPatchPath, mainPatch),
-        XP.setProjectName(name),
+        XP.assocPatch(MAIN_PATCH_PATH, mainPatch),
+        XP.setProjectName(''),
         XP.omitPatches(oldLocalPatchesPaths)
       )(state);
     }
@@ -105,15 +103,13 @@ export default (state = {}, action) => {
       );
     }
 
-    case AT.PROJECT_RENAME:
-      return XP.setProjectName(action.payload, state);
-
     case AT.PROJECT_OPEN: {
       return action.payload;
     }
 
     case AT.PROJECT_UPDATE_META:
       return R.compose(
+        XP.setProjectName(action.payload.name),
         XP.setProjectVersion(action.payload.version),
         XP.setProjectLicense(action.payload.license),
         XP.setProjectDescription(action.payload.description)

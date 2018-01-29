@@ -30,12 +30,13 @@ describe('Load/Save roundtrip', () => {
     // save it to a brand-new workspace
     const tmpDirPrefix = path.join(os.tmpdir(), 'xod-fs-test-');
     const tmpWorkspace = fs.mkdtempSync(tmpDirPrefix);
-    await saveAll(tmpWorkspace, emptyProject, project);
+    const tmpProject = path.join(tmpWorkspace, 'awesome-project');
+    await saveAll(tmpWorkspace, tmpProject, emptyProject, project);
 
     // compare source and destination directory contents
     const comparison = dircompare.compareSync(
       fixture('workspace/awesome-project'),
-      path.join(tmpWorkspace, 'awesome-project'),
+      tmpProject,
       {
         compareContent: true,
         excludeFilter: '.DS_Store,.directory,.Trash-*,Thumbs.db,desktop.ini',

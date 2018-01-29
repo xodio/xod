@@ -22,33 +22,22 @@ import composeMessage from '../messages/composeMessage';
 //
 // Project
 //
-export const requestCreateProject = () => ({
-  type: ActionType.PROJECT_CREATE_REQUESTED,
-  payload: {},
-});
 
 export const requestOpenProject = data => ({
   type: ActionType.PROJECT_OPEN_REQUESTED,
   payload: data,
 });
 
-export const createProject = projectName => (dispatch) => {
-  if (!XP.isValidIdentifier(projectName)) {
-    return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PROJECT_NAME));
-  }
-
-  return dispatch({
+export const createProject = () => (dispatch) => {
+  dispatch({
     type: ActionType.PROJECT_CREATE,
-    payload: {
-      name: projectName,
-      mainPatchPath: XP.getLocalPath('main'),
-    },
   });
 };
 
-export const updateProjectMeta = ({ license, description, version }) => ({
+export const updateProjectMeta = ({ name, license, description, version }) => ({
   type: ActionType.PROJECT_UPDATE_META,
   payload: {
+    name,
     license,
     description,
     version,
@@ -63,11 +52,6 @@ export const openProject = project => ({
 export const importProject = project => ({
   type: ActionType.PROJECT_IMPORT,
   payload: project,
-});
-
-export const renameProject = name => ({
-  type: ActionType.PROJECT_RENAME,
-  payload: name,
 });
 
 export const openWorkspace = libs => ({

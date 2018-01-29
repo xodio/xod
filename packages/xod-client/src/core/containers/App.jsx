@@ -6,8 +6,6 @@ import { Either } from 'ramda-fantasy';
 import { foldMaybe, foldEither, $Maybe } from 'xod-func-tools';
 import {
   Project,
-  getProjectName,
-  toXodball,
   isValidIdentifier,
   IDENTIFIER_RULES,
 } from 'xod-project';
@@ -57,27 +55,6 @@ export default class App extends React.Component {
       R.map(transpile),
       this.transformProjectForTranspiler
     )();
-  }
-
-  onExport() {
-    const { project } = this.props;
-
-    const xodballJSON = toXodball(project);
-    const xodballName = getProjectName(project);
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(xodballJSON)}`;
-
-    if (link && link.download !== undefined) {
-      link.href = url;
-      link.setAttribute('download', `${xodballName}.xodball`);
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } else {
-      window.open(url, '_blank');
-      window.focus();
-    }
   }
 
   transformProjectForTranspiler(debug = false) {
@@ -166,8 +143,6 @@ App.propTypes = {
     copyEntities: PropTypes.func.isRequired,
     pasteEntities: PropTypes.func.isRequired,
     /* eslint-disable react/no-unused-prop-types */
-    requestCreateProject: PropTypes.func.isRequired,
-    requestRenameProject: PropTypes.func.isRequired,
     requestPublishProject: PropTypes.func.isRequired,
     cancelPublishingProject: PropTypes.func.isRequired,
     importProject: PropTypes.func.isRequired,
@@ -201,8 +176,6 @@ App.propTypes = {
 App.actions = {
   updateCompileLimit: actions.updateCompileLimit,
   createProject: actions.createProject,
-  requestCreateProject: actions.requestCreateProject,
-  requestRenameProject: actions.requestRenameProject,
   requestPublishProject: actions.requestPublishProject,
   cancelPublishingProject: actions.cancelPublishingProject,
   importProject: actions.importProject,

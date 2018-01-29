@@ -43,13 +43,17 @@ describe('IDE', () => {
     EVENTS.SELECT_PROJECT,
     ({ projectMeta }) => {
       WA.onSelectProject(
+        (newProjectPath) => {
+          assert.equal(newProjectPath, resolve(path, projectName));
+        },
         (eventName, project) => {
           assert.equal(eventName, EVENTS.REQUEST_SHOW_PROJECT);
           assert.equal(getProjectName(project), projectName);
         },
         loadMock(path),
         projectMeta
-      ).then(() => done());
+      )
+      .then(() => done());
     }
   );
 
@@ -193,6 +197,13 @@ describe('IDE', () => {
 
       return expectRejectedWithCode(
         WA.onSelectProject(
+          (newProjectPath) => {
+            assert.fail(
+              newProjectPath,
+              undefined,
+              '`updateProjectPath` functions should not been called in this case'
+            );
+          }, // updateProjectPath function
           sendMock,
           loadMock(fixture('./emptyWorkspace')),
           { path: fixture('./emptyWorkspace/welcome-to-xod'), content: '' }
@@ -206,14 +217,12 @@ describe('IDE', () => {
     const deleteTestProject = () => rmrf(fixture('./emptyWorkspace/test'));
     afterEach(deleteTestProject);
 
-    it('creates and saves new project, and request to open new project', (done) => {
-      subscribeOnSelectProject(done, fixture('./emptyWorkspace'), 'test');
+    it('creates new project and resets project path to null', (done) => {
       WA.onCreateProject(
-        (eventName) => {
-          assert.equal(eventName, EVENTS.SAVE_ALL);
-        },
-        loadMock(fixture('./emptyWorkspace')),
-        'test'
+        (newProjectPath) => {
+          assert.isNull(newProjectPath);
+          done();
+        }
       );
     });
   });

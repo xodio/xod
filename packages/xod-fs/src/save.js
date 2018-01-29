@@ -6,7 +6,6 @@ import { rejectWithCode, allPromises } from 'xod-func-tools';
 
 import {
   resolvePath,
-  expandHomeDir,
   isPatchFile,
   isProjectFile,
   resolveLibPath,
@@ -14,7 +13,7 @@ import {
 } from './utils';
 import { writeFile, writeJSON } from './write';
 import { Backup } from './backup';
-import { arrangeByFiles, arrangePatchByFiles, fsSafeName, getProjectPath } from './unpack';
+import { arrangeByFiles, arrangePatchByFiles, fsSafeName } from './unpack';
 import {
   convertProjectToProjectFileContents,
   omitDefaultOptionsFromPatchFileContents,
@@ -36,37 +35,34 @@ const saveData = R.curry((pathToWorkspace, data) => new Promise((resolve, reject
 }));
 
 // :: pathToWorkspace -> data -> Promise
-export const saveArrangedFiles = R.curry((pathToWorkspace, data) => {
-  let savingFiles = [];
-
-  if (typeof data !== 'object') {
-    throw Object.assign(
-      new Error("Can't save project: wrong data format was passed into save function."),
-      {
-        path: resolvePath(pathToWorkspace),
-        data,
+export const saveArrangedFiles = R.curry((pathToProjectDir, data) => {
+  const projectDir = resolvePath(pathToProjectDir);
+  return fse.ensureDir(projectDir).then(
+    () => {
+      if (typeof data !== 'object') {
+        throw Object.assign(
+          new Error("Can't save project: wrong data format was passed into save function."),
+          {
+            path: projectDir,
+            data,
+          }
+        );
       }
-    );
-  }
-  const workspace = resolvePath(pathToWorkspace);
-  const isArray = (data instanceof Array);
-  const dataToSave = isArray ? data : [data];
-  const projectDir = dataToSave[0].path.split(path.sep)[1];
+      const isArray = (data instanceof Array);
+      const dataToSave = isArray ? data : [data];
+      const pathToTemp = path.resolve(projectDir, '../.tmp');
+      const backup = new Backup(projectDir, pathToTemp);
 
-  const pathToProject = expandHomeDir(path.resolve(workspace, projectDir));
-  const pathToTemp = expandHomeDir(path.resolve(workspace, './.tmp/'));
-  const backup = new Backup(pathToProject, pathToTemp);
-
-  return backup.make()
-    .then(() => {
-      savingFiles = dataToSave.map(saveData(workspace));
-
-      return Promise.all(savingFiles)
+      return backup.make()
+        .then(() => Promise.all(
+          dataToSave.map(saveData(projectDir))
+        ))
         .then(backup.clear)
         .catch(err => backup.restore()
           .then(() => Promise.reject(err))
         );
-    });
+    }
+  );
 });
 
 // :: Path -> Project -> Promise Project Error
@@ -91,15 +87,17 @@ export const saveProjectEntirely = R.curry(
 
 // :: String -> Project -> Path -> Promise Project Error
 export const saveLibraryEntirely = R.curry(
-  (owner, project, workspacePath) => {
-    const dirPath = R.compose(
-      libPath => path.resolve(libPath, fsSafeName(owner)),
+  (owner, project, workspacePath) => Promise.resolve(workspacePath)
+    .then(R.compose(
+      libPath => path.resolve(
+        libPath,
+        fsSafeName(owner),
+        fsSafeName(XP.getProjectName(project))
+      ),
       resolveLibPath
-    )(workspacePath);
-
-    return saveProjectEntirely(dirPath, project)
-      .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_LIBRARY));
-  }
+    ))
+    .then(dirPath => saveProjectEntirely(dirPath, project))
+    .catch(rejectWithCode(ERROR_CODES.CANT_SAVE_LIBRARY))
 );
 
 // :: Path -> Map LibName Project -> Promise [Project] Error
@@ -117,10 +115,9 @@ export const saveAllLibrariesEntirely = R.uncurryN(2,
 const savePatchChanges = def(
   'savePatchChanges :: Path -> [AnyPatchChange] -> Promise', // Promise Path Error
   (projectDir, patchChanges) => {
-    const workspacePath = path.resolve(projectDir, '..');
-
-    // delete patches :: [Promise]
+    // delete patches :: Promise
     const deletePatches = R.compose(
+      allPromises,
       R.map(R.compose(
         fse.remove,
         patchName => path.resolve(projectDir, patchName),
@@ -131,14 +128,14 @@ const savePatchChanges = def(
         R.equals(CHANGE_TYPES.DELETED),
         R.prop('changeType')
       ))
-    )(patchChanges);
+    );
 
     // add/modify patches :: Promise
     const addModifyPatches = R.compose(
       R.ifElse(
         R.isEmpty,
         () => Promise.resolve(),
-        saveArrangedFiles(workspacePath)
+        saveArrangedFiles(projectDir)
       ),
       R.map(R.when(
         isPatchFile,
@@ -146,49 +143,63 @@ const savePatchChanges = def(
       )),
       R.unnest,
       R.map(R.compose(
-        arrangePatchByFiles(projectDir),
+        arrangePatchByFiles,
         R.prop('data')
       )),
       R.reject(R.compose(
         R.equals(CHANGE_TYPES.DELETED),
         R.prop('changeType')
       ))
-    )(patchChanges);
+    );
 
-    return Promise.all(
-      R.append(addModifyPatches, deletePatches)
-    ).then(R.always(projectDir));
+    return addModifyPatches(patchChanges)
+      .then(() => deletePatches(patchChanges))
+      .then(R.always(projectDir));
   }
 );
 
 const saveProjectMeta = def(
   'saveProjectMeta :: Path -> Project -> Promise', // Promise Path Error
-  (projectDir, project) => {
-    const workspacePath = path.resolve(projectDir, '..');
+  (projectDir, project) => saveArrangedFiles(projectDir, [{
+    path: path.join(projectDir, 'project.xod'),
+    content: R.compose(
+      omitDefaultOptionsFromProjectFileContents,
+      convertProjectToProjectFileContents
+    )(project),
+  }])
+    .then(R.always(projectDir))
+);
 
-    return saveArrangedFiles(workspacePath, [{
-      path: path.join(projectDir, 'project.xod'),
-      content: R.compose(
-        omitDefaultOptionsFromProjectFileContents,
-        convertProjectToProjectFileContents
-      )(project),
-    }]).then(R.always(projectDir));
+export const saveProjectAsXodball = def(
+  'saveProjectAsXodball :: Path -> Project -> Promise', // Promise Path Error
+  (projectPath, project) => {
+    const projectDir = path.dirname(projectPath);
+    return R.compose(
+      R.always(projectPath),
+      saveArrangedFiles(projectDir),
+      content => ({
+        path: projectPath,
+        content,
+      }),
+      XP.toXodball
+    )(project);
   }
 );
 
 export const saveProject = def(
   'saveProject :: Path -> [AnyPatchChange] -> Project -> Promise', // Promise Path Error
-  (workspacePath, changes, project) => {
-    const projectDir = path.resolve(workspacePath, getProjectPath(project));
-    if (!doesDirectoryExist(projectDir)) {
+  (projectPath, changes, project) => {
+    if (/(.xodball)$/.test(projectPath)) return saveProjectAsXodball(projectPath, project);
+
+    if (!doesDirectoryExist(projectPath)) {
       // save entire project
-      return saveProjectEntirely(workspacePath, project);
+      return saveProjectEntirely(projectPath, project);
     }
 
     // save only changes in the local patches
     return R.compose(
-      localChanges => savePatchChanges(projectDir, localChanges)
-        .then(() => saveProjectMeta(projectDir, project)),
+      localChanges => savePatchChanges(projectPath, localChanges)
+        .then(() => saveProjectMeta(projectPath, project)),
       R.filter(R.compose(
         XP.isPathLocal,
         R.prop('path')
@@ -282,16 +293,20 @@ export const saveLibraries = def(
   )(changes)
 );
 
+/**
+ * Saves Project into specified Path
+ * and all changed libraries into user workspace lib folder.
+ */
 export const saveAll = def(
-  'saveAll :: Path -> Project -> Project -> Promise', // Promise Project Error
-  (workspacePath, projectBefore, projectAfter) => {
+  'saveAll :: Path -> Path -> Project -> Project -> Promise', // Promise Project Error
+  (workspacePath, projectPath, projectBefore, projectAfter) => {
     const changes = calculateDiff(
       XP.listPatchesWithoutBuiltIns(projectBefore),
       XP.listPatchesWithoutBuiltIns(projectAfter)
     );
 
     return Promise.all([
-      saveProject(workspacePath, changes, projectAfter),
+      saveProject(projectPath, changes, projectAfter),
       saveLibraries(workspacePath, changes, projectAfter),
     ]).then(R.always(projectAfter));
   }

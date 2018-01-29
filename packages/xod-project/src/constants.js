@@ -205,3 +205,5 @@ export const TERMINAL_PIN_KEYS = {
 export const NOT_IMPLEMENTED_IN_XOD_PATH = 'xod/patch-nodes/not-implemented-in-xod';
 
 export const IMPL_FILENAME = 'patch.cpp';
+
+export const UNTITLED_PROJECT = 'untitled';

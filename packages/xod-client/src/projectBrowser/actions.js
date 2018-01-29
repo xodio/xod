@@ -4,7 +4,6 @@ import {
   PATCH_CREATE_REQUESTED,
   PATCH_RENAME_REQUESTED,
   PATCH_DELETE_REQUESTED,
-  PROJECT_RENAME_REQUESTED,
   SET_SELECTION,
   REMOVE_SELECTION,
 } from './actionTypes';
@@ -41,10 +40,6 @@ export const requestDeletePatch = patchPath => (dispatch, getState) => {
     payload: { patchPath: selectedPatchPath },
   });
 };
-
-export const requestRenameProject = () => ({
-  type: PROJECT_RENAME_REQUESTED,
-});
 
 export const setSelection = selectedPatchPath => ({
   type: SET_SELECTION,

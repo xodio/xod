@@ -148,8 +148,8 @@ describe('Test FS things', () => {
     );
 
     // Calling Save Project and check all cases...
-    it('call Save All', () =>
-      ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Save All'])
+    it('call Save', () =>
+      ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Save'])
         .then(ide.page.waitUntilProjectSaved)
     );
 

@@ -20,7 +20,6 @@ import { switchPatch } from '../src/editor/actions';
 import {
   openProject,
   createProject,
-  renameProject,
   updateProjectMeta,
   addPatch,
   renamePatch,
@@ -46,16 +45,12 @@ describe('project reducer', () => {
     );
 
     it('should create a project', () => {
-      const newProjectName = 'new-test-project';
       const initialProject = getProject(store.getState());
-      store.dispatch(createProject(newProjectName));
+      store.dispatch(createProject());
 
       const newProject = getProject(store.getState());
       assert.notEqual(initialProject, newProject);
-      assert.equal(
-        newProjectName,
-        XP.getProjectName(newProject)
-      );
+      assert.equal(XP.getProjectName(newProject), '');
 
       const expectedPatches = R.compose(
         XP.listLocalPatches,
@@ -72,24 +67,6 @@ describe('project reducer', () => {
         XP.listLibraryPatches(initialProject),
         XP.listLibraryPatches(newProject),
         'new project has the same library patches'
-      );
-    });
-
-    it('should rename a project', () => {
-      const initialProject = getProject(store.getState());
-      const newName = 'new-name-for-my-project';
-      store.dispatch(renameProject(newName));
-
-      const renamedProject = getProject(store.getState());
-
-      assert.equal(
-        newName,
-        XP.getProjectName(renamedProject)
-      );
-      assert.deepEqual( // isTrue(R.eqBy(...)) will not provide a nice diff
-        R.omit(['name'], initialProject),
-        R.omit(['name'], renamedProject),
-        'everything except the name stays the same'
       );
     });
 

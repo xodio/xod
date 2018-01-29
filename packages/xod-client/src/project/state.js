@@ -1,29 +1,19 @@
 // TODO: Replace this hard-coded state with nodeType providers and empty defaults
 
 export default {
-  authors: [
-    'Amperka team',
-  ],
+  authors: [],
   description: '',
   license: '',
-  name: 'untitled',
+  name: '',
   version: '0.0.0',
   patches: {
-    '@/1': {
+    '@/main': {
       attachments: [],
       comments: {},
       description: '',
       links: {},
       nodes: {},
-      path: '@/1',
-    },
-    '@/2': {
-      attachments: [],
-      comments: {},
-      description: '',
-      links: {},
-      nodes: {},
-      path: '@/2',
+      path: '@/main',
     },
   },
 };

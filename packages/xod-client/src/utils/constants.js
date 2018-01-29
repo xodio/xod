@@ -5,7 +5,6 @@ export const COMMAND = {
 
   NEW_PROJECT: 'newProject',
   OPEN_PROJECT: 'openProject',
-  RENAME_PROJECT: 'renameProject',
 
   HIDE_HELPBOX: 'hideHelpbox',
   TOGGLE_HELP: 'toggleHelp',
@@ -26,7 +25,9 @@ export const COMMAND = {
   PASTE: 'paste',
   SELECT_ALL: 'selectall',
 
-  SAVE_ALL: 'saveAll',
+  SAVE: 'save',
+  SAVE_AS: 'saveAs',
+  SAVE_COPY_AS: 'saveCopyAs',
 
   INSERT_NODE: 'insertNode',
 };
@@ -41,13 +42,14 @@ export const HOTKEY = {
   [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],
 
   [COMMAND.NEW_PROJECT]: 'ctrl+shift+n',
-  [COMMAND.RENAME_PROJECT]: 'ctrl+shift+r',
 
   [COMMAND.ADD_PATCH]: 'ctrl+n',
   [COMMAND.RENAME]: 'ctrl+r',
   [COMMAND.DELETE]: ['ctrl+del', 'ctrl+backspace'],
 
-  [COMMAND.SAVE_ALL]: ['ctrl+s'],
+  [COMMAND.SAVE]: ['ctrl+s'],
+  [COMMAND.SAVE_AS]: ['ctrl+shift+s'],
+  [COMMAND.SAVE_COPY_AS]: ['ctrl+shift+alt+s'],
 
   [COMMAND.HIDE_HELPBOX]: 'escape',
   [COMMAND.TOGGLE_HELP]: ['h'],
@@ -68,7 +70,6 @@ export const ELECTRON_ACCELERATOR = {
 
   [COMMAND.NEW_PROJECT]: 'CmdOrCtrl+Shift+N',
   [COMMAND.OPEN_PROJECT]: 'CmdOrCtrl+O',
-  [COMMAND.RENAME_PROJECT]: 'CmdOrCtrl+Shift+R',
 
   [COMMAND.ADD_PATCH]: 'CmdOrCtrl+N',
   [COMMAND.RENAME]: 'CmdOrCtrl+R',
@@ -79,7 +80,9 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.PASTE]: 'CmdOrCtrl+V',
   [COMMAND.SELECT_ALL]: 'CmdOrCtrl+A',
 
-  [COMMAND.SAVE_ALL]: 'CmdOrCtrl+S',
+  [COMMAND.SAVE]: 'CmdOrCtrl+S',
+  [COMMAND.SAVE_AS]: 'CmdOrCtrl+Shift+S',
+  [COMMAND.SAVE_COPY_AS]: 'CmdOrCtrl+Shift+Alt+S',
 
   [COMMAND.HIDE_HELPBOX]: 'Escape',
   [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',

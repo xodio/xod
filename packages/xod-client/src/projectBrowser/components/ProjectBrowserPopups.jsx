@@ -67,24 +67,6 @@ class ProjectBrowserPopups extends React.PureComponent {
     );
   }
 
-  renderProjectRenamingPopup() {
-    const currentProjectName = this.getProjectName();
-
-    return (
-      <PopupPrompt
-        key="rename_project"
-        title="Rename project"
-        onConfirm={this.props.onProjectRename}
-        onClose={this.props.onCloseAllPopups}
-        inputMask={lowercaseKebabMask}
-        inputValidator={isValidIdentifier}
-        helpText={IDENTIFIER_RULES}
-      >
-        Type new name for project &laquo;{currentProjectName}&raquo;:
-      </PopupPrompt>
-    );
-  }
-
   renderPatchDeletingPopup() {
     const selectedPatchName = this.getSelectedPatchName();
 
@@ -111,10 +93,6 @@ class ProjectBrowserPopups extends React.PureComponent {
       return this.renderPatchCreatingPopup();
     }
 
-    if (isPopupVisible(POPUP_ID.RENAMING_PROJECT, this.props.popups)) {
-      return this.renderProjectRenamingPopup();
-    }
-
     return null;
   }
 }
@@ -126,7 +104,6 @@ ProjectBrowserPopups.propTypes = {
   projectName: PropTypes.string,
 
   onPatchCreate: PropTypes.func.isRequired,
-  onProjectRename: PropTypes.func.isRequired,
   onPatchRename: PropTypes.func.isRequired,
   onPatchDelete: PropTypes.func.isRequired,
 

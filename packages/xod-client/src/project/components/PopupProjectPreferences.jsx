@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import * as XP from 'xod-project';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PopupForm from '../../utils/components/PopupForm';
 import deepSCU from '../../utils/deepSCU';
+import { lowercaseKebabMask } from '../../utils/inputFormatting';
 
 const getInitialState = (project) => {
   const version = XP.getProjectVersion(project);
 
   return {
+    name: XP.getProjectName(project),
     license: XP.getProjectLicense(project),
     version,
     dirtyVersion: version,
@@ -22,6 +25,7 @@ class PopupProjectPreferences extends React.Component {
     this.state = getInitialState(props.project);
 
     this.onUpdateClicked = this.onUpdateClicked.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
     this.onLicenseChange = this.onLicenseChange.bind(this);
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
@@ -34,8 +38,12 @@ class PopupProjectPreferences extends React.Component {
   }
 
   onUpdateClicked() {
-    const { license, version, description } = this.state;
-    this.props.onChange({ license, version, description });
+    const { name, license, version, description } = this.state;
+    this.props.onChange({ name, license, version, description });
+  }
+  onNameChange(event) {
+    const val = lowercaseKebabMask(event.target.value);
+    this.setState({ name: val });
   }
   onLicenseChange(event) {
     this.setState({ license: event.target.value });
@@ -55,13 +63,35 @@ class PopupProjectPreferences extends React.Component {
     }
   }
 
+  isValidName() {
+    return XP.isValidIdentifier(this.state.name);
+  }
+
   render() {
+    const nameInputClasses = classNames('inspectorTextInput', 'inspectorInput--full-width', {
+      invalid: !this.isValidName() && this.state.name !== '',
+    });
+    const isFormValid = this.isValidName();
+
     return (
       <PopupForm
         isVisible={this.props.isVisible}
         title="Project preferences"
         onClose={this.props.onClose}
       >
+        <div className="ModalContent">
+          <label htmlFor="projectName">Name: </label>
+          <input
+            className={nameInputClasses}
+            type="text"
+            id="projectName"
+            onChange={this.onNameChange}
+            value={this.state.name}
+          />
+          <p className="helpText">
+            {XP.IDENTIFIER_RULES}
+          </p>
+        </div>
         <div className="ModalContent">
           <label htmlFor="projectLicense">License: </label>
           <input
@@ -93,7 +123,11 @@ class PopupProjectPreferences extends React.Component {
           />
         </div>
         <div className="ModalFooter">
-          <button onClick={this.onUpdateClicked} className="Button">
+          <button
+            onClick={this.onUpdateClicked}
+            disabled={!isFormValid}
+            className="Button"
+          >
             Update project preferences
           </button>
         </div>
