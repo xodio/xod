@@ -1,0 +1,502 @@
+{
+  "comments": [
+    {
+      "content": "Integral\n↓↓↓",
+      "id": "BJO-V45Vz",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 102
+      }
+    },
+    {
+      "content": "← Error value",
+      "id": "H1DGJN5Ef",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      }
+    },
+    {
+      "content": "Proportional\n↓↓↓",
+      "id": "SJ7x4E5Ez",
+      "position": {
+        "x": 34,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 102
+      }
+    },
+    {
+      "content": "Derivative\n↓↓↓",
+      "id": "SyWGNVcVz",
+      "position": {
+        "x": 374,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 102
+      }
+    }
+  ],
+  "description": "A proportional–integral–derivative controller. Computes fuzzy output value based on an actual current input value and the desired value.",
+  "links": [
+    {
+      "id": "BJe-0X9Ef",
+      "input": {
+        "nodeId": "r19lC79VM",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "H1QHqmcNz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJplRmqEf",
+      "input": {
+        "nodeId": "r19lC79VM",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "HkYH9QcEz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJyRp754M",
+      "input": {
+        "nodeId": "B1s6aX9Vf",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "H1p3aX5VM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "BkoIl4qNz",
+      "input": {
+        "nodeId": "BkaBeN54z",
+        "pinKey": "ry9j0mqEz"
+      },
+      "output": {
+        "nodeId": "H1p3aX5VM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "ByC6a7cNf",
+      "input": {
+        "nodeId": "B1s6aX9Vf",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "rJszc7qNG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Byg1g45NG",
+      "input": {
+        "nodeId": "H1991N9EM",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "BkW-1E54M",
+        "pinKey": "B1OK07cVz"
+      }
+    },
+    {
+      "id": "ByrBRQ5EG",
+      "input": {
+        "nodeId": "BycP9Q9NM",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1JSRX5Nz",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "H1gde4cEf",
+      "input": {
+        "nodeId": "BkaBeN54z",
+        "pinKey": "S1bhCQqVM"
+      },
+      "output": {
+        "nodeId": "H1QHqmcNz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ2GxE5NM",
+      "input": {
+        "nodeId": "HJhZl45Vz",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "r19lC79VM",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "HJBZyV5VM",
+      "input": {
+        "nodeId": "BkW-1E54M",
+        "pinKey": "H1NuAXqEM"
+      },
+      "output": {
+        "nodeId": "H1QHqmcNz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJqMlE5Ef",
+      "input": {
+        "nodeId": "HJhZl45Vz",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "ByeiM975VM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkgDlVqEz",
+      "input": {
+        "nodeId": "B10IeNqNM",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "BkaBeN54z",
+        "pinKey": "SkFpRm9Nz"
+      }
+    },
+    {
+      "id": "HkkoeV9Nf",
+      "input": {
+        "nodeId": "rkt9gE9Nz",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "H1hf57qVG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkvWk4cVf",
+      "input": {
+        "nodeId": "BkW-1E54M",
+        "pinKey": "ByCuRXcEG"
+      },
+      "output": {
+        "nodeId": "HkYH9QcEz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1bjgNcVG",
+      "input": {
+        "nodeId": "S1JSRX5Nz",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "rkt9gE9Nz",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "S1pqgEqEf",
+      "input": {
+        "nodeId": "rkt9gE9Nz",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "B10IeNqNM",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "SkGSA7cNf",
+      "input": {
+        "nodeId": "S1JSRX5Nz",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "BJwXAXq4M",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "SyvWg49NG",
+      "input": {
+        "nodeId": "r19lC79VM",
+        "pinKey": "HJvqZ0dLZ"
+      },
+      "output": {
+        "nodeId": "H1991N9EM",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "r1y9lV5Ef",
+      "input": {
+        "nodeId": "BJwXAXq4M",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "HJhZl45Vz",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rJ1aTmqVG",
+      "input": {
+        "nodeId": "H1p3aX5VM",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "HJVnt7c4f",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJMueN9Ef",
+      "input": {
+        "nodeId": "BkaBeN54z",
+        "pinKey": "SyYn0X5NM"
+      },
+      "output": {
+        "nodeId": "HkYH9QcEz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJy2JV9Ez",
+      "input": {
+        "nodeId": "BJwXAXq4M",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "B1s6aX9Vf",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rkXPlN9VG",
+      "input": {
+        "nodeId": "B10IeNqNM",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "BkW-1E54M",
+        "pinKey": "B1OK07cVz"
+      }
+    },
+    {
+      "id": "rkgTpX9Vz",
+      "input": {
+        "nodeId": "H1p3aX5VM",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "rkY46Q5NG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry-ggNcEf",
+      "input": {
+        "nodeId": "H1991N9EM",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "H1p3aX5VM",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B10IeNqNM",
+      "position": {
+        "x": 374,
+        "y": 612
+      },
+      "type": "@/divide"
+    },
+    {
+      "id": "B1s6aX9Vf",
+      "position": {
+        "x": 34,
+        "y": 816
+      },
+      "type": "@/multiply"
+    },
+    {
+      "id": "BJwXAXq4M",
+      "position": {
+        "x": 102,
+        "y": 918
+      },
+      "type": "@/add"
+    },
+    {
+      "id": "BkW-1E54M",
+      "position": {
+        "x": 510,
+        "y": 306
+      },
+      "type": "@/delta-time"
+    },
+    {
+      "id": "BkaBeN54z",
+      "position": {
+        "x": 374,
+        "y": 510
+      },
+      "type": "@/delta"
+    },
+    {
+      "description": "Computed effect value. Usually sent to an actuator like motor, cooler, etc.",
+      "id": "BycP9Q9NM",
+      "position": {
+        "x": 204,
+        "y": 1122
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "I (integral) factor. Set to 0 to disable. Non-zero value control a reaction to the accumulated error value.",
+      "id": "ByeiM975VM",
+      "label": "Ki",
+      "position": {
+        "x": 238,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1991N9EM",
+      "position": {
+        "x": 204,
+        "y": 510
+      },
+      "type": "@/multiply"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new computation, i.e. `OUT` update.",
+      "id": "H1QHqmcNz",
+      "label": "UPD",
+      "position": {
+        "x": 408,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "D (derivative) factor. Set to 0 to disable. Non-zero value control a reaction to the rate of error change.",
+      "id": "H1hf57qVG",
+      "label": "Kd",
+      "position": {
+        "x": 340,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1p3aX5VM",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/subtract"
+    },
+    {
+      "description": "Current actual value. Usually provided by a feedback mechanism such as encoder, thermometer, or another sensor.",
+      "id": "HJVnt7c4f",
+      "label": "IN",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJhZl45Vz",
+      "position": {
+        "x": 204,
+        "y": 816
+      },
+      "type": "@/multiply"
+    },
+    {
+      "description": "Resets computed errors and rates. Leads to starting computation from scratch.",
+      "id": "HkYH9QcEz",
+      "label": "RST",
+      "position": {
+        "x": 442,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "S1JSRX5Nz",
+      "position": {
+        "x": 204,
+        "y": 1020
+      },
+      "type": "@/add"
+    },
+    {
+      "id": "r19lC79VM",
+      "position": {
+        "x": 204,
+        "y": 612
+      },
+      "type": "@/count"
+    },
+    {
+      "description": "P (proportional) factor. Set to 0 to disable, positive value to increase `OUT` if `IN` is less than `TARG`, negative value to inverse. Start with tweaking this coefficient first. Values in range (0.0, 2.0) usually give a decent result.",
+      "id": "rJszc7qNG",
+      "label": "Kp",
+      "position": {
+        "x": 68,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Target, desired value. The final effect of `OUT` would make `IN` converge to `TARG` if coefficients set up correctly.",
+      "id": "rkY46Q5NG",
+      "label": "TARG",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkt9gE9Nz",
+      "position": {
+        "x": 340,
+        "y": 816
+      },
+      "type": "@/multiply"
+    }
+  ]
+}

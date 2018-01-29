@@ -1,0 +1,56 @@
+{
+  "description": "Reads temperature from a DS18B20 sensor. Expects single-drop bus setup, i.e. one thermometer on a port.",
+  "nodes": [
+    {
+      "description": "Board port number the sensor is connected to.",
+      "id": "B1VSPLfEG",
+      "label": "PORT",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "B1wPwUMNM",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The last read temperature value measured in °C.",
+      "id": "BJkDP8GEM",
+      "label": "Tc",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new update, i.e. temperature reading.",
+      "id": "SJlIvIMEM",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when a reading is done and `Tc` is refreshed.",
+      "id": "rkZ3_IzEG",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
