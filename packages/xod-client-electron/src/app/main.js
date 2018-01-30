@@ -195,7 +195,7 @@ const onReady = () => {
   createWindow();
   win.webContents.on('did-finish-load', () => {
     getFileToOpen().then(WA.onLoadProject(
-      store,
+      store.dispatch.updateProjectPath,
       (eventName, data) => win.webContents.send(eventName, data)
     ));
 
