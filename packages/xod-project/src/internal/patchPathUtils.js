@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import * as CONST from '../constants';
 
+
 // :: String -> Boolean
 export const isValidIdentifier = R.allPass([
   R.test(/[a-z0-9-]+/), // only lowercase alphanumeric and hypen
@@ -8,6 +9,12 @@ export const isValidIdentifier = R.allPass([
   R.complement(R.test(/-$/)), // can't end with hypen
   R.complement(R.test(/--/)), // only one hypen in row
 ]);
+
+// :: String -> Boolean
+export const isProjectNameValid = R.either(
+  isValidIdentifier,
+  R.isEmpty
+);
 
 // :: ([String] -> Boolean) -> * -> Boolean
 const checkPathParts = partsChecker =>

@@ -5,7 +5,7 @@ import $ from 'sanctuary-def';
 import * as XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isTerminalPatchPath, isValidIdentifier, isValidPatchPath, isLibName } from './internal/patchPathUtils';
+import { isTerminalPatchPath, isProjectNameValid, isValidIdentifier, isValidPatchPath, isLibName } from './internal/patchPathUtils';
 import { isValidVersion } from './versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -44,6 +44,7 @@ export const CommentId = AliasType('CommentId', ShortId);
 export const PinKey = AliasType('PinKey', NodeId);
 export const PinLabel = AliasType('PinLabel', $.String);
 export const Identifier = NullaryType('Identifier', isValidIdentifier);
+export const ProjectName = NullaryType('ProjectName', isProjectNameValid);
 export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const LibName = NullaryType('LibName', isLibName);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
@@ -116,7 +117,7 @@ export const Patch = Model('Patch', {
 
 export const Project = Model('Project', {
   patches: $.StrMap(Patch),
-  name: Identifier,
+  name: ProjectName,
   authors: $.Array($.String),
   license: $.String,
   version: Version,
@@ -148,6 +149,7 @@ export const env = XF.env.concat([
   DataType,
   DataValue,
   Identifier,
+  ProjectName,
   Label,
   Link,
   LinkId,

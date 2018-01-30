@@ -35,17 +35,17 @@ export const createProject = def(
     license: '',
     version: '0.0.0',
     patches: {},
-    name: 'untitled',
+    name: '',
   })
 );
 
 export const getProjectName = def(
-  'getProjectName :: Project -> Identifier',
+  'getProjectName :: Project -> ProjectName',
   R.prop('name')
 );
 
 export const setProjectName = def(
-  'setProjectName :: Identifier -> Project -> Project',
+  'setProjectName :: ProjectName -> Project -> Project',
   R.assoc('name')
 );
 

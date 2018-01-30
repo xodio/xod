@@ -16,13 +16,17 @@ const rawItems = {
   openTutorialProject: {
     label: 'Open Tutorial Project',
   },
-  saveAll: {
-    label: 'Save All',
-    command: COMMAND.SAVE_ALL,
+  save: {
+    label: 'Save',
+    command: COMMAND.SAVE,
   },
-  renameProject: {
-    label: 'Rename Project...',
-    command: COMMAND.RENAME_PROJECT,
+  saveAs: {
+    label: 'Save As...',
+    command: COMMAND.SAVE_AS,
+  },
+  saveCopyAs: {
+    label: 'Save Copy As...',
+    command: COMMAND.SAVE_COPY_AS,
   },
   switchWorkspace: {
     label: 'Switch Workspace...',

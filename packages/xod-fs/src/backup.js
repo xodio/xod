@@ -15,6 +15,7 @@ export class Backup {
 
     this.isDataExist = fs.existsSync(this.path.data);
     this.isTempExist = fs.existsSync(this.path.temp);
+    this.isDataTempExist = fs.existsSync(this.path.dataTemp);
 
     this.make = this.make.bind(this);
     this.clear = this.clear.bind(this);
@@ -25,6 +26,7 @@ export class Backup {
     return new Promise((resolve, reject) => {
       if (!this.isDataExist) { resolve('data is not exist'); return; }
       if (!this.isTempExist) { fs.mkdirSync(this.path.temp); }
+      if (!this.isDataTempExist) { fs.mkdirSync(this.path.dataTemp); }
 
       copy(this.path.data, this.path.dataTemp, (err) => {
         if (err) { reject(err); return; }

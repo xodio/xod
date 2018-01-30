@@ -50,6 +50,24 @@ For shortcuts the following convention is used:
     </tr>
     <tr>
       <td>
+        <span class="ui blue label">Ctrl+Shift+S</span> |
+        <span class="ui grey label">⇧⌘ S</span>
+      </td>
+      <td>
+        Save As...
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="ui blue label">Ctrl+Shift+Alt+S</span> |
+        <span class="ui grey label">⇧⌘⌥ S</span>
+      </td>
+      <td>
+        Save Copy As...
+      </td>
+    </tr>
+    <tr>
+      <td>
         <span class="ui blue label">Ctrl+O</span> |
         <span class="ui grey label">⌘ O</span>
       </td>

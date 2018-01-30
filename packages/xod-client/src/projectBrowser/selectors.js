@@ -17,7 +17,13 @@ export const getSelectedPatchPath = createSelector(
 
 export const getProjectName = createSelector(
   ProjectSelectors.getProject,
-  XP.getProjectName
+  R.compose(
+    R.when(
+      R.isEmpty,
+      R.always('My Project')
+    ),
+    XP.getProjectName
+  )
 );
 
 // :: Project -> Patch -> Patch

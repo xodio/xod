@@ -9,6 +9,9 @@ import { REMOVE_SELECTION } from '../projectBrowser/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 import {
+  MAIN_PATCH_PATH,
+} from '../project/constants';
+import {
   DEBUGGER_TAB_ID,
   FOCUS_AREAS,
   SELECTION_ENTITY_TYPE,
@@ -477,7 +480,7 @@ const editorReducer = (state = {}, action) => {
     //
     case PAT.PROJECT_CREATE: {
       const newState = R.assoc('tabs', {}, state);
-      return editorReducer(newState, switchPatchUnsafe(action.payload.mainPatchPath));
+      return editorReducer(newState, switchPatchUnsafe(MAIN_PATCH_PATH));
     }
     case PAT.PROJECT_OPEN:
     case PAT.PROJECT_IMPORT: {

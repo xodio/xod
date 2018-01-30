@@ -21,12 +21,15 @@ import * as settings from './settings';
 import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
 import * as WA from './workspaceActions';
 import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
+import createAppStore from './store/index';
 
 // =============================================================================
 //
 // Configure application
 //
 // =============================================================================
+
+const DEFAULT_APP_TITLE = 'XOD IDE';
 
 app.setName('xod');
 
@@ -41,6 +44,8 @@ if (IS_DEV) {
   // To prevent GL_ERROR in development version (black rectangles).
   app.disableHardwareAcceleration();
 }
+
+const store = createAppStore();
 
 // =============================================================================
 //
@@ -62,7 +67,7 @@ function createWindow() {
     height: 720,
     minWidth: 800,
     minHeight: 600,
-    title: 'XOD IDE',
+    title: DEFAULT_APP_TITLE,
     show: false,
     // this is required for subpixel antialiasing to work
     backgroundColor: '#FFF',
@@ -149,7 +154,7 @@ const onReady = () => {
   }
   settings.setDefaults();
 
-  subscribeToRemoteAction(EVENTS.SAVE_ALL, WA.subscribeToSaveAll);
+  subscribeToRemoteAction(EVENTS.SAVE_ALL, WA.subscribeToSaveAll(store));
 
   let debugPort = null;
   let userAttemptedCloseSerialPort = false;
@@ -161,7 +166,7 @@ const onReady = () => {
     }
   };
 
-  WA.subscribeToWorkspaceEvents(ipcMain);
+  WA.subscribeToWorkspaceEvents(ipcMain, store);
   ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) => Promise.resolve()
     .then(() => ((debugPort) ? stopDebugSession(event) : event))
     .then(() => uploadToArduinoHandler(event, payload))
@@ -189,10 +194,10 @@ const onReady = () => {
 
   createWindow();
   win.webContents.on('did-finish-load', () => {
-    getFileToOpen()
-      .then(WA.loadProjectByPath)
-      .then(project => win.webContents.send(EVENTS.REQUEST_SHOW_PROJECT, project))
-      .catch(err => win.webContents.send(EVENTS.ERROR, err));
+    getFileToOpen().then(WA.onLoadProject(
+      store,
+      (eventName, data) => win.webContents.send(eventName, data)
+    ));
 
     WA.prepareWorkspaceOnLaunch(
       (eventName, data) => win.webContents.send(eventName, data)
@@ -203,6 +208,16 @@ const onReady = () => {
       ipcMain,
       autoUpdater
     );
+
+    store.subscribe(() => {
+      const projectPath = store.select.projectPath();
+      win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
+
+      const newTitle = projectPath
+        ? `${projectPath} — ${DEFAULT_APP_TITLE}`
+        : DEFAULT_APP_TITLE;
+      win.setTitle(newTitle);
+    });
 
     autoUpdater.checkForUpdates();
   });

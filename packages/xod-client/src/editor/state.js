@@ -2,7 +2,7 @@ import { FOCUS_AREAS, TAB_TYPES, SIDEBAR_IDS, PANEL_IDS } from './constants';
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
 
 export default {
-  currentTabId: '@/1',
+  currentTabId: '@/main',
   isHelpboxVisible: false,
   focusedArea: FOCUS_AREAS.WORKAREA,
   draggedPreviewSize: { width: 0, height: 0 },
@@ -12,11 +12,11 @@ export default {
     highlightedPatchPath: null,
   },
   tabs: {
-    '@/1': {
-      id: '@/1',
+    '@/main': {
+      id: '@/main',
       type: TAB_TYPES.PATCH,
       index: 0,
-      patchPath: '@/1',
+      patchPath: '@/main',
       selection: [],
       linkingPin: null,
       offset: DEFAULT_PANNING_OFFSET,

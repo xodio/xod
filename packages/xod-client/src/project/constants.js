@@ -1,3 +1,7 @@
+import { getLocalPath } from 'xod-project';
+
+export const MAIN_PATCH_PATH = getLocalPath('main');
+
 export const NODE_PROPERTY_KIND = {
   PIN: 'pin',
   PROP: 'property',

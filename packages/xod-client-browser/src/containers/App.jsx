@@ -33,19 +33,17 @@ class App extends client.App {
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
-    this.onImportChange = this.onImportChange.bind(this);
     this.onOpenTutorial = this.onOpenTutorial.bind(this);
-    this.onImport = this.onImport.bind(this);
-    this.onExport = this.onExport.bind(this);
+    this.onLoadChange = this.onLoadChange.bind(this);
+    this.onLoad = this.onLoad.bind(this);
+    this.onSave = this.onSave.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
-    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
     this.hotkeyHandlers = {
-      [client.COMMAND.NEW_PROJECT]: this.onRequestCreateProject,
-      [client.COMMAND.RENAME_PROJECT]: this.props.actions.requestRenameProject,
+      [client.COMMAND.NEW_PROJECT]: this.onCreateProject,
     };
 
     this.urlActions = {
@@ -92,20 +90,42 @@ class App extends client.App {
     );
   }
 
-  onCreateProject(projectName) {
-    this.props.actions.createProject(projectName);
+  onCreateProject() {
+    if (!this.confirmUnsavedChanges()) return;
+    this.props.actions.createProject();
   }
 
   onUpload() {
     this.showInstallAppPopup();
   }
 
-  onImportChange(event) {
+  onSave() {
+    const { project } = this.props;
+
+    const xodballJSON = XP.toXodball(project);
+    const xodballName = XP.getProjectName(project);
+    const link = (document) ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(xodballJSON)}`;
+
+    if (link && link.download !== undefined) {
+      link.href = url;
+      link.setAttribute('download', `${xodballName}.xodball`);
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(url, '_blank');
+      window.focus();
+    }
+  }
+
+  onLoadChange(event) {
     const file = event.target.files[0];
     const reader = new window.FileReader();
 
     reader.onload = (e) => {
-      this.onImport(e.target.result);
+      this.onLoad(e.target.result);
     };
 
     reader.readAsText(file);
@@ -127,13 +147,7 @@ class App extends client.App {
     return false;
   }
 
-  onRequestCreateProject() {
-    if (!this.confirmUnsavedChanges()) return;
-
-    this.props.actions.requestCreateProject();
-  }
-
-  onImport(jsonString) {
+  onLoad(jsonString) {
     if (!this.confirmUnsavedChanges()) return;
 
     foldEither(
@@ -161,31 +175,31 @@ class App extends client.App {
       submenu,
     } = client.menu;
 
-    const importProject = {
-      key: 'Import_Project',
+    const openProject = {
+      key: items.openProject.key,
       click: (event) => {
         if (
-          event.target === this.menuRefs.Import_Project ||
-          event.target.parentNode === this.menuRefs.Import_Project.parentNode
+          event.target === this.menuRefs.openProject ||
+          event.target.parentNode === this.menuRefs.openProject.parentNode
         ) return;
         event.stopPropagation();
-        this.menuRefs.Import_Project.click();
+        this.menuRefs.openProject.click();
       },
       children: (
         <label
           key="import"
           className="load-button"
-          htmlFor="importButton"
+          htmlFor="openProjectButton"
         >
           <input
             type="file"
             accept=".xodball"
-            onChange={this.onImportChange}
-            id="importButton"
-            ref={(input) => { this.menuRefs.Import_Project = input; }}
+            onChange={this.onLoadChange}
+            id="openProjectButton"
+            ref={(input) => { this.menuRefs.openProject = input; }}
           />
           <span>
-            Import project
+            {items.openProject.label}
           </span>
         </label>
       ),
@@ -215,11 +229,9 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.onRequestCreateProject),
-          onClick(items.renameProject, this.props.actions.requestRenameProject),
-          items.separator,
-          importProject,
-          onClick(items.exportProject, this.onExport),
+          onClick(items.newProject, this.onCreateProject),
+          openProject,
+          onClick(items.saveAs, this.onSave),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
           items.separator,

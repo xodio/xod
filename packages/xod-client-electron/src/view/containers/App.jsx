@@ -1,4 +1,3 @@
-import fs from 'fs';
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -10,7 +9,7 @@ import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
-import { Project, fromXodball } from 'xod-project';
+import { Project, getProjectName } from 'xod-project';
 import { foldEither, isAmong, explodeMaybe } from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
@@ -31,12 +30,13 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
-import * as MESSAGES from '../../shared/messages';
 import UPLOAD_MESSAGES from '../../upload/messages';
 import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import { subscribeAutoUpdaterEvents } from '../autoupdate';
 import { subscribeToTriggerMainMenuRequests } from '../../testUtils/triggerMainMenu';
+
+import { getOpenDialogFileFilters, createSaveDialogOptions } from '../nativeDialogs';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -45,6 +45,7 @@ const DEFAULT_CANVAS_HEIGHT = 600;
 const defaultState = {
   size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
   workspace: '',
+  projectPath: null,
   downloadProgressPopup: false,
   downloadProgressPopupError: null,
 };
@@ -57,15 +58,16 @@ class App extends client.App {
 
     this.onResize = this.onResize.bind(this);
 
+    this.suggestProjectFilePath = this.suggestProjectFilePath.bind(this);
+
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(this);
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
-    this.onImportClicked = this.onImportClicked.bind(this);
-    this.onImport = this.onImport.bind(this);
-    this.onExport = this.onExport.bind(this);
-    this.onSaveAll = this.onSaveAll.bind(this);
+    this.onSave = this.onSave.bind(this);
+    this.onSaveAs = this.onSaveAs.bind(this);
+    this.onSaveCopyAs = this.onSaveCopyAs.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
 
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
@@ -73,7 +75,6 @@ class App extends client.App {
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onWorkspaceCreate = this.onWorkspaceCreate.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
-    this.onRequestCreateProject = this.onRequestCreateProject.bind(this);
 
     this.onLoadProject = this.onLoadProject.bind(this);
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
@@ -87,6 +88,10 @@ class App extends client.App {
     this.initNativeMenu();
 
     // Reactions on messages from Main Process
+    ipcRenderer.on(
+      EVENTS.PROJECT_PATH_CHANGED,
+      (event, projectPath) => this.setState({ projectPath })
+    );
     ipcRenderer.on(
       EVENTS.UPDATE_WORKSPACE,
       (event, workspacePath) => this.setState({ workspace: workspacePath })
@@ -254,19 +259,25 @@ class App extends client.App {
     });
   }
 
-  onCreateProject(projectName) {
+  onCreateProject() {
     if (!this.confirmUnsavedChanges()) return;
 
-    this.props.actions.createProject(projectName);
-    ipcRenderer.send(EVENTS.CREATE_PROJECT, projectName);
-    ipcRenderer.once(EVENTS.SAVE_ALL, () => {
-      this.props.actions.addConfirmation(MESSAGES.SAVE_ALL_SUCCEED);
-    });
+    this.props.actions.createProject();
+    ipcRenderer.send(EVENTS.CREATE_PROJECT);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   onOpenProjectClicked() {
-    ipcRenderer.send(EVENTS.OPEN_PROJECT);
-    this.showPopupProjectSelection();
+    dialog.showOpenDialog(
+      {
+        properties: ['openFile'],
+        filters: getOpenDialogFileFilters(),
+      },
+      (filePaths) => {
+        if (!filePaths) return;
+        ipcRenderer.send(EVENTS.LOAD_PROJECT, filePaths[0]);
+      }
+    );
   }
 
   static onSelectProject(projectMeta) {
@@ -283,30 +294,6 @@ class App extends client.App {
     this.props.actions.openProject(project);
   }
 
-  onImportClicked() {
-    dialog.showOpenDialog(
-      {
-        properties: ['openFile'],
-        filters: [
-          { name: 'xodball', extensions: ['xodball'] },
-        ],
-      },
-      (filePaths) => {
-        if (!filePaths) return;
-
-        fs.readFile(filePaths[0], 'utf8', (err, data) => {
-          if (err) {
-            this.props.actions.addError(
-              client.composeMessage(err.message)
-            );
-          }
-
-          this.onImport(data);
-        });
-      }
-    );
-  }
-
   onWorkspaceChange(val) {
     if (!this.confirmUnsavedChanges()) return;
 
@@ -319,28 +306,44 @@ class App extends client.App {
     ipcRenderer.send(EVENTS.CREATE_WORKSPACE, path);
   }
 
-  onSaveAll() {
-    this.props.actions.saveAll({
-      oldProject: this.props.lastSavedProject,
-      newProject: this.props.project,
-    });
+  onSave() {
+    if (this.state.projectPath) {
+      this.props.actions.saveAll({
+        oldProject: this.props.lastSavedProject,
+        newProject: this.props.project,
+        projectPath: this.state.projectPath,
+        updateProjectPath: false,
+      });
+    } else {
+      this.onSaveAs();
+    }
   }
-
-  onRequestCreateProject() {
-    this.props.actions.requestCreateProject();
+  onSaveAs() {
+    dialog.showSaveDialog(
+      createSaveDialogOptions('Save As...', this.suggestProjectFilePath(), 'Save'),
+      (filePath) => {
+        if (!filePath) return;
+        this.props.actions.saveAll({
+          oldProject: this.props.lastSavedProject,
+          newProject: this.props.project,
+          projectPath: filePath,
+          updateProjectPath: true,
+        });
+      }
+    );
   }
-
-  onImport(jsonString) {
-    foldEither(
-      R.compose(
-        this.props.actions.addError,
-        client.composeMessage
-      ),
-      (project) => {
-        if (!this.confirmUnsavedChanges()) return;
-        this.props.actions.importProject(project);
-      },
-      fromXodball(jsonString)
+  onSaveCopyAs() {
+    dialog.showSaveDialog(
+      createSaveDialogOptions('Save Copy As...', this.suggestProjectFilePath(), 'Save a Copy'),
+      (filePath) => {
+        if (!filePath) return;
+        this.props.actions.saveAll({
+          oldProject: this.props.lastSavedProject,
+          newProject: this.props.project,
+          projectPath: filePath,
+          updateProjectPath: false,
+        });
+      }
     );
   }
 
@@ -356,7 +359,7 @@ class App extends client.App {
     });
 
     if (clickedButtonId === 0) {
-      this.onSaveAll();
+      this.onSave();
     }
 
     return clickedButtonId !== 2;
@@ -422,14 +425,12 @@ class App extends client.App {
       submenu(
         items.file,
         [
-          onClick(items.newProject, this.onRequestCreateProject),
+          onClick(items.newProject, this.onCreateProject),
           onClick(items.openProject, this.onOpenProjectClicked),
-          onClick(items.saveAll, this.onSaveAll),
-          onClick(items.renameProject, this.props.actions.requestRenameProject),
+          onClick(items.save, this.onSave),
+          onClick(items.saveAs, this.onSaveAs),
+          onClick(items.saveCopyAs, this.onSaveCopyAs),
           onClick(items.switchWorkspace, this.showPopupSetWorkspace),
-          items.separator,
-          onClick(items.importProject, this.onImportClicked),
-          onClick(items.exportProject, this.onExport),
           items.separator,
           onClick(items.newPatch, this.props.actions.createPatch),
           items.separator,
@@ -510,6 +511,13 @@ class App extends client.App {
         resolve(response.data);
       });
     });
+  }
+
+  suggestProjectFilePath() {
+    return (
+      this.state.projectPath ||
+      `${this.state.workspace}/${getProjectName(this.props.project)}`
+    );
   }
 
   initNativeMenu() {
@@ -691,7 +699,10 @@ class App extends client.App {
           onSelect={this.constructor.onSelectProject}
           onClose={this.hideAllPopups}
           onSwitchWorkspace={this.showPopupSetWorkspace}
-          onCreateNewProject={this.props.actions.requestCreateProject}
+          onCreateNewProject={() => {}}
+          // Dont worry! This whole component will be removed into #1036,
+          // so this is just a temporary hack to remove a way to call
+          // removed function without useless refactoring.
         />
         <PopupCreateWorkspace
           data={this.props.popupsData.createWorkspace}
@@ -774,7 +785,6 @@ const mapStateToProps = R.applySpec({
     // TODO: make keys match with POPUP_IDs
     // (for example, `creatingProject` insteand of `createProject`)
     // this way we could make an util that takes an array of POPUP_IDs and generates a spec
-    createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     projectSelection: client.getPopupVisibility(client.POPUP_ID.OPENING_PROJECT),
     switchWorkspace: client.getPopupVisibility(client.POPUP_ID.SWITCHING_WORKSPACE),
     createWorkspace: client.getPopupVisibility(client.POPUP_ID.CREATING_WORKSPACE),

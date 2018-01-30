@@ -10,15 +10,6 @@ import {
 
 export const fsSafeName = XP.toIdentifier;
 
-export const getProjectPath = def(
-  'getProjectPath :: Project -> Path',
-  R.pipe(
-    XP.getProjectName,
-    fsSafeName,
-    name => `.${path.sep}${name}`
-  )
-);
-
 export const getPatchFolderName = def(
   'getPatchFolderName :: Patch -> Path',
   R.pipe(XP.getPatchPath, XP.getBaseName)
@@ -27,19 +18,19 @@ export const getPatchFolderName = def(
 const filePath = R.unapply(R.join(path.sep));
 
 const getXodpFile = def(
-  'getXodpFile :: Path -> Patch -> PatchFile',
-  (projectPath, patch) => ({
-    path: filePath(projectPath, getPatchFolderName(patch), 'patch.xodp'),
+  'getXodpFile :: Patch -> PatchFile',
+  patch => ({
+    path: filePath(getPatchFolderName(patch), 'patch.xodp'),
     content: convertPatchToPatchFileContents(patch),
   })
 );
 
 const getAttachmentFiles = def(
-  'getAttachmentFiles :: Path -> Patch -> [AttachmentFile]',
-  (projectPath, patch) => R.compose(
+  'getAttachmentFiles :: Patch -> [AttachmentFile]',
+  patch => R.compose(
     R.map(
       ({ filename, encoding, content }) => ({
-        path: filePath(projectPath, getPatchFolderName(patch), filename),
+        path: filePath(getPatchFolderName(patch), filename),
         encoding,
         content,
       })
@@ -49,27 +40,26 @@ const getAttachmentFiles = def(
 );
 
 export const arrangePatchByFiles = def(
-  'arrangePatchByFiles :: Path -> Patch -> [AnyXodFile]',
-  (projectDir, patch) => R.converge(
+  'arrangePatchByFiles :: Patch -> [AnyXodFile]',
+  R.converge(
     R.unapply(R.unnest),
     [
-      R.compose(R.of, getXodpFile(projectDir)),
-      getAttachmentFiles(projectDir),
+      R.compose(R.of, getXodpFile),
+      getAttachmentFiles,
     ]
-  )(patch)
+  )
 );
 
 // :: Project -> [ { path :: String, content :: Object } ]
 export const arrangeByFiles = def(
   'arrangeByFiles :: Project -> [AnyXodFile]',
   (project) => {
-    const projectPath = getProjectPath(project);
     const mainFiles = [{
-      path: filePath(projectPath, 'project.xod'),
+      path: filePath('project.xod'),
       content: convertProjectToProjectFileContents(project),
     }];
     const patchFiles = R.compose(
-      R.chain(arrangePatchByFiles(projectPath)),
+      R.chain(arrangePatchByFiles),
       XP.listLocalPatches
     )(project);
 

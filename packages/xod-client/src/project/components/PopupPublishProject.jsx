@@ -25,6 +25,22 @@ const PopupPublishProject = ({
   // When popup is hidden, `user` could be Nothing
   const { username } = user.getOrElse({});
 
+  const isValidName = (
+    XP.isValidIdentifier(projectName) &&
+    projectName.length > 0
+  );
+
+  const invalidNameMessage = (isValidName) ? null : (
+    <span className="error">
+      Project has no public name set.<br />
+      Edit
+      <a tabIndex="0" role="button" onClick={onRequestToEditPreferences}>
+        project preferences
+      </a>
+      to set it up prior to the publishing.
+    </span>
+  );
+
   return (
     <PopupForm
       className="PopupPublishProject"
@@ -36,6 +52,7 @@ const PopupPublishProject = ({
       <p className="property">
         <span className="propertyLabel">Name: </span>
         <span className="libName">{username}/{projectName}</span>
+        {invalidNameMessage}
       </p>
       <p className="property">
         <span className="propertyLabel">Version: </span>
@@ -55,7 +72,7 @@ const PopupPublishProject = ({
         </div>
       ) : (
         <div className="ModalFooter">
-          <Button onClick={onPublish} autoFocus>Publish</Button>
+          <Button onClick={onPublish} disabled={!isValidName} autoFocus>Publish</Button>
           <Button onClick={onRequestToEditPreferences}>Edit</Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>

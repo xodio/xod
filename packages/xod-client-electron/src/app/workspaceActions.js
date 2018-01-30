@@ -12,14 +12,12 @@ import {
   loadProject,
   getFilePath,
   filterDefaultProject,
-  findProjectMetaByName,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
   saveLibraryEntirely,
   ERROR_CODES as FS_ERROR_CODES,
 } from 'xod-fs';
 import {
-  explode,
   isAmong,
   rejectWithCode,
   allPromises,
@@ -105,33 +103,11 @@ const catchInvalidWorkspace = R.curry(
   )(err)
 );
 
-// :: String -> Project
-const createEmptyProject = projectName => R.compose(
-    XP.assocPatch(XP.getLocalPath('main'), XP.createPatch()),
-    XP.setProjectName(projectName),
-    XP.createProject
-  )();
-
 // =============================================================================
 //
 // Impure functions
 //
 // =============================================================================
-
-// :: Path -> String -> String
-const createAndSaveNewProject = R.curry(
-  (pathGetter, projectName) => R.pipeP(
-    Promise.resolve.bind(Promise),
-    createEmptyProject,
-    explode,
-    project => R.pipeP(
-      pathGetter,
-      saveAll(R.__, XP.createProject(), project)
-    )(),
-    R.always(projectName)
-  )(projectName)
-    .catch(rejectWithCode(ERROR_CODES.CANT_CREATE_NEW_PROJECT))
-);
 
 // :: () -> Promise Path Error
 export const loadWorkspacePath = R.compose(
@@ -200,12 +176,15 @@ export const saveLibraries = R.curry(
     })
 );
 
-// :: Path -> Project
-export const loadProjectByPath = pathToOpen => R.composeP(
-  loadProject(R.__, pathToOpen),
-  R.append(getPathToBundledWorkspace()),
-  loadWorkspacePath
-)();
+// :: (Path -> ()) -> Path -> Promise Project Error
+export const loadProjectByPath = R.curry(
+  (updateProjectPath, pathToOpen) => R.composeP(
+    R.tap(() => updateProjectPath(pathToOpen)),
+    loadProject(R.__, pathToOpen),
+    R.append(getPathToBundledWorkspace()),
+    loadWorkspacePath
+  )()
+);
 
 // =============================================================================
 //
@@ -213,13 +192,25 @@ export const loadProjectByPath = pathToOpen => R.composeP(
 //
 // =============================================================================
 
-// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Project -> Project ->
+// SaveData :: {
+//   oldProject :: Project,
+//   newProject :: Project,
+//   projectPath :: Path,
+//   updateProjectPath :: Boolean
+// }
+//
+// :: (Path -> ()) -> (String -> a -> ()) -> (() -> Promise Path Error) -> SaveData ->
 //    -> Promise Project Error
 export const onSaveAll = R.curry(
-  (send, pathGetter, oldProject, newProject) => R.pipeP(
+  (updateProjectPath, send, pathGetter, saveData) => R.pipeP(
     pathGetter,
-    saveAll(R.__, oldProject, newProject),
-    R.tap(notifySaveAllComplete(send))
+    saveAll(R.__, saveData.projectPath, saveData.oldProject, saveData.newProject),
+    R.tap(notifySaveAllComplete(send)),
+    R.tap(() => {
+      if (saveData.updateProjectPath) {
+        updateProjectPath(saveData.projectPath);
+      }
+    })
   )().catch(handleError(send))
 );
 
@@ -232,17 +223,30 @@ export const onOpenProject = R.curry(
   .catch(handleError(send))
 );
 
-// :: (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
+// :: (Path -> ()) -> (String -> a -> ()) -> Path -> Promise Project Error
+export const onLoadProject = R.curry(
+  (updateProjectPath, send, pathToOpen) =>
+    loadProjectByPath(updateProjectPath, pathToOpen)
+      .then(project => send(EVENTS.REQUEST_SHOW_PROJECT, project))
+      .catch(err => send(EVENTS.ERROR, errorToPlainObject(err)))
+);
+
+// :: (Path -> ()) -> (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
-  (send, pathGetter, projectMeta) => pathGetter()
-    .then(() => loadProject([getPathToBundledWorkspace()], getFilePath(projectMeta)))
-    .then(requestShowProject(send))
-    .catch(R.ifElse(
-      R.prop('errorCode'),
-      Promise.reject.bind(Promise),
-      rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT)
-    ))
-    .catch(handleError(send))
+  (updateProjectPath, send, pathGetter, projectMeta) => {
+    const projectPath = getFilePath(projectMeta);
+
+    return pathGetter()
+      .then(() => loadProject([getPathToBundledWorkspace()], projectPath))
+      .then(requestShowProject(send))
+      .then(R.tap(() => updateProjectPath(projectPath)))
+      .catch(R.ifElse(
+        R.prop('errorCode'),
+        Promise.reject.bind(Promise),
+        rejectWithCode(ERROR_CODES.CANT_OPEN_SELECTED_PROJECT)
+      ))
+      .catch(handleError(send));
+  }
 );
 
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
@@ -298,19 +302,8 @@ export const onSwitchWorkspace = R.curry(
     .catch(handleError(send))
 );
 
-// :: (String -> a -> ()) -> Path -> String -> ProjectMeta
-// With side-effect: emitSelectProject
-export const onCreateProject = R.curry(
-  (send, pathGetter, projectName) => R.pipeP(
-    createAndSaveNewProject,
-    R.tap(notifySaveAllComplete(send)),
-    pathGetter,
-    getLocalProjects,
-    findProjectMetaByName(projectName),
-    R.tap(emitSelectProject(send))
-  )(pathGetter, projectName)
-  .catch(handleError(send))
-);
+// :: (Path -> ()) -> void
+export const onCreateProject = updateProjectPath => updateProjectPath(null);
 
 // =============================================================================
 //
@@ -323,14 +316,27 @@ const ipcSender = event => (eventName, arg) => event.sender.send(eventName, arg)
 
 // This event is subscribed by subscribeRemoteAction function
 export const subscribeToSaveAll = R.curry(
-  (event, { oldProject, newProject }) =>
-    onSaveAll(ipcSender(event), loadWorkspacePath, oldProject, newProject)
+  (store, event, saveData) =>
+    onSaveAll(
+      store.dispatch.updateProjectPath,
+      ipcSender(event),
+      loadWorkspacePath,
+      saveData
+    )
 );
 
 // onSelectProject
-export const subscribeToSelectProjectEvent = () => WorkspaceEvents.on(
-  EVENTS.SELECT_PROJECT,
-  ({ send, projectMeta }) => onSelectProject(send, loadWorkspacePath, projectMeta)
+export const subscribeToSelectProjectEvent = R.uncurryN(
+  2,
+  store => WorkspaceEvents.on(
+    EVENTS.SELECT_PROJECT,
+    ({ send, projectMeta }) => onSelectProject(
+      store.dispatch.updateProjectPath,
+      send,
+      loadWorkspacePath,
+      projectMeta
+    )
+  )
 );
 
 // Pass through IPC event into EventEmitter
@@ -339,18 +345,24 @@ export const subscribeToSelectProject = ipcMain => ipcMain.on(
   (event, projectMeta) => emitSelectProject(ipcSender(event), projectMeta)
 );
 
-export const subscribeToOpenBundledProject = ipcMain => ipcMain.on(
-  EVENTS.OPEN_BUNDLED_PROJECT,
-  (event, projectName) => {
-    const pathToBundledWorkspace = getPathToBundledWorkspace();
-    const projectPath = path.join(pathToBundledWorkspace, projectName);
+export const subscribeToOpenBundledProject = R.curry(
+  (store, ipcMain) => ipcMain.on(
+    EVENTS.OPEN_BUNDLED_PROJECT,
+    (event, projectName) => {
+      const pathToBundledWorkspace = getPathToBundledWorkspace();
+      const projectPath = path.join(pathToBundledWorkspace, projectName);
 
-    return onSelectProject(
-      ipcSender(event),
-      () => Promise.resolve(pathToBundledWorkspace),
-      { path: projectPath }
-    );
-  }
+      return onSelectProject(
+        // User should not save changes in the bundled project,
+        // so when it will be loaded we'll update project path to
+        // null, to make it works like it was not saved before.
+        () => store.dispatch.updateProjectPath(null),
+        ipcSender(event),
+        () => Promise.resolve(pathToBundledWorkspace),
+        { path: projectPath }
+      );
+    }
+  )
 );
 
 // onOpenProject
@@ -360,9 +372,11 @@ export const subscribeToOpenProject = ipcMain => ipcMain.on(
 );
 
 // onCreateProject
-export const subscribeToCreateProject = ipcMain => ipcMain.on(
-  EVENTS.CREATE_PROJECT,
-  (event, projectName) => onCreateProject(ipcSender(event), loadWorkspacePath, projectName)
+export const subscribeToCreateProject = R.curry(
+  (store, ipcMain) => ipcMain.on(
+    EVENTS.CREATE_PROJECT,
+    () => onCreateProject(store.dispatch.updateProjectPath)
+  )
 );
 
 // onCreateWorkspace
@@ -377,25 +391,38 @@ export const subscribeToSwitchWorkspace = ipcMain => ipcMain.on(
   (event, workspacePath) => onSwitchWorkspace(ipcSender(event), saveWorkspacePath, workspacePath)
 );
 
+// onLoadProject
+export const subscribeToLoadProject = R.curry(
+  (store, ipcMain) => ipcMain.on(
+    EVENTS.LOAD_PROJECT,
+    (event, projectPath) => onLoadProject(
+      store.dispatch.updateProjectPath,
+      ipcSender(event),
+      projectPath
+    )
+  )
+);
+
 // =============================================================================
 //
 // Handy functions to call from main process
 //
 // =============================================================================
 
-// :: ipcMain -> ipcMain
-export const subscribeToWorkspaceEvents = R.tap(R.compose(
+// :: ipcMain -> Store -> ipcMain
+export const subscribeToWorkspaceEvents = (ipcMain, store) => R.tap(R.compose(
   R.ap([
     subscribeToSelectProject,
-    subscribeToSelectProjectEvent,
+    subscribeToSelectProjectEvent(store),
     subscribeToOpenProject,
-    subscribeToOpenBundledProject,
-    subscribeToCreateProject,
+    subscribeToOpenBundledProject(store),
+    subscribeToCreateProject(store),
     subscribeToCreateWorkspace,
     subscribeToSwitchWorkspace,
+    subscribeToLoadProject(store),
   ]),
   R.of
-));
+))(ipcMain);
 
 // :: (String -> a -> ()) -> Promise ProjectMeta[] Error
 export const prepareWorkspaceOnLaunch = send => onIDELaunch(

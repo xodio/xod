@@ -313,7 +313,6 @@ class ProjectBrowser extends React.Component {
           popups={this.props.popups}
           onPatchDelete={this.props.actions.deletePatch}
           onPatchRename={this.props.actions.renamePatch}
-          onProjectRename={this.props.actions.renameProject}
           onPatchCreate={this.props.actions.addPatch}
           onCloseAllPopups={this.props.actions.closeAllPopups}
         />
@@ -366,7 +365,6 @@ ProjectBrowser.propTypes = {
     renamePatch: PropTypes.func.isRequired,
     deletePatch: PropTypes.func.isRequired,
     startDraggingPatch: PropTypes.func.isRequired,
-    renameProject: PropTypes.func.isRequired,
     closeAllPopups: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
@@ -401,7 +399,6 @@ const mapDispatchToProps = dispatch => ({
     addPatch: ProjectActions.addPatch,
     renamePatch: ProjectActions.renamePatch,
     deletePatch: ProjectActions.deletePatch,
-    renameProject: ProjectActions.renameProject,
 
     closeAllPopups: PopupActions.hideAllPopups,
 

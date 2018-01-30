@@ -22,6 +22,7 @@ import { expectRejectedWithCode } from './utils';
 
 const tempDirName = './fs-temp';
 const tempDir = path.resolve(__dirname, tempDirName);
+const tempProjectDir = path.resolve(__dirname, tempDirName, 'project');
 
 describe('saveProjectEntirely()', () => {
   it('should reject CANT_SAVE_PROJECT', () =>
@@ -53,9 +54,9 @@ describe('saveProjectEntirely()', () => {
     });
 
     return saveProjectEntirely(tempDir, testProject)
-      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'img/20x20.png'), 'base64'))
+      .then(() => readFile(path.resolve(tempDir, 'test', 'img/20x20.png'), 'base64'))
       .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[0].content))
-      .then(() => readFile(path.resolve(tempDir, projectName, 'test', 'README.md'), 'utf8'))
+      .then(() => readFile(path.resolve(tempDir, 'test', 'README.md'), 'utf8'))
       .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[1].content));
   });
 });
@@ -116,10 +117,10 @@ describe('Save project and libraries', () => {
   const libPath = (...extraPath) => path.resolve(resolveLibPath(tempDir), ...extraPath);
 
   const firstLocalExpectedFiles = [
-    path.resolve(tempDir, projectName, 'same/patch.xodp'),
-    path.resolve(tempDir, projectName, 'edited/patch.xodp'),
-    path.resolve(tempDir, projectName, 'deleted/patch.xodp'),
-    path.resolve(tempDir, projectName, 'project.xod'),
+    path.resolve(tempProjectDir, 'same/patch.xodp'),
+    path.resolve(tempProjectDir, 'edited/patch.xodp'),
+    path.resolve(tempProjectDir, 'deleted/patch.xodp'),
+    path.resolve(tempProjectDir, 'project.xod'),
   ];
   const firstLibExpectedFiles = [
     libPath('xod/core/project.xod'),
@@ -128,10 +129,10 @@ describe('Save project and libraries', () => {
     libPath('xod/core/deleted/patch.xodp'),
   ];
   const secondLocalExpectedFiles = [
-    path.resolve(tempDir, projectName, 'same/patch.xodp'),
-    path.resolve(tempDir, projectName, 'edited/patch.xodp'),
-    path.resolve(tempDir, projectName, 'added/patch.xodp'),
-    path.resolve(tempDir, projectName, 'project.xod'),
+    path.resolve(tempProjectDir, 'same/patch.xodp'),
+    path.resolve(tempProjectDir, 'edited/patch.xodp'),
+    path.resolve(tempProjectDir, 'added/patch.xodp'),
+    path.resolve(tempProjectDir, 'project.xod'),
   ];
   const secondLibExpectedFiles = [
     libPath('xod/core/project.xod'),
@@ -142,12 +143,12 @@ describe('Save project and libraries', () => {
 
   describe('saveProject', () => {
     it('should save entire project if it wasn\'t saved yet', () =>
-      saveProject(tempDir, firstChanges, firstProject)
+      saveProject(tempProjectDir, firstChanges, firstProject)
         .then(() => Promise.all(R.map(assertPathExists, firstLocalExpectedFiles)))
     );
     it('should save only changes in the project', () =>
-      saveProject(tempDir, firstChanges, firstProject) // make sure that project exists on FS
-        .then(() => saveProject(tempDir, secondChanges, secondProject))
+      saveProject(tempProjectDir, firstChanges, firstProject) // make sure that project exists on FS
+        .then(() => saveProject(tempProjectDir, secondChanges, secondProject))
         .then(() => Promise.all(R.map(assertPathExists, secondLocalExpectedFiles)))
     );
   });
@@ -176,15 +177,15 @@ describe('Save project and libraries', () => {
 
   describe('saveAll', () => {
     it('should save entire project and library', () =>
-      saveAll(tempDir, emptyProject, firstProject)
+      saveAll(tempDir, tempProjectDir, emptyProject, firstProject)
         .then(() => Promise.all(R.compose(
           R.map(assertPathExists),
           R.concat
         )(firstLocalExpectedFiles, firstLibExpectedFiles)))
     );
     it('should save only changes in project and library', () =>
-      saveAll(tempDir, emptyProject, firstProject)
-        .then(savedProject => saveAll(tempDir, savedProject, secondProject))
+      saveAll(tempDir, tempProjectDir, emptyProject, firstProject)
+        .then(savedProject => saveAll(tempDir, tempProjectDir, savedProject, secondProject))
         .then(() => Promise.all(R.compose(
           R.map(assertPathExists),
           R.concat
