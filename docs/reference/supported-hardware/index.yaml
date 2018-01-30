@@ -255,6 +255,37 @@
       nodes:
         - xod/common-hardware/dht2x-thermometer
 
+    - part: DS18B20
+      kind: Thermometer
+      vendor: Dallas
+      nodes:
+        - xod/common-hardware/ds18b20-thermometer
+      shopping:
+        - shop: Adafruit
+          sku: "#374"
+          flavor: Raw
+          url: https://www.adafruit.com/product/374
+        - shop: Adafruit
+          sku: "#381"
+          flavor: Raw
+          url: https://www.adafruit.com/product/381
+        - shop: DFRobot
+          sku: DFR0024
+          flavor: Mod
+          url: https://www.dfrobot.com/product-164.html
+        - shop: DFRobot
+          sku: KIT0021
+          flavor: Mod
+          url: https://www.dfrobot.com/product-1354.html
+        - shop: SparkFun
+          sku: SEN-00245
+          flavor: Raw
+          url: https://www.sparkfun.com/products/245
+        - shop: SparkFun
+          sku: SEN-11050
+          flavor: Raw
+          url: https://www.sparkfun.com/products/11050
+
     - part: TMP36
       kind: Thermometer
       vendor: Analog Devices
