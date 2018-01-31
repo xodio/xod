@@ -1,8 +1,38 @@
+import * as R from 'ramda';
 import fs from 'fs-extra';
 import path from 'path';
 import copy from 'recursive-copy';
 
 const lastDir = dir => dir.split(path.sep).filter(name => name !== '').pop();
+
+// CopyResult :: {
+//   src   :: Path,
+//   dest  :: Path,
+//   stats :: Stats,
+// }
+// :: Path -> Path -> Promise [CopyResult] Error
+const copyContents = (from, to) =>
+  fs.readdir(from)
+    .then(R.converge(
+      R.zip,
+      [
+        R.map(
+          dirOrFileName => path.resolve(
+            from, dirOrFileName
+          )
+        ),
+        R.map(
+          dirOrFileName => path.resolve(
+            to, path.basename(dirOrFileName)
+          )
+        ),
+      ]
+    ))
+    .then(pairs => Promise.all(
+      pairs.map(
+        ([fromPath, toPath]) => copy(fromPath, toPath, { overwrite: true })
+      )
+    ));
 
 export class Backup {
   constructor(dataPath, tempPath) {
@@ -23,17 +53,18 @@ export class Backup {
   }
 
   make() {
-    return new Promise((resolve, reject) => {
-      if (!this.isDataExist) { resolve('data is not exist'); return; }
-      if (!this.isTempExist) { fs.mkdirSync(this.path.temp); }
-      if (!this.isDataTempExist) { fs.mkdirSync(this.path.dataTemp); }
+    if (!this.isDataExist) {
+      return Promise.reject(
+        new Error('Can not make a backup: Data is not exist')
+      );
+    }
 
-      copy(this.path.data, this.path.dataTemp, (err) => {
-        if (err) { reject(err); return; }
-        this.stored = true;
-        resolve();
-      });
-    });
+    if (!this.isTempExist) { fs.mkdirSync(this.path.temp); }
+    if (this.isDataTempExist) { fs.removeSync(this.path.dataTemp); }
+    fs.mkdirSync(this.path.dataTemp);
+
+    return copyContents(this.path.data, this.path.dataTemp)
+      .then(R.tap(() => { this.stored = true; }));
   }
 
   clear() {
@@ -50,14 +81,10 @@ export class Backup {
   restore() {
     if (!this.stored) { return Promise.resolve(); }
 
-    return new Promise((resolve, reject) => {
-      fs.removeSync(this.path.data);
-      copy(this.path.dataTemp, this.path.data, (err) => {
-        if (err) { reject(err); return; }
-        this.clear();
-        resolve();
-      });
-    });
+    return fs.emptyDir(this.path.data)
+      .then(() => copyContents(this.path.dataTemp, this.path.data))
+      .then(() => this.clear())
+      .then(R.tap(() => { this.stored = false; }));
   }
 }
 
