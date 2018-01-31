@@ -17,6 +17,6 @@ void evaluate(Context ctx) {
     auto addr = (uint8_t)getValue<input_ADDR>(ctx);
     auto nBytes = (uint8_t)getValue<input_N>(ctx);
     Wire.requestFrom(addr, nBytes);
-            
+
     emitValue<output_DONE>(ctx, 1);
 }

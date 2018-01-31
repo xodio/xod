@@ -1,0 +1,110 @@
+{
+  "description": "Outputs time difference between the current and previous updates.",
+  "links": [
+    {
+      "id": "B1gJyE5Vf",
+      "input": {
+        "nodeId": "SJ6ACXqNz",
+        "pinKey": "ry9j0mqEz"
+      },
+      "output": {
+        "nodeId": "H1z5AmcNz",
+        "pinKey": "BkEVI0uHwJb"
+      }
+    },
+    {
+      "id": "BkvcRX5Ef",
+      "input": {
+        "nodeId": "H1z5AmcNz",
+        "pinKey": "Bk74I0_SPyb"
+      },
+      "output": {
+        "nodeId": "H1NuAXqEM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJVJkVcNM",
+      "input": {
+        "nodeId": "SJ6ACXqNz",
+        "pinKey": "S1bhCQqVM"
+      },
+      "output": {
+        "nodeId": "H1NuAXqEM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SydykNqEG",
+      "input": {
+        "nodeId": "B1OK07cVz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJ6ACXqNz",
+        "pinKey": "SkFpRm9Nz"
+      }
+    },
+    {
+      "id": "rJvk1V9VG",
+      "input": {
+        "nodeId": "SJ6ACXqNz",
+        "pinKey": "SyYn0X5NM"
+      },
+      "output": {
+        "nodeId": "ByCuRXcEG",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Time difference in seconds between the current and previous updates. Always equals to 0 on the first update.",
+      "id": "B1OK07cVz",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Resets the output to 0",
+      "id": "ByCuRXcEG",
+      "label": "RST",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundValues": {
+        "__out__": "CONTINUOUSLY"
+      },
+      "description": "Triggers new update",
+      "id": "H1NuAXqEM",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H1z5AmcNz",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/system-time"
+    },
+    {
+      "id": "SJ6ACXqNz",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "@/delta"
+    }
+  ]
+}

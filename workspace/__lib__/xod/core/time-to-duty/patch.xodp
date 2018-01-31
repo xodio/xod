@@ -93,7 +93,7 @@
         "x": 34,
         "y": 204
       },
-      "type": "xod/core/add"
+      "type": "@/add"
     },
     {
       "id": "HJ1SqAFkG",
@@ -120,7 +120,7 @@
         "x": -68,
         "y": 306
       },
-      "type": "xod/core/divide"
+      "type": "@/divide"
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "description": "Outputs a difference between the current `IN` value and its value at the moment of the last node update.",
+  "nodes": [
+    {
+      "id": "HyJCAXqNG",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers a new update",
+      "id": "S1bhCQqVM",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Difference between the current `IN` value and the value it has when the previous `UPD` was send. Can be positive or negative. Always equals to 0 on the first update.",
+      "id": "SkFpRm9Nz",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Resets the output difference to 0",
+      "id": "SyYn0X5NM",
+      "label": "RST",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Input value",
+      "id": "ry9j0mqEz",
+      "label": "IN",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

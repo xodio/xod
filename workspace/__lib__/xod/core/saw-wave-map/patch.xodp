@@ -167,7 +167,7 @@
         "x": 68,
         "y": 306
       },
-      "type": "xod/core/divide"
+      "type": "@/divide"
     },
     {
       "id": "rkCsLuOyz",
