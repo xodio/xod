@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { TRIGGER_MAIN_MENU_ITEM } from './events';
 
 function findMenuItem([itemLabel, ...restLabels], tpl) {
   if (R.isNil(tpl)) {
@@ -15,9 +16,7 @@ function findMenuItem([itemLabel, ...restLabels], tpl) {
   return findMenuItem(restLabels, item.submenu);
 }
 
-export const TRIGGER_MAIN_MENU_ITEM = 'TRIGGER_MAIN_MENU_ITEM';
-
-export const subscribeToTriggerMainMenuRequests = (eventEmitter, menuTemplate) => {
+export default (eventEmitter, menuTemplate) => {
   eventEmitter.on(TRIGGER_MAIN_MENU_ITEM, (pathToMenuItem) => {
     const item = findMenuItem(pathToMenuItem, menuTemplate);
     if (item && typeof item.click === 'function') {

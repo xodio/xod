@@ -194,13 +194,10 @@ const onReady = () => {
 
   createWindow();
   win.webContents.on('did-finish-load', () => {
-    getFileToOpen().then(WA.onLoadProject(
-      store.dispatch.updateProjectPath,
-      (eventName, data) => win.webContents.send(eventName, data)
-    ));
-
     WA.prepareWorkspaceOnLaunch(
-      (eventName, data) => win.webContents.send(eventName, data)
+      (eventName, data) => win.webContents.send(eventName, data),
+      store.dispatch.updateProjectPath,
+      getFileToOpen
     );
 
     subscribeOnAutoUpdaterEvents(

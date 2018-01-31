@@ -1,0 +1,16 @@
+{
+  "comments": [
+    {
+      "content": "Welcome to XOD again!\n\nDid you complete the built-in tutorial? We recommend you to do it:\n\n»»                                                              ««\n»»»»              [Open Built-in Tutorial Project](xod://actions/open-tutorial)              ««««\n»»                                                              ««\n\nStarting a new project? Delete this comment and start tinkering.\nOr use “File” menu to open an existing project.",
+      "id": "HyZlIT6Bf",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 255,
+        "width": 510
+      }
+    }
+  ]
+}

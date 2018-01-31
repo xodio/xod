@@ -1,17 +1,15 @@
 import * as R from 'ramda';
 import EventEmitter from 'events';
 import path from 'path';
+import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 import {
   spawnWorkspaceFile,
-  spawnDefaultProject,
   saveAll,
-  getLocalProjects,
   validateWorkspace,
   loadProject,
   getFilePath,
-  filterDefaultProject,
   resolveDefaultProjectPath,
   ensureWorkspacePath,
   saveLibraryEntirely,
@@ -21,6 +19,8 @@ import {
   isAmong,
   rejectWithCode,
   allPromises,
+  notNil,
+  explodeMaybe,
 } from 'xod-func-tools';
 
 import * as settings from './settings';
@@ -57,10 +57,7 @@ const requestCreateWorkspace = R.curry(
     }
   )
 );
-// :: (String -> a -> ()) -> ProjectMeta[] -> ()
-const requestSelectProject = R.curry(
-  (send, projectMetas) => send(EVENTS.REQUEST_SELECT_PROJECT, projectMetas)
-);
+
 // :: (String -> a -> ()) -> Project -> ()
 const requestShowProject = R.curry(
   (send, project) => send(EVENTS.REQUEST_SHOW_PROJECT, project)
@@ -91,11 +88,14 @@ export const getDefaultProjectPath = () => resolveDefaultProjectPath(getPathToBu
 const catchInvalidWorkspace = R.curry(
   (catchFn, err) => R.ifElse(
     R.compose(
-      isAmong([
-        FS_ERROR_CODES.INVALID_WORKSPACE_PATH,
-        FS_ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-        FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
-      ]),
+      R.both(
+        notNil,
+        isAmong([
+          FS_ERROR_CODES.INVALID_WORKSPACE_PATH,
+          FS_ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
+          FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
+        ]),
+      ),
       R.prop('errorCode')
     ),
     catchFn,
@@ -123,29 +123,6 @@ export const saveWorkspacePath = workspacePath => R.compose(
     settings.setWorkspacePath(workspacePath),
     settings.load
   )();
-
-// :: (String -> a -> ()) ->Path -> Promise ProjectMeta[] Error
-const spawnAndLoadDefaultProject = (send, workspacePath) =>
-  spawnDefaultProject(getDefaultProjectPath(), workspacePath)
-    .catch(rejectWithCode(ERROR_CODES.CANT_COPY_DEFAULT_PROJECT))
-    .then(getLocalProjects)
-    .then(filterDefaultProject)
-    .then(R.tap(R.compose(
-      emitSelectProject(send),
-      R.head
-    )));
-
-// :: (String -> a -> ()) -> Path -> Promise ProjectMeta[] Error
-export const loadProjectsOrSpawnDefault = R.curry(
-  (send, workspacePath) => R.pipeP(
-    getLocalProjects,
-    R.ifElse(
-      R.isEmpty,
-      () => spawnAndLoadDefaultProject(send, workspacePath),
-      R.tap(requestSelectProject(send))
-    )
-  )(workspacePath)
-);
 
 // :: SaveLibPayload :: { request: LibParams, projects: Map LibName Project }
 // :: IpcEvent -> SaveLibPayload -> Promise SaveLibPayload Error
@@ -214,15 +191,6 @@ export const onSaveAll = R.curry(
   )().catch(handleError(send))
 );
 
-// :: (String -> a -> ()) -> (() -> Promise Path Error) -> Promise ProjectMeta[] Error
-export const onOpenProject = R.curry(
-  (send, pathGetter) => R.pipeP(
-    pathGetter,
-    loadProjectsOrSpawnDefault(send)
-  )()
-  .catch(handleError(send))
-);
-
 // :: (Path -> ()) -> (String -> a -> ()) -> Path -> Promise Project Error
 export const onLoadProject = R.curry(
   (updateProjectPath, send, pathToOpen) =>
@@ -249,20 +217,38 @@ export const onSelectProject = R.curry(
   }
 );
 
+export const onOpenBundledProject = (send, updateProjectPath, projectName) => {
+  const pathToBundledWorkspace = getPathToBundledWorkspace();
+  const projectPath = path.join(pathToBundledWorkspace, projectName);
+  return onLoadProject(
+    () => updateProjectPath(null),
+    send,
+    projectPath
+  );
+};
+
 // :: (String -> a -> ()) -> (Path -> Promise Path Error) -> Path -> Promise ProjectMeta[] Error
 export const onCreateWorkspace = R.curry(
   (send, pathSaver, workspacePath) => R.pipeP(
     spawnWorkspaceFile,
     pathSaver,
     updateWorkspace(send, ''),
-    loadProjectsOrSpawnDefault(send)
   )(workspacePath).catch(handleError(send))
 );
+
+// :: Path -> Promise Path Error
+const ensureWorkspace = workspacePath => validateWorkspace(workspacePath)
+  .catch((err) => {
+    if (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY) {
+      return spawnWorkspaceFile(workspacePath);
+    }
+    throw err;
+  });
 
 // :: (String -> a -> ()) -> (() -> Promise Path Error) ->
 //    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onIDELaunch = R.curry(
-  (send, pathGetter, pathSaver) => {
+  (send, updateProjectPath, getFileToOpen, pathGetter, pathSaver) => {
     let oldPath = null;
     let newPath = null;
 
@@ -272,9 +258,29 @@ export const onIDELaunch = R.curry(
       ensureWorkspacePath,
       R.tap((p) => { newPath = p; }),
       pathSaver,
-      validateWorkspace,
+      ensureWorkspace,
       updateWorkspace(send, oldPath),
-      loadProjectsOrSpawnDefault(send)
+      () => {
+        const maybePatchToOpen = getFileToOpen();
+
+        if (Maybe.isNothing(maybePatchToOpen)) {
+          const isFirstLaunch = R.isEmpty(oldPath);
+          const projectName = isFirstLaunch ? 'welcome-to-xod' : 'welcome-again';
+
+          return onOpenBundledProject(send, updateProjectPath, projectName).then(() => {
+            // TODO: better pass it along the project with REQUEST_SHOW_PROJECT event
+            if (!isFirstLaunch) {
+              send(EVENTS.PAN_TO_CENTER);
+            }
+          });
+        }
+
+        const projectPath = explodeMaybe(
+          'Imposible error: we just checked Maybe for being Nothing',
+          maybePatchToOpen
+        );
+        return onLoadProject(updateProjectPath, send, projectPath);
+      }
     )()
       .catch(catchInvalidWorkspace(
         (err) => {
@@ -294,7 +300,6 @@ export const onSwitchWorkspace = R.curry(
   (send, pathSaver, workspacePath) => validateWorkspace(workspacePath)
     .then(pathSaver)
     .then(updateWorkspace(send, ''))
-    .then(loadProjectsOrSpawnDefault(send))
     .catch(catchInvalidWorkspace((err) => {
       const force = (err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY);
       requestCreateWorkspace(send, workspacePath, force);
@@ -348,27 +353,12 @@ export const subscribeToSelectProject = ipcMain => ipcMain.on(
 export const subscribeToOpenBundledProject = R.curry(
   (store, ipcMain) => ipcMain.on(
     EVENTS.OPEN_BUNDLED_PROJECT,
-    (event, projectName) => {
-      const pathToBundledWorkspace = getPathToBundledWorkspace();
-      const projectPath = path.join(pathToBundledWorkspace, projectName);
-
-      return onSelectProject(
-        // User should not save changes in the bundled project,
-        // so when it will be loaded we'll update project path to
-        // null, to make it works like it was not saved before.
-        () => store.dispatch.updateProjectPath(null),
-        ipcSender(event),
-        () => Promise.resolve(pathToBundledWorkspace),
-        { path: projectPath }
-      );
-    }
+    (event, projectName) => onOpenBundledProject(
+      ipcSender(event),
+      store.dispatch.updateProjectPath,
+      projectName
+    )
   )
-);
-
-// onOpenProject
-export const subscribeToOpenProject = ipcMain => ipcMain.on(
-  EVENTS.OPEN_PROJECT,
-  event => onOpenProject(ipcSender(event), loadWorkspacePath)
 );
 
 // onCreateProject
@@ -414,7 +404,6 @@ export const subscribeToWorkspaceEvents = (ipcMain, store) => R.tap(R.compose(
   R.ap([
     subscribeToSelectProject,
     subscribeToSelectProjectEvent(store),
-    subscribeToOpenProject,
     subscribeToOpenBundledProject(store),
     subscribeToCreateProject(store),
     subscribeToCreateWorkspace,
@@ -425,6 +414,5 @@ export const subscribeToWorkspaceEvents = (ipcMain, store) => R.tap(R.compose(
 ))(ipcMain);
 
 // :: (String -> a -> ()) -> Promise ProjectMeta[] Error
-export const prepareWorkspaceOnLaunch = send => onIDELaunch(
-  send, loadWorkspacePath, saveWorkspacePath
-);
+export const prepareWorkspaceOnLaunch = (send, updateProjectPath, getFileToOpen) =>
+  onIDELaunch(send, updateProjectPath, getFileToOpen, loadWorkspacePath, saveWorkspacePath);
