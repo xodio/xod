@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { resolvePath } from 'xod-fs';
-import { maybeToPromise } from 'xod-func-tools';
 import isDevelopment from 'electron-is-dev';
 
 export const IS_DEV = (isDevelopment || process.env.NODE_ENV === 'development');
@@ -24,31 +23,35 @@ export const errorToPlainObject = R.when(
  * - MacOS: get it from fired events
  *
  * It accepts an app and returns a getter function,
- * that will return `Promise Path Null`.
+ * that will return `Maybe Path`.
  */
-// :: App -> (_ -> Promise Path Null)
+// :: App -> () -> Maybe Path
 export const getFilePathToOpen = (app) => {
   // Windows & Linux
   let pathToOpen = R.compose(
     R.map(resolvePath),
-    Maybe,
     R.ifElse(
-      () => isDevelopment,
-      R.nth(2), // electron . /optional/path/to/project.xod
-      R.nth(1) // xod.app /optional/path/to/project.xod
-    )
+      R.anyPass([
+        R.isNil,
+        // to filter out command line switches and other arguments
+        // that are definitely not a file path to open
+        R.startsWith('-'),
+        R.startsWith('data:'),
+        R.equals('.'),
+      ]),
+      Maybe.Nothing,
+      Maybe.of
+    ),
+    R.last,
+    R.tail
   )(process.argv);
 
   // MacOS
-  app.on('will-finish-launching', () => {
-    app.on('open-file', (event, filePath) => {
+  app.once('will-finish-launching', () => {
+    app.once('open-file', (event, filePath) => {
       pathToOpen = Maybe(filePath);
     });
   });
 
-  return () => maybeToPromise(
-    R.always(null),
-    R.identity,
-    pathToOpen
-  );
+  return () => pathToOpen;
 };

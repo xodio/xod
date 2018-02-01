@@ -23,9 +23,7 @@ import * as settingsActions from '../../settings/actions';
 import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
-import PopupProjectSelection from '../../projects/components/PopupProjectSelection';
 import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
-import { REDUCER_STATUS } from '../../projects/constants';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import formatError from '../../shared/errorFormatter';
@@ -34,7 +32,8 @@ import UPLOAD_MESSAGES from '../../upload/messages';
 import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import { subscribeAutoUpdaterEvents } from '../autoupdate';
-import { subscribeToTriggerMainMenuRequests } from '../../testUtils/triggerMainMenu';
+import subscribeToTriggerMainMenuRequests from '../../testUtils/triggerMainMenu';
+import { TRIGGER_SAVE_AS } from '../../testUtils/events';
 
 import { getOpenDialogFileFilters, createSaveDialogOptions } from '../nativeDialogs';
 
@@ -80,7 +79,6 @@ class App extends client.App {
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
-    this.showPopupProjectSelection = this.showPopupProjectSelection.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
     this.showPopupSetWorkspaceNotCancellable = this.showPopupSetWorkspaceNotCancellable.bind(this);
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
@@ -95,10 +93,6 @@ class App extends client.App {
     ipcRenderer.on(
       EVENTS.UPDATE_WORKSPACE,
       (event, workspacePath) => this.setState({ workspace: workspacePath })
-    );
-    ipcRenderer.on(
-      EVENTS.REQUEST_SELECT_PROJECT,
-      (event, data) => this.showPopupProjectSelection(data)
     );
     ipcRenderer.on(
       EVENTS.REQUEST_SHOW_PROJECT,
@@ -142,6 +136,7 @@ class App extends client.App {
         this.props.actions.addError(formatError(error));
       }
     );
+    ipcRenderer.on(EVENTS.PAN_TO_CENTER, this.props.actions.setCurrentPatchOffsetToCenter);
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
@@ -165,6 +160,20 @@ class App extends client.App {
 
     // autoUpdater
     subscribeAutoUpdaterEvents(ipcRenderer, this);
+
+    if (isDevelopment) {
+      // Besause we can't control file dialogs in autotests
+      ipcRenderer.on(
+        TRIGGER_SAVE_AS,
+        (projectPath) => {
+          if (!projectPath) {
+            throw new Error('Expected projectPath to be present');
+          }
+
+          this.saveAs(projectPath);
+        }
+      );
+    }
 
     // request for data from main process
     props.actions.fetchGrant();
@@ -318,17 +327,22 @@ class App extends client.App {
       this.onSaveAs();
     }
   }
+
+  saveAs(filePath) {
+    this.props.actions.saveAll({
+      oldProject: this.props.lastSavedProject,
+      newProject: this.props.project,
+      projectPath: filePath,
+      updateProjectPath: true,
+    });
+  }
+
   onSaveAs() {
     dialog.showSaveDialog(
       createSaveDialogOptions('Save As...', this.suggestProjectFilePath(), 'Save'),
       (filePath) => {
         if (!filePath) return;
-        this.props.actions.saveAll({
-          oldProject: this.props.lastSavedProject,
-          newProject: this.props.project,
-          projectPath: filePath,
-          updateProjectPath: true,
-        });
+        this.saveAs(filePath);
       }
     );
   }
@@ -602,17 +616,6 @@ class App extends client.App {
     )(template);
   }
 
-  showPopupProjectSelection(projects) {
-    const data = projects ? {
-      status: REDUCER_STATUS.LOADED,
-      list: projects,
-    } : {
-      status: REDUCER_STATUS.PENDING,
-    };
-
-    this.props.actions.requestOpenProject(data);
-  }
-
   showPopupSetWorkspace() {
     this.props.actions.requestSwitchWorkspace({ disposable: false });
   }
@@ -692,17 +695,6 @@ class App extends client.App {
           isVisible={this.props.popups.switchWorkspace}
           onChange={this.onWorkspaceChange}
           onClose={this.hideAllPopups}
-        />
-        <PopupProjectSelection
-          projects={this.props.popupsData.projectSelection}
-          isVisible={this.props.popups.projectSelection}
-          onSelect={this.constructor.onSelectProject}
-          onClose={this.hideAllPopups}
-          onSwitchWorkspace={this.showPopupSetWorkspace}
-          onCreateNewProject={() => {}}
-          // Dont worry! This whole component will be removed into #1036,
-          // so this is just a temporary hack to remove a way to call
-          // removed function without useless refactoring.
         />
         <PopupCreateWorkspace
           data={this.props.popupsData.createWorkspace}

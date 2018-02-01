@@ -4,7 +4,7 @@ import { assert } from 'chai';
 
 import prepareSuite from './prepare';
 
-import { TRIGGER_MAIN_MENU_ITEM } from '../src/testUtils/triggerMainMenu';
+import { TRIGGER_MAIN_MENU_ITEM, TRIGGER_SAVE_AS } from '../src/testUtils/events';
 
 // :: PatchFileContents -> [NodeType]
 const extractListOfUsedNodeTypes = R.compose(
@@ -71,12 +71,24 @@ describe('Test FS things', () => {
       userCustomFileInProject = ide.wsPath('welcome-to-xod/02-deploy/note.txt');
     });
 
+    // welcome project is readonly, let's save a "mutable" copy
+    it('saves welcome project to disk', () =>
+      ide.app.electron.ipcRenderer.emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
+        .then(ide.page.waitUntilProjectSaved)
+    );
+
     // Prepare local project changes
     it('create new empty patch', () =>
       ide.page.clickAddPatch()
         .then(() => ide.page.findPopup().setValue('input', 'my-patch'))
         .then(() => ide.page.confirmPopup())
         .then(() => ide.page.assertActiveTabHasTitle('my-patch'))
+        // TODO: if patch is empty — it is not saved!
+        .then(() => ide.page.expandPatchGroup('xod/patch-nodes'))
+        .then(() => ide.page.scrollToPatchInProjectBrowser('input-string'))
+        .then(() => ide.page.selectPatchInProjectBrowser('input-string'))
+        .then(() => ide.page.clickAddNodeButton('input-string'))
+        .then(() => ide.page.expandPatchGroup('xod/patch-nodes'))
     );
 
     it('delete another patch (`01-hello`)', () =>

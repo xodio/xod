@@ -320,7 +320,7 @@ function assertNoPatchesAreOpen(client) {
 // Messages
 //-----------------------------------------------------------------------------
 function waitUntilProjectSaved(client) {
-  return client.waitForExist('.SnackBarMessage.confirmation', 5000);
+  return client.waitForExist('.SnackBarMessage*=Saved', 5000);
 }
 
 //-----------------------------------------------------------------------------

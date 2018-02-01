@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import $ from 'sanctuary-def';
 import HMDef from 'hm-def';
 import {
-  Identifier,
+  ProjectName,
   PatchPath,
   Patch,
   Node,
@@ -70,7 +70,7 @@ export const PatchFileContents = Model('PatchFileContents', {
 export const PatchFile = AliasType('PatchFile', XodFile(PatchFileContents));
 
 export const ProjectFileContents = Model('ProjectFileContents', {
-  name: Identifier,
+  name: ProjectName,
   authors: $.Array($.String),
   license: $.String,
   description: $.String,
