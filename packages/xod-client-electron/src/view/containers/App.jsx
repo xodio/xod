@@ -48,6 +48,7 @@ const defaultState = {
   projectPath: null,
   downloadProgressPopup: false,
   downloadProgressPopupError: null,
+  saveInProgress: false,
 };
 
 class App extends client.App {
@@ -97,6 +98,14 @@ class App extends client.App {
       (event, workspacePath) => this.setState({ workspace: workspacePath })
     );
     ipcRenderer.on(
+      `${EVENTS.SAVE_ALL}:complete`,
+      () => this.setState({ saveInProgress: false })
+    );
+    ipcRenderer.on(
+      `${EVENTS.SAVE_ALL}:error`,
+      () => this.setState({ saveInProgress: false })
+    );
+    ipcRenderer.on(
       EVENTS.REQUEST_SELECT_PROJECT,
       (event, data) => this.showPopupProjectSelection(data)
     );
@@ -116,6 +125,7 @@ class App extends client.App {
         this.showPopupSetWorkspaceNotCancellable();
         console.error(error); // eslint-disable-line no-console
         this.props.actions.addError(formatError(error));
+        this.setState({ saveInProgress: false });
       }
     );
     ipcRenderer.on(
@@ -307,6 +317,7 @@ class App extends client.App {
   }
 
   onSave() {
+    if (this.state.saveInProgress) return;
     if (this.state.projectPath) {
       this.props.actions.saveAll({
         oldProject: this.props.lastSavedProject,
@@ -314,11 +325,13 @@ class App extends client.App {
         projectPath: this.state.projectPath,
         updateProjectPath: false,
       });
+      this.setState({ saveInProgress: true });
     } else {
       this.onSaveAs();
     }
   }
   onSaveAs() {
+    if (this.state.saveInProgress) return;
     dialog.showSaveDialog(
       createSaveDialogOptions('Save As...', this.suggestProjectFilePath(), 'Save'),
       (filePath) => {
@@ -329,10 +342,12 @@ class App extends client.App {
           projectPath: filePath,
           updateProjectPath: true,
         });
+        this.setState({ saveInProgress: true });
       }
     );
   }
   onSaveCopyAs() {
+    if (this.state.saveInProgress) return;
     dialog.showSaveDialog(
       createSaveDialogOptions('Save Copy As...', this.suggestProjectFilePath(), 'Save a Copy'),
       (filePath) => {
@@ -343,6 +358,7 @@ class App extends client.App {
           projectPath: filePath,
           updateProjectPath: false,
         });
+        this.setState({ saveInProgress: true });
       }
     );
   }
