@@ -25,6 +25,7 @@ export {
   findClosestProjectDir,
   findClosestWorkspaceDir,
   isWorkspaceDir,
+  getPathToXodProject,
 } from './find';
 
 export * from './constants';

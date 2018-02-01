@@ -6,14 +6,12 @@ import * as XF from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import pack from './pack';
-import { findClosestProjectDir } from './find';
+import { getPathToXodProject } from './find';
 import { loadLibs } from './loadLibs';
 import { readDir, readJSON } from './read';
 import * as ERROR_CODES from './errorCodes';
 import {
-  isBasename,
   isExtname,
-  isDirectory,
   resolvePath,
   resolveLibPath,
   resolveProjectFile,
@@ -209,36 +207,14 @@ export const loadProjectFromXodball = R.curry((workspaceDirs, xodballPath) =>
  */
 // :: [Path] -> Path -> Promise Project Error
 export const loadProject = R.uncurryN(2,
-  workspaceDirs => R.cond([
-    [
-      isBasename('project.xod'),
-      R.compose(
-        loadProjectFromDir(workspaceDirs),
-        path.dirname,
-      ),
-    ],
-    [
+  workspaceDirs => R.composeP(
+    R.ifElse(
       isExtname('.xodball'),
       loadProjectFromXodball(workspaceDirs),
-    ],
-    [
-      R.either(
-        isBasename('patch.xodp'),
-        isDirectory
-      ),
-      a => R.composeP(
-        loadProjectFromDir(workspaceDirs),
-        findClosestProjectDir
-      )(a),
-    ],
-    [
-      R.T,
-      filePath => XF.rejectWithCode(
-        ERROR_CODES.TRIED_TO_OPEN_NOT_XOD_FILE,
-        new Error(`Tried to open not a xod file: ${filePath}`)
-      ),
-    ],
-  ])
+      loadProjectFromDir(workspaceDirs)
+    ),
+    getPathToXodProject
+  )
 );
 
 export default {

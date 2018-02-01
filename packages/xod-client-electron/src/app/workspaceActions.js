@@ -5,6 +5,7 @@ import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 import {
+  getPathToXodProject,
   spawnWorkspaceFile,
   saveAll,
   validateWorkspace,
@@ -155,12 +156,15 @@ export const saveLibraries = R.curry(
 
 // :: (Path -> ()) -> Path -> Promise Project Error
 export const loadProjectByPath = R.curry(
-  (updateProjectPath, pathToOpen) => R.composeP(
-    R.tap(() => updateProjectPath(pathToOpen)),
-    loadProject(R.__, pathToOpen),
-    R.append(getPathToBundledWorkspace()),
-    loadWorkspacePath
-  )()
+  async (updateProjectPath, pathToOpen) => {
+    const projectPath = await getPathToXodProject(pathToOpen);
+    return R.composeP(
+      R.tap(() => updateProjectPath(projectPath)),
+      loadProject(R.__, projectPath),
+      R.append(getPathToBundledWorkspace()),
+      loadWorkspacePath
+    )();
+  }
 );
 
 // =============================================================================
@@ -201,11 +205,12 @@ export const onLoadProject = R.curry(
 
 // :: (Path -> ()) -> (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
 export const onSelectProject = R.curry(
-  (updateProjectPath, send, pathGetter, projectMeta) => {
-    const projectPath = getFilePath(projectMeta);
+  async (updateProjectPath, send, pathGetter, projectMeta) => {
+    const projectXodPath = getFilePath(projectMeta);
+    const projectPath = await getPathToXodProject(projectXodPath);
 
     return pathGetter()
-      .then(() => loadProject([getPathToBundledWorkspace()], projectPath))
+      .then(wsPath => loadProject([wsPath, getPathToBundledWorkspace()], projectPath))
       .then(requestShowProject(send))
       .then(R.tap(() => updateProjectPath(projectPath)))
       .catch(R.ifElse(

@@ -1,5 +1,14 @@
+import * as R from 'ramda';
 import { statSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { rejectWithCode } from 'xod-func-tools';
+
+import {
+  isBasename,
+  isExtname,
+  isDirectory,
+} from './utils';
+import * as ERROR_CODES from './errorCodes';
 
 function getParentDirectories(path) {
   function loop(currentPath, parentDirectories) {
@@ -49,3 +58,33 @@ export function findClosestProjectDir(path) {
       }". Project directory must contain "project.xod" file.`));
   });
 }
+
+
+// :: Path -> Promise Path Error
+export const getPathToXodProject = R.composeP(
+  R.cond([
+    [
+      isBasename('project.xod'),
+      dirname,
+    ],
+    [
+      isExtname('.xodball'),
+      R.identity,
+    ],
+    [
+      R.either(
+        isBasename('patch.xodp'),
+        isDirectory
+      ),
+      findClosestProjectDir,
+    ],
+    [
+      R.T,
+      filePath => rejectWithCode(
+        ERROR_CODES.TRIED_TO_OPEN_NOT_XOD_FILE,
+        new Error(`Tried to open not a xod file: ${filePath}`)
+      ),
+    ],
+  ]),
+  Promise.resolve.bind(Promise)
+);
