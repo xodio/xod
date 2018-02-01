@@ -209,6 +209,9 @@ const onReady = () => {
     store.subscribe(() => {
       const projectPath = store.select.projectPath();
       win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
+      if (projectPath != null) {
+        app.addRecentDocument(projectPath);
+      }
 
       const newTitle = projectPath
         ? `${projectPath} — ${DEFAULT_APP_TITLE}`
@@ -234,4 +237,15 @@ app.on('activate', () => {
   if (win === null) {
     createWindow();
   }
+});
+
+// this is triggered on MacOS when a file is requested from the recent documents menu
+app.on('open-file', (event, path) => {
+  if (!win) return;
+
+  WA.onLoadProject(
+    app.addRecentDocument.bind(app),
+    (eventName, data) => win.webContents.send(eventName, data),
+    path
+  );
 });
