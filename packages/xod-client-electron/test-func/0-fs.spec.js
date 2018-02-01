@@ -35,10 +35,7 @@ describe('Test FS things', () => {
 
     it('double clicks on found library to install', () =>
       ide.page.installLibrary()
-        .then(() => Promise.all([
-          ide.page.assertLibSuggesterHidden(),
-          ide.page.assertProjectBrowserHasInstallingLib('xod/core'),
-        ]))
+        .then(() => ide.page.assertLibSuggesterHidden())
     );
 
     it('checks that installed xod/core have not `concat-4` node', () =>
