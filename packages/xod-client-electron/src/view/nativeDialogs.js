@@ -2,11 +2,10 @@ import os from 'os';
 import * as R from 'ramda';
 
 const addExtensionsIntoFilters = (fileFilter) => {
-  const extForName = R.ifElse(
-    R.isEmpty,
-    R.always('directory'),
-    R.concat('.')
-  )(fileFilter.extensions[0]);
+  const extForName = R.compose(
+    R.join(';'),
+    R.map(R.concat('*.'))
+  )(fileFilter.extensions);
 
   return R.assoc(
     'name',
@@ -30,11 +29,10 @@ const transformDialogFileFilters = filters => R.compose(
 
 export const getSaveDialogFileFilters = () => transformDialogFileFilters([
   { name: 'Packed XOD Project', extensions: ['xodball'] },
-  { name: 'Multifile XOD Project', extensions: ['', 'xod'] },
+  { name: 'Multifile XOD Project', extensions: [''] },
 ]);
 export const getOpenDialogFileFilters = () => transformDialogFileFilters([
-  { name: 'Packed XOD project', extensions: ['xodball'] },
-  { name: 'Multifile XOD project', extensions: ['xod', 'xodp'] },
+  { name: 'Any XOD File', extensions: ['xodball', 'xod', 'xodp'] },
 ]);
 
 export const createSaveDialogOptions = (title, defaultPath, buttonLabel) => ({
