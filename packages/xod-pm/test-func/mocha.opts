@@ -1,3 +1,3 @@
 --require babel-register
 --colors
---timeout 10000
+--timeout 30000
