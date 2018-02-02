@@ -1,0 +1,21 @@
+{
+  "name": "single-file-test",
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "BkTaA1GLM": {
+          "boundValues": {
+            "B1oqkTnIb": 13
+          },
+          "id": "BkTaA1GLM",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/common-hardware/led"
+        }
+      },
+      "path": "@/main"
+    }
+  }
+}

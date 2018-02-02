@@ -46,20 +46,36 @@ describe('IDE', () => {
   });
 
   describe('when launched', () => {
+    const assertEventNames = (eventsSequence, expectedEventNames) =>
+      assert.deepEqual(
+        eventsSequence.map(R.prop('eventName')),
+        expectedEventNames
+      );
+
+    // !!! assumes that event with project is always second
+    const assertOpenedProjectName = (eventsSequence, expectedName) => {
+      const openedProjectName = R.compose(
+        getProjectName,
+        R.path([1, 'data'])
+      )(eventsSequence);
+      assert.equal(openedProjectName, expectedName);
+    };
+
     describe('workspace does not exist(1st launch)', () => {
       // Change homedirectory to check spawning in homedir without questions
       const homeVar = (process.platform === 'win32') ? 'USERPROFILE' : 'HOME';
       const originalHomedir = process.env[homeVar];
+      let homedirWorkspace;
 
       before(() => {
         process.env[homeVar] = fixture('');
+        homedirWorkspace = resolvePath('~/xod');
       });
       after(() => {
         process.env[homeVar] = originalHomedir;
       });
 
       it('spawns workspace in homedir and opens welcome project', () => {
-        const homedirWorkspace = resolvePath('~/xod');
         const eventsSequence = [];
 
         return WA.onIDELaunch(
@@ -72,19 +88,50 @@ describe('IDE', () => {
           loadMock(''),
           saveMock(homedirWorkspace)
         ).then(() => {
-          assert.deepEqual(
-            eventsSequence.map(R.prop('eventName')),
-            [
-              EVENTS.UPDATE_WORKSPACE,
-              EVENTS.REQUEST_SHOW_PROJECT,
-            ]
-          );
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+          ]);
+          assertOpenedProjectName(eventsSequence, 'welcome-to-xod');
+        });
+      });
+      it('opens a multifileproject if it is specified as an argument', () => {
+        const eventsSequence = [];
 
-          const openedProjectName = R.compose(
-            getProjectName,
-            R.path([1, 'data'])
-          )(eventsSequence);
-          assert.equal(openedProjectName, 'welcome-to-xod');
+        return WA.onIDELaunch(
+          (eventName, data) => { eventsSequence.push({ eventName, data }); },
+          (newPath) => {
+            // notice that 'project.xod' at the end is gone
+            assert.equal(newPath, fixture('./multifileProject'));
+          },
+          () => Maybe.Just(fixture('./multifileProject/project.xod')),
+          loadMock(''),
+          saveMock(homedirWorkspace)
+        ).then(() => {
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+          ]);
+          assertOpenedProjectName(eventsSequence, 'multi-file-test');
+        });
+      });
+      it('opens a xodball if it is specified as an argument', () => {
+        const eventsSequence = [];
+
+        return WA.onIDELaunch(
+          (eventName, data) => { eventsSequence.push({ eventName, data }); },
+          (newPath) => {
+            assert.equal(newPath, fixture('./singleFile.xodball'));
+          },
+          () => Maybe.Just(fixture('./singleFile.xodball')),
+          loadMock(''),
+          saveMock(homedirWorkspace)
+        ).then(() => {
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+          ]);
+          assertOpenedProjectName(eventsSequence, 'single-file-test');
         });
       });
     });
@@ -102,14 +149,50 @@ describe('IDE', () => {
           loadMock(fixture('./validWorkspace')),
           saveMock(fixture('./validWorkspace'))
         ).then(() => {
-          assert.deepEqual(
-            eventsSequence.map(R.prop('eventName')),
-            [
-              EVENTS.UPDATE_WORKSPACE,
-              EVENTS.REQUEST_SHOW_PROJECT,
-              EVENTS.PAN_TO_CENTER,
-            ]
-          );
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+            EVENTS.PAN_TO_CENTER,
+          ]);
+        });
+      });
+      it('opens a multifileproject if it is specified as an argument', () => {
+        const eventsSequence = [];
+
+        return WA.onIDELaunch(
+          (eventName, data) => { eventsSequence.push({ eventName, data }); },
+          (newPath) => {
+            // notice that 'project.xod' at the end is gone
+            assert.equal(newPath, fixture('./multifileProject'));
+          },
+          () => Maybe.Just(fixture('./multifileProject/project.xod')),
+          loadMock(fixture('./validWorkspace')),
+          saveMock(fixture('./validWorkspace'))
+        ).then(() => {
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+          ]);
+          assertOpenedProjectName(eventsSequence, 'multi-file-test');
+        });
+      });
+      it('opens a xodball if it is specified as an argument', () => {
+        const eventsSequence = [];
+
+        return WA.onIDELaunch(
+          (eventName, data) => { eventsSequence.push({ eventName, data }); },
+          (newPath) => {
+            assert.equal(newPath, fixture('./singleFile.xodball'));
+          },
+          () => Maybe.Just(fixture('./singleFile.xodball')),
+          loadMock(fixture('./validWorkspace')),
+          saveMock(fixture('./validWorkspace'))
+        ).then(() => {
+          assertEventNames(eventsSequence, [
+            EVENTS.UPDATE_WORKSPACE,
+            EVENTS.REQUEST_SHOW_PROJECT,
+          ]);
+          assertOpenedProjectName(eventsSequence, 'single-file-test');
         });
       });
     });
