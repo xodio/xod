@@ -222,10 +222,6 @@ function assertProjectBrowserHasInstallingLib(client, libName) {
   );
 }
 
-function waitUntilLibraryInstalled(client) {
-  return findProjectBrowser(client).waitForExist('.PatchGroup--installing', 10000, true);
-}
-
 //-----------------------------------------------------------------------------
 // Patch
 //-----------------------------------------------------------------------------
@@ -322,6 +318,9 @@ function assertNoPatchesAreOpen(client) {
 function waitUntilProjectSaved(client) {
   return client.waitForExist('.SnackBarMessage*=Saved', 5000);
 }
+function waitUntilLibraryInstalled(client) {
+  return client.waitForExist('.SnackBarMessage*=installed', 10000);
+}
 
 //-----------------------------------------------------------------------------
 // API
@@ -372,9 +371,9 @@ const API = {
   installLibrary,
   assertLibSuggesterHidden,
   assertProjectBrowserHasInstallingLib,
-  waitUntilLibraryInstalled,
   // Messages
   waitUntilProjectSaved,
+  waitUntilLibraryInstalled,
 };
 
 /**
