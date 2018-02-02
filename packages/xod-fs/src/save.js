@@ -1,3 +1,4 @@
+import os from 'os';
 import path from 'path';
 import * as R from 'ramda';
 import * as XP from 'xod-project';
@@ -25,37 +26,40 @@ import { calculateDiff } from './patchDiff';
 
 import { def } from './types';
 
-// :: pathToWorkspace -> data -> Promise
-const saveData = R.curry((pathToWorkspace, data) => new Promise((resolve, reject) => {
-  const filePath = path.resolve(resolvePath(pathToWorkspace), data.path);
+// :: Path -> AnyXodFile -> Promise AnyXodFile Error
+const saveVirtualFile = R.curry((rootDir, virtualFile) => {
+  const filePath = path.join(rootDir, virtualFile.path);
   // Decide how to write file, as JSON, or as string:
-  const writeFn = (typeof data.content === 'string') ? writeFile : writeJSON;
+  const writeFn = (typeof virtualFile.content === 'string') ? writeFile : writeJSON;
   // Write
-  return writeFn(filePath, data.content, data.encoding || 'utf8').then(resolve).catch(reject);
-}));
+  return writeFn(filePath, virtualFile.content, virtualFile.encoding || 'utf8');
+});
 
-// :: pathToWorkspace -> data -> Promise
-export const saveArrangedFiles = R.curry((pathToProjectDir, data) => {
-  const projectDir = resolvePath(pathToProjectDir);
-  return fse.ensureDir(projectDir).then(
+// :: Path -> (AnyXodFile | [AnyXodFile]) -> Promise
+export const saveArrangedFiles = R.curry((rootDir, virtualFile) => {
+  const realRootDir = resolvePath(rootDir);
+  return fse.ensureDir(realRootDir).then(
     () => {
-      if (typeof data !== 'object') {
+      if (typeof virtualFile !== 'object') {
         throw Object.assign(
           new Error("Can't save project: wrong data format was passed into save function."),
           {
-            path: projectDir,
-            data,
+            path: realRootDir,
+            virtualFile,
           }
         );
       }
-      const isArray = (data instanceof Array);
-      const dataToSave = isArray ? data : [data];
-      const pathToTemp = path.resolve(projectDir, '../.tmp');
-      const backup = new Backup(projectDir, pathToTemp);
+
+      const dataToSave = R.when(
+        R.complement(Array.isArray),
+        R.of
+      )(virtualFile);
+      const pathToTemp = path.resolve(os.tmpdir(), 'xod-temp');
+      const backup = new Backup(realRootDir, pathToTemp);
 
       return backup.make()
         .then(() => Promise.all(
-          dataToSave.map(saveData(projectDir))
+          dataToSave.map(saveVirtualFile(realRootDir))
         ))
         .then(backup.clear)
         .catch(err => backup.restore()
@@ -176,9 +180,9 @@ export const saveProjectAsXodball = def(
     const projectDir = path.dirname(projectPath);
     return R.compose(
       R.always(projectPath),
-      saveArrangedFiles(projectDir),
+      saveVirtualFile(projectDir),
       content => ({
-        path: projectPath,
+        path: path.basename(projectPath),
         content,
       }),
       XP.toXodball
