@@ -1,12 +1,7 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
       "id": "noNativeImpl",
-      "label": "",
-      "description": "",
-      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -14,10 +9,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "id": "brightness",
-      "label": "",
       "description": "Shine brightness",
-      "boundValues": {},
+      "id": "brightness",
       "position": {
         "x": 0,
         "y": 0

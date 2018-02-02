@@ -1,12 +1,7 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
       "id": "noNativeImpl",
-      "label": "",
-      "description": "",
-      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -16,8 +11,6 @@
     {
       "id": "a",
       "label": "First input",
-      "description": "",
-      "boundValues": {},
       "position": {
         "x": 0,
         "y": 0
@@ -27,8 +20,6 @@
     {
       "id": "b",
       "label": "Second input",
-      "description": "",
-      "boundValues": {},
       "position": {
         "x": 200,
         "y": 0
@@ -36,10 +27,9 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "description": "\"true\" if both inputs are \"true\"",
       "id": "out",
       "label": "output",
-      "description": "\"true\" if both inputs are \"true\"",
-      "boundValues": {},
       "position": {
         "x": 0,
         "y": 300
