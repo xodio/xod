@@ -146,6 +146,18 @@ export const loadProjectWithLibs = R.curry(
 );
 
 /**
+ * After merging library patches in the loaded project
+ * we have to resolve NodeTypes inside library patches and
+ * inject type hints for proper type checking of loaded
+ * patches and nodes.
+ */
+// :: Project -> Project
+const resoliveLibraryPatches = R.compose(
+  XP.resolveNodeTypesInProject,
+  XP.injectProjectTypeHints
+);
+
+/**
  * Loads a XOD project from anywhere. Project names are determined by path
  * provided. It is expected to be a path to the project directory, e.g.
  * `/path/to/my-proj`.
@@ -169,8 +181,7 @@ export const loadProjectWithLibs = R.curry(
 export const loadProjectFromDir = R.curry((workspaceDirs, projectPath) =>
   loadProjectWithLibs(workspaceDirs, projectPath)
     .then(({ project, libs }) => pack(project, libs))
-    .then(XP.injectProjectTypeHints)
-    .then(XP.resolveNodeTypesInProject)
+    .then(resoliveLibraryPatches)
 );
 
 
@@ -186,9 +197,10 @@ export const loadProjectFromXodball = R.curry((workspaceDirs, xodballPath) =>
     )(workspaceDirs),
   ])
     .then(([eitherProject, libs]) =>
-      eitherProject.map(
+      eitherProject.map(R.compose(
+        resoliveLibraryPatches,
         XP.mergePatchesList(R.values(libs))
-      )
+      ))
     )
     .then(XF.eitherToPromise)
 );
