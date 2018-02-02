@@ -244,7 +244,7 @@ app.on('open-file', (event, path) => {
   if (!win) return;
 
   WA.onLoadProject(
-    app.addRecentDocument.bind(app),
+    store.dispatch.updateProjectPath,
     (eventName, data) => win.webContents.send(eventName, data),
     path
   );
