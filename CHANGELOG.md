@@ -4,6 +4,64 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Perform loop unroll optimization technique for the generated C\++
+  code. It dramatically improves RAM consumption and XOD execution performance.
+  (thanks, @awgrover).
+* [ide] Eight new embedded tutorial chapters (21 through 28) explaining pulse
+  basics and LCD interaction.
+* [ide] Support Markdown in patch comments. Your patches now can be more
+  expressive. See the tutorial project for example.
+* [ide] Add OS file associations for `*.xodball`, `project.xod`, `*.xodp` and a
+  list of recent items in the app system menu. Currently works on Windows and
+  macOS, not Linux yet.
+* [ide] You’re not limited now in where on file system you save a project.
+  Previously a project was saved in a “workspace,” now you may choose an
+  arbitrary directory with the native OS “Save” dialog.
+* [ide] Blur the difference between single-file projects (xodballs) and regular
+  multi-file projects. Both kinds can be seamlessly saved/loaded through “File
+  → Save,” “File → Save as,” “File → Save a Copy,” and “File → Open.”
+* [ide] No more clunky project selection dialog on desktop IDE start: just a
+  ready to use blank project with a welcoming comment.
+* [ide] Add “View → Pan to Origin” (Home) and “View → Pan to Center”
+  (Ctrl+Home).
+* [ide] Upgrade and tweak IDE build toolchain (Webpack). A consequence is 2×
+  smaller distributive code size which means IDE loads faster.
+* [ide] Unify font sizes and styles across all sidebars, popups, dialogs. The
+  main font size now is 12px rather than 11px. That makes IDE more accessible
+  and comfortable to work with.
+* [ide] Code editor has got block commenting (Ctrl+/), auto-close opening
+  brackets, trailing space highlight, auto-clear trailing spaces on empty
+  lines.
+
+### New nodes
+
+* [xod/core/pid-controller](https://xod.io/libs/xod/core/pid-controller/)
+* [xod/core/delta-time](https://xod.io/libs/xod/core/delta-time/)
+* [xod/core/delta](https://xod.io/libs/xod/core/delta/)
+* [xod/common-hardware/ds18b20-thermometer](https://xod.io/libs/xod/common-hardware/ds18b20-thermometer/)
+
+### Bug fixes
+
+* [ide] Fix few typos in UI (thanks, nick).
+* [ide] Quick help panel text is copyable now.
+* [ide] When starting debugger patch panning position is preserved, no more
+  jumps out of work area. Breadcrumbs bar no longer overlaps the patch when
+  appear.
+* [ide] Bring back grabbing and hand cursors while panning.
+* [ide] Fix C\++ code editor improper syntax highlighting in the middle of
+  identifiers and comments.
+* [ide] The `not-implemented-in-xod` node now carries C\++ implementation when
+  copied to the clipboard, the code template which appears with the node is
+  applied immediately (thanks, bitrex).
+* [ide] Fix link to mouse and keyboard shortcuts in the top menu.
+* [ide] Make text in the deployment panel copyable.
+* [ide] Do not trim leading whitespace in an output of the compiler.
+* [ide] Gracefully handle USB connection lost while debugging.
+
 <a name="0.17.1"></a>
 ## 0.17.1 (2017-12-27)
 
