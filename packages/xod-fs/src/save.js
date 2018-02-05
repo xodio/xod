@@ -165,7 +165,7 @@ const savePatchChanges = def(
 const saveProjectMeta = def(
   'saveProjectMeta :: Path -> Project -> Promise', // Promise Path Error
   (projectDir, project) => saveArrangedFiles(projectDir, [{
-    path: path.join(projectDir, 'project.xod'),
+    path: path.join('.', 'project.xod'),
     content: R.compose(
       omitDefaultOptionsFromProjectFileContents,
       convertProjectToProjectFileContents
