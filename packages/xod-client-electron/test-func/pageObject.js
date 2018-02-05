@@ -71,6 +71,11 @@ function findProjectBrowser(client) {
   return client.element('.ProjectBrowser');
 }
 
+function assertProjectIsOpened(client, projectName) {
+  const selector = `.PatchGroup__trigger.my .patch-group-trigger[data-id="${projectName}"`;
+  return assert.eventually.isTrue(client.waitForExist(selector, 5000));
+}
+
 function clickAddPatch(client) {
   return findProjectBrowser(client).click('button[title="Add patch"]');
 }
@@ -342,6 +347,7 @@ const API = {
   assertPinIsAcceptingLinks,
   assertPinIsSelected,
   assertPopupShown,
+  assertProjectIsOpened,
   bindValue,
   clickAddNodeButton,
   clickAddPatch,

@@ -1,5 +1,7 @@
 import R from 'ramda';
 import fse from 'fs-extra';
+import path from 'path';
+import dircompare from 'dir-compare';
 import { assert } from 'chai';
 
 import prepareSuite from './prepare';
@@ -12,11 +14,59 @@ const extractListOfUsedNodeTypes = R.compose(
   R.prop('nodes')
 );
 
+const getComparisonDiffs = R.compose(
+  R.reject(R.propEq('state', 'equal')),
+  R.prop('diffSet')
+);
+
 describe('Test FS things', () => {
   const ide = prepareSuite();
 
   it('IDE loaded and rendered', () => ide.page.rendered());
 
+  it('opens welcome-to-xod project on first start',
+    () => ide.page.assertProjectIsOpened('welcome-to-xod')
+  );
+
+  describe('saving welcome-to-xod project to disk', () => {
+    const compareSavedWithFixture = () =>
+      dircompare.compareSync(
+        ide.wsPath('welcome-to-xod'),
+        path.join(__dirname, '../src/workspace/welcome-to-xod'),
+        {
+          compareContent: true,
+          excludeFilter: '.DS_Store,.directory,.Trash-*,Thumbs.db,desktop.ini',
+        }
+      );
+
+    // welcome project is readonly, let's save a "mutable" copy.
+    // !!! Ideally, we should simulate clicking 'file -> save',
+    // check that a file dialog appears and enter desired path there.
+    // But spectron can't handle file dialogs :(
+    it('saves welcome project to disk', () =>
+      ide.app.electron.ipcRenderer
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
+        .then(ide.page.waitUntilProjectSaved)
+    );
+
+    it('is exaclty like bundled welcome project', () => {
+      const comparison = compareSavedWithFixture();
+      assert.deepEqual([], getComparisonDiffs(comparison));
+    });
+
+    it('saves a project for a second time without changing anything', () =>
+      ide.app.electron.ipcRenderer
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
+        .then(ide.page.waitUntilProjectSaved)
+    );
+
+    it('remains the same after saving for a second time', () => {
+      const comparison = compareSavedWithFixture();
+      assert.deepEqual([], getComparisonDiffs(comparison));
+    });
+  });
+
+  // TODO: move most of this to xod-client-browser tests.
   describe('Add library in the IDE', () => {
     it('opens an "Add Library" suggester', () =>
       ide.app.electron.ipcRenderer.emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Add Library...'])
@@ -38,7 +88,7 @@ describe('Test FS things', () => {
         .then(() => ide.page.assertLibSuggesterHidden())
     );
 
-    it('checks that installed xod/core have not `concat-4` node', () =>
+    it('checks that installed xod/core does not have `concat-4` node', () =>
       ide.page.waitUntilLibraryInstalled()
         .then(() => ide.page.expandPatchGroup('xod/core'))
         .then(() => ide.page.assertNodeUnavailableInProjectBrowser('concat-4'))
@@ -67,12 +117,6 @@ describe('Test FS things', () => {
       userCustomFileInLibPath = ide.libPath('xod/core/add/accounting.txt');
       userCustomFileInProject = ide.wsPath('welcome-to-xod/02-deploy/note.txt');
     });
-
-    // welcome project is readonly, let's save a "mutable" copy
-    it('saves welcome project to disk', () =>
-      ide.app.electron.ipcRenderer.emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
-        .then(ide.page.waitUntilProjectSaved)
-    );
 
     // Prepare local project changes
     it('create new empty patch', () =>
