@@ -54,6 +54,7 @@
     "chai-as-promised": "^6.0.0",
     "cpx": "^1.5.0",
     "devtron": "^1.3.0",
+    "dir-compare": "^1.4.0",
     "electron": "1.6.16",
     "electron-builder": "git+https://github.com/xodio/electron-builder#390724e57468c57424287d47f4b932f959f9c75d",
     "electron-devtools-installer": "^2.2.1",
