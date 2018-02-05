@@ -170,7 +170,7 @@ class App extends client.App {
             throw new Error('Expected projectPath to be present');
           }
 
-          this.saveAs(projectPath);
+          this.saveAs(projectPath, true);
         }
       );
     }
@@ -317,23 +317,18 @@ class App extends client.App {
 
   onSave() {
     if (this.state.projectPath) {
-      this.props.actions.saveAll({
-        oldProject: this.props.lastSavedProject,
-        newProject: this.props.project,
-        projectPath: this.state.projectPath,
-        updateProjectPath: false,
-      });
+      this.saveAs(this.state.projectPath, false);
     } else {
       this.onSaveAs();
     }
   }
 
-  saveAs(filePath) {
+  saveAs(filePath, shouldUpdateProjectPath) {
     this.props.actions.saveAll({
       oldProject: this.props.lastSavedProject,
       newProject: this.props.project,
       projectPath: filePath,
-      updateProjectPath: true,
+      updateProjectPath: shouldUpdateProjectPath,
     });
   }
 
@@ -342,7 +337,7 @@ class App extends client.App {
       createSaveDialogOptions('Save As...', this.suggestProjectFilePath(), 'Save'),
       (filePath) => {
         if (!filePath) return;
-        this.saveAs(filePath);
+        this.saveAs(filePath, true);
       }
     );
   }
@@ -351,12 +346,7 @@ class App extends client.App {
       createSaveDialogOptions('Save Copy As...', this.suggestProjectFilePath(), 'Save a Copy'),
       (filePath) => {
         if (!filePath) return;
-        this.props.actions.saveAll({
-          oldProject: this.props.lastSavedProject,
-          newProject: this.props.project,
-          projectPath: filePath,
-          updateProjectPath: false,
-        });
+        this.saveAs(filePath, false);
       }
     );
   }

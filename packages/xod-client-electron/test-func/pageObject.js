@@ -193,7 +193,7 @@ function assertLibSuggesterShown(client) {
 
 function assertLibsNotFound(client) {
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.error', 5000)
+    findLibSuggester(client).waitForExist('.error', 10000)
   );
 }
 
