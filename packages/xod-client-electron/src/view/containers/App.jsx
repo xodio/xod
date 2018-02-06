@@ -10,7 +10,7 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project, getProjectName } from 'xod-project';
-import { foldEither, isAmong, explodeMaybe } from 'xod-func-tools';
+import { foldEither, isAmong, explodeMaybe, noop } from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
 import packageJson from '../../../package.json';
@@ -68,6 +68,7 @@ class App extends client.App {
     this.onSaveAs = this.onSaveAs.bind(this);
     this.onSaveCopyAs = this.onSaveCopyAs.bind(this);
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
+    this.onOpenTutorialProject = this.onOpenTutorialProject.bind(this);
 
     this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
@@ -95,6 +96,12 @@ class App extends client.App {
       (event, workspacePath) => this.setState({ workspace: workspacePath })
     );
     ipcRenderer.on(
+      EVENTS.REQUEST_OPEN_PROJECT,
+      (event, path) => {
+        this.confirmUnsavedChanges(() => ipcRenderer.send(EVENTS.CONFIRM_OPEN_PROJECT, path));
+      }
+    );
+    ipcRenderer.on(
       EVENTS.REQUEST_SHOW_PROJECT,
       (event, project) => this.onLoadProject(project)
     );
@@ -115,7 +122,7 @@ class App extends client.App {
     ipcRenderer.on(
       EVENTS.REQUEST_CLOSE_WINDOW,
       () => {
-        if (this.confirmUnsavedChanges()) {
+        this.confirmUnsavedChanges(() => {
           setTimeout(() => {
             if (this.props.saveProcess) {
               // TODO: don't allow any more interaction?
@@ -126,7 +133,7 @@ class App extends client.App {
               ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
             }
           }, 0);
-        }
+        });
       }
     );
     ipcRenderer.on(
@@ -140,7 +147,7 @@ class App extends client.App {
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
-      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.constructor.onOpenTutorialProject,
+      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
     };
     ipcRenderer.on(
       EVENTS.XOD_URL_CLICKED,
@@ -170,7 +177,7 @@ class App extends client.App {
             throw new Error('Expected projectPath to be present');
           }
 
-          this.saveAs(projectPath, true);
+          this.saveAs(projectPath, true).catch(noop);
         }
       );
     }
@@ -269,45 +276,47 @@ class App extends client.App {
   }
 
   onCreateProject() {
-    if (!this.confirmUnsavedChanges()) return;
-
-    this.props.actions.createProject();
-    ipcRenderer.send(EVENTS.CREATE_PROJECT);
+    this.confirmUnsavedChanges(() => {
+      this.props.actions.createProject();
+      ipcRenderer.send(EVENTS.CREATE_PROJECT);
+    });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   onOpenProjectClicked() {
-    dialog.showOpenDialog(
-      {
-        properties: ['openFile'],
-        filters: getOpenDialogFileFilters(),
-      },
-      (filePaths) => {
-        if (!filePaths) return;
-        ipcRenderer.send(EVENTS.LOAD_PROJECT, filePaths[0]);
-      }
-    );
+    this.confirmUnsavedChanges(() => {
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          filters: getOpenDialogFileFilters(),
+        },
+        (filePaths) => {
+          if (!filePaths) return;
+          ipcRenderer.send(EVENTS.LOAD_PROJECT, filePaths[0]);
+        }
+      );
+    });
   }
 
+  // TODO: Do we still need it?
   static onSelectProject(projectMeta) {
     ipcRenderer.send(EVENTS.SELECT_PROJECT, projectMeta);
   }
 
-  static onOpenTutorialProject() {
-    ipcRenderer.send(EVENTS.OPEN_BUNDLED_PROJECT, 'welcome-to-xod');
+  onOpenTutorialProject() {
+    this.confirmUnsavedChanges(() => {
+      ipcRenderer.send(EVENTS.OPEN_BUNDLED_PROJECT, 'welcome-to-xod');
+    });
   }
 
   onLoadProject(project) {
-    if (!this.confirmUnsavedChanges()) return;
-
     this.props.actions.openProject(project);
   }
 
   onWorkspaceChange(val) {
-    if (!this.confirmUnsavedChanges()) return;
-
-    this.props.actions.switchWorkspace(val);
-    ipcRenderer.send(EVENTS.SWITCH_WORKSPACE, val);
+    this.confirmUnsavedChanges(() => {
+      this.props.actions.switchWorkspace(val);
+      ipcRenderer.send(EVENTS.SWITCH_WORKSPACE, val);
+    });
   }
 
   onWorkspaceCreate(path) {
@@ -315,29 +324,44 @@ class App extends client.App {
     ipcRenderer.send(EVENTS.CREATE_WORKSPACE, path);
   }
 
-  onSave() {
+  onSave(onAfterSave = noop) {
     if (this.state.projectPath) {
-      this.saveAs(this.state.projectPath, false);
+      this.saveAs(this.state.projectPath, false)
+        .then(onAfterSave)
+        .catch(noop);
     } else {
-      this.onSaveAs();
+      this.onSaveAs(onAfterSave);
     }
   }
 
   saveAs(filePath, shouldUpdateProjectPath) {
-    this.props.actions.saveAll({
-      oldProject: this.props.lastSavedProject,
-      newProject: this.props.project,
-      projectPath: filePath,
-      updateProjectPath: shouldUpdateProjectPath,
+    return new Promise((resolve, reject) => {
+      this.props.actions.saveAll({
+        oldProject: this.props.lastSavedProject,
+        newProject: this.props.project,
+        projectPath: filePath,
+        updateProjectPath: shouldUpdateProjectPath,
+      });
+
+      ipcRenderer.once(
+        `${EVENTS.SAVE_ALL}:complete`, // TODO: replace `complete` with constant
+        (event, res) => resolve(res)
+      );
+      ipcRenderer.once(
+        `${EVENTS.SAVE_ALL}:error`, // TODO: replace `error` with constant
+        (event, err) => reject(err)
+      );
     });
   }
 
-  onSaveAs() {
+  onSaveAs(onAfterSave = noop) {
     dialog.showSaveDialog(
       createSaveDialogOptions('Save As...', this.suggestProjectFilePath(), 'Save'),
       (filePath) => {
         if (!filePath) return;
-        this.saveAs(filePath, true);
+        this.saveAs(filePath, true)
+          .then(onAfterSave)
+          .catch(noop);
       }
     );
   }
@@ -346,13 +370,16 @@ class App extends client.App {
       createSaveDialogOptions('Save Copy As...', this.suggestProjectFilePath(), 'Save a Copy'),
       (filePath) => {
         if (!filePath) return;
-        this.saveAs(filePath, false);
+        this.saveAs(filePath, false).catch(noop);
       }
     );
   }
 
-  confirmUnsavedChanges() {
-    if (!this.props.hasUnsavedChanges) return true;
+  confirmUnsavedChanges(onConfirm) {
+    if (!this.props.hasUnsavedChanges) {
+      onConfirm();
+      return;
+    }
 
     const clickedButtonId = dialog.showMessageBox({
       message: 'Save changes to the current project before closing?',
@@ -362,11 +389,11 @@ class App extends client.App {
       cancelId: 2,
     });
 
-    if (clickedButtonId === 0) {
-      this.onSave();
+    if (clickedButtonId === 0) { // Save
+      this.onSave(onConfirm);
+    } else if (clickedButtonId === 1) { // Discard
+      onConfirm();
     }
-
-    return clickedButtonId !== 2;
   }
 
   onUploadPopupClose(id) {
@@ -476,7 +503,7 @@ class App extends client.App {
             label: `Version: ${packageJson.version}`,
           },
           items.separator,
-          onClick(items.openTutorialProject, this.constructor.onOpenTutorialProject),
+          onClick(items.openTutorialProject, this.onOpenTutorialProject),
           onClick(items.documentation, () => {
             shell.openExternal(client.getUtmSiteUrl('/docs/', 'docs', 'menu'));
           }),
