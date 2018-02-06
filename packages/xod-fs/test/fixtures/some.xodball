@@ -1,34 +1,42 @@
 {
+  "version": "0.0.42",
   "authors": [
     "Amperka team"
   ],
-  "description": "",
-  "license": "",
   "name": "awesome-project",
   "patches": {
     "@/empty-local-patch": {
-      "@@type": "xod-project/Patch",
-      "attachments": [
-      ],
-      "comments": {
-      },
-      "description": "",
-      "links": {
-      },
-      "nodes": {
-      },
       "path": "@/empty-local-patch"
     },
     "@/main": {
-      "@@type": "xod-project/Patch",
-      "attachments": [
-      ],
-      "comments": {
+      "nodes": {
+        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+          "position": {
+            "x": 292,
+            "y": 182
+          },
+          "type": "xod/core/pot"
+        },
+        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+          "position": {
+            "x": 363,
+            "y": 322
+          },
+          "type": "@/qux"
+        },
+        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+          "position": {
+            "x": 163,
+            "y": 314
+          },
+          "type": "xod/core/and"
+        }
       },
-      "description": "",
       "links": {
         "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
-          "@@type": "xod-project/Link",
           "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
           "input": {
             "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
@@ -40,7 +48,6 @@
           }
         },
         "3ed564cd-71e5-4ad3-9361-e7b9719bc82a": {
-          "@@type": "xod-project/Link",
           "id": "3ed564cd-71e5-4ad3-9361-e7b9719bc82a",
           "input": {
             "nodeId": "2c03e470-fefd-4f58-be6a-58d209d9158c",
@@ -52,74 +59,29 @@
           }
         }
       },
-      "nodes": {
-        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
-          "@@type": "xod-project/Node",
-          "boundValues": {
-          },
-          "description": "",
-          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-          "label": "",
-          "position": {
-            "x": 292,
-            "y": 182
-          },
-          "type": "xod/core/pot"
-        },
-        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "@@type": "xod-project/Node",
-          "boundValues": {
-          },
-          "description": "",
-          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
-          "label": "",
-          "position": {
-            "x": 363,
-            "y": 322
-          },
-          "type": "@/qux"
-        },
-        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
-          "@@type": "xod-project/Node",
-          "boundValues": {
-          },
-          "description": "",
-          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
-          "label": "",
-          "position": {
-            "x": 163,
-            "y": 314
-          },
-          "type": "xod/core/and"
-        }
-      },
       "path": "@/main"
     },
     "@/qux": {
-      "@@type": "xod-project/Patch",
-      "attachments": [
-        {
-          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n",
-          "encoding": "utf8",
-          "filename": "README.md"
+      "nodes": {
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "position": {
+            "x": 276,
+            "y": 155
+          },
+          "type": "xod/patch-nodes/input-number"
         },
-        {
-          "content": "// Impl loaded fine!\n",
-          "encoding": "utf8",
-          "filename": "patch.cpp"
-        },
-        {
-          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC",
-          "encoding": "base64",
-          "filename": "img/20x20.png"
+        "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
+          "position": {
+            "x": 310,
+            "y": 307
+          },
+          "type": "xod/core/led"
         }
-      ],
-      "comments": {
       },
-      "description": "",
       "links": {
         "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
-          "@@type": "xod-project/Link",
           "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
           "input": {
             "nodeId": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
@@ -131,36 +93,24 @@
           }
         }
       },
-      "nodes": {
-        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "@@type": "xod-project/Node",
-          "boundValues": {
-          },
-          "description": "",
-          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
-          "label": "",
-          "position": {
-            "x": 276,
-            "y": 155
-          },
-          "type": "xod/patch-nodes/input-number"
+      "path": "@/qux",
+      "attachments": [
+        {
+          "filename": "README.md",
+          "encoding": "utf8",
+          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n"
         },
-        "4da4c29d-f482-47c2-825e-a969084b1116": {
-          "@@type": "xod-project/Node",
-          "boundValues": {
-          },
-          "description": "",
-          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
-          "label": "",
-          "position": {
-            "x": 310,
-            "y": 307
-          },
-          "type": "xod/core/led"
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// Impl loaded fine!\n"
+        },
+        {
+          "filename": "img/20x20.png",
+          "encoding": "base64",
+          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC"
         }
-      },
-      "path": "@/qux"
+      ]
     }
-  },
-  "version": "0.0.42"
+  }
 }

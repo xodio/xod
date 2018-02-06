@@ -2,11 +2,11 @@
   "nodes": [
     {
       "id": "5c03e488-fefd-4f12-gq6a-78d209d9148c",
-      "type": "xod/core/pot",
       "position": {
         "x": 292,
         "y": 182
-      }
+      },
+      "type": "xod/core/pot"
     }
   ]
 }

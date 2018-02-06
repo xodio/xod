@@ -1,12 +1,7 @@
 {
-  "description": "",
-  "links": [],
   "nodes": [
     {
       "id": "noNativeImpl",
-      "label": "",
-      "description": "",
-      "boundValues": {},
       "position": {
         "x": 100,
         "y": 100
@@ -14,10 +9,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "id": "sample",
-      "label": "",
       "description": "Sample current value",
-      "boundValues": {},
+      "id": "sample",
       "position": {
         "x": 0,
         "y": 0
@@ -25,10 +18,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "value",
-      "label": "",
       "description": "Sampled potentiometer value",
-      "boundValues": {},
+      "id": "value",
       "position": {
         "x": 0,
         "y": 300

@@ -178,14 +178,15 @@ export const saveProjectAsXodball = def(
   'saveProjectAsXodball :: Path -> Project -> Promise', // Promise Path Error
   (projectPath, project) => {
     const projectDir = path.dirname(projectPath);
-    return R.compose(
+    return R.composeP(
       R.always(projectPath),
-      saveVirtualFile(projectDir),
+      virtualXodball => saveVirtualFile(projectDir, virtualXodball),
       content => ({
         path: path.basename(projectPath),
         content,
       }),
-      XP.toXodball
+      XP.toXodball,
+      Promise.resolve.bind(Promise)
     )(project);
   }
 );
