@@ -39,10 +39,22 @@ describe('Test FS things', () => {
         }
       );
 
-    // welcome project is readonly, let's save a "mutable" copy.
+    const saveAsXodballAndCheck = () =>
+      ide.app.electron.ipcRenderer
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod.xodball'))
+        .then(ide.page.waitUntilProjectSaved)
+        .then(() => {
+          const expectedXodball = fse.readFileSync(path.join(__dirname, './fixtures/welcome-to-xod.xodball'), 'utf8');
+          const actualXodball = fse.readFileSync(ide.wsPath('welcome-to-xod.xodball'), 'utf8');
+          assert.equal(actualXodball, expectedXodball);
+        });
+
     // !!! Ideally, we should simulate clicking 'file -> save',
     // check that a file dialog appears and enter desired path there.
     // But spectron can't handle file dialogs :(
+    it('saves welcome project to disk as xodball', saveAsXodballAndCheck);
+    it('saves welcome project to disk as xodball again and it remains the same', saveAsXodballAndCheck);
+
     it('saves welcome project to disk', () =>
       ide.app.electron.ipcRenderer
         .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
