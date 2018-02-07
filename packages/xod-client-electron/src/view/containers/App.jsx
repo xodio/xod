@@ -36,6 +36,7 @@ import subscribeToTriggerMainMenuRequests from '../../testUtils/triggerMainMenu'
 import { TRIGGER_SAVE_AS } from '../../testUtils/events';
 
 import { getOpenDialogFileFilters, createSaveDialogOptions } from '../nativeDialogs';
+import { STATES, getEventNameWithState } from '../../shared/eventStates';
 
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
@@ -335,11 +336,11 @@ class App extends client.App {
       });
 
       ipcRenderer.once(
-        `${EVENTS.SAVE_ALL}:complete`, // TODO: replace `complete` with constant
+        getEventNameWithState(EVENTS.SAVE_ALL, STATES.COMPLETE),
         (event, res) => resolve(res)
       );
       ipcRenderer.once(
-        `${EVENTS.SAVE_ALL}:error`, // TODO: replace `error` with constant
+        getEventNameWithState(EVENTS.SAVE_ALL, STATES.ERROR),
         (event, err) => reject(err)
       );
     });

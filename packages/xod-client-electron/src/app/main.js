@@ -23,6 +23,8 @@ import * as WA from './workspaceActions';
 import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
 import createAppStore from './store/index';
 
+import { STATES, getEventNameWithState } from '../shared/eventStates';
+
 // =============================================================================
 //
 // Configure application
@@ -128,11 +130,19 @@ function createWindow() {
 
 const subscribeToRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, data) => {
-    event.sender.send(`${processName}:process`);
+    event.sender.send(
+      getEventNameWithState(processName, STATES.PROCESS),
+    );
     remoteAction(event, data).then((result) => {
-      event.sender.send(`${processName}:complete`, result);
+      event.sender.send(
+        getEventNameWithState(processName, STATES.COMPLETE),
+        result
+      );
     }).catch((err) => {
-      event.sender.send(`${processName}:error`, errorToPlainObject(err));
+      event.sender.send(
+        getEventNameWithState(processName, STATES.ERROR),
+        errorToPlainObject(err)
+      );
     });
   });
 };

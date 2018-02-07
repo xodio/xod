@@ -14,6 +14,7 @@ import {
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
+import { STATES, getEventNameWithState } from '../shared/eventStates';
 
 // =============================================================================
 //
@@ -73,7 +74,7 @@ export const createAsyncAction = ({
 
       if (processMsg) {
         ipcRenderer.once(
-          `${eventName}:process`,
+          getEventNameWithState(eventName, STATES.PROCESS),
           (sender, payload) => processProgressed(
             { processId, actionType, message: processMsg, notify, payload },
             dispatch
@@ -83,7 +84,7 @@ export const createAsyncAction = ({
     }
 
     ipcRenderer.once(
-      `${eventName}:complete`,
+      getEventNameWithState(eventName, STATES.COMPLETE),
       (sender, payload) => {
         if (!silent) {
           processCompleted(
@@ -102,7 +103,7 @@ export const createAsyncAction = ({
     );
 
     ipcRenderer.once(
-      `${eventName}:error`,
+      getEventNameWithState(eventName, STATES.ERROR),
       (sender, err) => {
         // eslint-disable-next-line no-console
         console.error(
