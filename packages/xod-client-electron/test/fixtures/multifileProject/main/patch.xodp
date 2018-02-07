@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {
+      "boundValues": {
+        "B1oqkTnIb": 13
+      },
+      "id": "BkTaA1GLM",
+      "position": {
+        "x": -68,
+        "y": -102
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}
