@@ -123,16 +123,7 @@ class App extends client.App {
       EVENTS.REQUEST_CLOSE_WINDOW,
       () => {
         this.confirmUnsavedChanges(() => {
-          setTimeout(() => {
-            if (this.props.saveProcess) {
-              // TODO: don't allow any more interaction?
-              ipcRenderer.once(EVENTS.SAVE_ALL, () => {
-                ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
-              });
-            } else {
-              ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
-            }
-          }, 0);
+          ipcRenderer.send(EVENTS.CONFIRM_CLOSE_WINDOW);
         });
       }
     );
