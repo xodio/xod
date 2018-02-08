@@ -1334,5 +1334,50 @@ describe('Patch', () => {
         );
       });
     });
+
+    describe('getVardiadicKindFromPatch', () => {
+      it('returns Nothing for patch without variadic Node', () => {
+        const patch = Helper.defaultizePatch({});
+        assert.equal(
+          Patch.getVardiadicKindFromPatch(patch).isNothing,
+          true
+        );
+      });
+      it('returns Nothing for patch with wrong kind of variadic Node', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-99',
+            },
+          },
+        });
+        assert.equal(
+          Patch.getVardiadicKindFromPatch(patch).isNothing,
+          true
+        );
+      });
+
+      const createTestForJust = (n) => {
+        it(`returns Maybe ${n} for patch with variadic Node`, () => {
+          const patch = Helper.defaultizePatch({
+            nodes: {
+              a: {
+                id: 'a',
+                type: `xod/patch-nodes/variadic-${n}`,
+              },
+            },
+          });
+          assert.equal(
+            Patch.getVardiadicKindFromPatch(patch).getOrElse(null),
+            n
+          );
+        });
+      };
+
+      createTestForJust(1);
+      createTestForJust(2);
+      createTestForJust(3);
+    });
   });
 });

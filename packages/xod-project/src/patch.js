@@ -21,6 +21,8 @@ import {
   resolvePatchPath,
   isBuiltInLibName,
   isLocalMarker,
+  isVariadicPath,
+  getVariadicPathKind,
 } from './patchPathUtils';
 
 /**
@@ -1021,7 +1023,15 @@ export const upsertDeadPins = def(
   }
 );
 
-
+/**
+ * It takes Patch and replaces all local nodetypes with absolute.
+ * E.G.
+ * Patch "xod/core/concat-4" has few nodes with types "@/concat".
+ * Theirs node types will be replaced with "xod/core/concat".
+ *
+ * This function is used in loading of libraries.
+ */
+// :: Patch -> Patch
 export const resolveNodeTypesInPatch = patch => R.compose(
   R.reduce(R.flip(assocNode), patch),
   R.map(node => R.compose(
@@ -1032,3 +1042,20 @@ export const resolveNodeTypesInPatch = patch => R.compose(
   R.filter(Node.isLocalNode),
   listNodes
 )(patch);
+
+/**
+ * Get variadic kind (1/2/3) from Patch by checking for
+ * existing of variadic node and extract its kind from
+ * NodeType. Cause Patch could not contain any variadic
+ * node it returns value wrapped into Maybe.
+ */
+export const getVardiadicKindFromPatch = def(
+  'getVardiadicKindFromPatch :: Patch -> Maybe VariadicKind',
+  R.compose(
+    R.map(getVariadicPathKind),
+    Maybe,
+    R.find(isVariadicPath),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);

@@ -38,6 +38,10 @@ const NonZeroNaturalNumber = NullaryType(
   'NonZeroNaturalNumber',
   R.both(Number.isInteger, R.gt(R.__, 0))
 );
+const VariadicKind = NullaryType(
+  'VariadicKind',
+  x => x >= 1 && x <= 3
+);
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
@@ -181,6 +185,7 @@ export const env = XF.env.concat([
   LibName,
   ArityLevel,
   NonZeroNaturalNumber,
+  VariadicKind,
 ]);
 
 export const def = HMDef.create({

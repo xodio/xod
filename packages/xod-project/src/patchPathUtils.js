@@ -130,15 +130,14 @@ export const getTerminalPath = R.curry((direction, type) => `${PATCH_NODES_LIB_N
 // utils for variadic marker nodes
 //
 
-const variadicRegExp =
-  new RegExp(`${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
+const variadicRegExp = new RegExp(`${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
 
 // :: PatchPath -> Boolean
 export const isVariadicPath = R.test(variadicRegExp);
 
 // TODO: Maybe `Maybe NonZeroNaturalNumber`?
 // :: PatchPath -> NonZeroNaturalNumber
-export const getVariadicPathCount = R.compose(
+export const getVariadicPathKind = R.compose(
   R.nth(1),
   R.match(variadicRegExp)
 );
