@@ -94,7 +94,7 @@ export const convertToLocalPath = R.compose(
 // Utils for terminal patches
 //
 
-const TERMINALS_LIB_NAME = 'xod/patch-nodes';
+const PATCH_NODES_LIB_NAME = 'xod/patch-nodes';
 const dataTypes = R.values(CONST.PIN_TYPE);
 
 // :: String -> Direction
@@ -124,7 +124,26 @@ export const isOutputTerminalPath = R.compose(
 );
 
 // ::
-export const getTerminalPath = R.curry((direction, type) => `${TERMINALS_LIB_NAME}/${direction}-${type}`);
+export const getTerminalPath = R.curry((direction, type) => `${PATCH_NODES_LIB_NAME}/${direction}-${type}`);
+
+//
+// utils for variadic marker nodes
+//
+
+const variadicRegExp = new RegExp(`${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
+
+// :: PatchPath -> Boolean
+export const isVariadicPath = R.test(variadicRegExp);
+
+// :: PatchPath -> ArityStep
+export const getArityStepFromPatchPath = R.compose(
+  x => parseInt(x, 10),
+  R.nth(1),
+  R.match(variadicRegExp)
+);
+
+// :: NonZeroNaturalNumber -> PatchPath
+export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 
 //
 // utils for cast patches

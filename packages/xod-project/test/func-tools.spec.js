@@ -30,14 +30,12 @@ describe('Functional tools', () => {
     it('should be Either.Left for false', () => {
       const errMessage = 'test';
       const res = Tools.errOnFalse(errMessage, () => false)({});
-      expect(res.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, res, errMessage);
+      Helper.expectEitherError(errMessage, res);
     });
     it('should be Either.Right for true', () => {
       const obj = {};
       const res = Tools.errOnFalse('test', () => true)(obj);
-      expect(res.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         val => expect(val).to.be.equal(obj),
         res
       );
@@ -48,15 +46,13 @@ describe('Functional tools', () => {
       const errMessage = 'test passed';
       const nothing = Maybe.Nothing(); // eslint-disable-line new-cap
       const either = Tools.errOnNothing(errMessage, nothing);
-      expect(either.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, either, errMessage);
+      Helper.expectEitherError(errMessage, either);
     });
     it('should return Either.Right for Maybe.Just', () => {
       const content = {};
       const just = Maybe.of(content);
       const either = Tools.errOnNothing({}, just);
-      expect(either.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         val => expect(val).to.be.equal(content),
         either
       );

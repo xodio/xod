@@ -150,3 +150,27 @@ export const reduceMaybe = def(
   'reduceEither :: (b -> a -> Maybe b) -> b -> [a] -> Maybe b',
   reduceM(Maybe.of)
 );
+
+/**
+ * Returns Either b c.
+ *
+ * Checks passed value for condition and if it passes it
+ * returns Either.Right with the same value, if not — returns
+ * Either.Left with result of calling second function from second
+ * argument passed into `leftIf`.
+ *
+ * E.G.
+ * ```
+ *   const validateMoreThan5 = leftIf(x => x > 5, x => `${x} less than 5`);
+ *   validateMoreThan5(3); // Either.Left '3 less than 5'
+ *   validateMoreThan5(6); // Either.Right 6
+ * ```
+ */
+export const leftIf = def(
+  'leftIf :: (a -> c) -> (a -> b) -> a -> Either b c',
+  (condition, leftFn, val) => (
+    condition(val)
+    ? Either.of(val)
+    : Either.Left(leftFn(val))
+  )
+);

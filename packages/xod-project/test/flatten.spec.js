@@ -11,25 +11,6 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
 import { getCastPatchPath } from '../src/patchPathUtils';
-import { fromXodballDataUnsafe } from '../src/xodball';
-
-import blinking from './fixtures/blinking.json';
-import blinkingFlat from './fixtures/blinking.flat.json';
-
-import deeplyNested from './fixtures/deeply-nested.json';
-import deeplyNestedFlat from './fixtures/deeply-nested.flat.json';
-
-import boundInputValuesPropagation from './fixtures/bound-input-values-propagation.json';
-import boundInputValuesPropagationFlat from './fixtures/bound-input-values-propagation.flat.json';
-
-import castMultipleOutputsXodball from './fixtures/cast-multiple-outputs.xodball.json';
-import castMultipleOutputsFlat from './fixtures/cast-multiple-outputs.flat.json';
-
-import deepBoundValuesPropagationXodball from './fixtures/deep-bound-values-propagation.xodball.json';
-import deepBoundValuesPropagationFlat from './fixtures/deep-bound-values-propagation.flat.json';
-
-import boundValuesPropagationToBusyOutputXodball from './fixtures/bound-values-propagation-to-busy-output.xodball.json';
-import boundValuesPropagationToBusyOutputFlat from './fixtures/bound-values-propagation-to-busy-output.flat.json';
 
 chai.use(dirtyChai);
 
@@ -388,8 +369,8 @@ describe('Flatten', () => {
         project.patches['@/foo'].nodes.c.boundValues
       );
     });
-    it('correct structure for blinking.json', () => {
-      const defaultizedBlinking = Helper.defaultizeProject(blinking);
+    it('correct structure for blinking.xodball', () => {
+      const defaultizedBlinking = Helper.loadXodball('./fixtures/blinking.xodball');
       const extracted = extractPatches(
         defaultizedBlinking,
         [
@@ -436,13 +417,10 @@ describe('Flatten', () => {
         },
       });
       const result = extractLeafPatches(project, '@/main', project.patches['@/main'])[0];
-      expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(
-        msg => expect(msg).to.be.equal(
-          formatString(
-            CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
-            { patchPath: 'xod/test/non-existent-patch' }
-          )
+      Helper.expectEitherError(
+        formatString(
+          CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
+          { patchPath: 'xod/test/non-existent-patch' }
         ),
         result
       );
@@ -541,18 +519,15 @@ describe('Flatten', () => {
       )(project);
 
       const flatProject = flatten(projectWithMissingAttachments, '@/main');
-      expect(flatProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(
-        expect,
-        flatProject,
-        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: 'xod/core/or' })
+      Helper.expectEitherError(
+        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: 'xod/core/or' }),
+        flatProject
       );
     });
     it('should ignore not referred patches', () => {
       const flatProject = flatten(project, '@/foo');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['@/empty', '@/foo']);
@@ -565,8 +540,7 @@ describe('Flatten', () => {
     it('should return patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
@@ -579,8 +553,7 @@ describe('Flatten', () => {
     it('should return patch with links', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
@@ -731,8 +704,7 @@ describe('Flatten', () => {
     it('should ignore not referred patches', () => {
       const flatProject = flatten(project, '@/foo');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/foo']);
@@ -748,8 +720,7 @@ describe('Flatten', () => {
     it('should return patch and its dependencies', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
@@ -766,8 +737,7 @@ describe('Flatten', () => {
     it('should return nodes with prefixed ids', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
@@ -784,8 +754,7 @@ describe('Flatten', () => {
     it('should remove unused terminals', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes)
             .to.have.not.property('b~d');
@@ -797,8 +766,7 @@ describe('Flatten', () => {
     it('should return flattened links', () => {
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(R.keys(newProject.patches))
             .to.be.deep.equal(['xod/core/or', '@/main']);
@@ -809,21 +777,20 @@ describe('Flatten', () => {
       );
     });
 
-    it('should correctly flatten blinking.json', () => {
-      const defaultizedBlinking = Helper.defaultizeProject(blinking);
-      const flattened = R.unnest(flatten(defaultizedBlinking, '@/main'));
+    it('should correctly flatten blinking.xodball', () => {
+      const blinking = Helper.loadXodball('./fixtures/blinking.xodball');
+      const blinkingFlat = Helper.loadXodball('./fixtures/blinking.flat.xodball');
+      const flattened = R.unnest(flatten(blinking, '@/main'));
       expect(flattened).to.deep.equal(blinkingFlat);
     });
 
-    it('should correctly flatten deeply-nested.json', () => {
-      const eitherErrorOrFlat = flatten(deeplyNested, '@/main');
+    it('should correctly flatten deeply-nested.xodball', () => {
+      const deeplyNestedProject = Helper.loadXodball('./fixtures/deeply-nested.xodball');
+      const expected = Helper.loadXodball('./fixtures/deeply-nested.flat.xodball');
+      const eitherErrorOrFlat = flatten(deeplyNestedProject, '@/main');
 
-      expect(eitherErrorOrFlat.isRight).to.be.true();
-
-      Helper.expectEither(
-        (flat) => {
-          expect(flat).to.be.deep.equal(deeplyNestedFlat);
-        },
+      Helper.expectEitherRight(
+        flat => expect(flat).to.be.deep.equal(expected),
         eitherErrorOrFlat
       );
     });
@@ -905,8 +872,7 @@ describe('Flatten', () => {
 
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main');
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(R.keys(newProject.patches))
               .to.be.deep.equal(['xod/core/number', '@/main']);
@@ -918,8 +884,7 @@ describe('Flatten', () => {
       it('should return @/main without cast node and link to it', () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(R.keys(newProject.patches['@/main'].nodes))
               .to.be.deep.equal(['a']);
@@ -1071,8 +1036,7 @@ describe('Flatten', () => {
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
 
-          expect(flatProject.isRight).to.be.true();
-          Helper.expectEither(
+          Helper.expectEitherRight(
             (newProject) => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
@@ -1226,8 +1190,7 @@ describe('Flatten', () => {
             [`xod/core/${typeIn}`, expectedPath, '@/main'] :
             [`xod/core/${typeIn}`, `xod/core/${typeOut}`, expectedPath, '@/main'];
 
-          expect(flatProject.isRight).to.be.true();
-          Helper.expectEither(
+          Helper.expectEitherRight(
             (newProject) => {
               expect(R.keys(newProject.patches))
                 .to.be.deep.equal(expectedPaths);
@@ -1334,8 +1297,7 @@ describe('Flatten', () => {
       it('should return patches without cast patch', () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(R.keys(newProject.patches))
               .to.be.deep.equal(['xod/core/number', '@/main']);
@@ -1347,8 +1309,7 @@ describe('Flatten', () => {
       it('should return two flattened nodes', () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(R.keys(newProject.patches['@/main'].nodes))
               .to.be.deep.equal(['a~a', 'b']);
@@ -1360,8 +1321,7 @@ describe('Flatten', () => {
       it('should return one flattened links', () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(R.values(newProject.patches['@/main'].links))
               .to.have.lengthOf(1)
@@ -1446,11 +1406,9 @@ describe('Flatten', () => {
       it(`should return Either.Left with error "${CONST.ERROR.CAST_PATCH_NOT_FOUND}"`, () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(
-          expect,
-          flatProject,
-          formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: 'xod/core/cast-boolean-to-number' })
+        Helper.expectEitherError(
+          formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: 'xod/core/cast-boolean-to-number' }),
+          flatProject
         );
       });
     });
@@ -1466,14 +1424,12 @@ describe('Flatten', () => {
       //  +----------------+
       //
       it('should create a separate cast node for each casted output', () => {
-        const castMultipleOutputs = fromXodballDataUnsafe(castMultipleOutputsXodball);
-        const flatProject = flatten(castMultipleOutputs, '@/main');
+        const inputProject = Helper.loadXodball('./fixtures/cast-multiple-outputs.xodball');
+        const expectedProject = Helper.loadXodball('./fixtures/cast-multiple-outputs.flat.xodball');
+        const flatProject = flatten(inputProject, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
-          (project) => {
-            expect(project).to.deep.equal(castMultipleOutputsFlat);
-          },
+        Helper.expectEitherRight(
+          flat => expect(flat).to.deep.equal(expectedProject),
           flatProject
         );
       });
@@ -1549,8 +1505,7 @@ describe('Flatten', () => {
 
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['f~a'])
             .to.have.property('boundValues')
@@ -1757,8 +1712,7 @@ describe('Flatten', () => {
       });
       const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           expect(newProject.patches['@/main'].nodes['b~a2-to-b~b-pin-in2'])
             .to.have.property('boundValues')
@@ -1833,8 +1787,7 @@ describe('Flatten', () => {
         },
       });
       const flatProject = flatten(project, '@/main');
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (newProject) => {
           const node = newProject.patches['@/main'].nodes.m;
           expect(node.boundValues).to.deep.equal({
@@ -1847,40 +1800,33 @@ describe('Flatten', () => {
     });
 
     it('should propagate bound values to nested patches', () => {
-      const flatProject = flatten(boundInputValuesPropagation, '@/main');
+      const project = Helper.loadXodball('./fixtures/bound-input-values-propagation.xodball');
+      const expectedProject = Helper.loadXodball('./fixtures/bound-input-values-propagation.flat.xodball');
+      const flatProject = flatten(project, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
-        (project) => {
-          expect(project).to.deep.equal(boundInputValuesPropagationFlat);
-        },
+      Helper.expectEitherRight(
+        proj => expect(proj).to.deep.equal(expectedProject),
         flatProject
       );
     });
 
     it('should propagate bound values to DEEPLY nested patches', () => {
-      const deepBoundValuesPropagationProject =
-        fromXodballDataUnsafe(deepBoundValuesPropagationXodball);
-      const flatProject = flatten(deepBoundValuesPropagationProject, '@/main');
+      const inputProject = Helper.loadXodball('./fixtures/deep-bound-values-propagation.xodball');
+      const expectedProject = Helper.loadXodball('./fixtures/deep-bound-values-propagation.flat.xodball');
+      const flatProject = flatten(inputProject, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
-        (project) => {
-          expect(project).to.deep.equal(deepBoundValuesPropagationFlat);
-        },
+      Helper.expectEitherRight(
+        project => expect(project).to.deep.equal(expectedProject),
         flatProject
       );
     });
     it('should not override already bound outputs when propagating values upwards', () => {
-      const boundValuesPropagationToBusyOutputProject =
-        fromXodballDataUnsafe(boundValuesPropagationToBusyOutputXodball);
-      const flatProject = flatten(boundValuesPropagationToBusyOutputProject, '@/main');
+      const inputProject = Helper.loadXodball('./fixtures/bound-values-propagation-to-busy-output.xodball');
+      const expectedProject = Helper.loadXodball('./fixtures/bound-values-propagation-to-busy-output.flat.xodball');
+      const flatProject = flatten(inputProject, '@/main');
 
-      expect(flatProject.isRight).to.be.true();
-      Helper.expectEither(
-        (project) => {
-          expect(project).to.deep.equal(boundValuesPropagationToBusyOutputFlat);
-        },
+      Helper.expectEitherRight(
+        project => expect(project).to.deep.equal(expectedProject),
         flatProject
       );
     });
@@ -1953,8 +1899,7 @@ describe('Flatten', () => {
       it('defined implementation exists', () => {
         const flatProject = flatten(project, '@/main');
 
-        expect(flatProject.isRight).to.be.true();
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (newProject) => {
             expect(newProject.patches['@/main'])
               .to.be.deep.equal(project.patches['@/main']);
@@ -1964,22 +1909,18 @@ describe('Flatten', () => {
       });
       it('no defined implementation in the project', () => {
         const flatProject = flatten(project, '@/references-patch-without-impl');
-        expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(
-          expect,
-          flatProject,
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: '@/no-impl' })
+        Helper.expectEitherError(
+          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, { patchPath: '@/no-impl' }),
+          flatProject
         );
       });
     });
     describe('patch not implemented in xod as an entry point', () => {
       it('should not be accepted', () => {
         const flatProject = flatten(project, 'xod/core/or');
-        expect(flatProject.isLeft).to.be.true();
-        Helper.expectErrorMessage(
-          expect,
-          flatProject,
+        Helper.expectEitherError(
           CONST.ERROR.CPP_AS_ENTRY_POINT,
+          flatProject
         );
       });
     });

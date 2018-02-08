@@ -18,11 +18,11 @@ describe('Helpers', () => {
     const right = Either.Right(rightObj);
 
     it('should throw Left value', () => {
-      const eitherLeft = () => Helper.expectEither(R.identity, left);
+      const eitherLeft = () => Helper.expectEitherRight(R.identity, left);
       assert.throws(eitherLeft, Error, 'LEFT');
     });
     it('should return Right value', () => {
-      Helper.expectEither(
+      Helper.expectEitherRight(
         val => assert.deepEqual(val, rightObj),
         right
       );

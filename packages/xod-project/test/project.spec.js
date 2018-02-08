@@ -12,8 +12,6 @@ import * as Project from '../src/project';
 import { formatString } from '../src/utils';
 import { BUILT_IN_PATCH_PATHS } from '../src/builtInPatches';
 
-import brokenProject from './fixtures/broken-project.json';
-
 import * as Helper from './helpers';
 
 chai.use(dirtyChai);
@@ -216,14 +214,12 @@ describe('Project', () => {
         project
       );
 
-      expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_REBASING_BUILT_IN);
+      Helper.expectEitherError(CONST.ERROR.PATCH_REBASING_BUILT_IN, newProject);
     });
     it('should return Either.Left if patch is not in the project', () => {
       const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
 
-      expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }));
+      Helper.expectEitherError(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }), newProject);
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = Helper.defaultizeProject({
@@ -231,8 +227,7 @@ describe('Project', () => {
       });
       const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
 
-      expect(newProject.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, newProject, CONST.ERROR.PATCH_PATH_OCCUPIED);
+      Helper.expectEitherError(CONST.ERROR.PATCH_PATH_OCCUPIED, newProject);
     });
     it('should return Either.Right with Project', () => {
       const patch = {};
@@ -241,7 +236,7 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({ patches: { [oldPath]: patch } });
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(proj).to.be.equal(project);
         },
@@ -286,38 +281,36 @@ describe('Project', () => {
 
     it('should be Either.Left for non-existent type', () => {
       const result = Project.validatePatchContents(patchWithNodeOnly, emptyProject);
-      expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, formatString(
-        CONST.ERROR.TYPE_NOT_FOUND,
-        { type: '@/test' }
-      ));
+      Helper.expectEitherError(
+        formatString(
+          CONST.ERROR.TYPE_NOT_FOUND,
+          { type: '@/test' }
+        ),
+        result
+      );
     });
     it('should be Either.Left for non-existent pins', () => {
       const result = Project.validatePatchContents(fullPatch, smallProject);
-      expect(result.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, result, CONST.ERROR.PINS_NOT_FOUND);
+      Helper.expectEitherError(CONST.ERROR.PINS_NOT_FOUND, result);
     });
     it('should be Either.Right for empty patch', () => {
       const newPatch = Helper.defaultizePatch({ path: '@/test2' });
       const result = Project.validatePatchContents(newPatch, smallProject);
-      expect(result.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         validPatch => expect(validPatch).to.be.equal(newPatch),
         result
       );
     });
     it('should be Either.Right for patch with valid node without links', () => {
       const result = Project.validatePatchContents(patchWithNodeOnly, smallProject);
-      expect(result.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         validPatch => expect(validPatch).to.be.equal(patchWithNodeOnly),
         result
       );
     });
     it('should be Either.Right for valid new patch', () => {
       const result = Project.validatePatchContents(fullPatch, fullProject);
-      expect(result.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         validPatch => expect(validPatch).to.be.equal(fullPatch),
         result
       );
@@ -340,8 +333,7 @@ describe('Project', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, emptyProject);
-      expect(newProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -362,8 +354,7 @@ describe('Project', () => {
         },
       });
       const newProject = Project.assocPatch(newPath, newPatch, project);
-      expect(newProject.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(oldPatch);
           expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(newPatch);
@@ -380,7 +371,7 @@ describe('Project', () => {
     ]);
     it('should return Right Projct with associated patches', () => {
       const res = Project.assocPatchList(patches, emptyProject);
-      Helper.expectEither(
+      Helper.expectEitherRight(
         proj => R.forEach(
           (expectedPatch) => {
             const patchPath = Patch.getPatchPath(expectedPatch);
@@ -397,7 +388,10 @@ describe('Project', () => {
         patches
       );
       const res = Project.assocPatchList(invalidPatches, emptyProject);
-      Helper.expectErrorMessage(expect, res, formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: 'xod/test/not-existent-one' }));
+      Helper.expectEitherError(
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: 'xod/test/not-existent-one' }),
+        res
+      );
     });
   });
   describe('dissocPatch', () => {
@@ -440,9 +434,8 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({ patches: { [oldPath]: {} } });
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
-      expect(newProject.isRight).to.be.true();
 
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -463,7 +456,7 @@ describe('Project', () => {
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
 
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -488,9 +481,8 @@ describe('Project', () => {
       });
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
-      expect(newProject.isRight).to.be.true();
 
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (proj) => {
           expect(proj)
             .to.have.property('patches')
@@ -796,6 +788,7 @@ describe('Project', () => {
   });
 
   describe('validateProject', () => {
+    const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
     const project = addMissingOptionalProjectFields(brokenProject);
     const unfoldLeft = e => Either.either(R.identity, R.always(null), e);
     const unfoldRight = e => Either.either(R.always(null), R.identity, e);
@@ -832,6 +825,7 @@ describe('Project', () => {
   });
 
   describe('project surviving', () => {
+    const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
     const project = addMissingOptionalProjectFields(brokenProject);
     const curPatch = Project.getPatchByPathUnsafe('@/main', project);
 

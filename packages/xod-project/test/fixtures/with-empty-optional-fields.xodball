@@ -15,6 +15,7 @@
             "x": 0,
             "y": 0
           },
+          "arityLevel": 1,
           "type": "bob/awesome-library/test-patch"
         }
       },

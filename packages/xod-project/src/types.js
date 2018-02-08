@@ -34,12 +34,25 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 
 const ObjectWithId = NullaryType('ObjectWithId', R.both(XF.notNil, R.has('id')));
 const ObjectWithKey = NullaryType('ObjectWithKey', R.both(XF.notNil, R.has('key')));
+const NonZeroNaturalNumber = NullaryType(
+  'NonZeroNaturalNumber',
+  R.both(Number.isInteger, R.gt(R.__, 0))
+);
+const ArityStep = NullaryType(
+  'ArityStep',
+  x => (
+    x >= 1
+    && x <= C.MAX_ARITY_STEP
+    && Number.isInteger(x)
+  )
+);
 
 export const Label = AliasType('Label', $.String);
 export const Source = AliasType('Source', $.String);
 export const ShortId = AliasType('ShortId', $.String);
 export const LinkId = AliasType('LinkId', ShortId);
 export const NodeId = AliasType('NodeId', ShortId);
+export const ArityLevel = AliasType('ArityLevel', NonZeroNaturalNumber);
 export const CommentId = AliasType('CommentId', ShortId);
 export const PinKey = AliasType('PinKey', NodeId);
 export const PinLabel = AliasType('PinLabel', $.String);
@@ -80,6 +93,7 @@ export const Node = Model('Node', {
   label: $.String,
   description: $.String,
   boundValues: $.StrMap(DataValue),
+  arityLevel: ArityLevel,
 });
 
 export const Link = Model('Link', {
@@ -173,6 +187,9 @@ export const env = XF.env.concat([
   TerminalNode,
   Version,
   LibName,
+  ArityLevel,
+  NonZeroNaturalNumber,
+  ArityStep,
 ]);
 
 export const def = HMDef.create({
