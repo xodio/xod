@@ -7,6 +7,7 @@ export const OPTIONAL_NODE_FIELDS = {
   boundValues: {},
   description: '',
   label: '',
+  arityLevel: 1,
 };
 
 export const OPTIONAL_PATCH_FIELDS = {

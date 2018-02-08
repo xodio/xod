@@ -10,6 +10,7 @@
       "links": {},
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "noNativeImpl",
@@ -22,6 +23,7 @@
           "@@type": "xod-project/Node"
         },
         "ryVmUAOrvkb": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": false
           },
@@ -52,6 +54,7 @@
       "links": {},
       "nodes": {
         "HJdO9HwJ-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "HJdO9HwJ-",
@@ -64,6 +67,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "S1n95SDJb",
@@ -76,6 +80,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "noNativeImpl",
@@ -104,6 +109,7 @@
       "links": {},
       "nodes": {
         "ByHmL0uHPk-": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": false
           },
@@ -118,6 +124,7 @@
           "@@type": "xod-project/Node"
         },
         "ByU7LRuSPkW": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "ByU7LRuSPkW",
@@ -130,6 +137,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "noNativeImpl",
@@ -142,6 +150,7 @@
           "@@type": "xod-project/Node"
         },
         "ryv7IRdSP1b": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "ryv7IRdSP1b",
@@ -176,6 +185,7 @@
           },
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {},
           "@@type": "xod-project/Node"
         },
@@ -188,6 +198,7 @@
           },
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {
             "HJdO9HwJ-": "It works!"
           },
@@ -202,6 +213,7 @@
           },
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {},
           "@@type": "xod-project/Node"
         }

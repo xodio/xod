@@ -14,6 +14,7 @@
             "x": 138,
             "y": 16
           },
+          "arityLevel": 1,
           "boundValues": {
             "rJJbPFO8b": 123,
             "B1FlPYuL-": 456
@@ -42,6 +43,7 @@
             "x": 138,
             "y": 432
           },
+          "arityLevel": 1,
           "boundValues": {
             "S1n95SDJb": "ON_BOOT"
           }
@@ -265,6 +267,7 @@
     "xod/core/round": {
       "nodes": {
         "BkF78AurDJW": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "X",
@@ -276,6 +279,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -287,6 +291,7 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "rkO7L0uSP1Z": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": 0
           },
@@ -315,6 +320,7 @@
     "xod/core/console-log": {
       "nodes": {
         "HJdO9HwJ-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "LINE",
@@ -326,6 +332,7 @@
           "type": "xod/patch-nodes/input-string"
         },
         "S1n95SDJb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "DUMP",
@@ -337,6 +344,7 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -363,6 +371,7 @@
     "xod/core/buffer": {
       "nodes": {
         "HkXm80uHPyb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "A value to store",
           "label": "NEW",
@@ -374,6 +383,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "Hy-QUR_BPkZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "Saves `NEW` value in memory",
           "label": "UPD",
@@ -385,6 +395,7 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -396,6 +407,7 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "r1lQLAOBwJb": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": 0
           },
@@ -424,6 +436,7 @@
     "xod/core/cast-number-to-string": {
       "nodes": {
         "__in__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -435,6 +448,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "__out__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -446,6 +460,7 @@
           "type": "xod/patch-nodes/output-string"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",

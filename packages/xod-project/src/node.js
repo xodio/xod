@@ -50,6 +50,7 @@ export const createNode = def(
     label: '',
     description: '',
     boundValues: {},
+    arityLevel: 1,
   })
 );
 
@@ -158,6 +159,27 @@ export const setNodePosition = def(
 export const getNodePosition = def(
   'getNodePosition :: Node -> Position',
   R.prop('position')
+);
+
+/**
+ * @function setNodeArityLevel
+ * @param {ArityLevel} arityLevel - new arity of the node
+ * @param {Node} node - node to update
+ * @returns {Node} copy of node with new arity level
+ */
+export const setNodeArityLevel = def(
+  'setNodeArityLevel :: ArityLevel -> Node -> Node',
+  R.assoc('arityLevel')
+);
+
+/**
+ * @function getNodeArityLevel
+ * @param {Node} node
+ * @returns {ArityLevel}
+ */
+export const getNodeArityLevel = def(
+  'getNodeArityLevel :: Node -> ArityLevel',
+  R.prop('arityLevel')
 );
 
 /**

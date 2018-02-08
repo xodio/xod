@@ -17,6 +17,7 @@
       "comments": {},
       "nodes": {
         "Bk_h9jpZW": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "Bk_h9jpZW",
@@ -29,6 +30,7 @@
           "@@type": "xod-project/Node"
         },
         "BkeKcj6ZZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "BkeKcj6ZZ",
@@ -41,6 +43,7 @@
           "@@type": "xod-project/Node"
         },
         "Hkqu9oaWb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "Hkqu9oaWb",
@@ -53,6 +56,7 @@
           "@@type": "xod-project/Node"
         },
         "rksccsp-W": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "rksccsp-W",
@@ -81,6 +85,7 @@
       "comments": {},
       "nodes": {
         "Hk5ccgtI-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -93,6 +98,7 @@
           "@@type": "xod-project/Node"
         },
         "HkjwYxKUb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "OUT_A",
@@ -105,6 +111,7 @@
           "@@type": "xod-project/Node"
         },
         "rJqjcxYUZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -117,6 +124,7 @@
           "@@type": "xod-project/Node"
         },
         "rkavKlFUb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "OUT_B",
@@ -145,6 +153,7 @@
       "comments": {},
       "nodes": {
         "HJdO9HwJ-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "HJdO9HwJ-",
@@ -157,6 +166,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "S1n95SDJb",
@@ -169,6 +179,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "noNativeImpl",
@@ -197,6 +208,7 @@
       "comments": {},
       "nodes": {
         "__in__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "__in__",
@@ -209,6 +221,7 @@
           "@@type": "xod-project/Node"
         },
         "__out__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "__out__",
@@ -221,6 +234,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "id": "noNativeImpl",
@@ -240,6 +254,7 @@
       "comments": {},
       "nodes": {
         "B1VMtgtUb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -252,6 +267,7 @@
           "@@type": "xod-project/Node"
         },
         "HyXhclKUZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -264,6 +280,7 @@
           "@@type": "xod-project/Node"
         },
         "rk5MteYLZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -284,6 +301,7 @@
           "type": "xod/core/cast-number-to-string",
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {},
           "@@type": "xod-project/Node"
         },
@@ -296,6 +314,7 @@
           "type": "xod/core/cast-number-to-string",
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {},
           "@@type": "xod-project/Node"
         }

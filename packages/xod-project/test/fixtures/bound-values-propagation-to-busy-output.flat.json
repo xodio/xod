@@ -9,6 +9,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "ByXnYHPyb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "Duty cycle value in range 0.0 … 1.0",
           "label": "DUTY",
@@ -21,6 +22,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -33,6 +35,7 @@
           "@@type": "xod-project/Node"
         },
         "rJsaFSvk-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "Board PWM port to write to",
           "label": "PORT",
@@ -61,6 +64,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1QQ_nhUb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -73,6 +77,7 @@
           "@@type": "xod-project/Node"
         },
         "BkRma33U-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -85,6 +90,7 @@
           "@@type": "xod-project/Node"
         },
         "ByZ7_hnUb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -113,6 +119,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1x2RV3eZ": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": ""
           },
@@ -127,6 +134,7 @@
           "@@type": "xod-project/Node"
         },
         "H1PnRN2lW": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -155,6 +163,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "BkDHHm3JG~S1XVBXhyf~H114eThI-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -167,6 +176,7 @@
           "@@type": "xod-project/Node"
         },
         "BkDHHm3JG~S1XVBXhyf~SyqVe6hLb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -179,6 +189,7 @@
           "@@type": "xod-project/Node"
         },
         "H1iBrm2Jf": {
+          "arityLevel": 1,
           "boundValues": {
             "B1x2RV3eZ": 11
           },

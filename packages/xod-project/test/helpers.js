@@ -113,6 +113,7 @@ export const defaultizeNode = R.merge({
   label: '',
   description: '',
   boundValues: {},
+  arityLevel: 1,
 });
 
 export const defaultizePin = R.merge({

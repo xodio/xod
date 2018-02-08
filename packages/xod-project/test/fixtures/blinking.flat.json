@@ -10,6 +10,7 @@
       "path": "xod/core/digital-output",
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -22,6 +23,7 @@
           "@@type": "xod-project/Node"
         },
         "pin": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -34,6 +36,7 @@
           "@@type": "xod-project/Node"
         },
         "value": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -62,6 +65,7 @@
       "path": "xod/math/multiply",
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -74,6 +78,7 @@
           "@@type": "xod-project/Node"
         },
         "a": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -86,6 +91,7 @@
           "@@type": "xod-project/Node"
         },
         "b": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -98,6 +104,7 @@
           "@@type": "xod-project/Node"
         },
         "out": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -126,6 +133,7 @@
       "path": "xod/core/latch",
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -138,6 +146,7 @@
           "@@type": "xod-project/Node"
         },
         "toggle": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -150,6 +159,7 @@
           "@@type": "xod-project/Node"
         },
         "set": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -162,6 +172,7 @@
           "@@type": "xod-project/Node"
         },
         "reset": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -174,6 +185,7 @@
           "@@type": "xod-project/Node"
         },
         "state": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -202,6 +214,7 @@
       "path": "xod/core/clock",
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -214,6 +227,7 @@
           "@@type": "xod-project/Node"
         },
         "interval": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -226,6 +240,7 @@
           "@@type": "xod-project/Node"
         },
         "tick": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -254,6 +269,7 @@
       "path": "xod/core/cast-boolean-to-number",
       "nodes": {
         "noNativeImpl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -266,6 +282,7 @@
           "@@type": "xod-project/Node"
         },
         "__in__": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -278,6 +295,7 @@
           "@@type": "xod-project/Node"
         },
         "__out__": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -306,6 +324,7 @@
       "path": "@/main",
       "nodes": {
         "SJ7g05EdFe~rJWgAqVOtx": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -318,6 +337,7 @@
           "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~ryFxRcNdKg": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {
@@ -332,6 +352,7 @@
           "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~HkSgA94OYx": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -344,6 +365,7 @@
           "@@type": "xod-project/Node"
         },
         "BJ4l0cVdKe~rJUgCqNuKl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -356,6 +378,7 @@
           "@@type": "xod-project/Node"
         },
         "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {},
@@ -368,6 +391,7 @@
           "@@type": "xod-project/Node"
         },
         "SJ7g05EdFe~rJxgAqV_tl": {
+          "arityLevel": 1,
           "label": "",
           "description": "",
           "boundValues": {

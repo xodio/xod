@@ -16,6 +16,7 @@
       "links": {},
       "nodes": {
         "HkXm80uHPyb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "A value to store",
           "label": "NEW",
@@ -28,6 +29,7 @@
           "@@type": "xod-project/Node"
         },
         "Hy-QUR_BPkZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "Saves `NEW` value in memory",
           "label": "UPD",
@@ -40,6 +42,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -52,6 +55,7 @@
           "@@type": "xod-project/Node"
         },
         "r1lQLAOBwJb": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": 0
           },
@@ -82,6 +86,7 @@
       "links": {},
       "nodes": {
         "BkF78AurDJW": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "X",
@@ -94,6 +99,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -106,6 +112,7 @@
           "@@type": "xod-project/Node"
         },
         "rkO7L0uSP1Z": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": 0
           },
@@ -136,6 +143,7 @@
       "links": {},
       "nodes": {
         "HJdO9HwJ-": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "LINE",
@@ -148,6 +156,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "DUMP",
@@ -160,6 +169,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -188,6 +198,7 @@
       "links": {},
       "nodes": {
         "__in__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -200,6 +211,7 @@
           "@@type": "xod-project/Node"
         },
         "__out__": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -212,6 +224,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -231,6 +244,7 @@
     "@/main": {
       "nodes": {
         "rJuzwF_IZ~H1vZPFOUW~HkU68Y_IW": {
+          "arityLevel": 1,
           "boundValues": {
             "HkXm80uHPyb": 123,
             "r1lQLAOBwJb": 456
@@ -246,6 +260,7 @@
           "@@type": "xod-project/Node"
         },
         "BJZPPF_Ib": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -258,6 +273,7 @@
           "@@type": "xod-project/Node"
         },
         "ryN_PKd8W": {
+          "arityLevel": 1,
           "boundValues": {
             "S1n95SDJb": "ON_BOOT"
           },
@@ -280,6 +296,7 @@
           "type": "xod/core/cast-number-to-string",
           "label": "",
           "description": "",
+          "arityLevel": 1,
           "boundValues": {},
           "@@type": "xod-project/Node"
         }

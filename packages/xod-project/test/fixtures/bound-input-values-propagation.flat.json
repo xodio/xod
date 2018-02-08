@@ -7,6 +7,7 @@
     "xod/core/add": {
       "nodes": {
         "BJnQUR_BwyZ": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "X",
@@ -19,6 +20,7 @@
           "@@type": "xod-project/Node"
         },
         "HkqmLAOrD1W": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "Y",
@@ -31,6 +33,7 @@
           "@@type": "xod-project/Node"
         },
         "SyomIRurDJ-": {
+          "arityLevel": 1,
           "boundValues": {
             "__in__": 0
           },
@@ -45,6 +48,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
+          "arityLevel": 1,
           "boundValues": {},
           "description": "",
           "label": "",
@@ -75,6 +79,7 @@
         "HJbQvOPL-~r1yIU_vU-": {
           "id": "HJbQvOPL-~r1yIU_vU-",
           "type": "xod/core/add",
+          "arityLevel": 1,
           "boundValues": {
             "BJnQUR_BwyZ": 111,
             "HkqmLAOrD1W": 222
