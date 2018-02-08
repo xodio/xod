@@ -1,7 +1,13 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 
-import { explode, explodeMaybe, explodeEither, catMaybies } from 'xod-func-tools';
+import {
+  explode,
+  explodeMaybe,
+  explodeEither,
+  foldMaybe,
+  catMaybies,
+} from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Project from './project';
@@ -10,7 +16,11 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
-import { formatString, wrapDeadRefErrorMessage } from './utils';
+import {
+  formatString,
+  composeDeadRefError,
+  maybeComposeDeadRefError,
+} from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
@@ -117,6 +127,7 @@ const extractLeafPatchRecursive = R.curry(
   (recursiveFn, project, node) => R.compose(
     path => R.compose(
       R.chain(recursiveFn(project, path)),
+      composeDeadRefError(path),
       errOnNothing(
         formatString(
           CONST.ERROR.PATCH_NOT_FOUND_BY_PATH,
@@ -154,12 +165,15 @@ export const extractLeafPatches = def(
               CONST.ERROR.IMPLEMENTATION_NOT_FOUND,
               { patchPath: Patch.getPatchPath(patch) }
             )
-          ),
+          )
         ),
       ],
       [
         R.T,
-        extractLeafPatchesFromNodes(extractLeafPatches, project),
+        R.compose(
+          R.map(maybeComposeDeadRefError(path)),
+          extractLeafPatchesFromNodes(extractLeafPatches, project),
+        ),
       ],
     ])(patch)
 );
@@ -182,30 +196,38 @@ const isLeafNode = R.curry((leafPatchPaths, node) => R.compose(
 // :: String -> String -> String
 const getPrefixedId = R.curry((prefix, id) => ((prefix) ? `${prefix}~${id}` : id));
 
-const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
-  R.compose(
-    Pin.getPinType,
-    explode,
-    R.converge(
-      // = PinKey + Patch -> Pin
-      Patch.getPinByKey,
-      [
-        // Link -> PinKey
-        keyGetter,
-        // Link -> NodeId -> Node -> NodeType -> Patch
-        R.compose(
-          R.prop(1),
-          R.find(R.__, patchTuples),
-          R.propEq(0),
-          Node.getNodeType,
-          R.find(R.__, nodes),
-          R.propEq('id'),
-          idGetter
-        ),
-      ]
-    )
-  )(link)
-);
+// :: [[PatchPath, Patch]] -> [Node] -> (Link -> NodeId) -> (Link -> PinKey) ->
+// -> Link -> Either Error PinType
+const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) => {
+  const linkKey = keyGetter(link);
+  const linkPatch = R.compose(
+    R.prop(1),
+    R.find(R.__, patchTuples),
+    R.propEq(0),
+    Node.getNodeType,
+    R.find(R.__, nodes),
+    R.propEq('id'),
+    idGetter
+  )(link);
+  const pinType = R.compose(
+    R.map(Pin.getPinType),
+    Patch.getPinByKey
+  )(linkKey, linkPatch);
+  const r = foldMaybe(
+    Either.Left(
+      new Error(
+        formatString(
+          CONST.ERROR.PIN_NOT_FOUND,
+          { pinKey: linkKey, patchPath: Patch.getPatchPath(linkPatch) }
+        )
+      )
+    ),
+    Either.of,
+    pinType
+  );
+
+  return r;
+});
 
 /**
  * Replace terminal node with casting node
@@ -219,24 +241,29 @@ const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
  * @param {Link} link
  * @returns {Maybe<Node>}
  */
-// :: [[Path, Patch]] -> [Node] -> Link -> Maybe Node
+// :: [[Path, Patch]] -> [Node] -> Link -> Either Error (Maybe Node)
 const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
-  R.map(
+  R.map(R.map(R.compose(
     R.assoc('id', [
       Link.getLinkOutputNodeId(link),
       '-to-',
       Link.getLinkInputNodeId(link),
       '-pin-',
       Link.getLinkInputPinKey(link),
-    ].join(''))
-  ),
-  R.map(Node.createNode({ x: 0, y: 0 })),
-  // Link -> Maybe String
+    ].join('')),
+    Node.createNode({ x: 0, y: 0 })
+  ))),
+  // Link -> Either Error (Maybe String)
   R.converge(
-    R.ifElse(
-      R.equals,
-      Maybe.Nothing,
-      R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
+    R.compose(
+      R.map(
+        R.ifElse(
+          a => R.equals(a[0], a[1]),
+          Maybe.Nothing,
+          R.compose(Maybe.of, R.apply(PatchPathUtils.getCastPatchPath))
+        )
+      ),
+      R.unapply(R.sequence(Either.of))
     ),
     [
       getPinType(patchTuples, nodes, Link.getLinkOutputNodeId, Link.getLinkOutputPinKey),
@@ -257,39 +284,43 @@ const createCastNode = R.curry((patchTuples, nodes, link) => R.compose(
  * @param {Array<Array<Path, Patch>>} patchTuples
  * @param {Array<Node>} nodes
  * @param {Link} link
- * @returns {Array<Node|Null, Array<Link>>}
+ * @returns {Either<Error|Array<Node|Null, Array<Link>>>}
  */
 const splitLinkWithCastNode = R.curry((patchTuples, nodes, link) =>
-  Maybe.maybe(
-    [null, [link]],
-    (castNode) => {
-      const origLinkId = Link.getLinkId(link);
-      const fromNodeId = Link.getLinkOutputNodeId(link);
-      const fromPinKey = Link.getLinkOutputPinKey(link);
-      const toNodeId = Link.getLinkInputNodeId(link);
-      const toPinKey = Link.getLinkInputPinKey(link);
+  R.compose(
+    R.map(
+      Maybe.maybe(
+        [null, [link]],
+        (castNode) => {
+          const origLinkId = Link.getLinkId(link);
+          const fromNodeId = Link.getLinkOutputNodeId(link);
+          const fromPinKey = Link.getLinkOutputPinKey(link);
+          const toNodeId = Link.getLinkInputNodeId(link);
+          const toPinKey = Link.getLinkInputPinKey(link);
 
-      const toCastNode = R.assoc('id', `${origLinkId}-to-cast`,
-        Link.createLink(
-          CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
-          castNode.id,
-          fromPinKey,
-          fromNodeId
-        )
-      );
-      const fromCastNode = R.assoc('id', `${origLinkId}-from-cast`,
-        Link.createLink(
-          toPinKey,
-          toNodeId,
-          CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT],
-          castNode.id
-        )
-      );
+          const toCastNode = R.assoc('id', `${origLinkId}-to-cast`,
+            Link.createLink(
+              CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
+              castNode.id,
+              fromPinKey,
+              fromNodeId
+            )
+          );
+          const fromCastNode = R.assoc('id', `${origLinkId}-from-cast`,
+            Link.createLink(
+              toPinKey,
+              toNodeId,
+              CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT],
+              castNode.id
+            )
+          );
 
-      return [castNode, [toCastNode, fromCastNode]];
-    },
-    createCastNode(patchTuples, nodes, link)
-  )
+          return [castNode, [toCastNode, fromCastNode]];
+        }
+      )
+    ),
+    createCastNode
+  )(patchTuples, nodes, link)
 );
 
 // :: [{ nodeId, pinKey, value }] -> StrMap Node -> StrMap Node
@@ -592,16 +623,19 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
  * @param {Array<Link>} links
  * @returns {Array<Array<Node>, Array<Link>>}
  */
-// :: [[Path, Patch]] -> Node[] -> Link[] -> [ Node[], Link[] ]
+// :: [[Path, Patch]] -> Node[] -> Link[] -> Either Error [ Node[], Link[] ]
 const createCastNodes = R.curry((patchTuples, nodes, links) => R.compose(
-  removeTerminalsAndPassPins,
-  R.converge(
-    (newNodes, newLinks) => ([newNodes, newLinks]),
-    [
-      R.compose(R.concat(nodes), R.reject(R.isNil), R.pluck(0)),
-      R.compose(R.flatten, R.pluck(1)),
-    ]
-  ),
+  R.map(R.compose(
+    removeTerminalsAndPassPins,
+    R.converge(
+      (newNodes, newLinks) => ([newNodes, newLinks]),
+      [
+        R.compose(R.concat(nodes), R.reject(R.isNil), R.pluck(0)),
+        R.compose(R.flatten, R.pluck(1)),
+      ]
+    )
+  )),
+  R.sequence(Either.of),
   R.map(splitLinkWithCastNode(patchTuples, nodes))
 )(links));
 
@@ -815,7 +849,7 @@ export const extractPatches = R.curry((project, leafPaths, prefix, boundValues, 
  * @returns {Patch}
  */
 const convertPatch = def(
-  'convertPatch :: Project -> [Pair PatchPath Patch] -> Patch -> Patch',
+  'convertPatch :: Project -> [Pair PatchPath Patch] -> Patch -> Either Error Patch',
   (project, leafPatches, patch) =>
     R.unless(
       Patch.hasImpl,
@@ -824,13 +858,13 @@ const convertPatch = def(
         const flattenEntities = extractPatches(project, leafPatchPaths, null, {}, originalPatch);
         const nodes = R.map(R.unnest, flattenEntities[0]);
         const links = R.map(R.unnest, flattenEntities[1]);
-        const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
-
-        return R.compose(
-          explodeEither,
-          Patch.upsertLinks(newLinks),
-          Patch.upsertNodes(newNodes)
-        )(Patch.createPatch());
+        return createCastNodes(leafPatches, nodes, links).map(
+          ([newNodes, newLinks]) => R.compose(
+            explodeEither,
+            Patch.upsertLinks(newLinks),
+            Patch.upsertNodes(newNodes)
+          )(Patch.createPatch())
+        );
       }
     )(patch)
 );
@@ -854,26 +888,30 @@ const convertPatch = def(
  */
 const convertProject = def(
   'convertProject :: Project -> PatchPath -> Patch -> [Pair PatchPath Patch] -> Either Error Project',
-  (project, path, patch, leafPatches) => {
-    // Patch
-    const convertedPatch = convertPatch(project, leafPatches, patch);
-    // String[]
-    const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
-    // Right Project
-    const newProject = Either.of(Project.createProject());
+  (project, path, patch, leafPatches) => R.compose(
+    composeDeadRefError(path),
+    R.chain(
+      (convertedPatch) => {
+        // String[]
+        const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
+        // Right Project
+        const newProject = Either.of(Project.createProject());
 
-    return R.compose(
-      R.chain(reduceChainOver(newProject)),
-      R.map(R.compose(
-        R.map(R.apply(Project.assocPatch)),
-        R.append([path, convertedPatch]),
-        removeNotImplementedInXodNodes,
-        removeTerminalPatches
-      )),
-      R.sequence(Either.of),
-      addCastPatches(project, usedCastNodeTypes)
-    )(leafPatches);
-  }
+        return R.compose(
+          R.chain(reduceChainOver(newProject)),
+          R.map(R.compose(
+            R.map(R.apply(Project.assocPatch)),
+            R.append([path, convertedPatch]),
+            removeNotImplementedInXodNodes,
+            removeTerminalPatches
+          )),
+          R.sequence(Either.of),
+          addCastPatches(project, usedCastNodeTypes)
+        )(leafPatches);
+      }
+    ),
+    convertPatch
+  )(project, leafPatches, patch)
 );
 
 //
@@ -980,17 +1018,11 @@ const checkEntryPatchIsNative = def(
  */
 export default def(
   'flatten :: Project -> PatchPath -> Either Error Project',
-  (inputProject, path) =>
+  (project, path) =>
     R.compose(
-      R.chain(project =>
-        R.compose(
-          R.chain(flattenProject(project, path)),
-          R.chain(checkEntryPatchIsNative),
-          errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
-          Project.getPatchByPath(path)
-        )(project)
-      ),
-      wrapDeadRefErrorMessage(path),
-      Project.validateProject
-    )(inputProject)
+      R.chain(flattenProject(project, path)),
+      R.chain(checkEntryPatchIsNative),
+      errOnNothing(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path })),
+      Project.getPatchByPath(path)
+    )(project)
 );

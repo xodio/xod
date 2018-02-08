@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import nl2br from 'react-nl2br';
 import { MESSAGE_TYPE } from '../constants';
 import Button from '../../core/components/Button';
 import CloseButton from '../../core/components/CloseButton';
@@ -52,7 +53,7 @@ class SnackBarMessage extends React.Component {
         <span className="title">
           {message.payload.title}
         </span>
-        {message.payload.note}
+        {nl2br(message.payload.note)}
       </div>,
       <div className="message-buttons" key="buttons">
         {button}
