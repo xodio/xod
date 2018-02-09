@@ -30,7 +30,7 @@ describe('IDE', () => {
   const loadMock = path => () => Promise.resolve(path);
   const saveMock = expectedPath => (actualPath) => {
     assert.equal(expectedPath, actualPath);
-    return actualPath;
+    return WA.saveWorkspacePath(actualPath);
   };
 
   describe('could spawn whole workspace', () => {

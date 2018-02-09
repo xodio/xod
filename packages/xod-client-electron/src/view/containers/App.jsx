@@ -33,7 +33,7 @@ import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import { subscribeAutoUpdaterEvents } from '../autoupdate';
 import subscribeToTriggerMainMenuRequests from '../../testUtils/triggerMainMenu';
-import { TRIGGER_SAVE_AS } from '../../testUtils/events';
+import { TRIGGER_SAVE_AS, TRIGGER_LOAD_PROJECT } from '../../testUtils/events';
 
 import { getOpenDialogFileFilters, createSaveDialogOptions } from '../nativeDialogs';
 import { STATES, getEventNameWithState } from '../../shared/eventStates';
@@ -170,6 +170,15 @@ class App extends client.App {
           }
 
           this.saveAs(projectPath, true).catch(noop);
+        }
+      );
+      ipcRenderer.on(
+        TRIGGER_LOAD_PROJECT,
+        (projectPath) => {
+          if (!projectPath) {
+            throw new Error('Expected projectPath to be present');
+          }
+          ipcRenderer.send(EVENTS.LOAD_PROJECT, projectPath);
         }
       );
     }

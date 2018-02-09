@@ -6,7 +6,15 @@ import { assert } from 'chai';
 
 import prepareSuite from './prepare';
 
-import { TRIGGER_MAIN_MENU_ITEM, TRIGGER_SAVE_AS } from '../src/testUtils/events';
+import {
+  TRIGGER_MAIN_MENU_ITEM,
+  TRIGGER_SAVE_AS,
+  TRIGGER_LOAD_PROJECT,
+} from '../src/testUtils/events';
+
+const bundledWsPath = p => path.resolve(
+  __dirname, '../../../workspace', p
+);
 
 // :: PatchFileContents -> [NodeType]
 const extractListOfUsedNodeTypes = R.compose(
@@ -265,5 +273,16 @@ describe('Test FS things', () => {
         'Expected to save entire library.'
       ),
     ]));
+
+    // Open project and make sure that libraries loaded from user workspace
+    it('call Open Project', () =>
+      ide.app.electron.ipcRenderer
+        .emit(TRIGGER_LOAD_PROJECT, bundledWsPath('blink/project.xod'))
+        .then(() => ide.page.assertProjectIsOpened('blink'))
+    );
+    it('checks that `xod/core` loaded from User workspace by checking absense of `concat-4` patch', () =>
+      ide.page.expandPatchGroup('xod/core')
+        .then(() => ide.page.assertNodeUnavailableInProjectBrowser('concat-4'))
+    );
   });
 });
