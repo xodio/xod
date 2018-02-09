@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Fix user-installed libraries not showing up when opening the project.
+
 <a name="0.18.0"></a>
 ## 0.18.0 (2018-02-07)
 
