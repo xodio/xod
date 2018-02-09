@@ -162,6 +162,7 @@ export const loadProjectByPath = R.curry(
       R.tap(() => updateProjectPath(projectPath)),
       loadProject(R.__, projectPath),
       R.append(getPathToBundledWorkspace()),
+      R.of,
       loadWorkspacePath
     )();
   }
@@ -200,7 +201,7 @@ export const onLoadProject = R.curry(
   (updateProjectPath, send, pathToOpen) =>
     loadProjectByPath(updateProjectPath, pathToOpen)
       .then(project => send(EVENTS.REQUEST_SHOW_PROJECT, project))
-      .catch(err => send(EVENTS.ERROR, errorToPlainObject(err)))
+      .catch(err => send(EVENTS.WORKSPACE_ERROR, errorToPlainObject(err)))
 );
 
 // :: (Path -> ()) -> (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
@@ -271,7 +272,6 @@ export const onIDELaunch = R.curry(
         if (Maybe.isNothing(maybePatchToOpen)) {
           const isFirstLaunch = R.isEmpty(oldPath);
           const projectName = isFirstLaunch ? 'welcome-to-xod' : 'welcome-again';
-
           return onOpenBundledProject(send, updateProjectPath, projectName).then(() => {
             // TODO: better pass it along the project with REQUEST_SHOW_PROJECT event
             if (!isFirstLaunch) {
