@@ -14,6 +14,7 @@ import {
 import {
   getTerminalPath,
   getInternalTerminalPath,
+  getVariadicPath,
 } from './patchPathUtils';
 
 /**
@@ -52,6 +53,12 @@ export const PINS_OF_PATCH_NODES = R.compose(
     NOT_IMPLEMENTED_IN_XOD_PATH,
     {},
   ]),
+  R.concat(R.map(
+    arityStep => ([
+      getVariadicPath(arityStep),
+      {},
+    ])
+  )([1, 2, 3])),
   R.ap([ // [[patchBaseName, patchPins]] for each type and direction
     R.juxt([ // TODO: make more DRY or more readable?
       getTerminalPath(DIRECTION.OUTPUT),
