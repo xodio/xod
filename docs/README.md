@@ -77,6 +77,12 @@ User’s guide
 * [Linking rules](./guide/linking-rules/)
 * [Execution model](./guide/execution-model/)
 
+### Projects and libraries
+
+* [Working on projects](./guide/projects/)
+* [Using libraries](./guide/using-libraries/)
+* [Creating libraries](./guide/creating-libraries/)
+
 Reference
 ---------
 
