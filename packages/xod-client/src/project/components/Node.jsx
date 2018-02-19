@@ -86,6 +86,12 @@ class Node extends React.Component {
 
     const isTerminalNode = XP.isTerminalPatchPath(type);
 
+    const errTitle = (this.props.dead && this.props.errors.length > 0)
+      ? R.compose(
+        R.join(';\n'),
+        R.map(R.prop('message'))
+      )(this.props.errors) : null;
+
     return (
       <svg
         key={id}
@@ -101,10 +107,10 @@ class Node extends React.Component {
           onDoubleClick={this.onDoubleClick}
           id={id}
           data-label={nodeLabel} // for func tests
-          title={nodeLabel}
+          title={errTitle || nodeLabel}
         >
           {this.renderBody()}
-          {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
+          {!this.props.isDragged ? <title>{errTitle || nodeLabel}</title> : null}
         </g>
         <g className="pins" id={`nodePins_${id}`}>
           {pinsArr.map(pin =>
@@ -139,6 +145,9 @@ Node.propTypes = {
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,
   dead: PropTypes.bool,
+  errors: PropTypes.arrayOf(
+    PropTypes.instanceOf(Error)
+  ),
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
@@ -152,6 +161,7 @@ Node.propTypes = {
 };
 
 Node.defaultProps = {
+  errors: [],
   dead: false,
   isSelected: false,
   isGhost: false,

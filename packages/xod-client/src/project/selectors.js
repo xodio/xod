@@ -3,7 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { foldMaybe } from 'xod-func-tools';
+import { foldMaybe, foldEither } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -133,6 +133,26 @@ const addDeadFlag = R.curry(
   )(renderableNode)
 );
 
+// :: Patch -> RenderableNode -> RenderableNode
+const addVariadicErrors = R.curry(
+  (patch, renderableNode) => R.when(
+    R.compose(
+      XP.isVariadicPath,
+      R.prop('type')
+    ),
+    node => R.compose(
+      foldEither(
+        err => R.compose(
+          R.assoc('errors', [err]),
+          R.assoc('dead', true)
+        )(node),
+        R.always(node)
+      ),
+      XP.validateVariadicPatch
+    )(patch)
+  )(renderableNode)
+);
+
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
@@ -141,6 +161,7 @@ export const getRenderableNodes = createMemoizedSelector(
     {},
     currentPatch => R.map(
       R.compose(
+        addVariadicErrors(currentPatch),
         addDeadFlag(project),
         addNodePositioning,
         assocPinIsConnected(connectedPins),
