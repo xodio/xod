@@ -72,6 +72,8 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.DEAD]: 0,
 };
 
+export const MAX_ARITY_STEP = 3;
+
 /**
  * A lookup table that answers the
  * question 'can a type A be cast to type B?'

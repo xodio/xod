@@ -40,7 +40,7 @@ const NonZeroNaturalNumber = NullaryType(
 );
 const ArityStep = NullaryType(
   'ArityStep',
-  x => x >= 1 && x <= 3
+  x => x >= 1 && x <= C.MAX_ARITY_STEP
 );
 
 export const Label = AliasType('Label', $.String);
