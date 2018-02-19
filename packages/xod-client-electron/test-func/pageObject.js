@@ -231,11 +231,11 @@ function assertProjectBrowserHasInstallingLib(client, libName) {
 // Patch
 //-----------------------------------------------------------------------------
 function findNode(client, nodeType) {
-  return client.element(`.Node[title=${nodeType}]`);
+  return client.element(`.Node[data-label="${nodeType}"]`);
 }
 
 function dragNode(client, nodeType, dx, dy) {
-  return client.moveToObject(`.Node[title=${nodeType}]`)
+  return client.moveToObject(`.Node[data-label="${nodeType}"]`)
     .buttonDown()
     .moveTo(null, dx, dy)
     .buttonUp()
@@ -243,7 +243,7 @@ function dragNode(client, nodeType, dx, dy) {
 }
 
 function findPin(client, nodeType, pinLabel) {
-  return client.element(`.NodePinsOverlay[title=${nodeType}] .PinOverlay[title=${pinLabel}]`);
+  return client.element(`.NodePinsOverlay[data-label="${nodeType}"] .PinOverlay[data-label="${pinLabel}"]`);
 }
 
 function findLink(client, type) {

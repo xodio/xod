@@ -46,7 +46,7 @@ class Node extends BasePageObject {
   async findPinByName(name) {
     const nodeId = await this.getId();
     // generally we should use only `this.elementHandle.$`, but in this case it's unavoidable
-    const pinElementHandle = await this.page.$(`#nodePinsOverlay_${nodeId} .PinOverlay[title="${name}"]`);
+    const pinElementHandle = await this.page.$(`#nodePinsOverlay_${nodeId} .PinOverlay[data-label="${name}"]`);
 
     if (!pinElementHandle) return null;
 
@@ -55,7 +55,7 @@ class Node extends BasePageObject {
 }
 
 Node.findByName = async (page, nodeName) => {
-  const elementHandle = await page.$(`.Node[title="${nodeName}"]`);
+  const elementHandle = await page.$(`.Node[data-label="${nodeName}"]`);
   if (!elementHandle) return null;
 
   return new Node(page, elementHandle);

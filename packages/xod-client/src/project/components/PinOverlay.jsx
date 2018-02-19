@@ -36,7 +36,7 @@ export default class PinOverlay extends React.Component {
     return (
       <g
         className={cls}
-        title={this.props.label}
+        data-label={this.props.label} // for func tests
         onMouseUp={this.onMouseUp}
         onMouseDown={this.onMouseDown}
         onMouseOver={this.handleOver}
