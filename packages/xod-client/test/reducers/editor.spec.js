@@ -26,7 +26,7 @@ const testStore = state => createStore(
 describe('Editor reducer', () => {
   describe('selecting entities', () => {
     const mockState = {
-      project: {
+      project: defaultizeProject({
         authors: [
           'Test Person',
         ],
@@ -89,7 +89,7 @@ describe('Editor reducer', () => {
             comments: {},
           },
         },
-      },
+      }),
       editor: {
         currentTabId: '@/1',
         mode: EDITOR_MODE.DEFAULT,
