@@ -3,7 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { foldMaybe } from 'xod-func-tools';
+import { foldMaybe, foldEither } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -20,6 +20,8 @@ import {
 import { isPatchDeadTerminal } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
+
+import { missingPatchForNode } from './messages';
 
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
@@ -123,13 +125,59 @@ export const getCurrentPatch = createSelector(
   )
 );
 
+// :: Error -> RenderableNode -> RenderableNode
+const addError = R.curry(
+  (error, node) => R.compose(
+    R.over(
+      R.lensProp('errors'),
+      R.append(error)
+    ),
+    R.unless(
+      R.has('errors'),
+      R.assoc('errors', [])
+    )
+  )(node)
+);
+
 // :: Project -> RenderableNode -> RenderableNode
-const addDeadFlag = R.curry(
+const addDeadRefErrors = R.curry(
   (project, renderableNode) => R.compose(
-    R.assoc('dead', R.__, renderableNode),
-    Maybe.isNothing,
-    XP.getPatchByPath(R.__, project),
+    R.ifElse(
+      R.compose(
+        Maybe.isNothing,
+        XP.getPatchByPath(R.__, project),
+      ),
+      type => addError(
+        new Error(missingPatchForNode(type)),
+        renderableNode
+      ),
+      R.compose(
+        foldEither(
+          err => addError(err, renderableNode),
+          R.always(renderableNode)
+        ),
+        XP.validatePatchContents(R.__, project),
+        XP.getPatchByPathUnsafe(R.__, project)
+      )
+    ),
     R.prop('type')
+  )(renderableNode)
+);
+
+// :: Patch -> RenderableNode -> RenderableNode
+const addVariadicErrors = R.curry(
+  (patch, renderableNode) => R.when(
+    R.compose(
+      XP.isVariadicPath,
+      R.prop('type')
+    ),
+    node => R.compose(
+      foldEither(
+        err => addError(err, node),
+        R.always(node)
+      ),
+      XP.validatePatchForVariadics
+    )(patch)
   )(renderableNode)
 );
 
@@ -141,7 +189,8 @@ export const getRenderableNodes = createMemoizedSelector(
     {},
     currentPatch => R.map(
       R.compose(
-        addDeadFlag(project),
+        addVariadicErrors(currentPatch),
+        addDeadRefErrors(project),
         addNodePositioning,
         assocPinIsConnected(connectedPins),
         assocNodeIdToPins,

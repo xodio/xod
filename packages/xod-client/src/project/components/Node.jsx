@@ -13,6 +13,14 @@ import RegularNodeBody from './nodeParts/RegularNodeBody';
 import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 
+import TooltipHOC from '../../tooltip/components/TooltipHOC';
+
+const renderTooltipContent = (nodeType, nodeLabel, errText) => [
+  <div key="nodeLabel" className="Tooltip--nodeLabel">{nodeLabel}</div>,
+  <div key="nodeType" className="Tooltip--nodeType">{nodeType}</div>,
+  ...(errText ? [<div key="error" className="Tooltip--error">{errText}</div>] : []),
+];
+
 class Node extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +80,7 @@ class Node extends React.Component {
       'is-selected': this.props.isSelected,
       'is-dragged': this.props.isDragged,
       'is-ghost': this.props.isGhost,
-      'is-dead': this.props.dead,
+      'is-errored': (this.props.errors.length > 0),
     });
 
 
@@ -86,47 +94,59 @@ class Node extends React.Component {
 
     const isTerminalNode = XP.isTerminalPatchPath(type);
 
+    const errMessage = (this.props.errors.length > 0)
+      ? R.compose(
+        R.join(';\n'),
+        R.pluck('message')
+      )(this.props.errors) : null;
+
     return (
-      <svg
-        key={id}
-        style={svgStyle}
-        {...position}
-        {...size}
-        viewBox={`0 0 ${size.width} ${size.height}`}
-      >
-        <g
-          className={cls}
-          onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
-          onDoubleClick={this.onDoubleClick}
-          id={id}
-          data-label={nodeLabel} // for func tests
-          title={nodeLabel}
-        >
-          {this.renderBody()}
-          {!this.props.isDragged ? <title>{nodeLabel}</title> : null}
-        </g>
-        <g className="pins" id={`nodePins_${id}`}>
-          {pinsArr.map(pin =>
-            <g key={pin.key}>
-              {isTerminalNode ? null : (
-                <PinLabel
-                  {...pin}
-                  keyName={pin.key}
-                  key={`pinlabel_${pin.key}`}
-                />
-              )}
-              <Pin
-                {...pin}
-                isSelected={isPinSelected(linkingPin, pin)}
-                isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
-                keyName={pin.key}
-                key={`pin_${pin.key}`}
-              />
+      <TooltipHOC
+        content={renderTooltipContent(type, nodeLabel, errMessage)}
+        render={(onMouseOver, onMouseMove, onMouseLeave) => (
+          <svg
+            key={id}
+            style={svgStyle}
+            {...position}
+            {...size}
+            viewBox={`0 0 ${size.width} ${size.height}`}
+            onMouseOver={onMouseOver}
+            onMouseMove={onMouseMove}
+            onMouseLeave={onMouseLeave}
+          >
+            <g
+              className={cls}
+              onMouseDown={this.onMouseDown}
+              onMouseUp={this.onMouseUp}
+              onDoubleClick={this.onDoubleClick}
+              id={id}
+              data-label={nodeLabel} // for func tests
+            >
+              {this.renderBody()}
             </g>
-          )}
-        </g>
-      </svg>
+            <g className="pins" id={`nodePins_${id}`}>
+              {pinsArr.map(pin =>
+                <g key={pin.key}>
+                  {isTerminalNode ? null : (
+                    <PinLabel
+                      {...pin}
+                      keyName={pin.key}
+                      key={`pinlabel_${pin.key}`}
+                    />
+                  )}
+                  <Pin
+                    {...pin}
+                    isSelected={isPinSelected(linkingPin, pin)}
+                    isAcceptingLinks={this.props.pinLinkabilityValidator(pin)}
+                    keyName={pin.key}
+                    key={`pin_${pin.key}`}
+                  />
+                </g>
+              )}
+            </g>
+          </svg>
+        )}
+      />
     );
   }
 }
@@ -138,7 +158,9 @@ Node.propTypes = {
   pins: PropTypes.any.isRequired,
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,
-  dead: PropTypes.bool,
+  errors: PropTypes.arrayOf(
+    PropTypes.instanceOf(Error)
+  ),
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
@@ -152,7 +174,7 @@ Node.propTypes = {
 };
 
 Node.defaultProps = {
-  dead: false,
+  errors: [],
   isSelected: false,
   isGhost: false,
   isDragged: false,

@@ -1224,12 +1224,16 @@ export const listVariadicSharedPins = def(
  * Checks a patch for variadic marker existence.
  * If it has variadic marker — compute and validate variadic Pins,
  * and then return Either Error Patch.
- * If not — just return Either.Right Patch.
+ * If not - just return Either.Right Patch.
  */
-export const validateVariadicPatch = def(
-  'validateVariadicPatch :: Patch -> Either Error Patch',
-  patch => R.compose(
-    R.map(R.always(patch)),
-    computeVariadicPins
+export const validatePatchForVariadics = def(
+  'validatePatchForVariadics :: Patch -> Either Error Patch',
+  patch => R.ifElse(
+    isVariadicPatch,
+    R.compose(
+      R.map(R.always(patch)),
+      computeVariadicPins
+    ),
+    Either.of
   )(patch)
 );

@@ -397,7 +397,7 @@ const checkPinKeys = def(
 export const validatePatchContents = def(
   'validatePatchContents :: Patch -> Project -> Either Error Patch',
   (patch, project) => {
-    // :: patch -> Either
+    // :: patch -> Either Error Patch
     const checkNodeTypes = R.compose(
       R.map(R.always(patch)),
       R.sequence(Either.of),
@@ -417,7 +417,7 @@ export const validatePatchContents = def(
       ),
       Patch.listNodes
     );
-    // :: patch -> Either
+    // :: patch -> Either Error Patch
     const checkLinks = R.compose(
       R.ifElse(
         R.compose(
@@ -435,7 +435,9 @@ export const validatePatchContents = def(
       Patch.listLinks
     );
 
-    return checkNodeTypes(patch).chain(checkLinks);
+    return checkNodeTypes(patch)
+      .chain(checkLinks)
+      .chain(Patch.validatePatchForVariadics);
   }
 );
 

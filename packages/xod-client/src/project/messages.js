@@ -30,3 +30,6 @@ export const NODETYPE_ERRORS = {
     ].join(' ')
   ),
 };
+
+export const missingPatchForNode = patchPath =>
+  `Patch with type "${patchPath}" is not found in the project`;
