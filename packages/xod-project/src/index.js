@@ -48,6 +48,11 @@ export {
   applyNodeIdMap,
   resolveNodeTypesInPatch,
   listLibraryNamesUsedInPatch,
+  computeVariadicPins,
+  listValueInputPins,
+  listAccInputPins,
+  listSharedInputPins,
+  validateVariadicPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

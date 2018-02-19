@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, notNil, reduceEither, isAmong, mapIndexed } from 'xod-func-tools';
+import { explodeMaybe, notNil, reduceEither, isAmong, mapIndexed, notEmpty } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -28,6 +28,7 @@ import {
   variadicHasNotEnoughInputs,
   patchHasNoVariadicMarkers,
   patchHasMoreThanOneVariadicMarkers,
+  wrongVariadicPinTypes,
   ERR_VARIADIC_HAS_NO_OUTPUTS,
 } from './messages';
 
@@ -1147,6 +1148,24 @@ export const computeVariadicPins = def(
       R.takeLast(outputsCount),
       R.slice(0, R.negate(arityStep))
     )(inputs);
+
+    const pinLabelsOfNonEqualPinTypes = R.compose(
+      R.reject(R.isNil),
+      mapIndexed((accPin, idx) => {
+        const curPinType = Pin.getPinType(accPin);
+        const outPinType = Pin.getPinType(outputs[idx]);
+        return (curPinType === outPinType)
+          ? null
+          : [Pin.getPinLabel(accPin), Pin.getPinLabel(outputs[idx])];
+      }),
+    )(accPins);
+
+    if (notEmpty(pinLabelsOfNonEqualPinTypes)) {
+      const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
+      const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
+      return Either.Left(new Error(wrongVariadicPinTypes(accPinLabels, outPinLabels)));
+    }
+
     const sharedPins = R.slice(
       0,
       R.negate(R.add(accPins.length, arityStep))

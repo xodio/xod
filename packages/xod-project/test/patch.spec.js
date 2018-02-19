@@ -1496,6 +1496,50 @@ describe('Patch', () => {
         assert.equal(res.isLeft, true);
         Helper.expectErrorMessage(expect, res, MSG.variadicHasNotEnoughInputs(2, 1, 3));
       });
+      it('returns Either.Left Error for patch with different types of output pins and accumulator input pins', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+            b: {
+              id: 'b',
+              label: 'X',
+              type: 'xod/patch-nodes/input-number',
+            },
+            c: {
+              id: 'c',
+              label: 'Y',
+              type: 'xod/patch-nodes/input-number',
+            },
+            d: {
+              id: 'd',
+              label: 'ADD',
+              type: 'xod/patch-nodes/input-number',
+            },
+            e: {
+              id: 'e',
+              label: 'ADD2',
+              type: 'xod/patch-nodes/input-number',
+            },
+            f: {
+              id: 'f',
+              label: 'A',
+              type: 'xod/patch-nodes/output-number',
+            },
+            g: {
+              id: 'g',
+              label: 'B',
+              type: 'xod/patch-nodes/output-boolean',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        assert.equal(res.isLeft, true);
+        Helper.expectErrorMessage(expect, res, MSG.wrongVariadicPinTypes(['Y'], ['B']));
+      });
       it('returns Either.Right VariadicPins for patch with variadic marker and correct amount of pins', () => {
         const patch = Helper.defaultizePatch({
           nodes: {

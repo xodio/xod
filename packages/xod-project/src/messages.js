@@ -13,4 +13,7 @@ export const patchHasMoreThanOneVariadicMarkers = patchPath => `Patch "${patchPa
 export const variadicHasNotEnoughInputs = (arityStep, outputCount, minInputs) =>
   `A variadic-${arityStep} patch node with ${outputCount} outputs should have at least ${minInputs} inputs`;
 
+export const wrongVariadicPinTypes = (inputPinLabels, outputPinLabels) =>
+  `Types of inputs ${inputPinLabels.join(', ')} should match the types of outputs ${outputPinLabels.join(', ')}`;
+
 export const ERR_VARIADIC_HAS_NO_OUTPUTS = 'A variadic patch should have at least one output';
