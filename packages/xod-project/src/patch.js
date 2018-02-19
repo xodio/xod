@@ -22,8 +22,14 @@ import {
   isBuiltInLibName,
   isLocalMarker,
   isVariadicPath,
-  getVariadicPathKind,
+  getArityStepFromPatchPath,
 } from './patchPathUtils';
+import {
+  variadicHasNotEnoughInputs,
+  patchHasNoVariadicMarkers,
+  patchHasMoreThanOneVariadicMarkers,
+  ERR_VARIADIC_HAS_NO_OUTPUTS,
+} from './messages';
 
 /**
  * An object representing single patch in a project
@@ -1043,19 +1049,165 @@ export const resolveNodeTypesInPatch = patch => R.compose(
   listNodes
 )(patch);
 
+// =============================================================================
+//
+// Variadic Utils and Getters
+//
+// =============================================================================
+
 /**
- * Get variadic kind (1/2/3) from Patch by checking for
- * existing of variadic node and extract its kind from
- * NodeType. Cause Patch could not contain any variadic
- * node it returns value wrapped into Maybe.
+ * Finds variadic marker node in the Patch.
  */
-export const getVardiadicKindFromPatch = def(
-  'getVardiadicKindFromPatch :: Patch -> Maybe VariadicKind',
+const findVariadicPatchPath = def(
+  'findVariadicPatchPath :: Patch -> Maybe PatchPath',
   R.compose(
-    R.map(getVariadicPathKind),
     Maybe,
     R.find(isVariadicPath),
     R.map(Node.getNodeType),
     listNodes
   )
+);
+
+/**
+ * Checks does Patch contains variadic marker.
+ */
+export const isVariadicPatch = def(
+  'isVariadicPatch :: Patch -> Boolean',
+  R.compose(
+    Maybe.isJust,
+    findVariadicPatchPath
+  )
+);
+
+/**
+ * Get arity step (1/2/3) from Patch by checking for
+ * existing of variadic node and extract its arity step from
+ * NodeType. Cause Patch could not contain any variadic
+ * node it returns value wrapped into Maybe.
+ */
+export const getArityStepFromPatch = def(
+  'getArityStepFromPatch :: Patch -> Maybe ArityStep',
+  R.compose(
+    R.map(getArityStepFromPatchPath),
+    findVariadicPatchPath
+  )
+);
+
+/**
+ * Checks that Patch contains exactly one arity marker.
+ */
+const checkArityMarkersAmount = def(
+  'checkArityMarkersAmount :: Patch -> Boolean',
+  R.compose(
+    R.equals(1),
+    R.length,
+    R.filter(isVariadicPath),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
+// Here we're sure that is variadic!
+// TODO: Object -> New Type
+export const computeVariadicPins = def(
+  'computeVariadicPins :: Patch -> Either Error Object',
+  (patch) => {
+    const patchPath = getPatchPath(patch);
+
+    if (!isVariadicPatch(patch)) {
+      return Either.Left(new Error(patchHasNoVariadicMarkers(patchPath)));
+    }
+    if (!checkArityMarkersAmount(patch)) {
+      return Either.Left(new Error(patchHasMoreThanOneVariadicMarkers(patchPath)));
+    }
+
+    const outputs = listOutputPins(patch);
+    const outputsCount = outputs.length;
+
+    if (outputsCount === 0) {
+      return Either.Left(new Error(ERR_VARIADIC_HAS_NO_OUTPUTS));
+    }
+
+    const inputs = listInputPins(patch);
+    const inputsCount = inputs.length;
+    const arityStep = R.compose(
+      explodeMaybe(
+        'Imposible error: we should catch Patch without arity markers on first check'
+      ),
+      getArityStepFromPatch
+    )(patch);
+
+    if (inputsCount - arityStep < outputsCount) {
+      const minInputs = R.add(outputsCount, arityStep);
+      return Either.Left(new Error(variadicHasNotEnoughInputs(arityStep, outputsCount, minInputs)));
+    }
+
+    const valPins = R.takeLast(arityStep, inputs);
+    const accPins = R.compose(
+      R.takeLast(outputsCount),
+      R.slice(0, R.negate(arityStep))
+    )(inputs);
+    const sharedPins = R.slice(
+      0,
+      R.negate(R.add(accPins.length, arityStep))
+    )(inputs);
+
+    return Either.of({
+      acc: accPins,
+      value: valPins,
+      shared: sharedPins,
+      outputs,
+    });
+  }
+);
+
+
+/**
+ * Get list of variadic value pins of the Patch.
+ */
+export const listValueInputPins = def(
+  'listValueInputPins :: Patch -> Either Error [Pin]',
+  R.compose(
+    R.map(R.prop('value')),
+    computeVariadicPins
+  )
+);
+
+/**
+ * Get list of accumulator input pins of the Patch.
+ * This pins will be linked with outputs of the same
+ * instance of the Patch, so their amount should be
+ * equal to amount of output pins.
+ */
+export const listAccInputPins = def(
+  'listAccInputPins :: Patch -> Either Error [Pin]',
+  R.compose(
+    R.map(R.prop('acc')),
+    computeVariadicPins
+  )
+);
+
+/**
+ * Get list of variadic shared input pins of the Patch.
+ * This pins will have the same input for each level of
+ * reduced tree.
+ */
+export const listSharedInputPins = def(
+  'listAccInputPins :: Patch -> Either Error [Pin]',
+  R.compose(
+    R.map(R.prop('shared')),
+    computeVariadicPins
+  )
+);
+
+/**
+ * It computed a variadic pins and validates Patch.
+ * It returns Either Patch or Validation Error.
+ */
+export const validateVariadicPatch = def(
+  'validateVariadicPatch :: Patch -> Either Error Patch',
+  patch => R.compose(
+    R.map(R.always(patch)),
+    computeVariadicPins
+  )(patch)
 );

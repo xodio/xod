@@ -38,8 +38,8 @@ const NonZeroNaturalNumber = NullaryType(
   'NonZeroNaturalNumber',
   R.both(Number.isInteger, R.gt(R.__, 0))
 );
-const VariadicKind = NullaryType(
-  'VariadicKind',
+const ArityStep = NullaryType(
+  'ArityStep',
   x => x >= 1 && x <= 3
 );
 
@@ -185,7 +185,7 @@ export const env = XF.env.concat([
   LibName,
   ArityLevel,
   NonZeroNaturalNumber,
-  VariadicKind,
+  ArityStep,
 ]);
 
 export const def = HMDef.create({

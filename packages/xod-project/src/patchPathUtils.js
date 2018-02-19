@@ -137,7 +137,7 @@ export const isVariadicPath = R.test(variadicRegExp);
 
 // TODO: Maybe `Maybe NonZeroNaturalNumber`?
 // :: PatchPath -> NonZeroNaturalNumber
-export const getVariadicPathKind = R.compose(
+export const getArityStepFromPatchPath = R.compose(
   R.nth(1),
   R.match(variadicRegExp)
 );
