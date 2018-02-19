@@ -100,7 +100,8 @@ class Node extends React.Component {
           onMouseUp={this.onMouseUp}
           onDoubleClick={this.onDoubleClick}
           id={id}
-          title={nodeLabel} // this is for func-tests
+          data-label={nodeLabel} // for func tests
+          title={nodeLabel}
         >
           {this.renderBody()}
           {!this.props.isDragged ? <title>{nodeLabel}</title> : null}

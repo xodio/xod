@@ -50,7 +50,7 @@ class NodePinsOverlay extends React.Component {
         {...size}
         className="NodePinsOverlay"
         viewBox={`0 0 ${size.width} ${size.height}`}
-        title={nodeLabel}
+        data-label={nodeLabel} // for func tests
       >
         <g className="pins">
           {pinsArr.map(pin =>
