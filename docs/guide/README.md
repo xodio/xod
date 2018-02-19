@@ -24,3 +24,9 @@ User’s Guide
 * [Data types](./data-types/)
 * [Linking rules](./linking-rules/)
 * [Execution model](./execution-model/)
+
+### Projects and libraries
+
+* [Working on projects](./projects/)
+* [Using libraries](./using-libraries/)
+* [Creating libraries](./creating-libraries/)
