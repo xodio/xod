@@ -52,7 +52,7 @@ export {
   listValueInputPins,
   listAccInputPins,
   listSharedInputPins,
-  validateVariadicPatch,
+  validatePatchForVariadics,
 } from './patch';
 export * from './node';
 export * from './comment';
