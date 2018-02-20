@@ -1074,20 +1074,17 @@ describe('Patch', () => {
     it('should return Either.Left for non-existent input node in the patch', () => {
       const link = { id: linkId, input: { nodeId: 'non-existent', pinKey: 'a' }, output: validOutput };
       const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND);
+      Helper.expectEitherError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND, err);
     });
     it('should return Either.Left for non-existent output node in the patch', () => {
       const link = { id: linkId, input: validInput, output: { nodeId: 'non-existent', pinKey: 'a' } };
       const err = Patch.validateLink(link, patch);
-      expect(err.isLeft).to.be.true();
-      Helper.expectErrorMessage(expect, err, CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND);
+      Helper.expectEitherError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND, err);
     });
     it('should return Either.Right with link', () => {
       const link = { id: linkId, input: validInput, output: validOutput };
       const valid = Patch.validateLink(link, patch);
-      expect(valid.isRight).to.be.true();
-      Helper.expectEither(
+      Helper.expectEitherRight(
         validLink => expect(validLink).to.be.equal(link),
         valid
       );
@@ -1155,7 +1152,7 @@ describe('Patch', () => {
         assert.deepEqual(sortedPatch, expectedPatch);
       });
       it('getTopology: should return correct topology', () => {
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (topology) => {
             expect(topology)
               .to.be.deep.equal(['a', 'b', 'c']);
@@ -1163,7 +1160,7 @@ describe('Patch', () => {
           Patch.getTopology(patch)
         );
 
-        Helper.expectEither(
+        Helper.expectEitherRight(
           (topology) => {
             expect(topology)
               .to.be.deep.equal(['0', '1', '2']);
@@ -1332,6 +1329,298 @@ describe('Patch', () => {
           Patch.removeDebugNodes(origPatch),
           origPatch
         );
+      });
+    });
+  });
+
+  // variadics
+  describe('variadic utils', () => {
+    describe('isVariadicPatch', () => {
+      it('returns false for Patch without variadic markers', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/core/add',
+            },
+          },
+        });
+
+        assert.equal(
+          Patch.isVariadicPatch(patch),
+          false
+        );
+      });
+      it('returns false for Patch with not valid variadic marker', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-99',
+            },
+          },
+        });
+
+        assert.equal(
+          Patch.isVariadicPatch(patch),
+          false
+        );
+      });
+      it('returns true for Patch with valid variadic marker', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+          },
+        });
+
+        assert.equal(
+          Patch.isVariadicPatch(patch),
+          true
+        );
+      });
+    });
+
+    describe('getArityStepFromPatch', () => {
+      it('returns Nothing for patch without variadic Node', () => {
+        const patch = Helper.defaultizePatch({});
+        assert.equal(
+          Patch.getArityStepFromPatch(patch).isNothing,
+          true
+        );
+      });
+      it('returns Nothing for patch with wrong kind of variadic Node', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-99',
+            },
+          },
+        });
+        assert.equal(
+          Patch.getArityStepFromPatch(patch).isNothing,
+          true
+        );
+      });
+
+      const createTestForJust = (n) => {
+        it(`returns Maybe ${n} for patch with variadic Node`, () => {
+          const patch = Helper.defaultizePatch({
+            nodes: {
+              a: {
+                id: 'a',
+                type: `xod/patch-nodes/variadic-${n}`,
+              },
+            },
+          });
+          assert.equal(
+            Patch.getArityStepFromPatch(patch).getOrElse(null),
+            n
+          );
+        });
+      };
+
+      createTestForJust(1);
+      createTestForJust(2);
+      createTestForJust(3);
+    });
+
+    describe('computeVariadicPins', () => {
+      it('returns Either.Left Error for Patch without variadic markers', () => {
+        const patch = Helper.defaultizePatch({
+          path: '@/test',
+        });
+        const res = Patch.computeVariadicPins(patch);
+        Helper.expectEitherError(
+          'Patch "@/test" has no variadic markers.',
+          res
+        );
+      });
+      it('returns Either.Left Error for Patch with >1 variadic marker', () => {
+        const patch = Helper.defaultizePatch({
+          path: '@/test',
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-1',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/patch-nodes/variadic-1',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        Helper.expectEitherError(
+          'Patch "@/test" has more than one variadic-* marker',
+          res
+        );
+      });
+      it('returns Either.Left Error for patch with variadic marker and without output pins', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        Helper.expectEitherError(
+          'A variadic patch should have at least one output',
+          res
+        );
+      });
+      it('returns Either.Left Error for patch with variadic marker and with less inputs than needed', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/patch-nodes/input-number',
+            },
+            d: {
+              id: 'd',
+              type: 'xod/patch-nodes/output-number',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        Helper.expectEitherError(
+          'A variadic-2 patch node with 1 outputs should have at least 3 inputs',
+          res
+        );
+      });
+      it('returns Either.Left Error for patch with different types of output pins and accumulator input pins', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+            b: {
+              id: 'b',
+              label: 'X',
+              type: 'xod/patch-nodes/input-number',
+            },
+            c: {
+              id: 'c',
+              label: 'Y',
+              type: 'xod/patch-nodes/input-number',
+            },
+            d: {
+              id: 'd',
+              label: 'ADD',
+              type: 'xod/patch-nodes/input-number',
+            },
+            e: {
+              id: 'e',
+              label: 'ADD2',
+              type: 'xod/patch-nodes/input-number',
+            },
+            f: {
+              id: 'f',
+              label: 'A',
+              type: 'xod/patch-nodes/output-number',
+            },
+            g: {
+              id: 'g',
+              label: 'B',
+              type: 'xod/patch-nodes/output-boolean',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        Helper.expectEitherError(
+          'Types of inputs Y should match the types of outputs B',
+          res
+        );
+      });
+      it('returns Either.Right VariadicPins for patch with variadic marker and correct amount of pins', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-2',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 0, y: 0 },
+            },
+            c: {
+              id: 'c',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 10, y: 0 },
+            },
+            d: {
+              id: 'd',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 20, y: 0 },
+            },
+            e: {
+              id: 'e',
+              type: 'xod/patch-nodes/output-number',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        assert.equal(res.isRight, true);
+        const resPins = XF.explodeEither(res);
+        assert.equal(resPins.value[0].key, 'c');
+        assert.equal(resPins.value[1].key, 'd');
+        assert.equal(resPins.acc[0].key, 'b');
+        assert.equal(resPins.outputs[0].key, 'e');
+
+        assert.lengthOf(resPins.shared, 0);
+      });
+      it('returns Either.Right VariadicPins with shared pins', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              id: 'a',
+              type: 'xod/patch-nodes/variadic-1',
+            },
+            b: {
+              id: 'b',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 0, y: 0 },
+            },
+            c: {
+              id: 'c',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 10, y: 0 },
+            },
+            d: {
+              id: 'd',
+              type: 'xod/patch-nodes/input-number',
+              position: { x: 20, y: 0 },
+            },
+            e: {
+              id: 'e',
+              type: 'xod/patch-nodes/output-number',
+            },
+          },
+        });
+        const res = Patch.computeVariadicPins(patch);
+
+        assert.equal(res.isRight, true);
+        const resPins = XF.explodeEither(res);
+        assert.equal(resPins.value[0].key, 'd');
+        assert.equal(resPins.acc[0].key, 'c');
+        assert.equal(resPins.shared[0].key, 'b');
+        assert.equal(resPins.outputs[0].key, 'e');
       });
     });
   });

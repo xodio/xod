@@ -9,11 +9,13 @@ import {
   TERMINAL_PIN_KEYS,
   NOT_IMPLEMENTED_IN_XOD_PATH,
   DEFAULT_VALUE_OF_TYPE,
+  MAX_ARITY_STEP,
 } from './constants';
 
 import {
   getTerminalPath,
   getInternalTerminalPath,
+  getVariadicPath,
 } from './patchPathUtils';
 
 /**
@@ -52,6 +54,12 @@ export const PINS_OF_PATCH_NODES = R.compose(
     NOT_IMPLEMENTED_IN_XOD_PATH,
     {},
   ]),
+  R.concat(R.map(
+    arityStep => ([
+      getVariadicPath(arityStep),
+      {},
+    ])
+  )(R.range(1, MAX_ARITY_STEP + 1))),
   R.ap([ // [[patchBaseName, patchPins]] for each type and direction
     R.juxt([ // TODO: make more DRY or more readable?
       getTerminalPath(DIRECTION.OUTPUT),

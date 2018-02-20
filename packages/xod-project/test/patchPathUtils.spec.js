@@ -74,17 +74,16 @@ describe('PatchPathUtils', () => {
     it('should be Either.Left for not valid paths', () => {
       const err1 = PatchPathUtils.validatePath('');
       const err2 = PatchPathUtils.validatePath('dots.in.names');
-      assert.isTrue(err1.isLeft);
+
       assert.isTrue(PatchPathUtils.validatePath('кириллица').isLeft);
       assert.isTrue(PatchPathUtils.validatePath('spa ce').isLeft);
       assert.isTrue(PatchPathUtils.validatePath('spçiålÇhÅr$').isLeft);
 
       assert.isTrue(PatchPathUtils.validatePath('@/folder/subfolder/patchName').isLeft);
       assert.isTrue(PatchPathUtils.validatePath('@/patch_name_underscored').isLeft);
-      assert.isTrue(err2.isLeft);
 
-      Helper.expectErrorMessage(expect, err1, CONST.ERROR.PATH_INVALID);
-      Helper.expectErrorMessage(expect, err2, CONST.ERROR.PATH_INVALID);
+      Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err1);
+      Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err2);
     });
     it('should be Either.Right for valid paths', () => {
       assert.isTrue(PatchPathUtils.validatePath('@/patch-name').isRight);
@@ -96,7 +95,7 @@ describe('PatchPathUtils', () => {
       assert.isTrue(result.isRight);
 
       /* istanbul ignore next */
-      Helper.expectEither(
+      Helper.expectEitherRight(
         (val) => { expect(val).to.be.equal(path); },
         result
       );

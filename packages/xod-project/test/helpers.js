@@ -1,32 +1,42 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { assert } from 'chai';
+
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
+import { foldEither } from 'xod-func-tools';
 
 import { PIN_DIRECTION, PIN_TYPE } from '../src/constants';
+import { fromXodballDataUnsafe } from '../src/xodball';
 
-export const expectEither = R.curry((testFunction, object) => {
-  Either.either(
-    (err) => { throw err; },
+export const expectEitherRight = R.curry((testFunction, object) => {
+  foldEither(
+    err => assert(false, `Expected Either.Right, but got Either.Left: ${err}`),
     testFunction,
     object
   );
 });
 
-export const expectErrorMessage = R.curry((expect, err, originalMessage) => {
+export const expectEitherError = R.curry((originalMessage, err) => {
   const check = (errObj) => {
-    expect(errObj).to.be.an('Error');
-    expect(errObj.toString()).to.be.equal(new Error(originalMessage).toString());
+    assert.typeOf(errObj, 'Error');
+    assert.strictEqual(
+      errObj.message,
+      originalMessage,
+      `Expected Error with message "${originalMessage}", but got Error: ${err.message}`
+    );
   };
 
-  if (err instanceof Either) {
-    Either.either(
-      check,
-      (val) => { throw new Error(`Expected Error but returned ${val}`); },
-      err
-    );
-    return;
+  if (!Either.isLeft(err)) {
+    assert(false, `Expected Either.Left, but got: ${err}`);
   }
 
-  check(err);
+  foldEither(
+    check,
+    val => assert(false, `Expected Either.Left, but got Either.Right: ${val}`),
+    err
+  );
 });
 
 export const expectOptionalStringGetter = R.curry((expect, method, propName) => {
@@ -113,6 +123,7 @@ export const defaultizeNode = R.merge({
   label: '',
   description: '',
   boundValues: {},
+  arityLevel: 1,
 });
 
 export const defaultizePin = R.merge({
@@ -173,4 +184,17 @@ export const defaultizeProject = R.compose(
     patches: {},
     name: 'test-project-name',
   })
+);
+
+// Loading files
+
+export const loadJSON = R.compose(
+  JSON.parse,
+  filePath => readFileSync(filePath, 'utf8'),
+  filePath => resolve(__dirname, filePath)
+);
+
+export const loadXodball = R.compose(
+  fromXodballDataUnsafe,
+  loadJSON
 );

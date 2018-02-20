@@ -13,6 +13,7 @@ import {
   maybeToPromise,
   reduceEither,
   reduceMaybe,
+  leftIf,
 } from '../src/monads';
 
 describe('moands', () => {
@@ -199,6 +200,27 @@ describe('moands', () => {
         () => explodeMaybe('err', res),
         Error
       );
+    });
+
+    describe('leftIf()', () => {
+      const validateMoreThan5 = leftIf(x => x > 5, x => `${x} less than 5`);
+
+      it('returns Either.Right 5 for truthy condition', () => {
+        const res = validateMoreThan5(6);
+        assert.equal(res.isRight, true);
+        assert.equal(
+          explodeEither(res),
+          6
+        );
+      });
+      it('returns Either.Left String for falsy condition', () => {
+        const res = validateMoreThan5(3);
+        assert.equal(res.isLeft, true);
+        assert.equal(
+          foldEither(identity, identity, res),
+          '3 less than 5'
+        );
+      });
     });
   });
 });
