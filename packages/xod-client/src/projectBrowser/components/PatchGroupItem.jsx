@@ -27,7 +27,7 @@ const deadIcon = (
     key="dead-patch-icon"
     className="dead-patch-icon"
     name="warning"
-    title="Patch contains dead references"
+    title="Patch contains errors"
   />
 );
 

@@ -36,6 +36,8 @@ import Sidebar from './Sidebar';
 import SnackBar from '../../messages/containers/SnackBar';
 import Helpbox from './Helpbox';
 
+import Tooltip from '../../tooltip/components/Tooltip';
+
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
 
@@ -263,6 +265,7 @@ class Editor extends React.Component {
           onSwitchSideClick={this.props.actions.movePanel}
           onAutohideClick={this.props.actions.togglePanelAutohide}
         />
+        <Tooltip />
       </HotKeys>
     );
   }

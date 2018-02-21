@@ -18,7 +18,7 @@
     &.dead { stroke: $color-datatype-dead; }
   }
 
-  &.is-dead {
+  &.is-errored {
     .nodeLabel {
       color: $color-error;
     }

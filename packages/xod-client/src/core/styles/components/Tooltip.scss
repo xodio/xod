@@ -1,0 +1,41 @@
+.Tooltip {
+  display: block;
+  position: fixed;
+  z-index: 10000;
+  top: -1000px;
+  left: -1000px;
+
+  max-width: 250px;
+  word-break: break-word;
+
+  background: rgba($coal, .8);
+  box-shadow: 5px 5px 10px -5px rgba($black,.5);
+  color: $chalk;
+  padding: 6px 8px;
+
+  line-height: 1.4;
+  font-weight: 300;
+  font-size: $font-size-m;
+
+  // Offset to prevent overlaping this by mouse
+  margin: 6px 0 0 8px;
+
+  transition: opacity 0.2s linear;
+  pointer-events: none;
+  opacity: 0;
+
+  & * { color: $chalk; }
+  p { margin: .25em 0; }
+
+  &.is-visible {
+    transition: none !important;
+    opacity: 1;
+  }
+
+  &--nodeLabel {
+    font-weight: 500;
+  }
+  &--error {
+    color: $red-bright;
+  }
+}
