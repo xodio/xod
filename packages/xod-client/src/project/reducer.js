@@ -331,11 +331,13 @@ export default (state = {}, action) => {
     case AT.LINK_ADD: {
       const { pins, patchPath } = action.payload;
 
-      const firstPinNodeType = R.compose(
-        XP.getNodeType,
+      const firstPinNode = R.compose(
         XP.getNodeByIdUnsafe(pins[0].nodeId),
         R.view(XP.lensPatch(patchPath))
       )(state);
+
+      const firstPinNodeType = XP.getNodeType(firstPinNode);
+      const firstPinPatch = XP.getPatchByPathUnsafe(firstPinNodeType, state);
 
       const inputPinIndex = R.compose(
         R.ifElse(
@@ -343,8 +345,8 @@ export default (state = {}, action) => {
           R.always(0),
           R.always(1)
         ),
-        XP.getPinByKeyUnsafe(pins[0].pinKey),
-        R.view(XP.lensPatch(firstPinNodeType))
+        R.prop(pins[0].pinKey),
+        XP.getPinsForNode(firstPinNode, firstPinPatch)
       )(state);
 
       const input = pins[inputPinIndex];

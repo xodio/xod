@@ -97,6 +97,11 @@ export const expectOptionalNumberSetter = R.curry((expect, method, propName) => 
   });
 });
 
+export const assertProps = (actual, expected) => R.forEachObjIndexed(
+  (v, k) => assert.deepPropertyVal(actual, k, v),
+  expected
+);
+
 //-----------------------------------------------------------------------------
 // Defaultizers
 //-----------------------------------------------------------------------------
