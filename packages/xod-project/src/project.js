@@ -837,6 +837,45 @@ export const getPinsForNode = def(
   }
 );
 
+// Helper function for getPatchDependencies
+// :: Project -> [PatchPath] -> Map PatchPath [PatchPath] -> Map PatchPath [PatchPath]
+const getDependenciesMap = (project, patchPaths, depsMap) => {
+  if (R.isEmpty(patchPaths)) {
+    return depsMap;
+  }
+
+  const [currentPatchPath, ...restPatchPaths] = patchPaths;
+
+  if (R.has(currentPatchPath, depsMap)) {
+    return getDependenciesMap(project, restPatchPaths, depsMap);
+  }
+
+  const currentPatchDeps = R.compose(
+    R.map(Node.getNodeType),
+    Patch.listNodes,
+    getPatchByPathUnsafe(currentPatchPath),
+  )(project);
+
+  return getDependenciesMap(
+    project,
+    R.concat(restPatchPaths, currentPatchDeps),
+    R.assoc(currentPatchPath, currentPatchDeps, depsMap)
+  );
+};
+
+/**
+ * Returns a list of paths of all patches that are used
+ * by a patch with a given path(directly or indirectly)
+ */
+export const getPatchDependencies = def(
+  'getPatchDependencies :: PatchPath -> Project -> [PatchPath]',
+  (entryPatchPath, project) => R.compose(
+    R.uniq,
+    R.unnest,
+    R.values,
+    getDependenciesMap
+  )(project, [entryPatchPath], {})
+);
 
 /**
  * Validates all patches in the project for validness.

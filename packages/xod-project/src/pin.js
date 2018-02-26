@@ -273,3 +273,8 @@ export const normalizePinLabels = def(
     )
   )
 );
+
+export const addVariadicPinKeySuffix = def(
+  'addVariadicPinKeySuffix :: Number -> PinKey -> PinKey',
+  (index, key) => `${key}-$${index}`
+);

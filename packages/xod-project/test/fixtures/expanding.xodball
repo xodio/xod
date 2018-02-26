@@ -1,0 +1,119 @@
+{
+  "name": "",
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "HysZyLy_G": {
+          "arityLevel": 5,
+          "id": "HysZyLy_G",
+          "position": {
+            "x": -136,
+            "y": -102
+          },
+          "type": "@/my-variadic"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/my-variadic": {
+      "nodes": {
+        "B1qn0SJuM": {
+          "id": "B1qn0SJuM",
+          "position": {
+            "x": 578,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-2"
+        },
+        "By1oTHyuz": {
+          "id": "By1oTHyuz",
+          "label": "SH1",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "ByZ0o0HyOz": {
+          "id": "ByZ0o0HyOz",
+          "label": "V2",
+          "position": {
+            "x": 476,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "H13YRHyOM": {
+          "id": "H13YRHyOM",
+          "position": {
+            "x": 170,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "HkCo0rJuM": {
+          "id": "HkCo0rJuM",
+          "label": "V1",
+          "position": {
+            "x": 408,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "Hkl2pHkuz": {
+          "id": "Hkl2pHkuz",
+          "label": "A3",
+          "position": {
+            "x": 306,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "HytsTHkOf": {
+          "id": "HytsTHkOf",
+          "label": "A2",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "S16hpryOG": {
+          "id": "S16hpryOG",
+          "position": {
+            "x": 306,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "Sk1jCBJ_M": {
+          "id": "Sk1jCBJ_M",
+          "label": "SH2",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "SkUhpHkdf": {
+          "id": "SkUhpHkdf",
+          "position": {
+            "x": 238,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "ryNjTHyOz": {
+          "id": "ryNjTHyOz",
+          "label": "A1",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/my-variadic"
+    }
+  }
+}

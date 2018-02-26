@@ -850,4 +850,27 @@ describe('Project', () => {
       assert.lengthOf(pinKeys, 5);
     });
   });
+
+  describe('getPatchDependencies', () => {
+    it('lists all patches used in a given patch and their dependencies', () => {
+      const blinking = Helper.loadXodball('./fixtures/blinking.xodball');
+      const deps = Project.getPatchDependencies('@/main', blinking);
+
+      assert.deepEqual(deps, [
+        '@/led',
+        '@/blink',
+        'xod/core/digital-output',
+        'xod/patch-nodes/input-string',
+        'xod/patch-nodes/input-number',
+        'xod/math/multiply',
+        'xod/patch-nodes/output-boolean',
+        'xod/core/latch',
+        'xod/core/clock',
+        'xod/patch-nodes/not-implemented-in-xod',
+        'xod/patch-nodes/output-number',
+        'xod/patch-nodes/input-pulse',
+        'xod/patch-nodes/output-pulse',
+      ]);
+    });
+  });
 });
