@@ -14,6 +14,7 @@ import { formatString, wrapDeadRefErrorMessage } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
+import expandVariadicNodes from './expandVariadicNodes';
 
 // =============================================================================
 //
@@ -990,6 +991,7 @@ export default def(
           Project.getPatchByPath(path)
         )(project)
       ),
+      R.map(expandVariadicNodes(path)),
       wrapDeadRefErrorMessage(path),
       Project.validateProject
     )(inputProject)

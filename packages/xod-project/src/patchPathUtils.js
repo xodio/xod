@@ -20,6 +20,7 @@ export {
   isTerminalPatchPath,
   isWatchPatchPath,
   isBuiltInLibName,
+  getExpandedVariadicPatchPath,
 } from './internal/patchPathUtils';
 
 // :: String -> Identifier

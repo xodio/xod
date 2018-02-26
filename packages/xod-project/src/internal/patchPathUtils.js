@@ -1,6 +1,15 @@
 import * as R from 'ramda';
 import * as CONST from '../constants';
 
+const EXPANDED_PATCH_NAME_SUFFIX = '-$';
+
+export const getExpandedVariadicPatchPath = R.curry(
+  (arityLevel, originalPath) => [
+    originalPath,
+    EXPANDED_PATCH_NAME_SUFFIX,
+    arityLevel,
+  ].join('')
+);
 
 // :: String -> Boolean
 export const isValidIdentifier = R.allPass([
