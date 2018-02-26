@@ -53,6 +53,7 @@ export {
   listVariadicAccPins,
   listVariadicSharedPins,
   validatePatchForVariadics,
+  getArityStepFromPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

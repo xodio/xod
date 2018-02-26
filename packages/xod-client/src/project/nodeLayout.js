@@ -21,7 +21,7 @@ export const LINK_HOTSPOT_SIZE = {
 export const NODE_CORNER_RADIUS = 5;
 
 export const PIN_RADIUS = 6;
-export const PIN_RADIUS_WITH_OUTER_STROKE = PIN_RADIUS + 2;
+export const PIN_RADIUS_WITH_OUTER_STROKE = PIN_RADIUS + 3;
 export const PIN_RADIUS_WITH_SHADOW = PIN_RADIUS + 4; // TODO: rename
 export const PIN_HIGHLIGHT_RADIUS = 15;
 export const PIN_OFFSET_FROM_NODE_EDGE = 3;

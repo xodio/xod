@@ -13,10 +13,12 @@ import {
   addPoints,
   subtractPoints,
   snapNodePositionToSlots,
+  PIN_RADIUS_WITH_OUTER_STROKE,
 } from '../../../../project/nodeLayout';
 
 import { isLinkConnectedToNodeIds } from '../../../../project/utils';
 import { getSelectedEntityIdsOfType } from '../../../utils';
+import { changeLineLength } from '../../../../utils/vectors';
 
 import {
   getOffsetMatrix,
@@ -131,6 +133,23 @@ const movingMode = {
       R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
+    // We have to shorten dragged links to avoid overlapping
+    // Pins with ending of the Link, cause it became ugly
+    // when User drags Link connected to the variadic Pin,
+    // that contains "dots" symbol inside it.
+    const shortenedDraggedLinks = R.map(
+      link => R.compose(
+        R.assoc('from', R.__, link),
+        R.converge(
+          changeLineLength(R.negate(PIN_RADIUS_WITH_OUTER_STROKE)),
+          [
+            R.prop('to'),
+            R.prop('from'),
+          ]
+        )
+      )(link)
+    )(draggedLinks);
+
     const snappedPreviews = getSnappedPreviews(draggedNodes, draggedComments, deltaPosition);
 
     const draggedEntitiesStyle = { transform: `translate(${deltaPosition.x}px, ${deltaPosition.y}px)` };
@@ -190,8 +209,9 @@ const movingMode = {
             </g>
             <Layers.Links
               key="dragged links"
-              links={draggedLinks}
+              links={shortenedDraggedLinks}
               selection={api.props.selection}
+              isDragged
             />
             <g style={draggedEntitiesStyle}>
               <Layers.Nodes

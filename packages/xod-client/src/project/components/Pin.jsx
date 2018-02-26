@@ -19,6 +19,20 @@ const Pin = (props) => {
     cy: props.position.y,
   };
 
+  const variadicDots = props.isLastVariadicGroup
+    ? (
+      <text
+        className="PinDots"
+        x={props.position.x}
+        y={props.position.y}
+        textAnchor="middle"
+        dy="1" // To center dots inside circle
+      >
+        &hellip;
+      </text>
+    )
+    : null;
+
   return (
     <g
       className={cls}
@@ -40,6 +54,7 @@ const Pin = (props) => {
         {...pinCircleCenter}
         r={PIN_RADIUS}
       />
+      {variadicDots}
     </g>
   );
 };
@@ -52,6 +67,7 @@ Pin.propTypes = {
   isSelected: PropTypes.bool,
   isConnected: PropTypes.bool,
   isAcceptingLinks: PropTypes.bool,
+  isLastVariadicGroup: PropTypes.bool,
 };
 
 export default Pin;

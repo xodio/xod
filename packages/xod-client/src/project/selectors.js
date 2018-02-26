@@ -108,10 +108,37 @@ const assocNodeIdToPins = node =>
     node
   );
 
+const addLastVariadicGroupFlag = R.curry(
+  (project, node, pins) => {
+    const nodeType = XP.getNodeType(node);
+    const arityStep = R.compose(
+      foldMaybe(0, R.identity),
+      R.chain(XP.getArityStepFromPatch),
+      XP.getPatchByPath
+    )(nodeType, project);
+
+    return R.converge(
+      R.merge,
+      [
+        R.map(R.assoc('isLastVariadicGroup', false)),
+        R.compose(
+          R.indexBy(XP.getPinKey),
+          R.map(R.assoc('isLastVariadicGroup', true)),
+          R.takeLast(arityStep),
+          R.sortBy(XP.getPinOrder),
+          R.filter(XP.isInputPin),
+          R.values
+        ),
+      ]
+    )(pins);
+  }
+);
+
 // :: Project -> Patch -> IntermediateNode -> IntermediateNode
 const mergePinDataFromPatch = R.curry(
   (project, curPatch, node) => R.compose(
     R.assoc('pins', R.__, node),
+    addLastVariadicGroupFlag(project, node),
     XP.getPinsForNode
   )(node, curPatch, project)
 );
