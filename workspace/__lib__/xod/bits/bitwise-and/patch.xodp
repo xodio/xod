@@ -1,5 +1,5 @@
 {
-  "description": "Computes bitwise AND of two bytes. A resulting bit at a particular position is 1 only if corresponding bits of inputs  are both 1.",
+  "description": "Computes bitwise AND of two or more bytes. A resulting bit at a particular position is 1 only if corresponding bits of all inputs are 1.",
   "nodes": [
     {
       "id": "ByjTuuxef",
@@ -8,6 +8,14 @@
         "y": 102
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkpP80W_f",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/variadic-1"
     },
     {
       "id": "S1YR_dgeG",

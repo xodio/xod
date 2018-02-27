@@ -1,11 +1,19 @@
 {
-  "description": "Computes bitwise OR of two bytes. A resulting bit at a particular position is 0 only if corresponding bits of inputs  are both 0.",
+  "description": "Computes bitwise OR of two or more bytes. A resulting bit at a particular position is 0 only if all corresponding bits of inputs are 0.",
   "nodes": [
+    {
+      "id": "HkiYIAWuz",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
     {
       "id": "SkC1aTZeM",
       "position": {
-        "x": 33,
-        "y": -1
+        "x": 34,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -20,8 +28,8 @@
     {
       "id": "r1zA16pbxM",
       "position": {
-        "x": -1,
-        "y": -1
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },

@@ -1,40 +1,45 @@
 {
-  "description": "Concatenates (adds together) two strings",
+  "description": "Concatenates (adds together) strings",
   "nodes": [
     {
       "id": "Bk_h9jpZW",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "BkeKcj6ZZ",
-      "label": "TAIL",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "Hkqu9oaWb",
-      "label": "HEAD",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "rksccsp-W",
-      "label": "STR",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "ry63AlsPf",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
     }
   ]
 }

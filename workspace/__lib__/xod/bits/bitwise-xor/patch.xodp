@@ -1,6 +1,14 @@
 {
-  "description": "Computes bitwise XOR of two bytes. A resulting bit at a particular position is 1 only if either of corresponding bits of inputs is 1 and another is 0.",
+  "description": "Computes bitwise XOR of two or more bytes. A resulting bit at a particular position is 1 only if an odd number of corresponding bits of inputs is 1.",
   "nodes": [
+    {
+      "id": "B1b5LAbOz",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
     {
       "id": "BkbqIa6ZgM",
       "position": {

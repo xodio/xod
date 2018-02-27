@@ -25,7 +25,7 @@ describe('xod-patch-search/index', () => {
     const result = idx.search('path:number');
     assert.equal(
       result[0].item.path,
-      'xod/core/nth-number-2'
+      'xod/core/nth-number'
     );
   });
 
@@ -37,7 +37,7 @@ describe('xod-patch-search/index', () => {
 
   it('searches: "number"', () => assert.equal(
     idx.search('number')[0].item.path,
-    'xod/core/nth-number-2' // Cause it has a `number` in the path and it alphabetically sorted (that's why not *-to-string)
+    'xod/core/nth-number' // Cause it has a `number` in the path and it alphabetically sorted (that's why not *-to-string)
   ));
 
   it('searches: "lib:xod/patch-nodes number"', () => {
