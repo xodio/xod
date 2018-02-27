@@ -8,7 +8,7 @@ import { isLinkSelected } from '../../../editor/utils';
 
 import XODLink from '../Link';
 
-const LinksLayer = ({ links, selection }) => (
+const LinksLayer = ({ links, selection, isDragged = false }) => (
   <g className="LinksLayer">
     {R.compose(
       R.map(link =>
@@ -19,6 +19,7 @@ const LinksLayer = ({ links, selection }) => (
           to={link.to}
           type={link.type}
           dead={link.dead}
+          isDragged={isDragged}
           isSelected={isLinkSelected(selection, link.id)}
         />
       ),
@@ -28,6 +29,7 @@ const LinksLayer = ({ links, selection }) => (
 );
 
 LinksLayer.propTypes = {
+  isDragged: PropTypes.bool,
   links: PropTypes.object,
   selection: PropTypes.arrayOf(PropTypes.object),
 };

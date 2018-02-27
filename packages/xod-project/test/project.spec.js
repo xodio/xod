@@ -315,6 +315,15 @@ describe('Project', () => {
         result
       );
     });
+    it('should be Either.Right for valid blink project', () => {
+      const blinkProject = Helper.loadXodball('./fixtures/blinking.xodball');
+      const mainPatch = Project.getPatchByPathUnsafe('@/main', blinkProject);
+      const result = Project.validatePatchContents(mainPatch, blinkProject);
+      Helper.expectEitherRight(
+        validPatch => expect(validPatch).to.be.equal(mainPatch),
+        result
+      );
+    });
   });
 
   // entity setters
@@ -815,12 +824,26 @@ describe('Project', () => {
       assert.equal(res.isLeft, true);
       assert.strictEqual(unfoldLeft(res).message, err.message);
     });
-    it('returns Either Project for valid project', () => {
+    it('returns Either Project for valid empty project', () => {
       const validProject = Helper.defaultizeProject({});
       const res = Project.validateProject(validProject);
 
       assert.equal(res.isRight, true);
       assert.deepEqual(unfoldRight(res), validProject);
+    });
+    it('returns Either Project for valid blink project', () => {
+      const blinkProject = Helper.loadXodball('./fixtures/blinking.xodball');
+      const res = Project.validateProject(blinkProject);
+
+      assert.equal(res.isRight, true);
+      assert.deepEqual(unfoldRight(res), blinkProject);
+    });
+    it('returns Either Project for valid variadic project', () => {
+      const variadicsProject = Helper.loadXodball('./fixtures/variadics.xodball');
+      const res = Project.validateProject(variadicsProject);
+
+      assert.equal(res.isRight, true);
+      assert.deepEqual(unfoldRight(res), variadicsProject);
     });
   });
 
@@ -871,6 +894,81 @@ describe('Project', () => {
         'xod/patch-nodes/input-pulse',
         'xod/patch-nodes/output-pulse',
       ]);
+    });
+  });
+
+  describe('getPinsForNode', () => {
+    it('returns valid Pins for valid Patch & Node', () => {
+      const project = Helper.loadXodball('./fixtures/blinking.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', project);
+      const node = Patch.getNodeByIdUnsafe('BJ4l0cVdKe', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, project);
+
+      Helper.assertProps(pins.S1ulA9NuFx, { normalizedLabel: 'IN1', label: '', type: 'string', direction: 'input', value: 'LED1', order: 0 });
+      Helper.assertProps(pins.B1wg0qVOtg, { normalizedLabel: 'IN2', label: '', type: 'number', direction: 'input', value: 0, order: 1 });
+    });
+    it('returns dead Pins for Node with broken input Links', () => {
+      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
+      const node = Patch.getNodeByIdUnsafe('brokenNodeInLinks', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, brokenProject);
+
+      Helper.assertProps(pins['Hkp4rion-'], { label: '', type: 'dead', direction: 'input', order: 0 });
+      Helper.assertProps(pins.BJbHBjs2b, { label: '', type: 'dead', direction: 'input', order: 1 });
+    });
+    it('returns dead Pins for Node with broken output Links', () => {
+      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
+      const node = Patch.getNodeByIdUnsafe('brokenNodeOutLinks', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, brokenProject);
+
+      Helper.assertProps(pins['B1BSSsi3-'], { label: '', type: 'dead', direction: 'output', order: 0 });
+    });
+    it('returns dead Pins for valid Node with broken PinKey', () => {
+      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
+      const node = Patch.getNodeByIdUnsafe('validNodeId', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, brokenProject);
+
+      Helper.assertProps(pins.brokenPinKey, { label: '', type: 'dead', direction: 'input' });
+    });
+    it('returns valid Pins for variadic Node with arityLevel === 4 and unlabeled pins', () => {
+      const project = Helper.loadXodball('./fixtures/variadics.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', project);
+      const node = Patch.getNodeByIdUnsafe('HytU4ZsDz', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, project);
+
+      assert.lengthOf(R.keys(pins), 7);
+      Helper.assertProps(pins.rk6Q4Ziwf, { label: '', type: 'number', direction: 'input', value: 0, order: 1 });
+      Helper.assertProps(pins['rk6Q4Ziwf-$1'], { label: '', type: 'number', direction: 'input', value: 0, order: 2 });
+      Helper.assertProps(pins['rk6Q4Ziwf-$4'], { label: '', type: 'number', direction: 'input', value: 0, order: 5 });
+    });
+    it('returns valid Pins for variadic Node with arityLevel === 2 and labeled pins', () => {
+      const project = Helper.loadXodball('./fixtures/variadics.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', project);
+      const node = Patch.getNodeByIdUnsafe('S1z24-iPG', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, project);
+
+      assert.lengthOf(R.keys(pins), 8);
+      Helper.assertProps(pins['SJb3uE-sPf'], { label: 'D', type: 'number', direction: 'input', value: 0, order: 3 });
+      Helper.assertProps(pins['SJb3uE-sPf-$1'], { label: 'D2', type: 'number', direction: 'input', value: 0, order: 4 });
+      Helper.assertProps(pins['SJb3uE-sPf-$2'], { label: 'D3', type: 'number', direction: 'input', value: 0, order: 5 });
+    });
+    it('returns valid Pins for variadic Node with arityLevel === 3 and labeled pins with numbers and ariteStep === 2', () => {
+      const project = Helper.loadXodball('./fixtures/variadics.xodball');
+      const curPatch = Project.getPatchByPathUnsafe('@/main', project);
+      const node = Patch.getNodeByIdUnsafe('SkTgS-ovf', curPatch);
+      const pins = Project.getPinsForNode(node, curPatch, project);
+
+      assert.lengthOf(R.keys(pins), 12);
+
+      Helper.assertProps(pins.S1Z1AEZsvf, { label: 'A2', type: 'number', direction: 'input', value: 0, order: 2 });
+      Helper.assertProps(pins['S1Z1AEZsvf-$1'], { label: 'A3', type: 'number', direction: 'input', value: 0, order: 4 });
+      Helper.assertProps(pins['S1Z1AEZsvf-$3'], { label: 'A5', type: 'number', direction: 'input', value: 0, order: 8 });
+
+      Helper.assertProps(pins.HkzJCNbivG, { label: 'B2', type: 'number', direction: 'input', value: 0, order: 3 });
+      Helper.assertProps(pins['HkzJCNbivG-$1'], { label: 'B3', type: 'number', direction: 'input', value: 0, order: 5 });
+      Helper.assertProps(pins['HkzJCNbivG-$3'], { label: 'B5', type: 'number', direction: 'input', value: 0, order: 9 });
     });
   });
 });

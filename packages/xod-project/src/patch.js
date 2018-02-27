@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, notNil, reduceEither, isAmong, mapIndexed, notEmpty } from 'xod-func-tools';
+import { explodeMaybe, explodeEither, notNil, reduceEither, isAmong, mapIndexed, notEmpty } from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -917,11 +917,12 @@ export const removeDebugNodes = def(
 export const getNondeadNodePins = def(
   'getNondeadNodePins :: Node -> Patch -> Map PinKey Pin',
   (node, patch) => R.compose(
-    R.map(pin => R.assoc(
-      'value',
-      Node.getBoundValueOrDefault(pin, node),
-      pin
-    )),
+    R.map(
+      pin => Pin.setPinValue(
+        Node.getBoundValueOrDefault(pin, node),
+        pin
+      )
+    ),
     patchPins => R.compose(
       R.mergeWith(R.merge, R.__, patchPins),
       R.map(R.compose(
@@ -1236,4 +1237,53 @@ export const validatePatchForVariadics = def(
     ),
     Either.of
   )(patch)
+);
+
+/**
+ * Computes and returns map of pins for Node with additional Pins,
+ * if Node has `arityLevel > 1` and Patch has a variadic markers.
+ */
+export const addVariadicPins = def(
+  'addVariadicPins :: Node -> Patch -> Map PinKey Pin -> Map PinKey Pin',
+  (node, patch, originalPins) => {
+    const arityLevel = Node.getNodeArityLevel(node);
+    const isVariadic = isVariadicPatch(patch);
+    if (arityLevel === 1 || !isVariadic) return originalPins;
+
+    const variadicPins = listVariadicValuePins(patch);
+    if (Either.isLeft(variadicPins)) return originalPins;
+
+    const pinsToRepeat = explodeEither(variadicPins);
+    const variadicCount = pinsToRepeat.length;
+    const newPins = R.times(
+      idx => R.map(
+        originalPin => R.compose(
+          newPin => Pin.setPinValue(
+            Node.getBoundValueOrDefault(newPin, node),
+            newPin
+          ),
+          Pin.setPinLabel(
+            Pin.induceVariadicPinLabel(idx, Pin.getPinLabel(originalPin))
+          ),
+          Pin.setPinOrder(
+            Pin.getPinOrder(originalPin) + (variadicCount * (idx + 1))
+          ),
+          Pin.setPinKey(
+            Pin.addVariadicPinKeySuffix(
+              (idx + 1),
+              Pin.getPinKey(originalPin)
+            )
+          )
+        )(originalPin),
+        pinsToRepeat
+      ),
+      arityLevel
+    );
+
+    return R.compose(
+      R.merge(originalPins),
+      R.indexBy(Pin.getPinKey),
+      R.unnest
+    )(newPins);
+  }
 );

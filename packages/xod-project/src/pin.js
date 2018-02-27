@@ -194,9 +194,24 @@ export const isPulsePin = def(
 //
 // =============================================================================
 
-const setPinLabel = def(
+export const setPinLabel = def(
   'setPinLabel :: PinLabel -> Pin -> Pin',
   R.assoc('label')
+);
+
+export const setPinValue = def(
+  'setPinValue :: DataValue -> Pin -> Pin',
+  R.assoc('value')
+);
+
+export const setPinKey = def(
+  'setPinKey :: PinKey -> Pin -> Pin',
+  R.assoc('key')
+);
+
+export const setPinOrder = def(
+  'setPinOrder :: Number -> Pin -> Pin',
+  R.assoc('order')
 );
 
 // =============================================================================
@@ -277,4 +292,57 @@ export const normalizePinLabels = def(
 export const addVariadicPinKeySuffix = def(
   'addVariadicPinKeySuffix :: Number -> PinKey -> PinKey',
   (index, key) => `${key}-$${index}`
+);
+
+/**
+ * (!) This function should be called only for variadic pins,
+ * that should have an updated label.
+ *
+ * Returns PinLabel by incrementing it in accordance with rules.
+ * - "FOO" -> "FOO2"
+ * - "X7" -> "X8"
+ * - "" -> ""
+ *
+ * Accepts an index of the additional variadic pin as the first
+ * argument and a label of the original variadic Pin.
+ * E.G.
+ * Node has `arityLevel === 4` and variadic pin with label 'FOO'.
+ * This function will be called with these arguments:
+ * - 0, 'FOO' -> 'FOO2'
+ * - 1, 'FOO' -> 'FOO3'
+ * - 2, 'FOO' -> 'FOO4'
+ */
+export const induceVariadicPinLabel = def(
+  'induceVariadicPinLabel :: Number -> PinLabel -> PinLabel',
+  (index, label) => R.unless(
+    R.isEmpty,
+    R.compose(
+      R.converge(
+        R.concat,
+        [
+          R.nth(1),
+          R.compose(
+            R.toString,
+            R.add(index + 1),
+            R.defaultTo(1),
+            x => parseInt(x, 10),
+            R.nth(2)
+          ),
+        ]
+      ),
+      R.match(/^(\D+)(\d*)$/)
+    )
+  )(label)
+);
+
+/**
+ * Returns True for Pin with `dead` type
+ * and False for any other type.
+ */
+export const isDeadPin = def(
+  'isDeadPin :: Pin -> Boolean',
+  R.compose(
+    R.equals(CONST.PIN_TYPE.DEAD),
+    getPinType
+  )
 );

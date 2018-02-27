@@ -57,6 +57,7 @@
     "throttle-debounce": "^1.0.1",
     "url-parse": "^1.1.9",
     "url-search-params-polyfill": "^2.0.1",
+    "vec-la-fp": "^1.5.2",
     "xod-arduino": "^0.18.0",
     "xod-func-tools": "^0.18.0",
     "xod-patch-search": "^0.18.0",

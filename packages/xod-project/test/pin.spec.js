@@ -1,4 +1,4 @@
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import * as Pin from '../src/pin';
@@ -111,6 +111,21 @@ describe('Pin', () => {
       ].map(Helper.defaultizePin);
 
       expect(Pin.normalizePinLabels(pins)).to.be.deep.equal(pinsExpected);
+    });
+  });
+
+  describe('induceVariadicPinLabel', () => {
+    it('Empty label -> Empty label', () => {
+      assert.strictEqual(Pin.induceVariadicPinLabel(0, ''), '');
+      assert.strictEqual(Pin.induceVariadicPinLabel(1, ''), '');
+    });
+    it('FOO -> FOO2, FOO -> FOO3', () => {
+      assert.strictEqual(Pin.induceVariadicPinLabel(0, 'FOO'), 'FOO2');
+      assert.strictEqual(Pin.induceVariadicPinLabel(1, 'FOO'), 'FOO3');
+    });
+    it('X3 -> X4, X3 -> X5', () => {
+      assert.strictEqual(Pin.induceVariadicPinLabel(0, 'X3'), 'X4');
+      assert.strictEqual(Pin.induceVariadicPinLabel(1, 'X3'), 'X5');
     });
   });
 });

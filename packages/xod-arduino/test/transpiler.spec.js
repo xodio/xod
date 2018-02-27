@@ -39,8 +39,7 @@ describe('xod-arduino transpiler', () => {
     () =>
       loadProject([wsPath()], wsPath('blink'))
         .then(transformProject(R.__, '@/non-existing-patch'))
-        .then(R.map(transpile))
-        .then(result => assert.ok(result.isLeft))
+        .then(result => assert.equal(result.isLeft, true))
   );
 
   it('returns error if some native node has more than 7 outputs',

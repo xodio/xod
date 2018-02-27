@@ -8,6 +8,7 @@ import * as Tools from './func-tools';
 import * as Link from './link';
 import * as Node from './node';
 import * as Patch from './patch';
+import * as Pin from './pin';
 import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
@@ -324,6 +325,45 @@ export const getPatchByPathUnsafe = def(
   )
 );
 
+
+/**
+ * Returns a map of Pins for the passed Node.
+ *
+ * If Node points to unexistent Patch, the Pins will be calculated
+ * from Links, connected with it, with "UNKNOWN" type.
+ * Such Nodes will be marked as dead.
+ *
+ * If Patch exists — it gets Pins from Patch and ensures, that all Links
+ * conntected with specified Node really have a Pin. If not — it will
+ * add pins with Unknown type (to render it properly).
+ * Such Links will be marked as dead, but Nodes — not.
+ *
+ * Also, it checks for `arityLevel` property of the Node
+ * and existence of variadic marker in the Patch. And adds
+ * additional pins if `arityLevel` > 1.
+ */
+export const getPinsForNode = def(
+  'getPinsForNode :: Node -> Patch -> Project -> Map PinKey Pin',
+  (node, currentPatch, project) => {
+    const type = Node.getNodeType(node);
+    return R.compose(
+      R.ifElse(
+        Maybe.isJust,
+        R.compose(
+          explodeMaybe(`Expected valid pins for existent patch ${type}`),
+          R.map(patch => R.compose(
+            Patch.upsertDeadPins(node, currentPatch),
+            Patch.addVariadicPins(node, patch),
+            Patch.getNondeadNodePins(node)
+          )(patch))
+        ),
+        () => Patch.getDeadNodePins(node, currentPatch)
+      ),
+      getPatchByPath
+    )(type, project);
+  }
+);
+
 /**
  * Checks project for existence of patches and pins that used in link.
  *
@@ -338,48 +378,66 @@ const checkPinKeys = def(
   'checkPinKeys :: Link -> Patch -> Project -> Either Error Patch',
   (link, patch, project) => {
     // TODO: Move check function and child functions on the top-level
+    // :: (Link -> NodeId) -> (Link -> PinKey) -> Either Error Link
     const check = (nodeIdGetter, pinKeyGetter) => {
+      const nodeId = nodeIdGetter(link);
       const pinKey = pinKeyGetter(link);
-      // :: patch -> Either
-      const checkPinExists = R.compose(
-        Tools.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
-        Patch.getPinByKey(pinKey)
-      );
-      // :: node -> Either
-      const checkTypeExists = R.compose(
-        type => R.compose(
-          Tools.errOnNothing(
-            Utils.formatString(
-              CONST.ERROR.TYPE_NOT_FOUND,
-              { type }
-            )
+      const patchPath = Patch.getPatchPath(patch);
+
+      // :: Maybe Node
+      const node = Patch.getNodeById(nodeId, patch);
+      // :: Maybe NodeType
+      const nodeType = R.map(Node.getNodeType, node);
+      // :: Maybe Patch
+      const nodePatch = R.chain(getPatchByPath(R.__, project), nodeType);
+
+      // :: Maybe Patch -> Maybe Node -> Either Error Pin
+      const checkPinExists = R.curry(
+        (maybePatch, maybeNode) => R.compose(
+          Tools.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
+          R.chain(
+            ([justPatch, justNode]) => R.ifElse(
+              Patch.isVariadicPatch,
+              R.compose(
+                Maybe,
+                R.prop(pinKey),
+                R.reject(Pin.isDeadPin),
+                getPinsForNode(justNode, R.__, project)
+              ),
+              Patch.getPinByKey(pinKey)
+            )(justPatch)
           ),
-          getPatchByPath(R.__, project)
-        )(type),
-        Node.getNodeType
+          R.unapply(R.sequence(Maybe.of))
+        )(maybePatch, maybeNode)
       );
-      // :: link -> Either
-      const checkNodeExists = R.curry(R.compose(
-        nodeId => Tools.errOnNothing(
-          Utils.formatString(
-            CONST.ERROR.NODE_NOT_FOUND,
-            { nodeId, patchPath: Patch.getPatchPath(patch) }
-          ),
-          Patch.getNodeById(nodeId, patch)
+
+      // :: Maybe Patch -> Either Error Patch
+      const checkNodePatchExists = maybePatch => Tools.errOnNothing(
+        Utils.formatString(
+          CONST.ERROR.TYPE_NOT_FOUND,
+          { type: nodeType }
         ),
-        nodeIdGetter
-      ));
+        maybePatch
+      );
+      // :: Maybe Node -> Either Error Node
+      const checkNodeExists = maybeNode => Tools.errOnNothing(
+        Utils.formatString(
+          CONST.ERROR.NODE_NOT_FOUND,
+          { nodeId, patchPath }
+        ),
+        maybeNode
+      );
 
       return R.compose(
-        R.chain(checkPinExists),
-        R.chain(checkTypeExists),
-        checkNodeExists
-      )(link);
+        R.chain(() => checkPinExists(nodePatch, node)),
+        R.chain(() => checkNodePatchExists(nodePatch)),
+        () => checkNodeExists(node)
+      )();
     };
 
-    return check(Link.getLinkInputNodeId, Link.getLinkInputPinKey).chain(
-      () => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey)
-    ).map(R.always(patch));
+    return check(Link.getLinkInputNodeId, Link.getLinkInputPinKey)
+      .chain(() => check(Link.getLinkOutputNodeId, Link.getLinkOutputPinKey))
+      .map(R.always(patch));
   }
 );
 
@@ -420,16 +478,12 @@ export const validatePatchContents = def(
     // :: patch -> Either Error Patch
     const checkLinks = R.compose(
       R.ifElse(
+        R.isEmpty,
+        R.always(Either.of(patch)),
         R.compose(
-          R.gt(R.__, 0),
-          R.length
-        ),
-        R.compose(
-          R.prop(0),
-          R.chain(R.partialRight(checkPinKeys, [patch, project]))
-        ),
-        R.always(
-          Either.of(patch)
+          R.map(R.always(patch)),
+          R.sequence(Either.of),
+          R.map(checkPinKeys(R.__, patch, project))
         )
       ),
       Patch.listLinks
@@ -802,39 +856,6 @@ export const resolveNodeTypesInProject = def(
     )),
     listLibraryPatches
   )(project)
-);
-
-/**
- * Returns a map of Pins for the passed Node.
- *
- * If Node points to unexistent Patch, so Pins will be calculated
- * from Links, connected with it, with "UNKNOWN" type.
- * Such Nodes will be marked as dead.
- *
- * If Patch exists — it gets Pins from Patch and ensures, that all Links
- * conntected with specified Node really has a Pin. If not — it will
- * add pins with Unknown type (to render it properly).
- * Such Links will be marked as dead, but Nodes — not.
- */
-export const getPinsForNode = def(
-  'getPinsForNode :: Node -> Patch -> Project -> Map PinKey Pin',
-  (node, currentPatch, project) => {
-    const type = Node.getNodeType(node);
-    return R.compose(
-      R.ifElse(
-        Maybe.isJust,
-        R.compose(
-          explodeMaybe(`Expected valid pins for existent patch ${type}`),
-          R.map(R.compose(
-            Patch.upsertDeadPins(node, currentPatch),
-            Patch.getNondeadNodePins(node)
-          ))
-        ),
-        () => Patch.getDeadNodePins(node, currentPatch)
-      ),
-      getPatchByPath
-    )(type, project);
-  }
 );
 
 // Helper function for getPatchDependencies

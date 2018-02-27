@@ -1,0 +1,260 @@
+{
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "HytU4ZsDz": {
+          "arityLevel": 4,
+          "id": "HytU4ZsDz",
+          "type": "@/unnamed-pins",
+          "position": {
+            "x": 102,
+            "y": 102
+          }
+        },
+        "S1z24-iPG": {
+          "arityLevel": 2,
+          "id": "S1z24-iPG",
+          "type": "@/named-pins",
+          "position": {
+            "x": 102,
+            "y": 204
+          }
+        },
+        "SkTgS-ovf": {
+          "arityLevel": 3,
+          "id": "SkTgS-ovf",
+          "type": "@/named-pins-v2",
+          "position": {
+            "x": 102,
+            "y": 306
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/named-pins": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n"
+        }
+      ],
+      "nodes": {
+        "BkKuEZjDM": {
+          "label": "A",
+          "id": "BkKuEZjDM",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 34,
+            "y": 102
+          }
+        },
+        "S13u4WsDG": {
+          "label": "B",
+          "id": "S13u4WsDG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 102,
+            "y": 102
+          }
+        },
+        "HJl2_V-iDM": {
+          "label": "C",
+          "id": "HJl2_V-iDM",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 136,
+            "y": 102
+          }
+        },
+        "SJb3uE-sPf": {
+          "label": "D",
+          "id": "SJb3uE-sPf",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 204,
+            "y": 102
+          }
+        },
+        "ry3KEWiPz": {
+          "label": "R1",
+          "id": "ry3KEWiPz",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 102,
+            "y": 306
+          }
+        },
+        "SyTKNbowz": {
+          "label": "R2",
+          "id": "SyTKNbowz",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 136,
+            "y": 306
+          }
+        },
+        "SkXs4-jDG": {
+          "id": "SkXs4-jDG",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 102,
+            "y": 204
+          }
+        },
+        "SJui4Wiwz": {
+          "id": "SJui4Wiwz",
+          "type": "xod/patch-nodes/variadic-1",
+          "position": {
+            "x": 204,
+            "y": 204
+          }
+        }
+      },
+      "path": "@/named-pins"
+    },
+    "@/named-pins-v2": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n"
+        }
+      ],
+      "nodes": {
+        "r1k0N-jwG": {
+          "label": "A1",
+          "id": "r1k0N-jwG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": -1,
+            "y": -1
+          }
+        },
+        "r1eyCNZsDG": {
+          "label": "B1",
+          "id": "r1eyCNZsDG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 34,
+            "y": 0
+          }
+        },
+        "S1Z1AEZsvf": {
+          "label": "A2",
+          "id": "S1Z1AEZsvf",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 136,
+            "y": 0
+          }
+        },
+        "HkzJCNbivG": {
+          "label": "B2",
+          "id": "HkzJCNbivG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 169,
+            "y": -1
+          }
+        },
+        "HJmJ0Vbjvz": {
+          "label": "R_A",
+          "id": "HJmJ0Vbjvz",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 204
+          }
+        },
+        "r1EyRVWoDf": {
+          "label": "R_B",
+          "id": "r1EyRVWoDf",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 34,
+            "y": 204
+          }
+        },
+        "ByrJ0EZiDM": {
+          "id": "ByrJ0EZiDM",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 34,
+            "y": 102
+          }
+        },
+        "SJyxH-ovf": {
+          "id": "SJyxH-ovf",
+          "type": "xod/patch-nodes/variadic-2",
+          "position": {
+            "x": 136,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/named-pins-v2"
+    },
+    "@/unnamed-pins": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n"
+        }
+      ],
+      "nodes": {
+        "Sk97EZjPG": {
+          "id": "Sk97EZjPG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          }
+        },
+        "rk6Q4Ziwf": {
+          "id": "rk6Q4Ziwf",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 136,
+            "y": 0
+          }
+        },
+        "HyjVE-oDM": {
+          "label": "SUM",
+          "id": "HyjVE-oDM",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 68,
+            "y": 204
+          }
+        },
+        "r10SVboPM": {
+          "id": "r10SVboPM",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 102,
+            "y": 102
+          }
+        },
+        "ByBLE-oPG": {
+          "id": "ByBLE-oPG",
+          "type": "xod/patch-nodes/variadic-1",
+          "position": {
+            "x": 136,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/unnamed-pins"
+    }
+  },
+  "authors": [
+    "xod"
+  ],
+  "license": "MIT",
+  "version": "0.14.0",
+  "description": "A crash course tutorial baked as a project",
+  "name": ""
+}

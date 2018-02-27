@@ -34,7 +34,7 @@
   }
 
   .outerStroke {
-    stroke-width: 2px;
+    stroke-width: 0;
     stroke: $color-pin-fill;
     fill: $color-pin-fill;
   }
@@ -82,4 +82,11 @@
       display: block;
     }
   }
+}
+
+.PinDots {
+  fill: $chalk;
+  font-family: $font-family-normal;
+  font-size: 14px;
+  font-weight: 500;
 }
