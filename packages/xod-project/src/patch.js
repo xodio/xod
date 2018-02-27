@@ -1277,7 +1277,7 @@ export const addVariadicPins = def(
         )(originalPin),
         pinsToRepeat
       ),
-      arityLevel
+      arityLevel - 1
     );
 
     return R.compose(
