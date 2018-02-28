@@ -151,12 +151,12 @@ const createLinksToAdditionalValueTerminals =
 
 
 const createLinksFromNodeOutputsToAccPins = (variadicPinKeys, expansionNodeIds) => {
-  const accOutPinKeyPairs = R.zip(variadicPinKeys.outputs, variadicPinKeys.acc);
+  const accOutPinKeyPairs = R.zip(variadicPinKeys.acc, variadicPinKeys.outputs);
   return R.compose(
-    R.chain(([inputNodeId, outputNodeId]) => R.map(
+    R.chain(([outputNodeId, inputNodeId]) => R.map(
       ([accPinKey, outputPinKey]) => Link.createLink(
         accPinKey, inputNodeId,
-        outputPinKey, outputNodeId
+        outputPinKey, outputNodeId,
       ),
       accOutPinKeyPairs
     )),
