@@ -72,17 +72,17 @@ class Node extends React.Component {
       position,
       size,
       type,
+      isDragged,
     } = this.props;
 
     const pinsArr = R.values(pins);
 
     const cls = classNames('Node', {
       'is-selected': this.props.isSelected,
-      'is-dragged': this.props.isDragged,
+      'is-dragged': isDragged,
       'is-ghost': this.props.isGhost,
       'is-errored': (this.props.errors.length > 0),
     });
-
 
     const svgStyle = {
       overflow: 'visible',
@@ -102,7 +102,7 @@ class Node extends React.Component {
 
     return (
       <TooltipHOC
-        content={renderTooltipContent(type, nodeLabel, errMessage)}
+        content={isDragged ? null : renderTooltipContent(type, nodeLabel, errMessage)}
         render={(onMouseOver, onMouseMove, onMouseLeave) => (
           <svg
             key={id}
