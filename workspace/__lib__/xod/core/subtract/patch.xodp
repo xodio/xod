@@ -5,8 +5,8 @@
       "id": "BypX80uSD1Z",
       "label": "X",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -15,18 +15,17 @@
         "__in__": 0
       },
       "id": "HyRmUCdBDkZ",
-      "label": "DIFF",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -34,10 +33,18 @@
       "id": "rkJ4URuHDJ-",
       "label": "Y",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ry8ts1m_f",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
     }
   ]
 }

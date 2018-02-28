@@ -1,0 +1,155 @@
+{
+  "description": "Rounds input `X` up to the first threshold `T0`, `T1`, ..., `T𝑛` greater or equal to the `X`. If `X` is even greater than the last threshold, the value is round down to it.",
+  "links": [
+    {
+      "id": "BJqR9pWYZ",
+      "input": {
+        "nodeId": "ryua56WYb",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "r1SqqabFZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ0_LU7Oz",
+      "input": {
+        "nodeId": "rkVicaZFZ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryLFq6btW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJPC5T-FZ",
+      "input": {
+        "nodeId": "ryua56WYb",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "rJl5qpZYZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hkc35TZKb",
+      "input": {
+        "nodeId": "HJw2cTbFW",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "r1SqqabFZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk_yopZY-",
+      "input": {
+        "nodeId": "rkpc9pZYb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryua56WYb",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "r1325T-tb",
+      "input": {
+        "nodeId": "HJw2cTbFW",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "ryLFq6btW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryZR5aWKW",
+      "input": {
+        "nodeId": "ryua56WYb",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "HJw2cTbFW",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HJw2cTbFW",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "@/less"
+    },
+    {
+      "id": "SyLXO0Wuz",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "id": "r1SqqabFZ",
+      "label": "T1",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJl5qpZYZ",
+      "label": "T0",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.",
+      "id": "rkVicaZFZ",
+      "label": "_",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "The rounding result. Equals to one of Tx.",
+      "id": "rkpc9pZYb",
+      "label": "T",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ryLFq6btW",
+      "label": "X",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryua56WYb",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "@/if-else"
+    }
+  ]
+}

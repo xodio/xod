@@ -57,8 +57,8 @@ const createAdditionalValueTerminalGroups = (
   const getValueTerminalX = (terminalGroupIndex, terminalIndex) => (
     rightmostInputTerminalX +
     DISTANCE_BETWEEN_TERMINALS +
-    // because terminalGroupIndex always starts from 2
-    ((terminalGroupIndex - 2) * valueTerminalsGroupWidth) +
+    // because terminalGroupIndex always starts from 1
+    ((terminalGroupIndex - 1) * valueTerminalsGroupWidth) +
     (terminalIndex * DISTANCE_BETWEEN_TERMINALS)
   );
 
@@ -77,8 +77,7 @@ const createAdditionalValueTerminalGroups = (
       )(node),
       originalValueTerminalNodes
     )),
-    R.range(2), // [2; desiredArityLevel]
-    R.inc
+    R.range(1), // [1; desiredArityLevel)
   )(desiredArityLevel);
 };
 
@@ -152,12 +151,12 @@ const createLinksToAdditionalValueTerminals =
 
 
 const createLinksFromNodeOutputsToAccPins = (variadicPinKeys, expansionNodeIds) => {
-  const accOutPinKeyPairs = R.zip(variadicPinKeys.outputs, variadicPinKeys.acc);
+  const accOutPinKeyPairs = R.zip(variadicPinKeys.acc, variadicPinKeys.outputs);
   return R.compose(
-    R.chain(([inputNodeId, outputNodeId]) => R.map(
+    R.chain(([outputNodeId, inputNodeId]) => R.map(
       ([accPinKey, outputPinKey]) => Link.createLink(
         accPinKey, inputNodeId,
-        outputPinKey, outputNodeId
+        outputPinKey, outputNodeId,
       ),
       accOutPinKeyPairs
     )),

@@ -7,7 +7,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    auto x = getValue<input_X>(ctx);
-    auto y = getValue<input_Y>(ctx);
-    emitValue<output_PROD>(ctx, x * y);
+    auto x = getValue<input_IN1>(ctx);
+    auto y = getValue<input_IN2>(ctx);
+    emitValue<output_OUT>(ctx, x * y);
 }

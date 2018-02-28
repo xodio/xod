@@ -7,7 +7,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    auto a = getValue<input_A>(ctx);
-    auto b = getValue<input_B>(ctx);
-    emitValue<output_AND>(ctx, a && b);
+    auto a = getValue<input_IN1>(ctx);
+    auto b = getValue<input_IN2>(ctx);
+    emitValue<output_OUT>(ctx, a && b);
 }

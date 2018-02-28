@@ -1,21 +1,27 @@
 {
-  "description": "Outputs false if and only if both inputs are false",
+  "description": "Outputs false if and only if all inputs are false",
   "nodes": [
     {
-      "id": "BJaG80urD1-",
-      "label": "A",
+      "id": "BJS2bbsPG",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "id": "BJaG80urD1-",
+      "position": {
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     },
     {
       "id": "HJCfI0dBDkb",
-      "label": "B",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     },
@@ -24,10 +30,9 @@
         "__in__": false
       },
       "id": "SJyXI0OrD1-",
-      "label": "OR",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"
     },
