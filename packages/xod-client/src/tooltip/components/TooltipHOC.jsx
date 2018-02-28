@@ -52,6 +52,7 @@ class TooltipHOC extends React.Component {
   }
 
   showTooltip() {
+    clearTimeout(this.timeout);
     this.timeout = setTimeout(
       () => {
         this.shown = true;
