@@ -61,26 +61,29 @@ export const getCurrentPatchNodes = createSelector(
   getIndexedPatchEntitiesBy(XP.listNodes)
 );
 
+// :: { LinkId: Link } -> { NodeId: { PinKey: Boolean } }
+export const computeConnectedPins = R.compose(
+  R.reduce(
+    (acc, link) => R.compose(
+      R.assocPath([
+        XP.getLinkInputNodeId(link),
+        XP.getLinkInputPinKey(link),
+      ], true),
+      R.assocPath([
+        XP.getLinkOutputNodeId(link),
+        XP.getLinkOutputPinKey(link),
+      ], true)
+    )(acc),
+    {}
+  ),
+  R.values
+);
+
 // returns object with a shape { nodeId: { pinKey: Boolean } }
 export const getConnectedPins = createMemoizedSelector(
   [getCurrentPatchLinks],
   [R.equals],
-  R.compose(
-    R.reduce(
-      (acc, link) => R.compose(
-        R.assocPath([
-          XP.getLinkInputNodeId(link),
-          XP.getLinkInputPinKey(link),
-        ], true),
-        R.assocPath([
-          XP.getLinkOutputNodeId(link),
-          XP.getLinkOutputPinKey(link),
-        ], true)
-      )(acc),
-      {}
-    ),
-    R.values
-  )
+  computeConnectedPins
 );
 
 // :: IndexedLinks -> IntermediateNode -> IntermediateNode

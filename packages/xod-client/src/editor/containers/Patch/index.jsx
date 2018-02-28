@@ -7,8 +7,6 @@ import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactResizeDetector from 'react-resize-detector';
-import * as XP from 'xod-project';
-import { $Maybe } from 'xod-func-tools';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -138,6 +136,17 @@ class Patch extends React.Component {
 
   render() {
     const { currentMode } = this.state;
+    /**
+     * Some Modes could need more data from Project, than we
+     * have in this Container.
+     * (See `changingArityLevel.jsx`)
+     *
+     * For this purposes we have to get Project, but for better
+     * performance we do not include it into Props to prevent
+     * excessive updates and renders, but get it right from
+     * context and pass into render function of Modes.
+     */
+    const project = ProjectSelectors.getProject(this.context.store.getState());
 
     return this.props.connectDropTarget(
       <div
@@ -149,11 +158,18 @@ class Patch extends React.Component {
           handleHeight
           onResize={this.props.actions.patchWorkareaResized}
         />
-        {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
+        {MODE_HANDLERS[currentMode].render(
+          this.getApi(currentMode),
+          project
+        )}
       </div>
     );
   }
 }
+
+Patch.contextTypes = {
+  store: PropTypes.object,
+};
 
 Patch.propTypes = {
   /* eslint-disable react/no-unused-prop-types */
@@ -174,9 +190,6 @@ Patch.propTypes = {
   isDebugSession: PropTypes.bool,
   isPatchDraggedOver: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
-  connectedPins: PropTypes.object,
-  project: sanctuaryPropType(XP.Project),
-  currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
   /* eslint-enable react/no-unused-prop-types */
 };
 
@@ -192,9 +205,6 @@ const mapStateToProps = R.applySpec({
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
   isDebugSession: DebugSelectors.isDebugSession,
   nodeValues: DebugSelectors.getWatchNodeValuesForCurrentPatch,
-  connectedPins: ProjectSelectors.getConnectedPins,
-  project: ProjectSelectors.getProject,
-  currentPatch: ProjectSelectors.getCurrentPatch,
 });
 
 const mapDispatchToProps = dispatch => ({

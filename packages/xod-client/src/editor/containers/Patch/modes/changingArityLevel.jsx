@@ -2,13 +2,12 @@ import * as R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import * as XP from 'xod-project';
-import { explodeMaybe } from 'xod-func-tools';
 
 import { EDITOR_MODE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
-import { getRenderableNode } from '../../../../project/selectors';
+import { computeConnectedPins, getRenderableNode } from '../../../../project/selectors';
 
 import {
   SLOT_SIZE,
@@ -61,7 +60,13 @@ const changingArityLevel = {
     api.goToMode(EDITOR_MODE.DEFAULT);
   },
 
-  render(api) {
+  render(api, project) {
+    const currentPatch = XP.getPatchByPathUnsafe(api.props.patchPath, project);
+    const connectedPins = R.compose(
+      computeConnectedPins,
+      R.indexBy(XP.getLinkId),
+      XP.listLinks
+    )(currentPatch);
     /**
      * To render Node with changed ArityLevel without excessive dispatching
      * we have to get an original Node, change its ArityLevel and pass
@@ -72,38 +77,33 @@ const changingArityLevel = {
      */
     // :: RenderableNode
     const newNode = R.compose(
-      explodeMaybe('Impossible error: Patch and Node was rendered here!'),
-      R.map(
-        currentPatch => R.compose(
-          renderableNode => R.compose(
-            R.assoc('id', `${renderableNode.id}-$CHANGING_ARITY`),
-            R.assoc('isChangingArity', true),
-            keysToOmit => R.compose(
-              R.assocPath(
-                ['size', 'width'],
-                (renderableNode.size.width - (keysToOmit.length * SLOT_SIZE.WIDTH))
-              ),
-              R.over(
-                R.lensProp('pins'),
-                R.omit(keysToOmit)
-              )
-            )(renderableNode),
-            R.pluck('key'),
-            R.filter(R.propEq('type', XP.PIN_TYPE.DEAD)),
-            R.values,
-            R.prop('pins')
-          )(renderableNode),
-          getRenderableNode(
-            R.__,
-            currentPatch,
-            api.props.connectedPins,
-            api.props.project
+      renderableNode => R.compose(
+        R.assoc('id', `${renderableNode.id}-$CHANGING_ARITY`),
+        R.assoc('isChangingArity', true),
+        keysToOmit => R.compose(
+          R.assocPath(
+            ['size', 'width'],
+            (renderableNode.size.width - (keysToOmit.length * SLOT_SIZE.WIDTH))
           ),
-          XP.setNodeArityLevel(api.state.desiredArityLevel),
-          XP.getNodeByIdUnsafe(api.state.nodeId)
-        )(currentPatch)
-      )
-    )(api.props.currentPatch);
+          R.over(
+            R.lensProp('pins'),
+            R.omit(keysToOmit)
+          )
+        )(renderableNode),
+        R.pluck('key'),
+        R.filter(R.propEq('type', XP.PIN_TYPE.DEAD)),
+        R.values,
+        R.prop('pins')
+      )(renderableNode),
+      getRenderableNode(
+        R.__,
+        currentPatch,
+        connectedPins,
+        project
+      ),
+      XP.setNodeArityLevel(api.state.desiredArityLevel),
+      XP.getNodeByIdUnsafe(api.state.nodeId)
+    )(currentPatch);
 
     // :: [RenderableNode]
     const nodes = R.compose(
