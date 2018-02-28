@@ -46,7 +46,7 @@ class CustomDragLayer extends React.PureComponent {
         props => (
           <Node {...props} isDragged noEvents />
         ),
-        patchToNodeProps
+        patchToNodeProps(false)
       )),
       XP.getPatchByPath(this.props.item.patchPath)
     )(this.props.project);
