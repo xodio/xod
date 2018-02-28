@@ -325,6 +325,25 @@ export default (state = {}, action) => {
       );
     }
 
+    case AT.NODE_CHANGE_ARITY_LEVEL: {
+      const { nodeId, arityLevel, patchPath } = action.payload;
+      const currentPatchLens = XP.lensPatch(patchPath);
+      const updatedNode = R.compose(
+        XP.setNodeArityLevel(arityLevel),
+        XP.getNodeByIdUnsafe(nodeId),
+        XP.getPatchByPathUnsafe(patchPath)
+      )(state);
+
+      return R.over(
+        currentPatchLens,
+        R.compose(
+          XP.omitDeadLinksByNodeId(nodeId, R.__, state),
+          XP.assocNode(updatedNode)
+        ),
+        state
+      );
+    }
+
     //
     // Link
     //

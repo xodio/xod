@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { explodeMaybe, notEmpty, isAmong } from 'xod-func-tools';
+import { foldMaybe, explodeMaybe, notEmpty, isAmong } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
@@ -883,6 +883,42 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
     R.assoc(currentPatchPath, currentPatchDeps, depsMap)
   );
 };
+
+/**
+ * Returns a list of dead Links for Node in specified Patch.
+ */
+const listDeadLinksByNodeId = def(
+  'listDeadLinksByNodeId :: NodeId -> Patch -> Project -> [Link]',
+  (nodeId, patch, project) => R.compose(
+    foldMaybe([], R.identity),
+    R.map(
+      node => R.compose(
+        deadPinKeys => R.compose(
+          R.filter(R.either(
+            R.compose(isAmong(deadPinKeys), Link.getLinkInputPinKey),
+            R.compose(isAmong(deadPinKeys), Link.getLinkOutputPinKey),
+          )),
+          Patch.listLinksByNode
+        )(nodeId, patch),
+        R.keys,
+        R.filter(Pin.isDeadPin),
+        getPinsForNode
+      )(node, patch, project)
+    ),
+    Patch.getNodeById
+  )(nodeId, patch, project)
+);
+
+/**
+ * Returns Patch with omitted dead links to specified Node.
+ */
+export const omitDeadLinksByNodeId = def(
+  'omitDeadLinksByNodeId :: NodeId -> Patch -> Project -> Patch',
+  (nodeId, patch, project) => R.compose(
+    Patch.omitLinks(R.__, patch),
+    listDeadLinksByNodeId
+  )(nodeId, patch, project)
+);
 
 /**
  * Returns a list of paths of all patches that are used

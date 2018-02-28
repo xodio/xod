@@ -62,7 +62,7 @@ export const getCurrentPatchNodes = createSelector(
 );
 
 // returns object with a shape { nodeId: { pinKey: Boolean } }
-const getConnectedPins = createMemoizedSelector(
+export const getConnectedPins = createMemoizedSelector(
   [getCurrentPatchLinks],
   [R.equals],
   R.compose(
@@ -208,6 +208,36 @@ const addVariadicErrors = R.curry(
   )(renderableNode)
 );
 
+/**
+ * Adds `isVariadic` flag and `arityStep` prop.
+ */
+// :: Project -> RenderableNode -> RenderableNode
+const addVariadicProps = R.curry(
+  (project, renderableNode) => R.compose(
+    R.merge(renderableNode),
+    R.applySpec({
+      isVariadic: foldMaybe(false, R.T),
+      arityStep: foldMaybe(0, R.identity),
+    }),
+    R.chain(XP.getArityStepFromPatch),
+    XP.getPatchByPath(R.__, project),
+    R.prop('type')
+  )(renderableNode)
+);
+
+// :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
+export const getRenderableNode = R.curry(
+  (node, currentPatch, connectedPins, project) => R.compose(
+    addVariadicErrors(currentPatch),
+    addVariadicProps(project),
+    addDeadRefErrors(project),
+    addNodePositioning,
+    assocPinIsConnected(connectedPins),
+    assocNodeIdToPins,
+    mergePinDataFromPatch(project, currentPatch)
+  )(node)
+);
+
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
@@ -215,14 +245,7 @@ export const getRenderableNodes = createMemoizedSelector(
   (project, maybeCurrentPatch, currentPatchNodes, connectedPins) => foldMaybe(
     {},
     currentPatch => R.map(
-      R.compose(
-        addVariadicErrors(currentPatch),
-        addDeadRefErrors(project),
-        addNodePositioning,
-        assocPinIsConnected(connectedPins),
-        assocNodeIdToPins,
-        mergePinDataFromPatch(project, currentPatch)
-      ),
+      getRenderableNode(R.__, currentPatch, connectedPins, project),
       currentPatchNodes
     ),
     maybeCurrentPatch

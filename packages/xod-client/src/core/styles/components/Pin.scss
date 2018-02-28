@@ -6,6 +6,18 @@
   }
 }
 
+.pins.is-ghost {
+  .symbol, .PinDots {
+    opacity: 0.4;
+  }
+  .outerStroke {
+    fill: $color-canvas-background;
+  }
+  .PinLabel {
+    visibility: hidden;
+  }
+}
+
 .Pin {
   .symbol {
     fill: $color-pin-fill;
@@ -35,7 +47,6 @@
 
   .outerStroke {
     stroke-width: 0;
-    stroke: $color-pin-fill;
     fill: $color-pin-fill;
   }
 

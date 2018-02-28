@@ -31,6 +31,7 @@ export {
   assocLink,
   dissocLink,
   upsertLinks,
+  omitLinks,
   assocNode,
   dissocNode,
   upsertNodes,
@@ -54,6 +55,7 @@ export {
   listVariadicSharedPins,
   validatePatchForVariadics,
   getArityStepFromPatch,
+  isVariadicPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

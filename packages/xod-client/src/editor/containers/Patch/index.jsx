@@ -7,6 +7,8 @@ import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactResizeDetector from 'react-resize-detector';
+import * as XP from 'xod-project';
+import { $Maybe } from 'xod-func-tools';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -31,6 +33,7 @@ import resizingCommentMode from './modes/resizingComment';
 import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
 import debuggingMode from './modes/debugging';
 import marqueeSelectingMode from './modes/marqueeSelecting';
+import changingArityLevelMode from './modes/changingArityLevel';
 
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
@@ -41,6 +44,7 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
   [EDITOR_MODE.DEBUGGING]: debuggingMode,
   [EDITOR_MODE.MARQUEE_SELECTING]: marqueeSelectingMode,
+  [EDITOR_MODE.CHANGING_ARITY_LEVEL]: changingArityLevelMode,
 };
 
 const DEFAULT_MODES = {
@@ -170,6 +174,9 @@ Patch.propTypes = {
   isDebugSession: PropTypes.bool,
   isPatchDraggedOver: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
+  connectedPins: PropTypes.object,
+  project: sanctuaryPropType(XP.Project),
+  currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
   /* eslint-enable react/no-unused-prop-types */
 };
 
@@ -185,6 +192,9 @@ const mapStateToProps = R.applySpec({
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
   isDebugSession: DebugSelectors.isDebugSession,
   nodeValues: DebugSelectors.getWatchNodeValuesForCurrentPatch,
+  connectedPins: ProjectSelectors.getConnectedPins,
+  project: ProjectSelectors.getProject,
+  currentPatch: ProjectSelectors.getCurrentPatch,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -210,6 +220,7 @@ const mapDispatchToProps = dispatch => ({
     drillDown: DebuggerActions.drillDown,
     openImplementationEditor: EditorActions.openImplementationEditor,
     patchWorkareaResized: EditorActions.patchWorkareaResized,
+    changeArityLevel: ProjectActions.changeArityLevel,
   }, dispatch),
 });
 

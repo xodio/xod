@@ -16,4 +16,7 @@
       cursor: grabbing;
     }
   }
+  &.isInChangingArityLevelMode {
+    * { cursor: ew-resize; }
+  }
 }
