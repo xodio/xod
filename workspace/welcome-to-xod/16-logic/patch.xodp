@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "* `and`: returns `true` if both `A` *and* `B` are `true`.\n* `or`: returns `true` if A, B, or both are `true`.\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
+      "content": "* `and`: returns `true` if both (`IN1` *and* `IN2`) are `true`.\n* `or`: returns `true` if `IN1`, `IN2`, or both are `true`.\n* `xor` returns `true` if only one of `IN1` and `IN2` is `true`\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
       "id": "H1I643knZ",
       "position": {
         "x": 612,

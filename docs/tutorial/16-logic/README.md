@@ -18,9 +18,9 @@ in `xod/core`.
 
 ![Patch](./patch.png)
 
-* `and` returns `true` if both A *and* B are `true`
-* `or` returns `true` if A, B, or both are `true`
-* `xor` returns `true` if only one of A and B is `true`
+* `and` returns `true` if both inputs (`IN1` *and* `IN2`) are `true`
+* `or` returns `true` if `IN1`, `IN2`, or both are `true`
+* `xor` returns `true` if only one of `IN1` and `IN2` is `true`
 * `not` inverts the input value
 * `nand` is an inverted `and`
 * `nor` is an inverted `or`

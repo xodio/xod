@@ -22,8 +22,9 @@ mathematical comparisons. They are in `xod/core`.
 
 ![Patch](./patch.png)
 
-The `LHS` and `RHS` pins receive numbers to compare, and output pins return
-the comparison result expressed as a boolean value (true or false).
+The left `IN1` and right `IN2` pins receive numbers to compare, and the output
+`OUT` pin returns the comparison result expressed as a boolean value (true or
+false).
 
 ## Test circuit
 
@@ -40,15 +41,15 @@ The circuit is the same as for the previous lesson.
 
 * Place a `xod/core/less` (or `greater`) node to trigger an action when
   a measured parameter goes under (or over) a threshold value.
-* Use the `LHS` pin to link the value measured.
-* Set the threshold as the `RHS` pin value.
+* Use the left pin to link the value measured.
+* Set the threshold as the right pin value.
 * In cases where figuring out the proper threshold is tricky use a value
   from a potentiometer to adjust it dynamically.
 
 ![Screencast](./screencast.gif)
 
 In the example shown, if the `analog-input` node (our photoresistor) returns a
-value greater than the threshold, the `greater` node will set the `GT` pin to
+value greater than the threshold, the `greater` node will set the `OUT` pin to
 `true`, and the LED will turn on.
 
 [Next lesson →](../19-if-else/)
