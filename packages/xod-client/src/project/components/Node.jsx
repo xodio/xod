@@ -15,6 +15,8 @@ import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
+import nodeHoverContextType from '../../editor/nodeHoverContextType';
+
 const renderTooltipContent = (nodeType, nodeLabel, errText) => [
   <div key="nodeLabel" className="Tooltip--nodeLabel">{nodeLabel}</div>,
   <div key="nodeType" className="Tooltip--nodeType">{nodeType}</div>,
@@ -53,6 +55,25 @@ class Node extends React.Component {
     this.props.onDoubleClick(this.props.id, this.props.type);
   }
 
+  onMouseOver(...args) {
+    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseOver'], this)(...args);
+  }
+
+  onMouseLeave(...args) {
+    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseLeave'], this)(...args);
+  }
+
+  getHoveredNodeId() {
+    return R.pathOr(null, ['context', 'nodeHover', 'nodeId'], this);
+  }
+
+  isNodeHovered() {
+    return (
+      this.getHoveredNodeId() === this.props.id
+      && !this.props.noNodeHovering
+    );
+  }
+
   renderBody() {
     const { type } = this.props;
 
@@ -84,6 +105,7 @@ class Node extends React.Component {
       'is-variadic': this.props.isVariadic,
       'is-changing-arity': this.props.isChangingArity,
       'is-errored': (this.props.errors.length > 0),
+      'is-hovered': this.isNodeHovered(),
     });
 
     const pinsCls = classNames('pins', {
@@ -117,9 +139,15 @@ class Node extends React.Component {
             {...position}
             {...size}
             viewBox={`0 0 ${size.width} ${size.height}`}
-            onMouseOver={onMouseOver}
+            onMouseOver={(...args) => {
+              onMouseOver(...args);
+              this.onMouseOver(id);
+            }}
             onMouseMove={onMouseMove}
-            onMouseLeave={onMouseLeave}
+            onMouseLeave={(...args) => {
+              onMouseLeave(...args);
+              this.onMouseLeave();
+            }}
           >
             <g
               className={cls}
@@ -158,6 +186,10 @@ class Node extends React.Component {
   }
 }
 
+Node.contextTypes = {
+  nodeHover: nodeHoverContextType,
+};
+
 Node.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
@@ -180,6 +212,7 @@ Node.propTypes = {
   onMouseDown: PropTypes.func,
   onMouseUp: PropTypes.func,
   onDoubleClick: PropTypes.func,
+  noNodeHovering: PropTypes.bool,
 };
 
 Node.defaultProps = {
@@ -194,6 +227,7 @@ Node.defaultProps = {
   onMouseUp: noop,
   onDoubleClick: noop,
   pinLinkabilityValidator: R.F,
+  noNodeHovering: false,
 };
 
 export default Node;

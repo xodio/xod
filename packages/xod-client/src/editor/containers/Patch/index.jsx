@@ -33,6 +33,8 @@ import debuggingMode from './modes/debugging';
 import marqueeSelectingMode from './modes/marqueeSelecting';
 import changingArityLevelMode from './modes/changingArityLevel';
 
+import nodeHoverContextType from '../../nodeHoverContextType';
+
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
   [EDITOR_MODE.LINKING]: linkingMode,
@@ -63,6 +65,7 @@ class Patch extends React.Component {
       modeSpecificState: {
         [mode]: MODE_HANDLERS[mode].getInitialState(props),
       },
+      hoveredNodeId: null,
     };
 
     this.goToMode = this.goToMode.bind(this);
@@ -70,6 +73,18 @@ class Patch extends React.Component {
     this.getModeState = this.getModeState.bind(this);
     this.setModeState = this.setModeState.bind(this);
     this.setModeStateThrottled = throttle(100, true, this.setModeState);
+  }
+
+  getChildContext() {
+    // We're creating context here only for handle hovering of the Node.
+    // Don't be tempted to use context for other tasks if you can solve them differently.
+    return {
+      nodeHover: {
+        nodeId: this.state.hoveredNodeId,
+        onMouseOver: nodeId => this.setState({ hoveredNodeId: nodeId }),
+        onMouseLeave: () => this.setState({ hoveredNodeId: null }),
+      },
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -169,6 +184,10 @@ class Patch extends React.Component {
 
 Patch.contextTypes = {
   store: PropTypes.object,
+};
+
+Patch.childContextTypes = {
+  nodeHover: nodeHoverContextType,
 };
 
 Patch.propTypes = {

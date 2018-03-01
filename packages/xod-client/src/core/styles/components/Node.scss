@@ -72,7 +72,7 @@
     user-select: none;
   }
 
-  &:hover {
+  &.is-hovered {
     .outline {
       stroke: $color-highlight;
     }
