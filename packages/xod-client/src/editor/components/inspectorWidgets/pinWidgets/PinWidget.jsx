@@ -52,6 +52,7 @@ function PinWidget(props) {
         id={props.elementId}
         type={props.dataType}
         isConnected={props.isConnected}
+        isLastVariadicGroup={props.isLastVariadicGroup}
       />
       <label
         htmlFor={props.elementId}
@@ -68,6 +69,7 @@ PinWidget.propTypes = {
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
+  isLastVariadicGroup: PropTypes.bool,
   isBindable: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   direction: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
   children: PropTypes.element,

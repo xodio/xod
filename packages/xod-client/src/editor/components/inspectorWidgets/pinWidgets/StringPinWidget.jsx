@@ -15,6 +15,7 @@ const StringWidget = (props) => {
       normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
+      isLastVariadicGroup={props.isLastVariadicGroup}
       isBindable={props.isBindable}
       direction={props.direction}
     >
@@ -37,6 +38,7 @@ StringWidget.propTypes = {
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
+  isLastVariadicGroup: PropTypes.bool,
   isBindable: PropTypes.bool,
   direction: PropTypes.string,
 

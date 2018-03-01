@@ -10,6 +10,7 @@ const DeadWidget = props => (
     normalizedLabel={props.normalizedLabel}
     dataType={props.dataType}
     isConnected={props.isConnected}
+    isLastVariadicGroup={props.isLastVariadicGroup}
     isBindable={props.isBindable}
     direction={props.direction}
   />
@@ -21,6 +22,7 @@ DeadWidget.propTypes = {
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
+  isLastVariadicGroup: PropTypes.bool,
   isBindable: PropTypes.bool,
   direction: PropTypes.string,
 };

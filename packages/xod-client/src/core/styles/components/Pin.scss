@@ -106,6 +106,7 @@
 .Node.is-selected + .pins .PinDots,
 .Node.is-hovered + .pins .PinDots,
 .Node.is-changing-arity + .pins .PinDots,
+.PinWidget .PinDots,
 .PatchDocs .PinDots {
   visibility: visible;
 }

@@ -39,6 +39,7 @@ const getPinWidgetProps = R.applySpec({
   direction: XP.getPinDirection,
   isConnected: R.prop('isConnected'),
   isBindable: XP.isPinBindable,
+  isLastVariadicGroup: R.prop('isLastVariadicGroup'),
 });
 
 // :: RenderableNode -> { components: {...}, props: {...} }
