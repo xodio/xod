@@ -3,7 +3,6 @@
   "nodes": [
     {
       "id": "BypX80uSD1Z",
-      "label": "X",
       "position": {
         "x": 0,
         "y": 0
@@ -31,7 +30,6 @@
     },
     {
       "id": "rkJ4URuHDJ-",
-      "label": "Y",
       "position": {
         "x": 102,
         "y": 0

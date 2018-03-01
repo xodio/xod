@@ -1142,7 +1142,7 @@ struct State {
 
 struct Node {
     State state;
-    Logic output_GT;
+    Logic output_OUT;
 
     union {
         struct {
@@ -1153,20 +1153,20 @@ struct Node {
     };
 };
 
-struct input_LHS { };
-struct input_RHS { };
-struct output_GT { };
+struct input_IN1 { };
+struct input_IN2 { };
+struct output_OUT { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_LHS> { using T = Number; };
-template<> struct ValueType<input_RHS> { using T = Number; };
-template<> struct ValueType<output_GT> { using T = Logic; };
+template<> struct ValueType<input_IN1> { using T = Number; };
+template<> struct ValueType<input_IN2> { using T = Number; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_LHS;
-    Number _input_RHS;
+    Number _input_IN1;
+    Number _input_IN2;
 
 };
 
@@ -1175,18 +1175,18 @@ using Context = ContextObject*;
 template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
-            " input_LHS input_RHS" \
-            " output_GT");
+            " input_IN1 input_IN2" \
+            " output_OUT");
 }
 
-template<> Number getValue<input_LHS>(Context ctx) {
-    return ctx->_input_LHS;
+template<> Number getValue<input_IN1>(Context ctx) {
+    return ctx->_input_IN1;
 }
-template<> Number getValue<input_RHS>(Context ctx) {
-    return ctx->_input_RHS;
+template<> Number getValue<input_IN2>(Context ctx) {
+    return ctx->_input_IN2;
 }
-template<> Logic getValue<output_GT>(Context ctx) {
-    return ctx->_node->output_GT;
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1199,11 +1199,11 @@ template<typename InputT> bool isInputDirty(Context ctx) {
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            " output_GT");
+            " output_OUT");
 }
 
-template<> void emitValue<output_GT>(Context ctx, Logic val) {
-    ctx->_node->output_GT = val;
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
 }
 
 State* getState(Context ctx) {
@@ -1211,9 +1211,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
-    auto lhs = getValue<input_LHS>(ctx);
-    auto rhs = getValue<input_RHS>(ctx);
-    emitValue<output_GT>(ctx, lhs > rhs);
+    auto lhs = getValue<input_IN1>(ctx);
+    auto rhs = getValue<input_IN2>(ctx);
+    emitValue<output_OUT>(ctx, lhs > rhs);
 }
 
 } // namespace xod__core__greater
@@ -1453,10 +1453,10 @@ xod__core__count::Node node_13 = {
     true // node itself dirty
 };
 
-constexpr Logic node_14_output_GT = false;
+constexpr Logic node_14_output_OUT = false;
 xod__core__greater::Node node_14 = {
     xod__core__greater::State(), // state default
-    node_14_output_GT, // output GT default
+    node_14_output_OUT, // output OUT default
     true // node itself dirty
 };
 
@@ -1587,8 +1587,8 @@ void runTransaction(bool firstRun) {
             ctxObj._node = &node_14;
 
             // copy data from upstream nodes into context
-            ctxObj._input_LHS = node_13.output_OUT;
-            ctxObj._input_RHS = node_11_output_VAL;
+            ctxObj._input_IN1 = node_13.output_OUT;
+            ctxObj._input_IN2 = node_11_output_VAL;
 
             xod__core__greater::evaluate(&ctxObj);
 
@@ -1645,7 +1645,7 @@ void runTransaction(bool firstRun) {
             ctxObj._node = &node_17;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN = node_14.output_GT;
+            ctxObj._input_IN = node_14.output_OUT;
 
             ctxObj._isInputDirty_IN = true;
 

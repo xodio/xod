@@ -1,24 +1,22 @@
 {
-  "description": "Outputs true if LHS = RHS, and false otherwise",
+  "description": "Outputs true if `IN1` = `IN2`, and false otherwise",
   "nodes": [
     {
       "boundValues": {
         "__in__": false
       },
       "id": "H1E8AuSPkZ",
-      "label": "EQ",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 68,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "HJG8C_SPkb",
-      "label": "RHS",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -32,10 +30,9 @@
     },
     {
       "id": "rJXICuSwyW",
-      "label": "LHS",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     }

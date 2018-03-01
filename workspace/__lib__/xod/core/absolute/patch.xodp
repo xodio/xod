@@ -6,19 +6,17 @@
         "__in__": 0
       },
       "id": "B1LNICdSDJW",
-      "label": "ABSX",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 102,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "H1SVIAuBDJZ",
-      "label": "X",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },

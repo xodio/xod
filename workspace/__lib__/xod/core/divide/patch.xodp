@@ -6,28 +6,25 @@
         "__in__": 0
       },
       "id": "BkqLCOSw1W",
-      "label": "FRAC",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 68,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BytUCdHD1-",
-      "label": "Y",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "SkdIRuBD1b",
-      "label": "X",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
