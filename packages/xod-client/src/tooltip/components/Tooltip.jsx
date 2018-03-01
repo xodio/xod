@@ -46,6 +46,8 @@ class Tooltip extends React.Component {
   }
 
   render() {
+    if (!this.state.content) return null;
+
     const cls = cn('Tooltip', {
       'is-visible': this.state.shown,
     });
