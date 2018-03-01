@@ -19,6 +19,7 @@ const NodesLayer = ({
   onDoubleClick,
   isDebugSession,
   nodeValues,
+  onVariadicHandleDown,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
@@ -41,6 +42,8 @@ const NodesLayer = ({
               isSelected={isNodeSelected(selection, node.id)}
               isGhost={node.isGhost} // TODO: is this actually used?
               isDragged={areDragged}
+              isVariadic={node.isVariadic}
+              isChangingArity={node.isChangingArity}
               linkingPin={linkingPin}
               pinLinkabilityValidator={pinLinkabilityValidator}
               onMouseDown={onMouseDown}
@@ -48,6 +51,7 @@ const NodesLayer = ({
               onDoubleClick={onDoubleClick}
               isDebugSession={isDebugSession}
               nodeValue={R.prop(node.id, nodeValues)}
+              onVariadicHandleDown={onVariadicHandleDown}
             />
         ),
         R.values
@@ -71,6 +75,7 @@ NodesLayer.propTypes = {
   onDoubleClick: PropTypes.func,
   isDebugSession: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
+  onVariadicHandleDown: PropTypes.func,
 };
 
 export default pureDeepEqual(NodesLayer);

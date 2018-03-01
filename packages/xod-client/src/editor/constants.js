@@ -9,6 +9,7 @@ export const EDITOR_MODE = {
   ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',
   DEBUGGING: 'debugging',
   MARQUEE_SELECTING: 'marquee_selecting',
+  CHANGING_ARITY_LEVEL: 'changing_arity_level',
 
   get DEFAULT() {
     return this.SELECTING;

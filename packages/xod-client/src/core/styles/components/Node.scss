@@ -27,6 +27,8 @@
     }
   }
 
+  &.is-variadic {}
+
   .watch-node {
     .body {
       fill: $color-watch-node-fill;
@@ -81,6 +83,10 @@
     .nodeLabel {
       color: $color-highlight;
     }
+
+    .VariadicHandle--grip {
+      stroke: $color-highlight;
+    }
   }
 
   &.is-dragged {
@@ -95,13 +101,50 @@
     .nodeLabel {
       color: $color-canvas-selected !important;
     }
+
+    .VariadicHandle--grip {
+      stroke: $color-canvas-selected !important;
+    }
   }
 
-  &.is-ghost {
-    opacity: 0.8;
+  &.is-ghost, &.is-ghost.is-selected {
+    pointer-events: none;
+    opacity: 0.3;
+
+    .outline, .VariadicHandle--grip {
+      stroke: $color-node-outline !important;
+    }
+    .nodeLabel {
+      visibility: hidden;
+    }
+  }
+
+  &.is-changing-arity {
+    .outline {
+      stroke: $color-highlight;
+    }
+    .nodeLabel {
+      color: $color-highlight;
+    }
+    .VariadicHandle--grip {
+      stroke: $color-highlight;
+    }
   }
 }
 
 .NodePinsOverlay {
   overflow: visible;
+}
+
+.VariadicHandle {
+  &--clickArea {
+    cursor: ew-resize;
+    fill: transparent;
+  }
+  &--grip {
+    pointer-events: none;
+    stroke-width: 6px;
+    stroke-linecap: round;
+    stroke: $color-node-outline;
+  }
 }

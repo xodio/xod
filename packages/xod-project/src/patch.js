@@ -649,6 +649,14 @@ export const upsertLinks = def(
   (linkList, patch) => reduceEither(R.flip(assocLink), patch, linkList)
 );
 
+/**
+ * Returns a Patch with omitted list of Links
+ */
+export const omitLinks = def(
+  'omitLinks :: [LinkOrId] -> Patch -> Patch',
+  (linkList, patch) => R.reduce(R.flip(dissocLink), patch, linkList)
+);
+
 // =============================================================================
 //
 // Nodes assoc/dissoc

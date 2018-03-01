@@ -31,6 +31,7 @@ import resizingCommentMode from './modes/resizingComment';
 import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
 import debuggingMode from './modes/debugging';
 import marqueeSelectingMode from './modes/marqueeSelecting';
+import changingArityLevelMode from './modes/changingArityLevel';
 
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
@@ -41,6 +42,7 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
   [EDITOR_MODE.DEBUGGING]: debuggingMode,
   [EDITOR_MODE.MARQUEE_SELECTING]: marqueeSelectingMode,
+  [EDITOR_MODE.CHANGING_ARITY_LEVEL]: changingArityLevelMode,
 };
 
 const DEFAULT_MODES = {
@@ -134,6 +136,17 @@ class Patch extends React.Component {
 
   render() {
     const { currentMode } = this.state;
+    /**
+     * Some Modes could need more data from Project, than we
+     * have in this Container.
+     * (See `changingArityLevel.jsx`)
+     *
+     * For this purposes we have to get Project, but for better
+     * performance we do not include it into Props to prevent
+     * excessive updates and renders, but get it right from
+     * context and pass into render function of Modes.
+     */
+    const project = ProjectSelectors.getProject(this.context.store.getState());
 
     return this.props.connectDropTarget(
       <div
@@ -145,11 +158,18 @@ class Patch extends React.Component {
           handleHeight
           onResize={this.props.actions.patchWorkareaResized}
         />
-        {MODE_HANDLERS[currentMode].render(this.getApi(currentMode))}
+        {MODE_HANDLERS[currentMode].render(
+          this.getApi(currentMode),
+          project
+        )}
       </div>
     );
   }
 }
+
+Patch.contextTypes = {
+  store: PropTypes.object,
+};
 
 Patch.propTypes = {
   /* eslint-disable react/no-unused-prop-types */
@@ -210,6 +230,7 @@ const mapDispatchToProps = dispatch => ({
     drillDown: DebuggerActions.drillDown,
     openImplementationEditor: EditorActions.openImplementationEditor,
     patchWorkareaResized: EditorActions.patchWorkareaResized,
+    changeArityLevel: ProjectActions.changeArityLevel,
   }, dispatch),
 });
 

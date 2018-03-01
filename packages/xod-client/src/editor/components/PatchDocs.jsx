@@ -110,7 +110,7 @@ const PatchDocs = ({ patch, minimal }) => {
   const baseName = XP.getBaseName(nodeType);
   const description = XP.getPatchDescription(patch);
 
-  const nodeProps = patchToNodeProps(patch);
+  const nodeProps = patchToNodeProps(true, patch);
 
   const scaleFactor = nodeProps.size.width < MAX_NODE_WIDTH
     ? 1
@@ -170,6 +170,7 @@ const PatchDocs = ({ patch, minimal }) => {
               <Node
                 {...nodeProps}
                 position={position}
+                noEvents
               />
             </g>
           </svg>

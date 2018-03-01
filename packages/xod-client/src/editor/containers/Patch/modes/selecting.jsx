@@ -92,6 +92,17 @@ const selectingMode = {
       }
     );
   },
+  onVariadicHandleDown(api, event, nodeId) {
+    if (isMiddleButtonPressed(event)) return;
+
+    api.goToMode(
+      EDITOR_MODE.CHANGING_ARITY_LEVEL,
+      {
+        nodeId,
+        dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      }
+    );
+  },
   onPinMouseDown(api, event, nodeId, pinKey) {
     if (isMiddleButtonPressed(event)) return;
 
@@ -244,6 +255,7 @@ const selectingMode = {
               onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
               onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
               onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
+              onVariadicHandleDown={bindApi(api, this.onVariadicHandleDown)}
             />
             <Layers.LinksOverlay
               links={api.props.links}

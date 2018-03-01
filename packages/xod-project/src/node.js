@@ -162,6 +162,16 @@ export const getNodePosition = def(
 );
 
 /**
+ * @function setNodeArityLevel
+ * @param {Node} node
+ * @returns {ArityLevel}
+ */
+export const setNodeArityLevel = def(
+  'setNodeArityLevel :: ArityLevel -> Node -> ArityLevel',
+  R.assoc('arityLevel')
+);
+
+/**
  * @function getNodeArityLevel
  * @param {Node} node
  * @returns {ArityLevel}

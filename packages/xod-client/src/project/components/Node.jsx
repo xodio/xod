@@ -81,8 +81,15 @@ class Node extends React.Component {
       'is-selected': this.props.isSelected,
       'is-dragged': isDragged,
       'is-ghost': this.props.isGhost,
+      'is-variadic': this.props.isVariadic,
+      'is-changing-arity': this.props.isChangingArity,
       'is-errored': (this.props.errors.length > 0),
     });
+
+    const pinsCls = classNames('pins', {
+      'is-ghost': this.props.isGhost,
+    });
+
 
     const svgStyle = {
       overflow: 'visible',
@@ -124,7 +131,7 @@ class Node extends React.Component {
             >
               {this.renderBody()}
             </g>
-            <g className="pins" id={`nodePins_${id}`}>
+            <g className={pinsCls} id={`nodePins_${id}`}>
               {pinsArr.map(pin =>
                 <g key={pin.key}>
                   {isTerminalNode ? null : (
@@ -164,6 +171,8 @@ Node.propTypes = {
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
+  isVariadic: PropTypes.bool,
+  isChangingArity: PropTypes.bool,
   hidden: PropTypes.bool,
   noEvents: PropTypes.bool,
   linkingPin: PropTypes.object,
@@ -178,6 +187,8 @@ Node.defaultProps = {
   isSelected: false,
   isGhost: false,
   isDragged: false,
+  isVariadic: false,
+  isChangingArity: false,
   noEvents: false,
   onMouseDown: noop,
   onMouseUp: noop,

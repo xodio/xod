@@ -306,3 +306,12 @@ export const bulkDeleteNodesAndComments =
       },
     });
   };
+
+export const changeArityLevel = (nodeId, patchPath, newArityLevel) => ({
+  type: ActionType.NODE_CHANGE_ARITY_LEVEL,
+  payload: {
+    nodeId,
+    patchPath,
+    arityLevel: newArityLevel,
+  },
+});

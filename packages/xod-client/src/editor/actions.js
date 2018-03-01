@@ -297,7 +297,7 @@ export const startDraggingPatch = patchPath => (dispatch, getState) => {
 
   const previewSize = R.compose(
     R.prop('size'),
-    patchToNodeProps,
+    patchToNodeProps(false),
     XP.getPatchByPathUnsafe(patchPath),
     ProjectSelectors.getProject
   )(state);
