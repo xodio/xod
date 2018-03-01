@@ -5,6 +5,14 @@ title: User’s Guide
 User’s Guide
 ============
 
+## Concepts
+
+* [Program structure](./program-structure/)
+* [Data types](./data-types/)
+* [Linking rules](./linking-rules/)
+* [Execution model](./execution-model/)
+* [Variadic nodes](./variadics/)
+
 ## Making your own nodes
 
 * [Creating nodes for XOD in XOD](./nodes-for-xod-in-xod/)
@@ -18,14 +26,6 @@ User’s Guide
 ## Doing things sequentially
 
 * [Simple traffic light example](./simple-traffic-light/)
-
-## Concepts
-
-* [Program structure](./program-structure/)
-* [Data types](./data-types/)
-* [Linking rules](./linking-rules/)
-* [Execution model](./execution-model/)
-* [Variadic nodes](./variadics/)
 
 ### Projects and libraries
 

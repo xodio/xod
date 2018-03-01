@@ -57,6 +57,14 @@ The articles which are going to be superseeded by the crash course above.
 User’s guide
 ------------
 
+### Concepts
+
+* [Program structure](./guide/program-structure/)
+* [Data types](./guide/data-types/)
+* [Linking rules](./guide/linking-rules/)
+* [Execution model](./guide/execution-model/)
+* [Variadic nodes](./guide/variadics/)
+
 ### Making your own nodes
 
 * [Creating nodes for XOD in XOD](./guide/nodes-for-xod-in-xod/)
@@ -70,14 +78,6 @@ User’s guide
 ### Doing things sequentially
 
 * [Simple traffic light example](./guide/simple-traffic-light/)
-
-### Concepts
-
-* [Program structure](./guide/program-structure/)
-* [Data types](./guide/data-types/)
-* [Linking rules](./guide/linking-rules/)
-* [Execution model](./guide/execution-model/)
-* [Variadic nodes](./guide/variadics/)
 
 ### Projects and libraries
 
