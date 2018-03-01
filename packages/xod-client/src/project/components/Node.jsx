@@ -43,6 +43,10 @@ class Node extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    this.onMouseLeave();
+  }
+
   onMouseDown(event) {
     this.props.onMouseDown(event, this.props.id);
   }
