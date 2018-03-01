@@ -77,7 +77,7 @@ class TooltipHOC extends React.Component {
 }
 
 TooltipHOC.propTypes = {
-  content: PropTypes.node.isRequired,
+  content: PropTypes.node,
   render: PropTypes.func.isRequired,
 };
 
