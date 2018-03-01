@@ -1,0 +1,107 @@
+{
+  "description": "Joins multiple strings together inserting a delimiter between each pair. Useful for separating string parts with spaces and building CSV lines.",
+  "links": [
+    {
+      "id": "HJ2DPrEOf",
+      "input": {
+        "nodeId": "HJrBNr4dG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkyDwHEuz",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "HydvPr4Oz",
+      "input": {
+        "nodeId": "HkyDwHEuz",
+        "pinKey": "BkeKcj6ZZ-$1"
+      },
+      "output": {
+        "nodeId": "rJJHNrVuM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1UDwBEuf",
+      "input": {
+        "nodeId": "HkyDwHEuz",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "rJGQNB4df",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkBPDSNuf",
+      "input": {
+        "nodeId": "HkyDwHEuz",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "HynENHNOz",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HJo8NB4uG",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "id": "HJrBNr4dG",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "arityLevel": 2,
+      "id": "HkyDwHEuz",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/concat"
+    },
+    {
+      "id": "HynENHNOz",
+      "label": "S1",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundValues": {
+        "__out__": " "
+      },
+      "description": "Delimiter character or string",
+      "id": "rJGQNB4df",
+      "label": "D",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rJJHNrVuM",
+      "label": "S2",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}
