@@ -13,6 +13,7 @@ User’s Guide
 * [Creating nodes for XOD in C++](./nodes-for-xod-in-cpp/)
 * [Dealing with state in C++](./cpp-state/)
 * [Dealing with time in C++](./cpp-time/)
+* [Creating variadic patch nodes](./creating-variadics/)
 
 ## Doing things sequentially
 
@@ -24,6 +25,7 @@ User’s Guide
 * [Data types](./data-types/)
 * [Linking rules](./linking-rules/)
 * [Execution model](./execution-model/)
+* [Variadic nodes](./variadics/)
 
 ### Projects and libraries
 
