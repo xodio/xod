@@ -35,14 +35,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "ry8ts1m_f",
-      "position": {
-        "x": 204,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/variadic-1"
     }
   ]
 }
