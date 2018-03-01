@@ -20,6 +20,7 @@ const NodesLayer = ({
   isDebugSession,
   nodeValues,
   onVariadicHandleDown,
+  noNodeHovering,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
@@ -52,6 +53,7 @@ const NodesLayer = ({
               isDebugSession={isDebugSession}
               nodeValue={R.prop(node.id, nodeValues)}
               onVariadicHandleDown={onVariadicHandleDown}
+              noNodeHovering={noNodeHovering}
             />
         ),
         R.values
@@ -76,6 +78,7 @@ NodesLayer.propTypes = {
   isDebugSession: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
   onVariadicHandleDown: PropTypes.func,
+  noNodeHovering: PropTypes.bool,
 };
 
 export default pureDeepEqual(NodesLayer);

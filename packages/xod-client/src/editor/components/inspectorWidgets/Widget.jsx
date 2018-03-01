@@ -100,6 +100,7 @@ export default function composeWidget(Component, widgetProps) {
             title={this.props.title}
             normalizedLabel={this.props.normalizedLabel}
             isConnected={this.props.isConnected}
+            isLastVariadicGroup={this.props.isLastVariadicGroup}
             isBindable={this.props.isBindable}
             direction={this.props.direction}
             dataType={this.type}
@@ -131,6 +132,7 @@ export default function composeWidget(Component, widgetProps) {
       PropTypes.array,
     ]),
     isConnected: PropTypes.bool,
+    isLastVariadicGroup: PropTypes.bool,
     isBindable: PropTypes.bool,
     focused: PropTypes.bool,
     // dispatchers
@@ -146,6 +148,7 @@ export default function composeWidget(Component, widgetProps) {
     title: '',
     focused: false,
     isConnected: false,
+    isLastVariadicGroup: false,
     isBindable: true,
     direction: '',
     onPropUpdate: noop,

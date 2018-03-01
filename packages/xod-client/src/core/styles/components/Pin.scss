@@ -96,8 +96,17 @@
 }
 
 .PinDots {
+  visibility: hidden;
   fill: $chalk;
   font-family: $font-family-normal;
   font-size: 14px;
   font-weight: 500;
+}
+
+.Node.is-selected + .pins .PinDots,
+.Node.is-hovered + .pins .PinDots,
+.Node.is-changing-arity + .pins .PinDots,
+.PinWidget .PinDots,
+.PatchDocs .PinDots {
+  visibility: visible;
 }

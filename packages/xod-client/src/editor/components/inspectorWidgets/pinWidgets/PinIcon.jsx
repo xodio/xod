@@ -7,7 +7,7 @@ import { PIN_RADIUS_WITH_SHADOW } from '../../../../project/nodeLayout';
 
 const pinPos = { x: PIN_RADIUS_WITH_SHADOW, y: PIN_RADIUS_WITH_SHADOW };
 
-const PinIcon = ({ id, type, isConnected }) => (
+const PinIcon = ({ id, type, isConnected, isLastVariadicGroup }) => (
   <svg width={PIN_RADIUS_WITH_SHADOW * 2} height={PIN_RADIUS_WITH_SHADOW * 2} className="PinIcon">
     <Pin
       keyName={`widgetPinIcon_${id}`}
@@ -17,6 +17,7 @@ const PinIcon = ({ id, type, isConnected }) => (
       onMouseDown={noop}
       isSelected={false}
       isConnected={isConnected}
+      isLastVariadicGroup={isLastVariadicGroup}
       isAcceptingLinks={false}
     />
   </svg>
@@ -28,6 +29,7 @@ PinIcon.propTypes = {
   id: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   isConnected: PropTypes.bool.isRequired,
+  isLastVariadicGroup: PropTypes.bool.isRequired,
 };
 
 export default PinIcon;

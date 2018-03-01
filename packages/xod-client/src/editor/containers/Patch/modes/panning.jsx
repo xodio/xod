@@ -121,6 +121,7 @@ const panningMode = {
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
+              noNodeHovering
             />
             <Layers.LinksOverlay
               hidden // to avoid heavy remounting
