@@ -4,6 +4,7 @@ import PT from 'prop-types';
 import cn from 'classnames';
 
 import * as XP from 'xod-project';
+import { foldEither } from 'xod-func-tools';
 
 import Node from '../../project/components/Node';
 import { patchToNodeProps } from '../../project/utils';
@@ -17,11 +18,12 @@ const NODE_POSITION_IN_PREVIEW = {
 const MAX_NODE_WIDTH = 245 - (NODE_POSITION_IN_PREVIEW.x * 2);
 const NODE_PREVIEW_HEIGHT = 93;
 
-const PinInfo = ({ type, label, description }) => (
+const PinInfo = ({ type, label, description, isVariadic }) => (
   <div className="pin-info">
     <div>
       <span className="label">{label}</span>
       <span className={cn('type', type)}>{type}</span>
+      {isVariadic && <span className="variadic">&nbsp;(variadic)</span>}
     </div>
     <div className="description">
       <span>{description}</span>
@@ -33,6 +35,7 @@ PinInfo.propTypes = {
   type: PT.string.isRequired,
   label: PT.string.isRequired,
   description: PT.string.isRequired,
+  isVariadic: PT.bool.isRequired,
 };
 
 const InputPins = ({ pins, distanceBetweenPins }) => {
@@ -101,9 +104,24 @@ OutputPins.defaultProps = {
 
 
 const PatchDocs = ({ patch, minimal }) => {
+  const variadicPinKeys = R.compose(
+    foldEither(
+      R.always([]),
+      R.map(XP.getPinKey),
+    ),
+    XP.listVariadicValuePins
+  )(patch);
+
   const [inputPins, outputPins] = R.compose(
     R.partition(XP.isInputPin),
     XP.normalizePinLabels,
+    R.map(
+      pin => R.assoc(
+        'isVariadic',
+        R.contains(XP.getPinKey(pin), variadicPinKeys),
+        pin
+      )
+    ),
     XP.listPins
   )(patch);
   const nodeType = XP.getPatchPath(patch);
