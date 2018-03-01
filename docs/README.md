@@ -42,18 +42,6 @@ Tutorials
 
 * [Complex projects?](./tutorial/complex-projects/)
 
-### Contributed tutorials
-
-* [Découvrir et utiliser XOD](http://formations.open-elearning.fr/modules/electronique/xod/decouverte/) (French, by [@pepe](https://forum.xod.io/u/pepe/summary))
-
-### Obsolete tutorials
-
-The articles which are going to be superseeded by the crash course above.
-
-1. [Nodes and Links](./tutorial/nodes-and-links/)
-1. [Data Types and Conversions](./tutorial/data-types-and-conversions/)
-1. [Patch Nodes](./tutorial/patch-nodes/)
-
 User’s guide
 ------------
 
