@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Implement variadic nodes. An ability to have an adjustable number of
+  input pins on a node.
+* [nodes] Nodes from the standard library made variadic if applicable: `add`,
+  `multiply`, `bitwise-*`, `any`, `and`, `or`, `concat`, `discretize`,
+  `select`, and others.
+* [ide] Show richer tooltips on node hover. It shows the node label, fully
+  qualified type, and errors if there are any.
+
+### New nodes
+
+* [xod/core/join](https://xod.io/libs/xod/core/join/)
+
 <a name="0.18.1"></a>
 ## 0.18.1 (2018-02-09)
 
