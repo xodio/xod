@@ -1,41 +1,38 @@
 {
-  "description": "Outputs true if LHS > RHS, and false otherwise",
+  "description": "Outputs true if `IN1` > `IN2`, and false otherwise",
   "nodes": [
     {
       "boundValues": {
         "__in__": ""
       },
       "id": "B19RYS3lW",
-      "label": "GT",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 136,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "HJbACN3gb",
-      "label": "RHS",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HyC0AE3eZ",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 136,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rJg00Nhe-",
-      "label": "LHS",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     }

@@ -7,6 +7,6 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    auto x = getValue<input_X>(ctx);
-    emitValue<output_RND>(ctx, round(x));
+    auto x = getValue<input_IN>(ctx);
+    emitValue<output_OUT>(ctx, round(x));
 }

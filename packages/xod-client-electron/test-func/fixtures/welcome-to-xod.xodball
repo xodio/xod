@@ -406,7 +406,7 @@
     "@/10-math": {
       "comments": {
         "BJj5fP6YZ": {
-          "content": "It’s a `multiply` node.\n- `X` and `Y` - numbers to multiply\n- `PROD` - product of the `X` and `Y`",
+          "content": "It’s a `multiply` node.\n- Inputs `IN1` and `IN2` are numbers to multiply\n- Output `OUT` is the product of the `IN1` and `IN2`",
           "id": "BJj5fP6YZ",
           "position": {
             "x": 510,
@@ -414,11 +414,11 @@
           },
           "size": {
             "height": 153,
-            "width": 272
+            "width": 374
           }
         },
         "Hkp_Mw6Kb": {
-          "content": "You probably noticed that there is a `UPD` input pin on the pot node and that it’s blue.\n\nThe pin’s color indicates the *type* of data that this pin is compatible with.\nGreen pins can take and return numerical values. Blue pins work with pulses, a special data type that we will return to later.\n\nLet’s try to do some math.\n\n## Instructions\n\n1. Delete the link between the `pot` node and LED2.\n\n2. Link the pot `VAL` pin to the `X` pin of the `multiply` node. Then, connect the `PROD` pin to the `LUM` pin on LED2.\n\n3. Upload the patch to the Arduino.\n\nTurn the potentiometer knob. The LED on port 11 will reach the maximum brightness with a half-turn of the knob. This happens because the `multiply` node multiplied the values of `X` and `Y`, and transferred the multiplication result to the `PROD` pin. As `Y` was set to 2 in the Inspector, the value of the `pot` node doubles before reaching the `LUM` pin of LED2.\n\nIn `xod/core`, you will find nodes for different mathematical and trigonometric calculations. Try other operators like `add`, `subtract`, `divide`.",
+          "content": "You probably noticed that there is a `UPD` input pin on the pot node and that it’s blue.\n\nThe pin’s color indicates the *type* of data that this pin is compatible with.\nGreen pins can take and return numerical values. Blue pins work with pulses, a special data type that we will return to later.\n\nLet’s try to do some math.\n\n## Instructions\n\n1. Delete the link between the `pot` node and LED2.\n\n2. Link the pot `VAL` pin to the left input pin (`IN1`) of the `multiply` node. Then, connect the `multiply` output to the `LUM` pin on LED2.\n\n3. Upload the patch to the Arduino.\n\nTurn the potentiometer knob. The LED on port 11 will reach the maximum brightness with a half-turn of the knob. This happens because the `multiply` node multiplied its input values and transferred the multiplication result to the output pin. As `IN2` was set to 2 in the Inspector, the value of the `pot` node doubles before reaching the `LUM` pin of LED2.\n\nIn `xod/core`, you will find nodes for different mathematical and trigonometric calculations. Try other operators like `add`, `subtract`, `divide`.",
           "id": "Hkp_Mw6Kb",
           "position": {
             "x": -34,
@@ -804,7 +804,7 @@
     "@/16-logic": {
       "comments": {
         "H1I643knZ": {
-          "content": "* `and`: returns `true` if both `A` *and* `B` are `true`.\n* `or`: returns `true` if A, B, or both are `true`.\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
+          "content": "* `and`: returns `true` if both (`IN1` *and* `IN2`) are `true`.\n* `or`: returns `true` if `IN1`, `IN2`, or both are `true`.\n* `xor` returns `true` if only one of `IN1` and `IN2` is `true`\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
           "id": "H1I643knZ",
           "position": {
             "x": 612,
@@ -992,7 +992,7 @@
     "@/18-comparisons": {
       "comments": {
         "B1XVTkyc-": {
-          "content": "- `LHS` and `RHS` are the input for the values to compare\n- `LT` returns `true` if LHS < RHS and `false` otherwise.",
+          "content": "- `IN1` and `IN2` are the input for the values to compare\n- `OUT` returns `true` if `IN1` < `IN2` and `false` otherwise.",
           "id": "B1XVTkyc-",
           "position": {
             "x": 374,
@@ -1004,7 +1004,7 @@
           }
         },
         "BJBXpkJq-": {
-          "content": "- `LHS` and `RHS` are input pins for numeric values to compare\n- `GT` returns `true` if LHS > RHS and `false` otherwise.",
+          "content": "- `IN1` and `IN2` are input pins for numeric values to compare\n- `OUT` returns `true` if `IN1` > `IN2` and `false` otherwise.",
           "id": "BJBXpkJq-",
           "position": {
             "x": 374,
@@ -1016,7 +1016,7 @@
           }
         },
         "H1dIB11c-": {
-          "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-input` node to the `LHS` pin on the `greater` node.\n\n2. Set a value of 0.4 on the `RHS` pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the `GT` pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `GT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the `RHS` pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
+          "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-input` node to the left pin on the `greater` node.\n\n2. Set a value of 0.4 on the right pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the output pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `OUT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the right pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
           "id": "H1dIB11c-",
           "position": {
             "x": -68,
@@ -1960,7 +1960,7 @@
     "@/28-string-concat": {
       "comments": {
         "HyXbS17bf": {
-          "content": "Concat allows you to merge two strings into one. The new string will have the input to the `HEAD` pin placed in the beginning and the input to the `TAIL` pin placed at the end.",
+          "content": "Concat allows you to merge two strings into one. The new string will have the input to the `IN1` pin placed in the beginning and the input to the `IN2` pin placed at the end.",
           "id": "HyXbS17bf",
           "position": {
             "x": 646,
@@ -1972,7 +1972,7 @@
           }
         },
         "S1jgrJ7Wz": {
-          "content": "We have already learned how to display readings from our sensors. But if we have more than one sensor, we'll need a way to tell the readings apart.\n\nThe `concat` node will help us solve this problem.\n\n## Instructions\n\n1. Assemble the [circuit with a thermometer, photoresistor, and LCD](https://xod.io/docs/tutorial/28-string-concat/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_28).\n2. Find the `constant-string` node in the library. Add one above each `concat`.\n3. Assign string values to each node using the Inspector. Try something like “Temp: ” and “Light: ” to keep things short. Put a space at the end so that when we combine it with another string they won't bunch up.\n4. Link the `VAL` pins of the `constant-string` nodes to the `HEAD` pins of the `concat` nodes. `HEAD` is the beginning of the line, it’s the first part.\n5. Link the outputs of the thermometer and photoresistor to the `TAIL` pins on the `concat` nodes. They will be the second part of the generated string.\n6. Upload the patch to the Arduino.\n\nNow, the readings from your sensors are displayed on the screen with a convenient label!\n\n## Try it yourself\n\nTry to display the measurement label before the reading and the units of measurement afterward. Use two more `concat` nodes for this. But remember, you only have 16 characters per line.\n\nTry to convert degrees Celsius to degrees Fahrenheit and label them accordingly. You will find a clue for this task in patch 14.\n",
+          "content": "We have already learned how to display readings from our sensors. But if we have more than one sensor, we'll need a way to tell the readings apart.\n\nThe `concat` node will help us solve this problem.\n\n## Instructions\n\n1. Assemble the [circuit with a thermometer, photoresistor, and LCD](https://xod.io/docs/tutorial/28-string-concat/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_28).\n2. Find the `constant-string` node in the library. Add one above each `concat`.\n3. Assign string values to each node using the Inspector. Try something like “Temp: ” and “Light: ” to keep things short. Put a space at the end so that when we combine it with another string they won't bunch up.\n4. Link the `VAL` pins of the `constant-string` nodes to the left pins of the `concat` nodes. The left input is the beginning of the line, it’s the first part.\n5. Link the outputs of the thermometer and photoresistor to the right pins on the `concat` nodes. They will be the second part of the generated string.\n6. Upload the patch to the Arduino.\n\nNow, the readings from your sensors are displayed on the screen with a convenient label!\n\n## Try it yourself\n\nTry to display the measurement label before the reading and the units of measurement afterward. Use two more `concat` nodes for this. But remember, you only have 16 characters per line.\n\nTry to convert degrees Celsius to degrees Fahrenheit and label them accordingly. You will find a clue for this task in patch 14.\n",
           "id": "S1jgrJ7Wz",
           "position": {
             "x": -102,

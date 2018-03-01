@@ -23,7 +23,7 @@ Let’s try to do some math.
 ![Patch](./patch.png)
 
 As you can guess, the `multiply` node transfers the result of the multiplication
-of the numbers from the `X` and `Y` pins to the `PROD` pin.
+of the numbers from the input pins (`IN1` and `IN2`) to the output pin.
 
 In `xod/core`, you will find nodes for different mathematical and trigonometric
 calculations. Along with the `multiply` node, you will find `add`, `subtract`,
@@ -43,15 +43,15 @@ The circuit is the same as for the previous lesson.
 ## How-to
 
 1. Add a new `multiply` or another math node to the patch.
-2. Link its `X` input to the first value provider.
-3. Set the `Y` input value with the Inspector or link it to an output too.
+2. Link its left input to the first value provider.
+3. Set the right input value with the Inspector or link it to an output too.
 
 ![Screencast](./screencast.gif)
 
 Turn the potentiometer knob. If you have followed the example. The LED on port
 11 will reach the maximum brightness with a half-turn of the knob. This happens
-because the `multiply` node multiplied the values of `X` and `Y`, and
-transferred them to the `PROD` pin. As `Y` was set to 2 in the Inspector, the
-value of the `pot` node doubles before reaching the `LUM` pin of LED2.
+because the `multiply` node multiplied the input values and transferred them to
+the `OUT` pin. As `IN2` was set to 2 in the Inspector, the value of the `pot`
+node doubles before reaching the `LUM` pin of LED2.
 
 [Next lesson →](../11-servo/)

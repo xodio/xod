@@ -14,19 +14,17 @@
         "__in__": false
       },
       "id": "r1if8ROSDJ-",
-      "label": "NOTX",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 102,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "ry3zLA_Bv1Z",
-      "label": "X",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     }

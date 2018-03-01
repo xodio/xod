@@ -12,7 +12,7 @@ The `concat` node will help us solve this problem.
 ![Patch](./patch.png)
 
 Concat allows you to merge two strings into one. The new string will have the
-input to the `HEAD` pin placed in the beginning and the input to the `TAIL` pin
+input to the left pin placed in the beginning and the input to the right pin
 placed at the end.
 
 ## Test circuit
@@ -29,9 +29,9 @@ placed at the end.
 2. Assign string values to each node using the Inspector. Try something like
    “Temp: ” and “Light: ” to keep things short. Put a space at the end
    so that when we combine it with another string they won't bunch up.
-3. Link the `VAL` pins of the `constant-string` nodes to the `HEAD` pins of the
-   `concat` nodes. `HEAD` is the beginning of the line, it’s the first part.
-4. Link the outputs of the thermometer and photoresistor to the `TAIL` pins on
+3. Link the `VAL` pins of the `constant-string` nodes to the left pins of the
+   `concat` nodes. The `IN1` is the beginning of the line, it’s the first part.
+4. Link the outputs of the thermometer and photoresistor to the right pins on
    the `concat` nodes. They will be the second part of the generated string.
 5. Upload the patch to the Arduino.
 
