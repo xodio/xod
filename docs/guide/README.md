@@ -5,6 +5,14 @@ title: User’s Guide
 User’s Guide
 ============
 
+## Concepts
+
+* [Program structure](./program-structure/)
+* [Data types](./data-types/)
+* [Linking rules](./linking-rules/)
+* [Execution model](./execution-model/)
+* [Variadic nodes](./variadics/)
+
 ## Making your own nodes
 
 * [Creating nodes for XOD in XOD](./nodes-for-xod-in-xod/)
@@ -13,17 +21,11 @@ User’s Guide
 * [Creating nodes for XOD in C++](./nodes-for-xod-in-cpp/)
 * [Dealing with state in C++](./cpp-state/)
 * [Dealing with time in C++](./cpp-time/)
+* [Creating variadic patch nodes](./creating-variadics/)
 
 ## Doing things sequentially
 
 * [Simple traffic light example](./simple-traffic-light/)
-
-## Concepts
-
-* [Program structure](./program-structure/)
-* [Data types](./data-types/)
-* [Linking rules](./linking-rules/)
-* [Execution model](./execution-model/)
 
 ### Projects and libraries
 
