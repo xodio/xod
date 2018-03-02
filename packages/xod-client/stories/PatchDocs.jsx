@@ -27,6 +27,9 @@ storiesOf('PatchDocs', module)
   .add('no pin descriptions (add)', () => (
     <PatchDocs patch={tutorialProject.patches['xod/core/add']} />
   ))
+  .add('variadic (select)', () => (
+    <PatchDocs patch={tutorialProject.patches['xod/core/select']} />
+  ))
   .add('input terminal', () => (
     <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/input-pulse', emptyProject)} />
   ))

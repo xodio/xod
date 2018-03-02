@@ -22,11 +22,13 @@ $PinInfo-padding-bottom: 10px;
     padding-left: 5px;
     padding-bottom: $PinInfo-padding-bottom;
 
-    .label {
+    .label, .variadic {
       display: inline-block;
-      width: $label-width;
       color: $color-pinlabel;
       font-family: $font-family-condensed;
+    }
+    .label {
+      width: $label-width;
     }
 
     .type {
