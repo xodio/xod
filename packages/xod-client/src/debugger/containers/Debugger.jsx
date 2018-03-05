@@ -17,7 +17,8 @@ const contextMenuAttrs = {
   className: 'contextmenu filter-button',
 };
 
-const DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID = 'DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID';
+const DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID =
+  'DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID';
 
 const checkmark = active => (active ? <span className="state">✔</span> : null);
 
@@ -32,15 +33,18 @@ class Debugger extends React.Component {
       },
     };
 
-    this.toggleDebugMessages = this.toggleMessageType.bind(this, UPLOAD_MSG_TYPE.XOD);
-    this.toggleUploadMessages = this.toggleMessageType.bind(this, UPLOAD_MSG_TYPE.FLASHER);
+    this.toggleDebugMessages = this.toggleMessageType.bind(
+      this,
+      UPLOAD_MSG_TYPE.XOD
+    );
+    this.toggleUploadMessages = this.toggleMessageType.bind(
+      this,
+      UPLOAD_MSG_TYPE.FLASHER
+    );
   }
 
   toggleMessageType(type) {
-    this.setState(R.over(
-      R.lensPath(['messageTypeFilter', type]),
-      R.not
-    ));
+    this.setState(R.over(R.lensPath(['messageTypeFilter', type]), R.not));
   }
 
   renderControlsForExpandedState() {
@@ -69,8 +73,8 @@ class Debugger extends React.Component {
         <ContextMenu id={DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID}>
           <MenuItem onClick={this.toggleUploadMessages}>
             {checkmark(messageTypeFilter[UPLOAD_MSG_TYPE.FLASHER])}
-              Upload Log
-            </MenuItem>
+            Upload Log
+          </MenuItem>
           <MenuItem onClick={this.toggleDebugMessages}>
             {checkmark(messageTypeFilter[UPLOAD_MSG_TYPE.XOD])}
             Watched Values
@@ -107,10 +111,9 @@ class Debugger extends React.Component {
     );
 
     const { messageTypeFilter } = this.state;
-    const rejectedMessageTypes = R.compose(
-      R.keys,
-      R.filter(R.equals(false))
-    )(messageTypeFilter);
+    const rejectedMessageTypes = R.compose(R.keys, R.filter(R.equals(false)))(
+      messageTypeFilter
+    );
 
     return (
       <div className={cn('Debugger', { isCollapsed: !isExpanded })}>
@@ -120,13 +123,9 @@ class Debugger extends React.Component {
             className="expander"
             onClick={actions.toggleDebugger}
           >
-            <span className="title">
-              Deployment
-            </span>
+            <span className="title">Deployment</span>
 
-            <div className="progress">
-              {uploadProgress}
-            </div>
+            <div className="progress">{uploadProgress}</div>
           </div>
 
           {this.renderControlsForExpandedState()}
@@ -154,7 +153,6 @@ class Debugger extends React.Component {
             <Log rejectedMessageTypes={rejectedMessageTypes} />
           </div>
         ) : null}
-
       </div>
     );
   }
@@ -173,10 +171,13 @@ const mapStateToProps = R.applySpec({
   isExpanded: isDebuggerVisible,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    toggleDebugger: DA.toggleDebugger,
-    clearLog: DA.clearDebuggerLog,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      toggleDebugger: DA.toggleDebugger,
+      clearLog: DA.clearDebuggerLog,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Debugger);

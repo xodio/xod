@@ -25,37 +25,36 @@ const NodesLayer = ({
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
 
   return (
-    <g className="NodesLayer" >
+    <g className="NodesLayer">
       {R.compose(
-        R.map(
-          node =>
-            <Node
-              key={node.id}
-              id={node.id}
-              label={node.label}
-              type={node.type}
-              position={node.position}
-              errors={node.errors}
-              hidden={node.hidden}
-              size={node.size}
-              pins={node.pins}
-              width={node.width}
-              isSelected={isNodeSelected(selection, node.id)}
-              isGhost={node.isGhost} // TODO: is this actually used?
-              isDragged={areDragged}
-              isVariadic={node.isVariadic}
-              isChangingArity={node.isChangingArity}
-              linkingPin={linkingPin}
-              pinLinkabilityValidator={pinLinkabilityValidator}
-              onMouseDown={onMouseDown}
-              onMouseUp={onMouseUp}
-              onDoubleClick={onDoubleClick}
-              isDebugSession={isDebugSession}
-              nodeValue={R.prop(node.id, nodeValues)}
-              onVariadicHandleDown={onVariadicHandleDown}
-              noNodeHovering={noNodeHovering}
-            />
-        ),
+        R.map(node => (
+          <Node
+            key={node.id}
+            id={node.id}
+            label={node.label}
+            type={node.type}
+            position={node.position}
+            errors={node.errors}
+            hidden={node.hidden}
+            size={node.size}
+            pins={node.pins}
+            width={node.width}
+            isSelected={isNodeSelected(selection, node.id)}
+            isGhost={node.isGhost} // TODO: is this actually used?
+            isDragged={areDragged}
+            isVariadic={node.isVariadic}
+            isChangingArity={node.isChangingArity}
+            linkingPin={linkingPin}
+            pinLinkabilityValidator={pinLinkabilityValidator}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
+            onDoubleClick={onDoubleClick}
+            isDebugSession={isDebugSession}
+            nodeValue={R.prop(node.id, nodeValues)}
+            onVariadicHandleDown={onVariadicHandleDown}
+            noNodeHovering={noNodeHovering}
+          />
+        )),
         R.values
       )(nodes)}
     </g>

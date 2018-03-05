@@ -7,19 +7,23 @@ import {
 export const SUCCESSFULLY_PUBLISHED = composeMessage('Library published');
 
 export const LINK_ERRORS = {
-  [LE.SAME_DIRECTION]: composeMessage('Canʼt create link between pins of the same direction!'),
-  [LE.SAME_NODE]: composeMessage('Canʼt create link between pins of the same node!'),
-  [LE.ONE_LINK_FOR_INPUT_PIN]: composeMessage('Input pin can have only one link!'),
+  [LE.SAME_DIRECTION]: composeMessage(
+    'Canʼt create link between pins of the same direction!'
+  ),
+  [LE.SAME_NODE]: composeMessage(
+    'Canʼt create link between pins of the same node!'
+  ),
+  [LE.ONE_LINK_FOR_INPUT_PIN]: composeMessage(
+    'Input pin can have only one link!'
+  ),
   [LE.UNKNOWN_ERROR]: composeMessage('Canʼt create link', 'Unknown error!'),
   [LE.INCOMPATIBLE_TYPES]: composeMessage('Incompatible pin types!'),
 };
 
 export const NODETYPE_ERRORS = {
-  [NTE.CANT_DELETE_USED_PATCHNODE]: (
-    composeMessage(
-      'Canʼt delete Patch',
-      'Current Patch Node is used somewhere. You should remove it first!'
-    )
+  [NTE.CANT_DELETE_USED_PATCHNODE]: composeMessage(
+    'Canʼt delete Patch',
+    'Current Patch Node is used somewhere. You should remove it first!'
   ),
   [NTE.CANT_DELETE_USED_PIN_OF_PATCHNODE]: composeMessage(
     'Canʼt delete Pin',

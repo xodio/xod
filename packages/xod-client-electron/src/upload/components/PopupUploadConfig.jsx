@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
 import { NO_PORTS_FOUND as NO_PORTS_FOUND_ERRCODE } from '../../shared/errorCodes';
-import { ENUMERATING_PORTS, ENUMERATING_BOARDS, NO_PORTS_FOUND } from '../../shared/messages';
+import {
+  ENUMERATING_PORTS,
+  ENUMERATING_BOARDS,
+  NO_PORTS_FOUND,
+} from '../../shared/messages';
 
 // :: Board -> Boolean
-const hasBoardCpu = board => (
-  board.cpuName && board.cpuName.length > 0 &&
-  board.cpuId && board.cpuId.length > 0
-);
+const hasBoardCpu = board =>
+  board.cpuName &&
+  board.cpuName.length > 0 &&
+  board.cpuId &&
+  board.cpuId.length > 0;
 
 class PopupUploadConfig extends React.Component {
   constructor(props) {
@@ -38,8 +43,9 @@ class PopupUploadConfig extends React.Component {
   }
 
   componentDidMount() {
-    this.getSelectedBoard()
-      .then(selectedBoard => this.getBoards(selectedBoard));
+    this.getSelectedBoard().then(selectedBoard =>
+      this.getBoards(selectedBoard)
+    );
     this.getPorts();
     this.props.updateCompileLimit();
   }
@@ -53,7 +59,10 @@ class PopupUploadConfig extends React.Component {
   }
 
   onPortChanged(event) {
-    const selectedPort = R.find(R.propEq('comName', event.target.value), this.state.ports);
+    const selectedPort = R.find(
+      R.propEq('comName', event.target.value),
+      this.state.ports
+    );
     this.changePort(selectedPort);
   }
 
@@ -66,7 +75,7 @@ class PopupUploadConfig extends React.Component {
       this.state.selectedBoard,
       this.props.selectedPort,
       this.state.doCompileInCloud,
-      this.state.debugAfterUpload,
+      this.state.debugAfterUpload
     );
   }
 
@@ -81,14 +90,14 @@ class PopupUploadConfig extends React.Component {
   }
 
   getBoards(selectedBoard = this.state.selectedBoard) {
-    const isBoardSelected = (selectedBoard !== null);
+    const isBoardSelected = selectedBoard !== null;
 
-    this.props.listBoards()
+    this.props
+      .listBoards()
       .then(R.tap(boards => this.setState({ boards })))
-      .then((boards) => {
-        const doesSelectedBoardExist = (
-          isBoardSelected && R.contains(selectedBoard, boards)
-        );
+      .then(boards => {
+        const doesSelectedBoardExist =
+          isBoardSelected && R.contains(selectedBoard, boards);
         const defaultBoardIndex = R.compose(
           R.defaultTo(0),
           R.findIndex(R.propEq('boardsTxtId', 'uno'))
@@ -103,20 +112,26 @@ class PopupUploadConfig extends React.Component {
   getPorts() {
     this.setState({ ports: null });
 
-    this.props.listPorts()
-      .catch(err => (
-        (err.errorCode === NO_PORTS_FOUND_ERRCODE) ? [] : Promise.reject(err)
-      ))
+    this.props
+      .listPorts()
+      .catch(
+        err =>
+          err.errorCode === NO_PORTS_FOUND_ERRCODE ? [] : Promise.reject(err)
+      )
       .then(R.tap(ports => this.setState({ ports })))
-      .then((ports) => {
+      .then(ports => {
         const hasSelectedPort = R.contains(this.props.selectedPort, ports);
-        const defaultPort = (ports && ports.length > 0) ? ports[0] : null;
+        const defaultPort = ports && ports.length > 0 ? ports[0] : null;
         const defaultPreferredPort = R.compose(
           R.defaultTo(defaultPort),
-          R.find(R.compose(
-            R.test(/^(\/dev\/ttyUSB|\/dev\/tty.usb|\/dev\/cu.usb|\/dev\/ttyACM)/i),
-            R.prop('comName')
-          ))
+          R.find(
+            R.compose(
+              R.test(
+                /^(\/dev\/ttyUSB|\/dev\/tty.usb|\/dev\/cu.usb|\/dev\/ttyACM)/i
+              ),
+              R.prop('comName')
+            )
+          )
         )(ports);
 
         if (!hasSelectedPort) {
@@ -127,23 +142,19 @@ class PopupUploadConfig extends React.Component {
 
   getSelectedBoardIndex() {
     return R.compose(
-      R.when(
-        R.equals(-1),
-        R.always(0)
-      ),
+      R.when(R.equals(-1), R.always(0)),
       R.findIndex(R.equals(this.state.selectedBoard)),
       R.defaultTo([])
     )(this.state.boards);
   }
 
   getSelectedPortName() {
-    return R.compose(
-      R.propOr('', 'comName')
-    )(this.props.selectedPort);
+    return R.compose(R.propOr('', 'comName'))(this.props.selectedPort);
   }
 
   getSelectedBoard() {
-    return this.props.getSelectedBoard()
+    return this.props
+      .getSelectedBoard()
       .then(R.tap(board => this.setState({ selectedBoard: board })));
   }
 
@@ -160,48 +171,48 @@ class PopupUploadConfig extends React.Component {
   }
 
   canUnpload() {
-    return (this.state.selectedBoard && this.props.selectedPort);
+    return this.state.selectedBoard && this.props.selectedPort;
   }
 
   renderBoardSelect() {
-    const select = (this.state.boards === null) ? (
-      <select
-        id="targetBoard"
-        className="inspectorSelectInput inspectorInput--full-width"
-        disabled
-      >
-        <option>{ENUMERATING_BOARDS}</option>
-      </select>
-    ) : (
-      <select
-        id="targetBoard"
-        className="inspectorSelectInput inspectorInput--full-width"
-        onChange={this.onBoardChanged}
-        value={this.getSelectedBoardIndex()}
-      >
-        {this.state.boards.map((board, ix) => (
-          <option key={`${board.name}_${ix}`} value={ix}>
-            {board.name}{hasBoardCpu(board) ? ` (${board.cpuName})` : ''}
-          </option>
-        ))}
-      </select>
-    );
+    const select =
+      this.state.boards === null ? (
+        <select
+          id="targetBoard"
+          className="inspectorSelectInput inspectorInput--full-width"
+          disabled
+        >
+          <option>{ENUMERATING_BOARDS}</option>
+        </select>
+      ) : (
+        <select
+          id="targetBoard"
+          className="inspectorSelectInput inspectorInput--full-width"
+          onChange={this.onBoardChanged}
+          value={this.getSelectedBoardIndex()}
+        >
+          {this.state.boards.map((board, ix) => (
+            <option key={`${board.name}_${ix}`} value={ix}>
+              {board.name}
+              {hasBoardCpu(board) ? ` (${board.cpuName})` : ''}
+            </option>
+          ))}
+        </select>
+      );
 
     return (
       <div>
         <label htmlFor="targetBoard">Board model:</label>
-        <div>
-          {select}
-        </div>
+        <div>{select}</div>
       </div>
     );
   }
 
   renderPortSelect() {
-    const isSelecting = (this.state.ports === null);
-    const hasPorts = (this.state.ports !== null && this.state.ports.length > 0);
+    const isSelecting = this.state.ports === null;
+    const hasPorts = this.state.ports !== null && this.state.ports.length > 0;
 
-    const select = (hasPorts) ? (
+    const select = hasPorts ? (
       <select
         id="targetPort"
         className="inspectorSelectInput inspectorInput--full-width"
@@ -215,13 +226,9 @@ class PopupUploadConfig extends React.Component {
         ))}
       </select>
     ) : (
-      <select
-        id="targetPort"
-        className="inspectorSelectInput"
-        disabled
-      >
+      <select id="targetPort" className="inspectorSelectInput" disabled>
         <option>
-          {(this.state.ports === null) ? ENUMERATING_PORTS : NO_PORTS_FOUND}
+          {this.state.ports === null ? ENUMERATING_PORTS : NO_PORTS_FOUND}
         </option>
       </select>
     );
@@ -261,12 +268,8 @@ class PopupUploadConfig extends React.Component {
         title="Upload project to Arduino"
         onClose={this.onClose}
       >
-        <div className="ModalContent">
-          {boards}
-        </div>
-        <div className="ModalContent">
-          {ports}
-        </div>
+        <div className="ModalContent">{boards}</div>
+        <div className="ModalContent">{ports}</div>
         <div className="ModalContent">
           <input
             id="compileInCloud"
@@ -277,9 +280,11 @@ class PopupUploadConfig extends React.Component {
           />
           <label htmlFor="compileInCloud">
             Compile in the cloud&nbsp;
-            {compileLimitLeft
-              ? <span>({compileLimitLeft} left)</span>
-              : <span>(currently offline)</span>}
+            {compileLimitLeft ? (
+              <span>({compileLimitLeft} left)</span>
+            ) : (
+              <span>(currently offline)</span>
+            )}
           </label>
         </div>
         <div className="ModalContent">
@@ -289,12 +294,14 @@ class PopupUploadConfig extends React.Component {
             checked={this.state.debugAfterUpload}
             onChange={this.onDebugCheckboxChanged}
           />
-          <label htmlFor="debug">
-            Debug after upload
-          </label>
+          <label htmlFor="debug">Debug after upload</label>
         </div>
         <div className="ModalFooter">
-          <button onClick={this.onUploadClicked} className="Button" disabled={!this.canUnpload()}>
+          <button
+            onClick={this.onUploadClicked}
+            className="Button"
+            disabled={!this.canUnpload()}
+          >
             Upload
           </button>
         </div>

@@ -38,11 +38,13 @@ describe('project reducer', () => {
   describe('Project management', () => {
     let store = null;
 
-    beforeEach(
-      () => {
-        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-      }
-    );
+    beforeEach(() => {
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
+    });
 
     it('should create a project', () => {
       const initialProject = getProject(store.getState());
@@ -72,7 +74,11 @@ describe('project reducer', () => {
 
     it('should update project meta (license, description, version)', () => {
       store.dispatch(
-        updateProjectMeta({ license: 'TEST', version: '1.2.3', description: 'Test passed' })
+        updateProjectMeta({
+          license: 'TEST',
+          version: '1.2.3',
+          description: 'Test passed',
+        })
       );
       const proj = getProject(store.getState());
       const newLicense = XP.getProjectLicense(proj);
@@ -88,11 +94,13 @@ describe('project reducer', () => {
   describe('Patch management', () => {
     let store = null;
 
-    beforeEach(
-      () => {
-        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-      }
-    );
+    beforeEach(() => {
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
+    });
 
     it('should add a patch', () => {
       const addPatchAction = store.dispatch(addPatch('test-patch'));
@@ -107,11 +115,15 @@ describe('project reducer', () => {
       const addPatchAction = store.dispatch(addPatch('initial-name'));
       const initialPatchPath = addPatchAction.payload.patchPath;
       const newPatchName = 'new-patch-name';
-      const renameAction = store.dispatch(renamePatch(initialPatchPath, newPatchName));
+      const renameAction = store.dispatch(
+        renamePatch(initialPatchPath, newPatchName)
+      );
       const { newPatchPath } = renameAction.payload;
 
       const project = getProject(store.getState());
-      const renamedPatch = XP.getPatchByPath(newPatchPath, project).getOrElse(null);
+      const renamedPatch = XP.getPatchByPath(newPatchPath, project).getOrElse(
+        null
+      );
 
       assert.isOk(renamedPatch);
       assert.equal(
@@ -149,16 +161,20 @@ describe('project reducer', () => {
     let store = null;
     let testPatchPath = '';
 
-    beforeEach(
-      () => {
-        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('test-patch'));
-        testPatchPath = addPatchAction.payload.patchPath;
-      }
-    );
+    beforeEach(() => {
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      testPatchPath = addPatchAction.payload.patchPath;
+    });
 
     it('should add a node', () => {
-      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(
+        addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath)
+      );
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
@@ -169,9 +185,13 @@ describe('project reducer', () => {
       assert.isTrue(Maybe.isJust(maybeNode));
     });
     it('should update node label', () => {
-      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
+      const nodeId = store.dispatch(
+        addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath)
+      );
       const desiredLabel = 'desired label';
-      store.dispatch(updateNodeProperty(nodeId, 'property', 'label', desiredLabel));
+      store.dispatch(
+        updateNodeProperty(nodeId, 'property', 'label', desiredLabel)
+      );
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
@@ -181,16 +201,17 @@ describe('project reducer', () => {
 
       const actualLabel = Maybe.maybe({}, XP.getNodeLabel, maybeNode);
 
-      assert.deepEqual(
-        desiredLabel,
-        actualLabel
-      );
+      assert.deepEqual(desiredLabel, actualLabel);
     });
-    it('should update node\'s pin value ', () => {
-      const nodeId = store.dispatch(addNode('xod/patch-nodes/output-number', { x: 0, y: 0 }, testPatchPath));
+    it("should update node's pin value ", () => {
+      const nodeId = store.dispatch(
+        addNode('xod/patch-nodes/output-number', { x: 0, y: 0 }, testPatchPath)
+      );
       const pinKey = '__in__';
       const desiredPinValue = 42;
-      store.dispatch(updateNodeProperty(nodeId, 'pin', pinKey, desiredPinValue));
+      store.dispatch(
+        updateNodeProperty(nodeId, 'pin', pinKey, desiredPinValue)
+      );
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
@@ -202,14 +223,15 @@ describe('project reducer', () => {
 
       const actualPinValue = Maybe.maybe({}, R.identity, maybePinValue);
 
-      assert.deepEqual(
-        desiredPinValue,
-        actualPinValue
-      );
+      assert.deepEqual(desiredPinValue, actualPinValue);
     });
     it('should delete a node', () => {
-      const nodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath));
-      store.dispatch(bulkDeleteNodesAndComments([nodeId], [], [], testPatchPath));
+      const nodeId = store.dispatch(
+        addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, testPatchPath)
+      );
+      store.dispatch(
+        bulkDeleteNodesAndComments([nodeId], [], [], testPatchPath)
+      );
 
       const maybeNode = R.compose(
         XP.getNodeById(nodeId),
@@ -227,21 +249,37 @@ describe('project reducer', () => {
     let inNodeId = '';
     let outNodeId = '';
 
-    beforeEach(
-      () => {
-        store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
-        const addPatchAction = store.dispatch(addPatch('test-patch'));
-        testPatchPath = addPatchAction.payload.patchPath;
-        inNodeId = store.dispatch(addNode('xod/patch-nodes/input-number', { x: 100, y: 100 }, testPatchPath));
-        outNodeId = store.dispatch(addNode('xod/patch-nodes/output-number', { x: 500, y: 500 }, testPatchPath));
-      }
-    );
+    beforeEach(() => {
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
+      const addPatchAction = store.dispatch(addPatch('test-patch'));
+      testPatchPath = addPatchAction.payload.patchPath;
+      inNodeId = store.dispatch(
+        addNode(
+          'xod/patch-nodes/input-number',
+          { x: 100, y: 100 },
+          testPatchPath
+        )
+      );
+      outNodeId = store.dispatch(
+        addNode(
+          'xod/patch-nodes/output-number',
+          { x: 500, y: 500 },
+          testPatchPath
+        )
+      );
+    });
 
     it('should add a link', () => {
-      store.dispatch(addLink(
-        { nodeId: inNodeId, pinKey: '__out__' },
-        { nodeId: outNodeId, pinKey: '__in__' }
-      ));
+      store.dispatch(
+        addLink(
+          { nodeId: inNodeId, pinKey: '__out__' },
+          { nodeId: outNodeId, pinKey: '__in__' }
+        )
+      );
 
       const links = R.compose(
         XP.listLinks,
@@ -252,10 +290,12 @@ describe('project reducer', () => {
       assert.equal(1, links.length);
     });
     it('should delete a link', () => {
-      store.dispatch(addLink(
-        { nodeId: inNodeId, pinKey: '__out__' },
-        { nodeId: outNodeId, pinKey: '__in__' }
-      ));
+      store.dispatch(
+        addLink(
+          { nodeId: inNodeId, pinKey: '__out__' },
+          { nodeId: outNodeId, pinKey: '__in__' }
+        )
+      );
 
       const linkId = R.compose(
         XP.getLinkId,
@@ -265,7 +305,9 @@ describe('project reducer', () => {
         getProject
       )(store.getState());
 
-      store.dispatch(bulkDeleteNodesAndComments([], [linkId], [], testPatchPath));
+      store.dispatch(
+        bulkDeleteNodesAndComments([], [linkId], [], testPatchPath)
+      );
 
       const links = R.compose(
         XP.listLinks,
@@ -281,30 +323,24 @@ describe('project reducer', () => {
     let store = null;
     let testPatchPath = '';
 
-    const getCommentsList = R.uncurryN(2)(
-      patchPath => R.compose(
-        XP.listComments,
-        XP.getPatchByPathUnsafe(patchPath),
-        getProject
-      )
+    const getCommentsList = R.uncurryN(2)(patchPath =>
+      R.compose(XP.listComments, XP.getPatchByPathUnsafe(patchPath), getProject)
     );
 
-    const getAddedComment = R.uncurryN(2)(
-      patchPath => R.compose(
-        R.head,
-        getCommentsList(patchPath)
-      )
+    const getAddedComment = R.uncurryN(2)(patchPath =>
+      R.compose(R.head, getCommentsList(patchPath))
     );
 
-    const getAddedCommentId = R.uncurryN(2)(
-      patchPath => R.compose(
-        XP.getCommentId,
-        getAddedComment(patchPath)
-      )
+    const getAddedCommentId = R.uncurryN(2)(patchPath =>
+      R.compose(XP.getCommentId, getAddedComment(patchPath))
     );
 
     beforeEach(() => {
-      store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
       const addPatchAction = store.dispatch(addPatch('test-patch'));
       testPatchPath = addPatchAction.payload.patchPath;
     });
@@ -319,7 +355,9 @@ describe('project reducer', () => {
       store.dispatch(addComment());
       const testCommentId = getAddedCommentId(testPatchPath, store.getState());
 
-      store.dispatch(bulkDeleteNodesAndComments([], [], [testCommentId], testPatchPath));
+      store.dispatch(
+        bulkDeleteNodesAndComments([], [], [testCommentId], testPatchPath)
+      );
 
       const comments = getCommentsList(testPatchPath, store.getState());
       assert.equal(comments.length, 0);
@@ -332,12 +370,9 @@ describe('project reducer', () => {
       store.dispatch(resizeComment(testCommentId, newSize));
 
       const commentAfter = getAddedComment(testPatchPath, store.getState());
-      assert.deepEqual(
-        XP.getCommentSize(commentAfter),
-        newSize
-      );
+      assert.deepEqual(XP.getCommentSize(commentAfter), newSize);
     });
-    it('should edit comment\'s content', () => {
+    it("should edit comment's content", () => {
       store.dispatch(addComment());
       const testCommentId = getAddedCommentId(testPatchPath, store.getState());
       const newContent = 'totally new content for test comment';
@@ -345,10 +380,7 @@ describe('project reducer', () => {
       store.dispatch(editComment(testCommentId, newContent));
 
       const commentAfter = getAddedComment(testPatchPath, store.getState());
-      assert.deepEqual(
-        XP.getCommentContent(commentAfter),
-        newContent
-      );
+      assert.deepEqual(XP.getCommentContent(commentAfter), newContent);
     });
   });
 });
@@ -365,7 +397,10 @@ describe('project actions', () => {
           },
           links: {
             someLink: {
-              input: { nodeId: 'instanceOfPatchInQuestion', pinKey: 'importantTerminal' },
+              input: {
+                nodeId: 'instanceOfPatchInQuestion',
+                pinKey: 'importantTerminal',
+              },
               output: { nodeId: 'someOtherNode', pinKey: '__out__' },
             },
           },
@@ -380,25 +415,26 @@ describe('project actions', () => {
     });
 
     beforeEach(() => {
-      store = createStore(generateReducers(), initialState, applyMiddleware(thunk));
+      store = createStore(
+        generateReducers(),
+        initialState,
+        applyMiddleware(thunk)
+      );
       store.dispatch(openProject(project));
     });
 
     it('should display an error message if we try to delete a used terminal node', () => {
       const patchPath = '@/foo';
       store.dispatch(switchPatch(patchPath));
-      const action = store.dispatch(bulkDeleteNodesAndComments(['importantTerminal'], [], [], patchPath));
-      const expectedAction =
-        addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]);
+      const action = store.dispatch(
+        bulkDeleteNodesAndComments(['importantTerminal'], [], [], patchPath)
+      );
+      const expectedAction = addError(
+        NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]
+      );
 
-      assert.deepEqual(
-        action.type,
-        expectedAction.type
-      );
-      assert.deepEqual(
-        action.payload,
-        expectedAction.payload
-      );
+      assert.deepEqual(action.type, expectedAction.type);
+      assert.deepEqual(action.payload, expectedAction.payload);
     });
   });
 });

@@ -22,8 +22,9 @@ import {
 
 import * as ERROR_CODES from './errorCodes';
 
-export const expandHomeDir = (pathToResolve) => {
-  const homedir = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+export const expandHomeDir = pathToResolve => {
+  const homedir =
+    process.env[process.platform === 'win32' ? 'USERPROFILE' : 'HOME'];
 
   if (!pathToResolve) return pathToResolve;
   if (pathToResolve === '~') return homedir;
@@ -34,43 +35,35 @@ export const expandHomeDir = (pathToResolve) => {
 
 export const isDirectory = def(
   'isDirectory :: Path -> Boolean',
-  (pathToCheck) => {
+  pathToCheck => {
     let stats;
-    try { stats = fs.statSync(pathToCheck); } catch (error) { stats = null; }
-    return (stats && stats.isDirectory());
+    try {
+      stats = fs.statSync(pathToCheck);
+    } catch (error) {
+      stats = null;
+    }
+    return stats && stats.isDirectory();
   }
 );
 
 export const isBasename = def(
   'isBasename :: String -> Path -> Boolean',
-  (basename, filePath) => R.compose(
-    R.equals(basename),
-    path.basename
-  )(filePath)
+  (basename, filePath) => R.compose(R.equals(basename), path.basename)(filePath)
 );
 
 export const isExtname = def(
   'isExtname :: String -> Path -> Boolean',
-  (extname, filePath) => R.compose(
-    R.equals(extname),
-    path.extname
-  )(filePath)
+  (extname, filePath) => R.compose(R.equals(extname), path.extname)(filePath)
 );
 
 export const isProjectFile = def(
   'isProjectFile :: AnyXodFile -> Boolean',
-  R.pipe(
-    R.prop('path'),
-    isBasename('project.xod')
-  )
+  R.pipe(R.prop('path'), isBasename('project.xod'))
 );
 
 export const isPatchFile = def(
   'isProjectFile :: AnyXodFile -> Boolean',
-  R.pipe(
-    R.prop('path'),
-    isBasename('patch.xodp')
-  )
+  R.pipe(R.prop('path'), isBasename('patch.xodp'))
 );
 
 export const getFilePath = def(
@@ -89,77 +82,54 @@ export const getProjectMetaName = def(
 
 export const resolvePath = def(
   'resolvePath :: Path -> Path',
-  R.compose(
-    path.resolve,
-    expandHomeDir
-  )
+  R.compose(path.resolve, expandHomeDir)
 );
 
 export const doesDirectoryExist = def(
   'doesDirectoryExist :: Path -> Boolean',
-    R.tryCatch(
-    R.compose(
-      R.invoker(0, 'isDirectory'),
-      fs.statSync,
-      resolvePath
-    ),
+  R.tryCatch(
+    R.compose(R.invoker(0, 'isDirectory'), fs.statSync, resolvePath),
     R.F
   )
 );
 
 export const doesFileExist = def(
   'doesFileExist :: String -> Boolean',
-  R.tryCatch(
-    R.compose(
-      R.invoker(0, 'isFile'),
-      fs.statSync,
-      resolvePath
-    ),
-    R.F
-  )
+  R.tryCatch(R.compose(R.invoker(0, 'isFile'), fs.statSync, resolvePath), R.F)
 );
 
 export const getPatchName = def(
   'getPatchName :: Path -> Identifier',
-  (patchPath) => {
+  patchPath => {
     const parts = patchPath.split(path.sep);
     return parts[parts.length - 2];
   }
 );
 
-export const hasExt = R.curry((ext, filename) => R.equals(path.extname(filename), ext));
-
+export const hasExt = R.curry((ext, filename) =>
+  R.equals(path.extname(filename), ext)
+);
 
 export const basenameEquals = def(
   'basenameEquals :: String -> Path -> Boolean',
-  (basename, filePath) => R.compose(
-    R.equals(basename),
-    path.basename
-  )(filePath)
+  (basename, filePath) => R.compose(R.equals(basename), path.basename)(filePath)
 );
 
 export const basenameAmong = def(
   'basenameAmong :: [String] -> Path -> Boolean',
-  (basenames, filePath) => R.compose(
-    isAmong(basenames),
-    path.basename
-  )(filePath)
+  (basenames, filePath) =>
+    R.compose(isAmong(basenames), path.basename)(filePath)
 );
 
 export const extAmong = def(
   'extAmong :: [String] -> Path -> Boolean',
-  (extensions, filePath) => R.compose(
-    isAmong(extensions),
-    path.extname
-  )(filePath)
+  (extensions, filePath) =>
+    R.compose(isAmong(extensions), path.extname)(filePath)
 );
 
 export const beginsWithDot = def(
   'beginsWithDot :: String -> Boolean',
-  R.compose(
-    R.equals('.'),
-    R.head
-  )
+  R.compose(R.equals('.'), R.head)
 );
 
 export const resolveProjectFile = def(
@@ -169,20 +139,13 @@ export const resolveProjectFile = def(
 
 export const hasProjectFile = def(
   'hasProjectFile :: Path -> Boolean',
-  R.compose(
-    doesFileExist,
-    resolveProjectFile
-  )
+  R.compose(doesFileExist, resolveProjectFile)
 );
 
 // :: Path -> Boolean
 export const isLocalProjectDirectory = def(
   'isLocalProjectDirectory :: Path -> Boolean',
-  R.allPass([
-    doesDirectoryExist,
-    R.complement(beginsWithDot),
-    hasProjectFile,
-  ])
+  R.allPass([doesDirectoryExist, R.complement(beginsWithDot), hasProjectFile])
 );
 
 // =============================================================================
@@ -193,22 +156,12 @@ export const isLocalProjectDirectory = def(
 
 export const findProjectMetaByName = def(
   'findProjectMetaByName :: Identifier -> [ProjectFile] -> ProjectFile',
-  (nameToFind, projectMetas) => R.find(
-    R.compose(
-      R.equals(nameToFind),
-      getProjectMetaName
-    ),
-    projectMetas
-  )
+  (nameToFind, projectMetas) =>
+    R.find(R.compose(R.equals(nameToFind), getProjectMetaName), projectMetas)
 );
 export const filterDefaultProject = def(
   'filterDefaultProject :: [ProjectFile] -> [ProjectFile]',
-  R.filter(
-    R.compose(
-      R.equals(DEFAULT_PROJECT_NAME),
-      getProjectMetaName
-    )
-  )
+  R.filter(R.compose(R.equals(DEFAULT_PROJECT_NAME), getProjectMetaName))
 );
 
 /**
@@ -222,10 +175,10 @@ export const filterDefaultProject = def(
 // :: Path -> Promise Path Error
 export const resolveWorkspacePath = R.compose(
   foldEither(
-    workspacePath => rejectWithCode(
-      ERROR_CODES.INVALID_WORKSPACE_PATH,
-      { path: workspacePath }
-    ),
+    workspacePath =>
+      rejectWithCode(ERROR_CODES.INVALID_WORKSPACE_PATH, {
+        path: workspacePath,
+      }),
     Promise.resolve.bind(Promise)
   ),
   R.map(resolvePath),
@@ -234,15 +187,11 @@ export const resolveWorkspacePath = R.compose(
 
 export const resolveLibPath = def(
   'resolveLibPath :: Path -> Path',
-  workspacePath => path.resolve(
-    workspacePath, LIBS_DIRNAME
-  )
+  workspacePath => path.resolve(workspacePath, LIBS_DIRNAME)
 );
 export const resolveDefaultProjectPath = def(
   'resolveDefaultProjectPath :: Path -> Path',
-  workspacePath => path.resolve(
-    workspacePath, DEFAULT_PROJECT_NAME
-  )
+  workspacePath => path.resolve(workspacePath, DEFAULT_PROJECT_NAME)
 );
 
 // :: * -> Path
@@ -254,41 +203,29 @@ export const ensureWorkspacePath = R.ifElse(
 
 const doesWorkspaceFileExist = def(
   'doesWorkspaceFileExist :: Path -> Boolean',
-  R.compose(
-    doesFileExist,
-    workspacePath => path.resolve(workspacePath, WORKSPACE_FILENAME)
+  R.compose(doesFileExist, workspacePath =>
+    path.resolve(workspacePath, WORKSPACE_FILENAME)
   )
 );
 const isWorkspaceDirEmptyOrNotExist = def(
   'isWorkspaceDirEmptyOrNotExist :: Path -> Boolean',
-  R.tryCatch(
-    R.compose(
-      R.isEmpty,
-      fs.readdirSync
-    ),
-    R.T
-  )
+  R.tryCatch(R.compose(R.isEmpty, fs.readdirSync), R.T)
 );
 
 // :: Path -> Promise Path Error
 export const isWorkspaceValid = R.cond([
-  [
-    doesWorkspaceFileExist,
-    Promise.resolve.bind(Promise),
-  ],
+  [doesWorkspaceFileExist, Promise.resolve.bind(Promise)],
   [
     isWorkspaceDirEmptyOrNotExist,
-    dirPath => rejectWithCode(
-      ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY,
-      { path: dirPath }
-    ),
+    dirPath =>
+      rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EXIST_OR_EMPTY, {
+        path: dirPath,
+      }),
   ],
   [
     R.T,
-    dirPath => rejectWithCode(
-      ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY,
-      { path: dirPath }
-    ),
+    dirPath =>
+      rejectWithCode(ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY, { path: dirPath }),
   ],
 ]);
 
@@ -300,18 +237,17 @@ export const validateWorkspace = R.pipeP(
 
 // :: String -> PatchFileContents -> Promise Error PatchFileContents
 export const rejectOnInvalidPatchFileContents = R.curry(
-  (filePath, fileContents) => R.compose(
-    foldEither(
-      () => rejectWithCode(
-        ERROR_CODES.INVALID_FILE_CONTENTS,
-        { path: filePath }
+  (filePath, fileContents) =>
+    R.compose(
+      foldEither(
+        () =>
+          rejectWithCode(ERROR_CODES.INVALID_FILE_CONTENTS, { path: filePath }),
+        () => Promise.resolve(fileContents)
       ),
-      () => Promise.resolve(fileContents)
-    ),
-    validateSanctuaryType(PatchFileContents),
-    // Omit type hints to guarantee full type check of the data loaded from FS.
-    // The @@type fields should not be there, and this is en extra layer of
-    // protection from improper save.
-    omitTypeHints
-  )(fileContents)
+      validateSanctuaryType(PatchFileContents),
+      // Omit type hints to guarantee full type check of the data loaded from FS.
+      // The @@type fields should not be there, and this is en extra layer of
+      // protection from improper save.
+      omitTypeHints
+    )(fileContents)
 );

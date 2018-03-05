@@ -7,10 +7,7 @@ import Pin from './Pin';
 
 class Node extends BasePageObject {
   getId() {
-    return this.page.evaluate(
-      el => el.id,
-      this.elementHandle
-    );
+    return this.page.evaluate(el => el.id, this.elementHandle);
   }
 
   async getName() {
@@ -36,17 +33,15 @@ class Node extends BasePageObject {
   }
 
   drag(x, y) {
-    return drag(
-      this.page,
-      this.elementHandle,
-      { x, y }
-    );
+    return drag(this.page, this.elementHandle, { x, y });
   }
 
   async findPinByName(name) {
     const nodeId = await this.getId();
     // generally we should use only `this.elementHandle.$`, but in this case it's unavoidable
-    const pinElementHandle = await this.page.$(`#nodePinsOverlay_${nodeId} .PinOverlay[data-label="${name}"]`);
+    const pinElementHandle = await this.page.$(
+      `#nodePinsOverlay_${nodeId} .PinOverlay[data-label="${name}"]`
+    );
 
     if (!pinElementHandle) return null;
 
@@ -70,12 +65,12 @@ Node.findById = async (page, nodeId) => {
 
 export default Node;
 
-export const getAllNodes = async (page) => {
+export const getAllNodes = async page => {
   const elementHandles = await page.$$('.Node');
   return elementHandles.map(eh => new Node(page, eh));
 };
 
-export const getSelectedNodes = async (page) => {
+export const getSelectedNodes = async page => {
   const elementHandles = await page.$$('.Node.is-selected');
   return elementHandles.map(eh => new Node(page, eh));
 };

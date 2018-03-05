@@ -42,12 +42,10 @@ describe('Link', () => {
   // properties
   describe('getLinkId', () => {
     it('should return id string for Node object', () => {
-      expect(Link.getLinkId({ id: '@/test' }))
-        .to.be.equal('@/test');
+      expect(Link.getLinkId({ id: '@/test' })).to.be.equal('@/test');
     });
     it('should return id string for string', () => {
-      expect(Link.getLinkId('@/test'))
-        .to.be.equal('@/test');
+      expect(Link.getLinkId('@/test')).to.be.equal('@/test');
     });
   });
   describe('getters', () => {
@@ -97,13 +95,19 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isLinkInputNodeIdEquals('@/non-existent', link)).to.be.false();
+      expect(
+        Link.isLinkInputNodeIdEquals('@/non-existent', link)
+      ).to.be.false();
     });
     it('should return false for nodeId from output', () => {
-      expect(Link.isLinkInputNodeIdEquals(link.output.nodeId, link)).to.be.false();
+      expect(
+        Link.isLinkInputNodeIdEquals(link.output.nodeId, link)
+      ).to.be.false();
     });
     it('should return true for nodeId from input', () => {
-      expect(Link.isLinkInputNodeIdEquals(link.input.nodeId, link)).to.be.true();
+      expect(
+        Link.isLinkInputNodeIdEquals(link.input.nodeId, link)
+      ).to.be.true();
     });
   });
   describe('isLinkOutputNodeIdEquals', () => {
@@ -114,13 +118,19 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isLinkOutputNodeIdEquals('@/non-existent', link)).to.be.false();
+      expect(
+        Link.isLinkOutputNodeIdEquals('@/non-existent', link)
+      ).to.be.false();
     });
     it('should return false for nodeId from input', () => {
-      expect(Link.isLinkOutputNodeIdEquals(link.input.nodeId, link)).to.be.false();
+      expect(
+        Link.isLinkOutputNodeIdEquals(link.input.nodeId, link)
+      ).to.be.false();
     });
     it('should return true for nodeId from output', () => {
-      expect(Link.isLinkOutputNodeIdEquals(link.output.nodeId, link)).to.be.true();
+      expect(
+        Link.isLinkOutputNodeIdEquals(link.output.nodeId, link)
+      ).to.be.true();
     });
   });
   describe('isLinkInputPinKeyEquals', () => {
@@ -131,13 +141,19 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isLinkInputPinKeyEquals('non-existent-pin', link)).to.be.false();
+      expect(
+        Link.isLinkInputPinKeyEquals('non-existent-pin', link)
+      ).to.be.false();
     });
     it('should return false for pinKey from output', () => {
-      expect(Link.isLinkInputPinKeyEquals(link.output.pinKey, link)).to.be.false();
+      expect(
+        Link.isLinkInputPinKeyEquals(link.output.pinKey, link)
+      ).to.be.false();
     });
     it('should return true for pinKey from input', () => {
-      expect(Link.isLinkInputPinKeyEquals(link.input.pinKey, link)).to.be.true();
+      expect(
+        Link.isLinkInputPinKeyEquals(link.input.pinKey, link)
+      ).to.be.true();
     });
   });
   describe('isLinkOutputPinKeyEquals', () => {
@@ -148,13 +164,19 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(Link.isLinkOutputPinKeyEquals('non-existent-pin', link)).to.be.false();
+      expect(
+        Link.isLinkOutputPinKeyEquals('non-existent-pin', link)
+      ).to.be.false();
     });
     it('should return false for pinKey from input', () => {
-      expect(Link.isLinkOutputPinKeyEquals(link.input.pinKey, link)).to.be.false();
+      expect(
+        Link.isLinkOutputPinKeyEquals(link.input.pinKey, link)
+      ).to.be.false();
     });
     it('should return true for pinKey from output', () => {
-      expect(Link.isLinkOutputPinKeyEquals(link.output.pinKey, link)).to.be.true();
+      expect(
+        Link.isLinkOutputPinKeyEquals(link.output.pinKey, link)
+      ).to.be.true();
     });
   });
 });

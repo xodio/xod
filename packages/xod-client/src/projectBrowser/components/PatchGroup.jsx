@@ -9,14 +9,16 @@ const PatchGroup = ({ name, children, type, onClose }) => (
     classParentString="PatchGroup"
     data-id={name} // TODO: leave only a single data-id.
     trigger={
-      <span className="patch-group-trigger" data-id={name}>{name}</span>
+      <span className="patch-group-trigger" data-id={name}>
+        {name}
+      </span>
     }
     triggerClassName={type}
     triggerOpenedClassName={type}
     transitionTime={100}
     onClose={onClose}
   >
-    { children }
+    {children}
   </Collapsible>
 );
 

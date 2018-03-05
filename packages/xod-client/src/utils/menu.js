@@ -140,16 +140,15 @@ const rawItems = {
   },
 };
 
-const assignHotkeys = menuItem => R.when(
-  R.prop('command'),
-  R.merge(
-    {
+const assignHotkeys = menuItem =>
+  R.when(
+    R.prop('command'),
+    R.merge({
       hotkey: HOTKEY[menuItem.command],
       accelerator: ELECTRON_ACCELERATOR[menuItem.command],
-    }
-  ),
-  menuItem
-);
+    }),
+    menuItem
+  );
 
 export const items = R.compose(
   // separator item is secial and sould not have `key` or hotkey-related props

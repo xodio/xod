@@ -10,11 +10,14 @@ describe('xod-patch-search/mapper', () => {
       'xod/core/constant-number': {
         path: 'xod/core/constant-number',
         description: 'Outputs a constant number value',
-        attachments: [{
-          filename: 'README.md',
-          encoding: 'utf8',
-          content: '#Constant-number node \n\n It sends a constant number once on the start of programm to all links connected to its only one output.',
-        }],
+        attachments: [
+          {
+            filename: 'README.md',
+            encoding: 'utf8',
+            content:
+              '#Constant-number node \n\n It sends a constant number once on the start of programm to all links connected to its only one output.',
+          },
+        ],
       },
       'xod/core/multiply': {
         path: 'xod/core/multiply',
@@ -40,7 +43,8 @@ describe('xod-patch-search/mapper', () => {
       lib: 'xod/core',
       keywords: ['constant', 'number'],
       description: fixture.patches['xod/core/constant-number'].description,
-      fullDescription: fixture.patches['xod/core/constant-number'].attachments[0].content,
+      fullDescription:
+        fixture.patches['xod/core/constant-number'].attachments[0].content,
     });
     assert.deepEqual(indexData[1], {
       path: 'xod/core/multiply',

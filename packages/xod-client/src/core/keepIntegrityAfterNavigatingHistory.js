@@ -3,9 +3,13 @@ import * as R from 'ramda';
 import { editorLens } from '../editor/selectors';
 import { currentTabLens, selectionLens } from '../editor/reducer';
 import { SELECTION_ENTITY_TYPE } from '../editor/constants';
-import { getCurrentPatchLinks, getCurrentPatchNodes, getCurrentPatchComments } from '../project/selectors';
+import {
+  getCurrentPatchLinks,
+  getCurrentPatchNodes,
+  getCurrentPatchComments,
+} from '../project/selectors';
 
-const removeInvalidSelections = (state) => {
+const removeInvalidSelections = state => {
   const nodes = getCurrentPatchNodes(state);
   const links = getCurrentPatchLinks(state);
   const comments = getCurrentPatchComments(state);

@@ -5,7 +5,13 @@ import $ from 'sanctuary-def';
 import * as XF from 'xod-func-tools';
 
 import * as C from './constants';
-import { isTerminalPatchPath, isProjectNameValid, isValidIdentifier, isValidPatchPath, isLibName } from './internal/patchPathUtils';
+import {
+  isTerminalPatchPath,
+  isProjectNameValid,
+  isValidIdentifier,
+  isValidPatchPath,
+  isLibName,
+} from './internal/patchPathUtils';
 import { isValidVersion } from './versionUtils';
 
 /* Types are by convention starts with a capital leter, so: */
@@ -32,19 +38,21 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //
 //-----------------------------------------------------------------------------
 
-const ObjectWithId = NullaryType('ObjectWithId', R.both(XF.notNil, R.has('id')));
-const ObjectWithKey = NullaryType('ObjectWithKey', R.both(XF.notNil, R.has('key')));
+const ObjectWithId = NullaryType(
+  'ObjectWithId',
+  R.both(XF.notNil, R.has('id'))
+);
+const ObjectWithKey = NullaryType(
+  'ObjectWithKey',
+  R.both(XF.notNil, R.has('key'))
+);
 const NonZeroNaturalNumber = NullaryType(
   'NonZeroNaturalNumber',
   R.both(Number.isInteger, R.gt(R.__, 0))
 );
 const ArityStep = NullaryType(
   'ArityStep',
-  x => (
-    x >= 1
-    && x <= C.MAX_ARITY_STEP
-    && Number.isInteger(x)
-  )
+  x => x >= 1 && x <= C.MAX_ARITY_STEP && Number.isInteger(x)
 );
 
 export const Label = AliasType('Label', $.String);
@@ -140,10 +148,7 @@ export const Project = Model('Project', {
 
 export const TerminalNode = NullaryType(
   'TerminalNode',
-  R.both(
-    XF.hasType(Node),
-    R.propSatisfies(isTerminalPatchPath, 'type')
-  )
+  R.both(XF.hasType(Node), R.propSatisfies(isTerminalPatchPath, 'type'))
 );
 
 export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);

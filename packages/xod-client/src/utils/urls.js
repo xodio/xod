@@ -28,28 +28,26 @@ export const getUtmSiteUrl = getUtmUrl(process.env.XOD_SITE_DOMAIN);
  * Accepts only one argument: medium.
  */
 // :: String -> String
-export const getUtmForumUrl = getUtmUrl(process.env.XOD_FORUM_DOMAIN, '', 'forum');
+export const getUtmForumUrl = getUtmUrl(
+  process.env.XOD_FORUM_DOMAIN,
+  '',
+  'forum'
+);
 
 export const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
 
 // :: () -> String
-export const getCompileLimitUrl = () =>
-  `https://compile.${HOSTNAME}/limits/`;
+export const getCompileLimitUrl = () => `https://compile.${HOSTNAME}/limits/`;
 
-export const getPmSwaggerUrl = () =>
-  `https://pm.${HOSTNAME}/swagger/`;
+export const getPmSwaggerUrl = () => `https://pm.${HOSTNAME}/swagger/`;
 
-export const getLoginUrl = () =>
-  `https://${HOSTNAME}/auth/login/`;
+export const getLoginUrl = () => `https://${HOSTNAME}/auth/login/`;
 
-export const getLogoutUrl = () =>
-  `https://${HOSTNAME}/auth/logout/`;
+export const getLogoutUrl = () => `https://${HOSTNAME}/auth/logout/`;
 
-export const getWhoamiUrl = () =>
-  `https://${HOSTNAME}/auth/whoami/`;
+export const getWhoamiUrl = () => `https://${HOSTNAME}/auth/whoami/`;
 
-export const getAuthFormUrl = () =>
-  `https://${HOSTNAME}/auth/#signup`;
+export const getAuthFormUrl = () => `https://${HOSTNAME}/auth/#signup`;
 
 export const getPasswordResetUrl = () =>
   `https://auth.${HOSTNAME}/auth/realms/xod/login-actions/reset-credentials`;

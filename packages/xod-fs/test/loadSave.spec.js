@@ -15,24 +15,25 @@ import { saveAll, saveProjectAsXodball } from '../src/save';
 
 const fixture = subpath => path.resolve(__dirname, 'fixtures', subpath);
 
-const formatDiffs = comparison => JSON.stringify(
-  R.reject(
-    R.propEq('state', 'equal'),
-    comparison.diffSet
-  ),
-  null, 2
-);
+const formatDiffs = comparison =>
+  JSON.stringify(
+    R.reject(R.propEq('state', 'equal'), comparison.diffSet),
+    null,
+    2
+  );
 
 describe('Load/Save roundtrip', () => {
-  afterEach(() => Promise.all([
-    fs.remove(fixture('new')),
-    fs.remove(fixture('new.xodball')),
-  ]));
+  afterEach(() =>
+    Promise.all([fs.remove(fixture('new')), fs.remove(fixture('new.xodball'))])
+  );
 
   it('preserves project files byte-by-byte', async () => {
     // load fixture project
     const emptyProject = defaultizeProject({});
-    const project = await loadProject([fixture('workspace')], fixture('workspace/awesome-project'));
+    const project = await loadProject(
+      [fixture('workspace')],
+      fixture('workspace/awesome-project')
+    );
 
     // save it to a brand-new workspace
     const tmpDirPrefix = path.join(os.tmpdir(), 'xod-fs-test-');
@@ -50,10 +51,13 @@ describe('Load/Save roundtrip', () => {
       }
     );
 
-    assert.equal(comparison.differences, 0, [
-      'Fixture project and its resave differ:',
-      formatDiffs(comparison),
-    ].join('\n'));
+    assert.equal(
+      comparison.differences,
+      0,
+      ['Fixture project and its resave differ:', formatDiffs(comparison)].join(
+        '\n'
+      )
+    );
   });
   it('xodball -> multifile, multifile -> xodball', async () => {
     const emptyProject = defaultizeProject({});
@@ -73,20 +77,14 @@ describe('Load/Save roundtrip', () => {
       [fixture('workspace')],
       fixture('new')
     );
-    await saveProjectAsXodball(
-      fixture('new.xodball'),
-      projectFromMulti
-    );
+    await saveProjectAsXodball(fixture('new.xodball'), projectFromMulti);
 
     const filesToCompare = await Promise.all([
       fs.readFile(fixture('some.xodball'), 'utf8').then(JSON.parse),
       fs.readFile(fixture('new.xodball'), 'utf8').then(JSON.parse),
     ]);
 
-    assert.deepEqual(
-      filesToCompare[0],
-      filesToCompare[1]
-    );
+    assert.deepEqual(filesToCompare[0], filesToCompare[1]);
   });
   it('multifile -> xodball, xodball -> multifile', async () => {
     const emptyProject = defaultizeProject({});
@@ -95,10 +93,7 @@ describe('Load/Save roundtrip', () => {
       [fixture('workspace')],
       fixture('workspace/awesome-project')
     );
-    await saveProjectAsXodball(
-      fixture('new.xodball'),
-      projectFromMultifile
-    );
+    await saveProjectAsXodball(fixture('new.xodball'), projectFromMultifile);
 
     const projectFromXodball = await loadProject(
       [fixture('workspace')],
@@ -121,20 +116,22 @@ describe('Load/Save roundtrip', () => {
       }
     );
 
-    assert.equal(comparison.differences, 0, [
-      'Fixture project and its resave differ:',
-      formatDiffs(comparison),
-    ].join('\n'));
+    assert.equal(
+      comparison.differences,
+      0,
+      ['Fixture project and its resave differ:', formatDiffs(comparison)].join(
+        '\n'
+      )
+    );
   });
 
   // NodePosition :: { x :: Number, y :: Number }
   // :: NodePosition -> NodeId -> PatchPath -> Project -> Project
-  const moveNode = R.curry(
-    (position, nodeId, patchPath, project) => R.compose(
+  const moveNode = R.curry((position, nodeId, patchPath, project) =>
+    R.compose(
       explodeEither,
-      XP.updatePatch(
-        patchPath,
-        patch => R.compose(
+      XP.updatePatch(patchPath, patch =>
+        R.compose(
           XP.assocNode(R.__, patch),
           XP.setNodePosition(position),
           XP.getNodeByIdUnsafe(nodeId)
@@ -193,10 +190,7 @@ describe('Load/Save roundtrip', () => {
       fs.readFile(fixture('new.xodball'), 'utf8').then(JSON.parse),
     ]);
 
-    assert.deepEqual(
-      filesToCompare[0],
-      filesToCompare[1]
-    );
+    assert.deepEqual(filesToCompare[0], filesToCompare[1]);
   });
 
   it('multifile -> move -> multifile -> counter-move -> multifile', async () => {
@@ -254,9 +248,12 @@ describe('Load/Save roundtrip', () => {
       }
     );
 
-    assert.equal(comparison.differences, 0, [
-      'Fixture project and its resave differ:',
-      formatDiffs(comparison),
-    ].join('\n'));
+    assert.equal(
+      comparison.differences,
+      0,
+      ['Fixture project and its resave differ:', formatDiffs(comparison)].join(
+        '\n'
+      )
+    );
   });
 });

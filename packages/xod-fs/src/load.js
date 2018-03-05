@@ -35,64 +35,76 @@ import {
 // =============================================================================
 
 // :: Path -> Promise (XodFile ProjectFileContents) Object
-const readProjectMetaFile = projectFile => readJSON(projectFile)
-  .then(addMissingOptionsToProjectFileContents)
-  .then(R.compose(
-    XF.eitherToPromise,
-    XF.validateSanctuaryType(ProjectFileContents)
-  ))
-  .then(R.assoc('path', path.dirname(projectFile)))
-  .catch(err => ({ error: true, message: err.toString(), path: projectFile }));
+const readProjectMetaFile = projectFile =>
+  readJSON(projectFile)
+    .then(addMissingOptionsToProjectFileContents)
+    .then(
+      R.compose(
+        XF.eitherToPromise,
+        XF.validateSanctuaryType(ProjectFileContents)
+      )
+    )
+    .then(R.assoc('path', path.dirname(projectFile)))
+    .catch(err => ({
+      error: true,
+      message: err.toString(),
+      path: projectFile,
+    }));
 
 // :: Path -> Promise ProjectMeta Error
-const readProjectDirectories = projectDirectory => R.compose(
-  R.composeP(
-    content => ({ path: projectDirectory, content }),
-    addMissingOptionsToProjectFileContents,
-    fs.readJson
-  ),
-  resolveProjectFile
-)(projectDirectory);
+const readProjectDirectories = projectDirectory =>
+  R.compose(
+    R.composeP(
+      content => ({ path: projectDirectory, content }),
+      addMissingOptionsToProjectFileContents,
+      fs.readJson
+    ),
+    resolveProjectFile
+  )(projectDirectory);
 
 // :: Path -> Promise ProjectMeta[] Error
 export const getLocalProjects = R.compose(
-  workspacePath => R.composeP(
-    Promise.all.bind(Promise),
-    R.map(readProjectDirectories),
-    R.filter(isLocalProjectDirectory),
-    R.map(filename => path.resolve(workspacePath, filename)),
-    fs.readdir
-  )(workspacePath)
-    .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS)),
+  workspacePath =>
+    R.composeP(
+      Promise.all.bind(Promise),
+      R.map(readProjectDirectories),
+      R.filter(isLocalProjectDirectory),
+      R.map(filename => path.resolve(workspacePath, filename)),
+      fs.readdir
+    )(workspacePath).catch(
+      XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS)
+    ),
   resolvePath
 );
 
 // Returns a Promise of all project metas for given workspace path
 // :: Path -> Promise ProjectMeta[] Error
-export const getProjects = workspacePath => R.composeP(
-  XF.allPromises,
-  R.map(readProjectMetaFile),
-  R.filter(basenameEquals('project.xod')),
-  readDir
-)(workspacePath)
-  .catch(XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS));
+export const getProjects = workspacePath =>
+  R.composeP(
+    XF.allPromises,
+    R.map(readProjectMetaFile),
+    R.filter(basenameEquals('project.xod')),
+    readDir
+  )(workspacePath).catch(
+    XF.rejectWithCode(ERROR_CODES.CANT_ENUMERATE_PROJECTS)
+  );
 
 // :: String -> String -> Promise { path :: String, content :: Object, id :: String }
 const readXodFile = projectPath => xodfile =>
-  readJSON(xodfile)
-    .then((data) => {
-      const { base, dir } = path.parse(xodfile);
+  readJSON(xodfile).then(data => {
+    const { base, dir } = path.parse(xodfile);
 
-      const projectFolder = path.resolve(projectPath, '..');
-      const filePath = path.relative(projectFolder, xodfile);
+    const projectFolder = path.resolve(projectPath, '..');
+    const filePath = path.relative(projectFolder, xodfile);
 
-      return R.composeP(
-        XF.omitNilValues,
-        content => ({ path: `./${filePath}`, content }),
-        R.cond([
-          [
-            () => base === 'patch.xodp',
-            patch => R.composeP(
+    return R.composeP(
+      XF.omitNilValues,
+      content => ({ path: `./${filePath}`, content }),
+      R.cond([
+        [
+          () => base === 'patch.xodp',
+          patch =>
+            R.composeP(
               loadAttachments(dir),
               R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
               convertPatchFileContentsToPatch,
@@ -100,50 +112,45 @@ const readXodFile = projectPath => xodfile =>
               addMissingOptionsToPatchFileContents,
               Promise.resolve.bind(Promise)
             )(patch),
-          ],
-          [
-            () => base === 'project.xod',
-            addMissingOptionsToProjectFileContents,
-          ],
-          [R.T, R.identity],
-        ]),
-        Promise.resolve.bind(Promise)
-      )(data);
-    });
+        ],
+        [() => base === 'project.xod', addMissingOptionsToProjectFileContents],
+        [R.T, R.identity],
+      ]),
+      Promise.resolve.bind(Promise)
+    )(data);
+  });
 
 // :: Path -> Promise [File] Error
-export const loadProjectWithoutLibs = projectPath => R.composeP(
-  XF.allPromises,
-  R.map(readXodFile(projectPath)),
-  R.filter(basenameAmong([
-    'project.xod',
-    'patch.xodp',
-  ])),
-  readDir
-)(projectPath);
+export const loadProjectWithoutLibs = projectPath =>
+  R.composeP(
+    XF.allPromises,
+    R.map(readXodFile(projectPath)),
+    R.filter(basenameAmong(['project.xod', 'patch.xodp'])),
+    readDir
+  )(projectPath);
 
 // :: [Path] -> Path -> Promise [File] Error
-export const loadProjectWithLibs = R.curry(
-  (workspaceDirs, projectPath) => {
-    const fullProjectPath = resolvePath(projectPath);
-    const libDirPaths = R.map(
-      R.compose(resolvePath, resolveLibPath),
-      workspaceDirs
-    );
+export const loadProjectWithLibs = R.curry((workspaceDirs, projectPath) => {
+  const fullProjectPath = resolvePath(projectPath);
+  const libDirPaths = R.map(
+    R.compose(resolvePath, resolveLibPath),
+    workspaceDirs
+  );
 
-    return Promise.all([
-      loadProjectWithoutLibs(fullProjectPath),
-      loadLibs(libDirPaths),
-    ])
-      .then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
-      .catch(err => Promise.reject(
+  return Promise.all([
+    loadProjectWithoutLibs(fullProjectPath),
+    loadLibs(libDirPaths),
+  ])
+    .then(([projectFiles, libs]) => ({ project: projectFiles, libs }))
+    .catch(err =>
+      Promise.reject(
         Object.assign(err, {
           libPaths: libDirPaths,
           fullProjectPath,
         })
-      ));
-  }
-);
+      )
+    );
+});
 
 /**
  * After merging library patches in the loaded project
@@ -184,23 +191,18 @@ export const loadProjectFromDir = R.curry((workspaceDirs, projectPath) =>
     .then(resoliveLibraryPatches)
 );
 
-
 // :: [Path] -> Path -> Promise Project Error
 export const loadProjectFromXodball = R.curry((workspaceDirs, xodballPath) =>
   Promise.all([
     fs.readFile(xodballPath, 'utf8').then(XP.fromXodball),
-    R.compose(
-      loadLibs,
-      R.map(
-        R.compose(resolvePath, resolveLibPath)
-      )
-    )(workspaceDirs),
+    R.compose(loadLibs, R.map(R.compose(resolvePath, resolveLibPath)))(
+      workspaceDirs
+    ),
   ])
     .then(([eitherProject, libs]) =>
-      eitherProject.map(R.compose(
-        resoliveLibraryPatches,
-        XP.mergePatchesList(R.values(libs))
-      ))
+      eitherProject.map(
+        R.compose(resoliveLibraryPatches, XP.mergePatchesList(R.values(libs)))
+      )
     )
     .then(XF.eitherToPromise)
 );
@@ -218,8 +220,8 @@ export const loadProjectFromXodball = R.curry((workspaceDirs, xodballPath) =>
  * rejected Promise with Error. Otherwise, Promise Project.
  */
 // :: [Path] -> Path -> Promise Project Error
-export const loadProject = R.uncurryN(2,
-  workspaceDirs => R.composeP(
+export const loadProject = R.uncurryN(2, workspaceDirs =>
+  R.composeP(
     R.ifElse(
       isExtname('.xodball'),
       loadProjectFromXodball(workspaceDirs),

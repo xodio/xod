@@ -4,10 +4,7 @@ import { createSelector } from 'reselect';
 
 export const getUserState = R.prop('user');
 
-export const getCompileLimit = createSelector(
-  getUserState,
-  R.prop('limit')
-);
+export const getCompileLimit = createSelector(getUserState, R.prop('limit'));
 
 export const getCompileLimitLeft = createSelector(
   getCompileLimit,
@@ -29,12 +26,6 @@ export const getGrant = createSelector(
   R.pipe(R.prop('grant'), Maybe)
 );
 
-export const getUser = createSelector(
-  getGrant,
-  R.map(R.prop('user'))
-);
+export const getUser = createSelector(getGrant, R.map(R.prop('user')));
 
-export const isAuthorized = createSelector(
-  getUser,
-  Maybe.isJust
-);
+export const isAuthorized = createSelector(getUser, Maybe.isJust);

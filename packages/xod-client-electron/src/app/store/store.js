@@ -8,9 +8,10 @@ const projectPathReducer = (state = null, action) => {
   return state;
 };
 
-export default initialState => createStore(
-  combineReducers({
-    projectPath: projectPathReducer,
-  }),
-  initialState
-);
+export default initialState =>
+  createStore(
+    combineReducers({
+      projectPath: projectPathReducer,
+    }),
+    initialState
+  );

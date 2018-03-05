@@ -7,9 +7,7 @@ import * as XP from 'xod-project';
 import { def } from './types';
 import { readDir } from './read';
 import { BASE64_EXTNAMES, ATTACHMENT_EXTNAMES } from './constants';
-import {
-  extAmong,
-} from './utils';
+import { extAmong } from './utils';
 
 const isBase64Extname = def(
   'isBase64Extname :: Path -> Boolean',
@@ -18,25 +16,21 @@ const isBase64Extname = def(
 
 const getEncodingByExtname = def(
   'getEncodingByExtname :: Path -> String',
-  R.ifElse(
-    isBase64Extname,
-    R.always('base64'),
-    R.always('utf8')
-  )
+  R.ifElse(isBase64Extname, R.always('base64'), R.always('utf8'))
 );
 
 const encodeBuffer = def(
   'encodeBuffer :: Path -> Buffer -> String',
-  (filePath, buffer) => R.compose(
-    encoding => buffer.toString(encoding),
-    getEncodingByExtname
-  )(filePath)
+  (filePath, buffer) =>
+    R.compose(encoding => buffer.toString(encoding), getEncodingByExtname)(
+      filePath
+    )
 );
 
 // Loads and returns a single Attachment
 // :: Path -> Path -> Promise Attachment Error
-const loadAttachment = R.curry(
-  (patchDirPath, filePath) => R.composeP(
+const loadAttachment = R.curry((patchDirPath, filePath) =>
+  R.composeP(
     content => ({
       filename: path.relative(patchDirPath, filePath),
       encoding: getEncodingByExtname(filePath),
@@ -49,8 +43,8 @@ const loadAttachment = R.curry(
 
 // Returns Patch with glued attachments
 // :: Path -> Promise Patch Error
-export const loadAttachments = R.curry(
-  (patchDirPath, data) => R.composeP(
+export const loadAttachments = R.curry((patchDirPath, data) =>
+  R.composeP(
     XP.setPatchAttachments(R.__, data),
     XF.allPromises,
     R.map(loadAttachment(patchDirPath)),

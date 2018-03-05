@@ -42,15 +42,12 @@ class PopupShowCode extends React.PureComponent {
         afterClose={this.props.onClose}
       >
         <div className="CodeboxModalContent">
-          <textarea
-            className="Codebox"
-            value={this.props.code}
-            readOnly
-          />
+          <textarea className="Codebox" value={this.props.code} readOnly />
           <div className="ModalBody ModalBody--light">
             <div className="ModalFooter">
               This code could be uploaded onto your device.<br />
-              Just connect your device via USB and click on &quot;Upload&quot; button.
+              Just connect your device via USB and click on &quot;Upload&quot;
+              button.
             </div>
           </div>
         </div>

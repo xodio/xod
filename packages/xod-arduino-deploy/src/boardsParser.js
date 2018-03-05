@@ -56,35 +56,27 @@ import * as Utils from './utils';
 // :: String -> Object
 const parseTxtConfig = R.compose(
   R.reduce(
-    (acc, [tokens, value]) => R.compose(
-      R.assocPath(R.__, value, acc),
-      R.when(
-        R.both(
-          R.propEq(1, 'menu'),
-          R.compose(R.equals(4), R.length)
-        ),
-        R.append('cpuName')
-      )
-    )(tokens),
+    (acc, [tokens, value]) =>
+      R.compose(
+        R.assocPath(R.__, value, acc),
+        R.when(
+          R.both(R.propEq(1, 'menu'), R.compose(R.equals(4), R.length)),
+          R.append('cpuName')
+        )
+      )(tokens),
     {}
   ),
-  R.map(R.compose(
-    R.zipWith(R.call, [R.split('.'), R.identity]),
-    R.split('=')
-  )),
+  R.map(R.compose(R.zipWith(R.call, [R.split('.'), R.identity]), R.split('='))),
   R.reject(R.test(/^(#|$)/)),
   R.map(R.trim),
-  R.split(/$/mg)
+  R.split(/$/gm)
 );
 
 /** Returns a parsed boards.txt from specified platform directory. */
 // :: Path -> Promise (StrMap BoardPrefs) Error
-export const loadBoards = R.curry(
-  platformDir => R.pipeP(
-    () => Promise.resolve(path.resolve(
-      platformDir,
-      'boards.txt'
-    )),
+export const loadBoards = R.curry(platformDir =>
+  R.pipeP(
+    () => Promise.resolve(path.resolve(platformDir, 'boards.txt')),
     filePath => fse.readFile(filePath, 'utf8'),
     parseTxtConfig
   )()
@@ -97,32 +89,26 @@ export const loadBoards = R.curry(
 // =============================================================================
 
 // :: FQBN -> Map boardIdentifier BoardPrefs -> BoardPrefs
-const getBoardPrefsByFqbn = R.curry(
-  (fqbn, boardPrefsMap) => {
-    const pabc = Utils.parseFQBN(fqbn);
-    const getCpuPrefs = R.pathOr({}, ['menu', 'cpu', pabc.cpu]);
+const getBoardPrefsByFqbn = R.curry((fqbn, boardPrefsMap) => {
+  const pabc = Utils.parseFQBN(fqbn);
+  const getCpuPrefs = R.pathOr({}, ['menu', 'cpu', pabc.cpu]);
 
-    return R.compose(
-      R.omit('menu'),
-      boardPrefs => R.compose(
-        R.mergeDeepLeft(boardPrefs),
-        getCpuPrefs
-      )(boardPrefs),
-      R.prop(pabc.boardIdentifier)
-    )(boardPrefsMap);
-  }
-);
+  return R.compose(
+    R.omit('menu'),
+    boardPrefs =>
+      R.compose(R.mergeDeepLeft(boardPrefs), getCpuPrefs)(boardPrefs),
+    R.prop(pabc.boardIdentifier)
+  )(boardPrefsMap);
+});
 
 /**
  * Loads board preferences from boards.txt and returns only preferences for specified board.
  */
 // :: FQBN -> Path -> Promise BoardPrefs Error
-export const loadBoardPrefs = R.curry(
-  (fqbn, packagesDir) => {
-    const architectureDir = Utils.getArchitectureDirectory(fqbn, packagesDir);
-    return loadBoards(architectureDir).then(getBoardPrefsByFqbn(fqbn));
-  }
-);
+export const loadBoardPrefs = R.curry((fqbn, packagesDir) => {
+  const architectureDir = Utils.getArchitectureDirectory(fqbn, packagesDir);
+  return loadBoards(architectureDir).then(getBoardPrefsByFqbn(fqbn));
+});
 
 // BoardInfo :: {
 //   name: String,
@@ -132,22 +118,20 @@ export const loadBoardPrefs = R.curry(
 // }
 
 // :: FQBN -> Path -> [BoardInfo]
-export const loadPABs = R.curry(
-  (fqbn, packagesDir) => {
-    const pab = Utils.parseFQBN(fqbn);
-    const architectureDir = Utils.getArchitectureDirectory(fqbn, packagesDir);
-    return loadBoards(architectureDir).then(R.compose(
+export const loadPABs = R.curry((fqbn, packagesDir) => {
+  const pab = Utils.parseFQBN(fqbn);
+  const architectureDir = Utils.getArchitectureDirectory(fqbn, packagesDir);
+  return loadBoards(architectureDir).then(
+    R.compose(
       R.values,
-      R.mapObjIndexed(
-        (boardData, boardKey) => ({
-          name: boardData.name,
-          package: pab.package,
-          architecture: pab.architecture,
-          boardIdentifier: boardKey,
-        })
-      )
-    ));
-  }
-);
+      R.mapObjIndexed((boardData, boardKey) => ({
+        name: boardData.name,
+        package: pab.package,
+        architecture: pab.architecture,
+        boardIdentifier: boardKey,
+      }))
+    )
+  );
+});
 
 export default loadBoardPrefs;

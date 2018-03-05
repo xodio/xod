@@ -3,16 +3,13 @@ import { Maybe } from 'ramda-fantasy';
 import { resolvePath } from 'xod-fs';
 import isDevelopment from 'electron-is-dev';
 
-export const IS_DEV = (isDevelopment || process.env.NODE_ENV === 'development');
+export const IS_DEV = isDevelopment || process.env.NODE_ENV === 'development';
 
 // for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
 // if we don't do this, we get empty objects on the other side instead of errors
 export const errorToPlainObject = R.when(
   R.is(Error),
-  R.converge(R.pick, [
-    Object.getOwnPropertyNames,
-    R.identity,
-  ])
+  R.converge(R.pick, [Object.getOwnPropertyNames, R.identity])
 );
 
 /**
@@ -26,7 +23,7 @@ export const errorToPlainObject = R.when(
  * that will return `Maybe Path`.
  */
 // :: App -> () -> Maybe Path
-export const getFilePathToOpen = (app) => {
+export const getFilePathToOpen = app => {
   // Windows & Linux
   let pathToOpen = R.compose(
     R.map(resolvePath),

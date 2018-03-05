@@ -18,27 +18,24 @@ import * as Utils from './utils';
  * @typedef {Object} Project
  */
 
- /**
-  * Archived project state
-  * @typedef {Object} Xodball
-  */
+/**
+ * Archived project state
+ * @typedef {Object} Xodball
+ */
 
 /**
  * @function createProject
  * @returns {Project} newly created project
  */
-export const createProject = def(
-  'createProject :: () -> Project',
-  () => ({
-    '@@type': 'xod-project/Project',
-    authors: [],
-    description: '',
-    license: '',
-    version: '0.0.0',
-    patches: {},
-    name: '',
-  })
-);
+export const createProject = def('createProject :: () -> Project', () => ({
+  '@@type': 'xod-project/Project',
+  authors: [],
+  description: '',
+  license: '',
+  version: '0.0.0',
+  patches: {},
+  name: '',
+}));
 
 export const getProjectName = def(
   'getProjectName :: Project -> ProjectName',
@@ -129,13 +126,22 @@ export const setProjectLicense = def(
 export const injectProjectTypeHints = def(
   'injectTypeHints :: Project -> Project',
   R.compose(
-    R.over(R.lensProp('patches'), R.map(
-      R.compose(
-        R.over(R.lensProp('nodes'), R.map(R.assoc('@@type', 'xod-project/Node'))),
-        R.over(R.lensProp('links'), R.map(R.assoc('@@type', 'xod-project/Link'))),
-        R.assoc('@@type', 'xod-project/Patch')
+    R.over(
+      R.lensProp('patches'),
+      R.map(
+        R.compose(
+          R.over(
+            R.lensProp('nodes'),
+            R.map(R.assoc('@@type', 'xod-project/Node'))
+          ),
+          R.over(
+            R.lensProp('links'),
+            R.map(R.assoc('@@type', 'xod-project/Link'))
+          ),
+          R.assoc('@@type', 'xod-project/Patch')
+        )
       )
-    )),
+    ),
     R.assoc('@@type', 'xod-project/Project')
   )
 );
@@ -152,23 +158,13 @@ export const injectProjectTypeHints = def(
  */
 export const BUILT_IN_PATCHES = R.compose(
   R.indexBy(Patch.getPatchPath),
-  R.map(
-    path =>
-      R.pipe(
-        Patch.createPatch,
-        Patch.setPatchPath(path)
-      )()
-  )
+  R.map(path => R.pipe(Patch.createPatch, Patch.setPatchPath(path))())
 )(BUILT_IN_PATCH_PATHS);
 
 // :: String -> Boolean
 export const isPathBuiltIn = R.flip(R.contains)(BUILT_IN_PATCH_PATHS);
 
-const getPatches =
-  R.compose(
-    R.merge(BUILT_IN_PATCHES),
-    R.prop('patches')
-  );
+const getPatches = R.compose(R.merge(BUILT_IN_PATCHES), R.prop('patches'));
 
 /**
  * @function lensPatch
@@ -176,10 +172,7 @@ const getPatches =
  * @returns {Lens} a Ramda lens whose focus is a patch with the specified id.
  */
 export const lensPatch = patchId =>
-  R.compose(
-    R.lens(getPatches, R.assoc('patches')),
-    R.lensProp(patchId)
-  );
+  R.compose(R.lens(getPatches, R.assoc('patches')), R.lensProp(patchId));
 
 /**
  * @function listPatches
@@ -199,10 +192,7 @@ export const listPatches = def(
 export const listPatchesWithoutBuiltIns = def(
   'listPatches :: Project -> [Patch]',
   R.compose(
-    R.reject(R.compose(
-      isAmong(BUILT_IN_PATCH_PATHS),
-      Patch.getPatchPath
-    )),
+    R.reject(R.compose(isAmong(BUILT_IN_PATCH_PATHS), Patch.getPatchPath)),
     R.values,
     R.prop('patches')
   )
@@ -258,10 +248,9 @@ export const listInstalledLibraryNames = def(
   'listInstalledLibraryNames :: Project -> [LibName]',
   R.compose(
     R.uniq,
-    R.reject(R.either(
-      PatchPathUtils.isBuiltInLibName,
-      PatchPathUtils.isLocalMarker
-    )),
+    R.reject(
+      R.either(PatchPathUtils.isBuiltInLibName, PatchPathUtils.isLocalMarker)
+    ),
     R.map(PatchPathUtils.getLibraryName),
     listPatchPaths
   )
@@ -287,13 +276,10 @@ export const listLibraryNamesUsedInProject = def(
  */
 export const listMissingLibraryNames = def(
   'listMissingLibraryNames :: Project -> [LibName]',
-  R.converge(
-    R.difference,
-    [
-      listLibraryNamesUsedInProject,
-      listInstalledLibraryNames,
-    ]
-  )
+  R.converge(R.difference, [
+    listLibraryNamesUsedInProject,
+    listInstalledLibraryNames,
+  ])
 );
 
 /**
@@ -304,10 +290,7 @@ export const listMissingLibraryNames = def(
  */
 export const getPatchByPath = def(
   'getPatchByPath :: PatchPath -> Project -> Maybe Patch',
-  (path, project) => R.compose(
-    Tools.prop(path),
-    getPatches
-  )(project)
+  (path, project) => R.compose(Tools.prop(path), getPatches)(project)
 );
 
 /**
@@ -319,12 +302,14 @@ export const getPatchByPath = def(
  */
 export const getPatchByPathUnsafe = def(
   'getPatchByPath :: PatchPath -> Project -> Patch',
-  (path, project) => explodeMaybe(
-    Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: path }),
-    getPatchByPath(path, project)
-  )
+  (path, project) =>
+    explodeMaybe(
+      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+        patchPath: path,
+      }),
+      getPatchByPath(path, project)
+    )
 );
-
 
 /**
  * Returns a map of Pins for the passed Node.
@@ -351,11 +336,13 @@ export const getPinsForNode = def(
         Maybe.isJust,
         R.compose(
           explodeMaybe(`Expected valid pins for existent patch ${type}`),
-          R.map(patch => R.compose(
-            Patch.upsertDeadPins(node, currentPatch),
-            Patch.addVariadicPins(node, patch),
-            Patch.getNondeadNodePins(node)
-          )(patch))
+          R.map(patch =>
+            R.compose(
+              Patch.upsertDeadPins(node, currentPatch),
+              Patch.addVariadicPins(node, patch),
+              Patch.getNondeadNodePins(node)
+            )(patch)
+          )
         ),
         () => Patch.getDeadNodePins(node, currentPatch)
       ),
@@ -392,11 +379,11 @@ const checkPinKeys = def(
       const nodePatch = R.chain(getPatchByPath(R.__, project), nodeType);
 
       // :: Maybe Patch -> Maybe Node -> Either Error Pin
-      const checkPinExists = R.curry(
-        (maybePatch, maybeNode) => R.compose(
+      const checkPinExists = R.curry((maybePatch, maybeNode) =>
+        R.compose(
           Tools.errOnNothing(CONST.ERROR.PINS_NOT_FOUND),
-          R.chain(
-            ([justPatch, justNode]) => R.ifElse(
+          R.chain(([justPatch, justNode]) =>
+            R.ifElse(
               Patch.isVariadicPatch,
               R.compose(
                 Maybe,
@@ -412,21 +399,17 @@ const checkPinKeys = def(
       );
 
       // :: Maybe Patch -> Either Error Patch
-      const checkNodePatchExists = maybePatch => Tools.errOnNothing(
-        Utils.formatString(
-          CONST.ERROR.TYPE_NOT_FOUND,
-          { type: nodeType }
-        ),
-        maybePatch
-      );
+      const checkNodePatchExists = maybePatch =>
+        Tools.errOnNothing(
+          Utils.formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: nodeType }),
+          maybePatch
+        );
       // :: Maybe Node -> Either Error Node
-      const checkNodeExists = maybeNode => Tools.errOnNothing(
-        Utils.formatString(
-          CONST.ERROR.NODE_NOT_FOUND,
-          { nodeId, patchPath }
-        ),
-        maybeNode
-      );
+      const checkNodeExists = maybeNode =>
+        Tools.errOnNothing(
+          Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, { nodeId, patchPath }),
+          maybeNode
+        );
 
       return R.compose(
         R.chain(() => checkPinExists(nodePatch, node)),
@@ -461,15 +444,13 @@ export const validatePatchContents = def(
       R.sequence(Either.of),
       R.chain(
         R.compose(
-          type => R.compose(
-            Tools.errOnNothing(
-              Utils.formatString(
-                CONST.ERROR.TYPE_NOT_FOUND,
-                { type }
-              )
-            ),
-            getPatchByPath(R.__, project)
-          )(type),
+          type =>
+            R.compose(
+              Tools.errOnNothing(
+                Utils.formatString(CONST.ERROR.TYPE_NOT_FOUND, { type })
+              ),
+              getPatchByPath(R.__, project)
+            )(type),
           Node.getNodeType
         )
       ),
@@ -509,10 +490,11 @@ export const validatePatchContents = def(
  */
 export const assocPatchUnsafe = def(
   'assocPatchUnsafe :: PatchPath -> Patch -> Project -> Project',
-  (path, patch, project) => R.compose(
-    R.assocPath(['patches', path], R.__, project),
-    Patch.setPatchPath(path)
-  )(patch)
+  (path, patch, project) =>
+    R.compose(
+      R.assocPath(['patches', path], R.__, project),
+      Patch.setPatchPath(path)
+    )(patch)
 );
 
 /**
@@ -530,9 +512,9 @@ export const assocPatchUnsafe = def(
 export const assocPatch = def(
   'assocPatch :: PatchPath -> Patch -> Project -> Either Error Project',
   (path, patch, project) =>
-  validatePatchContents(patch, project).map(
-    assocPatchUnsafe(path, R.__, project)
-  )
+    validatePatchContents(patch, project).map(
+      assocPatchUnsafe(path, R.__, project)
+    )
 );
 
 /**
@@ -542,18 +524,11 @@ export const assocPatch = def(
  */
 export const assocPatchListUnsafe = def(
   'assocPatchListUnsafe :: [Patch] -> Project -> Project',
-  (patches, project) => R.compose(
-    R.reduce((proj, fn) => fn(proj), project),
-    R.map(
-      R.converge(
-        assocPatchUnsafe,
-        [
-          Patch.getPatchPath,
-          R.identity,
-        ]
-      )
-    )
-  )(patches)
+  (patches, project) =>
+    R.compose(
+      R.reduce((proj, fn) => fn(proj), project),
+      R.map(R.converge(assocPatchUnsafe, [Patch.getPatchPath, R.identity]))
+    )(patches)
 );
 
 /**
@@ -563,18 +538,11 @@ export const assocPatchListUnsafe = def(
  */
 export const assocPatchList = def(
   'assocPatchList :: [Patch] -> Project -> Either Error Project',
-  (patches, project) => R.compose(
-    R.reduce(R.flip(R.chain), Either.of(project)),
-    R.map(
-      R.converge(
-        assocPatch,
-        [
-          Patch.getPatchPath,
-          R.identity,
-        ]
-      )
-    )
-  )(patches)
+  (patches, project) =>
+    R.compose(
+      R.reduce(R.flip(R.chain), Either.of(project)),
+      R.map(R.converge(assocPatch, [Patch.getPatchPath, R.identity]))
+    )(patches)
 );
 
 /**
@@ -592,9 +560,7 @@ export const mergePatchesList = def(
     // TODO: perform validation or switch to 'make a blueprint and then validate all' paradigm?
     R.over(
       R.lensProp('patches'),
-      R.flip(R.merge)(
-        R.indexBy(Patch.getPatchPath, patches)
-      ),
+      R.flip(R.merge)(R.indexBy(Patch.getPatchPath, patches)),
       project
     )
 );
@@ -611,8 +577,7 @@ export const mergePatchesList = def(
  */
 export const dissocPatch = def(
   'dissocPatch :: PatchPath -> Project -> Project',
-  (path, project) =>
-    R.dissocPath(['patches', path], project)
+  (path, project) => R.dissocPath(['patches', path], project)
 );
 
 /**
@@ -625,12 +590,7 @@ export const dissocPatch = def(
  */
 export const omitPatches = def(
   'omitPatches :: [PatchPath] -> Project -> Project',
-  (paths, project) =>
-    R.over(
-      R.lensProp('patches'),
-      R.omit(paths),
-      project
-    )
+  (paths, project) => R.over(R.lensProp('patches'), R.omit(paths), project)
 );
 
 const doesPathExist = def(
@@ -658,17 +618,22 @@ export const validatePatchRebase = def(
     (isPathBuiltIn(oldPath)
       ? Tools.err(CONST.ERROR.PATCH_REBASING_BUILT_IN)()
       : Either.of(newPath)
-    ).chain(
-      Tools.errOnFalse(
-        CONST.ERROR.PATCH_PATH_OCCUPIED,
-        R.complement(doesPathExist(R.__, project))
-      )
     )
-    .chain(() => Tools.errOnNothing(
-      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: oldPath }),
-      getPatchByPath(oldPath, project)
-    ))
-    .map(R.always(project))
+      .chain(
+        Tools.errOnFalse(
+          CONST.ERROR.PATCH_PATH_OCCUPIED,
+          R.complement(doesPathExist(R.__, project))
+        )
+      )
+      .chain(() =>
+        Tools.errOnNothing(
+          Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+            patchPath: oldPath,
+          }),
+          getPatchByPath(oldPath, project)
+        )
+      )
+      .map(R.always(project))
 );
 
 /**
@@ -689,35 +654,31 @@ export const validatePatchRebase = def(
 export const rebasePatch = def(
   'rebasePatch :: PatchPath -> PatchPath -> Project -> Either Error Project',
   (newPath, oldPath, project) =>
-    validatePatchRebase(newPath, oldPath, project)
-      .map(
-        (proj) => {
-          const patch = getPatchByPath(oldPath, proj).map(Patch.setPatchPath(newPath));
-          const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
+    validatePatchRebase(newPath, oldPath, project).map(proj => {
+      const patch = getPatchByPath(oldPath, proj).map(
+        Patch.setPatchPath(newPath)
+      );
+      const assocThatPatch = patch.chain(R.assocPath(['patches', newPath]));
 
-          // TODO: Think about refactoring that piece of code :-D
-          // Patch -> Patch
-          const updateReferences = R.when(
-            R.has('nodes'),
-            R.evolve({
-              nodes: R.mapObjIndexed(
-                R.when(
-                  R.propEq('type', oldPath),
-                  R.assoc('type', newPath)
-                )
-              ),
-            })
-          );
+      // TODO: Think about refactoring that piece of code :-D
+      // Patch -> Patch
+      const updateReferences = R.when(
+        R.has('nodes'),
+        R.evolve({
+          nodes: R.mapObjIndexed(
+            R.when(R.propEq('type', oldPath), R.assoc('type', newPath))
+          ),
+        })
+      );
 
-          return R.compose(
-            R.evolve({
-              patches: R.mapObjIndexed(updateReferences),
-            }),
-            R.dissocPath(['patches', oldPath]),
-            assocThatPatch
-          )(proj);
-        }
-      )
+      return R.compose(
+        R.evolve({
+          patches: R.mapObjIndexed(updateReferences),
+        }),
+        R.dissocPath(['patches', oldPath]),
+        assocThatPatch
+      )(proj);
+    })
 );
 
 /**
@@ -726,14 +687,15 @@ export const rebasePatch = def(
  */
 export const updatePatch = def(
   'updatePatch :: PatchPath -> (Patch -> Patch) -> Project -> Either Error Project',
-  (patchPath, updateFunction, project) => R.compose(
-    R.chain(assocPatch(patchPath, R.__, project)),
-    R.map(updateFunction),
-    Tools.errOnNothing(
-      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath })
-    ),
-    getPatchByPath
-  )(patchPath, project)
+  (patchPath, updateFunction, project) =>
+    R.compose(
+      R.chain(assocPatch(patchPath, R.__, project)),
+      R.map(updateFunction),
+      Tools.errOnNothing(
+        Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath })
+      ),
+      getPatchByPath
+    )(patchPath, project)
 );
 
 // =============================================================================
@@ -748,10 +710,8 @@ export const updatePatch = def(
  */
 export const getPatchByNode = def(
   'getPatchByNode :: Node -> Project -> Maybe Patch',
-  (node, project) => R.compose(
-    getPatchByPath(R.__, project),
-    Node.getNodeType
-  )(node)
+  (node, project) =>
+    R.compose(getPatchByPath(R.__, project), Node.getNodeType)(node)
 );
 /**
  * Returns Maybe list of Pins, computed from the Patch,
@@ -759,10 +719,8 @@ export const getPatchByNode = def(
  */
 export const getNodePins = def(
   'getNodePins :: Node -> Project -> Maybe [Pin]',
-  (node, project) => R.compose(
-    R.map(Patch.listPins),
-    getPatchByNode(R.__, project)
-  )(node)
+  (node, project) =>
+    R.compose(R.map(Patch.listPins), getPatchByNode(R.__, project))(node)
 );
 /**
  * Returns Maybe Pin, extracted from the Patch,
@@ -770,10 +728,11 @@ export const getNodePins = def(
  */
 export const getNodePin = def(
   'getNodePin :: PinKey -> Node -> Project -> Maybe Pin',
-  (pinKey, node, project) => R.compose(
-    R.chain(Patch.getPinByKey(pinKey)),
-    getPatchByNode(R.__, project)
-  )(node)
+  (pinKey, node, project) =>
+    R.compose(
+      R.chain(Patch.getPinByKey(pinKey)),
+      getPatchByNode(R.__, project)
+    )(node)
 );
 
 /**
@@ -787,26 +746,25 @@ export const getNodePin = def(
  */
 export const getPatchByNodeId = def(
   'getPatchByNodeId :: NodeId -> Patch -> Project -> Maybe Patch',
-  (nodeId, patch, project) => R.compose(
-    R.chain(getPatchByPath(R.__, project)),
-    R.map(Node.getNodeType),
-    Patch.getNodeById(R.__, patch)
-  )(nodeId)
+  (nodeId, patch, project) =>
+    R.compose(
+      R.chain(getPatchByPath(R.__, project)),
+      R.map(Node.getNodeType),
+      Patch.getNodeById(R.__, patch)
+    )(nodeId)
 );
 export const getPatchByNodeIdUnsafe = def(
   'getPatchByNodeIdUnsafe :: NodeId -> Patch -> Project -> Patch',
-  (nodeId, patch, project) => R.compose(
-    explodeMaybe(
-      Utils.formatString(
-        CONST.ERROR.CANT_GET_PATCH_BY_NODEID,
-        {
+  (nodeId, patch, project) =>
+    R.compose(
+      explodeMaybe(
+        Utils.formatString(CONST.ERROR.CANT_GET_PATCH_BY_NODEID, {
           nodeId,
           patchPath: Patch.getPatchPath(patch),
-        }
-      )
-    ),
-    getPatchByNodeId
-  )(nodeId, patch, project)
+        })
+      ),
+      getPatchByNodeId
+    )(nodeId, patch, project)
 );
 
 /**
@@ -815,20 +773,18 @@ export const getPatchByNodeIdUnsafe = def(
  */
 export const isTerminalNodeInUse = def(
   'isTerminalNodeInUse :: PinKey -> PatchPath -> Project -> Boolean',
-  (terminalNodeId, patchPath, project) => R.compose(
-    R.any(
-      patch => R.compose(
-        notEmpty,
-        R.chain(node => Patch.listLinksByPin(terminalNodeId, node, patch)),
-        R.filter(R.compose(
-          R.equals(patchPath),
-          Node.getNodeType
-        )),
-        Patch.listNodes
-      )(patch)
-    ),
-    listLocalPatches // TODO: are only local patches enough?
-  )(project)
+  (terminalNodeId, patchPath, project) =>
+    R.compose(
+      R.any(patch =>
+        R.compose(
+          notEmpty,
+          R.chain(node => Patch.listLinksByPin(terminalNodeId, node, patch)),
+          R.filter(R.compose(R.equals(patchPath), Node.getNodeType)),
+          Patch.listNodes
+        )(patch)
+      ),
+      listLocalPatches // TODO: are only local patches enough?
+    )(project)
 );
 
 /**
@@ -847,15 +803,13 @@ export const isTerminalNodeInUse = def(
  */
 export const resolveNodeTypesInProject = def(
   'resolveNodeTypesInProject :: Project -> Project',
-  project => R.compose(
-    assocPatchListUnsafe(R.__, project),
-    R.map(Patch.resolveNodeTypesInPatch),
-    R.filter(R.compose(
-      R.any(Node.isLocalNode),
-      Patch.listNodes
-    )),
-    listLibraryPatches
-  )(project)
+  project =>
+    R.compose(
+      assocPatchListUnsafe(R.__, project),
+      R.map(Patch.resolveNodeTypesInPatch),
+      R.filter(R.compose(R.any(Node.isLocalNode), Patch.listNodes)),
+      listLibraryPatches
+    )(project)
 );
 
 // Helper function for getPatchDependencies
@@ -874,7 +828,7 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
   const currentPatchDeps = R.compose(
     R.map(Node.getNodeType),
     Patch.listNodes,
-    getPatchByPathUnsafe(currentPatchPath),
+    getPatchByPathUnsafe(currentPatchPath)
   )(project);
 
   return getDependenciesMap(
@@ -889,24 +843,28 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
  */
 const listDeadLinksByNodeId = def(
   'listDeadLinksByNodeId :: NodeId -> Patch -> Project -> [Link]',
-  (nodeId, patch, project) => R.compose(
-    foldMaybe([], R.identity),
-    R.map(
-      node => R.compose(
-        deadPinKeys => R.compose(
-          R.filter(R.either(
-            R.compose(isAmong(deadPinKeys), Link.getLinkInputPinKey),
-            R.compose(isAmong(deadPinKeys), Link.getLinkOutputPinKey),
-          )),
-          Patch.listLinksByNode
-        )(nodeId, patch),
-        R.keys,
-        R.filter(Pin.isDeadPin),
-        getPinsForNode
-      )(node, patch, project)
-    ),
-    Patch.getNodeById
-  )(nodeId, patch, project)
+  (nodeId, patch, project) =>
+    R.compose(
+      foldMaybe([], R.identity),
+      R.map(node =>
+        R.compose(
+          deadPinKeys =>
+            R.compose(
+              R.filter(
+                R.either(
+                  R.compose(isAmong(deadPinKeys), Link.getLinkInputPinKey),
+                  R.compose(isAmong(deadPinKeys), Link.getLinkOutputPinKey)
+                )
+              ),
+              Patch.listLinksByNode
+            )(nodeId, patch),
+          R.keys,
+          R.filter(Pin.isDeadPin),
+          getPinsForNode
+        )(node, patch, project)
+      ),
+      Patch.getNodeById
+    )(nodeId, patch, project)
 );
 
 /**
@@ -914,10 +872,12 @@ const listDeadLinksByNodeId = def(
  */
 export const omitDeadLinksByNodeId = def(
   'omitDeadLinksByNodeId :: NodeId -> Patch -> Project -> Patch',
-  (nodeId, patch, project) => R.compose(
-    Patch.omitLinks(R.__, patch),
-    listDeadLinksByNodeId
-  )(nodeId, patch, project)
+  (nodeId, patch, project) =>
+    R.compose(Patch.omitLinks(R.__, patch), listDeadLinksByNodeId)(
+      nodeId,
+      patch,
+      project
+    )
 );
 
 /**
@@ -926,12 +886,12 @@ export const omitDeadLinksByNodeId = def(
  */
 export const getPatchDependencies = def(
   'getPatchDependencies :: PatchPath -> Project -> [PatchPath]',
-  (entryPatchPath, project) => R.compose(
-    R.uniq,
-    R.unnest,
-    R.values,
-    getDependenciesMap
-  )(project, [entryPatchPath], {})
+  (entryPatchPath, project) =>
+    R.compose(R.uniq, R.unnest, R.values, getDependenciesMap)(
+      project,
+      [entryPatchPath],
+      {}
+    )
 );
 
 /**
@@ -939,23 +899,17 @@ export const getPatchDependencies = def(
  * @param {Project} project
  * @returns {Either<Error|Project>}
  */
-export const validateProject = project => R.compose(
-  R.ifElse(
-    Either.isLeft,
-    R.identity,
-    R.always(Either.of(project))
-  ),
-  R.sequence(Either.of),
-  R.map(validatePatchContents(R.__, project)),
-  listPatches
-)(project);
+export const validateProject = project =>
+  R.compose(
+    R.ifElse(Either.isLeft, R.identity, R.always(Either.of(project))),
+    R.sequence(Either.of),
+    R.map(validatePatchContents(R.__, project)),
+    listPatches
+  )(project);
 
 /**
  * Validates project and returns boolean value.
  * @param {Project} project
  * @returns {Boolean}
  */
-export const isValidProject = R.compose(
-  Either.isRight,
-  validateProject
-);
+export const isValidProject = R.compose(Either.isRight, validateProject);

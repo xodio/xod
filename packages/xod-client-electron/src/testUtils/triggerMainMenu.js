@@ -17,7 +17,7 @@ function findMenuItem([itemLabel, ...restLabels], tpl) {
 }
 
 export default (eventEmitter, menuTemplate) => {
-  eventEmitter.on(TRIGGER_MAIN_MENU_ITEM, (pathToMenuItem) => {
+  eventEmitter.on(TRIGGER_MAIN_MENU_ITEM, pathToMenuItem => {
     const item = findMenuItem(pathToMenuItem, menuTemplate);
     if (item && typeof item.click === 'function') {
       item.click();

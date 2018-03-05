@@ -22,7 +22,13 @@ import * as EditorSelectors from '../selectors';
 import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
-import { FOCUS_AREAS, DEBUGGER_TAB_ID, TAB_TYPES, IMPL_TEMPLATE, SIDEBAR_IDS } from '../constants';
+import {
+  FOCUS_AREAS,
+  DEBUGGER_TAB_ID,
+  TAB_TYPES,
+  IMPL_TEMPLATE,
+  SIDEBAR_IDS,
+} from '../constants';
 
 import Patch from './Patch';
 import CppImplementationEditor from '../components/CppImplementationEditor';
@@ -57,21 +63,20 @@ class Editor extends React.Component {
 
     this.patchSize = this.props.size;
 
-    this.updatePatchImplementationDebounced =
-      debounce(300, this.props.actions.updatePatchImplementation);
+    this.updatePatchImplementationDebounced = debounce(
+      300,
+      this.props.actions.updatePatchImplementation
+    );
   }
 
   onAddNode(patchPath) {
     // TODO: rewrite this when implementing "zombie" nodes
-    const position = this.props.suggesterPlacePosition || this.props.defaultNodePosition;
+    const position =
+      this.props.suggesterPlacePosition || this.props.defaultNodePosition;
 
     this.hideSuggester();
-    this.props.currentPatchPath.map(
-      currentPatchPath => this.props.actions.addNode(
-        patchPath,
-        position,
-        currentPatchPath
-      )
+    this.props.currentPatchPath.map(currentPatchPath =>
+      this.props.actions.addNode(patchPath, position, currentPatchPath)
     );
   }
 
@@ -87,11 +92,13 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.UNDO]: () => this.props.currentPatchPath.map(this.props.actions.undo),
-      [COMMAND.REDO]: () => this.props.currentPatchPath.map(this.props.actions.redo),
+      [COMMAND.UNDO]: () =>
+        this.props.currentPatchPath.map(this.props.actions.undo),
+      [COMMAND.REDO]: () =>
+        this.props.currentPatchPath.map(this.props.actions.redo),
       [COMMAND.HIDE_HELPBOX]: () => this.props.actions.hideHelpbox(),
       [COMMAND.TOGGLE_HELP]: this.toggleHelp,
-      [COMMAND.INSERT_NODE]: (event) => {
+      [COMMAND.INSERT_NODE]: event => {
         if (isInputTarget(event)) return;
         this.showSuggester(null);
       },
@@ -119,7 +126,7 @@ class Editor extends React.Component {
 
     return foldMaybe(
       <NoPatch />,
-      (tab) => {
+      tab => {
         // Do not render <Patch /> component if opened tab
         // is in EditingCppImplementation mode.
         if (tab.isEditingCppImplementation) return null;
@@ -129,12 +136,14 @@ class Editor extends React.Component {
         // to pass it into <Patch />
         const curPatchPath = explodeMaybe(
           'Current tab should contain PatchPath to render <Patch /> component, but its not. \n' +
-          `Check it out: ${JSON.stringify(tab, null, 2)}`,
+            `Check it out: ${JSON.stringify(tab, null, 2)}`,
           currentPatchPath
         );
         return (
           <Patch
-            ref={(el) => { this.patchRef = el; }}
+            ref={el => {
+              this.patchRef = el;
+            }}
             patchPath={curPatchPath}
             tabType={tab.type}
             size={this.patchSize}
@@ -149,29 +158,35 @@ class Editor extends React.Component {
   renderOpenedImplementationEditorTabs() {
     return foldMaybe(
       null,
-      (currentTab) => {
-        const tabs = this.props.implEditorTabs.map(({ id, type, patchPath }) => {
-          const patch = XP.getPatchByPathUnsafe(patchPath, this.props.project);
-          const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
+      currentTab => {
+        const tabs = this.props.implEditorTabs.map(
+          ({ id, type, patchPath }) => {
+            const patch = XP.getPatchByPathUnsafe(
+              patchPath,
+              this.props.project
+            );
+            const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
 
-          const onChange = src => this.updatePatchImplementationDebounced(patchPath, src);
-          const currentPatchPath = explodeMaybe(
-            'No currentPatchPath, but currentTab exists',
-            this.props.currentPatchPath
-          );
+            const onChange = src =>
+              this.updatePatchImplementationDebounced(patchPath, src);
+            const currentPatchPath = explodeMaybe(
+              'No currentPatchPath, but currentTab exists',
+              this.props.currentPatchPath
+            );
 
-          return (
-            <CppImplementationEditor
-              key={id}
-              isActive={id === currentTab.id}
-              source={source}
-              onChange={onChange}
-              isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
-              onClose={this.props.actions.closeImplementationEditor}
-              patchPath={currentPatchPath}
-            />
-          );
-        });
+            return (
+              <CppImplementationEditor
+                key={id}
+                isActive={id === currentTab.id}
+                source={source}
+                onChange={onChange}
+                isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+                onClose={this.props.actions.closeImplementationEditor}
+                patchPath={currentPatchPath}
+              />
+            );
+          }
+        );
 
         return (
           <div
@@ -188,11 +203,9 @@ class Editor extends React.Component {
   }
 
   render() {
-    const {
-      patchesIndex,
-    } = this.props;
+    const { patchesIndex } = this.props;
 
-    const suggester = (this.props.suggesterIsVisible) ? (
+    const suggester = this.props.suggesterIsVisible ? (
       <Suggester
         index={patchesIndex}
         onAddNode={this.onAddNode}
@@ -203,7 +216,7 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const libSuggester = (this.props.isLibSuggesterVisible) ? (
+    const libSuggester = this.props.isLibSuggesterVisible ? (
       <LibSuggester
         extraClassName="Suggester--library"
         onInstallLibrary={this.onInstallLibrary}
@@ -214,9 +227,8 @@ class Editor extends React.Component {
 
     const debuggerBreadcrumbs = foldMaybe(
       null,
-      tab => (
-        (tab.id === DEBUGGER_TAB_ID && this.props.isDebugSessionRunning)
-        ? (
+      tab =>
+        tab.id === DEBUGGER_TAB_ID && this.props.isDebugSessionRunning ? (
           <Breadcrumbs>
             <button
               className="debug-session-stop-button Button Button--light"
@@ -225,23 +237,20 @@ class Editor extends React.Component {
               <Icon name="stop" /> Stop debug
             </button>
           </Breadcrumbs>
-        ) : null
-      ),
+        ) : null,
       this.props.currentTab
     );
 
     return (
-      <HotKeys handlers={this.getHotkeyHandlers()} className="Editor" id="Editor">
-        <Sidebar
-          id={SIDEBAR_IDS.LEFT}
-          windowSize={this.props.size}
-        />
+      <HotKeys
+        handlers={this.getHotkeyHandlers()}
+        className="Editor"
+        id="Editor"
+      >
+        <Sidebar id={SIDEBAR_IDS.LEFT} windowSize={this.props.size} />
         {suggester}
         {libSuggester}
-        <FocusTrap
-          className="Workarea"
-          onFocus={this.onWorkareaFocus}
-        >
+        <FocusTrap className="Workarea" onFocus={this.onWorkareaFocus}>
           <Tabs />
           {debuggerBreadcrumbs}
           <div className="Workarea-inner">
@@ -254,10 +263,7 @@ class Editor extends React.Component {
             onUploadAndDebugClick={this.props.onUploadAndDebugClick}
           />
         </FocusTrap>
-        <Sidebar
-          id={SIDEBAR_IDS.RIGHT}
-          windowSize={this.props.size}
-        />
+        <Sidebar id={SIDEBAR_IDS.RIGHT} windowSize={this.props.size} />
         <DragLayer />
         {this.props.isHelpboxVisible && <Helpbox />}
         <PanelContextMenu
@@ -327,29 +333,32 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    updateNodeProperty: ProjectActions.updateNodeProperty,
-    updatePatchDescription: ProjectActions.updatePatchDescription,
-    updatePatchImplementation: ProjectActions.updatePatchImplementation,
-    closeImplementationEditor: Actions.closeImplementationEditor,
-    undo: ProjectActions.undoPatch,
-    redo: ProjectActions.redoPatch,
-    toggleHelp: Actions.toggleHelp,
-    setFocusedArea: Actions.setFocusedArea,
-    addNode: ProjectActions.addNode,
-    showSuggester: Actions.showSuggester,
-    hideSuggester: Actions.hideSuggester,
-    highlightSugessterItem: Actions.highlightSugessterItem,
-    hideLibSuggester: Actions.hideLibSuggester,
-    installLibraries: Actions.installLibraries,
-    minimizePanel: Actions.minimizePanel,
-    movePanel: Actions.movePanel,
-    togglePanelAutohide: Actions.togglePanelAutohide,
-    hideHelpbox: Actions.hideHelpbox,
-    showHelpbox: Actions.showHelpbox,
-    panToOrigin: Actions.setCurrentPatchOffsetToOrigin,
-    panToCenter: Actions.setCurrentPatchOffsetToCenter,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      updateNodeProperty: ProjectActions.updateNodeProperty,
+      updatePatchDescription: ProjectActions.updatePatchDescription,
+      updatePatchImplementation: ProjectActions.updatePatchImplementation,
+      closeImplementationEditor: Actions.closeImplementationEditor,
+      undo: ProjectActions.undoPatch,
+      redo: ProjectActions.redoPatch,
+      toggleHelp: Actions.toggleHelp,
+      setFocusedArea: Actions.setFocusedArea,
+      addNode: ProjectActions.addNode,
+      showSuggester: Actions.showSuggester,
+      hideSuggester: Actions.hideSuggester,
+      highlightSugessterItem: Actions.highlightSugessterItem,
+      hideLibSuggester: Actions.hideLibSuggester,
+      installLibraries: Actions.installLibraries,
+      minimizePanel: Actions.minimizePanel,
+      movePanel: Actions.movePanel,
+      togglePanelAutohide: Actions.togglePanelAutohide,
+      hideHelpbox: Actions.hideHelpbox,
+      showHelpbox: Actions.showHelpbox,
+      panToOrigin: Actions.setCurrentPatchOffsetToOrigin,
+      panToCenter: Actions.setCurrentPatchOffsetToCenter,
+    },
+    dispatch
+  ),
 });
 
 export default R.compose(

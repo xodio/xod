@@ -14,29 +14,27 @@ const onContextMenuItemClick = onClick => (event, data) => {
   document.getElementById('Editor').focus();
 };
 
-const PatchGroupItemContextMenu = (props) => {
-  const trigger = (props.trigger) ? props.trigger : {};
+const PatchGroupItemContextMenu = props => {
+  const trigger = props.trigger ? props.trigger : {};
 
-  const renamePatch = (trigger.isLocalPatch)
-    ? (
-      <MenuItem
-        onClick={onContextMenuItemClick(props.onPatchRename)}
-        // data-id has special attribute that used by func tests
-        attributes={{ 'data-id': 'rename' }}
-      >
-        Rename
-      </MenuItem>
-    ) : null;
+  const renamePatch = trigger.isLocalPatch ? (
+    <MenuItem
+      onClick={onContextMenuItemClick(props.onPatchRename)}
+      // data-id has special attribute that used by func tests
+      attributes={{ 'data-id': 'rename' }}
+    >
+      Rename
+    </MenuItem>
+  ) : null;
 
-  const deletePatch = (trigger.isLocalPatch)
-    ? (
-      <MenuItem
-        onClick={onContextMenuItemClick(props.onPatchDelete)}
-        attributes={{ 'data-id': 'delete' }}
-      >
-        Delete
-      </MenuItem>
-    ) : null;
+  const deletePatch = trigger.isLocalPatch ? (
+    <MenuItem
+      onClick={onContextMenuItemClick(props.onPatchDelete)}
+      attributes={{ 'data-id': 'delete' }}
+    >
+      Delete
+    </MenuItem>
+  ) : null;
 
   const cls = cn('ContextMenu ContextMenu--PatchGroupItem', {
     // It's a hack to prevent rendering contextmenu
@@ -45,18 +43,13 @@ const PatchGroupItemContextMenu = (props) => {
   });
 
   return (
-    <ContextMenu
-      id={PATCH_GROUP_CONTEXT_MENU_ID}
-      className={cls}
-    >
+    <ContextMenu id={PATCH_GROUP_CONTEXT_MENU_ID} className={cls}>
       <MenuItem
         onClick={onContextMenuItemClick(props.onPatchAdd)}
         disabled={!trigger.canAdd}
         attributes={{ 'data-id': 'place' }}
       >
-        <span className="accelerator">
-          drag&drop
-        </span>
+        <span className="accelerator">drag&drop</span>
         Place
       </MenuItem>
       <MenuItem divider />
@@ -64,9 +57,7 @@ const PatchGroupItemContextMenu = (props) => {
         onClick={onContextMenuItemClick(props.onPatchOpen)}
         attributes={{ 'data-id': 'open' }}
       >
-        <span className="accelerator">
-          click&times;2
-        </span>
+        <span className="accelerator">click&times;2</span>
         Open
       </MenuItem>
       {renamePatch}
@@ -76,9 +67,7 @@ const PatchGroupItemContextMenu = (props) => {
         onClick={onContextMenuItemClick(props.onPatchHelp)}
         attributes={{ 'data-id': 'help' }}
       >
-        <span className="accelerator">
-          h
-        </span>
+        <span className="accelerator">h</span>
         Help
       </MenuItem>
     </ContextMenu>
@@ -100,4 +89,6 @@ PatchGroupItemContextMenu.propTypes = {
   onPatchHelp: PropTypes.func.isRequired,
 };
 
-export default connectMenu(PATCH_GROUP_CONTEXT_MENU_ID)(PatchGroupItemContextMenu);
+export default connectMenu(PATCH_GROUP_CONTEXT_MENU_ID)(
+  PatchGroupItemContextMenu
+);

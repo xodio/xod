@@ -56,35 +56,42 @@ describe('objects', () => {
   });
   describe('omitEmptyValues()', () => {
     it('omits empty values from object', () => {
-      assert.hasAllKeys(
-        omitEmptyValues({ a: 1, b: 2, c: '', d: '', e: 3 }),
-        ['a', 'b', 'e']
-      );
+      assert.hasAllKeys(omitEmptyValues({ a: 1, b: 2, c: '', d: '', e: 3 }), [
+        'a',
+        'b',
+        'e',
+      ]);
     });
   });
 
   describe('subtractObject()', () => {
     it('returns subtracted object (if fields are equal)', () => {
-      assert.deepEqual(
-        subtractObject({ a: 1, b: 2 }, { a: 1, b: 9, c: 3 }),
-        { b: 9, c: 3 }
-      );
+      assert.deepEqual(subtractObject({ a: 1, b: 2 }, { a: 1, b: 9, c: 3 }), {
+        b: 9,
+        c: 3,
+      });
     });
   });
 
   describe('renameKeys()', () => {
     it('returns object with renamed keys', () => {
-      assert.deepEqual(
-        renameKeys({ a: 'b', b: 'c', c: 'd' }, { a: 1, b: 2 }),
-        { b: 1, c: 2 }
-      );
+      assert.deepEqual(renameKeys({ a: 'b', b: 'c', c: 'd' }, { a: 1, b: 2 }), {
+        b: 1,
+        c: 2,
+      });
     });
   });
 
   describe('reverseLookup()', () => {
     it('returns first finded key that contains specified value', () => {
       assert.equal(
-        reverseLookup('find me', { a: 'a', b: 'b', c: 'find me', d: 'd', e: 'find me' }),
+        reverseLookup('find me', {
+          a: 'a',
+          b: 'b',
+          c: 'find me',
+          d: 'd',
+          e: 'find me',
+        }),
         'c'
       );
     });
@@ -92,10 +99,10 @@ describe('objects', () => {
 
   describe('invertMap()', () => {
     it('returns object with switched keys and values', () => {
-      assert.deepEqual(
-        invertMap({ a: 'abc', b: 'bcd' }),
-        { abc: 'a', bcd: 'b' }
-      );
+      assert.deepEqual(invertMap({ a: 'abc', b: 'bcd' }), {
+        abc: 'a',
+        bcd: 'b',
+      });
     });
   });
 });

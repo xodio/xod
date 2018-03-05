@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  emitShowTooltip,
-  emitHideTooltip,
-} from '../eventEmitters';
+import { emitShowTooltip, emitHideTooltip } from '../eventEmitters';
 
 // Delay between `mouseenter` and showing tooltip
 const SHOW_TOOLTIP_DELAY = 500;
@@ -53,16 +50,13 @@ class TooltipHOC extends React.Component {
 
   showTooltip() {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(
-      () => {
-        this.shown = true;
-        emitShowTooltip({
-          position: this.mousePosition,
-          content: this.props.content,
-        });
-      },
-      SHOW_TOOLTIP_DELAY
-    );
+    this.timeout = setTimeout(() => {
+      this.shown = true;
+      emitShowTooltip({
+        position: this.mousePosition,
+        content: this.props.content,
+      });
+    }, SHOW_TOOLTIP_DELAY);
   }
 
   hideTooltip() {
@@ -72,7 +66,11 @@ class TooltipHOC extends React.Component {
   }
 
   render() {
-    return this.props.render(this.onMouseOver, this.onMouseMove, this.onMouseLeave);
+    return this.props.render(
+      this.onMouseOver,
+      this.onMouseMove,
+      this.onMouseLeave
+    );
   }
 }
 

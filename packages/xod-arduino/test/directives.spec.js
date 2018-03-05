@@ -1,4 +1,3 @@
-
 import { assert } from 'chai';
 import {
   forUnitTests,
@@ -124,10 +123,7 @@ describe('Search for #pragma XOD', () => {
       #pragma XOD digun liteta
       `;
 
-    assertPragmasFound(code, [
-      ['foo', 'bar', 'baz'],
-      ['digun', 'liteta'],
-    ]);
+    assertPragmasFound(code, [['foo', 'bar', 'baz'], ['digun', 'liteta']]);
   });
 
   it('finds tricky pragmas', () => {
@@ -137,24 +133,19 @@ describe('Search for #pragma XOD', () => {
       //#pragma XOD commented out
       `;
 
-    assertPragmasFound(code, [
-      ['foo', 'bar', 'baz'],
-      ['digun', 'liteta'],
-    ]);
+    assertPragmasFound(code, [['foo', 'bar', 'baz'], ['digun', 'liteta']]);
   });
 
   it('considers enquoted arguments atomic', () => {
-    assertPragmasFound(
-      '#pragma XOD foo "bar baz" qux',
-      [['foo', 'bar baz', 'qux']]
-    );
+    assertPragmasFound('#pragma XOD foo "bar baz" qux', [
+      ['foo', 'bar baz', 'qux'],
+    ]);
   });
 
   it('considers - _ . a non-breaking character', () => {
-    assertPragmasFound(
-      '#pragma XOD foo.bar baz-qux_kut',
-      [['foo.bar', 'baz-qux_kut']]
-    );
+    assertPragmasFound('#pragma XOD foo.bar baz-qux_kut', [
+      ['foo.bar', 'baz-qux_kut'],
+    ]);
   });
 });
 

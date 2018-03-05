@@ -15,23 +15,26 @@ export const addProcess = type => (dispatch, getState) => {
   return newId;
 };
 
-export const progressProcess = (id, type, payload = {}) => dispatch => dispatch({
-  type,
-  payload: R.merge(payload, { id }),
-  meta: { status: STATUS.PROGRESSED },
-});
+export const progressProcess = (id, type, payload = {}) => dispatch =>
+  dispatch({
+    type,
+    payload: R.merge(payload, { id }),
+    meta: { status: STATUS.PROGRESSED },
+  });
 
-export const successProcess = (id, type, payload = {}) => dispatch => dispatch({
-  type,
-  payload: R.merge(payload, { id }),
-  meta: { status: STATUS.SUCCEEDED },
-});
+export const successProcess = (id, type, payload = {}) => dispatch =>
+  dispatch({
+    type,
+    payload: R.merge(payload, { id }),
+    meta: { status: STATUS.SUCCEEDED },
+  });
 
-export const failProcess = (id, type, payload = {}) => dispatch => dispatch({
-  type,
-  payload: R.merge(payload, { id }),
-  meta: { status: STATUS.FAILED },
-});
+export const failProcess = (id, type, payload = {}) => dispatch =>
+  dispatch({
+    type,
+    payload: R.merge(payload, { id }),
+    meta: { status: STATUS.FAILED },
+  });
 
 export const deleteProcess = (id, type) => ({
   type,

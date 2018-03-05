@@ -22,38 +22,26 @@ describe('Utils', () => {
         });
       };
 
-      suite(
-        'xod/common-hardware',
-        {
-          owner: 'xod',
-          name: 'common-hardware',
-          version: 'latest',
-        }
-      );
-      suite(
-        'xod/common-hardware@latest',
-        {
-          owner: 'xod',
-          name: 'common-hardware',
-          version: 'latest',
-        }
-      );
-      suite(
-        'xod/common-hardware@0.15.0',
-        {
-          owner: 'xod',
-          name: 'common-hardware',
-          version: 'v0.15.0',
-        }
-      );
-      suite(
-        'xod/common-hardware@v0.15.0',
-        {
-          owner: 'xod',
-          name: 'common-hardware',
-          version: 'v0.15.0',
-        }
-      );
+      suite('xod/common-hardware', {
+        owner: 'xod',
+        name: 'common-hardware',
+        version: 'latest',
+      });
+      suite('xod/common-hardware@latest', {
+        owner: 'xod',
+        name: 'common-hardware',
+        version: 'latest',
+      });
+      suite('xod/common-hardware@0.15.0', {
+        owner: 'xod',
+        name: 'common-hardware',
+        version: 'v0.15.0',
+      });
+      suite('xod/common-hardware@v0.15.0', {
+        owner: 'xod',
+        name: 'common-hardware',
+        version: 'v0.15.0',
+      });
     });
     it('returns Maybe.Nothing for invalid requests', () => {
       assert.isTrue(Maybe.isNothing(parseLibQuery('')));
@@ -81,61 +69,47 @@ describe('Utils', () => {
     it('returns resolved Promise for existing version or "latest" request', () => {
       const req = version => ({ owner: 'xod', name: 'core', version });
       const fixture = {
-        versions: [
-          '0.15.0',
-          '0.14.0',
-        ],
+        versions: ['0.15.0', '0.14.0'],
       };
 
       return Promise.all([
-        rejectUnexistingVersion(req('0.15.0'), fixture)
-        .then(res => assert.equal(res, fixture)),
-        rejectUnexistingVersion(req('0.14.0'), fixture)
-        .then(res => assert.equal(res, fixture)),
-        rejectUnexistingVersion(req('latest'), fixture)
-        .then(res => assert.equal(res, fixture)),
+        rejectUnexistingVersion(req('0.15.0'), fixture).then(res =>
+          assert.equal(res, fixture)
+        ),
+        rejectUnexistingVersion(req('0.14.0'), fixture).then(res =>
+          assert.equal(res, fixture)
+        ),
+        rejectUnexistingVersion(req('latest'), fixture).then(res =>
+          assert.equal(res, fixture)
+        ),
       ]);
     });
 
     it('rejectUnexistingVersion() returns rejected Promise for unexisting version', () => {
       const req = version => ({ owner: 'xod', name: 'core', version });
       const fixture = {
-        versions: [
-          '0.15.0',
-          '0.14.0',
-        ],
+        versions: ['0.15.0', '0.14.0'],
       };
 
-      return rejectUnexistingVersion(req('0.16.0'), fixture)
-      .catch(err => assert.propertyVal(err, 'errorCode', ERR_CODES.CANT_FIND_LIB_VERSION));
+      return rejectUnexistingVersion(req('0.16.0'), fixture).catch(err =>
+        assert.propertyVal(err, 'errorCode', ERR_CODES.CANT_FIND_LIB_VERSION)
+      );
     });
   });
 
   describe('getLibVersion()', () => {
-    const libData = reqVersion => (
-      {
-        versions: ['v0.15.0', 'v0.14.0', 'v0.13.0'],
-        requestParams: { version: reqVersion },
-      }
-    );
+    const libData = reqVersion => ({
+      versions: ['v0.15.0', 'v0.14.0', 'v0.13.0'],
+      requestParams: { version: reqVersion },
+    });
 
     it('should return founded version', () => {
-      assert.strictEqual(
-        getLibVersion(libData('latest')),
-        'v0.15.0'
-      );
-      assert.strictEqual(
-        getLibVersion(libData('v0.14.0')),
-        'v0.14.0'
-      );
+      assert.strictEqual(getLibVersion(libData('latest')), 'v0.15.0');
+      assert.strictEqual(getLibVersion(libData('v0.14.0')), 'v0.14.0');
     });
     it('should return null for unexisting version', () => {
-      assert.isNull(
-        getLibVersion(libData('v0.0.1'))
-      );
-      assert.isNull(
-        getLibVersion(libData(''))
-      );
+      assert.isNull(getLibVersion(libData('v0.0.1')));
+      assert.isNull(getLibVersion(libData('')));
     });
   });
 });

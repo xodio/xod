@@ -50,18 +50,16 @@ const getTerminalPins = R.curry((direction, type) => {
 
 export const PINS_OF_PATCH_NODES = R.compose(
   R.fromPairs,
-  R.append([
-    NOT_IMPLEMENTED_IN_XOD_PATH,
-    {},
-  ]),
-  R.concat(R.map(
-    arityStep => ([
-      getVariadicPath(arityStep),
-      {},
-    ])
-  )(R.range(1, MAX_ARITY_STEP + 1))),
-  R.ap([ // [[patchBaseName, patchPins]] for each type and direction
-    R.juxt([ // TODO: make more DRY or more readable?
+  R.append([NOT_IMPLEMENTED_IN_XOD_PATH, {}]),
+  R.concat(
+    R.map(arityStep => [getVariadicPath(arityStep), {}])(
+      R.range(1, MAX_ARITY_STEP + 1)
+    )
+  ),
+  R.ap([
+    // [[patchBaseName, patchPins]] for each type and direction
+    R.juxt([
+      // TODO: make more DRY or more readable?
       getTerminalPath(DIRECTION.OUTPUT),
       getTerminalPins(DIRECTION.OUTPUT),
     ]),
@@ -82,10 +80,7 @@ const TERMINAL_NODE_PINS = R.compose(
       getInternalTerminalPath,
       R.converge(
         R.merge,
-        R.compose(
-          R.map(getTerminalPins),
-          R.values
-        )(DIRECTION)
+        R.compose(R.map(getTerminalPins), R.values)(DIRECTION)
       ),
     ])
   ),
@@ -93,8 +88,6 @@ const TERMINAL_NODE_PINS = R.compose(
 )(PIN_TYPE);
 
 // :: PatchPath -> (StrMap Pin) | Null
-export const getHardcodedPinsForPatchPath =
-  R.flip(R.prop)(R.merge(
-    PINS_OF_PATCH_NODES,
-    TERMINAL_NODE_PINS
-  ));
+export const getHardcodedPinsForPatchPath = R.flip(R.prop)(
+  R.merge(PINS_OF_PATCH_NODES, TERMINAL_NODE_PINS)
+);

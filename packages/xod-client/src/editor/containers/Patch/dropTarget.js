@@ -2,10 +2,7 @@ import { DropTarget } from 'react-dnd';
 
 import { EDITOR_MODE, DRAGGED_ENTITY_TYPE } from '../../constants';
 
-import {
-  snapNodePositionToSlots,
-} from '../../../project/nodeLayout';
-
+import { snapNodePositionToSlots } from '../../../project/nodeLayout';
 
 const getDraggedPatchPosition = (props, monitor, component) => {
   const globalDropPosition = monitor.getClientOffset();
@@ -25,11 +22,7 @@ const dropTarget = {
 
     const { patchPath } = monitor.getItem();
 
-    props.actions.addNode(
-      patchPath,
-      newNodePosition,
-      props.patchPath
-    );
+    props.actions.addNode(patchPath, newNodePosition, props.patchPath);
     component.goToDefaultMode();
   },
   hover(props, monitor, component) {
@@ -37,10 +30,9 @@ const dropTarget = {
 
     if (!monitor.isOver()) return;
 
-    component.setModeStateThrottled(
-      EDITOR_MODE.ACCEPTING_DRAGGED_PATCH,
-      { previewPosition: getDraggedPatchPosition(props, monitor, component) }
-    );
+    component.setModeStateThrottled(EDITOR_MODE.ACCEPTING_DRAGGED_PATCH, {
+      previewPosition: getDraggedPatchPosition(props, monitor, component),
+    });
   },
   canDrop(props, monitor) {
     const { patchPath } = monitor.getItem();
@@ -48,7 +40,8 @@ const dropTarget = {
   },
 };
 
-export default DropTarget( // eslint-disable-line new-cap
+// eslint-disable-next-line new-cap
+export default DropTarget(
   DRAGGED_ENTITY_TYPE.PATCH,
   dropTarget,
   (conn, monitor) => ({

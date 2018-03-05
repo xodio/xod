@@ -19,15 +19,11 @@ import * as MSG from '../messages';
 const getSuggestionValue = R.prop('requestParams');
 
 const renderNothingFound = () => (
-  <div className="error">
-    {MSG.LIB_SUGGESTER_NOTHING_FOUND}
-  </div>
+  <div className="error">{MSG.LIB_SUGGESTER_NOTHING_FOUND}</div>
 );
 
 const renderTypeToBegin = () => (
-  <div className="hint">
-    {MSG.LIB_SUGGESTER_TYPE_TO_BEGIN}
-  </div>
+  <div className="hint">{MSG.LIB_SUGGESTER_TYPE_TO_BEGIN}</div>
 );
 
 class LibSuggester extends React.Component {
@@ -45,8 +41,12 @@ class LibSuggester extends React.Component {
 
     this.renderItem = this.renderItem.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
-    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(
+      this
+    );
+    this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(
+      this
+    );
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this);
     this.storeInputReference = this.storeInputReference.bind(this);
     this.renderContent = this.renderContent.bind(this);
@@ -70,7 +70,7 @@ class LibSuggester extends React.Component {
 
     this.setState({
       value: newValue,
-      notFound: (newValue === '') ? false : this.state.notFound,
+      notFound: newValue === '' ? false : this.state.notFound,
     });
   }
 
@@ -105,11 +105,11 @@ class LibSuggester extends React.Component {
     fetchLibData(getPmSwaggerUrl(), request)
       .then(R.of) // TODO: Once it will become an array
       .catch(R.always([]))
-      .then(
-        data => this.setState({
+      .then(data =>
+        this.setState({
           suggestions: data,
           loading: false,
-          notFound: (data.length === 0),
+          notFound: data.length === 0,
         })
       );
   }
@@ -141,9 +141,9 @@ class LibSuggester extends React.Component {
       'is-highlighted': isHighlighted,
     });
 
-    const license = (item.license)
-      ? <span className="license">{item.license}</span>
-      : null;
+    const license = item.license ? (
+      <span className="license">{item.license}</span>
+    ) : null;
 
     const libName = `${item.owner}/${item.libname}`;
 
@@ -187,7 +187,7 @@ class LibSuggester extends React.Component {
       placeholder: 'Search libraries',
       value,
       onChange: this.onChange,
-      onKeyDown: (event) => {
+      onKeyDown: event => {
         const code = event.keyCode || event.which;
         if (code === KEYCODE.ESCAPE && event.target.value === '') {
           this.props.onBlur();
@@ -197,12 +197,9 @@ class LibSuggester extends React.Component {
       type: 'search',
     };
 
-    const loading = (this.state.loading) ? (
+    const loading = this.state.loading ? (
       <div className="loading-icon">
-        <Icon
-          name="circle-o-notch"
-          spin
-        />
+        <Icon name="circle-o-notch" spin />
       </div>
     ) : null;
 

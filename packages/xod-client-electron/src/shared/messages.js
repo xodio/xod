@@ -1,10 +1,13 @@
 import composeMessage from './composeMessage';
 import * as EVENTS from './events';
 
-export const CODE_TRANSPILED = 'Project was successfully transpiled. Searching for device...';
-export const PORT_FOUND = 'Port with connected Arduino was found. Installing toolchains...';
+export const CODE_TRANSPILED =
+  'Project was successfully transpiled. Searching for device...';
+export const PORT_FOUND =
+  'Port with connected Arduino was found. Installing toolchains...';
 export const TOOLCHAIN_INSTALLED = 'Toolchain is installed. Uploading...';
-export const CLOUD_TOOLCHAIN_INSTALLED = 'Toolchain is installed. Compiling code in the cloud...';
+export const CLOUD_TOOLCHAIN_INSTALLED =
+  'Toolchain is installed. Compiling code in the cloud...';
 export const CODE_COMPILED = 'Code compiled succesfully. Uploading...';
 
 export const ENUMERATING_PORTS = 'Enumerating...';
@@ -29,8 +32,9 @@ export const DEBUG_SESSION_STOPPED_ON_TAB_CLOSE = composeMessage(
 );
 export const DEBUG_LOST_CONNECTION = 'Lost connection with the device.';
 
-export const updateAvailableMessage = version => composeMessage(
-  'Update available',
-  `New version ${version} of XOD\u00A0IDE is available`,
-  'Download & Install'
-);
+export const updateAvailableMessage = version =>
+  composeMessage(
+    'Update available',
+    `New version ${version} of XOD\u00A0IDE is available`,
+    'Download & Install'
+  );

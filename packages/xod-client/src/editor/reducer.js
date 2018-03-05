@@ -8,9 +8,7 @@ import * as DAT from '../debugger/actionTypes';
 import { REMOVE_SELECTION } from '../projectBrowser/actionTypes';
 
 import { DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
-import {
-  MAIN_PATCH_PATH,
-} from '../project/constants';
+import { MAIN_PATCH_PATH } from '../project/constants';
 import {
   DEBUGGER_TAB_ID,
   FOCUS_AREAS,
@@ -18,7 +16,11 @@ import {
   TAB_TYPES,
   PANEL_IDS,
 } from './constants';
-import { createSelectionEntity, getNewSelection, getTabByPatchPath } from './utils';
+import {
+  createSelectionEntity,
+  getNewSelection,
+  getTabByPatchPath,
+} from './utils';
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
 import { getInitialPatchOffset } from '../project/utils';
@@ -32,26 +34,14 @@ import { getInitialPatchOffset } from '../project/utils';
 const getTabs = R.prop('tabs');
 const getCurrentTabId = R.prop('currentTabId');
 
-const getTabById = R.curry(
-  (tabId, state) => R.compose(
-    R.propOr(null, tabId),
-    getTabs
-  )(state)
+const getTabById = R.curry((tabId, state) =>
+  R.compose(R.propOr(null, tabId), getTabs)(state)
 );
 
-const getCurrentTab = R.converge(
-  getTabById,
-  [
-    getCurrentTabId,
-    R.identity,
-  ]
-);
+const getCurrentTab = R.converge(getTabById, [getCurrentTabId, R.identity]);
 
 const isTabOpened = R.curry((tabId, state) =>
-  R.compose(
-    R.complement(R.isNil),
-    getTabById(tabId)
-  )(state)
+  R.compose(R.complement(R.isNil), getTabById(tabId))(state)
 );
 
 // focuses on a current tab
@@ -65,46 +55,41 @@ export const currentTabLens = R.lens(
   )
 );
 
-const getBreadcrumbs = R.compose(
-  R.prop('breadcrumbs'),
-  getCurrentTab
-);
+const getBreadcrumbs = R.compose(R.prop('breadcrumbs'), getCurrentTab);
 const getBreadcrumbActiveIndex = R.compose(
   R.propOr(-1, 'activeIndex'),
   getBreadcrumbs
 );
-const getBreadcrumbChunks = R.compose(
-  R.propOr([], 'chunks'),
-  getBreadcrumbs
+const getBreadcrumbChunks = R.compose(R.propOr([], 'chunks'), getBreadcrumbs);
+
+const isPatchOpened = R.curry((patchPath, state) =>
+  R.compose(R.complement(R.isNil), getTabByPatchPath(patchPath), getTabs)(state)
 );
 
-const isPatchOpened = R.curry(
-  (patchPath, state) => R.compose(
-    R.complement(R.isNil),
-    getTabByPatchPath(patchPath),
-    getTabs
-  )(state)
-);
-
-const setTabOffset = R.curry(
-  (offset, tabId, state) => R.compose(
+const setTabOffset = R.curry((offset, tabId, state) =>
+  R.compose(
     R.when(
-      () => (tabId === DEBUGGER_TAB_ID),
-      newState => R.assocPath(
-        ['tabs', tabId, 'breadcrumbs', 'chunks', getBreadcrumbActiveIndex(newState), 'offset'],
-        offset,
-        newState
-      )
+      () => tabId === DEBUGGER_TAB_ID,
+      newState =>
+        R.assocPath(
+          [
+            'tabs',
+            tabId,
+            'breadcrumbs',
+            'chunks',
+            getBreadcrumbActiveIndex(newState),
+            'offset',
+          ],
+          offset,
+          newState
+        )
     ),
-    R.assocPath(
-      ['tabs', tabId, 'offset'],
-      offset
-    )
+    R.assocPath(['tabs', tabId, 'offset'], offset)
   )(state)
 );
 
-const getTabIdbyPatchPath = R.curry(
-  (patchPath, state) => R.compose(
+const getTabIdbyPatchPath = R.curry((patchPath, state) =>
+  R.compose(
     R.propOr(null, 'id'),
     R.find(R.propEq('patchPath', patchPath)),
     R.values,
@@ -112,62 +97,57 @@ const getTabIdbyPatchPath = R.curry(
   )(state)
 );
 
-const listTabsByPatchPath = R.curry(
-  (patchPath, state) => R.compose(
-    R.filter(R.propEq('patchPath', patchPath)),
-    R.values,
-    getTabs
-  )(state)
+const listTabsByPatchPath = R.curry((patchPath, state) =>
+  R.compose(R.filter(R.propEq('patchPath', patchPath)), R.values, getTabs)(
+    state
+  )
 );
 
-const syncTabOffset = R.curry(
-  (offset, state) => {
-    const currentTab = getTabById(state.currentTabId, state);
-    const currentPatchPath = currentTab.patchPath;
-    if (!currentTab) return state;
+const syncTabOffset = R.curry((offset, state) => {
+  const currentTab = getTabById(state.currentTabId, state);
+  const currentPatchPath = currentTab.patchPath;
+  if (!currentTab) return state;
 
-    const tabIdsToSync = R.compose(
-      R.map(R.prop('id')),
-      R.reject(R.propEq('id', state.currentTabId)),
-      listTabsByPatchPath(currentPatchPath)
-    )(state);
-    const syncOffsets = R.map(setTabOffset(offset), tabIdsToSync);
+  const tabIdsToSync = R.compose(
+    R.map(R.prop('id')),
+    R.reject(R.propEq('id', state.currentTabId)),
+    listTabsByPatchPath(currentPatchPath)
+  )(state);
+  const syncOffsets = R.map(setTabOffset(offset), tabIdsToSync);
 
-    return R.reduce((acc, fn) => fn(acc), state, syncOffsets);
-  }
-);
+  return R.reduce((acc, fn) => fn(acc), state, syncOffsets);
+});
 
-const setPropsToTab = R.curry(
-  (id, props, state) => R.compose(
+const setPropsToTab = R.curry((id, props, state) =>
+  R.compose(
     R.assocPath(['tabs', id], R.__, state),
     R.merge(R.__, props),
     getTabById(id)
   )(state)
 );
 
-const addTabWithProps = R.curry(
-  (id, type, patchPath, state) => {
-    const tabs = R.prop('tabs')(state);
-    const lastIndex = R.reduce(
-      (acc, tab) => R.pipe(
-        R.prop('index'),
-        R.max(acc)
-      )(tab),
-      -1,
-      R.values(tabs)
-    );
-    const newIndex = R.inc(lastIndex);
+const addTabWithProps = R.curry((id, type, patchPath, state) => {
+  const tabs = R.prop('tabs')(state);
+  const lastIndex = R.reduce(
+    (acc, tab) => R.pipe(R.prop('index'), R.max(acc))(tab),
+    -1,
+    R.values(tabs)
+  );
+  const newIndex = R.inc(lastIndex);
 
-    return setPropsToTab(id, {
+  return setPropsToTab(
+    id,
+    {
       id,
       patchPath,
       index: newIndex,
       type,
       offset: DEFAULT_PANNING_OFFSET,
       isEditingCppImplementation: false,
-    }, state);
-  }
-);
+    },
+    state
+  );
+});
 
 const addPatchTab = R.curry((newId, patchPath, state) => {
   if (!patchPath) return state;
@@ -175,7 +155,9 @@ const addPatchTab = R.curry((newId, patchPath, state) => {
 });
 
 const applyTabSort = (tab, payload) => {
-  if (R.not(R.has(tab.id, payload))) { return tab; }
+  if (R.not(R.has(tab.id, payload))) {
+    return tab;
+  }
 
   return R.assoc('index', payload[tab.id].index, tab);
 };
@@ -184,22 +166,18 @@ const resetCurrentPatchPath = (reducer, state, project) => {
   const stateWithClearedTabs = R.assoc('tabs', {}, state);
 
   return R.compose(
-    R.ifElse(
-      R.isNil,
-      R.always(stateWithClearedTabs),
-      (firstLocalPatch) => {
-        const firstPatchPath = XP.getPatchPath(firstLocalPatch);
-        const offset = getInitialPatchOffset(firstPatchPath, project);
+    R.ifElse(R.isNil, R.always(stateWithClearedTabs), firstLocalPatch => {
+      const firstPatchPath = XP.getPatchPath(firstLocalPatch);
+      const offset = getInitialPatchOffset(firstPatchPath, project);
 
-        return [
-          switchPatchUnsafe(firstPatchPath),
-          setCurrentPatchOffset(offset),
-        ].reduce(reducer, stateWithClearedTabs);
-      }
-    ),
+      return [
+        switchPatchUnsafe(firstPatchPath),
+        setCurrentPatchOffset(offset),
+      ].reduce(reducer, stateWithClearedTabs);
+    }),
     R.head,
     R.sortBy(XP.getPatchPath),
-    XP.listLocalPatches,
+    XP.listLocalPatches
   )(project);
 };
 
@@ -214,117 +192,108 @@ export const selectionLens = R.lensProp('selection');
 // focuses on a linking pin of a given tab
 export const linkingPinLens = R.lensProp('linkingPin');
 
-const openPatchByPath = R.curry(
-  (patchPath, state) => {
-    const alreadyOpened = isPatchOpened(patchPath, state);
-    const tabId = (alreadyOpened) ?
-        getTabIdbyPatchPath(patchPath, state) :
-        shortid.generate();
+const openPatchByPath = R.curry((patchPath, state) => {
+  const alreadyOpened = isPatchOpened(patchPath, state);
+  const tabId = alreadyOpened
+    ? getTabIdbyPatchPath(patchPath, state)
+    : shortid.generate();
 
-    return R.compose(
-      R.assoc('currentTabId', tabId),
-      R.unless(
-        () => alreadyOpened,
-        addPatchTab(tabId, patchPath)
-      )
-    )(state);
-  }
-);
+  return R.compose(
+    R.assoc('currentTabId', tabId),
+    R.unless(() => alreadyOpened, addPatchTab(tabId, patchPath))
+  )(state);
+});
 
-const openLatestOpenedTab = R.converge(
-  R.assoc('currentTabId'),
-  [
-    R.compose( // get patch id from last of remaining tabs
-      R.propOr(null, 'id'),
-      R.last,
-      R.values,
-      R.prop('tabs')
-    ),
-    R.identity,
-  ]
-);
+const openLatestOpenedTab = R.converge(R.assoc('currentTabId'), [
+  R.compose(
+    // get patch id from last of remaining tabs
+    R.propOr(null, 'id'),
+    R.last,
+    R.values,
+    R.prop('tabs')
+  ),
+  R.identity,
+]);
 
-const closeTabById = R.curry(
-  (tabId, state) => {
-    if (!isTabOpened(tabId, state)) return state;
+const closeTabById = R.curry((tabId, state) => {
+  if (!isTabOpened(tabId, state)) return state;
 
-    const tabToClose = getTabById(tabId, state);
+  const tabToClose = getTabById(tabId, state);
 
-    const isDebuggerTabClosing = () => (tabToClose.type === TAB_TYPES.DEBUGGER);
-    const isCurrentTabClosing = R.propEq('currentTabId', tabId);
-    const isCurrentDebuggerTabClosing = R.both(
-      isDebuggerTabClosing,
-      isCurrentTabClosing
-    );
+  const isDebuggerTabClosing = () => tabToClose.type === TAB_TYPES.DEBUGGER;
+  const isCurrentTabClosing = R.propEq('currentTabId', tabId);
+  const isCurrentDebuggerTabClosing = R.both(
+    isDebuggerTabClosing,
+    isCurrentTabClosing
+  );
 
-    const openOriginalPatch = patchPath => R.compose(
-      R.converge(
-        setTabOffset(tabToClose.offset),
-        [
-          getTabIdbyPatchPath(patchPath),
-          R.identity,
-        ]
-      ),
+  const openOriginalPatch = patchPath =>
+    R.compose(
+      R.converge(setTabOffset(tabToClose.offset), [
+        getTabIdbyPatchPath(patchPath),
+        R.identity,
+      ]),
       openPatchByPath(patchPath)
     );
 
-    return R.compose(
-      R.cond([
-        [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
-        [isCurrentTabClosing, openLatestOpenedTab],
-        [R.T, R.identity],
-      ]),
-      R.dissocPath(['tabs', tabId])
-    )(state);
-  }
-);
+  return R.compose(
+    R.cond([
+      [isCurrentDebuggerTabClosing, openOriginalPatch(tabToClose.patchPath)],
+      [isCurrentTabClosing, openLatestOpenedTab],
+      [R.T, R.identity],
+    ]),
+    R.dissocPath(['tabs', tabId])
+  )(state);
+});
 
-const closeTabByPatchPath = R.curry(
-  (patchPath, state) => {
-    const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
-    return closeTabById(tabIdToClose, state);
-  }
-);
+const closeTabByPatchPath = R.curry((patchPath, state) => {
+  const tabIdToClose = getTabIdbyPatchPath(patchPath, state);
+  return closeTabById(tabIdToClose, state);
+});
 
 // :: PatchPath -> PatchPath -> Tab -> Tab
 const renamePatchPathInBreadcrumbs = R.curry(
-  (newPatchPath, oldPatchPath, tab) => R.when(
-    R.has('breadcrumbs'),
-    R.over(
-      R.lensPath(['breadcrumbs', 'chunks']),
-      R.map(R.when(
-        R.propEq('patchPath', oldPatchPath),
-        R.assoc('patchPath', newPatchPath)
-      ))
-    )
-  )(tab)
+  (newPatchPath, oldPatchPath, tab) =>
+    R.when(
+      R.has('breadcrumbs'),
+      R.over(
+        R.lensPath(['breadcrumbs', 'chunks']),
+        R.map(
+          R.when(
+            R.propEq('patchPath', oldPatchPath),
+            R.assoc('patchPath', newPatchPath)
+          )
+        )
+      )
+    )(tab)
 );
 
 const renamePatchInTabs = (newPatchPath, oldPatchPath, state) => {
-  const tabIdsToRename = R.compose(
-    R.map(R.prop('id')),
-    listTabsByPatchPath
-  )(oldPatchPath, state);
-
-  return (tabIdsToRename.length === 0) ? state : R.over(
-    R.lensProp('tabs'),
-    R.map(R.compose(
-      renamePatchPathInBreadcrumbs(newPatchPath, oldPatchPath),
-      R.when(
-        R.propEq('patchPath', oldPatchPath),
-        R.assoc('patchPath', newPatchPath)
-      )
-    )),
+  const tabIdsToRename = R.compose(R.map(R.prop('id')), listTabsByPatchPath)(
+    oldPatchPath,
     state
   );
+
+  return tabIdsToRename.length === 0
+    ? state
+    : R.over(
+        R.lensProp('tabs'),
+        R.map(
+          R.compose(
+            renamePatchPathInBreadcrumbs(newPatchPath, oldPatchPath),
+            R.when(
+              R.propEq('patchPath', oldPatchPath),
+              R.assoc('patchPath', newPatchPath)
+            )
+          )
+        ),
+        state
+      );
 };
 
-const findChunkIndex = R.curry(
-  (patchPath, nodeId, chunks) =>
-    R.findIndex(R.both(
-      R.propEq('patchPath', patchPath),
-      R.propEq('nodeId', nodeId),
-    ),
+const findChunkIndex = R.curry((patchPath, nodeId, chunks) =>
+  R.findIndex(
+    R.both(R.propEq('patchPath', patchPath), R.propEq('nodeId', nodeId)),
     chunks
   )
 );
@@ -335,61 +304,51 @@ const createChunk = (patchPath, nodeId) => ({
   offset: DEFAULT_PANNING_OFFSET,
 });
 
-const setActiveIndex = R.curry(
-  (index, state) => {
-    const curTabId = getCurrentTabId(state);
-    return R.assocPath(['tabs', curTabId, 'breadcrumbs', 'activeIndex'], index, state);
-  }
-);
+const setActiveIndex = R.curry((index, state) => {
+  const curTabId = getCurrentTabId(state);
+  return R.assocPath(
+    ['tabs', curTabId, 'breadcrumbs', 'activeIndex'],
+    index,
+    state
+  );
+});
 
-const drillDown = R.curry(
-  (patchPath, nodeId, state) => {
-    const currentTabId = getCurrentTabId(state);
-    if (currentTabId !== DEBUGGER_TAB_ID) return state;
+const drillDown = R.curry((patchPath, nodeId, state) => {
+  const currentTabId = getCurrentTabId(state);
+  if (currentTabId !== DEBUGGER_TAB_ID) return state;
 
-    const activeIndex = getBreadcrumbActiveIndex(state);
-    const chunks = getBreadcrumbChunks(state);
-    const index = findChunkIndex(patchPath, nodeId, chunks);
+  const activeIndex = getBreadcrumbActiveIndex(state);
+  const chunks = getBreadcrumbChunks(state);
+  const index = findChunkIndex(patchPath, nodeId, chunks);
 
-    if (index > -1) {
-      const chunkOffset = getBreadcrumbChunks(state)[index].offset;
-      return R.compose(
-        setTabOffset(chunkOffset, currentTabId),
-        setActiveIndex(index)
-      )(state);
-    }
-
-    const shouldResetTail = (activeIndex < (chunks.length - 1));
-    const newChunk = createChunk(patchPath, nodeId);
-    // TODO: always default offset, not calculated optimal
-    const newChunkOffset = newChunk.offset;
-
+  if (index > -1) {
+    const chunkOffset = getBreadcrumbChunks(state)[index].offset;
     return R.compose(
-      setTabOffset(newChunkOffset, currentTabId),
-      R.converge(
-        setActiveIndex,
-        [
-          R.compose(
-            R.dec,
-            R.length,
-            getBreadcrumbChunks
-          ),
-          R.identity,
-        ]
-      ),
-      R.over(
-        R.compose(currentTabLens, R.lensPath(['breadcrumbs', 'chunks'])),
-        R.compose(
-          R.append(newChunk),
-          R.when(
-            () => shouldResetTail,
-            R.take((activeIndex + 1))
-          )
-        )
-      ),
+      setTabOffset(chunkOffset, currentTabId),
+      setActiveIndex(index)
     )(state);
   }
-);
+
+  const shouldResetTail = activeIndex < chunks.length - 1;
+  const newChunk = createChunk(patchPath, nodeId);
+  // TODO: always default offset, not calculated optimal
+  const newChunkOffset = newChunk.offset;
+
+  return R.compose(
+    setTabOffset(newChunkOffset, currentTabId),
+    R.converge(setActiveIndex, [
+      R.compose(R.dec, R.length, getBreadcrumbChunks),
+      R.identity,
+    ]),
+    R.over(
+      R.compose(currentTabLens, R.lensPath(['breadcrumbs', 'chunks'])),
+      R.compose(
+        R.append(newChunk),
+        R.when(() => shouldResetTail, R.take(activeIndex + 1))
+      )
+    )
+  )(state);
+});
 
 // =============================================================================
 //
@@ -408,21 +367,17 @@ const editorReducer = (state = {}, action) => {
     case EAT.EDITOR_SELECT_ENTITY:
       return R.set(
         R.compose(currentTabLens, selectionLens),
-        [
-          createSelectionEntity(
-            action.payload.entityType,
-            action.payload.id
-          ),
-        ],
+        [createSelectionEntity(action.payload.entityType, action.payload.id)],
         state
       );
     case EAT.EDITOR_DESELECT_ENTITY:
       return R.over(
         R.compose(currentTabLens, selectionLens),
-        R.reject(R.equals(createSelectionEntity(
-          action.payload.entityType,
-          action.payload.id
-        ))),
+        R.reject(
+          R.equals(
+            createSelectionEntity(action.payload.entityType, action.payload.id)
+          )
+        ),
         state
       );
     case EAT.EDITOR_ADD_ENTITY_TO_SELECTION:
@@ -430,10 +385,9 @@ const editorReducer = (state = {}, action) => {
         R.compose(currentTabLens, selectionLens),
         R.compose(
           R.uniq,
-          R.append(createSelectionEntity(
-            action.payload.entityType,
-            action.payload.id
-          ))
+          R.append(
+            createSelectionEntity(action.payload.entityType, action.payload.id)
+          )
         ),
         state
       );
@@ -444,7 +398,11 @@ const editorReducer = (state = {}, action) => {
         state
       );
     case EAT.EDITOR_SELECT_PIN:
-      return R.set(R.compose(currentTabLens, linkingPinLens), action.payload, state);
+      return R.set(
+        R.compose(currentTabLens, linkingPinLens),
+        action.payload,
+        state
+      );
     case EAT.EDITOR_DESELECT_PIN:
     case PAT.LINK_ADD:
       return R.set(R.compose(currentTabLens, linkingPinLens), null, state);
@@ -456,21 +414,18 @@ const editorReducer = (state = {}, action) => {
       return R.compose(
         R.set(
           R.compose(currentTabLens, selectionLens),
-          getNewSelection(action.payload.entities),
+          getNewSelection(action.payload.entities)
         ),
         R.assoc('focusedArea', FOCUS_AREAS.WORKAREA)
       )(state);
     case PAT.NODE_ADD:
       return R.compose(
-        R.set(
-          R.compose(currentTabLens, selectionLens),
-          [
-            createSelectionEntity(
-              SELECTION_ENTITY_TYPE.NODE,
-              action.payload.newNodeId
-            ),
-          ]
-        ),
+        R.set(R.compose(currentTabLens, selectionLens), [
+          createSelectionEntity(
+            SELECTION_ENTITY_TYPE.NODE,
+            action.payload.newNodeId
+          ),
+        ]),
         R.assoc('focusedArea', FOCUS_AREAS.WORKAREA),
         R.assoc('draggedPreviewSize', { width: 0, height: 0 })
       )(state);
@@ -499,11 +454,7 @@ const editorReducer = (state = {}, action) => {
     case EAT.EDITOR_SWITCH_PATCH:
       return openPatchByPath(action.payload.patchPath, state);
     case EAT.EDITOR_SWITCH_TAB:
-      return R.assoc(
-        'currentTabId',
-        action.payload.tabId,
-        state
-      );
+      return R.assoc('currentTabId', action.payload.tabId, state);
     case EAT.EDITOR_OPEN_IMPLEMENTATION_CODE:
       return R.over(
         currentTabLens,
@@ -593,7 +544,11 @@ const editorReducer = (state = {}, action) => {
         R.assocPath(['suggester', 'placePosition'], null)
       )(state);
     case EAT.HIGHLIGHT_SUGGESTER_ITEM:
-      return R.assocPath(['suggester', 'highlightedPatchPath'], action.payload.patchPath, state);
+      return R.assocPath(
+        ['suggester', 'highlightedPatchPath'],
+        action.payload.patchPath,
+        state
+      );
     case EAT.SHOW_LIB_SUGGESTER:
       return R.assoc('libSuggesterVisible', true, state);
     case EAT.INSTALL_LIBRARIES_BEGIN:
@@ -623,23 +578,19 @@ const editorReducer = (state = {}, action) => {
       return R.compose(
         drillDown(action.payload.patchPath, action.payload.nodeId),
         setPropsToTab(DEBUGGER_TAB_ID, { patchPath: action.payload.patchPath }),
-        R.over(currentTabLens, clearSelection),
+        R.over(currentTabLens, clearSelection)
       )(state);
 
     //
     // panel settings
     //
     case EAT.SET_SIDEBAR_LAYOUT:
-      return R.over(
-        R.lensProp('panels'),
-        R.merge(R.__, action.payload),
-        state
-      );
+      return R.over(R.lensProp('panels'), R.merge(R.__, action.payload), state);
     case EAT.RESIZE_PANELS:
       return R.over(
         R.lensProp('panels'),
-        R.mapObjIndexed(
-          (val, id) => R.when(
+        R.mapObjIndexed((val, id) =>
+          R.when(
             () => R.contains(id, R.keys(action.payload)),
             R.assoc('size', action.payload[id])
           )(val)

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import PinWidget from './PinWidget';
 
-const StringWidget = (props) => {
-  const onChange = (event) => {
+const StringWidget = props => {
+  const onChange = event => {
     props.onChange(event.target.value);
   };
 

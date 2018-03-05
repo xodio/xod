@@ -5,7 +5,10 @@ import contextMenu from 'electron-context-menu';
 import { URL } from 'url';
 import * as R from 'ramda';
 
-import { URL_ACTION_PROTOCOL, URL_ACTION_PREFIX } from 'xod-client/dist/core/urlActions';
+import {
+  URL_ACTION_PROTOCOL,
+  URL_ACTION_PREFIX,
+} from 'xod-client/dist/core/urlActions';
 
 import * as EVENTS from '../shared/events';
 import {
@@ -20,7 +23,10 @@ import {
 import * as settings from './settings';
 import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
 import * as WA from './workspaceActions';
-import { configureAutoUpdater, subscribeOnAutoUpdaterEvents } from './autoupdate';
+import {
+  configureAutoUpdater,
+  subscribeOnAutoUpdaterEvents,
+} from './autoupdate';
 import createAppStore from './store/index';
 
 import { STATES, getEventNameWithState } from '../shared/eventStates';
@@ -92,14 +98,14 @@ function createWindow() {
     if (href !== webContents.getURL()) {
       e.preventDefault();
       const url = new URL(href);
-      if (url.protocol === URL_ACTION_PROTOCOL && url.hostname === URL_ACTION_PREFIX) {
-        win.webContents.send(
-          EVENTS.XOD_URL_CLICKED,
-          {
-            actionName: url.pathname,
-            params: R.fromPairs(Array.from(url.searchParams.entries())),
-          }
-        );
+      if (
+        url.protocol === URL_ACTION_PROTOCOL &&
+        url.hostname === URL_ACTION_PREFIX
+      ) {
+        win.webContents.send(EVENTS.XOD_URL_CLICKED, {
+          actionName: url.pathname,
+          params: R.fromPairs(Array.from(url.searchParams.entries())),
+        });
       } else {
         shell.openExternal(href);
       }
@@ -108,7 +114,7 @@ function createWindow() {
   webContents.on('will-navigate', handleRedirect);
   webContents.on('new-window', handleRedirect);
 
-  win.on('close', (e) => {
+  win.on('close', e => {
     // a bit of magic, because of weird `onbeforeunload` behaviour.
     // see https://github.com/electron/electron/issues/7977
     if (!confirmedWindowClose) {
@@ -130,20 +136,20 @@ function createWindow() {
 
 const subscribeToRemoteAction = (processName, remoteAction) => {
   ipcMain.on(processName, (event, data) => {
-    event.sender.send(
-      getEventNameWithState(processName, STATES.PROCESS),
-    );
-    remoteAction(event, data).then((result) => {
-      event.sender.send(
-        getEventNameWithState(processName, STATES.COMPLETE),
-        result
-      );
-    }).catch((err) => {
-      event.sender.send(
-        getEventNameWithState(processName, STATES.ERROR),
-        errorToPlainObject(err)
-      );
-    });
+    event.sender.send(getEventNameWithState(processName, STATES.PROCESS));
+    remoteAction(event, data)
+      .then(result => {
+        event.sender.send(
+          getEventNameWithState(processName, STATES.COMPLETE),
+          result
+        );
+      })
+      .catch(err => {
+        event.sender.send(
+          getEventNameWithState(processName, STATES.ERROR),
+          errorToPlainObject(err)
+        );
+      });
   });
 };
 
@@ -159,8 +165,9 @@ const onReady = () => {
       REDUX_DEVTOOLS,
     } = require('electron-devtools-installer'); // eslint-disable-line global-require
 
-    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-      .catch(err => console.log(err)); // eslint-disable-line no-console
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).catch(
+      err => console.log(err) // eslint-disable-line no-console
+    );
   }
   settings.setDefaults();
 
@@ -169,7 +176,7 @@ const onReady = () => {
   let debugPort = null;
   let userAttemptedCloseSerialPort = false;
 
-  const stopDebugSession = (event) => {
+  const stopDebugSession = event => {
     if (debugPort) {
       userAttemptedCloseSerialPort = true;
       stopDebugSessionHandler(event, debugPort);
@@ -177,20 +184,26 @@ const onReady = () => {
   };
 
   WA.subscribeToWorkspaceEvents(ipcMain, store);
-  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) => Promise.resolve()
-    .then(() => ((debugPort) ? stopDebugSession(event) : event))
-    .then(() => uploadToArduinoHandler(event, payload))
+  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) =>
+    Promise.resolve()
+      .then(() => (debugPort ? stopDebugSession(event) : event))
+      .then(() => uploadToArduinoHandler(event, payload))
   );
-  ipcMain.on(EVENTS.START_DEBUG_SESSION, startDebugSessionHandler(
-    (port) => {
-      userAttemptedCloseSerialPort = false;
-      debugPort = port;
-    },
-    (sendErr) => {
-      if (!userAttemptedCloseSerialPort) { sendErr(); }
-      debugPort = null;
-    }
-  ));
+  ipcMain.on(
+    EVENTS.START_DEBUG_SESSION,
+    startDebugSessionHandler(
+      port => {
+        userAttemptedCloseSerialPort = false;
+        debugPort = port;
+      },
+      sendErr => {
+        if (!userAttemptedCloseSerialPort) {
+          sendErr();
+        }
+        debugPort = null;
+      }
+    )
+  );
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);

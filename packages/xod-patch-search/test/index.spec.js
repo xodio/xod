@@ -12,33 +12,33 @@ describe('xod-patch-search/index', () => {
   const workspace = path.resolve(__dirname, '../../../workspace');
   const getProjectPath = projectName => path.resolve(workspace, projectName);
 
-  before(() => loadProject([workspace], getProjectPath('welcome-to-xod'))
-    .then(listPatches)
-    .then(createIndexData)
-    .then((iData) => {
-      indexData = iData;
-      idx = createIndex(indexData);
-    })
+  before(() =>
+    loadProject([workspace], getProjectPath('welcome-to-xod'))
+      .then(listPatches)
+      .then(createIndexData)
+      .then(iData => {
+        indexData = iData;
+        idx = createIndex(indexData);
+      })
   );
 
   it('searches by path correctly', () => {
     const result = idx.search('path:number');
-    assert.equal(
-      result[0].item.path,
-      'xod/core/nth-number'
-    );
+    assert.equal(result[0].item.path, 'xod/core/nth-number');
   });
 
   it('searches by lib correctly', () => {
     const result = idx.search('lib:xod/core');
-    const expectedLength = indexData.filter(item => item.lib === 'xod/core').length;
+    const expectedLength = indexData.filter(item => item.lib === 'xod/core')
+      .length;
     assert.lengthOf(result, expectedLength);
   });
 
-  it('searches: "number"', () => assert.equal(
-    idx.search('number')[0].item.path,
-    'xod/core/nth-number' // Cause it has a `number` in the path and it alphabetically sorted (that's why not *-to-string)
-  ));
+  it('searches: "number"', () =>
+    assert.equal(
+      idx.search('number')[0].item.path,
+      'xod/core/nth-number' // Cause it has a `number` in the path and it alphabetically sorted (that's why not *-to-string)
+    ));
 
   it('searches: "lib:xod/patch-nodes number"', () => {
     assert.equal(
@@ -57,10 +57,11 @@ describe('xod-patch-search/index', () => {
     assert.includeMembers(foundPatchPaths, ['xod/units/m-to-ft']); // Don't care about position, but be sure that it's found
   });
 
-  it('searches: "temp"', () => assert.equal(
-    idx.search('temp')[0].item.path,
-    'xod/units/c-to-f' // Cause this node has a `temperature` in the description
-  ));
+  it('searches: "temp"', () =>
+    assert.equal(
+      idx.search('temp')[0].item.path,
+      'xod/units/c-to-f' // Cause this node has a `temperature` in the description
+    ));
 
   it('searches: "therm"', () => {
     const results = idx.search('therm');
@@ -84,9 +85,6 @@ describe('xod-patch-search/index', () => {
       results[1].item.path,
       'xod/common-hardware/hc-sr04-ultrasonic-time'
     );
-    assert.equal(
-      results[2].item.path,
-      'xod/core/multiply'
-    );
+    assert.equal(results[2].item.path, 'xod/core/multiply');
   });
 });

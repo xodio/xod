@@ -24,7 +24,7 @@ describe('expandVariadicNodes', () => {
 
     assert.sameMembers(
       Project.listPatchPaths(expandedProject),
-      Project.listPatchPaths(expected),
+      Project.listPatchPaths(expected)
     );
 
     assert.deepEqual(
@@ -33,8 +33,14 @@ describe('expandVariadicNodes', () => {
       'expanded node type should be updated'
     );
 
-    const expandedPatch = Project.getPatchByPathUnsafe('@/my-variadic-$5', expandedProject);
-    const expectedExpandedPatch = Project.getPatchByPathUnsafe('@/my-variadic-$5', expected);
+    const expandedPatch = Project.getPatchByPathUnsafe(
+      '@/my-variadic-$5',
+      expandedProject
+    );
+    const expectedExpandedPatch = Project.getPatchByPathUnsafe(
+      '@/my-variadic-$5',
+      expected
+    );
 
     assert.deepEqual(
       Patch.listPins(expandedPatch),
@@ -51,10 +57,7 @@ describe('expandVariadicNodes', () => {
         R.reject(Node.isPinNode),
         Patch.listNodes
       ),
-      [
-        expandedPatch,
-        expectedExpandedPatch,
-      ]
+      [expandedPatch, expectedExpandedPatch]
     );
 
     const omitIds = R.map(R.dissoc('id'));
@@ -72,22 +75,28 @@ describe('expandVariadicNodes', () => {
       R.map(R.map(Node.getNodeId)),
       R.zip
     )(expandedPatchNonTerminalNodes, expectedExpandedPatchNonTerminalNodes);
-    const replaceId = id => (correspondingExpectedNodeIds[id] || id);
+    const replaceId = id => correspondingExpectedNodeIds[id] || id;
 
-    const expectedExpandedPatchLinks = R.compose(
-      omitIds,
-      Patch.listLinks
-    )(expectedExpandedPatch);
+    const expectedExpandedPatchLinks = R.compose(omitIds, Patch.listLinks)(
+      expectedExpandedPatch
+    );
 
     const expandedPatchLinks = R.compose(
       omitIds,
-      R.map((link) => {
+      R.map(link => {
         const inputPinKey = Link.getLinkInputPinKey(link);
         const inputNodeId = R.compose(replaceId, Link.getLinkInputNodeId)(link);
         const outputPinKey = Link.getLinkOutputPinKey(link);
-        const outputNodeId = R.compose(replaceId, Link.getLinkOutputNodeId)(link);
+        const outputNodeId = R.compose(replaceId, Link.getLinkOutputNodeId)(
+          link
+        );
 
-        return Link.createLink(inputPinKey, inputNodeId, outputPinKey, outputNodeId);
+        return Link.createLink(
+          inputPinKey,
+          inputNodeId,
+          outputPinKey,
+          outputNodeId
+        );
       }),
       Patch.listLinks
     )(expandedPatch);

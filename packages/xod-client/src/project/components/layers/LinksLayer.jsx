@@ -11,7 +11,7 @@ import XODLink from '../Link';
 const LinksLayer = ({ links, selection, isDragged = false }) => (
   <g className="LinksLayer">
     {R.compose(
-      R.map(link =>
+      R.map(link => (
         <XODLink
           key={link.id}
           id={link.id}
@@ -22,7 +22,7 @@ const LinksLayer = ({ links, selection, isDragged = false }) => (
           isDragged={isDragged}
           isSelected={isLinkSelected(selection, link.id)}
         />
-      ),
+      )),
       R.values
     )(links)}
   </g>

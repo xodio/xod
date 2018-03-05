@@ -9,23 +9,15 @@ const TabsItem = ({ data, onClick, onClose }) => {
   });
 
   const handleClick = () => onClick(data.id);
-  const handleClose = (event) => {
+  const handleClose = event => {
     event.stopPropagation();
     onClose(data.id);
   };
 
   return (
-    <li
-      className={classes}
-      onMouseDown={handleClick}
-    >
-      <span className="tab-name">
-        {data.label}
-      </span>
-      <span
-        className="tab-close"
-        onMouseDown={handleClose}
-      >
+    <li className={classes} onMouseDown={handleClick}>
+      <span className="tab-name">{data.label}</span>
+      <span className="tab-close" onMouseDown={handleClose}>
         &times;
       </span>
     </li>

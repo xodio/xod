@@ -19,12 +19,14 @@ export const expectEitherRight = R.curry((testFunction, object) => {
 });
 
 export const expectEitherError = R.curry((originalMessage, err) => {
-  const check = (errObj) => {
+  const check = errObj => {
     assert.typeOf(errObj, 'Error');
     assert.strictEqual(
       errObj.message,
       originalMessage,
-      `Expected Error with message "${originalMessage}", but got Error: ${err.message}`
+      `Expected Error with message "${originalMessage}", but got Error: ${
+        err.message
+      }`
     );
   };
 
@@ -39,68 +41,77 @@ export const expectEitherError = R.curry((originalMessage, err) => {
   );
 });
 
-export const expectOptionalStringGetter = R.curry((expect, method, propName) => {
-  it(`should return empty string for undefined ${propName}`, () => {
-    expect(method({})).to.be.equal('');
-  });
-  it(`should return ${propName}`, () => {
-    const val = 'test';
-    expect(method({ [propName]: val })).to.be.equal(val);
-  });
-});
-
-export const expectOptionalStringSetter = R.curry((expect, method, propName) => {
-  it(`should return new object with assigned ${propName}`, () => {
-    const val = 'test';
-    const object = {};
-    const newobject = method(val, object);
-    expect(newobject)
-      .to.be.an('object')
-      .and.have.property(propName)
-      .to.be.equal(val);
-    expect(newobject).to.be.not.equal(object);
-  });
-  it(`should convert other types into string and assign ${propName}`, () => {
-    expect(method(5, {}))
-      .to.have.property(propName).to.be.equal('5');
-  });
-});
-
-export const expectOptionalNumberGetter = R.curry((expect, method, propName) => {
-  it(`should return 0 for undefined ${propName}`, () => {
-    expect(method({})).to.be.equal(0);
-  });
-  it(`should return ${propName}`, () => {
-    const val = 5;
-    expect(method({ [propName]: val })).to.be.equal(val);
-  });
-});
-
-export const expectOptionalNumberSetter = R.curry((expect, method, propName) => {
-  it(`should return new object with assigned ${propName}`, () => {
-    const val = 5;
-    const object = {};
-    const newobject = method(val, object);
-    expect(newobject)
-      .to.be.an('object')
-      .and.have.property(propName)
-      .to.be.equal(val);
-    expect(newobject).to.be.not.equal(object);
-  });
-  it(`should convert other types into number and assign ${propName}`, () => {
-    expect(method('5', {}))
-      .to.have.property(propName).to.be.equal(5);
-  });
-  it('should assign 0 if converted value is NaN', () => {
-    expect(method('zca', {}))
-      .to.have.property(propName).to.be.equal(0);
-  });
-});
-
-export const assertProps = (actual, expected) => R.forEachObjIndexed(
-  (v, k) => assert.deepPropertyVal(actual, k, v),
-  expected
+export const expectOptionalStringGetter = R.curry(
+  (expect, method, propName) => {
+    it(`should return empty string for undefined ${propName}`, () => {
+      expect(method({})).to.be.equal('');
+    });
+    it(`should return ${propName}`, () => {
+      const val = 'test';
+      expect(method({ [propName]: val })).to.be.equal(val);
+    });
+  }
 );
+
+export const expectOptionalStringSetter = R.curry(
+  (expect, method, propName) => {
+    it(`should return new object with assigned ${propName}`, () => {
+      const val = 'test';
+      const object = {};
+      const newobject = method(val, object);
+      expect(newobject)
+        .to.be.an('object')
+        .and.have.property(propName)
+        .to.be.equal(val);
+      expect(newobject).to.be.not.equal(object);
+    });
+    it(`should convert other types into string and assign ${propName}`, () => {
+      expect(method(5, {}))
+        .to.have.property(propName)
+        .to.be.equal('5');
+    });
+  }
+);
+
+export const expectOptionalNumberGetter = R.curry(
+  (expect, method, propName) => {
+    it(`should return 0 for undefined ${propName}`, () => {
+      expect(method({})).to.be.equal(0);
+    });
+    it(`should return ${propName}`, () => {
+      const val = 5;
+      expect(method({ [propName]: val })).to.be.equal(val);
+    });
+  }
+);
+
+export const expectOptionalNumberSetter = R.curry(
+  (expect, method, propName) => {
+    it(`should return new object with assigned ${propName}`, () => {
+      const val = 5;
+      const object = {};
+      const newobject = method(val, object);
+      expect(newobject)
+        .to.be.an('object')
+        .and.have.property(propName)
+        .to.be.equal(val);
+      expect(newobject).to.be.not.equal(object);
+    });
+    it(`should convert other types into number and assign ${propName}`, () => {
+      expect(method('5', {}))
+        .to.have.property(propName)
+        .to.be.equal(5);
+    });
+    it('should assign 0 if converted value is NaN', () => {
+      expect(method('zca', {}))
+        .to.have.property(propName)
+        .to.be.equal(0);
+    });
+  }
+);
+
+export const assertProps = (actual, expected) =>
+  R.forEachObjIndexed((v, k) => assert.deepPropertyVal(actual, k, v), expected);
 
 //-----------------------------------------------------------------------------
 // Defaultizers
@@ -147,18 +158,9 @@ const assignIds = R.mapObjIndexed((entity, id) => R.assoc('id', id, entity));
 
 export const defaultizePatch = R.compose(
   R.evolve({
-    nodes: R.compose(
-      assignIds,
-      R.map(defaultizeNode)
-    ),
-    links: R.compose(
-      assignIds,
-      R.map(defaultizeLink)
-    ),
-    comments: R.compose(
-      assignIds,
-      R.map(defaultizeComment)
-    ),
+    nodes: R.compose(assignIds, R.map(defaultizeNode)),
+    links: R.compose(assignIds, R.map(defaultizeLink)),
+    comments: R.compose(assignIds, R.map(defaultizeComment)),
   }),
   R.merge({
     '@@type': 'xod-project/Patch',
@@ -199,7 +201,4 @@ export const loadJSON = R.compose(
   filePath => resolve(__dirname, filePath)
 );
 
-export const loadXodball = R.compose(
-  fromXodballDataUnsafe,
-  loadJSON
-);
+export const loadXodball = R.compose(fromXodballDataUnsafe, loadJSON);

@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 const ErrorMessage = props => (
   <div className={`line ${props.data.type}`}>
     <span className="content">{props.data.message}</span>
-    <pre>
-      {props.data.stack}
-    </pre>
+    <pre>{props.data.stack}</pre>
   </div>
 );
 

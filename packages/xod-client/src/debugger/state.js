@@ -5,9 +5,7 @@ export default {
   isVisible: false,
   isRunning: false,
   log: [],
-  uploadLog: [
-    createSystemMessage(INTRODUCTION),
-  ],
+  uploadLog: [createSystemMessage(INTRODUCTION)],
   nodeIdsMap: {},
   watchNodeValues: {},
   uploadProgress: null,

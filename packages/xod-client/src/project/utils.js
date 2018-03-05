@@ -12,24 +12,21 @@ import {
 import { LINK_ERRORS } from '../editor/constants';
 
 // :: NodeId -> PinKey -> RenderableNodes -> RenderablePin
-export const getRenderablePin = R.uncurryN(3, (nodeId, pinKey) => R.path([nodeId, 'pins', pinKey]));
+export const getRenderablePin = R.uncurryN(3, (nodeId, pinKey) =>
+  R.path([nodeId, 'pins', pinKey])
+);
 
 // :: [NodeId] -> Link -> Boolean
-export const isLinkConnectedToNodeIds =
-  R.uncurryN(2, nodeIds =>
-    R.compose(
-      R.complement(R.isEmpty),
-      R.intersection(nodeIds),
-      XP.getLinkNodeIds
-    )
-  );
+export const isLinkConnectedToNodeIds = R.uncurryN(2, nodeIds =>
+  R.compose(R.complement(R.isEmpty), R.intersection(nodeIds), XP.getLinkNodeIds)
+);
 
 //
 // pins linking validation utils
 //
 
 // :: RenderablePin -> String | Null
-export const getPinSelectionError = (pin) => {
+export const getPinSelectionError = pin => {
   if (XP.isInputPin(pin) && pin.isConnected) {
     return LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
   }
@@ -73,7 +70,10 @@ export const getPinLinkabilityValidator = (linkingPin, nodes) => {
     return R.F;
   }
 
-  const selectedPin = R.path([linkingPin.nodeId, 'pins', linkingPin.pinKey], nodes);
+  const selectedPin = R.path(
+    [linkingPin.nodeId, 'pins', linkingPin.pinKey],
+    nodes
+  );
 
   return canPinsBeLinked(selectedPin);
 };
@@ -91,40 +91,33 @@ export const isPatchPathTaken = (state, newPatchPath) => {
 // :: PatchPath -> Project -> Position
 export const getInitialPatchOffset = R.compose(
   getOptimalPanningOffset,
-  R.converge(
-    R.concat,
-    [
-      R.compose(R.map(XP.getNodePosition), XP.listNodes),
-      R.compose(R.map(XP.getCommentPosition), XP.listComments),
-    ]
-  ),
+  R.converge(R.concat, [
+    R.compose(R.map(XP.getNodePosition), XP.listNodes),
+    R.compose(R.map(XP.getCommentPosition), XP.listComments),
+  ]),
   XP.getPatchByPathUnsafe
 );
 
 // extract information from Patch that is required to render it with Node component
-export const patchToNodeProps = R.curry(
-  (shouldNormalizePinLabels, patch) => {
-    const pins = XP.listPins(patch);
-    const size = calcutaleNodeSizeFromPins(pins);
-    const type = XP.getPatchPath(patch);
-    const isVariadic = XP.isVariadicPatch(patch);
-    const arityStep = foldMaybe(
-      0,
-      R.identity,
-      XP.getArityStepFromPatch(patch)
-    );
+export const patchToNodeProps = R.curry((shouldNormalizePinLabels, patch) => {
+  const pins = XP.listPins(patch);
+  const size = calcutaleNodeSizeFromPins(pins);
+  const type = XP.getPatchPath(patch);
+  const isVariadic = XP.isVariadicPatch(patch);
+  const arityStep = foldMaybe(0, R.identity, XP.getArityStepFromPatch(patch));
 
-    return {
-      id: type,
-      type,
-      label: '',
-      position: { x: 0, y: 0 },
-      size,
-      isVariadic,
-      pins: R.compose(
-        R.when(
-          () => isVariadic,
-          renderablePins => R.compose(
+  return {
+    id: type,
+    type,
+    label: '',
+    position: { x: 0, y: 0 },
+    size,
+    isVariadic,
+    pins: R.compose(
+      R.when(
+        () => isVariadic,
+        renderablePins =>
+          R.compose(
             R.merge(renderablePins),
             R.indexBy(R.prop('keyName')),
             R.map(R.assoc('isLastVariadicGroup', true)),
@@ -133,35 +126,33 @@ export const patchToNodeProps = R.curry(
             R.filter(XP.isInputPin),
             R.values
           )(renderablePins)
-        ),
-        R.indexBy(R.prop('keyName')),
-        R.map(R.applySpec({
+      ),
+      R.indexBy(R.prop('keyName')),
+      R.map(
+        R.applySpec({
           key: XP.getPinKey,
           keyName: XP.getPinKey,
           type: XP.getPinType,
           direction: XP.getPinDirection,
           label: XP.getPinLabel,
           position: calculatePinPosition(size),
-        })),
-        shouldNormalizePinLabels ? XP.normalizePinLabels : R.identity,
-      )(pins),
-    };
-  }
-);
+        })
+      ),
+      shouldNormalizePinLabels ? XP.normalizePinLabels : R.identity
+    )(pins),
+  };
+});
 
 export const isPatchDeadTerminal = R.compose(
   R.ifElse(
     XP.isTerminalPatchPath,
-    R.compose(
-      R.equals(XP.PIN_TYPE.DEAD),
-      XP.getTerminalDataType
-    ),
+    R.compose(R.equals(XP.PIN_TYPE.DEAD), XP.getTerminalDataType),
     R.F
   ),
-  XP.getPatchPath,
+  XP.getPatchPath
 );
 
 export const isNotImplementedInXodNode = R.compose(
   R.equals(XP.NOT_IMPLEMENTED_IN_XOD_PATH),
-  XP.getNodeType,
+  XP.getNodeType
 );

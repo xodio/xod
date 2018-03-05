@@ -7,12 +7,16 @@ export function getViewableSize(defaultWidth = 0, defaultHeight = 0) {
   };
 
   if (window || document) {
-    sizes.width = (
-      document.body.clientWidth || document.documentElement.clientWidth || window.innerWidth || 0
-    );
-    sizes.height = (
-      document.body.clientHeight || document.documentElement.clientHeight || window.innerHeight || 0
-    );
+    sizes.width =
+      document.body.clientWidth ||
+      document.documentElement.clientWidth ||
+      window.innerWidth ||
+      0;
+    sizes.height =
+      document.body.clientHeight ||
+      document.documentElement.clientHeight ||
+      window.innerHeight ||
+      0;
   }
 
   return sizes;
@@ -30,7 +34,7 @@ export const findParentByClassName = (element, className) => {
 
 export const checkForMouseBubbling = (event, parent) => {
   const elem = event.toElement || event.relatedTarget;
-  return (elem.parentNode === parent || elem === parent);
+  return elem.parentNode === parent || elem === parent;
 };
 
 export const isInput = R.compose(
@@ -40,7 +44,5 @@ export const isInput = R.compose(
 
 export const isInputTarget = event => isInput(event.target || event.srcElement);
 
-export const isEdge = () => R.compose(
-  R.test(/Edge/),
-  R.pathOr('', ['navigator', 'userAgent'])
-)(window);
+export const isEdge = () =>
+  R.compose(R.test(/Edge/), R.pathOr('', ['navigator', 'userAgent']))(window);

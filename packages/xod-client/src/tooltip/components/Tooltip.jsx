@@ -1,10 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 
-import {
-  SHOW_GLOBAL_TOOLTIP,
-  HIDE_GLOBAL_TOOLTIP,
-} from '../events';
+import { SHOW_GLOBAL_TOOLTIP, HIDE_GLOBAL_TOOLTIP } from '../events';
 
 class Tooltip extends React.Component {
   constructor(props) {
@@ -54,10 +51,7 @@ class Tooltip extends React.Component {
     const { x: left, y: top } = this.state.position;
 
     return (
-      <div
-        className={cls}
-        style={{ left, top }}
-      >
+      <div className={cls} style={{ left, top }}>
         {this.state.content}
       </div>
     );

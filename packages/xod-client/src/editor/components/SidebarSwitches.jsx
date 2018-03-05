@@ -24,46 +24,51 @@ const SidebarSwitches = ({
     'Sidebar-title--left': id === SIDEBAR_IDS.LEFT,
     'Sidebar-title--right': id === SIDEBAR_IDS.RIGHT,
     'Sidebar-title--minimized': isMinimized,
-    'Sidebar-title--hidden': (isMinimized && maximizedPanels.length > 0),
+    'Sidebar-title--hidden': isMinimized && maximizedPanels.length > 0,
   });
 
-  const onToggleProjectBrowserPanel = () => onTogglePanel(PANEL_IDS.PROJECT_BROWSER);
+  const onToggleProjectBrowserPanel = () =>
+    onTogglePanel(PANEL_IDS.PROJECT_BROWSER);
   const onToggleInspectorPanel = () => onTogglePanel(PANEL_IDS.INSPECTOR);
   const onToggleAccountPanel = () => onTogglePanel(PANEL_IDS.ACCOUNT);
   const ontoggleHelpPanel = () => onTogglePanel(PANEL_IDS.HELPBAR);
 
   return (
     <div className={classNames}>
-      {R.map(R.cond([
-        sidebarPanelRenderer(PANEL_IDS.PROJECT_BROWSER, ({ maximized }) => (
-          <button
-            key="projectBrowser"
-            className={`projectBrowser ${maximized && 'selected'}`}
-            onClick={onToggleProjectBrowserPanel}
-          />
-        )),
-        sidebarPanelRenderer(PANEL_IDS.INSPECTOR, ({ maximized }) => (
-          <button
-            key="inspector"
-            className={`inspector ${maximized && 'selected'}`}
-            onClick={onToggleInspectorPanel}
-          />
-        )),
-        sidebarPanelRenderer(PANEL_IDS.ACCOUNT, ({ maximized }) => (
-          <button
-            key="account"
-            className={`account ${maximized && 'selected'} ${!isLoggedIn && 'not-logged-in'}`}
-            onClick={onToggleAccountPanel}
-          />
-        )),
-        sidebarPanelRenderer(PANEL_IDS.HELPBAR, ({ maximized }) => (
-          <button
-            key="helppanel"
-            className={`helppanel ${maximized && 'selected'}`}
-            onClick={ontoggleHelpPanel}
-          />
-        )),
-      ]), panelsForThisSidebar)}
+      {R.map(
+        R.cond([
+          sidebarPanelRenderer(PANEL_IDS.PROJECT_BROWSER, ({ maximized }) => (
+            <button
+              key="projectBrowser"
+              className={`projectBrowser ${maximized && 'selected'}`}
+              onClick={onToggleProjectBrowserPanel}
+            />
+          )),
+          sidebarPanelRenderer(PANEL_IDS.INSPECTOR, ({ maximized }) => (
+            <button
+              key="inspector"
+              className={`inspector ${maximized && 'selected'}`}
+              onClick={onToggleInspectorPanel}
+            />
+          )),
+          sidebarPanelRenderer(PANEL_IDS.ACCOUNT, ({ maximized }) => (
+            <button
+              key="account"
+              className={`account ${maximized && 'selected'} ${!isLoggedIn &&
+                'not-logged-in'}`}
+              onClick={onToggleAccountPanel}
+            />
+          )),
+          sidebarPanelRenderer(PANEL_IDS.HELPBAR, ({ maximized }) => (
+            <button
+              key="helppanel"
+              className={`helppanel ${maximized && 'selected'}`}
+              onClick={ontoggleHelpPanel}
+            />
+          )),
+        ]),
+        panelsForThisSidebar
+      )}
     </div>
   );
 };
@@ -71,13 +76,15 @@ const SidebarSwitches = ({
 SidebarSwitches.propTypes = {
   isMinimized: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
-  panels: PropTypes.objectOf(PropTypes.shape({
-    /* eslint-disable react/no-unused-prop-types */
-    maximized: PropTypes.bool.isRequired,
-    sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
-    autohide: PropTypes.bool.isRequired,
-    /* eslint-enable react/no-unused-prop-types */
-  })),
+  panels: PropTypes.objectOf(
+    PropTypes.shape({
+      /* eslint-disable react/no-unused-prop-types */
+      maximized: PropTypes.bool.isRequired,
+      sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+      autohide: PropTypes.bool.isRequired,
+      /* eslint-enable react/no-unused-prop-types */
+    })
+  ),
   onTogglePanel: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool,
 };

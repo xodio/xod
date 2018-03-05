@@ -14,7 +14,8 @@ import Inspector from './pageObjects/Inspector';
 import Menubar from './pageObjects/Menubar';
 import TranspiledCodePopup from './pageObjects/TranspiledCodePopup';
 
-const workspacePath = subPath => path.resolve(__dirname, '../../../workspace/', subPath);
+const workspacePath = subPath =>
+  path.resolve(__dirname, '../../../workspace/', subPath);
 
 describe('creating blink patch', () => {
   let page;
@@ -29,17 +30,11 @@ describe('creating blink patch', () => {
     projectBrowser.clickCreatePatch();
 
     const popup = await PromptPopup.waitOnPage(page);
-    assert.equal(
-      await popup.getTitle(),
-      'Create new patch'
-    );
+    assert.equal(await popup.getTitle(), 'Create new patch');
     await popup.typeText('my-blink');
     await popup.clickConfirm();
 
-    assert.isNull(
-      await PromptPopup.findOnPage(page),
-      'prompt popup is closed'
-    );
+    assert.isNull(await PromptPopup.findOnPage(page), 'prompt popup is closed');
 
     const activeTab = await EditorTab.findActive(page);
     assert.equal(
@@ -83,10 +78,7 @@ describe('creating blink patch', () => {
     const nodes = await getAllNodes(page);
 
     assert.equal(nodes.length, 1, 'only a single node is added');
-    assert.isTrue(
-      await nodes[0].isSelected(),
-      'created node is selected'
-    );
+    assert.isTrue(await nodes[0].isSelected(), 'created node is selected');
     assert.equal(
       await nodes[0].getName(),
       'clock',
@@ -179,6 +171,10 @@ describe('creating blink patch', () => {
       'utf-8'
     );
 
-    assert.equal(code, expectedCode, 'transpiled code is equivalent to fixture');
+    assert.equal(
+      code,
+      expectedCode,
+      'transpiled code is equivalent to fixture'
+    );
   });
 });

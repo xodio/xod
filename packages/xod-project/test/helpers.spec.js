@@ -22,10 +22,7 @@ describe('Helpers', () => {
       assert.throws(eitherLeft, Error, 'LEFT');
     });
     it('should return Right value', () => {
-      Helper.expectEitherRight(
-        val => assert.deepEqual(val, rightObj),
-        right
-      );
+      Helper.expectEitherRight(val => assert.deepEqual(val, rightObj), right);
     });
   });
 });

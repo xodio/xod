@@ -2,7 +2,11 @@ import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
-import { fetchLibsWithDependencies, stringifyLibQuery, getLibName } from 'xod-pm';
+import {
+  fetchLibsWithDependencies,
+  stringifyLibQuery,
+  getLibName,
+} from 'xod-pm';
 import { foldMaybe, explodeMaybe } from 'xod-func-tools';
 
 import {
@@ -26,10 +30,7 @@ import {
   bulkMoveNodesAndComments,
   bulkDeleteNodesAndComments,
 } from '../project/actions';
-import {
-  addError,
-  addConfirmation,
-} from '../messages/actions';
+import { addError, addConfirmation } from '../messages/actions';
 import composeMessage from '../messages/composeMessage';
 
 import * as Selectors from './selectors';
@@ -55,7 +56,11 @@ import {
 } from './utils';
 import { isInput, isEdge } from '../utils/browser';
 import { getPmSwaggerUrl } from '../utils/urls';
-import { addPoints, subtractPoints, DEFAULT_PANNING_OFFSET } from '../project/nodeLayout';
+import {
+  addPoints,
+  subtractPoints,
+  DEFAULT_PANNING_OFFSET,
+} from '../project/nodeLayout';
 
 import { ClipboardEntities } from '../types';
 
@@ -91,7 +96,9 @@ export const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
 
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
-  if (!Selectors.hasSelection(state)) { return; }
+  if (!Selectors.hasSelection(state)) {
+    return;
+  }
 
   dispatch({
     type: ActionType.EDITOR_DESELECT_ALL,
@@ -118,13 +125,17 @@ export const selectNode = selectEntity(SELECTION_ENTITY_TYPE.NODE);
 export const selectComment = selectEntity(SELECTION_ENTITY_TYPE.COMMENT);
 export const selectLink = selectEntity(SELECTION_ENTITY_TYPE.LINK);
 
- // :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> Action
+// :: { nodes :: [Node], links :: [Link], comments :: [Comment] } -> Action
 export const setEditorSelection = entities => ({
   type: ActionType.EDITOR_SET_SELECION,
   payload: { entities },
 });
 
-export const addAndSelectNode = (typeId, position, currentPatchPath) => (dispatch) => {
+export const addAndSelectNode = (
+  typeId,
+  position,
+  currentPatchPath
+) => dispatch => {
   const newId = dispatch(addNode(typeId, position, currentPatchPath));
   dispatch(selectNode(newId));
 };
@@ -169,13 +180,15 @@ export const deleteSelection = () => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
 
-  Selectors.getCurrentPatchPath(state).map(
-    currentPatchPath => dispatch(bulkDeleteNodesAndComments(
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-      currentPatchPath
-    ))
+  Selectors.getCurrentPatchPath(state).map(currentPatchPath =>
+    dispatch(
+      bulkDeleteNodesAndComments(
+        getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+        getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK, selection),
+        getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+        currentPatchPath
+      )
+    )
   );
 };
 
@@ -183,13 +196,15 @@ export const moveSelection = deltaPosition => (dispatch, getState) => {
   const state = getState();
   const selection = Selectors.getSelection(state);
 
-  Selectors.getCurrentPatchPath(state).map(
-    currentPatchPath => dispatch(bulkMoveNodesAndComments(
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
-      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
-      deltaPosition,
-      currentPatchPath
-    ))
+  Selectors.getCurrentPatchPath(state).map(currentPatchPath =>
+    dispatch(
+      bulkMoveNodesAndComments(
+        getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.NODE, selection),
+        getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.COMMENT, selection),
+        deltaPosition,
+        currentPatchPath
+      )
+    )
   );
 };
 
@@ -203,7 +218,10 @@ export const setCurrentPatchOffset = newOffset => ({
   payload: newOffset,
 });
 
-const setPatchOffsetByEntitiesBoundingBox = getDesiredOffset => (dispatch, getState) => {
+const setPatchOffsetByEntitiesBoundingBox = getDesiredOffset => (
+  dispatch,
+  getState
+) => {
   const state = getState();
   const maybeCurrentPatchPath = Selectors.getCurrentPatchPath(state);
   if (maybeCurrentPatchPath.isNothing) return;
@@ -215,36 +233,29 @@ const setPatchOffsetByEntitiesBoundingBox = getDesiredOffset => (dispatch, getSt
   const project = ProjectSelectors.getProject(state);
   const currentPatch = XP.getPatchByPathUnsafe(currentPatchPath, project);
 
-  const entitiesBoundingBox = getBoundingBox(
-    currentPatch,
-    project,
-    {
-      nodes: XP.listNodes(currentPatch),
-      comments: XP.listComments(currentPatch),
-    }
-  );
+  const entitiesBoundingBox = getBoundingBox(currentPatch, project, {
+    nodes: XP.listNodes(currentPatch),
+    comments: XP.listComments(currentPatch),
+  });
 
   const patchBoundingRect = Selectors.getPatchWorkareaSize(state);
 
-  R.compose(
-    dispatch,
-    setCurrentPatchOffset,
-    getDesiredOffset
-  )(entitiesBoundingBox, patchBoundingRect);
+  R.compose(dispatch, setCurrentPatchOffset, getDesiredOffset)(
+    entitiesBoundingBox,
+    patchBoundingRect
+  );
 };
 
 export const setCurrentPatchOffsetToOrigin = () =>
-  setPatchOffsetByEntitiesBoundingBox(
-    entitiesBB => subtractPoints(DEFAULT_PANNING_OFFSET, entitiesBB)
+  setPatchOffsetByEntitiesBoundingBox(entitiesBB =>
+    subtractPoints(DEFAULT_PANNING_OFFSET, entitiesBB)
   );
 
 export const setCurrentPatchOffsetToCenter = () =>
-  setPatchOffsetByEntitiesBoundingBox(
-    (entitiesBB, patchBB) => ({
-      x: ((patchBB.width - entitiesBB.width) / 2) - entitiesBB.x,
-      y: ((patchBB.height - entitiesBB.height) / 2) - entitiesBB.y,
-    })
-  );
+  setPatchOffsetByEntitiesBoundingBox((entitiesBB, patchBB) => ({
+    x: (patchBB.width - entitiesBB.width) / 2 - entitiesBB.x,
+    y: (patchBB.height - entitiesBB.height) / 2 - entitiesBB.y,
+  }));
 
 export const switchPatchUnsafe = patchPath => ({
   type: ActionType.EDITOR_SWITCH_PATCH,
@@ -355,12 +366,12 @@ export const hideLibSuggester = () => ({
 const getClipboardDataType = () => (isEdge() ? 'Text' : CLIPBOARD_DATA_TYPE);
 
 // :: State -> Maybe ClipboardEntities
-const getClipboardEntities = (state) => {
+const getClipboardEntities = state => {
   const selection = Selectors.getSelection(state);
   if (R.isEmpty(selection)) return Maybe.Nothing();
 
-  return Selectors.getCurrentPatchPath(state).chain(
-    currentPatchPath => R.compose(
+  return Selectors.getCurrentPatchPath(state).chain(currentPatchPath =>
+    R.compose(
       R.map(currentPatch => getEntitiesToCopy(currentPatch, selection)),
       XP.getPatchByPath(currentPatchPath),
       ProjectSelectors.getProject
@@ -377,8 +388,11 @@ export const copyEntities = event => (dispatch, getState) => {
 
     // linter confuses array and a Maybe
     // eslint-disable-next-line array-callback-return
-    getClipboardEntities(state).map((entities) => {
-      event.clipboardData.setData(getClipboardDataType(), JSON.stringify(entities, null, 2));
+    getClipboardEntities(state).map(entities => {
+      event.clipboardData.setData(
+        getClipboardDataType(),
+        JSON.stringify(entities, null, 2)
+      );
       event.preventDefault();
     });
   }
@@ -419,16 +433,15 @@ export const pasteEntities = event => (dispatch, getState) => {
 
   const project = ProjectSelectors.getProject(state);
 
-  const availablePatches = R.compose(
-    R.map(XP.getPatchPath),
-    XP.listPatches,
-  )(project);
+  const availablePatches = R.compose(R.map(XP.getPatchPath), XP.listPatches)(
+    project
+  );
   const missingPatches = R.without(availablePatches, pastedNodeTypes);
 
   if (!R.isEmpty(missingPatches)) {
-    dispatch(addError(
-      clipboardMissingPatchPasteError(missingPatches.join(', '))
-    ));
+    dispatch(
+      addError(clipboardMissingPatchPasteError(missingPatches.join(', ')))
+    );
     return;
   }
 
@@ -441,20 +454,18 @@ export const pasteEntities = event => (dispatch, getState) => {
     defaultNewPosition,
     R.ifElse(
       R.eqBy(
-        R.compose( // check if selection is structurally the same as copied entities
+        R.compose(
+          // check if selection is structurally the same as copied entities
           R.map(R.map(R.omit('id'))),
           R.omit(['links', 'impl']),
           resetClipboardEntitiesPosition
         ),
         copiedEntities
       ),
-      R.converge(
-        addPoints,
-        [
-          R.pipe(getBoundingBoxSize(currentPatch, project), R.assoc('y', 0)),
-          getBBoxTopLeftPosition,
-        ]
-      ),
+      R.converge(addPoints, [
+        R.pipe(getBoundingBoxSize(currentPatch, project), R.assoc('y', 0)),
+        getBBoxTopLeftPosition,
+      ]),
       R.always(defaultNewPosition)
     ),
     getClipboardEntities(state)
@@ -462,14 +473,18 @@ export const pasteEntities = event => (dispatch, getState) => {
 
   const entitiesToPaste = R.compose(
     R.evolve({
-      nodes: R.map(R.over(
-        R.lens(XP.getNodePosition, XP.setNodePosition),
-        addPoints(newPosition)
-      )),
-      comments: R.map(R.over(
-        R.lens(XP.getCommentPosition, XP.setCommentPosition),
-        addPoints(newPosition)
-      )),
+      nodes: R.map(
+        R.over(
+          R.lens(XP.getNodePosition, XP.setNodePosition),
+          addPoints(newPosition)
+        )
+      ),
+      comments: R.map(
+        R.over(
+          R.lens(XP.getCommentPosition, XP.setCommentPosition),
+          addPoints(newPosition)
+        )
+      ),
     }),
     resetClipboardEntitiesPosition,
     regenerateIds
@@ -485,7 +500,7 @@ export const pasteEntities = event => (dispatch, getState) => {
   });
 };
 
-export const cutEntities = event => (dispatch) => {
+export const cutEntities = event => dispatch => {
   if (isInput(document.activeElement)) return;
 
   dispatch(copyEntities(event));
@@ -493,7 +508,7 @@ export const cutEntities = event => (dispatch) => {
 };
 
 export const installLibraryComplete = R.curry(
-  (libParams, projects) => (dispatch) => {
+  (libParams, projects) => dispatch => {
     dispatch({
       type: ActionType.INSTALL_LIBRARIES_COMPLETE,
       payload: {
@@ -502,16 +517,11 @@ export const installLibraryComplete = R.curry(
       },
     });
 
-    R.forEachObjIndexed(
-      (proj, libName) => {
-        const name = getLibName(libName);
-        const version = XP.getProjectVersion(proj);
-        dispatch(
-          addConfirmation(libInstalled(name, version))
-        );
-      },
-      projects
-    );
+    R.forEachObjIndexed((proj, libName) => {
+      const name = getLibName(libName);
+      const version = XP.getProjectVersion(proj);
+      dispatch(addConfirmation(libInstalled(name, version)));
+    }, projects);
   }
 );
 
@@ -530,7 +540,7 @@ export const installLibraries = libParams => (dispatch, getState) => {
 
   fetchLibsWithDependencies(getPmSwaggerUrl(), existingLibNames, libQueries)
     .then(projects => dispatch(installLibraryComplete(libParams, projects)))
-    .catch((err) => {
+    .catch(err => {
       dispatch({
         type: ActionType.INSTALL_LIBRARIES_FAILED,
         payload: {

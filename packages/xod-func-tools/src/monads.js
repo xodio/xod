@@ -53,10 +53,29 @@ export const foldMaybe = Maybe.maybe;
  */
 export const explode = R.cond([
   [Maybe.isJust, R.unnest],
-  [Maybe.isNothing, () => { throw new Error('Maybe is expected to be Just, but its Nothing.'); }],
+  [
+    Maybe.isNothing,
+    () => {
+      throw new Error('Maybe is expected to be Just, but its Nothing.');
+    },
+  ],
   [Either.isRight, R.unnest],
-  [Either.isLeft, (val) => { throw new Error(`Either expected to be Right, but its Left with value: ${val}`); }],
-  [R.T, (input) => { throw new Error(`Maybe or Either should be passed into explode function. Passed: ${input}`); }],
+  [
+    Either.isLeft,
+    val => {
+      throw new Error(
+        `Either expected to be Right, but its Left with value: ${val}`
+      );
+    },
+  ],
+  [
+    R.T,
+    input => {
+      throw new Error(
+        `Maybe or Either should be passed into explode function. Passed: ${input}`
+      );
+    },
+  ],
 ]);
 
 /**
@@ -92,10 +111,9 @@ export const catMaybies = def(
  */
 export const explodeEither = def(
   'explodeEither :: Either a b -> b',
-  foldEither(
-    (err) => { throw new Error(`Explosion failed: ${err}`); },
-    R.identity
-  )
+  foldEither(err => {
+    throw new Error(`Explosion failed: ${err}`);
+  }, R.identity)
 );
 
 // :: Either a b -> Promise a b
@@ -105,11 +123,9 @@ export const eitherToPromise = foldEither(
 );
 
 // :: (() -> b) -> (a -> a) -> Maybe a -> Promise a b
-export const maybeToPromise = R.curry(
-  (nothingFn, justFn, maybe) => new Promise(
-    (resolve, reject) => (
-      maybe.isJust ? resolve(maybe.value) : reject()
-    )
+export const maybeToPromise = R.curry((nothingFn, justFn, maybe) =>
+  new Promise(
+    (resolve, reject) => (maybe.isJust ? resolve(maybe.value) : reject())
   ).then(justFn, nothingFn)
 );
 
@@ -124,11 +140,8 @@ export const maybeToPromise = R.curry(
  */
 export const reduceM = def(
   'reduceM :: (b -> m b) -> (b -> a -> m b) -> b -> [a] -> m c',
-  (m, fn, initial, list) => R.reduce(
-    (acc, a) => R.chain(val => fn(val, a), acc),
-    m(initial),
-    list
-  )
+  (m, fn, initial, list) =>
+    R.reduce((acc, a) => R.chain(val => fn(val, a), acc), m(initial), list)
 );
 
 /**
@@ -168,9 +181,6 @@ export const reduceMaybe = def(
  */
 export const leftIf = def(
   'leftIf :: (a -> c) -> (a -> b) -> a -> Either b c',
-  (condition, leftFn, val) => (
-    condition(val)
-    ? Either.of(val)
-    : Either.Left(leftFn(val))
-  )
+  (condition, leftFn, val) =>
+    condition(val) ? Either.of(val) : Either.Left(leftFn(val))
 );

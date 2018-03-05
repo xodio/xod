@@ -44,18 +44,15 @@ describe('Node', () => {
   // properties
   describe('getNodeId', () => {
     it('should return id string for Node object', () => {
-      expect(Node.getNodeId({ id: '@/test' }))
-        .to.be.equal('@/test');
+      expect(Node.getNodeId({ id: '@/test' })).to.be.equal('@/test');
     });
     it('should return id string for string', () => {
-      expect(Node.getNodeId('@/test'))
-        .to.be.equal('@/test');
+      expect(Node.getNodeId('@/test')).to.be.equal('@/test');
     });
   });
   describe('getNodeType', () => {
     it('should return type', () => {
-      expect(Node.getNodeType(nodeOfType('@/test')))
-        .to.be.equal('@/test');
+      expect(Node.getNodeType(nodeOfType('@/test'))).to.be.equal('@/test');
     });
   });
   describe('setNodeType', () => {
@@ -113,7 +110,9 @@ describe('Node', () => {
   describe('getAllBoundValues', () => {
     it('should return empty object for node without bound values', () => {
       const node = Helper.defaultizeNode({ boundValues: {} });
-      expect(Node.getAllBoundValues(node)).to.be.an('object').and.empty();
+      expect(Node.getAllBoundValues(node))
+        .to.be.an('object')
+        .and.empty();
     });
     it('should return object with shape { pinKey: pinValue }', () => {
       const node = Helper.defaultizeNode({
@@ -136,7 +135,7 @@ describe('Node', () => {
         existing: 'hey-ho',
       },
     });
-    const checkJust = (pinName) => {
+    const checkJust = pinName => {
       const value = Node.getBoundValue(pinName, node);
       expect(value.isJust).to.be.true();
       expect(value.getOrElse(null)).to.be.equal(node.boundValues[pinName]);
@@ -198,15 +197,21 @@ describe('Node', () => {
       expect(Node.isInputPinNode(nodeOfType('@/input'))).to.be.false();
     });
     it('should return true for type equal to xod/patch-nodes/input-*', () => {
-      expect(Node.isInputPinNode(nodeOfType('xod/patch-nodes/input-number'))).to.be.true();
+      expect(
+        Node.isInputPinNode(nodeOfType('xod/patch-nodes/input-number'))
+      ).to.be.true();
     });
   });
   describe('isOutputPinNode', () => {
     it('should return false for type not equal to xod/patch-nodes/output-*', () => {
-      expect(Node.isOutputPinNode(nodeOfType('test/test/output'))).to.be.false();
+      expect(
+        Node.isOutputPinNode(nodeOfType('test/test/output'))
+      ).to.be.false();
     });
     it('should return true for type equal to xod/patch-nodes/output-*', () => {
-      expect(Node.isOutputPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
+      expect(
+        Node.isOutputPinNode(nodeOfType('xod/patch-nodes/output-number'))
+      ).to.be.true();
     });
   });
   describe('isPinNode', () => {
@@ -214,30 +219,42 @@ describe('Node', () => {
       expect(Node.isPinNode(nodeOfType('test/test/output'))).to.be.false();
     });
     it('should return true for type equal to xod/patch-nodes/input*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/patch-nodes/input-number'))).to.be.true();
+      expect(
+        Node.isPinNode(nodeOfType('xod/patch-nodes/input-number'))
+      ).to.be.true();
     });
     it('should return true for type equal to xod/patch-nodes/output*', () => {
-      expect(Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))).to.be.true();
+      expect(
+        Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))
+      ).to.be.true();
     });
   });
   // etc
   describe('getPinNodeDataType', () => {
     it('should return `number` for xod/patch-nodes/input-number', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-number'));
+      const res = Node.getPinNodeDataType(
+        nodeOfType('xod/patch-nodes/input-number')
+      );
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
     it('should return `number` for xod/patch-nodes/output-number', () => {
-      const res = Node.getPinNodeDataType(nodeOfType('xod/patch-nodes/input-number'));
+      const res = Node.getPinNodeDataType(
+        nodeOfType('xod/patch-nodes/input-number')
+      );
       expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
     it('should return `input` for `xod/patch-nodes/input-number`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/input-number'));
+      const res = Node.getPinNodeDirection(
+        nodeOfType('xod/patch-nodes/input-number')
+      );
       expect(res).to.be.equal('input');
     });
     it('should return `output` for `xod/patch-nodes/output-number`', () => {
-      const res = Node.getPinNodeDirection(nodeOfType('xod/patch-nodes/output-number'));
+      const res = Node.getPinNodeDirection(
+        nodeOfType('xod/patch-nodes/output-number')
+      );
       expect(res).to.be.equal('output');
     });
   });

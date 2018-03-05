@@ -20,40 +20,30 @@ import { isLinkConnectedToNodeIds } from '../../../../project/utils';
 import { getSelectedEntityIdsOfType } from '../../../utils';
 import { changeLineLength } from '../../../../utils/vectors';
 
-import {
-  getOffsetMatrix,
-  bindApi,
-  getMousePosition,
-} from '../modeUtils';
+import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
 let patchSvgRef = null;
 
-const getDeltaPosition = api => subtractPoints(
-  api.state.mousePosition,
-  api.state.dragStartPosition
-);
+const getDeltaPosition = api =>
+  subtractPoints(api.state.mousePosition, api.state.dragStartPosition);
 
 const getSnappedPreviews = (draggedNodes, draggedComments, deltaPosition) =>
   R.compose(
-    R.map(R.compose(
-      R.over(
-        R.lensProp('position'),
-        R.compose(
-          snapNodePositionToSlots,
-          addPoints(deltaPosition)
-        )
-      ),
-      R.pick(['size', 'position'])
-    )),
-    R.concat,
-  )(
-    R.values(draggedNodes),
-    R.values(draggedComments)
-  );
+    R.map(
+      R.compose(
+        R.over(
+          R.lensProp('position'),
+          R.compose(snapNodePositionToSlots, addPoints(deltaPosition))
+        ),
+        R.pick(['size', 'position'])
+      )
+    ),
+    R.concat
+  )(R.values(draggedNodes), R.values(draggedComments));
 
-const updateLinksPositions = R.uncurryN(3)(
-  (draggedNodeIds, deltaPosition) => R.map(
-    link => R.compose(
+const updateLinksPositions = R.uncurryN(3)((draggedNodeIds, deltaPosition) =>
+  R.map(link =>
+    R.compose(
       R.over(
         R.lensProp('to'),
         R.when(
@@ -86,8 +76,7 @@ const movingMode = {
     // performance optimization:
     // hide instead of unmounting and then remounting again
     const idleNodes = R.reduce(
-      (nodes, nodeId) =>
-        R.assocPath([nodeId, 'hidden'], true, nodes),
+      (nodes, nodeId) => R.assocPath([nodeId, 'hidden'], true, nodes),
       props.nodes,
       draggedNodeIds
     );
@@ -113,7 +102,11 @@ const movingMode = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     api.setState({ mousePosition });
   },
   onMouseUp(api) {
@@ -124,12 +117,21 @@ const movingMode = {
   },
 
   render(api) {
-    const { draggedNodeIds, draggedNodes, draggedComments, idleNodes, idleComments } = api.state;
+    const {
+      draggedNodeIds,
+      draggedNodes,
+      draggedComments,
+      idleNodes,
+      idleComments,
+    } = api.state;
 
     const deltaPosition = getDeltaPosition(api);
 
     const [draggedLinks, idleLinks] = R.compose(
-      R.over(R.lensIndex(0), updateLinksPositions(draggedNodeIds, deltaPosition)),
+      R.over(
+        R.lensIndex(0),
+        updateLinksPositions(draggedNodeIds, deltaPosition)
+      ),
       R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
@@ -137,32 +139,34 @@ const movingMode = {
     // Pins with ending of the Link, cause it became ugly
     // when User drags Link connected to the variadic Pin,
     // that contains "dots" symbol inside it.
-    const shortenedDraggedLinks = R.map(
-      link => R.compose(
+    const shortenedDraggedLinks = R.map(link =>
+      R.compose(
         R.assoc('from', R.__, link),
-        R.converge(
-          changeLineLength(R.negate(PIN_RADIUS_WITH_OUTER_STROKE)),
-          [
-            R.prop('to'),
-            R.prop('from'),
-          ]
-        )
+        R.converge(changeLineLength(R.negate(PIN_RADIUS_WITH_OUTER_STROKE)), [
+          R.prop('to'),
+          R.prop('from'),
+        ])
       )(link)
     )(draggedLinks);
 
-    const snappedPreviews = getSnappedPreviews(draggedNodes, draggedComments, deltaPosition);
+    const snappedPreviews = getSnappedPreviews(
+      draggedNodes,
+      draggedComments,
+      deltaPosition
+    );
 
-    const draggedEntitiesStyle = { transform: `translate(${deltaPosition.x}px, ${deltaPosition.y}px)` };
+    const draggedEntitiesStyle = {
+      transform: `translate(${deltaPosition.x}px, ${deltaPosition.y}px)`,
+    };
 
     return (
-      <HotKeys
-        className="PatchWrapper"
-        handlers={{}}
-      >
+      <HotKeys className="PatchWrapper" handlers={{}}>
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}
@@ -175,10 +179,7 @@ const movingMode = {
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
-            <Layers.Links
-              links={idleLinks}
-              selection={api.props.selection}
-            />
+            <Layers.Links links={idleLinks} selection={api.props.selection} />
             <Layers.Nodes
               nodes={idleNodes}
               selection={api.props.selection}
@@ -195,9 +196,7 @@ const movingMode = {
               linkingPin={api.props.linkingPin}
             />
 
-            <Layers.SnappingPreview
-              previews={snappedPreviews}
-            />
+            <Layers.SnappingPreview previews={snappedPreviews} />
             <g style={draggedEntitiesStyle}>
               <Layers.Comments
                 key="dragged comments"

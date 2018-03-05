@@ -34,24 +34,15 @@ class SnackBarMessage extends React.Component {
   getMessageContent() {
     const { message, onClickMessageButton } = this.props;
 
-    const button = R.unless(
-      R.isNil,
-      text => (
-        <Button
-          small
-          light
-          onClick={() => onClickMessageButton(message.id)}
-        >
-          {text}
-        </Button>
-      )
-    )(message.payload.button);
+    const button = R.unless(R.isNil, text => (
+      <Button small light onClick={() => onClickMessageButton(message.id)}>
+        {text}
+      </Button>
+    ))(message.payload.button);
 
     return [
       <div className="message-text" key="text">
-        <span className="title">
-          {message.payload.title}
-        </span>
+        <span className="title">{message.payload.title}</span>
         {message.payload.note}
       </div>,
       <div className="message-buttons" key="buttons">
@@ -61,19 +52,15 @@ class SnackBarMessage extends React.Component {
   }
 
   setHidden(val) {
-    this.setState(
-      R.assoc('hidden', val, this.state)
-    );
+    this.setState(R.assoc('hidden', val, this.state));
   }
 
   setDisplay(val) {
-    this.setState(
-      R.assoc('display', val, this.state)
-    );
+    this.setState(R.assoc('display', val, this.state));
   }
 
   hide() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.setHidden(true);
       setTimeout(resolve, ANIMATION_TIMEOUT);
     }).then(() => {
@@ -94,13 +81,8 @@ class SnackBarMessage extends React.Component {
     const messageContent = this.getMessageContent();
 
     return (
-      <li
-        className={cls}
-      >
-        <a
-          className="message-content"
-          tabIndex={message.id}
-        >
+      <li className={cls}>
+        <a className="message-content" tabIndex={message.id}>
           <CloseButton onClick={this.onCloseMessage} />
           {messageContent}
         </a>
@@ -112,10 +94,7 @@ class SnackBarMessage extends React.Component {
 SnackBarMessage.propTypes = {
   message: PropTypes.shape({
     /* eslint-disable react/no-unused-prop-types */
-    id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     type: PropTypes.string,
     persistent: PropTypes.bool,
     payload: PropTypes.shape({

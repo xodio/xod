@@ -15,12 +15,15 @@ import * as ERR_CODES from './errorCodes';
 export const updateCompileLimit = (startup = false) => dispatch =>
   fetch(getCompileLimitUrl(), {
     headers: startup ? { 'x-launch': 'true' } : {},
-  }).then(res => (res.ok ? res.json() : null))
+  })
+    .then(res => (res.ok ? res.json() : null))
     .catch(() => null)
-    .then(limit => dispatch({
-      type: ActionTypes.UPDATE_COMPILE_LIMIT,
-      payload: limit,
-    }));
+    .then(limit =>
+      dispatch({
+        type: ActionTypes.UPDATE_COMPILE_LIMIT,
+        payload: limit,
+      })
+    );
 
 const setGrant = grant => ({
   type: ActionTypes.SET_AUTH_GRANT,
@@ -35,18 +38,20 @@ const setGrant = grant => ({
 export const fetchGrant = () => dispatch =>
   fetch(getWhoamiUrl(), { credentials: 'include' })
     .then(res => (res.ok ? res.json() : null))
-    .then((grant) => {
+    .then(grant => {
       dispatch(setGrant(grant));
       dispatch(updateCompileLimit(false));
 
       return grant;
     })
-    .catch(() => rejectWithCode(
-      ERR_CODES.CANT_FETCH_GRANT,
-      new Error(Messages.SERVICE_UNAVAILABLE)
-    ));
+    .catch(() =>
+      rejectWithCode(
+        ERR_CODES.CANT_FETCH_GRANT,
+        new Error(Messages.SERVICE_UNAVAILABLE)
+      )
+    );
 
-export const login = (username, password) => (dispatch) => {
+export const login = (username, password) => dispatch => {
   const form = new URLSearchParams();
   form.set('username', username);
   form.set('password', password);
@@ -54,7 +59,7 @@ export const login = (username, password) => (dispatch) => {
   dispatch({ type: ActionTypes.LOGIN_STARTED });
 
   fetch(getLoginUrl(), { method: 'POST', credentials: 'include', body: form })
-    .then((res) => {
+    .then(res => {
       if (!res.ok) {
         const err = new Error(res.statusText);
         err.status = res.status;
@@ -63,17 +68,18 @@ export const login = (username, password) => (dispatch) => {
 
       return dispatch(fetchGrant());
     })
-    .catch((err) => {
-      const errMessage = err.status === 403
-        ? Messages.INCORRECT_CREDENTIALS
-        : Messages.SERVICE_UNAVAILABLE;
+    .catch(err => {
+      const errMessage =
+        err.status === 403
+          ? Messages.INCORRECT_CREDENTIALS
+          : Messages.SERVICE_UNAVAILABLE;
       dispatch(addError(errMessage));
 
       dispatch({ type: ActionTypes.LOGIN_FAILED });
     });
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => dispatch => {
   fetch(getLogoutUrl(), { credentials: 'include' })
     .then(() => {
       dispatch(setGrant(null));

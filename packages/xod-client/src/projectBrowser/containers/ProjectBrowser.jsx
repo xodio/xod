@@ -47,9 +47,7 @@ const pickPropsForComparsion = R.compose(
     localPatches: pickPatchPartsForComparsion,
     libs: pickPatchPartsForComparsion,
   }),
-  R.omit([
-    'actions',
-  ])
+  R.omit(['actions'])
 );
 
 class ProjectBrowser extends React.Component {
@@ -75,16 +73,12 @@ class ProjectBrowser extends React.Component {
     triggerUpdateHelpboxPositionViaProjectBrowser();
   }
   shouldComponentUpdate(nextProps) {
-    return !R.eqBy(
-      pickPropsForComparsion,
-      nextProps,
-      this.props
-    );
+    return !R.eqBy(pickPropsForComparsion, nextProps, this.props);
   }
 
   onAddNode(patchPath) {
-    this.props.currentPatchPath.map(
-      curPatchPath => this.props.actions.addNode(
+    this.props.currentPatchPath.map(curPatchPath =>
+      this.props.actions.addNode(
         patchPath,
         this.props.defaultNodePosition,
         curPatchPath
@@ -172,16 +166,9 @@ class ProjectBrowser extends React.Component {
   }
 
   renderItem({ path, dead }) {
-    const {
-      currentPatchPath,
-      selectedPatchPath,
-    } = this.props;
+    const { currentPatchPath, selectedPatchPath } = this.props;
 
-    const isOpen = foldMaybe(
-      false,
-      R.equals(path),
-      currentPatchPath
-    );
+    const isOpen = foldMaybe(false, R.equals(path), currentPatchPath);
 
     const {
       switchPatch,
@@ -201,7 +188,7 @@ class ProjectBrowser extends React.Component {
         onDoubleClick={() => switchPatch(path)}
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
-        onClick={(event) => {
+        onClick={event => {
           triggerUpdateHelpboxPositionViaProjectBrowser(event);
           setSelection(path);
         }}
@@ -212,10 +199,7 @@ class ProjectBrowser extends React.Component {
   }
 
   renderLocalPatches() {
-    const {
-      projectName,
-      localPatches,
-    } = this.props;
+    const { projectName, localPatches } = this.props;
 
     return (
       <PatchGroup
@@ -234,34 +218,37 @@ class ProjectBrowser extends React.Component {
     const installingLibsComponents = R.map(
       ({ owner, name, version }) => ({
         name: `${owner}/${name}`,
-        component: (<div
-          key={`${owner}/${name}/${version}`}
-          className="PatchGroup PatchGroup--installing library"
-        >
-          <span className="name">{owner}/{name}</span>
-          <span className="version">{version}</span>
-          <Icon name="circle-o-notch" spin />
-        </div>),
+        component: (
+          <div
+            key={`${owner}/${name}/${version}`}
+            className="PatchGroup PatchGroup--installing library"
+          >
+            <span className="name">
+              {owner}/{name}
+            </span>
+            <span className="version">{version}</span>
+            <Icon name="circle-o-notch" spin />
+          </div>
+        ),
       }),
       installingLibs
     );
     const installingLibNames = R.pluck('name', installingLibsComponents);
 
     const libComponents = R.compose(
-      R.reject(R.compose(
-        isAmong(installingLibNames),
-        R.prop('name')
-      )),
+      R.reject(R.compose(isAmong(installingLibNames), R.prop('name'))),
       R.map(([libName, libPatches]) => ({
         name: libName,
-        component: (<PatchGroup
-          key={libName}
-          type="library"
-          name={libName}
-          onClose={this.deselectIfInLibrary(libName)}
-        >
-          {libPatches.map(this.renderItem)}
-        </PatchGroup>),
+        component: (
+          <PatchGroup
+            key={libName}
+            type="library"
+            name={libName}
+            onClose={this.deselectIfInLibrary(libName)}
+          >
+            {libPatches.map(this.renderItem)}
+          </PatchGroup>
+        ),
       })),
       R.toPairs
     )(libs);
@@ -327,7 +314,9 @@ class ProjectBrowser extends React.Component {
           {this.renderPatches()}
         </SidebarPanel>
         <PatchGroupItemContextMenu
-          ref={(c) => { this.patchContextMenuRef = c; }}
+          ref={c => {
+            this.patchContextMenuRef = c;
+          }}
           onPatchAdd={this.onAddNode}
           onPatchOpen={this.props.actions.switchPatch}
           onPatchDelete={this.props.actions.requestDelete}
@@ -384,29 +373,31 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    setEditorMode: EditorActions.setMode,
-    switchPatch: EditorActions.switchPatch,
-    startDraggingPatch: EditorActions.startDraggingPatch,
+  actions: bindActionCreators(
+    {
+      setEditorMode: EditorActions.setMode,
+      switchPatch: EditorActions.switchPatch,
+      startDraggingPatch: EditorActions.startDraggingPatch,
 
-    requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
-    requestRename: ProjectBrowserActions.requestRenamePatch,
-    requestDelete: ProjectBrowserActions.requestDeletePatch,
-    setSelection: ProjectBrowserActions.setSelection,
-    removeSelection: ProjectBrowserActions.removeSelection,
+      requestCreatePatch: ProjectBrowserActions.requestCreatePatch,
+      requestRename: ProjectBrowserActions.requestRenamePatch,
+      requestDelete: ProjectBrowserActions.requestDeletePatch,
+      setSelection: ProjectBrowserActions.setSelection,
+      removeSelection: ProjectBrowserActions.removeSelection,
 
-    addNode: ProjectActions.addNode,
-    addPatch: ProjectActions.addPatch,
-    renamePatch: ProjectActions.renamePatch,
-    deletePatch: ProjectActions.deletePatch,
+      addNode: ProjectActions.addNode,
+      addPatch: ProjectActions.addPatch,
+      renamePatch: ProjectActions.renamePatch,
+      deletePatch: ProjectActions.deletePatch,
 
-    closeAllPopups: PopupActions.hideAllPopups,
+      closeAllPopups: PopupActions.hideAllPopups,
 
-    addNotification: MessagesActions.addNotification,
-    showLibSuggester: EditorActions.showLibSuggester,
-    showHelpbox: EditorActions.showHelpbox,
-  }, dispatch),
+      addNotification: MessagesActions.addNotification,
+      showLibSuggester: EditorActions.showLibSuggester,
+      showHelpbox: EditorActions.showHelpbox,
+    },
+    dispatch
+  ),
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectBrowser);

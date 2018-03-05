@@ -20,14 +20,13 @@ const getNodeX = R.pipe(Node.getNodePosition, R.prop('x'));
 
 const nodeIdLens = R.lens(Node.getNodeId, R.assoc('id'));
 
-
 // helpers for creating nodes inside expanded patch
 
 const createAdditionalValueTerminalGroups = (
   patch,
   desiredArityLevel,
   originalTerminalNodes,
-  variadicPins,
+  variadicPins
 ) => {
   const arityStep = R.compose(
     explodeMaybe('Patch is guaranteed to be variadic at this point'),
@@ -41,125 +40,148 @@ const createAdditionalValueTerminalGroups = (
     R.filter(Node.isInputPinNode)
   )(originalTerminalNodes);
 
-
   // :: [ Node ]
   const originalValueTerminalNodes = R.compose(
     R.sortBy(getNodeX),
-    R.map(R.compose(
-      R.flip(Patch.getNodeByIdUnsafe)(patch),
-      Pin.getPinKey,
-    )),
-    R.prop('value'),
+    R.map(R.compose(R.flip(Patch.getNodeByIdUnsafe)(patch), Pin.getPinKey)),
+    R.prop('value')
   )(variadicPins);
 
   const DISTANCE_BETWEEN_TERMINALS = 50;
   const valueTerminalsGroupWidth = arityStep * DISTANCE_BETWEEN_TERMINALS;
-  const getValueTerminalX = (terminalGroupIndex, terminalIndex) => (
+  const getValueTerminalX = (terminalGroupIndex, terminalIndex) =>
     rightmostInputTerminalX +
     DISTANCE_BETWEEN_TERMINALS +
     // because terminalGroupIndex always starts from 1
-    ((terminalGroupIndex - 1) * valueTerminalsGroupWidth) +
-    (terminalIndex * DISTANCE_BETWEEN_TERMINALS)
-  );
+    (terminalGroupIndex - 1) * valueTerminalsGroupWidth +
+    terminalIndex * DISTANCE_BETWEEN_TERMINALS;
 
   // :: [ [Node] ]
   return R.compose(
-    R.map(terminalGroupIndex => R.addIndex(R.map)((node, index) =>
-      R.compose(
-        R.over(
-          nodeIdLens,
-          Pin.addVariadicPinKeySuffix(terminalGroupIndex)
-        ),
-        Node.setNodePosition({
-          x: getValueTerminalX(terminalGroupIndex, index),
-          y: 0,
-        })
-      )(node),
-      originalValueTerminalNodes
-    )),
-    R.range(1), // [1; desiredArityLevel)
+    R.map(terminalGroupIndex =>
+      R.addIndex(R.map)(
+        (node, index) =>
+          R.compose(
+            R.over(nodeIdLens, Pin.addVariadicPinKeySuffix(terminalGroupIndex)),
+            Node.setNodePosition({
+              x: getValueTerminalX(terminalGroupIndex, index),
+              y: 0,
+            })
+          )(node),
+        originalValueTerminalNodes
+      )
+    ),
+    R.range(1) // [1; desiredArityLevel)
   )(desiredArityLevel);
 };
 
 const createExpansionNodes = (patch, desiredArityLevel) => {
   const nodeType = Patch.getPatchPath(patch);
   return R.compose(
-    R.map(idx => Node.createNode(
-      {
-        x: 100 * idx,
-        y: 100 * idx,
-      },
-      nodeType
-    )),
+    R.map(idx =>
+      Node.createNode(
+        {
+          x: 100 * idx,
+          y: 100 * idx,
+        },
+        nodeType
+      )
+    ),
     R.range(0)
   )(desiredArityLevel);
 };
-
 
 // helpers for linking expanded patch contents
 
 const createLinksToSharedTerminals = (expansionNodes, variadicPinKeys) =>
   R.compose(
-    R.chain(sharedPinKey => R.map(instanceNodeId => Link.createLink(
-      sharedPinKey, instanceNodeId,
-      // sharedPinKey also acts as a terminal node id
-      TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT], sharedPinKey
-    ))(expansionNodes)),
+    R.chain(sharedPinKey =>
+      R.map(instanceNodeId =>
+        Link.createLink(
+          sharedPinKey,
+          instanceNodeId,
+          // sharedPinKey also acts as a terminal node id
+          TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT],
+          sharedPinKey
+        )
+      )(expansionNodes)
+    ),
     R.prop('shared')
   )(variadicPinKeys);
 
-const createLinksFromLastNodeToOutputs = (expansionNodeIds, variadicPinKeys) => {
+const createLinksFromLastNodeToOutputs = (
+  expansionNodeIds,
+  variadicPinKeys
+) => {
   const lastNodeId = R.last(expansionNodeIds);
   return R.map(
-    outputPinKey => Link.createLink(
-      // outputPinKey also acts as a terminal node id
-      TERMINAL_PIN_KEYS[PIN_DIRECTION.INPUT], outputPinKey,
-      outputPinKey, lastNodeId
-    ),
+    outputPinKey =>
+      Link.createLink(
+        // outputPinKey also acts as a terminal node id
+        TERMINAL_PIN_KEYS[PIN_DIRECTION.INPUT],
+        outputPinKey,
+        outputPinKey,
+        lastNodeId
+      ),
     variadicPinKeys.outputs
   );
 };
-const createLinksFromFirstNodeToInputTerminals = (expansionNodeIds, variadicPinKeys) => {
+const createLinksFromFirstNodeToInputTerminals = (
+  expansionNodeIds,
+  variadicPinKeys
+) => {
   const firstNodeId = R.head(expansionNodeIds);
 
   return R.map(
-    pinKey => Link.createLink(
-      pinKey, firstNodeId,
-      // pinKey also acts as a terminal node id
-      TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT], pinKey
-    ),
+    pinKey =>
+      Link.createLink(
+        pinKey,
+        firstNodeId,
+        // pinKey also acts as a terminal node id
+        TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT],
+        pinKey
+      ),
     R.concat(variadicPinKeys.acc, variadicPinKeys.value)
   );
 };
 
-const createLinksToAdditionalValueTerminals =
-  (variadicPinKeys, additionalValueTerminalGroups, expansionNodeIds) =>
-    R.compose(
-      R.chain(([terminalNodes, instanceNodeId]) =>
-        R.compose(
-          R.map(([valuePinKey, terminalNodeId]) => Link.createLink(
-            valuePinKey, instanceNodeId,
-            TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT], terminalNodeId
-          )),
-          R.zip(variadicPinKeys.value),
-          R.map(Node.getNodeId)
-        )(terminalNodes)
-      ),
-      R.zip(additionalValueTerminalGroups), // :: [ (NodeId, [Node]) ]
-      R.tail
-    )(expansionNodeIds);
+const createLinksToAdditionalValueTerminals = (
+  variadicPinKeys,
+  additionalValueTerminalGroups,
+  expansionNodeIds
+) =>
+  R.compose(
+    R.chain(([terminalNodes, instanceNodeId]) =>
+      R.compose(
+        R.map(([valuePinKey, terminalNodeId]) =>
+          Link.createLink(
+            valuePinKey,
+            instanceNodeId,
+            TERMINAL_PIN_KEYS[PIN_DIRECTION.OUTPUT],
+            terminalNodeId
+          )
+        ),
+        R.zip(variadicPinKeys.value),
+        R.map(Node.getNodeId)
+      )(terminalNodes)
+    ),
+    R.zip(additionalValueTerminalGroups), // :: [ (NodeId, [Node]) ]
+    R.tail
+  )(expansionNodeIds);
 
-
-const createLinksFromNodeOutputsToAccPins = (variadicPinKeys, expansionNodeIds) => {
+const createLinksFromNodeOutputsToAccPins = (
+  variadicPinKeys,
+  expansionNodeIds
+) => {
   const accOutPinKeyPairs = R.zip(variadicPinKeys.acc, variadicPinKeys.outputs);
   return R.compose(
-    R.chain(([outputNodeId, inputNodeId]) => R.map(
-      ([accPinKey, outputPinKey]) => Link.createLink(
-        accPinKey, inputNodeId,
-        outputPinKey, outputNodeId,
-      ),
-      accOutPinKeyPairs
-    )),
+    R.chain(([outputNodeId, inputNodeId]) =>
+      R.map(
+        ([accPinKey, outputPinKey]) =>
+          Link.createLink(accPinKey, inputNodeId, outputPinKey, outputNodeId),
+        accOutPinKeyPairs
+      )
+    ),
     R.aperture(2)
   )(expansionNodeIds);
 };
@@ -193,34 +215,30 @@ const expandPatch = R.curry((desiredArityLevel, patch) => {
     patch,
     desiredArityLevel,
     originalTerminalNodes,
-    variadicPins,
+    variadicPins
   );
 
   // :: [Node]
   const expansionNodes = createExpansionNodes(patch, desiredArityLevel);
 
+  const variadicPinKeys = R.map(R.map(Pin.getPinKey), variadicPins);
 
-  const variadicPinKeys = R.map(
-    R.map(Pin.getPinKey),
-    variadicPins
-  );
-
-  const expansionNodeIds = R.map(
-    Node.getNodeId,
-    expansionNodes
-  );
+  const expansionNodeIds = R.map(Node.getNodeId, expansionNodes);
 
   return R.compose(
     explodeEither,
     Patch.upsertLinks([
       ...createLinksToSharedTerminals(expansionNodes, variadicPinKeys),
       ...createLinksFromLastNodeToOutputs(expansionNodeIds, variadicPinKeys),
-      ...createLinksFromFirstNodeToInputTerminals(expansionNodeIds, variadicPinKeys),
+      ...createLinksFromFirstNodeToInputTerminals(
+        expansionNodeIds,
+        variadicPinKeys
+      ),
       ...createLinksToAdditionalValueTerminals(
-          variadicPinKeys,
-          additionalValueTerminalGroups,
-          expansionNodeIds
-        ),
+        variadicPinKeys,
+        additionalValueTerminalGroups,
+        expansionNodeIds
+      ),
       ...createLinksFromNodeOutputsToAccPins(variadicPinKeys, expansionNodeIds),
     ]),
     Patch.upsertNodes([
@@ -244,15 +262,17 @@ export default def(
 
     // :: { patchPath, node }
     const nodesToExpand = R.compose(
-      R.chain(patchPath => R.compose(
-        R.map(node => ({
-          patchPath,
-          node,
-        })),
-        R.filter(R.pipe(Node.getNodeArityLevel, al => al > 1)),
-        Patch.listNodes,
-        Project.getPatchByPathUnsafe(patchPath)
-      )(project)),
+      R.chain(patchPath =>
+        R.compose(
+          R.map(node => ({
+            patchPath,
+            node,
+          })),
+          R.filter(R.pipe(Node.getNodeArityLevel, al => al > 1)),
+          Patch.listNodes,
+          Project.getPatchByPathUnsafe(patchPath)
+        )(project)
+      ),
       R.append(entryPatchPath)
     )(deps);
 
@@ -264,35 +284,38 @@ export default def(
         )(project)
       ),
       R.uniq,
-      R.map(R.compose(
-        R.applySpec({
-          patchPath: Node.getNodeType,
-          desiredArityLevel: Node.getNodeArityLevel,
-        }),
-        R.prop('node')
-      ))
+      R.map(
+        R.compose(
+          R.applySpec({
+            patchPath: Node.getNodeType,
+            desiredArityLevel: Node.getNodeArityLevel,
+          }),
+          R.prop('node')
+        )
+      )
     )(nodesToExpand);
-
 
     // :: [ Patch -> Patch ]
     const expandedNodeTypeUpdaters = R.compose(
       R.values,
-      R.mapObjIndexed((nodes, patchPath) => R.compose(
-        explodeEither,
-        Project.updatePatch(patchPath, (patch) => {
-          const updatedNodes = R.map(
-            (node) => {
+      R.mapObjIndexed((nodes, patchPath) =>
+        R.compose(
+          explodeEither,
+          Project.updatePatch(patchPath, patch => {
+            const updatedNodes = R.map(node => {
               const arityLevel = Node.getNodeArityLevel(node);
               const originalType = Node.getNodeType(node);
-              const expandedNodeType = getExpandedVariadicPatchPath(arityLevel, originalType);
+              const expandedNodeType = getExpandedVariadicPatchPath(
+                arityLevel,
+                originalType
+              );
               return Node.setNodeType(expandedNodeType, node);
-            },
-            nodes
-          );
+            }, nodes);
 
-          return Patch.upsertNodes(updatedNodes, patch);
-        })
-      )),
+            return Patch.upsertNodes(updatedNodes, patch);
+          })
+        )
+      ),
       R.map(R.map(R.prop('node'))),
       R.groupBy(R.prop('patchPath'))
     )(nodesToExpand);

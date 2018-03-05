@@ -39,25 +39,23 @@ const OneOfType = XF.OneOfType(packageName, docUrl);
 //-----------------------------------------------------------------------------
 
 export const $Buffer = NullaryType('Buffer', R.is(Buffer));
-export const Path = NullaryType('Path', R.both(XF.hasType($.String), XF.notEmpty));
+export const Path = NullaryType(
+  'Path',
+  R.both(XF.hasType($.String), XF.notEmpty)
+);
 
 // :: x -> Boolean
 const isValidXodFile = R.allPass([
   R.complement(R.isNil),
   R.has('path'),
   R.has('content'),
-  R.compose(
-    XF.hasType(Path),
-    R.prop('path')
-  ),
+  R.compose(XF.hasType(Path), R.prop('path')),
 ]);
 
-export const XodFile = UnaryType('XodFile',
+export const XodFile = UnaryType(
+  'XodFile',
   isValidXodFile,
-  R.compose(
-    R.of,
-    R.prop('content')
-  )
+  R.compose(R.of, R.prop('content'))
 );
 
 export const PatchFileContents = Model('PatchFileContents', {
@@ -77,18 +75,44 @@ export const ProjectFileContents = Model('ProjectFileContents', {
   version: $.String,
 });
 
-export const ProjectFile = AliasType('ProjectFile', XodFile(ProjectFileContents));
+export const ProjectFile = AliasType(
+  'ProjectFile',
+  XodFile(ProjectFileContents)
+);
 export const AttachmentFile = AliasType('AttachmentFile', XodFile($.String));
 
 // TODO: Remove last `XodFile(Patch)` after refactoring of loadProject* and readXodFile functions
-export const AnyXodFile = OneOfType('AnyXodFile', [ProjectFile, PatchFile, AttachmentFile, XodFile(Patch)]);
+export const AnyXodFile = OneOfType('AnyXodFile', [
+  ProjectFile,
+  PatchFile,
+  AttachmentFile,
+  XodFile(Patch),
+]);
 
-export const XodFileContent = OneOfType('XodFileContent', [ProjectFileContents, PatchFileContents, Patch, $.String]);
+export const XodFileContent = OneOfType('XodFileContent', [
+  ProjectFileContents,
+  PatchFileContents,
+  Patch,
+  $.String,
+]);
 
-export const AddedChangeType = NullaryType('AddedChangeType', R.equals(CHANGE_TYPES.ADDED));
-export const ModifiedChangeType = NullaryType('ModifiedChangeType', R.equals(CHANGE_TYPES.MODIFIED));
-export const DeletedChangeType = NullaryType('DeletedChangeType', R.equals(CHANGE_TYPES.DELETED));
-export const AnyChangeType = OneOfType('AnyChangeType', [AddedChangeType, ModifiedChangeType, DeletedChangeType]);
+export const AddedChangeType = NullaryType(
+  'AddedChangeType',
+  R.equals(CHANGE_TYPES.ADDED)
+);
+export const ModifiedChangeType = NullaryType(
+  'ModifiedChangeType',
+  R.equals(CHANGE_TYPES.MODIFIED)
+);
+export const DeletedChangeType = NullaryType(
+  'DeletedChangeType',
+  R.equals(CHANGE_TYPES.DELETED)
+);
+export const AnyChangeType = OneOfType('AnyChangeType', [
+  AddedChangeType,
+  ModifiedChangeType,
+  DeletedChangeType,
+]);
 //
 export const AddedPatchChange = Model('AddedPatchChange', {
   path: PatchPath,
@@ -104,7 +128,11 @@ export const DeletedPatchChange = Model('DeletedPatchChange', {
   path: PatchPath,
   changeType: DeletedChangeType,
 });
-export const AnyPatchChange = OneOfType('AnyPatchChange', [AddedPatchChange, ModifiedPatchChange, DeletedPatchChange]);
+export const AnyPatchChange = OneOfType('AnyPatchChange', [
+  AddedPatchChange,
+  ModifiedPatchChange,
+  DeletedPatchChange,
+]);
 
 //-----------------------------------------------------------------------------
 //

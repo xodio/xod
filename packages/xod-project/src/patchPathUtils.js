@@ -56,10 +56,7 @@ export const validatePath = Tools.errOnFalse(
  * @param {string} path
  * @returns {string}
  */
-export const getBaseName = R.compose(
-  R.last,
-  R.split('/')
-);
+export const getBaseName = R.compose(R.last, R.split('/'));
 
 /**
  * @function getLibraryName
@@ -68,28 +65,18 @@ export const getBaseName = R.compose(
  */
 export const getLibraryName = R.ifElse(
   isPathLibrary,
-  R.compose(
-    R.join('/'),
-    R.take(2),
-    R.split('/')
-  ),
+  R.compose(R.join('/'), R.take(2), R.split('/')),
   R.always('@')
 );
 
 // :: PatchPath -> String
-export const getOwnerName = R.compose(
-  R.head,
-  R.split('/')
-);
+export const getOwnerName = R.compose(R.head, R.split('/'));
 
 /**
  * Converts `xod/core/something` into `@/something`,
  * `@/another-one` will be unchanged.
  */
-export const convertToLocalPath = R.compose(
-  getLocalPath,
-  getBaseName
-);
+export const convertToLocalPath = R.compose(getLocalPath, getBaseName);
 
 //
 // Utils for terminal patches
@@ -106,10 +93,7 @@ export const getTerminalDirection = R.compose(
 
 export const getTerminalDataType = def(
   'getTerminalDataType :: PatchPath -> DataType',
-  R.compose(
-    R.nth(2),
-    R.match(terminalPatchPathRegExp)
-  )
+  R.compose(R.nth(2), R.match(terminalPatchPathRegExp))
 );
 
 // :: String -> Boolean
@@ -125,7 +109,9 @@ export const isOutputTerminalPath = R.compose(
 );
 
 // ::
-export const getTerminalPath = R.curry((direction, type) => `${PATCH_NODES_LIB_NAME}/${direction}-${type}`);
+export const getTerminalPath = R.curry(
+  (direction, type) => `${PATCH_NODES_LIB_NAME}/${direction}-${type}`
+);
 
 //
 // utils for variadic marker nodes
@@ -150,8 +136,9 @@ export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 // utils for cast patches
 //
 
-const castTypeRegExp =
-  new RegExp(`xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`);
+const castTypeRegExp = new RegExp(
+  `xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`
+);
 
 // :: String -> Boolean
 export const isCastPatchPath = R.test(castTypeRegExp);
@@ -163,14 +150,14 @@ export const isCastPatchPath = R.test(castTypeRegExp);
  * @param {PIN_TYPE} typeOut
  * @returns {String}
  */
-export const getCastPatchPath = (typeIn, typeOut) => `xod/core/cast-${typeIn}-to-${typeOut}`;
+export const getCastPatchPath = (typeIn, typeOut) =>
+  `xod/core/cast-${typeIn}-to-${typeOut}`;
 
 //
 // defer-* nodes
 //
 
-const deferNodeRegExp =
-  new RegExp(`xod/core/defer-(${dataTypes.join('|')})$`);
+const deferNodeRegExp = new RegExp(`xod/core/defer-(${dataTypes.join('|')})$`);
 
 // :: PatchPath -> Boolean
 export const isDeferNodeType = R.test(deferNodeRegExp);
@@ -179,8 +166,9 @@ export const isDeferNodeType = R.test(deferNodeRegExp);
 // constant-* nodes
 //
 
-const constantNodeRegExp =
-  new RegExp(`xod/core/constant-(${dataTypes.join('|')})$`);
+const constantNodeRegExp = new RegExp(
+  `xod/core/constant-(${dataTypes.join('|')})$`
+);
 
 // :: PatchPath -> Boolean
 export const isConstantNodeType = R.test(constantNodeRegExp);
@@ -200,8 +188,9 @@ export const convertToInternalTerminalPath = R.compose(
   getTerminalDataType
 );
 
-const internalTerminalRegExp =
-  new RegExp(`xod/internal/terminal-(${dataTypes.join('|')})$`);
+const internalTerminalRegExp = new RegExp(
+  `xod/internal/terminal-(${dataTypes.join('|')})$`
+);
 
 // :: PatchPath -> Boolean
 export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
@@ -211,7 +200,10 @@ export const resolvePatchPath = def(
   R.cond([
     [(...args) => R.all(isPathLocal)(args), R.nthArg(0)],
     [(...args) => R.all(isPathLibrary)(args), R.nthArg(0)],
-    [R.compose(isPathLibrary, R.nthArg(1)), (p1, p2) => `${getLibraryName(p2)}/${getBaseName(p1)}`],
+    [
+      R.compose(isPathLibrary, R.nthArg(1)),
+      (p1, p2) => `${getLibraryName(p2)}/${getBaseName(p1)}`,
+    ],
     [R.compose(isPathLocal, R.nthArg(1)), R.nthArg(0)],
   ])
 );

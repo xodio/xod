@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { Either } from 'ramda-fantasy';
 import { foldMaybe, foldEither, $Maybe } from 'xod-func-tools';
-import {
-  Project,
-  isValidIdentifier,
-  IDENTIFIER_RULES,
-} from 'xod-project';
+import { Project, isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
 import {
   transformProject,
   transformProjectWithDebug,
@@ -31,13 +27,15 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(this);
+    this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(
+      this
+    );
   }
   componentDidMount() {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
-    this.props.actions.updateCompileLimit(/* startup */true);
+    this.props.actions.updateCompileLimit(/* startup */ true);
   }
 
   onShowCodeArduino() {
@@ -45,10 +43,7 @@ export default class App extends React.Component {
       foldEither(
         R.compose(
           this.props.actions.addError,
-          R.when(
-            R.is(Error),
-            err => composeMessage(err.message),
-          )
+          R.when(R.is(Error), err => composeMessage(err.message))
         ),
         this.props.actions.showCode
       ),
@@ -58,7 +53,7 @@ export default class App extends React.Component {
   }
 
   transformProjectForTranspiler(debug = false) {
-    const transformFn = (debug) ? transformProjectWithDebug : transformProject;
+    const transformFn = debug ? transformProjectWithDebug : transformProject;
     return foldMaybe(
       Either.Left(NO_PATCH_TO_TRANSPILE),
       curPatchPath => transformFn(this.props.project, curPatchPath),
@@ -115,9 +110,7 @@ export default class App extends React.Component {
         inputValidator={isValidIdentifier}
         helpText={IDENTIFIER_RULES}
       >
-        <p>
-          Please, give a sonorous name to your project:
-        </p>
+        <p>Please, give a sonorous name to your project:</p>
       </PopupPrompt>
     );
   }

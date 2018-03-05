@@ -8,8 +8,8 @@ import * as R from 'ramda';
 export const tapP = promiseFn => arg => promiseFn(arg).then(R.always(arg));
 
 // :: ERROR_CODE -> Error -> Promise.Reject Error
-export const rejectWithCode = R.curry(
-  (code, err) => Promise.reject(Object.assign(err, { errorCode: code }))
+export const rejectWithCode = R.curry((code, err) =>
+  Promise.reject(Object.assign(err, { errorCode: code }))
 );
 
 // :: [Promise a] -> Promise a
@@ -48,13 +48,12 @@ export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
  * ```
  */
 // :: [Number] -> (b -> Boolean) -> (b -> Error) -> (() -> Promise a b) -> (b -> Promise a b)
-export const retryOrFail = R.curry(
-  (delays, stopFn, errFn, retryFn) => {
-    const maxRetries = delays.length;
-    let retryCounter = 0;
+export const retryOrFail = R.curry((delays, stopFn, errFn, retryFn) => {
+  const maxRetries = delays.length;
+  let retryCounter = 0;
 
-
-    const run = data => new Promise((resolve, reject) => {
+  const run = data =>
+    new Promise((resolve, reject) => {
       if (stopFn(data) || retryCounter === maxRetries) {
         reject(errFn(data));
         return;
@@ -69,6 +68,5 @@ export const retryOrFail = R.curry(
       }, delays[retryCounter]);
     });
 
-    return run;
-  }
-);
+  return run;
+});

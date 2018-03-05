@@ -65,11 +65,15 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     isDisabled() {
-      return (this.props.kind === NODE_PROPERTY_KIND.PIN) && this.props.isConnected;
+      return (
+        this.props.kind === NODE_PROPERTY_KIND.PIN && this.props.isConnected
+      );
     }
 
     updateValue(value) {
-      const commitCallback = (this.commitOnChange) ? this.commit.bind(this) : noop;
+      const commitCallback = this.commitOnChange
+        ? this.commit.bind(this)
+        : noop;
 
       this.setState({ value }, commitCallback);
     }

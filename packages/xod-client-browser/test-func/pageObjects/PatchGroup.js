@@ -8,7 +8,10 @@ class PatchGroup extends BasePageObject {
 
   async _getTriggerClassList() {
     const trigger = await this._getTrigger();
-    const classList = await this.page.evaluate(el => Array.from(el.classList), trigger);
+    const classList = await this.page.evaluate(
+      el => Array.from(el.classList),
+      trigger
+    );
     return classList;
   }
 
@@ -28,7 +31,9 @@ class PatchGroup extends BasePageObject {
   }
 
   async findPatchGroupItem(title) {
-    const elementHandle = await this.elementHandle.$(`.PatchGroupItem[data-id="${title}"]`);
+    const elementHandle = await this.elementHandle.$(
+      `.PatchGroupItem[data-id="${title}"]`
+    );
     if (!elementHandle) return null;
     return new PatchGroupItem(this.page, elementHandle);
   }

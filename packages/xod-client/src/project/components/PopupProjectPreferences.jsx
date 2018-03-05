@@ -7,7 +7,7 @@ import PopupForm from '../../utils/components/PopupForm';
 import deepSCU from '../../utils/deepSCU';
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
 
-const getInitialState = (project) => {
+const getInitialState = project => {
   const version = XP.getProjectVersion(project);
 
   return {
@@ -68,9 +68,13 @@ class PopupProjectPreferences extends React.Component {
   }
 
   render() {
-    const nameInputClasses = classNames('inspectorTextInput', 'inspectorInput--full-width', {
-      invalid: !this.isValidName() && this.state.name !== '',
-    });
+    const nameInputClasses = classNames(
+      'inspectorTextInput',
+      'inspectorInput--full-width',
+      {
+        invalid: !this.isValidName() && this.state.name !== '',
+      }
+    );
     const isFormValid = this.isValidName();
 
     return (
@@ -88,9 +92,7 @@ class PopupProjectPreferences extends React.Component {
             onChange={this.onNameChange}
             value={this.state.name}
           />
-          <p className="helpText">
-            {XP.IDENTIFIER_RULES}
-          </p>
+          <p className="helpText">{XP.IDENTIFIER_RULES}</p>
         </div>
         <div className="ModalContent">
           <label htmlFor="projectLicense">License: </label>

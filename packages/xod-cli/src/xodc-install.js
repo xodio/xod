@@ -6,12 +6,15 @@ import * as MSG from './messages';
 import { getWorkspacePath } from './utils';
 
 // :: Path -> Promise Path Error
-const ensureWorkspacePath = wsPath => new Promise((resolve, reject) => {
-  if (xodFs.isWorkspaceDir(wsPath)) return resolve(wsPath);
-  return reject(
-    new Error(`Directory "${wsPath}" is not a workspace directory. Workspace directory must contain ".xodworkspace" file.`)
-  );
-});
+const ensureWorkspacePath = wsPath =>
+  new Promise((resolve, reject) => {
+    if (xodFs.isWorkspaceDir(wsPath)) return resolve(wsPath);
+    return reject(
+      new Error(
+        `Directory "${wsPath}" is not a workspace directory. Workspace directory must contain ".xodworkspace" file.`
+      )
+    );
+  });
 
 /**
  * Installs the library version from package manager.
@@ -23,8 +26,9 @@ export default function install(swaggerUrl, libQuery, workspace) {
   const wsPath = getWorkspacePath(workspace);
   return ensureWorkspacePath(wsPath)
     .then(() => fetchLibData(swaggerUrl, libQuery))
-    .then(
-      libData => xodFs.scanWorkspaceForLibNames(wsPath)
+    .then(libData =>
+      xodFs
+        .scanWorkspaceForLibNames(wsPath)
         .then(libNames => [libData, libNames])
     )
     .then(([libData, libNames]) => {
@@ -34,14 +38,18 @@ export default function install(swaggerUrl, libQuery, workspace) {
       const libName = `${params.owner}/${params.name}`;
 
       return fetchLibsWithDependencies(swaggerUrl, libNames, [libName])
-        .then(R.tap(R.forEachObjIndexed(
-          (proj, name) => messages.notice(MSG.dependencyResolved(name))
-        )))
+        .then(
+          R.tap(
+            R.forEachObjIndexed((proj, name) =>
+              messages.notice(MSG.dependencyResolved(name))
+            )
+          )
+        )
         .then(xodFs.saveAllLibrariesEntirely(wsPath))
         .then(() => MSG.allLibrariesInstalled(wsPath));
     })
     .then(messages.success)
-    .catch((err) => {
+    .catch(err => {
       messages.error(err.message);
       process.exit(1);
     });

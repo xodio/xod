@@ -12,20 +12,20 @@ describe('Tool Manager', () => {
   afterEach(removeTmpDir);
 
   const toolName = 'avrdude/6.3.0-arduino9';
-  const url = 'https://storage.googleapis.com/releases.xod.io/tools/avrdude_darwin.tar.bz2';
+  const url =
+    'https://storage.googleapis.com/releases.xod.io/tools/avrdude_darwin.tar.bz2';
 
   // Installing
   it('installTool() downloads and installs tool', () =>
     installTool(tmpDir, toolName, url)
-      .then((res) => {
+      .then(res => {
         assert.isTrue(res.installed);
         assert.isTrue(res.downloaded);
       })
       .then(() => installTool(tmpDir, toolName, url))
-      .then((res) => {
+      .then(res => {
         // already downloaded and installed
         assert.isTrue(res.installed);
         assert.isFalse(res.downloaded);
-      })
-  );
+      }));
 });

@@ -77,7 +77,10 @@ describe('Project', () => {
       const project = Helper.defaultizeProject({
         authors: ['Vasya', 'Petya'],
       });
-      expect(Project.getProjectAuthors(project)).to.have.members(['Vasya', 'Petya']);
+      expect(Project.getProjectAuthors(project)).to.have.members([
+        'Vasya',
+        'Petya',
+      ]);
     });
   });
 
@@ -108,8 +111,14 @@ describe('Project', () => {
   });
   describe('getPatchByPathUnsafe', () => {
     it('should throw error if project is empty object', () => {
-      const fn = () => Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
-      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: 'does/not/exist' }));
+      const fn = () =>
+        Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
+      expect(fn).to.throw(
+        Error,
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: 'does/not/exist',
+        })
+      );
     });
     it('should throw error if there is no patch with such path', () => {
       const project = Helper.defaultizeProject({
@@ -118,7 +127,12 @@ describe('Project', () => {
         },
       });
       const fn = () => Project.getPatchByPathUnsafe('@/two', project);
-      expect(fn).to.throw(Error, formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/two' }));
+      expect(fn).to.throw(
+        Error,
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: '@/two',
+        })
+      );
     });
     it('should return Patch if project have a patch', () => {
       const project = Helper.defaultizeProject({
@@ -142,13 +156,21 @@ describe('Project', () => {
     });
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), project);
+      const maybe = Project.getPatchByNode(
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        project
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Patch> for existing patch in the project', () => {
-      const maybe = Project.getPatchByNode(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getPatchByNode(
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
-      expect(R.unnest(maybe)).to.be.deep.equal(project.patches['xod/core/test']);
+      expect(R.unnest(maybe)).to.be.deep.equal(
+        project.patches['xod/core/test']
+      );
     });
   });
   describe('getNodePins', () => {
@@ -162,14 +184,22 @@ describe('Project', () => {
       },
     });
 
-    const expectedPins = [Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0)];
+    const expectedPins = [
+      Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0),
+    ];
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
+      const maybe = Project.getNodePins(
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        emptyProject
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Pin[]> for existing pin', () => {
-      const maybe = Project.getNodePins(Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePins(
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
       expect(R.unnest(maybe)).to.be.deep.equal(expectedPins);
     });
@@ -185,18 +215,39 @@ describe('Project', () => {
       },
     });
 
-    const expectedPin = Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0);
+    const expectedPin = Pin.createPin(
+      'a',
+      'number',
+      'input',
+      0,
+      'A',
+      '',
+      true,
+      0
+    );
 
     it('should return Nothing for unexisting patch', () => {
-      const maybe = Project.getNodePin('test', Helper.defaultizeNode({ type: 'test/unexisting/patch' }), emptyProject);
+      const maybe = Project.getNodePin(
+        'test',
+        Helper.defaultizeNode({ type: 'test/unexisting/patch' }),
+        emptyProject
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Nothing for unexisting pin', () => {
-      const maybe = Project.getNodePin('b', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePin(
+        'b',
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isNothing).to.be.true();
     });
     it('should return Just<Pin> for existing pin', () => {
-      const maybe = Project.getNodePin('a', Helper.defaultizeNode({ type: 'xod/core/test' }), project);
+      const maybe = Project.getNodePin(
+        'a',
+        Helper.defaultizeNode({ type: 'xod/core/test' }),
+        project
+      );
       expect(maybe.isJust).to.be.true();
       expect(R.unnest(maybe)).to.be.deep.equal(expectedPin);
     });
@@ -217,15 +268,28 @@ describe('Project', () => {
       Helper.expectEitherError(CONST.ERROR.PATCH_REBASING_BUILT_IN, newProject);
     });
     it('should return Either.Left if patch is not in the project', () => {
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', emptyProject);
+      const newProject = Project.validatePatchRebase(
+        '@/test',
+        '@/patch',
+        emptyProject
+      );
 
-      Helper.expectEitherError(formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath: '@/patch' }), newProject);
+      Helper.expectEitherError(
+        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
+          patchPath: '@/patch',
+        }),
+        newProject
+      );
     });
     it('should return Either.Left if another patch with same path already exist', () => {
       const project = Helper.defaultizeProject({
         patches: { '@/test': {}, '@/patch': {} },
       });
-      const newProject = Project.validatePatchRebase('@/test', '@/patch', project);
+      const newProject = Project.validatePatchRebase(
+        '@/test',
+        '@/patch',
+        project
+      );
 
       Helper.expectEitherError(CONST.ERROR.PATCH_PATH_OCCUPIED, newProject);
     });
@@ -233,15 +297,14 @@ describe('Project', () => {
       const patch = {};
       const oldPath = '@/test';
       const newPath = '@/anotherPath';
-      const project = Helper.defaultizeProject({ patches: { [oldPath]: patch } });
+      const project = Helper.defaultizeProject({
+        patches: { [oldPath]: patch },
+      });
 
       const newProject = Project.validatePatchRebase(newPath, oldPath, project);
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(proj).to.be.equal(project);
-        },
-        newProject
-      );
+      Helper.expectEitherRight(proj => {
+        expect(proj).to.be.equal(project);
+      }, newProject);
     });
   });
   describe('validatePatchContents', () => {
@@ -280,12 +343,12 @@ describe('Project', () => {
     });
 
     it('should be Either.Left for non-existent type', () => {
-      const result = Project.validatePatchContents(patchWithNodeOnly, emptyProject);
+      const result = Project.validatePatchContents(
+        patchWithNodeOnly,
+        emptyProject
+      );
       Helper.expectEitherError(
-        formatString(
-          CONST.ERROR.TYPE_NOT_FOUND,
-          { type: '@/test' }
-        ),
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: '@/test' }),
         result
       );
     });
@@ -302,7 +365,10 @@ describe('Project', () => {
       );
     });
     it('should be Either.Right for patch with valid node without links', () => {
-      const result = Project.validatePatchContents(patchWithNodeOnly, smallProject);
+      const result = Project.validatePatchContents(
+        patchWithNodeOnly,
+        smallProject
+      );
       Helper.expectEitherRight(
         validPatch => expect(validPatch).to.be.equal(patchWithNodeOnly),
         result
@@ -331,26 +397,25 @@ describe('Project', () => {
     it('should return Either.Left if patch is not valid', () => {
       const invalidPatch = R.pipe(
         Patch.createPatch,
-        Patch.assocNode(
-          Node.createNode({ x: 0, y: 0 }, 'not/existing/type')
-        )
+        Patch.assocNode(Node.createNode({ x: 0, y: 0 }, 'not/existing/type'))
       )();
-      const newProject = Project.assocPatch('@/test', invalidPatch, emptyProject);
+      const newProject = Project.assocPatch(
+        '@/test',
+        invalidPatch,
+        emptyProject
+      );
       expect(newProject.isLeft).to.be.true();
     });
     it('should return Either.Right with associated patch', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, emptyProject);
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(path)
-            .that.deep.equals(R.assoc('path', path, patch));
-        },
-        newProject
-      );
+      Helper.expectEitherRight(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(path)
+          .that.deep.equals(R.assoc('path', path, patch));
+      }, newProject);
     });
     it('should not remove other patches from project', () => {
       const oldPath = '@/old';
@@ -363,13 +428,14 @@ describe('Project', () => {
         },
       });
       const newProject = Project.assocPatch(newPath, newPatch, project);
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(oldPatch);
-          expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(newPatch);
-        },
-        newProject
-      );
+      Helper.expectEitherRight(proj => {
+        expect(Project.getPatchByPathUnsafe(oldPath, proj)).to.be.deep.equal(
+          oldPatch
+        );
+        expect(Project.getPatchByPathUnsafe(newPath, proj)).to.be.deep.equal(
+          newPatch
+        );
+      }, newProject);
     });
   });
   describe('assocPatchList', () => {
@@ -381,24 +447,29 @@ describe('Project', () => {
     it('should return Right Projct with associated patches', () => {
       const res = Project.assocPatchList(patches, emptyProject);
       Helper.expectEitherRight(
-        proj => R.forEach(
-          (expectedPatch) => {
+        proj =>
+          R.forEach(expectedPatch => {
             const patchPath = Patch.getPatchPath(expectedPatch);
-            expect(Project.getPatchByPathUnsafe(patchPath, proj)).to.be.deep.equal(expectedPatch);
-          },
-          patches
-        ),
+            expect(
+              Project.getPatchByPathUnsafe(patchPath, proj)
+            ).to.be.deep.equal(expectedPatch);
+          }, patches),
         res
       );
     });
     it('should return Left Error, cause one of patches is invalid', () => {
       const invalidPatches = R.append(
-        Helper.defaultizePatch({ path: '@/wrong', nodes: { a: { type: 'xod/test/not-existent-one' } } }),
+        Helper.defaultizePatch({
+          path: '@/wrong',
+          nodes: { a: { type: 'xod/test/not-existent-one' } },
+        }),
         patches
       );
       const res = Project.assocPatchList(invalidPatches, emptyProject);
       Helper.expectEitherError(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: 'xod/test/not-existent-one' }),
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
+          type: 'xod/test/not-existent-one',
+        }),
         res
       );
     });
@@ -434,8 +505,9 @@ describe('Project', () => {
   });
   describe('rebasePatch', () => {
     it('should return Either.Left if something is not valid', () => {
-      expect(Project.rebasePatch('@/new', '@/old', emptyProject).isLeft)
-        .to.be.true();
+      expect(
+        Project.rebasePatch('@/new', '@/old', emptyProject).isLeft
+      ).to.be.true();
     });
     it('should return Either.Right for correct values', () => {
       const oldPath = '@/test';
@@ -444,15 +516,12 @@ describe('Project', () => {
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
 
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(newPath);
-          expect(proj.patches).to.have.all.keys(newPath);
-        },
-        newProject
-      );
+      Helper.expectEitherRight(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(newPath);
+        expect(proj.patches).to.have.all.keys(newPath);
+      }, newProject);
     });
     it('should update path property of a moved patch', () => {
       const oldPath = '@/test';
@@ -465,16 +534,13 @@ describe('Project', () => {
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
 
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(newPath)
-            .that.have.property('path')
-            .that.equals(newPath);
-        },
-        newProject
-      );
+      Helper.expectEitherRight(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(newPath)
+          .that.have.property('path')
+          .that.equals(newPath);
+      }, newProject);
     });
     it('should update all reference on changed path', () => {
       const oldPath = '@/test';
@@ -491,20 +557,17 @@ describe('Project', () => {
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
 
-      Helper.expectEitherRight(
-        (proj) => {
-          expect(proj)
-            .to.have.property('patches')
-            .that.have.property(withNodesPath)
-            .that.have.property('nodes')
-            .that.have.property('1')
-            .that.have.property('type')
-            .that.equal(newPath);
+      Helper.expectEitherRight(proj => {
+        expect(proj)
+          .to.have.property('patches')
+          .that.have.property(withNodesPath)
+          .that.have.property('nodes')
+          .that.have.property('1')
+          .that.have.property('type')
+          .that.equal(newPath);
 
-          expect(proj.patches).to.have.all.keys([newPath, withNodesPath]);
-        },
-        newProject
-      );
+        expect(proj.patches).to.have.all.keys([newPath, withNodesPath]);
+      }, newProject);
     });
   });
 
@@ -543,10 +606,7 @@ describe('Project', () => {
     });
     describe('listPatchesWithoutBuiltIns', () => {
       it('should return empty array for empty project', () => {
-        assert.deepEqual(
-          [],
-          Project.listPatchesWithoutBuiltIns(emptyProject)
-        );
+        assert.deepEqual([], Project.listPatchesWithoutBuiltIns(emptyProject));
       });
       it('should return array with patches for non-empty project', () => {
         expect(Project.listPatchesWithoutBuiltIns(project))
@@ -572,10 +632,7 @@ describe('Project', () => {
           BUILT_IN_PATCH_PATHS
         );
 
-        assert.sameMembers(
-          expected,
-          Project.listPatchPaths(project)
-        );
+        assert.sameMembers(expected, Project.listPatchPaths(project));
       });
     });
     describe('listLocalPatches', () => {
@@ -606,112 +663,103 @@ describe('Project', () => {
           ],
           R.values(Project.BUILT_IN_PATCHES)
         );
-        assert.sameMembers(
-          expected,
-          Project.listLibraryPatches(project)
-        );
+        assert.sameMembers(expected, Project.listLibraryPatches(project));
       });
     });
     describe('listInstalledLibraryNames', () => {
       it('returns empty array for empty project', () =>
         assert.isEmpty(
           Project.listInstalledLibraryNames(Helper.defaultizeProject({}))
-        )
-      );
+        ));
       it('returns empty array for project without any library', () =>
         assert.isEmpty(
-          Project.listInstalledLibraryNames(Helper.defaultizeProject({
-            patches: {
-              '@/main': { path: '@/main' },
-              '@/hello': { path: '@/hello' },
-            },
-          }))
-        )
-      );
+          Project.listInstalledLibraryNames(
+            Helper.defaultizeProject({
+              patches: {
+                '@/main': { path: '@/main' },
+                '@/hello': { path: '@/hello' },
+              },
+            })
+          )
+        ));
       it('returns array with two libnames', () =>
-        assert.sameMembers(
-          Project.listInstalledLibraryNames(project),
-          [
-            'some/external',
-            'another/one',
-          ]
-        )
-      );
+        assert.sameMembers(Project.listInstalledLibraryNames(project), [
+          'some/external',
+          'another/one',
+        ]));
     });
     describe('listLibraryNamesUsedInProject', () => {
       it('returns empty array for empty project', () =>
         assert.isEmpty(
           Project.listLibraryNamesUsedInProject(Helper.defaultizeProject({}))
-        )
-      );
+        ));
       it('returns empty array for project without any library', () =>
         assert.isEmpty(
-          Project.listLibraryNamesUsedInProject(Helper.defaultizeProject({
-            patches: {
-              '@/main': { path: '@/main' },
-              '@/hello': { path: '@/hello' },
-            },
-          }))
-        )
-      );
+          Project.listLibraryNamesUsedInProject(
+            Helper.defaultizeProject({
+              patches: {
+                '@/main': { path: '@/main' },
+                '@/hello': { path: '@/hello' },
+              },
+            })
+          )
+        ));
       it('returns array with three libnames', () =>
-        assert.sameMembers(
-          Project.listLibraryNamesUsedInProject(project),
-          [
-            'some/external',
-            'another/one',
-            'xod/core',
-          ]
-        )
-      );
+        assert.sameMembers(Project.listLibraryNamesUsedInProject(project), [
+          'some/external',
+          'another/one',
+          'xod/core',
+        ]));
     });
     describe('listMissingLibraryNames()', () => {
       it('returns an empty list if there is no missing libraries', () =>
         assert.isEmpty(
-          Project.listMissingLibraryNames(Helper.defaultizeProject({
-            patches: {
-              '@/a': { path: '@/a', nodes: { a: { type: '@/b' } } },
-              '@/b': { path: '@/b' },
-            },
-          }))
-        )
-      );
+          Project.listMissingLibraryNames(
+            Helper.defaultizeProject({
+              patches: {
+                '@/a': { path: '@/a', nodes: { a: { type: '@/b' } } },
+                '@/b': { path: '@/b' },
+              },
+            })
+          )
+        ));
       it('returns a list of library names', () =>
         assert.sameMembers(
-          Project.listMissingLibraryNames(Helper.defaultizeProject({
-            patches: {
-              '@/a': {
-                path: '@/a',
-                nodes: {
-                  a: { type: '@/b' },
-                  b: { type: 'xod/test/use-units' },
-                  c: { type: 'another/one/library' },
+          Project.listMissingLibraryNames(
+            Helper.defaultizeProject({
+              patches: {
+                '@/a': {
+                  path: '@/a',
+                  nodes: {
+                    a: { type: '@/b' },
+                    b: { type: 'xod/test/use-units' },
+                    c: { type: 'another/one/library' },
+                  },
+                },
+                '@/b': {
+                  path: '@/b',
+                  nodes: {
+                    a: { type: 'xod/patch-nodes/input-number' },
+                    b: { type: 'xod/common-hardware/led' },
+                  },
+                },
+                'xod/test/use-units': {
+                  path: 'xod/test/use-units',
+                  nodes: {
+                    a: { type: 'xod/units/c-to-f' },
+                  },
+                },
+                'xod/common-hardware/led': {
+                  path: 'xod/common-hardware/led',
+                  nodes: {
+                    a: { type: 'xod/patch-nodes/input-number' },
+                  },
                 },
               },
-              '@/b': {
-                path: '@/b',
-                nodes: {
-                  a: { type: 'xod/patch-nodes/input-number' },
-                  b: { type: 'xod/common-hardware/led' },
-                },
-              },
-              'xod/test/use-units': {
-                path: 'xod/test/use-units',
-                nodes: {
-                  a: { type: 'xod/units/c-to-f' },
-                },
-              },
-              'xod/common-hardware/led': {
-                path: 'xod/common-hardware/led',
-                nodes: {
-                  a: { type: 'xod/patch-nodes/input-number' },
-                },
-              },
-            },
-          })),
+            })
+          ),
           ['xod/units', 'another/one']
-        )
-      );
+        ));
     });
   });
 
@@ -726,7 +774,10 @@ describe('Project', () => {
           },
           links: {
             someLink: {
-              input: { nodeId: 'instanceOfPatchInQuestion', pinKey: 'importantTerminal' },
+              input: {
+                nodeId: 'instanceOfPatchInQuestion',
+                pinKey: 'importantTerminal',
+              },
               output: { nodeId: 'someOtherNode', pinKey: '__out__' },
             },
           },
@@ -780,11 +831,13 @@ describe('Project', () => {
     };
     // :: Project -> Map PatchPath (Map NodeId PatchPath)
     const getActualMap = R.compose(
-      R.map(R.compose(
-        R.map(Node.getNodeType),
-        R.indexBy(Node.getNodeId),
-        Patch.listNodes
-      )),
+      R.map(
+        R.compose(
+          R.map(Node.getNodeType),
+          R.indexBy(Node.getNodeId),
+          Patch.listNodes
+        )
+      ),
       R.indexBy(Patch.getPatchPath),
       Project.listPatchesWithoutBuiltIns
     );
@@ -797,7 +850,9 @@ describe('Project', () => {
   });
 
   describe('validateProject', () => {
-    const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+    const brokenProject = Helper.loadXodball(
+      './fixtures/broken-project.xodball'
+    );
     const project = addMissingOptionalProjectFields(brokenProject);
     const unfoldLeft = e => Either.either(R.identity, R.always(null), e);
     const unfoldRight = e => Either.either(R.always(null), R.identity, e);
@@ -805,7 +860,9 @@ describe('Project', () => {
     it('returns Either Error about non-existing patch in the project', () => {
       const res = Project.validateProject(project);
       const err = new Error(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: '@/not-existing-patch' })
+        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
+          type: '@/not-existing-patch',
+        })
       );
 
       assert.equal(res.isLeft, true);
@@ -839,7 +896,9 @@ describe('Project', () => {
       assert.deepEqual(unfoldRight(res), blinkProject);
     });
     it('returns Either Project for valid variadic project', () => {
-      const variadicsProject = Helper.loadXodball('./fixtures/variadics.xodball');
+      const variadicsProject = Helper.loadXodball(
+        './fixtures/variadics.xodball'
+      );
       const res = Project.validateProject(variadicsProject);
 
       assert.equal(res.isRight, true);
@@ -848,17 +907,16 @@ describe('Project', () => {
   });
 
   describe('project surviving', () => {
-    const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+    const brokenProject = Helper.loadXodball(
+      './fixtures/broken-project.xodball'
+    );
     const project = addMissingOptionalProjectFields(brokenProject);
     const curPatch = Project.getPatchByPathUnsafe('@/main', project);
 
     // :: NodeId -> Patch -> [PinKey]
     const getPinKeysByNodeId = R.compose(
       Maybe.maybe([], R.identity),
-      R.map(R.compose(
-        R.keys,
-        Project.getPinsForNode(R.__, curPatch, project)
-      )),
+      R.map(R.compose(R.keys, Project.getPinsForNode(R.__, curPatch, project))),
       Patch.getNodeById
     );
 
@@ -904,33 +962,72 @@ describe('Project', () => {
       const node = Patch.getNodeByIdUnsafe('BJ4l0cVdKe', curPatch);
       const pins = Project.getPinsForNode(node, curPatch, project);
 
-      Helper.assertProps(pins.S1ulA9NuFx, { normalizedLabel: 'IN1', label: '', type: 'string', direction: 'input', value: 'LED1', order: 0 });
-      Helper.assertProps(pins.B1wg0qVOtg, { normalizedLabel: 'IN2', label: '', type: 'number', direction: 'input', value: 0, order: 1 });
+      Helper.assertProps(pins.S1ulA9NuFx, {
+        normalizedLabel: 'IN1',
+        label: '',
+        type: 'string',
+        direction: 'input',
+        value: 'LED1',
+        order: 0,
+      });
+      Helper.assertProps(pins.B1wg0qVOtg, {
+        normalizedLabel: 'IN2',
+        label: '',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 1,
+      });
     });
     it('returns dead Pins for Node with broken input Links', () => {
-      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const brokenProject = Helper.loadXodball(
+        './fixtures/broken-project.xodball'
+      );
       const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
       const node = Patch.getNodeByIdUnsafe('brokenNodeInLinks', curPatch);
       const pins = Project.getPinsForNode(node, curPatch, brokenProject);
 
-      Helper.assertProps(pins['Hkp4rion-'], { label: '', type: 'dead', direction: 'input', order: 0 });
-      Helper.assertProps(pins.BJbHBjs2b, { label: '', type: 'dead', direction: 'input', order: 1 });
+      Helper.assertProps(pins['Hkp4rion-'], {
+        label: '',
+        type: 'dead',
+        direction: 'input',
+        order: 0,
+      });
+      Helper.assertProps(pins.BJbHBjs2b, {
+        label: '',
+        type: 'dead',
+        direction: 'input',
+        order: 1,
+      });
     });
     it('returns dead Pins for Node with broken output Links', () => {
-      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const brokenProject = Helper.loadXodball(
+        './fixtures/broken-project.xodball'
+      );
       const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
       const node = Patch.getNodeByIdUnsafe('brokenNodeOutLinks', curPatch);
       const pins = Project.getPinsForNode(node, curPatch, brokenProject);
 
-      Helper.assertProps(pins['B1BSSsi3-'], { label: '', type: 'dead', direction: 'output', order: 0 });
+      Helper.assertProps(pins['B1BSSsi3-'], {
+        label: '',
+        type: 'dead',
+        direction: 'output',
+        order: 0,
+      });
     });
     it('returns dead Pins for valid Node with broken PinKey', () => {
-      const brokenProject = Helper.loadXodball('./fixtures/broken-project.xodball');
+      const brokenProject = Helper.loadXodball(
+        './fixtures/broken-project.xodball'
+      );
       const curPatch = Project.getPatchByPathUnsafe('@/main', brokenProject);
       const node = Patch.getNodeByIdUnsafe('validNodeId', curPatch);
       const pins = Project.getPinsForNode(node, curPatch, brokenProject);
 
-      Helper.assertProps(pins.brokenPinKey, { label: '', type: 'dead', direction: 'input' });
+      Helper.assertProps(pins.brokenPinKey, {
+        label: '',
+        type: 'dead',
+        direction: 'input',
+      });
     });
     it('returns valid Pins for variadic Node with arityLevel === 4 and unlabeled pins', () => {
       const project = Helper.loadXodball('./fixtures/variadics.xodball');
@@ -939,9 +1036,27 @@ describe('Project', () => {
       const pins = Project.getPinsForNode(node, curPatch, project);
 
       assert.lengthOf(R.keys(pins), 6);
-      Helper.assertProps(pins.rk6Q4Ziwf, { label: '', type: 'number', direction: 'input', value: 0, order: 1 });
-      Helper.assertProps(pins['rk6Q4Ziwf-$1'], { label: '', type: 'number', direction: 'input', value: 0, order: 2 });
-      Helper.assertProps(pins['rk6Q4Ziwf-$3'], { label: '', type: 'number', direction: 'input', value: 0, order: 4 });
+      Helper.assertProps(pins.rk6Q4Ziwf, {
+        label: '',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 1,
+      });
+      Helper.assertProps(pins['rk6Q4Ziwf-$1'], {
+        label: '',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 2,
+      });
+      Helper.assertProps(pins['rk6Q4Ziwf-$3'], {
+        label: '',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 4,
+      });
     });
     it('returns valid Pins for variadic Node with arityLevel === 2 and labeled pins', () => {
       const project = Helper.loadXodball('./fixtures/variadics.xodball');
@@ -950,8 +1065,20 @@ describe('Project', () => {
       const pins = Project.getPinsForNode(node, curPatch, project);
 
       assert.lengthOf(R.keys(pins), 7);
-      Helper.assertProps(pins['SJb3uE-sPf'], { label: 'D', type: 'number', direction: 'input', value: 0, order: 3 });
-      Helper.assertProps(pins['SJb3uE-sPf-$1'], { label: 'D2', type: 'number', direction: 'input', value: 0, order: 4 });
+      Helper.assertProps(pins['SJb3uE-sPf'], {
+        label: 'D',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 3,
+      });
+      Helper.assertProps(pins['SJb3uE-sPf-$1'], {
+        label: 'D2',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 4,
+      });
     });
     it('returns valid Pins for variadic Node with arityLevel === 3 and labeled pins with numbers and ariteStep === 2', () => {
       const project = Helper.loadXodball('./fixtures/variadics.xodball');
@@ -961,13 +1088,49 @@ describe('Project', () => {
 
       assert.lengthOf(R.keys(pins), 10);
 
-      Helper.assertProps(pins.S1Z1AEZsvf, { label: 'A2', type: 'number', direction: 'input', value: 0, order: 2 });
-      Helper.assertProps(pins['S1Z1AEZsvf-$1'], { label: 'A3', type: 'number', direction: 'input', value: 0, order: 4 });
-      Helper.assertProps(pins['S1Z1AEZsvf-$2'], { label: 'A4', type: 'number', direction: 'input', value: 0, order: 6 });
+      Helper.assertProps(pins.S1Z1AEZsvf, {
+        label: 'A2',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 2,
+      });
+      Helper.assertProps(pins['S1Z1AEZsvf-$1'], {
+        label: 'A3',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 4,
+      });
+      Helper.assertProps(pins['S1Z1AEZsvf-$2'], {
+        label: 'A4',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 6,
+      });
 
-      Helper.assertProps(pins.HkzJCNbivG, { label: 'B2', type: 'number', direction: 'input', value: 0, order: 3 });
-      Helper.assertProps(pins['HkzJCNbivG-$1'], { label: 'B3', type: 'number', direction: 'input', value: 0, order: 5 });
-      Helper.assertProps(pins['HkzJCNbivG-$2'], { label: 'B4', type: 'number', direction: 'input', value: 0, order: 7 });
+      Helper.assertProps(pins.HkzJCNbivG, {
+        label: 'B2',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 3,
+      });
+      Helper.assertProps(pins['HkzJCNbivG-$1'], {
+        label: 'B3',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 5,
+      });
+      Helper.assertProps(pins['HkzJCNbivG-$2'], {
+        label: 'B4',
+        type: 'number',
+        direction: 'input',
+        value: 0,
+        order: 7,
+      });
     });
   });
 });

@@ -9,8 +9,8 @@ import { expandHomeDir, DEFAULT_WORKSPACE_PATH } from 'xod-fs';
  * @param {Object.<String, Function>} programs
  */
 export const runCommand = R.uncurryN(2, options =>
-  R.mapObjIndexed(
-    (fn, command) => R.when(
+  R.mapObjIndexed((fn, command) =>
+    R.when(
       R.compose(R.equals(true), R.prop(R.__, options)),
       R.tap(() => fn(options))
     )(command)
@@ -20,9 +20,7 @@ export const runCommand = R.uncurryN(2, options =>
 // :: Nullable Path -> Path
 export const getWorkspacePath = R.compose(
   expandHomeDir,
-  R.defaultTo(
-    process.env.XOD_WORKSPACE || DEFAULT_WORKSPACE_PATH
-  )
+  R.defaultTo(process.env.XOD_WORKSPACE || DEFAULT_WORKSPACE_PATH)
 );
 
 export default { runCommand };

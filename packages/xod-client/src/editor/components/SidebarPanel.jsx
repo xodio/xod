@@ -5,11 +5,7 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import CustomScroll from 'react-custom-scroll';
 import { noop } from 'xod-func-tools';
 
-import {
-  PANEL_CONTEXT_MENU_ID,
-  PANEL_IDS,
-  SIDEBAR_IDS,
-} from '../constants';
+import { PANEL_CONTEXT_MENU_ID, PANEL_IDS, SIDEBAR_IDS } from '../constants';
 
 const SidebarPanelToolbar = ({
   panelId,
@@ -19,9 +15,7 @@ const SidebarPanelToolbar = ({
   additionalButtons = [],
 }) => (
   <div className="SidebarPanel-toolbar">
-    <div className="SidebarPanel-toolbar-title">
-      {title}
-    </div>
+    <div className="SidebarPanel-toolbar-title">{title}</div>
     <div className="SidebarPanel-toolbar-buttons">
       {additionalButtons}
       <ContextMenuTrigger

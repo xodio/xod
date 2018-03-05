@@ -33,9 +33,13 @@ const arduinoBuilderPlatformMap = {
   darwin: 'mac',
 };
 
-const arduinoBuilderPath = (IS_DEV) ?
-  resolve(app.getAppPath(), 'arduino-builders', arduinoBuilderPlatformMap[os.platform()]) :
-  resolve(process.resourcesPath, 'arduino-builder');
+const arduinoBuilderPath = IS_DEV
+  ? resolve(
+      app.getAppPath(),
+      'arduino-builders',
+      arduinoBuilderPlatformMap[os.platform()]
+    )
+  : resolve(process.resourcesPath, 'arduino-builder');
 
 const arduinoLibrariesPath = resolve(
   IS_DEV ? app.getAppPath() : process.resourcesPath,
@@ -46,9 +50,7 @@ const artifactTmpDir = resolve(app.getPath('userData'), 'upload-temp');
 
 // Another place to store uploader tools
 // Will be used by xod-deploy (cloud compiler)
-const uploadToolsPath = resolve(
-  app.getPath('userData'), 'tools'
-);
+const uploadToolsPath = resolve(app.getPath('userData'), 'tools');
 
 // =============================================================================
 //
@@ -68,24 +70,23 @@ export const getListOfBoards = () => xad.listBoardsFromIndex(xad.packageIndex);
  * it will just return Null
  */
 // :: () -> Nullable Board
-export const loadTargetBoard = () => R.compose(
-  R.when(
-    R.either(R.isNil, R.isEmpty),
-    R.always(null)
-  ),
-  settings.getUploadTarget,
-  settings.load
-)();
+export const loadTargetBoard = () =>
+  R.compose(
+    R.when(R.either(R.isNil, R.isEmpty), R.always(null)),
+    settings.getUploadTarget,
+    settings.load
+  )();
 
 /**
  * Saves a specified Board into Settings and returns itself.
  */
-export const saveTargetBoard = board => R.compose(
-  R.always(board),
-  settings.save,
-  settings.setUploadTarget(board),
-  settings.load
-)();
+export const saveTargetBoard = board =>
+  R.compose(
+    R.always(board),
+    settings.save,
+    settings.setUploadTarget(board),
+    settings.load
+  )();
 
 // =============================================================================
 //
@@ -95,37 +96,45 @@ export const saveTargetBoard = board => R.compose(
 /**
  * Install hardware data and tools by fqbn
  */
-export const installPackage = fqbn => xad.installArchitecture(
-  fqbn, arduinoPackagesPath, xad.packageIndex
-).catch(rejectWithCode(ERROR_CODES.CANT_INSTALL_ARCHITECTURE));
+export const installPackage = fqbn =>
+  xad
+    .installArchitecture(fqbn, arduinoPackagesPath, xad.packageIndex)
+    .catch(rejectWithCode(ERROR_CODES.CANT_INSTALL_ARCHITECTURE));
 
 /**
  * Gets list of all serial ports
  * @returns {Promise<Object, Error>} Promise with Port object or Error
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
-export const listPorts = () => xad.listPorts()
-  .then(R.sort(R.descend(R.prop('comName'))))
-  .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
+export const listPorts = () =>
+  xad
+    .listPorts()
+    .then(R.sort(R.descend(R.prop('comName'))))
+    .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
 
 // :: Port -> [Port] -> Boolean
-const hasPort = R.curry((port, ports) => R.compose(
-  R.gt(R.__, -1),
-  R.findIndex(R.propEq('comName', port.comName))
-)(ports));
+const hasPort = R.curry((port, ports) =>
+  R.compose(R.gt(R.__, -1), R.findIndex(R.propEq('comName', port.comName)))(
+    ports
+  )
+);
 
 /**
  * Validates that port is exist and returns Promise with the same Port object
  * or Rejected Promise with Error Code and object, that contain port
  * and list of available ports.
  */
-export const checkPort = port => listPorts()
-  .then(R.ifElse(
-    hasPort(port),
-    R.always(port),
-    (ports) => { throw Object.assign(new Error(`Port ${port.comName} not found`), { port, ports }); }
-  ))
-  .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
+export const checkPort = port =>
+  listPorts()
+    .then(
+      R.ifElse(hasPort(port), R.always(port), ports => {
+        throw Object.assign(new Error(`Port ${port.comName} not found`), {
+          port,
+          ports,
+        });
+      })
+    )
+    .catch(rejectWithCode(ERROR_CODES.PORT_NOT_FOUND));
 
 /**
  * Upload transpiled code to specified device at specified port
@@ -141,18 +150,26 @@ export const uploadToArduino = (pab, port, code) => {
   const clearTmp = () => fse.remove(artifactTmpDir);
 
   return writeFile(sketchFile, code, 'utf8')
-    .then(({ path }) => xad.buildAndUpload(
-      path, pab, arduinoPackagesPath, arduinoLibrariesPath, buildDir, port, arduinoBuilderPath
-    ))
+    .then(({ path }) =>
+      xad.buildAndUpload(
+        path,
+        pab,
+        arduinoPackagesPath,
+        arduinoLibrariesPath,
+        buildDir,
+        port,
+        arduinoBuilderPath
+      )
+    )
     .then(tapP(clearTmp))
-    .catch(
-      err => clearTmp().then(() => rejectWithCode(ERROR_CODES.UPLOAD_ERROR, err))
+    .catch(err =>
+      clearTmp().then(() => rejectWithCode(ERROR_CODES.UPLOAD_ERROR, err))
     );
 };
 
 // :: String -> [Board] -> Board
-const findBoardById = R.curry(
-  (id, boards) => R.find(R.propEq('boardIdentifier', id), boards)
+const findBoardById = R.curry((id, boards) =>
+  R.find(R.propEq('boardIdentifier', id), boards)
 );
 
 // =============================================================================
@@ -161,11 +178,7 @@ const findBoardById = R.curry(
 //
 // =============================================================================
 
-const deployToArduino = ({
-  payload,
-  sendProgress,
-  sendSuccess,
-}) => {
+const deployToArduino = ({ payload, sendProgress, sendSuccess }) => {
   const boardId = payload.board.boardsTxtId;
   const boardCpuId = payload.board.cpuId;
   const { package: pkg, architecture } = payload.board;
@@ -173,28 +186,29 @@ const deployToArduino = ({
 
   return R.pipeP(
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-    () => checkPort(payload.port)
-      .then(port => ({ port: port.comName })),
+    () => checkPort(payload.port).then(port => ({ port: port.comName })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
     tapP(() => installPackage(fqbn)),
     sendProgress(MESSAGES.TOOLCHAIN_INSTALLED, 30),
-    ({ port }) => xad.loadPABs(fqbn, arduinoPackagesPath)
-      .then(boards => ({
+    ({ port }) =>
+      xad.loadPABs(fqbn, arduinoPackagesPath).then(boards => ({
         port,
-        pab: R.compose(
-          R.assoc('cpu', boardCpuId),
-          findBoardById(boardId)
-        )(boards),
+        pab: R.compose(R.assoc('cpu', boardCpuId), findBoardById(boardId))(
+          boards
+        ),
       })),
-    ({ port, pab }) => uploadToArduino(xad.strigifyFQBN(pab), port, payload.code),
-    (result) => {
+    ({ port, pab }) =>
+      uploadToArduino(xad.strigifyFQBN(pab), port, payload.code),
+    result => {
       if (result.exitCode !== 0) {
-        return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
+        return Promise.reject(
+          Object.assign(
+            new Error(`Upload tool exited with error code: ${result.exitCode}`),
+            result
+          )
+        );
       }
-      sendSuccess(
-        [result.stdout, result.stderr].join('\n\n'),
-        100
-      )();
+      sendSuccess([result.stdout, result.stderr].join('\n\n'), 100)();
 
       return result;
     }
@@ -208,13 +222,10 @@ const deployToArduino = ({
 // =============================================================================
 
 // :: UploadConfig -> Promise Path Error
-const installTool = R.converge(
-  xd.installTool(uploadToolsPath),
-  [
-    xd.getToolVersionPath,
-    xd.getToolUrl,
-  ]
-);
+const installTool = R.converge(xd.installTool(uploadToolsPath), [
+  xd.getToolVersionPath,
+  xd.getToolUrl,
+]);
 
 const deployToArduinoThroughCloud = ({
   payload,
@@ -226,39 +237,50 @@ const deployToArduinoThroughCloud = ({
 
   return R.pipeP(
     sendProgress(MESSAGES.CODE_TRANSPILED, 10),
-    () => checkPort(payload.port)
-      .then(port => ({
+    () =>
+      checkPort(payload.port).then(port => ({
         port: port.comName,
       })),
     sendProgress(MESSAGES.PORT_FOUND, 15),
-    ({ port }) => xd.getUploadConfig(pio)
-      .then(uploadConfig => ({ port, uploadConfig }))
-      .catch((err) => {
-        const errCode = R.cond([
-          [R.propEq('status', 404), R.always(ERROR_CODES.BOARD_NOT_SUPPORTED)],
-          [R.has('status'), R.always(ERROR_CODES.CANT_GET_UPLOAD_CONFIG)],
-          [R.T, R.always(ERROR_CODES.CLOUD_NETWORK_ERROR)],
-        ])(err);
+    ({ port }) =>
+      xd
+        .getUploadConfig(pio)
+        .then(uploadConfig => ({ port, uploadConfig }))
+        .catch(err => {
+          const errCode = R.cond([
+            [
+              R.propEq('status', 404),
+              R.always(ERROR_CODES.BOARD_NOT_SUPPORTED),
+            ],
+            [R.has('status'), R.always(ERROR_CODES.CANT_GET_UPLOAD_CONFIG)],
+            [R.T, R.always(ERROR_CODES.CLOUD_NETWORK_ERROR)],
+          ])(err);
 
-        return rejectWithCode(errCode, err);
-      }),
-    data => installTool(data.uploadConfig)
-      .then(res => R.assoc('toolPath', res.path, data)),
+          return rejectWithCode(errCode, err);
+        }),
+    data =>
+      installTool(data.uploadConfig).then(res =>
+        R.assoc('toolPath', res.path, data)
+      ),
     sendProgress(MESSAGES.CLOUD_TOOLCHAIN_INSTALLED, 30),
-    data => xd.compile(pio, code)
-      .then(xd.saveCompiledBinary(artifactTmpDir))
-      .then(artifactPath => R.assoc('artifactPath', artifactPath, data)),
+    data =>
+      xd
+        .compile(pio, code)
+        .then(xd.saveCompiledBinary(artifactTmpDir))
+        .then(artifactPath => R.assoc('artifactPath', artifactPath, data)),
     sendProgress(MESSAGES.CODE_COMPILED, 75),
     ({ uploadConfig, toolPath, artifactPath, port }) =>
       xd.upload(uploadConfig, { toolPath, artifactPath, port }),
-    (result) => {
+    result => {
       if (result.exitCode !== 0) {
-        return Promise.reject(Object.assign(new Error(`Upload tool exited with error code: ${result.exitCode}`), result));
+        return Promise.reject(
+          Object.assign(
+            new Error(`Upload tool exited with error code: ${result.exitCode}`),
+            result
+          )
+        );
       }
-      sendSuccess(
-        [result.stderr, result.stdout].join('\n\n'),
-        100,
-      )();
+      sendSuccess([result.stderr, result.stdout].join('\n\n'), 100)();
 
       return result;
     }
@@ -273,12 +295,15 @@ const deployToArduinoThroughCloud = ({
 
 const debug = async (port, onData, onClose) => {
   const ports = await xad.listPorts();
-  const newPort = R.find(R.allPass([
-    R.propEq('manufacturer', port.manufacturer),
-    R.propEq('vendorId', port.vendorId),
-    R.propEq('serialNumber', port.serialNumber),
-    R.propEq('productId', port.productId),
-  ]), ports);
+  const newPort = R.find(
+    R.allPass([
+      R.propEq('manufacturer', port.manufacturer),
+      R.propEq('vendorId', port.vendorId),
+      R.propEq('serialNumber', port.serialNumber),
+      R.propEq('productId', port.productId),
+    ]),
+    ports
+  );
 
   if (!newPort) {
     return rejectWithCode(
@@ -289,11 +314,13 @@ const debug = async (port, onData, onClose) => {
 
   const portName = R.prop('comName', port);
 
-  return delay(400)
-    .then(() => xad.openAndReadPort(portName, onData, onClose));
+  return delay(400).then(() => xad.openAndReadPort(portName, onData, onClose));
 };
 
-const isDeviceNotFound = R.propEq('errorCode', ERROR_CODES.DEVICE_NOT_FOUND_FOR_DEBUG);
+const isDeviceNotFound = R.propEq(
+  'errorCode',
+  ERROR_CODES.DEVICE_NOT_FOUND_FOR_DEBUG
+);
 
 // =============================================================================
 //
@@ -313,7 +340,10 @@ const isDeviceNotFound = R.propEq('errorCode', ERROR_CODES.DEVICE_NOT_FOUND_FOR_
  *                   really error occured, so it's passed as argument and
  *                   called in the main process.
  */
-export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }) => {
+export const startDebugSessionHandler = (storeFn, onCloseCb) => (
+  event,
+  { port }
+) => {
   let triesToSearchDevice = 0;
   const maxTriesToSearch = 7;
   const searchDelay = 300;
@@ -321,17 +351,14 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }
   let messageCollector = [];
   const throttleDelay = 100; // ms
 
-  const intervalId = setInterval(
-    () => {
-      if (messageCollector.length > 0) {
-        event.sender.send(EVENTS.DEBUG_SESSION, messageCollector);
-        messageCollector = [];
-      }
-    },
-    throttleDelay
-  );
+  const intervalId = setInterval(() => {
+    if (messageCollector.length > 0) {
+      event.sender.send(EVENTS.DEBUG_SESSION, messageCollector);
+      messageCollector = [];
+    }
+  }, throttleDelay);
 
-  const onData = (data) => {
+  const onData = data => {
     messageCollector = R.append(parseDebuggerMessage(data), messageCollector);
   };
   const onClose = () => {
@@ -343,11 +370,14 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }
       )(new Error(MESSAGES.DEBUG_LOST_CONNECTION));
       event.sender.send(EVENTS.DEBUG_SESSION, [errorMessage]);
     });
-    event.sender.send(EVENTS.STOP_DEBUG_SESSION, createSystemMessage('Debug session stopped'));
+    event.sender.send(
+      EVENTS.STOP_DEBUG_SESSION,
+      createSystemMessage('Debug session stopped')
+    );
   };
 
-  const runDebug = () => debug(port, onData, onClose)
-    .catch(async (err) => {
+  const runDebug = () =>
+    debug(port, onData, onClose).catch(async err => {
       if (triesToSearchDevice >= maxTriesToSearch || !isDeviceNotFound(err)) {
         return err;
       }
@@ -358,15 +388,10 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (event, { port }
     });
 
   return runDebug()
-    .then(R.tap(
-      debugPort => storeFn(debugPort, intervalId)
-    ))
-    .catch((err) => {
+    .then(R.tap(debugPort => storeFn(debugPort, intervalId)))
+    .catch(err => {
       clearInterval(intervalId);
-      event.sender.send(
-        EVENTS.DEBUG_SESSION,
-        [createErrorMessage(err)]
-      );
+      event.sender.send(EVENTS.DEBUG_SESSION, [createErrorMessage(err)]);
     });
 };
 
@@ -375,28 +400,33 @@ export const stopDebugSessionHandler = (event, port) => xad.closePort(port);
 export const uploadToArduinoHandler = (event, payload) => {
   let lastPercentage = 0;
   // Messages
-  const send = status => R.compose(
-    data => (arg) => { event.sender.send('UPLOAD_TO_ARDUINO', data); return arg; },
-    R.assoc(status, true),
-    (message, percentage, err = null) => {
-      lastPercentage = percentage;
-      return {
-        success: false,
-        progress: false,
-        failure: false,
-        error: err,
-        message,
-        percentage,
-      };
-    }
-  );
+  const send = status =>
+    R.compose(
+      data => arg => {
+        event.sender.send('UPLOAD_TO_ARDUINO', data);
+        return arg;
+      },
+      R.assoc(status, true),
+      (message, percentage, err = null) => {
+        lastPercentage = percentage;
+        return {
+          success: false,
+          progress: false,
+          failure: false,
+          error: err,
+          message,
+          percentage,
+        };
+      }
+    );
   const sendSuccess = send('success');
   const sendProgress = send('progress');
   const sendFailure = send('failure');
-  const convertAndSendError = err => R.compose(
-    msg => sendFailure(msg, lastPercentage, errorToPlainObject(err))(),
-    formatError
-  )(err);
+  const convertAndSendError = err =>
+    R.compose(
+      msg => sendFailure(msg, lastPercentage, errorToPlainObject(err))(),
+      formatError
+    )(err);
 
   const opts = {
     payload,
@@ -404,48 +434,42 @@ export const uploadToArduinoHandler = (event, payload) => {
     sendSuccess,
   };
 
-  const deployFn = (payload.cloud) ? deployToArduinoThroughCloud : deployToArduino;
+  const deployFn = payload.cloud
+    ? deployToArduinoThroughCloud
+    : deployToArduino;
 
-  return deployFn(opts)
-    .catch(convertAndSendError);
+  return deployFn(opts).catch(convertAndSendError);
 };
 
-export const listPortsHandler = event => listPorts()
-  .then(ports => event.sender.send(
-    EVENTS.LIST_PORTS,
-    {
-      err: false,
-      data: ports,
-    }
-  ))
-  .catch(err => event.sender.send(
-    EVENTS.LIST_PORTS,
-    {
-      err: true,
-      data: err,
-    }
-  ));
+export const listPortsHandler = event =>
+  listPorts()
+    .then(ports =>
+      event.sender.send(EVENTS.LIST_PORTS, {
+        err: false,
+        data: ports,
+      })
+    )
+    .catch(err =>
+      event.sender.send(EVENTS.LIST_PORTS, {
+        err: true,
+        data: err,
+      })
+    );
 
-export const listBoardsHandler = event => event.sender.send(
-  EVENTS.LIST_BOARDS,
-  {
+export const listBoardsHandler = event =>
+  event.sender.send(EVENTS.LIST_BOARDS, {
     err: false,
     data: getListOfBoards(),
-  }
-);
+  });
 
-export const loadTargetBoardHandler = event => event.sender.send(
-  EVENTS.GET_SELECTED_BOARD,
-  {
+export const loadTargetBoardHandler = event =>
+  event.sender.send(EVENTS.GET_SELECTED_BOARD, {
     err: false,
     data: loadTargetBoard(),
-  }
-);
+  });
 
-export const saveTargetBoardHandler = (event, payload) => event.sender.send(
-  EVENTS.SET_SELECTED_BOARD,
-  {
+export const saveTargetBoardHandler = (event, payload) =>
+  event.sender.send(EVENTS.SET_SELECTED_BOARD, {
     err: false,
     data: saveTargetBoard(payload),
-  }
-);
+  });

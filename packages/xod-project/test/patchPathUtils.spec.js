@@ -53,17 +53,31 @@ describe('PatchPathUtils', () => {
       assert.isFalse(PatchPathUtils.isValidPatchPath('@'));
       assert.isFalse(PatchPathUtils.isValidPatchPath('@/'));
       assert.isFalse(PatchPathUtils.isValidPatchPath('@/notAValidIdentifier'));
-      assert.isFalse(PatchPathUtils.isValidPatchPath('@/not_a_valid_identifier'));
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath('@/not_a_valid_identifier')
+      );
       assert.isFalse(PatchPathUtils.isValidPatchPath('@/extra/slashes'));
     });
     it('should accept library paths(author/lib-name/some-valid-identifier)', () => {
       assert.isTrue(PatchPathUtils.isValidPatchPath('a/b/c'));
-      assert.isTrue(PatchPathUtils.isValidPatchPath('author/lib-name/some-identifier'));
+      assert.isTrue(
+        PatchPathUtils.isValidPatchPath('author/lib-name/some-identifier')
+      );
 
       assert.isFalse(PatchPathUtils.isValidPatchPath('//'));
-      assert.isFalse(PatchPathUtils.isValidPatchPath('invalid@author/lib-name/some-identifier'));
-      assert.isFalse(PatchPathUtils.isValidPatchPath('author/@invalid@libname@/some-identifier'));
-      assert.isFalse(PatchPathUtils.isValidPatchPath('author/lib-name/invalid@identifier'));
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'invalid@author/lib-name/some-identifier'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/@invalid@libname@/some-identifier'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath('author/lib-name/invalid@identifier')
+      );
 
       assert.isFalse(PatchPathUtils.isValidPatchPath('not-enough/slashes'));
       assert.isFalse(PatchPathUtils.isValidPatchPath('way/too/much/slashes'));
@@ -79,15 +93,22 @@ describe('PatchPathUtils', () => {
       assert.isTrue(PatchPathUtils.validatePath('spa ce').isLeft);
       assert.isTrue(PatchPathUtils.validatePath('spçiålÇhÅr$').isLeft);
 
-      assert.isTrue(PatchPathUtils.validatePath('@/folder/subfolder/patchName').isLeft);
-      assert.isTrue(PatchPathUtils.validatePath('@/patch_name_underscored').isLeft);
+      assert.isTrue(
+        PatchPathUtils.validatePath('@/folder/subfolder/patchName').isLeft
+      );
+      assert.isTrue(
+        PatchPathUtils.validatePath('@/patch_name_underscored').isLeft
+      );
 
       Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err1);
       Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err2);
     });
     it('should be Either.Right for valid paths', () => {
       assert.isTrue(PatchPathUtils.validatePath('@/patch-name').isRight);
-      assert.isTrue(PatchPathUtils.validatePath('author-name/library-name/patch-name').isRight);
+      assert.isTrue(
+        PatchPathUtils.validatePath('author-name/library-name/patch-name')
+          .isRight
+      );
     });
     it('should be Either.Right should containt correct value', () => {
       const path = '@/patchName';
@@ -95,10 +116,9 @@ describe('PatchPathUtils', () => {
       assert.isTrue(result.isRight);
 
       /* istanbul ignore next */
-      Helper.expectEitherRight(
-        (val) => { expect(val).to.be.equal(path); },
-        result
-      );
+      Helper.expectEitherRight(val => {
+        expect(val).to.be.equal(path);
+      }, result);
     });
   });
 
@@ -154,16 +174,31 @@ describe('PatchPathUtils', () => {
 
   describe('resolvePatchPath', () => {
     it('if both paths is local, it returns the same path', () => {
-      assert.equal(PatchPathUtils.resolvePatchPath('@/local1', '@/local2'), '@/local1');
+      assert.equal(
+        PatchPathUtils.resolvePatchPath('@/local1', '@/local2'),
+        '@/local1'
+      );
     });
     it('if both paths is library, it returns the same path', () => {
-      assert.equal(PatchPathUtils.resolvePatchPath('xod/lib/local1', 'xod/another-lib/local2'), 'xod/lib/local1');
+      assert.equal(
+        PatchPathUtils.resolvePatchPath(
+          'xod/lib/local1',
+          'xod/another-lib/local2'
+        ),
+        'xod/lib/local1'
+      );
     });
     it('if first path is local, but second is libraty it should return new resolved path', () => {
-      assert.equal(PatchPathUtils.resolvePatchPath('@/local1', 'xod/lib/local2'), 'xod/lib/local1');
+      assert.equal(
+        PatchPathUtils.resolvePatchPath('@/local1', 'xod/lib/local2'),
+        'xod/lib/local1'
+      );
     });
     it('if first path is library, but second is local it returns the same library path', () => {
-      assert.equal(PatchPathUtils.resolvePatchPath('xod/lib/local1', '@/local2'), 'xod/lib/local1');
+      assert.equal(
+        PatchPathUtils.resolvePatchPath('xod/lib/local1', '@/local2'),
+        'xod/lib/local1'
+      );
     });
   });
 });

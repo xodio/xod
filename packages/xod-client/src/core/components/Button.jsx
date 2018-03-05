@@ -10,20 +10,21 @@ const Button = ({
   small,
   children,
   ...restProps
-}) => React.createElement(
-  as,
-  {
-    ...restProps,
-    className: cn('Button', className, {
-      'Button--light': light,
-      'Button--small': small,
+}) =>
+  React.createElement(
+    as,
+    {
+      ...restProps,
+      className: cn('Button', className, {
+        'Button--light': light,
+        'Button--small': small,
+        disabled,
+      }),
       disabled,
-    }),
-    disabled,
-    role: as !== 'button' ? 'button' : restProps.role,
-  },
-  children
-);
+      role: as !== 'button' ? 'button' : restProps.role,
+    },
+    children
+  );
 
 Button.propTypes = {
   as: PropTypes.string,

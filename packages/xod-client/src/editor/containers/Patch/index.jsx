@@ -16,7 +16,11 @@ import * as EditorSelectors from '../../selectors';
 import * as ProjectSelectors from '../../../project/selectors';
 import * as DebugSelectors from '../../../debugger/selectors';
 
-import { RenderableLink, RenderableNode, RenderableComment } from '../../../types';
+import {
+  RenderableLink,
+  RenderableNode,
+  RenderableComment,
+} from '../../../types';
 import sanctuaryPropType from '../../../utils/sanctuaryPropType';
 
 import dropTarget from './dropTarget';
@@ -140,7 +144,10 @@ class Patch extends React.Component {
   }
 
   goToMode(newMode, payload) {
-    const newModeState = MODE_HANDLERS[newMode].getInitialState(this.props, payload);
+    const newModeState = MODE_HANDLERS[newMode].getInitialState(
+      this.props,
+      payload
+    );
     this.setModeState(newMode, newModeState);
   }
 
@@ -166,17 +173,16 @@ class Patch extends React.Component {
     return this.props.connectDropTarget(
       <div
         className={cn('PatchWrapper-container', currentMode)}
-        ref={(r) => { this.dropTargetRootRef = r; }}
+        ref={r => {
+          this.dropTargetRootRef = r;
+        }}
       >
         <ReactResizeDetector
           handleWidth
           handleHeight
           onResize={this.props.actions.patchWorkareaResized}
         />
-        {MODE_HANDLERS[currentMode].render(
-          this.getApi(currentMode),
-          project
-        )}
+        {MODE_HANDLERS[currentMode].render(this.getApi(currentMode), project)}
       </div>
     );
   }
@@ -227,30 +233,33 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    addNode: ProjectActions.addNode,
-    editComment: ProjectActions.editComment,
-    moveSelection: EditorActions.moveSelection,
-    resizeComment: ProjectActions.resizeComment,
-    deselectAll: EditorActions.deselectAll,
-    deleteSelection: EditorActions.deleteSelection,
-    selectLink: EditorActions.selectLink,
-    selectNode: EditorActions.selectNode,
-    selectComment: EditorActions.selectComment,
-    selectEntity: EditorActions.selectEntity,
-    deselectEntity: EditorActions.deselectEntity,
-    setSelection: EditorActions.setEditorSelection,
-    combineSelection: EditorActions.combineEditorSelection,
-    addEntityToSelection: EditorActions.addEntityToSelection,
-    doPinSelection: EditorActions.doPinSelection,
-    linkPin: EditorActions.linkPin,
-    setOffset: EditorActions.setCurrentPatchOffset,
-    switchPatch: EditorActions.switchPatch,
-    drillDown: DebuggerActions.drillDown,
-    openImplementationEditor: EditorActions.openImplementationEditor,
-    patchWorkareaResized: EditorActions.patchWorkareaResized,
-    changeArityLevel: ProjectActions.changeArityLevel,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      addNode: ProjectActions.addNode,
+      editComment: ProjectActions.editComment,
+      moveSelection: EditorActions.moveSelection,
+      resizeComment: ProjectActions.resizeComment,
+      deselectAll: EditorActions.deselectAll,
+      deleteSelection: EditorActions.deleteSelection,
+      selectLink: EditorActions.selectLink,
+      selectNode: EditorActions.selectNode,
+      selectComment: EditorActions.selectComment,
+      selectEntity: EditorActions.selectEntity,
+      deselectEntity: EditorActions.deselectEntity,
+      setSelection: EditorActions.setEditorSelection,
+      combineSelection: EditorActions.combineEditorSelection,
+      addEntityToSelection: EditorActions.addEntityToSelection,
+      doPinSelection: EditorActions.doPinSelection,
+      linkPin: EditorActions.linkPin,
+      setOffset: EditorActions.setCurrentPatchOffset,
+      switchPatch: EditorActions.switchPatch,
+      drillDown: DebuggerActions.drillDown,
+      openImplementationEditor: EditorActions.openImplementationEditor,
+      patchWorkareaResized: EditorActions.patchWorkareaResized,
+      changeArityLevel: ProjectActions.changeArityLevel,
+    },
+    dispatch
+  ),
 });
 
 export default R.compose(

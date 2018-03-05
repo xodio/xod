@@ -13,12 +13,14 @@ class ConfirmationPopup extends BasePageObject {
   }
 
   async clickConfirm() {
-    const button = await this.elementHandle.xpath('//button[.//text()="Confirm"]');
+    const button = await this.elementHandle.xpath(
+      '//button[.//text()="Confirm"]'
+    );
     await button.click();
   }
 }
 
-ConfirmationPopup.findOnPage = async (page) => {
+ConfirmationPopup.findOnPage = async page => {
   const elementHandle = await page.$('.PopupConfirm');
   if (!elementHandle) return null;
   return new ConfirmationPopup(page, elementHandle);

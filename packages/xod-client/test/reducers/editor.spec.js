@@ -14,22 +14,21 @@ import editorReducer from '../../src/editor/reducer';
 import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../src/editor/constants';
 
 const mockStore = configureStore([thunk]);
-const testStore = state => createStore(
-  combineReducers({
-    project: f => f || {},
-    editor: editorReducer,
-  }),
-  state,
-  applyMiddleware(thunk)
-);
+const testStore = state =>
+  createStore(
+    combineReducers({
+      project: f => f || {},
+      editor: editorReducer,
+    }),
+    state,
+    applyMiddleware(thunk)
+  );
 
 describe('Editor reducer', () => {
   describe('selecting entities', () => {
     const mockState = {
       project: defaultizeProject({
-        authors: [
-          'Test Person',
-        ],
+        authors: ['Test Person'],
         description: '',
         license: '',
         version: '0.0.0',
@@ -105,33 +104,33 @@ describe('Editor reducer', () => {
     };
     let store = null;
 
-    beforeEach(
-      () => {
-        store = mockStore(mockState);
-      }
-    );
+    beforeEach(() => {
+      store = mockStore(mockState);
+    });
 
     it('should select node', () => {
       store = testStore(mockState);
       const id = '1';
       store.dispatch(Actions.selectNode(id));
 
-      chai.expect(Selectors.getSelection(store.getState()))
-        .to.deep.equal([{
+      chai.expect(Selectors.getSelection(store.getState())).to.deep.equal([
+        {
           entity: SELECTION_ENTITY_TYPE.NODE,
           id,
-        }]);
+        },
+      ]);
     });
     it('should select link', () => {
       store = testStore(mockState);
       const id = '1';
       store.dispatch(Actions.selectLink(id));
 
-      chai.expect(Selectors.getSelection(store.getState()))
-        .to.deep.equal([{
+      chai.expect(Selectors.getSelection(store.getState())).to.deep.equal([
+        {
           entity: SELECTION_ENTITY_TYPE.LINK,
           id,
-        }]);
+        },
+      ]);
     });
     it('should deselect all', () => {
       store = testStore(mockState);
@@ -144,9 +143,7 @@ describe('Editor reducer', () => {
     it('should select pin', () => {
       const nodeId = '1';
       const pinKey = 'in';
-      const expectedActions = [
-        Actions.setPinSelection(nodeId, pinKey),
-      ];
+      const expectedActions = [Actions.setPinSelection(nodeId, pinKey)];
 
       store.dispatch(Actions.doPinSelection(nodeId, pinKey));
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
@@ -188,21 +185,20 @@ describe('Editor reducer', () => {
         },
       }),
     };
-    const createTabsStore = state => createStore(
-      combineReducers({
-        editor: editorReducer,
-      }),
-      state,
-      applyMiddleware(thunk)
-    );
+    const createTabsStore = state =>
+      createStore(
+        combineReducers({
+          editor: editorReducer,
+        }),
+        state,
+        applyMiddleware(thunk)
+      );
 
     let store = null;
 
-    beforeEach(
-      () => {
-        store = createTabsStore(mockState);
-      }
-    );
+    beforeEach(() => {
+      store = createTabsStore(mockState);
+    });
 
     it('should add new tab', () => {
       store.dispatch(Actions.switchPatch('@/p3'));
