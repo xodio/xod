@@ -17,31 +17,22 @@ const NODE_BODY_RECT_PROPS = {
 
 const RegularNodeBody = props => (
   <g>
-    <rect
-      className="body"
-      {...NODE_BODY_RECT_PROPS}
-    />
+    <rect className="body" {...NODE_BODY_RECT_PROPS} />
     <NodeLabel
       text={props.label || XP.getBaseName(props.type)}
       width={props.size.width}
       height={props.size.height}
     />
-    <rect
-      className="outline"
-      {...NODE_BODY_RECT_PROPS}
-    />
-    {props.isVariadic
-      ? (
-        <VariadicHandle
-          size={props.size}
-          onMouseDown={(event) => {
-            event.stopPropagation();
-            props.onVariadicHandleDown(event, props.id);
-          }}
-        />
-      )
-      : null
-    }
+    <rect className="outline" {...NODE_BODY_RECT_PROPS} />
+    {props.isVariadic ? (
+      <VariadicHandle
+        size={props.size}
+        onMouseDown={event => {
+          event.stopPropagation();
+          props.onVariadicHandleDown(event, props.id);
+        }}
+      />
+    ) : null}
   </g>
 );
 

@@ -37,16 +37,18 @@ class Comment extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !R.eqBy(
-      R.omit([
-        'onMouseDown',
-        'onMouseUp',
-        'onResizeHandleMouseDown',
-        'onFinishEditing',
-      ]),
-      nextProps,
-      this.props
-    ) || !R.equals(nextState, this.state);
+    return (
+      !R.eqBy(
+        R.omit([
+          'onMouseDown',
+          'onMouseUp',
+          'onResizeHandleMouseDown',
+          'onFinishEditing',
+        ]),
+        nextProps,
+        this.props
+      ) || !R.equals(nextState, this.state)
+    );
   }
 
   onMouseDown(event) {
@@ -115,10 +117,7 @@ class Comment extends React.Component {
       hidden,
     } = this.props;
 
-    const {
-      isEditing,
-      editorValue,
-    } = this.state;
+    const { isEditing, editorValue } = this.state;
 
     const cls = classNames('Comment', {
       'is-selected': isSelected,
@@ -142,12 +141,7 @@ class Comment extends React.Component {
         onDoubleClick={this.beginEditing}
       >
         <clipPath id={maskId}>
-          <rect
-            className="mask"
-            {...position}
-            {...size}
-            {...bodyRectProps}
-          />
+          <rect className="mask" {...position} {...size} {...bodyRectProps} />
         </clipPath>
         <rect
           {...position}
@@ -165,12 +159,7 @@ class Comment extends React.Component {
               Z
             `}
         />
-        <rect
-          className="outline"
-          {...position}
-          {...size}
-          {...bodyRectProps}
-        />
+        <rect className="outline" {...position} {...size} {...bodyRectProps} />
         <foreignObject {...size} {...position}>
           <div className="container" xmlns="http://www.w3.org/1999/xhtml">
             {isEditing ? (
@@ -184,10 +173,7 @@ class Comment extends React.Component {
               />
             ) : (
               <div className="content viewer">
-                <Markdown
-                  options={remarkableOptions}
-                  source={content}
-                />
+                <Markdown options={remarkableOptions} source={content} />
               </div>
             )}
           </div>
@@ -195,8 +181,8 @@ class Comment extends React.Component {
         <rect
           className="resizeHandleOverlay"
           onMouseDown={this.onResizeHandleMouseDown}
-          x={(position.x + size.width) - HANDLE_SIZE}
-          y={(position.y + size.height) - HANDLE_SIZE}
+          x={position.x + size.width - HANDLE_SIZE}
+          y={position.y + size.height - HANDLE_SIZE}
           width={HANDLE_SIZE}
           height={HANDLE_SIZE}
         />

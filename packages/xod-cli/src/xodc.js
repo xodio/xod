@@ -43,22 +43,24 @@ Options:
 `;
 
 const programs = {
-  pack: o => pack(o['<projectDir>'], o['<output>'], {
-    workspace: o['--workspace'],
-  }),
+  pack: o =>
+    pack(o['<projectDir>'], o['<output>'], {
+      workspace: o['--workspace'],
+    }),
   unpack: o => unpack(o['<xodball>'], o['<dirPath>']),
-  transpile: o => transpile(o['<input>'], o['<patchPath>'], {
-    output: o['--output'],
-    workspace: o['--workspace'],
-  }),
-  publish: o => publish(
-    o['--swagger'] || PM_SWAGGER_URL,
-    o['--orgname'],
-    o['<projectDir>'] || '.'),
-  install: o => install(
-    o['--swagger'] || PM_SWAGGER_URL,
-    o['<libUri>'],
-    o['--workspace']),
+  transpile: o =>
+    transpile(o['<input>'], o['<patchPath>'], {
+      output: o['--output'],
+      workspace: o['--workspace'],
+    }),
+  publish: o =>
+    publish(
+      o['--swagger'] || PM_SWAGGER_URL,
+      o['--orgname'],
+      o['<projectDir>'] || '.'
+    ),
+  install: o =>
+    install(o['--swagger'] || PM_SWAGGER_URL, o['<libUri>'], o['--workspace']),
 };
 
 // Running command

@@ -29,8 +29,7 @@ describe('saveProjectEntirely()', () => {
     expectRejectedWithCode(
       saveProjectEntirely(tempDir, {}),
       ERROR_CODES.CANT_SAVE_PROJECT
-    )
-  );
+    ));
   it('should save patch attachments correctly', () => {
     const projectName = 'attachment-test';
     const testProject = defaultizeProject({
@@ -41,7 +40,8 @@ describe('saveProjectEntirely()', () => {
             {
               filename: 'img/20x20.png',
               encoding: 'base64',
-              content: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC',
+              content:
+                'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC',
             },
             {
               filename: 'README.md',
@@ -54,10 +54,22 @@ describe('saveProjectEntirely()', () => {
     });
 
     return saveProjectEntirely(tempDir, testProject)
-      .then(() => readFile(path.resolve(tempDir, 'test', 'img/20x20.png'), 'base64'))
-      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[0].content))
+      .then(() =>
+        readFile(path.resolve(tempDir, 'test', 'img/20x20.png'), 'base64')
+      )
+      .then(content =>
+        assert.strictEqual(
+          content,
+          testProject.patches['@/test'].attachments[0].content
+        )
+      )
       .then(() => readFile(path.resolve(tempDir, 'test', 'README.md'), 'utf8'))
-      .then(content => assert.strictEqual(content, testProject.patches['@/test'].attachments[1].content));
+      .then(content =>
+        assert.strictEqual(
+          content,
+          testProject.patches['@/test'].attachments[1].content
+        )
+      );
   });
 });
 
@@ -66,8 +78,7 @@ describe('saveLibraryEntirely()', () => {
     expectRejectedWithCode(
       saveLibraryEntirely('test', {}, tempDir),
       ERROR_CODES.CANT_SAVE_LIBRARY
-    )
-  );
+    ));
 });
 
 describe('Save project and libraries', () => {
@@ -86,7 +97,7 @@ describe('Save project and libraries', () => {
       '@/same': samePatch, // will be the same
       '@/edited': {}, // will be edited
       '@/deleted': {}, // will be deleted
-      'xod/core/same': samePatch,  // will be the same
+      'xod/core/same': samePatch, // will be the same
       'xod/core/edited': {}, // will be edited
       'xod/core/deleted': {}, // will be deleted
     },
@@ -112,9 +123,12 @@ describe('Save project and libraries', () => {
     XP.listPatchesWithoutBuiltIns(secondProject)
   );
 
-  const assertPathExists = (...pathParts) => pathExists(path.resolve(...pathParts))
-    .then(isExist => assert.isTrue(isExist, `Path "${pathParts}" does not exists.`));
-  const libPath = (...extraPath) => path.resolve(resolveLibPath(tempDir), ...extraPath);
+  const assertPathExists = (...pathParts) =>
+    pathExists(path.resolve(...pathParts)).then(isExist =>
+      assert.isTrue(isExist, `Path "${pathParts}" does not exists.`)
+    );
+  const libPath = (...extraPath) =>
+    path.resolve(resolveLibPath(tempDir), ...extraPath);
 
   const firstLocalExpectedFiles = [
     path.resolve(tempProjectDir, 'same/patch.xodp'),
@@ -142,54 +156,64 @@ describe('Save project and libraries', () => {
   ];
 
   describe('saveProject', () => {
-    it('should save entire project if it wasn\'t saved yet', () =>
-      saveProject(tempProjectDir, firstChanges, firstProject)
-        .then(() => Promise.all(R.map(assertPathExists, firstLocalExpectedFiles)))
-    );
+    it("should save entire project if it wasn't saved yet", () =>
+      saveProject(tempProjectDir, firstChanges, firstProject).then(() =>
+        Promise.all(R.map(assertPathExists, firstLocalExpectedFiles))
+      ));
     it('should save only changes in the project', () =>
       saveProject(tempProjectDir, firstChanges, firstProject) // make sure that project exists on FS
         .then(() => saveProject(tempProjectDir, secondChanges, secondProject))
-        .then(() => Promise.all(R.map(assertPathExists, secondLocalExpectedFiles)))
-    );
+        .then(() =>
+          Promise.all(R.map(assertPathExists, secondLocalExpectedFiles))
+        ));
   });
   describe('saveLibraries', () => {
-    it('should save entire library if it wasn\'t save yet', () =>
-      saveLibraries(tempDir, firstChanges, firstProject)
-        .then(() => Promise.all(R.map(assertPathExists, firstLibExpectedFiles)))
-    );
+    it("should save entire library if it wasn't save yet", () =>
+      saveLibraries(tempDir, firstChanges, firstProject).then(() =>
+        Promise.all(R.map(assertPathExists, firstLibExpectedFiles))
+      ));
     it('should save only changes in the library', () =>
       saveLibraries(tempDir, firstChanges, firstProject)
         .then(() => saveLibraries(tempDir, secondChanges, secondProject))
-        .then(() => Promise.all(R.map(assertPathExists, secondLibExpectedFiles)))
+        .then(() =>
+          Promise.all(R.map(assertPathExists, secondLibExpectedFiles))
+        )
         .then(() => readJson(libPath('xod/core/edited/patch.xodp'), 'utf8'))
-        .then(content => assert.deepEqual(
-          content,
-          {
-            nodes: [{
-              id: 'a',
-              position: { x: 0, y: 0 },
-              type: '@/foo',
-            }],
-          }
-        ))
-    );
+        .then(content =>
+          assert.deepEqual(content, {
+            nodes: [
+              {
+                id: 'a',
+                position: { x: 0, y: 0 },
+                type: '@/foo',
+              },
+            ],
+          })
+        ));
   });
 
   describe('saveAll', () => {
     it('should save entire project and library', () =>
-      saveAll(tempDir, tempProjectDir, emptyProject, firstProject)
-        .then(() => Promise.all(R.compose(
-          R.map(assertPathExists),
-          R.concat
-        )(firstLocalExpectedFiles, firstLibExpectedFiles)))
-    );
+      saveAll(tempDir, tempProjectDir, emptyProject, firstProject).then(() =>
+        Promise.all(
+          R.compose(R.map(assertPathExists), R.concat)(
+            firstLocalExpectedFiles,
+            firstLibExpectedFiles
+          )
+        )
+      ));
     it('should save only changes in project and library', () =>
       saveAll(tempDir, tempProjectDir, emptyProject, firstProject)
-        .then(savedProject => saveAll(tempDir, tempProjectDir, savedProject, secondProject))
-        .then(() => Promise.all(R.compose(
-          R.map(assertPathExists),
-          R.concat
-        )(secondLocalExpectedFiles, secondLibExpectedFiles)))
-    );
+        .then(savedProject =>
+          saveAll(tempDir, tempProjectDir, savedProject, secondProject)
+        )
+        .then(() =>
+          Promise.all(
+            R.compose(R.map(assertPathExists), R.concat)(
+              secondLocalExpectedFiles,
+              secondLibExpectedFiles
+            )
+          )
+        ));
   });
 });

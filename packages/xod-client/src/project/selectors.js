@@ -31,8 +31,8 @@ export const projectLens = R.lensProp('project');
 //
 
 // :: (Patch -> a) -> Project -> Maybe PatchPath -> a
-const getIndexedPatchEntitiesBy = R.curry(
-  (getter, project, maybePatchPath) => foldMaybe(
+const getIndexedPatchEntitiesBy = R.curry((getter, project, maybePatchPath) =>
+  foldMaybe(
     {},
     R.compose(
       R.indexBy(R.prop('id')),
@@ -64,16 +64,17 @@ export const getCurrentPatchNodes = createSelector(
 // :: { LinkId: Link } -> { NodeId: { PinKey: Boolean } }
 export const computeConnectedPins = R.compose(
   R.reduce(
-    (acc, link) => R.compose(
-      R.assocPath([
-        XP.getLinkInputNodeId(link),
-        XP.getLinkInputPinKey(link),
-      ], true),
-      R.assocPath([
-        XP.getLinkOutputNodeId(link),
-        XP.getLinkOutputPinKey(link),
-      ], true)
-    )(acc),
+    (acc, link) =>
+      R.compose(
+        R.assocPath(
+          [XP.getLinkInputNodeId(link), XP.getLinkInputPinKey(link)],
+          true
+        ),
+        R.assocPath(
+          [XP.getLinkOutputNodeId(link), XP.getLinkOutputPinKey(link)],
+          true
+        )
+      )(acc),
     {}
   ),
   R.values
@@ -91,11 +92,7 @@ const assocPinIsConnected = R.curry((connectedPins, node) =>
   R.over(
     R.lensProp('pins'),
     R.map(pin =>
-      R.assoc(
-        'isConnected',
-        !!R.path([node.id, pin.key], connectedPins),
-        pin
-      )
+      R.assoc('isConnected', !!R.path([node.id, pin.key], connectedPins), pin)
     ),
     node
   )
@@ -103,43 +100,32 @@ const assocPinIsConnected = R.curry((connectedPins, node) =>
 
 // :: IntermediateNode -> IntermediateNode
 const assocNodeIdToPins = node =>
-  R.over(
-    R.lensProp('pins'),
-    R.map(
-      R.assoc('nodeId', node.id)
+  R.over(R.lensProp('pins'), R.map(R.assoc('nodeId', node.id)), node);
+
+const addLastVariadicGroupFlag = R.curry((project, node, pins) => {
+  const nodeType = XP.getNodeType(node);
+  const arityStep = R.compose(
+    foldMaybe(0, R.identity),
+    R.chain(XP.getArityStepFromPatch),
+    XP.getPatchByPath
+  )(nodeType, project);
+
+  return R.converge(R.merge, [
+    R.map(R.assoc('isLastVariadicGroup', false)),
+    R.compose(
+      R.indexBy(XP.getPinKey),
+      R.map(R.assoc('isLastVariadicGroup', true)),
+      R.takeLast(arityStep),
+      R.sortBy(XP.getPinOrder),
+      R.filter(XP.isInputPin),
+      R.values
     ),
-    node
-  );
-
-const addLastVariadicGroupFlag = R.curry(
-  (project, node, pins) => {
-    const nodeType = XP.getNodeType(node);
-    const arityStep = R.compose(
-      foldMaybe(0, R.identity),
-      R.chain(XP.getArityStepFromPatch),
-      XP.getPatchByPath
-    )(nodeType, project);
-
-    return R.converge(
-      R.merge,
-      [
-        R.map(R.assoc('isLastVariadicGroup', false)),
-        R.compose(
-          R.indexBy(XP.getPinKey),
-          R.map(R.assoc('isLastVariadicGroup', true)),
-          R.takeLast(arityStep),
-          R.sortBy(XP.getPinOrder),
-          R.filter(XP.isInputPin),
-          R.values
-        ),
-      ]
-    )(pins);
-  }
-);
+  ])(pins);
+});
 
 // :: Project -> Patch -> IntermediateNode -> IntermediateNode
-const mergePinDataFromPatch = R.curry(
-  (project, curPatch, node) => R.compose(
+const mergePinDataFromPatch = R.curry((project, curPatch, node) =>
+  R.compose(
     R.assoc('pins', R.__, node),
     addLastVariadicGroupFlag(project, node),
     XP.getPinsForNode
@@ -149,38 +135,23 @@ const mergePinDataFromPatch = R.curry(
 // :: State -> Maybe Patch
 export const getCurrentPatch = createSelector(
   [getCurrentPatchPath, getProject],
-  (patchPath, project) => R.chain(
-    XP.getPatchByPath(R.__, project),
-    patchPath
-  )
+  (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
 // :: Error -> RenderableNode -> RenderableNode
-const addError = R.curry(
-  (error, node) => R.compose(
-    R.over(
-      R.lensProp('errors'),
-      R.append(error)
-    ),
-    R.unless(
-      R.has('errors'),
-      R.assoc('errors', [])
-    )
+const addError = R.curry((error, node) =>
+  R.compose(
+    R.over(R.lensProp('errors'), R.append(error)),
+    R.unless(R.has('errors'), R.assoc('errors', []))
   )(node)
 );
 
 // :: Project -> RenderableNode -> RenderableNode
-const addDeadRefErrors = R.curry(
-  (project, renderableNode) => R.compose(
+const addDeadRefErrors = R.curry((project, renderableNode) =>
+  R.compose(
     R.ifElse(
-      R.compose(
-        Maybe.isNothing,
-        XP.getPatchByPath(R.__, project),
-      ),
-      type => addError(
-        new Error(missingPatchForNode(type)),
-        renderableNode
-      ),
+      R.compose(Maybe.isNothing, XP.getPatchByPath(R.__, project)),
+      type => addError(new Error(missingPatchForNode(type)), renderableNode),
       R.compose(
         foldEither(
           err => addError(err, renderableNode),
@@ -195,17 +166,10 @@ const addDeadRefErrors = R.curry(
 );
 
 // :: Patch -> RenderableNode -> RenderableNode
-const addVariadicErrors = R.curry(
-  (patch, renderableNode) => R.when(
+const addVariadicErrors = R.curry((patch, renderableNode) =>
+  R.when(R.compose(XP.isVariadicPath, R.prop('type')), node =>
     R.compose(
-      XP.isVariadicPath,
-      R.prop('type')
-    ),
-    node => R.compose(
-      foldEither(
-        err => addError(err, node),
-        R.always(node)
-      ),
+      foldEither(err => addError(err, node), R.always(node)),
       XP.validatePatchForVariadics
     )(patch)
   )(renderableNode)
@@ -215,8 +179,8 @@ const addVariadicErrors = R.curry(
  * Adds `isVariadic` flag and `arityStep` prop.
  */
 // :: Project -> RenderableNode -> RenderableNode
-const addVariadicProps = R.curry(
-  (project, renderableNode) => R.compose(
+const addVariadicProps = R.curry((project, renderableNode) =>
+  R.compose(
     R.merge(renderableNode),
     R.applySpec({
       isVariadic: foldMaybe(false, R.T),
@@ -230,29 +194,32 @@ const addVariadicProps = R.curry(
 
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
-  (node, currentPatch, connectedPins, project) => R.compose(
-    addVariadicErrors(currentPatch),
-    addVariadicProps(project),
-    addDeadRefErrors(project),
-    addNodePositioning,
-    assocPinIsConnected(connectedPins),
-    assocNodeIdToPins,
-    mergePinDataFromPatch(project, currentPatch)
-  )(node)
+  (node, currentPatch, connectedPins, project) =>
+    R.compose(
+      addVariadicErrors(currentPatch),
+      addVariadicProps(project),
+      addDeadRefErrors(project),
+      addNodePositioning,
+      assocPinIsConnected(connectedPins),
+      assocNodeIdToPins,
+      mergePinDataFromPatch(project, currentPatch)
+    )(node)
 );
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
   [R.equals, R.equals, R.equals, R.equals],
-  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) => foldMaybe(
-    {},
-    currentPatch => R.map(
-      getRenderableNode(R.__, currentPatch, connectedPins, project),
-      currentPatchNodes
-    ),
-    maybeCurrentPatch
-  )
+  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
+    foldMaybe(
+      {},
+      currentPatch =>
+        R.map(
+          getRenderableNode(R.__, currentPatch, connectedPins, project),
+          currentPatchNodes
+        ),
+      maybeCurrentPatch
+    )
 );
 
 // :: State -> StrMap RenderableLink
@@ -262,7 +229,7 @@ export const getRenderableLinks = createMemoizedSelector(
   (nodes, links) =>
     R.compose(
       addLinksPositioning(nodes),
-      R.map((link) => {
+      R.map(link => {
         const inputNodeId = XP.getLinkInputNodeId(link);
         const outputNodeId = XP.getLinkOutputNodeId(link);
         const inputPinKey = XP.getLinkInputPinKey(link);
@@ -281,16 +248,14 @@ export const getRenderableLinks = createMemoizedSelector(
           nodes
         );
 
-        return R.merge(
-          link,
-          {
-            type: nodes[outputNodeId].pins[outputPinKey].type,
-            dead: (
-              inputNodeIsDead || outputNodeIsDead ||
-              inputPinKeyHasDeadType || outputPinKeyHasDeadType
-            ),
-          }
-        );
+        return R.merge(link, {
+          type: nodes[outputNodeId].pins[outputPinKey].type,
+          dead:
+            inputNodeIsDead ||
+            outputNodeIsDead ||
+            inputPinKeyHasDeadType ||
+            outputPinKeyHasDeadType,
+        });
       })
     )(links)
 );
@@ -302,7 +267,9 @@ export const getRenderableComments = getCurrentPatchComments;
 export const getLinkGhost = createSelector(
   [getRenderableNodes, getLinkingPin],
   (nodes, fromPin) => {
-    if (!fromPin) { return null; }
+    if (!fromPin) {
+      return null;
+    }
 
     const node = nodes[fromPin.nodeId];
     const pin = node.pins[fromPin.pinKey];
@@ -346,8 +313,5 @@ export const getRenderableSelection = createMemoizedSelector(
 //
 export const getPatchSearchIndex = createSelector(
   R.compose(XP.listPatches, getProject),
-  R.compose(
-    createIndexFromPatches,
-    R.reject(isPatchDeadTerminal)
-  )
+  R.compose(createIndexFromPatches, R.reject(isPatchDeadTerminal))
 );

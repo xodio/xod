@@ -9,10 +9,7 @@ import {
   REMOVE_SELECTION,
 } from './actionTypes';
 
-import {
-  PATCH_DELETE,
-  PATCH_RENAME,
-} from '../project/actionTypes';
+import { PATCH_DELETE, PATCH_RENAME } from '../project/actionTypes';
 
 import {
   INSTALL_LIBRARIES_BEGIN,
@@ -56,10 +53,10 @@ const installingLibrariesReducer = (state, action) => {
 };
 
 export default (state = initialState, action) =>
-  R.merge(
-    state,
-    {
-      selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
-      installingLibraries: installingLibrariesReducer(state.installingLibraries, action),
-    }
-  );
+  R.merge(state, {
+    selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
+    installingLibraries: installingLibrariesReducer(
+      state.installingLibraries,
+      action
+    ),
+  });

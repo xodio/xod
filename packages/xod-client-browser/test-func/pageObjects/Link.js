@@ -1,7 +1,6 @@
 import BasePageObject from './BasePageObject';
 
-class Link extends BasePageObject {
-}
+class Link extends BasePageObject {}
 
 export default Link;
 

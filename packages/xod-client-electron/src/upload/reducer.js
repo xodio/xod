@@ -1,7 +1,5 @@
 import * as R from 'ramda';
-import {
-  SELECT_SERIAL_PORT,
-} from '../upload/actionTypes';
+import { SELECT_SERIAL_PORT } from '../upload/actionTypes';
 
 const initialState = {
   selectedSerialPort: null,

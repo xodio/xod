@@ -1,4 +1,3 @@
-
 const R = require('ramda');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -9,11 +8,9 @@ const { assert } = chai;
 //-----------------------------------------------------------------------------
 // Func utils
 //-----------------------------------------------------------------------------
-const hasClass = R.curry(
-  (className, element) => R.composeP(
-    R.contains(className),
-    R.split(' '),
-    el => el.getAttribute('class')
+const hasClass = R.curry((className, element) =>
+  R.composeP(R.contains(className), R.split(' '), el =>
+    el.getAttribute('class')
   )(element)
 );
 
@@ -21,11 +18,15 @@ const hasClass = R.curry(
 // General Utils
 //-----------------------------------------------------------------------------
 function scrollTo(client, containerSelector, childSelector) {
-  return client.execute((contSel, chldSel) => {
-    const container = document.querySelector(contSel);
-    const child = document.querySelector(chldSel);
-    container.scrollTop = child.offsetTop;
-  }, containerSelector, childSelector);
+  return client.execute(
+    (contSel, chldSel) => {
+      const container = document.querySelector(contSel);
+      const child = document.querySelector(chldSel);
+      container.scrollTop = child.offsetTop;
+    },
+    containerSelector,
+    childSelector
+  );
 }
 
 function rendered(client) {
@@ -65,7 +66,8 @@ function closePopup(client) {
 //-----------------------------------------------------------------------------
 // Project browser
 //-----------------------------------------------------------------------------
-const getSelectorForPatchInProjectBrowser = nodeName => `.PatchGroupItem[data-id="${nodeName}"]`;
+const getSelectorForPatchInProjectBrowser = nodeName =>
+  `.PatchGroupItem[data-id="${nodeName}"]`;
 
 function findProjectBrowser(client) {
   return client.element('.ProjectBrowser');
@@ -82,13 +84,15 @@ function clickAddPatch(client) {
 
 function findPatchGroup(client, groupTitle) {
   const selector = `.PatchGroup=${groupTitle}`;
-  return findProjectBrowser(client).waitForExist(selector, 5000)
+  return findProjectBrowser(client)
+    .waitForExist(selector, 5000)
     .then(() => client.element(selector));
 }
 
 function findPatchGroupItem(client, name) {
   const selector = getSelectorForPatchInProjectBrowser(name);
-  return findProjectBrowser(client).waitForExist(selector, 5000)
+  return findProjectBrowser(client)
+    .waitForExist(selector, 5000)
     .then(() => client.element(selector));
 }
 
@@ -110,14 +114,18 @@ function assertPatchGroupExpanded(client, groupTitle) {
 
 function assertNodeAvailableInProjectBrowser(client, nodeName) {
   return assert.eventually.isTrue(
-    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    findProjectBrowser(client).isVisible(
+      getSelectorForPatchInProjectBrowser(nodeName)
+    ),
     `Expected node "${nodeName}" to be available in the project browser`
   );
 }
 
 function assertNodeUnavailableInProjectBrowser(client, nodeName) {
   return assert.eventually.isFalse(
-    findProjectBrowser(client).isVisible(getSelectorForPatchInProjectBrowser(nodeName)),
+    findProjectBrowser(client).isVisible(
+      getSelectorForPatchInProjectBrowser(nodeName)
+    ),
     `Expected node "${nodeName}" to be unavailable in the project browser`
   );
 }
@@ -133,10 +141,10 @@ function scrollToPatchInProjectBrowser(client, name) {
 function selectPatchInProjectBrowser(client, name) {
   const patch = findPatchGroupItem(client, name);
   return hasClass('isSelected', patch).then(
-    selected => (selected
-      ? Promise.resolve()
-      : client.click(getSelectorForPatchInProjectBrowser(name))
-    )
+    selected =>
+      selected
+        ? Promise.resolve()
+        : client.click(getSelectorForPatchInProjectBrowser(name))
   );
 }
 
@@ -157,31 +165,34 @@ function openPatchFromProjectBrowser(client, name) {
 }
 
 function clickDeletePatchButton(client, name) {
-  return openProjectBrowserPatchContextMenu(client, name)
-    .then(
-      () => findProjectBrowserPatchContextMenu(client).click('.react-contextmenu-item[data-id="delete"]')
-    );
+  return openProjectBrowserPatchContextMenu(client, name).then(() =>
+    findProjectBrowserPatchContextMenu(client).click(
+      '.react-contextmenu-item[data-id="delete"]'
+    )
+  );
 }
 
 function assertPatchSelected(client, name) {
   return assert.eventually.include(
-    client.element(getSelectorForPatchInProjectBrowser(name)).getAttribute('class'),
+    client
+      .element(getSelectorForPatchInProjectBrowser(name))
+      .getAttribute('class'),
     'isSelected'
   );
 }
 
 function clickAddNodeButton(client, name) {
-  return openProjectBrowserPatchContextMenu(client, name)
-    .then(
-      () => findProjectBrowserPatchContextMenu(client).click('.react-contextmenu-item[data-id="place"]')
-    );
+  return openProjectBrowserPatchContextMenu(client, name).then(() =>
+    findProjectBrowserPatchContextMenu(client).click(
+      '.react-contextmenu-item[data-id="place"]'
+    )
+  );
 }
 
 function expandPatchGroup(client, groupTitle) {
   return hasClass('is-open', findPatchGroup(client, groupTitle)).then(
-    opened => (
+    opened =>
       opened ? Promise.resolve() : findPatchGroup(client, groupTitle).click()
-    )
   );
 }
 
@@ -213,15 +224,14 @@ function installLibrary(client) {
 }
 
 function assertLibSuggesterHidden(client) {
-  return assert.eventually.isFalse(
-    client.isExisting('.Suggester-libs')
-  );
+  return assert.eventually.isFalse(client.isExisting('.Suggester-libs'));
 }
 
 function assertProjectBrowserHasInstallingLib(client, libName) {
   const selector = '.PatchGroup--installing';
   return assert.eventually.equal(
-    client.waitForExist(selector, 10000)
+    client
+      .waitForExist(selector, 10000)
       .then(() => client.element('.PatchGroup--installing').getText('.name')),
     libName
   );
@@ -235,7 +245,8 @@ function findNode(client, nodeType) {
 }
 
 function dragNode(client, nodeType, dx, dy) {
-  return client.moveToObject(`.Node[data-label="${nodeType}"]`)
+  return client
+    .moveToObject(`.Node[data-label="${nodeType}"]`)
     .buttonDown()
     .moveTo(null, dx, dy)
     .buttonUp()
@@ -243,7 +254,9 @@ function dragNode(client, nodeType, dx, dy) {
 }
 
 function findPin(client, nodeType, pinLabel) {
-  return client.element(`.NodePinsOverlay[data-label="${nodeType}"] .PinOverlay[data-label="${pinLabel}"]`);
+  return client.element(
+    `.NodePinsOverlay[data-label="${nodeType}"] .PinOverlay[data-label="${pinLabel}"]`
+  );
 }
 
 function findLink(client, type) {
@@ -258,10 +271,13 @@ function addNode(client, type, dragX, dragY) {
 }
 
 function deletePatch(client, type) {
-  return client.waitForVisible(getSelectorForPatchInProjectBrowser(type))
+  return client
+    .waitForVisible(getSelectorForPatchInProjectBrowser(type))
     .then(() => scrollToPatchInProjectBrowser(client, type))
     .then(() => clickDeletePatchButton(client, type))
-    .then(() => findProjectBrowser(client).click('.PopupConfirm button.Button--primary'));
+    .then(() =>
+      findProjectBrowser(client).click('.PopupConfirm button.Button--primary')
+    );
 }
 
 function assertPinIsSelected(client, nodeType, pinLabel) {
@@ -287,7 +303,8 @@ function findInspectorWidget(client, name) {
 }
 
 function bindValue(client, nodeType, pinLabel, value) {
-  return findNode(client, nodeType).click()
+  return findNode(client, nodeType)
+    .click()
     .then(() =>
       findInspectorWidget(client, pinLabel)
         .setValue(value)
@@ -312,9 +329,7 @@ function assertTabWithTitleDoesNotExist(client, expectedTitle) {
 }
 
 function assertNoPatchesAreOpen(client) {
-  return assert.eventually.isTrue(
-    client.isVisible('.NoPatch')
-  );
+  return assert.eventually.isTrue(client.isVisible('.NoPatch'));
 }
 
 //-----------------------------------------------------------------------------

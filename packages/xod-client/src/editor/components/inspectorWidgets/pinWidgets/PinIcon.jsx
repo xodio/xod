@@ -8,7 +8,11 @@ import { PIN_RADIUS_WITH_SHADOW } from '../../../../project/nodeLayout';
 const pinPos = { x: PIN_RADIUS_WITH_SHADOW, y: PIN_RADIUS_WITH_SHADOW };
 
 const PinIcon = ({ id, type, isConnected, isLastVariadicGroup }) => (
-  <svg width={PIN_RADIUS_WITH_SHADOW * 2} height={PIN_RADIUS_WITH_SHADOW * 2} className="PinIcon">
+  <svg
+    width={PIN_RADIUS_WITH_SHADOW * 2}
+    height={PIN_RADIUS_WITH_SHADOW * 2}
+    className="PinIcon"
+  >
     <Pin
       keyName={`widgetPinIcon_${id}`}
       type={type}

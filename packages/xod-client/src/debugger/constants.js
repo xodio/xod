@@ -1,4 +1,3 @@
-
 export const UPLOAD_STATUS = {
   STARTED: 'started',
   PROGRESSED: 'progressed',

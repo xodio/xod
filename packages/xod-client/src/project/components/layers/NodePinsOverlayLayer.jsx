@@ -22,23 +22,22 @@ const NodePinsOverlayLayer = ({
   return (
     <g className={cn('PinsOverlayLayer', { hidden })}>
       {R.compose(
-          R.map(
-            node =>
-              <NodePinsOverlay
-                key={node.id}
-                id={node.id}
-                position={node.position}
-                nodeLabel={node.label || getBaseName(node.type)}
-                size={node.size}
-                pins={node.pins}
-                linkingPin={linkingPin}
-                onPinMouseUp={onPinMouseUp}
-                onPinMouseDown={onPinMouseDown}
-                pinLinkabilityValidator={pinLinkabilityValidator}
-              />
-          ),
-          R.values
-        )(nodes)}
+        R.map(node => (
+          <NodePinsOverlay
+            key={node.id}
+            id={node.id}
+            position={node.position}
+            nodeLabel={node.label || getBaseName(node.type)}
+            size={node.size}
+            pins={node.pins}
+            linkingPin={linkingPin}
+            onPinMouseUp={onPinMouseUp}
+            onPinMouseDown={onPinMouseDown}
+            pinLinkabilityValidator={pinLinkabilityValidator}
+          />
+        )),
+        R.values
+      )(nodes)}
     </g>
   );
 };

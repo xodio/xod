@@ -19,38 +19,30 @@ import {
   SLOT_SIZE,
 } from '../../../../project/nodeLayout';
 
-import {
-  getOffsetMatrix,
-  bindApi,
-  getMousePosition,
-} from '../modeUtils';
+import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
 let patchSvgRef = null;
 
-const getDeltaPosition = api => subtractPoints(
-  api.state.mousePosition,
-  api.state.dragStartPosition
+const getDeltaPosition = api =>
+  subtractPoints(api.state.mousePosition, api.state.dragStartPosition);
+
+const addDeltaToSize = R.uncurryN(2)(deltaPosition =>
+  R.compose(pointToSize, addPoints(deltaPosition), sizeToPoint)
 );
 
-const addDeltaToSize = R.uncurryN(2)(
-  deltaPosition => R.compose(
-    pointToSize,
-    addPoints(deltaPosition),
-    sizeToPoint
-  )
-);
-
-const addDeltaToCommentSizes = R.uncurryN(2)(
-  deltaPosition => R.map(R.over(
-    R.lensProp('size'),
-    R.compose(
-      R.evolve({
-        width: R.max(SLOT_SIZE.WIDTH),
-        height: R.max(NODE_HEIGHT),
-      }),
-      addDeltaToSize(deltaPosition)
+const addDeltaToCommentSizes = R.uncurryN(2)(deltaPosition =>
+  R.map(
+    R.over(
+      R.lensProp('size'),
+      R.compose(
+        R.evolve({
+          width: R.max(SLOT_SIZE.WIDTH),
+          height: R.max(NODE_HEIGHT),
+        }),
+        addDeltaToSize(deltaPosition)
+      )
     )
-  ))
+  )
 );
 
 const resizingCommentMode = {
@@ -72,7 +64,11 @@ const resizingCommentMode = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     api.setState({ mousePosition });
   },
   onMouseUp(api) {
@@ -101,22 +97,23 @@ const resizingCommentMode = {
     )(api.props.comments);
 
     const snappedPreviews = R.compose(
-      R.map(R.compose(
-        R.over(R.lensProp('size'), snapNodeSizeToSlots),
-        R.pick(['size', 'position'])
-      )),
+      R.map(
+        R.compose(
+          R.over(R.lensProp('size'), snapNodeSizeToSlots),
+          R.pick(['size', 'position'])
+        )
+      ),
       R.values
     )(resizedComments);
 
     return (
-      <HotKeys
-        className="PatchWrapper"
-        handlers={{}}
-      >
+      <HotKeys className="PatchWrapper" handlers={{}}>
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}
@@ -149,9 +146,7 @@ const resizingCommentMode = {
               linkingPin={api.props.linkingPin}
             />
 
-            <Layers.SnappingPreview
-              previews={snappedPreviews}
-            />
+            <Layers.SnappingPreview previews={snappedPreviews} />
             <Layers.Comments
               key="resized comment"
               areDragged

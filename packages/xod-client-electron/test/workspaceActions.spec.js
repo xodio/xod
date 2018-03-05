@@ -3,7 +3,12 @@ import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { rmrf, spawnDefaultProject, getLocalProjects, resolvePath } from 'xod-fs';
+import {
+  rmrf,
+  spawnDefaultProject,
+  getLocalProjects,
+  resolvePath,
+} from 'xod-fs';
 import { getProjectName } from 'xod-project';
 
 import * as WA from '../src/app/workspaceActions';
@@ -14,35 +19,37 @@ chai.use(chaiAsPromised);
 
 const fixture = path => resolve(__dirname, './fixtures', path);
 
-const expectRejectedWithCode = (promise, errorCode) => expect(promise)
-  .to.eventually.be.rejected
-  .and.have.property('errorCode', errorCode);
+const expectRejectedWithCode = (promise, errorCode) =>
+  expect(promise).to.eventually.be.rejected.and.have.property(
+    'errorCode',
+    errorCode
+  );
 
 describe('IDE', () => {
-  const deleteTestFiles = () => Promise.all([
-    rmrf(fixture('./notExistWorkspace')),
-    rmrf(fixture('./emptyWorkspace/welcome-to-xod')),
-    rmrf(fixture('./emptyWorkspace/lib')),
-    rmrf(fixture('./xod')),
-  ]);
+  const deleteTestFiles = () =>
+    Promise.all([
+      rmrf(fixture('./notExistWorkspace')),
+      rmrf(fixture('./emptyWorkspace/welcome-to-xod')),
+      rmrf(fixture('./emptyWorkspace/lib')),
+      rmrf(fixture('./xod')),
+    ]);
   afterEach(deleteTestFiles);
 
   const loadMock = path => () => Promise.resolve(path);
-  const saveMock = expectedPath => (actualPath) => {
+  const saveMock = expectedPath => actualPath => {
     assert.equal(expectedPath, actualPath);
     return WA.saveWorkspacePath(actualPath);
   };
 
   describe('could spawn whole workspace', () => {
-    it('resolves a list of local projects',
-      () => Promise.resolve(fixture('./notExistWorkspace'))
+    it('resolves a list of local projects', () =>
+      Promise.resolve(fixture('./notExistWorkspace'))
         .then(WA.spawnWorkspace)
         .then(spawnDefaultProject(WA.getDefaultProjectPath()))
         .then(getLocalProjects)
-        .then((projects) => {
+        .then(projects => {
           assert.lengthOf(projects, 1);
-        })
-    );
+        }));
   });
 
   describe('when launched', () => {
@@ -54,16 +61,15 @@ describe('IDE', () => {
 
     // !!! assumes that event with project is always second
     const assertOpenedProjectName = (eventsSequence, expectedName) => {
-      const openedProjectName = R.compose(
-        getProjectName,
-        R.path([1, 'data'])
-      )(eventsSequence);
+      const openedProjectName = R.compose(getProjectName, R.path([1, 'data']))(
+        eventsSequence
+      );
       assert.equal(openedProjectName, expectedName);
     };
 
     describe('workspace does not exist(1st launch)', () => {
       // Change homedirectory to check spawning in homedir without questions
-      const homeVar = (process.platform === 'win32') ? 'USERPROFILE' : 'HOME';
+      const homeVar = process.platform === 'win32' ? 'USERPROFILE' : 'HOME';
       const originalHomedir = process.env[homeVar];
       let homedirWorkspace;
 
@@ -79,8 +85,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             // because we are opening a built-in project
             assert.equal(newPath, null);
           },
@@ -99,8 +107,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             // notice that 'project.xod' at the end is gone
             assert.equal(newPath, fixture('./multifileProject'));
           },
@@ -119,8 +129,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             assert.equal(newPath, fixture('./singleFile.xodball'));
           },
           () => Maybe.Just(fixture('./singleFile.xodball')),
@@ -140,8 +152,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             // because we are opening a built-in project
             assert.equal(newPath, null);
           },
@@ -160,8 +174,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             // notice that 'project.xod' at the end is gone
             assert.equal(newPath, fixture('./multifileProject'));
           },
@@ -180,8 +196,10 @@ describe('IDE', () => {
         const eventsSequence = [];
 
         return WA.onIDELaunch(
-          (eventName, data) => { eventsSequence.push({ eventName, data }); },
-          (newPath) => {
+          (eventName, data) => {
+            eventsSequence.push({ eventName, data });
+          },
+          newPath => {
             assert.equal(newPath, fixture('./singleFile.xodball'));
           },
           () => Maybe.Just(fixture('./singleFile.xodball')),
@@ -203,19 +221,18 @@ describe('IDE', () => {
       const eventsSequence = [];
 
       return WA.onSwitchWorkspace(
-        (eventName, data) => { eventsSequence.push({ eventName, data }); },
+        (eventName, data) => {
+          eventsSequence.push({ eventName, data });
+        },
         saveMock(fixture('./validWorkspace')),
         fixture('./validWorkspace')
       ).then(() => {
-        assert.deepEqual(
-          eventsSequence,
-          [
-            {
-              eventName: EVENTS.UPDATE_WORKSPACE,
-              data: fixture('./validWorkspace'),
-            },
-          ]
-        );
+        assert.deepEqual(eventsSequence, [
+          {
+            eventName: EVENTS.UPDATE_WORKSPACE,
+            data: fixture('./validWorkspace'),
+          },
+        ]);
       });
     });
     it('if workspace does not exist, requests User to confirm creation of new workspace', () => {
@@ -224,7 +241,11 @@ describe('IDE', () => {
         assert.equal(path, fixture('./notExistWorkspace'));
         assert.isFalse(force);
       };
-      return WA.onSwitchWorkspace(sendMock, saveMock(fixture('./notExistWorkspace')), fixture('./notExistWorkspace'));
+      return WA.onSwitchWorkspace(
+        sendMock,
+        saveMock(fixture('./notExistWorkspace')),
+        fixture('./notExistWorkspace')
+      );
     });
     it('if choosed folder is not empty, requests User to confirm forced creation of new workspace in this directory', () => {
       const sendMock = (eventName, { path, force }) => {
@@ -232,7 +253,11 @@ describe('IDE', () => {
         assert.equal(path, fixture('.'));
         assert.isTrue(force);
       };
-      return WA.onSwitchWorkspace(sendMock, saveMock(fixture('.')), fixture('.'));
+      return WA.onSwitchWorkspace(
+        sendMock,
+        saveMock(fixture('.')),
+        fixture('.')
+      );
     });
   });
 
@@ -245,8 +270,7 @@ describe('IDE', () => {
         },
         saveMock(fixture('./notExistWorkspace')),
         fixture('./notExistWorkspace')
-      )
-    );
+      ));
     it('if directory is workspace without projects, spawns only default project, save path in settings, and requests to open it', () =>
       WA.onCreateWorkspace(
         (eventName, updatedWorspacePath) => {
@@ -255,8 +279,7 @@ describe('IDE', () => {
         },
         saveMock(fixture('./emptyWorkspace')),
         fixture('./emptyWorkspace')
-      )
-    );
+      ));
   });
 
   describe('when User selected project to open', () => {
@@ -281,7 +304,7 @@ describe('IDE', () => {
 
       return expectRejectedWithCode(
         WA.onSelectProject(
-          (newProjectPath) => {
+          newProjectPath => {
             assert.fail(
               newProjectPath,
               undefined,
@@ -301,13 +324,11 @@ describe('IDE', () => {
     const deleteTestProject = () => rmrf(fixture('./emptyWorkspace/test'));
     afterEach(deleteTestProject);
 
-    it('creates new project and resets project path to null', (done) => {
-      WA.onCreateProject(
-        (newProjectPath) => {
-          assert.isNull(newProjectPath);
-          done();
-        }
-      );
+    it('creates new project and resets project path to null', done => {
+      WA.onCreateProject(newProjectPath => {
+        assert.isNull(newProjectPath);
+        done();
+      });
     });
   });
 });

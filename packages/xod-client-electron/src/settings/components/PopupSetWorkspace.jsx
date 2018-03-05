@@ -29,8 +29,8 @@ class PopupSetWorkspace extends React.Component {
         currentWorkspace: (
           <p>
             To save your project you should choose a workspace directory.<br />
-            We&apos;ll put all your projects into this directory,
-            but you can easily switch it in the future.
+            We&apos;ll put all your projects into this directory, but you can
+            easily switch it in the future.
           </p>
         ),
         buttonLabel: 'Select workspace directory',
@@ -49,11 +49,14 @@ class PopupSetWorkspace extends React.Component {
   }
 
   changeWorkspace() {
-    remote.dialog.showOpenDialog({
-      title: 'Choose workspace directory',
-      properties: ['openDirectory'],
-      buttonLabel: 'Choose directory',
-    }, this.onChange);
+    remote.dialog.showOpenDialog(
+      {
+        title: 'Choose workspace directory',
+        properties: ['openDirectory'],
+        buttonLabel: 'Choose directory',
+      },
+      this.onChange
+    );
   }
 
   render() {
@@ -65,9 +68,7 @@ class PopupSetWorkspace extends React.Component {
         isClosable={this.props.isClosable}
         onCloseClicked={this.onClose}
       >
-        <div className="ModalContent">
-          {currentWorkspace}
-        </div>
+        <div className="ModalContent">{currentWorkspace}</div>
         <div className="ModalFooter">
           <button className="Button" onClick={this.changeWorkspace}>
             {buttonLabel}

@@ -17,7 +17,8 @@ describe('Uploader', () => {
         name: 'avrdude',
         version: '6.3.0-arduino9',
       },
-      cmdTemplate: '"{TOOL_PATH}{TOOL_EXEC}" -p atmega328p -C "{TOOL_PATH}etc{/}avrdude.conf" -c arduino -b 115200 -P "{PORT}" -D -U flash:w:{ARTIFACT_PATH}:i',
+      cmdTemplate:
+        '"{TOOL_PATH}{TOOL_EXEC}" -p atmega328p -C "{TOOL_PATH}etc{/}avrdude.conf" -c arduino -b 115200 -P "{PORT}" -D -U flash:w:{ARTIFACT_PATH}:i',
     };
 
     const cfg = {
@@ -26,13 +27,17 @@ describe('Uploader', () => {
       artifactPath: normalize('/a/b/c/artifacts/firmware.hex'),
     };
 
-    const toolExecPath = normalize('/a/b/c/tools/avrdude/6.3.0-arduino9/bin/avrdude');
+    const toolExecPath = normalize(
+      '/a/b/c/tools/avrdude/6.3.0-arduino9/bin/avrdude'
+    );
     const toolPath = normalize(`${cfg.toolPath}/avrdude/6.3.0-arduino9/`);
 
     const cmd = composeCommand(uno, cfg);
     assert.equal(
       cmd,
-      `"${toolExecPath}" -p atmega328p -C "${toolPath}etc${sep}avrdude.conf" -c arduino -b 115200 -P "${cfg.port}" -D -U flash:w:${cfg.artifactPath}:i`
+      `"${toolExecPath}" -p atmega328p -C "${toolPath}etc${sep}avrdude.conf" -c arduino -b 115200 -P "${
+        cfg.port
+      }" -D -U flash:w:${cfg.artifactPath}:i`
     );
   });
 });

@@ -6,7 +6,7 @@ export const lowercaseKebabMask = R.replace(/[^a-z0-9-]/g, '');
 
 export const PROPERTY_TYPE_PARSE = {
   [PIN_TYPE.BOOLEAN]: v => !!v,
-  [PIN_TYPE.NUMBER]: (v) => {
+  [PIN_TYPE.NUMBER]: v => {
     const float = parseFloat(v, 10);
     return isNaN(float) ? 0 : float;
   },

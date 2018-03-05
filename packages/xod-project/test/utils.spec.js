@@ -37,21 +37,22 @@ describe('Utils', () => {
         .and.to.be.empty();
     });
     it('guidToIdx: should return a map oldId to newId', () => {
-      expect(Utils.guidToIdx(nodes))
-        .to.be.deep.equal({
-          a: '0',
-          b: '1',
-          c: '2',
-        });
+      expect(Utils.guidToIdx(nodes)).to.be.deep.equal({
+        a: '0',
+        b: '1',
+        c: '2',
+      });
     });
 
     it('resolveNodeIds: should return nodes with new ids', () => {
-      expect(Utils.resolveNodeIds(nodesIdMap, nodes))
-        .to.be.deep.equal(expectedNodes);
+      expect(Utils.resolveNodeIds(nodesIdMap, nodes)).to.be.deep.equal(
+        expectedNodes
+      );
     });
     it('resolveLinkNodeIds: should return links with resolved node ids', () => {
-      expect(Utils.resolveLinkNodeIds(nodesIdMap, links))
-        .to.be.deep.equal(expectedLinks);
+      expect(Utils.resolveLinkNodeIds(nodesIdMap, links)).to.be.deep.equal(
+        expectedLinks
+      );
     });
   });
 

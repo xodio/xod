@@ -13,30 +13,31 @@ class WidgetsGroup extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const shouldCreateComponents = !R.equals(this.props.entity, nextProps.entity);
+    const shouldCreateComponents = !R.equals(
+      this.props.entity,
+      nextProps.entity
+    );
     const widgetsData = this.props.createWidgetsConfig(nextProps.entity);
-    const dataToUpdate = (shouldCreateComponents) ? widgetsData : R.pick(['props'], widgetsData);
+    const dataToUpdate = shouldCreateComponents
+      ? widgetsData
+      : R.pick(['props'], widgetsData);
     this.setState(dataToUpdate);
   }
 
   render() {
     const widgets = R.compose(
       R.values,
-      R.mapObjIndexed((Widget, key) =>
+      R.mapObjIndexed((Widget, key) => (
         <li key={key}>
           <Widget
             {...this.state.props[key]}
             onPropUpdate={this.props.onPropUpdate}
           />
         </li>
-      )
+      ))
     )(this.state.components);
 
-    return (
-      <ul>
-        {widgets}
-      </ul>
-    );
+    return <ul>{widgets}</ul>;
   }
 }
 

@@ -48,20 +48,22 @@ const xodMessageRegExp = /^(\+\w+):(\d+):(\d+):(.+)/;
 export const isXodMessage = R.test(xodMessageRegExp);
 
 // :: String -> XodMessage
-export const createXodMessage = input => R.compose(
-  R.applySpec({
-    type: R.always(DEBUGGER_MESSAGE_TYPES.XOD),
-    prefix: R.nth(1),
-    timecode: R.nth(2),
-    nodeId: R.nth(3),
-    content: R.nth(4),
-  }),
-  R.when(
-    R.isEmpty,
-    () => { throw new Error(`Canʼt create XOD debugger message from string: "${input}"`); }
-  ),
-  R.match(xodMessageRegExp)
-)(input);
+export const createXodMessage = input =>
+  R.compose(
+    R.applySpec({
+      type: R.always(DEBUGGER_MESSAGE_TYPES.XOD),
+      prefix: R.nth(1),
+      timecode: R.nth(2),
+      nodeId: R.nth(3),
+      content: R.nth(4),
+    }),
+    R.when(R.isEmpty, () => {
+      throw new Error(
+        `Canʼt create XOD debugger message from string: "${input}"`
+      );
+    }),
+    R.match(xodMessageRegExp)
+  )(input);
 
 // :: Error -> ErrorMessage
 export const createErrorMessage = err => ({

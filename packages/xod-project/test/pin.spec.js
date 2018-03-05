@@ -51,12 +51,16 @@ describe('Pin', () => {
   // is input / output
   describe('isInputPin / isOutputPin', () => {
     it('should honor output direction', () => {
-      const pin = Helper.defaultizePin({ direction: CONST.PIN_DIRECTION.OUTPUT });
+      const pin = Helper.defaultizePin({
+        direction: CONST.PIN_DIRECTION.OUTPUT,
+      });
       expect(Pin.isInputPin(pin)).to.be.false();
       expect(Pin.isOutputPin(pin)).to.be.true();
     });
     it('should honor input direction', () => {
-      const pin = Helper.defaultizePin({ direction: CONST.PIN_DIRECTION.INPUT });
+      const pin = Helper.defaultizePin({
+        direction: CONST.PIN_DIRECTION.INPUT,
+      });
       expect(Pin.isInputPin(pin)).to.be.true();
       expect(Pin.isOutputPin(pin)).to.be.false();
     });

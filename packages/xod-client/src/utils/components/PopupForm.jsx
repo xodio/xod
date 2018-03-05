@@ -7,11 +7,18 @@ import EventListener from 'react-event-listener';
 import { noop } from '../../utils/ramda';
 import { KEYCODE } from '../../utils/constants';
 
-const PopupForm = ({ title, children, className, onClose, isClosable, isVisible }) => {
+const PopupForm = ({
+  title,
+  children,
+  className,
+  onClose,
+  isClosable,
+  isVisible,
+}) => {
   const wrapperClassNames = classNames('PopupForm', className);
   const onCloseClicked = isClosable ? onClose : noop;
 
-  const onKeyDown = (event) => {
+  const onKeyDown = event => {
     if (!isVisible) return;
 
     const keycode = event.keycode || event.which;
@@ -30,9 +37,7 @@ const PopupForm = ({ title, children, className, onClose, isClosable, isVisible 
         onCloseClicked={onCloseClicked}
         onOverlayClicked={onCloseClicked}
       >
-        <div className="ModalBody">
-          {children}
-        </div>
+        <div className="ModalBody">{children}</div>
       </SkyLightStateless>
     </div>
   );

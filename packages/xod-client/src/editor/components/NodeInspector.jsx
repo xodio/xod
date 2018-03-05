@@ -3,10 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
-import {
-  SELECTION_ENTITY_TYPE,
-  WIDGET_TYPE,
-} from '../constants';
+import { SELECTION_ENTITY_TYPE, WIDGET_TYPE } from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
 import WidgetsGroup from './WidgetsGroup';
@@ -19,13 +16,10 @@ import { getUtmSiteUrl } from '../../utils/urls';
 import * as MESSAGES from '../messages';
 
 // :: RenderablePin -> String
-const getWidgetKey = R.converge(
-  (id, key) => `${id}_${key}`,
-  [
-    R.prop('nodeId'),
-    R.prop('key'),
-  ]
-);
+const getWidgetKey = R.converge((id, key) => `${id}_${key}`, [
+  R.prop('nodeId'),
+  R.prop('key'),
+]);
 
 const getPinWidgetProps = R.applySpec({
   entityId: R.prop('nodeId'),
@@ -62,10 +56,7 @@ const createPinWidgetsConfig = R.compose(
   ),
   R.apply(R.concat),
   R.map(R.sort(R.ascend(XP.getPinOrder))),
-  R.juxt([
-    R.filter(XP.isInputPin),
-    R.filter(XP.isOutputPin),
-  ]),
+  R.juxt([R.filter(XP.isInputPin), R.filter(XP.isOutputPin)]),
   R.values,
   R.prop('pins')
 );
@@ -82,9 +73,8 @@ const NodeDescriptionWidget = Widgets.composeWidget(
 
 const NodeInspector = ({ node, onPropUpdate }) => {
   const type = XP.getNodeType(node);
-  const nodeHelpIcon = (XP.isPathBuiltIn(type) || XP.isPathLocal(type))
-    ? null
-    : (
+  const nodeHelpIcon =
+    XP.isPathBuiltIn(type) || XP.isPathLocal(type) ? null : (
       <a
         href={getUtmSiteUrl(`/libs/${type}`, 'docs', 'inspector')}
         target="_blank"
@@ -100,7 +90,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 
   const nodeId = XP.getNodeId(node);
 
-  const DeadNodeMessage = (node.dead) ? (
+  const DeadNodeMessage = node.dead ? (
     <Widgets.HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
   ) : null;
 

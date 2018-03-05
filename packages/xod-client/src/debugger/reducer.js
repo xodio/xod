@@ -3,12 +3,9 @@ import { renameKeys, invertMap } from 'xod-func-tools';
 
 import {
   UPLOAD,
-
   TOGGLE_DEBUGGER_PANEL,
-
   DEBUGGER_LOG_ADD_MESSAGES,
   DEBUGGER_LOG_CLEAR,
-
   DEBUG_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
 } from './actionTypes';
@@ -16,7 +13,11 @@ import {
 import { UPLOAD_STATUS, UPLOAD_MSG_TYPE } from './constants';
 import * as MSG from './messages';
 
-import { createSystemMessage, createFlasherMessage, createErrorMessage } from './utils';
+import {
+  createSystemMessage,
+  createFlasherMessage,
+  createErrorMessage,
+} from './utils';
 
 import initialState from './state';
 
@@ -31,52 +32,35 @@ const MAX_LOG_MESSAGES = 1000;
 const overDebugLog = R.over(R.lensProp('log'));
 const overUploadLog = R.over(R.lensProp('uploadLog'));
 
-const addMessageToLog = R.curry(
-  (message, state) => overDebugLog(
-    R.compose(
-      R.takeLast(MAX_LOG_MESSAGES),
-      R.append(message)
-    ),
+const addMessageToLog = R.curry((message, state) =>
+  overDebugLog(
+    R.compose(R.takeLast(MAX_LOG_MESSAGES), R.append(message)),
     state
   )
 );
 
-const addMessageListToLog = R.curry(
-  (messages, state) => overDebugLog(
-    R.compose(
-      R.takeLast(MAX_LOG_MESSAGES),
-      R.concat(R.__, messages)
-    ),
+const addMessageListToLog = R.curry((messages, state) =>
+  overDebugLog(
+    R.compose(R.takeLast(MAX_LOG_MESSAGES), R.concat(R.__, messages)),
     state
   )
 );
 
-const updateWatchNodeValues = R.curry(
-  (messageList, state) => {
-    const MapToRekey = R.prop('nodeIdsMap', state);
-    return R.compose(
-      newValues => R.over(
-        R.lensProp('watchNodeValues'),
-        R.merge(R.__, newValues),
-        state
-      ),
-      renameKeys(MapToRekey),
-      R.map(R.compose(
-        R.prop('content'),
-        R.last
-      )),
-      R.groupBy(R.prop('nodeId')),
-      R.filter(R.propEq('type', 'xod'))
-    )(messageList);
-  }
-);
+const updateWatchNodeValues = R.curry((messageList, state) => {
+  const MapToRekey = R.prop('nodeIdsMap', state);
+  return R.compose(
+    newValues =>
+      R.over(R.lensProp('watchNodeValues'), R.merge(R.__, newValues), state),
+    renameKeys(MapToRekey),
+    R.map(R.compose(R.prop('content'), R.last)),
+    R.groupBy(R.prop('nodeId')),
+    R.filter(R.propEq('type', 'xod'))
+  )(messageList);
+});
 
 const showDebuggerPane = R.assoc('isVisible', true);
 
-const splitMessage = R.compose(
-  R.reject(R.isEmpty),
-  R.split('\n')
-);
+const splitMessage = R.compose(R.reject(R.isEmpty), R.split('\n'));
 
 // =============================================================================
 //
@@ -87,18 +71,13 @@ const splitMessage = R.compose(
 export default (state = initialState, action) => {
   switch (action.type) {
     case UPLOAD: {
-      const {
-        payload,
-        meta: { status },
-      } = action;
+      const { payload, meta: { status } } = action;
 
       if (status === UPLOAD_STATUS.STARTED) {
         return R.compose(
           R.assoc('uploadProgress', 0),
           R.assoc('log', []),
-          R.assoc('uploadLog', [
-            createSystemMessage(MSG.TRANSPILING),
-          ])
+          R.assoc('uploadLog', [createSystemMessage(MSG.TRANSPILING)])
         )(state);
       }
       if (status === UPLOAD_STATUS.PROGRESSED) {
@@ -106,26 +85,25 @@ export default (state = initialState, action) => {
 
         return R.compose(
           R.assoc('uploadProgress', percentage),
-          overUploadLog(R.append(createSystemMessage(message))),
+          overUploadLog(R.append(createSystemMessage(message)))
         )(state);
       }
       if (status === UPLOAD_STATUS.SUCCEEDED) {
         const messages = R.compose(
           R.append(createSystemMessage(MSG.SUCCES)),
           R.map(createFlasherMessage),
-          splitMessage,
+          splitMessage
         )(payload.message);
 
         return R.compose(
           R.assoc('uploadProgress', null),
-          overUploadLog(R.concat(R.__, messages)),
+          overUploadLog(R.concat(R.__, messages))
         )(state);
       }
       if (status === UPLOAD_STATUS.FAILED) {
-        const messages = R.compose(
-          R.map(createErrorMessage),
-          splitMessage
-        )(payload.message);
+        const messages = R.compose(R.map(createErrorMessage), splitMessage)(
+          payload.message
+        );
 
         return R.compose(
           R.assoc('uploadProgress', null),
@@ -139,7 +117,10 @@ export default (state = initialState, action) => {
     case TOGGLE_DEBUGGER_PANEL:
       return R.over(R.lensProp('isVisible'), R.not, state);
     case DEBUGGER_LOG_ADD_MESSAGES: {
-      const showPanelOnErrorMessages = R.any(R.propEq('type', UPLOAD_MSG_TYPE.ERROR), action.payload)
+      const showPanelOnErrorMessages = R.any(
+        R.propEq('type', UPLOAD_MSG_TYPE.ERROR),
+        action.payload
+      )
         ? showDebuggerPane
         : R.identity;
 
@@ -150,10 +131,7 @@ export default (state = initialState, action) => {
       )(state);
     }
     case DEBUGGER_LOG_CLEAR:
-      return R.compose(
-        R.assoc('log', []),
-        R.assoc('uploadLog', [])
-      )(state);
+      return R.compose(R.assoc('log', []), R.assoc('uploadLog', []))(state);
     case DEBUG_SESSION_STARTED:
       return R.compose(
         addMessageToLog(action.payload.message),

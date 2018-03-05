@@ -23,7 +23,6 @@ import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
 import * as PopupConstants from './popups/constants';
 
-
 import popupsReducer, { showOnlyPopup, hideOnePopup } from './popups/reducer';
 
 import * as siteLinkUtils from './utils/urls';
@@ -84,7 +83,9 @@ export { default as PopupConfirm } from './utils/components/PopupConfirm';
 export { default as PopupPrompt } from './utils/components/PopupPrompt';
 export { default as PopupForm } from './utils/components/PopupForm';
 export { default as Toolbar } from './utils/components/Toolbar';
-export { default as PopupProjectPreferences } from './project/components/PopupProjectPreferences';
+export {
+  default as PopupProjectPreferences,
+} from './project/components/PopupProjectPreferences';
 
 export { default as App } from './core/containers/App';
 export { default as Root } from './core/containers/Root';
@@ -95,36 +96,41 @@ export * from './messages/constants';
 
 export { default as initialState } from './core/state';
 
-export { default as popupsReducer, showOnlyPopup, hideOnePopup } from './popups/reducer';
-
-export default Object.assign({
-  App,
-  Root,
-  Editor,
-  CreateNodeWidget,
-  PopupShowCode,
-  PopupAlert,
-  PopupConfirm,
-  PopupPrompt,
-  PopupForm,
-  SnackBar,
-  Toolbar,
-  menu: MenuUtils,
-  sanctuaryPropType,
-  initialState,
-  popupsReducer,
+export {
+  default as popupsReducer,
   showOnlyPopup,
   hideOnePopup,
-  PopupProjectPreferences,
-  hasUnsavedChanges,
-  getLastSavedProject,
-  composeMessage,
-  TAB_CLOSE,
-  SAVE_ALL,
-  INSTALL_LIBRARIES_COMPLETE,
-  MESSAGE_BUTTON_CLICKED,
-  Messages: coreMessages,
-},
+} from './popups/reducer';
+
+export default Object.assign(
+  {
+    App,
+    Root,
+    Editor,
+    CreateNodeWidget,
+    PopupShowCode,
+    PopupAlert,
+    PopupConfirm,
+    PopupPrompt,
+    PopupForm,
+    SnackBar,
+    Toolbar,
+    menu: MenuUtils,
+    sanctuaryPropType,
+    initialState,
+    popupsReducer,
+    showOnlyPopup,
+    hideOnePopup,
+    PopupProjectPreferences,
+    hasUnsavedChanges,
+    getLastSavedProject,
+    composeMessage,
+    TAB_CLOSE,
+    SAVE_ALL,
+    INSTALL_LIBRARIES_COMPLETE,
+    MESSAGE_BUTTON_CLICKED,
+    Messages: coreMessages,
+  },
   UserSelectors,
   EditorSelectors,
   ProcessSelectors,

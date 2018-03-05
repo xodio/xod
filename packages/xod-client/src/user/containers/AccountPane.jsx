@@ -6,10 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import { foldMaybe } from 'xod-func-tools';
 
-import {
-  PANEL_IDS,
-  SIDEBAR_IDS,
-} from '../../editor/constants';
+import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 
 import SidebarPanel from '../../editor/components/SidebarPanel';
 import Button from '../../core/components/Button';
@@ -38,8 +35,12 @@ const AccountPane = ({
         {foldMaybe(
           <div className="username">Guest Xoder</div>,
           ({ username }) => [
-            <div className="introduction" key="introduction">Logged in as</div>,
-            <div className="username" key="username">{username}</div>,
+            <div className="introduction" key="introduction">
+              Logged in as
+            </div>,
+            <div className="username" key="username">
+              {username}
+            </div>,
           ],
           user
         )}
@@ -48,13 +49,14 @@ const AccountPane = ({
       <div className="dailyQuotas">
         <div className="title">Daily quotas</div>
         <div>
-          Compilations: {compilationsLeft == null ? 'currently offline' : compilationsLeft}
+          Compilations:{' '}
+          {compilationsLeft == null ? 'currently offline' : compilationsLeft}
         </div>
       </div>
 
       {foldMaybe(
         <AuthForm onLogin={actions.login} isAuthorising={isAuthorising} />,
-        () => (<Button onClick={actions.logout}>Logout</Button>),
+        () => <Button onClick={actions.logout}>Logout</Button>,
         user
       )}
     </div>
@@ -78,10 +80,13 @@ const mapStateToProps = R.applySpec({
   isAuthorising: Selectors.isAuthorising,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    login: Actions.login,
-    logout: Actions.logout,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      login: Actions.login,
+      logout: Actions.logout,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountPane);

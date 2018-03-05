@@ -10,22 +10,16 @@ const Pin = ({ keyName, label, direction, position }) => {
 
   const textProps = {
     x: position.x,
-    y: position.y + (textVerticalOffset * (isInput ? -1 : 1)),
+    y: position.y + textVerticalOffset * (isInput ? -1 : 1),
     textAnchor: 'middle',
   };
 
   return label ? (
     <g key={`pinText_${keyName}`}>
-      <text
-        className="PinLabel outline"
-        {...textProps}
-      >
+      <text className="PinLabel outline" {...textProps}>
         {label}
       </text>
-      <text
-        className="PinLabel"
-        {...textProps}
-      >
+      <text className="PinLabel" {...textProps}>
         {label}
       </text>
     </g>

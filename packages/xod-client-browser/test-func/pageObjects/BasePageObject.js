@@ -4,7 +4,9 @@ export default class BasePageObject {
     this.page = page;
 
     if (elementHandle == null) {
-      throw new Error('trying to create a page object with a null root element handle');
+      throw new Error(
+        'trying to create a page object with a null root element handle'
+      );
     }
 
     this.elementHandle = elementHandle;

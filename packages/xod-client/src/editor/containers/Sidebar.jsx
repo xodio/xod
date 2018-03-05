@@ -6,11 +6,7 @@ import cls from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { FocusTrap } from 'react-hotkeys';
-import {
-  ReflexContainer,
-  ReflexSplitter,
-  ReflexElement,
-} from 'react-reflex';
+import { ReflexContainer, ReflexSplitter, ReflexElement } from 'react-reflex';
 import * as XP from 'xod-project';
 import { $Maybe, mapIndexed, notEquals } from 'xod-func-tools';
 import debounce from 'throttle-debounce/debounce';
@@ -52,12 +48,11 @@ const pickPropsToCheck = R.compose(
   ])
 );
 
-const getSizes = (props) => {
+const getSizes = props => {
   const panels = getMaximizedPanelsBySidebarId(props.id, props.panels);
-  return R.compose(
-    R.fromPairs,
-    R.map(R.over(R.lensIndex(1), R.prop('size')))
-  )(panels);
+  return R.compose(R.fromPairs, R.map(R.over(R.lensIndex(1), R.prop('size'))))(
+    panels
+  );
 };
 
 class Sidebar extends React.Component {
@@ -85,23 +80,16 @@ class Sidebar extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.panels !== nextProps.panels && !this.state.sizes) {
-      this.setState(
-        R.assoc('sizes', getSizes(nextProps))
-      );
+      this.setState(R.assoc('sizes', getSizes(nextProps)));
     }
   }
   shouldComponentUpdate(nextProps) {
     // Optimize rendering of the sidebars
-    return notEquals(
-      pickPropsToCheck(nextProps),
-      pickPropsToCheck(this.props)
-    );
+    return notEquals(pickPropsToCheck(nextProps), pickPropsToCheck(this.props));
   }
   onResizePane(event) {
     const { name, flex } = event.component.props;
-    this.setState(
-      R.assocPath(['sizes', name], flex)
-    );
+    this.setState(R.assocPath(['sizes', name], flex));
     this.resizePanelsAction(this.state.sizes);
   }
   onProjectBrowserFocus() {
@@ -119,9 +107,13 @@ class Sidebar extends React.Component {
     this.forceUpdate();
   }
   isResizable() {
-    const panelsCount = getMaximizedPanelsBySidebarId(this.props.id, this.props.panels).length;
+    const panelsCount = getMaximizedPanelsBySidebarId(
+      this.props.id,
+      this.props.panels
+    ).length;
     return (
-      this.containerRef && this.containerRef.clientHeight > MIN_SIZE * panelsCount
+      this.containerRef &&
+      this.containerRef.clientHeight > MIN_SIZE * panelsCount
     );
   }
   renderProjectBrowser(settings) {
@@ -178,7 +170,10 @@ class Sidebar extends React.Component {
   }
   renderPanel(panelSettings) {
     return R.cond([
-      sidebarPanelRenderer(PANEL_IDS.PROJECT_BROWSER, this.renderProjectBrowser),
+      sidebarPanelRenderer(
+        PANEL_IDS.PROJECT_BROWSER,
+        this.renderProjectBrowser
+      ),
       sidebarPanelRenderer(PANEL_IDS.INSPECTOR, this.renderInspector),
       sidebarPanelRenderer(PANEL_IDS.HELPBAR, this.renderHelpbar),
       sidebarPanelRenderer(PANEL_IDS.ACCOUNT, this.renderAccountPane),
@@ -191,10 +186,10 @@ class Sidebar extends React.Component {
     const classNames = cls('Sidebar', {
       'Sidebar--left': this.props.id === SIDEBAR_IDS.LEFT,
       'Sidebar--right': this.props.id === SIDEBAR_IDS.RIGHT,
-      'Sidebar--hidden': (maximizedPanels.length === 0),
+      'Sidebar--hidden': maximizedPanels.length === 0,
     });
 
-    const lastIndex = (maximizedPanels.length - 1);
+    const lastIndex = maximizedPanels.length - 1;
     return (
       <div className={classNames} ref={this.setContainerRef}>
         <SidebarSwitches
@@ -218,16 +213,15 @@ class Sidebar extends React.Component {
                 >
                   {this.renderPanel(panel)}
                 </ReflexElement>,
-                index !== lastIndex && this.isResizable() && (
-                  <ReflexSplitter key={`splitter_${panel[0]}`} propagate />
-                ),
+                index !== lastIndex &&
+                  this.isResizable() && (
+                    <ReflexSplitter key={`splitter_${panel[0]}`} propagate />
+                  ),
               ])
             )(maximizedPanels)}
           </ReflexContainer>
         )}
-        {maximizedPanels.length === 1 && (
-          this.renderPanel(maximizedPanels[0])
-        )}
+        {maximizedPanels.length === 1 && this.renderPanel(maximizedPanels[0])}
       </div>
     );
   }
@@ -240,13 +234,15 @@ Sidebar.propTypes = {
   windowSize: PropTypes.object.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
-  panels: PropTypes.objectOf(PropTypes.shape({
-    /* eslint-disable react/no-unused-prop-types */
-    maximized: PropTypes.bool.isRequired,
-    sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
-    autohide: PropTypes.bool.isRequired,
-    /* eslint-enable react/no-unused-prop-types */
-  })),
+  panels: PropTypes.objectOf(
+    PropTypes.shape({
+      /* eslint-disable react/no-unused-prop-types */
+      maximized: PropTypes.bool.isRequired,
+      sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+      autohide: PropTypes.bool.isRequired,
+      /* eslint-enable react/no-unused-prop-types */
+    })
+  ),
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
@@ -264,13 +260,16 @@ const mapStateToProps = R.applySpec({
   userAuthorised: UserSelectors.isAuthorized,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    updateNodeProperty: ProjectActions.updateNodeProperty,
-    updatePatchDescription: ProjectActions.updatePatchDescription,
-    resizePanels: EditorActions.resizePanels,
-    togglePanel: EditorActions.togglePanel,
-    setFocusedArea: EditorActions.setFocusedArea,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      updateNodeProperty: ProjectActions.updateNodeProperty,
+      updatePatchDescription: ProjectActions.updatePatchDescription,
+      resizePanels: EditorActions.resizePanels,
+      togglePanel: EditorActions.togglePanel,
+      setFocusedArea: EditorActions.setFocusedArea,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

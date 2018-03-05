@@ -49,39 +49,38 @@ describe('Maquee selecting geometry', () => {
   });
 
   it('getSelectionBox() returns valid box object', () => {
-    assert.deepEqual(
-      getSelectionBox({ x: 0, y: 0 }, { x: 100, y: 50 }),
-      {
-        from: { x: 0, y: 0 },
-        to: { x: 100, y: 50 },
-        width: 100,
-        height: 50,
-      }
-    );
+    assert.deepEqual(getSelectionBox({ x: 0, y: 0 }, { x: 100, y: 50 }), {
+      from: { x: 0, y: 0 },
+      to: { x: 100, y: 50 },
+      width: 100,
+      height: 50,
+    });
   });
 
   it('filters links only inside selection box', () => {
-    assert.sameMembers(
-      filterLinksByBox(box, links),
-      [links[0], links[2]]
-    );
+    assert.sameMembers(filterLinksByBox(box, links), [links[0], links[2]]);
   });
   it('filters links that inside selection box or collides with it', () => {
-    assert.sameMembers(
-      filterLinksByInclusiveBox(box, links),
-      [links[0], links[1], links[2], links[4]]
-    );
+    assert.sameMembers(filterLinksByInclusiveBox(box, links), [
+      links[0],
+      links[1],
+      links[2],
+      links[4],
+    ]);
   });
   it('filters nodes only inside selection box', () => {
-    assert.sameMembers(
-      filterNodesByBox(box, nodes),
-      [nodes[0], nodes[1], nodes[2]]
-    );
+    assert.sameMembers(filterNodesByBox(box, nodes), [
+      nodes[0],
+      nodes[1],
+      nodes[2],
+    ]);
   });
   it('filters nodes that inside selection box or collides with it', () => {
-    assert.sameMembers(
-      filterNodesByInclusiveBox(box, nodes),
-      [nodes[0], nodes[1], nodes[2], nodes[4]]
-    );
+    assert.sameMembers(filterNodesByInclusiveBox(box, nodes), [
+      nodes[0],
+      nodes[1],
+      nodes[2],
+      nodes[4],
+    ]);
   });
 });

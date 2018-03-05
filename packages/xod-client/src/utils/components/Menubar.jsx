@@ -14,17 +14,10 @@ const capitalize = R.compose(
 
 function formatHotkey(hotkeys) {
   if (Array.isArray(hotkeys)) {
-    return R.compose(
-      R.join(', '),
-      R.map(formatHotkey)
-    )(hotkeys);
+    return R.compose(R.join(', '), R.map(formatHotkey))(hotkeys);
   }
 
-  return R.compose(
-    R.join('+'),
-    R.map(capitalize),
-    R.split('+')
-  )(hotkeys);
+  return R.compose(R.join('+'), R.map(capitalize), R.split('+'))(hotkeys);
 }
 
 const noSelectedKeys = [];
@@ -86,16 +79,17 @@ class Menubar extends React.Component {
     } else {
       this.setState({
         // do not allow to close all, only open something different
-        openKeys: R.isEmpty(newOpenKeys) ? openKeys : R.difference(newOpenKeys, openKeys),
+        openKeys: R.isEmpty(newOpenKeys)
+          ? openKeys
+          : R.difference(newOpenKeys, openKeys),
       });
     }
   }
 
   onTitleClick({ key }) {
-    const isTopLevel = R.compose(
-      R.contains(key),
-      R.map(R.prop('key'))
-    )(this.props.items);
+    const isTopLevel = R.compose(R.contains(key), R.map(R.prop('key')))(
+      this.props.items
+    );
 
     if (this.state.isOpen && isTopLevel) {
       this.closeAll();
@@ -122,9 +116,7 @@ class Menubar extends React.Component {
     } = item;
 
     if (type === 'separator') {
-      return (
-        <Divider key={key} />
-      );
+      return <Divider key={key} />;
     }
 
     if (Array.isArray(submenu)) {
@@ -145,8 +137,8 @@ class Menubar extends React.Component {
         {/* because rc-menu does not support attaching callbacks directly to menu items */}
         {/* eslint-disable jsx-a11y/no-static-element-interactions */}
         <div onClick={click} className="Menubar-clickable-item">
-          { children || label }
-          { hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div> }
+          {children || label}
+          {hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div>}
         </div>
         {/* eslint-enable jsx-a11y/no-static-element-interactions */}
       </MenuItem>
@@ -182,7 +174,6 @@ class Menubar extends React.Component {
   }
 }
 
-
 // a trick to make recursive propType.
 // see https://github.com/facebook/react/issues/5676
 let menuBarItemType;
@@ -210,6 +201,5 @@ Menubar.propTypes = {
 Menubar.defaultProps = {
   items: [],
 };
-
 
 export default Menubar;

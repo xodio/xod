@@ -64,45 +64,42 @@ const calculateEntryRate = (str, token) => {
   return 2.5;
 };
 
-const calculatePenaltyForPath = R.curry(
-  (token, item) => {
-    const path = item.item.path;
-    const basename = getBaseName(path);
-    const index = basename.indexOf(token);
-    const k = calculateEntryRate(path, token);
+const calculatePenaltyForPath = R.curry((token, item) => {
+  const path = item.item.path;
+  const basename = getBaseName(path);
+  const index = basename.indexOf(token);
+  const k = calculateEntryRate(path, token);
 
-    return (index === -1) ? 0.25 : (index / 100) * k;
-  }
-);
+  return index === -1 ? 0.25 : index / 100 * k;
+});
 
-const refineScore = R.curry(
-  (query, result) => R.compose(
+const refineScore = R.curry((query, result) =>
+  R.compose(
     sortByScoreOrAlphabetically,
     R.unless(
       () => query.trim().split(' ').length > 1, // TODO
-      R.map(
-        (item) => {
-          const tokens = query.trim().split(' ');
-          const token = tokens[0];
+      R.map(item => {
+        const tokens = query.trim().split(' ');
+        const token = tokens[0];
 
-          const pathPenalty = calculatePenaltyForPath(token, item);
-          const newScore = (item.score + pathPenalty);
-          return R.assoc('score', newScore, item);
-        }
-      )
+        const pathPenalty = calculatePenaltyForPath(token, item);
+        const newScore = item.score + pathPenalty;
+        return R.assoc('score', newScore, item);
+      })
     )
   )(result)
 );
 
-const getAverageScore = resultList => R.compose(
-  R.divide(R.__, resultList.length),
-  R.reduce(R.add, 0),
-  R.pluck('score')
-)(resultList);
+const getAverageScore = resultList =>
+  R.compose(
+    R.divide(R.__, resultList.length),
+    R.reduce(R.add, 0),
+    R.pluck('score')
+  )(resultList);
 
-const reduceResults = (results) => {
+const reduceResults = results => {
   const averageScore = getAverageScore(results);
-  const scoreToFilter = Math.min((averageScore * 2), 0.3);
+  const scoreToFilter = Math.min(averageScore * 2, 0.3);
 
   if (results.length <= 5) return results;
 
@@ -113,21 +110,15 @@ const reduceResults = (results) => {
 };
 
 // :: [IndexData] -> SearchIndex
-export const createIndex = (data) => {
+export const createIndex = data => {
   const idx = new Fuse(data, options);
 
   return {
-    search: query => R.compose(
-      reduceResults,
-      refineScore(query),
-      idx.search.bind(idx)
-    )(query),
+    search: query =>
+      R.compose(reduceResults, refineScore(query), idx.search.bind(idx))(query),
   };
 };
 // :: [Patch] -> SearchIndex
-export const createIndexFromPatches = R.compose(
-  createIndex,
-  createIndexData
-);
+export const createIndexFromPatches = R.compose(createIndex, createIndexData);
 
 export { default as createIndexData } from './mapper';

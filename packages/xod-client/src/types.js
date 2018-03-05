@@ -22,10 +22,7 @@ const ExtendedModel = (typeName, baseModel, schema) =>
     packageName,
     docUrl,
     typeName,
-    R.both(
-      XF.hasType(baseModel),
-      XF.hasType($.RecordType(schema))
-    )
+    R.both(XF.hasType(baseModel), XF.hasType($.RecordType(schema)))
   );
 
 export const Point = Model('Point', {
@@ -59,10 +56,11 @@ export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {
 
 export const RenderableComment = AliasType('RenderableComment', XP.Comment);
 
-const RenderableEntity = OneOfType(
-  'RenderableEntity',
-  [RenderableNode, RenderableLink, RenderableComment]
-);
+const RenderableEntity = OneOfType('RenderableEntity', [
+  RenderableNode,
+  RenderableLink,
+  RenderableComment,
+]);
 
 export const SelectionEntityType = EnumType(
   'SelectionEntityType',

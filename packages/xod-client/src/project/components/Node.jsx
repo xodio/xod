@@ -17,11 +17,23 @@ import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import nodeHoverContextType from '../../editor/nodeHoverContextType';
 
-const renderTooltipContent = (nodeType, nodeLabel, errText) => [
-  <div key="nodeLabel" className="Tooltip--nodeLabel">{nodeLabel}</div>,
-  <div key="nodeType" className="Tooltip--nodeType">{nodeType}</div>,
-  ...(errText ? [<div key="error" className="Tooltip--error">{errText}</div>] : []),
-];
+const renderTooltipContent = (nodeType, nodeLabel, errText) =>
+  [
+    <div key="nodeLabel" className="Tooltip--nodeLabel">
+      {nodeLabel}
+    </div>,
+    <div key="nodeType" className="Tooltip--nodeType">
+      {nodeType}
+    </div>,
+  ].concat(
+    errText
+      ? [
+          <div key="error" className="Tooltip--error">
+            {errText}
+          </div>,
+        ]
+      : []
+  );
 
 class Node extends React.Component {
   constructor(props) {
@@ -33,11 +45,7 @@ class Node extends React.Component {
 
   shouldComponentUpdate(newProps) {
     return !R.eqBy(
-      R.omit([
-        'onMouseDown',
-        'onMouseUp',
-        'onDoubleClick',
-      ]),
+      R.omit(['onMouseDown', 'onMouseUp', 'onDoubleClick']),
       newProps,
       this.props
     );
@@ -60,11 +68,15 @@ class Node extends React.Component {
   }
 
   onMouseOver(...args) {
-    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseOver'], this)(...args);
+    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseOver'], this)(
+      ...args
+    );
   }
 
   onMouseLeave(...args) {
-    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseLeave'], this)(...args);
+    return R.pathOr(noop, ['context', 'nodeHover', 'onMouseLeave'], this)(
+      ...args
+    );
   }
 
   getHoveredNodeId() {
@@ -73,8 +85,7 @@ class Node extends React.Component {
 
   isNodeHovered() {
     return (
-      this.getHoveredNodeId() === this.props.id
-      && !this.props.noNodeHovering
+      this.getHoveredNodeId() === this.props.id && !this.props.noNodeHovering
     );
   }
 
@@ -108,14 +119,13 @@ class Node extends React.Component {
       'is-ghost': this.props.isGhost,
       'is-variadic': this.props.isVariadic,
       'is-changing-arity': this.props.isChangingArity,
-      'is-errored': (this.props.errors.length > 0),
+      'is-errored': this.props.errors.length > 0,
       'is-hovered': this.isNodeHovered(),
     });
 
     const pinsCls = classNames('pins', {
       'is-ghost': this.props.isGhost,
     });
-
 
     const svgStyle = {
       overflow: 'visible',
@@ -127,15 +137,16 @@ class Node extends React.Component {
 
     const isTerminalNode = XP.isTerminalPatchPath(type);
 
-    const errMessage = (this.props.errors.length > 0)
-      ? R.compose(
-        R.join(';\n'),
-        R.pluck('message')
-      )(this.props.errors) : null;
+    const errMessage =
+      this.props.errors.length > 0
+        ? R.compose(R.join(';\n'), R.pluck('message'))(this.props.errors)
+        : null;
 
     return (
       <TooltipHOC
-        content={isDragged ? null : renderTooltipContent(type, nodeLabel, errMessage)}
+        content={
+          isDragged ? null : renderTooltipContent(type, nodeLabel, errMessage)
+        }
         render={(onMouseOver, onMouseMove, onMouseLeave) => (
           <svg
             key={id}
@@ -164,7 +175,7 @@ class Node extends React.Component {
               {this.renderBody()}
             </g>
             <g className={pinsCls} id={`nodePins_${id}`}>
-              {pinsArr.map(pin =>
+              {pinsArr.map(pin => (
                 <g key={pin.key}>
                   {isTerminalNode ? null : (
                     <PinLabel
@@ -181,7 +192,7 @@ class Node extends React.Component {
                     key={`pin_${pin.key}`}
                   />
                 </g>
-              )}
+              ))}
             </g>
           </svg>
         )}
@@ -201,9 +212,7 @@ Node.propTypes = {
   pins: PropTypes.any.isRequired,
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,
-  errors: PropTypes.arrayOf(
-    PropTypes.instanceOf(Error)
-  ),
+  errors: PropTypes.arrayOf(PropTypes.instanceOf(Error)),
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,

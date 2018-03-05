@@ -7,16 +7,13 @@ import { installLibraries } from '../editor/actions';
 import { PROJECT_OPEN, PROJECT_IMPORT } from './actionTypes';
 import { getProject } from './selectors';
 
-export default store => next => (action) => {
+export default store => next => action => {
   const res = next(action);
 
   if (R.contains(action.type, [PROJECT_OPEN, PROJECT_IMPORT])) {
     const project = getProject(store.getState());
     const missingLibParams = R.compose(
-      R.map(R.compose(
-        explode,
-        parseLibQuery
-      )),
+      R.map(R.compose(explode, parseLibQuery)),
       listMissingLibraryNames
     )(project);
 

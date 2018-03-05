@@ -15,14 +15,12 @@ import {
 
 // CompileError :: { errorCode: String, message: String }
 
-const createCompileError = (message, errorCode, payload = {}) => Object.assign(
-  new Error(message), { errorCode }, payload
-);
+const createCompileError = (message, errorCode, payload = {}) =>
+  Object.assign(new Error(message), { errorCode }, payload);
 
 // :: () -> URL
-const getCompileUrl = () => (
-  process.env.XOD_CLOUD_COMPILE_URL || DEFAULT_CLOUD_COMPILE_URL
-);
+const getCompileUrl = () =>
+  process.env.XOD_CLOUD_COMPILE_URL || DEFAULT_CLOUD_COMPILE_URL;
 
 /**
  * Sends board identifier and code to compilation server
@@ -38,33 +36,40 @@ const getCompileUrl = () => (
  * and optional `code`, `error`, `timeout`.
  */
 // :: { board: String, body: String } -> Promise { data: String, name: String } CompileError
-const sendAndReceive = dataToSend => new Promise((resolve, reject) => {
-  const ws = new WebSocket(getCompileUrl(), {
-    perMessageDeflate: true,
-    handshakeTimeout: 3000,
+const sendAndReceive = dataToSend =>
+  new Promise((resolve, reject) => {
+    const ws = new WebSocket(getCompileUrl(), {
+      perMessageDeflate: true,
+      handshakeTimeout: 3000,
+    });
+    ws.on('open', () => ws.send(JSON.stringify(dataToSend)));
+    ws.on('message', res => {
+      const data = JSON.parse(res);
+
+      const errCode = RESPONSE_TO_ERROR[data.type];
+      if (errCode) {
+        reject(createCompileError(data.body, errCode));
+      }
+
+      if (data.type === COMPILATION_RESPONSE_TYPES.SUCCEEDED) {
+        resolve(data.body);
+      }
+    });
+
+    ws.on('close', (closeCode, reason) =>
+      reject(
+        createCompileError(reason, COMPILATION_ERRORS.CLOSED, { closeCode })
+      )
+    );
+
+    ws.on('error', err =>
+      reject(
+        createCompileError(err.message, COMPILATION_ERRORS.FAILED, {
+          code: err.code,
+        })
+      )
+    );
   });
-  ws.on('open', () => ws.send(JSON.stringify(dataToSend)));
-  ws.on('message', (res) => {
-    const data = JSON.parse(res);
-
-    const errCode = RESPONSE_TO_ERROR[data.type];
-    if (errCode) {
-      reject(createCompileError(data.body, errCode));
-    }
-
-    if (data.type === COMPILATION_RESPONSE_TYPES.SUCCEEDED) {
-      resolve(data.body);
-    }
-  });
-
-  ws.on('close', (closeCode, reason) => reject(
-    createCompileError(reason, COMPILATION_ERRORS.CLOSED, { closeCode })
-  ));
-
-  ws.on('error', err => reject(
-    createCompileError(err.message, COMPILATION_ERRORS.FAILED, { code: err.code })
-  ));
-});
 
 /**
  * Returns Promise with compilation result or error.
@@ -74,18 +79,17 @@ const sendAndReceive = dataToSend => new Promise((resolve, reject) => {
  * See docs for `sendAndReceive` and `retryOrFail`.
  */
 // :: String -> String -> Promise { data: String, name: String } CompileError
-export const compile = R.curry(
-  (board, code) => {
-    const dataToSend = { board, body: code };
-    return sendAndReceive(dataToSend)
-      .catch(retryOrFail(
-        RETRY_DELAYS,
-        data => (data.errorCode === COMPILATION_ERRORS.COMPILE_FAILED),
-        R.identity,
-        () => sendAndReceive(dataToSend)
-      ));
-  }
-);
+export const compile = R.curry((board, code) => {
+  const dataToSend = { board, body: code };
+  return sendAndReceive(dataToSend).catch(
+    retryOrFail(
+      RETRY_DELAYS,
+      data => data.errorCode === COMPILATION_ERRORS.COMPILE_FAILED,
+      R.identity,
+      () => sendAndReceive(dataToSend)
+    )
+  );
+});
 
 /**
  * It saves a compilation result (object with data and filename) into
@@ -93,16 +97,10 @@ export const compile = R.curry(
  * Returns a Promise with path to saved file or Error.
  */
 // :: Path -> { data: String, name: String } -> Promise Path Error
-export const saveCompiledBinary = R.curry(
-  (distPath, { data, name }) => {
-    const ext = path.extname(name);
-    const filepath = path.resolve(distPath, name);
-    const dataToSave = (ext === '.bin') ? atob(data) : data;
+export const saveCompiledBinary = R.curry((distPath, { data, name }) => {
+  const ext = path.extname(name);
+  const filepath = path.resolve(distPath, name);
+  const dataToSave = ext === '.bin' ? atob(data) : data;
 
-    return outputFile(
-      filepath,
-      dataToSave,
-      'binary'
-    ).then(() => filepath);
-  }
-);
+  return outputFile(filepath, dataToSave, 'binary').then(() => filepath);
+});

@@ -7,17 +7,14 @@ import { EDITOR_MODE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
-import { computeConnectedPins, getRenderableNode } from '../../../../project/selectors';
-
 import {
-  SLOT_SIZE,
-} from '../../../../project/nodeLayout';
+  computeConnectedPins,
+  getRenderableNode,
+} from '../../../../project/selectors';
 
-import {
-  getOffsetMatrix,
-  bindApi,
-  getMousePosition,
-} from '../modeUtils';
+import { SLOT_SIZE } from '../../../../project/nodeLayout';
+
+import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
 let patchSvgRef = null;
 
@@ -49,13 +46,19 @@ const changingArityLevel = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     const desiredArityLevel = getDesiredArityLevel(api, mousePosition);
     api.setState({ mousePosition, desiredArityLevel });
   },
   onMouseUp(api) {
     api.props.actions.changeArityLevel(
-      api.state.nodeId, api.props.patchPath, api.state.desiredArityLevel
+      api.state.nodeId,
+      api.props.patchPath,
+      api.state.desiredArityLevel
     );
     api.goToMode(EDITOR_MODE.DEFAULT);
   },
@@ -77,30 +80,24 @@ const changingArityLevel = {
      */
     // :: RenderableNode
     const newNode = R.compose(
-      renderableNode => R.compose(
-        R.assoc('id', `${renderableNode.id}-$CHANGING_ARITY`),
-        R.assoc('isChangingArity', true),
-        keysToOmit => R.compose(
-          R.assocPath(
-            ['size', 'width'],
-            (renderableNode.size.width - (keysToOmit.length * SLOT_SIZE.WIDTH))
-          ),
-          R.over(
-            R.lensProp('pins'),
-            R.omit(keysToOmit)
-          )
+      renderableNode =>
+        R.compose(
+          R.assoc('id', `${renderableNode.id}-$CHANGING_ARITY`),
+          R.assoc('isChangingArity', true),
+          keysToOmit =>
+            R.compose(
+              R.assocPath(
+                ['size', 'width'],
+                renderableNode.size.width - keysToOmit.length * SLOT_SIZE.WIDTH
+              ),
+              R.over(R.lensProp('pins'), R.omit(keysToOmit))
+            )(renderableNode),
+          R.pluck('key'),
+          R.filter(R.propEq('type', XP.PIN_TYPE.DEAD)),
+          R.values,
+          R.prop('pins')
         )(renderableNode),
-        R.pluck('key'),
-        R.filter(R.propEq('type', XP.PIN_TYPE.DEAD)),
-        R.values,
-        R.prop('pins')
-      )(renderableNode),
-      getRenderableNode(
-        R.__,
-        currentPatch,
-        connectedPins,
-        project
-      ),
+      getRenderableNode(R.__, currentPatch, connectedPins, project),
       XP.setNodeArityLevel(api.state.desiredArityLevel),
       XP.getNodeByIdUnsafe(api.state.nodeId)
     )(currentPatch);
@@ -117,14 +114,13 @@ const changingArityLevel = {
     )(api.props.nodes);
 
     return (
-      <HotKeys
-        className="PatchWrapper"
-        handlers={{}}
-      >
+      <HotKeys className="PatchWrapper" handlers={{}}>
         <PatchSVG
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
           isInChangingArityLevelMode
         >
           <Layers.Background

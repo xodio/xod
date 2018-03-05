@@ -4,11 +4,8 @@ import PropTypes from 'prop-types';
 
 import PinWidget from './PinWidget';
 
-const NumberWidget = (props) => {
-  const onChange = R.compose(
-    props.onChange,
-    R.path(['target', 'value'])
-  );
+const NumberWidget = props => {
+  const onChange = R.compose(props.onChange, R.path(['target', 'value']));
 
   return (
     <PinWidget
@@ -26,7 +23,6 @@ const NumberWidget = (props) => {
         type="text"
         id={props.elementId}
         value={props.value}
-
         onChange={onChange}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
@@ -45,10 +41,7 @@ NumberWidget.propTypes = {
   isBindable: PropTypes.bool,
   direction: PropTypes.string,
 
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,

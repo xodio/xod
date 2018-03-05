@@ -23,10 +23,7 @@ const XOD_TAG_NAMES = /(((input|output)_[A-Za-z0-9_]+)|GENERATED_CODE)\b/gm;
 const createCMHack = R.compose(
   r => new RegExp(`[A-Za-z0-9_]+(${r})`, 'gm'),
   R.join('|'),
-  R.map(R.compose(
-    R.replace('\\b', ''),
-    R.prop('source')
-  ))
+  R.map(R.compose(R.replace('\\b', ''), R.prop('source')))
 );
 
 (() => {

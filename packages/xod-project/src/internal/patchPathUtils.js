@@ -4,11 +4,8 @@ import * as CONST from '../constants';
 const EXPANDED_PATCH_NAME_SUFFIX = '-$';
 
 export const getExpandedVariadicPatchPath = R.curry(
-  (arityLevel, originalPath) => [
-    originalPath,
-    EXPANDED_PATCH_NAME_SUFFIX,
-    arityLevel,
-  ].join('')
+  (arityLevel, originalPath) =>
+    [originalPath, EXPANDED_PATCH_NAME_SUFFIX, arityLevel].join('')
 );
 
 // :: String -> Boolean
@@ -20,20 +17,11 @@ export const isValidIdentifier = R.allPass([
 ]);
 
 // :: String -> Boolean
-export const isProjectNameValid = R.either(
-  isValidIdentifier,
-  R.isEmpty
-);
+export const isProjectNameValid = R.either(isValidIdentifier, R.isEmpty);
 
 // :: ([String] -> Boolean) -> * -> Boolean
 const checkPathParts = partsChecker =>
-  R.both(
-    R.is(String),
-    R.compose(
-      partsChecker,
-      R.split('/')
-    )
-  );
+  R.both(R.is(String), R.compose(partsChecker, R.split('/')));
 
 // :: String -> Boolean
 export const isLocalMarker = R.equals('@');
@@ -57,10 +45,7 @@ export const isPathLocal = checkPathParts(
  * @returns {boolean}
  */
 export const isPathLibrary = checkPathParts(
-  R.allPass([
-    R.pipe(R.length, R.equals(3)),
-    R.all(isValidIdentifier),
-  ])
+  R.allPass([R.pipe(R.length, R.equals(3)), R.all(isValidIdentifier)])
 );
 
 /**
@@ -83,8 +68,9 @@ export const TERMINALS_LIB_NAME = 'xod/patch-nodes';
 const directions = R.values(CONST.PIN_DIRECTION);
 const dataTypes = R.values(CONST.PIN_TYPE);
 
-export const terminalPatchPathRegExp =
-  new RegExp(`^${TERMINALS_LIB_NAME}/(${directions.join('|')})-(${dataTypes.join('|')})$`);
+export const terminalPatchPathRegExp = new RegExp(
+  `^${TERMINALS_LIB_NAME}/(${directions.join('|')})-(${dataTypes.join('|')})$`
+);
 
 // :: String -> Boolean
 export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);

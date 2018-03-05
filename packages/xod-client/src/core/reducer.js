@@ -16,10 +16,10 @@ import trackLastSavedChanges from './trackLastSavedChanges';
 import initialProjectState from '../project/state';
 
 // :: [(s -> a -> s)] -> s -> a -> s
-const pipeReducers = (...reducers) =>
-  (state, action) => reducers.reduce((s, r) => r(s, action), state);
+const pipeReducers = (...reducers) => (state, action) =>
+  reducers.reduce((s, r) => r(s, action), state);
 
-const combineRootReducers = (extraReducers) => {
+const combineRootReducers = extraReducers => {
   const reducers = merge(
     {
       user: userReducer,
@@ -37,10 +37,7 @@ const combineRootReducers = (extraReducers) => {
   );
 
   return undoableProject(
-    pipeReducers(
-      combineReducers(reducers),
-      trackLastSavedChanges,
-    ),
+    pipeReducers(combineReducers(reducers), trackLastSavedChanges),
     keepIntegrityAfterNavigatingHistory
   );
 };

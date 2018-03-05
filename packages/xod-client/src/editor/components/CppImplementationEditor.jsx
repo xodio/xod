@@ -23,11 +23,15 @@ const CppImplementationEditor = ({
     theme: 'xod',
     indentUnit: 4,
     extraKeys: {
-      Tab: (CM) => {
+      Tab: CM => {
         if (CM.somethingSelected()) {
           const sel = CM.getSelection('\n');
           // Indent only if there are multiple lines selected, or if the selection spans a full line
-          if (sel.length > 0 && (sel.indexOf('\n') > -1 || sel.length === CM.getLine(CM.getCursor().line).length)) {
+          if (
+            sel.length > 0 &&
+            (sel.indexOf('\n') > -1 ||
+              sel.length === CM.getLine(CM.getCursor().line).length)
+          ) {
             CM.indentSelection('add');
             return;
           }
@@ -69,23 +73,14 @@ const CppImplementationEditor = ({
             <button className="back-button" onClick={onClose} />
           </li>
           <li>
-            <button
-              className="Breadcrumbs-chunk-button"
-              onClick={onClose}
-            >
+            <button className="Breadcrumbs-chunk-button" onClick={onClose}>
               {patchPath}
             </button>
           </li>
           <li>
-            <button
-              className="Breadcrumbs-chunk-button is-tail is-active"
-            >
+            <button className="Breadcrumbs-chunk-button is-tail is-active">
               C++ implementation
-              {isInDebuggerTab && (
-                <span className="hint">
-                  read only
-                </span>
-              )}
+              {isInDebuggerTab && <span className="hint">read only</span>}
             </button>
           </li>
         </ul>
@@ -95,7 +90,9 @@ const CppImplementationEditor = ({
           value={source}
           onChange={onChange}
           options={options}
-          ref={(el) => { codeMirror = codeMirror || el; }}
+          ref={el => {
+            codeMirror = codeMirror || el;
+          }}
         />
       </div>
     </div>

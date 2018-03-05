@@ -11,8 +11,12 @@ import {
 } from '../src/index';
 
 describe('Optional fields utils', () => {
-  const omittedOptionals = loadJSON('./fixtures/with-omitted-optional-fields.xodball');
-  const emptyOptionals = loadJSON('./fixtures/with-empty-optional-fields.xodball');
+  const omittedOptionals = loadJSON(
+    './fixtures/with-omitted-optional-fields.xodball'
+  );
+  const emptyOptionals = loadJSON(
+    './fixtures/with-empty-optional-fields.xodball'
+  );
 
   describe('addMissingOptionalProjectFields', () => {
     it('takes a project with omitted optional fields and returns a valid Project', () => {

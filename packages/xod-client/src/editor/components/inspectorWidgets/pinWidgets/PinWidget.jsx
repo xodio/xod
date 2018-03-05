@@ -18,10 +18,7 @@ const isNonBindableOutput = R.both(
   R.complement(R.prop('isBindable'))
 );
 
-const isBindingForbidden = R.either(
-  isLinkedInput,
-  isNonBindableOutput
-);
+const isBindingForbidden = R.either(isLinkedInput, isNonBindableOutput);
 
 const isPulsePin = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.PULSE));
 const isDeadPinType = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.DEAD));
@@ -36,15 +33,16 @@ const getReason = R.cond([
 ]);
 
 function PinWidget(props) {
-  const input = isBindingForbidden(props)
-    ? (
-      <input
-        className="inspectorTextInput inspectorTextInput--not-bindable"
-        type="text"
-        disabled
-        value={getReason(props)}
-      />
-    ) : props.children;
+  const input = isBindingForbidden(props) ? (
+    <input
+      className="inspectorTextInput inspectorTextInput--not-bindable"
+      type="text"
+      disabled
+      value={getReason(props)}
+    />
+  ) : (
+    props.children
+  );
   return (
     <div className="Widget PinWidget" title={props.normalizedLabel}>
       {input}
@@ -54,11 +52,7 @@ function PinWidget(props) {
         isConnected={props.isConnected}
         isLastVariadicGroup={props.isLastVariadicGroup}
       />
-      <label
-        htmlFor={props.elementId}
-      >
-        {props.label}
-      </label>
+      <label htmlFor={props.elementId}>{props.label}</label>
     </div>
   );
 }

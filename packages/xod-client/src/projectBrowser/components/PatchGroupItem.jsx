@@ -68,14 +68,10 @@ class PatchGroupItem extends React.Component {
       ...restProps
     } = this.props;
 
-    const classNames = cn(
-      'PatchGroupItem',
-      className,
-      {
-        isSelected,
-        isOpen,
-      }
-    );
+    const classNames = cn('PatchGroupItem', className, {
+      isSelected,
+      isOpen,
+    });
 
     return connectDragSource(
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -84,7 +80,10 @@ class PatchGroupItem extends React.Component {
         className={classNames}
         onClick={onClick}
         onContextMenuCapture={onClick}
-        {...R.omit(['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'], restProps)}
+        {...R.omit(
+          ['patchPath', 'onBeginDrag', 'connectDragPreview', 'dead'],
+          restProps
+        )}
       >
         <ContextMenuTrigger
           id={PATCH_GROUP_CONTEXT_MENU_ID}
@@ -96,13 +95,11 @@ class PatchGroupItem extends React.Component {
             onDoubleClick={onDoubleClick}
             role="button"
           >
-            {(dead) ? deadIcon : null}
+            {dead ? deadIcon : null}
             {label}
           </div>
         </ContextMenuTrigger>
-        <div className="PatchGroupItem__hover-buttons">
-          {hoverButtons}
-        </div>
+        <div className="PatchGroupItem__hover-buttons">{hoverButtons}</div>
       </div>
     );
   }
@@ -124,8 +121,7 @@ PatchGroupItem.propTypes = {
   collectPropsFn: PropTypes.func.isRequired,
 };
 
-export default DragSource( // eslint-disable-line new-cap
-  DRAGGED_ENTITY_TYPE.PATCH,
-  dragSource,
-  collect
-)(PatchGroupItem);
+// eslint-disable-next-line new-cap
+export default DragSource(DRAGGED_ENTITY_TYPE.PATCH, dragSource, collect)(
+  PatchGroupItem
+);

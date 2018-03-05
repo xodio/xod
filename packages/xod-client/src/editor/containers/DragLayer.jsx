@@ -23,7 +23,11 @@ const layerStyles = {
 
 class CustomDragLayer extends React.PureComponent {
   getItemStyles() {
-    const { initialClientOffset, initialSourceClientOffset, currentOffset } = this.props;
+    const {
+      initialClientOffset,
+      initialSourceClientOffset,
+      currentOffset,
+    } = this.props;
 
     if (!initialClientOffset || !initialSourceClientOffset || !currentOffset) {
       return {
@@ -31,7 +35,10 @@ class CustomDragLayer extends React.PureComponent {
       };
     }
 
-    const offsetFromSourceRoot = subtractPoints(initialClientOffset, initialSourceClientOffset);
+    const offsetFromSourceRoot = subtractPoints(
+      initialClientOffset,
+      initialSourceClientOffset
+    );
     const { x, y } = addPoints(offsetFromSourceRoot, currentOffset);
 
     return {
@@ -42,12 +49,12 @@ class CustomDragLayer extends React.PureComponent {
   renderPatchAsNode() {
     return R.compose(
       maybeRenderedPatch => maybeRenderedPatch.getOrElse(null),
-      R.map(R.compose(
-        props => (
-          <Node {...props} isDragged noEvents />
-        ),
-        patchToNodeProps(false)
-      )),
+      R.map(
+        R.compose(
+          props => <Node {...props} isDragged noEvents />,
+          patchToNodeProps(false)
+        )
+      ),
       XP.getPatchByPath(this.props.item.patchPath)
     )(this.props.project);
   }
@@ -59,9 +66,7 @@ class CustomDragLayer extends React.PureComponent {
 
     return (
       <div style={layerStyles}>
-        <div style={this.getItemStyles()}>
-          {this.renderPatchAsNode()}
-        </div>
+        <div style={this.getItemStyles()}>{this.renderPatchAsNode()}</div>
       </div>
     );
   }
@@ -87,7 +92,8 @@ const mapStateToProps = R.applySpec({
 
 export default R.compose(
   connect(mapStateToProps),
-  DragLayer(monitor => ({ // eslint-disable-line new-cap
+  // eslint-disable-next-line new-cap
+  DragLayer(monitor => ({
     item: monitor.getItem(),
     // TODO: add monitor.getItemType() when there are more types
     initialClientOffset: monitor.getInitialClientOffset(),

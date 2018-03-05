@@ -18,7 +18,9 @@ class GhostLayer extends React.Component {
   getLink() {
     const { ghostLink } = this.props;
 
-    if (!this.isLinking() || !ghostLink) { return null; }
+    if (!this.isLinking() || !ghostLink) {
+      return null;
+    }
 
     return (
       <XODLink
@@ -34,17 +36,13 @@ class GhostLayer extends React.Component {
 
   isLinking(source) {
     const props = source || this.props;
-    return (props.mode === EDITOR_MODE.LINKING && props.ghostLink);
+    return props.mode === EDITOR_MODE.LINKING && props.ghostLink;
   }
 
   render() {
     const ghostLink = this.getLink();
 
-    return (
-      <g className="GhostsLayer">
-        {ghostLink}
-      </g>
-    );
+    return <g className="GhostsLayer">{ghostLink}</g>;
   }
 }
 

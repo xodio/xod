@@ -25,16 +25,17 @@ export const swap = def(
   (oldIndex, newIndex, array) => {
     const len = array.length;
     if (oldIndex >= len || newIndex >= len) {
-      throw new Error(`Can not swap items that out of an array: ${oldIndex} > ${newIndex}. Array length: ${len}.`);
+      throw new Error(
+        `Can not swap items that out of an array: ${oldIndex} > ${newIndex}. Array length: ${len}.`
+      );
     }
 
     const oldItem = R.nth(oldIndex, array);
     const newItem = R.nth(newIndex, array);
 
-    return R.pipe(
-      R.update(oldIndex, newItem),
-      R.update(newIndex, oldItem)
-    )(array);
+    return R.pipe(R.update(oldIndex, newItem), R.update(newIndex, oldItem))(
+      array
+    );
   }
 );
 
@@ -51,10 +52,7 @@ export const swap = def(
 export const uniqLists = def(
   'uniqLists :: [[String]] -> [[String]]',
   R.reduce(
-    (acc, nextList) => R.append(
-      R.without(R.unnest(acc), nextList),
-      acc
-    ),
+    (acc, nextList) => R.append(R.without(R.unnest(acc), nextList), acc),
     []
   )
 );

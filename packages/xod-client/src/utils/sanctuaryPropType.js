@@ -4,6 +4,8 @@ export default SanctuaryType => (props, propName, componentName) => {
   const validationResult = SanctuaryType.validate(props[propName]);
 
   if (validationResult.isLeft) {
-    return new Error(`Invalid prop '${propName}' supplied to '${componentName}'`);
+    return new Error(
+      `Invalid prop '${propName}' supplied to '${componentName}'`
+    );
   }
 };

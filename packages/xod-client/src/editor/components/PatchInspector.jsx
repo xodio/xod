@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
-import {
-  SELECTION_ENTITY_TYPE,
-  WIDGET_TYPE,
-} from '../constants';
+import { SELECTION_ENTITY_TYPE, WIDGET_TYPE } from '../constants';
 import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
 
 import sanctuaryPropType from '../../utils/sanctuaryPropType';

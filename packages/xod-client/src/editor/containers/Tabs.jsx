@@ -19,45 +19,35 @@ import SidebarSwitches from '../components/SidebarSwitches';
 
 import { SIDEBAR_IDS } from '../constants';
 
-const SortableItem = sortableElement(
-  ({ value }) => (
-    <TabsItem
-      key={value.id}
-      data={value}
-      onClick={value.onClick}
-      onClose={value.onClose}
-    />
-  )
-);
+const SortableItem = sortableElement(({ value }) => (
+  <TabsItem
+    key={value.id}
+    data={value}
+    onClick={value.onClick}
+    onClose={value.onClose}
+  />
+));
 
-const SortableList = sortableContainer(
-  ({ items, onClick, onClose }) => (
-    <TabsContainer>
-      {items.map((value, index) => {
-        const item = R.merge(
-          value,
-          {
-            onClick,
-            onClose,
-          }
-        );
+const SortableList = sortableContainer(({ items, onClick, onClose }) => (
+  <TabsContainer>
+    {items.map((value, index) => {
+      const item = R.merge(value, {
+        onClick,
+        onClose,
+      });
 
-        return (
-          <SortableItem
-            key={`item-${value.id}`}
-            index={index}
-            value={item}
-
-            onClick={onClick}
-            onClose={onClose}
-          />
-        );
-      }
-      )}
-    </TabsContainer>
-  )
-);
-
+      return (
+        <SortableItem
+          key={`item-${value.id}`}
+          index={index}
+          value={item}
+          onClick={onClick}
+          onClose={onClose}
+        />
+      );
+    })}
+  </TabsContainer>
+));
 
 class Tabs extends React.Component {
   constructor(props) {
@@ -92,9 +82,7 @@ class Tabs extends React.Component {
   }
 
   getTabs() {
-    return R.sortBy(
-      R.prop('index')
-    )(R.values(this.props.tabs));
+    return R.sortBy(R.prop('index'))(R.values(this.props.tabs));
   }
 
   render() {
@@ -123,7 +111,6 @@ class Tabs extends React.Component {
           lockToContainerEdges
           lockOffset="-5%"
           helperClass="is-sorting"
-
           onClick={this.onSwitchTab}
           onClose={this.onCloseTab}
         />
@@ -135,13 +122,15 @@ class Tabs extends React.Component {
 Tabs.propTypes = {
   tabs: PropTypes.object,
   actions: PropTypes.objectOf(PropTypes.func),
-  panels: PropTypes.objectOf(PropTypes.shape({
-    /* eslint-disable react/no-unused-prop-types */
-    maximized: PropTypes.bool.isRequired,
-    sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
-    autohide: PropTypes.bool.isRequired,
-    /* eslint-enable react/no-unused-prop-types */
-  })),
+  panels: PropTypes.objectOf(
+    PropTypes.shape({
+      /* eslint-disable react/no-unused-prop-types */
+      maximized: PropTypes.bool.isRequired,
+      sidebar: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
+      autohide: PropTypes.bool.isRequired,
+      /* eslint-enable react/no-unused-prop-types */
+    })
+  ),
   userAuthorised: PropTypes.bool.isRequired,
 };
 
@@ -152,12 +141,15 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToprops = dispatch => ({
-  actions: bindActionCreators({
-    switchTab: Actions.switchTab,
-    closeTab: Actions.closeTab,
-    sortTabs: Actions.sortTabs,
-    togglePanel: Actions.togglePanel,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      switchTab: Actions.switchTab,
+      closeTab: Actions.closeTab,
+      sortTabs: Actions.sortTabs,
+      togglePanel: Actions.togglePanel,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToprops)(Tabs);

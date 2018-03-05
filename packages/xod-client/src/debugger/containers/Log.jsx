@@ -10,19 +10,20 @@ import ErrorMessage from '../components/ErrorMessage';
 import LogMessage from '../components/LogMessage';
 import XodMessage from '../components/XodMessage';
 
-const hasType = R.curry(
-  (type, messageData) => R.propEq('type', type, messageData)
+const hasType = R.curry((type, messageData) =>
+  R.propEq('type', type, messageData)
 );
 
-const renderLogMessage = (messageData, idx) => R.compose(
-  Renderer => <Renderer key={idx} data={messageData} />,
-  R.cond([
-    [hasType('system'), R.always(SystemMessage)],
-    [hasType('error'), R.always(ErrorMessage)],
-    [hasType('xod'), R.always(XodMessage)],
-    [R.T, R.always(LogMessage)],
-  ])
-)(messageData);
+const renderLogMessage = (messageData, idx) =>
+  R.compose(
+    Renderer => <Renderer key={idx} data={messageData} />,
+    R.cond([
+      [hasType('system'), R.always(SystemMessage)],
+      [hasType('error'), R.always(ErrorMessage)],
+      [hasType('xod'), R.always(XodMessage)],
+      [R.T, R.always(LogMessage)],
+    ])
+  )(messageData);
 
 const Log = ({ log, uploadLog, rejectedMessageTypes }) => (
   <Infinite
@@ -31,12 +32,10 @@ const Log = ({ log, uploadLog, rejectedMessageTypes }) => (
     containerHeight={196}
     displayBottomUpwards
   >
-    {
-      uploadLog
-        .concat(log)
-        .filter(msg => !rejectedMessageTypes.includes(msg.type))
-        .map(renderLogMessage)
-    }
+    {uploadLog
+      .concat(log)
+      .filter(msg => !rejectedMessageTypes.includes(msg.type))
+      .map(renderLogMessage)}
   </Infinite>
 );
 

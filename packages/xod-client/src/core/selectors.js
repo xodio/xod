@@ -40,23 +40,20 @@ export const getPatchForHelpbox = createSelector(
     if (suggesterVisible && suggesterPatchPath) {
       return XP.getPatchByPath(suggesterPatchPath, project);
     }
-    return R.compose(
-      R.chain(XP.getPatchByPath(R.__, project)),
-      Maybe
-    )(selectedPatchPath);
+    return R.compose(R.chain(XP.getPatchByPath(R.__, project)), Maybe)(
+      selectedPatchPath
+    );
   }
 );
 export const getPatchForQuickHelp = createSelector(
   [Project.getProject, Editor.getSelection, Project.getCurrentPatchNodes],
-  (project, editorSelection, currentPatchNodes) => R.compose(
-    R.chain(XP.getPatchByPath(R.__, project)),
-    R.map(R.compose(
-      XP.getNodeType,
-      ({ id }) => currentPatchNodes[id]
-    )),
-    Maybe,
-    R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE)),
-  )(editorSelection)
+  (project, editorSelection, currentPatchNodes) =>
+    R.compose(
+      R.chain(XP.getPatchByPath(R.__, project)),
+      R.map(R.compose(XP.getNodeType, ({ id }) => currentPatchNodes[id])),
+      Maybe,
+      R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE))
+    )(editorSelection)
 );
 
 export default {

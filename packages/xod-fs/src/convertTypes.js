@@ -6,11 +6,7 @@ import { def } from './types';
 
 export const convertProjectToProjectFileContents = def(
   'convertProjectToProjectFileContents :: Project -> ProjectFileContents',
-  R.compose(
-    R.dissoc('@@type'),
-    R.dissoc('patches'),
-    R.dissoc('attachments')
-  )
+  R.compose(R.dissoc('@@type'), R.dissoc('patches'), R.dissoc('attachments'))
 );
 
 export const convertProjectFileContentsToProject = def(
@@ -18,7 +14,7 @@ export const convertProjectFileContentsToProject = def(
   R.compose(
     R.assoc('@@type', 'xod-project/Project'),
     R.assoc('patches', {}),
-    R.assoc('attachments', []),
+    R.assoc('attachments', [])
   )
 );
 
@@ -38,14 +34,19 @@ export const convertPatchToPatchFileContents = def(
 
 export const convertPatchFileContentsToPatch = def(
   'convertPatchFileContentsToPatch :: PatchFileContents -> Patch',
-  fsPatch => R.compose(
-    XF.explodeEither,
-    XP.upsertLinks(R.map(R.assoc('@@type', 'xod-project/Link'), fsPatch.links)),
-    XP.upsertNodes(R.map(R.assoc('@@type', 'xod-project/Node'), fsPatch.nodes)),
-    XP.upsertComments(fsPatch.comments),
-    XP.setPatchDescription(fsPatch.description),
-    XP.createPatch
-  )()
+  fsPatch =>
+    R.compose(
+      XF.explodeEither,
+      XP.upsertLinks(
+        R.map(R.assoc('@@type', 'xod-project/Link'), fsPatch.links)
+      ),
+      XP.upsertNodes(
+        R.map(R.assoc('@@type', 'xod-project/Node'), fsPatch.nodes)
+      ),
+      XP.upsertComments(fsPatch.comments),
+      XP.setPatchDescription(fsPatch.description),
+      XP.createPatch
+    )()
 );
 
 const optionalPatchFields = {
@@ -76,8 +77,10 @@ const OPTIONAL_PROJECT_FIELDS = {
   authors: [],
 };
 
-export const addMissingOptionsToProjectFileContents =
-  R.merge(OPTIONAL_PROJECT_FIELDS);
+export const addMissingOptionsToProjectFileContents = R.merge(
+  OPTIONAL_PROJECT_FIELDS
+);
 
-export const omitDefaultOptionsFromProjectFileContents =
-  XF.subtractObject(OPTIONAL_PROJECT_FIELDS);
+export const omitDefaultOptionsFromProjectFileContents = XF.subtractObject(
+  OPTIONAL_PROJECT_FIELDS
+);

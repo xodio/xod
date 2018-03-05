@@ -7,16 +7,11 @@ import { Maybe, Either } from 'ramda-fantasy';
 // TODO: Disquss: Should we make docs for this functions or keep it private?
 
 // :: RegExp -> groupIndex -> string -> Maybe<string>
-export const match = R.curry(
-  (regExp, groupIndex, string) =>
+export const match = R.curry((regExp, groupIndex, string) =>
   R.compose(
     Maybe,
     R.compose(
-      R.ifElse(
-        R.isEmpty,
-        R.always(null),
-        R.identity
-      ),
+      R.ifElse(R.isEmpty, R.always(null), R.identity),
       R.prop(groupIndex)
     ),
     R.match(regExp)
@@ -24,29 +19,16 @@ export const match = R.curry(
 );
 
 // :: *|Maybe -> Maybe<*>
-export const ensureMaybe = R.ifElse(
-  R.is(Maybe),
-  R.identity,
-  Maybe
-);
+export const ensureMaybe = R.ifElse(R.is(Maybe), R.identity, Maybe);
 
 // :: string -> object -> Maybe<*>
-export const prop = R.curry(R.compose(
-  Maybe,
-  R.prop
-));
+export const prop = R.curry(R.compose(Maybe, R.prop));
 
 // :: array -> object -> Maybe<*>
-export const path = R.curry(R.compose(
-  Maybe,
-  R.path
-));
+export const path = R.curry(R.compose(Maybe, R.path));
 
 // :: function -> object -> Maybe<*>
-export const find = R.curry(R.compose(
-  Maybe,
-  R.find
-));
+export const find = R.curry(R.compose(Maybe, R.find));
 
 //
 // Functions with Either monad
@@ -59,11 +41,7 @@ export const find = R.curry(R.compose(
  * @param {string} errorMessage
  * @returns {Either.Left<Error>}
  */
-export const err = R.compose(
-  R.always,
-  Either.Left,
-  R.construct(Error)
-);
+export const err = R.compose(R.always, Either.Left, R.construct(Error));
 
 /**
  * Returns function that checks condition and returns Either
@@ -75,12 +53,8 @@ export const err = R.compose(
  * @param {function} condition
  * @returns {function}
  */
-export const errOnFalse = R.curry(
-  (errorMessage, condition) => R.ifElse(
-    condition,
-    Either.of,
-    err(errorMessage)
-  )
+export const errOnFalse = R.curry((errorMessage, condition) =>
+  R.ifElse(condition, Either.of, err(errorMessage))
 );
 
 /**
@@ -91,13 +65,9 @@ export const errOnFalse = R.curry(
  * @param {*|Maybe<*>} data Data or Maybe monad
  * @returns {Either<Error|*>}
  */
-export const errOnNothing = R.curry(
-  (errorMessage, data) => R.compose(
-    R.ifElse(
-      Maybe.isNothing,
-      err(errorMessage),
-      R.chain(Either.Right)
-    ),
+export const errOnNothing = R.curry((errorMessage, data) =>
+  R.compose(
+    R.ifElse(Maybe.isNothing, err(errorMessage), R.chain(Either.Right)),
     ensureMaybe
   )(data)
 );
@@ -114,9 +84,7 @@ export const errOnNothing = R.curry(
  * @param {object} dictionary
  * @returns {boolean}
  */
-export const hasPropEq = R.useWith(
-  R.contains, [R.identity, R.values]
-);
+export const hasPropEq = R.useWith(R.contains, [R.identity, R.values]);
 
 /**
  * Returns function that assoc string to a specified key
@@ -124,13 +92,7 @@ export const hasPropEq = R.useWith(
  * @param {string} key
  * @returns {function}
  */
-export const assocString = key => R.useWith(
-  R.assoc(key),
-  [
-    String,
-    R.identity,
-  ]
-);
+export const assocString = key => R.useWith(R.assoc(key), [String, R.identity]);
 
 /**
  * Returns function that assoc number to a specified key
@@ -138,13 +100,5 @@ export const assocString = key => R.useWith(
  * @param {string} key
  * @returns {function}
  */
-export const assocNumber = key => R.useWith(
-  R.assoc(key),
-  [
-    R.compose(
-      R.defaultTo(0),
-      Number
-    ),
-    R.identity,
-  ]
-);
+export const assocNumber = key =>
+  R.useWith(R.assoc(key), [R.compose(R.defaultTo(0), Number), R.identity]);

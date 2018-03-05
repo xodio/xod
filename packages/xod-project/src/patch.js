@@ -1,6 +1,14 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { explodeMaybe, explodeEither, notNil, reduceEither, isAmong, mapIndexed, notEmpty } from 'xod-func-tools';
+import {
+  explodeMaybe,
+  explodeEither,
+  notNil,
+  reduceEither,
+  isAmong,
+  mapIndexed,
+  notEmpty,
+} from 'xod-func-tools';
 
 import * as CONST from './constants';
 import * as Tools from './func-tools';
@@ -12,7 +20,10 @@ import * as Utils from './utils';
 import * as Attachment from './attachment';
 import { sortGraph } from './gmath';
 import { def } from './types';
-import { getHardcodedPinsForPatchPath, getPinKeyForTerminalDirection } from './builtInPatches';
+import {
+  getHardcodedPinsForPatchPath,
+  getPinKeyForTerminalDirection,
+} from './builtInPatches';
 import {
   getLocalPath,
   getLibraryName,
@@ -46,28 +57,22 @@ import {
  * @function createPatch
  * @returns {Patch} newly created patch
  */
-export const createPatch = def(
-  'createPatch :: () -> Patch',
-  () => ({
-    '@@type': 'xod-project/Patch',
-    nodes: {},
-    links: {},
-    comments: {},
-    path: getLocalPath('untitled-patch'),
-    description: '',
-    attachments: [],
-  })
-);
+export const createPatch = def('createPatch :: () -> Patch', () => ({
+  '@@type': 'xod-project/Patch',
+  nodes: {},
+  links: {},
+  comments: {},
+  path: getLocalPath('untitled-patch'),
+  description: '',
+  attachments: [],
+}));
 
 /**
  * @function duplicatePatch
  * @param {Patch} patch
  * @returns {Patch} deeply cloned patch
  */
-export const duplicatePatch = def(
-  'duplicatePatch :: Patch -> Patch',
-  R.clone
-);
+export const duplicatePatch = def('duplicatePatch :: Patch -> Patch', R.clone);
 
 /**
  * @function getPatchPath
@@ -87,10 +92,7 @@ export const getPatchPath = def(
  */
 export const setPatchPath = def(
   'setPatchPath :: PatchPath -> Patch -> Patch',
-  R.useWith(
-    R.assoc('path'),
-    [String, R.identity]
-  )
+  R.useWith(R.assoc('path'), [String, R.identity])
 );
 
 export const getPatchDescription = def(
@@ -145,24 +147,21 @@ export const getImpl = def(
  */
 export const hasImpl = def(
   'hasImpl :: Patch -> Boolean',
-  R.compose(
-    Maybe.isJust,
-    getImpl
-  )
+  R.compose(Maybe.isJust, getImpl)
 );
 
 export const setImpl = def(
   'setImpl :: Source -> Patch -> Patch',
-  (source, patch) => R.over(
-    R.lensProp('attachments'),
-    R.compose(
-      R.append(Attachment.createImplAttachment(source)),
-      R.reject(Attachment.isImplAttachment),
-    ),
-    patch
-  )
+  (source, patch) =>
+    R.over(
+      R.lensProp('attachments'),
+      R.compose(
+        R.append(Attachment.createImplAttachment(source)),
+        R.reject(Attachment.isImplAttachment)
+      ),
+      patch
+    )
 );
-
 
 // =============================================================================
 //
@@ -178,12 +177,10 @@ export const setImpl = def(
  * @param {NodeOrId} node
  * @returns {boolean}
  */
-export const nodeIdEquals = def( // TODO: it's unused
+export const nodeIdEquals = def(
+  // TODO: it's unused
   'nodeIdEquals :: NodeId -> NodeOrId -> Boolean',
-  (id, node) => R.compose(
-    R.equals(id),
-    Node.getNodeId
-  )(node)
+  (id, node) => R.compose(R.equals(id), Node.getNodeId)(node)
 );
 
 /**
@@ -193,10 +190,7 @@ export const nodeIdEquals = def( // TODO: it's unused
  */
 export const listNodes = def(
   'listNodes :: Patch -> [Node]',
-  R.compose(
-    R.values,
-    R.prop('nodes')
-  )
+  R.compose(R.values, R.prop('nodes'))
 );
 
 /**
@@ -209,14 +203,8 @@ export const listLibraryNamesUsedInPatch = def(
   'listLibraryNamesUsedInPatch :: Patch -> [LibName]',
   R.compose(
     R.uniq,
-    R.reject(R.either(
-      isBuiltInLibName,
-      isLocalMarker
-    )),
-    R.map(R.compose(
-      getLibraryName,
-      Node.getNodeType
-    )),
+    R.reject(R.either(isBuiltInLibName, isLocalMarker)),
+    R.map(R.compose(getLibraryName, Node.getNodeType)),
     listNodes
   )
 );
@@ -229,10 +217,7 @@ export const listLibraryNamesUsedInPatch = def(
  */
 export const getNodeById = def(
   'getNodeById :: NodeId -> Patch -> Maybe Node',
-  (id, patch) => R.compose(
-    Maybe,
-    R.path(['nodes', id])
-  )(patch)
+  (id, patch) => R.compose(Maybe, R.path(['nodes', id]))(patch)
 );
 
 /**
@@ -244,10 +229,14 @@ export const getNodeById = def(
  */
 export const getNodeByIdUnsafe = def(
   'getNodeByIdUnsafe :: NodeId -> Patch -> Node',
-  (nodeId, patch) => explodeMaybe(
-    Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, { nodeId, patchPath: getPatchPath(patch) }),
-    getNodeById(nodeId, patch)
-  )
+  (nodeId, patch) =>
+    explodeMaybe(
+      Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, {
+        nodeId,
+        patchPath: getPatchPath(patch),
+      }),
+      getNodeById(nodeId, patch)
+    )
 );
 
 // =============================================================================
@@ -256,13 +245,13 @@ export const getNodeByIdUnsafe = def(
 //
 // =============================================================================
 
-const getHardcodedPinsForPatch =
-  R.pipe(getPatchPath, getHardcodedPinsForPatchPath);
+const getHardcodedPinsForPatch = R.pipe(
+  getPatchPath,
+  getHardcodedPinsForPatchPath
+);
 
 // not isPathBuiltIn, because it does not cover internal patches
-const patchHasHardcodedPins =
-  R.pipe(getHardcodedPinsForPatch, notNil);
-
+const patchHasHardcodedPins = R.pipe(getHardcodedPinsForPatch, notNil);
 
 /**
  * Tells if a given patch is an 'effect patch'.
@@ -279,11 +268,7 @@ export const isEffectPatch = def(
     // where a full pins list is not available yet
     R.ifElse(
       patchHasHardcodedPins,
-      R.compose(
-        R.map(Pin.getPinType),
-        R.values,
-        getHardcodedPinsForPatch
-      ),
+      R.compose(R.map(Pin.getPinType), R.values, getHardcodedPinsForPatch),
       R.compose(
         R.map(Node.getPinNodeDataType),
         R.filter(Node.isPinNode),
@@ -306,7 +291,8 @@ export const isFunctionalPatch = R.complement(isEffectPatch);
 export const canBindToOutputs = def(
   'canBindToOutputs :: Patch -> Boolean',
   R.either(
-    R.compose( // it's one of 'allowed' types
+    R.compose(
+      // it's one of 'allowed' types
       R.anyPass([
         isTerminalPatchPath,
         isAmong(R.values(CONST.CONST_NODETYPES)),
@@ -325,9 +311,10 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   const direction = Node.getPinNodeDirection(node);
   const type = Node.getPinNodeDataType(node);
 
-  const isBindable = direction === CONST.PIN_DIRECTION.INPUT
-    ? true // inputs are always bindable
-    : (canBindToOutputs(patch) && type !== CONST.PIN_TYPE.PULSE);
+  const isBindable =
+    direction === CONST.PIN_DIRECTION.INPUT
+      ? true // inputs are always bindable
+      : canBindToOutputs(patch) && type !== CONST.PIN_TYPE.PULSE;
   const defaultValue = Node.getBoundValue(
     getPinKeyForTerminalDirection(direction),
     node
@@ -345,12 +332,8 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   );
 });
 
-
 // :: Patch -> String
-const pinsMemoizer = R.compose(
-  JSON.stringify.bind(JSON),
-  listNodes
-);
+const pinsMemoizer = R.compose(JSON.stringify.bind(JSON), listNodes);
 
 // :: Patch -> StrMap Pins
 const computePins = R.memoizeWith(pinsMemoizer, patch =>
@@ -360,9 +343,7 @@ const computePins = R.memoizeWith(pinsMemoizer, patch =>
     R.values,
     R.map(
       R.compose(
-        R.addIndex(R.map)(
-          createPinFromTerminalNode(patch)
-        ),
+        R.addIndex(R.map)(createPinFromTerminalNode(patch)),
         R.sortWith([
           compareNodesPositionAxis('x'),
           compareNodesPositionAxis('y'),
@@ -391,10 +372,7 @@ const getPins = R.ifElse(
  */
 export const getPinByKey = def(
   'getPinByKey :: PinKey -> Patch -> Maybe Pin',
-  (key, patch) => R.compose(
-    Tools.prop(key),
-    getPins
-  )(patch)
+  (key, patch) => R.compose(Tools.prop(key), getPins)(patch)
 );
 
 /**
@@ -406,10 +384,14 @@ export const getPinByKey = def(
  */
 export const getPinByKeyUnsafe = def(
   'getPinByKey :: PinKey -> Patch -> Pin',
-  (pinKey, patch) => explodeMaybe(
-    Utils.formatString(CONST.ERROR.PIN_NOT_FOUND, { pinKey, patchPath: getPatchPath(patch) }),
-    getPinByKey(pinKey, patch)
-  )
+  (pinKey, patch) =>
+    explodeMaybe(
+      Utils.formatString(CONST.ERROR.PIN_NOT_FOUND, {
+        pinKey,
+        patchPath: getPatchPath(patch),
+      }),
+      getPinByKey(pinKey, patch)
+    )
 );
 
 /**
@@ -419,10 +401,7 @@ export const getPinByKeyUnsafe = def(
  */
 export const listPins = def(
   'listPins :: Patch -> [Pin]',
-  R.compose(
-    R.values,
-    getPins
-  )
+  R.compose(R.values, getPins)
 );
 
 /**
@@ -432,10 +411,7 @@ export const listPins = def(
  */
 export const listInputPins = def(
   'listInputPins :: Patch -> [Pin]',
-  R.compose(
-    R.filter(Pin.isInputPin),
-    listPins
-  )
+  R.compose(R.filter(Pin.isInputPin), listPins)
 );
 
 /**
@@ -445,10 +421,7 @@ export const listInputPins = def(
  */
 export const listOutputPins = def(
   'listOutputPins :: Patch -> [Pin]',
-  R.compose(
-    R.filter(Pin.isOutputPin),
-    listPins
-  )
+  R.compose(R.filter(Pin.isOutputPin), listPins)
 );
 
 /**
@@ -459,10 +432,7 @@ export const listOutputPins = def(
  */
 export const isTerminalPatch = def(
   'isTerminalPatch :: Patch -> Boolean',
-  R.compose(
-    isTerminalPatchPath,
-    getPatchPath
-  )
+  R.compose(isTerminalPatchPath, getPatchPath)
 );
 
 // =============================================================================
@@ -478,10 +448,7 @@ export const isTerminalPatch = def(
  */
 export const listLinks = def(
   'listLinks :: Patch -> [Link]',
-  R.compose(
-    R.values,
-    R.prop('links')
-  )
+  R.compose(R.values, R.prop('links'))
 );
 
 /**
@@ -494,10 +461,7 @@ export const listLinks = def(
  */
 export const linkIdEquals = def(
   'linkIdEquals :: LinkId -> LinkOrId -> Boolean',
-  (id, link) => R.compose(
-    R.equals(id),
-    Link.getLinkId
-  )(link)
+  (id, link) => R.compose(R.equals(id), Link.getLinkId)(link)
 );
 
 /**
@@ -508,18 +472,19 @@ export const linkIdEquals = def(
  */
 export const getLinkById = def(
   'getLinkById :: LinkId -> Patch -> Maybe Link',
-  (id, patch) => R.compose(
-    Tools.find(linkIdEquals(id)),
-    listLinks
-  )(patch)
+  (id, patch) => R.compose(Tools.find(linkIdEquals(id)), listLinks)(patch)
 );
 
 export const getLinkByIdUnsafe = def(
   'getLinkByIdUnsafe :: LinkId -> Patch -> Link',
-  (linkId, patch) => explodeMaybe(
-    Utils.formatString(CONST.ERROR.LINK_NOT_FOUND, { linkId, patchPath: getPatchPath(patch) }),
-    getLinkById(linkId, patch)
-  )
+  (linkId, patch) =>
+    explodeMaybe(
+      Utils.formatString(CONST.ERROR.LINK_NOT_FOUND, {
+        linkId,
+        patchPath: getPatchPath(patch),
+      }),
+      getLinkById(linkId, patch)
+    )
 );
 
 /**
@@ -593,16 +558,21 @@ export const listLinksByPin = def(
  */
 export const validateLink = def(
   'validateLink :: Link -> Patch -> Either Error Link',
-  (link, patch) => Either.of(link)
-    .chain(() => Tools.errOnNothing(
-        CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
-        getNodeById(Link.getLinkInputNodeId(link), patch)
-    ))
-    .chain(() => Tools.errOnNothing(
-        CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND,
-        getNodeById(Link.getLinkOutputNodeId(link), patch)
-    ))
-    .map(R.always(link))
+  (link, patch) =>
+    Either.of(link)
+      .chain(() =>
+        Tools.errOnNothing(
+          CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
+          getNodeById(Link.getLinkInputNodeId(link), patch)
+        )
+      )
+      .chain(() =>
+        Tools.errOnNothing(
+          CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND,
+          getNodeById(Link.getLinkOutputNodeId(link), patch)
+        )
+      )
+      .map(R.always(link))
 );
 
 /**
@@ -618,12 +588,11 @@ export const validateLink = def(
  */
 export const assocLink = def(
   'assocLink :: Link -> Patch -> Either Error Patch',
-  (link, patch) => validateLink(link, patch).map(
-    (validLink) => {
+  (link, patch) =>
+    validateLink(link, patch).map(validLink => {
       const id = Link.getLinkId(validLink);
       return R.assocPath(['links', id], validLink, patch);
-    }
-  )
+    })
 );
 
 /**
@@ -676,8 +645,7 @@ export const omitLinks = def(
  */
 export const assocNode = def(
   'assocNode :: Node -> Patch -> Patch', // TODO: inconsistency with Project.assocPatch
-  (node, patch) =>
-    R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
+  (node, patch) => R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
 );
 
 /**
@@ -699,15 +667,10 @@ export const dissocNode = def(
     const id = Node.getNodeId(nodeOrId);
     const links = listLinksByNode(id, patch);
 
-    const removeLinks = R.reduce(
-      R.flip(dissocLink)
-    );
+    const removeLinks = R.reduce(R.flip(dissocLink));
     const removeNode = R.dissocPath(['nodes', id]);
 
-    return R.compose(
-      removeNode,
-      removeLinks
-    )(patch, links);
+    return R.compose(removeNode, removeLinks)(patch, links);
   }
 );
 
@@ -727,29 +690,24 @@ export const upsertNodes = def(
 
 export const listComments = def(
   'listComments :: Patch -> [Comment]',
-  R.compose(
-    R.values,
-    R.prop('comments')
-  )
+  R.compose(R.values, R.prop('comments'))
 );
 
 export const getCommentById = def(
   'getCommentById :: CommentId -> Patch -> Maybe Comment',
-  (commentId, patch) => R.compose(
-    Maybe,
-    R.path(['comments', commentId])
-  )(patch)
+  (commentId, patch) => R.compose(Maybe, R.path(['comments', commentId]))(patch)
 );
 
 export const getCommentByIdUnsafe = def(
   'getCommentByIdUnsafe :: CommentId -> Patch -> Comment',
-  (commentId, patch) => explodeMaybe(
-    Utils.formatString(
-      CONST.ERROR.COMMENT_NOT_FOUND,
-      { commentId, patchPath: getPatchPath(patch) }
-    ),
-    getCommentById(commentId, patch)
-  )
+  (commentId, patch) =>
+    explodeMaybe(
+      Utils.formatString(CONST.ERROR.COMMENT_NOT_FOUND, {
+        commentId,
+        patchPath: getPatchPath(patch),
+      }),
+      getCommentById(commentId, patch)
+    )
 );
 
 // TODO: inconsistency with Project.assocPatch, see also `assocNode`
@@ -761,8 +719,7 @@ export const assocComment = def(
 
 export const dissocComment = def(
   'dissocComment :: CommentId -> Patch -> Patch',
-  (commentId, patch) =>
-    R.dissocPath(['comments', commentId], patch)
+  (commentId, patch) => R.dissocPath(['comments', commentId], patch)
 );
 
 export const upsertComments = def(
@@ -779,10 +736,8 @@ export const upsertComments = def(
 const listLinksNotFromDeferNodes = def(
   'listLinksNotFromDeferNodes :: Patch -> [Link]',
   R.converge(
-    (deferNodeIds, links) => R.reject(
-      R.pipe(Link.getLinkOutputNodeId, isAmong(deferNodeIds)),
-      links
-    ),
+    (deferNodeIds, links) =>
+      R.reject(R.pipe(Link.getLinkOutputNodeId, isAmong(deferNodeIds)), links),
     [
       R.compose(
         R.map(Node.getNodeId),
@@ -796,19 +751,10 @@ const listLinksNotFromDeferNodes = def(
 
 const toposortGraph = def(
   'toposortGraph :: Patch -> Either Error [NodeId]',
-  R.converge(
-    sortGraph,
-    [
-      R.compose(
-        R.map(Node.getNodeId),
-        listNodes
-      ),
-      R.compose(
-        R.map(Link.getLinkNodeIds),
-        listLinksNotFromDeferNodes
-      ),
-    ]
-  )
+  R.converge(sortGraph, [
+    R.compose(R.map(Node.getNodeId), listNodes),
+    R.compose(R.map(Link.getLinkNodeIds), listLinksNotFromDeferNodes),
+  ])
 );
 
 /**
@@ -822,14 +768,17 @@ const toposortGraph = def(
  */
 const sendDeferNodesToBottom = def(
   'sendDeferNodesToBottom :: Patch -> [NodeId] -> [NodeId]',
-  (patch, toposortedNodeIds) => R.compose(
-    R.unnest,
-    R.partition(R.compose(
-      R.complement(isDeferNodeType),
-      Node.getNodeType,
-      R.flip(getNodeByIdUnsafe)(patch)
-    ))
-  )(toposortedNodeIds)
+  (patch, toposortedNodeIds) =>
+    R.compose(
+      R.unnest,
+      R.partition(
+        R.compose(
+          R.complement(isDeferNodeType),
+          Node.getNodeType,
+          R.flip(getNodeByIdUnsafe)(patch)
+        )
+      )
+    )(toposortedNodeIds)
 );
 
 /**
@@ -842,10 +791,7 @@ const sendDeferNodesToBottom = def(
  */
 export const getTopology = def(
   'getTopology :: Patch -> Either Error [NodeId]',
-  patch => R.compose(
-    R.map(sendDeferNodesToBottom(patch)),
-    toposortGraph
-  )(patch)
+  patch => R.compose(R.map(sendDeferNodesToBottom(patch)), toposortGraph)(patch)
 );
 
 /**
@@ -854,10 +800,7 @@ export const getTopology = def(
 export const getTopologyMap = def(
   'getTopologyMap :: Patch -> Either Error (Map NodeId String)',
   R.compose(
-    R.map(R.compose(
-      R.fromPairs,
-      mapIndexed((x, idx) => [x, idx.toString()])
-    )),
+    R.map(R.compose(R.fromPairs, mapIndexed((x, idx) => [x, idx.toString()]))),
     getTopology
   )
 );
@@ -870,9 +813,15 @@ export const applyNodeIdMap = def(
   'applyNodeIdMap :: Patch -> Map NodeId String -> Patch',
   (patch, nodeIdsMap) => {
     const nodes = listNodes(patch);
-    const newNodes = R.indexBy(Node.getNodeId, Utils.resolveNodeIds(nodeIdsMap, nodes));
+    const newNodes = R.indexBy(
+      Node.getNodeId,
+      Utils.resolveNodeIds(nodeIdsMap, nodes)
+    );
     const links = listLinks(patch);
-    const newLinks = R.indexBy(Link.getLinkId, Utils.resolveLinkNodeIds(nodeIdsMap, links));
+    const newLinks = R.indexBy(
+      Link.getLinkId,
+      Utils.resolveLinkNodeIds(nodeIdsMap, links)
+    );
 
     return R.compose(
       R.assoc('nodes', newNodes),
@@ -890,10 +839,7 @@ export const applyNodeIdMap = def(
  */
 export const toposortNodes = def(
   'toposortNodes :: Patch -> Either Error Patch',
-  patch => R.compose(
-    R.map(applyNodeIdMap(patch)),
-    getTopologyMap
-  )(patch)
+  patch => R.compose(R.map(applyNodeIdMap(patch)), getTopologyMap)(patch)
 );
 
 /**
@@ -903,19 +849,12 @@ export const toposortNodes = def(
  */
 export const removeDebugNodes = def(
   'removeDebugNodes :: Patch -> Patch',
-  patch => R.compose(
-    R.reduce(
-      (acc, node) => dissocNode(node, acc),
-      patch
-    ),
-    R.filter(
-      R.compose(
-        isAmong(CONST.DEBUG_NODETYPES),
-        Node.getNodeType
-      )
-    ),
-    listNodes,
-  )(patch)
+  patch =>
+    R.compose(
+      R.reduce((acc, node) => dissocNode(node, acc), patch),
+      R.filter(R.compose(isAmong(CONST.DEBUG_NODETYPES), Node.getNodeType)),
+      listNodes
+    )(patch)
 );
 
 /**
@@ -924,26 +863,22 @@ export const removeDebugNodes = def(
  */
 export const getNondeadNodePins = def(
   'getNondeadNodePins :: Node -> Patch -> Map PinKey Pin',
-  (node, patch) => R.compose(
-    R.map(
-      pin => Pin.setPinValue(
-        Node.getBoundValueOrDefault(pin, node),
-        pin
-      )
-    ),
-    patchPins => R.compose(
-      R.mergeWith(R.merge, R.__, patchPins),
-      R.map(R.compose(
-        R.objOf('normalizedLabel'),
-        Pin.getPinLabel
-      )),
+  (node, patch) =>
+    R.compose(
+      R.map(pin =>
+        Pin.setPinValue(Node.getBoundValueOrDefault(pin, node), pin)
+      ),
+      patchPins =>
+        R.compose(
+          R.mergeWith(R.merge, R.__, patchPins),
+          R.map(R.compose(R.objOf('normalizedLabel'), Pin.getPinLabel)),
+          R.indexBy(Pin.getPinKey),
+          Pin.normalizePinLabels,
+          R.values
+        )(patchPins),
       R.indexBy(Pin.getPinKey),
-      Pin.normalizePinLabels,
-      R.values
-    )(patchPins),
-    R.indexBy(Pin.getPinKey),
-    listPins
-  )(patch)
+      listPins
+    )(patch)
 );
 
 /**
@@ -958,24 +893,28 @@ export const getDeadNodePins = def(
       R.indexBy(Pin.getPinKey),
       R.flatten,
       R.values,
-      R.mapObjIndexed(
-        (links, direction) => R.compose(
-          mapIndexed(
-            (pinKey, idx) => Pin.createDeadPin(pinKey, direction, idx)
+      R.mapObjIndexed((links, direction) =>
+        R.compose(
+          mapIndexed((pinKey, idx) =>
+            Pin.createDeadPin(pinKey, direction, idx)
           ),
           R.keys,
-          R.groupBy(R.ifElse(
-            () => (direction === CONST.PIN_DIRECTION.INPUT),
-            Link.getLinkInputPinKey,
-            Link.getLinkOutputPinKey
-          ))
+          R.groupBy(
+            R.ifElse(
+              () => direction === CONST.PIN_DIRECTION.INPUT,
+              Link.getLinkInputPinKey,
+              Link.getLinkOutputPinKey
+            )
+          )
         )(links)
       ),
-      R.groupBy(R.ifElse(
-        Link.isLinkInputNodeIdEquals(nodeId),
-        R.always(CONST.PIN_DIRECTION.INPUT),
-        R.always(CONST.PIN_DIRECTION.OUTPUT),
-      )),
+      R.groupBy(
+        R.ifElse(
+          Link.isLinkInputNodeIdEquals(nodeId),
+          R.always(CONST.PIN_DIRECTION.INPUT),
+          R.always(CONST.PIN_DIRECTION.OUTPUT)
+        )
+      ),
       listLinksByNode(node)
     )(currentPatch);
   }
@@ -1003,7 +942,7 @@ export const upsertDeadPins = def(
     const rejectNondeadLinks = R.reject(
       R.either(
         R.compose(isAmong(pinKeys), Link.getLinkInputPinKey),
-        R.compose(isAmong(pinKeys), Link.getLinkOutputPinKey),
+        R.compose(isAmong(pinKeys), Link.getLinkOutputPinKey)
       )
     );
 
@@ -1016,10 +955,10 @@ export const upsertDeadPins = def(
           R.map(R.apply(Pin.createDeadPin)),
           R.unnest,
           R.values,
-          R.mapObjIndexed(
-            (group, direction) => mapIndexed(
+          R.mapObjIndexed((group, direction) =>
+            mapIndexed(
               // Adds a correct order as a third element of each Array
-              (data, idx) => R.append((idx + pinsByDir[direction].length), data),
+              (data, idx) => R.append(idx + pinsByDir[direction].length, data),
               group
             )
           ),
@@ -1027,8 +966,14 @@ export const upsertDeadPins = def(
           R.map(
             R.ifElse(
               Link.isLinkInputNodeIdEquals(nodeId),
-              link => ([Link.getLinkInputPinKey(link), CONST.PIN_DIRECTION.INPUT]),
-              link => ([Link.getLinkOutputPinKey(link), CONST.PIN_DIRECTION.OUTPUT]),
+              link => [
+                Link.getLinkInputPinKey(link),
+                CONST.PIN_DIRECTION.INPUT,
+              ],
+              link => [
+                Link.getLinkOutputPinKey(link),
+                CONST.PIN_DIRECTION.OUTPUT,
+              ]
             )
           )
         )
@@ -1048,16 +993,19 @@ export const upsertDeadPins = def(
  * This function is used in loading of libraries.
  */
 // :: Patch -> Patch
-export const resolveNodeTypesInPatch = patch => R.compose(
-  R.reduce(R.flip(assocNode), patch),
-  R.map(node => R.compose(
-    Node.setNodeType(R.__, node),
-    resolvePatchPath(R.__, getPatchPath(patch)),
-    Node.getNodeType
-  )(node)),
-  R.filter(Node.isLocalNode),
-  listNodes
-)(patch);
+export const resolveNodeTypesInPatch = patch =>
+  R.compose(
+    R.reduce(R.flip(assocNode), patch),
+    R.map(node =>
+      R.compose(
+        Node.setNodeType(R.__, node),
+        resolvePatchPath(R.__, getPatchPath(patch)),
+        Node.getNodeType
+      )(node)
+    ),
+    R.filter(Node.isLocalNode),
+    listNodes
+  )(patch);
 
 // =============================================================================
 //
@@ -1070,12 +1018,7 @@ export const resolveNodeTypesInPatch = patch => R.compose(
  */
 const findVariadicPatchPath = def(
   'findVariadicPatchPath :: Patch -> Maybe PatchPath',
-  R.compose(
-    Maybe,
-    R.find(isVariadicPath),
-    R.map(Node.getNodeType),
-    listNodes
-  )
+  R.compose(Maybe, R.find(isVariadicPath), R.map(Node.getNodeType), listNodes)
 );
 
 /**
@@ -1083,10 +1026,7 @@ const findVariadicPatchPath = def(
  */
 export const isVariadicPatch = def(
   'isVariadicPatch :: Patch -> Boolean',
-  R.compose(
-    Maybe.isJust,
-    findVariadicPatchPath
-  )
+  R.compose(Maybe.isJust, findVariadicPatchPath)
 );
 
 /**
@@ -1097,10 +1037,7 @@ export const isVariadicPatch = def(
  */
 export const getArityStepFromPatch = def(
   'getArityStepFromPatch :: Patch -> Maybe ArityStep',
-  R.compose(
-    R.map(getArityStepFromPatchPath),
-    findVariadicPatchPath
-  )
+  R.compose(R.map(getArityStepFromPatchPath), findVariadicPatchPath)
 );
 
 /**
@@ -1122,7 +1059,7 @@ const checkArityMarkersAmount = def(
  */
 export const computeVariadicPins = def(
   'computeVariadicPins :: Patch -> Either Error Object',
-  (patch) => {
+  patch => {
     const patchPath = getPatchPath(patch);
 
     if (!isVariadicPatch(patch)) {
@@ -1150,7 +1087,9 @@ export const computeVariadicPins = def(
 
     if (inputsCount - arityStep < outputsCount) {
       const minInputs = R.add(outputsCount, arityStep);
-      return Either.Left(new Error(notEnoughVariadicInputs(arityStep, outputsCount, minInputs)));
+      return Either.Left(
+        new Error(notEnoughVariadicInputs(arityStep, outputsCount, minInputs))
+      );
     }
 
     const valPins = R.takeLast(arityStep, inputs);
@@ -1164,22 +1103,23 @@ export const computeVariadicPins = def(
       mapIndexed((accPin, idx) => {
         const curPinType = Pin.getPinType(accPin);
         const outPinType = Pin.getPinType(outputs[idx]);
-        return (curPinType === outPinType)
+        return curPinType === outPinType
           ? null
           : [Pin.getPinLabel(accPin), Pin.getPinLabel(outputs[idx])];
-      }),
+      })
     )(accPins);
 
     if (notEmpty(pinLabelsOfNonEqualPinTypes)) {
       const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
       const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
-      return Either.Left(new Error(wrongVariadicPinTypes(accPinLabels, outPinLabels)));
+      return Either.Left(
+        new Error(wrongVariadicPinTypes(accPinLabels, outPinLabels))
+      );
     }
 
-    const sharedPins = R.slice(
-      0,
-      R.negate(R.add(accPins.length, arityStep))
-    )(inputs);
+    const sharedPins = R.slice(0, R.negate(R.add(accPins.length, arityStep)))(
+      inputs
+    );
 
     return Either.of({
       acc: accPins,
@@ -1190,16 +1130,12 @@ export const computeVariadicPins = def(
   }
 );
 
-
 /**
  * Get list of variadic value pins of the Patch.
  */
 export const listVariadicValuePins = def(
   'listVariadicValuePins :: Patch -> Either Error [Pin]',
-  R.compose(
-    R.pluck('value'),
-    computeVariadicPins
-  )
+  R.compose(R.pluck('value'), computeVariadicPins)
 );
 
 /**
@@ -1210,10 +1146,7 @@ export const listVariadicValuePins = def(
  */
 export const listVariadicAccPins = def(
   'listVariadicAccPins :: Patch -> Either Error [Pin]',
-  R.compose(
-    R.pluck('acc'),
-    computeVariadicPins
-  )
+  R.compose(R.pluck('acc'), computeVariadicPins)
 );
 
 /**
@@ -1223,10 +1156,7 @@ export const listVariadicAccPins = def(
  */
 export const listVariadicSharedPins = def(
   'listVariadicSharedPins :: Patch -> Either Error [Pin]',
-  R.compose(
-    R.pluck('shared'),
-    computeVariadicPins
-  )
+  R.compose(R.pluck('shared'), computeVariadicPins)
 );
 
 /**
@@ -1237,14 +1167,12 @@ export const listVariadicSharedPins = def(
  */
 export const validatePatchForVariadics = def(
   'validatePatchForVariadics :: Patch -> Either Error Patch',
-  patch => R.ifElse(
-    isVariadicPatch,
-    R.compose(
-      R.map(R.always(patch)),
-      computeVariadicPins
-    ),
-    Either.of
-  )(patch)
+  patch =>
+    R.ifElse(
+      isVariadicPatch,
+      R.compose(R.map(R.always(patch)), computeVariadicPins),
+      Either.of
+    )(patch)
 );
 
 /**
@@ -1264,34 +1192,32 @@ export const addVariadicPins = def(
     const pinsToRepeat = explodeEither(variadicPins);
     const variadicCount = pinsToRepeat.length;
     const newPins = R.times(
-      idx => R.map(
-        originalPin => R.compose(
-          newPin => Pin.setPinValue(
-            Node.getBoundValueOrDefault(newPin, node),
-            newPin
-          ),
-          Pin.setPinLabel(
-            Pin.induceVariadicPinLabel(idx, Pin.getPinLabel(originalPin))
-          ),
-          Pin.setPinOrder(
-            Pin.getPinOrder(originalPin) + (variadicCount * (idx + 1))
-          ),
-          Pin.setPinKey(
-            Pin.addVariadicPinKeySuffix(
-              (idx + 1),
-              Pin.getPinKey(originalPin)
-            )
-          )
-        )(originalPin),
-        pinsToRepeat
-      ),
+      idx =>
+        R.map(
+          originalPin =>
+            R.compose(
+              newPin =>
+                Pin.setPinValue(
+                  Node.getBoundValueOrDefault(newPin, node),
+                  newPin
+                ),
+              Pin.setPinLabel(
+                Pin.induceVariadicPinLabel(idx, Pin.getPinLabel(originalPin))
+              ),
+              Pin.setPinOrder(
+                Pin.getPinOrder(originalPin) + variadicCount * (idx + 1)
+              ),
+              Pin.setPinKey(
+                Pin.addVariadicPinKeySuffix(idx + 1, Pin.getPinKey(originalPin))
+              )
+            )(originalPin),
+          pinsToRepeat
+        ),
       arityLevel - 1
     );
 
-    return R.compose(
-      R.merge(originalPins),
-      R.indexBy(Pin.getPinKey),
-      R.unnest
-    )(newPins);
+    return R.compose(R.merge(originalPins), R.indexBy(Pin.getPinKey), R.unnest)(
+      newPins
+    );
   }
 );

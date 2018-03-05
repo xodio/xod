@@ -7,15 +7,12 @@ import { resolvePath } from './utils';
 export const writeFile = curry((outputPath, data, encoding) => {
   const resolvedPath = resolvePath(outputPath);
 
-  const dataWithEol = unless(
-    test(/\n$/g),
-    concat(__, '\n')
-  )(data);
+  const dataWithEol = unless(test(/\n$/g), concat(__, '\n'))(data);
 
   return outputFile(resolvedPath, dataWithEol, encoding)
     .then(() => ({ path: resolvedPath, data }))
-    .catch(
-      err => Promise.reject(Object.assign(err, { path: resolvedPath, data }))
+    .catch(err =>
+      Promise.reject(Object.assign(err, { path: resolvedPath, data }))
     );
 });
 

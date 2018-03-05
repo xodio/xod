@@ -11,7 +11,6 @@ import { loadPanelSettings } from '../../editor/utils';
 import { setSidebarLayout } from '../../editor/actions';
 
 export default class Root extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -23,17 +22,11 @@ export default class Root extends React.Component {
   }
   componentDidMount() {
     // dispatch actions "on init"
-    this.store.dispatch(
-      setSidebarLayout(loadPanelSettings())
-    );
+    this.store.dispatch(setSidebarLayout(loadPanelSettings()));
   }
 
   render() {
-    return (
-      <Provider store={this.store}>
-        {this.props.children}
-      </Provider>
-    );
+    return <Provider store={this.store}>{this.props.children}</Provider>;
   }
 }
 

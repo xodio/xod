@@ -11,8 +11,8 @@ describe('welcome-to-xod', () => {
   const projectPath = 'welcome-to-xod';
 
   it('should load as a valid project', () =>
-    loadProjectWithLibs([workspace], path.resolve(workspace, projectPath))
-      .then(({ project, libs }) => {
+    loadProjectWithLibs([workspace], path.resolve(workspace, projectPath)).then(
+      ({ project, libs }) => {
         const packed = pack(project, libs);
         assert.isAtLeast(
           Object.keys(packed.patches).length,
@@ -22,6 +22,6 @@ describe('welcome-to-xod', () => {
 
         const eitherValidationResult = Project.validate(packed);
         assert.isTrue(eitherValidationResult.isRight);
-      })
-  );
+      }
+    ));
 });

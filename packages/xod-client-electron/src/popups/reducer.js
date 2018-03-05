@@ -20,7 +20,6 @@ import {
   SWITCH_WORKSPACE,
 } from '../settings/actionTypes';
 
-
 export default (state, action) => {
   switch (action.type) {
     case UPLOAD:

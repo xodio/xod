@@ -49,49 +49,55 @@ const createPatchNames = def(
 
 const findPatchByPath = def(
   'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',
-  (path, patches) => R.compose(
-    R.find(R.__, patches),
-    R.allPass,
-    R.map(R.apply(R.propEq)),
-    R.toPairs,
-    createPatchNames
-  )(path)
+  (path, patches) =>
+    R.compose(
+      R.find(R.__, patches),
+      R.allPass,
+      R.map(R.apply(R.propEq)),
+      R.toPairs,
+      createPatchNames
+    )(path)
 );
 
 const getLinksInputNodeIds = def(
   'getLinksInputNodeIds :: [Link] -> [TNodeId]',
-  R.compose(
-    R.uniq,
-    R.map(R.compose(
-      toInt,
-      Project.getLinkInputNodeId
-    ))
-  )
+  R.compose(R.uniq, R.map(R.compose(toInt, Project.getLinkInputNodeId)))
 );
 
 const getPatchByNodeId = def(
   'getPatchByNodeId :: Project -> PatchPath -> [TPatch] -> NodeId -> TPatch',
-  (project, entryPath, patches, nodeId) => R.compose(
-    findPatchByPath(R.__, patches),
-    Project.getNodeType,
-    Project.getNodeByIdUnsafe(nodeId),
-    Project.getPatchByPathUnsafe
-  )(entryPath, project)
+  (project, entryPath, patches, nodeId) =>
+    R.compose(
+      findPatchByPath(R.__, patches),
+      Project.getNodeType,
+      Project.getNodeByIdUnsafe(nodeId),
+      Project.getPatchByPathUnsafe
+    )(entryPath, project)
 );
 
 const toposortProject = def(
   'toposortProject :: PatchPath -> Project -> Either Error Object',
-  (path, project) => R.compose(
-    R.chain(nodeIdsMap => R.compose(
-      R.map(R.applySpec({
-        project: R.identity,
-        nodeIdsMap: R.always(nodeIdsMap),
-      })),
-      () => Project.updatePatch(path, Project.applyNodeIdMap(R.__, nodeIdsMap), project)
-    )(nodeIdsMap)),
-    Project.getTopologyMap,
-    Project.getPatchByPathUnsafe
-  )(path, project)
+  (path, project) =>
+    R.compose(
+      R.chain(nodeIdsMap =>
+        R.compose(
+          R.map(
+            R.applySpec({
+              project: R.identity,
+              nodeIdsMap: R.always(nodeIdsMap),
+            })
+          ),
+          () =>
+            Project.updatePatch(
+              path,
+              Project.applyNodeIdMap(R.__, nodeIdsMap),
+              project
+            )
+        )(nodeIdsMap)
+      ),
+      Project.getTopologyMap,
+      Project.getPatchByPathUnsafe
+    )(path, project)
 );
 
 //-----------------------------------------------------------------------------
@@ -102,94 +108,92 @@ const toposortProject = def(
 
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
-  (entryPath, project) => R.compose(
-    R.values,
-    R.mapObjIndexed((patch, path) => {
-      const names = createPatchNames(path);
-      const impl = explodeMaybe(
-        `Implementation for ${path} not found`,
-        Project.getImpl(patch)
-      );
+  (entryPath, project) =>
+    R.compose(
+      R.values,
+      R.mapObjIndexed((patch, path) => {
+        const names = createPatchNames(path);
+        const impl = explodeMaybe(
+          `Implementation for ${path} not found`,
+          Project.getImpl(patch)
+        );
 
-      const isDirtyable = pin =>
-        Project.getPinType(pin) === Project.PIN_TYPE.PULSE
-        || isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
+        const isDirtyable = pin =>
+          Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
+          isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
 
-      const outputs = R.compose(
-        R.map(R.applySpec({
-          type: Project.getPinType,
-          pinKey: Project.getPinLabel,
-          value: R.compose(
-            Project.defaultValueOfType,
-            Project.getPinType
+        const outputs = R.compose(
+          R.map(
+            R.applySpec({
+              type: Project.getPinType,
+              pinKey: Project.getPinLabel,
+              value: R.compose(Project.defaultValueOfType, Project.getPinType),
+              isDirtyable,
+              isDirtyOnBoot: R.compose(
+                R.not,
+                R.equals(Project.PIN_TYPE.PULSE),
+                Project.getPinType
+              ),
+            })
           ),
-          isDirtyable,
-          isDirtyOnBoot: R.compose(
-            R.not,
-            R.equals(Project.PIN_TYPE.PULSE),
-            Project.getPinType
+          Project.normalizePinLabels,
+          Project.listOutputPins
+        )(patch);
+
+        const inputs = R.compose(
+          R.map(
+            R.applySpec({
+              type: Project.getPinType,
+              pinKey: Project.getPinLabel,
+              isDirtyable,
+            })
           ),
-        })),
-        Project.normalizePinLabels,
-        Project.listOutputPins
-      )(patch);
+          Project.normalizePinLabels,
+          Project.listInputPins
+        )(patch);
 
-      const inputs = R.compose(
-        R.map(R.applySpec({
-          type: Project.getPinType,
-          pinKey: Project.getPinLabel,
-          isDirtyable,
-        })),
-        Project.normalizePinLabels,
-        Project.listInputPins
-      )(patch);
+        const isThisIsThat = {
+          isDefer: Project.isDeferNodeType(path),
+          isConstant: Project.isConstantNodeType(path),
+          usesTimeouts: areTimeoutsEnabled(impl),
+          usesNodeId: isNodeIdEnabled(impl),
+        };
 
-      const isThisIsThat = {
-        isDefer: Project.isDeferNodeType(path),
-        isConstant: Project.isConstantNodeType(path),
-        usesTimeouts: areTimeoutsEnabled(impl),
-        usesNodeId: isNodeIdEnabled(impl),
-      };
-
-      return R.mergeAll([
-        names,
-        isThisIsThat,
-        {
-          outputs,
-          inputs,
-          impl,
-        },
-      ]);
-    }),
-    R.omit([entryPath]),
-    R.indexBy(Project.getPatchPath),
-    Project.listPatchesWithoutBuiltIns
-  )(project)
+        return R.mergeAll([
+          names,
+          isThisIsThat,
+          {
+            outputs,
+            inputs,
+            impl,
+          },
+        ]);
+      }),
+      R.omit([entryPath]),
+      R.indexBy(Project.getPatchPath),
+      Project.listPatchesWithoutBuiltIns
+    )(project)
 );
 
 const getPinLabelsMap = def(
   'getPinLabelsMap :: [Pin] -> Map PinKey PinLabel',
-  R.compose(
-    R.map(Project.getPinLabel),
-    R.indexBy(Project.getPinKey)
-  )
+  R.compose(R.map(Project.getPinLabel), R.indexBy(Project.getPinKey))
 );
 
 const getNodePinsUnsafe = def(
   'getNodePinsUnsafe :: Node -> Project -> [Pin]',
-  (node, project) => R.compose(
-    explodeMaybe(`Can’t get node pins of node ${node}. Referred type missing?`),
-    Project.getNodePins
-  )(node, project)
+  (node, project) =>
+    R.compose(
+      explodeMaybe(
+        `Can’t get node pins of node ${node}. Referred type missing?`
+      ),
+      Project.getNodePins
+    )(node, project)
 );
 
 const getNodePinLabels = def(
   'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
-  R.compose(
-    getPinLabelsMap,
-    Project.normalizePinLabels,
-    getNodePinsUnsafe
-  )
+  R.compose(getPinLabelsMap, Project.normalizePinLabels, getNodePinsUnsafe)
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values
@@ -199,15 +203,13 @@ const getNodePinLabels = def(
  */
 const getDefaultPinValue = def(
   'getDefaultPinValue :: PinKey -> Node -> Project -> DataValue',
-  (pinKey, node, project) => R.compose(
-    explodeMaybe(`Can’t find pin with key ${pinKey} for node ${node}"`),
-    R.map(R.compose(
-      Project.defaultValueOfType,
-      Project.getPinType
-    )),
-    R.chain(Project.getPinByKey(pinKey)),
-    Project.getPatchByNode(R.__, project)
-  )(node)
+  (pinKey, node, project) =>
+    R.compose(
+      explodeMaybe(`Can’t find pin with key ${pinKey} for node ${node}"`),
+      R.map(R.compose(Project.defaultValueOfType, Project.getPinType)),
+      R.chain(Project.getPinByKey(pinKey)),
+      Project.getPatchByNode(R.__, project)
+    )(node)
 );
 
 const getTNodeOutputs = def(
@@ -221,8 +223,9 @@ const getTNodeOutputs = def(
       R.mapObjIndexed((links, pinKey) => ({
         to: getLinksInputNodeIds(links),
         pinKey: nodePins[pinKey],
-        value: Project.getBoundValue(pinKey, node)
-          .getOrElse(getDefaultPinValue(pinKey, node, project)),
+        value: Project.getBoundValue(pinKey, node).getOrElse(
+          getDefaultPinValue(pinKey, node, project)
+        ),
       })),
       R.groupBy(Project.getLinkOutputPinKey),
       R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
@@ -237,13 +240,12 @@ const getOutputPinLabelByLink = def(
   (project, patch, link) => {
     const pinKey = Project.getLinkOutputPinKey(link);
     return R.compose(
-      explodeMaybe(`Can’t find pin with key ${pinKey} for link ${link} on patch ${patch}`),
-      R.map(R.compose(
-        Project.getPinLabel,
-        R.head,
-        Project.normalizePinLabels,
-        R.of
-      )),
+      explodeMaybe(
+        `Can’t find pin with key ${pinKey} for link ${link} on patch ${patch}`
+      ),
+      R.map(
+        R.compose(Project.getPinLabel, R.head, Project.normalizePinLabels, R.of)
+      ),
       R.chain(Project.getPinByKey(pinKey)),
       R.chain(Project.getPatchByNode(R.__, project)),
       Project.getNodeById(R.__, patch),
@@ -279,7 +281,10 @@ const getTNodeInputs = def(
       fromNodeId: R.compose(toInt, Project.getLinkOutputNodeId),
       fromPatch: getUpstreamNodePatch,
       fromPinKey: getUpstreamPinLabel,
-      fromOutput: R.converge(getTPatchOutputByLabel, [getUpstreamPinLabel, getUpstreamNodePatch]),
+      fromOutput: R.converge(getTPatchOutputByLabel, [
+        getUpstreamPinLabel,
+        getUpstreamNodePatch,
+      ]),
     });
 
     return R.compose(
@@ -292,18 +297,24 @@ const getTNodeInputs = def(
 
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Map NodeId String -> Project -> [TNode]',
-  (entryPath, patches, nodeIdsMap, project) => R.compose(
-    R.sortBy(R.prop('id')),
-    R.map(R.applySpec({
-      id: R.compose(toInt, Project.getNodeId),
-      originalId: R.compose(reverseLookup(R.__, nodeIdsMap), Project.getNodeId),
-      patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
-      outputs: getTNodeOutputs(project, entryPath),
-      inputs: getTNodeInputs(project, entryPath, patches),
-    })),
-    Project.listNodes,
-    Project.getPatchByPathUnsafe
-  )(entryPath, project)
+  (entryPath, patches, nodeIdsMap, project) =>
+    R.compose(
+      R.sortBy(R.prop('id')),
+      R.map(
+        R.applySpec({
+          id: R.compose(toInt, Project.getNodeId),
+          originalId: R.compose(
+            reverseLookup(R.__, nodeIdsMap),
+            Project.getNodeId
+          ),
+          patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
+          outputs: getTNodeOutputs(project, entryPath),
+          inputs: getTNodeInputs(project, entryPath, patches),
+        })
+      ),
+      Project.listNodes,
+      Project.getPatchByPathUnsafe
+    )(entryPath, project)
 );
 
 /**
@@ -313,45 +324,52 @@ const createTNodes = def(
  */
 const transformProjectWithImpls = def(
   'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
-  (project, path, opts) => R.compose(
-    Project.wrapDeadRefErrorMessage(path),
-    R.chain((tProject) => {
-      const nodeWithTooManyOutputs = R.find(
-        R.pipe(R.prop('outputs'), R.length, R.lt(7)),
-        tProject.patches
-      );
+  (project, path, opts) =>
+    R.compose(
+      Project.wrapDeadRefErrorMessage(path),
+      R.chain(tProject => {
+        const nodeWithTooManyOutputs = R.find(
+          R.pipe(R.prop('outputs'), R.length, R.lt(7)),
+          tProject.patches
+        );
 
-      if (nodeWithTooManyOutputs) {
-        const { owner, libName, patchName } = nodeWithTooManyOutputs;
-        return Either.Left(new Error(`Native node ${owner}/${libName}/${patchName} has more than 7 outputs`));
-      }
+        if (nodeWithTooManyOutputs) {
+          const { owner, libName, patchName } = nodeWithTooManyOutputs;
+          return Either.Left(
+            new Error(
+              `Native node ${owner}/${libName}/${patchName} has more than 7 outputs`
+            )
+          );
+        }
 
-      return Either.of(tProject);
-    }),
-    R.map(({ project: proj, nodeIdsMap }) => {
-      const patches = createTPatches(path, proj);
+        return Either.of(tProject);
+      }),
+      R.map(({ project: proj, nodeIdsMap }) => {
+        const patches = createTPatches(path, proj);
 
-      return R.merge(
-        {
-          config: { XOD_DEBUG: opts.debug },
-        },
-        R.applySpec({
-          patches: R.always(patches),
-          nodes: createTNodes(path, patches, nodeIdsMap),
-        })(proj)
-      );
-    }),
-    R.chain(R.compose(
-      toposortProject(path),
-      Project.extractBoundInputsToConstNodes(R.__, path, project),
-    )),
-    R.chain(Project.flatten(R.__, path)),
-    R.unless(
-      () => opts.debug,
-      R.chain(Project.updatePatch(path, Project.removeDebugNodes))
-    ),
-    Project.validateProject
-  )(project)
+        return R.merge(
+          {
+            config: { XOD_DEBUG: opts.debug },
+          },
+          R.applySpec({
+            patches: R.always(patches),
+            nodes: createTNodes(path, patches, nodeIdsMap),
+          })(proj)
+        );
+      }),
+      R.chain(
+        R.compose(
+          toposortProject(path),
+          Project.extractBoundInputsToConstNodes(R.__, path, project)
+        )
+      ),
+      R.chain(Project.flatten(R.__, path)),
+      R.unless(
+        () => opts.debug,
+        R.chain(Project.updatePatch(path, Project.removeDebugNodes))
+      ),
+      Project.validateProject
+    )(project)
 );
 
 export const getNodeIdsMap = def(

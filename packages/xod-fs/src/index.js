@@ -19,7 +19,10 @@ export {
   loadProjectWithLibs,
   loadProjectWithoutLibs,
 } from './load';
-export { scanWorkspaceForLibNames, loadLibsFromWorkspaceList } from './loadLibs';
+export {
+  scanWorkspaceForLibNames,
+  loadLibsFromWorkspaceList,
+} from './loadLibs';
 export * from './utils';
 export {
   findClosestProjectDir,

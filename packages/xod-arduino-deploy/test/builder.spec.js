@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import { composeCommand } from '../src/builder';
 import { isWindows } from '../src/utils';
 
-const winExt = (isWindows) ? '.exe' : '';
+const winExt = isWindows ? '.exe' : '';
 
 describe('Builder', () => {
   it('composeCommand() returns correct command', () => {
@@ -22,10 +22,15 @@ describe('Builder', () => {
       builderDir
     );
 
-    const execCmd = path.normalize(`/xod/arduino-builder/arduino-builder${winExt}`);
+    const execCmd = path.normalize(
+      `/xod/arduino-builder/arduino-builder${winExt}`
+    );
     const hardwareA = path.normalize('/xod/arduino-builder/hardware');
     const toolsA = path.normalize('/xod/arduino-builder/tools');
 
-    assert.strictEqual(cmd, `"${execCmd}" -hardware="${hardwareA}" -hardware="${packagesDir}" -libraries="${librariesDir}" -tools="${toolsA}" -tools="${packagesDir}" -fqbn="arduino:avr:uno" -build-path="${artifacts}" "${sketch}"`);
+    assert.strictEqual(
+      cmd,
+      `"${execCmd}" -hardware="${hardwareA}" -hardware="${packagesDir}" -libraries="${librariesDir}" -tools="${toolsA}" -tools="${packagesDir}" -fqbn="arduino:avr:uno" -build-path="${artifacts}" "${sketch}"`
+    );
   });
 });

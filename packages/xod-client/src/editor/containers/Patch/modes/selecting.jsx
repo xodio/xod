@@ -84,31 +84,29 @@ const selectingMode = {
   onCommentResizeHandleMouseDown(api, event, commentId) {
     if (isMiddleButtonPressed(event)) return;
 
-    api.goToMode(
-      EDITOR_MODE.RESIZING_COMMENT,
-      {
-        resizedCommentId: commentId,
-        dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
-      }
-    );
+    api.goToMode(EDITOR_MODE.RESIZING_COMMENT, {
+      resizedCommentId: commentId,
+      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+    });
   },
   onVariadicHandleDown(api, event, nodeId) {
     if (isMiddleButtonPressed(event)) return;
 
-    api.goToMode(
-      EDITOR_MODE.CHANGING_ARITY_LEVEL,
-      {
-        nodeId,
-        dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
-      }
-    );
+    api.goToMode(EDITOR_MODE.CHANGING_ARITY_LEVEL, {
+      nodeId,
+      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+    });
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
     if (isMiddleButtonPressed(event)) return;
 
     const didSelectPin = api.props.actions.doPinSelection(nodeId, pinKey);
     if (didSelectPin) {
-      const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+      const mousePosition = getMousePosition(
+        patchSvgRef,
+        api.props.offset,
+        event
+      );
       api.goToMode(EDITOR_MODE.LINKING, { mousePosition });
     }
   },
@@ -126,31 +124,32 @@ const selectingMode = {
     }
   },
   onMouseDown(api, event) {
-    const mousePosition = getMousePosition(patchSvgRef, api.props.offset, event);
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
     if (!isMiddleButtonPressed(event)) return;
 
-    api.goToMode(EDITOR_MODE.PANNING, { isPanning: true, panningStartPosition: mousePosition });
+    api.goToMode(EDITOR_MODE.PANNING, {
+      isPanning: true,
+      panningStartPosition: mousePosition,
+    });
   },
   onMouseMove(api, event) {
     if (api.state.isMouseDownOnBackground) {
-      api.goToMode(
-        EDITOR_MODE.MARQUEE_SELECTING,
-        {
-          mouseStartPosition: api.state.mouseDownPosition,
-          mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
-        }
-      );
+      api.goToMode(EDITOR_MODE.MARQUEE_SELECTING, {
+        mouseStartPosition: api.state.mouseDownPosition,
+        mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      });
     }
 
     if (!api.state.isMouseDownOnMovableObject) return;
 
-    api.goToMode(
-      EDITOR_MODE.MOVING_SELECTION,
-      {
-        dragStartPosition: api.state.dragStartPosition,
-        mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
-      }
-    );
+    api.goToMode(EDITOR_MODE.MOVING_SELECTION, {
+      dragStartPosition: api.state.dragStartPosition,
+      mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
+    });
   },
   onMouseUp(api) {
     api.setState({
@@ -176,10 +175,9 @@ const selectingMode = {
 
     event.preventDefault();
 
-    props.actions.setSelection(R.compose(
-      R.map(R.values),
-      R.pick(['nodes', 'links', 'comments'])
-    )(props));
+    props.actions.setSelection(
+      R.compose(R.map(R.values), R.pick(['nodes', 'links', 'comments']))(props)
+    );
   },
   onBackgroundClick(api, event) {
     // to prevent misclicks when selecting multiple entities
@@ -188,11 +186,11 @@ const selectingMode = {
     api.props.actions.deselectAll();
   },
   onBackgroundDoubleClick(api, event) {
-    R.compose(
-      api.props.onDoubleClick,
-      snapPositionToSlots,
-      getMousePosition
-    )(patchSvgRef, api.props.offset, event);
+    R.compose(api.props.onDoubleClick, snapPositionToSlots, getMousePosition)(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
   },
   onBackgroundMouseDown(api, event) {
     api.setState({
@@ -225,7 +223,9 @@ const selectingMode = {
           onMouseDown={bindApi(api, this.onMouseDown)}
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={(svg) => { patchSvgRef = svg; }}
+          svgRef={svg => {
+            patchSvgRef = svg;
+          }}
         >
           <Layers.Background
             width={api.props.size.width}
@@ -239,9 +239,18 @@ const selectingMode = {
             <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
-              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.COMMENT])}
-              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.COMMENT])}
-              onResizeHandleMouseDown={bindApi(api, this.onCommentResizeHandleMouseDown)}
+              onMouseDown={R.partial(this.onEntityMouseDown, [
+                api,
+                SELECTION_ENTITY_TYPE.COMMENT,
+              ])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [
+                api,
+                SELECTION_ENTITY_TYPE.COMMENT,
+              ])}
+              onResizeHandleMouseDown={bindApi(
+                api,
+                this.onCommentResizeHandleMouseDown
+              )}
               onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
@@ -252,8 +261,14 @@ const selectingMode = {
               nodes={api.props.nodes}
               selection={api.props.selection}
               linkingPin={api.props.linkingPin}
-              onMouseDown={R.partial(this.onEntityMouseDown, [api, SELECTION_ENTITY_TYPE.NODE])}
-              onMouseUp={R.partial(this.onEntityMouseUp, [api, SELECTION_ENTITY_TYPE.NODE])}
+              onMouseDown={R.partial(this.onEntityMouseDown, [
+                api,
+                SELECTION_ENTITY_TYPE.NODE,
+              ])}
+              onMouseUp={R.partial(this.onEntityMouseUp, [
+                api,
+                SELECTION_ENTITY_TYPE.NODE,
+              ])}
               onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
               onVariadicHandleDown={bindApi(api, this.onVariadicHandleDown)}
             />

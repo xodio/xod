@@ -29,10 +29,7 @@ export default function prepareSuite() {
       return path.resolve(this.tmpHomeDir, 'xod', ...extraPath);
     },
     libPath: function getLibPath(...extraPath) {
-      return path.resolve(
-        resolveLibPath(this.wsPath()),
-        ...extraPath
-      );
+      return path.resolve(resolveLibPath(this.wsPath()), ...extraPath);
     },
   };
 
@@ -42,8 +39,9 @@ export default function prepareSuite() {
     // With a dirty hack we extract out objects that we’d interact later
     // in tests and tear-down. Impure, but can’t figure out a better solution
     // with Mocha
-    return fse.mkdtemp(tmpDir)
-      .then((home) => {
+    return fse
+      .mkdtemp(tmpDir)
+      .then(home => {
         state.app = new Application({
           path: appPath,
           args: ['.'],
@@ -65,16 +63,18 @@ export default function prepareSuite() {
 
   after(() => {
     if (!state.passed || DEBUG) {
-      state.app.client.getMainProcessLogs().then((logs) => {
+      state.app.client.getMainProcessLogs().then(logs => {
         logs.forEach(console.log); // eslint-disable-line no-console
       });
     }
 
-    const shouldClose = state.app && state.app.isRunning() && (state.passed || !DEBUG);
+    const shouldClose =
+      state.app && state.app.isRunning() && (state.passed || !DEBUG);
     return shouldClose
-      // TODO: simulating click on 'confirm' is probably cleaner
-      ? state.app.electron.ipcRenderer.send('CONFIRM_CLOSE_WINDOW')
-        .then(() => fse.remove(state.tmpHomeDir))
+      ? // TODO: simulating click on 'confirm' is probably cleaner
+        state.app.electron.ipcRenderer
+          .send('CONFIRM_CLOSE_WINDOW')
+          .then(() => fse.remove(state.tmpHomeDir))
       : Promise.resolve();
   });
 

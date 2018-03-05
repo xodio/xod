@@ -57,11 +57,13 @@ class App extends client.App {
   }
 
   onDocumentClick(e) {
-    if (R.allPass([
-      notNil,
-      R.propEq('tagName', 'A'),
-      R.propEq('protocol', client.URL_ACTION_PROTOCOL),
-    ])(e.target)) {
+    if (
+      R.allPass([
+        notNil,
+        R.propEq('tagName', 'A'),
+        R.propEq('protocol', client.URL_ACTION_PROTOCOL),
+      ])(e.target)
+    ) {
       const url = urlParse(e.target.href, true);
 
       if (url.hostname !== client.URL_ACTION_PREFIX) return;
@@ -75,7 +77,9 @@ class App extends client.App {
       if (action) {
         action(params);
       } else {
-        this.props.actions.addError(client.Messages.invalidUrlActionName(actionName));
+        this.props.actions.addError(
+          client.Messages.invalidUrlActionName(actionName)
+        );
       }
     }
   }
@@ -104,8 +108,10 @@ class App extends client.App {
 
     const xodballJSON = XP.toXodball(project);
     const xodballName = XP.getProjectName(project);
-    const link = (document) ? document.createElement('a') : null;
-    const url = `data:application/xod;charset=utf8,${encodeURIComponent(xodballJSON)}`;
+    const link = document ? document.createElement('a') : null;
+    const url = `data:application/xod;charset=utf8,${encodeURIComponent(
+      xodballJSON
+    )}`;
 
     if (link && link.download !== undefined) {
       link.href = url;
@@ -124,7 +130,7 @@ class App extends client.App {
     const file = event.target.files[0];
     const reader = new window.FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = e => {
       this.onLoad(e.target.result);
     };
 
@@ -161,7 +167,8 @@ class App extends client.App {
     let message = true;
 
     if (this.props.hasUnsavedChanges) {
-      message = 'You have not saved changes in your project. Are you sure want to close app?';
+      message =
+        'You have not saved changes in your project. Are you sure want to close app?';
       if (event) { event.returnValue = message; } // eslint-disable-line
     }
 
@@ -169,45 +176,39 @@ class App extends client.App {
   }
 
   getMenuBarItems() {
-    const {
-      items,
-      onClick,
-      submenu,
-    } = client.menu;
+    const { items, onClick, submenu } = client.menu;
 
     const openProject = {
       key: items.openProject.key,
-      click: (event) => {
+      click: event => {
         if (
           event.target === this.menuRefs.openProject ||
           event.target.parentNode === this.menuRefs.openProject.parentNode
-        ) return;
+        ) {
+          return;
+        }
         event.stopPropagation();
         this.menuRefs.openProject.click();
       },
       children: (
-        <label
-          key="import"
-          className="load-button"
-          htmlFor="openProjectButton"
-        >
+        <label key="import" className="load-button" htmlFor="openProjectButton">
           <input
             type="file"
             accept=".xodball"
             onChange={this.onLoadChange}
             id="openProjectButton"
-            ref={(input) => { this.menuRefs.openProject = input; }}
+            ref={input => {
+              this.menuRefs.openProject = input;
+            }}
           />
-          <span>
-            {items.openProject.label}
-          </span>
+          <span>{items.openProject.label}</span>
         </label>
       ),
     };
 
     const link = (itemProps, componentProps) => ({
       key: itemProps.key,
-      click: (event) => {
+      click: event => {
         if (event.target === this.menuRefs[itemProps.key]) return;
         event.stopPropagation();
         this.menuRefs[itemProps.key].click();
@@ -217,7 +218,9 @@ class App extends client.App {
           className="menu-link"
           target="_blank"
           rel="noopener noreferrer"
-          ref={(el) => { this.menuRefs[itemProps.key] = el; }}
+          ref={el => {
+            this.menuRefs[itemProps.key] = el;
+          }}
           {...componentProps}
         >
           {itemProps.label}
@@ -226,73 +229,68 @@ class App extends client.App {
     });
 
     return [
-      submenu(
-        items.file,
-        [
-          onClick(items.newProject, this.onCreateProject),
-          openProject,
-          onClick(items.saveAs, this.onSave),
-          items.separator,
-          onClick(items.newPatch, this.props.actions.createPatch),
-          items.separator,
-          onClick(items.addLibrary, this.props.actions.showLibSuggester),
-          onClick(items.publish, this.props.actions.requestPublishProject),
-        ]
-      ),
-      submenu(
-        items.edit,
-        [
-          onClick(items.undo, this.props.actions.undoCurrentPatch),
-          onClick(items.redo, this.props.actions.redoCurrentPatch),
-          items.separator,
-          onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
-          onClick(items.insertComment, this.props.actions.addComment),
-          items.separator,
-          onClick(items.projectPreferences, this.props.actions.showProjectPreferences),
-        ]
-      ),
-      submenu(
-        items.deploy,
-        [
-          onClick(items.showCodeForArduino, this.onShowCodeArduino),
-          onClick(items.uploadToArduino, this.onUpload),
-        ]
-      ),
-      submenu(
-        items.view,
-        [
-          onClick(
-            items.toggleHelp,
-            this.props.actions.toggleHelp
+      submenu(items.file, [
+        onClick(items.newProject, this.onCreateProject),
+        openProject,
+        onClick(items.saveAs, this.onSave),
+        items.separator,
+        onClick(items.newPatch, this.props.actions.createPatch),
+        items.separator,
+        onClick(items.addLibrary, this.props.actions.showLibSuggester),
+        onClick(items.publish, this.props.actions.requestPublishProject),
+      ]),
+      submenu(items.edit, [
+        onClick(items.undo, this.props.actions.undoCurrentPatch),
+        onClick(items.redo, this.props.actions.redoCurrentPatch),
+        items.separator,
+        onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
+        onClick(items.insertComment, this.props.actions.addComment),
+        items.separator,
+        onClick(
+          items.projectPreferences,
+          this.props.actions.showProjectPreferences
+        ),
+      ]),
+      submenu(items.deploy, [
+        onClick(items.showCodeForArduino, this.onShowCodeArduino),
+        onClick(items.uploadToArduino, this.onUpload),
+      ]),
+      submenu(items.view, [
+        onClick(items.toggleHelp, this.props.actions.toggleHelp),
+        onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
+        onClick(items.toggleAccountPane, () =>
+          this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
+        ),
+        items.separator,
+        onClick(
+          items.panToOrigin,
+          this.props.actions.setCurrentPatchOffsetToOrigin
+        ),
+        onClick(
+          items.panToCenter,
+          this.props.actions.setCurrentPatchOffsetToCenter
+        ),
+      ]),
+      submenu(items.help, [
+        {
+          key: 'version',
+          enabled: false,
+          label: `Version: ${packageJson.version}`,
+        },
+        items.separator,
+        onClick(items.openTutorialProject, this.onOpenTutorial),
+        link(items.documentation, {
+          href: client.getUtmSiteUrl('/docs/', 'docs', 'menu'),
+        }),
+        link(items.shortcuts, {
+          href: client.getUtmSiteUrl(
+            '/docs/reference/shortcuts/',
+            'docs',
+            'menu'
           ),
-          onClick(
-            items.toggleDebugger,
-            this.props.actions.toggleDebugger
-          ),
-          onClick(
-            items.toggleAccountPane,
-            () => this.props.actions.togglePanel(client.PANEL_IDS.ACCOUNT)
-          ),
-          items.separator,
-          onClick(items.panToOrigin, this.props.actions.setCurrentPatchOffsetToOrigin),
-          onClick(items.panToCenter, this.props.actions.setCurrentPatchOffsetToCenter),
-        ]
-      ),
-      submenu(
-        items.help,
-        [
-          {
-            key: 'version',
-            enabled: false,
-            label: `Version: ${packageJson.version}`,
-          },
-          items.separator,
-          onClick(items.openTutorialProject, this.onOpenTutorial),
-          link(items.documentation, { href: client.getUtmSiteUrl('/docs/', 'docs', 'menu') }),
-          link(items.shortcuts, { href: client.getUtmSiteUrl('/docs/reference/shortcuts/', 'docs', 'menu') }),
-          link(items.forum, { href: client.getUtmForumUrl('menu') }),
-        ]
-      ),
+        }),
+        link(items.forum, { href: client.getUtmForumUrl('menu') }),
+      ]),
     ];
   }
 
@@ -313,20 +311,14 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys
-        id="App"
-        keyMap={client.HOTKEY}
-        handlers={this.hotkeyHandlers}
-      >
+      <HotKeys id="App" keyMap={client.HOTKEY} handlers={this.hotkeyHandlers}>
         <EventListener
           target={window}
           onResize={this.onResize}
           onKeyDown={this.constructor.onKeyDown}
           onBeforeUnload={this.onCloseApp}
         />
-        <client.Toolbar
-          menuBarItems={this.getMenuBarItems()}
-        />
+        <client.Toolbar menuBarItems={this.getMenuBarItems()} />
         <client.Editor
           size={this.state.size}
           onUploadClick={this.onUpload}
@@ -361,8 +353,12 @@ const mapStateToProps = R.applySpec({
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
-    projectPreferences: client.getPopupVisibility(client.POPUP_ID.EDITING_PROJECT_PREFERENCES),
-    publishingProject: client.getPopupVisibility(client.POPUP_ID.PUBLISHING_PROJECT),
+    projectPreferences: client.getPopupVisibility(
+      client.POPUP_ID.EDITING_PROJECT_PREFERENCES
+    ),
+    publishingProject: client.getPopupVisibility(
+      client.POPUP_ID.PUBLISHING_PROJECT
+    ),
   },
   popupsData: {
     showCode: client.getPopupData(client.POPUP_ID.SHOWING_CODE),
@@ -374,7 +370,8 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     R.merge(client.App.actions, {
       // Put custom actions for xod-client-browser here
-    }), dispatch
+    }),
+    dispatch
   ),
 });
 

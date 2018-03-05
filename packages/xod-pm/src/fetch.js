@@ -10,7 +10,13 @@ import { fromXodballData, listMissingLibraryNames } from 'xod-project';
 
 import * as ERR_CODES from './errorCodes';
 import * as MSG from './messages';
-import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName, getSwaggerClient } from './utils';
+import {
+  parseLibQuery,
+  unfoldMaybeLibQuery,
+  rejectUnexistingVersion,
+  getLibName,
+  getSwaggerClient,
+} from './utils';
 
 // =============================================================================
 //
@@ -21,7 +27,7 @@ import { parseLibQuery, unfoldMaybeLibQuery, rejectUnexistingVersion, getLibName
 // :: (b -> c) -> (() => Promise a b) -> Promise a c
 const retryExceptAny400 = retryOrFail(
   [500, 1000, 2000, 3000],
-  res => (res.status && res.status >= 400 && res.status < 500),
+  res => res.status && res.status >= 400 && res.status < 500
 );
 
 // =============================================================================
@@ -35,10 +41,11 @@ const retryExceptAny400 = retryOrFail(
 // :: URL -> LibName -> Promise LibData Error
 export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
   const fetchFn = (swagger, params) => {
-    const tryFn = () => swagger.apis.Library.getOrgLib({
-      libname: params.name,
-      orgname: params.owner,
-    });
+    const tryFn = () =>
+      swagger.apis.Library.getOrgLib({
+        libname: params.name,
+        orgname: params.owner,
+      });
 
     return tryFn()
       .catch(
@@ -57,26 +64,23 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
       .then(R.assoc('requestParams', params));
   };
 
-
-  return getSwaggerClient(swaggerUrl)
-    .then(swagger =>
-      R.compose(
-        unfoldMaybeLibQuery(
-          params => fetchFn(swagger, params)
-        ),
-        parseLibQuery
-      )(libQuery)
-    );
+  return getSwaggerClient(swaggerUrl).then(swagger =>
+    R.compose(
+      unfoldMaybeLibQuery(params => fetchFn(swagger, params)),
+      parseLibQuery
+    )(libQuery)
+  );
 });
 
 // :: URL -> LibName -> Promise Project Error
 export const fetchLibrary = R.curry((swaggerUrl, libQuery) => {
   const fetchFn = (swagger, params) => {
-    const tryFn = () => swagger.apis.Version.getLibVersionXodball({
-      libname: params.name,
-      orgname: params.owner,
-      semver_or_latest: params.version,
-    });
+    const tryFn = () =>
+      swagger.apis.Version.getLibVersionXodball({
+        libname: params.name,
+        orgname: params.owner,
+        semver_or_latest: params.version,
+      });
 
     return tryFn()
       .catch(
@@ -92,20 +96,18 @@ export const fetchLibrary = R.curry((swaggerUrl, libQuery) => {
       )
       .then(R.prop('obj'))
       .then(xodball =>
-        R.compose(eitherToPromise, fromXodballData)(xodball)
-          .catch(rejectWithCode(ERR_CODES.INVALID_XODBALL))
+        R.compose(eitherToPromise, fromXodballData)(xodball).catch(
+          rejectWithCode(ERR_CODES.INVALID_XODBALL)
+        )
       );
   };
 
-  return getSwaggerClient(swaggerUrl)
-    .then(swagger =>
-      R.compose(
-        unfoldMaybeLibQuery(
-          params => fetchFn(swagger, params)
-        ),
-        parseLibQuery
-      )(libQuery)
-    );
+  return getSwaggerClient(swaggerUrl).then(swagger =>
+    R.compose(
+      unfoldMaybeLibQuery(params => fetchFn(swagger, params)),
+      parseLibQuery
+    )(libQuery)
+  );
 });
 
 // :: URL -> [LibName] -> [LibName] -> Map LibName Project -> Promise Map LibName Project Error
@@ -114,33 +116,29 @@ export const fetchLibsReqursively = R.curry(
     if (libNamesToFetch.length === 0) return Promise.resolve(fetchedLibs);
 
     const nextLibName = R.head(libNamesToFetch);
-    return fetchLibrary(swaggerUrl, nextLibName)
-      .then((lib) => {
-        const nextFetchedLibs = R.assoc(nextLibName, lib, fetchedLibs);
-        const fetchedLibNames = R.compose(
-          R.map(getLibName),
-          R.keys
-        )(nextFetchedLibs);
-        const nextLibNamesToFetch = R.compose(
-          R.concat(R.__, R.tail(libNamesToFetch)),
-          R.reject(R.either(
-            isAmong(fetchedLibNames),
-            isAmong(existingLibNames)
-          )),
-          listMissingLibraryNames
-        )(lib);
+    return fetchLibrary(swaggerUrl, nextLibName).then(lib => {
+      const nextFetchedLibs = R.assoc(nextLibName, lib, fetchedLibs);
+      const fetchedLibNames = R.compose(R.map(getLibName), R.keys)(
+        nextFetchedLibs
+      );
+      const nextLibNamesToFetch = R.compose(
+        R.concat(R.__, R.tail(libNamesToFetch)),
+        R.reject(R.either(isAmong(fetchedLibNames), isAmong(existingLibNames))),
+        listMissingLibraryNames
+      )(lib);
 
-        return fetchLibsReqursively(
-          swaggerUrl,
-          existingLibNames,
-          nextFetchedLibs,
-          nextLibNamesToFetch
-        );
-      });
+      return fetchLibsReqursively(
+        swaggerUrl,
+        existingLibNames,
+        nextFetchedLibs,
+        nextLibNamesToFetch
+      );
+    });
   }
 );
 
 // :: URL -> [LibName] -> [LibName] -> Promise [Project] Error
-export const fetchLibsWithDependencies = R.curry((swaggerUrl, existingLibNames, libNamesToFetch) =>
-  fetchLibsReqursively(swaggerUrl, existingLibNames, {}, libNamesToFetch)
+export const fetchLibsWithDependencies = R.curry(
+  (swaggerUrl, existingLibNames, libNamesToFetch) =>
+    fetchLibsReqursively(swaggerUrl, existingLibNames, {}, libNamesToFetch)
 );

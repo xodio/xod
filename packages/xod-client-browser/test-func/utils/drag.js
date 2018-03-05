@@ -8,6 +8,9 @@ export default async function drag(page, elementHandle, delta) {
 
   await page.mouse.move(startingPosition.x, startingPosition.y);
   await page.mouse.down();
-  await page.mouse.move(startingPosition.x + delta.x, startingPosition.y + delta.y);
+  await page.mouse.move(
+    startingPosition.x + delta.x,
+    startingPosition.y + delta.y
+  );
   await page.mouse.up();
 }

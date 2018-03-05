@@ -6,41 +6,43 @@ import { ContextMenu, MenuItem, connectMenu } from 'react-contextmenu';
 
 import { PANEL_CONTEXT_MENU_ID, PANEL_IDS, SIDEBAR_IDS } from '../constants';
 
-const callCallbackWithPanelId = onClick => (event, data) => onClick(data.panelId);
+const callCallbackWithPanelId = onClick => (event, data) =>
+  onClick(data.panelId);
 
-const PanelContextMenu = (props) => {
-  const trigger = (props.trigger) ? props.trigger : {};
+const PanelContextMenu = props => {
+  const trigger = props.trigger ? props.trigger : {};
   const cls = cn('ContextMenu ContextMenu--Sidebar', {
     // It's a hack to prevent rendering contextmenu
     // after click something with wrong menu items
     'ContextMenu--hide': !props.trigger,
   });
 
-  const callSwitchSideClick = R.curry(
-    (sidebarId, panelId) => props.onSwitchSideClick(sidebarId, panelId)
+  const callSwitchSideClick = R.curry((sidebarId, panelId) =>
+    props.onSwitchSideClick(sidebarId, panelId)
   );
 
   return (
-    <ContextMenu
-      id={PANEL_CONTEXT_MENU_ID}
-      className={cls}
-    >
+    <ContextMenu id={PANEL_CONTEXT_MENU_ID} className={cls}>
       <MenuItem
         onClick={callCallbackWithPanelId(props.onMinimizeClick)}
         attributes={{ 'data-id': 'minimize' }}
       >
         Minimize
       </MenuItem>
-      {(trigger.sidebarId === SIDEBAR_IDS.LEFT) ? (
+      {trigger.sidebarId === SIDEBAR_IDS.LEFT ? (
         <MenuItem
-          onClick={callCallbackWithPanelId(callSwitchSideClick(SIDEBAR_IDS.RIGHT))}
+          onClick={callCallbackWithPanelId(
+            callSwitchSideClick(SIDEBAR_IDS.RIGHT)
+          )}
           attributes={{ 'data-id': 'move-to-right' }}
         >
           Dock to Right
         </MenuItem>
       ) : (
         <MenuItem
-          onClick={callCallbackWithPanelId(callSwitchSideClick(SIDEBAR_IDS.LEFT))}
+          onClick={callCallbackWithPanelId(
+            callSwitchSideClick(SIDEBAR_IDS.LEFT)
+          )}
           attributes={{ 'data-id': 'move-to-left' }}
         >
           Dock to Left

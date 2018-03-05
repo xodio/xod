@@ -4,7 +4,10 @@ import { explodeEither } from 'xod-func-tools';
 import { getLibName } from 'xod-pm';
 
 import * as AT from './actionTypes';
-import { PASTE_ENTITIES, INSTALL_LIBRARIES_COMPLETE } from '../editor/actionTypes';
+import {
+  PASTE_ENTITIES,
+  INSTALL_LIBRARIES_COMPLETE,
+} from '../editor/actionTypes';
 import { IMPL_TEMPLATE } from '../editor/constants';
 
 import {
@@ -13,7 +16,11 @@ import {
   slotPositionToPixels,
   snapNodePositionToSlots,
 } from './nodeLayout';
-import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY, MAIN_PATCH_PATH } from './constants';
+import {
+  NODE_PROPERTY_KIND,
+  NODE_PROPERTY_KEY,
+  MAIN_PATCH_PATH,
+} from './constants';
 import { isNotImplementedInXodNode } from './utils';
 
 // TODO: rewrite this?
@@ -48,26 +55,24 @@ const updateCommentWith = (updaterFn, id, patchPath, state) => {
 };
 
 const nodePositionLens = R.lens(XP.getNodePosition, XP.setNodePosition);
-const commentPositionLens = R.lens(XP.getCommentPosition, XP.setCommentPosition);
-
-const moveEntities = (positionLens, deltaPosition) => R.map(
-  R.over(
-    positionLens,
-    R.compose(
-      snapNodePositionToSlots,
-      addPoints(deltaPosition)
-    )
-  )
+const commentPositionLens = R.lens(
+  XP.getCommentPosition,
+  XP.setCommentPosition
 );
 
+const moveEntities = (positionLens, deltaPosition) =>
+  R.map(
+    R.over(
+      positionLens,
+      R.compose(snapNodePositionToSlots, addPoints(deltaPosition))
+    )
+  );
+
 // :: LibName -> Project -> Project
-const omitLibPatches = R.curry(
-  (libName, project) => R.compose(
+const omitLibPatches = R.curry((libName, project) =>
+  R.compose(
     XP.omitPatches(R.__, project),
-    R.filter(R.compose(
-      R.equals(libName),
-      XP.getLibraryName
-    )),
+    R.filter(R.compose(R.equals(libName), XP.getLibraryName)),
     R.map(XP.getPatchPath),
     XP.listLibraryPatches
   )(project)
@@ -97,10 +102,7 @@ export default (state = {}, action) => {
     case AT.PROJECT_IMPORT: {
       const importedProject = action.payload;
 
-      return XP.mergePatchesList(
-        XP.listLibraryPatches(state),
-        importedProject
-      );
+      return XP.mergePatchesList(XP.listLibraryPatches(state), importedProject);
     }
 
     case AT.PROJECT_OPEN: {
@@ -133,10 +135,7 @@ export default (state = {}, action) => {
 
       const patch = XP.createPatch();
 
-      return R.compose(
-        explodeEither,
-        XP.assocPatch(patchPath, patch)
-      )(state);
+      return R.compose(explodeEither, XP.assocPatch(patchPath, patch))(state);
     }
 
     case AT.PATCH_RENAME: {
@@ -153,39 +152,30 @@ export default (state = {}, action) => {
     case AT.PATCH_DESCRIPTION_UPDATE: {
       const { path, description } = action.payload;
       const patchLens = XP.lensPatch(path);
-      return R.over(
-        patchLens,
-        XP.setPatchDescription(description),
-        state
-      );
+      return R.over(patchLens, XP.setPatchDescription(description), state);
     }
 
     case AT.PATCH_NATIVE_IMPLEMENTATION_UPDATE: {
       const { patchPath, newSource } = action.payload;
       const patchLens = XP.lensPatch(patchPath);
-      return R.over(
-        patchLens,
-        XP.setImpl(newSource),
-        state
-      );
+      return R.over(patchLens, XP.setImpl(newSource), state);
     }
 
     case INSTALL_LIBRARIES_COMPLETE: {
       const patches = R.compose(
         R.unnest,
         R.values,
-        R.mapObjIndexed(
-          (proj, name) => R.compose(
+        R.mapObjIndexed((proj, name) =>
+          R.compose(
             XP.prepareLibPatchesToInsertIntoProject(R.__, proj),
             getLibName
           )(name)
         )
       )(action.payload.projects);
 
-      const libNames = R.compose(
-        R.map(getLibName),
-        R.keys
-      )(action.payload.projects);
+      const libNames = R.compose(R.map(getLibName), R.keys)(
+        action.payload.projects
+      );
 
       return R.compose(
         XP.assocPatchListUnsafe(patches),
@@ -197,12 +187,7 @@ export default (state = {}, action) => {
     // Bulk actions on multiple entities
     //
     case AT.BULK_MOVE_NODES_AND_COMMENTS: {
-      const {
-        nodeIds,
-        commentIds,
-        deltaPosition,
-        patchPath,
-      } = action.payload;
+      const { nodeIds, commentIds, deltaPosition, patchPath } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchPath);
       const patch = R.view(currentPatchLens, state);
@@ -219,21 +204,13 @@ export default (state = {}, action) => {
 
       return R.over(
         currentPatchLens,
-        R.compose(
-          XP.upsertComments(movedComments),
-          XP.upsertNodes(movedNodes),
-        ),
+        R.compose(XP.upsertComments(movedComments), XP.upsertNodes(movedNodes)),
         state
       );
     }
 
     case AT.BULK_DELETE_ENTITIES: {
-      const {
-        linkIds,
-        nodeIds,
-        commentIds,
-        patchPath,
-      } = action.payload;
+      const { linkIds, nodeIds, commentIds, patchPath } = action.payload;
 
       const dissocFns = R.unnest([
         R.map(XP.dissocLink, linkIds),
@@ -260,19 +237,16 @@ export default (state = {}, action) => {
           XP.upsertNodes(entities.nodes),
           R.unless(
             () => R.isNil(entities.impl),
-            R.compose(
-              (patch) => {
-                const existingNiixNode = R.compose(
-                  R.find(isNotImplementedInXodNode),
-                  XP.listNodes
-                )(patch);
+            R.compose(patch => {
+              const existingNiixNode = R.compose(
+                R.find(isNotImplementedInXodNode),
+                XP.listNodes
+              )(patch);
 
-                return existingNiixNode
-                  ? XP.dissocNode(existingNiixNode, patch)
-                  : patch;
-              },
-              XP.setImpl(entities.impl)
-            )
+              return existingNiixNode
+                ? XP.dissocNode(existingNiixNode, patch)
+                : patch;
+            }, XP.setImpl(entities.impl))
           )
         ),
         state
@@ -318,9 +292,7 @@ export default (state = {}, action) => {
 
       return R.over(
         currentPatchLens,
-        XP.assocNode(
-          selectNodePropertyUpdater(action.payload)(node)
-        ),
+        XP.assocNode(selectNodePropertyUpdater(action.payload)(node)),
         state
       );
     }
@@ -359,11 +331,7 @@ export default (state = {}, action) => {
       const firstPinPatch = XP.getPatchByPathUnsafe(firstPinNodeType, state);
 
       const inputPinIndex = R.compose(
-        R.ifElse(
-          XP.isInputPin,
-          R.always(0),
-          R.always(1)
-        ),
+        R.ifElse(XP.isInputPin, R.always(0), R.always(1)),
         R.prop(pins[0].pinKey),
         XP.getPinsForNode(firstPinNode, firstPinPatch)
       )(state);
@@ -371,7 +339,12 @@ export default (state = {}, action) => {
       const input = pins[inputPinIndex];
       const output = pins[1 - inputPinIndex];
 
-      const newLink = XP.createLink(input.pinKey, input.nodeId, output.pinKey, output.nodeId);
+      const newLink = XP.createLink(
+        input.pinKey,
+        input.nodeId,
+        output.pinKey,
+        output.nodeId
+      );
 
       return R.over(
         XP.lensPatch(patchPath),
@@ -408,7 +381,12 @@ export default (state = {}, action) => {
     case AT.COMMENT_SET_CONTENT: {
       const { id, patchPath, content } = action.payload;
 
-      return updateCommentWith(XP.setCommentContent(content), id, patchPath, state);
+      return updateCommentWith(
+        XP.setCommentContent(content),
+        id,
+        patchPath,
+        state
+      );
     }
 
     default:

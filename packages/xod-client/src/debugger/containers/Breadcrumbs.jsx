@@ -6,15 +6,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { drillDown } from '../actions';
-import { getRenerableBreadcrumbChunks, getBreadcrumbActiveIndex } from '../../editor/selectors';
+import {
+  getRenerableBreadcrumbChunks,
+  getBreadcrumbActiveIndex,
+} from '../../editor/selectors';
 
 const Breadcrumbs = ({ chunks, activeIndex, actions, children }) => (
   <div className="Breadcrumbs Breadcrumbs--debugger">
     <ul>
       {chunks.map((chunk, i) => {
         const cls = classNames('Breadcrumbs-chunk-button', {
-          'is-active': (i === activeIndex),
-          'is-tail': (i > activeIndex),
+          'is-active': i === activeIndex,
+          'is-tail': i > activeIndex,
         });
         return (
           <li key={chunk.nodeId}>
@@ -45,9 +48,12 @@ const mapStateToProps = R.applySpec({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    drillDown,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      drillDown,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Breadcrumbs);

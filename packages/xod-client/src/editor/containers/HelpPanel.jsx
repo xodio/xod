@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import { Patch as PatchType } from 'xod-project';
 import { $Maybe } from 'xod-func-tools';
 
-import {
-  PANEL_IDS,
-  SIDEBAR_IDS,
-} from '../constants';
+import { PANEL_IDS, SIDEBAR_IDS } from '../constants';
 
 import SidebarPanel from '../components/SidebarPanel';
 import { getPatchForQuickHelp } from '../../core/selectors';
@@ -32,9 +29,7 @@ const HelpPanel = ({ maybeSelectedPatch, sidebarId, autohide }) => {
       sidebarId={sidebarId}
       autohide={autohide}
     >
-      <div className="HelpPanel-content">
-        {docs}
-      </div>
+      <div className="HelpPanel-content">{docs}</div>
     </SidebarPanel>
   );
 };

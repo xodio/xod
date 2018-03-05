@@ -20,8 +20,8 @@ const VariadicHandle = props => (
       className="VariadicHandle--grip"
       x1={props.size.width - 1.5}
       x2={props.size.width - 1.5}
-      y1={(props.size.height / 2) - 5}
-      y2={(props.size.height / 2) + 5}
+      y1={props.size.height / 2 - 5}
+      y2={props.size.height / 2 + 5}
     />
   </g>
 );

@@ -1,20 +1,15 @@
-import {
-  undoPatch,
-  redoPatch,
-} from '../project/actions';
-import {
-  SHOW_CODE_REQUESTED,
-} from './actionTypes';
+import { undoPatch, redoPatch } from '../project/actions';
+import { SHOW_CODE_REQUESTED } from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
 
 export const undoCurrentPatch = () => (dispatch, getState) =>
-  getCurrentPatchPath(getState()).map(
-    currentPatchPath => dispatch(undoPatch(currentPatchPath))
+  getCurrentPatchPath(getState()).map(currentPatchPath =>
+    dispatch(undoPatch(currentPatchPath))
   );
 
 export const redoCurrentPatch = () => (dispatch, getState) =>
-  getCurrentPatchPath(getState()).map(
-    currentPatchPath => dispatch(redoPatch(currentPatchPath))
+  getCurrentPatchPath(getState()).map(currentPatchPath =>
+    dispatch(redoPatch(currentPatchPath))
   );
 
 export const showCode = code => ({

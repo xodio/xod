@@ -29,10 +29,7 @@ class AuthForm extends React.Component {
 
   onLogin(event) {
     event.preventDefault();
-    this.props.onLogin(
-      this.state.username,
-      this.state.password
-    );
+    this.props.onLogin(this.state.username, this.state.password);
   }
 
   render() {
@@ -66,13 +63,12 @@ class AuthForm extends React.Component {
           href={getPasswordResetUrl()}
           target="_blank"
           rel="noopener noreferrer"
-        >Forgot password</a>
+        >
+          Forgot password
+        </a>
 
         <div className="ButtonsRow">
-          <Button
-            light
-            disabled={isAuthorising}
-          >
+          <Button light disabled={isAuthorising}>
             Log In
           </Button>
           <Button

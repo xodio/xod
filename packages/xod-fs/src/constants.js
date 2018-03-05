@@ -3,13 +3,7 @@ export const DEFAULT_WORKSPACE_PATH = '~/xod';
 export const DEFAULT_PROJECT_NAME = 'welcome-to-xod';
 export const LIBS_DIRNAME = '__lib__';
 
-export const BASE64_EXTNAMES = [
-  '.png',
-  '.jpg',
-  '.jpeg',
-  '.gif',
-  '.fzz',
-];
+export const BASE64_EXTNAMES = ['.png', '.jpg', '.jpeg', '.gif', '.fzz'];
 export const UTF8_EXTNAMES = [
   '.md',
   '.svg',

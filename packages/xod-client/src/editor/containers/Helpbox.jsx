@@ -67,7 +67,7 @@ class Helpbox extends React.Component {
     const windowWidth = window.innerWidth;
     const elWidth = this.helpboxRef.clientWidth;
 
-    const rightSided = (event.detail.right + elWidth) >= windowWidth;
+    const rightSided = event.detail.right + elWidth >= windowWidth;
 
     const top = event.detail.top;
     // if helpbox refers to element that closer to the right side and
@@ -76,11 +76,11 @@ class Helpbox extends React.Component {
     // and helpbox will be positioned at the left side of referred element
     // E.G. ProjectBrowser at the left side — Helpbox is not "rightSided" helpbox
     //      ProjectBrowser at the right side — Helpbox "rightSided"
-    const left = (rightSided) ? (event.detail.left - elWidth) : event.detail.right;
+    const left = rightSided ? event.detail.left - elWidth : event.detail.right;
 
     const windowHeight = window.innerHeight;
     const elHeight = this.helpboxRef.clientHeight;
-    const isFitWindow = (top + elHeight < windowHeight);
+    const isFitWindow = top + elHeight < windowHeight;
     const newTop = isFitWindow ? top : windowHeight - elHeight;
     const newPointer = isFitWindow ? 0 : top - newTop;
 
@@ -95,7 +95,9 @@ class Helpbox extends React.Component {
     });
   }
   getHelpboxOffset() {
-    return { transform: `translate(${this.state.left}px, ${this.state.top}px)` };
+    return {
+      transform: `translate(${this.state.left}px, ${this.state.top}px)`,
+    };
   }
   getPointerOffset() {
     return { transform: `translateY(${this.state.pointerTop}px)` };
@@ -114,12 +116,11 @@ class Helpbox extends React.Component {
   render() {
     const { maybeSelectedPatch, isVisible, actions } = this.props;
     if (!isVisible) return null;
-    const isHidden = (
+    const isHidden =
       !isVisible ||
       Maybe.isNothing(maybeSelectedPatch) ||
       !this.state.isVisible ||
-      this.state.top === 0
-    );
+      this.state.top === 0;
 
     const docs = maybeSelectedPatch
       .map(patch => <PatchDocs patch={patch} />)
@@ -133,14 +134,9 @@ class Helpbox extends React.Component {
     return (
       <div className={cls} style={this.getHelpboxOffset()} ref={this.updateRef}>
         <div className="pointer" style={this.getPointerOffset()} />
-        <CloseButton
-          tabIndex="0"
-          onClick={actions.hideHelpbox}
-        />
+        <CloseButton tabIndex="0" onClick={actions.hideHelpbox} />
         <div className="Helpbox-content">
-          <CustomScroll flex="1">
-            {docs}
-          </CustomScroll>
+          <CustomScroll flex="1">{docs}</CustomScroll>
         </div>
       </div>
     );
@@ -163,9 +159,12 @@ const mapStateToProps = R.applySpec({
   focusedArea: getFocusedArea,
 });
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({
-    hideHelpbox: Actions.hideHelpbox,
-  }, dispatch),
+  actions: bindActionCreators(
+    {
+      hideHelpbox: Actions.hideHelpbox,
+    },
+    dispatch
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Helpbox);

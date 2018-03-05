@@ -5,8 +5,8 @@ import { INPUT_PULSE_PIN_BINDING_OPTIONS } from 'xod-project';
 
 import PinWidget from './PinWidget';
 
-const PulseWidget = (props) => {
-  const onChange = (event) => {
+const PulseWidget = props => {
+  const onChange = event => {
     props.onChange(event.target.value);
   };
 
@@ -31,7 +31,9 @@ const PulseWidget = (props) => {
       >
         <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER}>Never</option>
         <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT}>On boot</option>
-        <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY}>Continuously</option>
+        <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY}>
+          Continuously
+        </option>
       </select>
     </PinWidget>
   );

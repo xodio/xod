@@ -17,11 +17,7 @@ export default function trackLastSavedChanges(state, action) {
     case PROJECT_IMPORT:
     case SAVE_ALL:
     case PROJECT_OPEN_WORKSPACE: {
-      return R.assoc(
-        'lastSavedProject',
-        getProject(state),
-        state
-      );
+      return R.assoc('lastSavedProject', getProject(state), state);
     }
 
     default:

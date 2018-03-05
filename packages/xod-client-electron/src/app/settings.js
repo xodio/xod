@@ -40,7 +40,10 @@ export const setDefaults = R.compose(
  * - a path to directory (could contain a homedir alias `~`)
  * - filename for settings file (default is `Settings`).
  */
-export const rewriteElectronSettingsFilePath = (dirPath, fileName = 'Settings') => {
+export const rewriteElectronSettingsFilePath = (
+  dirPath,
+  fileName = 'Settings'
+) => {
   const fullPath = path.join(resolvePath(dirPath), fileName);
   electronSettings.setPath(fullPath);
 };

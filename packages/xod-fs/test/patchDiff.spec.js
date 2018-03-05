@@ -33,20 +33,22 @@ describe('Patch diffs', () => {
   const before = [patchA, patchB, patchC];
   const after = [patchA, patchBNew, patchD];
 
-  it('calculateAdded() returns correct results', () => assert.sameMembers(
-    calculateAdded(before, after).map(a => a.path),
-    ['@/d']
-  ));
-  it('calculateModified() returns correct results', () => assert.sameMembers(
-    calculateModified(before, after).map(a => a.path),
-    ['@/b']
-  ));
-  it('calculateDeleted() returns correct results', () => assert.sameMembers(
-    calculateDeleted(before, after).map(a => a.path),
-    ['@/c']
-  ));
-  it('calculateDiff() returns correct results', () => assert.sameMembers(
-    calculateDiff(before, after).map(a => a.path),
-    ['@/d', '@/b', '@/c']
-  ));
+  it('calculateAdded() returns correct results', () =>
+    assert.sameMembers(calculateAdded(before, after).map(a => a.path), [
+      '@/d',
+    ]));
+  it('calculateModified() returns correct results', () =>
+    assert.sameMembers(calculateModified(before, after).map(a => a.path), [
+      '@/b',
+    ]));
+  it('calculateDeleted() returns correct results', () =>
+    assert.sameMembers(calculateDeleted(before, after).map(a => a.path), [
+      '@/c',
+    ]));
+  it('calculateDiff() returns correct results', () =>
+    assert.sameMembers(calculateDiff(before, after).map(a => a.path), [
+      '@/d',
+      '@/b',
+      '@/c',
+    ]));
 });

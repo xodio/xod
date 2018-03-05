@@ -9,7 +9,4 @@ export const isMany = R.compose(R.gt(R.__, 1), R.length);
 export const isOne = R.compose(R.equals(1), R.length);
 
 // :: [propName] -> Object -> Bool
-export const propsAreFalsy = R.curry(R.compose(
-  R.all(R.not),
-  R.props
-));
+export const propsAreFalsy = R.curry(R.compose(R.all(R.not), R.props));

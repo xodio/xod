@@ -106,8 +106,9 @@ describe('Processes reducer', () => {
       chai.expect(newState).to.deep.equal(expectedState);
     });
 
-
-    it(`should delete a process after accepting status ${STATUS.DELETED}`, () => {
+    it(`should delete a process after accepting status ${
+      STATUS.DELETED
+    }`, () => {
       const id = getLastId(stateWithProcess);
       const newState = reducer(stateWithProcess, {
         type: 'TEST_PROCESS',

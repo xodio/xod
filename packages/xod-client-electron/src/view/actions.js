@@ -22,28 +22,34 @@ import { STATES, getEventNameWithState } from '../shared/eventStates';
 //
 // =============================================================================
 
-const processProgressed = ({
+const processProgressed = (
+  {
     processId,
     actionType,
     message = 'Process in progress',
     progress = 0.5,
     payload = {},
-  }, dispatch) => dispatch(
+  },
+  dispatch
+) =>
+  dispatch(
     progressProcess(
       processId,
       actionType,
-      R.merge({
-        message,
-        progress,
-      }, payload)
+      R.merge(
+        {
+          message,
+          progress,
+        },
+        payload
+      )
     )
-);
+  );
 
-const finishProcess = action => ({
-    processId,
-    actionType,
-    payload,
-  }, dispatch) => {
+const finishProcess = action => (
+  { processId, actionType, payload },
+  dispatch
+) => {
   dispatch(action(processId, actionType, { data: payload }));
   setTimeout(() => {
     dispatch(deleteProcess(processId, actionType));
@@ -55,83 +61,76 @@ const processCompleted = finishProcess(successProcess);
 const processFailed = finishProcess(failProcess);
 
 export const createAsyncAction = ({
-    eventName,
-    actionType,
-    messages: {
-      process: processMsg = '',
-      complete: completeMsg = '',
-      error: errorMsg = '',
-    } = {},
-    notify = true,
-    silent = false,
-    onComplete = R.always(undefined),
-    onError = R.always(undefined),
-  }) => data => (dispatch) => {
-    let processId = null;
+  eventName,
+  actionType,
+  messages: {
+    process: processMsg = '',
+    complete: completeMsg = '',
+    error: errorMsg = '',
+  } = {},
+  notify = true,
+  silent = false,
+  onComplete = R.always(undefined),
+  onError = R.always(undefined),
+}) => data => dispatch => {
+  let processId = null;
 
-    if (!silent) {
-      processId = dispatch(addProcess(actionType));
+  if (!silent) {
+    processId = dispatch(addProcess(actionType));
 
-      if (processMsg) {
-        ipcRenderer.once(
-          getEventNameWithState(eventName, STATES.PROCESS),
-          (sender, payload) => processProgressed(
+    if (processMsg) {
+      ipcRenderer.once(
+        getEventNameWithState(eventName, STATES.PROCESS),
+        (sender, payload) =>
+          processProgressed(
             { processId, actionType, message: processMsg, notify, payload },
             dispatch
           )
-        );
-      }
+      );
     }
+  }
 
-    ipcRenderer.once(
-      getEventNameWithState(eventName, STATES.COMPLETE),
-      (sender, payload) => {
-        if (!silent) {
-          processCompleted(
-            { processId, actionType, payload },
-            dispatch
-          );
-        }
-        if (notify) {
-          dispatch(addConfirmation(
-            composeMessage(completeMsg)
-          ));
-        }
-
-        onComplete(payload, dispatch);
+  ipcRenderer.once(
+    getEventNameWithState(eventName, STATES.COMPLETE),
+    (sender, payload) => {
+      if (!silent) {
+        processCompleted({ processId, actionType, payload }, dispatch);
       }
-    );
-
-    ipcRenderer.once(
-      getEventNameWithState(eventName, STATES.ERROR),
-      (sender, err) => {
-        // eslint-disable-next-line no-console
-        console.error(
-          `Unhandled error returned in event '${eventName}' (started by action '${actionType}'). See details:`,
-          {
-            eventName,
-            actionType,
-            data,
-            error: err,
-          }
-        );
-
-        if (!silent) {
-          processFailed(
-            { processId, actionType, payload: err },
-            dispatch
-          );
-        }
-        if (notify) {
-          dispatch(addError(composeMessage(errorMsg)));
-        }
-
-        onError(err, dispatch);
+      if (notify) {
+        dispatch(addConfirmation(composeMessage(completeMsg)));
       }
-    );
 
-    ipcRenderer.send(eventName, data);
-  };
+      onComplete(payload, dispatch);
+    }
+  );
+
+  ipcRenderer.once(
+    getEventNameWithState(eventName, STATES.ERROR),
+    (sender, err) => {
+      // eslint-disable-next-line no-console
+      console.error(
+        `Unhandled error returned in event '${eventName}' (started by action '${actionType}'). See details:`,
+        {
+          eventName,
+          actionType,
+          data,
+          error: err,
+        }
+      );
+
+      if (!silent) {
+        processFailed({ processId, actionType, payload: err }, dispatch);
+      }
+      if (notify) {
+        dispatch(addError(composeMessage(errorMsg)));
+      }
+
+      onError(err, dispatch);
+    }
+  );
+
+  ipcRenderer.send(eventName, data);
+};
 
 // =============================================================================
 //

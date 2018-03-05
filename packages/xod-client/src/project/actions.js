@@ -28,7 +28,7 @@ export const requestOpenProject = data => ({
   payload: data,
 });
 
-export const createProject = () => (dispatch) => {
+export const createProject = () => dispatch => {
   dispatch({
     type: ActionType.PROJECT_CREATE,
   });
@@ -82,7 +82,7 @@ export const publishProject = () => (dispatch, getState) => {
   dispatch({ type: ActionType.PROJECT_PUBLISH_START });
 
   dispatch(fetchGrant()) // to obtain freshest auth token
-    .then((freshGrant) => {
+    .then(freshGrant => {
       if (freshGrant === null) {
         // could happen if user logs out in another tab
         return rejectWithCode(
@@ -97,7 +97,7 @@ export const publishProject = () => (dispatch, getState) => {
       dispatch(addConfirmation(SUCCESSFULLY_PUBLISHED));
       dispatch({ type: ActionType.PROJECT_PUBLISH_SUCCESS });
     })
-    .catch((err) => {
+    .catch(err => {
       dispatch({ type: ActionType.PROJECT_PUBLISH_FAIL });
       dispatch(addError(composeMessage(err.message)));
     });
@@ -136,14 +136,14 @@ export const addPatch = baseName => (dispatch, getState) => {
   });
 };
 
-export const renamePatch = (oldPatchPath, newBaseName) => (dispatch, getState) => {
+export const renamePatch = (oldPatchPath, newBaseName) => (
+  dispatch,
+  getState
+) => {
   const newPatchPath = XP.getLocalPath(newBaseName);
   const state = getState();
 
-  if (
-    newPatchPath !== oldPatchPath &&
-    isPatchPathTaken(state, newPatchPath)
-  ) {
+  if (newPatchPath !== oldPatchPath && isPatchPathTaken(state, newPatchPath)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
   }
 
@@ -182,7 +182,7 @@ export const updatePatchImplementation = (patchPath, newSource) => ({
 //
 // Node
 //
-export const addNode = (typeId, position, patchPath) => (dispatch) => {
+export const addNode = (typeId, position, patchPath) => dispatch => {
   const newNodeId = XP.generateId();
 
   dispatch({
@@ -198,28 +198,30 @@ export const addNode = (typeId, position, patchPath) => (dispatch) => {
   return newNodeId;
 };
 
-export const updateNodeProperty =
-  (nodeId, propKind, propKey, propValue) => (dispatch, getState) => {
-    getCurrentPatchPath(getState()).map(
-      patchPath => dispatch({
-        type: ActionType.NODE_UPDATE_PROPERTY,
-        payload: {
-          id: nodeId,
-          kind: propKind,
-          key: propKey,
-          value: propValue,
-          patchPath,
-        },
-      })
-    );
-  };
+export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (
+  dispatch,
+  getState
+) => {
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.NODE_UPDATE_PROPERTY,
+      payload: {
+        id: nodeId,
+        kind: propKind,
+        key: propKey,
+        value: propValue,
+        patchPath,
+      },
+    })
+  );
+};
 
 //
 // Link
 //
 export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  getCurrentPatchPath(getState()).map(
-    patchPath => dispatch({
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
       type: ActionType.LINK_ADD,
       payload: {
         patchPath,
@@ -235,17 +237,18 @@ export const addLink = (pin1, pin2) => (dispatch, getState) => {
 export const addComment = () => (dispatch, getState) =>
   getCurrentPatchPath(getState()).map(
     // TODO: where to provide initial size, position and content?
-    patchPath => dispatch({
-      type: ActionType.COMMENT_ADD,
-      payload: {
-        patchPath,
-      },
-    })
+    patchPath =>
+      dispatch({
+        type: ActionType.COMMENT_ADD,
+        payload: {
+          patchPath,
+        },
+      })
   );
 
 export const resizeComment = (id, size) => (dispatch, getState) =>
-  getCurrentPatchPath(getState()).map(
-    patchPath => dispatch({
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
       type: ActionType.COMMENT_RESIZE,
       payload: {
         id,
@@ -256,8 +259,8 @@ export const resizeComment = (id, size) => (dispatch, getState) =>
   );
 
 export const editComment = (id, content) => (dispatch, getState) =>
-  getCurrentPatchPath(getState()).map(
-    patchPath => dispatch({
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
       type: ActionType.COMMENT_SET_CONTENT,
       payload: {
         id,
@@ -267,7 +270,12 @@ export const editComment = (id, content) => (dispatch, getState) =>
     })
   );
 
-export const bulkMoveNodesAndComments = (nodeIds, commentIds, deltaPosition, patchPath) => ({
+export const bulkMoveNodesAndComments = (
+  nodeIds,
+  commentIds,
+  deltaPosition,
+  patchPath
+) => ({
   type: ActionType.BULK_MOVE_NODES_AND_COMMENTS,
   payload: {
     nodeIds,
@@ -282,30 +290,38 @@ const isNodeWithIdInUse = R.curry((project, patchPath, nodeId) => {
   const patch = XP.getPatchByPathUnsafe(patchPath, project);
   const node = XP.getNodeByIdUnsafe(nodeId, patch);
 
-  return XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project);
+  return (
+    XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project)
+  );
 });
 
-export const bulkDeleteNodesAndComments =
-  (nodeIds, linkIds, commentIds, patchPath) => (dispatch, getState) => {
-    const state = getState();
-    const project = getProject(state);
+export const bulkDeleteNodesAndComments = (
+  nodeIds,
+  linkIds,
+  commentIds,
+  patchPath
+) => (dispatch, getState) => {
+  const state = getState();
+  const project = getProject(state);
 
-    if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
-      return dispatch(
-        addError(NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE])
-      );
-    }
+  if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
+    return dispatch(
+      addError(
+        NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]
+      )
+    );
+  }
 
-    return dispatch({
-      type: ActionType.BULK_DELETE_ENTITIES,
-      payload: {
-        nodeIds,
-        linkIds,
-        commentIds,
-        patchPath,
-      },
-    });
-  };
+  return dispatch({
+    type: ActionType.BULK_DELETE_ENTITIES,
+    payload: {
+      nodeIds,
+      linkIds,
+      commentIds,
+      patchPath,
+    },
+  });
+};
 
 export const changeArityLevel = (nodeId, patchPath, newArityLevel) => ({
   type: ActionType.NODE_CHANGE_ARITY_LEVEL,

@@ -25,12 +25,10 @@ const PopupPublishProject = ({
   // When popup is hidden, `user` could be Nothing
   const { username } = user.getOrElse({});
 
-  const isValidName = (
-    XP.isValidIdentifier(projectName) &&
-    projectName.length > 0
-  );
+  const isValidName =
+    XP.isValidIdentifier(projectName) && projectName.length > 0;
 
-  const invalidNameMessage = (isValidName) ? null : (
+  const invalidNameMessage = isValidName ? null : (
     <span className="error">
       Project has no public name set.<br />
       Edit
@@ -51,7 +49,9 @@ const PopupPublishProject = ({
     >
       <p className="property">
         <span className="propertyLabel">Name: </span>
-        <span className="libName">{username}/{projectName}</span>
+        <span className="libName">
+          {username}/{projectName}
+        </span>
         {invalidNameMessage}
       </p>
       <p className="property">
@@ -72,7 +72,9 @@ const PopupPublishProject = ({
         </div>
       ) : (
         <div className="ModalFooter">
-          <Button onClick={onPublish} disabled={!isValidName} autoFocus>Publish</Button>
+          <Button onClick={onPublish} disabled={!isValidName} autoFocus>
+            Publish
+          </Button>
           <Button onClick={onRequestToEditPreferences}>Edit</Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>

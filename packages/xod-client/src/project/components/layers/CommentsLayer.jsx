@@ -19,28 +19,26 @@ const CommentsLayer = ({
 }) => (
   <g className="CommentsLayer">
     {R.compose(
-      R.map(
-        comment =>
-          <Comment
-            key={comment.id}
-            id={comment.id}
-            content={comment.content}
-            position={comment.position}
-            hidden={comment.hidden}
-            size={comment.size}
-            isSelected={isCommentSelected(selection, comment.id)}
-            isDragged={areDragged}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            onResizeHandleMouseDown={onResizeHandleMouseDown}
-            onFinishEditing={onFinishEditing}
-          />
-      ),
+      R.map(comment => (
+        <Comment
+          key={comment.id}
+          id={comment.id}
+          content={comment.content}
+          position={comment.position}
+          hidden={comment.hidden}
+          size={comment.size}
+          isSelected={isCommentSelected(selection, comment.id)}
+          isDragged={areDragged}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onResizeHandleMouseDown={onResizeHandleMouseDown}
+          onFinishEditing={onFinishEditing}
+        />
+      )),
       R.values
     )(comments)}
   </g>
 );
-
 
 CommentsLayer.defaultProps = {
   areDragged: false,

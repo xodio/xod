@@ -40,7 +40,7 @@ const nodeSizeInSlots = pinCountByDirection => ({
 // :: Size -> Size
 export const nodeSizeInSlotsToPixels = R.evolve({
   width: slots => slots * SLOT_SIZE.WIDTH,
-  height: slots => (R.dec(slots) * SLOT_SIZE.HEIGHT) + NODE_HEIGHT,
+  height: slots => R.dec(slots) * SLOT_SIZE.HEIGHT + NODE_HEIGHT,
 });
 
 // :: [Pin] -> Size
@@ -49,15 +49,14 @@ export const calcutaleNodeSizeFromPins = R.compose(
   nodeSizeInSlots,
   R.map(R.length),
   R.merge({ input: [], output: [] }),
-  R.groupBy(R.prop('direction')),
+  R.groupBy(R.prop('direction'))
 );
 
 // :: Number -> Number -> Position
-const pinOrderToPosition = R.curry(
-  (nodeWidth, pinOrder) => ({
-    x: (pinOrder * SLOT_SIZE.WIDTH) + (SLOT_SIZE.WIDTH / 2),
-    y: PIN_OFFSET_FROM_NODE_EDGE,
-  }));
+const pinOrderToPosition = R.curry((nodeWidth, pinOrder) => ({
+  x: pinOrder * SLOT_SIZE.WIDTH + SLOT_SIZE.WIDTH / 2,
+  y: PIN_OFFSET_FROM_NODE_EDGE,
+}));
 
 // :: Size -> Pin -> Position
 export const calculatePinPosition = R.curry((nodeSize, pin) => {
@@ -74,23 +73,16 @@ export const calculatePinPosition = R.curry((nodeSize, pin) => {
  * adds `size` to node and `position` to node's pins
  * @param node - dereferenced node
  */
-export const addNodePositioning = (node) => {
-  const size = R.compose(
-    calcutaleNodeSizeFromPins,
-    R.values
-  )(node.pins);
+export const addNodePositioning = node => {
+  const size = R.compose(calcutaleNodeSizeFromPins, R.values)(node.pins);
 
-  const pins = R.map(
-    (pin) => {
-      const position = calculatePinPosition(size, pin);
-      return R.merge(pin, { position });
-    },
-    node.pins
-  );
+  const pins = R.map(pin => {
+    const position = calculatePinPosition(size, pin);
+    return R.merge(pin, { position });
+  }, node.pins);
 
   return R.merge(node, { size, pins });
 };
-
 
 export const addNodesPositioning = R.map(addNodePositioning);
 
@@ -109,23 +101,17 @@ export const subtractPoints = R.curry((a, b) => ({
  * @param links - dereferenced links
  */
 export const addLinksPositioning = nodes =>
-  R.map((link) => {
+  R.map(link => {
     const { input, output } = R.map(
-      pin => R.assoc(
-        'position',
-        nodes[pin.nodeId].pins[pin.pinKey].position,
-        pin
-      ),
+      pin =>
+        R.assoc('position', nodes[pin.nodeId].pins[pin.pinKey].position, pin),
       R.pick(['input', 'output'], link)
     );
 
-    return R.merge(
-      link,
-      {
-        from: addPoints(nodes[input.nodeId].position, input.position) || null,
-        to: addPoints(nodes[output.nodeId].position, output.position) || null,
-      }
-    );
+    return R.merge(link, {
+      from: addPoints(nodes[input.nodeId].position, input.position) || null,
+      to: addPoints(nodes[output.nodeId].position, output.position) || null,
+    });
   });
 
 // ============= snapping to slots grid ===================
@@ -153,7 +139,7 @@ export const sizeToPoint = ({ width, height }) => ({ x: width, y: height });
 // :: Position -> Position
 export const snapPositionToSlots = R.compose(
   slotPositionToPixels,
-  nodePositionInPixelsToSlots,
+  nodePositionInPixelsToSlots
 );
 
 /**
@@ -175,20 +161,23 @@ export const snapNodeSizeToSlots = R.compose(
 
 // :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Position
 export const findPosition = R.uncurryN(3)((xFn, yFn) =>
-  R.converge(
-    (x, y) => ({ x, y }),
-    [
-      R.compose(xFn, R.map(R.prop('x'))),
-      R.compose(yFn, R.map(R.prop('y'))),
-    ]
-  )
+  R.converge((x, y) => ({ x, y }), [
+    R.compose(xFn, R.map(R.prop('x'))),
+    R.compose(yFn, R.map(R.prop('y'))),
+  ])
 );
 
 // :: [Position] -> Position
-export const getTopLeftPosition = findPosition(R.apply(Math.min), R.apply(Math.min));
+export const getTopLeftPosition = findPosition(
+  R.apply(Math.min),
+  R.apply(Math.min)
+);
 
 // :: [Position] -> Position
-export const getBottomRightPosition = findPosition(R.apply(Math.max), R.apply(Math.max));
+export const getBottomRightPosition = findPosition(
+  R.apply(Math.max),
+  R.apply(Math.max)
+);
 
 // Given a list of positions of all entities, returns optimal patch panning offset
 // :: [Position] -> Position

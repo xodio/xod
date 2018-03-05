@@ -25,20 +25,11 @@ export const omitEmptyValues = def(
 export const omitRecursively = def(
   'omitRecursively :: [String] -> a -> a',
   (keys, input) => {
-    const isPlainObject = R.both(
-      R.is(Object),
-      R.complement(R.is(Array))
-    );
+    const isPlainObject = R.both(R.is(Object), R.complement(R.is(Array)));
 
     return R.compose(
-      R.map(R.when(
-        R.is(Object),
-        omitRecursively(keys)
-      )),
-      R.when(
-        isPlainObject,
-        R.omit(keys)
-      )
+      R.map(R.when(R.is(Object), omitRecursively(keys))),
+      R.when(isPlainObject, R.omit(keys))
     )(input);
   }
 );
@@ -67,19 +58,20 @@ export const optionalObjOf = def(
 //   ) // => { bar: "not 2", baz: 3}
 export const subtractObject = def(
   'subtractObject :: Object -> Object -> Object',
-  R.uncurryN(2, objToSubstract => R.converge(
-    R.omit,
-    [
+  R.uncurryN(2, objToSubstract =>
+    R.converge(R.omit, [
       R.compose(
         R.keys,
-        R.pickBy(R.both(
-          (value, key) => R.has(key, objToSubstract),
-          (value, key) => R.propEq(key, value, objToSubstract)
-        ))
+        R.pickBy(
+          R.both(
+            (value, key) => R.has(key, objToSubstract),
+            (value, key) => R.propEq(key, value, objToSubstract)
+          )
+        )
       ),
       R.identity,
-    ]
-  ))
+    ])
+  )
 );
 
 /**
@@ -96,9 +88,12 @@ export const subtractObject = def(
  */
 export const renameKeys = def(
   'renameKeys :: Map a b -> Map a c -> Map b c',
-  (keysMap, obj) => R.reduce(
-    (acc, key) => R.assoc(keysMap[key] || key, obj[key], acc), {}, R.keys(obj)
-  )
+  (keysMap, obj) =>
+    R.reduce(
+      (acc, key) => R.assoc(keysMap[key] || key, obj[key], acc),
+      {},
+      R.keys(obj)
+    )
 );
 
 /**
@@ -108,14 +103,10 @@ export const renameKeys = def(
  */
 export const reverseLookup = def(
   'reverseLookup :: a -> Map b a -> b',
-  (val, obj) => R.compose(
-    R.nth(0),
-    R.find(R.compose(
-      R.equals(val),
-      R.nth(1)
-    )),
-    R.toPairs
-  )(obj)
+  (val, obj) =>
+    R.compose(R.nth(0), R.find(R.compose(R.equals(val), R.nth(1))), R.toPairs)(
+      obj
+    )
 );
 
 /**
@@ -124,9 +115,5 @@ export const reverseLookup = def(
  */
 export const invertMap = def(
   'invertMap :: Map a b -> Map b a',
-  R.compose(
-    R.fromPairs,
-    R.map(R.reverse),
-    R.toPairs
-  )
+  R.compose(R.fromPairs, R.map(R.reverse), R.toPairs)
 );

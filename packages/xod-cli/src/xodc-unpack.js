@@ -20,7 +20,7 @@ export default (xodball, dir) => {
       msg.success('Done!');
       process.exit(0);
     })
-    .catch((err) => {
+    .catch(err => {
       msg.error(err);
       process.exit(1);
     });

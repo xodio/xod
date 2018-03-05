@@ -15,7 +15,7 @@ const NODE_POSITION_IN_PREVIEW = {
   y: 20, // compensate for labels outside the node
 };
 
-const MAX_NODE_WIDTH = 245 - (NODE_POSITION_IN_PREVIEW.x * 2);
+const MAX_NODE_WIDTH = 245 - NODE_POSITION_IN_PREVIEW.x * 2;
 const NODE_PREVIEW_HEIGHT = 93;
 
 const PinInfo = ({ type, label, description, isVariadic }) => (
@@ -52,7 +52,9 @@ const InputPins = ({ pins, distanceBetweenPins }) => {
       <div className="pin-info-container">
         <PinInfo {...pin} />
       </div>
-      {isLastPin ? null : <InputPins pins={restPins} distanceBetweenPins={distanceBetweenPins} />}
+      {isLastPin ? null : (
+        <InputPins pins={restPins} distanceBetweenPins={distanceBetweenPins} />
+      )}
     </div>
   );
 };
@@ -102,25 +104,17 @@ OutputPins.defaultProps = {
   isFirst: true,
 };
 
-
 const PatchDocs = ({ patch, minimal }) => {
   const variadicPinKeys = R.compose(
-    foldEither(
-      R.always([]),
-      R.map(XP.getPinKey),
-    ),
+    foldEither(R.always([]), R.map(XP.getPinKey)),
     XP.listVariadicValuePins
   )(patch);
 
   const [inputPins, outputPins] = R.compose(
     R.partition(XP.isInputPin),
     XP.normalizePinLabels,
-    R.map(
-      pin => R.assoc(
-        'isVariadic',
-        R.contains(XP.getPinKey(pin), variadicPinKeys),
-        pin
-      )
+    R.map(pin =>
+      R.assoc('isVariadic', R.contains(XP.getPinKey(pin), variadicPinKeys), pin)
     ),
     XP.listPins
   )(patch);
@@ -130,19 +124,20 @@ const PatchDocs = ({ patch, minimal }) => {
 
   const nodeProps = patchToNodeProps(true, patch);
 
-  const scaleFactor = nodeProps.size.width < MAX_NODE_WIDTH
-    ? 1
-    : MAX_NODE_WIDTH / nodeProps.size.width;
+  const scaleFactor =
+    nodeProps.size.width < MAX_NODE_WIDTH
+      ? 1
+      : MAX_NODE_WIDTH / nodeProps.size.width;
 
   const fromNodeEdgeToPin = scaleFactor * (SLOT_SIZE.WIDTH / 2);
-  const scaledNodeWidth = (nodeProps.size.width * scaleFactor) + fromNodeEdgeToPin;
-  const distanceToFirstPin = minimal ? 0 : (
-    fromNodeEdgeToPin +
-    (NODE_POSITION_IN_PREVIEW.x * scaleFactor)
-  ) - 1;
+  const scaledNodeWidth =
+    nodeProps.size.width * scaleFactor + fromNodeEdgeToPin;
+  const distanceToFirstPin = minimal
+    ? 0
+    : fromNodeEdgeToPin + NODE_POSITION_IN_PREVIEW.x * scaleFactor - 1;
   const scaledNodePreviewHeight = NODE_PREVIEW_HEIGHT * scaleFactor;
 
-  const distanceBetweenPins = minimal ? 0 : (scaleFactor * SLOT_SIZE.WIDTH) - 1;
+  const distanceBetweenPins = minimal ? 0 : scaleFactor * SLOT_SIZE.WIDTH - 1;
 
   // because we never draw labels for terminal nodes
   const position = R.when(
@@ -173,7 +168,9 @@ const PatchDocs = ({ patch, minimal }) => {
       <div className={containerCls} style={{ paddingLeft: distanceToFirstPin }}>
         {inputPins.length > 0 && [
           minimal && (
-            <span className="pin-title" key="title">Inputs:</span>
+            <span className="pin-title" key="title">
+              Inputs:
+            </span>
           ),
           <InputPins
             key="inputPins"
@@ -182,23 +179,24 @@ const PatchDocs = ({ patch, minimal }) => {
           />,
         ]}
         {!minimal && (
-          <svg className="node-preview" width={scaledNodeWidth} height={scaledNodePreviewHeight}>
+          <svg
+            className="node-preview"
+            width={scaledNodeWidth}
+            height={scaledNodePreviewHeight}
+          >
             <rect className="bg" width="100%" height="100%" />
             <g transform={`scale(${scaleFactor})`}>
-              <Node
-                {...nodeProps}
-                position={position}
-                noEvents
-              />
+              <Node {...nodeProps} position={position} noEvents />
             </g>
           </svg>
         )}
       </div>
       {outputPins.length > 0 && (
-        <div className="output-pins-container" style={{ paddingLeft: distanceToFirstPin }}>
-          {minimal && (
-            <span className="pin-title">Outputs:</span>
-          )}
+        <div
+          className="output-pins-container"
+          style={{ paddingLeft: distanceToFirstPin }}
+        >
+          {minimal && <span className="pin-title">Outputs:</span>}
           <OutputPins
             distanceBetweenPins={distanceBetweenPins}
             pins={outputPins}

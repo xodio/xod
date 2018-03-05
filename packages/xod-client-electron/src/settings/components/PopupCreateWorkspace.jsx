@@ -17,7 +17,7 @@ class PopupCreateWorkspace extends React.Component {
   }
 
   getContent() {
-    return (getForce(this.props.data)) ? (
+    return getForce(this.props.data) ? (
       <div>
         <p>
           <strong>{getPath(this.props.data)} is not empty.</strong>
@@ -27,15 +27,13 @@ class PopupCreateWorkspace extends React.Component {
       </div>
     ) : (
       <div>
-        <p>
-          Create new workspace in {getPath(this.props.data)}?
-        </p>
+        <p>Create new workspace in {getPath(this.props.data)}?</p>
       </div>
     );
   }
 
   getButtonCaption() {
-    return (getForce(this.props.data)) ? 'Create, force' : 'Create';
+    return getForce(this.props.data) ? 'Create, force' : 'Create';
   }
 
   render() {
@@ -45,20 +43,12 @@ class PopupCreateWorkspace extends React.Component {
         isClosable={false}
         title="New workspace"
       >
-        <div className="ModalContent">
-          {this.getContent()}
-        </div>
+        <div className="ModalContent">{this.getContent()}</div>
         <div className="ModalFooter">
-          <button
-            className="Button"
-            onClick={this.onCreateWorkspace}
-          >
+          <button className="Button" onClick={this.onCreateWorkspace}>
             {this.getButtonCaption()}
           </button>
-          <button
-            className="Button"
-            onClick={this.props.onClose}
-          >
+          <button className="Button" onClick={this.props.onClose}>
             Change location
           </button>
         </div>

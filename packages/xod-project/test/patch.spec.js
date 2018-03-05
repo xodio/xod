@@ -87,16 +87,11 @@ describe('Patch', () => {
       it('should return Just Source with implementation for patch with impl attachment', () => {
         const expectedSource = '// ok!';
         const patch = Helper.defaultizePatch({
-          attachments: [
-            Attachment.createImplAttachment(expectedSource),
-          ],
+          attachments: [Attachment.createImplAttachment(expectedSource)],
         });
         const maybeImpl = Patch.getImpl(patch);
         assert.isTrue(maybeImpl.isJust);
-        assert.equal(
-          maybeImpl.getOrElse(null),
-          expectedSource
-        );
+        assert.equal(maybeImpl.getOrElse(null), expectedSource);
       });
     });
     describe('hasImpl', () => {
@@ -118,9 +113,7 @@ describe('Patch', () => {
       it('should return true for patch with impl attachment', () => {
         const expectedSource = '// ok!';
         const patch = Helper.defaultizePatch({
-          attachments: [
-            Attachment.createImplAttachment(expectedSource),
-          ],
+          attachments: [Attachment.createImplAttachment(expectedSource)],
         });
         assert.isTrue(Patch.hasImpl(patch));
       });
@@ -132,7 +125,7 @@ describe('Patch', () => {
             Attachment.createAttachment(
               'not-an-implementation.cpp',
               'utf-8',
-              '// whatever',
+              '// whatever'
             ),
           ],
         });
@@ -220,10 +213,7 @@ describe('Patch', () => {
     it('should return an array of nodes', () => {
       expect(Patch.listNodes(patch))
         .to.be.instanceof(Array)
-        .to.have.members([
-          patch.nodes.rndId,
-          patch.nodes.rndId2,
-        ]);
+        .to.have.members([patch.nodes.rndId, patch.nodes.rndId2]);
     });
   });
   describe('nodeIdEquals', () => {
@@ -248,10 +238,10 @@ describe('Patch', () => {
       expect(maybeNode.isNothing).to.be.true();
     });
     it('should Maybe.Just with node for existent node', () => {
-      expect(Patch.getNodeById('rndId', patch).isJust)
-        .to.be.true();
-      expect(Patch.getNodeById('rndId', patch).getOrElse(null))
-        .to.be.equal(patch.nodes.rndId);
+      expect(Patch.getNodeById('rndId', patch).isJust).to.be.true();
+      expect(Patch.getNodeById('rndId', patch).getOrElse(null)).to.be.equal(
+        patch.nodes.rndId
+      );
     });
   });
   describe('getNodeByIdUnsafe', () => {
@@ -267,13 +257,10 @@ describe('Patch', () => {
       const fn = () => Patch.getNodeByIdUnsafe(nodeId, patch);
       expect(fn).to.throw(
         Error,
-        formatString(
-          CONST.ERROR.NODE_NOT_FOUND,
-          {
-            nodeId,
-            patchPath: patch.path,
-          }
-        )
+        formatString(CONST.ERROR.NODE_NOT_FOUND, {
+          nodeId,
+          patchPath: patch.path,
+        })
       );
     });
     it('should return Node', () => {
@@ -298,10 +285,7 @@ describe('Patch', () => {
     it('should return an array of links', () => {
       expect(Patch.listLinks(patch))
         .to.be.instanceof(Array)
-        .to.have.members([
-          patch.links['1'],
-          patch.links['2'],
-        ]);
+        .to.have.members([patch.links['1'], patch.links['2']]);
     });
   });
   describe('linkIdEquals', () => {
@@ -322,11 +306,15 @@ describe('Patch', () => {
     });
 
     it('should Maybe.Nothing for non-existent link', () => {
-      expect(Patch.getLinkById('non-existent', emptyPatch).isNothing).to.be.true();
+      expect(
+        Patch.getLinkById('non-existent', emptyPatch).isNothing
+      ).to.be.true();
     });
     it('should Maybe.Just with link for existent link', () => {
       expect(Patch.getLinkById('1', patch).isJust).to.be.true();
-      expect(Patch.getLinkById('1', patch).getOrElse(null)).to.be.equal(patch.links[1]);
+      expect(Patch.getLinkById('1', patch).getOrElse(null)).to.be.equal(
+        patch.links[1]
+      );
     });
   });
   describe('listLinksByNode', () => {
@@ -400,33 +388,31 @@ describe('Patch', () => {
     it('returns an empty list for empty patch', () =>
       assert.isEmpty(
         Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({}))
-      )
-    );
+      ));
     it('returns an empty list if Patch used only Nodes from local project or builtIns', () =>
       assert.isEmpty(
-        Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({
-          nodes: {
-            a: { type: '@/my-patch' },
-            b: { type: `${TERMINALS_LIB_NAME}/input-number` },
-          },
-        }))
-      )
-    );
+        Patch.listLibraryNamesUsedInPatch(
+          Helper.defaultizePatch({
+            nodes: {
+              a: { type: '@/my-patch' },
+              b: { type: `${TERMINALS_LIB_NAME}/input-number` },
+            },
+          })
+        )
+      ));
     it('returns a list of two libNames', () =>
       assert.sameMembers(
-        Patch.listLibraryNamesUsedInPatch(Helper.defaultizePatch({
-          nodes: {
-            a: { type: 'xod/core/flip-flop' },
-            b: { type: 'xod/core/clock' },
-            c: { type: 'xod/common-hardware/led' },
-          },
-        })),
-        [
-          'xod/core',
-          'xod/common-hardware',
-        ]
-      )
-    );
+        Patch.listLibraryNamesUsedInPatch(
+          Helper.defaultizePatch({
+            nodes: {
+              a: { type: 'xod/core/flip-flop' },
+              b: { type: 'xod/core/clock' },
+              c: { type: 'xod/common-hardware/led' },
+            },
+          })
+        ),
+        ['xod/core', 'xod/common-hardware']
+      ));
   });
 
   describe('pins', () => {
@@ -496,8 +482,8 @@ describe('Patch', () => {
     describe('listPins', () => {
       it('should return empty array for empty patch', () => {
         expect(Patch.listPins(emptyPatch))
-        .to.be.instanceof(Array)
-        .and.to.be.empty();
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
       });
       it('should return array with two pins', () => {
         assert.sameDeepMembers(
@@ -509,27 +495,21 @@ describe('Patch', () => {
     describe('listInputPins', () => {
       it('should return empty array for empty patch', () => {
         expect(Patch.listInputPins(emptyPatch))
-        .to.be.instanceof(Array)
-        .and.to.be.empty();
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
       });
       it('should return array with one pin', () => {
-        assert.sameDeepMembers(
-          [expectedPins.in],
-          Patch.listInputPins(patch)
-        );
+        assert.sameDeepMembers([expectedPins.in], Patch.listInputPins(patch));
       });
     });
     describe('listOutputPins', () => {
       it('should return empty array for empty patch', () => {
         expect(Patch.listOutputPins(emptyPatch))
-        .to.be.instanceof(Array)
-        .and.to.be.empty();
+          .to.be.instanceof(Array)
+          .and.to.be.empty();
       });
       it('should return array with one pin', () => {
-        assert.sameDeepMembers(
-          [expectedPins.out],
-          Patch.listOutputPins(patch)
-        );
+        assert.sameDeepMembers([expectedPins.out], Patch.listOutputPins(patch));
       });
     });
 
@@ -569,10 +549,7 @@ describe('Patch', () => {
           Patch.listPins
         )(testPatch);
 
-        assert.deepEqual(
-          orderedPinKeys,
-          ['in0', 'in1', 'in2']
-        );
+        assert.deepEqual(orderedPinKeys, ['in0', 'in1', 'in2']);
       });
       it('should order pins with the same x coordinate of terminal nodes by y', () => {
         const inputBooleanType = PPU.getTerminalPath(
@@ -615,12 +592,9 @@ describe('Patch', () => {
           Patch.listPins
         )(testPatch);
 
-        assert.deepEqual(
-          orderedPinKeys,
-          ['in0', 'in1', 'in2']
-        );
+        assert.deepEqual(orderedPinKeys, ['in0', 'in1', 'in2']);
       });
-      it('should extract defaultValue from terminal\'s bound values', () => {
+      it("should extract defaultValue from terminal's bound values", () => {
         const testPatch = Helper.defaultizePatch({
           nodes: {
             inStr: {
@@ -650,10 +624,7 @@ describe('Patch', () => {
           Patch.listPins
         )(testPatch);
 
-        assert.deepEqual(
-          { inStr: 'hello', outNum: 42 },
-          pinDefaultValues
-        );
+        assert.deepEqual({ inStr: 'hello', outNum: 42 }, pinDefaultValues);
       });
       it('should set defaultValue to default for type if terminal has no bound values', () => {
         const testPatch = Helper.defaultizePatch({
@@ -681,10 +652,7 @@ describe('Patch', () => {
           Patch.listPins
         )(testPatch);
 
-        assert.deepEqual(
-          { inStr: '', outNum: 0 },
-          pinDefaultValues
-        );
+        assert.deepEqual({ inStr: '', outNum: 0 }, pinDefaultValues);
       });
     });
   });
@@ -739,10 +707,10 @@ describe('Patch', () => {
       });
 
       it('should return an array of comments added to patch', () => {
-        assert.sameMembers(
-          Patch.listComments(patchWithComments),
-          [testComment1, testComment2]
-        );
+        assert.sameMembers(Patch.listComments(patchWithComments), [
+          testComment1,
+          testComment2,
+        ]);
       });
     });
     describe('getCommentById', () => {
@@ -752,10 +720,7 @@ describe('Patch', () => {
           patchWithComments
         );
 
-        assert.equal(
-          maybeComment.isJust,
-          true
-        );
+        assert.equal(maybeComment.isJust, true);
       });
       it('should return Nothing for a non-existing Comment', () => {
         const maybeComment = Patch.getCommentById(
@@ -763,10 +728,7 @@ describe('Patch', () => {
           patchWithComments
         );
 
-        assert.equal(
-          maybeComment.isNothing,
-          true
-        );
+        assert.equal(maybeComment.isNothing, true);
       });
     });
     describe('getCommentByIdUnsafe', () => {
@@ -776,27 +738,18 @@ describe('Patch', () => {
           patchWithComments
         );
 
-        assert.equal(
-          comment,
-          testComment1
-        );
+        assert.equal(comment, testComment1);
       });
       it('should throw Error if a Comment with a given CommentId does not exist', () => {
         const nonExistingCommentId = 'non-existing';
         assert.throws(
           () => {
-            Patch.getCommentByIdUnsafe(
-              nonExistingCommentId,
-              patchWithComments
-            );
+            Patch.getCommentByIdUnsafe(nonExistingCommentId, patchWithComments);
           },
-          formatString(
-            CONST.ERROR.COMMENT_NOT_FOUND,
-            {
-              commentId: nonExistingCommentId,
-              patchPath: patchWithComments.path,
-            }
-          )
+          formatString(CONST.ERROR.COMMENT_NOT_FOUND, {
+            commentId: nonExistingCommentId,
+            patchPath: patchWithComments.path,
+          })
         );
       });
     });
@@ -805,10 +758,7 @@ describe('Patch', () => {
         const commentsList = [testComment1, testComment2];
         const newPatch = Patch.upsertComments(commentsList, emptyPatch);
 
-        assert.sameMembers(
-          Patch.listComments(newPatch),
-          commentsList
-        );
+        assert.sameMembers(Patch.listComments(newPatch), commentsList);
       });
     });
   });
@@ -851,12 +801,18 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, emptyPatch);
 
-      const expectedPin = Pin.createPin('1', 'number', 'input', 0, 'A', '', true, 0);
-
-      assert.deepEqual(
-        [expectedPin],
-        Patch.listPins(newPatch)
+      const expectedPin = Pin.createPin(
+        '1',
+        'number',
+        'input',
+        0,
+        'A',
+        '',
+        true,
+        0
       );
+
+      assert.deepEqual([expectedPin], Patch.listPins(newPatch));
     });
     it('should update pin by associating terminal Node with the same id', () => {
       const patch = Helper.defaultizePatch({
@@ -868,11 +824,17 @@ describe('Patch', () => {
         },
       });
 
-      const expectedPinBeforeUpdate = Pin.createPin('1', 'string', 'output', 0, '', '', false, '');
-      assert.deepEqual(
-        [expectedPinBeforeUpdate],
-        Patch.listPins(patch)
+      const expectedPinBeforeUpdate = Pin.createPin(
+        '1',
+        'string',
+        'output',
+        0,
+        '',
+        '',
+        false,
+        ''
       );
+      assert.deepEqual([expectedPinBeforeUpdate], Patch.listPins(patch));
 
       const node = Helper.defaultizeNode({
         id: '1',
@@ -881,11 +843,17 @@ describe('Patch', () => {
       });
       const newPatch = Patch.assocNode(node, patch);
 
-      const expectedPinAfterUpdate = Pin.createPin('1', 'number', 'input', 0, 'A', '', true, 0);
-      assert.deepEqual(
-        [expectedPinAfterUpdate],
-        Patch.listPins(newPatch)
+      const expectedPinAfterUpdate = Pin.createPin(
+        '1',
+        'number',
+        'input',
+        0,
+        'A',
+        '',
+        true,
+        0
       );
+      assert.deepEqual([expectedPinAfterUpdate], Patch.listPins(newPatch));
     });
   });
   describe('dissocNode', () => {
@@ -956,10 +924,7 @@ describe('Patch', () => {
       const newPatch = Patch.dissocNode('a', patchWithPins);
       assert.deepEqual(
         ['b'],
-        R.compose(
-          R.map(Pin.getPinKey),
-          Patch.listPins
-        )(newPatch)
+        R.compose(R.map(Pin.getPinKey), Patch.listPins)(newPatch)
       );
     });
   });
@@ -1033,10 +998,7 @@ describe('Patch', () => {
       ];
       const patchWithNodes = Patch.upsertNodes(newNodes, patch);
 
-      assert.sameDeepMembers(
-        Patch.listNodes(patchWithNodes),
-        newNodes
-      );
+      assert.sameDeepMembers(Patch.listNodes(patchWithNodes), newNodes);
 
       const nodeIds = R.map(Node.getNodeId, newNodes);
       const newLinks = [
@@ -1072,12 +1034,20 @@ describe('Patch', () => {
     };
 
     it('should return Either.Left for non-existent input node in the patch', () => {
-      const link = { id: linkId, input: { nodeId: 'non-existent', pinKey: 'a' }, output: validOutput };
+      const link = {
+        id: linkId,
+        input: { nodeId: 'non-existent', pinKey: 'a' },
+        output: validOutput,
+      };
       const err = Patch.validateLink(link, patch);
       Helper.expectEitherError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND, err);
     });
     it('should return Either.Left for non-existent output node in the patch', () => {
-      const link = { id: linkId, input: validInput, output: { nodeId: 'non-existent', pinKey: 'a' } };
+      const link = {
+        id: linkId,
+        input: validInput,
+        output: { nodeId: 'non-existent', pinKey: 'a' },
+      };
       const err = Patch.validateLink(link, patch);
       Helper.expectEitherError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND, err);
     });
@@ -1116,7 +1086,7 @@ describe('Patch', () => {
           Attachment.createAttachment(
             'patch.cpp',
             'utf-8',
-            '// implementation',
+            '// implementation'
           ),
         ],
       });
@@ -1142,7 +1112,7 @@ describe('Patch', () => {
           Attachment.createAttachment(
             'patch.cpp',
             'utf-8',
-            '// implementation',
+            '// implementation'
           ),
         ],
       });
@@ -1152,21 +1122,13 @@ describe('Patch', () => {
         assert.deepEqual(sortedPatch, expectedPatch);
       });
       it('getTopology: should return correct topology', () => {
-        Helper.expectEitherRight(
-          (topology) => {
-            expect(topology)
-              .to.be.deep.equal(['a', 'b', 'c']);
-          },
-          Patch.getTopology(patch)
-        );
+        Helper.expectEitherRight(topology => {
+          expect(topology).to.be.deep.equal(['a', 'b', 'c']);
+        }, Patch.getTopology(patch));
 
-        Helper.expectEitherRight(
-          (topology) => {
-            expect(topology)
-              .to.be.deep.equal(['0', '1', '2']);
-          },
-          Patch.getTopology(expectedPatch)
-        );
+        Helper.expectEitherRight(topology => {
+          expect(topology).to.be.deep.equal(['0', '1', '2']);
+        }, Patch.getTopology(expectedPatch));
       });
     });
 
@@ -1176,14 +1138,20 @@ describe('Patch', () => {
           path: PPU.getLocalPath('my-patch'),
           nodes: {
             plsin: {
-              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.PULSE
+              ),
             },
           },
         });
         expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
 
         const terminalPulse = Helper.defaultizePatch({
-          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE),
+          path: PPU.getTerminalPath(
+            CONST.PIN_DIRECTION.OUTPUT,
+            CONST.PIN_TYPE.PULSE
+          ),
         });
         expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
       });
@@ -1191,13 +1159,21 @@ describe('Patch', () => {
         const someLocalPatch = Helper.defaultizePatch({
           path: PPU.getLocalPath('my-patch'),
           nodes: {
-            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+            plsout: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.PULSE
+              ),
+            },
           },
         });
         expect(Patch.isEffectPatch(someLocalPatch)).to.be.true();
 
         const terminalPulse = Helper.defaultizePatch({
-          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+          path: PPU.getTerminalPath(
+            CONST.PIN_DIRECTION.INPUT,
+            CONST.PIN_TYPE.PULSE
+          ),
         });
         expect(Patch.isEffectPatch(terminalPulse)).to.be.true();
       });
@@ -1211,10 +1187,16 @@ describe('Patch', () => {
           path: PPU.getLocalPath('my-patch'),
           nodes: {
             someInputNode: {
-              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.NUMBER),
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.NUMBER
+              ),
             },
             someOutputNode: {
-              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.BOOLEAN),
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.BOOLEAN
+              ),
             },
           },
         });
@@ -1228,7 +1210,10 @@ describe('Patch', () => {
           path: PPU.getLocalPath('my-patch'),
           nodes: {
             plsin: {
-              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.INPUT, CONST.PIN_TYPE.PULSE),
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.PULSE
+              ),
             },
           },
         });
@@ -1238,7 +1223,12 @@ describe('Patch', () => {
         const patch = Helper.defaultizePatch({
           path: PPU.getLocalPath('my-patch'),
           nodes: {
-            plsout: { type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.PULSE) },
+            plsout: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.PULSE
+              ),
+            },
           },
         });
         expect(Patch.canBindToOutputs(patch)).to.be.true();
@@ -1248,7 +1238,10 @@ describe('Patch', () => {
           path: CONST.CONST_NODETYPES[CONST.PIN_TYPE.NUMBER],
           nodes: {
             out: {
-              type: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.NUMBER
+              ),
             },
           },
         });
@@ -1256,7 +1249,10 @@ describe('Patch', () => {
       });
       it('should return true for terminal patches', () => {
         const patch = Helper.defaultizePatch({
-          path: PPU.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT, CONST.PIN_TYPE.NUMBER),
+          path: PPU.getTerminalPath(
+            CONST.PIN_DIRECTION.OUTPUT,
+            CONST.PIN_TYPE.NUMBER
+          ),
         });
         expect(Patch.canBindToOutputs(patch)).to.be.true();
       });
@@ -1299,10 +1295,7 @@ describe('Patch', () => {
           links: {},
         });
 
-        assert.deepEqual(
-          Patch.removeDebugNodes(origPatch),
-          expectedPatch
-        );
+        assert.deepEqual(Patch.removeDebugNodes(origPatch), expectedPatch);
       });
       it('should not affect patch without debug nodes', () => {
         const origPatch = Helper.defaultizePatch({
@@ -1325,10 +1318,7 @@ describe('Patch', () => {
           },
         });
 
-        assert.strictEqual(
-          Patch.removeDebugNodes(origPatch),
-          origPatch
-        );
+        assert.strictEqual(Patch.removeDebugNodes(origPatch), origPatch);
       });
     });
   });
@@ -1346,10 +1336,7 @@ describe('Patch', () => {
           },
         });
 
-        assert.equal(
-          Patch.isVariadicPatch(patch),
-          false
-        );
+        assert.equal(Patch.isVariadicPatch(patch), false);
       });
       it('returns false for Patch with not valid variadic marker', () => {
         const patch = Helper.defaultizePatch({
@@ -1361,10 +1348,7 @@ describe('Patch', () => {
           },
         });
 
-        assert.equal(
-          Patch.isVariadicPatch(patch),
-          false
-        );
+        assert.equal(Patch.isVariadicPatch(patch), false);
       });
       it('returns true for Patch with valid variadic marker', () => {
         const patch = Helper.defaultizePatch({
@@ -1376,20 +1360,14 @@ describe('Patch', () => {
           },
         });
 
-        assert.equal(
-          Patch.isVariadicPatch(patch),
-          true
-        );
+        assert.equal(Patch.isVariadicPatch(patch), true);
       });
     });
 
     describe('getArityStepFromPatch', () => {
       it('returns Nothing for patch without variadic Node', () => {
         const patch = Helper.defaultizePatch({});
-        assert.equal(
-          Patch.getArityStepFromPatch(patch).isNothing,
-          true
-        );
+        assert.equal(Patch.getArityStepFromPatch(patch).isNothing, true);
       });
       it('returns Nothing for patch with wrong kind of variadic Node', () => {
         const patch = Helper.defaultizePatch({
@@ -1400,13 +1378,10 @@ describe('Patch', () => {
             },
           },
         });
-        assert.equal(
-          Patch.getArityStepFromPatch(patch).isNothing,
-          true
-        );
+        assert.equal(Patch.getArityStepFromPatch(patch).isNothing, true);
       });
 
-      const createTestForJust = (n) => {
+      const createTestForJust = n => {
         it(`returns Maybe ${n} for patch with variadic Node`, () => {
           const patch = Helper.defaultizePatch({
             nodes: {
@@ -1416,10 +1391,7 @@ describe('Patch', () => {
               },
             },
           });
-          assert.equal(
-            Patch.getArityStepFromPatch(patch).getOrElse(null),
-            n
-          );
+          assert.equal(Patch.getArityStepFromPatch(patch).getOrElse(null), n);
         });
       };
 

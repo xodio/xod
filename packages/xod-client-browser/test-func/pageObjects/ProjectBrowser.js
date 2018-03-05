@@ -5,7 +5,9 @@ import PatchGroupItemContextMenu from './PatchGroupItemContextMenu';
 
 class ProjectBrowser extends BasePageObject {
   async findPatchGroup(title) {
-    const patchGroupElementHandle = await this.elementHandle.xpath(`//*[@class="PatchGroup"][.//text()="${title}"]`);
+    const patchGroupElementHandle = await this.elementHandle.xpath(
+      `//*[@class="PatchGroup"][.//text()="${title}"]`
+    );
     if (!patchGroupElementHandle) return null;
     return new PatchGroup(this.page, patchGroupElementHandle);
   }
@@ -51,7 +53,7 @@ class ProjectBrowser extends BasePageObject {
   }
 }
 
-ProjectBrowser.findOnPage = async (page) => {
+ProjectBrowser.findOnPage = async page => {
   const elementHandle = await page.$('.ProjectBrowser');
   return new ProjectBrowser(page, elementHandle);
 };
