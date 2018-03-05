@@ -43,9 +43,9 @@ number equals to the arity step. In the example above they are `V1` and
 `V2`. Values for the inputs on each level are provided by a node user.
 
 **Accumulator pins**. Pins in the middle get this role. Their number equals the
-output number. In the example they are `A1`, `A2`, and `A3`. The user provides
-values only for the top level of the cascade; all other levels get accumulator
-values straightly from output pins of the respective upstream node.
+output number. In the example they are `A1`, `A2`, `A3`, and `A4`. The user
+provides values only for the top level of the cascade; all other levels get
+accumulator values straightly from output pins of the respective upstream node.
 
 **Shared pins**. The leftmost pins which are not variadic nor accumulator get
 this role. In the example they are `S1` and `S2`. The values are provided by
