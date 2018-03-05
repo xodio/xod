@@ -13,17 +13,6 @@
       }
     },
     {
-      "id": "HJ0_LU7Oz",
-      "input": {
-        "nodeId": "rkVicaZFZ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ryLFq6btW",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "HJPC5T-FZ",
       "input": {
         "nodeId": "ryua56WYb",
@@ -113,16 +102,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.",
-      "id": "rkVicaZFZ",
-      "label": "_",
-      "position": {
-        "x": 34,
-        "y": 306
-      },
-      "type": "xod/patch-nodes/output-number"
     },
     {
       "description": "The rounding result. Equals to one of Tx.",
