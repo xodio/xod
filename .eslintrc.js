@@ -13,6 +13,7 @@ module.exports = {
     'mocha',
     'flowtype',
     'xod-fp',
+    'prettier',
   ],
 
   extends: [
@@ -23,6 +24,9 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:flowtype/recommended',
     'airbnb',
+    'prettier',
+    'prettier/flowtype',
+    'prettier/react',
   ],
 
   globals: {
@@ -41,6 +45,7 @@ module.exports = {
   },
 
   rules: {
+    'prettier/prettier': 'error',
     'xod-fp/max-composition-depth': ['error', {
       max: 11, // TODO: it should be lowered to 6
       ignoreCurry: true,
