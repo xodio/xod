@@ -45,6 +45,10 @@ defs:
       name: Build
       command: yarn build
 
+    step-verify-git-clean: &step-verify-git-clean
+      name: Verify that previous step made no side-effects
+      command: ./tools/verify-git-clean.sh
+
     step-build-electron: &step-build-electron
       name: Build electron IDE app
       command: yarn build:electron
@@ -89,10 +93,12 @@ jobs:
       - run: *step-install
       - save_cache: *cache-node_modules
       - run: *step-build
+      - run: *step-verify-git-clean
       - run: *step-flow
       - run: *step-lint
       - run: *step-test
       - run: *step-test-func
+      - run: *step-verify-git-clean
 
   verify-macos:
     macos:
@@ -105,10 +111,12 @@ jobs:
       - run: *step-install
       - save_cache: *cache-node_modules
       - run: *step-build
+      - run: *step-verify-git-clean
       - run: *step-flow
       - run: *step-lint
       - run: *step-test
       - run: *step-test-func
+      - run: *step-verify-git-clean
 
   #--------------------------------------------------------------------
   # Distro jobs
