@@ -6,7 +6,7 @@ struct State {
 void evaluate(Context ctx) {
     if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
         setTimeout(ctx, 0);
-    } else {
+    } else if (isTimedOut(ctx)) {
         emitValue<output_OUT>(ctx, true);
     }
 }
