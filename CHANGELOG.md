@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
-## Not yet released
+<a name="0.19.2"></a>
+## 0.19.2 (2018-03-12)
 
 ### Bug fixes
 
