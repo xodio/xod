@@ -933,24 +933,27 @@ export const upsertDeadPins = def(
   'upsertDeadPins :: Node -> Patch -> Map PinKey Pin -> Map PinKey Pin',
   (node, currentPatch, pins) => {
     const nodeId = Node.getNodeId(node);
-    const pinKeys = R.keys(pins);
-    const pinsByDir = R.applySpec({
-      [CONST.PIN_DIRECTION.INPUT]: R.filter(Pin.isInputPin),
-      [CONST.PIN_DIRECTION.OUTPUT]: R.filter(Pin.isOutputPin),
-    })(R.values(pins));
+
+    const pinsByDir = R.compose(R.groupBy(Pin.getPinDirection), R.values)(pins);
 
     const rejectNondeadLinks = R.reject(
       R.either(
-        R.compose(isAmong(pinKeys), Link.getLinkInputPinKey),
-        R.compose(isAmong(pinKeys), Link.getLinkOutputPinKey)
+        R.both(
+          Link.isLinkInputNodeIdEquals(nodeId),
+          R.pipe(Link.getLinkInputPinKey, R.has(R.__, pins))
+        ),
+        R.both(
+          Link.isLinkOutputNodeIdEquals(nodeId),
+          R.pipe(Link.getLinkOutputPinKey, R.has(R.__, pins))
+        )
       )
     );
 
     return R.compose(
       R.merge(pins),
       R.indexBy(Pin.getPinKey),
-      R.when(
-        R.complement(R.isEmpty),
+      R.unless(
+        R.isEmpty,
         R.compose(
           R.map(R.apply(Pin.createDeadPin)),
           R.unnest,
