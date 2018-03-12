@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [nodes] Do not emit an unconditional pulse from `xod/core/defer-pulse` on
+  boot (#1108)
+* [nodes] Remove extraneous utility output from `xod/core/discretize` (#1106)
+* [core] Fix IDE crashing when opening some patches with dead links (#1111)
+
 <a name="0.19.0"></a>
 ## 0.19.0 (2018-03-02)
 
