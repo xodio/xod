@@ -219,17 +219,13 @@ export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (
 //
 // Link
 //
-export const addLink = (pin1, pin2) => (dispatch, getState) => {
-  getCurrentPatchPath(getState()).map(patchPath =>
-    dispatch({
-      type: ActionType.LINK_ADD,
-      payload: {
-        patchPath,
-        pins: [pin1, pin2],
-      },
-    })
-  );
-};
+export const addLink = (pin1, pin2, patchPath) => ({
+  type: ActionType.LINK_ADD,
+  payload: {
+    patchPath,
+    pins: [pin1, pin2],
+  },
+});
 
 //
 // Comment

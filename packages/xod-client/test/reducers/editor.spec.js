@@ -145,7 +145,7 @@ describe('Editor reducer', () => {
       const pinKey = 'in';
       const expectedActions = [Actions.setPinSelection(nodeId, pinKey)];
 
-      store.dispatch(Actions.doPinSelection(nodeId, pinKey));
+      store.dispatch(Actions.setPinSelection(nodeId, pinKey));
       chai.expect(store.getActions()).to.deep.equal(expectedActions);
     });
     it('should deselect pin on second click', () => {

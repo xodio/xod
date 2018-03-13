@@ -25,24 +25,8 @@ export const isLinkConnectedToNodeIds = R.uncurryN(2, nodeIds =>
 // pins linking validation utils
 //
 
-// :: RenderablePin -> String | Null
-export const getPinSelectionError = pin => {
-  if (XP.isInputPin(pin) && pin.isConnected) {
-    return LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-  }
-
-  return null;
-};
-
-// :: RenderablePin -> Boolean
-export const isPinLinkable = R.complement(getPinSelectionError);
-
 // :: RenderablePin -> RenderablePin -> String | Null
 export const getLinkingError = R.curry((pin1, pin2) => {
-  if (!isPinLinkable(pin1) || !isPinLinkable(pin2)) {
-    return LINK_ERRORS.ONE_LINK_FOR_INPUT_PIN;
-  }
-
   // same direction?
   if (pin1.direction === pin2.direction) return LINK_ERRORS.SAME_DIRECTION;
 

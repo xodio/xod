@@ -249,7 +249,7 @@ const mapDispatchToProps = dispatch => ({
       setSelection: EditorActions.setEditorSelection,
       combineSelection: EditorActions.combineEditorSelection,
       addEntityToSelection: EditorActions.addEntityToSelection,
-      doPinSelection: EditorActions.doPinSelection,
+      doPinSelection: EditorActions.setPinSelection,
       linkPin: EditorActions.linkPin,
       setOffset: EditorActions.setCurrentPatchOffset,
       switchPatch: EditorActions.switchPatch,

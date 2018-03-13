@@ -38,7 +38,6 @@ import * as ProjectSelectors from '../project/selectors';
 
 import {
   getRenderablePin,
-  getPinSelectionError,
   getLinkingError,
   getInitialPatchOffset,
   patchToNodeProps,
@@ -75,24 +74,6 @@ export const setPinSelection = (nodeId, pinKey) => ({
 export const clearPinSelection = () => ({
   type: ActionType.EDITOR_DESELECT_PIN,
 });
-
-export const doPinSelection = (nodeId, pinKey) => (dispatch, getState) => {
-  const selectedPin = getRenderablePin(
-    nodeId,
-    pinKey,
-    ProjectSelectors.getRenderableNodes(getState())
-  );
-
-  const err = getPinSelectionError(selectedPin);
-
-  if (err) {
-    dispatch(addError(LINK_ERRORS[err]));
-    return false;
-  }
-
-  dispatch(setPinSelection(nodeId, pinKey));
-  return true;
-};
 
 export const deselectAll = () => (dispatch, getState) => {
   const state = getState();
@@ -148,8 +129,41 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
 
   const linkingTo = { nodeId, pinKey };
 
-  if (R.equals(linkingFrom, linkingTo)) {
+  // We have to check is User want to create the same link to prevent recreating it.
+  // But in case that there is no information about pin direction
+  // we're check it using a Cartesian set of conditions.
+  const isSameLink = R.compose(
+    R.any(
+      R.both(
+        R.either(
+          R.both(
+            XP.isLinkInputNodeIdEquals(linkingTo.nodeId),
+            XP.isLinkInputPinKeyEquals(linkingTo.pinKey)
+          ),
+          R.both(
+            XP.isLinkInputNodeIdEquals(linkingFrom.nodeId),
+            XP.isLinkInputPinKeyEquals(linkingFrom.pinKey)
+          )
+        ),
+        R.either(
+          R.both(
+            XP.isLinkOutputNodeIdEquals(linkingTo.nodeId),
+            XP.isLinkOutputPinKeyEquals(linkingTo.pinKey)
+          ),
+          R.both(
+            XP.isLinkOutputNodeIdEquals(linkingFrom.nodeId),
+            XP.isLinkOutputPinKeyEquals(linkingFrom.pinKey)
+          )
+        )
+      )
+    ),
+    R.values,
+    ProjectSelectors.getCurrentPatchLinks
+  )(state);
+
+  if (R.equals(linkingFrom, linkingTo) || isSameLink) {
     // linking a pin to itself
+    // or linking pins that already has the same link
     dispatch(clearPinSelection());
     return;
   }
@@ -172,7 +186,13 @@ export const linkPin = (nodeId, pinKey) => (dispatch, getState) => {
     dispatch(addError(LINK_ERRORS[error]));
     dispatch(clearPinSelection());
   } else {
-    dispatch(addLink(linkingFrom, linkingTo));
+    dispatch(
+      foldMaybe(
+        clearPinSelection(),
+        patchPath => addLink(linkingFrom, linkingTo, patchPath),
+        Selectors.getCurrentPatchPath(state)
+      )
+    );
   }
 };
 

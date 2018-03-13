@@ -148,7 +148,7 @@ export const isLinkOutputNodeIdEquals = def(
 
 /**
  * Returns true if input pin key equal to specified pin key
- * @function isInputPinKeyEquals
+ * @function isLinkInputPinKeyEquals
  * @param {string} pinKey
  * @param {Link} link
  * @returns {boolean}
@@ -160,7 +160,7 @@ export const isLinkInputPinKeyEquals = def(
 
 /**
  * Returns true if input pin key equal to specified pin key
- * @function isOutputPinKeyEquals
+ * @function isLinkOutputPinKeyEquals
  * @param {string} pinKey
  * @param {Link} link
  * @returns {boolean}

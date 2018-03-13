@@ -247,6 +247,7 @@ describe('project reducer', () => {
     let store = null;
     let testPatchPath = '';
     let inNodeId = '';
+    let inNodeId2 = '';
     let outNodeId = '';
 
     beforeEach(() => {
@@ -264,6 +265,13 @@ describe('project reducer', () => {
           testPatchPath
         )
       );
+      inNodeId2 = store.dispatch(
+        addNode(
+          'xod/patch-nodes/input-number',
+          { x: 200, y: 200 },
+          testPatchPath
+        )
+      );
       outNodeId = store.dispatch(
         addNode(
           'xod/patch-nodes/output-number',
@@ -277,7 +285,32 @@ describe('project reducer', () => {
       store.dispatch(
         addLink(
           { nodeId: inNodeId, pinKey: '__out__' },
-          { nodeId: outNodeId, pinKey: '__in__' }
+          { nodeId: outNodeId, pinKey: '__in__' },
+          '@/test-patch'
+        )
+      );
+
+      const links = R.compose(
+        XP.listLinks,
+        XP.getPatchByPathUnsafe(testPatchPath),
+        getProject
+      )(store.getState());
+
+      assert.equal(1, links.length);
+    });
+    it('should relink a link', () => {
+      store.dispatch(
+        addLink(
+          { nodeId: inNodeId, pinKey: '__out__' },
+          { nodeId: outNodeId, pinKey: '__in__' },
+          '@/test-patch'
+        )
+      );
+      store.dispatch(
+        addLink(
+          { nodeId: inNodeId2, pinKey: '__out__' },
+          { nodeId: outNodeId, pinKey: '__in__' },
+          '@/test-patch'
         )
       );
 
@@ -293,7 +326,8 @@ describe('project reducer', () => {
       store.dispatch(
         addLink(
           { nodeId: inNodeId, pinKey: '__out__' },
-          { nodeId: outNodeId, pinKey: '__in__' }
+          { nodeId: outNodeId, pinKey: '__in__' },
+          '@/test-patch'
         )
       );
 
