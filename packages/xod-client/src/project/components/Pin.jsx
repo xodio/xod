@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { PIN_DIRECTION } from 'xod-project';
+
 import {
   PIN_RADIUS,
   PIN_RADIUS_WITH_OUTER_STROKE,
@@ -11,6 +13,9 @@ const Pin = props => {
   const cls = classNames('Pin', {
     'is-selected': props.isSelected,
     'is-accepting-links': props.isAcceptingLinks,
+    'is-connected': props.isConnected,
+    'is-input': props.direction === PIN_DIRECTION.INPUT,
+    'is-output': props.direction === PIN_DIRECTION.OUTPUT,
   });
 
   const symbolClassNames = classNames('symbol', props.type, {
@@ -60,6 +65,7 @@ Pin.propTypes = {
   keyName: PropTypes.string.isRequired,
   label: PropTypes.string,
   type: PropTypes.string,
+  direction: PropTypes.string,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   isConnected: PropTypes.bool,
