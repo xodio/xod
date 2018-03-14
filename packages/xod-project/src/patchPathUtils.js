@@ -13,6 +13,7 @@ import {
 export {
   isLocalMarker,
   isValidIdentifier,
+  isValidPatchBasename,
   isPathLocal,
   isPathLibrary,
   isLibName,
