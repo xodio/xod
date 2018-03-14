@@ -13,9 +13,6 @@ export const LINK_ERRORS = {
   [LE.SAME_NODE]: composeMessage(
     'Canʼt create link between pins of the same node!'
   ),
-  [LE.ONE_LINK_FOR_INPUT_PIN]: composeMessage(
-    'Input pin can have only one link!'
-  ),
   [LE.UNKNOWN_ERROR]: composeMessage('Canʼt create link', 'Unknown error!'),
   [LE.INCOMPATIBLE_TYPES]: composeMessage('Incompatible pin types!'),
 };

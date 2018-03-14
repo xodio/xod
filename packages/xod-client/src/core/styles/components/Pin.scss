@@ -67,6 +67,10 @@
       fill: $color-canvas-selected;
     }
   }
+
+  &.is-connected.is-input .linkingHighlight {
+    fill-opacity: 0.3;
+  }
 }
 
 .PinOverlay {

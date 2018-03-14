@@ -339,6 +339,11 @@ export default (state = {}, action) => {
       const input = pins[inputPinIndex];
       const output = pins[1 - inputPinIndex];
 
+      const oldLinks = R.compose(
+        XP.listLinksByPin(input.pinKey, input.nodeId),
+        XP.getPatchByPathUnsafe(patchPath)
+      )(state);
+
       const newLink = XP.createLink(
         input.pinKey,
         input.nodeId,
@@ -348,7 +353,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath),
-        R.pipe(XP.assocLink(newLink), explodeEither),
+        R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink), explodeEither),
         state
       );
     }
