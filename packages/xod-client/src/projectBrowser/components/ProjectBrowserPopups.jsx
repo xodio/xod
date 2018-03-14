@@ -56,6 +56,7 @@ class ProjectBrowserPopups extends React.PureComponent {
       <PopupPrompt
         key="rename_patch"
         title="Rename patch"
+        value={selectedPatchName}
         onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.onCloseAllPopups}
         inputMask={patchBasenameMask}
