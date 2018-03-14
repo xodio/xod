@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
+import { isValidPatchBasename, PATCH_BASENAME_RULES } from 'xod-project';
 import { POPUP_ID } from '../../popups/constants';
 import { isPopupVisible } from '../../popups/selectors';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
 import PopupConfirm from '../../utils/components/PopupConfirm';
-import { lowercaseKebabMask } from '../../utils/inputFormatting';
+import { patchBasenameMask } from '../../utils/inputFormatting';
 
 class ProjectBrowserPopups extends React.PureComponent {
   constructor(props) {
@@ -40,9 +40,9 @@ class ProjectBrowserPopups extends React.PureComponent {
         title="Create new patch"
         onConfirm={this.props.onPatchCreate}
         onClose={this.props.onCloseAllPopups}
-        inputMask={lowercaseKebabMask}
-        inputValidator={isValidIdentifier}
-        helpText={IDENTIFIER_RULES}
+        inputMask={patchBasenameMask}
+        inputValidator={isValidPatchBasename}
+        helpText={PATCH_BASENAME_RULES}
       >
         Type the name for new patch:
       </PopupPrompt>
@@ -58,9 +58,9 @@ class ProjectBrowserPopups extends React.PureComponent {
         title="Rename patch"
         onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.onCloseAllPopups}
-        inputMask={lowercaseKebabMask}
-        inputValidator={isValidIdentifier}
-        helpText={IDENTIFIER_RULES}
+        inputMask={patchBasenameMask}
+        inputValidator={isValidPatchBasename}
+        helpText={PATCH_BASENAME_RULES}
       >
         Type new name for patch &laquo;{selectedPatchName}&raquo;:
       </PopupPrompt>
