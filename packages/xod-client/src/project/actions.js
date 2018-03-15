@@ -117,7 +117,7 @@ export const redoPatch = patchPath => ({
 });
 
 export const addPatch = baseName => (dispatch, getState) => {
-  if (!XP.isValidIdentifier(baseName)) {
+  if (!XP.isValidPatchBasename(baseName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
   }
 
@@ -140,6 +140,10 @@ export const renamePatch = (oldPatchPath, newBaseName) => (
   dispatch,
   getState
 ) => {
+  if (!XP.isValidPatchBasename(newBaseName)) {
+    return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
+  }
+
   const newPatchPath = XP.getLocalPath(newBaseName);
   const state = getState();
 

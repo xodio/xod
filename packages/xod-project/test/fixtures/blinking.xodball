@@ -2535,10 +2535,10 @@
         }
       ]
     },
-    "xod/core/analog_output": {
+    "xod/core/analog-output": {
       "comments": {},
       "description": "",
-      "path": "xod/core/analog_output",
+      "path": "xod/core/analog-output",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2642,10 +2642,10 @@
         }
       ]
     },
-    "xod/core/analog_input": {
+    "xod/core/analog-input": {
       "comments": {},
       "description": "",
-      "path": "xod/core/analog_input",
+      "path": "xod/core/analog-input",
       "nodes": {
         "noNativeImpl": {
           "label": "",

@@ -8,13 +8,44 @@ export const getExpandedVariadicPatchPath = R.curry(
     [originalPath, EXPANDED_PATCH_NAME_SUFFIX, arityLevel].join('')
 );
 
+// =============================================================================
+// RegExp parts
+// =============================================================================
+
+// foo2
+const alphanumeric = '[a-z0-9]+';
+
+// foo-2-bar
+const alphanumericWithHypens = `${alphanumeric}(-${alphanumeric})*`;
+
+// foo-2-bar,foo-5-bar
+const alphanumericWithHypensAndCommans = `${alphanumeric}(-${alphanumeric}|,${alphanumeric})*`;
+
+// -$5
+const variadicLevel = '-\\$\\d';
+
+// (foo-2-bar,foo-5-bar)
+const types = `(\\(${alphanumericWithHypensAndCommans}\\)){0,1}`;
+
+// foo2(foo-2-bar,foo-5-bar)-$5
+const patchBaseNameRegExp = new RegExp(
+  `^${alphanumericWithHypens}(${types}|${variadicLevel})$`
+);
+
+// foo-2-bar
+const identifierRegExp = new RegExp(`^${alphanumericWithHypens}$`);
+
+// =============================================================================
+// Validating functions
+// =============================================================================
+
 // :: String -> Boolean
-export const isValidIdentifier = R.allPass([
-  R.test(/[a-z0-9-]+/), // only lowercase alphanumeric and hypen
-  R.complement(R.test(/^-/)), // can't start with hypen
-  R.complement(R.test(/-$/)), // can't end with hypen
-  R.complement(R.test(/--/)), // only one hypen in row
-]);
+// only lowercase alphanumeric and hypen
+export const isValidIdentifier = R.test(identifierRegExp);
+
+// :: String -> Boolean
+// only lowercase alphanumeric and hypen and not more than one type specification
+export const isValidPatchBasename = R.test(patchBaseNameRegExp);
 
 // :: String -> Boolean
 export const isProjectNameValid = R.either(isValidIdentifier, R.isEmpty);
@@ -35,7 +66,7 @@ export const isPathLocal = checkPathParts(
   R.allPass([
     R.pipe(R.length, R.equals(2)),
     R.pipe(R.head, isLocalMarker),
-    R.pipe(R.last, isValidIdentifier),
+    R.pipe(R.last, isValidPatchBasename),
   ])
 );
 
@@ -45,7 +76,11 @@ export const isPathLocal = checkPathParts(
  * @returns {boolean}
  */
 export const isPathLibrary = checkPathParts(
-  R.allPass([R.pipe(R.length, R.equals(3)), R.all(isValidIdentifier)])
+  R.allPass([
+    R.pipe(R.length, R.equals(3)),
+    R.pipe(R.take(2), R.all(isValidIdentifier)),
+    R.pipe(R.last, isValidPatchBasename),
+  ])
 );
 
 /**
@@ -58,10 +93,11 @@ export const isLibName = checkPathParts(
     R.pipe(R.length, R.equals(2)),
     R.pipe(R.head, R.complement(R.equals('@'))),
     R.all(isValidIdentifier),
+    R.pipe(R.last, isValidPatchBasename),
   ])
 );
 
-// :: * -> Boolean
+// :: String -> Boolean
 export const isValidPatchPath = R.either(isPathLocal, isPathLibrary);
 
 export const TERMINALS_LIB_NAME = 'xod/patch-nodes';

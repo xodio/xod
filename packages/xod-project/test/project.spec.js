@@ -296,7 +296,7 @@ describe('Project', () => {
     it('should return Either.Right with Project', () => {
       const patch = {};
       const oldPath = '@/test';
-      const newPath = '@/anotherPath';
+      const newPath = '@/another-path';
       const project = Helper.defaultizeProject({
         patches: { [oldPath]: patch },
       });
@@ -511,7 +511,7 @@ describe('Project', () => {
     });
     it('should return Either.Right for correct values', () => {
       const oldPath = '@/test';
-      const newPath = '@/anotherPath';
+      const newPath = '@/another-path';
       const project = Helper.defaultizeProject({ patches: { [oldPath]: {} } });
 
       const newProject = Project.rebasePatch(newPath, oldPath, project);
@@ -525,7 +525,7 @@ describe('Project', () => {
     });
     it('should update path property of a moved patch', () => {
       const oldPath = '@/test';
-      const newPath = '@/anotherPath';
+      const newPath = '@/another-path';
       const project = Helper.defaultizeProject({
         patches: {
           [oldPath]: { path: oldPath },
@@ -544,7 +544,7 @@ describe('Project', () => {
     });
     it('should update all reference on changed path', () => {
       const oldPath = '@/test';
-      const newPath = '@/anotherPath';
+      const newPath = '@/another-path';
       const withNodesPath = '@/withNodes';
       const project = Helper.defaultizeProject({
         patches: {

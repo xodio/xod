@@ -8,6 +8,11 @@ import * as Helper from './helpers';
 
 chai.use(dirtyChai);
 
+// Kludge to overwrite corrupted by dirtyChai asserts
+// TODO: Remove dirtyChai ( https://github.com/xodio/xod/issues/1129 )
+assert.isTrue = a => assert.equal(a, true);
+assert.isFalse = a => assert.equal(a, false);
+
 describe('PatchPathUtils', () => {
   describe('getBaseName', () => {
     it('should return base name extracted from path', () => {
@@ -46,8 +51,43 @@ describe('PatchPathUtils', () => {
     });
   });
 
+  describe('isValidPatchBasename', () => {
+    it('should ensure that PatchBasename is valid Identifier and could contain valid type specification', () => {
+      // Valid common patch basenames
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('a'));
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('a-1'));
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('a-b'));
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('lower-kebab-123'));
+
+      // Valid basenames with types
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('a(string)'));
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('a-b(string)'));
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('foo(string,number)'));
+      assert.isTrue(
+        PatchPathUtils.isValidPatchBasename('foo(super-string,number)')
+      );
+
+      // Invalid common patch basenames
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('-'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a-'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('-a'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('foo--bar'));
+
+      // Invalid basenames with types
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a-(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a-string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a(string'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a(string,)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a(string)lala'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a(string,number-)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('a(string,-number)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('foo--bar(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('(string,number)'));
+    });
+  });
   describe('isValidPatchPath', () => {
-    it('should accept local paths(@/some-valid-identifier)', () => {
+    it('should accept local paths', () => {
       assert.isTrue(PatchPathUtils.isValidPatchPath('@/some-identifier'));
 
       assert.isFalse(PatchPathUtils.isValidPatchPath('@'));
@@ -58,7 +98,22 @@ describe('PatchPathUtils', () => {
       );
       assert.isFalse(PatchPathUtils.isValidPatchPath('@/extra/slashes'));
     });
-    it('should accept library paths(author/lib-name/some-valid-identifier)', () => {
+    it('should accept local paths with types', () => {
+      assert.isTrue(PatchPathUtils.isValidPatchPath('@/foo(string)'));
+      assert.isTrue(PatchPathUtils.isValidPatchPath('@/foo(string,number)'));
+
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/AA(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/a(string,)'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/a(string,'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/a-(string)'));
+      assert.isFalse(PatchPathUtils.isValidPatchPath('@/a-string)'));
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath('@/extra/slashes(string)')
+      );
+    });
+    it('should accept library paths', () => {
       assert.isTrue(PatchPathUtils.isValidPatchPath('a/b/c'));
       assert.isTrue(
         PatchPathUtils.isValidPatchPath('author/lib-name/some-identifier')
@@ -81,6 +136,48 @@ describe('PatchPathUtils', () => {
 
       assert.isFalse(PatchPathUtils.isValidPatchPath('not-enough/slashes'));
       assert.isFalse(PatchPathUtils.isValidPatchPath('way/too/much/slashes'));
+    });
+    it('should accept library paths with types', () => {
+      assert.isTrue(PatchPathUtils.isValidPatchPath('a/b/c(string)'));
+      assert.isTrue(PatchPathUtils.isValidPatchPath('a/b/c(string,boolean)'));
+      assert.isTrue(
+        PatchPathUtils.isValidPatchPath('author/a-b/some-identifier(string)')
+      );
+      assert.isTrue(
+        PatchPathUtils.isValidPatchPath('author/a-b/foo-bar(string,number)')
+      );
+
+      assert.isFalse(PatchPathUtils.isValidPatchPath('//(string)'));
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/lib-name/some-identifier-(string)'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/lib-name/some-identifier(string,)'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/lib-name/some-identifier(string'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/lib-name/some-identifier-string)'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'author/lib-name/some-identifier(string)lala'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchPath(
+          'invalid@author/lib-name/some-identifier(string)'
+        )
+      );
     });
   });
 
@@ -111,7 +208,7 @@ describe('PatchPathUtils', () => {
       );
     });
     it('should be Either.Right should containt correct value', () => {
-      const path = '@/patchName';
+      const path = '@/patch-name';
       const result = PatchPathUtils.validatePath(path);
       assert.isTrue(result.isRight);
 

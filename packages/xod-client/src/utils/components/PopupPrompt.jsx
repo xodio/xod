@@ -9,12 +9,14 @@ import { noop } from '../../utils/ramda';
 import { KEYCODE } from '../../utils/constants';
 import deepSCU from '../deepSCU';
 
+const selectOnFocus = event => event.target.select();
+
 class PopupPrompt extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      inputValue: '',
+      inputValue: props.value,
     };
 
     this.onCloseClicked = this.onCloseClicked.bind(this);
@@ -107,6 +109,7 @@ class PopupPrompt extends React.Component {
                   type={inputType}
                   value={this.state.inputValue}
                   onChange={this.onInputChange}
+                  onFocus={selectOnFocus}
                   autoFocus
                 />
                 <p className="helpText">{helpText}</p>
@@ -133,6 +136,7 @@ class PopupPrompt extends React.Component {
 
 PopupPrompt.propTypes = {
   title: PropTypes.string,
+  value: PropTypes.string,
   helpText: PropTypes.string,
   children: PropTypes.any,
   confirmText: PropTypes.string,
@@ -149,6 +153,7 @@ PopupPrompt.propTypes = {
 
 PopupPrompt.defaultProps = {
   title: 'We have a question...',
+  value: '',
   helpText: '',
   confirmText: 'Confirm',
   cancelText: 'Cancel',
