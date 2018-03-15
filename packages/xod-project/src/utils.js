@@ -3,7 +3,6 @@ import shortid from 'shortid';
 
 import * as Node from './node';
 import * as CONST from './constants';
-import { formatDeadReferencesFound } from './messages';
 import { def } from './types';
 
 /**
@@ -26,23 +25,6 @@ export const formatString = R.curry((template, replacements) =>
       R.replace(new RegExp(`\\{${key}\\}`, 'gi'), replacement)
     )
   )(replacements)
-);
-
-/**
- * Updates Error message of Left value by wrapping it with
- * dead reference error message. Right value will be passed unchanged.
- *
- * @param {PatchPath} patchPath
- * @param {Either} either Either Error a
- * @returns {Either} Either Error a
- */
-export const wrapDeadRefErrorMessage = R.curry((patchPath, either) =>
-  either.bimap(error => {
-    // Error message updated by mutation to prevent creating new stack trace.
-    // eslint-disable-next-line no-param-reassign
-    error.message = formatDeadReferencesFound(patchPath, error.message);
-    return error;
-  }, R.identity)
 );
 
 /**

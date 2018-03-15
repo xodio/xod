@@ -15,7 +15,7 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
-import { formatString, wrapDeadRefErrorMessage } from './utils';
+import { formatString } from './utils';
 import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
@@ -1033,7 +1033,6 @@ export default def(
         )(project)
       ),
       R.map(expandVariadicNodes(path)),
-      wrapDeadRefErrorMessage(path),
       Project.validateProject
     )(inputProject)
 );

@@ -38,10 +38,18 @@ export const find = R.curry(R.compose(Maybe, R.find));
  * Returns an Error object wrapped into Either.Left
  * @private
  * @function err
- * @param {string} errorMessage
+ * @param {string|object} errorMessage
  * @returns {Either.Left<Error>}
  */
-export const err = R.compose(R.always, Either.Left, R.construct(Error));
+export const err = R.compose(
+  R.always,
+  Either.Left,
+  R.ifElse(R.is(String), R.construct(Error), ({ title, message }) => {
+    const e = new Error(message);
+    e.title = title;
+    return e;
+  })
+);
 
 /**
  * Returns function that checks condition and returns Either
@@ -49,7 +57,7 @@ export const err = R.compose(R.always, Either.Left, R.construct(Error));
  * Right with passed content for true
  * @private
  * @function errOnFalse
- * @param {string} errorMessage
+ * @param {string|object} errorMessage
  * @param {function} condition
  * @returns {function}
  */
@@ -61,7 +69,7 @@ export const errOnFalse = R.curry((errorMessage, condition) =>
  * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
  * @private
  * @function errOnNothing
- * @param {string} errorMessage Error message for Maybe.Nothing
+ * @param {string|object} errorMessage Error message for Maybe.Nothing
  * @param {*|Maybe<*>} data Data or Maybe monad
  * @returns {Either<Error|*>}
  */

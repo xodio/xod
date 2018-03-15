@@ -43,7 +43,11 @@ export default class App extends React.Component {
       foldEither(
         R.compose(
           this.props.actions.addError,
-          R.when(R.is(Error), err => composeMessage(err.message))
+          R.when(R.is(Error), err => {
+            const title = err.title || err.message;
+            const message = err.title ? err.message : null;
+            return composeMessage(title, message);
+          })
         ),
         this.props.actions.showCode
       ),

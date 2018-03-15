@@ -819,17 +819,11 @@ describe('Flatten', () => {
       // number to *
       fn(CONST.PIN_TYPE.NUMBER, CONST.PIN_TYPE.BOOLEAN);
       fn(CONST.PIN_TYPE.NUMBER, CONST.PIN_TYPE.STRING);
-      fn(CONST.PIN_TYPE.NUMBER, CONST.PIN_TYPE.PULSE);
       // boolean to *
       fn(CONST.PIN_TYPE.BOOLEAN, CONST.PIN_TYPE.NUMBER);
       fn(CONST.PIN_TYPE.BOOLEAN, CONST.PIN_TYPE.STRING);
       fn(CONST.PIN_TYPE.BOOLEAN, CONST.PIN_TYPE.PULSE);
-      // string to *
-      fn(CONST.PIN_TYPE.STRING, CONST.PIN_TYPE.BOOLEAN);
-      fn(CONST.PIN_TYPE.STRING, CONST.PIN_TYPE.PULSE);
-      // pulse to *
-      fn(CONST.PIN_TYPE.PULSE, CONST.PIN_TYPE.NUMBER);
-      fn(CONST.PIN_TYPE.PULSE, CONST.PIN_TYPE.BOOLEAN);
+      // string and pulse types does not casts to anything
     };
 
     describe('no links to terminal', () => {
