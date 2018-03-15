@@ -20,6 +20,8 @@ const LinksOverlayLayer = ({ links, selection, hidden, onClick }) => (
           from={link.from}
           to={link.to}
           type={link.type}
+          dead={link.dead}
+          errors={link.errors}
           onClick={onClick}
           isSelected={isLinkSelected(selection, link.id)}
         />
