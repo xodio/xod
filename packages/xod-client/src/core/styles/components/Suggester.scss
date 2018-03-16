@@ -121,14 +121,26 @@
   }
 
   &-item {
-    padding: 6px 4px;
-    height: 40px;
+    // Keeping a height of every line of the item the same is cruicial
+    // because at most times content will overflow (description is too
+    // long). To be sure the content is clipped accurately between lines
+    // the line height is fixed and inner elements should not add any
+    // non-complementary vertical margins and paddings
+    $line-height: 15px;
+    $padding-vert: 6px;
+    $title-margin: 3px;
+
+    padding: ($padding-vert + $title-margin) 4px 0 4px;
+    // The border is an artificial bottom-padding hiding overflown content
+    border-bottom: $padding-vert solid transparent;
+    height: 3 * $line-height;
+    position: relative;
     overflow: hidden;
 
     border-radius: 2px;
 
     &--library {
-      height: 52px;
+      height: 4 * $line-height;
 
       .add {
         display: block;
@@ -150,9 +162,9 @@
       display: block;
       font-size: $font-size-l;
       color: $sidebar-color-text-hover;
-      margin-bottom: 2px;
-      margin-top: -2px;
-      line-height: 1.2;
+      margin-bottom: $title-margin;
+      margin-top: -$title-margin;
+      line-height: $line-height;
 
       .version {
         font-size: $font-size-m;
@@ -160,17 +172,17 @@
       }
     }
     .description {
+      color: $sidebar-color-subtitle;
       display: block;
       font-size: $font-size-m;
-      height: 28px;
-      padding-top: 2px;
+      line-height: $line-height;
       overflow: hidden;
     }
   }
 
   mark {
-    background: rgba(255,255,0,.25);
-    box-shadow: 0 0 2px rgba(255,255,0,.25);
+    background: rgba($olive, 0.5);
+    box-shadow: 0 0 2px rgba($olive, 0.5);
     color: #fff;
     text-shadow: 0 1px 2px rgba(0,0,0,.6);
   }
