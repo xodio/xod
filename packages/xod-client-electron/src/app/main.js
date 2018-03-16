@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
+import windowStateKeeper from 'electron-window-state';
 import { URL } from 'url';
 import * as R from 'ramda';
 
@@ -69,21 +70,34 @@ let win;
 let confirmedWindowClose = false;
 
 function createWindow() {
+  // Load the previous state with fallback to defaults
+  const winState = windowStateKeeper({
+    defaultWidth: 1280,
+    defaultHeight: 720,
+  });
+
   // Create the browser window.
   win = new BrowserWindow({
-    width: 1280,
-    height: 720,
+    x: winState.x,
+    y: winState.y,
+    width: winState.width,
+    height: winState.height,
     minWidth: 800,
     minHeight: 600,
     title: DEFAULT_APP_TITLE,
     show: false,
-    // this is required for subpixel antialiasing to work
+    // Explicit opaque white is required for subpixel antialiasing to work
     backgroundColor: '#FFF',
     webPreferences: {
       partition: 'persist:main',
     },
   });
-  win.maximize();
+
+  // Register listeners on the window, so it can update the state automatically
+  // (the listeners will be removed when the window is closed) and restore the
+  // maximized or full screen state
+  winState.manage(win);
+
   // and load the index.html of the app.
   win.loadURL(`file://${__dirname}/../index.html`);
 
