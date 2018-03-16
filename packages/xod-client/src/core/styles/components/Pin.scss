@@ -21,8 +21,12 @@
 .Pin {
   .symbol {
     fill: $color-pin-fill;
-    stroke: $color-pin-fill; // pins borders are colored by type and don't have a 'default' color.
+    stroke: $color-datatype-generic;
     stroke-width: 2px;
+
+    &.is-connected {
+      fill: $color-datatype-generic;
+    }
 
     &.string {
       @include symbol-coloring($color-datatype-string);

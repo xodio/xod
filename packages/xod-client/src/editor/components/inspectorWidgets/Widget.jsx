@@ -91,7 +91,8 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     parseValue(val) {
-      return PROPERTY_TYPE_PARSE[this.type](val);
+      const parser = PROPERTY_TYPE_PARSE[this.type] || R.identity;
+      return parser(val);
     }
 
     render() {

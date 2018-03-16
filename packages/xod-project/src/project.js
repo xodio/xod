@@ -472,6 +472,7 @@ export const validatePatchContents = def(
 
     return checkNodeTypes(patch)
       .chain(checkLinks)
+      .chain(Patch.validateAbstractPatch)
       .chain(Patch.validatePatchForVariadics);
   }
 );

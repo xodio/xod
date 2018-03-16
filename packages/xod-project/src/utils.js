@@ -102,6 +102,8 @@ export const generateId = shortid.generate;
  */
 export const validateId = R.test(/^[a-zA-Z0-9\-_]+$/);
 
+export const isGenericType = R.test(/^t[1-3]$/);
+
 /**
  * Returns a default (empty) value for a given data type.
  *

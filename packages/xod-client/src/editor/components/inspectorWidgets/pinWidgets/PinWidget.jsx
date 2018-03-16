@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { PIN_DIRECTION, PIN_TYPE } from 'xod-project';
+import { PIN_DIRECTION, PIN_TYPE, isGenericType } from 'xod-project';
 
 import PinIcon from './PinIcon';
 
@@ -18,12 +18,19 @@ const isNonBindableOutput = R.both(
   R.complement(R.prop('isBindable'))
 );
 
-const isBindingForbidden = R.either(isLinkedInput, isNonBindableOutput);
+const isGenericPin = R.pipe(R.prop('dataType'), isGenericType);
+
+const isBindingForbidden = R.anyPass([
+  isGenericPin,
+  isLinkedInput,
+  isNonBindableOutput,
+]);
 
 const isPulsePin = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.PULSE));
 const isDeadPinType = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.DEAD));
 
 const getReason = R.cond([
+  [isGenericPin, R.always('generic pin')],
   [isDeadPinType, R.always('dead pin')],
   [isLinkedInput, R.always('linked')],
   [R.both(isNonBindableOutput, isPulsePin), R.always('pulse')],

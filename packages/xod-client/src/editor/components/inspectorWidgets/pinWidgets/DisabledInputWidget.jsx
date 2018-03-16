@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import PinWidget from './PinWidget';
 
-const DeadWidget = props => (
+const DisabledInputWidget = props => (
   <PinWidget
     elementId={props.elementId}
     label={props.label}
@@ -16,7 +16,7 @@ const DeadWidget = props => (
   />
 );
 
-DeadWidget.propTypes = {
+DisabledInputWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
   normalizedLabel: PropTypes.string.isRequired,
   label: PropTypes.string,
@@ -27,9 +27,9 @@ DeadWidget.propTypes = {
   direction: PropTypes.string,
 };
 
-DeadWidget.defaultProps = {
+DisabledInputWidget.defaultProps = {
   label: 'Unnamed property',
   value: 0,
 };
 
-export default DeadWidget;
+export default DisabledInputWidget;

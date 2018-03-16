@@ -167,10 +167,20 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
 
 // :: Patch -> RenderableNode -> RenderableNode
 const addVariadicErrors = R.curry((patch, renderableNode) =>
-  R.when(R.compose(XP.isVariadicPath, R.prop('type')), node =>
+  R.when(R.compose(XP.isVariadicPath, XP.getNodeType), node =>
     R.compose(
       foldEither(err => addError(err, node), R.always(node)),
       XP.validatePatchForVariadics
+    )(patch)
+  )(renderableNode)
+);
+
+// :: Patch -> RenderableNode -> RenderableNode
+const addAbstractPatchErrors = R.curry((patch, renderableNode) =>
+  R.when(R.compose(R.equals(XP.ABSTRACT_MARKER_PATH), XP.getNodeType), node =>
+    R.compose(
+      foldEither(err => addError(err, node), R.always(node)),
+      XP.validateAbstractPatch
     )(patch)
   )(renderableNode)
 );
@@ -196,6 +206,7 @@ const addVariadicProps = R.curry((project, renderableNode) =>
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, project) =>
     R.compose(
+      addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),
       addVariadicProps(project),
       addDeadRefErrors(project),

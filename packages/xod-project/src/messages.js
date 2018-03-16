@@ -23,3 +23,10 @@ export const wrongVariadicPinTypes = (inputPinLabels, outputPinLabels) =>
 
 export const ERR_VARIADIC_HAS_NO_OUTPUTS =
   'A variadic patch should have at least one output';
+
+// Abstract patches
+
+export const nonsequentialGenericTerminals = expectedPinTypes =>
+  `Generic inputs should be employed sequentially. Use ${expectedPinTypes.join(
+    ', '
+  )}`;

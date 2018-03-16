@@ -10,8 +10,12 @@
 
 .Link {
   .line {
-    stroke: grey;
+    stroke: $color-datatype-generic;
     stroke-width: 2px;
+  }
+
+  .end {
+    fill:  $color-datatype-generic;
   }
 
   &.string {

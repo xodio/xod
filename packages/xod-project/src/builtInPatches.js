@@ -8,6 +8,7 @@ import {
   OPPOSITE_DIRECTION,
   TERMINAL_PIN_KEYS,
   NOT_IMPLEMENTED_IN_XOD_PATH,
+  ABSTRACT_MARKER_PATH,
   DEFAULT_VALUE_OF_TYPE,
   MAX_ARITY_STEP,
 } from './constants';
@@ -50,7 +51,7 @@ const getTerminalPins = R.curry((direction, type) => {
 
 export const PINS_OF_PATCH_NODES = R.compose(
   R.fromPairs,
-  R.append([NOT_IMPLEMENTED_IN_XOD_PATH, {}]),
+  R.concat([[NOT_IMPLEMENTED_IN_XOD_PATH, {}], [ABSTRACT_MARKER_PATH, {}]]),
   R.concat(
     R.map(arityStep => [getVariadicPath(arityStep), {}])(
       R.range(1, MAX_ARITY_STEP + 1)

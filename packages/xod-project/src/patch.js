@@ -38,6 +38,7 @@ import {
 import {
   notEnoughVariadicInputs,
   noVariadicMarkers,
+  nonsequentialGenericTerminals,
   tooManyVariadicMarkers,
   wrongVariadicPinTypes,
   ERR_VARIADIC_HAS_NO_OUTPUTS,
@@ -1223,4 +1224,58 @@ export const addVariadicPins = def(
       newPins
     );
   }
+);
+
+// =============================================================================
+//
+// Utils for Abstract patches
+//
+// =============================================================================
+
+/**
+ * Checks if a patch is marked as abstract.
+ */
+export const isAbstractPatch = def(
+  'isAbstractPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.equals(CONST.ABSTRACT_MARKER_PATH)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
+export const validateAbstractPatch = def(
+  'validateAbstractPatch :: Patch -> Either Error Patch',
+  R.ifElse(
+    isAbstractPatch,
+    patch => {
+      const genericPinTypes = R.compose(
+        R.sort(R.ascend),
+        R.uniq,
+        R.map(Pin.getPinType),
+        R.filter(Pin.isGenericPin),
+        listPins
+      )(patch);
+
+      if (R.isEmpty(genericPinTypes)) {
+        return Either.Left(new Error(CONST.ERROR.GENERIC_TERMINALS_REQUIRED));
+      }
+
+      const expectedPinTypes = R.compose(
+        R.map(i => `t${i}`),
+        R.range(1),
+        R.inc,
+        R.length
+      )(genericPinTypes);
+
+      if (!R.equals(genericPinTypes, expectedPinTypes)) {
+        return Either.Left(
+          new Error(nonsequentialGenericTerminals(expectedPinTypes))
+        );
+      }
+
+      return Either.of(patch);
+    },
+    Either.of
+  )
 );

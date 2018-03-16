@@ -1596,4 +1596,65 @@ describe('Patch', () => {
       });
     });
   });
+
+  describe('abstract patches', () => {
+    describe('validateAbstractPatch', () => {
+      it('should ignore regular patches', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            foo: {
+              type: PPU.getLocalPath('whatever'),
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(patch),
+          Patch.validateAbstractPatch(patch)
+        );
+      });
+
+      it('should check that abstract patches have generic inputs', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              type: CONST.ABSTRACT_MARKER_PATH,
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          CONST.ERROR.GENERIC_TERMINALS_REQUIRED,
+          Patch.validateAbstractPatch(patch)
+        );
+      });
+
+      it('should check that generic terminals are used sequentually', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              type: CONST.ABSTRACT_MARKER_PATH,
+            },
+            b: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
+            c: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T3
+              ),
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          'Generic inputs should be employed sequentially. Use t1, t2',
+          Patch.validateAbstractPatch(patch)
+        );
+      });
+    });
+  });
 });

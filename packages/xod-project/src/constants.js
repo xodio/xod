@@ -18,6 +18,7 @@ export const ERROR = {
   PATCH_REBASING_BUILT_IN: "Can't rebase built-in patch",
   CANT_GET_PATCH_BY_NODEID:
     'Can\'t find prototype Patch of Node with Id "{nodeId}" from Patch "{patchPath}"',
+  GENERIC_TERMINALS_REQUIRED: 'At least one generic terminal is required',
   // pathes
   PATH_INVALID: 'Path is empty or contains invalid characters',
   // nodes
@@ -51,6 +52,8 @@ export const ERROR = {
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'No implementation for {patchPath} found.',
   CPP_AS_ENTRY_POINT: 'Can’t use patch not implemented in XOD as entry point',
+  ABSTRACT_AS_ENTRY_POINT: 'Can’t use abstract patch as entry point',
+  ALL_TYPES_MUST_BE_RESOLVED: 'All generic types must be resolved', // TODO: phrasing!
   CAST_PATCH_NOT_FOUND:
     'Casting patch "{patchPath}" is not found in the project',
   // .xodball format
@@ -77,6 +80,10 @@ export const PIN_TYPE = {
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
   DEAD: 'dead',
+  // generic types
+  T1: 't1',
+  T2: 't2',
+  T3: 't3',
 };
 
 export const DEFAULT_VALUE_OF_TYPE = {
@@ -85,6 +92,9 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.BOOLEAN]: false,
   [PIN_TYPE.PULSE]: false,
   [PIN_TYPE.DEAD]: 0,
+  [PIN_TYPE.T1]: 0,
+  [PIN_TYPE.T2]: 0,
+  [PIN_TYPE.T3]: 0,
 };
 
 export const MAX_ARITY_STEP = 3;
@@ -138,6 +148,10 @@ export const TYPES_COMPATIBILITY = {
     [PIN_TYPE.STRING]: false,
     [PIN_TYPE.DEAD]: false,
   },
+  // for now generic pins can't connect with anything
+  [PIN_TYPE.T1]: {},
+  [PIN_TYPE.T2]: {},
+  [PIN_TYPE.T3]: {},
 };
 
 export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
@@ -218,6 +232,15 @@ export const TERMINAL_PIN_KEYS = {
  */
 export const NOT_IMPLEMENTED_IN_XOD_PATH =
   'xod/patch-nodes/not-implemented-in-xod';
+
+/**
+ * Path for a 'magic' patch, whose instance is placed
+ * to mark abstract nodes.
+ *
+ * @name ABSTRACT_MARKER_PATH
+ * @type {string}
+ */
+export const ABSTRACT_MARKER_PATH = 'xod/patch-nodes/abstract';
 
 export const IMPL_FILENAME = 'patch.cpp';
 

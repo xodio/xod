@@ -3,11 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
-import { SELECTION_ENTITY_TYPE, WIDGET_TYPE } from '../constants';
+import { WIDGET_TYPE } from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
 import WidgetsGroup from './WidgetsGroup';
-import Widgets, { WIDGET_MAPPING } from './inspectorWidgets';
+import Widgets, { getNodeWidgetConfig } from './inspectorWidgets';
 
 import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
@@ -42,10 +42,9 @@ const createPinWidgetsConfig = R.compose(
     (acc, renderablePin) => {
       const widgetProps = getPinWidgetProps(renderablePin);
 
-      const widget = Widgets.composeWidget(
-        WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetProps.type].component,
-        WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][widgetProps.type].props
-      );
+      const { component, props } = getNodeWidgetConfig(widgetProps.type);
+
+      const widget = Widgets.composeWidget(component, props);
 
       return R.compose(
         R.assocPath(['components', widgetProps.key], widget),
@@ -63,12 +62,12 @@ const createPinWidgetsConfig = R.compose(
 
 const NodeLabelWidget = Widgets.composeWidget(
   Widgets.LabelWidget,
-  WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.STRING].props
+  getNodeWidgetConfig(WIDGET_TYPE.STRING).props
 );
 
 const NodeDescriptionWidget = Widgets.composeWidget(
   Widgets.DescriptionWidget,
-  WIDGET_MAPPING[SELECTION_ENTITY_TYPE.NODE][WIDGET_TYPE.TEXTAREA].props
+  getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props
 );
 
 const NodeInspector = ({ node, onPropUpdate }) => {
