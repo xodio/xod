@@ -6,7 +6,7 @@ import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
 import PulseWidget from './pinWidgets/PulsePinWidget';
 import StringWidget from './pinWidgets/StringPinWidget';
-import DeadPinWidget from './pinWidgets/DeadPinWidget';
+import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
 import IOLabelWidget from './IOLabelWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
@@ -76,7 +76,7 @@ const WIDGET_MAPPING = {
     props: { type: 'string' },
   },
   [WIDGET_TYPE.DEAD]: {
-    component: DeadPinWidget,
+    component: DisabledInputWidget,
     props: {
       type: PIN_TYPE.DEAD,
     },
@@ -86,7 +86,7 @@ const WIDGET_MAPPING = {
 export const getNodeWidgetConfig = type =>
   isGenericType(type)
     ? {
-        component: DeadPinWidget,
+        component: DisabledInputWidget,
         props: { type },
       }
     : WIDGET_MAPPING[type];
