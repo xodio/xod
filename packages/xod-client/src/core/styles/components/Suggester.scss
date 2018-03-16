@@ -11,14 +11,23 @@
 }
 
 .Suggester {
+  $width: 400px;
+
   position: absolute;
   left: 50%;
   top: 5%;
   z-index: 10;
 
-  width: 400px;
-  margin: 0 0 0 -400px;
+  width: $width;
+  margin-left: (-$width);
   box-sizing: border-box;
+
+  @media(max-width: 2 * $width) {
+    /* In cases when the window is to narrow to host the whole suggester on the
+       right half, use the full width of the half we have */
+    width: 50vw;
+    margin-left: -50vw;
+  }
 
   padding: 4px;
 

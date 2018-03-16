@@ -82,7 +82,9 @@ function createWindow() {
     y: winState.y,
     width: winState.width,
     height: winState.height,
-    minWidth: 800,
+    // 700px is the content width on xod.io and Medium. Resizing down to it
+    // lets make 1-to-1 screencasts and snapshots
+    minWidth: 700,
     minHeight: 600,
     title: DEFAULT_APP_TITLE,
     show: false,
