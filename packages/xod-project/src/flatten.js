@@ -172,6 +172,10 @@ export const extractLeafPatches = def(
           )
         ),
       ],
+      [
+        Patch.isAbstractPatch,
+        R.compose(R.of, err(CONST.ERROR.ALL_TYPES_MUST_BE_RESOLVED)),
+      ],
       [R.T, extractLeafPatchesFromNodes(extractLeafPatches, project)],
     ])(patch)
 );
@@ -945,6 +949,16 @@ const checkEntryPatchIsNative = def(
     )(patch)
 );
 
+const checkEntryPatchIsNotAbstract = def(
+  'checkEntryPatchIsNotAbstract :: Patch -> Either Error Patch',
+  patch =>
+    R.ifElse(
+      Patch.isAbstractPatch,
+      err(CONST.ERROR.ABSTRACT_AS_ENTRY_POINT),
+      Either.of
+    )(patch)
+);
+
 /**
  * Flattens project
  *
@@ -1009,6 +1023,7 @@ export default def(
         R.compose(
           R.chain(flattenProject(project, path)),
           R.chain(checkEntryPatchIsNative),
+          R.chain(checkEntryPatchIsNotAbstract),
           errOnNothing(
             formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
               patchPath: path,

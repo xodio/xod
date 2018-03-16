@@ -10,7 +10,7 @@ import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { formatString } from '../src/utils';
-import { getCastPatchPath } from '../src/patchPathUtils';
+import { getCastPatchPath, getTerminalPath } from '../src/patchPathUtils';
 
 chai.use(dirtyChai);
 
@@ -1930,6 +1930,49 @@ describe('Flatten', () => {
         const flatProject = flatten(project, 'xod/core/or');
         Helper.expectEitherError(CONST.ERROR.CPP_AS_ENTRY_POINT, flatProject);
       });
+    });
+  });
+
+  describe('abstract patches', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        '@/main': {
+          nodes: {
+            a: {
+              type: '@/abstract',
+            },
+          },
+        },
+        '@/abstract': {
+          nodes: {
+            a: {
+              type: CONST.ABSTRACT_MARKER_PATH,
+            },
+            b: {
+              type: getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
+          },
+        },
+      },
+    });
+
+    it('should not accept abstract patches as an entry point', () => {
+      const flatProject = flatten(project, '@/abstract');
+      Helper.expectEitherError(
+        CONST.ERROR.ABSTRACT_AS_ENTRY_POINT,
+        flatProject
+      );
+    });
+
+    it('should not allow unresolved abstract patches', () => {
+      const flatProject = flatten(project, '@/main');
+      Helper.expectEitherError(
+        CONST.ERROR.ALL_TYPES_MUST_BE_RESOLVED,
+        flatProject
+      );
     });
   });
 });

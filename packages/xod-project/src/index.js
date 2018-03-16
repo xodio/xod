@@ -56,6 +56,8 @@ export {
   validatePatchForVariadics,
   getArityStepFromPatch,
   isVariadicPatch,
+  isAbstractPatch,
+  validateAbstractPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

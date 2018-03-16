@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import * as CONST from './constants';
 import { def } from './types';
+import { isGenericType } from './utils';
 
 /**
  * An object representing patch pin
@@ -182,6 +183,11 @@ export const isTerminalPin = def(
 export const isPulsePin = def(
   'isPulsePin :: Pin -> Boolean',
   R.compose(R.equals(CONST.PIN_TYPE.PULSE), getPinType)
+);
+
+export const isGenericPin = def(
+  'isGenericPin :: Pin -> Boolean',
+  R.compose(isGenericType, getPinType)
 );
 
 // =============================================================================

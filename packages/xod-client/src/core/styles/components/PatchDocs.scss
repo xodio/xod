@@ -41,6 +41,7 @@ $PinInfo-padding-bottom: 10px;
       &.pulse { color: $color-datatype-pulse }
       &.number { color: $color-datatype-number }
       &.string { color: $color-datatype-string }
+      &.generic { color: $color-datatype-generic }
     }
 
     .description {

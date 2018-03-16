@@ -18,11 +18,16 @@ const NODE_POSITION_IN_PREVIEW = {
 const MAX_NODE_WIDTH = 245 - NODE_POSITION_IN_PREVIEW.x * 2;
 const NODE_PREVIEW_HEIGHT = 93;
 
+const formatPinType = R.when(XP.isGenericType, type => `generic ${type}`);
+const getPinTypeClassName = R.when(XP.isGenericType, R.always('generic'));
+
 const PinInfo = ({ type, label, description, isVariadic }) => (
   <div className="pin-info">
     <div>
       <span className="label">{label}</span>
-      <span className={cn('type', type)}>{type}</span>
+      <span className={cn('type', getPinTypeClassName(type))}>
+        {formatPinType(type)}
+      </span>
       {isVariadic && <span className="variadic">&nbsp;(variadic)</span>}
     </div>
     <div className="description">
