@@ -158,10 +158,19 @@ export const getCastPatchPath = (typeIn, typeOut) =>
 // defer-* nodes
 //
 
-const deferNodeRegExp = new RegExp(`xod/core/defer-(${dataTypes.join('|')})$`);
+const legacyDeferNodeRegExp = new RegExp(
+  `^xod/core/defer-(${dataTypes.join('|')})$`
+);
+// TODO: when custom types will be added this should be generalized
+const deferNodeRegExp = new RegExp(
+  `^xod/core/defer\\((${dataTypes.join('|')})\\)$`
+);
 
 // :: PatchPath -> Boolean
-export const isDeferNodeType = R.test(deferNodeRegExp);
+export const isDeferNodeType = R.either(
+  R.test(legacyDeferNodeRegExp),
+  R.test(deferNodeRegExp)
+);
 
 //
 // constant-* nodes
