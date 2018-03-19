@@ -9,6 +9,7 @@ import {
   isTerminalPatchPath,
   isProjectNameValid,
   isValidIdentifier,
+  isValidPatchBasename,
   isValidPatchPath,
   isLibName,
 } from './internal/patchPathUtils';
@@ -66,6 +67,7 @@ export const PinKey = AliasType('PinKey', NodeId);
 export const PinLabel = AliasType('PinLabel', $.String);
 export const Identifier = NullaryType('Identifier', isValidIdentifier);
 export const ProjectName = NullaryType('ProjectName', isProjectNameValid);
+export const PatchBaseName = NullaryType('PatchBaseName', isValidPatchBasename);
 export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const LibName = NullaryType('LibName', isLibName);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
@@ -177,6 +179,7 @@ export const env = XF.env.concat([
   NodeId,
   NodeOrId,
   Patch,
+  PatchBaseName,
   PatchPath,
   Pin,
   PinDirection,
