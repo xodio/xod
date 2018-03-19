@@ -6,6 +6,7 @@ import {
   PATCH_DELETE_REQUESTED,
   SET_SELECTION,
   REMOVE_SELECTION,
+  TOGGLE_DEPRECATED_FILTER,
 } from './actionTypes';
 
 import { getSelectedPatchPath } from './selectors';
@@ -48,4 +49,8 @@ export const setSelection = selectedPatchPath => ({
 
 export const removeSelection = () => ({
   type: REMOVE_SELECTION,
+});
+
+export const toggleDeprecatedFilter = () => ({
+  type: TOGGLE_DEPRECATED_FILTER,
 });

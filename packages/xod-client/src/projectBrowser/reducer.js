@@ -7,6 +7,7 @@ import {
   PATCH_DELETE_REQUESTED,
   SET_SELECTION,
   REMOVE_SELECTION,
+  TOGGLE_DEPRECATED_FILTER,
 } from './actionTypes';
 
 import { PATCH_DELETE, PATCH_RENAME } from '../project/actionTypes';
@@ -17,6 +18,7 @@ import {
   INSTALL_LIBRARIES_FAILED,
 } from '../editor/actionTypes';
 
+// Reducers
 const selectionReducer = (state, action) => {
   switch (action.type) {
     case SET_SELECTION:
@@ -52,9 +54,19 @@ const installingLibrariesReducer = (state, action) => {
   }
 };
 
+const filtersReducer = (state, action) => {
+  switch (action.type) {
+    case TOGGLE_DEPRECATED_FILTER:
+      return R.over(R.lensProp('deprecated'), R.not, state);
+    default:
+      return state;
+  }
+};
+
 export default (state = initialState, action) =>
   R.merge(state, {
     selectedPatchPath: selectionReducer(state.selectedPatchPath, action),
+    filters: filtersReducer(state.filters, action),
     installingLibraries: installingLibrariesReducer(
       state.installingLibraries,
       action

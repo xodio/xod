@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-fa';
 import { HotKeys } from 'react-hotkeys';
-import { ContextMenuTrigger } from 'react-contextmenu';
+import { ContextMenuTrigger, ContextMenu, MenuItem } from 'react-contextmenu';
 
 import $ from 'sanctuary-def';
 import {
@@ -14,6 +14,7 @@ import {
   isPathLocal,
   getBaseName,
   PatchPath,
+  isDeprecatedPatch,
 } from 'xod-project';
 import { isAmong, notEquals, $Maybe, foldMaybe } from 'xod-func-tools';
 
@@ -36,16 +37,23 @@ import PatchGroupItem from '../components/PatchGroupItem';
 import ProjectBrowserPopups from '../components/ProjectBrowserPopups';
 import PatchGroupItemContextMenu from '../components/PatchGroupItemContextMenu';
 
-import { PATCH_GROUP_CONTEXT_MENU_ID } from '../constants';
+import {
+  PATCH_GROUP_CONTEXT_MENU_ID,
+  FILTER_CONTEXT_MENU_ID,
+} from '../constants';
 import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
-const pickPatchPartsForComparsion = R.map(R.pick(['dead', 'path']));
+const pickPatchPartsForComparsion = R.map(
+  R.pick(['deprecated', 'dead', 'path'])
+);
+
+const checkmark = active => (active ? <span className="state">✔</span> : null);
 
 const pickPropsForComparsion = R.compose(
   R.evolve({
     localPatches: pickPatchPartsForComparsion,
-    libs: pickPatchPartsForComparsion,
+    libs: R.map(pickPatchPartsForComparsion),
   }),
   R.omit(['actions'])
 );
@@ -178,9 +186,11 @@ class ProjectBrowser extends React.Component {
 
     const collectPropsFn = this.getCollectPropsFn(path);
 
+    const key = `${path}${deprecated ? '_deprecated' : ''}`;
+
     return (
       <PatchGroupItem
-        key={path}
+        key={key}
         patchPath={path}
         dead={dead}
         label={getBaseName(path)}
@@ -235,6 +245,14 @@ class ProjectBrowser extends React.Component {
     );
     const installingLibNames = R.pluck('name', installingLibsComponents);
 
+    // Rejecting of deprecated patches is implemented in the
+    // component for better performance.
+    // :: { LibName: [Patch] } -> { LibName: [Patch] }
+    const rejectDeprecatedPatches = R.unless(
+      () => this.props.showDeprecated,
+      R.map(R.reject(isDeprecatedPatch))
+    );
+
     const libComponents = R.compose(
       R.reject(R.compose(isAmong(installingLibNames), R.prop('name'))),
       R.map(([libName, libPatches]) => ({
@@ -250,7 +268,8 @@ class ProjectBrowser extends React.Component {
           </PatchGroup>
         ),
       })),
-      R.toPairs
+      R.toPairs,
+      rejectDeprecatedPatches
     )(libs);
 
     return R.compose(
@@ -283,6 +302,17 @@ class ProjectBrowser extends React.Component {
         title="Add library"
         onClick={this.onClickAddLibrary}
       />,
+      <ContextMenuTrigger
+        id={FILTER_CONTEXT_MENU_ID}
+        key="contextMenuTrigger"
+        renderTag="button"
+        attributes={{
+          className: 'filter',
+        }}
+        holdToDisplay={0}
+      >
+        <span />
+      </ContextMenuTrigger>,
     ];
   }
 
@@ -323,6 +353,12 @@ class ProjectBrowser extends React.Component {
           onPatchRename={this.props.actions.requestRename}
           onPatchHelp={this.onPatchHelpClicked}
         />
+        <ContextMenu id={FILTER_CONTEXT_MENU_ID}>
+          <MenuItem onClick={this.props.actions.toggleDeprecatedFilter}>
+            {checkmark(this.props.showDeprecated)}
+            Deprecated nodes
+          </MenuItem>
+        </ContextMenu>
       </HotKeys>
     );
   }
@@ -342,6 +378,7 @@ ProjectBrowser.propTypes = {
   defaultNodePosition: PropTypes.object.isRequired,
   sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
   autohide: PropTypes.bool.isRequired,
+  showDeprecated: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
     switchPatch: PropTypes.func.isRequired,
@@ -357,6 +394,7 @@ ProjectBrowser.propTypes = {
     closeAllPopups: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
+    toggleDeprecatedFilter: PropTypes.func.isRequired,
   }),
 };
 
@@ -370,6 +408,7 @@ const mapStateToProps = R.applySpec({
   libs: ProjectBrowserSelectors.getLibs,
   installingLibs: ProjectBrowserSelectors.getInstallingLibraries,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
+  showDeprecated: ProjectBrowserSelectors.shouldShowDeprecatedPatches,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -395,6 +434,8 @@ const mapDispatchToProps = dispatch => ({
       addNotification: MessagesActions.addNotification,
       showLibSuggester: EditorActions.showLibSuggester,
       showHelpbox: EditorActions.showHelpbox,
+
+      toggleDeprecatedFilter: ProjectBrowserActions.toggleDeprecatedFilter,
     },
     dispatch
   ),
