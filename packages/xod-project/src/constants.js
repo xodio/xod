@@ -249,6 +249,12 @@ export const NOT_IMPLEMENTED_IN_XOD_PATH =
  */
 export const ABSTRACT_MARKER_PATH = 'xod/patch-nodes/abstract';
 
+/**
+ * Path for a 'magic' patch, whose instance is placed
+ * to mark deprecated nodes.
+ */
+export const DEPRECATED_MARKER_PATH = 'xod/patch-nodes/deprecated';
+
 export const IMPL_FILENAME = 'patch.cpp';
 
 export const UNTITLED_PROJECT = 'untitled';
