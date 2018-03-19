@@ -7,7 +7,7 @@
 // TODO: Messages that are templates (contains variables)
 //       should be moved into messages.js as separate variables.
 export const ERROR = {
-  // project
+  // dead ref errors:
   TYPE_NOT_FOUND: 'Patch with type "{type}" is not found in the project',
   PINS_NOT_FOUND:
     "Specified node types haven't required pins for creating links",
@@ -56,10 +56,17 @@ export const ERROR = {
   ALL_TYPES_MUST_BE_RESOLVED: 'All generic types must be resolved', // TODO: phrasing!
   CAST_PATCH_NOT_FOUND:
     'Casting patch "{patchPath}" is not found in the project',
+  CANT_CAST_TYPES_DIRECTLY:
+    '{patchPath}: type {fromType} can’t cast to {toType} directly.',
   // .xodball format
   NOT_A_JSON: 'File that you try to load is not in a JSON format',
   INVALID_XODBALL_FORMAT:
     'File that you try to load is corrupted and has a wrong structure',
+};
+
+export const ERROR_TITLES = {
+  DEAD_REFERENCE: 'Dead reference error',
+  BAD_LINKS: 'Program contains bad links',
 };
 
 export const IDENTIFIER_RULES = `Only a-z, 0-9 and - are allowed.

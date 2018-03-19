@@ -3,7 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { foldMaybe, foldEither } from 'xod-func-tools';
+import { foldMaybe, foldEither, explodeMaybe } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -138,12 +138,12 @@ export const getCurrentPatch = createSelector(
   (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
-// :: Error -> RenderableNode -> RenderableNode
-const addError = R.curry((error, node) =>
+// :: Error -> RenderableNode|RenderableLink -> RenderableNode|RenderableLink
+const addError = R.curry((error, renderableEntity) =>
   R.compose(
     R.over(R.lensProp('errors'), R.append(error)),
     R.unless(R.has('errors'), R.assoc('errors', []))
-  )(node)
+  )(renderableEntity)
 );
 
 // :: Project -> RenderableNode -> RenderableNode
@@ -235,39 +235,37 @@ export const getRenderableNodes = createMemoizedSelector(
 
 // :: State -> StrMap RenderableLink
 export const getRenderableLinks = createMemoizedSelector(
-  [getRenderableNodes, getCurrentPatchLinks],
-  [R.equals, R.equals],
-  (nodes, links) =>
+  [getRenderableNodes, getCurrentPatchLinks, getCurrentPatch, getProject],
+  [R.equals, R.equals, R.equals, R.equals],
+  (nodes, links, curPatch, project) =>
     R.compose(
       addLinksPositioning(nodes),
-      R.map(link => {
-        const inputNodeId = XP.getLinkInputNodeId(link);
-        const outputNodeId = XP.getLinkOutputNodeId(link);
-        const inputPinKey = XP.getLinkInputPinKey(link);
-        const outputPinKey = XP.getLinkOutputPinKey(link);
-
-        const inputNodeIsDead = nodes[inputNodeId].dead;
-        const outputNodeIsDead = nodes[outputNodeId].dead;
-        const inputPinKeyHasDeadType = R.pathEq(
-          [inputNodeId, 'pins', inputPinKey, 'type'],
-          XP.PIN_TYPE.DEAD,
-          nodes
-        );
-        const outputPinKeyHasDeadType = R.pathEq(
-          [outputNodeId, 'pins', outputPinKey, 'type'],
-          XP.PIN_TYPE.DEAD,
-          nodes
-        );
-
-        return R.merge(link, {
-          type: nodes[outputNodeId].pins[outputPinKey].type,
-          dead:
-            inputNodeIsDead ||
-            outputNodeIsDead ||
-            inputPinKeyHasDeadType ||
-            outputPinKeyHasDeadType,
-        });
-      })
+      R.map(link =>
+        R.compose(
+          newLink => {
+            const outputNodeId = XP.getLinkOutputNodeId(link);
+            const outputPinKey = XP.getLinkOutputPinKey(link);
+            return R.assoc(
+              'type',
+              nodes[outputNodeId].pins[outputPinKey].type,
+              newLink
+            );
+          },
+          foldEither(
+            R.pipe(addError(R.__, link), R.assoc('dead', true)),
+            R.identity
+          ),
+          R.map(R.always(link)),
+          XP.validateLinkPins
+        )(
+          link,
+          explodeMaybe(
+            'Imposible error: RenderableLinks will be computed only for current patch',
+            curPatch
+          ),
+          project
+        )
+      )
     )(links)
 );
 

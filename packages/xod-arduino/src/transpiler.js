@@ -326,7 +326,6 @@ const transformProjectWithImpls = def(
   'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
   (project, path, opts) =>
     R.compose(
-      Project.wrapDeadRefErrorMessage(path),
       R.chain(tProject => {
         const nodeWithTooManyOutputs = R.find(
           R.pipe(R.prop('outputs'), R.length, R.lt(7)),

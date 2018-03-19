@@ -391,6 +391,339 @@ describe('Project', () => {
       );
     });
   });
+  describe('validateLinkPins', () => {
+    const testPatches = {
+      numbers: Helper.defaultizePatch({
+        path: 'test/nodes/numbers',
+        nodes: {
+          in: {
+            type: 'xod/patch-nodes/input-number',
+          },
+          out: {
+            type: 'xod/patch-nodes/output-number',
+          },
+        },
+      }),
+      pulses: Helper.defaultizePatch({
+        path: 'test/nodes/pulses',
+        nodes: {
+          in: {
+            type: 'xod/patch-nodes/input-pulse',
+          },
+          out: {
+            type: 'xod/patch-nodes/output-pulse',
+          },
+        },
+      }),
+      variadic: Helper.defaultizePatch({
+        path: 'test/nodes/variadic',
+        nodes: {
+          in: {
+            type: 'xod/patch-nodes/input-number',
+          },
+          in2: {
+            type: 'xod/patch-nodes/input-number',
+          },
+          out: {
+            type: 'xod/patch-nodes/output-number',
+          },
+          v: {
+            type: 'xod/patch-nodes/variadic-1',
+          },
+        },
+      }),
+    };
+
+    it('invalid link if input Node does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          b: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        `Can't find the Node "a" in the patch with path "@/test"`,
+        result
+      );
+    });
+    it('invalid link if output Node does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        `Can't find the Node "b" in the patch with path "@/test"`,
+        result
+      );
+    });
+    it('invalid link if input Pin does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out2' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        "Specified node types haven't required pins for creating links",
+        result
+      );
+    });
+    it('invalid link if output Pin does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in2' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        "Specified node types haven't required pins for creating links",
+        result
+      );
+    });
+    it('invalid link if Patch for input Node does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/not-exists',
+          },
+          b: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        'Patch with type "test/nodes/not-exists" is not found in the project',
+        result
+      );
+    });
+    it('invalid link if Patch for output Node does not exists', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/not-exists',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        'Patch with type "test/nodes/not-exists" is not found in the project',
+        result
+      );
+    });
+    it('invalid link between incompatible pins', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/pulses',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+          'test/nodes/pulses': testPatches.pulses,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      Helper.expectEitherError(
+        '@/test: type pulse can’t cast to number directly.',
+        result
+      );
+    });
+
+    it('valid link between compatible pins', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/numbers',
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      assert.equal(Either.isRight(result), true);
+    });
+    it('valid link connected to variadic input', () => {
+      const link = Helper.defaultizeLink({
+        id: 'l',
+        input: { nodeId: 'a', pinKey: 'out' },
+        output: { nodeId: 'b', pinKey: 'in2-$1' },
+      });
+      const patch = Helper.defaultizePatch({
+        path: '@/test',
+        nodes: {
+          a: {
+            type: 'test/nodes/numbers',
+          },
+          b: {
+            type: 'test/nodes/variadic',
+            arityLevel: 2,
+          },
+        },
+        links: {
+          l: link,
+        },
+      });
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/test': patch,
+          'test/nodes/numbers': testPatches.numbers,
+          'test/nodes/variadic': testPatches.variadic,
+        },
+      });
+
+      const result = Project.validateLinkPins(link, patch, project);
+      assert.equal(Either.isRight(result), true);
+    });
+  });
 
   // entity setters
   describe('assocPatch', () => {
