@@ -26,6 +26,9 @@ import { missingPatchForNode } from './messages';
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
 
+// :: State -> [Patch]
+const listPatches = R.compose(XP.listPatches, getProject);
+
 //
 // Patch
 //
@@ -320,7 +323,27 @@ export const getRenderableSelection = createMemoizedSelector(
 //
 // Suggester
 //
+
+// :: Maybe PatchPath -> Patch -> Boolean
+const patchEqualsToCurPatchPath = R.curry((maybeCurrentPatchPath, patch) =>
+  R.compose(
+    R.equals(foldMaybe('', R.identity, maybeCurrentPatchPath)),
+    XP.getPatchPath
+  )(patch)
+);
+
+// :: State -> [PatchSearchIndex]
 export const getPatchSearchIndex = createSelector(
-  R.compose(XP.listPatches, getProject),
-  R.compose(createIndexFromPatches, R.reject(isPatchDeadTerminal))
+  [listPatches, getCurrentPatchPath],
+  (patches, maybeCurPatchPath) =>
+    R.compose(
+      createIndexFromPatches,
+      R.reject(
+        R.anyPass([
+          isPatchDeadTerminal,
+          XP.isDeprecatedPatch,
+          patchEqualsToCurPatchPath(maybeCurPatchPath),
+        ])
+      )
+    )(patches)
 );
