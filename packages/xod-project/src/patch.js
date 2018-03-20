@@ -1306,7 +1306,7 @@ export const validateAbstractPatch = def(
     isAbstractPatch,
     patch => {
       const genericPinTypes = R.compose(
-        R.sort(R.ascend),
+        R.sort(R.ascend(R.identity)),
         R.uniq,
         R.map(Pin.getPinType),
         R.filter(Pin.isGenericPin),

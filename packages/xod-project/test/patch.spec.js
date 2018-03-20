@@ -1694,6 +1694,34 @@ describe('Patch', () => {
           Patch.validateAbstractPatch(patch)
         );
       });
+
+      it('should ignore the order in which terminals are created', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            // note that output-t2 is defined first
+            'output-t2': {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.T2
+              ),
+            },
+            'input-t1': {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
+            'abstract-marker': {
+              type: CONST.ABSTRACT_MARKER_PATH,
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(patch),
+          Patch.validateAbstractPatch(patch)
+        );
+      });
     });
   });
 });
