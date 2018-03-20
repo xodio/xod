@@ -17,23 +17,32 @@ import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import nodeHoverContextType from '../../editor/nodeHoverContextType';
 
-const renderTooltipContent = (nodeType, nodeLabel, errText) =>
-  [
+const renderTooltipContent = (nodeType, nodeLabel, isDeprecated, errText) =>
+  R.compose(
+    R.when(
+      () => isDeprecated,
+      R.concat([
+        <div key="deprecated" className="Tooltip--deprecated">
+          Deprecated
+        </div>,
+      ])
+    ),
+    R.when(
+      () => !!errText,
+      R.append(
+        <div key="error" className="Tooltip--error">
+          {errText}
+        </div>
+      )
+    )
+  )([
     <div key="nodeLabel" className="Tooltip--nodeLabel">
       {nodeLabel}
     </div>,
     <div key="nodeType" className="Tooltip--nodeType">
       {nodeType}
     </div>,
-  ].concat(
-    errText
-      ? [
-          <div key="error" className="Tooltip--error">
-            {errText}
-          </div>,
-        ]
-      : []
-  );
+  ]);
 
 class Node extends React.Component {
   constructor(props) {
@@ -109,6 +118,7 @@ class Node extends React.Component {
       size,
       type,
       isDragged,
+      isDeprecated,
     } = this.props;
 
     const pinsArr = R.values(pins);
@@ -121,6 +131,7 @@ class Node extends React.Component {
       'is-changing-arity': this.props.isChangingArity,
       'is-errored': this.props.errors.length > 0,
       'is-hovered': this.isNodeHovered(),
+      'is-deprecated': this.props.isDeprecated,
     });
 
     const pinsCls = classNames('pins', {
@@ -145,7 +156,9 @@ class Node extends React.Component {
     return (
       <TooltipHOC
         content={
-          isDragged ? null : renderTooltipContent(type, nodeLabel, errMessage)
+          isDragged
+            ? null
+            : renderTooltipContent(type, nodeLabel, isDeprecated, errMessage)
         }
         render={(onMouseOver, onMouseMove, onMouseLeave) => (
           <svg
@@ -213,6 +226,7 @@ Node.propTypes = {
   size: PropTypes.any.isRequired,
   position: PropTypes.object.isRequired,
   errors: PropTypes.arrayOf(PropTypes.instanceOf(Error)),
+  isDeprecated: PropTypes.bool,
   isSelected: PropTypes.bool,
   isGhost: PropTypes.bool,
   isDragged: PropTypes.bool,
@@ -230,6 +244,7 @@ Node.propTypes = {
 
 Node.defaultProps = {
   errors: [],
+  isDeprecated: false,
   isSelected: false,
   isGhost: false,
   isDragged: false,

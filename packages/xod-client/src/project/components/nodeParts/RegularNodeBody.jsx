@@ -15,13 +15,19 @@ const NODE_BODY_RECT_PROPS = {
   height: '100%',
 };
 
+// To prevent the label from sticking to the node outline
+// NodeLabel block is shifted to the right by this value
+// and has reduced width by doubled value
+const NODE_LABEL_MARGIN = 2;
+
 const RegularNodeBody = props => (
   <g>
     <rect className="body" {...NODE_BODY_RECT_PROPS} />
     <NodeLabel
       text={props.label || XP.getBaseName(props.type)}
-      width={props.size.width}
+      width={props.size.width - NODE_LABEL_MARGIN * 2}
       height={props.size.height}
+      x={NODE_LABEL_MARGIN}
     />
     <rect className="outline" {...NODE_BODY_RECT_PROPS} />
     {props.isVariadic ? (

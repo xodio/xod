@@ -38,4 +38,7 @@
   &--error {
     color: $red-bright;
   }
+  &--deprecated {
+    color: $deprecated;
+  }
 }

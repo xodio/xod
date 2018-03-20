@@ -205,10 +205,21 @@ const addVariadicProps = R.curry((project, renderableNode) =>
   )(renderableNode)
 );
 
+// :: Project -> RenderableNode -> RenderableNode
+const markDeprecatedNodes = R.curry((project, node) =>
+  R.compose(
+    R.assoc('deprecated', R.__, node),
+    foldMaybe(false, R.identity),
+    R.map(XP.isDeprecatedPatch),
+    XP.getPatchByNode
+  )(node, project)
+);
+
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, project) =>
     R.compose(
+      markDeprecatedNodes(project),
       addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),
       addVariadicProps(project),

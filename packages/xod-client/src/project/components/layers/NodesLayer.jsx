@@ -35,6 +35,7 @@ const NodesLayer = ({
             type={node.type}
             position={node.position}
             errors={node.errors}
+            isDeprecated={node.deprecated}
             hidden={node.hidden}
             size={node.size}
             pins={node.pins}
