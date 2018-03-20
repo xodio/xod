@@ -1,0 +1,29 @@
+{
+  "description": "Transforms a number to string with two digits after dot",
+  "nodes": [
+    {
+      "id": "__in__",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "__out__",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Transforms true value to 1.0 and false to 0.0",
+  "nodes": [
+    {
+      "id": "__in__",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "__out__",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

@@ -1219,9 +1219,9 @@ void evaluate(Context ctx) {
 } // namespace xod__core__greater
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_boolean_to_pulse implementation
+// xod/core/cast__boolean__pulse implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_boolean_to_pulse {
+namespace xod__core__cast__boolean__pulse {
 
 struct State {
   bool state = false;
@@ -1303,12 +1303,12 @@ void evaluate(Context ctx) {
     state->state = newValue;
 }
 
-} // namespace xod__core__cast_boolean_to_pulse
+} // namespace xod__core__cast__boolean__pulse
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_number_to_string implementation
+// xod/core/cast__number__string implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_number_to_string {
+namespace xod__core__cast__number__string {
 
 #pragma XOD dirtieness disable
 
@@ -1389,7 +1389,7 @@ void evaluate(Context ctx) {
     emitValue<output_OUT>(ctx, XString(&state->view));
 }
 
-} // namespace xod__core__cast_number_to_string
+} // namespace xod__core__cast__number__string
 
 } // namespace xod
 
@@ -1407,8 +1407,8 @@ namespace xod {
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
 constexpr Logic node_0_output_OUT = false;
-xod__core__cast_boolean_to_pulse::Node node_0 = {
-    xod__core__cast_boolean_to_pulse::State(), // state default
+xod__core__cast__boolean__pulse::Node node_0 = {
+    xod__core__cast__boolean__pulse::State(), // state default
     node_0_output_OUT, // output OUT default
     false, // OUT dirty
     true // node itself dirty
@@ -1461,8 +1461,8 @@ xod__core__greater::Node node_14 = {
 };
 
 constexpr XString node_15_output_OUT = XString();
-xod__core__cast_number_to_string::Node node_15 = {
-    xod__core__cast_number_to_string::State(), // state default
+xod__core__cast__number__string::Node node_15 = {
+    xod__core__cast__number__string::State(), // state default
     node_15_output_OUT, // output OUT default
     true // node itself dirty
 };
@@ -1517,18 +1517,18 @@ void runTransaction(bool firstRun) {
     }
 
     // Evaluate all dirty nodes
-    { // xod__core__cast_boolean_to_pulse #0
+    { // xod__core__cast__boolean__pulse #0
         if (node_0.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
 
-            xod__core__cast_boolean_to_pulse::ContextObject ctxObj;
+            xod__core__cast__boolean__pulse::ContextObject ctxObj;
             ctxObj._node = &node_0;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_17.output_OUT;
 
-            xod__core__cast_boolean_to_pulse::evaluate(&ctxObj);
+            xod__core__cast__boolean__pulse::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_13.isNodeDirty |= node_0.isOutputDirty_OUT;
@@ -1596,18 +1596,18 @@ void runTransaction(bool firstRun) {
             node_17.isNodeDirty = true;
         }
     }
-    { // xod__core__cast_number_to_string #15
+    { // xod__core__cast__number__string #15
         if (node_15.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
 
-            xod__core__cast_number_to_string::ContextObject ctxObj;
+            xod__core__cast__number__string::ContextObject ctxObj;
             ctxObj._node = &node_15;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_13.output_OUT;
 
-            xod__core__cast_number_to_string::evaluate(&ctxObj);
+            xod__core__cast__number__string::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_16.isNodeDirty = true;

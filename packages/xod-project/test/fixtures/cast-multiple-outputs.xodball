@@ -216,7 +216,7 @@
       },
       "path": "@/two-nums-output"
     },
-    "xod/core/cast-number-to-string": {
+    "xod/core/cast(number,string)": {
       "nodes": {
         "__in__": {
           "boundValues": {},
@@ -253,7 +253,7 @@
         }
       },
       "links": {},
-      "path": "xod/core/cast-number-to-string",
+      "path": "xod/core/cast(number,string)",
       "description": "Transforms a number to string with two digits after dot",
       "attachments": [
         {

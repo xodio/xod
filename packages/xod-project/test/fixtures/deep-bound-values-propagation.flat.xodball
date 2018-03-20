@@ -176,7 +176,7 @@
       "path": "xod/core/console-log",
       "@@type": "xod-project/Patch"
     },
-    "xod/core/cast-number-to-string": {
+    "xod/core/cast(number,string)": {
       "attachments": [
         {
           "filename": "patch.cpp",
@@ -225,7 +225,7 @@
         }
       },
       "comments": {},
-      "path": "xod/core/cast-number-to-string",
+      "path": "xod/core/cast(number,string)",
       "@@type": "xod-project/Patch"
     },
     "@/main": {
@@ -277,7 +277,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/core/cast-number-to-string",
+          "type": "xod/core/cast(number,string)",
           "label": "",
           "description": "",
           "boundValues": {},

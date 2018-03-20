@@ -1,0 +1,29 @@
+{
+  "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
+  "nodes": [
+    {
+      "id": "__in__",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "__out__",
+      "position": {
+        "x": 0,
+        "y": 300
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
