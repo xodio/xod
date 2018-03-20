@@ -803,101 +803,6 @@ void evaluate(Context ctx) {
 } // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
-// xod/core/defer_boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__defer_boolean {
-
-struct State {
-};
-
-struct Node {
-    State state;
-    TimeMs timeoutAt;
-    Logic output_OUT;
-
-    union {
-        struct {
-            bool isOutputDirty_OUT : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Logic; };
-template<> struct ValueType<output_OUT> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-    Logic _input_IN;
-
-    bool _isInputDirty_IN;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Logic getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> Logic getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_IN");
-    return false;
-}
-
-template<> bool isInputDirty<input_IN>(Context ctx) {
-    return ctx->_isInputDirty_IN;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Logic val) {
-    ctx->_node->output_OUT = val;
-    ctx->_node->isOutputDirty_OUT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-        setTimeout(ctx, 0);
-        // This will not have any immediate effect, because
-        // deferred nodes are at the very bottom of sorted graph.
-        // We do this to just save the value for reemission
-        // on deferred-only evaluation.
-        emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
-    } else { // deferred-only evaluation pass
-        emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
-    }
-}
-
-} // namespace xod__core__defer_boolean
-
-//-----------------------------------------------------------------------------
 // xod/core/clock implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__clock {
@@ -1131,6 +1036,101 @@ void evaluate(Context ctx) {
 } // namespace xod__core__count
 
 //-----------------------------------------------------------------------------
+// xod/core/defer__boolean implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__defer__boolean {
+
+struct State {
+};
+
+struct Node {
+    State state;
+    TimeMs timeoutAt;
+    Logic output_OUT;
+
+    union {
+        struct {
+            bool isOutputDirty_OUT : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Logic; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Logic _input_IN;
+
+    bool _isInputDirty_IN;
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
+}
+
+template<> Logic getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            " input_IN");
+    return false;
+}
+
+template<> bool isInputDirty<input_IN>(Context ctx) {
+    return ctx->_isInputDirty_IN;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
+    ctx->_node->isOutputDirty_OUT = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
+        setTimeout(ctx, 0);
+        // This will not have any immediate effect, because
+        // deferred nodes are at the very bottom of sorted graph.
+        // We do this to just save the value for reemission
+        // on deferred-only evaluation.
+        emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
+    } else { // deferred-only evaluation pass
+        emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
+    }
+}
+
+} // namespace xod__core__defer__boolean
+
+//-----------------------------------------------------------------------------
 // xod/core/greater implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__greater {
@@ -1219,95 +1219,9 @@ void evaluate(Context ctx) {
 } // namespace xod__core__greater
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_number_to_string implementation
+// xod/core/cast__boolean__pulse implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_number_to_string {
-
-#pragma XOD dirtieness disable
-
-struct State {
-    char str[16];
-    CStringView view;
-    State() : view(str) { }
-};
-
-struct Node {
-    State state;
-    XString output_OUT;
-
-    union {
-        struct {
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Number; };
-template<> struct ValueType<output_OUT> { using T = XString; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_IN;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> XString getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, XString val) {
-    ctx->_node->output_OUT = val;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    auto num = getValue<input_IN>(ctx);
-    dtostrf(num, 0, 2, state->str);
-    emitValue<output_OUT>(ctx, XString(&state->view));
-}
-
-} // namespace xod__core__cast_number_to_string
-
-//-----------------------------------------------------------------------------
-// xod/core/cast_boolean_to_pulse implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__cast_boolean_to_pulse {
+namespace xod__core__cast__boolean__pulse {
 
 struct State {
   bool state = false;
@@ -1389,7 +1303,93 @@ void evaluate(Context ctx) {
     state->state = newValue;
 }
 
-} // namespace xod__core__cast_boolean_to_pulse
+} // namespace xod__core__cast__boolean__pulse
+
+//-----------------------------------------------------------------------------
+// xod/core/cast__number__string implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__cast__number__string {
+
+#pragma XOD dirtieness disable
+
+struct State {
+    char str[16];
+    CStringView view;
+    State() : view(str) { }
+};
+
+struct Node {
+    State state;
+    XString output_OUT;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Number; };
+template<> struct ValueType<output_OUT> { using T = XString; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_IN;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
+}
+
+template<> Number getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> XString getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, XString val) {
+    ctx->_node->output_OUT = val;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    auto state = getState(ctx);
+    auto num = getValue<input_IN>(ctx);
+    dtostrf(num, 0, 2, state->str);
+    emitValue<output_OUT>(ctx, XString(&state->view));
+}
+
+} // namespace xod__core__cast__number__string
 
 } // namespace xod
 
@@ -1407,8 +1407,8 @@ namespace xod {
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
 constexpr Logic node_0_output_OUT = false;
-xod__core__cast_boolean_to_pulse::Node node_0 = {
-    xod__core__cast_boolean_to_pulse::State(), // state default
+xod__core__cast__boolean__pulse::Node node_0 = {
+    xod__core__cast__boolean__pulse::State(), // state default
     node_0_output_OUT, // output OUT default
     false, // OUT dirty
     true // node itself dirty
@@ -1461,8 +1461,8 @@ xod__core__greater::Node node_14 = {
 };
 
 constexpr XString node_15_output_OUT = XString();
-xod__core__cast_number_to_string::Node node_15 = {
-    xod__core__cast_number_to_string::State(), // state default
+xod__core__cast__number__string::Node node_15 = {
+    xod__core__cast__number__string::State(), // state default
     node_15_output_OUT, // output OUT default
     true // node itself dirty
 };
@@ -1473,8 +1473,8 @@ xod__common_hardware__text_lcd_16x2::Node node_16 = {
 };
 
 constexpr Logic node_17_output_OUT = false;
-xod__core__defer_boolean::Node node_17 = {
-    xod__core__defer_boolean::State(), // state default
+xod__core__defer__boolean::Node node_17 = {
+    xod__core__defer__boolean::State(), // state default
     0, // timeoutAt
     node_17_output_OUT, // output OUT default
     true, // OUT dirty
@@ -1502,11 +1502,11 @@ void runTransaction(bool firstRun) {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN(17);
 
-            xod__core__defer_boolean::ContextObject ctxObj;
+            xod__core__defer__boolean::ContextObject ctxObj;
             ctxObj._node = &node_17;
             ctxObj._isInputDirty_IN = false;
 
-            xod__core__defer_boolean::evaluate(&ctxObj);
+            xod__core__defer__boolean::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_0.isNodeDirty |= node_17.isOutputDirty_OUT;
@@ -1517,18 +1517,18 @@ void runTransaction(bool firstRun) {
     }
 
     // Evaluate all dirty nodes
-    { // xod__core__cast_boolean_to_pulse #0
+    { // xod__core__cast__boolean__pulse #0
         if (node_0.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
 
-            xod__core__cast_boolean_to_pulse::ContextObject ctxObj;
+            xod__core__cast__boolean__pulse::ContextObject ctxObj;
             ctxObj._node = &node_0;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_17.output_OUT;
 
-            xod__core__cast_boolean_to_pulse::evaluate(&ctxObj);
+            xod__core__cast__boolean__pulse::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_13.isNodeDirty |= node_0.isOutputDirty_OUT;
@@ -1596,18 +1596,18 @@ void runTransaction(bool firstRun) {
             node_17.isNodeDirty = true;
         }
     }
-    { // xod__core__cast_number_to_string #15
+    { // xod__core__cast__number__string #15
         if (node_15.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
 
-            xod__core__cast_number_to_string::ContextObject ctxObj;
+            xod__core__cast__number__string::ContextObject ctxObj;
             ctxObj._node = &node_15;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_13.output_OUT;
 
-            xod__core__cast_number_to_string::evaluate(&ctxObj);
+            xod__core__cast__number__string::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_16.isNodeDirty = true;
@@ -1636,12 +1636,12 @@ void runTransaction(bool firstRun) {
             // mark downstream nodes dirty
         }
     }
-    { // xod__core__defer_boolean #17
+    { // xod__core__defer__boolean #17
         if (node_17.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(17);
 
-            xod__core__defer_boolean::ContextObject ctxObj;
+            xod__core__defer__boolean::ContextObject ctxObj;
             ctxObj._node = &node_17;
 
             // copy data from upstream nodes into context
@@ -1649,7 +1649,7 @@ void runTransaction(bool firstRun) {
 
             ctxObj._isInputDirty_IN = true;
 
-            xod__core__defer_boolean::evaluate(&ctxObj);
+            xod__core__defer__boolean::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_0.isNodeDirty |= node_17.isOutputDirty_OUT;

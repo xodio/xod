@@ -298,4 +298,71 @@ describe('PatchPathUtils', () => {
       );
     });
   });
+
+  describe('Cast patch utils', () => {
+    describe('isCastPatchPath', () => {
+      it('should recognise legacy cast paths', () => {
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-number')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-pulse')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-string')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast-number-to-boolean')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast-number-to-string')
+        );
+      });
+      it('should recognise new cast paths', () => {
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,number)')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,pulse)')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,string)')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast(number,boolean)')
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath('xod/core/cast(number,string)')
+        );
+      });
+    });
+    describe('getCastPatchPath', () => {
+      it('should return patch paths that are recognised as cast paths', () => {
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath(
+            PatchPathUtils.getCastPatchPath(
+              CONST.PIN_TYPE.BOOLEAN,
+              CONST.PIN_TYPE.NUMBER
+            )
+          )
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath(
+            PatchPathUtils.getCastPatchPath(
+              CONST.PIN_TYPE.BOOLEAN,
+              CONST.PIN_TYPE.STRING
+            )
+          )
+        );
+        assert.isTrue(
+          PatchPathUtils.isCastPatchPath(
+            PatchPathUtils.getCastPatchPath(
+              CONST.PIN_TYPE.NUMBER,
+              CONST.PIN_TYPE.BOOLEAN
+            )
+          )
+        );
+      });
+    });
+  });
 });

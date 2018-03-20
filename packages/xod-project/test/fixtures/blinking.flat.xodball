@@ -249,9 +249,9 @@
       ],
       "@@type": "xod-project/Patch"
     },
-    "xod/core/cast-boolean-to-number": {
+    "xod/core/cast(boolean,number)": {
       "comments": {},
-      "path": "xod/core/cast-boolean-to-number",
+      "path": "xod/core/cast(boolean,number)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -364,7 +364,7 @@
             "x": 0,
             "y": 0
           },
-          "type": "xod/core/cast-boolean-to-number",
+          "type": "xod/core/cast(boolean,number)",
           "@@type": "xod-project/Node"
         },
         "SJ7g05EdFe~rJxgAqV_tl": {

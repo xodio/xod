@@ -118,7 +118,7 @@ export const getTerminalPath = R.curry(
 // utils for variadic marker nodes
 //
 
-const variadicRegExp = new RegExp(`${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
+const variadicRegExp = new RegExp(`^${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
 
 // :: PatchPath -> Boolean
 export const isVariadicPath = R.test(variadicRegExp);
@@ -137,12 +137,20 @@ export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 // utils for cast patches
 //
 
+const legacyCastTypeRegExp = new RegExp(
+  `^xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`
+);
+// TODO: When custom types will be added this should be generalized.
+//       Also, casting from/to generic types should be forbidden.
 const castTypeRegExp = new RegExp(
-  `xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`
+  `^xod/core/cast\\((${dataTypes.join('|')}),(${dataTypes.join('|')})\\)$`
 );
 
 // :: String -> Boolean
-export const isCastPatchPath = R.test(castTypeRegExp);
+export const isCastPatchPath = R.either(
+  R.test(legacyCastTypeRegExp),
+  R.test(castTypeRegExp)
+);
 
 /**
  * Returns path for casting patch
@@ -152,23 +160,33 @@ export const isCastPatchPath = R.test(castTypeRegExp);
  * @returns {String}
  */
 export const getCastPatchPath = (typeIn, typeOut) =>
-  `xod/core/cast-${typeIn}-to-${typeOut}`;
+  `xod/core/cast(${typeIn},${typeOut})`;
 
 //
 // defer-* nodes
 //
 
-const deferNodeRegExp = new RegExp(`xod/core/defer-(${dataTypes.join('|')})$`);
+const legacyDeferNodeRegExp = new RegExp(
+  `^xod/core/defer-(${dataTypes.join('|')})$`
+);
+// TODO: when custom types will be added this should be generalized
+const deferNodeRegExp = new RegExp(
+  `^xod/core/defer\\((${dataTypes.join('|')})\\)$`
+);
 
 // :: PatchPath -> Boolean
-export const isDeferNodeType = R.test(deferNodeRegExp);
+export const isDeferNodeType = R.either(
+  R.test(legacyDeferNodeRegExp),
+  R.test(deferNodeRegExp)
+);
 
 //
 // constant-* nodes
 //
 
+// TODO: this gives a false positive for `xod/core/constant-pulse`
 const constantNodeRegExp = new RegExp(
-  `xod/core/constant-(${dataTypes.join('|')})$`
+  `^xod/core/constant-(${dataTypes.join('|')})$`
 );
 
 // :: PatchPath -> Boolean
@@ -190,7 +208,7 @@ export const convertToInternalTerminalPath = R.compose(
 );
 
 const internalTerminalRegExp = new RegExp(
-  `xod/internal/terminal-(${dataTypes.join('|')})$`
+  `^xod/internal/terminal-(${dataTypes.join('|')})$`
 );
 
 // :: PatchPath -> Boolean

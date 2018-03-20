@@ -888,9 +888,9 @@ void evaluate(Context ctx) {
 } // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_number_to_string implementation
+// xod/core/cast__number__string implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_number_to_string {
+namespace xod__core__cast__number__string {
 
 #pragma XOD dirtieness disable
 
@@ -971,7 +971,7 @@ void evaluate(Context ctx) {
     emitValue<output_OUT>(ctx, XString(&state->view));
 }
 
-} // namespace xod__core__cast_number_to_string
+} // namespace xod__core__cast__number__string
 
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
@@ -1094,8 +1094,8 @@ xod__core__system_time::Node node_8 = {
 };
 
 constexpr XString node_9_output_OUT = XString();
-xod__core__cast_number_to_string::Node node_9 = {
-    xod__core__cast_number_to_string::State(), // state default
+xod__core__cast__number__string::Node node_9 = {
+    xod__core__cast__number__string::State(), // state default
     node_9_output_OUT, // output OUT default
     true // node itself dirty
 };
@@ -1157,18 +1157,18 @@ void runTransaction(bool firstRun) {
             node_9.isNodeDirty = true;
         }
     }
-    { // xod__core__cast_number_to_string #9
+    { // xod__core__cast__number__string #9
         if (node_9.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
-            xod__core__cast_number_to_string::ContextObject ctxObj;
+            xod__core__cast__number__string::ContextObject ctxObj;
             ctxObj._node = &node_9;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_8.output_TIME;
 
-            xod__core__cast_number_to_string::evaluate(&ctxObj);
+            xod__core__cast__number__string::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_10.isNodeDirty = true;

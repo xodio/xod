@@ -1921,10 +1921,10 @@
         }
       ]
     },
-    "xod/core/cast-string-to-pulse": {
+    "xod/core/cast(string,pulse)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-string-to-pulse",
+      "path": "xod/core/cast(string,pulse)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -1969,10 +1969,10 @@
         }
       ]
     },
-    "xod/core/cast-string-to-boolean": {
+    "xod/core/cast(string,boolean)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-string-to-boolean",
+      "path": "xod/core/cast(string,boolean)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2017,10 +2017,10 @@
         }
       ]
     },
-    "xod/core/cast-number-to-pulse": {
+    "xod/core/cast(number,pulse)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-number-to-pulse",
+      "path": "xod/core/cast(number,pulse)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2065,10 +2065,10 @@
         }
       ]
     },
-    "xod/core/cast-number-to-string": {
+    "xod/core/cast(number,string)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-number-to-string",
+      "path": "xod/core/cast(number,string)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2113,10 +2113,10 @@
         }
       ]
     },
-    "xod/core/cast-pulse-to-number": {
+    "xod/core/cast(pulse,number)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-pulse-to-number",
+      "path": "xod/core/cast(pulse,number)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2161,10 +2161,10 @@
         }
       ]
     },
-    "xod/core/cast-pulse-to-boolean": {
+    "xod/core/cast(pulse,boolean)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-pulse-to-boolean",
+      "path": "xod/core/cast(pulse,boolean)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2209,10 +2209,10 @@
         }
       ]
     },
-    "xod/core/cast-number-to-boolean": {
+    "xod/core/cast(number,boolean)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-number-to-boolean",
+      "path": "xod/core/cast(number,boolean)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2257,10 +2257,10 @@
         }
       ]
     },
-    "xod/core/cast-boolean-to-string": {
+    "xod/core/cast(boolean,string)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-boolean-to-string",
+      "path": "xod/core/cast(boolean,string)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2305,10 +2305,10 @@
         }
       ]
     },
-    "xod/core/cast-boolean-to-number": {
+    "xod/core/cast(boolean,number)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-boolean-to-number",
+      "path": "xod/core/cast(boolean,number)",
       "nodes": {
         "noNativeImpl": {
           "label": "",
@@ -2390,10 +2390,10 @@
         }
       ]
     },
-    "xod/core/cast-boolean-to-pulse": {
+    "xod/core/cast(boolean,pulse)": {
       "comments": {},
       "description": "",
-      "path": "xod/core/cast-boolean-to-pulse",
+      "path": "xod/core/cast(boolean,pulse)",
       "nodes": {
         "noNativeImpl": {
           "label": "",

@@ -99,7 +99,7 @@ export const doesFileExist = def(
 );
 
 export const getPatchName = def(
-  'getPatchName :: Path -> Identifier',
+  'getPatchName :: Path -> PatchBaseName',
   patchPath => {
     const parts = patchPath.split(path.sep);
     return parts[parts.length - 2];

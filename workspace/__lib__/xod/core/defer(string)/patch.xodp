@@ -1,0 +1,29 @@
+{
+  "description": "Allows to create feedback loops. Repeats a change of the input on the output right after the current transaction will complete.",
+  "nodes": [
+    {
+      "id": "B11dDLY9W",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "H15wwUtcZ",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "S1nDPLY9-",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

@@ -48,7 +48,7 @@ export const ERROR = {
   PIN_KEY_INVALID: 'Pin key should be generated with shortid',
   // other
   LOOPS_DETECTED:
-    'The program has a cycle path. Use xod/core/defer-* nodes to break the cycle',
+    'The program has a cycle path. Use xod/core/defer node to break the cycle',
   DATATYPE_INVALID: 'Invalid data type',
   IMPLEMENTATION_NOT_FOUND: 'No implementation for {patchPath} found.',
   CPP_AS_ENTRY_POINT: 'Can’t use patch not implemented in XOD as entry point',

@@ -3,8 +3,7 @@
  * @see https://groups.google.com/forum/#!topic/google-chrome-developer-tools/J0pQuKeeqfw
  */
 
-
-const getDuration = (pathToJson) => {
+const getDuration = pathToJson => {
   /* eslint-disable import/no-dynamic-require */
   /* eslint-disable global-require */
   const { traceEvents } = require(pathToJson);
@@ -21,6 +20,15 @@ const getDuration = (pathToJson) => {
 };
 
 /* eslint-disable no-console */
-console.log('first column of nodes:', getDuration('./tracing-results/adding_first_nodes.json'));
-console.log('last column of nodes:', getDuration('./tracing-results/adding_last_nodes.json'));
-console.log('linking last nodes:', getDuration('./tracing-results/linking_last_nodes.json'));
+console.log(
+  'first column of nodes:',
+  getDuration('./tracing-results/adding_first_nodes.json')
+);
+console.log(
+  'last column of nodes:',
+  getDuration('./tracing-results/adding_last_nodes.json')
+);
+console.log(
+  'linking last nodes:',
+  getDuration('./tracing-results/linking_last_nodes.json')
+);

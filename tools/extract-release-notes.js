@@ -27,18 +27,25 @@ const releases = new Transform(function* f1(line) {
 });
 
 process.stdin
-  .pipe(new Transform(function* f2(stdin) {
-    for (const line of stdin.toString().trim().split(/$/m)) {
-      yield line;
-    }
-  }))
+  .pipe(
+    new Transform(function* f2(stdin) {
+      for (const line of stdin
+        .toString()
+        .trim()
+        .split(/$/m)) {
+        yield line;
+      }
+    })
+  )
   .on('finish', () => {
     releases.write('<a name="TERMINAL"></a>');
   })
   .pipe(releases)
-  .pipe(new Transform(function* f3(release) {
-    if (release.tag === process.argv[2]) {
-      yield `${release.content.trim()}\n`;
-    }
-  }))
+  .pipe(
+    new Transform(function* f3(release) {
+      if (release.tag === process.argv[2]) {
+        yield `${release.content.trim()}\n`;
+      }
+    })
+  )
   .pipe(process.stdout);
