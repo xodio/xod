@@ -64,20 +64,27 @@ class Helpbox extends React.Component {
     window.removeEventListener(UPDATE_HELPBOX_POSITION, this.onUpdatePosition);
   }
   onUpdatePosition(event) {
+    // If helpbox refers to an element that is too close to the right side and
+    // helpbox could not fit window, it will be switched to the "rightSide"
+    // mode. That also means the pointer will be translated to the right side
+    // and helpbox will be positioned at the left side of referred element E.g.
+    //
+    // ProjectBrowser at the left side — Helpbox is not "rightSided" helpbox;
+    // ProjectBrowser at the right side — Helpbox "rightSided".
+    //
+    // Also if the helpbox is too wide to fit either side, a jut would be
+    // applied so that it will be completely visible at the expense of
+    // overlaping the referred element.
     const windowWidth = window.innerWidth;
     const elWidth = this.helpboxRef.clientWidth;
-
-    const rightSided = event.detail.right + elWidth >= windowWidth;
+    const overflow = Math.max(0, event.detail.right + elWidth - windowWidth);
+    const underflow = Math.max(0, elWidth - event.detail.left);
+    const rightSided = overflow > underflow;
+    const jut = rightSided ? underflow : -overflow;
+    const left =
+      jut + (rightSided ? event.detail.left - elWidth : event.detail.right);
 
     const top = event.detail.top;
-    // if helpbox refers to element that closer to the right side and
-    // helpbox could not fit window — it will be switched to "rightSide"
-    // mode, that means that pointer will be translated to the right side
-    // and helpbox will be positioned at the left side of referred element
-    // E.G. ProjectBrowser at the left side — Helpbox is not "rightSided" helpbox
-    //      ProjectBrowser at the right side — Helpbox "rightSided"
-    const left = rightSided ? event.detail.left - elWidth : event.detail.right;
-
     const windowHeight = window.innerHeight;
     const elHeight = this.helpboxRef.clientHeight;
     const isFitWindow = top + elHeight < windowHeight;
