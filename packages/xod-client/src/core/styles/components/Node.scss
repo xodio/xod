@@ -3,11 +3,6 @@
   padding: 3px 0;
   text-shadow: 0 1px 1px $color-node-fill;
 }
-@mixin wavy-deprecated() {
-  background: url('../assets/gui/wavy-deprecated.svg') repeat-x bottom left;
-  padding: 3px 0;
-  text-shadow: 0 1px 1px $color-node-fill;
-}
 
 .Node {
   .body {
@@ -31,11 +26,11 @@
 
   &.is-errored {
     .nodeLabel {
-      color: $color-error;
+      color: $error-text;
       @include wavy-error();
     }
     .outline {
-      stroke: $color-error;
+      stroke: $error;
     }
   }
 
@@ -145,8 +140,7 @@
 
   &.is-deprecated {
     .nodeLabel {
-      color: $deprecated;
-      @include wavy-deprecated();
+      @include wavy-error();
     }
   }
 }
