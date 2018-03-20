@@ -156,6 +156,15 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use xod/core/nth-number with adjusted arity instead",
+      "id": "HJupmFAYz",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundValues": {
         "SJqZ8COrDkW": 3
       },

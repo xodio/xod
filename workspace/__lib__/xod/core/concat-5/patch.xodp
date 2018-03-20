@@ -156,6 +156,15 @@
       "type": "@/concat"
     },
     {
+      "description": "Use xod/core/concat with adjusted arity instead",
+      "id": "r1CKmYCKG",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "rJwg1hlA-",
       "position": {
         "x": 0,

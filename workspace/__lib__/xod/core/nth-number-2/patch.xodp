@@ -77,6 +77,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use xod/core/nth-number with adjusted arity instead",
+      "id": "S1nnmK0Kf",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SJrESpZKW",
       "position": {
         "x": 68,

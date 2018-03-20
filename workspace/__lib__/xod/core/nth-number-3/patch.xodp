@@ -127,6 +127,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use xod/core/nth-number with adjusted arity instead",
+      "id": "SJMTmtCFf",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SJhFra-t-",
       "label": "X1",
       "position": {

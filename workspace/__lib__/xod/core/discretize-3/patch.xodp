@@ -199,6 +199,15 @@
       "type": "@/less"
     },
     {
+      "description": "Use xod/core/discretize with adjusted arity instead",
+      "id": "rkcsXtCtM",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "ryDEo6bF-",
       "label": "T2",
       "position": {
