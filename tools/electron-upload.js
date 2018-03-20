@@ -13,7 +13,8 @@ const file = resolve(options['--file']);
 const tag = options['--tag'];
 const basename = path.basename(file);
 
-storage({ keyFilename }).bucket('releases.xod.io')
+storage({ keyFilename })
+  .bucket('releases.xod.io')
   .upload(file, {
     destination: `${tag}/${basename}`,
     metadata: {
@@ -21,8 +22,8 @@ storage({ keyFilename }).bucket('releases.xod.io')
     },
     public: true,
   })
-  .catch((error) => {
-// eslint-disable-next-line no-console
+  .catch(error => {
+    // eslint-disable-next-line no-console
     console.error(error);
     process.exit(1);
   });

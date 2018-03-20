@@ -10,10 +10,13 @@ import PromptPopup from '../test-func/pageObjects/PromptPopup';
 import PatchGroupItemContextMenu from '../test-func/pageObjects/PatchGroupItemContextMenu';
 import { getSelectedNodes } from '../test-func/pageObjects/Node';
 
-const getTracingResultsPath = name => path.resolve(__dirname, `./tracing-results/${name}.json`);
+const getTracingResultsPath = name =>
+  path.resolve(__dirname, `./tracing-results/${name}.json`);
 
-const waitForSelectingMode = page => page.waitFor('.PatchWrapper-container.selecting');
-const pinSelector = (nodeId, pinName) => `#nodePinsOverlay_${nodeId} .PinOverlay[title=${pinName}]`;
+const waitForSelectingMode = page =>
+  page.waitFor('.PatchWrapper-container.selecting');
+const pinSelector = (nodeId, pinName) =>
+  `#nodePinsOverlay_${nodeId} .PinOverlay[title=${pinName}]`;
 
 const width = 1300;
 const height = 850;
@@ -57,10 +60,14 @@ const height = 850;
   // TODO: User Timing API to marks placed here like this:
   //    await page.evaluate(() => { window.performance.mark('added_node'); });
   // show up in JSON, but are not visible when viewing profile in Chrome
-  await page.tracing.start({ path: getTracingResultsPath('adding_first_nodes') });
+  await page.tracing.start({
+    path: getTracingResultsPath('adding_first_nodes'),
+  });
   for (let col = COLS; col >= 0; col -= 1) {
     if (col === 0) {
-      await page.tracing.start({ path: getTracingResultsPath('adding_last_nodes') });
+      await page.tracing.start({
+        path: getTracingResultsPath('adding_last_nodes'),
+      });
     }
 
     for (let row = ROWS; row >= 0; row -= 1) {
@@ -69,7 +76,9 @@ const height = 850;
       await contextMenu.clickPlace();
 
       const [placedNode] = await getSelectedNodes(page);
-      const { width: placedNodeWidth } = await placedNode.getBoundingClientRect();
+      const {
+        width: placedNodeWidth,
+      } = await placedNode.getBoundingClientRect();
       const placedNodeId = await placedNode.getId();
       nodeIds.push(placedNodeId);
 
@@ -88,7 +97,9 @@ const height = 850;
   // linking placed nodes
   for (let idx = nodeIds.length - 1; idx > 0; idx -= 1) {
     if (idx === ROWS) {
-      await page.tracing.start({ path: getTracingResultsPath('linking_last_nodes') });
+      await page.tracing.start({
+        path: getTracingResultsPath('linking_last_nodes'),
+      });
     }
 
     const currentId = nodeIds[idx];
@@ -97,8 +108,12 @@ const height = 850;
     const yPinElementHandle = await page.$(pinSelector(currentId, 'Y'));
     const sumPinElementHandle = await page.$(pinSelector(prevId, 'SUM'));
 
-    const yPinPosition = getCenterPositon(await getBoundingClientRect(page, yPinElementHandle));
-    const sumPinPosition = getCenterPositon(await getBoundingClientRect(page, sumPinElementHandle));
+    const yPinPosition = getCenterPositon(
+      await getBoundingClientRect(page, yPinElementHandle)
+    );
+    const sumPinPosition = getCenterPositon(
+      await getBoundingClientRect(page, sumPinElementHandle)
+    );
 
     await page.mouse.move(yPinPosition.x, yPinPosition.y);
     await page.mouse.down();

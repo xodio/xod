@@ -8,9 +8,11 @@ const pathToDist = path.resolve(__dirname, '../dist');
 
 const file = new nodeStatic.Server(pathToDist);
 const server = http.createServer((request, response) => {
-  request.addListener('end', () => {
-    file.serve(request, response);
-  }).resume();
+  request
+    .addListener('end', () => {
+      file.serve(request, response);
+    })
+    .resume();
 });
 
 const startServer = util.promisify(server.listen.bind(server, PORT));
