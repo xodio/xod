@@ -118,7 +118,7 @@ export const getTerminalPath = R.curry(
 // utils for variadic marker nodes
 //
 
-const variadicRegExp = new RegExp(`${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
+const variadicRegExp = new RegExp(`^${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
 
 // :: PatchPath -> Boolean
 export const isVariadicPath = R.test(variadicRegExp);
@@ -186,7 +186,7 @@ export const isDeferNodeType = R.either(
 
 // TODO: this gives a false positive for `xod/core/constant-pulse`
 const constantNodeRegExp = new RegExp(
-  `xod/core/constant-(${dataTypes.join('|')})$`
+  `^xod/core/constant-(${dataTypes.join('|')})$`
 );
 
 // :: PatchPath -> Boolean
@@ -208,7 +208,7 @@ export const convertToInternalTerminalPath = R.compose(
 );
 
 const internalTerminalRegExp = new RegExp(
-  `xod/internal/terminal-(${dataTypes.join('|')})$`
+  `^xod/internal/terminal-(${dataTypes.join('|')})$`
 );
 
 // :: PatchPath -> Boolean
