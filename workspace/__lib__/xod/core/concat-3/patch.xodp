@@ -75,6 +75,15 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Use xod/core/concat with adjusted arity instead",
+      "id": "H1cuQKRtG",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "HJT7Rsg0-",
       "position": {
         "x": 0,

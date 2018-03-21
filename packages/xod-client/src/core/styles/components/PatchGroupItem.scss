@@ -121,7 +121,16 @@
   }
 
   .dead-patch-icon {
-    color: $color-error;
+    color: $error-text;
     margin: 0 .3em 0 -1.3em;
+  }
+
+  .deprecated-patch-icon {
+    display: inline-block;
+    width: 9px;
+    height: 8px;
+
+    @extend .icon-deprecated;
+    margin: 0 .3em 0 -13px;
   }
 }

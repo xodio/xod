@@ -9,6 +9,7 @@ import {
   TERMINAL_PIN_KEYS,
   NOT_IMPLEMENTED_IN_XOD_PATH,
   ABSTRACT_MARKER_PATH,
+  DEPRECATED_MARKER_PATH,
   DEFAULT_VALUE_OF_TYPE,
   MAX_ARITY_STEP,
 } from './constants';
@@ -49,9 +50,17 @@ const getTerminalPins = R.curry((direction, type) => {
   return R.objOf(pinKey, pin);
 });
 
+const BUILT_IN_MARKERS = [
+  NOT_IMPLEMENTED_IN_XOD_PATH,
+  ABSTRACT_MARKER_PATH,
+  DEPRECATED_MARKER_PATH,
+];
+
+const PINS_FOR_BUILT_IN_MARKERS = R.map(path => [path, {}])(BUILT_IN_MARKERS);
+
 export const PINS_OF_PATCH_NODES = R.compose(
   R.fromPairs,
-  R.concat([[NOT_IMPLEMENTED_IN_XOD_PATH, {}], [ABSTRACT_MARKER_PATH, {}]]),
+  R.concat(PINS_FOR_BUILT_IN_MARKERS),
   R.concat(
     R.map(arityStep => [getVariadicPath(arityStep), {}])(
       R.range(1, MAX_ARITY_STEP + 1)

@@ -1204,6 +1204,45 @@ describe('Patch', () => {
       });
     });
 
+    describe('isDeprecatedPatch', () => {
+      it('returns true for patch with deprecated marker', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              type: 'xod/patch-nodes/deprecated',
+            },
+          },
+        });
+
+        assert.equal(Patch.isDeprecatedPatch(patch), true);
+      });
+      it('returns false for patch without deprecated marker', () => {
+        const patch = Helper.defaultizePatch({});
+        assert.equal(Patch.isDeprecatedPatch(patch), false);
+      });
+    });
+    describe('getDeprecationReason', () => {
+      it('returns Maybe String for patch with deprecated marker', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            a: {
+              type: 'xod/patch-nodes/deprecated',
+              description: 'You should not use it anymore',
+            },
+          },
+        });
+
+        assert.equal(
+          Patch.getDeprecationReason(patch).getOrElse(null),
+          'You should not use it anymore'
+        );
+      });
+      it('returns Maybe.Nothing for patch without deprecated marker', () => {
+        const patch = Helper.defaultizePatch({});
+        assert.equal(Patch.getDeprecationReason(patch).isNothing, true);
+      });
+    });
+
     describe('canBindToOutputs', () => {
       it('should return true for a patch with pulse inputs', () => {
         const patch = Helper.defaultizePatch({

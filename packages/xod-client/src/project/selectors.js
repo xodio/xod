@@ -26,6 +26,9 @@ import { missingPatchForNode } from './messages';
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
 
+// :: State -> [Patch]
+const listPatches = R.compose(XP.listPatches, getProject);
+
 //
 // Patch
 //
@@ -202,10 +205,21 @@ const addVariadicProps = R.curry((project, renderableNode) =>
   )(renderableNode)
 );
 
+// :: Project -> RenderableNode -> RenderableNode
+const markDeprecatedNodes = R.curry((project, node) =>
+  R.compose(
+    R.assoc('deprecated', R.__, node),
+    foldMaybe(false, R.identity),
+    R.map(XP.isDeprecatedPatch),
+    XP.getPatchByNode
+  )(node, project)
+);
+
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, project) =>
     R.compose(
+      markDeprecatedNodes(project),
       addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),
       addVariadicProps(project),
@@ -320,7 +334,27 @@ export const getRenderableSelection = createMemoizedSelector(
 //
 // Suggester
 //
+
+// :: Maybe PatchPath -> Patch -> Boolean
+const patchEqualsToCurPatchPath = R.curry((maybeCurrentPatchPath, patch) =>
+  R.compose(
+    R.equals(foldMaybe('', R.identity, maybeCurrentPatchPath)),
+    XP.getPatchPath
+  )(patch)
+);
+
+// :: State -> [PatchSearchIndex]
 export const getPatchSearchIndex = createSelector(
-  R.compose(XP.listPatches, getProject),
-  R.compose(createIndexFromPatches, R.reject(isPatchDeadTerminal))
+  [listPatches, getCurrentPatchPath],
+  (patches, maybeCurPatchPath) =>
+    R.compose(
+      createIndexFromPatches,
+      R.reject(
+        R.anyPass([
+          isPatchDeadTerminal,
+          XP.isDeprecatedPatch,
+          patchEqualsToCurPatchPath(maybeCurPatchPath),
+        ])
+      )
+    )(patches)
 );

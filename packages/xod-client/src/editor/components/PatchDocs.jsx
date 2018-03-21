@@ -4,7 +4,7 @@ import PT from 'prop-types';
 import cn from 'classnames';
 
 import * as XP from 'xod-project';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, foldMaybe } from 'xod-func-tools';
 
 import Node from '../../project/components/Node';
 import { patchToNodeProps } from '../../project/utils';
@@ -109,6 +109,13 @@ OutputPins.defaultProps = {
   isFirst: true,
 };
 
+const renderDeprecationReason = maybeDeprecated =>
+  foldMaybe(
+    null,
+    reason => <div className="deprecated">Deprecated: {reason}</div>,
+    maybeDeprecated
+  );
+
 const PatchDocs = ({ patch, minimal }) => {
   const variadicPinKeys = R.compose(
     foldEither(R.always([]), R.map(XP.getPinKey)),
@@ -151,6 +158,8 @@ const PatchDocs = ({ patch, minimal }) => {
     NODE_POSITION_IN_PREVIEW
   );
 
+  const deprecatedReason = XP.getDeprecationReason(patch);
+
   const cls = cn('PatchDocs', {
     'PatchDocs--minimal': minimal,
   });
@@ -167,6 +176,7 @@ const PatchDocs = ({ patch, minimal }) => {
       <div className="nodeType">
         <span>{nodeType}</span>
       </div>
+      {renderDeprecationReason(deprecatedReason)}
       <div className="description">
         <span>{description}</span>
       </div>

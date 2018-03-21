@@ -193,6 +193,15 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use xod/core/discretize with adjusted arity instead",
+      "id": "HyghXKCFM",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "S1w-2pbtZ",
       "label": "T3",
       "position": {

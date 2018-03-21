@@ -1011,6 +1011,27 @@ export const resolveNodeTypesInPatch = patch =>
     listNodes
   )(patch);
 
+/**
+ * Gets a deprecated marker description.
+ */
+export const getDeprecationReason = def(
+  'getDeprecationReason :: Patch -> Maybe String',
+  R.compose(
+    R.map(Node.getNodeDescription),
+    Maybe,
+    R.find(R.compose(R.equals(CONST.DEPRECATED_MARKER_PATH), Node.getNodeType)),
+    listNodes
+  )
+);
+
+/**
+ * Checks if a patch is marked as deprecated.
+ */
+export const isDeprecatedPatch = def(
+  'isDeprecatedPatch :: Patch -> Boolean',
+  R.compose(Maybe.isJust, getDeprecationReason)
+);
+
 // =============================================================================
 //
 // Variadic Utils and Getters

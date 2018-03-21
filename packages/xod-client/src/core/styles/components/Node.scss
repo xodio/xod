@@ -1,3 +1,9 @@
+@mixin wavy-error() {
+  background: url('../assets/gui/wavy-error.svg') repeat-x bottom left;
+  padding: 3px 0;
+  text-shadow: 0 1px 1px $color-node-fill;
+}
+
 .Node {
   .body {
     width: 100%;
@@ -20,10 +26,11 @@
 
   &.is-errored {
     .nodeLabel {
-      color: $color-error;
+      color: $error-text;
+      @include wavy-error();
     }
     .outline {
-      stroke: $color-error;
+      stroke: $error;
     }
   }
 
@@ -128,6 +135,12 @@
     }
     .VariadicHandle--grip {
       stroke: $color-highlight;
+    }
+  }
+
+  &.is-deprecated {
+    .nodeLabel {
+      @include wavy-error();
     }
   }
 }

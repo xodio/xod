@@ -45,3 +45,7 @@
 .icon-clear-log {
   @include icon('../assets/icons/clear-log.svg');
 }
+
+.icon-deprecated {
+  @include icon('../assets/icons/deprecated.svg');
+}

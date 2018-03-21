@@ -39,7 +39,7 @@
   }
 
   &.is-dead {
-    @include link-parts-coloring($color-error);
+    @include link-parts-coloring($error);
     stroke-dasharray: 2,2;
   }
 }

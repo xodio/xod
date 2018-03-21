@@ -109,6 +109,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use xod/core/discretize with adjusted arity instead",
+      "id": "r1VsXK0KG",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "rJl5qpZYZ",
       "label": "T0",
       "position": {

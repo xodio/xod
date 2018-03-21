@@ -126,6 +126,14 @@ $PinInfo-padding-bottom: 10px;
     color: $sidebar-color-text;
   }
 
+  .deprecated {
+    padding-top: .5em;
+    font-family: $font-family-normal;
+    font-size: $font-size-m;
+    font-weight: 300;
+    color: $error-text;
+  }
+
   & > .description {
     padding-top: 7px;
     font-family: $font-family-normal;

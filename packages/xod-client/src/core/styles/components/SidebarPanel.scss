@@ -50,6 +50,9 @@
       &.newpatch{
         @extend .icon-newpatch;
       }
+      &.filter {
+        @extend .icon-filter;
+      }
       &.contextmenu {
         @extend .icon-contextmenu;
         opacity: 0.7;

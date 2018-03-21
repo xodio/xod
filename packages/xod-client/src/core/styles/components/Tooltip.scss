@@ -36,6 +36,9 @@
     font-weight: 500;
   }
   &--error {
-    color: $red-bright;
+    color: $error-text;
+  }
+  &--deprecated {
+    color: $error-text;
   }
 }

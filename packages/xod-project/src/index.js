@@ -58,6 +58,8 @@ export {
   isVariadicPatch,
   isAbstractPatch,
   validateAbstractPatch,
+  isDeprecatedPatch,
+  getDeprecationReason,
 } from './patch';
 export * from './node';
 export * from './comment';
