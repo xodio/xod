@@ -34,6 +34,7 @@ const getPinWidgetProps = R.applySpec({
   isConnected: R.prop('isConnected'),
   isBindable: XP.isPinBindable,
   isLastVariadicGroup: R.prop('isLastVariadicGroup'),
+  specializations: R.prop('specializations'),
 });
 
 // :: RenderableNode -> { components: {...}, props: {...} }
@@ -70,8 +71,11 @@ const NodeDescriptionWidget = Widgets.composeWidget(
   getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props
 );
 
-const NodeInspector = ({ node, onPropUpdate }) => {
+const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
   const type = XP.getNodeType(node);
+  const baseName = XP.getBaseName(type);
+  const nodeId = XP.getNodeId(node);
+
   const nodeHelpIcon =
     XP.isPathBuiltIn(type) || XP.isPathLocal(type) ? null : (
       <a
@@ -85,9 +89,15 @@ const NodeInspector = ({ node, onPropUpdate }) => {
       </a>
     );
 
-  const baseName = XP.getBaseName(type);
-
-  const nodeId = XP.getNodeId(node);
+  const SpecializationWidget =
+    node.specializations.length > 0 ? (
+      <Widgets.NodeSpecializationWidget
+        nodeId={nodeId}
+        specializations={node.specializations}
+        onChange={onNodeSpecializationChanged}
+        value={type}
+      />
+    ) : null;
 
   const DeadNodeMessage = node.dead ? (
     <Widgets.HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
@@ -115,6 +125,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
       />
 
       {DeadNodeMessage}
+      {SpecializationWidget}
 
       <WidgetsGroup
         entity={node}
@@ -138,6 +149,7 @@ const NodeInspector = ({ node, onPropUpdate }) => {
 NodeInspector.propTypes = {
   node: sanctuaryPropType(RenderableNode),
   onPropUpdate: PropTypes.func.isRequired,
+  onNodeSpecializationChanged: PropTypes.func.isRequired,
 };
 
 export default NodeInspector;

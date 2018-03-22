@@ -316,6 +316,19 @@ export default (state = {}, action) => {
       );
     }
 
+    case AT.NODE_CHANGE_SPECIALIZATION: {
+      const { nodeId, patchPath, nodeType } = action.payload;
+      const currentPatchLens = XP.lensPatch(patchPath);
+
+      const updatedNode = R.compose(
+        XP.setNodeType(nodeType),
+        XP.getNodeByIdUnsafe(nodeId),
+        XP.getPatchByPathUnsafe(patchPath)
+      )(state);
+
+      return R.over(currentPatchLens, XP.assocNode(updatedNode), state);
+    }
+
     //
     // Link
     //
