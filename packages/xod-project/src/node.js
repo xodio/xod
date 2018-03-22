@@ -9,6 +9,8 @@ import {
   isOutputTerminalPath,
   getTerminalDataType,
   isPathLocal,
+  getBaseName,
+  isSpecializationPatchBasename,
 } from './patchPathUtils';
 
 /**
@@ -220,6 +222,15 @@ export const isPinNode = def(
 export const isLocalNode = def(
   'isLocalNodeType :: Node -> Boolean',
   R.compose(isPathLocal, getNodeType)
+);
+
+/**
+ * Checks that Node have a NodeType referenced to the specialization Patch.
+ * E.G. `@/if-else(number)`
+ */
+export const isSpecializationNode = def(
+  'isSpecializationNode :: Node -> Boolean',
+  R.compose(isSpecializationPatchBasename, getBaseName, getNodeType)
 );
 
 // =============================================================================

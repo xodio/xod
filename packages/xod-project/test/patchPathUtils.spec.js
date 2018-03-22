@@ -67,6 +67,12 @@ describe('PatchPathUtils', () => {
         PatchPathUtils.isValidPatchBasename('foo(super-string,number)')
       );
 
+      // Valid basenames with variadic level
+      assert.isTrue(PatchPathUtils.isValidPatchBasename('lower-kebab-123-$3'));
+      assert.isTrue(
+        PatchPathUtils.isValidPatchBasename('foo(super-string,number)-$2')
+      );
+
       // Invalid common patch basenames
       assert.isFalse(PatchPathUtils.isValidPatchBasename('-'));
       assert.isFalse(PatchPathUtils.isValidPatchBasename('a-'));
@@ -84,6 +90,16 @@ describe('PatchPathUtils', () => {
       assert.isFalse(PatchPathUtils.isValidPatchBasename('foo--bar(string)'));
       assert.isFalse(PatchPathUtils.isValidPatchBasename('(string)'));
       assert.isFalse(PatchPathUtils.isValidPatchBasename('(string,number)'));
+
+      // Invalid basenames with variadic level
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('foo-$'));
+      assert.isFalse(PatchPathUtils.isValidPatchBasename('foo-$a'));
+      assert.isFalse(
+        PatchPathUtils.isValidPatchBasename('foo(super-string,number)-$')
+      );
+      assert.isFalse(
+        PatchPathUtils.isValidPatchBasename('foo(super-string,number)-$a')
+      );
     });
   });
   describe('isValidPatchPath', () => {

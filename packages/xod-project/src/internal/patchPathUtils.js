@@ -22,14 +22,18 @@ const alphanumericWithHypens = `${alphanumeric}(-${alphanumeric})*`;
 const alphanumericWithHypensAndCommans = `${alphanumeric}(-${alphanumeric}|,${alphanumeric})*`;
 
 // -$5
-const variadicLevel = '-\\$\\d';
+const variadicLevel = '(-\\$\\d+){0,1}';
 
 // (foo-2-bar,foo-5-bar)
 const types = `(\\(${alphanumericWithHypensAndCommans}\\)){0,1}`;
 
 // foo2(foo-2-bar,foo-5-bar)-$5
 const patchBaseNameRegExp = new RegExp(
-  `^${alphanumericWithHypens}(${types}|${variadicLevel})$`
+  `^${alphanumericWithHypens}${types}${variadicLevel}$`
+);
+
+const specializationPatchBasenameRegExp = new RegExp(
+  `^${alphanumericWithHypens}\\(${alphanumericWithHypensAndCommans}\\)${variadicLevel}$`
 );
 
 // foo-2-bar
@@ -116,3 +120,8 @@ export const isWatchPatchPath = R.test(/^xod\/core\/watch$/);
 
 // :: LibName -> Boolean
 export const isBuiltInLibName = R.equals(TERMINALS_LIB_NAME);
+
+// :: PatchPath -> Boolean
+export const isSpecializationPatchBasename = R.test(
+  specializationPatchBasenameRegExp
+);
