@@ -146,8 +146,27 @@ class Suggester extends React.Component {
     const cls = classNames('Suggester-item', {
       'is-highlighted': isHighlighted,
     });
-    const value = regExpEscape(this.state.value);
     const { item } = suggestion;
+
+    // TODO: Move extracting words for highlighter
+    // into `xod-patch-search` as `matched` property
+    // for each result
+    const searchWords = R.compose(
+      R.map(regExpEscape),
+      R.ifElse(
+        R.contains('('),
+        R.compose(
+          R.reject(R.isEmpty),
+          R.unless(
+            R.compose(R.isEmpty, R.nth(1)),
+            R.compose(R.unnest, R.over(R.lensIndex(1), R.split(',')))
+          ),
+          R.slice(1, 3),
+          R.match(/^(.+)\(([a-z0-9-,]*)\){0,1}$/)
+        ),
+        R.of
+      )
+    )(this.state.value);
 
     return (
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
@@ -158,12 +177,12 @@ class Suggester extends React.Component {
       >
         <Highlighter
           className="path"
-          searchWords={[value]}
+          searchWords={searchWords}
           textToHighlight={item.path}
         />
         <Highlighter
           className="description"
-          searchWords={[value]}
+          searchWords={searchWords}
           textToHighlight={item.description}
         />
       </div>

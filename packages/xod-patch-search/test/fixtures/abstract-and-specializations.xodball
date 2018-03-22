@@ -1,0 +1,159 @@
+{
+  "name": "",
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "SyY2S20KG": {
+          "id": "SyY2S20KG",
+          "position": {
+            "x": 102,
+            "y": -204
+          },
+          "type": "@/when-either-changes(number,string)"
+        },
+        "r18hH2RtM": {
+          "id": "r18hH2RtM",
+          "position": {
+            "x": -34,
+            "y": -204
+          },
+          "type": "@/when-either-changes(number,boolean)"
+        },
+        "rkNnr2RKf": {
+          "id": "rkNnr2RKf",
+          "position": {
+            "x": -170,
+            "y": -204
+          },
+          "type": "@/when-either-changes"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/when-either-changes": {
+      "nodes": {
+        "B1x_SnRtG": {
+          "id": "B1x_SnRtG",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t2"
+        },
+        "ByE4B20Yf": {
+          "id": "ByE4B20Yf",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "SytmH2RFG": {
+          "id": "SytmH2RFG",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "ryuwSh0Fz": {
+          "id": "ryuwSh0Fz",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "@/when-either-changes"
+    },
+    "@/when-either-changes(number,boolean)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "ByY5H2RFf": {
+          "id": "ByY5H2RFf",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HJ7or3Atz": {
+          "id": "HJ7or3Atz",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "SkgsBh0Yf": {
+          "id": "SkgsBh0Yf",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "rJ2qSn0Fz": {
+          "id": "rJ2qSn0Fz",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        }
+      },
+      "path": "@/when-either-changes(number,boolean)"
+    },
+    "@/when-either-changes(number,string)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BJFYS20Yz": {
+          "id": "BJFYS20Yz",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "HJecrnAKG": {
+          "id": "HJecrnAKG",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "S1WYr30tM": {
+          "id": "S1WYr30tM",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SJrFBnCtf": {
+          "id": "SJrFBnCtf",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        }
+      },
+      "path": "@/when-either-changes(number,string)"
+    }
+  }
+}

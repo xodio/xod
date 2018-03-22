@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 import Fuse from 'fuse.js';
+import { Maybe } from 'ramda-fantasy';
 import { getBaseName } from 'xod-project';
+import { foldMaybe } from 'xod-func-tools';
 
 import createIndexData from './mapper';
 
@@ -59,7 +61,7 @@ const calculateEntryRate = (str, token) => {
   // If str ends with token
   if (str.length === index + token.length) return 0.5;
   // If str doesn't contain token
-  if (index !== -1) return 3;
+  if (index === -1) return 3;
   // If str contains token
   return 2.5;
 };
@@ -90,6 +92,22 @@ const refineScore = R.curry((query, result) =>
   )(result)
 );
 
+const refineScoreForSpecializationNode = R.curry((query, result) =>
+  R.compose(
+    sortByScoreOrAlphabetically,
+    R.map(item => {
+      const tokens = query.trim().split(',');
+      const tokensInItem = R.filter(R.contains(R.__, item.item.path), tokens);
+      const tokensInItemCount = tokensInItem.length;
+
+      const newScore =
+        tokensInItemCount > 0 ? item.score / tokensInItemCount : Infinity;
+
+      return R.assoc('score', newScore, item);
+    })
+  )(result)
+);
+
 const getAverageScore = resultList =>
   R.compose(
     R.divide(R.__, resultList.length),
@@ -97,7 +115,10 @@ const getAverageScore = resultList =>
     R.pluck('score')
   )(resultList);
 
-const reduceResults = results => {
+const reduceResults = rawResults => {
+  // Cut results with "Infinity" score from results
+  const results = R.reject(R.propEq('score', Infinity), rawResults);
+
   const averageScore = getAverageScore(results);
   const scoreToFilter = Math.min(averageScore * 2, 0.3);
 
@@ -109,13 +130,41 @@ const reduceResults = results => {
   return results;
 };
 
+const itemPathContainsOpeningBracket = R.pathSatisfies(R.contains('('), [
+  'item',
+  'path',
+]);
+
+const filterSpecializationNodes = R.curry((query, idx) =>
+  R.ifElse(
+    R.contains('('),
+    R.compose(
+      R.reject(R.complement(itemPathContainsOpeningBracket)),
+      foldMaybe(idx, refineScoreForSpecializationNode(R.__, idx)),
+      Maybe,
+      R.nth(1),
+      R.match(/\((.+)\){0,1}$/)
+    ),
+    () => R.reject(itemPathContainsOpeningBracket)(idx)
+  )(query)
+);
+
+// :: String -> String
+const takeQueryWithoutBrackets = R.compose(R.nth(0), R.split('('));
+
 // :: [IndexData] -> SearchIndex
 export const createIndex = data => {
   const idx = new Fuse(data, options);
 
   return {
     search: query =>
-      R.compose(reduceResults, refineScore(query), idx.search.bind(idx))(query),
+      R.compose(
+        reduceResults,
+        filterSpecializationNodes(query),
+        refineScore(query),
+        idx.search.bind(idx),
+        takeQueryWithoutBrackets
+      )(query),
   };
 };
 // :: [Patch] -> SearchIndex

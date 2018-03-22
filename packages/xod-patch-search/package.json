@@ -21,6 +21,7 @@
   "dependencies": {
     "fuse.js": "^3.0.5",
     "ramda": "^0.24.1",
+    "ramda-fantasy": "^0.8.0",
     "xod-func-tools": "^0.19.2",
     "xod-project": "^0.19.2"
   },
