@@ -250,18 +250,20 @@ class ProjectBrowser extends React.Component {
     );
     const installingLibNames = R.pluck('name', installingLibsComponents);
 
+    // :: [(Patch -> Boolean)]
+    const rejectPatchFunctions = R.compose(
+      R.pluck(1),
+      R.reject(R.propEq(0, false))
+    )([
+      [!this.props.showDeprecated, R.propEq('isDeprecated', true)],
+      [!this.props.showUtilityPatches, R.propEq('isUtility', true)],
+    ]);
+
     // Rejecting of patches with markers by selected filter options
     // is implemented in the component for better performance.
     // :: { LibName: [Patch] } -> { LibName: [Patch] }
-    const rejectPatchesByFilterOptions = R.compose(
-      R.unless(
-        () => this.props.showDeprecated,
-        R.map(R.reject(R.propEq('isDeprecated', true)))
-      ),
-      R.unless(
-        () => this.props.showUtilityPatches,
-        R.map(R.reject(R.propEq('isUtility', true)))
-      )
+    const rejectPatchesByFilterOptions = R.map(
+      R.reject(R.anyPass(rejectPatchFunctions))
     );
 
     const libComponents = R.compose(
