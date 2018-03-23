@@ -47,7 +47,7 @@
 }
 
 .icon-deprecated {
-  @include icon('../assets/icons/deprecated.svg');
+  @include icon('../assets/icons/is-deprecated.svg');
 }
 .icon-utility {
   @include icon('../assets/icons/is-utility.svg');

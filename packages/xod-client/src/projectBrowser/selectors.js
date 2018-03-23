@@ -41,7 +41,7 @@ const markDeadPatches = R.curry((project, patch) =>
 
 // :: Patch -> Patch
 const markDeprecatedPatches = patch =>
-  R.assoc('deprecated', XP.isDeprecatedPatch(patch), patch);
+  R.assoc('isDeprecated', XP.isDeprecatedPatch(patch), patch);
 
 // :: Patch -> Patch
 const markUtilityPatches = patch =>

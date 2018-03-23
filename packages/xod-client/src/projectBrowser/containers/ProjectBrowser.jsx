@@ -44,7 +44,7 @@ import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(
-  R.pick(['deprecated', 'isUtility', 'dead', 'path'])
+  R.pick(['isDeprecated', 'isUtility', 'dead', 'path'])
 );
 
 const checkmark = active => (active ? <span className="state">✔</span> : null);
@@ -172,7 +172,7 @@ class ProjectBrowser extends React.Component {
     ];
   }
 
-  renderItem({ path, dead, deprecated, isUtility }) {
+  renderItem({ path, dead, isDeprecated, isUtility }) {
     const { currentPatchPath, selectedPatchPath } = this.props;
 
     const isOpen = foldMaybe(false, R.equals(path), currentPatchPath);
@@ -187,7 +187,7 @@ class ProjectBrowser extends React.Component {
 
     const key = [
       path,
-      deprecated ? '_deprecated' : '',
+      isDeprecated ? '_isDeprecated' : '',
       isUtility ? '_utility' : '',
     ].join('');
 
@@ -196,7 +196,7 @@ class ProjectBrowser extends React.Component {
         key={key}
         patchPath={path}
         dead={dead}
-        deprecated={deprecated}
+        isDeprecated={isDeprecated}
         isUtility={isUtility}
         label={getBaseName(path)}
         isOpen={isOpen}
@@ -256,7 +256,7 @@ class ProjectBrowser extends React.Component {
     const rejectPatchesByFilterOptions = R.compose(
       R.unless(
         () => this.props.showDeprecated,
-        R.map(R.reject(R.propEq('deprecated', true)))
+        R.map(R.reject(R.propEq('isDeprecated', true)))
       ),
       R.unless(
         () => this.props.showUtilityPatches,
