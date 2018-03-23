@@ -49,3 +49,6 @@
 .icon-deprecated {
   @include icon('../assets/icons/deprecated.svg');
 }
+.icon-utility {
+  @include icon('../assets/icons/is-utility.svg');
+}

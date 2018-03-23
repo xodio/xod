@@ -33,6 +33,9 @@ const deadIcon = (
 const deprecatedIcon = (
   <span className="deprecated-patch-icon" title="Patch deprecated" />
 );
+const utilityIcon = (
+  <span className="utility-patch-icon" title="Utility patch" />
+);
 
 class PatchGroupItem extends React.Component {
   componentDidMount() {
@@ -63,6 +66,7 @@ class PatchGroupItem extends React.Component {
       isOpen,
       dead,
       deprecated,
+      isUtility,
       className,
       hoverButtons,
       onClick,
@@ -101,6 +105,7 @@ class PatchGroupItem extends React.Component {
           >
             {dead ? deadIcon : null}
             {deprecated ? deprecatedIcon : null}
+            {isUtility ? utilityIcon : null}
             {label}
           </div>
         </ContextMenuTrigger>
@@ -115,6 +120,7 @@ PatchGroupItem.propTypes = {
   patchPath: PropTypes.string.isRequired,
   dead: PropTypes.bool,
   deprecated: PropTypes.bool,
+  isUtility: PropTypes.bool,
   isSelected: PropTypes.bool,
   isOpen: PropTypes.bool,
   className: PropTypes.string,

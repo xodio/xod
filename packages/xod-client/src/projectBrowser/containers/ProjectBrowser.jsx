@@ -45,7 +45,7 @@ import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(
-  R.pick(['deprecated', 'dead', 'path'])
+  R.pick(['deprecated', 'isUtility', 'dead', 'path'])
 );
 
 const checkmark = active => (active ? <span className="state">✔</span> : null);
@@ -173,7 +173,7 @@ class ProjectBrowser extends React.Component {
     ];
   }
 
-  renderItem({ path, dead, deprecated }) {
+  renderItem({ path, dead, deprecated, isUtility }) {
     const { currentPatchPath, selectedPatchPath } = this.props;
 
     const isOpen = foldMaybe(false, R.equals(path), currentPatchPath);
@@ -186,7 +186,11 @@ class ProjectBrowser extends React.Component {
 
     const collectPropsFn = this.getCollectPropsFn(path);
 
-    const key = `${path}${deprecated ? '_deprecated' : ''}`;
+    const key = [
+      path,
+      deprecated ? '_deprecated' : '',
+      isUtility ? '_utility' : '',
+    ].join('');
 
     return (
       <PatchGroupItem
@@ -194,6 +198,7 @@ class ProjectBrowser extends React.Component {
         patchPath={path}
         dead={dead}
         deprecated={deprecated}
+        isUtility={isUtility}
         label={getBaseName(path)}
         isOpen={isOpen}
         onDoubleClick={() => switchPatch(path)}

@@ -38,6 +38,10 @@ const markDeadPatches = R.curry((project, patch) =>
 const markDeprecatedPatches = patch =>
   R.assoc('deprecated', XP.isDeprecatedPatch(patch), patch);
 
+// :: Patch -> Patch
+const markUtilityPatches = patch =>
+  R.assoc('isUtility', XP.isUtilityPatch(patch), patch);
+
 const getLocalPatchesList = createSelector(
   ProjectSelectors.getProject,
   XP.listLocalPatches
@@ -49,7 +53,13 @@ export const getLocalPatches = createMemoizedSelector(
   (patches, project) =>
     R.compose(
       R.sortBy(XP.getPatchPath),
-      R.map(R.compose(markDeprecatedPatches, markDeadPatches(project)))
+      R.map(
+        R.compose(
+          markUtilityPatches,
+          markDeprecatedPatches,
+          markDeadPatches(project)
+        )
+      )
     )(patches)
 );
 
