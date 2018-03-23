@@ -2,6 +2,23 @@
   "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
   "nodes": [
     {
+      "id": "H19x_iG9G",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Use xod/core/pulse-on-true instead",
+      "id": "S1ecguozqf",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,

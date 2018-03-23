@@ -102,6 +102,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "B1zcwszcM",
+      "position": {
+        "x": 408,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
       "description": "Sensitivity level index, e.g. 0-th, 1-th, 2-th, or 3-th",
       "id": "H1C7ycV_b",
       "label": "IDX",

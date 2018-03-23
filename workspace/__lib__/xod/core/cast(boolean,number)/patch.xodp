@@ -2,6 +2,14 @@
   "description": "Transforms true value to 1.0 and false to 0.0",
   "nodes": [
     {
+      "id": "B1eydjf5z",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,

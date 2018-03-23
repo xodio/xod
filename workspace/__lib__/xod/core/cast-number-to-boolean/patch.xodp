@@ -2,6 +2,15 @@
   "description": "Transforms 0.0 to false and any other value to true",
   "nodes": [
     {
+      "description": "Use xod/core/equal instead",
+      "id": "ByZl-dof9G",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,
@@ -24,6 +33,14 @@
         "y": 100
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rkllW_szcf",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
     }
   ]
 }

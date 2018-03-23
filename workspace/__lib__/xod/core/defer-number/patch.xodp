@@ -24,6 +24,15 @@
         "y": 204
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Use xod/core/defer or its specialization.",
+      "id": "rk9A_jz5M",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

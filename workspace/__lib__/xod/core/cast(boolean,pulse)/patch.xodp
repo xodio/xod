@@ -2,6 +2,14 @@
   "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
   "nodes": [
     {
+      "id": "BkQJ_jz5M",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,
