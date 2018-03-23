@@ -14,7 +14,6 @@ import {
   isPathLocal,
   getBaseName,
   PatchPath,
-  isDeprecatedPatch,
 } from 'xod-project';
 import { isAmong, notEquals, $Maybe, foldMaybe } from 'xod-func-tools';
 
@@ -251,12 +250,18 @@ class ProjectBrowser extends React.Component {
     );
     const installingLibNames = R.pluck('name', installingLibsComponents);
 
-    // Rejecting of deprecated patches is implemented in the
-    // component for better performance.
+    // Rejecting of patches with markers by selected filter options
+    // is implemented in the component for better performance.
     // :: { LibName: [Patch] } -> { LibName: [Patch] }
-    const rejectDeprecatedPatches = R.unless(
-      () => this.props.showDeprecated,
-      R.map(R.reject(isDeprecatedPatch))
+    const rejectPatchesByFilterOptions = R.compose(
+      R.unless(
+        () => this.props.showDeprecated,
+        R.map(R.reject(R.propEq('deprecated', true)))
+      ),
+      R.unless(
+        () => this.props.showUtilityPatches,
+        R.map(R.reject(R.propEq('isUtility', true)))
+      )
     );
 
     const libComponents = R.compose(
@@ -275,7 +280,7 @@ class ProjectBrowser extends React.Component {
         ),
       })),
       R.toPairs,
-      rejectDeprecatedPatches
+      rejectPatchesByFilterOptions
     )(libs);
 
     return R.compose(
@@ -364,6 +369,10 @@ class ProjectBrowser extends React.Component {
             {checkmark(this.props.showDeprecated)}
             Deprecated nodes
           </MenuItem>
+          <MenuItem onClick={this.props.actions.toggleUtilityFilter}>
+            {checkmark(this.props.showUtilityPatches)}
+            Utility nodes
+          </MenuItem>
         </ContextMenu>
       </HotKeys>
     );
@@ -385,6 +394,7 @@ ProjectBrowser.propTypes = {
   sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
   autohide: PropTypes.bool.isRequired,
   showDeprecated: PropTypes.bool.isRequired,
+  showUtilityPatches: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
     switchPatch: PropTypes.func.isRequired,
@@ -401,6 +411,7 @@ ProjectBrowser.propTypes = {
     showLibSuggester: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
     toggleDeprecatedFilter: PropTypes.func.isRequired,
+    toggleUtilityFilter: PropTypes.func.isRequired,
   }),
 };
 
@@ -415,6 +426,7 @@ const mapStateToProps = R.applySpec({
   installingLibs: ProjectBrowserSelectors.getInstallingLibraries,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
   showDeprecated: ProjectBrowserSelectors.shouldShowDeprecatedPatches,
+  showUtilityPatches: ProjectBrowserSelectors.shouldShowUtilityPatches,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -442,6 +454,7 @@ const mapDispatchToProps = dispatch => ({
       showHelpbox: EditorActions.showHelpbox,
 
       toggleDeprecatedFilter: ProjectBrowserActions.toggleDeprecatedFilter,
+      toggleUtilityFilter: ProjectBrowserActions.toggleUtilityFilter,
     },
     dispatch
   ),

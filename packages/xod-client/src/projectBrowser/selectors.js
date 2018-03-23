@@ -15,6 +15,11 @@ export const shouldShowDeprecatedPatches = createSelector(
   R.path(['filters', 'deprecated'])
 );
 
+export const shouldShowUtilityPatches = createSelector(
+  getProjectBrowser,
+  R.path(['filters', 'utility'])
+);
+
 export const getSelectedPatchPath = createSelector(
   getProjectBrowser,
   R.prop('selectedPatchPath')
@@ -87,7 +92,13 @@ export const getLibs = createMemoizedSelector(
       R.map(R.sort(R.ascend(XP.getPatchPath))),
       R.groupBy(R.pipe(XP.getPatchPath, XP.getLibraryName)),
       R.reject(isPatchDeadTerminal),
-      R.map(R.compose(markDeprecatedPatches, markDeadPatches(project)))
+      R.map(
+        R.compose(
+          markUtilityPatches,
+          markDeprecatedPatches,
+          markDeadPatches(project)
+        )
+      )
     )(patches)
 );
 
