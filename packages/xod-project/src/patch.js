@@ -1032,6 +1032,17 @@ export const isDeprecatedPatch = def(
   R.compose(Maybe.isJust, getDeprecationReason)
 );
 
+/**
+ * Checks if a patch is marked as utility.
+ */
+export const isUtilityPatch = def(
+  'isUtilityPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.compose(R.equals(CONST.UTILITY_MARKER_PATH), Node.getNodeType)),
+    listNodes
+  )
+);
+
 // =============================================================================
 //
 // Variadic Utils and Getters
