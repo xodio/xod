@@ -352,6 +352,7 @@ export const getPatchSearchIndex = createSelector(
       R.reject(
         R.anyPass([
           isPatchDeadTerminal,
+          XP.isUtilityPatch,
           XP.isDeprecatedPatch,
           patchEqualsToCurPatchPath(maybeCurPatchPath),
         ])
