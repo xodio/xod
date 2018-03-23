@@ -297,6 +297,11 @@ export const removeBoundValue = def(
   R.uncurryN(2, pinKey => R.dissocPath(['boundValues', pinKey]))
 );
 
+export const dropAllBoundValues = def(
+  'dropAllBoundValues :: Node -> Node',
+  R.assoc('boundValues', {})
+);
+
 /**
  * Returns data type extracted from pinNode type
  * @function getPinNodeDataType
