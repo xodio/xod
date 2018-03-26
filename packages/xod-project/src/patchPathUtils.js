@@ -14,6 +14,7 @@ export {
   isLocalMarker,
   isValidIdentifier,
   isValidPatchBasename,
+  isSpecializationPatchBasename,
   isPathLocal,
   isPathLibrary,
   isLibName,
@@ -58,6 +59,13 @@ export const validatePath = Tools.errOnFalse(
  * @returns {string}
  */
 export const getBaseName = R.compose(R.last, R.split('/'));
+
+// :: PatchPath -> Identifier
+export const getBaseNameWithoutTypes = R.compose(
+  R.head,
+  R.split('('),
+  getBaseName
+);
 
 /**
  * @function getLibraryName

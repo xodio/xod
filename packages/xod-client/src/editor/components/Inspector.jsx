@@ -48,9 +48,15 @@ const renderSelectedLink = () => (
 const renderSelectedComment = () => (
   <InspectorMessage text="Comments do not have any properties." />
 );
-const renderSelectedNode = R.curry((onPropUpdate, selection) => (
-  <NodeInspector node={selection[0].data} onPropUpdate={onPropUpdate} />
-));
+const renderSelectedNode = R.curry(
+  (onPropUpdate, onNodeSpecializationChanged, selection) => (
+    <NodeInspector
+      node={selection[0].data}
+      onPropUpdate={onPropUpdate}
+      onNodeSpecializationChanged={onNodeSpecializationChanged}
+    />
+  )
+);
 const renderSelectedPatch = R.curry(
   (currentPatch, onPatchDescriptionUpdate) => (
     <PatchInspector
@@ -92,13 +98,17 @@ const Inspector = ({
   selection,
   currentPatch,
   onPropUpdate,
+  onNodeSpecializationChanged,
   onPatchDescriptionUpdate,
 }) => {
   const inspectorContent = R.cond([
     [isMany, renderSelectedManyElements],
     [isSingleLink, renderSelectedLink],
     [isSingleComment, renderSelectedComment],
-    [isSingleNode, renderSelectedNode(onPropUpdate)],
+    [
+      isSingleNode,
+      renderSelectedNode(onPropUpdate, onNodeSpecializationChanged),
+    ],
     [
       isPatchSelected(currentPatch),
       () => renderSelectedPatch(currentPatch, onPatchDescriptionUpdate),
@@ -125,6 +135,7 @@ Inspector.propTypes = {
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatch: sanctuaryPropType($Maybe(Patch)),
   onPropUpdate: PropTypes.func.isRequired,
+  onNodeSpecializationChanged: PropTypes.func.isRequired,
   onPatchDescriptionUpdate: PropTypes.func.isRequired,
 };
 

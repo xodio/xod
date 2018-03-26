@@ -10,6 +10,7 @@ import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
 import IOLabelWidget from './IOLabelWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
+import NodeSpecializationWidget from './NodeSpecializationWidget';
 import composeWidget from './Widget';
 
 import { WIDGET_TYPE } from '../../constants';
@@ -100,6 +101,7 @@ export default {
   IOLabelWidget,
   DescriptionWidget,
   LabelWidget,
+  NodeSpecializationWidget,
   composeWidget,
 
   WIDGET_MAPPING,

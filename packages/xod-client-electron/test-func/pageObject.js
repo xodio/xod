@@ -209,13 +209,13 @@ function assertLibSuggesterShown(client) {
 
 function assertLibsNotFound(client) {
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.error', 10000)
+    findLibSuggester(client).waitForExist('.error', 30000)
   );
 }
 
 function assertLibraryFound(client) {
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.Suggester-item--library', 10000)
+    findLibSuggester(client).waitForExist('.Suggester-item--library', 30000)
   );
 }
 

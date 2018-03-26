@@ -331,3 +331,19 @@ export const changeArityLevel = (nodeId, patchPath, newArityLevel) => ({
     arityLevel: newArityLevel,
   },
 });
+
+export const changeNodeSpecialization = (nodeId, newNodeType) => (
+  dispatch,
+  getState
+) => {
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.NODE_CHANGE_SPECIALIZATION,
+      payload: {
+        nodeId,
+        patchPath,
+        nodeType: newNodeType,
+      },
+    })
+  );
+};

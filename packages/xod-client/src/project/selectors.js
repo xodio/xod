@@ -215,10 +215,74 @@ const markDeprecatedNodes = R.curry((project, node) =>
   )(node, project)
 );
 
+/**
+ * Converts PatchPath into label to make selection of specialization easier.
+ * E.G.
+ * `xod/core/if-else` -> `Auto-detect (xod/core)`
+ * `xod/core/if-else(string)` -> `string (xod/core)`
+ * `foo/bar/if-else` -> `Auto-detect (foo/bar)`
+ * `foo/bar/if-else(number,number)` -> `number, number (foo/bar)`
+ * `@/if-else(boolean)` -> `boolean (@)`
+ */
+// : PatchPath -> String
+const getSpecializationLabel = patchPath =>
+  R.compose(
+    R.concat(R.__, ` (${XP.getLibraryName(patchPath)})`),
+    R.ifElse(
+      R.contains('('),
+      R.compose(
+        R.concat('Type: '),
+        R.replace(',', ', '),
+        R.nth(1),
+        R.match(/\((.+)\)/)
+      ),
+      R.always('Auto-detect type')
+    )
+  )(patchPath);
+
+// :: PatchPath -> Project -> [{ value: PatchPath, label: String }]
+const listSpecializationPatchPaths = R.curry((nodeTypeWithoutTypes, project) =>
+  R.compose(
+    R.map(patchPath => ({
+      value: patchPath,
+      label: getSpecializationLabel(patchPath),
+    })),
+    R.filter(
+      R.compose(R.equals(nodeTypeWithoutTypes), XP.getBaseNameWithoutTypes)
+    ),
+    XP.listPatchPaths
+  )(project)
+);
+
+// :: Project -> RenderableNode -> RenderableNode
+const addSpecializationsList = R.curry((project, node) => {
+  const nodeTypeWithoutTypes = R.compose(
+    XP.getBaseNameWithoutTypes,
+    XP.getNodeType
+  )(node);
+
+  return R.compose(
+    R.assoc('specializations', R.__, node),
+    R.ifElse(
+      R.either(
+        R.compose(
+          foldMaybe(false, R.identity),
+          R.map(XP.isAbstractPatch),
+          XP.getPatchByNode(R.__, project)
+        ),
+        XP.isSpecializationNode
+      ),
+      () => listSpecializationPatchPaths(nodeTypeWithoutTypes, project),
+      R.always([])
+    )
+  )(node);
+});
+
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, project) =>
     R.compose(
+      addSpecializationsList(project),
       markDeprecatedNodes(project),
       addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),

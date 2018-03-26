@@ -143,6 +143,9 @@ class Sidebar extends React.Component {
           selection={this.props.selection}
           currentPatch={this.props.currentPatch}
           onPropUpdate={this.props.actions.updateNodeProperty}
+          onNodeSpecializationChanged={
+            this.props.actions.changeNodeSpecialization
+          }
           onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
         />
       </FocusTrap>
@@ -246,6 +249,7 @@ Sidebar.propTypes = {
   actions: PropTypes.shape({
     updateNodeProperty: PropTypes.func.isRequired,
     updatePatchDescription: PropTypes.func.isRequired,
+    changeNodeSpecialization: PropTypes.func.isRequired,
     resizePanels: PropTypes.func.isRequired,
     togglePanel: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
@@ -264,6 +268,7 @@ const mapDispatchToProps = dispatch => ({
     {
       updateNodeProperty: ProjectActions.updateNodeProperty,
       updatePatchDescription: ProjectActions.updatePatchDescription,
+      changeNodeSpecialization: ProjectActions.changeNodeSpecialization,
       resizePanels: EditorActions.resizePanels,
       togglePanel: EditorActions.togglePanel,
       setFocusedArea: EditorActions.setFocusedArea,

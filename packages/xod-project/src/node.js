@@ -9,6 +9,8 @@ import {
   isOutputTerminalPath,
   getTerminalDataType,
   isPathLocal,
+  getBaseName,
+  isSpecializationPatchBasename,
 } from './patchPathUtils';
 
 /**
@@ -222,6 +224,15 @@ export const isLocalNode = def(
   R.compose(isPathLocal, getNodeType)
 );
 
+/**
+ * Checks that Node have a NodeType referenced to the specialization Patch.
+ * E.G. `@/if-else(number)`
+ */
+export const isSpecializationNode = def(
+  'isSpecializationNode :: Node -> Boolean',
+  R.compose(isSpecializationPatchBasename, getBaseName, getNodeType)
+);
+
 // =============================================================================
 //
 // Pins
@@ -284,6 +295,11 @@ export const setBoundValue = def(
 export const removeBoundValue = def(
   'removeBoundValue :: PinKey -> Node -> Node',
   R.uncurryN(2, pinKey => R.dissocPath(['boundValues', pinKey]))
+);
+
+export const dropAllBoundValues = def(
+  'dropAllBoundValues :: Node -> Node',
+  R.assoc('boundValues', {})
 );
 
 /**
