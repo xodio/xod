@@ -255,6 +255,12 @@ export const ABSTRACT_MARKER_PATH = 'xod/patch-nodes/abstract';
  */
 export const DEPRECATED_MARKER_PATH = 'xod/patch-nodes/deprecated';
 
+/**
+ * Path for a 'magic' patch, whose instance is placed
+ * to mark utility nodes.
+ */
+export const UTILITY_MARKER_PATH = 'xod/patch-nodes/utility';
+
 export const IMPL_FILENAME = 'patch.cpp';
 
 export const UNTITLED_PROJECT = 'untitled';

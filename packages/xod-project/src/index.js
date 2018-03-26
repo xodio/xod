@@ -60,6 +60,7 @@ export {
   validateAbstractPatch,
   isDeprecatedPatch,
   getDeprecationReason,
+  isUtilityPatch,
 } from './patch';
 export * from './node';
 export * from './comment';

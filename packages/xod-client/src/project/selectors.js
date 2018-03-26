@@ -208,7 +208,7 @@ const addVariadicProps = R.curry((project, renderableNode) =>
 // :: Project -> RenderableNode -> RenderableNode
 const markDeprecatedNodes = R.curry((project, node) =>
   R.compose(
-    R.assoc('deprecated', R.__, node),
+    R.assoc('isDeprecated', R.__, node),
     foldMaybe(false, R.identity),
     R.map(XP.isDeprecatedPatch),
     XP.getPatchByNode
@@ -352,6 +352,7 @@ export const getPatchSearchIndex = createSelector(
       R.reject(
         R.anyPass([
           isPatchDeadTerminal,
+          XP.isUtilityPatch,
           XP.isDeprecatedPatch,
           patchEqualsToCurPatchPath(maybeCurPatchPath),
         ])

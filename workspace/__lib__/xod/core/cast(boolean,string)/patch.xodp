@@ -2,6 +2,14 @@
   "description": "Transforms boolean false to string “false” and true to “true”",
   "nodes": [
     {
+      "id": "ByvJ_oM5G",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,

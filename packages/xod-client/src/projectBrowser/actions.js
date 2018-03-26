@@ -7,6 +7,7 @@ import {
   SET_SELECTION,
   REMOVE_SELECTION,
   TOGGLE_DEPRECATED_FILTER,
+  TOGGLE_UTILITY_FILTER,
 } from './actionTypes';
 
 import { getSelectedPatchPath } from './selectors';
@@ -53,4 +54,7 @@ export const removeSelection = () => ({
 
 export const toggleDeprecatedFilter = () => ({
   type: TOGGLE_DEPRECATED_FILTER,
+});
+export const toggleUtilityFilter = () => ({
+  type: TOGGLE_UTILITY_FILTER,
 });

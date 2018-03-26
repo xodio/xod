@@ -14,7 +14,6 @@ import {
   isPathLocal,
   getBaseName,
   PatchPath,
-  isDeprecatedPatch,
 } from 'xod-project';
 import { isAmong, notEquals, $Maybe, foldMaybe } from 'xod-func-tools';
 
@@ -45,7 +44,7 @@ import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
 import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(
-  R.pick(['deprecated', 'dead', 'path'])
+  R.pick(['isDeprecated', 'isUtility', 'dead', 'path'])
 );
 
 const checkmark = active => (active ? <span className="state">✔</span> : null);
@@ -173,7 +172,7 @@ class ProjectBrowser extends React.Component {
     ];
   }
 
-  renderItem({ path, dead, deprecated }) {
+  renderItem({ path, dead, isDeprecated, isUtility }) {
     const { currentPatchPath, selectedPatchPath } = this.props;
 
     const isOpen = foldMaybe(false, R.equals(path), currentPatchPath);
@@ -186,14 +185,19 @@ class ProjectBrowser extends React.Component {
 
     const collectPropsFn = this.getCollectPropsFn(path);
 
-    const key = `${path}${deprecated ? '_deprecated' : ''}`;
+    const key = [
+      path,
+      isDeprecated ? '_isDeprecated' : '',
+      isUtility ? '_utility' : '',
+    ].join('');
 
     return (
       <PatchGroupItem
         key={key}
         patchPath={path}
         dead={dead}
-        deprecated={deprecated}
+        isDeprecated={isDeprecated}
+        isUtility={isUtility}
         label={getBaseName(path)}
         isOpen={isOpen}
         onDoubleClick={() => switchPatch(path)}
@@ -246,12 +250,20 @@ class ProjectBrowser extends React.Component {
     );
     const installingLibNames = R.pluck('name', installingLibsComponents);
 
-    // Rejecting of deprecated patches is implemented in the
-    // component for better performance.
+    // :: [(Patch -> Boolean)]
+    const rejectPatchFunctions = R.compose(
+      R.pluck(1),
+      R.reject(R.propEq(0, false))
+    )([
+      [!this.props.showDeprecated, R.propEq('isDeprecated', true)],
+      [!this.props.showUtilityPatches, R.propEq('isUtility', true)],
+    ]);
+
+    // Rejecting of patches with markers by selected filter options
+    // is implemented in the component for better performance.
     // :: { LibName: [Patch] } -> { LibName: [Patch] }
-    const rejectDeprecatedPatches = R.unless(
-      () => this.props.showDeprecated,
-      R.map(R.reject(isDeprecatedPatch))
+    const rejectPatchesByFilterOptions = R.map(
+      R.reject(R.anyPass(rejectPatchFunctions))
     );
 
     const libComponents = R.compose(
@@ -270,7 +282,7 @@ class ProjectBrowser extends React.Component {
         ),
       })),
       R.toPairs,
-      rejectDeprecatedPatches
+      rejectPatchesByFilterOptions
     )(libs);
 
     return R.compose(
@@ -359,6 +371,10 @@ class ProjectBrowser extends React.Component {
             {checkmark(this.props.showDeprecated)}
             Deprecated nodes
           </MenuItem>
+          <MenuItem onClick={this.props.actions.toggleUtilityFilter}>
+            {checkmark(this.props.showUtilityPatches)}
+            Utility nodes
+          </MenuItem>
         </ContextMenu>
       </HotKeys>
     );
@@ -380,6 +396,7 @@ ProjectBrowser.propTypes = {
   sidebarId: PropTypes.oneOf(R.values(SIDEBAR_IDS)).isRequired,
   autohide: PropTypes.bool.isRequired,
   showDeprecated: PropTypes.bool.isRequired,
+  showUtilityPatches: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     addNode: PropTypes.func.isRequired,
     switchPatch: PropTypes.func.isRequired,
@@ -396,6 +413,7 @@ ProjectBrowser.propTypes = {
     showLibSuggester: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
     toggleDeprecatedFilter: PropTypes.func.isRequired,
+    toggleUtilityFilter: PropTypes.func.isRequired,
   }),
 };
 
@@ -410,6 +428,7 @@ const mapStateToProps = R.applySpec({
   installingLibs: ProjectBrowserSelectors.getInstallingLibraries,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
   showDeprecated: ProjectBrowserSelectors.shouldShowDeprecatedPatches,
+  showUtilityPatches: ProjectBrowserSelectors.shouldShowUtilityPatches,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -437,6 +456,7 @@ const mapDispatchToProps = dispatch => ({
       showHelpbox: EditorActions.showHelpbox,
 
       toggleDeprecatedFilter: ProjectBrowserActions.toggleDeprecatedFilter,
+      toggleUtilityFilter: ProjectBrowserActions.toggleUtilityFilter,
     },
     dispatch
   ),

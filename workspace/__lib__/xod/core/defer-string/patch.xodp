@@ -18,6 +18,15 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Use xod/core/defer or its specialization.",
+      "id": "HybJKoM5G",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "S1nDPLY9-",
       "position": {
         "x": 0,

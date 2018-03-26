@@ -8,6 +8,7 @@ import {
   SET_SELECTION,
   REMOVE_SELECTION,
   TOGGLE_DEPRECATED_FILTER,
+  TOGGLE_UTILITY_FILTER,
 } from './actionTypes';
 
 import { PATCH_DELETE, PATCH_RENAME } from '../project/actionTypes';
@@ -58,6 +59,8 @@ const filtersReducer = (state, action) => {
   switch (action.type) {
     case TOGGLE_DEPRECATED_FILTER:
       return R.over(R.lensProp('deprecated'), R.not, state);
+    case TOGGLE_UTILITY_FILTER:
+      return R.over(R.lensProp('utility'), R.not, state);
     default:
       return state;
   }

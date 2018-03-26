@@ -131,6 +131,17 @@
     height: 8px;
 
     @extend .icon-deprecated;
-    margin: 0 .3em 0 -13px;
+    margin: 0 3px 0 -13px;
+  }
+  .utility-patch-icon {
+    display: inline-block;
+    width: 9px;
+    height: 8px;
+
+    @extend .icon-utility;
+    margin: 0 3px 0 -13px;
+  }
+  .deprecated-patch-icon + .utility-patch-icon {
+    transform: translateY(-6px);
   }
 }

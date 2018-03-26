@@ -15,6 +15,11 @@ export const shouldShowDeprecatedPatches = createSelector(
   R.path(['filters', 'deprecated'])
 );
 
+export const shouldShowUtilityPatches = createSelector(
+  getProjectBrowser,
+  R.path(['filters', 'utility'])
+);
+
 export const getSelectedPatchPath = createSelector(
   getProjectBrowser,
   R.prop('selectedPatchPath')
@@ -36,7 +41,11 @@ const markDeadPatches = R.curry((project, patch) =>
 
 // :: Patch -> Patch
 const markDeprecatedPatches = patch =>
-  R.assoc('deprecated', XP.isDeprecatedPatch(patch), patch);
+  R.assoc('isDeprecated', XP.isDeprecatedPatch(patch), patch);
+
+// :: Patch -> Patch
+const markUtilityPatches = patch =>
+  R.assoc('isUtility', XP.isUtilityPatch(patch), patch);
 
 const getLocalPatchesList = createSelector(
   ProjectSelectors.getProject,
@@ -49,7 +58,13 @@ export const getLocalPatches = createMemoizedSelector(
   (patches, project) =>
     R.compose(
       R.sortBy(XP.getPatchPath),
-      R.map(R.compose(markDeprecatedPatches, markDeadPatches(project)))
+      R.map(
+        R.compose(
+          markUtilityPatches,
+          markDeprecatedPatches,
+          markDeadPatches(project)
+        )
+      )
     )(patches)
 );
 
@@ -77,7 +92,13 @@ export const getLibs = createMemoizedSelector(
       R.map(R.sort(R.ascend(XP.getPatchPath))),
       R.groupBy(R.pipe(XP.getPatchPath, XP.getLibraryName)),
       R.reject(isPatchDeadTerminal),
-      R.map(R.compose(markDeprecatedPatches, markDeadPatches(project)))
+      R.map(
+        R.compose(
+          markUtilityPatches,
+          markDeprecatedPatches,
+          markDeadPatches(project)
+        )
+      )
     )(patches)
 );
 

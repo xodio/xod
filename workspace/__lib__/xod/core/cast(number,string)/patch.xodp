@@ -2,6 +2,14 @@
   "description": "Transforms a number to string with two digits after dot",
   "nodes": [
     {
+      "id": "HJR1uifqM",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,

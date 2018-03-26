@@ -2,6 +2,23 @@
   "description": "Transforms boolean false to string “false” and true to “true”",
   "nodes": [
     {
+      "id": "SJaguiz5G",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Use xod/core/if-else instead",
+      "id": "SyeTgusf5M",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "__in__",
       "position": {
         "x": 0,
