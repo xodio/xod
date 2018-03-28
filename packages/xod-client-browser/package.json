@@ -1,6 +1,6 @@
 {
   "name": "xod-client-browser",
-  "version": "0.19.2",
+  "version": "0.19.4",
   "description": "XOD project: Client browser application",
   "scripts": {
     "build:tutorial-project": "node ./tools/loadTutorialProject.js",
@@ -23,17 +23,17 @@
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "url-parse": "^1.2.0",
-    "xod-arduino": "^0.19.2",
-    "xod-client": "^0.19.2",
+    "xod-arduino": "^0.19.4",
+    "xod-client": "^0.19.4",
     "xod-func-tools": "^0.19.2",
-    "xod-project": "^0.19.2"
+    "xod-project": "^0.19.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "node-static": "^0.7.10",
     "puppeteer": "^1.0.0-rc",
     "why-did-you-update": "^0.1.0",
-    "xod-fs": "^0.19.2"
+    "xod-fs": "^0.19.4"
   },
   "author": "XOD Team <dev@xod.io>",
   "license": "AGPL-3.0"
