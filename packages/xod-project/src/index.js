@@ -11,6 +11,7 @@ export {
   hasImpl,
   getImpl,
   setImpl,
+  removeImpl,
   nodeIdEquals,
   listNodes,
   getNodeById,

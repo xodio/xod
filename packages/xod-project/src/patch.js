@@ -8,6 +8,7 @@ import {
   isAmong,
   mapIndexed,
   notEmpty,
+  foldMaybe,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -139,6 +140,8 @@ export const getImpl = def(
   )
 );
 
+const attachmentsLens = R.lensProp('attachments');
+
 /**
  * Returns true if patch has a native implementation attached.
  *
@@ -155,13 +158,18 @@ export const setImpl = def(
   'setImpl :: Source -> Patch -> Patch',
   (source, patch) =>
     R.over(
-      R.lensProp('attachments'),
+      attachmentsLens,
       R.compose(
         R.append(Attachment.createImplAttachment(source)),
         R.reject(Attachment.isImplAttachment)
       ),
       patch
     )
+);
+
+export const removeImpl = def(
+  'removeImpl :: Patch -> Patch',
+  R.over(attachmentsLens, R.reject(Attachment.isImplAttachment))
 );
 
 // =============================================================================
@@ -654,14 +662,15 @@ export const assocNode = def(
  *
  * Does nothing if the `node` is not in the `patch`.
  *
- * Also removes all links associated with the `node`.
+ * Also removes all links associated with the `node`
+ * and remove implementation if type of deleted `node`
+ * is `xod/core/not-implemented-in-xod`
  *
  * @function dissocNode
  * @param {NodeOrId} node - node to delete
  * @param {Patch} patch - a patch where the node should be deleted
  * @returns {Patch} a copy of the `patch` with the node deleted
  */
-// TODO: Move child function into top-level
 export const dissocNode = def(
   'dissocNode :: NodeOrId -> Patch -> Patch',
   (nodeOrId, patch) => {
@@ -670,8 +679,23 @@ export const dissocNode = def(
 
     const removeLinks = R.reduce(R.flip(dissocLink));
     const removeNode = R.dissocPath(['nodes', id]);
+    const removeImplementation = R.compose(
+      foldMaybe(R.identity, () => removeImpl),
+      R.chain(
+        R.ifElse(
+          R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+          Maybe.of,
+          Maybe.Nothing
+        )
+      ),
+      R.map(Node.getNodeType),
+      getNodeById
+    )(id, patch);
 
-    return R.compose(removeNode, removeLinks)(patch, links);
+    return R.compose(removeImplementation, removeNode, removeLinks)(
+      patch,
+      links
+    );
   }
 );
 
