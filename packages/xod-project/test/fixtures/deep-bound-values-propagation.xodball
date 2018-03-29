@@ -421,7 +421,7 @@
         }
       ]
     },
-    "xod/core/cast(number,string)": {
+    "xod/core/cast-to-string(number)": {
       "nodes": {
         "__in__": {
           "boundValues": {},
@@ -459,7 +459,7 @@
       },
       "links": {},
       "comments": {},
-      "path": "xod/core/cast(number,string)",
+      "path": "xod/core/cast-to-string(number)",
       "description": "Transforms a number to string with two digits after dot",
       "attachments": [
         {

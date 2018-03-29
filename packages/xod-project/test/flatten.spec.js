@@ -858,7 +858,7 @@ describe('Flatten', () => {
             links: {},
             attachments: [Attachment.createImplAttachment('// ok')],
           },
-          'xod/core/cast(boolean,number)': {
+          'xod/core/cast-to-number(boolean)': {
             nodes: {
               __in__: {
                 id: '__in__',
@@ -995,7 +995,7 @@ describe('Flatten', () => {
                 links: {},
                 attachments: [Attachment.createImplAttachment('// ok')],
               },
-              [`xod/core/cast(${typeIn},${typeOut})`]: {
+              [`xod/core/cast-to-${typeOut}(${typeIn})`]: {
                 nodes: {
                   __in__: {
                     id: '__in__',
@@ -1040,7 +1040,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main');
-          const expectedPath = `xod/core/cast(${typeIn},${typeOut})`; // getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths =
             typeIn === typeOut
               ? [`xod/core/${typeIn}`, expectedPath, '@/main']
@@ -1152,7 +1152,7 @@ describe('Flatten', () => {
                 links: {},
                 attachments: [Attachment.createImplAttachment('// ok')],
               },
-              [`xod/core/cast(${typeIn},${typeOut})`]: {
+              [`xod/core/cast-to-${typeOut}(${typeIn})`]: {
                 nodes: {
                   __in__: {
                     id: '__in__',
@@ -1196,7 +1196,7 @@ describe('Flatten', () => {
           }
 
           const flatProject = flatten(project, '@/main');
-          const expectedPath = `xod/core/cast(${typeIn},${typeOut})`; // getCastPatchPath(typeIn, typeOut);
+          const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
           const expectedPaths =
             typeIn === typeOut
               ? [`xod/core/${typeIn}`, expectedPath, '@/main']
@@ -1415,7 +1415,7 @@ describe('Flatten', () => {
 
         Helper.expectEitherError(
           formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, {
-            patchPath: 'xod/core/cast(boolean,number)',
+            patchPath: 'xod/core/cast-to-number(boolean)',
           }),
           flatProject
         );
@@ -1670,7 +1670,7 @@ describe('Flatten', () => {
             links: {},
             attachments: [Attachment.createImplAttachment('// ok')],
           },
-          'xod/core/cast(boolean,number)': {
+          'xod/core/cast-to-number(boolean)': {
             nodes: {
               __in__: {
                 id: '__in__',
@@ -1691,7 +1691,7 @@ describe('Flatten', () => {
             links: {},
             attachments: [Attachment.createImplAttachment('// ok')],
           },
-          'xod/core/cast(number,boolean)': {
+          'xod/core/cast-to-boolean(number)': {
             nodes: {
               __in__: {
                 id: '__in__',
