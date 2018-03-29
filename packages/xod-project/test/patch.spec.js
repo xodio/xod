@@ -1695,13 +1695,40 @@ describe('Patch', () => {
         );
       });
 
-      it('should ignore the order in which terminals are created', () => {
+      it('should check that for all generic outputs we have inputs with the same type', () => {
         const patch = Helper.defaultizePatch({
           nodes: {
-            // note that output-t2 is defined first
+            'input-t1': {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
             'output-t2': {
               type: PPU.getTerminalPath(
                 CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.T2
+              ),
+            },
+            'abstract-marker': {
+              type: CONST.ABSTRACT_MARKER_PATH,
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          'For each generic output there has to be at least one generic input of the same type. Create input-t2',
+          Patch.validateAbstractPatch(patch)
+        );
+      });
+
+      it('should ignore the order in which terminals are created', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            // note that input-t2 is defined first
+            'input-t2': {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
                 CONST.PIN_TYPE.T2
               ),
             },

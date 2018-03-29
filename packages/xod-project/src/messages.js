@@ -23,3 +23,8 @@ export const nonsequentialGenericTerminals = expectedPinTypes =>
   `Generic inputs should be employed sequentially. Use ${expectedPinTypes.join(
     ', '
   )}`;
+
+export const orphanGenericOutputs = expectedInputTypes =>
+  `For each generic output there has to be at least one generic input of the same type. Create ${expectedInputTypes
+    .map(x => `input-${x}`)
+    .join(', ')}`;
