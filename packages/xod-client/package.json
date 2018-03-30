@@ -29,7 +29,7 @@
     "rc-menu": "git+https://github.com/xodio/menu.git#npm",
     "rc-progress": "^2.1.2",
     "react": "^16.2",
-    "react-autosuggest": "git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e",
+    "react-autosuggest": "git+https://github.com/xodio/react-autosuggest.git#7850ec32e40ea9c4750269ac4f08aa0b051bb86c",
     "react-codemirror": "^1.0.0",
     "react-collapsible": "^2.0.3",
     "react-contextmenu": "^2.9.1",

@@ -8876,9 +8876,9 @@ rc@^1.1.2, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-"react-autosuggest@git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e":
+"react-autosuggest@git+https://github.com/xodio/react-autosuggest.git#7850ec32e40ea9c4750269ac4f08aa0b051bb86c":
   version "9.3.2"
-  resolved "git+https://github.com/xodio/react-autosuggest.git#bc6ab71a2ec47ad5fbce5d13ff6a572942ea765e"
+  resolved "git+https://github.com/xodio/react-autosuggest.git#7850ec32e40ea9c4750269ac4f08aa0b051bb86c"
   dependencies:
     prop-types "^15.5.10"
     react-autowhatever "^10.1.0"
