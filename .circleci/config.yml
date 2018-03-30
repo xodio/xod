@@ -28,11 +28,6 @@ defs:
     step-install: &step-install
       name: Install Node modules
       command: yarn
-      environment:
-        # In any case switch to development for `yarn install` because
-        # react-autosuggest requires babel O_o (dev dependency) to be installed
-        # successfully
-        NODE_ENV: development
 
     step-bump-version: &step-bump-version
       name: Bump version
