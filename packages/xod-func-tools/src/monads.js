@@ -2,6 +2,12 @@ import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import { def } from './types';
 
+/*
+ * Shortcuts for easier ReasonML interop
+ */
+export const eitherLeft = Either.Left;
+export const eitherRight = Either.Right;
+
 /**
  * Function to extract value from `Either` by providing a function
  * to handle the types of values contained in both `Left` and `Right`.
