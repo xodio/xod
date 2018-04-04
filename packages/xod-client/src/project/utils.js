@@ -140,3 +140,11 @@ export const isNotImplementedInXodNode = R.compose(
   R.equals(XP.NOT_IMPLEMENTED_IN_XOD_PATH),
   XP.getNodeType
 );
+
+export const getRenderablePinType = pin => {
+  const { deducedType } = pin;
+
+  return deducedType
+    ? deducedType.getOrElse('conflicting')
+    : XP.getPinType(pin);
+};

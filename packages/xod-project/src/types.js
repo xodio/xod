@@ -157,6 +157,11 @@ export const NodeOrId = OneOfType('NodeOrId', [NodeId, ObjectWithId]);
 export const LinkOrId = OneOfType('LinkOrId', [LinkId, ObjectWithId]);
 export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 
+export const DeducedPinTypes = AliasType(
+  'DeducedPinTypes',
+  $.StrMap($.StrMap(XF.$Maybe(DataType)))
+);
+
 //-----------------------------------------------------------------------------
 //
 // Environment
@@ -198,6 +203,7 @@ export const env = XF.env.concat([
   ArityLevel,
   NonZeroNaturalNumber,
   ArityStep,
+  DeducedPinTypes,
 ]);
 
 export const def = HMDef.create({

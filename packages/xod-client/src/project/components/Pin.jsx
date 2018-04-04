@@ -5,6 +5,7 @@ import { PIN_DIRECTION } from 'xod-project';
 
 import {
   PIN_RADIUS,
+  PIN_INNER_RADIUS,
   PIN_RADIUS_WITH_OUTER_STROKE,
   PIN_HIGHLIGHT_RADIUS,
 } from '../nodeLayout';
@@ -56,6 +57,17 @@ const Pin = props => {
         {...pinCircleCenter}
         r={PIN_RADIUS}
       />
+      {props.deducedType && props.isConnected ? (
+        <circle
+          className={classNames(
+            'symbol',
+            'is-connected',
+            props.deducedType.getOrElse('conflicting')
+          )}
+          {...pinCircleCenter}
+          r={PIN_INNER_RADIUS}
+        />
+      ) : null}
       {variadicDots}
     </g>
   );
@@ -65,6 +77,7 @@ Pin.propTypes = {
   keyName: PropTypes.string.isRequired,
   label: PropTypes.string,
   type: PropTypes.string,
+  deducedType: PropTypes.object,
   direction: PropTypes.string,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,

@@ -17,7 +17,7 @@ import {
   getCurrentPatchPath,
   getLinkingPin,
 } from '../editor/selectors';
-import { isPatchDeadTerminal } from '../project/utils';
+import { isPatchDeadTerminal, getRenderablePinType } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 
@@ -62,6 +62,18 @@ export const getCurrentPatchLinks = createSelector(
 export const getCurrentPatchNodes = createSelector(
   [getProject, getCurrentPatchPath],
   getIndexedPatchEntitiesBy(XP.listNodes)
+);
+
+// :: State -> Maybe Patch
+export const getCurrentPatch = createSelector(
+  [getCurrentPatchPath, getProject],
+  (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
+);
+
+export const getDeducedPinTypes = createSelector(
+  [getProject, getCurrentPatch],
+  (project, maybeCurrentPatch) =>
+    foldMaybe({}, patch => XP.deducePinTypes(patch, project), maybeCurrentPatch)
 );
 
 // :: { LinkId: Link } -> { NodeId: { PinKey: Boolean } }
@@ -133,12 +145,6 @@ const mergePinDataFromPatch = R.curry((project, curPatch, node) =>
     addLastVariadicGroupFlag(project, node),
     XP.getPinsForNode
   )(node, curPatch, project)
-);
-
-// :: State -> Maybe Patch
-export const getCurrentPatch = createSelector(
-  [getCurrentPatchPath, getProject],
-  (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
 // :: Error -> RenderableNode|RenderableLink -> RenderableNode|RenderableLink
@@ -278,10 +284,25 @@ const addSpecializationsList = R.curry((project, node) => {
   )(node);
 });
 
+const assocDeducedPinTypes = R.curry((deducedPinTypes, node) =>
+  R.over(
+    R.lensProp('pins'),
+    R.map(pin =>
+      R.assoc(
+        'deducedType',
+        R.path([XP.getNodeId(node), XP.getPinKey(pin)], deducedPinTypes),
+        pin
+      )
+    ),
+    node
+  )
+);
+
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
-  (node, currentPatch, connectedPins, project) =>
+  (node, currentPatch, connectedPins, deducedPinTypes, project) =>
     R.compose(
+      assocDeducedPinTypes(deducedPinTypes),
       addSpecializationsList(project),
       markDeprecatedNodes(project),
       addAbstractPatchErrors(currentPatch),
@@ -297,14 +318,32 @@ export const getRenderableNode = R.curry(
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
-  [getProject, getCurrentPatch, getCurrentPatchNodes, getConnectedPins],
-  [R.equals, R.equals, R.equals, R.equals],
-  (project, maybeCurrentPatch, currentPatchNodes, connectedPins) =>
+  [
+    getProject,
+    getCurrentPatch,
+    getCurrentPatchNodes,
+    getConnectedPins,
+    getDeducedPinTypes,
+  ],
+  [R.equals, R.equals, R.equals, R.equals, R.equals],
+  (
+    project,
+    maybeCurrentPatch,
+    currentPatchNodes,
+    connectedPins,
+    deducedPinTypes
+  ) =>
     foldMaybe(
       {},
       currentPatch =>
         R.map(
-          getRenderableNode(R.__, currentPatch, connectedPins, project),
+          getRenderableNode(
+            R.__,
+            currentPatch,
+            connectedPins,
+            deducedPinTypes,
+            project
+          ),
           currentPatchNodes
         ),
       maybeCurrentPatch
@@ -313,9 +352,15 @@ export const getRenderableNodes = createMemoizedSelector(
 
 // :: State -> StrMap RenderableLink
 export const getRenderableLinks = createMemoizedSelector(
-  [getRenderableNodes, getCurrentPatchLinks, getCurrentPatch, getProject],
-  [R.equals, R.equals, R.equals, R.equals],
-  (nodes, links, curPatch, project) =>
+  [
+    getRenderableNodes,
+    getCurrentPatchLinks,
+    getCurrentPatch,
+    getProject,
+    getDeducedPinTypes,
+  ],
+  [R.equals, R.equals, R.equals, R.equals, R.equals],
+  (nodes, links, curPatch, project, deducedPinTypes) =>
     R.compose(
       addLinksPositioning(nodes),
       R.map(link =>
@@ -325,7 +370,7 @@ export const getRenderableLinks = createMemoizedSelector(
             const outputPinKey = XP.getLinkOutputPinKey(link);
             return R.assoc(
               'type',
-              nodes[outputNodeId].pins[outputPinKey].type,
+              getRenderablePinType(nodes[outputNodeId].pins[outputPinKey]),
               newLink
             );
           },
@@ -341,7 +386,8 @@ export const getRenderableLinks = createMemoizedSelector(
             'Imposible error: RenderableLinks will be computed only for current patch',
             curPatch
           ),
-          project
+          project,
+          deducedPinTypes
         )
       )
     )(links)

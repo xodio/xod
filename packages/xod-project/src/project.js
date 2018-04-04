@@ -1,6 +1,12 @@
 import * as R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
-import { foldMaybe, explodeMaybe, notEmpty, isAmong } from 'xod-func-tools';
+import {
+  foldMaybe,
+  explodeMaybe,
+  notEmpty,
+  isAmong,
+  notNil,
+} from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
@@ -12,6 +18,7 @@ import * as Pin from './pin';
 import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
+import { deducePinTypes } from './typeDeduction';
 
 /**
  * Root of a project’s state tree
@@ -372,26 +379,62 @@ export const getNodePins = def(
 );
 
 const checkPinsCompatibility = def(
-  'checkPinsCompatibility :: [Pin] -> Patch -> Either Error Patch',
-  ([inputPin, outputPin], patch) => {
+  'checkPinsCompatibility :: Patch -> Link -> DeducedPinTypes -> [Pin] -> Either Error Patch',
+  (patch, link, deducedPinTypes, [inputPin, outputPin]) => {
     const patchPath = Patch.getPatchPath(patch);
-    const inputPinType = Pin.getPinType(inputPin);
-    const outputPinType = Pin.getPinType(outputPin);
+
+    const pinTypes = [
+      {
+        original: Pin.getPinType(inputPin),
+        deduced: R.path(
+          [Link.getLinkInputNodeId(link), Link.getLinkInputPinKey(link)],
+          deducedPinTypes
+        ),
+      },
+      {
+        original: Pin.getPinType(outputPin),
+        deduced: R.path(
+          [Link.getLinkOutputNodeId(link), Link.getLinkOutputPinKey(link)],
+          deducedPinTypes
+        ),
+      },
+    ];
 
     return R.compose(
       R.map(R.always(patch)),
+      R.chain(
+        R.compose(
+          ([inputPinType, outputPinType]) =>
+            Tools.errOnFalse(
+              {
+                title: CONST.ERROR_TITLES.BAD_LINKS,
+                message: Utils.formatString(
+                  CONST.ERROR.CANT_CAST_TYPES_DIRECTLY,
+                  {
+                    fromType: outputPinType,
+                    toType: inputPinType,
+                    patchPath,
+                  }
+                ),
+              },
+              Utils.canCastTypes
+            )(outputPinType, inputPinType),
+          R.map(
+            ({ original, deduced }) =>
+              deduced
+                ? explodeMaybe(
+                    'Impossible error: We already checked for unresolvable types earlier',
+                    deduced
+                  )
+                : original
+          )
+        )
+      ),
       Tools.errOnFalse(
-        {
-          title: CONST.ERROR_TITLES.BAD_LINKS,
-          message: Utils.formatString(CONST.ERROR.CANT_CAST_TYPES_DIRECTLY, {
-            fromType: outputPinType,
-            toType: inputPinType,
-            patchPath,
-          }),
-        },
-        Utils.canCastTypes
+        CONST.ERROR.LINK_CAUSES_TYPE_CONFLICT,
+        R.none(R.propSatisfies(R.both(notNil, Maybe.isNothing), 'deduced'))
       )
-    )(outputPinType, inputPinType);
+    )(pinTypes);
   }
 );
 
@@ -431,8 +474,8 @@ const checkLinkPin = def(
             Patch.getPinByKey(pinKey)
           )(justPatch)
         ),
-        R.unapply(R.sequence(Maybe.of))
-      )(mPatch, mNode)
+        R.sequence(Maybe.of)
+      )([mPatch, mNode])
     );
 
     // :: Maybe Patch -> PatchPath -> Either Error Patch
@@ -482,8 +525,8 @@ const checkLinkPin = def(
  * @returns {Either<Error|Patch>}
  */
 export const validateLinkPins = def(
-  'validateLinkPins :: Link -> Patch -> Project -> Either Error Patch',
-  (link, patch, project) => {
+  'validateLinkPins :: Link -> Patch -> Project -> DeducedPinTypes -> Either Error Patch',
+  (link, patch, project, deducedPinTypes) => {
     const checkInputPin = checkLinkPin(
       Link.getLinkInputNodeId,
       Link.getLinkInputPinKey
@@ -495,7 +538,7 @@ export const validateLinkPins = def(
 
     return R.compose(
       R.map(R.always(patch)),
-      R.chain(checkPinsCompatibility(R.__, patch)),
+      R.chain(checkPinsCompatibility(patch, link, deducedPinTypes)),
       R.sequence(Either.of)
     )([
       checkInputPin(link, patch, project),
@@ -539,22 +582,29 @@ export const validatePatchContents = def(
       ),
       Patch.listNodes
     );
+
     // :: patch -> Either Error Patch
-    const checkLinks = R.compose(
-      R.ifElse(
-        R.isEmpty,
-        R.always(Either.of(patch)),
-        R.compose(
-          R.map(R.always(patch)),
-          R.sequence(Either.of),
-          R.map(validateLinkPins(R.__, patch, project))
-        )
-      ),
-      Patch.listLinks
-    );
+    const checkLinks = (checkedPatch, deducedPinTypes) =>
+      R.compose(
+        R.ifElse(
+          R.isEmpty,
+          R.always(Either.of(checkedPatch)),
+          R.compose(
+            R.map(R.always(checkedPatch)),
+            R.sequence(Either.of),
+            R.map(
+              validateLinkPins(R.__, checkedPatch, project, deducedPinTypes)
+            )
+          )
+        ),
+        Patch.listLinks
+      )(checkedPatch);
 
     return checkNodeTypes(patch)
-      .chain(checkLinks)
+      .chain(checkedPatch => {
+        const deducedPinTypes = deducePinTypes(checkedPatch, project);
+        return checkLinks(checkedPatch, deducedPinTypes);
+      })
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validatePatchForVariadics);
   }
