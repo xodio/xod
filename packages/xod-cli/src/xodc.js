@@ -9,6 +9,7 @@ import pack from './xodc-pack';
 import publish from './xodc-publish';
 import transpile from './xodc-transpile';
 import unpack from './xodc-unpack';
+import tabtest from './xodc-tabtest';
 
 const PM_SWAGGER_URL = 'https://pm.xod.io/swagger';
 
@@ -29,6 +30,7 @@ Usage:
   xodc transpile [--output=<filename>] [--workspace=<dir>] <input> <patchPath>
   xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
   xodc install [--swagger=<swagger>] [--workspace=<dir>] <libUri>
+  xodc tabtest [--workspace=<dir>] <input> <patchPath>
 
 Commands:
   pack                  Pack project directory into xodball.
@@ -36,6 +38,7 @@ Commands:
   transpile             Transpile project into device runtime.
   publish               Publish a new library version.
   install               Install the library into workspace.
+  tabtest               Run tabular tests.
 
 Options:
   --output=<filename>   Write result of transpilation into file.
@@ -61,6 +64,10 @@ const programs = {
     ),
   install: o =>
     install(o['--swagger'] || PM_SWAGGER_URL, o['<libUri>'], o['--workspace']),
+  tabtest: o =>
+    tabtest(o['<input>'], o['<patchPath>'], {
+      workspace: o['--workspace'],
+    }),
 };
 
 // Running command
