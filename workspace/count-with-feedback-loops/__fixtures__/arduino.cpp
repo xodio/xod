@@ -17,7 +17,6 @@
 
 #include <Arduino.h>
 #include <inttypes.h>
-#include <avr/pgmspace.h>
 
 
 /*=============================================================================
@@ -42,6 +41,7 @@
  *
  =============================================================================*/
 
+namespace xod {
 namespace std {
 
 template< class T > struct remove_reference      {typedef T type;};
@@ -54,6 +54,7 @@ typename remove_reference<T>::type&& move(T&& a) {
 }
 
 } // namespace std
+} // namespace xod
 
 /*=============================================================================
  *
