@@ -100,7 +100,13 @@ export const defaultValueOfType = def(
 
 export const canCastTypes = def(
   'canCastTypes :: DataType -> DataType -> Boolean',
-  (from, to) => R.pathOr(false, [from, to], CONST.TYPES_COMPATIBILITY)
+  (from, to) => {
+    if (isGenericType(from) || isGenericType(to)) {
+      return true;
+    }
+
+    return R.pathOr(false, [from, to], CONST.STATIC_TYPES_COMPATIBILITY);
+  }
 );
 
 // =============================================================================

@@ -145,20 +145,14 @@ export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 // utils for cast patches
 //
 
-const legacyCastTypeRegExp = new RegExp(
-  `^xod/core/cast-(${dataTypes.join('|')})-to-(${dataTypes.join('|')})$`
-);
 // TODO: When custom types will be added this should be generalized.
 //       Also, casting from/to generic types should be forbidden.
 const castTypeRegExp = new RegExp(
-  `^xod/core/cast\\((${dataTypes.join('|')}),(${dataTypes.join('|')})\\)$`
+  `^xod/core/cast-to-(${dataTypes.join('|')})\\((${dataTypes.join('|')})\\)$`
 );
 
 // :: String -> Boolean
-export const isCastPatchPath = R.either(
-  R.test(legacyCastTypeRegExp),
-  R.test(castTypeRegExp)
-);
+export const isCastPatchPath = R.test(castTypeRegExp);
 
 /**
  * Returns path for casting patch
@@ -168,7 +162,7 @@ export const isCastPatchPath = R.either(
  * @returns {String}
  */
 export const getCastPatchPath = (typeIn, typeOut) =>
-  `xod/core/cast(${typeIn},${typeOut})`;
+  `xod/core/cast-to-${typeOut}(${typeIn})`;
 
 //
 // defer-* nodes

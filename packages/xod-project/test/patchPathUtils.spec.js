@@ -317,38 +317,21 @@ describe('PatchPathUtils', () => {
 
   describe('Cast patch utils', () => {
     describe('isCastPatchPath', () => {
-      it('should recognise legacy cast paths', () => {
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-number')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-pulse')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-boolean-to-string')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-number-to-boolean')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-number-to-string')
-        );
-      });
       it('should recognise new cast paths', () => {
         assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,number)')
+          PatchPathUtils.isCastPatchPath('xod/core/cast-to-number(boolean)')
         );
         assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,pulse)')
+          PatchPathUtils.isCastPatchPath('xod/core/cast-to-pulse(boolean)')
         );
         assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast(boolean,string)')
+          PatchPathUtils.isCastPatchPath('xod/core/cast-to-string(boolean)')
         );
         assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast(number,boolean)')
+          PatchPathUtils.isCastPatchPath('xod/core/cast-to-boolean(number)')
         );
         assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast(number,string)')
+          PatchPathUtils.isCastPatchPath('xod/core/cast-to-string(number)')
         );
       });
     });

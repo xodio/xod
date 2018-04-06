@@ -458,7 +458,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         `Can't find the Node "a" in the patch with path "@/test"`,
         result
@@ -488,7 +488,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         `Can't find the Node "b" in the patch with path "@/test"`,
         result
@@ -521,7 +521,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         "Specified node types haven't required pins for creating links",
         result
@@ -554,7 +554,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         "Specified node types haven't required pins for creating links",
         result
@@ -587,7 +587,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         'Patch with type "test/nodes/not-exists" is not found in the project',
         result
@@ -620,7 +620,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         'Patch with type "test/nodes/not-exists" is not found in the project',
         result
@@ -654,7 +654,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
         '@/test: type pulse can’t cast to number directly.',
         result
@@ -688,7 +688,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       assert.equal(Either.isRight(result), true);
     });
     it('valid link connected to variadic input', () => {
@@ -720,7 +720,7 @@ describe('Project', () => {
         },
       });
 
-      const result = Project.validateLinkPins(link, patch, project);
+      const result = Project.validateLinkPins(link, patch, project, {});
       assert.equal(Either.isRight(result), true);
     });
   });

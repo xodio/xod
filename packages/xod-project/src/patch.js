@@ -40,6 +40,7 @@ import {
   notEnoughVariadicInputs,
   noVariadicMarkers,
   nonsequentialGenericTerminals,
+  orphanGenericOutputs,
   tooManyVariadicMarkers,
   wrongVariadicPinTypes,
   ERR_VARIADIC_HAS_NO_OUTPUTS,
@@ -1300,20 +1301,38 @@ export const isAbstractPatch = def(
   )
 );
 
+const sortUniq = R.compose(R.sort(R.ascend(R.identity)), R.uniq);
+
 export const validateAbstractPatch = def(
   'validateAbstractPatch :: Patch -> Either Error Patch',
   R.ifElse(
-    isAbstractPatch,
+    isAbstractPatch, // TODO: also validate composite patches!
     patch => {
-      const genericPinTypes = R.compose(
-        R.sort(R.ascend),
-        R.uniq,
-        R.map(Pin.getPinType),
+      const [genericInputTypes, genericOutputTypes] = R.compose(
+        R.map(R.map(Pin.getPinType)),
+        R.partition(Pin.isInputPin),
         R.filter(Pin.isGenericPin),
         listPins
       )(patch);
 
-      if (R.isEmpty(genericPinTypes)) {
+      // for example, there could be no output-t2 if there is no input-t2
+      const orphanGenericOutputTypes = R.compose(sortUniq, R.without)(
+        genericInputTypes,
+        genericOutputTypes
+      );
+
+      if (!R.isEmpty(orphanGenericOutputTypes)) {
+        return Either.Left(
+          new Error(orphanGenericOutputs(orphanGenericOutputTypes))
+        );
+      }
+
+      const allGenericPinTypes = R.compose(sortUniq, R.concat)(
+        genericInputTypes,
+        genericOutputTypes
+      );
+
+      if (R.isEmpty(allGenericPinTypes)) {
         return Either.Left(new Error(CONST.ERROR.GENERIC_TERMINALS_REQUIRED));
       }
 
@@ -1322,9 +1341,9 @@ export const validateAbstractPatch = def(
         R.range(1),
         R.inc,
         R.length
-      )(genericPinTypes);
+      )(allGenericPinTypes);
 
-      if (!R.equals(genericPinTypes, expectedPinTypes)) {
+      if (!R.equals(allGenericPinTypes, expectedPinTypes)) {
         return Either.Left(
           new Error(nonsequentialGenericTerminals(expectedPinTypes))
         );

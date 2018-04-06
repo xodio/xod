@@ -1,0 +1,702 @@
+{
+  "name": "",
+  "patches": {
+    "@/case1-top-to-bottom": {
+      "links": {
+        "B1gmG37oz": {
+          "id": "B1gmG37oz",
+          "input": {
+            "nodeId": "gen3_1to1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen2_ptp",
+            "pinKey": "outT1"
+          }
+        },
+        "BkMmMhmiz": {
+          "id": "BkMmMhmiz",
+          "input": {
+            "nodeId": "gen1_1to1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "constNum",
+            "pinKey": "outNum"
+          }
+        },
+        "HJWmM2Qif": {
+          "id": "HJWmM2Qif",
+          "input": {
+            "nodeId": "gen2_ptp",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen1_1to1",
+            "pinKey": "outT1"
+          }
+        },
+        "rykZj2msz": {
+          "id": "rykZj2msz",
+          "input": {
+            "nodeId": "HJqgj2Xsz",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "gen3_1to1",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "HJqgj2Xsz": {
+          "id": "HJqgj2Xsz",
+          "position": {
+            "x": 34,
+            "y": 408
+          },
+          "type": "@/displ-str"
+        },
+        "constNum": {
+          "id": "constNum",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "gen1_1to1": {
+          "id": "gen1_1to1",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2_ptp": {
+          "id": "gen2_ptp",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/generic-pair-to-pair"
+        },
+        "gen3_1to1": {
+          "id": "gen3_1to1",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/generic-1-to-1"
+        }
+      },
+      "path": "@/case1-top-to-bottom"
+    },
+    "@/case2-bottom-to-top": {
+      "links": {
+        "Bk7rBfhmoG": {
+          "id": "Bk7rBfhmoG",
+          "input": {
+            "nodeId": "gen2_ptp",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen1_1to1",
+            "pinKey": "outT1"
+          }
+        },
+        "H1NUzhmsf": {
+          "id": "H1NUzhmsf",
+          "input": {
+            "nodeId": "dispNum",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "gen3_1to1",
+            "pinKey": "outT1"
+          }
+        },
+        "SkGHSG2QiM": {
+          "id": "SkGHSG2QiM",
+          "input": {
+            "nodeId": "gen3_1to1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen2_ptp",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "dispNum": {
+          "id": "dispNum",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/displ-num"
+        },
+        "gen1_1to1": {
+          "id": "gen1_1to1",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2_ptp": {
+          "id": "gen2_ptp",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/generic-pair-to-pair"
+        },
+        "gen3_1to1": {
+          "id": "gen3_1to1",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/generic-1-to-1"
+        }
+      },
+      "path": "@/case2-bottom-to-top"
+    },
+    "@/case3-top-to-bottom-invalid": {
+      "comments": {
+        "BJhH73Qjz": {
+          "content": "does not stop on error, valid ones are still resolved",
+          "id": "BJhH73Qjz",
+          "position": {
+            "x": 306,
+            "y": 102
+          },
+          "size": {
+            "height": 51,
+            "width": 170
+          }
+        },
+        "rk1fQ3QjG": {
+          "content": "does not propagete",
+          "id": "rk1fQ3QjG",
+          "position": {
+            "x": 102,
+            "y": 306
+          },
+          "size": {
+            "height": 51,
+            "width": 204
+          }
+        }
+      },
+      "links": {
+        "BJehMnXoM": {
+          "id": "BJehMnXoM",
+          "input": {
+            "nodeId": "gen3_unresolved",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen2_broken",
+            "pinKey": "outT1"
+          }
+        },
+        "HJNrQ3Qjz": {
+          "id": "HJNrQ3Qjz",
+          "input": {
+            "nodeId": "gen4_unaffected_healthy",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "Bk9EQ3Xjz",
+            "pinKey": "outNum"
+          }
+        },
+        "S11nz37sf": {
+          "id": "S11nz37sf",
+          "input": {
+            "nodeId": "gen2_broken",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "gen1_healthy",
+            "pinKey": "outT1"
+          }
+        },
+        "rJL2G2Xsf": {
+          "id": "rJL2G2Xsf",
+          "input": {
+            "nodeId": "gen2_broken",
+            "pinKey": "inT1_2"
+          },
+          "output": {
+            "nodeId": "rJ7nz27jf",
+            "pinKey": "outStr"
+          }
+        },
+        "rkrzjM3msM": {
+          "id": "rkrzjM3msM",
+          "input": {
+            "nodeId": "gen1_healthy",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "Byzif2Qif",
+            "pinKey": "outNum"
+          }
+        }
+      },
+      "nodes": {
+        "Bk9EQ3Xjz": {
+          "id": "Bk9EQ3Xjz",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "Byzif2Qif": {
+          "id": "Byzif2Qif",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "gen1_healthy": {
+          "id": "gen1_healthy",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2_broken": {
+          "id": "gen2_broken",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/generic-2-to-1"
+        },
+        "gen3_unresolved": {
+          "id": "gen3_unresolved",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen4_unaffected_healthy": {
+          "id": "gen4_unaffected_healthy",
+          "position": {
+            "x": 238,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "rJ7nz27jf": {
+          "id": "rJ7nz27jf",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "@/const-str"
+        }
+      },
+      "path": "@/case3-top-to-bottom-invalid"
+    },
+    "@/case4-bottom-to-top-invalid": {
+      "comments": {
+        "Sk2vd7h7jG": {
+          "content": "does not stop on error, valid ones are still resolved",
+          "id": "Sk2vd7h7jG",
+          "position": {
+            "x": 544,
+            "y": 0
+          },
+          "size": {
+            "height": 51,
+            "width": 204
+          }
+        },
+        "r1ovuQ27oG": {
+          "content": "does not propagete",
+          "id": "r1ovuQ27oG",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "size": {
+            "height": 51,
+            "width": 170
+          }
+        }
+      },
+      "links": {
+        "H169XhXoM": {
+          "id": "H169XhXoM",
+          "input": {
+            "nodeId": "ByocXhmiM",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "gen2_broken",
+            "pinKey": "outT1"
+          }
+        },
+        "HJYimh7iG": {
+          "id": "HJYimh7iG",
+          "input": {
+            "nodeId": "H1Ds73QoM",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "gen5_unaffected",
+            "pinKey": "outT1"
+          }
+        },
+        "HkZoX2XiG": {
+          "id": "HkZoX2XiG",
+          "input": {
+            "nodeId": "BJJjmhmiG",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "gen2_broken",
+            "pinKey": "outT1"
+          }
+        },
+        "HyOTQ3mjf": {
+          "id": "HyOTQ3mjf",
+          "input": {
+            "nodeId": "SJG53X37if",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "gen4_broken",
+            "pinKey": "outT1_2"
+          }
+        },
+        "SkNaX3moG": {
+          "id": "SkNaX3moG",
+          "input": {
+            "nodeId": "gen4_broken",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen3_unresolved",
+            "pinKey": "outT1"
+          }
+        },
+        "Sy8pQ2mjf": {
+          "id": "Sy8pQ2mjf",
+          "input": {
+            "nodeId": "ryWqhm3msz",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "gen4_broken",
+            "pinKey": "outT1_1"
+          }
+        },
+        "rJCFmhXjz": {
+          "id": "rJCFmhXjz",
+          "input": {
+            "nodeId": "gen2_broken",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "gen1_unresolved",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "BJJjmhmiG": {
+          "id": "BJJjmhmiG",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/displ-str"
+        },
+        "ByocXhmiM": {
+          "id": "ByocXhmiM",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/displ-num"
+        },
+        "H1Ds73QoM": {
+          "id": "H1Ds73QoM",
+          "position": {
+            "x": 476,
+            "y": 102
+          },
+          "type": "@/displ-num"
+        },
+        "SJG53X37if": {
+          "id": "SJG53X37if",
+          "position": {
+            "x": 374,
+            "y": 204
+          },
+          "type": "@/displ-str"
+        },
+        "gen1_unresolved": {
+          "id": "gen1_unresolved",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2_broken": {
+          "id": "gen2_broken",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen3_unresolved": {
+          "id": "gen3_unresolved",
+          "position": {
+            "x": 306,
+            "y": 0
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen4_broken": {
+          "id": "gen4_broken",
+          "position": {
+            "x": 306,
+            "y": 102
+          },
+          "type": "@/generic-1-to-2"
+        },
+        "gen5_unaffected": {
+          "id": "gen5_unaffected",
+          "position": {
+            "x": 476,
+            "y": 0
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "ryWqhm3msz": {
+          "id": "ryWqhm3msz",
+          "position": {
+            "x": 272,
+            "y": 204
+          },
+          "type": "@/displ-num"
+        }
+      },
+      "path": "@/case4-bottom-to-top-invalid"
+    },
+    "@/const-num": {
+      "nodes": {
+        "outNum": {
+          "id": "outNum",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/const-num"
+    },
+    "@/const-str": {
+      "nodes": {
+        "outStr": {
+          "id": "outStr",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-string"
+        }
+      },
+      "path": "@/const-str"
+    },
+    "@/displ-num": {
+      "nodes": {
+        "inNum": {
+          "id": "inNum",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/displ-num"
+    },
+    "@/displ-str": {
+      "nodes": {
+        "inStr": {
+          "id": "inStr",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        }
+      },
+      "path": "@/displ-str"
+    },
+    "@/generic-1-to-1": {
+      "nodes": {
+        "inT1": {
+          "id": "inT1",
+          "position": {
+            "x": -272,
+            "y": -204
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -272,
+            "y": -102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "rJHbJc7oM": {
+          "id": "rJHbJc7oM",
+          "position": {
+            "x": -204,
+            "y": -204
+          },
+          "type": "xod/patch-nodes/abstract"
+        }
+      },
+      "path": "@/generic-1-to-1"
+    },
+    "@/generic-1-to-2": {
+      "nodes": {
+        "SkbVEZ9miG": {
+          "id": "SkbVEZ9miG",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "inT1": {
+          "id": "inT1",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1_1": {
+          "id": "outT1_1",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "outT1_2": {
+          "id": "outT1_2",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/generic-1-to-2"
+    },
+    "@/generic-2-to-1": {
+      "nodes": {
+        "inT1_1": {
+          "id": "inT1_1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT1_2": {
+          "id": "inT1_2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "r1-IGycmjM": {
+          "id": "r1-IGycmjM",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        }
+      },
+      "path": "@/generic-2-to-1"
+    },
+    "@/generic-pair-to-pair": {
+      "nodes": {
+        "SJb707cXof": {
+          "id": "SJb707cXof",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "inT1": {
+          "id": "inT1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT2": {
+          "id": "inT2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t2"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "outT2": {
+          "id": "outT2",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t2"
+        }
+      },
+      "path": "@/generic-pair-to-pair"
+    }
+  }
+}

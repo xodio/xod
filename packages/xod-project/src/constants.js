@@ -37,6 +37,7 @@ export const ERROR = {
     'Input node of the link does not exist in this patch',
   LINK_OUTPUT_NODE_NOT_FOUND:
     'Output node of the link does not exist in this patch',
+  LINK_CAUSES_TYPE_CONFLICT: 'Link causes type conflict',
   // comments
   COMMENT_NOT_FOUND:
     'Can\'t find the Comment "{commentId}" in the patch with path "{patchPath}"',
@@ -107,16 +108,17 @@ export const DEFAULT_VALUE_OF_TYPE = {
 export const MAX_ARITY_STEP = 3;
 
 /**
- * A lookup table that answers the
- * question 'can a type A be cast to type B?'
+ * A lookup table that answers the question
+ * 'can a type A be cast to type B?' for static types.
+ * Generic types are handled separately.
  *
  * @example
- *   TYPES_COMPATIBILITY[PIN_TYPE.BOOLEAN][PIN_TYPE.STRING] // true
+ *   STATIC_TYPES_COMPATIBILITY[PIN_TYPE.BOOLEAN][PIN_TYPE.STRING] // true
  *   // boolean can be cast to string
  *
- * @name TYPES_COMPATIBILITY
+ * @name STATIC_TYPES_COMPATIBILITY
  */
-export const TYPES_COMPATIBILITY = {
+export const STATIC_TYPES_COMPATIBILITY = {
   [PIN_TYPE.BOOLEAN]: {
     [PIN_TYPE.BOOLEAN]: true,
     [PIN_TYPE.NUMBER]: true,
@@ -155,10 +157,6 @@ export const TYPES_COMPATIBILITY = {
     [PIN_TYPE.STRING]: false,
     [PIN_TYPE.DEAD]: false,
   },
-  // for now generic pins can't connect with anything
-  [PIN_TYPE.T1]: {},
-  [PIN_TYPE.T2]: {},
-  [PIN_TYPE.T3]: {},
 };
 
 export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
