@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
-import { foldMaybe } from 'xod-func-tools';
+import { foldMaybe, foldEither } from 'xod-func-tools';
 
 import {
   getOptimalPanningOffset,
@@ -145,6 +145,6 @@ export const getRenderablePinType = pin => {
   const { deducedType } = pin;
 
   return deducedType
-    ? deducedType.getOrElse('conflicting')
+    ? foldEither(R.always('conflicting'), R.identity, deducedType)
     : XP.getPinType(pin);
 };

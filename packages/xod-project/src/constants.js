@@ -37,7 +37,8 @@ export const ERROR = {
     'Input node of the link does not exist in this patch',
   LINK_OUTPUT_NODE_NOT_FOUND:
     'Output node of the link does not exist in this patch',
-  LINK_CAUSES_TYPE_CONFLICT: 'Link causes type conflict',
+  LINK_CAUSES_TYPE_CONFLICT:
+    'Link causes type conflict between {conflictingTypes}',
   // comments
   COMMENT_NOT_FOUND:
     'Can\'t find the Comment "{commentId}" in the patch with path "{patchPath}"',

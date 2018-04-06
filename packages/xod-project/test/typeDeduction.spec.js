@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { Maybe } from 'ramda-fantasy';
+import { Either } from 'ramda-fantasy';
 
 import * as Helper from './helpers';
 
@@ -18,20 +18,20 @@ describe('deducePinTypes', () => {
 
     const expected = {
       gen1_1to1: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
       gen2_ptp: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
       gen3_1to1: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
     };
 
-    assert.deepEqual(expected, deduced);
+    assert.deepEqual(deduced, expected);
   });
 
   it('deduces pin types from concrete nodes linked to generic inputs', () => {
@@ -42,20 +42,20 @@ describe('deducePinTypes', () => {
 
     const expected = {
       gen1_1to1: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
       gen2_ptp: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
       gen3_1to1: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
     };
 
-    assert.deepEqual(expected, deduced);
+    assert.deepEqual(deduced, expected);
   });
 
   it('detects conflicts when several outputs with different types are linked to inputs of the same generic type', () => {
@@ -66,20 +66,20 @@ describe('deducePinTypes', () => {
 
     const expected = {
       gen1_healthy: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
       gen2_broken: {
-        inT1_1: Maybe.Nothing(),
-        inT1_2: Maybe.Nothing(),
+        inT1_1: Either.Left([PIN_TYPE.NUMBER, PIN_TYPE.STRING]),
+        inT1_2: Either.Left([PIN_TYPE.NUMBER, PIN_TYPE.STRING]),
       },
       gen4_unaffected_healthy: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
     };
 
-    assert.deepEqual(expected, deduced);
+    assert.deepEqual(deduced, expected);
   });
 
   it('detects conflicts when several inputs with different types are linked to outputs of the same generic type', () => {
@@ -90,18 +90,18 @@ describe('deducePinTypes', () => {
 
     const expected = {
       gen2_broken: {
-        outT1: Maybe.Nothing(),
+        outT1: Either.Left([PIN_TYPE.NUMBER, PIN_TYPE.STRING]),
       },
       gen4_broken: {
-        outT1_1: Maybe.Nothing(),
-        outT1_2: Maybe.Nothing(),
+        outT1_1: Either.Left([PIN_TYPE.STRING, PIN_TYPE.NUMBER]),
+        outT1_2: Either.Left([PIN_TYPE.STRING, PIN_TYPE.NUMBER]),
       },
       gen5_unaffected: {
-        inT1: Maybe.Just(PIN_TYPE.NUMBER),
-        outT1: Maybe.Just(PIN_TYPE.NUMBER),
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
       },
     };
 
-    assert.deepEqual(expected, deduced);
+    assert.deepEqual(deduced, expected);
   });
 });
