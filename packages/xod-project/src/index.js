@@ -63,6 +63,11 @@ export {
   getDeprecationReason,
   isUtilityPatch,
 } from './patch';
+export {
+  getFilename as getAttachmentFilename,
+  getContent as getAttachmentContent,
+  getEncoding as getAttachmentEncoding,
+} from './attachment';
 export * from './node';
 export * from './comment';
 export {

@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "Utility nodes for table tests",
+  "license": "AGPL-3.0",
+  "name": "tabtest",
+  "version": "1.0.0"
+}

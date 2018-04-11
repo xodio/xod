@@ -7,6 +7,7 @@ export const BASE64_EXTNAMES = ['.png', '.jpg', '.jpeg', '.gif', '.fzz'];
 export const UTF8_EXTNAMES = [
   '.md',
   '.svg',
+  '.tsv',
   // Implementation files
   '.c',
   '.cpp',

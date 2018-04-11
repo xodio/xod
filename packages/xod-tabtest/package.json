@@ -1,0 +1,22 @@
+{
+  "name": "xod-tabtest",
+  "version": "0.19.2",
+  "scripts": {
+    "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
+    "build": "bsb -make-world",
+    "test": "jest"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "XOD",
+  "license": "AGPL-3.0",
+  "main": "lib/js/src/Tabtest_Js.bs.js",
+  "devDependencies": {
+    "@glennsl/bs-jest": "^0.4.2",
+    "bs-platform": "^2.2.3"
+  },
+  "jest": {
+    "testMatch": ["**/lib/js/test/**/*_jest.bs.js"]
+  }
+}

@@ -20,6 +20,7 @@
   "dependencies": {
     "cli-color": "^1.1.0",
     "docopt": "^0.6.2",
+    "fs-extra": "^4.0.2",
     "hm-def": "^0.3.2",
     "inquirer": "^3.2.0",
     "ramda": "^0.24.1",
@@ -31,12 +32,13 @@
     "xod-fs": "^0.19.4",
     "xod-func-tools": "^0.19.2",
     "xod-pm": "^0.19.4",
-    "xod-project": "^0.19.4"
+    "xod-project": "^0.19.4",
+    "xod-pm": "^0.19.4",
+    "xod-tabtest": "^0.19.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "child-process-promise": "^2.2.1",
-    "cpx": "^1.5.0",
-    "fs-extra": "^4.0.2"
+    "cpx": "^1.5.0"
   }
 }
