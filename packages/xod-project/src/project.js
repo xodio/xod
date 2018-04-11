@@ -3,9 +3,11 @@ import { Either, Maybe } from 'ramda-fantasy';
 import {
   foldMaybe,
   explodeMaybe,
+  explodeEither,
   notEmpty,
   isAmong,
   notNil,
+  noop,
 } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
@@ -19,6 +21,7 @@ import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
 import { deducePinTypes } from './typeDeduction';
+import { foldEither } from '../../xod-func-tools/dist/monads';
 
 /**
  * Root of a project’s state tree
@@ -421,18 +424,28 @@ const checkPinsCompatibility = def(
             )(outputPinType, inputPinType),
           R.map(
             ({ original, deduced }) =>
-              deduced
-                ? explodeMaybe(
-                    'Impossible error: We already checked for unresolvable types earlier',
-                    deduced
-                  )
-                : original
+              deduced ? explodeEither(deduced) : original
           )
         )
       ),
-      Tools.errOnFalse(
-        CONST.ERROR.LINK_CAUSES_TYPE_CONFLICT,
-        R.none(R.propSatisfies(R.both(notNil, Maybe.isNothing), 'deduced'))
+      R.ifElse(
+        R.none(R.propSatisfies(R.both(notNil, Either.isLeft), 'deduced')),
+        Either.of,
+        R.compose(
+          foldEither(
+            conflictingTypes =>
+              Either.Left(
+                new Error(
+                  Utils.formatString(CONST.ERROR.LINK_CAUSES_TYPE_CONFLICT, {
+                    conflictingTypes: conflictingTypes.join(', '),
+                  })
+                )
+              ),
+            noop
+          ),
+          R.find(R.both(notNil, Either.isLeft)),
+          R.map(R.prop('deduced'))
+        )
       )
     )(pinTypes);
   }

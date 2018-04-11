@@ -1,6 +1,8 @@
+import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { foldEither } from 'xod-func-tools';
 import { PIN_DIRECTION } from 'xod-project';
 
 import {
@@ -62,7 +64,7 @@ const Pin = props => {
           className={classNames(
             'symbol',
             'is-connected',
-            props.deducedType.getOrElse('conflicting')
+            foldEither(R.always('conflicting'), R.identity, props.deducedType)
           )}
           {...pinCircleCenter}
           r={PIN_INNER_RADIUS}

@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import { foldEither, catMaybies } from 'xod-func-tools';
 
 import * as Link from './link';
@@ -16,7 +16,10 @@ const maybeGetTypeFromPreviouslyDeduced = R.curry(
     R.ifElse(
       Utils.isGenericType,
       () =>
-        R.pathOr(Maybe.Nothing(), [nodeId, pinKey], previouslyDeducedPinTypes),
+        R.compose(
+          foldEither(Maybe.Nothing, Maybe.of),
+          R.pathOr(Either.Left([]), [nodeId, pinKey])
+        )(previouslyDeducedPinTypes),
       Maybe.of
     )
 );
@@ -61,7 +64,7 @@ const getPinKeysByGenericType = patch =>
     Patch.listPins
   )(patch);
 
-// returns Map NodeId (Map PinKey (Maybe DataType))
+// returns Map NodeId (Map PinKey (Either [DataType] DataType))
 const deducePinTypesForNode = (
   abstractNodeId,
   getPatchByNodeId,
@@ -72,7 +75,7 @@ const deducePinTypesForNode = (
   // :: Map DataType [PinKey]
   const pinKeysByGenericType = getPinKeysByGenericType(abstractPatch);
 
-  // :: Map PinKey (Maybe DataType)
+  // :: Map PinKey (Either [DataType] DataType)
   const previouslyDeducedPinTypesForNode = R.propOr(
     {},
     abstractNodeId,
@@ -81,14 +84,34 @@ const deducePinTypesForNode = (
 
   return R.compose(
     R.reduce(
-      R.mergeWith(
-        // Nothing means there are are contradictions
-        (a, b) => (a.equals(b) ? a : Maybe.Nothing())
+      R.mergeWith((eitherA, eitherB) =>
+        foldEither(
+          contradictingAs =>
+            foldEither(
+              contradictingBs =>
+                R.compose(Either.Left, R.uniq, R.concat)(
+                  contradictingAs,
+                  contradictingBs
+                ),
+              okB =>
+                R.compose(Either.Left, R.uniq, R.append)(okB, contradictingAs),
+              eitherB
+            ),
+          okA =>
+            foldEither(
+              contradictingBs =>
+                R.compose(Either.Left, R.uniq, R.append)(okA, contradictingBs),
+              okB =>
+                okA === okB ? Either.Right(okA) : Either.Left([okA, okB]),
+              eitherB
+            ),
+          eitherA
+        )
       ),
       {}
     ),
     R.append(previouslyDeducedPinTypesForNode),
-    R.map(R.map(Maybe.of)),
+    R.map(R.map(Either.of)),
     // convert from [(PinKey, DataType)] to [Map PinKey DataType]
     // and propagate detected types to all pins with the same generic type
     catMaybies,
@@ -117,7 +140,7 @@ const deducePinTypesForNode = (
 
 // Filters out intermediate(outputs for strong resolution, inputs for weak) ambiguous pins,
 // which we needed only during resolving process.
-// :: Map NodeId (Map PinKey (Maybe DataType)) -> Map NodeId (Map PinKey (Maybe DataType))
+// :: Map NodeId (Map PinKey (Either [DataType] DataType)) -> Map NodeId (Map PinKey (Either [DataType] DataType))
 const omitIntermediateAmbiguousPins = (
   getPatchByNodeId,
   listIntermediatePins
@@ -126,7 +149,7 @@ const omitIntermediateAmbiguousPins = (
     R.compose(
       R.omit(R.__, pinTypes),
       R.filter(
-        R.pipe(R.propOr(Maybe.Nothing(), R.__, pinTypes), Maybe.isNothing)
+        R.pipe(R.propOr(Either.Left([]), R.__, pinTypes), Either.isLeft)
       ),
       R.map(Pin.getPinKey),
       listIntermediatePins,
@@ -163,8 +186,8 @@ export const deducePinTypes = def(
       Patch.listLinks
     )(patch);
 
-    // :: Map NodeId (Map PinKey (Maybe DataType))
-    // Maybe DataType is Just when type is resolved, and Nothing if it can not be decided.
+    // :: Map NodeId (Map PinKey (Either [DataType] DataType))
+    // Either [DataType] DataType is Right when type is resolved, and Left if there are conflicts.
     const stronglyResolvedTypes = R.compose(
       R.reject(R.isEmpty),
       R.reduce((previouslyDeducedPinTypes, abstractNodeId) => {
@@ -180,7 +203,7 @@ export const deducePinTypes = def(
           linksToNode
         );
 
-        // :: Map PinKey (Maybe DataType)
+        // :: Map PinKey (Either [DataType] DataType)
         const deducedPinTypesForNode = deducePinTypesForNode(
           abstractNodeId,
           getPatchByNodeId,
@@ -226,7 +249,7 @@ export const deducePinTypes = def(
           linksFromNode
         );
 
-        // :: Map PinKey (Maybe DataType)
+        // :: Map PinKey (Either [DataType] DataType)
         const deducedPinTypesForNode = deducePinTypesForNode(
           abstractNodeId,
           getPatchByNodeId,

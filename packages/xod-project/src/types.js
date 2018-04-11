@@ -159,7 +159,7 @@ export const PinOrKey = OneOfType('PinOrKey', [PinKey, ObjectWithKey]);
 
 export const DeducedPinTypes = AliasType(
   'DeducedPinTypes',
-  $.StrMap($.StrMap(XF.$Maybe(DataType)))
+  $.StrMap($.StrMap(XF.$Either($.Array(DataType), DataType)))
 );
 
 //-----------------------------------------------------------------------------
