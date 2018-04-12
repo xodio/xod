@@ -28,6 +28,7 @@ import {
   getPinKeyForTerminalDirection,
 } from './builtInPatches';
 import {
+  getBaseName,
   getLocalPath,
   getLibraryName,
   isTerminalPatchPath,
@@ -37,6 +38,7 @@ import {
   isLocalMarker,
   isVariadicPath,
   getArityStepFromPatchPath,
+  getSpecializationPatchPath,
 } from './patchPathUtils';
 
 /**
@@ -1365,4 +1367,131 @@ export const validateAbstractPatch = def(
     },
     Either.of
   )
+);
+
+export const getPatchSignature = def(
+  'getPatchSignature :: Patch -> PatchSignature',
+  R.compose(
+    R.map(
+      R.compose(
+        R.fromPairs,
+        R.map(R.converge(R.pair, [Pin.getPinOrder, Pin.getPinType]))
+      )
+    ),
+    R.groupBy(Pin.getPinDirection),
+    listPins
+  )
+);
+
+// checks that a concrete patch conforms to concrete patch specification
+export const checkSpecializationMatchesAbstraction = def(
+  'checkSpecializationMatchesAbstraction :: Patch -> Patch -> Either Error Patch',
+  (abstractPatch, specializationPatch) => {
+    if (isAbstractPatch(specializationPatch)) {
+      return fail('SPECIALIZATION_PATCH_CANT_BE_ABSTRACT', {});
+    }
+
+    const checkedPatchDoesHaveGenericPins = R.compose(
+      R.any(Pin.isGenericPin),
+      listPins
+    )(specializationPatch);
+
+    if (checkedPatchDoesHaveGenericPins) {
+      return fail('SPECIALIZATION_PATCH_CANT_HAVE_GENERIC_PINS', {});
+    }
+
+    const [
+      numberOfPinsInAbstractPatchByDirection,
+      numberOfPinsInSpecializationPatchByDirection,
+    ] = R.map(
+      R.compose(R.map(R.length), R.groupBy(Pin.getPinDirection), listPins)
+    )([abstractPatch, specializationPatch]);
+
+    // check that patch has a proper number of inputs and outputs
+    if (
+      numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT] !==
+      numberOfPinsInSpecializationPatchByDirection[CONST.PIN_DIRECTION.INPUT]
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS', {
+        desiredInputsNumber:
+          numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT],
+      });
+    }
+
+    if (
+      numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.OUTPUT] !==
+      numberOfPinsInSpecializationPatchByDirection[CONST.PIN_DIRECTION.OUTPUT]
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS', {
+        desiredOutputsNumber:
+          numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.OUTPUT],
+      });
+    }
+
+    const [genericPinPairs, staticPinPairs] = R.compose(
+      R.partition(R.pipe(R.nth(0), Pin.isGenericPin)),
+      R.apply(R.zip),
+      R.map(
+        R.compose(
+          R.sortWith([
+            R.ascend(Pin.getPinDirection),
+            R.ascend(Pin.getPinOrder),
+          ]),
+          listPins
+        )
+      )
+    )([abstractPatch, specializationPatch]);
+
+    const staticTypesMatch = R.all(
+      R.apply(R.eqBy(Pin.getPinType)),
+      staticPinPairs
+    );
+    // TODO: `find` instead of `any` and explain which one does not match?
+    if (!staticTypesMatch) {
+      return fail('SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH', {});
+    }
+
+    const ambiguousGenerics = R.compose(
+      R.toPairs,
+      R.filter(resolutions => resolutions.length > 1),
+      R.map(R.pipe(R.map(R.nth(1)), R.uniqBy(Pin.getPinType))),
+      R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
+    )(genericPinPairs);
+
+    if (!R.isEmpty(ambiguousGenerics)) {
+      const [genericType, pinsWithDifferentTypes] = ambiguousGenerics[0];
+      const typeNames = R.compose(R.join(', '), R.map(Pin.getPinType))(
+        pinsWithDifferentTypes
+      );
+
+      return fail('SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC', {
+        genericType,
+        typeNames,
+      });
+    }
+
+    const abstractPatchBaseName = R.compose(getBaseName, getPatchPath)(
+      abstractPatch
+    );
+    const expectedSpecializationBaseName = R.compose(
+      getSpecializationPatchPath(abstractPatchBaseName),
+      R.map(R.nth(1)),
+      R.sortBy(R.head),
+      R.toPairs,
+      // something like { t1: 'number', t2: 'string', etc }
+      R.map(R.pipe(R.head, R.nth(1), Pin.getPinType)),
+      R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
+    )(genericPinPairs);
+    const actualSpecializationBaseName = R.compose(getBaseName, getPatchPath)(
+      specializationPatch
+    );
+
+    if (expectedSpecializationBaseName !== actualSpecializationBaseName) {
+      return fail('SPECIALIZATION_HAS_WRONG_NAME', {
+        expectedSpecializationBaseName,
+      });
+    }
+
+    return Either.of(specializationPatch);
+  }
 );

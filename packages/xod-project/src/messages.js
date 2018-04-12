@@ -40,6 +40,18 @@ export default {
     )}`,
     trace,
   }),
+  CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({ patchPath }) => ({
+    title: `Can't find specializations for abstrat patch ${patchPath}`,
+  }),
+  CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({
+    patchPath,
+    conflictingSpecializations,
+  }) => ({
+    title: `Conflicting specializations for abstrat patch ${patchPath}`,
+    note: `To continue, explicitly switch to one of these: ${conflictingSpecializations.join(
+      ', '
+    )}`,
+  }),
 
   // Variadics
   NO_VARIADIC_MARKERS: ({ trace }) => ({

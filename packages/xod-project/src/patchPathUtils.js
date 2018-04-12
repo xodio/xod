@@ -226,3 +226,13 @@ export const resolvePatchPath = def(
     [R.compose(isPathLocal, R.nthArg(1)), R.nthArg(0)],
   ])
 );
+
+//
+// utils for abstract nodes
+//
+
+// :: PatchPath -> [DataType] -> PatchPath
+export const getSpecializationPatchPath = R.curry(
+  (abstractPatchBaseName, types) =>
+    `${abstractPatchBaseName}(${types.join(',')})`
+);

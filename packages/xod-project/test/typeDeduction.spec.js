@@ -2,10 +2,10 @@ import { assert } from 'chai';
 import { Either } from 'ramda-fantasy';
 
 import * as Helper from './helpers';
-
-import { getPatchByPathUnsafe } from '../src/project';
+import { getPatchByPathUnsafe, assocPatchUnsafe } from '../src/project';
 import { PIN_TYPE } from '../src/constants';
-import { deducePinTypes } from '../src/typeDeduction';
+
+import { deducePinTypes, autoresolveTypes } from '../src/typeDeduction';
 
 describe('deducePinTypes', () => {
   const project = Helper.loadXodball('./fixtures/pin-types-deduction.xodball');
@@ -103,5 +103,42 @@ describe('deducePinTypes', () => {
     };
 
     assert.deepEqual(deduced, expected);
+  });
+});
+
+describe('autoresolveTypes', () => {
+  const project = Helper.loadXodball(
+    './fixtures/abstract-nodes-resolution.xodball'
+  );
+  it('successfully resolves types for a valid project', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+    }, autoresolveTypes('@/case1-ok', project));
+  });
+  it('detects missing specializations', () => {
+    Helper.expectEitherError(
+      'CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change"}',
+      autoresolveTypes('@/case2-missing-specialization', project)
+    );
+  });
+  it('detects conflicting specializations', () => {
+    const conflictingSpecialization = getPatchByPathUnsafe(
+      '@/pulse-on-change(number)',
+      project
+    );
+    const projectWithConflictingSpecialization = assocPatchUnsafe(
+      'some/other-library/pulse-on-change(number)',
+      conflictingSpecialization,
+      project
+    );
+
+    Helper.expectEitherError(
+      'CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change","conflictingSpecializations":["@/pulse-on-change(number)","some/other-library/pulse-on-change(number)"]}',
+      autoresolveTypes('@/case1-ok', projectWithConflictingSpecialization)
+    );
   });
 });

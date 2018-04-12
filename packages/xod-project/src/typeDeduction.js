@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { foldEither, catMaybies } from 'xod-func-tools';
+import { foldEither, explodeEither, catMaybies, fail } from 'xod-func-tools';
 
 import * as Link from './link';
 import * as Node from './node';
@@ -9,6 +9,7 @@ import * as Project from './project';
 import * as Pin from './pin';
 import * as Utils from './utils';
 import { def } from './types';
+import flatten from './flatten';
 
 // :: NodeId -> PinKey -> DeducedPinTypes -> (DataType -> Maybe DataType)
 const maybeGetTypeFromPreviouslyDeduced = R.curry(
@@ -272,4 +273,171 @@ export const deducePinTypes = def(
   }
 );
 
-export default {};
+// :: DeducedTypes -> Either Error Map NodeId (Map PinKey Type)
+const checkResolvedTypesForConflicts = R.ifElse(
+  R.any(R.any(Either.isLeft)),
+  () => fail('ALL_TYPES_MUST_BE_RESOLVED', {}),
+  R.pipe(R.map(R.map(explodeEither)), Either.of)
+);
+
+// Pin -> (PinDirection, PinOrder)
+const getPinPath = R.converge(R.pair, [
+  Pin.getPinDirection,
+  R.pipe(Pin.getPinOrder, R.toString),
+]);
+
+const getMapOfCorrespondingPinKeys = R.curry((patchFrom, patchTo) => {
+  const pinKeysByPinPath = R.compose(
+    R.map(R.map(Pin.getPinKey)),
+    R.map(R.indexBy(Pin.getPinOrder)),
+    R.groupBy(Pin.getPinDirection),
+    Patch.listPins
+  )(patchTo);
+
+  return R.compose(
+    R.map(R.pipe(getPinPath, R.path(R.__, pinKeysByPinPath))),
+    R.indexBy(Pin.getPinKey),
+    Patch.listPins
+  )(patchFrom);
+});
+
+const inputPinKeyLens = R.lens(
+  Link.getLinkInputPinKey,
+  Link.setLinkInputPinKey
+);
+const outputPinKeyLens = R.lens(
+  Link.getLinkOutputPinKey,
+  Link.setLinkOutputPinKey
+);
+
+const relink = R.curry((patch, replacements) =>
+  R.reduce(
+    (resultingPatch, [nodeId, newType, mapOfCorrespondingPinKeys]) => {
+      const getReplacementPinKey = oldPinKey =>
+        mapOfCorrespondingPinKeys[oldPinKey] || oldPinKey;
+
+      const updatedNode = R.compose(
+        // TODO: what about bound values for static pins?
+        Node.setNodeType(newType),
+        Patch.getNodeByIdUnsafe(nodeId)
+      )(resultingPatch);
+
+      const updatedLinks = R.compose(
+        R.map(
+          R.cond([
+            [
+              Link.isLinkInputNodeIdEquals(nodeId),
+              R.over(inputPinKeyLens, getReplacementPinKey),
+            ],
+            [
+              Link.isLinkOutputNodeIdEquals(nodeId),
+              R.over(outputPinKeyLens, getReplacementPinKey),
+            ],
+            [R.T, R.identity],
+          ])
+        ),
+        Patch.listLinksByNode(nodeId)
+      )(resultingPatch);
+
+      return R.compose(
+        explodeEither,
+        Patch.upsertLinks(updatedLinks),
+        Patch.assocNode(updatedNode)
+      )(resultingPatch);
+    },
+    patch,
+    replacements
+  )
+);
+
+const getReplacementsForAbstractNodes = R.curry(
+  (entryPatch, originalProject, deduced) =>
+    R.compose(
+      R.sequence(Either.of),
+      R.map(([abstractNodeId, pinTypes]) => {
+        const abstractPatch = Project.getPatchByNodeIdUnsafe(
+          abstractNodeId,
+          entryPatch,
+          originalProject
+        );
+
+        // :: Map PinKey (PinDirection, PinOrder)
+        const pinPathByKey = R.compose(
+          R.map(getPinPath),
+          R.indexBy(Pin.getPinKey),
+          Patch.listPins
+        )(abstractPatch);
+
+        const patchSignatureMask = R.compose(
+          R.reduce(
+            (sig, [pinKey, type]) =>
+              R.assocPath(
+                // to avoid getting Map PinDirection Array
+                pinPathByKey[pinKey].map(String),
+                type,
+                sig
+              ),
+            {}
+          ),
+          R.toPairs
+        )(pinTypes);
+
+        const matchingSpecializations = R.compose(
+          R.filter(
+            R.compose(
+              Utils.matchPatchSignature(patchSignatureMask),
+              Patch.getPatchSignature
+            )
+          ),
+          Project.listAbstractPatchSpecializations(abstractPatch)
+        )(originalProject);
+
+        if (R.isEmpty(matchingSpecializations)) {
+          return fail('CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
+            patchPath: Patch.getPatchPath(abstractPatch),
+          });
+        }
+
+        if (matchingSpecializations.length > 1) {
+          return fail('CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
+            patchPath: Patch.getPatchPath(abstractPatch),
+            conflictingSpecializations: R.map(
+              Patch.getPatchPath,
+              matchingSpecializations
+            ),
+          });
+        }
+
+        const specialization = R.head(matchingSpecializations);
+
+        return Either.of([
+          abstractNodeId,
+          Patch.getPatchPath(specialization),
+          getMapOfCorrespondingPinKeys(abstractPatch, specialization),
+        ]);
+      }),
+      R.toPairs
+    )(deduced)
+);
+
+export const autoresolveTypes = R.curry((entryPatchPath, project) =>
+  R.compose(
+    R.chain(flatProject => {
+      const entryPatch = Project.getPatchByPathUnsafe(
+        entryPatchPath,
+        flatProject
+      );
+
+      return R.compose(
+        R.chain(Project.assocPatch(entryPatchPath, R.__, project)),
+        // :: Either Error Patch
+        R.map(relink(entryPatch)),
+        // :: Either Error [(NodeId, PatchPath, Map PinKey Pinkey)]
+        R.chain(getReplacementsForAbstractNodes(entryPatch, project)),
+        checkResolvedTypesForConflicts,
+        deducePinTypes
+      )(entryPatch, flatProject);
+    }),
+    flatten
+  )(project, entryPatchPath)
+);

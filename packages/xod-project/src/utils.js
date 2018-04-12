@@ -146,3 +146,8 @@ export const resolveLinkNodeIds = R.curry((nodeIdMap, links) =>
     links
   )
 );
+
+// :: PatchSignature -> PatchSignature -> Boolean
+export const matchPatchSignature = R.curry((mask, fullSignature) =>
+  R.equals(fullSignature, R.mergeDeepRight(fullSignature, mask))
+);

@@ -17,6 +17,7 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
+import { isGenericType } from './utils';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
 import expandVariadicNodes from './expandVariadicNodes';
@@ -154,19 +155,13 @@ export const extractLeafPatches = def(
   (project, path, patch) =>
     R.cond([
       [
-        isLeafPatchWithImplsOrTerminal,
+        R.either(isLeafPatchWithImplsOrTerminal, Patch.isAbstractPatch),
         R.compose(R.of, Either.of, leafPatch => [path, leafPatch]),
       ],
       [
         isLeafPatchWithoutImpls,
         R.compose(R.of, () =>
           fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path })
-        ),
-      ],
-      [
-        Patch.isAbstractPatch,
-        R.compose(R.of, () =>
-          fail('ALL_TYPES_MUST_BE_RESOLVED', { patchPath: path })
         ),
       ],
       [R.T, extractLeafPatchesFromNodes(extractLeafPatches, project)],
@@ -250,7 +245,12 @@ const createCastNode = R.curry((patchTuples, nodes, link) =>
     // Link -> Maybe String
     R.converge(
       R.ifElse(
-        R.equals,
+        R.either(
+          // don't create cast nodes between pins of the same type...
+          R.equals,
+          // ... and between generic pins
+          R.pipe(R.pair, R.any(isGenericType))
+        ),
         Maybe.Nothing,
         R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
       ),

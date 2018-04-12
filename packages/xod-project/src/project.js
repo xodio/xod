@@ -955,6 +955,38 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
   );
 };
 
+export const listAbstractPatchSpecializations = def(
+  'listAbstractPatchSpecializations :: Patch -> Project -> [Patch]',
+  (abstractPatch, project) => {
+    if (!Patch.isAbstractPatch(abstractPatch)) {
+      return [];
+    }
+
+    const expectedBaseNameStart = R.compose(
+      name => `${name}(`,
+      PatchPathUtils.getBaseName,
+      Patch.getPatchPath
+    )(abstractPatch);
+
+    return R.compose(
+      R.filter(
+        R.both(
+          R.pipe(
+            Patch.getPatchPath,
+            PatchPathUtils.getBaseName,
+            R.startsWith(expectedBaseNameStart)
+          ),
+          R.pipe(
+            Patch.checkSpecializationMatchesAbstraction(abstractPatch),
+            Either.isRight
+          )
+        )
+      ),
+      listPatches
+    )(project);
+  }
+);
+
 /**
  * Returns a list of dead Links for Node in specified Patch.
  */
