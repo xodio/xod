@@ -5,6 +5,7 @@ import {
   explodeEither,
   validateSanctuaryType,
   omitTypeHints,
+  fail,
 } from 'xod-func-tools';
 
 import { getPatchPath, resolveNodeTypesInPatch } from './patch';
@@ -18,18 +19,13 @@ import {
   addMissingOptionalProjectFields,
   omitEmptyOptionalProjectFields,
 } from './optionalFieldsUtils';
-import { ERROR } from './constants';
 import { Project, def } from './types';
 
 export const fromXodballData = def(
   'fromXodballData :: Object -> Either String Project',
   R.compose(
     R.map(injectProjectTypeHints),
-    foldEither(
-      // Replace sanctuary-def validation error with our own
-      R.always(Either.Left(ERROR.INVALID_XODBALL_FORMAT)),
-      Either.of
-    ),
+    foldEither(() => fail('INVALID_XODBALL_FORMAT', {}), Either.of),
     validateSanctuaryType(Project),
     addMissingOptionalProjectFields
   )
@@ -43,9 +39,8 @@ export const fromXodballDataUnsafe = def(
 export const fromXodball = def(
   'fromXodball :: String -> Either String Project',
   jsonString =>
-    R.tryCatch(
-      R.pipe(JSON.parse, Either.of),
-      R.always(Either.Left(ERROR.NOT_A_JSON))
+    R.tryCatch(R.pipe(JSON.parse, Either.of), input =>
+      fail('NOT_A_JSON', { input })
     )(jsonString).chain(fromXodballData)
 );
 

@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Maybe, Either } from 'ramda-fantasy';
+import { Maybe } from 'ramda-fantasy';
 
 //
 // Functions that wraps results into Maybe monad
@@ -29,56 +29,6 @@ export const path = R.curry(R.compose(Maybe, R.path));
 
 // :: function -> object -> Maybe<*>
 export const find = R.curry(R.compose(Maybe, R.find));
-
-//
-// Functions with Either monad
-//
-
-/**
- * Returns an Error object wrapped into Either.Left
- * @private
- * @function err
- * @param {string|object} errorMessage
- * @returns {Either.Left<Error>}
- */
-export const err = R.compose(
-  R.always,
-  Either.Left,
-  R.ifElse(R.is(String), R.construct(Error), ({ title, message }) => {
-    const e = new Error(message);
-    e.title = title;
-    return e;
-  })
-);
-
-/**
- * Returns function that checks condition and returns Either
- * Left with Error for false
- * Right with passed content for true
- * @private
- * @function errOnFalse
- * @param {string|object} errorMessage
- * @param {function} condition
- * @returns {function}
- */
-export const errOnFalse = R.curry((errorMessage, condition) =>
-  R.ifElse(condition, Either.of, err(errorMessage))
-);
-
-/**
- * Return Either.Right for Maybe.Just and Either.Left for Maybe.Nothing
- * @private
- * @function errOnNothing
- * @param {string|object} errorMessage Error message for Maybe.Nothing
- * @param {*|Maybe<*>} data Data or Maybe monad
- * @returns {Either<Error|*>}
- */
-export const errOnNothing = R.curry((errorMessage, data) =>
-  R.compose(
-    R.ifElse(Maybe.isNothing, err(errorMessage), R.chain(Either.Right)),
-    ensureMaybe
-  )(data)
-);
 
 //
 // General Ramda-utils

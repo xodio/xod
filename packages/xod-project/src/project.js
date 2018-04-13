@@ -8,10 +8,12 @@ import {
   isAmong,
   notNil,
   noop,
+  fail,
+  failOnFalse,
+  failOnNothing,
 } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
-import * as CONST from './constants';
 import * as Tools from './func-tools';
 import * as Link from './link';
 import * as Node from './node';
@@ -314,9 +316,7 @@ export const getPatchByPathUnsafe = def(
   'getPatchByPath :: PatchPath -> Project -> Patch',
   (path, project) =>
     explodeMaybe(
-      Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-        patchPath: path,
-      }),
+      `Can't find the patch in the project with specified path: "${path}"`,
       getPatchByPath(path, project)
     )
 );
@@ -408,17 +408,13 @@ const checkPinsCompatibility = def(
       R.chain(
         R.compose(
           ([inputPinType, outputPinType]) =>
-            Tools.errOnFalse(
+            failOnFalse(
+              'INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY',
               {
-                title: CONST.ERROR_TITLES.BAD_LINKS,
-                message: Utils.formatString(
-                  CONST.ERROR.CANT_CAST_TYPES_DIRECTLY,
-                  {
-                    fromType: outputPinType,
-                    toType: inputPinType,
-                    patchPath,
-                  }
-                ),
+                fromType: outputPinType,
+                toType: inputPinType,
+                patchPath,
+                path: [patchPath],
               },
               Utils.canCastTypes
             )(outputPinType, inputPinType),
@@ -434,13 +430,10 @@ const checkPinsCompatibility = def(
         R.compose(
           foldEither(
             conflictingTypes =>
-              Either.Left(
-                new Error(
-                  Utils.formatString(CONST.ERROR.LINK_CAUSES_TYPE_CONFLICT, {
-                    conflictingTypes: conflictingTypes.join(', '),
-                  })
-                )
-              ),
+              fail('INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT', {
+                types: conflictingTypes,
+                path: [patchPath],
+              }),
             noop
           ),
           R.find(R.both(notNil, Either.isLeft)),
@@ -471,9 +464,11 @@ const checkLinkPin = def(
     // :: Maybe Patch -> Maybe Node -> Either Error (Map NodeId Pin)
     const checkPinExists = R.curry((mPatch, mNode) =>
       R.compose(
-        Tools.errOnNothing({
-          title: CONST.ERROR_TITLES.DEAD_REFERENCE,
-          message: CONST.ERROR.PINS_NOT_FOUND,
+        failOnNothing('DEAD_REFERENCE__PINS_NOT_FOUND', {
+          nodeId,
+          pinKey,
+          patchPath,
+          path: [patchPath],
         }),
         R.chain(([justPatch, justNode]) =>
           R.ifElse(
@@ -493,27 +488,19 @@ const checkLinkPin = def(
 
     // :: Maybe Patch -> PatchPath -> Either Error Patch
     const checkPatchExists = (mPatch, nodeType) =>
-      Tools.errOnNothing(
-        {
-          title: CONST.ERROR_TITLES.DEAD_REFERENCE,
-          message: Utils.formatString(CONST.ERROR.TYPE_NOT_FOUND, {
-            type: nodeType,
-          }),
-        },
-        maybePatch
-      );
+      failOnNothing('DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND', {
+        nodeType,
+        patchPath,
+        path: [patchPath],
+      })(mPatch);
+
     // :: Maybe Node -> Either Error Node
     const checkNodeExists = mNode =>
-      Tools.errOnNothing(
-        {
-          title: CONST.ERROR_TITLES.DEAD_REFERENCE,
-          message: Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, {
-            nodeId,
-            patchPath,
-          }),
-        },
-        mNode
-      );
+      failOnNothing('DEAD_REFERENCE__NODE_NOT_FOUND', {
+        nodeId,
+        patchPath,
+        path: [patchPath],
+      })(mNode);
 
     return R.compose(
       R.chain(() => checkPinExists(maybePatch, maybeNode)),
@@ -574,6 +561,7 @@ export const validateLinkPins = def(
 export const validatePatchContents = def(
   'validatePatchContents :: Patch -> Project -> Either Error Patch',
   (patch, project) => {
+    const patchPath = Patch.getPatchPath(patch);
     // :: patch -> Either Error Patch
     const checkNodeTypes = R.compose(
       R.map(R.always(patch)),
@@ -582,11 +570,10 @@ export const validatePatchContents = def(
         R.compose(
           type =>
             R.compose(
-              Tools.errOnNothing({
-                title: CONST.ERROR_TITLES.DEAD_REFERENCE,
-                message: Utils.formatString(CONST.ERROR.TYPE_NOT_FOUND, {
-                  type,
-                }),
+              failOnNothing('DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND', {
+                nodeType: type,
+                patchPath,
+                path: [patchPath],
               }),
               getPatchByPath(R.__, project)
             )(type),
@@ -763,22 +750,24 @@ export const validatePatchRebase = def(
   'validatePatchRebase :: PatchPath -> PatchPath -> Project -> Either Error Project',
   (newPath, oldPath, project) =>
     (isPathBuiltIn(oldPath)
-      ? Tools.err(CONST.ERROR.PATCH_REBASING_BUILT_IN)()
+      ? fail('CANT_REBASE_PATCH__BUILT_IN_PATCH', { oldPath })
       : Either.of(newPath)
     )
       .chain(
-        Tools.errOnFalse(
-          CONST.ERROR.PATCH_PATH_OCCUPIED,
+        failOnFalse(
+          'CANT_REBASE_PATCH__OCCUPIED_PATH',
+          { oldPath, newPath },
           R.complement(doesPathExist(R.__, project))
         )
       )
       .chain(() =>
-        Tools.errOnNothing(
-          Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-            patchPath: oldPath,
+        R.compose(
+          failOnNothing('CANT_REBASE_PATCH__PATCH_NOT_FOUND_BY_PATH', {
+            oldPath,
+            newPath,
           }),
-          getPatchByPath(oldPath, project)
-        )
+          getPatchByPath
+        )(oldPath, project)
       )
       .map(R.always(project))
 );
@@ -838,9 +827,9 @@ export const updatePatch = def(
     R.compose(
       R.chain(assocPatch(patchPath, R.__, project)),
       R.map(updateFunction),
-      Tools.errOnNothing(
-        Utils.formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, { patchPath })
-      ),
+      failOnNothing('CANT_UPDATE_PATCH__PATCH_NOT_FOUND_BY_PATH', {
+        patchPath,
+      }),
       getPatchByPath
     )(patchPath, project)
 );
@@ -886,10 +875,9 @@ export const getPatchByNodeIdUnsafe = def(
   (nodeId, patch, project) =>
     R.compose(
       explodeMaybe(
-        Utils.formatString(CONST.ERROR.CANT_GET_PATCH_BY_NODEID, {
-          nodeId,
-          patchPath: Patch.getPatchPath(patch),
-        })
+        `Can't find prototype Patch of Node with Id "${nodeId}" from Patch "${Patch.getPatchPath(
+          patch
+        )}"`
       ),
       getPatchByNodeId
     )(nodeId, patch, project)

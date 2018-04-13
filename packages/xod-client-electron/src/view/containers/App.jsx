@@ -9,8 +9,14 @@ import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
-import { Project, getProjectName } from 'xod-project';
-import { foldEither, isAmong, explodeMaybe, noop } from 'xod-func-tools';
+import { Project, getProjectName, messages as xpMessages } from 'xod-project';
+import {
+  foldEither,
+  isAmong,
+  explodeMaybe,
+  noop,
+  composeErrorFormatters,
+} from 'xod-func-tools';
 import { transpile, getNodeIdsMap } from 'xod-arduino';
 
 import packageJson from '../../../package.json';
@@ -47,6 +53,8 @@ import { STATES, getEventNameWithState } from '../../shared/eventStates';
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
+
+const formatErrorMessage = composeErrorFormatters([xpMessages]);
 
 const defaultState = {
   size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
@@ -207,7 +215,14 @@ class App extends client.App {
 
     const errored = foldEither(
       error => {
-        proc.fail(error.message, 0);
+        const stanza = formatErrorMessage(error);
+        const messageForConsole = [
+          ...(stanza.title ? [stanza.title] : []),
+          ...(stanza.path ? [stanza.path.join(' -> ')] : []),
+          ...(stanza.note ? [stanza.note] : []),
+          ...(stanza.solution ? [stanza.solution] : []),
+        ].join('\n');
+        proc.fail(messageForConsole, 0);
         return 1;
       },
       code => {
