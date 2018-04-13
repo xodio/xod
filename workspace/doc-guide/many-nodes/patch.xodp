@@ -190,7 +190,7 @@
         "x": 204,
         "y": 204
       },
-      "type": "xod/core/gate"
+      "type": "xod/core/branch"
     },
     {
       "id": "S1I8DKSYb",
