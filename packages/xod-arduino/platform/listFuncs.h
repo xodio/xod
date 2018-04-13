@@ -49,6 +49,20 @@ template<typename T> size_t dump(List<T> xs, T* outBuff) {
     return buffEnd - outBuff;
 }
 
+/*
+ * Compares two lists.
+ */
+template<typename T> bool equal(List<T> lhs, List<T> rhs) {
+    auto lhsIt = lhs.iterate();
+    auto rhsIt = rhs.iterate();
+
+    for (; lhsIt && rhsIt; ++lhsIt, ++rhsIt) {
+        if (*lhsIt != *rhsIt) return false;
+    }
+
+    return !lhsIt && !rhsIt;
+}
+
 } // namespace xod
 
 #endif
