@@ -142,6 +142,21 @@ export const $Promise = NullaryType(
   x => x instanceof Promise
 );
 
+// In case that sanctuary-def Record type could have only required fields
+// we'll check Stanza only for being an object (not null and not array)
+// and enumerate possible keys here:
+//   - title: String
+//   - note: String
+//   - path: [PatchPath]
+//   - solution: String
+//   - learnMore: Url
+export const Stanza = NullaryType(
+  pkgName,
+  dUrl,
+  'Stanza',
+  x => x !== null && typeof x === 'object' && Array.isArray(x) === false
+);
+
 //-----------------------------------------------------------------------------
 //
 // Fantasy land types
@@ -177,6 +192,7 @@ export const env = $.env.concat([
   $Promise,
   $Either($.Unknown, $.Unknown),
   $Maybe($.Unknown),
+  Stanza,
 ]);
 
 export const def = HMDef.create({
