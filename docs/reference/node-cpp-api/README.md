@@ -107,6 +107,13 @@ Returns a pointer to the persistent state storage for the current node. The
 updated directly, with the pointer returned, no commit is required after
 a change.
 
+<a name="isSettingUp"></a>
+#### `bool isSettingUp()`
+
+Returns `true` if the evaluation takes place inside the very first transaction.
+Use the function to run some initialization code once on boot, or prevent
+undesirable initial values emission.
+
 <a name="transactionTime"></a>
 #### `TimeMs transactionTime()`
 
