@@ -32,7 +32,7 @@ namespace xod {
 {{/unless}}
 {{/each}}
 
-void runTransaction(bool firstRun) {
+void runTransaction() {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
@@ -123,7 +123,7 @@ void runTransaction(bool firstRun) {
             --}}
             {{#if isDirtyable}}
             {{#if fromPatch.isConstant}}
-            ctxObj._isInputDirty_{{ pinKey }} = firstRun;
+            ctxObj._isInputDirty_{{ pinKey }} = g_isSettingUp;
             {{else if fromOutput.isDirtyable}}
             ctxObj._isInputDirty_{{ pinKey }} = node_{{ fromNodeId }}.isOutputDirty_{{ fromPinKey }};
             {{else}}
