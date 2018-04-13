@@ -6,7 +6,7 @@
         "__out__": true
       },
       "description": "Whether values should pass through",
-      "id": "BJf6HXtDaW",
+      "id": "B1P1nFwaM",
       "label": "EN",
       "position": {
         "x": 68,
@@ -15,37 +15,28 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "id": "HJ1uXKDpb",
+      "id": "SJ-1mZPTz",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "OkPg7GDaW",
       "position": {
         "x": 0,
         "y": 204
       },
-      "type": "xod/patch-nodes/output-pulse"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
-      "id": "Hk6SXYPTb",
+      "id": "rJZl7twTQ",
       "position": {
         "x": 0,
         "y": 102
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "id": "S1VDQYD6W",
-      "position": {
-        "x": 0,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Use xod/core/gate instead",
-      "id": "Sy0Rwrz3f",
-      "position": {
-        "x": 136,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
+      "type": "xod/patch-nodes/abstract"
     }
   ]
 }

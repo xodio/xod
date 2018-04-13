@@ -2,15 +2,6 @@
   "description": "Allows values to pass through only if EN pin is set to true",
   "nodes": [
     {
-      "description": "Use xod/core/gate instead",
-      "id": "ByHJdBzhM",
-      "position": {
-        "x": 136,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "id": "H1cKmYPTZ",
       "position": {
         "x": 0,

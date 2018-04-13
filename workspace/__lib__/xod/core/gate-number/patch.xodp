@@ -31,6 +31,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use xod/core/gate instead",
+      "id": "Skw0DBGnz",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "rJXmXtvaZ",
       "position": {
         "x": 0,
