@@ -5,7 +5,7 @@
       "boundValues": {
         "__in__": false
       },
-      "id": "H1E8AuSPkZ",
+      "id": "W1E8AWSPIZ",
       "position": {
         "x": 68,
         "y": 204
@@ -13,28 +13,28 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "id": "HJG8C_SPkb",
+      "id": "H7GI8ISPk4",
       "position": {
         "x": 102,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/input-string"
     },
     {
-      "id": "abstract",
+      "id": "noNativeImpl",
       "position": {
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/abstract"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "id": "rJXICuSwyW",
+      "id": "rJWICuSwyI",
       "position": {
         "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/input-string"
     }
   ]
 }
