@@ -556,6 +556,7 @@ typedef uint8_t DirtyFlags;
 //----------------------------------------------------------------------------
 
 TimeMs g_transactionTime;
+bool g_isSettingUp;
 
 //----------------------------------------------------------------------------
 // Metaprogramming utilities
@@ -570,7 +571,7 @@ template<typename T> struct always_false {
 //----------------------------------------------------------------------------
 
 TimeMs transactionTime();
-void runTransaction(bool firstRun);
+void runTransaction();
 
 //----------------------------------------------------------------------------
 // Engine (private API)
@@ -614,6 +615,10 @@ TimeMs transactionTime() {
     return g_transactionTime;
 }
 
+bool isSettingUp() {
+    return !g_isSettingUp;
+}
+
 template<typename ContextT>
 void setTimeout(ContextT* ctx, TimeMs timeout) {
     ctx->_node->timeoutAt = transactionTime() + timeout;
@@ -642,11 +647,13 @@ void setup() {
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
 
-    xod::runTransaction(true);
+    xod::g_isSettingUp = true;
+    xod::runTransaction();
+    xod::g_isSettingUp = false;
 }
 
 void loop() {
-    xod::runTransaction(false);
+    xod::runTransaction();
 }
 
 /*=============================================================================
@@ -1031,7 +1038,7 @@ xod__core__digital_output::Node node_5 = {
     true // node itself dirty
 };
 
-void runTransaction(bool firstRun) {
+void runTransaction() {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
@@ -1061,7 +1068,7 @@ void runTransaction(bool firstRun) {
             ctxObj._input_IVAL = node_0_output_VAL;
 
             ctxObj._isInputDirty_RST = false;
-            ctxObj._isInputDirty_EN = firstRun;
+            ctxObj._isInputDirty_EN = g_isSettingUp;
 
             xod__core__clock::evaluate(&ctxObj);
 
