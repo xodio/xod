@@ -175,7 +175,12 @@ export const deducePinTypes = def(
     // :: [Node]
     const toposortedAbstractNodes = R.compose(
       R.filter(
-        R.compose(Patch.isAbstractPatch, getPatchByNodeId, Node.getNodeId)
+        R.compose(
+          R.any(Pin.isGenericPin),
+          Patch.listPins,
+          getPatchByNodeId,
+          Node.getNodeId
+        )
       ),
       catMaybies,
       R.map(Patch.getNodeById(R.__, patch)), // :: [Maybe Node]

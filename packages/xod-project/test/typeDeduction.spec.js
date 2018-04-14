@@ -128,6 +128,46 @@ describe('deducePinTypes', () => {
 
     assert.deepEqual(deduced, expected);
   });
+
+  it('deduces types of patches composed from other generics', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case6-patches-composed-from-generics', project),
+      project
+    );
+
+    const expected = {
+      gen1: {
+        inT1: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      wrappedGen1: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      wrappedGen2: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      gen2: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      wrappedGen3: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      wrappedGen4: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
 });
 
 describe('autoresolveTypes', () => {

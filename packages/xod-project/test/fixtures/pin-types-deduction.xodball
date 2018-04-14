@@ -608,6 +608,143 @@
       },
       "path": "@/case5-generics-with-static-terminals"
     },
+    "@/case6-patches-composed-from-generics": {
+      "links": {
+        "ByEj8uy3G": {
+          "id": "ByEj8uy3G",
+          "input": {
+            "nodeId": "gen1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "wrappedGen2",
+            "pinKey": "outT1"
+          }
+        },
+        "Byb85IdJ2f": {
+          "id": "Byb85IdJ2f",
+          "input": {
+            "nodeId": "wrappedGen4",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "wrappedGen3",
+            "pinKey": "outT1"
+          }
+        },
+        "HyFhLdyhf": {
+          "id": "HyFhLdyhf",
+          "input": {
+            "nodeId": "wrappedGen3",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "gen2",
+            "pinKey": "outT1"
+          }
+        },
+        "Sk02IOyhz": {
+          "id": "Sk02IOyhz",
+          "input": {
+            "nodeId": "Bkh3Ldk3f",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "wrappedGen4",
+            "pinKey": "outT1"
+          }
+        },
+        "SyWc8u1nM": {
+          "id": "SyWc8u1nM",
+          "input": {
+            "nodeId": "wrappedGen2",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "wrappedGen1",
+            "pinKey": "outT1"
+          }
+        },
+        "ryio8_1hG": {
+          "id": "ryio8_1hG",
+          "input": {
+            "nodeId": "wrappedGen1",
+            "pinKey": "inT1_2"
+          },
+          "output": {
+            "nodeId": "rkcsIdJhG",
+            "pinKey": "outStr"
+          }
+        }
+      },
+      "nodes": {
+        "Bkh3Ldk3f": {
+          "id": "Bkh3Ldk3f",
+          "position": {
+            "x": 306,
+            "y": 408
+          },
+          "type": "@/displ-num"
+        },
+        "wrappedGen1": {
+          "id": "wrappedGen1",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen2": {
+          "id": "wrappedGen2",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "gen1": {
+          "id": "gen1",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2": {
+          "id": "gen2",
+          "position": {
+            "x": 306,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "wrappedGen3": {
+          "id": "wrappedGen3",
+          "position": {
+            "x": 306,
+            "y": 204
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen4": {
+          "id": "wrappedGen4",
+          "position": {
+            "x": 306,
+            "y": 306
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "rkcsIdJhG": {
+          "id": "rkcsIdJhG",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "@/const-str"
+        }
+      },
+      "path": "@/case6-patches-composed-from-generics"
+    },
     "@/const-num": {
       "nodes": {
         "outNum": {
@@ -852,6 +989,78 @@
         }
       },
       "path": "@/generic-pair-to-pair"
+    },
+    "@/wrapped-generic-2-to-1": {
+      "links": {
+        "HJL-4uJ3z": {
+          "id": "HJL-4uJ3z",
+          "input": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "inT1_2"
+          },
+          "output": {
+            "nodeId": "inT1_2",
+            "pinKey": "__out__"
+          }
+        },
+        "SJr-Vuy3z": {
+          "id": "SJr-Vuy3z",
+          "input": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "inT1_1",
+            "pinKey": "__out__"
+          }
+        },
+        "rk4b4OknM": {
+          "id": "rk4b4OknM",
+          "input": {
+            "nodeId": "outT1",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "SySx4_y3f": {
+          "id": "SySx4_y3f",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1"
+        },
+        "inT1_1": {
+          "id": "inT1_1",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT1_2": {
+          "id": "inT1_2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/wrapped-generic-2-to-1"
     }
   }
 }
