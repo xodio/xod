@@ -104,6 +104,30 @@ describe('deducePinTypes', () => {
 
     assert.deepEqual(deduced, expected);
   });
+
+  it('does not include types of non-generic pins in the results', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case5-generics-with-static-terminals', project),
+      project
+    );
+
+    const expected = {
+      genericWithStatics1: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      genericWithStatics2: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      genericWithStatics3: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
 });
 
 describe('autoresolveTypes', () => {

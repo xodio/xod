@@ -119,17 +119,21 @@ const deducePinTypesForNode = (
     R.map(([pinKey, dataType]) =>
       R.compose(
         // :: Maybe (Map PinKey DataType)
-        R.map(
+        R.chain(
           R.ifElse(
-            Utils.isGenericType, // TODO: filter out connections to generic pins earlier?
+            Utils.isGenericType,
             // for example, if pins A and B are t1, and we discovered
             // that A is a number, mark B as a number as well
             R.compose(
+              Maybe.of,
               R.fromPairs,
               R.map(pk => [pk, dataType]),
               R.propOr([], R.__, pinKeysByGenericType)
             ),
-            R.always(R.objOf(pinKey, dataType))
+            // No need to include types of static(non-generic) pins in resolution results.
+            // We know them already!
+            // TODO: filter out connections to generic pins earlier?
+            Maybe.Nothing
           )
         ),
         R.map(Pin.getPinType), // :: Maybe DataType

@@ -498,6 +498,116 @@
       },
       "path": "@/case4-bottom-to-top-invalid"
     },
+    "@/case5-generics-with-static-terminals": {
+      "links": {
+        "BJZrzEAoz": {
+          "id": "BJZrzEAoz",
+          "input": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "constStr",
+            "pinKey": "outStr"
+          }
+        },
+        "BJyzfEAsM": {
+          "id": "BJyzfEAsM",
+          "input": {
+            "nodeId": "genericWithStatics2",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "outT1"
+          }
+        },
+        "HJTgMNAoM": {
+          "id": "HJTgMNAoM",
+          "input": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "constNum",
+            "pinKey": "outNum"
+          }
+        },
+        "S1fNLvJ3z": {
+          "id": "S1fNLvJ3z",
+          "input": {
+            "nodeId": "genericWithStatics2",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "outNum"
+          }
+        },
+        "rk6wwDk3f": {
+          "id": "rk6wwDk3f",
+          "input": {
+            "nodeId": "B15vwvJ3M",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "genericWithStatics3",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "B15vwvJ3M": {
+          "id": "B15vwvJ3M",
+          "position": {
+            "x": 204,
+            "y": 204
+          },
+          "type": "@/displ-num"
+        },
+        "constNum": {
+          "id": "constNum",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "constStr": {
+          "id": "constStr",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "@/const-str"
+        },
+        "genericWithStatics1": {
+          "id": "genericWithStatics1",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        },
+        "genericWithStatics2": {
+          "id": "genericWithStatics2",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        },
+        "genericWithStatics3": {
+          "id": "genericWithStatics3",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        }
+      },
+      "path": "@/case5-generics-with-static-terminals"
+    },
     "@/const-num": {
       "nodes": {
         "outNum": {
@@ -578,6 +688,51 @@
         }
       },
       "path": "@/generic-1-to-1"
+    },
+    "@/generic-1-to-1-with-static-terminals": {
+      "nodes": {
+        "By-R8jX0sf": {
+          "id": "By-R8jX0sf",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "inStr": {
+          "id": "inStr",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "inT1": {
+          "id": "inT1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outNum": {
+          "id": "outNum",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/generic-1-to-1-with-static-terminals"
     },
     "@/generic-1-to-2": {
       "nodes": {
