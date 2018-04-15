@@ -1404,6 +1404,15 @@ export const checkSpecializationMatchesAbstraction = def(
       return fail('SPECIALIZATION_PATCH_CANT_BE_ABSTRACT', {});
     }
 
+    if (
+      !R.equals(
+        getArityStepFromPatch(abstractPatch),
+        getArityStepFromPatch(specializationPatch)
+      )
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_SAME_ARITY_LEVEL', {});
+    }
+
     const checkedPatchDoesHaveGenericPins = R.compose(
       R.any(Pin.isGenericPin),
       listPins
