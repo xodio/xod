@@ -686,22 +686,6 @@
           },
           "type": "@/displ-num"
         },
-        "wrappedGen1": {
-          "id": "wrappedGen1",
-          "position": {
-            "x": 68,
-            "y": 102
-          },
-          "type": "@/wrapped-generic-2-to-1"
-        },
-        "wrappedGen2": {
-          "id": "wrappedGen2",
-          "position": {
-            "x": 68,
-            "y": 204
-          },
-          "type": "@/wrapped-generic-2-to-1"
-        },
         "gen1": {
           "id": "gen1",
           "position": {
@@ -718,6 +702,30 @@
           },
           "type": "@/generic-1-to-1"
         },
+        "rkcsIdJhG": {
+          "id": "rkcsIdJhG",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "@/const-str"
+        },
+        "wrappedGen1": {
+          "id": "wrappedGen1",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen2": {
+          "id": "wrappedGen2",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
         "wrappedGen3": {
           "id": "wrappedGen3",
           "position": {
@@ -733,17 +741,165 @@
             "y": 306
           },
           "type": "@/wrapped-generic-2-to-1"
-        },
-        "rkcsIdJhG": {
-          "id": "rkcsIdJhG",
-          "position": {
-            "x": 102,
-            "y": 0
-          },
-          "type": "@/const-str"
         }
       },
       "path": "@/case6-patches-composed-from-generics"
+    },
+    "@/case7-variadic-generics": {
+      "links": {
+        "H1-O0D5xnG": {
+          "id": "H1-O0D5xnG",
+          "input": {
+            "nodeId": "gen4",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "gen3",
+            "pinKey": "outT1"
+          }
+        },
+        "SydRpoynf": {
+          "id": "SydRpoynf",
+          "input": {
+            "nodeId": "gen2",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "Syan6iJ3f",
+            "pinKey": "outNum"
+          }
+        },
+        "rkICpsy3M": {
+          "id": "rkICpsy3M",
+          "input": {
+            "nodeId": "gen1",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "gen2",
+            "pinKey": "outT1"
+          }
+        },
+        "ryrIYqe3M": {
+          "id": "ryrIYqe3M",
+          "input": {
+            "nodeId": "S1gIY5l3z",
+            "pinKey": "HkgwHFqe2z-$2"
+          },
+          "output": {
+            "nodeId": "gen4",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "Syan6iJ3f": {
+          "id": "Syan6iJ3f",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "gen1": {
+          "arityLevel": 3,
+          "id": "gen1",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen2": {
+          "arityLevel": 3,
+          "id": "gen2",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen3": {
+          "arityLevel": 3,
+          "id": "gen3",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen4": {
+          "arityLevel": 3,
+          "id": "gen4",
+          "position": {
+            "x": 204,
+            "y": 204
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "S1gIY5l3z": {
+          "arityLevel": 3,
+          "id": "S1gIY5l3z",
+          "position": {
+            "x": 204,
+            "y": 306
+          },
+          "type": "@/concat"
+        }
+      },
+      "path": "@/case7-variadic-generics"
+    },
+    "@/concat": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {\n    ConcatListView<char> view;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto state = getState(ctx);\n    auto head = getValue<input_IN1>(ctx);\n    auto tail = getValue<input_IN2>(ctx);\n    state->view = ConcatListView<char>(head, tail);\n    emitValue<output_OUT>(ctx, XString(&state->view));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "B17wBtqehf": {
+          "id": "B17wBtqehf",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        },
+        "Bk-PrKqenz": {
+          "id": "Bk-PrKqenz",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "H1zvSF5xhM": {
+          "id": "H1zvSF5xhM",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "HkgwHFqe2z": {
+          "id": "HkgwHFqe2z",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "SyDHFqxnz": {
+          "id": "SyDHFqxnz",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/concat"
     },
     "@/const-num": {
       "nodes": {
@@ -944,6 +1100,51 @@
         }
       },
       "path": "@/generic-2-to-1"
+    },
+    "@/generic-2-to-1-variadic": {
+      "nodes": {
+        "inT1_1": {
+          "id": "inT1_1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT1_2": {
+          "id": "inT1_2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "r1-IGycmjM": {
+          "id": "r1-IGycmjM",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "rV-IGRcDjM": {
+          "id": "rV-IGRcDjM",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        }
+      },
+      "path": "@/generic-2-to-1-variadic"
     },
     "@/generic-pair-to-pair": {
       "nodes": {

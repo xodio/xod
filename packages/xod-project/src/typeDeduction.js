@@ -25,19 +25,21 @@ const maybeGetTypeFromPreviouslyDeduced = R.curry(
     )
 );
 
-// :: DeducedPinTypes -> (NodeId -> Patch) -> [Link] -> [(PinKey, DataType)]
+// returns [(PinKey, DataType)]
 const getPinTypesFromLinks = (
   getOutwardNodeIdFromLink, // outputs for top-down pass, inputs for bottom-up pass
   getOutwardPinKeyFromLink,
   getOwnPinKeyFromLink,
   previouslyDeducedTypes,
-  getPatchByNodeId,
-  linksToNode
+  getPatchByNodeId, // :: NodeId -> Patch
+  linksToNode,
+  entryPatch
 ) =>
   R.compose(
     catMaybies,
     R.map(link => {
       const outwardNodeId = getOutwardNodeIdFromLink(link);
+      const outwardNode = Patch.getNodeByIdUnsafe(outwardNodeId, entryPatch);
       const outwardPinKey = getOutwardPinKeyFromLink(link);
 
       // :: Maybe (PinKey, DataType)
@@ -51,30 +53,56 @@ const getPinTypesFromLinks = (
           )
         ),
         R.map(Pin.getPinType),
-        Patch.getPinByKey(outwardPinKey),
+        Patch.getVariadicPinByKey(outwardNode, outwardPinKey),
         getPatchByNodeId
       )(outwardNodeId);
     })
   )(linksToNode);
 
-const getPinKeysByGenericType = patch =>
+const getPinKeysByGenericType = (node, patch) =>
   R.compose(
     R.map(R.map(Pin.getPinKey)),
     R.groupBy(Pin.getPinType),
     R.filter(Pin.isGenericPin),
-    Patch.listPins
+    Patch.listPinsIncludingVariadics(node)
   )(patch);
+
+const leftIfDifferent = (eitherA, eitherB) =>
+  foldEither(
+    contradictingAs =>
+      foldEither(
+        contradictingBs =>
+          R.compose(Either.Left, R.uniq, R.concat)(
+            contradictingAs,
+            contradictingBs
+          ),
+        okB => R.compose(Either.Left, R.uniq, R.append)(okB, contradictingAs),
+        eitherB
+      ),
+    okA =>
+      foldEither(
+        contradictingBs =>
+          R.compose(Either.Left, R.uniq, R.append)(okA, contradictingBs),
+        okB => (okA === okB ? Either.Right(okA) : Either.Left([okA, okB])),
+        eitherB
+      ),
+    eitherA
+  );
 
 // returns Map NodeId (Map PinKey (Either [DataType] DataType))
 const deducePinTypesForNode = (
-  abstractNodeId,
+  abstractNode,
   getPatchByNodeId,
   previouslyDeducedPinTypes,
   pinTypesFromLinks
 ) => {
+  const abstractNodeId = Node.getNodeId(abstractNode);
   const abstractPatch = getPatchByNodeId(abstractNodeId);
   // :: Map DataType [PinKey]
-  const pinKeysByGenericType = getPinKeysByGenericType(abstractPatch);
+  const pinKeysByGenericType = getPinKeysByGenericType(
+    abstractNode,
+    abstractPatch
+  );
 
   // :: Map PinKey (Either [DataType] DataType)
   const previouslyDeducedPinTypesForNode = R.propOr(
@@ -84,33 +112,7 @@ const deducePinTypesForNode = (
   );
 
   return R.compose(
-    R.reduce(
-      R.mergeWith((eitherA, eitherB) =>
-        foldEither(
-          contradictingAs =>
-            foldEither(
-              contradictingBs =>
-                R.compose(Either.Left, R.uniq, R.concat)(
-                  contradictingAs,
-                  contradictingBs
-                ),
-              okB =>
-                R.compose(Either.Left, R.uniq, R.append)(okB, contradictingAs),
-              eitherB
-            ),
-          okA =>
-            foldEither(
-              contradictingBs =>
-                R.compose(Either.Left, R.uniq, R.append)(okA, contradictingBs),
-              okB =>
-                okA === okB ? Either.Right(okA) : Either.Left([okA, okB]),
-              eitherB
-            ),
-          eitherA
-        )
-      ),
-      {}
-    ),
+    R.reduce(R.mergeWith(leftIfDifferent), {}),
     R.append(previouslyDeducedPinTypesForNode),
     R.map(R.map(Either.of)),
     // convert from [(PinKey, DataType)] to [Map PinKey DataType]
@@ -137,7 +139,7 @@ const deducePinTypesForNode = (
           )
         ),
         R.map(Pin.getPinType), // :: Maybe DataType
-        Patch.getPinByKey(pinKey) // :: Maybe Pin
+        Patch.getVariadicPinByKey(abstractNode, pinKey) // :: Maybe Pin
       )(abstractPatch)
     )
   )(pinTypesFromLinks);
@@ -188,8 +190,6 @@ export const deducePinTypes = def(
       Patch.getTopology // :: Either Error [NodeId]
     )(patch);
 
-    const abstractNodeIds = R.map(Node.getNodeId, toposortedAbstractNodes);
-
     // :: Map NodeId [Link]
     const linksByInputNodeId = R.compose(
       R.groupBy(Link.getLinkInputNodeId),
@@ -200,7 +200,8 @@ export const deducePinTypes = def(
     // Either [DataType] DataType is Right when type is resolved, and Left if there are conflicts.
     const stronglyResolvedTypes = R.compose(
       R.reject(R.isEmpty),
-      R.reduce((previouslyDeducedPinTypes, abstractNodeId) => {
+      R.reduce((previouslyDeducedPinTypes, abstractNode) => {
+        const abstractNodeId = Node.getNodeId(abstractNode);
         const linksToNode = R.propOr([], abstractNodeId, linksByInputNodeId);
 
         // :: [(PinKey, DataType)]
@@ -210,12 +211,13 @@ export const deducePinTypes = def(
           Link.getLinkInputPinKey,
           previouslyDeducedPinTypes,
           getPatchByNodeId,
-          linksToNode
+          linksToNode,
+          patch
         );
 
         // :: Map PinKey (Either [DataType] DataType)
         const deducedPinTypesForNode = deducePinTypesForNode(
-          abstractNodeId,
+          abstractNode,
           getPatchByNodeId,
           previouslyDeducedPinTypes,
           pinTypesFromLinks
@@ -227,7 +229,7 @@ export const deducePinTypes = def(
           previouslyDeducedPinTypes
         );
       }, {})
-    )(abstractNodeIds);
+    )(toposortedAbstractNodes);
 
     const linksByOutputNodeId = R.compose(
       R.groupBy(Link.getLinkOutputNodeId),
@@ -236,7 +238,8 @@ export const deducePinTypes = def(
 
     const weaklyResolvedTypes = R.compose(
       R.reject(R.isEmpty),
-      R.reduceRight((abstractNodeId, previouslyDeducedPinTypes) => {
+      R.reduceRight((abstractNode, previouslyDeducedPinTypes) => {
+        const abstractNodeId = Node.getNodeId(abstractNode);
         const linksFromNode = R.compose(
           // reject links to already resolved
           R.filter(
@@ -256,12 +259,13 @@ export const deducePinTypes = def(
           Link.getLinkOutputPinKey,
           previouslyDeducedPinTypes,
           getPatchByNodeId,
-          linksFromNode
+          linksFromNode,
+          patch
         );
 
         // :: Map PinKey (Either [DataType] DataType)
         const deducedPinTypesForNode = deducePinTypesForNode(
-          abstractNodeId,
+          abstractNode,
           getPatchByNodeId,
           previouslyDeducedPinTypes,
           pinTypesFromLinks
@@ -273,7 +277,7 @@ export const deducePinTypes = def(
           previouslyDeducedPinTypes
         );
       }, {})
-    )(abstractNodeIds);
+    )(toposortedAbstractNodes);
 
     return R.useWith(R.mergeWith(R.merge), [
       omitIntermediateAmbiguousPins(getPatchByNodeId, Patch.listOutputPins),

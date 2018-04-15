@@ -360,6 +360,7 @@ const computePins = R.memoizeWith(pinsMemoizer, patch =>
   )(patch)
 );
 
+// :: Patch -> StrMap Pins
 const getPins = R.ifElse(
   patchHasHardcodedPins,
   getHardcodedPinsForPatch,
@@ -1290,6 +1291,18 @@ export const addVariadicPins = def(
       newPins
     );
   }
+);
+
+export const listPinsIncludingVariadics = def(
+  'listPinsIncludingVariadics :: Node -> Patch -> [Pin]',
+  (node, patch) =>
+    R.compose(R.values, addVariadicPins(node, patch), getPins)(patch)
+);
+
+export const getVariadicPinByKey = def(
+  'getPinByKey :: Node -> PinKey -> Patch -> Maybe Pin',
+  (node, key, patch) =>
+    R.compose(Tools.prop(key), addVariadicPins(node, patch), getPins)(patch)
 );
 
 // =============================================================================

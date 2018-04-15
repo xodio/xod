@@ -168,6 +168,46 @@ describe('deducePinTypes', () => {
 
     assert.deepEqual(deduced, expected);
   });
+
+  it('deduces types of variadic generic nodes', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case7-variadic-generics', project),
+      project
+    );
+
+    const expected = {
+      gen1: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$1': Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$2': Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      gen2: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$1': Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$2': Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      gen3: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$1': Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$2': Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      gen4: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$1': Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$2': Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
 });
 
 describe('autoresolveTypes', () => {
