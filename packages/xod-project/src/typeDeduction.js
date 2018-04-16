@@ -299,18 +299,19 @@ const getPinPath = R.converge(R.pair, [
   R.pipe(Pin.getPinOrder, R.toString),
 ]);
 
-const getMapOfCorrespondingPinKeys = R.curry((patchFrom, patchTo) => {
+// assumes that patchFrom and patchTo are compatible
+const getMapOfCorrespondingPinKeys = R.curry((nodeFrom, patchFrom, patchTo) => {
   const pinKeysByPinPath = R.compose(
     R.map(R.map(Pin.getPinKey)),
     R.map(R.indexBy(Pin.getPinOrder)),
     R.groupBy(Pin.getPinDirection),
-    Patch.listPins
+    Patch.listPinsIncludingVariadics(nodeFrom) // we need only arityLevel from node
   )(patchTo);
 
   return R.compose(
     R.map(R.pipe(getPinPath, R.path(R.__, pinKeysByPinPath))),
     R.indexBy(Pin.getPinKey),
-    Patch.listPins
+    Patch.listPinsIncludingVariadics(nodeFrom)
   )(patchFrom);
 });
 
@@ -384,12 +385,14 @@ const getReplacementsForAbstractNodes = R.curry(
         const patchSignatureMask = R.compose(
           R.reduce(
             (sig, [pinKey, type]) =>
-              R.assocPath(
-                // to avoid getting Map PinDirection Array
-                pinPathByKey[pinKey].map(String),
-                type,
-                sig
-              ),
+              pinPathByKey[pinKey]
+                ? R.assocPath(
+                    // to avoid getting Map PinDirection Array
+                    pinPathByKey[pinKey].map(String),
+                    type,
+                    sig
+                  )
+                : sig,
             {}
           ),
           R.toPairs
@@ -423,10 +426,19 @@ const getReplacementsForAbstractNodes = R.curry(
 
         const specialization = R.head(matchingSpecializations);
 
+        const abstaractNode = Patch.getNodeByIdUnsafe(
+          abstractNodeId,
+          entryPatch
+        );
+
         return Either.of([
           abstractNodeId,
           Patch.getPatchPath(specialization),
-          getMapOfCorrespondingPinKeys(abstractPatch, specialization),
+          getMapOfCorrespondingPinKeys(
+            abstaractNode,
+            abstractPatch,
+            specialization
+          ),
         ]);
       }),
       R.toPairs
