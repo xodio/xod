@@ -300,20 +300,20 @@ const getPinPath = R.converge(R.pair, [
 ]);
 
 // assumes that patchFrom and patchTo are compatible
-const getMapOfCorrespondingPinKeys = R.curry((nodeFrom, patchFrom, patchTo) => {
-  const pinKeysByPinPath = R.compose(
-    R.map(R.map(Pin.getPinKey)),
-    R.map(R.indexBy(Pin.getPinOrder)),
-    R.groupBy(Pin.getPinDirection),
-    Patch.listPinsIncludingVariadics(nodeFrom) // we need only arityLevel from node
-  )(patchTo);
-
-  return R.compose(
-    R.map(R.pipe(getPinPath, R.path(R.__, pinKeysByPinPath))),
-    R.indexBy(Pin.getPinKey),
-    Patch.listPinsIncludingVariadics(nodeFrom)
-  )(patchFrom);
-});
+const getMapOfCorrespondingPinKeys = R.curry((nodeFrom, patchFrom, patchTo) =>
+  R.compose(
+    R.fromPairs,
+    R.apply(R.zip),
+    R.map(
+      R.compose(
+        R.map(Pin.getPinKey),
+        R.sortWith([R.ascend(Pin.getPinDirection), R.ascend(Pin.getPinOrder)]),
+        Patch.listPinsIncludingVariadics(nodeFrom)
+      )
+    ),
+    R.pair
+  )(patchFrom, patchTo)
+);
 
 const inputPinKeyLens = R.lens(
   Link.getLinkInputPinKey,
