@@ -222,6 +222,41 @@
       "path": "@/case2-missing-specialization"
     },
     "@/case3-variadics": {
+      "links": {
+        "BynJpTWnM": {
+          "id": "BynJpTWnM",
+          "input": {
+            "nodeId": "rkio36bnG",
+            "pinKey": "ByMxha-hz-$4"
+          },
+          "output": {
+            "nodeId": "SycJaTZ3M",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "HJBzTaWnz": {
+          "id": "HJBzTaWnz",
+          "input": {
+            "nodeId": "Bk7Ga6WhG",
+            "pinKey": "Sy84Mlcjz"
+          },
+          "output": {
+            "nodeId": "SJIW6T-3z",
+            "pinKey": "rkdxhpb2G"
+          }
+        },
+        "ryKWapW2M": {
+          "id": "ryKWapW2M",
+          "input": {
+            "nodeId": "SJIW6T-3z",
+            "pinKey": "ByMxha-hz-$4"
+          },
+          "output": {
+            "nodeId": "rkio36bnG",
+            "pinKey": "rkdxhpb2G"
+          }
+        }
+      },
       "nodes": {
         "Bk7Ga6WhG": {
           "id": "Bk7Ga6WhG",
@@ -238,7 +273,7 @@
             "x": 68,
             "y": 204
           },
-          "type": "@/some-variadic(number)"
+          "type": "@/some-variadic"
         },
         "SycJaTZ3M": {
           "id": "SycJaTZ3M",
@@ -255,71 +290,12 @@
             "x": 68,
             "y": 102
           },
-          "type": "@/some-variadic(number)"
-        }
-      },
-      "links": {
-        "BynJpTWnM": {
-          "id": "BynJpTWnM",
-          "output": {
-            "nodeId": "SycJaTZ3M",
-            "pinKey": "H1bfDMgqiz"
-          },
-          "input": {
-            "nodeId": "rkio36bnG",
-            "pinKey": "Hkruh6-hG-$4"
-          }
-        },
-        "HJBzTaWnz": {
-          "id": "HJBzTaWnz",
-          "output": {
-            "nodeId": "SJIW6T-3z",
-            "pinKey": "HJR_hab2z"
-          },
-          "input": {
-            "nodeId": "Bk7Ga6WhG",
-            "pinKey": "Sy84Mlcjz"
-          }
-        },
-        "ryKWapW2M": {
-          "id": "ryKWapW2M",
-          "output": {
-            "nodeId": "rkio36bnG",
-            "pinKey": "HJR_hab2z"
-          },
-          "input": {
-            "nodeId": "SJIW6T-3z",
-            "pinKey": "Hkruh6-hG-$4"
-          }
+          "type": "@/some-variadic"
         }
       },
       "path": "@/case3-variadics"
     },
     "@/case4-bound-non-generic-pins": {
-      "links": {
-        "H1OqfEMhf": {
-          "id": "H1OqfEMhf",
-          "input": {
-            "nodeId": "r1RtzVznz",
-            "pinKey": "BkErGVzhz"
-          },
-          "output": {
-            "nodeId": "HkUqGEzhM",
-            "pinKey": "H1bfDMgqiz"
-          }
-        },
-        "ry2qzEznf": {
-          "id": "ry2qzEznf",
-          "input": {
-            "nodeId": "SkFcfNz2G",
-            "pinKey": "BkErGVzhz"
-          },
-          "output": {
-            "nodeId": "r1RtzVznz",
-            "pinKey": "rk7VBGEGnG"
-          }
-        }
-      },
       "nodes": {
         "HkUqGEzhM": {
           "id": "HkUqGEzhM",
@@ -331,27 +307,51 @@
         },
         "SkFcfNz2G": {
           "boundValues": {
-            "ByLUGVz2M": "don't lose this value as well",
-            "r1-UGNGnM": 222
+            "S1mGOG4MhG": "don't lose this value as well",
+            "H1GGdM4Mhz": 222
           },
           "id": "SkFcfNz2G",
           "position": {
             "x": 102,
             "y": 306
           },
-          "type": "@/with-non-generic-pins"
+          "type": "@/with-non-generic-pins(number)"
         },
         "r1RtzVznz": {
           "boundValues": {
-            "ByLUGVz2M": "don't lose this value",
-            "r1-UGNGnM": 111
+            "S1mGOG4MhG": "don't lose this value",
+            "H1GGdM4Mhz": 111
           },
           "id": "r1RtzVznz",
           "position": {
             "x": 102,
             "y": 204
           },
-          "type": "@/with-non-generic-pins"
+          "type": "@/with-non-generic-pins(number)"
+        }
+      },
+      "links": {
+        "H1OqfEMhf": {
+          "id": "H1OqfEMhf",
+          "output": {
+            "nodeId": "HkUqGEzhM",
+            "pinKey": "H1bfDMgqiz"
+          },
+          "input": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "Sy8ufNM3z"
+          }
+        },
+        "ry2qzEznf": {
+          "id": "ry2qzEznf",
+          "output": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "rJSKf4z3G"
+          },
+          "input": {
+            "nodeId": "SkFcfNz2G",
+            "pinKey": "Sy8ufNM3z"
+          }
         }
       },
       "path": "@/case4-bound-non-generic-pins"

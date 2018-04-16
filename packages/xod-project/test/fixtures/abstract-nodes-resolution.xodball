@@ -296,6 +296,67 @@
       },
       "path": "@/case3-variadics"
     },
+    "@/case4-bound-non-generic-pins": {
+      "links": {
+        "H1OqfEMhf": {
+          "id": "H1OqfEMhf",
+          "input": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "BkErGVzhz"
+          },
+          "output": {
+            "nodeId": "HkUqGEzhM",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "ry2qzEznf": {
+          "id": "ry2qzEznf",
+          "input": {
+            "nodeId": "SkFcfNz2G",
+            "pinKey": "BkErGVzhz"
+          },
+          "output": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "rk7VBGEGnG"
+          }
+        }
+      },
+      "nodes": {
+        "HkUqGEzhM": {
+          "id": "HkUqGEzhM",
+          "position": {
+            "x": 170,
+            "y": 102
+          },
+          "type": "@/pot"
+        },
+        "SkFcfNz2G": {
+          "boundValues": {
+            "ByLUGVz2M": "don't lose this value as well",
+            "r1-UGNGnM": 222
+          },
+          "id": "SkFcfNz2G",
+          "position": {
+            "x": 102,
+            "y": 306
+          },
+          "type": "@/with-non-generic-pins"
+        },
+        "r1RtzVznz": {
+          "boundValues": {
+            "ByLUGVz2M": "don't lose this value",
+            "r1-UGNGnM": 111
+          },
+          "id": "r1RtzVznz",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "type": "@/with-non-generic-pins"
+        }
+      },
+      "path": "@/case4-bound-non-generic-pins"
+    },
     "@/console-log": {
       "attachments": [
         {
@@ -916,6 +977,103 @@
         }
       },
       "path": "@/when-either-changes(number,number)"
+    },
+    "@/with-non-generic-pins": {
+      "nodes": {
+        "Bk-4HfEfhM": {
+          "id": "Bk-4HfEfhM",
+          "position": {
+            "x": 203,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "BkErGVzhz": {
+          "id": "BkErGVzhz",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "ByLUGVz2M": {
+          "id": "ByLUGVz2M",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "r1-UGNGnM": {
+          "id": "r1-UGNGnM",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rk7VBGEGnG": {
+          "id": "rk7VBGEGnG",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/with-non-generic-pins"
+    },
+    "@/with-non-generic-pins(number)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "H1GGdM4Mhz": {
+          "id": "H1GGdM4Mhz",
+          "position": {
+            "x": -1,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkROzEGhG": {
+          "id": "HkROzEGhG",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "S1mGOG4MhG": {
+          "id": "S1mGOG4MhG",
+          "position": {
+            "x": 67,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "Sy8ufNM3z": {
+          "id": "Sy8ufNM3z",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rJSKf4z3G": {
+          "id": "rJSKf4z3G",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/with-non-generic-pins(number)"
     }
   }
 }

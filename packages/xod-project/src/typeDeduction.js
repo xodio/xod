@@ -331,7 +331,21 @@ const relink = R.curry((patch, replacements) =>
         mapOfCorrespondingPinKeys[oldPinKey] || oldPinKey;
 
       const updatedNode = R.compose(
-        // TODO: what about bound values for static pins?
+        R.converge(
+          R.reduce((resultingNode, [pinKey, boundValue]) =>
+            // no need to check that pin is non-generic,
+            // because we can't bind values to generic pins
+            Node.setBoundValue(
+              getReplacementPinKey(pinKey),
+              boundValue,
+              resultingNode
+            )
+          ),
+          [
+            Node.dropAllBoundValues,
+            R.compose(R.toPairs, Node.getAllBoundValues),
+          ]
+        ),
         Node.setNodeType(newType),
         Patch.getNodeByIdUnsafe(nodeId)
       )(resultingPatch);

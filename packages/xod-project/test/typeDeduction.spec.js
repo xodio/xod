@@ -245,7 +245,6 @@ describe('autoresolveTypes', () => {
       autoresolveTypes('@/case1-ok', projectWithConflictingSpecialization)
     );
   });
-
   it('does not lose links from/to variadic patches', () => {
     const expectedResolvedProject = Helper.loadXodball(
       './fixtures/abstract-nodes-resolution.resolved-variadics.xodball'
@@ -254,5 +253,14 @@ describe('autoresolveTypes', () => {
     Helper.expectEitherRight(actualResolvedProject => {
       assert.deepEqual(actualResolvedProject, expectedResolvedProject);
     }, autoresolveTypes('@/case3-variadics', project));
+  });
+  it('does not lose values bound to non-generic pins', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved-bound-nongenerics.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+    }, autoresolveTypes('@/case4-bound-non-generic-pins', project));
   });
 });
