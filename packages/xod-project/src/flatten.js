@@ -20,7 +20,6 @@ import { def } from './types';
 import { isGenericType } from './utils';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
-import expandVariadicNodes from './expandVariadicNodes';
 
 // =============================================================================
 //
@@ -189,30 +188,23 @@ const getPrefixedId = R.curry(
   (prefix, id) => (prefix ? `${prefix}~${id}` : id)
 );
 
-const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
-  R.compose(
+const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) => {
+  const pinKey = keyGetter(link);
+  const node = R.compose(R.find(R.__, nodes), R.propEq('id'), idGetter)(link);
+
+  const patch = R.compose(
+    R.nth(1),
+    R.find(R.__, patchTuples),
+    R.propEq(0),
+    Node.getNodeType
+  )(node);
+
+  return R.compose(
     Pin.getPinType,
-    explode,
-    R.converge(
-      // = PinKey + Patch -> Pin
-      Patch.getPinByKey,
-      [
-        // Link -> PinKey
-        keyGetter,
-        // Link -> NodeId -> Node -> NodeType -> Patch
-        R.compose(
-          R.prop(1),
-          R.find(R.__, patchTuples),
-          R.propEq(0),
-          Node.getNodeType,
-          R.find(R.__, nodes),
-          R.propEq('id'),
-          idGetter
-        ),
-      ]
-    )
-  )(link)
-);
+    explodeMaybe(`Pin ${pinKey} should be in patch ${JSON.stringify(patch)}`),
+    Patch.getVariadicPinByKey(node, pinKey)
+  )(patch);
+});
 
 /**
  * Replace terminal node with casting node
@@ -1025,7 +1017,6 @@ export default def(
           Project.getPatchByPath(path)
         )(project)
       ),
-      R.map(expandVariadicNodes(path)),
       Project.validatePatchReqursively(path)
     )(inputProject)
 );
