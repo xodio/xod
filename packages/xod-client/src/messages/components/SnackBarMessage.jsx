@@ -31,34 +31,14 @@ class SnackBarMessage extends React.Component {
     this.props.onCloseMessage(this.props.message.id);
   }
 
-  getMessagePath() {
+  getMessageTrace() {
     const { message } = this.props;
-    const path = message.payload.path;
-    if (!path || path.length === 0) return null;
+    const trace = message.payload.trace;
+    if (!trace || trace.length === 0) return null;
 
     return (
-      <span className="path">
-        {R.compose(
-          R.append(
-            <span key="fin" className="colon">
-              :
-            </span>
-          ),
-          R.init,
-          R.unnest,
-          R.map(pathPart => [
-            <span key={pathPart} className="part">
-              {pathPart}
-            </span>,
-            <span key={`${pathPart}_sep`} className="sep">
-              {/*
-                nbsp and arrow is created by DOM elements, not by CSS,
-                to provide good-readibly message after copy-paste
-              */}
-              &nbsp;&rarr;&nbsp;
-            </span>,
-          ])
-        )(path)}
+      <span className="trace">
+        {R.pipe(R.join(' → '), R.concat(R.__, ':'))(trace)}
       </span>
     );
   }
@@ -75,7 +55,7 @@ class SnackBarMessage extends React.Component {
     return [
       <div className="message-text" key="text">
         <span className="title">{message.payload.title}</span>
-        {this.getMessagePath()}
+        {this.getMessageTrace()}
         {message.payload.note}
       </div>,
       <div className="message-buttons" key="buttons">

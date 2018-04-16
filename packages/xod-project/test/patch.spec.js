@@ -1033,7 +1033,7 @@ describe('Patch', () => {
       };
       const err = Patch.validateLink(link, patch);
       Helper.expectEitherError(
-        'LINK_INPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"non-existent","pinKey":"a"},"output":{"nodeId":"out","pinKey":"out"}},"nodeId":"non-existent","path":["@/default-patch-path"]}',
+        'LINK_INPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"non-existent","pinKey":"a"},"output":{"nodeId":"out","pinKey":"out"}},"nodeId":"non-existent","trace":["@/default-patch-path"]}',
         err
       );
     });
@@ -1045,7 +1045,7 @@ describe('Patch', () => {
       };
       const err = Patch.validateLink(link, patch);
       Helper.expectEitherError(
-        'LINK_OUTPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"in","pinKey":"in"},"output":{"nodeId":"non-existent","pinKey":"a"}},"nodeId":"in","path":["@/default-patch-path"]}',
+        'LINK_OUTPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"in","pinKey":"in"},"output":{"nodeId":"non-existent","pinKey":"a"}},"nodeId":"in","trace":["@/default-patch-path"]}',
         err
       );
     });
@@ -1444,7 +1444,7 @@ describe('Patch', () => {
         });
         const res = Patch.computeVariadicPins(patch);
         Helper.expectEitherError(
-          'NO_VARIADIC_MARKERS {"path":["@/test"]}',
+          'NO_VARIADIC_MARKERS {"trace":["@/test"]}',
           res
         );
       });
@@ -1465,7 +1465,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'TOO_MANY_VARIADIC_MARKERS {"path":["@/test"]}',
+          'TOO_MANY_VARIADIC_MARKERS {"trace":["@/test"]}',
           res
         );
       });
@@ -1481,7 +1481,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'VARIADIC_HAS_NO_OUTPUTS {"path":["@/default-patch-path"]}',
+          'VARIADIC_HAS_NO_OUTPUTS {"trace":["@/default-patch-path"]}',
           res
         );
       });
@@ -1505,7 +1505,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'NOT_ENOUGH_VARIADIC_INPUTS {"path":["@/default-patch-path"],"arityStep":2,"outputsCount":1,"minInputs":3}',
+          'NOT_ENOUGH_VARIADIC_INPUTS {"trace":["@/default-patch-path"],"arityStep":2,"outputsCount":1,"minInputs":3}',
           res
         );
       });
@@ -1551,7 +1551,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'WRONG_VARIADIC_PIN_TYPES {"path":["@/default-patch-path"],"accPinLabels":["Y"],"outPinLabels":["B"]}',
+          'WRONG_VARIADIC_PIN_TYPES {"trace":["@/default-patch-path"],"accPinLabels":["Y"],"outPinLabels":["B"]}',
           res
         );
       });
@@ -1661,7 +1661,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          'GENERIC_TERMINALS_REQUIRED {"path":["@/default-patch-path"]}',
+          'GENERIC_TERMINALS_REQUIRED {"trace":["@/default-patch-path"]}',
           Patch.validateAbstractPatch(patch)
         );
       });
@@ -1688,7 +1688,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          'NONSEQUENTIAL_GENERIC_TERMINALS {"types":["t1","t2"],"path":["@/default-patch-path"]}',
+          'NONSEQUENTIAL_GENERIC_TERMINALS {"types":["t1","t2"],"trace":["@/default-patch-path"]}',
           Patch.validateAbstractPatch(patch)
         );
       });
@@ -1715,7 +1715,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          'ORPHAN_GENERIC_OUTPUTS {"path":["@/default-patch-path"],"types":["t2"]}',
+          'ORPHAN_GENERIC_OUTPUTS {"trace":["@/default-patch-path"],"types":["t2"]}',
           Patch.validateAbstractPatch(patch)
         );
       });

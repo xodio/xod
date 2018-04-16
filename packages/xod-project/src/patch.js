@@ -569,7 +569,7 @@ export const validateLink = def(
           failOnNothing('LINK_INPUT_NODE_NOT_FOUND', {
             link,
             nodeId: inputNodeId,
-            path: [patchPath],
+            trace: [patchPath],
           }),
           getNodeById
         )(inputNodeId, patch)
@@ -579,7 +579,7 @@ export const validateLink = def(
           failOnNothing('LINK_OUTPUT_NODE_NOT_FOUND', {
             link,
             nodeId: inputNodeId,
-            path: [patchPath],
+            trace: [patchPath],
           }),
           getNodeById
         )(outputNodeId, patch)
@@ -1126,17 +1126,17 @@ export const computeVariadicPins = def(
     const patchPath = getPatchPath(patch);
 
     if (!isVariadicPatch(patch)) {
-      return fail('NO_VARIADIC_MARKERS', { path: [patchPath] });
+      return fail('NO_VARIADIC_MARKERS', { trace: [patchPath] });
     }
     if (!checkArityMarkersAmount(patch)) {
-      return fail('TOO_MANY_VARIADIC_MARKERS', { path: [patchPath] });
+      return fail('TOO_MANY_VARIADIC_MARKERS', { trace: [patchPath] });
     }
 
     const outputs = listOutputPins(patch);
     const outputsCount = outputs.length;
 
     if (outputsCount === 0) {
-      return fail('VARIADIC_HAS_NO_OUTPUTS', { path: [patchPath] });
+      return fail('VARIADIC_HAS_NO_OUTPUTS', { trace: [patchPath] });
     }
 
     const inputs = listInputPins(patch);
@@ -1151,7 +1151,7 @@ export const computeVariadicPins = def(
     if (inputsCount - arityStep < outputsCount) {
       const minInputs = R.add(outputsCount, arityStep);
       return fail('NOT_ENOUGH_VARIADIC_INPUTS', {
-        path: [patchPath],
+        trace: [patchPath],
         arityStep,
         outputsCount,
         minInputs,
@@ -1179,7 +1179,7 @@ export const computeVariadicPins = def(
       const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
       const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
       return fail('WRONG_VARIADIC_PIN_TYPES', {
-        path: [patchPath],
+        trace: [patchPath],
         accPinLabels,
         outPinLabels,
       });
@@ -1331,7 +1331,7 @@ export const validateAbstractPatch = def(
 
       if (!R.isEmpty(orphanGenericOutputTypes)) {
         return fail('ORPHAN_GENERIC_OUTPUTS', {
-          path: [patchPath],
+          trace: [patchPath],
           types: orphanGenericOutputTypes,
         });
       }
@@ -1343,7 +1343,7 @@ export const validateAbstractPatch = def(
 
       if (R.isEmpty(allGenericPinTypes)) {
         return fail('GENERIC_TERMINALS_REQUIRED', {
-          path: [getPatchPath(patch)],
+          trace: [getPatchPath(patch)],
         });
       }
 
@@ -1357,7 +1357,7 @@ export const validateAbstractPatch = def(
       if (!R.equals(allGenericPinTypes, expectedPinTypes)) {
         return fail('NONSEQUENTIAL_GENERIC_TERMINALS', {
           types: expectedPinTypes,
-          path: [patchPath],
+          trace: [patchPath],
         });
       }
 

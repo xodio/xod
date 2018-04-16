@@ -57,16 +57,12 @@
     margin-bottom: .5em;
   }
 
-  .path {
+  .trace {
     display: block;
     color: $chalk;
     font-family: $font-family-normal;
     font-size: $font-size-m;
     margin-bottom: .25em;
-
-    .part {}
-    .sep { margin: 0 .3em; }
-    .colon {}
   }
 
   &.persistent {

@@ -24,16 +24,16 @@ export const failOnNothing = R.curry((errorType, payload) =>
 );
 
 /**
- * Updates path of the Error, produced by any of `fail` functions.
+ * Updates trace of the Error, produced by any of `fail` functions.
  * Will be used in functions that validates something recursively.
  */
-export const prependPatchPathToError = def(
-  'prependPatchPathToError :: String -> Either Error a -> Either Error a',
+export const prependTraceToError = def(
+  'prependTraceToError :: String -> Either Error a -> Either Error a',
   (patchPath, either) =>
     foldEither(
       R.when(R.is(Error), err => {
         const newPayload = R.over(
-          R.lensProp('path'),
+          R.lensProp('trace'),
           R.pipe(R.defaultTo([]), R.concat([patchPath])),
           R.propOr({}, 'payload', err)
         );

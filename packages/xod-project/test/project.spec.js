@@ -346,14 +346,14 @@ describe('Project', () => {
         emptyProject
       );
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/test","patchPath":"@/default-patch-path","path":["@/default-patch-path"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/test","patchPath":"@/default-patch-path","trace":["@/default-patch-path"]}',
         result
       );
     });
     it('should be Either.Left for non-existent pins', () => {
       const result = Project.validatePatchContents(fullPatch, smallProject);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"in","patchPath":"@/default-patch-path","path":["@/default-patch-path"]}',
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"in","patchPath":"@/default-patch-path","trace":["@/default-patch-path"]}',
         result
       );
     });
@@ -461,7 +461,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        `DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"a","patchPath":"@/test","path":["@/test"]}`,
+        `DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"a","patchPath":"@/test","trace":["@/test"]}`,
         result
       );
     });
@@ -491,7 +491,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"b","patchPath":"@/test","path":["@/test"]}',
+        'DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"b","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -524,7 +524,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"out2","patchPath":"@/test","path":["@/test"]}',
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"out2","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -557,7 +557,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"b","pinKey":"in2","patchPath":"@/test","path":["@/test"]}',
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"b","pinKey":"in2","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -590,7 +590,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","path":["@/test"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -623,7 +623,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","path":["@/test"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -657,7 +657,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY {"fromType":"pulse","toType":"number","patchPath":"@/test","path":["@/test"]}',
+        'INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY {"fromType":"pulse","toType":"number","patchPath":"@/test","trace":["@/test"]}',
         result
       );
     });
@@ -742,7 +742,7 @@ describe('Project', () => {
       );
       const result = Project.validatePatchReqursively('@/main', brokenProject);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","path":["@/main"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","trace":["@/main"]}',
         result
       );
     });
@@ -752,7 +752,7 @@ describe('Project', () => {
       );
       const result = Project.validatePatchReqursively('@/main', brokenProject);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/common-hardware/button","patchPath":"@/c","path":["@/main","@/a","@/b","@/c"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/common-hardware/button","patchPath":"@/c","trace":["@/main","@/a","@/b","@/c"]}',
         result
       );
     });
@@ -833,7 +833,7 @@ describe('Project', () => {
       );
       const res = Project.assocPatchList(invalidPatches, emptyProject);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/test/not-existent-one","patchPath":"@/wrong","path":["@/wrong"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/test/not-existent-one","patchPath":"@/wrong","trace":["@/wrong"]}',
         res
       );
     });
@@ -1223,7 +1223,7 @@ describe('Project', () => {
     it('returns Either Error about non-existing patch in the project', () => {
       const res = Project.validateProject(project);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","path":["@/main"]}',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","trace":["@/main"]}',
         res
       );
     });
@@ -1236,7 +1236,7 @@ describe('Project', () => {
       );
       const res = Project.validateProject(projectWithNotExistingPatch);
       Helper.expectEitherError(
-        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"brokenNodeInLinks","pinKey":"Hkp4rion-","patchPath":"@/main","path":["@/main"]}',
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"brokenNodeInLinks","pinKey":"Hkp4rion-","patchPath":"@/main","trace":["@/main"]}',
         res
       );
     });
