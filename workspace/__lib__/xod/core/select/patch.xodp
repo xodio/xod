@@ -1,115 +1,6 @@
 {
   "description": "Outputs `X𝑛` value based on which `S𝑛` pulse came last. By default outputs `X1`.",
-  "links": [
-    {
-      "id": "BkDeLCaL-",
-      "input": {
-        "nodeId": "S1yaHC6UW",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "S1oJLRpLW",
-        "pinKey": "S13xLCuHvkW"
-      }
-    },
-    {
-      "id": "ByhRBATUW",
-      "input": {
-        "nodeId": "ryj6SCpL-",
-        "pinKey": "B1RU0OrDkb"
-      },
-      "output": {
-        "nodeId": "rJUjrCTUb",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "S1c4DAWdf",
-      "input": {
-        "nodeId": "BJ97PAWOM",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "rJUjrCTUb",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "Sk-xI0pL-",
-      "input": {
-        "nodeId": "S1oJLRpLW",
-        "pinKey": "r1AgIROHDJW"
-      },
-      "output": {
-        "nodeId": "rygjH06LW",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SkKEw0b_M",
-      "input": {
-        "nodeId": "BJ97PAWOM",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "rkmiHCaIZ",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SkSgU0TLb",
-      "input": {
-        "nodeId": "S1oJLRpLW",
-        "pinKey": "S1yZIA_rDJZ"
-      },
-      "output": {
-        "nodeId": "ryj6SCpL-",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "rJkeURaIb",
-      "input": {
-        "nodeId": "S1oJLRpLW",
-        "pinKey": "ryTeUROHD1b"
-      },
-      "output": {
-        "nodeId": "S10qrR6UZ",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rkVSvAbdM",
-      "input": {
-        "nodeId": "rkWHDAW_f",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "BJ97PAWOM",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "rysRHCaIb",
-      "input": {
-        "nodeId": "ryj6SCpL-",
-        "pinKey": "Bkh8A_Sv1-"
-      },
-      "output": {
-        "nodeId": "rkmiHCaIZ",
-        "pinKey": "__out__"
-      }
-    }
-  ],
   "nodes": [
-    {
-      "id": "BJ97PAWOM",
-      "position": {
-        "x": 408,
-        "y": 204
-      },
-      "type": "@/any"
-    },
     {
       "id": "BkiBD0buG",
       "position": {
@@ -125,15 +16,7 @@
         "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "S1oJLRpLW",
-      "position": {
-        "x": 102,
-        "y": 204
-      },
-      "type": "@/if-else"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
       "id": "S1yaHC6UW",
@@ -141,7 +24,7 @@
         "x": 102,
         "y": 306
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "rJUjrCTUb",
@@ -176,15 +59,15 @@
         "x": 272,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
-      "id": "ryj6SCpL-",
+      "id": "rysxU8G2G",
       "position": {
-        "x": 238,
-        "y": 204
+        "x": 544,
+        "y": 0
       },
-      "type": "@/flip-flop"
+      "type": "xod/patch-nodes/abstract"
     }
   ]
 }
