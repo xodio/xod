@@ -725,6 +725,38 @@ describe('Project', () => {
       assert.equal(Either.isRight(result), true);
     });
   });
+  describe('validatePatchReqursively', () => {
+    it('returns Either Error for non-existing entry patch', () => {
+      const result = Project.validatePatchReqursively(
+        '@/non-existing',
+        emptyProject
+      );
+      Helper.expectEitherError(
+        'ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH {"patchPath":"@/non-existing"}',
+        result
+      );
+    });
+    it('returns Either Error for patch with dead reference errors in entry patch', () => {
+      const brokenProject = Helper.loadXodball(
+        './fixtures/broken-project.xodball'
+      );
+      const result = Project.validatePatchReqursively('@/main', brokenProject);
+      Helper.expectEitherError(
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","path":["@/main"]}',
+        result
+      );
+    });
+    it('returns Either Error for patch with dead link deeply in patch tree', () => {
+      const brokenProject = Helper.loadXodball(
+        './fixtures/dead-link-deeply.xodball'
+      );
+      const result = Project.validatePatchReqursively('@/main', brokenProject);
+      Helper.expectEitherError(
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/common-hardware/button","patchPath":"@/c","path":["@/main","@/a","@/b","@/c"]}',
+        result
+      );
+    });
+  });
 
   // entity setters
   describe('assocPatch', () => {

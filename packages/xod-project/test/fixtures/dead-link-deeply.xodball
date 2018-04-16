@@ -1,0 +1,133 @@
+{
+  "name": "",
+  "patches": {
+    "@/a": {
+      "nodes": {
+        "HJGKuTjof": {
+          "id": "HJGKuTjof",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/b"
+        }
+      },
+      "path": "@/a"
+    },
+    "@/b": {
+      "nodes": {
+        "HJ1Fupsjf": {
+          "id": "HJ1Fupsjf",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/c"
+        }
+      },
+      "path": "@/b"
+    },
+    "@/c": {
+      "links": {
+        "HJuOdTojG": {
+          "id": "HJuOdTojG",
+          "input": {
+            "nodeId": "HJ9wdposG",
+            "pinKey": "rylw_ajsG"
+          },
+          "output": {
+            "nodeId": "S1I_uaisM",
+            "pinKey": "BJ--G1tI-"
+          }
+        },
+        "HkSudassz": {
+          "id": "HkSudassz",
+          "input": {
+            "nodeId": "HJ9wdposG",
+            "pinKey": "SJT8dTsjG"
+          },
+          "output": {
+            "nodeId": "HyGOd6joM",
+            "pinKey": "BJ--G1tI-"
+          }
+        }
+      },
+      "nodes": {
+        "HJ9wdposG": {
+          "id": "HJ9wdposG",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "@/d"
+        },
+        "HyGOd6joM": {
+          "id": "HyGOd6joM",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/common-hardware/button"
+        },
+        "S1I_uaisM": {
+          "id": "S1I_uaisM",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/common-hardware/button"
+        }
+      },
+      "path": "@/c"
+    },
+    "@/d": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Hk4P_asiM": {
+          "id": "Hk4P_asiM",
+          "position": {
+            "x": 170,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SJT8dTsjG": {
+          "id": "SJT8dTsjG",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "rylw_ajsB": {
+          "id": "rylw_ajsB",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        }
+      },
+      "path": "@/d"
+    },
+    "@/main": {
+      "nodes": {
+        "rJVKuaisM": {
+          "id": "rJVKuaisM",
+          "position": {
+            "x": -102,
+            "y": -204
+          },
+          "type": "@/a"
+        }
+      },
+      "path": "@/main"
+    }
+  }
+}

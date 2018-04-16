@@ -11,6 +11,7 @@ import {
   fail,
   failOnFalse,
   failOnNothing,
+  prependPatchPathToError,
 } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
@@ -1029,3 +1030,24 @@ export const validateProject = project =>
  * @returns {Boolean}
  */
 export const isValidProject = R.compose(Either.isRight, validateProject);
+
+export const validatePatchReqursively = def(
+  'validatePatchReqursively :: PatchPath -> Project -> Either Error Project',
+  (patchPath, project) =>
+    R.compose(
+      R.map(R.always(project)),
+      R.chain(
+        R.compose(
+          prependPatchPathToError(patchPath),
+          R.sequence(Either.of),
+          R.map(
+            R.pipe(Node.getNodeType, validatePatchReqursively(R.__, project))
+          ),
+          Patch.listNodes
+        )
+      ),
+      R.chain(validatePatchContents(R.__, project)),
+      failOnNothing('ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH', { patchPath }),
+      getPatchByPath
+    )(patchPath, project)
+);
