@@ -1,0 +1,169 @@
+{
+  "description": "Selects either `X0` or `X1` based on `IDX` index value.",
+  "links": [
+    {
+      "id": "BJnzg-Lf2z",
+      "input": {
+        "nodeId": "SyXGgWIznz",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "SywfxWUGhf",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "BkcMxZUznM",
+      "input": {
+        "nodeId": "SyXGgWIznz",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "r1Gzl-8Ghz",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkoGl-Uf2M",
+      "input": {
+        "nodeId": "SywfxWUGhf",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "Hk8GeZIfnM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyJlzeZLf2G",
+      "input": {
+        "nodeId": "r1WzgZLMhG",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "Hk8GeZIfnM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkRMebLfhf",
+      "input": {
+        "nodeId": "BJlMxW8M3f",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1WzgZLMhG",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "r16zgbLz3z",
+      "input": {
+        "nodeId": "H1rzg-Uf3M",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyXGgWIznz",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "ryYfx-8GnG",
+      "input": {
+        "nodeId": "SyXGgWIznz",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "HkzeZ8G3f",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.\n",
+      "id": "BJlMxW8M3f",
+      "label": "_",
+      "position": {
+        "x": -1,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "H1rzg-Uf3M",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Index to select. All values below 1 are considered to be 0. Values of 1 and above are considered to be 1.",
+      "id": "Hk8GeZIfnM",
+      "label": "IDX",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkzeZ8G3f",
+      "label": "X1",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SyXGgWIznz",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/if-else(number)"
+    },
+    {
+      "boundValues": {
+        "SJqZ8COrDkW": 1
+      },
+      "id": "SywfxWUGhf",
+      "position": {
+        "x": 67,
+        "y": 101
+      },
+      "type": "@/less"
+    },
+    {
+      "id": "r1Gzl-8Ghz",
+      "label": "X0",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundValues": {
+        "rkJ4URuHDJ-": 1
+      },
+      "id": "r1WzgZLMhG",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "@/subtract"
+    },
+    {
+      "id": "rJOGxb8MhG",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    }
+  ]
+}

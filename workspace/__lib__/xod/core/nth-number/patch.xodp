@@ -128,6 +128,15 @@
       "type": "@/if-else"
     },
     {
+      "description": "Use xod/core/nth-input instead",
+      "id": "SkoRFSz3f",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "rJCJSpbt-",
       "position": {
