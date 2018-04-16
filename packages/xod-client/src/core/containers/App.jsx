@@ -3,18 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { Either } from 'ramda-fantasy';
-import {
-  foldMaybe,
-  foldEither,
-  $Maybe,
-  composeErrorFormatters,
-} from 'xod-func-tools';
-import {
-  Project,
-  isValidIdentifier,
-  IDENTIFIER_RULES,
-  messages as xpMessages,
-} from 'xod-project';
+import { foldMaybe, foldEither, $Maybe } from 'xod-func-tools';
+import { Project, isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
 import {
   transformProject,
   transformProjectWithDebug,
@@ -32,7 +22,7 @@ import PopupPublishProject from '../../project/components/PopupPublishProject';
 import * as actions from '../actions';
 import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
 
-const formatErrorMessage = composeErrorFormatters([xpMessages]);
+import formatErrorMessage from '../formatErrorMessage';
 
 export default class App extends React.Component {
   constructor(props) {

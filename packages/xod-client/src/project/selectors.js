@@ -160,6 +160,7 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
   R.compose(
     R.ifElse(
       R.compose(Maybe.isNothing, XP.getPatchByPath(R.__, project)),
+      // TODO: Replace this custom error with rich error from xod-project
       type => addError(new Error(missingPatchForNode(type)), renderableNode),
       R.compose(
         foldEither(

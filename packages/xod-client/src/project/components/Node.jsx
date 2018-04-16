@@ -16,6 +16,7 @@ import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import nodeHoverContextType from '../../editor/nodeHoverContextType';
+import formatErrorMessage from '../../core/formatErrorMessage';
 
 const renderTooltipContent = (nodeType, nodeLabel, isDeprecated, errText) =>
   R.compose(
@@ -150,7 +151,10 @@ class Node extends React.Component {
 
     const errMessage =
       this.props.errors.length > 0
-        ? R.compose(R.join(';\n'), R.pluck('message'))(this.props.errors)
+        ? R.compose(
+            R.join(';\n'),
+            R.map(R.pipe(formatErrorMessage, R.prop('note')))
+          )(this.props.errors)
         : null;
 
     return (
