@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
-
-import { ERROR } from './constants';
+import { fail } from 'xod-func-tools';
 
 export function findVertexesWithNoIncomingEdges(vertexes, edges) {
   return R.difference(vertexes, R.map(R.nth(1), edges));
@@ -51,7 +50,7 @@ export function sortGraph(vertexes, edges) {
   }
 
   if (edgesLeft.length) {
-    return Either.Left(new Error(ERROR.LOOPS_DETECTED));
+    return fail('LOOPS_DETECTED', {});
   }
 
   return Either.of(l);

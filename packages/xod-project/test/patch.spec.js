@@ -10,7 +10,6 @@ import * as Link from '../src/link';
 import * as Comment from '../src/comment';
 import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
-import { formatString } from '../src/utils';
 import * as PPU from '../src/patchPathUtils';
 
 import { TERMINALS_LIB_NAME } from '../src/internal/patchPathUtils';
@@ -257,10 +256,7 @@ describe('Patch', () => {
       const fn = () => Patch.getNodeByIdUnsafe(nodeId, patch);
       expect(fn).to.throw(
         Error,
-        formatString(CONST.ERROR.NODE_NOT_FOUND, {
-          nodeId,
-          patchPath: patch.path,
-        })
+        `Can't find the Node "non-existent" in the patch with path "test/test/test"`
       );
     });
     it('should return Node', () => {
@@ -743,13 +739,9 @@ describe('Patch', () => {
       it('should throw Error if a Comment with a given CommentId does not exist', () => {
         const nonExistingCommentId = 'non-existing';
         assert.throws(
-          () => {
-            Patch.getCommentByIdUnsafe(nonExistingCommentId, patchWithComments);
-          },
-          formatString(CONST.ERROR.COMMENT_NOT_FOUND, {
-            commentId: nonExistingCommentId,
-            patchPath: patchWithComments.path,
-          })
+          () =>
+            Patch.getCommentByIdUnsafe(nonExistingCommentId, patchWithComments),
+          `Can't find the Comment "non-existing" in the patch with path "@/default-patch-path"`
         );
       });
     });
@@ -1040,7 +1032,10 @@ describe('Patch', () => {
         output: validOutput,
       };
       const err = Patch.validateLink(link, patch);
-      Helper.expectEitherError(CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND, err);
+      Helper.expectEitherError(
+        'LINK_INPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"non-existent","pinKey":"a"},"output":{"nodeId":"out","pinKey":"out"}},"nodeId":"non-existent","path":["@/default-patch-path"]}',
+        err
+      );
     });
     it('should return Either.Left for non-existent output node in the patch', () => {
       const link = {
@@ -1049,7 +1044,10 @@ describe('Patch', () => {
         output: { nodeId: 'non-existent', pinKey: 'a' },
       };
       const err = Patch.validateLink(link, patch);
-      Helper.expectEitherError(CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND, err);
+      Helper.expectEitherError(
+        'LINK_OUTPUT_NODE_NOT_FOUND {"link":{"id":"1","input":{"nodeId":"in","pinKey":"in"},"output":{"nodeId":"non-existent","pinKey":"a"}},"nodeId":"in","path":["@/default-patch-path"]}',
+        err
+      );
     });
     it('should return Either.Right with link', () => {
       const link = { id: linkId, input: validInput, output: validOutput };
@@ -1446,7 +1444,7 @@ describe('Patch', () => {
         });
         const res = Patch.computeVariadicPins(patch);
         Helper.expectEitherError(
-          'Patch "@/test" has no variadic markers.',
+          'NO_VARIADIC_MARKERS {"path":["@/test"]}',
           res
         );
       });
@@ -1467,7 +1465,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'Patch "@/test" has more than one variadic-* marker',
+          'TOO_MANY_VARIADIC_MARKERS {"path":["@/test"]}',
           res
         );
       });
@@ -1483,7 +1481,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'A variadic patch should have at least one output',
+          'VARIADIC_HAS_NO_OUTPUTS {"path":["@/default-patch-path"]}',
           res
         );
       });
@@ -1507,7 +1505,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'A variadic-2 patch node with 1 outputs should have at least 3 inputs',
+          'NOT_ENOUGH_VARIADIC_INPUTS {"path":["@/default-patch-path"],"arityStep":2,"outputsCount":1,"minInputs":3}',
           res
         );
       });
@@ -1553,7 +1551,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'Types of inputs Y should match the types of outputs B',
+          'WRONG_VARIADIC_PIN_TYPES {"path":["@/default-patch-path"],"accPinLabels":["Y"],"outPinLabels":["B"]}',
           res
         );
       });
@@ -1663,7 +1661,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          CONST.ERROR.GENERIC_TERMINALS_REQUIRED,
+          'GENERIC_TERMINALS_REQUIRED {"path":["@/default-patch-path"]}',
           Patch.validateAbstractPatch(patch)
         );
       });
@@ -1690,7 +1688,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          'Generic inputs should be employed sequentially. Use t1, t2',
+          'NONSEQUENTIAL_GENERIC_TERMINALS {"types":["t1","t2"],"path":["@/default-patch-path"]}',
           Patch.validateAbstractPatch(patch)
         );
       });
@@ -1717,7 +1715,7 @@ describe('Patch', () => {
         });
 
         Helper.expectEitherError(
-          'For each generic output there has to be at least one generic input of the same type. Create input-t2',
+          'ORPHAN_GENERIC_OUTPUTS {"path":["@/default-patch-path"],"types":["t2"]}',
           Patch.validateAbstractPatch(patch)
         );
       });

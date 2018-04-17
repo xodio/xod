@@ -9,7 +9,6 @@ import * as Patch from '../src/patch';
 import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
-import { formatString } from '../src/utils';
 import { getCastPatchPath, getTerminalPath } from '../src/patchPathUtils';
 
 chai.use(dirtyChai);
@@ -441,9 +440,7 @@ describe('Flatten', () => {
         project.patches['@/main']
       )[0];
       Helper.expectEitherError(
-        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-          patchPath: 'xod/test/non-existent-patch',
-        }),
+        'PATCH_NOT_FOUND_BY_PATH {"patchPath":"xod/test/non-existent-patch"}',
         result
       );
     });
@@ -535,9 +532,7 @@ describe('Flatten', () => {
 
       const flatProject = flatten(projectWithMissingAttachments, '@/main');
       Helper.expectEitherError(
-        formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, {
-          patchPath: 'xod/core/or',
-        }),
+        'IMPLEMENTATION_NOT_FOUND {"patchPath":"xod/core/or"}',
         flatProject
       );
     });
@@ -1408,15 +1403,11 @@ describe('Flatten', () => {
         },
       });
 
-      it(`should return Either.Left with error "${
-        CONST.ERROR.CAST_PATCH_NOT_FOUND
-      }"`, () => {
+      it('should return Either.Left Error', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherError(
-          formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, {
-            patchPath: 'xod/core/cast-to-number(boolean)',
-          }),
+          'CAST_PATCH_NOT_FOUND {"patchPath":"xod/core/cast-to-number(boolean)"}',
           flatProject
         );
       });
@@ -1912,9 +1903,7 @@ describe('Flatten', () => {
       it('no defined implementation in the project', () => {
         const flatProject = flatten(project, '@/references-patch-without-impl');
         Helper.expectEitherError(
-          formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, {
-            patchPath: '@/no-impl',
-          }),
+          'IMPLEMENTATION_NOT_FOUND {"patchPath":"@/no-impl"}',
           flatProject
         );
       });
@@ -1922,7 +1911,10 @@ describe('Flatten', () => {
     describe('patch not implemented in xod as an entry point', () => {
       it('should not be accepted', () => {
         const flatProject = flatten(project, 'xod/core/or');
-        Helper.expectEitherError(CONST.ERROR.CPP_AS_ENTRY_POINT, flatProject);
+        Helper.expectEitherError(
+          'CPP_AS_ENTRY_POINT {"patchPath":"xod/core/or"}',
+          flatProject
+        );
       });
     });
   });
@@ -1956,7 +1948,7 @@ describe('Flatten', () => {
     it('should not accept abstract patches as an entry point', () => {
       const flatProject = flatten(project, '@/abstract');
       Helper.expectEitherError(
-        CONST.ERROR.ABSTRACT_AS_ENTRY_POINT,
+        'ABSTRACT_AS_ENTRY_POINT {"patchPath":"@/abstract"}',
         flatProject
       );
     });
@@ -1964,7 +1956,7 @@ describe('Flatten', () => {
     it('should not allow unresolved abstract patches', () => {
       const flatProject = flatten(project, '@/main');
       Helper.expectEitherError(
-        CONST.ERROR.ALL_TYPES_MUST_BE_RESOLVED,
+        'ALL_TYPES_MUST_BE_RESOLVED {"patchPath":"@/abstract"}',
         flatProject
       );
     });

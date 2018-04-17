@@ -8,11 +8,12 @@ import { noop } from '../../utils/ramda';
 import { PIN_RADIUS, LINK_HOTSPOT_SIZE } from '../nodeLayout';
 
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
+import formatErrorMessage from '../../core/formatErrorMessage';
 
 // :: [Error] -> [ReactNode]
 const renderTooltipContent = mapIndexed((err, idx) => (
   <div key={idx} className="Tooltip--error">
-    {err.message}
+    {formatErrorMessage(err).note}
   </div>
 ));
 

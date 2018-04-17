@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { sortGraph } from '../src/gmath';
 
 import { expectEitherRight, expectEitherError } from './helpers';
-import { ERROR } from '../src/constants';
 
 describe('Graph math', () => {
   describe('Topological sorting', () => {
@@ -38,7 +37,7 @@ describe('Graph math', () => {
 
     it('should throw error for cycled graph', () => {
       expectEitherError(
-        ERROR.LOOPS_DETECTED,
+        'LOOPS_DETECTED {}',
         sortGraph([42, 43, 44], [[42, 43], [43, 42]])
       );
     });

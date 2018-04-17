@@ -9,6 +9,8 @@ import {
   mapIndexed,
   notEmpty,
   foldMaybe,
+  fail,
+  failOnNothing,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -36,15 +38,6 @@ import {
   isVariadicPath,
   getArityStepFromPatchPath,
 } from './patchPathUtils';
-import {
-  notEnoughVariadicInputs,
-  noVariadicMarkers,
-  nonsequentialGenericTerminals,
-  orphanGenericOutputs,
-  tooManyVariadicMarkers,
-  wrongVariadicPinTypes,
-  ERR_VARIADIC_HAS_NO_OUTPUTS,
-} from './messages';
 
 /**
  * An object representing single patch in a project
@@ -241,10 +234,9 @@ export const getNodeByIdUnsafe = def(
   'getNodeByIdUnsafe :: NodeId -> Patch -> Node',
   (nodeId, patch) =>
     explodeMaybe(
-      Utils.formatString(CONST.ERROR.NODE_NOT_FOUND, {
-        nodeId,
-        patchPath: getPatchPath(patch),
-      }),
+      `Can't find the Node "${nodeId}" in the patch with path "${getPatchPath(
+        patch
+      )}"`,
       getNodeById(nodeId, patch)
     )
 );
@@ -396,10 +388,9 @@ export const getPinByKeyUnsafe = def(
   'getPinByKey :: PinKey -> Patch -> Pin',
   (pinKey, patch) =>
     explodeMaybe(
-      Utils.formatString(CONST.ERROR.PIN_NOT_FOUND, {
-        pinKey,
-        patchPath: getPatchPath(patch),
-      }),
+      `Can't find the Pin "${pinKey}" in the patch with path "${getPatchPath(
+        patch
+      )}"`,
       getPinByKey(pinKey, patch)
     )
 );
@@ -489,10 +480,9 @@ export const getLinkByIdUnsafe = def(
   'getLinkByIdUnsafe :: LinkId -> Patch -> Link',
   (linkId, patch) =>
     explodeMaybe(
-      Utils.formatString(CONST.ERROR.LINK_NOT_FOUND, {
-        linkId,
-        patchPath: getPatchPath(patch),
-      }),
+      `Can't find the Link "${linkId}" in the patch with path "${getPatchPath(
+        patch
+      )}"`,
       getLinkById(linkId, patch)
     )
 );
@@ -568,21 +558,34 @@ export const listLinksByPin = def(
  */
 export const validateLink = def(
   'validateLink :: Link -> Patch -> Either Error Link',
-  (link, patch) =>
-    Either.of(link)
+  (link, patch) => {
+    const inputNodeId = Link.getLinkInputNodeId(link);
+    const outputNodeId = Link.getLinkOutputNodeId(link);
+    const patchPath = getPatchPath(patch);
+
+    return Either.of(link)
       .chain(() =>
-        Tools.errOnNothing(
-          CONST.ERROR.LINK_INPUT_NODE_NOT_FOUND,
-          getNodeById(Link.getLinkInputNodeId(link), patch)
-        )
+        R.compose(
+          failOnNothing('LINK_INPUT_NODE_NOT_FOUND', {
+            link,
+            nodeId: inputNodeId,
+            path: [patchPath],
+          }),
+          getNodeById
+        )(inputNodeId, patch)
       )
       .chain(() =>
-        Tools.errOnNothing(
-          CONST.ERROR.LINK_OUTPUT_NODE_NOT_FOUND,
-          getNodeById(Link.getLinkOutputNodeId(link), patch)
-        )
+        R.compose(
+          failOnNothing('LINK_OUTPUT_NODE_NOT_FOUND', {
+            link,
+            nodeId: inputNodeId,
+            path: [patchPath],
+          }),
+          getNodeById
+        )(outputNodeId, patch)
       )
-      .map(R.always(link))
+      .map(R.always(link));
+  }
 );
 
 /**
@@ -728,10 +731,9 @@ export const getCommentByIdUnsafe = def(
   'getCommentByIdUnsafe :: CommentId -> Patch -> Comment',
   (commentId, patch) =>
     explodeMaybe(
-      Utils.formatString(CONST.ERROR.COMMENT_NOT_FOUND, {
-        commentId,
-        patchPath: getPatchPath(patch),
-      }),
+      `Can't find the Comment "${commentId}" in the patch with path "${getPatchPath(
+        patch
+      )}"`,
       getCommentById(commentId, patch)
     )
 );
@@ -1124,17 +1126,17 @@ export const computeVariadicPins = def(
     const patchPath = getPatchPath(patch);
 
     if (!isVariadicPatch(patch)) {
-      return Either.Left(new Error(noVariadicMarkers(patchPath)));
+      return fail('NO_VARIADIC_MARKERS', { path: [patchPath] });
     }
     if (!checkArityMarkersAmount(patch)) {
-      return Either.Left(new Error(tooManyVariadicMarkers(patchPath)));
+      return fail('TOO_MANY_VARIADIC_MARKERS', { path: [patchPath] });
     }
 
     const outputs = listOutputPins(patch);
     const outputsCount = outputs.length;
 
     if (outputsCount === 0) {
-      return Either.Left(new Error(ERR_VARIADIC_HAS_NO_OUTPUTS));
+      return fail('VARIADIC_HAS_NO_OUTPUTS', { path: [patchPath] });
     }
 
     const inputs = listInputPins(patch);
@@ -1148,9 +1150,12 @@ export const computeVariadicPins = def(
 
     if (inputsCount - arityStep < outputsCount) {
       const minInputs = R.add(outputsCount, arityStep);
-      return Either.Left(
-        new Error(notEnoughVariadicInputs(arityStep, outputsCount, minInputs))
-      );
+      return fail('NOT_ENOUGH_VARIADIC_INPUTS', {
+        path: [patchPath],
+        arityStep,
+        outputsCount,
+        minInputs,
+      });
     }
 
     const valPins = R.takeLast(arityStep, inputs);
@@ -1173,9 +1178,11 @@ export const computeVariadicPins = def(
     if (notEmpty(pinLabelsOfNonEqualPinTypes)) {
       const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
       const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
-      return Either.Left(
-        new Error(wrongVariadicPinTypes(accPinLabels, outPinLabels))
-      );
+      return fail('WRONG_VARIADIC_PIN_TYPES', {
+        path: [patchPath],
+        accPinLabels,
+        outPinLabels,
+      });
     }
 
     const sharedPins = R.slice(0, R.negate(R.add(accPins.length, arityStep)))(
@@ -1308,6 +1315,7 @@ export const validateAbstractPatch = def(
   R.ifElse(
     isAbstractPatch, // TODO: also validate composite patches!
     patch => {
+      const patchPath = getPatchPath(patch);
       const [genericInputTypes, genericOutputTypes] = R.compose(
         R.map(R.map(Pin.getPinType)),
         R.partition(Pin.isInputPin),
@@ -1322,9 +1330,10 @@ export const validateAbstractPatch = def(
       );
 
       if (!R.isEmpty(orphanGenericOutputTypes)) {
-        return Either.Left(
-          new Error(orphanGenericOutputs(orphanGenericOutputTypes))
-        );
+        return fail('ORPHAN_GENERIC_OUTPUTS', {
+          path: [patchPath],
+          types: orphanGenericOutputTypes,
+        });
       }
 
       const allGenericPinTypes = R.compose(sortUniq, R.concat)(
@@ -1333,7 +1342,9 @@ export const validateAbstractPatch = def(
       );
 
       if (R.isEmpty(allGenericPinTypes)) {
-        return Either.Left(new Error(CONST.ERROR.GENERIC_TERMINALS_REQUIRED));
+        return fail('GENERIC_TERMINALS_REQUIRED', {
+          path: [getPatchPath(patch)],
+        });
       }
 
       const expectedPinTypes = R.compose(
@@ -1344,9 +1355,10 @@ export const validateAbstractPatch = def(
       )(allGenericPinTypes);
 
       if (!R.equals(allGenericPinTypes, expectedPinTypes)) {
-        return Either.Left(
-          new Error(nonsequentialGenericTerminals(expectedPinTypes))
-        );
+        return fail('NONSEQUENTIAL_GENERIC_TERMINALS', {
+          types: expectedPinTypes,
+          path: [patchPath],
+        });
       }
 
       return Either.of(patch);

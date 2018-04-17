@@ -6,6 +6,8 @@ import {
   explodeMaybe,
   explodeEither,
   catMaybies,
+  fail,
+  failOnNothing,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -15,8 +17,6 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
-import { formatString } from './utils';
-import { err, errOnNothing } from './func-tools';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
 import expandVariadicNodes from './expandVariadicNodes';
@@ -134,11 +134,7 @@ const extractLeafPatchRecursive = R.curry((recursiveFn, project, node) =>
     path =>
       R.compose(
         R.chain(recursiveFn(project, path)),
-        errOnNothing(
-          formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-            patchPath: path,
-          })
-        ),
+        failOnNothing('PATCH_NOT_FOUND_BY_PATH', { patchPath: path }),
         Project.getPatchByPath(R.__, project)
       )(path),
     Node.getNodeType
@@ -163,18 +159,15 @@ export const extractLeafPatches = def(
       ],
       [
         isLeafPatchWithoutImpls,
-        R.compose(
-          R.of,
-          err(
-            formatString(CONST.ERROR.IMPLEMENTATION_NOT_FOUND, {
-              patchPath: Patch.getPatchPath(patch),
-            })
-          )
+        R.compose(R.of, () =>
+          fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path })
         ),
       ],
       [
         Patch.isAbstractPatch,
-        R.compose(R.of, err(CONST.ERROR.ALL_TYPES_MUST_BE_RESOLVED)),
+        R.compose(R.of, () =>
+          fail('ALL_TYPES_MUST_BE_RESOLVED', { patchPath: path })
+        ),
       ],
       [R.T, extractLeafPatchesFromNodes(extractLeafPatches, project)],
     ])(patch)
@@ -643,9 +636,7 @@ const getCastNodeTypesFromPatch = R.compose(
 // :: Project -> String -> Either Error Patch
 const getEitherPatchByPath = R.curry((project, path) =>
   R.compose(
-    errOnNothing(
-      formatString(CONST.ERROR.CAST_PATCH_NOT_FOUND, { patchPath: path })
-    ),
+    failOnNothing('CAST_PATCH_NOT_FOUND', { patchPath: path }),
     Project.getPatchByPath(R.__, project)
   )(path)
 );
@@ -944,7 +935,8 @@ const checkEntryPatchIsNative = def(
   patch =>
     R.ifElse(
       isPatchNotImplementedInXod,
-      err(CONST.ERROR.CPP_AS_ENTRY_POINT),
+      () =>
+        fail('CPP_AS_ENTRY_POINT', { patchPath: Patch.getPatchPath(patch) }),
       Either.of
     )(patch)
 );
@@ -954,7 +946,10 @@ const checkEntryPatchIsNotAbstract = def(
   patch =>
     R.ifElse(
       Patch.isAbstractPatch,
-      err(CONST.ERROR.ABSTRACT_AS_ENTRY_POINT),
+      () =>
+        fail('ABSTRACT_AS_ENTRY_POINT', {
+          patchPath: Patch.getPatchPath(patch),
+        }),
       Either.of
     )(patch)
 );
@@ -1024,11 +1019,9 @@ export default def(
           R.chain(flattenProject(project, path)),
           R.chain(checkEntryPatchIsNative),
           R.chain(checkEntryPatchIsNotAbstract),
-          errOnNothing(
-            formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-              patchPath: path,
-            })
-          ),
+          failOnNothing('ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH', {
+            patchPath: path,
+          }),
           Project.getPatchByPath(path)
         )(project)
       ),

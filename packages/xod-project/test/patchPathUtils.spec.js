@@ -213,8 +213,11 @@ describe('PatchPathUtils', () => {
         PatchPathUtils.validatePath('@/patch_name_underscored').isLeft
       );
 
-      Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err1);
-      Helper.expectEitherError(CONST.ERROR.PATH_INVALID, err2);
+      Helper.expectEitherError('INVALID_PATCH_PATH {"patchPath":""}', err1);
+      Helper.expectEitherError(
+        'INVALID_PATCH_PATH {"patchPath":"dots.in.names"}',
+        err2
+      );
     });
     it('should be Either.Right for valid paths', () => {
       assert.isTrue(PatchPathUtils.validatePath('@/patch-name').isRight);

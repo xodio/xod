@@ -100,3 +100,4 @@ export * from './patchPathUtils';
 export * from './versionUtils';
 export * from './xodball';
 export * from './typeDeduction';
+export { default as messages } from './messages';

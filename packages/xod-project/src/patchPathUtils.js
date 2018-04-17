@@ -1,7 +1,7 @@
 import * as R from 'ramda';
+import { failOnFalse } from 'xod-func-tools';
 
 import { def } from './types';
-import * as Tools from './func-tools';
 import * as CONST from './constants';
 import {
   isPathLocal,
@@ -48,10 +48,8 @@ export const getLocalPath = baseName => `@/${baseName}`;
  * @param {string} path - string to check
  * @returns {Either<Error|string>} error or valid path
  */
-export const validatePath = Tools.errOnFalse(
-  CONST.ERROR.PATH_INVALID,
-  isValidPatchPath
-);
+export const validatePath = patchPath =>
+  failOnFalse('INVALID_PATCH_PATH', { patchPath }, isValidPatchPath)(patchPath);
 
 /**
  * @function getBaseName

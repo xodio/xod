@@ -21,7 +21,8 @@ import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
 import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
-import composeMessage from '../../messages/composeMessage';
+
+import formatErrorMessage from '../formatErrorMessage';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,11 +44,7 @@ export default class App extends React.Component {
       foldEither(
         R.compose(
           this.props.actions.addError,
-          R.when(R.is(Error), err => {
-            const title = err.title || err.message;
-            const message = err.title ? err.message : null;
-            return composeMessage(title, message);
-          })
+          R.when(R.is(Error), formatErrorMessage)
         ),
         this.props.actions.showCode
       ),

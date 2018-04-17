@@ -4,12 +4,10 @@ import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 
 import { addMissingOptionalProjectFields } from '../src/optionalFieldsUtils';
-import * as CONST from '../src/constants';
 import * as Node from '../src/node';
 import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
-import { formatString } from '../src/utils';
 import { BUILT_IN_PATCH_PATHS } from '../src/builtInPatches';
 
 import * as Helper from './helpers';
@@ -115,9 +113,7 @@ describe('Project', () => {
         Project.getPatchByPathUnsafe('does/not/exist', emptyProject);
       expect(fn).to.throw(
         Error,
-        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-          patchPath: 'does/not/exist',
-        })
+        `Can't find the patch in the project with specified path: "does/not/exist"`
       );
     });
     it('should throw error if there is no patch with such path', () => {
@@ -129,9 +125,7 @@ describe('Project', () => {
       const fn = () => Project.getPatchByPathUnsafe('@/two', project);
       expect(fn).to.throw(
         Error,
-        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-          patchPath: '@/two',
-        })
+        `Can't find the patch in the project with specified path: "@/two"`
       );
     });
     it('should return Patch if project have a patch', () => {
@@ -265,7 +259,10 @@ describe('Project', () => {
         project
       );
 
-      Helper.expectEitherError(CONST.ERROR.PATCH_REBASING_BUILT_IN, newProject);
+      Helper.expectEitherError(
+        'CANT_REBASE_PATCH__BUILT_IN_PATCH {"oldPath":"xod/patch-nodes/input-boolean"}',
+        newProject
+      );
     });
     it('should return Either.Left if patch is not in the project', () => {
       const newProject = Project.validatePatchRebase(
@@ -275,9 +272,7 @@ describe('Project', () => {
       );
 
       Helper.expectEitherError(
-        formatString(CONST.ERROR.PATCH_NOT_FOUND_BY_PATH, {
-          patchPath: '@/patch',
-        }),
+        'CANT_REBASE_PATCH__PATCH_NOT_FOUND_BY_PATH {"oldPath":"@/patch","newPath":"@/test"}',
         newProject
       );
     });
@@ -291,7 +286,10 @@ describe('Project', () => {
         project
       );
 
-      Helper.expectEitherError(CONST.ERROR.PATCH_PATH_OCCUPIED, newProject);
+      Helper.expectEitherError(
+        'CANT_REBASE_PATCH__OCCUPIED_PATH {"oldPath":"@/patch","newPath":"@/test"}',
+        newProject
+      );
     });
     it('should return Either.Right with Project', () => {
       const patch = {};
@@ -348,13 +346,16 @@ describe('Project', () => {
         emptyProject
       );
       Helper.expectEitherError(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, { type: '@/test' }),
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/test","patchPath":"@/default-patch-path","path":["@/default-patch-path"]}',
         result
       );
     });
     it('should be Either.Left for non-existent pins', () => {
       const result = Project.validatePatchContents(fullPatch, smallProject);
-      Helper.expectEitherError(CONST.ERROR.PINS_NOT_FOUND, result);
+      Helper.expectEitherError(
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"in","patchPath":"@/default-patch-path","path":["@/default-patch-path"]}',
+        result
+      );
     });
     it('should be Either.Right for empty patch', () => {
       const newPatch = Helper.defaultizePatch({ path: '@/test2' });
@@ -460,7 +461,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        `Can't find the Node "a" in the patch with path "@/test"`,
+        `DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"a","patchPath":"@/test","path":["@/test"]}`,
         result
       );
     });
@@ -490,7 +491,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        `Can't find the Node "b" in the patch with path "@/test"`,
+        'DEAD_REFERENCE__NODE_NOT_FOUND {"nodeId":"b","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -523,7 +524,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        "Specified node types haven't required pins for creating links",
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"a","pinKey":"out2","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -556,7 +557,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        "Specified node types haven't required pins for creating links",
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"b","pinKey":"in2","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -589,7 +590,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'Patch with type "test/nodes/not-exists" is not found in the project',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -622,7 +623,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        'Patch with type "test/nodes/not-exists" is not found in the project',
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"test/nodes/not-exists","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -656,7 +657,7 @@ describe('Project', () => {
 
       const result = Project.validateLinkPins(link, patch, project, {});
       Helper.expectEitherError(
-        '@/test: type pulse can’t cast to number directly.',
+        'INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY {"fromType":"pulse","toType":"number","patchPath":"@/test","path":["@/test"]}',
         result
       );
     });
@@ -800,9 +801,7 @@ describe('Project', () => {
       );
       const res = Project.assocPatchList(invalidPatches, emptyProject);
       Helper.expectEitherError(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
-          type: 'xod/test/not-existent-one',
-        }),
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/test/not-existent-one","patchPath":"@/wrong","path":["@/wrong"]}',
         res
       );
     });
@@ -1187,19 +1186,14 @@ describe('Project', () => {
       './fixtures/broken-project.xodball'
     );
     const project = addMissingOptionalProjectFields(brokenProject);
-    const unfoldLeft = e => Either.either(R.identity, R.always(null), e);
     const unfoldRight = e => Either.either(R.always(null), R.identity, e);
 
     it('returns Either Error about non-existing patch in the project', () => {
       const res = Project.validateProject(project);
-      const err = new Error(
-        formatString(CONST.ERROR.TYPE_NOT_FOUND, {
-          type: '@/not-existing-patch',
-        })
+      Helper.expectEitherError(
+        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"@/not-existing-patch","patchPath":"@/main","path":["@/main"]}',
+        res
       );
-
-      assert.equal(res.isLeft, true);
-      assert.strictEqual(unfoldLeft(res).message, err.message);
     });
     it('returns Either Error about missing pins', () => {
       const newPatch = Helper.defaultizePatch({});
@@ -1209,10 +1203,10 @@ describe('Project', () => {
         project
       );
       const res = Project.validateProject(projectWithNotExistingPatch);
-      const err = new Error(CONST.ERROR.PINS_NOT_FOUND);
-
-      assert.equal(res.isLeft, true);
-      assert.strictEqual(unfoldLeft(res).message, err.message);
+      Helper.expectEitherError(
+        'DEAD_REFERENCE__PINS_NOT_FOUND {"nodeId":"brokenNodeInLinks","pinKey":"Hkp4rion-","patchPath":"@/main","path":["@/main"]}',
+        res
+      );
     });
     it('returns Either Project for valid empty project', () => {
       const validProject = Helper.defaultizeProject({});
