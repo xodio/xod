@@ -31,6 +31,18 @@ class SnackBarMessage extends React.Component {
     this.props.onCloseMessage(this.props.message.id);
   }
 
+  getMessageTrace() {
+    const { message } = this.props;
+    const trace = message.payload.trace;
+    if (!trace || trace.length === 0) return null;
+
+    return (
+      <span className="trace">
+        {R.pipe(R.join(' → '), R.concat(R.__, ':'))(trace)}
+      </span>
+    );
+  }
+
   getMessageContent() {
     const { message, onClickMessageButton } = this.props;
 
@@ -43,6 +55,7 @@ class SnackBarMessage extends React.Component {
     return [
       <div className="message-text" key="text">
         <span className="title">{message.payload.title}</span>
+        {this.getMessageTrace()}
         {message.payload.note}
       </div>,
       <div className="message-buttons" key="buttons">

@@ -16,70 +16,70 @@ export default {
   }),
 
   // Generics, Abstracts and etc
-  ALL_TYPES_MUST_BE_RESOLVED: ({ patchPath, currentPatchPath, path }) => ({
+  ALL_TYPES_MUST_BE_RESOLVED: ({ patchPath, currentPatchPath, trace }) => ({
     title: 'Project contains unresolved abstract patches',
     note: `Patch "${currentPatchPath}" contains an Abstract Node "${patchPath}" that can't be resolved`,
-    path,
+    trace,
   }),
-  GENERIC_TERMINALS_REQUIRED: ({ path }) => ({
+  GENERIC_TERMINALS_REQUIRED: ({ trace }) => ({
     title: 'Invalid abstract patch',
     note: 'At least one generic terminal is required',
-    path,
+    trace,
   }),
-  ORPHAN_GENERIC_OUTPUTS: ({ path, types }) => ({
+  ORPHAN_GENERIC_OUTPUTS: ({ trace, types }) => ({
     title: 'Invalid abstract patch',
     note: `For each generic output there has to be at least one generic input of the same type. Create ${types
       .map(x => `input-${x}`)
       .join(', ')}`,
-    path,
+    trace,
   }),
-  NONSEQUENTIAL_GENERIC_TERMINALS: ({ path, types }) => ({
+  NONSEQUENTIAL_GENERIC_TERMINALS: ({ trace, types }) => ({
     title: 'Invalid abstract patch',
     note: `Generic inputs should be employed sequentially. Use ${types.join(
       ', '
     )}`,
-    path,
+    trace,
   }),
 
   // Variadics
-  NO_VARIADIC_MARKERS: ({ path }) => ({
+  NO_VARIADIC_MARKERS: ({ trace }) => ({
     title: "Can't compute variadic pins",
     note: `Patch has no variadic markers.`,
-    path,
+    trace,
   }),
-  TOO_MANY_VARIADIC_MARKERS: ({ path }) => ({
+  TOO_MANY_VARIADIC_MARKERS: ({ trace }) => ({
     title: 'Invalid variadic patch',
     note: `Patch has more than one variadic-* marker`,
-    path,
+    trace,
   }),
   NOT_ENOUGH_VARIADIC_INPUTS: ({
-    path,
+    trace,
     arityStep,
     outputCount,
     minInputs,
   }) => ({
     title: 'Invalid variadic patch',
     note: `A variadic-${arityStep} patch with ${outputCount} outputs should have at least ${minInputs} inputs`,
-    path,
+    trace,
   }),
-  WRONG_VARIADIC_PIN_TYPES: ({ inputPinLabels, outputPinLabels, path }) => ({
+  WRONG_VARIADIC_PIN_TYPES: ({ inputPinLabels, outputPinLabels, trace }) => ({
     title: 'Invalid variadic patch',
     note: `Types of inputs ${inputPinLabels.join(
       ', '
     )} should match the types of outputs ${outputPinLabels.join(', ')}`,
-    path,
+    trace,
   }),
-  VARIADIC_HAS_NO_OUTPUTS: ({ path }) => ({
+  VARIADIC_HAS_NO_OUTPUTS: ({ trace }) => ({
     title: 'Invalid variadic patch',
     note: `A variadic patch should have at least one output`,
-    path,
+    trace,
   }),
 
   // Transpile
-  IMPLEMENTATION_NOT_FOUND: ({ patchPath, path }) => ({
+  IMPLEMENTATION_NOT_FOUND: ({ patchPath, trace }) => ({
     title: 'No implementation found in leaf patch',
     note: `No implementation for ${patchPath} found.`,
-    path,
+    trace,
   }),
   CPP_AS_ENTRY_POINT: ({ patchPath }) => ({
     title: "Can't transpile selected Patch",
@@ -99,51 +99,51 @@ export default {
   }),
 
   // Project validation
-  LINK_INPUT_NODE_NOT_FOUND: ({ path }) => ({
+  LINK_INPUT_NODE_NOT_FOUND: ({ trace }) => ({
     title: 'Invalid link',
     note: 'Input node of the link does not exist in this patch',
-    path,
+    trace,
   }),
-  LINK_OUTPUT_NODE_NOT_FOUND: ({ path }) => ({
+  LINK_OUTPUT_NODE_NOT_FOUND: ({ trace }) => ({
     title: 'Invalid link',
     note: 'Output node of the link does not exist in this patch',
-    path,
+    trace,
   }),
   INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY: ({
     fromType,
     toType,
-    path,
+    trace,
   }) => ({
     title: 'Program contains bad links',
     note: `Type ${fromType} can’t cast to ${toType} directly.`,
     solution:
       'Replace bad links with a nodes, that are represent a logic how you want to cast these types',
-    path,
+    trace,
   }),
-  INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT: ({ types, path }) => ({
+  INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT: ({ types, trace }) => ({
     title: 'Program contains bad links',
     note: `Link causes type conflict between ${types.join(', ')}`,
-    path,
+    trace,
     // TODO: Add a solution
   }),
-  DEAD_REFERENCE__PINS_NOT_FOUND: ({ pinKey, patchPath, path }) => ({
+  DEAD_REFERENCE__PINS_NOT_FOUND: ({ pinKey, patchPath, trace }) => ({
     title: 'Dead reference error',
     note: `Can't find the Pin "${pinKey}" in the patch with path "${patchPath}"`,
-    path,
+    trace,
   }),
-  DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND: ({ nodeType, path }) => ({
+  DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND: ({ nodeType, trace }) => ({
     title: 'Dead reference error',
     note: `Patch "${nodeType}" is not found in the project`,
-    path,
+    trace,
   }),
-  DEAD_REFERENCE__NODE_NOT_FOUND: ({ nodeId, patchPath, path }) => ({
+  DEAD_REFERENCE__NODE_NOT_FOUND: ({ nodeId, patchPath, trace }) => ({
     title: 'Dead reference error',
     note: `Can't find the Node "${nodeId}" in the patch with path "${patchPath}"`,
-    path,
+    trace,
   }),
   LOOPS_DETECTED: () => ({
     title: 'Loops detected',
-    note: 'The program has a cycle path',
+    note: 'The program has a cycle',
     solution: 'Use xod/core/defer node to break the cycle',
   }),
 

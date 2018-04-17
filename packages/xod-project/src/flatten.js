@@ -705,7 +705,7 @@ const updateLinkNodeIds = R.curry((leafPaths, prefix, patch, link) => {
 // =============================================================================
 //
 // Flow of general flattening function calls:
-//     flatten -> validateProject -> getPatchByPath (or Error) ->
+//     flatten -> validatePatchReqursively -> getPatchByPath (or Error) ->
 //  -> flattenProject -> extractLeafPatches -> convertProject ->
 //  -> convertPatch -> extractPatches
 //
@@ -1026,6 +1026,6 @@ export default def(
         )(project)
       ),
       R.map(expandVariadicNodes(path)),
-      Project.validateProject
+      Project.validatePatchReqursively(path)
     )(inputProject)
 );

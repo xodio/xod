@@ -372,7 +372,7 @@ const transformProjectWithImpls = def(
         () => opts.debug,
         R.chain(Project.updatePatch(path, Project.removeDebugNodes))
       ),
-      Project.validateProject
+      Project.validatePatchReqursively(path)
     )(project)
 );
 

@@ -11,6 +11,7 @@ import {
   fail,
   failOnFalse,
   failOnNothing,
+  prependTraceToError,
 } from 'xod-func-tools';
 import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
@@ -414,7 +415,7 @@ const checkPinsCompatibility = def(
                 fromType: outputPinType,
                 toType: inputPinType,
                 patchPath,
-                path: [patchPath],
+                trace: [patchPath],
               },
               Utils.canCastTypes
             )(outputPinType, inputPinType),
@@ -432,7 +433,7 @@ const checkPinsCompatibility = def(
             conflictingTypes =>
               fail('INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT', {
                 types: conflictingTypes,
-                path: [patchPath],
+                trace: [patchPath],
               }),
             noop
           ),
@@ -468,7 +469,7 @@ const checkLinkPin = def(
           nodeId,
           pinKey,
           patchPath,
-          path: [patchPath],
+          trace: [patchPath],
         }),
         R.chain(([justPatch, justNode]) =>
           R.ifElse(
@@ -491,7 +492,7 @@ const checkLinkPin = def(
       failOnNothing('DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND', {
         nodeType,
         patchPath,
-        path: [patchPath],
+        trace: [patchPath],
       })(mPatch);
 
     // :: Maybe Node -> Either Error Node
@@ -499,7 +500,7 @@ const checkLinkPin = def(
       failOnNothing('DEAD_REFERENCE__NODE_NOT_FOUND', {
         nodeId,
         patchPath,
-        path: [patchPath],
+        trace: [patchPath],
       })(mNode);
 
     return R.compose(
@@ -573,7 +574,7 @@ export const validatePatchContents = def(
               failOnNothing('DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND', {
                 nodeType: type,
                 patchPath,
-                path: [patchPath],
+                trace: [patchPath],
               }),
               getPatchByPath(R.__, project)
             )(type),
@@ -1029,3 +1030,24 @@ export const validateProject = project =>
  * @returns {Boolean}
  */
 export const isValidProject = R.compose(Either.isRight, validateProject);
+
+export const validatePatchReqursively = def(
+  'validatePatchReqursively :: PatchPath -> Project -> Either Error Project',
+  (patchPath, project) =>
+    R.compose(
+      R.map(R.always(project)),
+      R.chain(
+        R.compose(
+          prependTraceToError(patchPath),
+          R.sequence(Either.of),
+          R.map(
+            R.pipe(Node.getNodeType, validatePatchReqursively(R.__, project))
+          ),
+          Patch.listNodes
+        )
+      ),
+      R.chain(validatePatchContents(R.__, project)),
+      failOnNothing('ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH', { patchPath }),
+      getPatchByPath
+    )(patchPath, project)
+);

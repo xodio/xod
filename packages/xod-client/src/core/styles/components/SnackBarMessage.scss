@@ -32,6 +32,9 @@
     line-height: 1.4em;
     padding-right: 3em;
     opacity: 0.9;
+
+    @include select-text;
+    * { @include select-text; }
   }
   .message-buttons {
     width: 35%;
@@ -52,6 +55,14 @@
     font-size: $font-size-l;
     font-weight: 400;
     margin-bottom: .5em;
+  }
+
+  .trace {
+    display: block;
+    color: $chalk;
+    font-family: $font-family-normal;
+    font-size: $font-size-m;
+    margin-bottom: .25em;
   }
 
   &.persistent {
