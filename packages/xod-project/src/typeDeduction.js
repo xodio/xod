@@ -459,6 +459,30 @@ const getReplacementsForAbstractNodes = R.curry(
     )(deduced)
 );
 
+const verifyThatAllNodesAreResolved = R.curry((project, patch) => {
+  const unresolvedNodeTypes = R.compose(
+    R.uniq,
+    R.map(Node.getNodeType),
+    R.filter(
+      R.compose(
+        R.any(Pin.isGenericPin),
+        Patch.listPins,
+        Project.getPatchByNodeIdUnsafe(R.__, patch, project),
+        Node.getNodeId
+      )
+    ),
+    Patch.listNodes
+  )(patch);
+
+  if (!R.isEmpty(unresolvedNodeTypes)) {
+    return fail('UNRESOLVED_ABSTRACT_NODES_LEFT', {
+      unresolvedNodeTypes,
+    });
+  }
+
+  return Either.of(patch);
+});
+
 export const autoresolveTypes = R.curry((entryPatchPath, project) =>
   R.compose(
     R.chain(flatProject => {
@@ -469,6 +493,7 @@ export const autoresolveTypes = R.curry((entryPatchPath, project) =>
 
       return R.compose(
         R.chain(Project.assocPatch(entryPatchPath, R.__, project)),
+        R.chain(verifyThatAllNodesAreResolved(project)),
         // :: Either Error Patch
         R.map(relink(entryPatch)),
         // :: Either Error [(NodeId, PatchPath, Map PinKey Pinkey)]
