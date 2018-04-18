@@ -187,7 +187,10 @@ const clearSelection = R.flip(R.merge)({
 });
 
 // focuses on a selection of a given tab
-export const selectionLens = R.lensProp('selection');
+export const selectionLens = R.lens(
+  R.propOr([], 'selection'),
+  R.assoc('selection')
+);
 
 // focuses on a linking pin of a given tab
 export const linkingPinLens = R.lensProp('linkingPin');
