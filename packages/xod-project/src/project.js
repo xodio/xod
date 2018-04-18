@@ -1029,6 +1029,49 @@ export const omitDeadLinksByNodeId = def(
     )
 );
 
+// Changes type of a node and preserves links connected to it by changing pin keys.
+// Assumes that node exists, and new type is compatible with the current one.
+export const changeNodeTypeUnsafe = def(
+  'changeNodeTypeUnsafe :: PatchPath -> NodeId -> PatchPath -> Project -> Project',
+  (patchPath, nodeId, newNodeType, project) => {
+    const patch = getPatchByPathUnsafe(patchPath, project);
+    const node = Patch.getNodeByIdUnsafe(nodeId, patch);
+    const patchFrom = R.compose(
+      getPatchByPathUnsafe(R.__, project),
+      Node.getNodeType
+    )(node);
+    const patchTo = getPatchByPathUnsafe(newNodeType, project);
+
+    const mapOfCorrespondingPinKeys = Patch.getMapOfCorrespondingPinKeys(
+      node,
+      patchFrom,
+      patchTo
+    );
+
+    const updatedLinks = Patch.getUpdatedLinksForNodeWithChangedType(
+      nodeId,
+      oldPinKey => mapOfCorrespondingPinKeys[oldPinKey] || oldPinKey,
+      patch
+    );
+
+    // TODO: drop bound values only in pins that changed their type
+    const updatedNode = R.compose(
+      Node.dropAllBoundValues,
+      Node.setNodeType(newNodeType)
+    )(node);
+
+    return R.over(
+      lensPatch(patchPath),
+      R.compose(
+        explodeEither,
+        Patch.upsertLinks(updatedLinks),
+        Patch.assocNode(updatedNode)
+      ),
+      project
+    );
+  }
+);
+
 /**
  * Returns a list of paths of all patches that are used
  * by a patch with a given path(directly or indirectly)

@@ -1396,11 +1396,66 @@ export const getPatchSignature = def(
   )
 );
 
+// assumes that patchFrom and patchTo are compatible
+export const getMapOfCorrespondingPinKeys = def(
+  'getMapOfCorrespondingPinKeys :: Node -> Patch -> Patch -> StrMap PinKey',
+  (nodeFrom, patchFrom, patchTo) =>
+    R.compose(
+      R.fromPairs,
+      R.apply(R.zip),
+      R.map(
+        R.compose(
+          R.map(Pin.getPinKey),
+          R.sortWith([
+            R.ascend(Pin.getPinDirection),
+            R.ascend(Pin.getPinOrder),
+          ]),
+          listPinsIncludingVariadics(nodeFrom)
+        )
+      ),
+      R.pair
+    )(patchFrom, patchTo)
+);
+
+const inputPinKeyLens = R.lens(
+  Link.getLinkInputPinKey,
+  Link.setLinkInputPinKey
+);
+const outputPinKeyLens = R.lens(
+  Link.getLinkOutputPinKey,
+  Link.setLinkOutputPinKey
+);
+
+// for internal use inside xod-project
+export const getUpdatedLinksForNodeWithChangedType = (
+  nodeId,
+  getReplacementPinKey, // :: (PinKey -> PinKey)
+  patch
+) =>
+  R.compose(
+    R.map(
+      R.cond([
+        [
+          Link.isLinkInputNodeIdEquals(nodeId),
+          R.over(inputPinKeyLens, getReplacementPinKey),
+        ],
+        [
+          Link.isLinkOutputNodeIdEquals(nodeId),
+          R.over(outputPinKeyLens, getReplacementPinKey),
+        ],
+        [R.T, R.identity],
+      ])
+    ),
+    listLinksByNode(nodeId)
+  )(patch);
+
 // checks that a concrete patch conforms to concrete patch specification
 export const checkSpecializationMatchesAbstraction = def(
   'checkSpecializationMatchesAbstraction :: Patch -> Patch -> Either Error Patch',
   (abstractPatch, specializationPatch) => {
     if (isAbstractPatch(specializationPatch)) {
+      // TODO: For now, this and other messages are not(yet) shown to the end user.
+      // In the future, we will most likely want to add additional metadata here.
       return fail('SPECIALIZATION_PATCH_CANT_BE_ABSTRACT', {});
     }
 

@@ -1559,4 +1559,25 @@ describe('Project', () => {
       assert.sameMembers(actual, expected);
     });
   });
+
+  describe('changeNodeTypeUnsafe', () => {
+    it('changes node type even if some links will become invalid', () => {
+      const project = Helper.loadXodball('./fixtures/change-node-type.xodball');
+      const expected = Helper.loadXodball(
+        './fixtures/change-node-type.expected.xodball'
+      );
+
+      const actual = Project.changeNodeTypeUnsafe(
+        '@/main',
+        'changeMyType',
+        '@/foo(boolean,number)',
+        project
+      );
+
+      assert.deepEqual(
+        Project.getPatchByPathUnsafe('@/main', actual),
+        Project.getPatchByPathUnsafe('@/main', expected)
+      );
+    });
+  });
 });

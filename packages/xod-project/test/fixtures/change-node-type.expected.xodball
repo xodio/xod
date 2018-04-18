@@ -1,0 +1,245 @@
+{
+  "patches": {
+    "@/foo": {
+      "nodes": {
+        "Bk8xhyB2z": {
+          "id": "Bk8xhyB2z",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "BysZ31H3G": {
+          "id": "BysZ31H3G",
+          "position": {
+            "x": 340,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "SJLZ3kSnf": {
+          "id": "SJLZ3kSnf",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "SJhxnkB2G": {
+          "id": "SJhxnkB2G",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "r17WnkBnf": {
+          "id": "r17WnkBnf",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t2"
+        }
+      },
+      "path": "@/foo"
+    },
+    "@/foo(boolean,number)": {
+      "attachments": [
+        {
+          "content": "// dummy implementation",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "B1gLinyS3G": {
+          "id": "B1gLinyS3G",
+          "position": {
+            "x": 101,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "BkLshyrnG": {
+          "id": "BkLshyrnG",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "H15inJr2f": {
+          "id": "H15inJr2f",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "S17Ui3JS2f": {
+          "id": "S17Ui3JS2f",
+          "position": {
+            "x": 305,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SkWIon1H2f": {
+          "id": "SkWIon1H2f",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        }
+      },
+      "path": "@/foo(boolean,number)"
+    },
+    "@/foo(boolean,string)": {
+      "attachments": [
+        {
+          "content": "// dummy implementation",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "B1cNn1ShG": {
+          "id": "B1cNn1ShG",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "BJUB2yBhf": {
+          "id": "BJUB2yBhf",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        },
+        "Hk-vhJH2G": {
+          "id": "Hk-vhJH2G",
+          "position": {
+            "x": 306,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Hy_U3Jrnf": {
+          "id": "Hy_U3Jrnf",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "S1yHnyH2z": {
+          "id": "S1yHnyH2z",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        }
+      },
+      "path": "@/foo(boolean,string)"
+    },
+    "@/main": {
+      "links": {
+        "BJBh3krnz": {
+          "id": "BJBh3krnz",
+          "input": {
+            "nodeId": "changeMyType",
+            "pinKey": "H15inJr2f"
+          },
+          "output": {
+            "nodeId": "ryQ231S3f",
+            "pinKey": "__out__"
+          }
+        },
+        "H1H_21H2M": {
+          "id": "H1H_21H2M",
+          "input": {
+            "nodeId": "changeMyType",
+            "pinKey": "B1gLinyS3G"
+          },
+          "output": {
+            "nodeId": "B1fu2kBhM",
+            "pinKey": "__out__"
+          }
+        },
+        "H1Q6hkS3M": {
+          "id": "H1Q6hkS3M",
+          "input": {
+            "nodeId": "changeMyType",
+            "pinKey": "BkLshyrnG"
+          },
+          "output": {
+            "nodeId": "HJbph1Hhf",
+            "pinKey": "__out__"
+          }
+        },
+        "ryn331BhM": {
+          "id": "ryn331BhM",
+          "input": {
+            "nodeId": "SkK321ShM",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "changeMyType",
+            "pinKey": "SkWIon1H2f"
+          }
+        }
+      },
+      "nodes": {
+        "changeMyType": {
+          "id": "changeMyType",
+          "position": {
+            "x": -170,
+            "y": 0
+          },
+          "type": "@/foo(boolean,number)"
+        },
+        "B1fu2kBhM": {
+          "id": "B1fu2kBhM",
+          "position": {
+            "x": -136,
+            "y": -204
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "HJbph1Hhf": {
+          "id": "HJbph1Hhf",
+          "position": {
+            "x": -204,
+            "y": -204
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SkK321ShM": {
+          "id": "SkK321ShM",
+          "position": {
+            "x": -170,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "ryQ231S3f": {
+          "id": "ryQ231S3f",
+          "position": {
+            "x": -68,
+            "y": -204
+          },
+          "type": "xod/patch-nodes/input-string"
+        }
+      },
+      "path": "@/main"
+    }
+  },
+  "name": ""
+}

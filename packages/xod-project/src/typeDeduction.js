@@ -299,31 +299,6 @@ const getPinPath = R.converge(R.pair, [
   R.pipe(Pin.getPinOrder, R.toString),
 ]);
 
-// assumes that patchFrom and patchTo are compatible
-const getMapOfCorrespondingPinKeys = R.curry((nodeFrom, patchFrom, patchTo) =>
-  R.compose(
-    R.fromPairs,
-    R.apply(R.zip),
-    R.map(
-      R.compose(
-        R.map(Pin.getPinKey),
-        R.sortWith([R.ascend(Pin.getPinDirection), R.ascend(Pin.getPinOrder)]),
-        Patch.listPinsIncludingVariadics(nodeFrom)
-      )
-    ),
-    R.pair
-  )(patchFrom, patchTo)
-);
-
-const inputPinKeyLens = R.lens(
-  Link.getLinkInputPinKey,
-  Link.setLinkInputPinKey
-);
-const outputPinKeyLens = R.lens(
-  Link.getLinkOutputPinKey,
-  Link.setLinkOutputPinKey
-);
-
 const relink = R.curry((patch, replacements) =>
   R.reduce(
     (resultingPatch, [nodeId, newType, mapOfCorrespondingPinKeys]) => {
@@ -350,22 +325,11 @@ const relink = R.curry((patch, replacements) =>
         Patch.getNodeByIdUnsafe(nodeId)
       )(resultingPatch);
 
-      const updatedLinks = R.compose(
-        R.map(
-          R.cond([
-            [
-              Link.isLinkInputNodeIdEquals(nodeId),
-              R.over(inputPinKeyLens, getReplacementPinKey),
-            ],
-            [
-              Link.isLinkOutputNodeIdEquals(nodeId),
-              R.over(outputPinKeyLens, getReplacementPinKey),
-            ],
-            [R.T, R.identity],
-          ])
-        ),
-        Patch.listLinksByNode(nodeId)
-      )(resultingPatch);
+      const updatedLinks = Patch.getUpdatedLinksForNodeWithChangedType(
+        nodeId,
+        getReplacementPinKey,
+        resultingPatch
+      );
 
       return R.compose(
         explodeEither,
@@ -448,7 +412,7 @@ const getReplacementsForAbstractNodes = R.curry(
         return Either.of([
           abstractNodeId,
           Patch.getPatchPath(specialization),
-          getMapOfCorrespondingPinKeys(
+          Patch.getMapOfCorrespondingPinKeys(
             abstaractNode,
             abstractPatch,
             specialization
