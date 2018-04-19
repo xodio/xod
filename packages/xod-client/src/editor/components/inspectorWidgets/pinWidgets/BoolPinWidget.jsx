@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ensureLiteral } from 'xod-project';
 
 import PinWidget from './PinWidget';
 
 function BoolWidget(props) {
-  const onChange = event => {
-    const boolValue = JSON.parse(event.target.value);
-    props.onChange(boolValue);
-  };
+  const onChange = event => props.onChange(event.target.value);
 
   return (
     <PinWidget
@@ -23,13 +21,13 @@ function BoolWidget(props) {
       <select
         className="inspectorSelectInput"
         id={props.elementId}
-        value={JSON.stringify(props.value)}
+        value={ensureLiteral(props.value)}
         onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
       >
-        <option value="false">false</option>
-        <option value="true">true</option>
+        <option value="False">False</option>
+        <option value="True">True</option>
       </select>
     </PinWidget>
   );

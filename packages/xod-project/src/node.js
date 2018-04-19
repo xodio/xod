@@ -32,7 +32,7 @@ import {
  *
  * And it is never can be {@link Null} or {@link undefined}
  *
- * @typedef {(string|number|boolean|Pulse)} PinValue
+ * @typedef {(string|number|boolean|Pulse)} DataValue
  */
 
 // =============================================================================
@@ -248,7 +248,7 @@ export const isSpecializationNode = def(
  *
  * @function getAllBoundValues
  * @param {Node} node
- * @returns {Object.<PinKey, PinValue>}
+ * @returns {Object.<PinKey, DataValue>}
  */
 export const getAllBoundValues = def(
   'getAllBoundValues :: Node -> Map PinKey DataValue',
@@ -263,7 +263,7 @@ const pathToBoundValue = pinKey => ['boundValues', pinKey];
  * @function getBoundValue
  * @param {string} key
  * @param {Node} node
- * @returns {Maybe<PinValue>}
+ * @returns {Maybe<DataValue>}
  */
 export const getBoundValue = def(
   'getBoundValue :: PinKey -> Node -> Maybe DataValue',

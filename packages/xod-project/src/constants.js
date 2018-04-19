@@ -22,15 +22,21 @@ export const PIN_TYPE = {
   T3: 't3',
 };
 
+export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
+  NEVER: 'Never',
+  CONTINUOUSLY: 'Continuously',
+  ON_BOOT: 'On Boot',
+};
+
 export const DEFAULT_VALUE_OF_TYPE = {
-  [PIN_TYPE.STRING]: '',
-  [PIN_TYPE.NUMBER]: 0,
-  [PIN_TYPE.BOOLEAN]: false,
-  [PIN_TYPE.PULSE]: false,
-  [PIN_TYPE.DEAD]: 0,
-  [PIN_TYPE.T1]: 0,
-  [PIN_TYPE.T2]: 0,
-  [PIN_TYPE.T3]: 0,
+  [PIN_TYPE.STRING]: '""',
+  [PIN_TYPE.NUMBER]: '0',
+  [PIN_TYPE.BOOLEAN]: 'False',
+  [PIN_TYPE.PULSE]: INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER,
+  [PIN_TYPE.DEAD]: '',
+  [PIN_TYPE.T1]: '',
+  [PIN_TYPE.T2]: '',
+  [PIN_TYPE.T3]: '',
 };
 
 export const MAX_ARITY_STEP = 3;
@@ -87,12 +93,6 @@ export const STATIC_TYPES_COMPATIBILITY = {
   },
 };
 
-export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
-  NEVER: 'NEVER',
-  CONTINUOUSLY: 'CONTINUOUSLY',
-  ON_BOOT: 'ON_BOOT',
-};
-
 // node types that provide a constant value
 export const CONST_NODETYPES = {
   number: 'xod/core/constant-number',
@@ -103,6 +103,7 @@ export const CONST_NODETYPES = {
 // node types that provide a constant pulse,
 // once(on start) or continuously
 export const PULSE_CONST_NODETYPES = {
+  [INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER]: null, // Do not create Node for `Never`
   [INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]: 'xod/core/boot',
   [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
 };

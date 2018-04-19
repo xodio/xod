@@ -1,11 +1,16 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ensureLiteral } from 'xod-project';
 
 import PinWidget from './PinWidget';
 
 const NumberWidget = props => {
-  const onChange = R.compose(props.onChange, R.path(['target', 'value']));
+  const onChange = R.compose(
+    props.onChange,
+    ensureLiteral(props.dataType),
+    R.path(['target', 'value'])
+  );
 
   return (
     <PinWidget

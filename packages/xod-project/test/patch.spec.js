@@ -436,7 +436,7 @@ describe('Patch', () => {
         label: 'in',
         description: '',
         order: 0,
-        defaultValue: false,
+        defaultValue: 'False',
         isBindable: true,
       },
       out: {
@@ -447,7 +447,7 @@ describe('Patch', () => {
         label: 'out',
         description: '',
         order: 0,
-        defaultValue: false,
+        defaultValue: 'False',
         isBindable: false,
       },
     };
@@ -648,7 +648,7 @@ describe('Patch', () => {
           Patch.listPins
         )(testPatch);
 
-        assert.deepEqual({ inStr: '', outNum: 0 }, pinDefaultValues);
+        assert.deepEqual({ inStr: '""', outNum: '0' }, pinDefaultValues);
       });
     });
   });
@@ -801,7 +801,7 @@ describe('Patch', () => {
         'A',
         '',
         true,
-        0
+        '0'
       );
 
       assert.deepEqual([expectedPin], Patch.listPins(newPatch));
@@ -824,7 +824,7 @@ describe('Patch', () => {
         '',
         '',
         false,
-        ''
+        '""'
       );
       assert.deepEqual([expectedPinBeforeUpdate], Patch.listPins(patch));
 
@@ -843,7 +843,7 @@ describe('Patch', () => {
         'A',
         '',
         true,
-        0
+        '0'
       );
       assert.deepEqual([expectedPinAfterUpdate], Patch.listPins(newPatch));
     });
