@@ -54,6 +54,12 @@
     fill: $color-pin-fill;
   }
 
+  .generic-pin-marker {
+    fill: none;
+    stroke: $color-datatype-generic;
+    stroke-width: 2px;
+  }
+
   .linkingHighlight {
     display: none;
     fill: $color-highlight;

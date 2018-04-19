@@ -12,16 +12,51 @@ import {
   PIN_HIGHLIGHT_RADIUS,
 } from '../nodeLayout';
 
+/**
+ * An outline of half of the circle, that indicated that Pin is generic
+ * even it has a deduced type.
+ */
+// :: Number -> Number -> Boolean -> ReactElement
+const genericPinMarker = (pinCircleCenter, output) => {
+  // To avoid using complex paths we draw just a circle
+  // but draw only half of the outline by CSS.
+
+  // To do it with CSS we have to:
+  //  1. Calculate the length of the circle (circumference).
+  const circumference = Math.PI * PIN_RADIUS * 2;
+  //  2. Calculate distance beetween dashes
+  const dasharray = 0.5 * circumference;
+  //  3. And then set `dasharray` to draw a half of outline
+  //  4. And set `dashoffset` to draw another half (for output Pin)
+  return (
+    <circle
+      className="generic-pin-marker"
+      {...pinCircleCenter}
+      r={PIN_RADIUS}
+      style={{
+        strokeDashoffset: output ? dasharray : 0,
+        strokeDasharray: dasharray,
+      }}
+    />
+  );
+};
+
 const Pin = props => {
+  const isOutput = props.direction === PIN_DIRECTION.OUTPUT;
+
   const cls = classNames('Pin', {
     'is-selected': props.isSelected,
     'is-accepting-links': props.isAcceptingLinks,
     'is-connected': props.isConnected,
     'is-input': props.direction === PIN_DIRECTION.INPUT,
-    'is-output': props.direction === PIN_DIRECTION.OUTPUT,
+    'is-output': isOutput,
   });
 
-  const symbolClassNames = classNames('symbol', props.type, {
+  const deducedType = props.deducedType
+    ? foldEither(R.always('conflicting'), R.identity, props.deducedType)
+    : null;
+
+  const symbolClassNames = classNames('symbol', props.type, deducedType, {
     'is-connected': props.isConnected,
   });
 
@@ -59,17 +94,14 @@ const Pin = props => {
         {...pinCircleCenter}
         r={PIN_RADIUS}
       />
-      {props.deducedType && props.isConnected ? (
+      {deducedType && props.isConnected ? (
         <circle
-          className={classNames(
-            'symbol',
-            'is-connected',
-            foldEither(R.always('conflicting'), R.identity, props.deducedType)
-          )}
+          className={classNames('symbol', 'is-connected', deducedType)}
           {...pinCircleCenter}
           r={PIN_INNER_RADIUS}
         />
       ) : null}
+      {deducedType ? genericPinMarker(pinCircleCenter, isOutput) : null}
       {variadicDots}
     </g>
   );
