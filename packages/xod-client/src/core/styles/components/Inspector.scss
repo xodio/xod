@@ -10,10 +10,15 @@
     padding: 6px;
   }
 
-  ul, li {
+  ul {
     padding: 0;
-    margin: 0;
+    margin: $font-size-m 0;
     list-style: none;
+
+    li {
+      padding: 0;
+      margin: 0;
+    }
   }
 
   .inspectorTitle {
@@ -99,7 +104,6 @@
 
   &--not-bindable {
     text-align: center;
-    font-style: italic;
     user-select: none;
   }
 }
@@ -119,6 +123,7 @@
   background: url(../assets/icons/dropdown.svg) no-repeat top 4px right 4px;
   background-size: 16px 16px;
   width: 100%;
+  padding-right: 22px;
 
   option {
     background-color: $input-color-bg;
@@ -135,9 +140,14 @@
   line-height: 0;
   vertical-align: baseline;
 
+  input, select, textarea {
+    font-family: $font-family-condensed;
+    font-size: $font-size-m;
+  }
   label {
     line-height: $font-size-l;
     display: block;
+    color: $sidebar-color-subtitle;
   }
   &.HintWidget {
     display: block;
@@ -148,6 +158,35 @@
     text-align: center;
     padding: 10px;
     margin: 0;
+  }
+  &.NodeSpecializationWidget {
+    position: relative;
+
+    .nodeType { display: none; }
+
+    &.no-specializations {
+      .nodeType {
+        font-family: $font-family-condensed;
+        font-size: $font-size-m;
+
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        box-sizing: border-box;
+        padding: 6px 22px 6px 5px;
+        height: 100%;
+        width: 100%;
+
+        line-height: 1.4em;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      select:disabled { color: transparent; }
+    }
   }
 }
 
@@ -162,36 +201,33 @@
 
   label {
     float: left;
-    padding: 6px 4px 0 4px;
+    padding: 7px 4px 0 4px;
     // TODO: this could be dropped when all labels will be 4 chars max
-    max-width: 34px;
+    max-width: 38px;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    color: $sidebar-color-text;
   }
 
   .inspectorTextInput,
   .inspectorSelectInput {
     float: right;
-    width: 104px;
+    width: 120px;
+
+    font-family: $font-family-mono;
+    font-size: $font-size-m;
+    line-height: 1.2;
   }
 }
 
-.LabelWidget {
-  .inspectorTextInput {
-    width: 100%;
-  }
+.LabelWidget .inspectorTextInput {
+  width: 100%;
 }
-
-.DescriptionWidget {
-  label {
-    color: $sidebar-color-subtitle;
-  }
-
-  .inspectorTextInput {
-    font-family: $font-family-condensed;
-    min-width: 100%;
-    max-width: 100%;
-    width: 100%;
-    height: 8em;
-  }
+.DescriptionWidget .inspectorTextInput {
+  font-family: $font-family-condensed;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+  height: 8em;
 }

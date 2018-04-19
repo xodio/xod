@@ -1,21 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cls from 'classnames';
 
 const NodeSpecializationWidget = props => {
   const onChange = event => props.onChange(props.nodeId, event.target.value);
 
+  const hasSpecializations =
+    props.specializations && props.specializations.length > 0;
+
+  const specializations = hasSpecializations ? (
+    props.specializations.map(spec => (
+      <option key={spec} value={spec}>
+        {spec}
+      </option>
+    ))
+  ) : (
+    <option key={props.value} value={props.value}>
+      {props.value}
+    </option>
+  );
+
+  const classNames = cls('Widget', 'NodeSpecializationWidget', {
+    'no-specializations': !hasSpecializations,
+  });
+
   return (
-    <div className="Widget NodeSpecializationWidget">
+    <div className={classNames}>
+      <span className="nodeType">{props.value}</span>
       <select
         className="inspectorSelectInput"
         value={props.value}
         onChange={onChange}
+        title={props.value}
+        disabled={!hasSpecializations}
       >
-        {props.specializations.map(spec => (
-          <option key={spec.value} value={spec.value}>
-            {spec.label}
-          </option>
-        ))}
+        {specializations}
       </select>
     </div>
   );
@@ -24,12 +43,7 @@ const NodeSpecializationWidget = props => {
 /* eslint-disable react/no-unused-prop-types */
 NodeSpecializationWidget.propTypes = {
   nodeId: PropTypes.string.isRequired,
-  specializations: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
-    })
-  ),
+  specializations: PropTypes.arrayOf(PropTypes.string),
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };
