@@ -15,6 +15,15 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "description": "Use xod/core/gate instead",
+      "id": "BJD6wBGnG",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SJY1mYPT-",
       "position": {
         "x": 0,

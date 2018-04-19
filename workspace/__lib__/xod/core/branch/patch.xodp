@@ -1,0 +1,59 @@
+{
+  "description": "Routes an incoming pulse to either of outputs depending on condition",
+  "nodes": [
+    {
+      "description": "Input pulse",
+      "id": "HkDgIRdrv1W",
+      "label": "TRIG",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Value which defines the route for an input pulse",
+      "id": "S1OlUAuBD1-",
+      "label": "GATE",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundValues": {
+        "__in__": false
+      },
+      "description": "Pulses with `TRIG` when `GATE` is true",
+      "id": "SJUl8Aurv1W",
+      "label": "T",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundValues": {
+        "__in__": ""
+      },
+      "description": "Pulses with `TRIG` when `GATE` is false",
+      "id": "SyM2ATB-b",
+      "label": "F",
+      "position": {
+        "x": 138,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

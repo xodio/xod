@@ -434,6 +434,20 @@ template<typename T> size_t dump(List<T> xs, T* outBuff) {
     return buffEnd - outBuff;
 }
 
+/*
+ * Compares two lists.
+ */
+template<typename T> bool equal(List<T> lhs, List<T> rhs) {
+    auto lhsIt = lhs.iterate();
+    auto rhsIt = rhs.iterate();
+
+    for (; lhsIt && rhsIt; ++lhsIt, ++rhsIt) {
+        if (*lhsIt != *rhsIt) return false;
+    }
+
+    return !lhsIt && !rhsIt;
+}
+
 } // namespace xod
 
 #endif
@@ -667,9 +681,9 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
-// xod/core/gate implementation
+// xod/core/branch implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__gate {
+namespace xod__core__branch {
 
 struct State {
 };
@@ -773,7 +787,7 @@ void evaluate(Context ctx) {
     }
 }
 
-} // namespace xod__core__gate
+} // namespace xod__core__branch
 
 //-----------------------------------------------------------------------------
 // xod/core/digital_input implementation
@@ -1206,8 +1220,8 @@ xod__core__digital_input::Node node_5 = {
 
 constexpr Logic node_6_output_T = false;
 constexpr Logic node_6_output_F = false;
-xod__core__gate::Node node_6 = {
-    xod__core__gate::State(), // state default
+xod__core__branch::Node node_6 = {
+    xod__core__branch::State(), // state default
     node_6_output_T, // output T default
     node_6_output_F, // output F default
     false, // T dirty
@@ -1217,8 +1231,8 @@ xod__core__gate::Node node_6 = {
 
 constexpr Logic node_7_output_T = false;
 constexpr Logic node_7_output_F = false;
-xod__core__gate::Node node_7 = {
-    xod__core__gate::State(), // state default
+xod__core__branch::Node node_7 = {
+    xod__core__branch::State(), // state default
     node_7_output_T, // output T default
     node_7_output_F, // output F default
     false, // T dirty
@@ -1315,12 +1329,12 @@ void runTransaction() {
             node_7.isNodeDirty |= node_5.isOutputDirty_SIG;
         }
     }
-    { // xod__core__gate #6
+    { // xod__core__branch #6
         if (node_6.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(6);
 
-            xod__core__gate::ContextObject ctxObj;
+            xod__core__branch::ContextObject ctxObj;
             ctxObj._node = &node_6;
 
             // copy data from upstream nodes into context
@@ -1329,18 +1343,18 @@ void runTransaction() {
 
             ctxObj._isInputDirty_TRIG = node_3.isOutputDirty_TICK;
 
-            xod__core__gate::evaluate(&ctxObj);
+            xod__core__branch::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_8.isNodeDirty |= node_6.isOutputDirty_F;
         }
     }
-    { // xod__core__gate #7
+    { // xod__core__branch #7
         if (node_7.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
 
-            xod__core__gate::ContextObject ctxObj;
+            xod__core__branch::ContextObject ctxObj;
             ctxObj._node = &node_7;
 
             // copy data from upstream nodes into context
@@ -1349,7 +1363,7 @@ void runTransaction() {
 
             ctxObj._isInputDirty_TRIG = node_3.isOutputDirty_TICK;
 
-            xod__core__gate::evaluate(&ctxObj);
+            xod__core__branch::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_8.isNodeDirty |= node_7.isOutputDirty_F;

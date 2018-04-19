@@ -1,32 +1,23 @@
 {
-  "description": "Debounces a boolean value. The `OUT` value would change only after a period of at least `Ts` seconds while which the input state `ST` has not changed. The node is useful to fight signal bouncing of mechanical switches.",
+  "description": "Debounces a value. The `OUT` value would change only after a period of at least `Ts` seconds while which the input state `ST` has not changed.",
   "nodes": [
-    {
-      "description": "Use xod/core/debounce instead",
-      "id": "BJeuwHfhf",
-      "position": {
-        "x": 238,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
     {
       "id": "H12EACuUW",
       "position": {
         "x": 10,
         "y": 120
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "type": "xod/patch-nodes/abstract"
     },
     {
-      "description": "Input bouncing boolean state.",
+      "description": "Input bouncing state.",
       "id": "S101C0OU-",
       "label": "ST",
       "position": {
         "x": 10,
         "y": 16
       },
-      "type": "xod/patch-nodes/input-boolean"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
       "description": "Debounced value.",
@@ -35,7 +26,7 @@
         "x": 10,
         "y": 224
       },
-      "type": "xod/patch-nodes/output-boolean"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
       "boundValues": {

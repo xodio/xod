@@ -2,15 +2,6 @@
   "description": "Debounces a boolean value. The `OUT` value would change only after a period of at least `Ts` seconds while which the input state `ST` has not changed. The node is useful to fight signal bouncing of mechanical switches.",
   "nodes": [
     {
-      "description": "Use xod/core/debounce instead",
-      "id": "BJeuwHfhf",
-      "position": {
-        "x": 238,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "id": "H12EACuUW",
       "position": {
         "x": 10,

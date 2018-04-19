@@ -1,59 +1,42 @@
 {
-  "description": "Routes an incoming pulse to either of outputs depending on condition",
+  "description": "Allows values to pass through only if EN pin is set to true",
   "nodes": [
     {
-      "description": "Input pulse",
-      "id": "HkDgIRdrv1W",
-      "label": "TRIG",
-      "position": {
-        "x": 138,
-        "y": 16
+      "boundValues": {
+        "__out__": true
       },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Value which defines the route for an input pulse",
-      "id": "S1OlUAuBD1-",
-      "label": "GATE",
+      "description": "Whether values should pass through",
+      "id": "B1P1nFwaM",
+      "label": "EN",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__in__": false
-      },
-      "description": "Pulses with `TRIG` when `GATE` is true",
-      "id": "SJUl8Aurv1W",
-      "label": "T",
+      "id": "SJ-1mZPTz",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/output-pulse"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
-      "boundValues": {
-        "__in__": ""
-      },
-      "description": "Pulses with `TRIG` when `GATE` is false",
-      "id": "SyM2ATB-b",
-      "label": "F",
+      "id": "OkPg7GDaW",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
-      "type": "xod/patch-nodes/output-pulse"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
-      "id": "noNativeImpl",
+      "id": "rJZl7twTQ",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 0,
+        "y": 102
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "type": "xod/patch-nodes/abstract"
     }
   ]
 }

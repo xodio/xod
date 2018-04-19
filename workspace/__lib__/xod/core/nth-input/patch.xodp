@@ -1,0 +1,68 @@
+{
+  "description": "Selects either `X0` or `X1` based on `IDX` index value.",
+  "nodes": [
+    {
+      "id": "BJRnxUG2G",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "id": "BkrwKrGhG",
+      "label": "X0",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "HypuFHG3z",
+      "label": "X1",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "SJPG4trMhf",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "description": "Index to select. All values below 1 are considered to be 0. Values of 1 and above are considered to be 1.",
+      "id": "SkSfVKSGhM",
+      "label": "IDX",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.\n",
+      "id": "SyxGVKSMhf",
+      "label": "_",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "r1ctYrM3G",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-t1"
+    }
+  ]
+}

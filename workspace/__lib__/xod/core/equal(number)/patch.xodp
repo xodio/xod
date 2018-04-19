@@ -18,15 +18,15 @@
         "x": 102,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/input-number"
     },
     {
-      "id": "abstract",
+      "id": "noNativeImpl",
       "position": {
         "x": 100,
         "y": 100
       },
-      "type": "xod/patch-nodes/abstract"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rJXICuSwyW",
@@ -34,7 +34,7 @@
         "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/input-number"
     }
   ]
 }

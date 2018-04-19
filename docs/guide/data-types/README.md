@@ -58,7 +58,7 @@ pins. The values describe the “what”, while the pulse describes the “when�
 Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 
 * [`clock`](/libs/xod/core/clock/)
-* [`gate`](/libs/xod/core/gate/)
+* [`branch`](/libs/xod/core/branch/)
 * [`any`](/libs/xod/core/any/)
 
 Boolean type

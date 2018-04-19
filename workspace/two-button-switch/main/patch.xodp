@@ -67,7 +67,7 @@
         "x": 272,
         "y": 102
       },
-      "type": "xod/core/gate"
+      "type": "xod/core/branch"
     },
     {
       "boundValues": {
@@ -104,7 +104,7 @@
         "x": 34,
         "y": 102
       },
-      "type": "xod/core/gate"
+      "type": "xod/core/branch"
     },
     {
       "boundValues": {

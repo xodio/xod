@@ -30,15 +30,6 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "Use xod/core/if-else instead",
-      "id": "HJhzwBfnM",
-      "position": {
-        "x": 204,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "description": "String to be output if condition is false",
       "id": "S151eoeAW",
       "label": "F",
