@@ -1952,13 +1952,5 @@ describe('Flatten', () => {
         flatProject
       );
     });
-
-    it('should not allow unresolved abstract patches', () => {
-      const flatProject = flatten(project, '@/main');
-      Helper.expectEitherError(
-        'ALL_TYPES_MUST_BE_RESOLVED {"patchPath":"@/abstract"}',
-        flatProject
-      );
-    });
   });
 });

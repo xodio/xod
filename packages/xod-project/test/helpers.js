@@ -5,10 +5,16 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
-import { foldEither } from 'xod-func-tools';
+import { foldEither, mapIndexed } from 'xod-func-tools';
 
-import { PIN_DIRECTION, PIN_TYPE } from '../src/constants';
+import {
+  PIN_DIRECTION,
+  PIN_TYPE,
+  ABSTRACT_MARKER_PATH,
+  NOT_IMPLEMENTED_IN_XOD_PATH,
+} from '../src/constants';
 import { fromXodballDataUnsafe } from '../src/xodball';
+import { getTerminalPath } from '../src/patchPathUtils';
 
 export const expectEitherRight = R.curry((testFunction, object) => {
   foldEither(
@@ -190,6 +196,45 @@ export const defaultizeProject = R.compose(
     version: '0.0.0',
     patches: {},
     name: 'test-project-name',
+  })
+);
+
+// Generate stuff to use with defaultize*
+
+const generateTerminals = R.curry((direction, types) =>
+  R.compose(
+    R.fromPairs,
+    mapIndexed((type, index) => [
+      `${direction}-${index}-${type}`,
+      {
+        type: getTerminalPath(direction, type),
+        position: { x: index, y: 0 },
+      },
+    ])
+  )(types)
+);
+
+export const createPatchStub = R.curry(
+  (extraNodes, inputTypes, outputTypes) => ({
+    nodes: R.mergeAll([
+      extraNodes,
+      generateTerminals(PIN_DIRECTION.INPUT, inputTypes),
+      generateTerminals(PIN_DIRECTION.OUTPUT, outputTypes),
+    ]),
+  })
+);
+
+export const createAbstractPatch = R.compose(
+  defaultizePatch,
+  createPatchStub({
+    abstarct: { type: ABSTRACT_MARKER_PATH },
+  })
+);
+
+export const createSpecializationPatch = R.compose(
+  defaultizePatch,
+  createPatchStub({
+    niix: { type: NOT_IMPLEMENTED_IN_XOD_PATH },
   })
 );
 

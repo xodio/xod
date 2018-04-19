@@ -1,0 +1,1079 @@
+{
+  "name": "",
+  "patches": {
+    "@/any": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    bool p1 = isInputDirty<input_IN1>(ctx);\n    bool p2 = isInputDirty<input_IN2>(ctx);\n    if (p1 || p2)\n        emitValue<output_OUT>(ctx, true);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BJQyAfe9jM": {
+          "id": "BJQyAfe9jM",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "S1eJ0flcof": {
+          "id": "S1eJ0flcof",
+          "position": {
+            "x": 135,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "Sk1RMe5sz": {
+          "boundValues": {
+            "__in__": false
+          },
+          "id": "Sk1RMe5sz",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "Skz1Czg5sz": {
+          "id": "Skz1Czg5sz",
+          "position": {
+            "x": 99,
+            "y": 99
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Sy-1CMg9oz": {
+          "id": "Sy-1CMg9oz",
+          "position": {
+            "x": 271,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        }
+      },
+      "path": "@/any"
+    },
+    "@/case1-ok": {
+      "links": {
+        "By5tfx9oG": {
+          "id": "By5tfx9oG",
+          "input": {
+            "nodeId": "BJRpkx9iM",
+            "pinKey": "Byk4yl5jG"
+          },
+          "output": {
+            "nodeId": "ryCPMe9sz",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "rJFKfg9jM": {
+          "id": "rJFKfg9jM",
+          "input": {
+            "nodeId": "Hyf_fxcjz",
+            "pinKey": "HylUEGgciz"
+          },
+          "output": {
+            "nodeId": "BJRpkx9iM",
+            "pinKey": "rJ1I1eqiM"
+          }
+        },
+        "rk6gnHqiM": {
+          "id": "rk6gnHqiM",
+          "input": {
+            "nodeId": "BJRpkx9iM",
+            "pinKey": "HycQkxqjG"
+          },
+          "output": {
+            "nodeId": "BJjxhBqif",
+            "pinKey": "rkegx3rqoz"
+          }
+        }
+      },
+      "nodes": {
+        "BJRpkx9iM": {
+          "id": "BJRpkx9iM",
+          "position": {
+            "x": -170,
+            "y": 0
+          },
+          "type": "@/when-either-changes"
+        },
+        "BJjxhBqif": {
+          "id": "BJjxhBqif",
+          "position": {
+            "x": -204,
+            "y": -102
+          },
+          "type": "@/digital-input"
+        },
+        "Hyf_fxcjz": {
+          "id": "Hyf_fxcjz",
+          "position": {
+            "x": -204,
+            "y": 102
+          },
+          "type": "@/console-log"
+        },
+        "ryCPMe9sz": {
+          "boundValues": {
+            "HkGPfxcjM": 3
+          },
+          "id": "ryCPMe9sz",
+          "position": {
+            "x": -102,
+            "y": -102
+          },
+          "type": "@/pot"
+        }
+      },
+      "path": "@/case1-ok"
+    },
+    "@/case2-missing-specialization": {
+      "links": {
+        "Bk6-mAijG": {
+          "id": "Bk6-mAijG",
+          "input": {
+            "nodeId": "ByPoG0ooz",
+            "pinKey": "Byk4yl5jG"
+          },
+          "output": {
+            "nodeId": "HJLZQCjiG",
+            "pinKey": "HJfTgQRsjM"
+          }
+        },
+        "H1EfmCsjz": {
+          "id": "H1EfmCsjz",
+          "input": {
+            "nodeId": "HJLZQCjiG",
+            "pinKey": "r16xX0ioz"
+          },
+          "output": {
+            "nodeId": "ry7fX0siM",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "rJBPjM0jsz": {
+          "id": "rJBPjM0jsz",
+          "input": {
+            "nodeId": "ByPoG0ooz",
+            "pinKey": "HycQkxqjG"
+          },
+          "output": {
+            "nodeId": "rylwifAooz",
+            "pinKey": "rkegx3rqoz"
+          }
+        },
+        "ry4Dsf0ioM": {
+          "id": "ry4Dsf0ioM",
+          "input": {
+            "nodeId": "H1WDozRjsG",
+            "pinKey": "HylUEGgciz"
+          },
+          "output": {
+            "nodeId": "ByPoG0ooz",
+            "pinKey": "rJ1I1eqiM"
+          }
+        }
+      },
+      "nodes": {
+        "ByPoG0ooz": {
+          "id": "ByPoG0ooz",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/when-either-changes"
+        },
+        "H1WDozRjsG": {
+          "id": "H1WDozRjsG",
+          "position": {
+            "x": 0,
+            "y": 408
+          },
+          "type": "@/console-log"
+        },
+        "HJLZQCjiG": {
+          "id": "HJLZQCjiG",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "type": "@/format-number"
+        },
+        "ry7fX0siM": {
+          "id": "ry7fX0siM",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "@/pot"
+        },
+        "rylwifAooz": {
+          "id": "rylwifAooz",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "@/digital-input"
+        }
+      },
+      "path": "@/case2-missing-specialization"
+    },
+    "@/case3-variadics": {
+      "links": {
+        "BynJpTWnM": {
+          "id": "BynJpTWnM",
+          "input": {
+            "nodeId": "rkio36bnG",
+            "pinKey": "ByMxha-hz-$4"
+          },
+          "output": {
+            "nodeId": "SycJaTZ3M",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "HJBzTaWnz": {
+          "id": "HJBzTaWnz",
+          "input": {
+            "nodeId": "Bk7Ga6WhG",
+            "pinKey": "Sy84Mlcjz"
+          },
+          "output": {
+            "nodeId": "SJIW6T-3z",
+            "pinKey": "rkdxhpb2G"
+          }
+        },
+        "ryKWapW2M": {
+          "id": "ryKWapW2M",
+          "input": {
+            "nodeId": "SJIW6T-3z",
+            "pinKey": "ByMxha-hz-$4"
+          },
+          "output": {
+            "nodeId": "rkio36bnG",
+            "pinKey": "rkdxhpb2G"
+          }
+        }
+      },
+      "nodes": {
+        "Bk7Ga6WhG": {
+          "id": "Bk7Ga6WhG",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "@/console-log"
+        },
+        "SJIW6T-3z": {
+          "arityLevel": 5,
+          "id": "SJIW6T-3z",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/some-variadic"
+        },
+        "SycJaTZ3M": {
+          "id": "SycJaTZ3M",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "@/pot"
+        },
+        "rkio36bnG": {
+          "arityLevel": 5,
+          "id": "rkio36bnG",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/some-variadic"
+        }
+      },
+      "path": "@/case3-variadics"
+    },
+    "@/case4-bound-non-generic-pins": {
+      "links": {
+        "H1OqfEMhf": {
+          "id": "H1OqfEMhf",
+          "input": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "BkErGVzhz"
+          },
+          "output": {
+            "nodeId": "HkUqGEzhM",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "ry2qzEznf": {
+          "id": "ry2qzEznf",
+          "input": {
+            "nodeId": "SkFcfNz2G",
+            "pinKey": "BkErGVzhz"
+          },
+          "output": {
+            "nodeId": "r1RtzVznz",
+            "pinKey": "rk7VBGEGnG"
+          }
+        }
+      },
+      "nodes": {
+        "HkUqGEzhM": {
+          "id": "HkUqGEzhM",
+          "position": {
+            "x": 170,
+            "y": 102
+          },
+          "type": "@/pot"
+        },
+        "SkFcfNz2G": {
+          "boundValues": {
+            "ByLUGVz2M": "don't lose this value as well",
+            "r1-UGNGnM": 222
+          },
+          "id": "SkFcfNz2G",
+          "position": {
+            "x": 102,
+            "y": 306
+          },
+          "type": "@/with-non-generic-pins"
+        },
+        "r1RtzVznz": {
+          "boundValues": {
+            "ByLUGVz2M": "don't lose this value",
+            "r1-UGNGnM": 111
+          },
+          "id": "r1RtzVznz",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "type": "@/with-non-generic-pins"
+        }
+      },
+      "path": "@/case4-bound-non-generic-pins"
+    },
+    "@/console-log": {
+      "attachments": [
+        {
+          "content": "struct State {\n    bool begun;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_DUMP>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    if (!state->begun) {\n        Serial.begin(115200);\n        state->begun = true;\n    }\n\n    auto line = getValue<input_LINE>(ctx);\n\n    for (auto it = line->iterate(); it; ++it)\n        Serial.write((char)*it);\n    Serial.write('\\r');\n    Serial.write('\\n');\n    Serial.flush();\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "HkbIVze5oG": {
+          "id": "HkbIVze5oG",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HylUEGgciz": {
+          "id": "HylUEGgciz",
+          "label": "DUMP",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "Sy84Mlcjz": {
+          "id": "Sy84Mlcjz",
+          "label": "LINE",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        }
+      },
+      "path": "@/console-log"
+    },
+    "@/digital-input": {
+      "attachments": [
+        {
+          "content": "struct State {\n    int configuredPort = -1;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_UPD>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    const int port = (int)getValue<input_PORT>(ctx);\n    if (port != state->configuredPort) {\n        ::pinMode(port, INPUT);\n        // Store configured port so to avoid repeating `pinMode` on\n        // subsequent requests\n        state->configuredPort = port;\n    }\n\n    emitValue<output_SIG>(ctx, ::digitalRead(port));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "SJgl2rcoz": {
+          "description": "Board GPIO port number to read from",
+          "id": "SJgl2rcoz",
+          "label": "PORT",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "r1fxl2r9sG": {
+          "id": "r1fxl2r9sG",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "rJWgxhS9sf": {
+          "boundValues": {
+            "__out__": "CONTINUOUSLY"
+          },
+          "description": "Triggers new read",
+          "id": "rJWgxhS9sf",
+          "label": "UPD",
+          "position": {
+            "x": 127,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "rkegx3rqoz": {
+          "boundValues": {
+            "__in__": false
+          },
+          "description": "The last read signal value",
+          "id": "rkegx3rqoz",
+          "label": "SIG",
+          "position": {
+            "x": -1,
+            "y": 207
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        }
+      },
+      "path": "@/digital-input"
+    },
+    "@/format-number": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {\n    char str[16];\n    CStringView view;\n    State() : view(str) { }\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto state = getState(ctx);\n    auto num = getValue<input_NUM>(ctx);\n    auto dig = getValue<input_DIG>(ctx);\n    dtostrf(num, 0, dig, state->str);\n    emitValue<output_STR>(ctx, XString(&state->view));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "HJfTgQRsjM": {
+          "description": "Formatted value",
+          "id": "HJfTgQRsjM",
+          "label": "STR",
+          "position": {
+            "x": -1,
+            "y": 207
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "HkWplXCjiz": {
+          "id": "HkWplXCjiz",
+          "position": {
+            "x": 127,
+            "y": 103
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SkepemRsjf": {
+          "boundValues": {
+            "__out__": 2
+          },
+          "description": "Number of digits after dot",
+          "id": "SkepemRsjf",
+          "label": "DIG",
+          "position": {
+            "x": 127,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "r16xX0ioz": {
+          "description": "Number to format",
+          "id": "r16xX0ioz",
+          "label": "NUM",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/format-number"
+    },
+    "@/pot": {
+      "attachments": [
+        {
+          "content": "struct State {\n    int configuredPort = -1;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    if (!isInputDirty<input_UPD>(ctx))\n        return;\n\n    State* state = getState(ctx);\n    const int port = (int)getValue<input_PORT>(ctx);\n    if (port != state->configuredPort) {\n        ::pinMode(port, INPUT);\n        // Store configured port so to avoid repeating `pinMode` on\n        // subsequent requests\n        state->configuredPort = port;\n    }\n\n    emitValue<output_VAL>(ctx, ::analogRead(port) / 1023.);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "H1bfDMgqiz": {
+          "boundValues": {
+            "__in__": ""
+          },
+          "description": "The latest read value in range 0.0 … 1.0",
+          "id": "H1bfDMgqiz",
+          "label": "VAL",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "H1xzPzeqjz": {
+          "id": "H1xzPzeqjz",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HkGMwGgqsG": {
+          "boundValues": {
+            "__out__": "CONTINUOUSLY"
+          },
+          "description": "Triggers new read",
+          "id": "HkGMwGgqsG",
+          "label": "UPD",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "HkGPfxcjM": {
+          "description": "Number of a board ADC port to read from",
+          "id": "HkGPfxcjM",
+          "label": "PORT",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/pot"
+    },
+    "@/pulse-on-change": {
+      "nodes": {
+        "SJkMLE5oM": {
+          "id": "SJkMLE5oM",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "SkobUEqiz": {
+          "id": "SkobUEqiz",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "rkpBUE5oM": {
+          "id": "rkpBUE5oM",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "@/pulse-on-change"
+    },
+    "@/pulse-on-change(boolean)": {
+      "attachments": [
+        {
+          "content": "struct State {\n    Logic sample = false;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    State* state = getState(ctx);\n    auto newValue = getValue<input_IN>(ctx);\n\n    if (newValue != state->sample)\n        emitValue<output_OUT>(ctx, 1);\n\n    state->sample = newValue;\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Bkmgp7qjz": {
+          "id": "Bkmgp7qjz",
+          "position": {
+            "x": -1,
+            "y": 103
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SJ6l07qif": {
+          "id": "SJ6l07qif",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "SkbXx6QcjG": {
+          "id": "SkbXx6QcjG",
+          "position": {
+            "x": -1,
+            "y": 207
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "@/pulse-on-change(boolean)"
+    },
+    "@/pulse-on-change(number)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n    Number sample = NAN;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    State* state = getState(ctx);\n    auto newValue = getValue<input_IN>(ctx);\n\n    if (newValue != state->sample)\n        emitValue<output_OUT>(ctx, 1);\n\n    state->sample = newValue;\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "ByKxQlqoz": {
+          "id": "ByKxQlqoz",
+          "position": {
+            "x": -1,
+            "y": 103
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "S1eFgXxcof": {
+          "id": "S1eFgXxcof",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "r1ZFe7x9sG": {
+          "id": "r1ZFe7x9sG",
+          "position": {
+            "x": -1,
+            "y": 207
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "@/pulse-on-change(number)"
+    },
+    "@/some-variadic": {
+      "nodes": {
+        "BJxx36-2M": {
+          "id": "BJxx36-2M",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "ByMxha-hz": {
+          "id": "ByMxha-hz",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "H1ubn6Z2f": {
+          "id": "H1ubn6Z2f",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "HJWW26WhG": {
+          "id": "HJWW26WhG",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        },
+        "rkdxhpb2G": {
+          "id": "rkdxhpb2G",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/some-variadic"
+    },
+    "@/some-variadic(number)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BytO2aWnG": {
+          "id": "BytO2aWnG",
+          "position": {
+            "x": 306,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        },
+        "HJQOhTW2f": {
+          "id": "HJQOhTW2f",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HJR_hab2z": {
+          "id": "HJR_hab2z",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "Hkruh6-hG": {
+          "id": "Hkruh6-hG",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "ryzY3Tb2z": {
+          "id": "ryzY3Tb2z",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/some-variadic(number)"
+    },
+    "@/when-either-changes": {
+      "links": {
+        "B1APU49sG": {
+          "id": "B1APU49sG",
+          "input": {
+            "nodeId": "rJtvL4qoG",
+            "pinKey": "S1eJ0flcof"
+          },
+          "output": {
+            "nodeId": "HyfPUNcoz",
+            "pinKey": "rkpBUE5oM"
+          }
+        },
+        "ByQu8Nqjz": {
+          "id": "ByQu8Nqjz",
+          "input": {
+            "nodeId": "HyfPUNcoz",
+            "pinKey": "SkobUEqiz"
+          },
+          "output": {
+            "nodeId": "Byk4yl5jG",
+            "pinKey": "__out__"
+          }
+        },
+        "ByfuUVcsf": {
+          "id": "ByfuUVcsf",
+          "input": {
+            "nodeId": "BJR8U49sz",
+            "pinKey": "SkobUEqiz"
+          },
+          "output": {
+            "nodeId": "HycQkxqjG",
+            "pinKey": "__out__"
+          }
+        },
+        "HJ6wUVcjG": {
+          "id": "HJ6wUVcjG",
+          "input": {
+            "nodeId": "rJtvL4qoG",
+            "pinKey": "BJQyAfe9jM"
+          },
+          "output": {
+            "nodeId": "BJR8U49sz",
+            "pinKey": "rkpBUE5oM"
+          }
+        },
+        "rke_8N9jz": {
+          "id": "rke_8N9jz",
+          "input": {
+            "nodeId": "rJ1I1eqiM",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "rJtvL4qoG",
+            "pinKey": "Sk1RMe5sz"
+          }
+        }
+      },
+      "nodes": {
+        "BJR8U49sz": {
+          "id": "BJR8U49sz",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/pulse-on-change"
+        },
+        "Byk4yl5jG": {
+          "id": "Byk4yl5jG",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t2"
+        },
+        "HycQkxqjG": {
+          "id": "HycQkxqjG",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "HyfPUNcoz": {
+          "id": "HyfPUNcoz",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "@/pulse-on-change"
+        },
+        "rJ1I1eqiM": {
+          "id": "rJ1I1eqiM",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "rJtvL4qoG": {
+          "id": "rJtvL4qoG",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/any"
+        }
+      },
+      "path": "@/when-either-changes"
+    },
+    "@/when-either-changes(number,number)": {
+      "links": {
+        "Hy17QxqsG": {
+          "id": "Hy17QxqsG",
+          "input": {
+            "nodeId": "S10f7gcjf",
+            "pinKey": "S1eFgXxcof"
+          },
+          "output": {
+            "nodeId": "BJ7qklqjG",
+            "pinKey": "__out__"
+          }
+        },
+        "S1mQQeqsz": {
+          "id": "S1mQQeqsz",
+          "input": {
+            "nodeId": "Hks0Gx9of",
+            "pinKey": "BJQyAfe9jM"
+          },
+          "output": {
+            "nodeId": "B1hGXe9iG",
+            "pinKey": "r1ZFe7x9sG"
+          }
+        },
+        "r1Nmme9if": {
+          "id": "r1Nmme9if",
+          "input": {
+            "nodeId": "Hks0Gx9of",
+            "pinKey": "S1eJ0flcof"
+          },
+          "output": {
+            "nodeId": "S10f7gcjf",
+            "pinKey": "r1ZFe7x9sG"
+          }
+        },
+        "rJTRfe5sz": {
+          "id": "rJTRfe5sz",
+          "input": {
+            "nodeId": "HJrnkl9sM",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "Hks0Gx9of",
+            "pinKey": "Sk1RMe5sz"
+          }
+        },
+        "rk-XXx9iG": {
+          "id": "rk-XXx9iG",
+          "input": {
+            "nodeId": "B1hGXe9iG",
+            "pinKey": "S1eFgXxcof"
+          },
+          "output": {
+            "nodeId": "r1Z5Je9sM",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "B1hGXe9iG": {
+          "id": "B1hGXe9iG",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/pulse-on-change(number)"
+        },
+        "BJ7qklqjG": {
+          "id": "BJ7qklqjG",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HJrnkl9sM": {
+          "id": "HJrnkl9sM",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "Hks0Gx9of": {
+          "id": "Hks0Gx9of",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/any"
+        },
+        "S10f7gcjf": {
+          "id": "S10f7gcjf",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "@/pulse-on-change(number)"
+        },
+        "r1Z5Je9sM": {
+          "id": "r1Z5Je9sM",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/when-either-changes(number,number)"
+    },
+    "@/with-non-generic-pins": {
+      "nodes": {
+        "Bk-4HfEfhM": {
+          "id": "Bk-4HfEfhM",
+          "position": {
+            "x": 203,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "BkErGVzhz": {
+          "id": "BkErGVzhz",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "ByLUGVz2M": {
+          "id": "ByLUGVz2M",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "r1-UGNGnM": {
+          "id": "r1-UGNGnM",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rk7VBGEGnG": {
+          "id": "rk7VBGEGnG",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/with-non-generic-pins"
+    },
+    "@/with-non-generic-pins(number)": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "H1GGdM4Mhz": {
+          "id": "H1GGdM4Mhz",
+          "position": {
+            "x": -1,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkROzEGhG": {
+          "id": "HkROzEGhG",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "S1mGOG4MhG": {
+          "id": "S1mGOG4MhG",
+          "position": {
+            "x": 67,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "Sy8ufNM3z": {
+          "id": "Sy8ufNM3z",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rJSKf4z3G": {
+          "id": "rJSKf4z3G",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/with-non-generic-pins(number)"
+    }
+  }
+}

@@ -28,6 +28,7 @@ import {
   getPinKeyForTerminalDirection,
 } from './builtInPatches';
 import {
+  getBaseName,
   getLocalPath,
   getLibraryName,
   isTerminalPatchPath,
@@ -37,6 +38,7 @@ import {
   isLocalMarker,
   isVariadicPath,
   getArityStepFromPatchPath,
+  getSpecializationPatchPath,
 } from './patchPathUtils';
 
 /**
@@ -358,6 +360,7 @@ const computePins = R.memoizeWith(pinsMemoizer, patch =>
   )(patch)
 );
 
+// :: Patch -> StrMap Pins
 const getPins = R.ifElse(
   patchHasHardcodedPins,
   getHardcodedPinsForPatch,
@@ -1290,6 +1293,18 @@ export const addVariadicPins = def(
   }
 );
 
+export const listPinsIncludingVariadics = def(
+  'listPinsIncludingVariadics :: Node -> Patch -> [Pin]',
+  (node, patch) =>
+    R.compose(R.values, addVariadicPins(node, patch), getPins)(patch)
+);
+
+export const getVariadicPinByKey = def(
+  'getPinByKey :: Node -> PinKey -> Patch -> Maybe Pin',
+  (node, key, patch) =>
+    R.compose(Tools.prop(key), addVariadicPins(node, patch), getPins)(patch)
+);
+
 // =============================================================================
 //
 // Utils for Abstract patches
@@ -1365,4 +1380,195 @@ export const validateAbstractPatch = def(
     },
     Either.of
   )
+);
+
+export const getPatchSignature = def(
+  'getPatchSignature :: Patch -> PatchSignature',
+  R.compose(
+    R.map(
+      R.compose(
+        R.fromPairs,
+        R.map(R.converge(R.pair, [Pin.getPinOrder, Pin.getPinType]))
+      )
+    ),
+    R.groupBy(Pin.getPinDirection),
+    listPins
+  )
+);
+
+// assumes that patchFrom and patchTo are compatible
+export const getMapOfCorrespondingPinKeys = def(
+  'getMapOfCorrespondingPinKeys :: Node -> Patch -> Patch -> StrMap PinKey',
+  (nodeFrom, patchFrom, patchTo) =>
+    R.compose(
+      R.fromPairs,
+      R.apply(R.zip),
+      R.map(
+        R.compose(
+          R.map(Pin.getPinKey),
+          R.sortWith([
+            R.ascend(Pin.getPinDirection),
+            R.ascend(Pin.getPinOrder),
+          ]),
+          listPinsIncludingVariadics(nodeFrom)
+        )
+      ),
+      R.pair
+    )(patchFrom, patchTo)
+);
+
+const inputPinKeyLens = R.lens(
+  Link.getLinkInputPinKey,
+  Link.setLinkInputPinKey
+);
+const outputPinKeyLens = R.lens(
+  Link.getLinkOutputPinKey,
+  Link.setLinkOutputPinKey
+);
+
+// for internal use inside xod-project
+export const getUpdatedLinksForNodeWithChangedType = (
+  nodeId,
+  getReplacementPinKey, // :: (PinKey -> PinKey)
+  patch
+) =>
+  R.compose(
+    R.map(
+      R.cond([
+        [
+          Link.isLinkInputNodeIdEquals(nodeId),
+          R.over(inputPinKeyLens, getReplacementPinKey),
+        ],
+        [
+          Link.isLinkOutputNodeIdEquals(nodeId),
+          R.over(outputPinKeyLens, getReplacementPinKey),
+        ],
+        [R.T, R.identity],
+      ])
+    ),
+    listLinksByNode(nodeId)
+  )(patch);
+
+// checks that a concrete patch conforms to concrete patch specification
+export const checkSpecializationMatchesAbstraction = def(
+  'checkSpecializationMatchesAbstraction :: Patch -> Patch -> Either Error Patch',
+  (abstractPatch, specializationPatch) => {
+    if (isAbstractPatch(specializationPatch)) {
+      // TODO: For now, this and other messages are not(yet) shown to the end user.
+      // In the future, we will most likely want to add additional metadata here.
+      return fail('SPECIALIZATION_PATCH_CANT_BE_ABSTRACT', {});
+    }
+
+    if (
+      !R.equals(
+        getArityStepFromPatch(abstractPatch),
+        getArityStepFromPatch(specializationPatch)
+      )
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_SAME_ARITY_LEVEL', {});
+    }
+
+    const checkedPatchDoesHaveGenericPins = R.compose(
+      R.any(Pin.isGenericPin),
+      listPins
+    )(specializationPatch);
+
+    if (checkedPatchDoesHaveGenericPins) {
+      return fail('SPECIALIZATION_PATCH_CANT_HAVE_GENERIC_PINS', {});
+    }
+
+    const [
+      numberOfPinsInAbstractPatchByDirection,
+      numberOfPinsInSpecializationPatchByDirection,
+    ] = R.map(
+      R.compose(R.map(R.length), R.groupBy(Pin.getPinDirection), listPins)
+    )([abstractPatch, specializationPatch]);
+
+    // check that patch has a proper number of inputs and outputs
+    if (
+      numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT] !==
+      numberOfPinsInSpecializationPatchByDirection[CONST.PIN_DIRECTION.INPUT]
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS', {
+        desiredInputsNumber:
+          numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT],
+      });
+    }
+
+    if (
+      numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.OUTPUT] !==
+      numberOfPinsInSpecializationPatchByDirection[CONST.PIN_DIRECTION.OUTPUT]
+    ) {
+      return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS', {
+        desiredOutputsNumber:
+          numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.OUTPUT],
+      });
+    }
+
+    const [genericPinPairs, staticPinPairs] = R.compose(
+      R.partition(R.pipe(R.nth(0), Pin.isGenericPin)),
+      R.apply(R.zip),
+      R.map(
+        R.compose(
+          R.sortWith([
+            R.ascend(Pin.getPinDirection),
+            R.ascend(Pin.getPinOrder),
+          ]),
+          listPins
+        )
+      )
+    )([abstractPatch, specializationPatch]);
+
+    const staticTypesMatch = R.all(
+      R.apply(R.eqBy(Pin.getPinType)),
+      staticPinPairs
+    );
+    // TODO: `find` instead of `any` and explain which one does not match?
+    if (!staticTypesMatch) {
+      return fail('SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH', {});
+    }
+
+    const ambiguousGenerics = R.compose(
+      R.toPairs,
+      R.filter(resolutions => resolutions.length > 1),
+      R.map(R.pipe(R.map(R.nth(1)), R.uniqBy(Pin.getPinType))),
+      R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
+    )(genericPinPairs);
+
+    if (!R.isEmpty(ambiguousGenerics)) {
+      const [genericType, pinsWithDifferentTypes] = ambiguousGenerics[0];
+      const typeNames = R.compose(R.join(', '), R.map(Pin.getPinType))(
+        pinsWithDifferentTypes
+      );
+
+      return fail('SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC', {
+        genericType,
+        typeNames,
+      });
+    }
+
+    const abstractPatchBaseName = R.compose(getBaseName, getPatchPath)(
+      abstractPatch
+    );
+    const expectedSpecializationBaseName = R.compose(
+      getSpecializationPatchPath(abstractPatchBaseName),
+      R.map(R.nth(1)),
+      R.sortBy(R.head),
+      R.toPairs,
+      // something like { t1: 'number', t2: 'string', etc }
+      R.map(R.pipe(R.head, R.nth(1), Pin.getPinType)),
+      R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
+    )(genericPinPairs);
+    const actualSpecializationBaseName = R.compose(getBaseName, getPatchPath)(
+      specializationPatch
+    );
+
+    if (expectedSpecializationBaseName !== actualSpecializationBaseName) {
+      return fail('SPECIALIZATION_HAS_WRONG_NAME', {
+        expectedSpecializationBaseName,
+      });
+    }
+
+    return Either.of(specializationPatch);
+  }
 );

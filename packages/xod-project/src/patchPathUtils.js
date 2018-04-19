@@ -170,14 +170,15 @@ const legacyDeferNodeRegExp = new RegExp(
   `^xod/core/defer-(${dataTypes.join('|')})$`
 );
 // TODO: when custom types will be added this should be generalized
-const deferNodeRegExp = new RegExp(
+const deferNodeSpecializationRegExp = new RegExp(
   `^xod/core/defer\\((${dataTypes.join('|')})\\)$`
 );
 
 // :: PatchPath -> Boolean
 export const isDeferNodeType = R.either(
-  R.test(legacyDeferNodeRegExp),
-  R.test(deferNodeRegExp)
+  R.equals('xod/core/defer'),
+  R.test(deferNodeSpecializationRegExp),
+  R.test(legacyDeferNodeRegExp)
 );
 
 //
@@ -225,4 +226,14 @@ export const resolvePatchPath = def(
     ],
     [R.compose(isPathLocal, R.nthArg(1)), R.nthArg(0)],
   ])
+);
+
+//
+// utils for abstract nodes
+//
+
+// :: PatchPath -> [DataType] -> PatchPath
+export const getSpecializationPatchPath = R.curry(
+  (abstractPatchBaseName, types) =>
+    `${abstractPatchBaseName}(${types.join(',')})`
 );

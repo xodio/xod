@@ -318,29 +318,8 @@ export default (state = {}, action) => {
 
     case AT.NODE_CHANGE_SPECIALIZATION: {
       const { nodeId, patchPath, nodeType } = action.payload;
-      const currentPatchLens = XP.lensPatch(patchPath);
 
-      // TODO: Replace these composition with smarter function
-      // from `xod-project`, that will switch NodeType and drop
-      // bound values only in pins, that changed their types.
-      const updatedNode = R.compose(
-        XP.dropAllBoundValues,
-        XP.setNodeType(nodeType),
-        XP.getNodeByIdUnsafe(nodeId),
-        XP.getPatchByPathUnsafe(patchPath)
-      )(state);
-
-      return R.over(
-        currentPatchLens,
-        R.compose(
-          // TODO: Replace `omitDeadLinksByNodeId` with new smarter
-          // function from `xod-project` to relink links to old pins
-          // into new pins of changed Node.
-          XP.omitDeadLinksByNodeId(nodeId, R.__, state),
-          XP.assocNode(updatedNode)
-        ),
-        state
-      );
+      return XP.changeNodeTypeUnsafe(patchPath, nodeId, nodeType, state);
     }
 
     //

@@ -955,6 +955,38 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
   );
 };
 
+export const listAbstractPatchSpecializations = def(
+  'listAbstractPatchSpecializations :: Patch -> Project -> [Patch]',
+  (abstractPatch, project) => {
+    if (!Patch.isAbstractPatch(abstractPatch)) {
+      return [];
+    }
+
+    const expectedBaseNameStart = R.compose(
+      name => `${name}(`,
+      PatchPathUtils.getBaseName,
+      Patch.getPatchPath
+    )(abstractPatch);
+
+    return R.compose(
+      R.filter(
+        R.both(
+          R.pipe(
+            Patch.getPatchPath,
+            PatchPathUtils.getBaseName,
+            R.startsWith(expectedBaseNameStart)
+          ),
+          R.pipe(
+            Patch.checkSpecializationMatchesAbstraction(abstractPatch),
+            Either.isRight
+          )
+        )
+      ),
+      listPatches
+    )(project);
+  }
+);
+
 /**
  * Returns a list of dead Links for Node in specified Patch.
  */
@@ -995,6 +1027,49 @@ export const omitDeadLinksByNodeId = def(
       patch,
       project
     )
+);
+
+// Changes type of a node and preserves links connected to it by changing pin keys.
+// Assumes that node exists, and new type is compatible with the current one.
+export const changeNodeTypeUnsafe = def(
+  'changeNodeTypeUnsafe :: PatchPath -> NodeId -> PatchPath -> Project -> Project',
+  (patchPath, nodeId, newNodeType, project) => {
+    const patch = getPatchByPathUnsafe(patchPath, project);
+    const node = Patch.getNodeByIdUnsafe(nodeId, patch);
+    const patchFrom = R.compose(
+      getPatchByPathUnsafe(R.__, project),
+      Node.getNodeType
+    )(node);
+    const patchTo = getPatchByPathUnsafe(newNodeType, project);
+
+    const mapOfCorrespondingPinKeys = Patch.getMapOfCorrespondingPinKeys(
+      node,
+      patchFrom,
+      patchTo
+    );
+
+    const updatedLinks = Patch.getUpdatedLinksForNodeWithChangedType(
+      nodeId,
+      oldPinKey => mapOfCorrespondingPinKeys[oldPinKey] || oldPinKey,
+      patch
+    );
+
+    // TODO: drop bound values only in pins that changed their type
+    const updatedNode = R.compose(
+      Node.dropAllBoundValues,
+      Node.setNodeType(newNodeType)
+    )(node);
+
+    return R.over(
+      lensPatch(patchPath),
+      R.compose(
+        explodeEither,
+        Patch.upsertLinks(updatedLinks),
+        Patch.assocNode(updatedNode)
+      ),
+      project
+    );
+  }
 );
 
 /**

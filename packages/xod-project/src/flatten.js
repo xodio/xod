@@ -17,9 +17,9 @@ import * as Pin from './pin';
 import * as Node from './node';
 import * as Link from './link';
 import { def } from './types';
+import { isGenericType } from './utils';
 import * as PatchPathUtils from './patchPathUtils';
 import { getPinKeyForTerminalDirection } from './builtInPatches';
-import expandVariadicNodes from './expandVariadicNodes';
 
 // =============================================================================
 //
@@ -154,19 +154,13 @@ export const extractLeafPatches = def(
   (project, path, patch) =>
     R.cond([
       [
-        isLeafPatchWithImplsOrTerminal,
+        R.either(isLeafPatchWithImplsOrTerminal, Patch.isAbstractPatch),
         R.compose(R.of, Either.of, leafPatch => [path, leafPatch]),
       ],
       [
         isLeafPatchWithoutImpls,
         R.compose(R.of, () =>
           fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path })
-        ),
-      ],
-      [
-        Patch.isAbstractPatch,
-        R.compose(R.of, () =>
-          fail('ALL_TYPES_MUST_BE_RESOLVED', { patchPath: path })
         ),
       ],
       [R.T, extractLeafPatchesFromNodes(extractLeafPatches, project)],
@@ -194,30 +188,23 @@ const getPrefixedId = R.curry(
   (prefix, id) => (prefix ? `${prefix}~${id}` : id)
 );
 
-const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) =>
-  R.compose(
+const getPinType = R.curry((patchTuples, nodes, idGetter, keyGetter, link) => {
+  const pinKey = keyGetter(link);
+  const node = R.compose(R.find(R.__, nodes), R.propEq('id'), idGetter)(link);
+
+  const patch = R.compose(
+    R.nth(1),
+    R.find(R.__, patchTuples),
+    R.propEq(0),
+    Node.getNodeType
+  )(node);
+
+  return R.compose(
     Pin.getPinType,
-    explode,
-    R.converge(
-      // = PinKey + Patch -> Pin
-      Patch.getPinByKey,
-      [
-        // Link -> PinKey
-        keyGetter,
-        // Link -> NodeId -> Node -> NodeType -> Patch
-        R.compose(
-          R.prop(1),
-          R.find(R.__, patchTuples),
-          R.propEq(0),
-          Node.getNodeType,
-          R.find(R.__, nodes),
-          R.propEq('id'),
-          idGetter
-        ),
-      ]
-    )
-  )(link)
-);
+    explodeMaybe(`Pin ${pinKey} should be in patch ${JSON.stringify(patch)}`),
+    Patch.getVariadicPinByKey(node, pinKey)
+  )(patch);
+});
 
 /**
  * Replace terminal node with casting node
@@ -250,7 +237,12 @@ const createCastNode = R.curry((patchTuples, nodes, link) =>
     // Link -> Maybe String
     R.converge(
       R.ifElse(
-        R.equals,
+        R.either(
+          // don't create cast nodes between pins of the same type...
+          R.equals,
+          // ... and between generic pins
+          R.pipe(R.pair, R.any(isGenericType))
+        ),
         Maybe.Nothing,
         R.compose(Maybe.of, PatchPathUtils.getCastPatchPath)
       ),
@@ -1025,7 +1017,6 @@ export default def(
           Project.getPatchByPath(path)
         )(project)
       ),
-      R.map(expandVariadicNodes(path)),
       Project.validatePatchReqursively(path)
     )(inputProject)
 );

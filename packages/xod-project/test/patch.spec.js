@@ -1634,6 +1634,67 @@ describe('Patch', () => {
     });
   });
 
+  describe('getPatchSignature', () => {
+    it('gets patch signature', () => {
+      const patch = Helper.defaultizePatch({
+        nodes: {
+          niix: {
+            type: CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
+          },
+          input1: {
+            type: PPU.getTerminalPath(
+              CONST.PIN_DIRECTION.INPUT,
+              CONST.PIN_TYPE.NUMBER
+            ),
+            position: { x: 0, y: 0 },
+          },
+          input2: {
+            type: PPU.getTerminalPath(
+              CONST.PIN_DIRECTION.INPUT,
+              CONST.PIN_TYPE.BOOLEAN
+            ),
+            position: { x: 1, y: 0 },
+          },
+          input3: {
+            type: PPU.getTerminalPath(
+              CONST.PIN_DIRECTION.INPUT,
+              CONST.PIN_TYPE.STRING
+            ),
+            position: { x: 2, y: 0 },
+          },
+          output1: {
+            type: PPU.getTerminalPath(
+              CONST.PIN_DIRECTION.OUTPUT,
+              CONST.PIN_TYPE.NUMBER
+            ),
+          },
+          output2: {
+            type: PPU.getTerminalPath(
+              CONST.PIN_DIRECTION.OUTPUT,
+              CONST.PIN_TYPE.PULSE
+            ),
+            position: { x: 1, y: 1 },
+          },
+        },
+      });
+
+      assert.deepEqual(
+        {
+          [CONST.PIN_DIRECTION.INPUT]: {
+            0: CONST.PIN_TYPE.NUMBER,
+            1: CONST.PIN_TYPE.BOOLEAN,
+            2: CONST.PIN_TYPE.STRING,
+          },
+          [CONST.PIN_DIRECTION.OUTPUT]: {
+            0: CONST.PIN_TYPE.NUMBER,
+            1: CONST.PIN_TYPE.PULSE,
+          },
+        },
+        Patch.getPatchSignature(patch)
+      );
+    });
+  });
+
   describe('abstract patches', () => {
     describe('validateAbstractPatch', () => {
       it('should ignore regular patches', () => {
@@ -1745,6 +1806,139 @@ describe('Patch', () => {
         Helper.expectEitherRight(
           R.equals(patch),
           Patch.validateAbstractPatch(patch)
+        );
+      });
+    });
+
+    describe('checkSpecializationMatchesAbstraction', () => {
+      const abstractPatch = Helper.createAbstractPatch(
+        ['t1', 'boolean', 't2'],
+        ['t1', 'pulse']
+      );
+
+      it('should check that specialization patch is not abstract', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_PATCH_CANT_BE_ABSTRACT {}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            abstractPatch
+          )
+        );
+      });
+
+      it('should check that specialization patch does not have generic pins', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_PATCH_CANT_HAVE_GENERIC_PINS {}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['t1', 'boolean', 'string'],
+              ['number', 'pulse']
+            )
+          )
+        );
+      });
+
+      it('should check that patches have equal number of inputs and outputs', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS {"desiredInputsNumber":3}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'boolean'],
+              ['number', 'pulse']
+            )
+          )
+        );
+
+        Helper.expectEitherError(
+          'SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS {"desiredOutputsNumber":2}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'boolean', 'string'],
+              ['number']
+            )
+          )
+        );
+      });
+
+      it('should check that static pins match', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'string', 'string'],
+              ['number', 'pulse']
+            )
+          )
+        );
+
+        Helper.expectEitherError(
+          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'boolean', 'string'],
+              ['number', 'string']
+            )
+          )
+        );
+      });
+
+      it('should check constrains for generic pins', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"string, number"}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['string', 'boolean', 'string'],
+              ['number', 'pulse']
+            )
+          )
+        );
+
+        Helper.expectEitherError(
+          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"number, string"}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'boolean', 'string'],
+              ['string', 'pulse']
+            )
+          )
+        );
+      });
+
+      it('should check patch basename', () => {
+        Helper.expectEitherError(
+          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(number,string)"}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['number', 'boolean', 'string'],
+              ['number', 'pulse']
+            )
+          )
+        );
+      });
+
+      it('should leave valid patch untouched', () => {
+        const validSpecializationPatch = Patch.setPatchPath(
+          '@/default-patch-path(number,string)',
+          Helper.createSpecializationPatch(
+            ['number', 'boolean', 'string'],
+            ['number', 'pulse']
+          )
+        );
+
+        Helper.expectEitherRight(
+          R.equals(validSpecializationPatch),
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            validSpecializationPatch
+          )
         );
       });
     });

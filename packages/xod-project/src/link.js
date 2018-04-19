@@ -88,6 +88,16 @@ export const getLinkOutputPinKey = def(
   R.path(['output', 'pinKey'])
 );
 
+export const setLinkInputPinKey = def(
+  'setLinkInputPinKey :: PinKey -> Link -> Link',
+  R.assocPath(['input', 'pinKey'])
+);
+
+export const setLinkOutputPinKey = def(
+  'setLinkOutputPinKey :: PinKey -> Link -> Link',
+  R.assocPath(['output', 'pinKey'])
+);
+
 /**
  * @function getLinkNodeIds
  * @param {Link}

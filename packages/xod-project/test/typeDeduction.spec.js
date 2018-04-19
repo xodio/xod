@@ -2,10 +2,10 @@ import { assert } from 'chai';
 import { Either } from 'ramda-fantasy';
 
 import * as Helper from './helpers';
-
-import { getPatchByPathUnsafe } from '../src/project';
+import { getPatchByPathUnsafe, assocPatchUnsafe } from '../src/project';
 import { PIN_TYPE } from '../src/constants';
-import { deducePinTypes } from '../src/typeDeduction';
+
+import { deducePinTypes, autoresolveTypes } from '../src/typeDeduction';
 
 describe('deducePinTypes', () => {
   const project = Helper.loadXodball('./fixtures/pin-types-deduction.xodball');
@@ -103,5 +103,164 @@ describe('deducePinTypes', () => {
     };
 
     assert.deepEqual(deduced, expected);
+  });
+
+  it('does not include types of non-generic pins in the results', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case5-generics-with-static-terminals', project),
+      project
+    );
+
+    const expected = {
+      genericWithStatics1: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      genericWithStatics2: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      genericWithStatics3: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
+
+  it('deduces types of patches composed from other generics', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case6-patches-composed-from-generics', project),
+      project
+    );
+
+    const expected = {
+      gen1: {
+        inT1: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      wrappedGen1: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      wrappedGen2: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      gen2: {
+        inT1: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      wrappedGen3: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      wrappedGen4: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
+
+  it('deduces types of variadic generic nodes', () => {
+    const deduced = deducePinTypes(
+      getPatchByPathUnsafe('@/case7-variadic-generics', project),
+      project
+    );
+
+    const expected = {
+      gen1: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$1': Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$2': Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      gen2: {
+        inT1_1: Either.Right(PIN_TYPE.NUMBER),
+        inT1_2: Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$1': Either.Right(PIN_TYPE.NUMBER),
+        'inT1_2-$2': Either.Right(PIN_TYPE.NUMBER),
+        outT1: Either.Right(PIN_TYPE.NUMBER),
+      },
+      gen3: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$1': Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$2': Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+      gen4: {
+        inT1_1: Either.Right(PIN_TYPE.STRING),
+        inT1_2: Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$1': Either.Right(PIN_TYPE.STRING),
+        'inT1_2-$2': Either.Right(PIN_TYPE.STRING),
+        outT1: Either.Right(PIN_TYPE.STRING),
+      },
+    };
+
+    assert.deepEqual(deduced, expected);
+  });
+});
+
+describe('autoresolveTypes', () => {
+  const project = Helper.loadXodball(
+    './fixtures/abstract-nodes-resolution.xodball'
+  );
+  it('successfully resolves types for a valid project', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+    }, autoresolveTypes('@/case1-ok', project));
+  });
+  it('detects missing specializations', () => {
+    Helper.expectEitherError(
+      'CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change"}',
+      autoresolveTypes('@/case2-missing-specialization', project)
+    );
+  });
+  it('detects conflicting specializations', () => {
+    const conflictingSpecialization = getPatchByPathUnsafe(
+      '@/pulse-on-change(number)',
+      project
+    );
+    const projectWithConflictingSpecialization = assocPatchUnsafe(
+      'some/other-library/pulse-on-change(number)',
+      conflictingSpecialization,
+      project
+    );
+
+    Helper.expectEitherError(
+      'CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change","conflictingSpecializations":["@/pulse-on-change(number)","some/other-library/pulse-on-change(number)"]}',
+      autoresolveTypes('@/case1-ok', projectWithConflictingSpecialization)
+    );
+  });
+  it('does not lose links from/to variadic patches', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved-variadics.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+    }, autoresolveTypes('@/case3-variadics', project));
+  });
+  it('does not lose values bound to non-generic pins', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved-bound-nongenerics.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+    }, autoresolveTypes('@/case4-bound-non-generic-pins', project));
   });
 });

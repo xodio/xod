@@ -498,6 +498,409 @@
       },
       "path": "@/case4-bottom-to-top-invalid"
     },
+    "@/case5-generics-with-static-terminals": {
+      "links": {
+        "BJZrzEAoz": {
+          "id": "BJZrzEAoz",
+          "input": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "constStr",
+            "pinKey": "outStr"
+          }
+        },
+        "BJyzfEAsM": {
+          "id": "BJyzfEAsM",
+          "input": {
+            "nodeId": "genericWithStatics2",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "outT1"
+          }
+        },
+        "HJTgMNAoM": {
+          "id": "HJTgMNAoM",
+          "input": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "constNum",
+            "pinKey": "outNum"
+          }
+        },
+        "S1fNLvJ3z": {
+          "id": "S1fNLvJ3z",
+          "input": {
+            "nodeId": "genericWithStatics2",
+            "pinKey": "inStr"
+          },
+          "output": {
+            "nodeId": "genericWithStatics1",
+            "pinKey": "outNum"
+          }
+        },
+        "rk6wwDk3f": {
+          "id": "rk6wwDk3f",
+          "input": {
+            "nodeId": "B15vwvJ3M",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "genericWithStatics3",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "B15vwvJ3M": {
+          "id": "B15vwvJ3M",
+          "position": {
+            "x": 204,
+            "y": 204
+          },
+          "type": "@/displ-num"
+        },
+        "constNum": {
+          "id": "constNum",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "constStr": {
+          "id": "constStr",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "@/const-str"
+        },
+        "genericWithStatics1": {
+          "id": "genericWithStatics1",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        },
+        "genericWithStatics2": {
+          "id": "genericWithStatics2",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        },
+        "genericWithStatics3": {
+          "id": "genericWithStatics3",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1-with-static-terminals"
+        }
+      },
+      "path": "@/case5-generics-with-static-terminals"
+    },
+    "@/case6-patches-composed-from-generics": {
+      "links": {
+        "ByEj8uy3G": {
+          "id": "ByEj8uy3G",
+          "input": {
+            "nodeId": "gen1",
+            "pinKey": "inT1"
+          },
+          "output": {
+            "nodeId": "wrappedGen2",
+            "pinKey": "outT1"
+          }
+        },
+        "Byb85IdJ2f": {
+          "id": "Byb85IdJ2f",
+          "input": {
+            "nodeId": "wrappedGen4",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "wrappedGen3",
+            "pinKey": "outT1"
+          }
+        },
+        "HyFhLdyhf": {
+          "id": "HyFhLdyhf",
+          "input": {
+            "nodeId": "wrappedGen3",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "gen2",
+            "pinKey": "outT1"
+          }
+        },
+        "Sk02IOyhz": {
+          "id": "Sk02IOyhz",
+          "input": {
+            "nodeId": "Bkh3Ldk3f",
+            "pinKey": "inNum"
+          },
+          "output": {
+            "nodeId": "wrappedGen4",
+            "pinKey": "outT1"
+          }
+        },
+        "SyWc8u1nM": {
+          "id": "SyWc8u1nM",
+          "input": {
+            "nodeId": "wrappedGen2",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "wrappedGen1",
+            "pinKey": "outT1"
+          }
+        },
+        "ryio8_1hG": {
+          "id": "ryio8_1hG",
+          "input": {
+            "nodeId": "wrappedGen1",
+            "pinKey": "inT1_2"
+          },
+          "output": {
+            "nodeId": "rkcsIdJhG",
+            "pinKey": "outStr"
+          }
+        }
+      },
+      "nodes": {
+        "Bkh3Ldk3f": {
+          "id": "Bkh3Ldk3f",
+          "position": {
+            "x": 306,
+            "y": 408
+          },
+          "type": "@/displ-num"
+        },
+        "gen1": {
+          "id": "gen1",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "gen2": {
+          "id": "gen2",
+          "position": {
+            "x": 306,
+            "y": 102
+          },
+          "type": "@/generic-1-to-1"
+        },
+        "rkcsIdJhG": {
+          "id": "rkcsIdJhG",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "@/const-str"
+        },
+        "wrappedGen1": {
+          "id": "wrappedGen1",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen2": {
+          "id": "wrappedGen2",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen3": {
+          "id": "wrappedGen3",
+          "position": {
+            "x": 306,
+            "y": 204
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        },
+        "wrappedGen4": {
+          "id": "wrappedGen4",
+          "position": {
+            "x": 306,
+            "y": 306
+          },
+          "type": "@/wrapped-generic-2-to-1"
+        }
+      },
+      "path": "@/case6-patches-composed-from-generics"
+    },
+    "@/case7-variadic-generics": {
+      "links": {
+        "H1-O0D5xnG": {
+          "id": "H1-O0D5xnG",
+          "input": {
+            "nodeId": "gen4",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "gen3",
+            "pinKey": "outT1"
+          }
+        },
+        "SydRpoynf": {
+          "id": "SydRpoynf",
+          "input": {
+            "nodeId": "gen2",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "Syan6iJ3f",
+            "pinKey": "outNum"
+          }
+        },
+        "rkICpsy3M": {
+          "id": "rkICpsy3M",
+          "input": {
+            "nodeId": "gen1",
+            "pinKey": "inT1_2-$2"
+          },
+          "output": {
+            "nodeId": "gen2",
+            "pinKey": "outT1"
+          }
+        },
+        "ryrIYqe3M": {
+          "id": "ryrIYqe3M",
+          "input": {
+            "nodeId": "S1gIY5l3z",
+            "pinKey": "HkgwHFqe2z-$2"
+          },
+          "output": {
+            "nodeId": "gen4",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "Syan6iJ3f": {
+          "id": "Syan6iJ3f",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/const-num"
+        },
+        "gen1": {
+          "arityLevel": 3,
+          "id": "gen1",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen2": {
+          "arityLevel": 3,
+          "id": "gen2",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen3": {
+          "arityLevel": 3,
+          "id": "gen3",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "gen4": {
+          "arityLevel": 3,
+          "id": "gen4",
+          "position": {
+            "x": 204,
+            "y": 204
+          },
+          "type": "@/generic-2-to-1-variadic"
+        },
+        "S1gIY5l3z": {
+          "arityLevel": 3,
+          "id": "S1gIY5l3z",
+          "position": {
+            "x": 204,
+            "y": 306
+          },
+          "type": "@/concat"
+        }
+      },
+      "path": "@/case7-variadic-generics"
+    },
+    "@/concat": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {\n    ConcatListView<char> view;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto state = getState(ctx);\n    auto head = getValue<input_IN1>(ctx);\n    auto tail = getValue<input_IN2>(ctx);\n    state->view = ConcatListView<char>(head, tail);\n    emitValue<output_OUT>(ctx, XString(&state->view));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "B17wBtqehf": {
+          "id": "B17wBtqehf",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        },
+        "Bk-PrKqenz": {
+          "id": "Bk-PrKqenz",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "H1zvSF5xhM": {
+          "id": "H1zvSF5xhM",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "HkgwHFqe2z": {
+          "id": "HkgwHFqe2z",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "SyDHFqxnz": {
+          "id": "SyDHFqxnz",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/concat"
+    },
     "@/const-num": {
       "nodes": {
         "outNum": {
@@ -579,6 +982,51 @@
       },
       "path": "@/generic-1-to-1"
     },
+    "@/generic-1-to-1-with-static-terminals": {
+      "nodes": {
+        "By-R8jX0sf": {
+          "id": "By-R8jX0sf",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "inStr": {
+          "id": "inStr",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "inT1": {
+          "id": "inT1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outNum": {
+          "id": "outNum",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/generic-1-to-1-with-static-terminals"
+    },
     "@/generic-1-to-2": {
       "nodes": {
         "SkbVEZ9miG": {
@@ -653,6 +1101,51 @@
       },
       "path": "@/generic-2-to-1"
     },
+    "@/generic-2-to-1-variadic": {
+      "nodes": {
+        "inT1_1": {
+          "id": "inT1_1",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT1_2": {
+          "id": "inT1_2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "r1-IGycmjM": {
+          "id": "r1-IGycmjM",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "rV-IGRcDjM": {
+          "id": "rV-IGRcDjM",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        }
+      },
+      "path": "@/generic-2-to-1-variadic"
+    },
     "@/generic-pair-to-pair": {
       "nodes": {
         "SJb707cXof": {
@@ -697,6 +1190,78 @@
         }
       },
       "path": "@/generic-pair-to-pair"
+    },
+    "@/wrapped-generic-2-to-1": {
+      "links": {
+        "HJL-4uJ3z": {
+          "id": "HJL-4uJ3z",
+          "input": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "inT1_2"
+          },
+          "output": {
+            "nodeId": "inT1_2",
+            "pinKey": "__out__"
+          }
+        },
+        "SJr-Vuy3z": {
+          "id": "SJr-Vuy3z",
+          "input": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "inT1_1"
+          },
+          "output": {
+            "nodeId": "inT1_1",
+            "pinKey": "__out__"
+          }
+        },
+        "rk4b4OknM": {
+          "id": "rk4b4OknM",
+          "input": {
+            "nodeId": "outT1",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SySx4_y3f",
+            "pinKey": "outT1"
+          }
+        }
+      },
+      "nodes": {
+        "SySx4_y3f": {
+          "id": "SySx4_y3f",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "@/generic-2-to-1"
+        },
+        "inT1_1": {
+          "id": "inT1_1",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "inT1_2": {
+          "id": "inT1_2",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "outT1": {
+          "id": "outT1",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/wrapped-generic-2-to-1"
     }
   }
 }

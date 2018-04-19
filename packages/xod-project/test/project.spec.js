@@ -1492,4 +1492,92 @@ describe('Project', () => {
       });
     });
   });
+
+  describe('listAbstractPatchSpecializations', () => {
+    it('lists all valid specializations for a given abstract patch', () => {
+      const project = Helper.defaultizeProject({
+        patches: {
+          '@/when-either-changes': Helper.createAbstractPatch(
+            ['t1', 't2'],
+            ['pulse']
+          ),
+          // good specialization
+          '@/when-either-changes(number,string)': Helper.createSpecializationPatch(
+            ['number', 'string'],
+            ['pulse']
+          ),
+          // another good specialization
+          '@/when-either-changes(number,number)': Helper.createSpecializationPatch(
+            ['number', 'number'],
+            ['pulse']
+          ),
+          // and another good specialization, from other library
+          'someone/other-lib/when-either-changes(number,string)': Helper.createSpecializationPatch(
+            ['number', 'string'],
+            ['pulse']
+          ),
+          // wrong static pin
+          '@/when-either-changes(string,pulse)': Helper.createSpecializationPatch(
+            ['string', 'pulse'],
+            ['string']
+          ),
+          // completely wrong name
+          '@/when-either-changes(some-nonsense)': Helper.createSpecializationPatch(
+            ['string', 'string'],
+            ['pulse']
+          ),
+          // wrong base name (types need to be the other way around)
+          '@/when-either-changes(string,number)': Helper.createSpecializationPatch(
+            ['number', 'string'],
+            ['pulse']
+          ),
+          '@/something-completely-different': Helper.createSpecializationPatch(
+            ['number', 'string'],
+            ['pulse']
+          ),
+        },
+      });
+
+      const expected = [
+        Project.getPatchByPathUnsafe(
+          '@/when-either-changes(number,string)',
+          project
+        ),
+        Project.getPatchByPathUnsafe(
+          '@/when-either-changes(number,number)',
+          project
+        ),
+        Project.getPatchByPathUnsafe(
+          'someone/other-lib/when-either-changes(number,string)',
+          project
+        ),
+      ];
+      const actual = Project.listAbstractPatchSpecializations(
+        Project.getPatchByPathUnsafe('@/when-either-changes', project),
+        project
+      );
+      assert.sameMembers(actual, expected);
+    });
+  });
+
+  describe('changeNodeTypeUnsafe', () => {
+    it('changes node type even if some links will become invalid', () => {
+      const project = Helper.loadXodball('./fixtures/change-node-type.xodball');
+      const expected = Helper.loadXodball(
+        './fixtures/change-node-type.expected.xodball'
+      );
+
+      const actual = Project.changeNodeTypeUnsafe(
+        '@/main',
+        'changeMyType',
+        '@/foo(boolean,number)',
+        project
+      );
+
+      assert.deepEqual(
+        Project.getPatchByPathUnsafe('@/main', actual),
+        Project.getPatchByPathUnsafe('@/main', expected)
+      );
+    });
+  });
 });

@@ -368,6 +368,8 @@ const transformProjectWithImpls = def(
         )
       ),
       R.chain(Project.flatten(R.__, path)),
+      R.map(Project.expandVariadicNodes(path)),
+      R.chain(Project.autoresolveTypes(path)),
       R.unless(
         () => opts.debug,
         R.chain(Project.updatePatch(path, Project.removeDebugNodes))

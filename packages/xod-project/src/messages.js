@@ -1,3 +1,5 @@
+import { enumerate } from 'xod-func-tools';
+
 // Stanza creators.
 // See `xod-func-tools` package Stanza type
 export default {
@@ -39,6 +41,28 @@ export default {
       ', '
     )}`,
     trace,
+  }),
+  CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({ patchPath }) => ({
+    title: `Can't find specializations for abstract patch ${patchPath}`,
+  }),
+  CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({
+    patchPath,
+    conflictingSpecializations,
+  }) => ({
+    title: `Conflicting specializations for abstrat patch ${patchPath}`,
+    note: `To continue, explicitly switch to ${enumerate(
+      ', ',
+      ' or ',
+      conflictingSpecializations
+    )}`,
+  }),
+  UNRESOLVED_ABSTRACT_NODES_LEFT: ({ unresolvedNodeTypes }) => ({
+    title: 'Project contains unresolved abstract nodes',
+    note: `Make sure node${
+      unresolvedNodeTypes.lenght === 1 ? '' : 's'
+    } ${enumerate(', ', ' and ', unresolvedNodeTypes)} ${
+      unresolvedNodeTypes.lenght === 1 ? 'is' : 'are'
+    } linked`,
   }),
 
   // Variadics
@@ -122,7 +146,11 @@ export default {
   }),
   INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT: ({ types, trace }) => ({
     title: 'Program contains bad links',
-    note: `Link causes type conflict between ${types.join(', ')}`,
+    note: `Link causes type conflict between ${enumerate(
+      ', ',
+      ' and ',
+      types
+    )}`,
     trace,
     // TODO: Add a solution
   }),
