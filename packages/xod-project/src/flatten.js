@@ -8,6 +8,7 @@ import {
   catMaybies,
   fail,
   failOnNothing,
+  prependTraceToError,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -160,10 +161,16 @@ export const extractLeafPatches = def(
       [
         isLeafPatchWithoutImpls,
         R.compose(R.of, () =>
-          fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path })
+          fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path, trace: [path] })
         ),
       ],
-      [R.T, extractLeafPatchesFromNodes(extractLeafPatches, project)],
+      [
+        R.T,
+        R.compose(
+          R.map(prependTraceToError(path)),
+          extractLeafPatchesFromNodes(extractLeafPatches, project)
+        ),
+      ],
     ])(patch)
 );
 

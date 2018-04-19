@@ -440,7 +440,7 @@ describe('Flatten', () => {
         project.patches['@/main']
       )[0];
       Helper.expectEitherError(
-        'PATCH_NOT_FOUND_BY_PATH {"patchPath":"xod/test/non-existent-patch"}',
+        'PATCH_NOT_FOUND_BY_PATH {"patchPath":"xod/test/non-existent-patch","trace":["@/main"]}',
         result
       );
     });
@@ -532,7 +532,7 @@ describe('Flatten', () => {
 
       const flatProject = flatten(projectWithMissingAttachments, '@/main');
       Helper.expectEitherError(
-        'IMPLEMENTATION_NOT_FOUND {"patchPath":"xod/core/or"}',
+        'IMPLEMENTATION_NOT_FOUND {"patchPath":"xod/core/or","trace":["@/main","xod/core/or"]}',
         flatProject
       );
     });
@@ -1903,7 +1903,7 @@ describe('Flatten', () => {
       it('no defined implementation in the project', () => {
         const flatProject = flatten(project, '@/references-patch-without-impl');
         Helper.expectEitherError(
-          'IMPLEMENTATION_NOT_FOUND {"patchPath":"@/no-impl"}',
+          'IMPLEMENTATION_NOT_FOUND {"patchPath":"@/no-impl","trace":["@/references-patch-without-impl","@/no-impl"]}',
           flatProject
         );
       });
