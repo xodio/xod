@@ -36,7 +36,7 @@ const getReason = R.cond([
   [R.both(isNonBindableOutput, isPulsePin), R.always('pulse')],
   // the only option left is that it's not bindable
   // because it belongs to a functional node
-  [R.T, R.always('defined by inputs')],
+  [R.T, R.always('computed')],
 ]);
 
 function PinWidget(props) {

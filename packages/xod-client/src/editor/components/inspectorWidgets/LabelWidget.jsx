@@ -7,6 +7,7 @@ const LabelWidget = props => {
   };
   return (
     <div className="Widget LabelWidget">
+      <label htmlFor={props.elementId}>Label</label>
       <input
         className="inspectorTextInput nodeLabelTextInput"
         type="text"

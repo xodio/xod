@@ -222,38 +222,9 @@ const markDeprecatedNodes = R.curry((project, node) =>
   )(node, project)
 );
 
-/**
- * Converts PatchPath into label to make selection of specialization easier.
- * E.G.
- * `xod/core/if-else` -> `Auto-detect (xod/core)`
- * `xod/core/if-else(string)` -> `string (xod/core)`
- * `foo/bar/if-else` -> `Auto-detect (foo/bar)`
- * `foo/bar/if-else(number,number)` -> `number, number (foo/bar)`
- * `@/if-else(boolean)` -> `boolean (@)`
- */
-// : PatchPath -> String
-const getSpecializationLabel = patchPath =>
-  R.compose(
-    R.concat(R.__, ` (${XP.getLibraryName(patchPath)})`),
-    R.ifElse(
-      R.contains('('),
-      R.compose(
-        R.concat('Type: '),
-        R.replace(',', ', '),
-        R.nth(1),
-        R.match(/\((.+)\)/)
-      ),
-      R.always('Auto-detect type')
-    )
-  )(patchPath);
-
-// :: PatchPath -> Project -> [{ value: PatchPath, label: String }]
+// :: PatchPath -> Project -> [PatchPath]
 const listSpecializationPatchPaths = R.curry((nodeTypeWithoutTypes, project) =>
   R.compose(
-    R.map(patchPath => ({
-      value: patchPath,
-      label: getSpecializationLabel(patchPath),
-    })),
     R.filter(
       R.compose(R.equals(nodeTypeWithoutTypes), XP.getBaseNameWithoutTypes)
     ),

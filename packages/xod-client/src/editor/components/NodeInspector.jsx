@@ -89,16 +89,6 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
       </a>
     );
 
-  const SpecializationWidget =
-    node.specializations.length > 0 ? (
-      <Widgets.NodeSpecializationWidget
-        nodeId={nodeId}
-        specializations={node.specializations}
-        onChange={onNodeSpecializationChanged}
-        value={type}
-      />
-    ) : null;
-
   const DeadNodeMessage = node.dead ? (
     <Widgets.HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
   ) : null;
@@ -111,7 +101,20 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
         <span className="nodeName">{baseName}</span>
       </div>
 
-      <div className="nodeType">{type}</div>
+      <Widgets.NodeSpecializationWidget
+        nodeId={nodeId}
+        specializations={node.specializations}
+        onChange={onNodeSpecializationChanged}
+        value={type}
+      />
+
+      {DeadNodeMessage}
+
+      <WidgetsGroup
+        entity={node}
+        createWidgetsConfig={createPinWidgetsConfig}
+        onPropUpdate={onPropUpdate}
+      />
 
       <NodeLabelWidget
         entityId={nodeId}
@@ -121,15 +124,6 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
         label="Label"
         title="Node’s label"
         value={XP.getNodeLabel(node)}
-        onPropUpdate={onPropUpdate}
-      />
-
-      {DeadNodeMessage}
-      {SpecializationWidget}
-
-      <WidgetsGroup
-        entity={node}
-        createWidgetsConfig={createPinWidgetsConfig}
         onPropUpdate={onPropUpdate}
       />
 
