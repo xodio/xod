@@ -1634,67 +1634,6 @@ describe('Patch', () => {
     });
   });
 
-  describe('getPatchSignature', () => {
-    it('gets patch signature', () => {
-      const patch = Helper.defaultizePatch({
-        nodes: {
-          niix: {
-            type: CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
-          },
-          input1: {
-            type: PPU.getTerminalPath(
-              CONST.PIN_DIRECTION.INPUT,
-              CONST.PIN_TYPE.NUMBER
-            ),
-            position: { x: 0, y: 0 },
-          },
-          input2: {
-            type: PPU.getTerminalPath(
-              CONST.PIN_DIRECTION.INPUT,
-              CONST.PIN_TYPE.BOOLEAN
-            ),
-            position: { x: 1, y: 0 },
-          },
-          input3: {
-            type: PPU.getTerminalPath(
-              CONST.PIN_DIRECTION.INPUT,
-              CONST.PIN_TYPE.STRING
-            ),
-            position: { x: 2, y: 0 },
-          },
-          output1: {
-            type: PPU.getTerminalPath(
-              CONST.PIN_DIRECTION.OUTPUT,
-              CONST.PIN_TYPE.NUMBER
-            ),
-          },
-          output2: {
-            type: PPU.getTerminalPath(
-              CONST.PIN_DIRECTION.OUTPUT,
-              CONST.PIN_TYPE.PULSE
-            ),
-            position: { x: 1, y: 1 },
-          },
-        },
-      });
-
-      assert.deepEqual(
-        {
-          [CONST.PIN_DIRECTION.INPUT]: {
-            0: CONST.PIN_TYPE.NUMBER,
-            1: CONST.PIN_TYPE.BOOLEAN,
-            2: CONST.PIN_TYPE.STRING,
-          },
-          [CONST.PIN_DIRECTION.OUTPUT]: {
-            0: CONST.PIN_TYPE.NUMBER,
-            1: CONST.PIN_TYPE.PULSE,
-          },
-        },
-        Patch.getPatchSignature(patch)
-      );
-    });
-  });
-
   describe('abstract patches', () => {
     describe('validateAbstractPatch', () => {
       it('should ignore regular patches', () => {

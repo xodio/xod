@@ -3,7 +3,6 @@ import chai, { expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
 
-import { PIN_TYPE, PIN_DIRECTION } from '../src/constants';
 import * as Utils from '../src/utils';
 
 chai.use(dirtyChai);
@@ -54,55 +53,6 @@ describe('Utils', () => {
       expect(Utils.resolveLinkNodeIds(nodesIdMap, links)).to.be.deep.equal(
         expectedLinks
       );
-    });
-  });
-
-  describe('matchPatchSignature', () => {
-    const fullSignature = {
-      [PIN_DIRECTION.INPUT]: {
-        0: PIN_TYPE.NUMBER,
-        1: PIN_TYPE.STRING,
-        2: PIN_TYPE.PULSE,
-      },
-      [PIN_DIRECTION.OUTPUT]: {
-        0: PIN_TYPE.NUMBER,
-        1: PIN_TYPE.PULSE,
-      },
-    };
-
-    it('should detect missing pins', () => {
-      const mask = {
-        [PIN_DIRECTION.INPUT]: {
-          3: PIN_TYPE.PULSE,
-        },
-      };
-
-      expect(Utils.matchPatchSignature(mask, fullSignature)).to.be.false();
-    });
-    it('should detect wrong pins', () => {
-      const mask = {
-        [PIN_DIRECTION.INPUT]: {
-          2: PIN_TYPE.PULSE, // this one is ok
-        },
-        [PIN_DIRECTION.OUTPUT]: {
-          1: PIN_TYPE.STRING, // here is the wrong one
-        },
-      };
-
-      expect(Utils.matchPatchSignature(mask, fullSignature)).to.be.false();
-    });
-    it('should return true when signature matches the mask', () => {
-      const mask = {
-        [PIN_DIRECTION.INPUT]: {
-          0: PIN_TYPE.NUMBER,
-          2: PIN_TYPE.PULSE,
-        },
-        [PIN_DIRECTION.OUTPUT]: {
-          1: PIN_TYPE.PULSE,
-        },
-      };
-
-      expect(Utils.matchPatchSignature(mask, fullSignature)).to.be.true();
     });
   });
 

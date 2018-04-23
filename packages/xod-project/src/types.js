@@ -139,12 +139,6 @@ export const Patch = Model('Patch', {
   attachments: $.Array(Attachment),
 });
 
-export const PatchSignature = AliasType(
-  'PatchSignature',
-  // TODO: make it a proper `Map PinDirection (Map Number DataType)`?
-  $.StrMap($.StrMap(DataType))
-);
-
 export const Project = Model('Project', {
   patches: $.StrMap(Patch),
   name: ProjectName,
@@ -192,7 +186,6 @@ export const env = XF.env.concat([
   Patch,
   PatchBaseName,
   PatchPath,
-  PatchSignature,
   Pin,
   PinDirection,
   PinKey,
