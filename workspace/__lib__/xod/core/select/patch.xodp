@@ -1,6 +1,115 @@
 {
   "description": "Outputs `X𝑛` value based on which `S𝑛` pulse came last. By default outputs `X1`.",
+  "links": [
+    {
+      "id": "B1Rxl8o2M",
+      "input": {
+        "nodeId": "B1dKR1Uonz",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "rkmiHCaIZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJ4QlUihG",
+      "input": {
+        "nodeId": "HyzFRyLohf",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "rygjH06LW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkQZlLonz",
+      "input": {
+        "nodeId": "SyY01LinM",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "rkmiHCaIZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ0YRyUj3f",
+      "input": {
+        "nodeId": "HyzFRyLohf",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "B1dKR1Uonz",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "HylNxUshz",
+      "input": {
+        "nodeId": "SyY01LinM",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJUjrCTUb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1HGeLohz",
+      "input": {
+        "nodeId": "rkWHDAW_f",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyY01LinM",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "SJOkl8jnf",
+      "input": {
+        "nodeId": "HyzFRyLohf",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "S10qrR6UZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk0bgLjnz",
+      "input": {
+        "nodeId": "S1yaHC6UW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyzFRyLohf",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "SynXeUi3f",
+      "input": {
+        "nodeId": "B1dKR1Uonz",
+        "pinKey": "B1RU0OrDkb"
+      },
+      "output": {
+        "nodeId": "rJUjrCTUb",
+        "pinKey": "__out__"
+      }
+    }
+  ],
   "nodes": [
+    {
+      "id": "B1dKR1Uonz",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "@/flip-flop"
+    },
     {
       "id": "BkiBD0buG",
       "position": {
@@ -8,6 +117,14 @@
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-2"
+    },
+    {
+      "id": "HyzFRyLohf",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "@/if-else"
     },
     {
       "id": "S10qrR6UZ",
@@ -25,6 +142,14 @@
         "y": 306
       },
       "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "id": "SyY01LinM",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "@/any"
     },
     {
       "id": "rJUjrCTUb",
@@ -60,14 +185,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
-    },
-    {
-      "id": "rysxU8G2G",
-      "position": {
-        "x": 544,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/abstract"
     }
   ]
 }
