@@ -7,14 +7,17 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
+import { ensureLiteral } from './legacy';
 import { PIN_TYPE, CONST_NODETYPES, PULSE_CONST_NODETYPES } from './constants';
 import squashSingleOutputNodes from './optimizers/squashSingleOutputNodes';
 import { def } from './types';
 
-const CONST_PATCH_PATHS = R.compose(R.uniq, R.values, R.merge)(
-  CONST_NODETYPES,
-  PULSE_CONST_NODETYPES
-);
+const CONST_PATCH_PATHS = R.compose(
+  R.reject(R.isNil),
+  R.uniq,
+  R.values,
+  R.merge
+)(CONST_NODETYPES, PULSE_CONST_NODETYPES);
 
 const getMapOfNodePinsWithLinks = def(
   'getMapOfNodePinsWithLinks :: [Node] -> [Link] -> Map NodeId [PinKey]',
@@ -113,7 +116,7 @@ const getMapOfExtractablePinPaths = def(
       R.map(
         ([pinType, pinValue]) =>
           pinType === PIN_TYPE.PULSE
-            ? PULSE_CONST_NODETYPES[pinValue]
+            ? PULSE_CONST_NODETYPES[ensureLiteral(pinType, pinValue)]
             : CONST_NODETYPES[pinType]
       )
     ),

@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ensureLiteral } from 'xod-project';
 import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
 
 import { KEYCODE } from '../../../utils/constants';
@@ -30,11 +31,17 @@ export default function composeWidget(Component, widgetProps) {
         value: val,
       };
 
+      // Store latest commited value (or parsed value)
+      // to avoid double dispatching of updating property
+      this.lastCommitedValue = val;
+
       this.keyDownHandlers = R.compose(
         R.map(fn => fn.bind(this)),
         R.merge(commonKeyDownHandlers),
         R.propOr({}, 'keyDownHandlers')
       )(widgetProps);
+
+      this.parseValue = this.parseValue.bind(this);
 
       this.onChange = this.onChange.bind(this);
       this.onFocus = this.onFocus.bind(this);
@@ -79,15 +86,34 @@ export default function composeWidget(Component, widgetProps) {
     }
 
     commit() {
-      const parsedValue = this.parseValue(this.state.value);
-      if (parsedValue !== this.parseValue(this.props.value)) {
-        this.props.onPropUpdate(
-          this.props.entityId,
-          this.props.kind,
-          this.props.keyName,
-          parsedValue
-        );
-      }
+      // Prevent of commiting widgets without changes provided by User
+      // E.G.
+      // User changed one of few widgets, but all of them will be
+      // unmnounted, so they try to commit values. Commit function parses
+      // and converts value into literal, so it could differ from initial value.
+      // This check will avoid unwanted commits.
+      if (this.state.value === this.lastCommitedValue) return;
+
+      const parsedValue = R.pipe(this.parseValue, ensureLiteral(this.type))(
+        this.state.value
+      );
+
+      // Prevent of commiting value twice on blur and on unmnount in widgets
+      // that have a differences in `state.value` and `parsedValue`.
+      // E.G.
+      // Strings are represented in the inputs just as string 'hello'
+      // But parsed value will be '"hello"'.
+      if (parsedValue === this.lastCommitedValue) return;
+
+      // Store last commited value to avoid commiting the same value twice.
+      this.lastCommitedValue = parsedValue;
+
+      this.props.onPropUpdate(
+        this.props.entityId,
+        this.props.kind,
+        this.props.keyName,
+        parsedValue
+      );
     }
 
     parseValue(val) {

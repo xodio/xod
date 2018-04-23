@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { INPUT_PULSE_PIN_BINDING_OPTIONS } from 'xod-project';
+import { INPUT_PULSE_PIN_BINDING_OPTIONS, ensureLiteral } from 'xod-project';
 
 import PinWidget from './PinWidget';
 
@@ -24,13 +24,13 @@ const PulseWidget = props => {
       <select
         className="inspectorSelectInput"
         id={props.elementId}
-        value={props.value}
+        value={ensureLiteral(props.dataType, props.value)}
         onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
       >
         <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER}>Never</option>
-        <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT}>On boot</option>
+        <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT}>On Boot</option>
         <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY}>
           Continuously
         </option>

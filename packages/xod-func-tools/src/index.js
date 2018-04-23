@@ -7,3 +7,4 @@ export * from './promises';
 export * from './types';
 export * from './typeUtils';
 export * from './utils';
+export * from './strings';

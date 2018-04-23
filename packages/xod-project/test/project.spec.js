@@ -179,7 +179,7 @@ describe('Project', () => {
     });
 
     const expectedPins = [
-      Pin.createPin('a', 'number', 'input', 0, 'A', '', true, 0),
+      Pin.createPin('a', 'number', 'input', 0, 'A', '', true, '0'),
     ];
 
     it('should return Nothing for unexisting patch', () => {
@@ -217,7 +217,7 @@ describe('Project', () => {
       'A',
       '',
       true,
-      0
+      '0'
     );
 
     it('should return Nothing for unexisting patch', () => {
@@ -1334,7 +1334,7 @@ describe('Project', () => {
         label: '',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 1,
       });
     });
@@ -1399,21 +1399,21 @@ describe('Project', () => {
         label: '',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 1,
       });
       Helper.assertProps(pins['rk6Q4Ziwf-$1'], {
         label: '',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 2,
       });
       Helper.assertProps(pins['rk6Q4Ziwf-$3'], {
         label: '',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 4,
       });
     });
@@ -1428,14 +1428,14 @@ describe('Project', () => {
         label: 'D',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 3,
       });
       Helper.assertProps(pins['SJb3uE-sPf-$1'], {
         label: 'D2',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 4,
       });
     });
@@ -1451,21 +1451,21 @@ describe('Project', () => {
         label: 'A2',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 2,
       });
       Helper.assertProps(pins['S1Z1AEZsvf-$1'], {
         label: 'A3',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 4,
       });
       Helper.assertProps(pins['S1Z1AEZsvf-$2'], {
         label: 'A4',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 6,
       });
 
@@ -1473,21 +1473,21 @@ describe('Project', () => {
         label: 'B2',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 3,
       });
       Helper.assertProps(pins['HkzJCNbivG-$1'], {
         label: 'B3',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 5,
       });
       Helper.assertProps(pins['HkzJCNbivG-$2'], {
         label: 'B4',
         type: 'number',
         direction: 'input',
-        value: 0,
+        value: '0',
         order: 7,
       });
     });

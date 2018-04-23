@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { enquote, unquote } from 'xod-func-tools';
+import { withState } from 'recompose';
+import cls from 'classnames';
 
 import PinWidget from './PinWidget';
 
-const StringWidget = props => {
-  const onChange = event => {
-    props.onChange(event.target.value);
+const StringWidget = withState('focused', 'setFocus', false)(props => {
+  const onChange = event => props.onChange(enquote(event.target.value));
+  const onFocus = () => props.setFocus(true);
+  const onBlur = () => {
+    props.setFocus(false);
+    props.onBlur();
   };
+
+  const wrapperClassNames = cls('inspector-input-wrapper', {
+    'string-focused': props.focused,
+  });
+  const value = props.focused ? unquote(props.value) : props.value;
 
   return (
     <PinWidget
@@ -19,18 +30,22 @@ const StringWidget = props => {
       isBindable={props.isBindable}
       direction={props.direction}
     >
-      <input
-        className="inspectorTextInput"
-        type="text"
-        id={props.elementId}
-        value={props.value}
-        onChange={onChange}
-        onBlur={props.onBlur}
-        onKeyDown={props.onKeyDown}
-      />
+      <span className={wrapperClassNames}>
+        <input
+          className="inspectorTextInput"
+          type="text"
+          id={props.elementId}
+          value={value}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyDown={props.onKeyDown}
+          spellCheck={false}
+        />
+      </span>
     </PinWidget>
   );
-};
+});
 
 StringWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
@@ -43,8 +58,11 @@ StringWidget.propTypes = {
   direction: PropTypes.string,
 
   value: PropTypes.string,
+  /* eslint-disable react/no-unused-prop-types */
+  // Linter can't find out usage of this functions somehow :-(
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  /* eslint-enable react/no-unused-prop-types */
   onKeyDown: PropTypes.func.isRequired,
 };
 

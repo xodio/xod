@@ -73,7 +73,8 @@
   color: $input-color-text;
   border: 1px solid $input-color-border;
   box-sizing: border-box;
-  padding: 6px 4px;
+  line-height: 16px;
+  padding: 5px 4px;
 
   &:focus {
     outline: none;
@@ -210,6 +211,7 @@
     color: $sidebar-color-text;
   }
 
+  .inspector-input-wrapper,
   .inspectorTextInput,
   .inspectorSelectInput {
     float: right;
@@ -217,7 +219,39 @@
 
     font-family: $font-family-mono;
     font-size: $font-size-m;
-    line-height: 1.2;
+  }
+  .inspector-input-wrapper {
+    position: relative;
+
+    &.string-focused {
+      &:before, &:after {
+        position: absolute;
+        top: 14px;
+        content: '"';
+        display: block;
+
+        color: $apricot-light;
+        font-family: $font-family-mono;
+        font-size: $font-size-m;
+        font-weight: 400;
+      }
+      &:before {
+        left: 5px;
+      }
+      &:after {
+        right: 5px;
+      }
+      .inspectorTextInput,
+      .inspectorSelectInput {
+        padding-left: 11px;
+        padding-right: 11px;
+      }
+    }
+
+    .inspectorTextInput,
+    .inspectorSelectInput {
+      float: none;
+    }
   }
 }
 

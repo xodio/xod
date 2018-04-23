@@ -1,7 +1,8 @@
 import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
-import { PIN_TYPE } from 'xod-project';
+import { unquote } from 'xod-func-tools';
+import { ensureLiteral, PIN_TYPE } from 'xod-project';
 
 import { def } from './types';
 
@@ -60,7 +61,11 @@ const cppType = def(
 // Formats a plain JS string into C++ string object
 const cppStringLiteral = def(
   'cppStringLiteral :: String -> String',
-  R.ifElse(R.isEmpty, R.always('XString()'), str => `XStringCString("${str}")`)
+  R.ifElse(
+    R.isEmpty,
+    R.always('XString()'),
+    str => `XStringCString("${R.replace(/"/g, '\\"', str)}")`
+  )
 );
 
 // =============================================================================
@@ -88,7 +93,7 @@ Handlebars.registerHelper('json', JSON.stringify);
 Handlebars.registerHelper(
   'decltype',
   (type, value) =>
-    type === PIN_TYPE.STRING && value !== ''
+    type === PIN_TYPE.STRING && unquote(value) !== ''
       ? 'static XStringCString'
       : `constexpr ${cppType(type)}`
 );
@@ -114,15 +119,18 @@ Handlebars.registerHelper('global', function global(options) {
 
 Handlebars.registerHelper('cppType', type => cppType(type));
 
-// Converts JS-typed data value to a string that is valid and expected
-// C++ literal representing that value
+// Converts bound value literals or JS-typed data value to a
+// string that is valid and expected C++ literal representing that value
 Handlebars.registerHelper('cppValue', (type, value) =>
-  R.propOr(R.always('unknown_type<void>'), type, {
-    [PIN_TYPE.PULSE]: R.always('false'),
-    [PIN_TYPE.BOOLEAN]: R.toString,
-    [PIN_TYPE.NUMBER]: R.toString,
-    [PIN_TYPE.STRING]: cppStringLiteral,
-  })(value)
+  R.compose(
+    R.propOr(R.always('unknown_type<void>'), type, {
+      [PIN_TYPE.PULSE]: R.always('false'),
+      [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
+      [PIN_TYPE.NUMBER]: R.identity,
+      [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
+    }),
+    ensureLiteral
+  )(type, value)
 );
 
 // A helper to quickly introduce a new filtered {{each ...}} loop
