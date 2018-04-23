@@ -42,8 +42,16 @@ export default {
     )}`,
     trace,
   }),
-  CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({ patchPath }) => ({
-    title: `Can't find specializations for abstract patch ${patchPath}`,
+  CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({
+    patchPath,
+    expectedSpecializationName,
+    trace,
+  }) => ({
+    title: 'Specialization patch not found',
+    note: `Cannot find specialization ${expectedSpecializationName} for abstract ${patchPath}.`,
+    solution:
+      'Try creating the missing patch in your project or install a library which provides such one.',
+    trace,
   }),
   CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({
     patchPath,

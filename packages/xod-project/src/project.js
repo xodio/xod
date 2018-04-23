@@ -958,10 +958,6 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
 export const listAbstractPatchSpecializations = def(
   'listAbstractPatchSpecializations :: Patch -> Project -> [Patch]',
   (abstractPatch, project) => {
-    if (!Patch.isAbstractPatch(abstractPatch)) {
-      return [];
-    }
-
     const expectedBaseNameStart = R.compose(
       name => `${name}(`,
       PatchPathUtils.getBaseName,
@@ -1029,7 +1025,11 @@ export const omitDeadLinksByNodeId = def(
     )
 );
 
+// :: Node -> PinKey -> Patch -> Maybe DataType
+const getPinType = R.compose(R.map(Pin.getPinType), Patch.getVariadicPinByKey);
+
 // Changes type of a node and preserves links connected to it by changing pin keys.
+// Rebinds values of the same type from old pins keys to new.
 // Assumes that node exists, and new type is compatible with the current one.
 export const changeNodeTypeUnsafe = def(
   'changeNodeTypeUnsafe :: PatchPath -> NodeId -> PatchPath -> Project -> Project',
@@ -1054,9 +1054,26 @@ export const changeNodeTypeUnsafe = def(
       patch
     );
 
-    // TODO: drop bound values only in pins that changed their type
     const updatedNode = R.compose(
-      Node.dropAllBoundValues,
+      R.converge(
+        R.reduce((resultingNode, [pinKeyFrom, boundValue]) => {
+          const pinKeyTo = mapOfCorrespondingPinKeys[pinKeyFrom];
+          if (R.isNil(pinKeyTo)) return resultingNode;
+
+          const maybePinTypeFrom = getPinType(node, pinKeyFrom, patchFrom);
+          const maybePinTypeTo = getPinType(node, pinKeyTo, patchTo);
+
+          if (Maybe.isNothing(maybePinTypeFrom)) return resultingNode;
+
+          // TODO: when binding to generics is implemented, also rebind
+          // compatible values from generic pins('42' literal to 'number' pin etc),
+          // and any(?) literals to generic pins
+          return R.equals(maybePinTypeFrom, maybePinTypeTo)
+            ? Node.setBoundValue(pinKeyTo, boundValue, resultingNode)
+            : resultingNode;
+        }),
+        [Node.dropAllBoundValues, R.pipe(Node.getAllBoundValues, R.toPairs)]
+      ),
       Node.setNodeType(newNodeType)
     )(node);
 

@@ -1382,20 +1382,6 @@ export const validateAbstractPatch = def(
   )
 );
 
-export const getPatchSignature = def(
-  'getPatchSignature :: Patch -> PatchSignature',
-  R.compose(
-    R.map(
-      R.compose(
-        R.fromPairs,
-        R.map(R.converge(R.pair, [Pin.getPinOrder, Pin.getPinType]))
-      )
-    ),
-    R.groupBy(Pin.getPinDirection),
-    listPins
-  )
-);
-
 // assumes that patchFrom and patchTo are compatible
 export const getMapOfCorrespondingPinKeys = def(
   'getMapOfCorrespondingPinKeys :: Node -> Patch -> Patch -> StrMap PinKey',
