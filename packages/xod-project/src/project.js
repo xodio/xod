@@ -958,10 +958,6 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
 export const listAbstractPatchSpecializations = def(
   'listAbstractPatchSpecializations :: Patch -> Project -> [Patch]',
   (abstractPatch, project) => {
-    if (!Patch.isAbstractPatch(abstractPatch)) {
-      return [];
-    }
-
     const expectedBaseNameStart = R.compose(
       name => `${name}(`,
       PatchPathUtils.getBaseName,

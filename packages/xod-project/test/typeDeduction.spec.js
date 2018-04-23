@@ -2,7 +2,11 @@ import { assert } from 'chai';
 import { Either } from 'ramda-fantasy';
 
 import * as Helper from './helpers';
-import { getPatchByPathUnsafe, assocPatchUnsafe } from '../src/project';
+import {
+  getPatchByPathUnsafe,
+  assocPatchUnsafe,
+  listPatchesWithoutBuiltIns,
+} from '../src/project';
 import { PIN_TYPE } from '../src/constants';
 
 import { deducePinTypes, autoresolveTypes } from '../src/typeDeduction';
@@ -220,12 +224,15 @@ describe('autoresolveTypes', () => {
     );
 
     Helper.expectEitherRight(actualResolvedProject => {
-      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+      assert.sameDeepMembers(
+        listPatchesWithoutBuiltIns(actualResolvedProject),
+        listPatchesWithoutBuiltIns(expectedResolvedProject)
+      );
     }, autoresolveTypes('@/case1-ok', project));
   });
   it('detects missing specializations', () => {
     Helper.expectEitherError(
-      'CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change"}',
+      'CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change","expectedSpecializationName":"pulse-on-change(string)","trace":["@/case2-missing-specialization","@/when-either-changes(boolean,string)"]}',
       autoresolveTypes('@/case2-missing-specialization', project)
     );
   });
@@ -241,7 +248,7 @@ describe('autoresolveTypes', () => {
     );
 
     Helper.expectEitherError(
-      'CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change","conflictingSpecializations":["@/pulse-on-change(number)","some/other-library/pulse-on-change(number)"]}',
+      'CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH {"patchPath":"@/pulse-on-change","conflictingSpecializations":["@/pulse-on-change(number)","some/other-library/pulse-on-change(number)"],"trace":["@/case1-ok","@/when-either-changes(boolean,number)"]}',
       autoresolveTypes('@/case1-ok', projectWithConflictingSpecialization)
     );
   });
@@ -251,7 +258,10 @@ describe('autoresolveTypes', () => {
     );
 
     Helper.expectEitherRight(actualResolvedProject => {
-      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+      assert.sameDeepMembers(
+        listPatchesWithoutBuiltIns(actualResolvedProject),
+        listPatchesWithoutBuiltIns(expectedResolvedProject)
+      );
     }, autoresolveTypes('@/case3-variadics', project));
   });
   it('does not lose values bound to non-generic pins', () => {
@@ -260,7 +270,10 @@ describe('autoresolveTypes', () => {
     );
 
     Helper.expectEitherRight(actualResolvedProject => {
-      assert.deepEqual(actualResolvedProject, expectedResolvedProject);
+      assert.sameDeepMembers(
+        listPatchesWithoutBuiltIns(actualResolvedProject),
+        listPatchesWithoutBuiltIns(expectedResolvedProject)
+      );
     }, autoresolveTypes('@/case4-bound-non-generic-pins', project));
   });
 });

@@ -1,6 +1,14 @@
 import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
-import { foldEither, explodeEither, catMaybies, fail } from 'xod-func-tools';
+import {
+  foldEither,
+  reduceEither,
+  explodeEither,
+  catMaybies,
+  fail,
+  failOnNothing,
+  prependTraceToError,
+} from 'xod-func-tools';
 
 import * as Link from './link';
 import * as Node from './node';
@@ -8,8 +16,8 @@ import * as Patch from './patch';
 import * as Project from './project';
 import * as Pin from './pin';
 import * as Utils from './utils';
+import * as PPU from './patchPathUtils';
 import { def } from './types';
-import flatten from './flatten';
 
 // :: NodeId -> PinKey -> DeducedPinTypes -> (DataType -> Maybe DataType)
 const maybeGetTypeFromPreviouslyDeduced = R.curry(
@@ -286,147 +294,8 @@ export const deducePinTypes = def(
   }
 );
 
-// :: DeducedTypes -> Either Error Map NodeId (Map PinKey Type)
-const checkResolvedTypesForConflicts = R.ifElse(
-  R.any(R.any(Either.isLeft)),
-  () => fail('ALL_TYPES_MUST_BE_RESOLVED', {}),
-  R.pipe(R.map(R.map(explodeEither)), Either.of)
-);
-
-// Pin -> (PinDirection, PinOrder)
-const getPinPath = R.converge(R.pair, [
-  Pin.getPinDirection,
-  R.pipe(Pin.getPinOrder, R.toString),
-]);
-
-const relink = R.curry((patch, replacements) =>
-  R.reduce(
-    (resultingPatch, [nodeId, newType, mapOfCorrespondingPinKeys]) => {
-      const getReplacementPinKey = oldPinKey =>
-        mapOfCorrespondingPinKeys[oldPinKey] || oldPinKey;
-
-      const updatedNode = R.compose(
-        R.converge(
-          R.reduce((resultingNode, [pinKey, boundValue]) =>
-            // no need to check that pin is non-generic,
-            // because we can't bind values to generic pins
-            Node.setBoundValue(
-              getReplacementPinKey(pinKey),
-              boundValue,
-              resultingNode
-            )
-          ),
-          [
-            Node.dropAllBoundValues,
-            R.compose(R.toPairs, Node.getAllBoundValues),
-          ]
-        ),
-        Node.setNodeType(newType),
-        Patch.getNodeByIdUnsafe(nodeId)
-      )(resultingPatch);
-
-      const updatedLinks = Patch.getUpdatedLinksForNodeWithChangedType(
-        nodeId,
-        getReplacementPinKey,
-        resultingPatch
-      );
-
-      return R.compose(
-        explodeEither,
-        Patch.upsertLinks(updatedLinks),
-        Patch.assocNode(updatedNode)
-      )(resultingPatch);
-    },
-    patch,
-    replacements
-  )
-);
-
-const getReplacementsForAbstractNodes = R.curry(
-  (entryPatch, originalProject, deduced) =>
-    R.compose(
-      R.sequence(Either.of),
-      R.map(([abstractNodeId, pinTypes]) => {
-        const abstractPatch = Project.getPatchByNodeIdUnsafe(
-          abstractNodeId,
-          entryPatch,
-          originalProject
-        );
-
-        // :: Map PinKey (PinDirection, PinOrder)
-        const pinPathByKey = R.compose(
-          R.map(getPinPath),
-          R.indexBy(Pin.getPinKey),
-          Patch.listPins
-        )(abstractPatch);
-
-        const patchSignatureMask = R.compose(
-          R.reduce(
-            (sig, [pinKey, type]) =>
-              pinPathByKey[pinKey]
-                ? R.assocPath(
-                    // to avoid getting Map PinDirection Array
-                    pinPathByKey[pinKey].map(String),
-                    type,
-                    sig
-                  )
-                : sig,
-            {}
-          ),
-          R.toPairs
-        )(pinTypes);
-
-        const matchingSpecializations = R.compose(
-          R.filter(
-            R.compose(
-              Utils.matchPatchSignature(patchSignatureMask),
-              Patch.getPatchSignature
-            )
-          ),
-          Project.listAbstractPatchSpecializations(abstractPatch)
-        )(originalProject);
-
-        if (R.isEmpty(matchingSpecializations)) {
-          return fail('CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
-            patchPath: Patch.getPatchPath(abstractPatch),
-          });
-        }
-
-        if (matchingSpecializations.length > 1) {
-          return fail('CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
-            patchPath: Patch.getPatchPath(abstractPatch),
-            conflictingSpecializations: R.map(
-              Patch.getPatchPath,
-              matchingSpecializations
-            ),
-          });
-        }
-
-        const specialization = R.head(matchingSpecializations);
-
-        const abstaractNode = Patch.getNodeByIdUnsafe(
-          abstractNodeId,
-          entryPatch
-        );
-
-        return Either.of([
-          abstractNodeId,
-          Patch.getPatchPath(specialization),
-          Patch.getMapOfCorrespondingPinKeys(
-            abstaractNode,
-            abstractPatch,
-            specialization
-          ),
-        ]);
-      }),
-      R.toPairs
-    )(deduced)
-);
-
-const verifyThatAllNodesAreResolved = R.curry((project, patch) => {
-  const unresolvedNodeTypes = R.compose(
-    R.uniq,
-    R.map(Node.getNodeType),
+const listGenericNodes = (patch, project) =>
+  R.compose(
     R.filter(
       R.compose(
         R.any(Pin.isGenericPin),
@@ -438,34 +307,192 @@ const verifyThatAllNodesAreResolved = R.curry((project, patch) => {
     Patch.listNodes
   )(patch);
 
-  if (!R.isEmpty(unresolvedNodeTypes)) {
-    return fail('UNRESOLVED_ABSTRACT_NODES_LEFT', {
-      unresolvedNodeTypes,
+// returns [ (DataType, DataType) ]
+// something like [ [t1, string], [t2, number] ]
+const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
+  const genericNodeId = Node.getNodeId(genericNode);
+  const genericNodeType = Node.getNodeType(genericNode);
+
+  const eitherPinTypes = R.propOr({}, genericNodeId, deducedTypes);
+
+  if (R.isEmpty(eitherPinTypes)) {
+    return fail('NO_DEDUCED_TYPES_FOUND_FOR_GENERIC_NODE', {
+      genericNodeId,
+      genericNodeType,
     });
   }
 
-  return Either.of(patch);
-});
+  const conflictingTypes = R.compose(
+    R.find(Either.isLeft),
+    R.values // TODO: do we need pinKeys in error?
+  )(eitherPinTypes);
 
-export const autoresolveTypes = R.curry((entryPatchPath, project) =>
-  R.compose(
-    R.chain(flatProject => {
-      const entryPatch = Project.getPatchByPathUnsafe(
-        entryPatchPath,
-        flatProject
-      );
+  if (conflictingTypes) {
+    return fail('CONFLICTING_TYPES_FOR_NODE', {
+      genericNodeId,
+      genericNodeType,
+    });
+  }
+
+  const pinTypes = R.map(explodeEither, eitherPinTypes);
+  const genericPatch = Project.getPatchByPathUnsafe(genericNodeType, project);
+  const deducedTypesForGenerics = R.compose(
+    R.sortBy(R.head),
+    R.uniqBy(R.head),
+    R.map(pin => [Pin.getPinType(pin), pinTypes[Pin.getPinKey(pin)]]),
+    R.filter(Pin.isGenericPin),
+    Patch.listPins
+  )(genericPatch);
+
+  const unresolvedGeneric = R.find(R.pipe(R.nth(1), R.isNil))(
+    deducedTypesForGenerics
+  );
+
+  if (unresolvedGeneric) {
+    return fail('UNRESOLVED_GENERIC_PIN', {
+      genericNodeId,
+      genericNodeType,
+      unresolvedPinType: R.head(unresolvedGeneric),
+    });
+  }
+
+  return Either.of(deducedTypesForGenerics);
+};
+
+const specializeTerminals = (deducedTypesForGenericPins, genericPatch) => {
+  const dataTypesForGenerics = R.fromPairs(deducedTypesForGenericPins);
+
+  const specializedTerminals = R.compose(
+    R.map(
+      R.over(
+        R.lens(
+          R.pipe(Node.getNodeType, PPU.getTerminalDataType),
+          (newDataType, node) => {
+            const direction = R.compose(
+              PPU.getTerminalDirection,
+              Node.getNodeType
+            )(node);
+
+            return Node.setNodeType(
+              PPU.getTerminalPath(direction, newDataType),
+              node
+            );
+          }
+        ),
+        R.prop(R.__, dataTypesForGenerics)
+      )
+    ),
+    R.filter(
+      R.both(
+        Node.isPinNode,
+        R.pipe(Node.getNodeType, PPU.getTerminalDataType, Utils.isGenericType)
+      )
+    ),
+    Patch.listNodes
+  )(genericPatch);
+
+  return Patch.upsertNodes(specializedTerminals, genericPatch);
+};
+
+const findOrCreateSpecialization = R.curry(
+  (autoresolveTypes, project, genericNode, deducedTypesForGenericPins) => {
+    const genericNodeType = Node.getNodeType(genericNode);
+    const genericPatch = Project.getPatchByPathUnsafe(genericNodeType, project);
+
+    const expectedSpecializationName = R.compose(
+      PPU.getSpecializationPatchPath(PPU.getBaseName(genericNodeType)),
+      R.map(R.nth(1))
+    )(deducedTypesForGenericPins);
+
+    const matchingSpecializations = R.compose(
+      R.filter(
+        R.compose(
+          R.equals(expectedSpecializationName),
+          PPU.getBaseName,
+          Patch.getPatchPath
+        )
+      ),
+      Project.listAbstractPatchSpecializations(genericPatch)
+    )(project);
+
+    if (matchingSpecializations.length > 1) {
+      return fail('CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
+        patchPath: Patch.getPatchPath(genericPatch),
+        conflictingSpecializations: R.map(
+          Patch.getPatchPath,
+          matchingSpecializations
+        ),
+      });
+    }
+
+    if (R.isEmpty(matchingSpecializations)) {
+      if (Patch.isAbstractPatch(genericPatch)) {
+        return fail('CANT_FIND_SPECIALIZATIONS_FOR_ABSTRACT_PATCH', {
+          patchPath: Patch.getPatchPath(genericPatch),
+          expectedSpecializationName,
+        });
+      }
+
+      // we have a patch composed form other generic patches.
+      // let's try to create a specialization
+      const specializationPatchPath = R.compose(
+        PPU.getSpecializationPatchPath(genericNodeType),
+        R.map(R.nth(1))
+      )(deducedTypesForGenericPins);
 
       return R.compose(
-        R.chain(Project.assocPatch(entryPatchPath, R.__, project)),
-        R.chain(verifyThatAllNodesAreResolved(project)),
-        // :: Either Error Patch
-        R.map(relink(entryPatch)),
-        // :: Either Error [(NodeId, PatchPath, Map PinKey Pinkey)]
-        R.chain(getReplacementsForAbstractNodes(entryPatch, project)),
-        checkResolvedTypesForConflicts,
-        deducePinTypes
-      )(entryPatch, flatProject);
-    }),
-    flatten
-  )(project, entryPatchPath)
+        R.map(R.pair(specializationPatchPath)), // :: Either Error (PatchPath, Project)
+        autoresolveTypes(specializationPatchPath), // :: Either Error Project
+        Project.assocPatchUnsafe(
+          specializationPatchPath,
+          specializeTerminals(deducedTypesForGenericPins, genericPatch)
+        )
+      )(project);
+    }
+
+    const specialization = R.head(matchingSpecializations);
+    return Either.of([Patch.getPatchPath(specialization), project]);
+  }
+);
+
+export const autoresolveTypes = def(
+  'autoresolveTypes :: PatchPath -> Project -> Either Error Project',
+  (entryPatchPath, project) =>
+    R.compose(
+      prependTraceToError(entryPatchPath),
+      R.chain(entryPatch =>
+        R.compose(
+          deducedTypes =>
+            reduceEither(
+              (updatedProject, genericNode) =>
+                R.compose(
+                  R.map(
+                    ([specializationPatchPath, projectWithSpecialization]) =>
+                      Project.changeNodeTypeUnsafe(
+                        entryPatchPath,
+                        Node.getNodeId(genericNode),
+                        specializationPatchPath,
+                        projectWithSpecialization
+                      )
+                  ),
+                  R.chain(
+                    findOrCreateSpecialization(
+                      autoresolveTypes,
+                      updatedProject,
+                      genericNode
+                    )
+                  ),
+                  getDeducedTypesForGenericPins
+                )(updatedProject, genericNode, deducedTypes),
+              project,
+              listGenericNodes(entryPatch, project)
+            ),
+          deducePinTypes
+        )(entryPatch, project)
+      ),
+      failOnNothing('ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH', {
+        patchPath: entryPatchPath,
+      }),
+      Project.getPatchByPath(entryPatchPath)
+    )(project)
 );
