@@ -75,7 +75,7 @@ function findProjectBrowser(client) {
 
 function assertProjectIsOpened(client, projectName) {
   const selector = `.PatchGroup__trigger.my .patch-group-trigger[data-id="${projectName}"`;
-  return assert.eventually.isTrue(client.waitForExist(selector, 5000));
+  return assert.eventually.isTrue(client.waitForExist(selector, 10000));
 }
 
 function clickAddPatch(client) {

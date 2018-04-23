@@ -22,6 +22,7 @@ export const WIDGET_TYPE = {
   STRING: PIN_TYPE.STRING,
   PULSE: PIN_TYPE.PULSE,
   DEAD: PIN_TYPE.DEAD,
+  LABEL: 'Label',
   IO_LABEL: 'IOLabel',
   TEXTAREA: 'textarea',
 };

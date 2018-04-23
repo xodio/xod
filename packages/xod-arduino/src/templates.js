@@ -126,7 +126,13 @@ Handlebars.registerHelper('cppValue', (type, value) =>
     R.propOr(R.always('unknown_type<void>'), type, {
       [PIN_TYPE.PULSE]: R.always('false'),
       [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
-      [PIN_TYPE.NUMBER]: R.identity,
+      [PIN_TYPE.NUMBER]: R.cond([
+        [R.equals('Inf'), R.always('INFINITY')],
+        [R.equals('+Inf'), R.always('INFINITY')],
+        [R.equals('-Inf'), R.always('(-INFINITY)')],
+        [R.equals('NaN'), R.always('NAN')],
+        [R.T, R.identity],
+      ]),
       [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
     }),
     ensureLiteral

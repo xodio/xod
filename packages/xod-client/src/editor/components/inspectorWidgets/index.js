@@ -1,5 +1,6 @@
 import * as R from 'ramda';
-import { PIN_TYPE, isGenericType } from 'xod-project';
+import { unquote, enquote } from 'xod-func-tools';
+import { PIN_TYPE, isGenericType, isValidNumberDataValue } from 'xod-project';
 
 import HintWidget from './HintWidget';
 import BoolWidget from './pinWidgets/BoolPinWidget';
@@ -56,10 +57,32 @@ const WIDGET_MAPPING = {
     props: {
       type: PIN_TYPE.NUMBER,
       keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
+      normalizeValue: R.compose(
+        // If value is not valid number — fallback to '0'.
+        R.unless(isValidNumberDataValue, R.always('0')),
+        // Let user type `nan`, `+inf`, `-inf` values with wrong case
+        // and type `+Inf` without plus symbol — correct it automatically
+        R.cond([
+          [R.equals('nan'), R.always('NaN')],
+          [R.equals('inf'), R.always('Inf')],
+          [R.equals('+inf'), R.always('+Inf')],
+          [R.equals('-inf'), R.always('-Inf')],
+          [R.T, R.identity],
+        ]),
+        R.toLower
+      ),
     },
   },
   [WIDGET_TYPE.STRING]: {
     component: StringWidget,
+    props: {
+      type: PIN_TYPE.STRING,
+      keyDownHandlers: submitOnEnter,
+      normalizeValue: R.pipe(unquote, enquote),
+    },
+  },
+  [WIDGET_TYPE.LABEL]: {
+    component: LabelWidget,
     props: {
       type: PIN_TYPE.STRING,
       keyDownHandlers: submitOnEnter,

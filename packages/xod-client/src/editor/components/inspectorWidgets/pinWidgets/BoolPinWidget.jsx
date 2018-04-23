@@ -21,7 +21,7 @@ function BoolWidget(props) {
       <select
         className="inspectorSelectInput"
         id={props.elementId}
-        value={ensureLiteral(props.value)}
+        value={ensureLiteral(props.dataType, props.value)}
         onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
