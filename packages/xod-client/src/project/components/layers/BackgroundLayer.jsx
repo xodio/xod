@@ -7,8 +7,8 @@ import { SLOT_SIZE, NODE_HEIGHT } from '../../nodeLayout';
 const NodeSlotPattern = ({ offset }) => (
   <pattern
     id="patch_bg_pattern"
-    x={offset.x}
-    y={offset.y}
+    x={Math.round(offset.x)}
+    y={Math.round(offset.y)}
     width={SLOT_SIZE.WIDTH}
     height={SLOT_SIZE.HEIGHT}
     patternUnits="userSpaceOnUse"

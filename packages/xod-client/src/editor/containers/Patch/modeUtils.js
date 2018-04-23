@@ -3,7 +3,8 @@ import * as R from 'ramda';
 export const bindApi = (api, fn) => (...args) => fn(api, ...args);
 
 // :: Point -> String
-export const getOffsetMatrix = ({ x, y }) => `matrix(1, 0, 0, 1, ${x}, ${y})`;
+export const getOffsetMatrix = ({ x, y }) =>
+  `matrix(1, 0, 0, 1, ${Math.round(x)}, ${Math.round(y)})`;
 
 // :: Ref -> Point -> Event -> Point
 export const getMousePosition = (rootRef, offset, event) => {
