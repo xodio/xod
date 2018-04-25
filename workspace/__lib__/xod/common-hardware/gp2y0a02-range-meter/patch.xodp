@@ -48,8 +48,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers an update, i.e. reading values again.",
       "id": "B1rqmq_8Z",
@@ -81,11 +81,11 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "B1p1KBvIW": 0.033,
-        "BJrkFSDL-": 0.925,
-        "BkqJFHDLW": 0.014,
-        "HJd1YBDL-": 2
+      "boundLiterals": {
+        "B1p1KBvIW": "0.033",
+        "BJrkFSDL-": "0.925",
+        "BkqJFHDLW": "0.014",
+        "HJd1YBDL-": "2"
       },
       "id": "SycjXcO8Z",
       "position": {

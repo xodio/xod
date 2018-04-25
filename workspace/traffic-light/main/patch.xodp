@@ -110,11 +110,10 @@
       "type": "xod/core/boot"
     },
     {
-      "boundValues": {
-        "B1PryZTTZ": true,
-        "HydWYQiTW": true,
-        "SJGIkWpTZ": true,
-        "SJg7tQjTW": 1
+      "boundLiterals": {
+        "B1PryZTTZ": "True",
+        "SJGIkWpTZ": "True",
+        "SJg7tQjTW": "1"
       },
       "id": "BkSAI066b",
       "label": "yellow-red",
@@ -141,10 +140,9 @@
       "type": "xod/core/any"
     },
     {
-      "boundValues": {
-        "B1PryZTTZ": true,
-        "BkeZYQipb": true,
-        "SJg7tQjTW": 4
+      "boundLiterals": {
+        "B1PryZTTZ": "True",
+        "SJg7tQjTW": "4"
       },
       "id": "Hyy1uXoa-",
       "label": "red",
@@ -155,8 +153,8 @@
       "type": "@/state"
     },
     {
-      "boundValues": {
-        "ByNiWkt8Z": 4
+      "boundLiterals": {
+        "ByNiWkt8Z": "4"
       },
       "id": "S1q5b-6TZ",
       "position": {
@@ -166,10 +164,9 @@
       "type": "xod/common-hardware/button"
     },
     {
-      "boundValues": {
-        "SJ2-FXoTb": true,
-        "SJg7tQjTW": 4,
-        "SkK81baTZ": true
+      "boundLiterals": {
+        "SJg7tQjTW": "4",
+        "SkK81baTZ": "True"
       },
       "id": "Sym1_msa-",
       "label": "green",
@@ -180,10 +177,9 @@
       "type": "@/state"
     },
     {
-      "boundValues": {
-        "HydWYQiTW": true,
-        "SJGIkWpTZ": true,
-        "SJg7tQjTW": 1
+      "boundLiterals": {
+        "SJGIkWpTZ": "True",
+        "SJg7tQjTW": "1"
       },
       "id": "rybJ_7spZ",
       "label": "yellow",

@@ -12,8 +12,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "description": "Mapped value",
       "id": "H12bIR_SPyZ",

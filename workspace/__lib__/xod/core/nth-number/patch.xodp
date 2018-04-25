@@ -100,8 +100,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 1
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
       },
       "id": "HywtN1QdM",
       "position": {
@@ -156,8 +156,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 1
+      "boundLiterals": {
+        "SJqZ8COrDkW": "1"
       },
       "id": "rJcQrTWtZ",
       "position": {

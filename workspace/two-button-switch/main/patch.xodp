@@ -58,9 +58,9 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "HkDgIRdrv1W": "CONTINUOUSLY",
-        "S1OlUAuBD1-": false
+      "boundLiterals": {
+        "HkDgIRdrv1W": "Continuously",
+        "S1OlUAuBD1-": "False"
       },
       "id": "HJqHeCBb-",
       "position": {
@@ -70,9 +70,9 @@
       "type": "xod/core/branch"
     },
     {
-      "boundValues": {
-        "B1ZUA_Hv1W": 12,
-        "SyLCdSwJZ": "CONTINUOUSLY"
+      "boundLiterals": {
+        "B1ZUA_Hv1W": "12",
+        "SyLCdSwJZ": "Continuously"
       },
       "id": "HkKQlCr-W",
       "position": {
@@ -82,10 +82,10 @@
       "type": "xod/core/digital-input"
     },
     {
-      "boundValues": {
-        "B1RU0OrDkb": false,
-        "Bkh8A_Sv1-": false,
-        "ryTIROHwkW": false
+      "boundLiterals": {
+        "B1RU0OrDkb": "Never",
+        "Bkh8A_Sv1-": "Never",
+        "ryTIROHwkW": "Never"
       },
       "id": "Hy-YeCB-b",
       "position": {
@@ -95,9 +95,9 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "boundValues": {
-        "HkDgIRdrv1W": "CONTINUOUSLY",
-        "S1OlUAuBD1-": false
+      "boundLiterals": {
+        "HkDgIRdrv1W": "Continuously",
+        "S1OlUAuBD1-": "False"
       },
       "id": "SyVrxRS-W",
       "position": {
@@ -107,9 +107,9 @@
       "type": "xod/core/branch"
     },
     {
-      "boundValues": {
-        "B1ZUA_Hv1W": 11,
-        "SyLCdSwJZ": "CONTINUOUSLY"
+      "boundLiterals": {
+        "B1ZUA_Hv1W": "11",
+        "SyLCdSwJZ": "Continuously"
       },
       "id": "rkrQlRrWb",
       "position": {
@@ -119,9 +119,9 @@
       "type": "xod/core/digital-input"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 13,
-        "HJ6HsEngZ": false
+      "boundLiterals": {
+        "B134j4neZ": "13",
+        "HJ6HsEngZ": "False"
       },
       "id": "ryQslRHbb",
       "position": {

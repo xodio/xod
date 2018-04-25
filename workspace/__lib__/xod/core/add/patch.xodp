@@ -26,8 +26,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "id": "SyomIRurDJ-",
       "position": {

@@ -20,8 +20,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Value to add on each increment. Use a negative value (e.g. -1) to make decrements.",
       "id": "HJvqZ0dLZ",

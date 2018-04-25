@@ -27,8 +27,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "H1s0WI6MZ": 1
+      "boundLiterals": {
+        "H1s0WI6MZ": "1"
       },
       "id": "Bklh_vNFb",
       "position": {
@@ -38,10 +38,10 @@
       "type": "xod/common-hardware/thermometer-tmp36"
     },
     {
-      "boundValues": {
-        "HJCWLAdSwyW": 0,
-        "rkpbU0OrwyZ": 0,
-        "ry1z8CuBDy-": 0
+      "boundLiterals": {
+        "HJCWLAdSwyW": "0",
+        "rkpbU0OrwyZ": "0",
+        "ry1z8CuBDy-": "0"
       },
       "id": "HkZpdP4tW",
       "position": {
@@ -51,8 +51,8 @@
       "type": "xod/core/map-range"
     },
     {
-      "boundValues": {
-        "S1vGmu6Gb": 9
+      "boundLiterals": {
+        "S1vGmu6Gb": "9"
       },
       "id": "rkK3_PEYb",
       "position": {

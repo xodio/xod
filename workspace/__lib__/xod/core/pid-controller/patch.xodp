@@ -396,8 +396,8 @@
       "type": "@/multiply"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new computation, i.e. `OUT` update.",
       "id": "H1QHqmcNz",

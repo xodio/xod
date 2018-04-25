@@ -27,8 +27,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1oqkTnIb": 10
+      "boundLiterals": {
+        "B1oqkTnIb": "10"
       },
       "id": "HknqGwVtb",
       "label": "LED1",
@@ -39,8 +39,8 @@
       "type": "xod/common-hardware/led"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 11
+      "boundLiterals": {
+        "B1oqkTnIb": "11"
       },
       "id": "Syi5GPNFZ",
       "label": "LED2",
@@ -51,8 +51,8 @@
       "type": "xod/common-hardware/led"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": 0
+      "boundLiterals": {
+        "B1x2RV3eZ": "0"
       },
       "id": "r1iTfwEFW",
       "position": {

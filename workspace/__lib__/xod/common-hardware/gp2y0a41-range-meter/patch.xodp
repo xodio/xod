@@ -48,12 +48,12 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1p1KBvIW": 0.107,
-        "BJrkFSDL-": 0.3,
-        "BkqJFHDLW": 0.025,
-        "HJSHFHwI-": 0.42,
-        "HJd1YBDL-": 1.4
+      "boundLiterals": {
+        "B1p1KBvIW": "0.107",
+        "BJrkFSDL-": "0.3",
+        "BkqJFHDLW": "0.025",
+        "HJSHFHwI-": "0.42",
+        "HJd1YBDL-": "1.4"
       },
       "id": "Bk5lqHvIZ",
       "position": {
@@ -63,8 +63,8 @@
       "type": "@/gp2y0a-linearize"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers an update, i.e. reading values again.",
       "id": "H1ny9SPLW",

@@ -10,7 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": "false"
       },
       "description": "Continuous pulses",
@@ -23,8 +23,8 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Determines if pulses should be continuously emitted",
       "id": "SkJ46dw6-",

@@ -10,7 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": "false"
       },
       "description": "Continuous pulses",

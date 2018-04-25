@@ -51,8 +51,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B13SCNhl-": 1
+      "boundLiterals": {
+        "B13SCNhl-": "1"
       },
       "id": "ByXLOXV9W",
       "position": {
@@ -62,8 +62,8 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 11
+      "boundLiterals": {
+        "B1oqkTnIb": "11"
       },
       "id": "HyA_GKr9W",
       "position": {

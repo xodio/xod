@@ -32,8 +32,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new ultrasonic ping which would result in the output update once sound echo will be captured. Pulses coming within 60 ms window after last one are ignored to fight sensor’s PCB resonance.",
       "id": "rJPQfbCIW",

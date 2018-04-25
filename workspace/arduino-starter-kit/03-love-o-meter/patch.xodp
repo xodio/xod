@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "ByD4kHTzW",
@@ -268,12 +267,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "HkqmLAOrD1W": 4
+      "boundLiterals": {
+        "HkqmLAOrD1W": "4"
       },
-      "description": "",
       "id": "BJ8KxHTMW",
-      "label": "",
       "position": {
         "x": 1162,
         "y": 744
@@ -281,12 +278,10 @@
       "type": "xod/core/add"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 5
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "5"
       },
-      "description": "",
       "id": "BJQALEafZ",
-      "label": "",
       "position": {
         "x": 266,
         "y": 328
@@ -294,12 +289,10 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "BkeKcj6ZZ": ", degrees C:"
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\", degrees C:\""
       },
-      "description": "",
       "id": "BJjKAHafb",
-      "label": "",
       "position": {
         "x": 394,
         "y": 744
@@ -307,10 +300,7 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "H1dMvV6MW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 1056
@@ -318,10 +308,7 @@
       "type": "xod/core/console-log"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HkioeH6fZ",
-      "label": "",
       "position": {
         "x": 1162,
         "y": 848
@@ -329,10 +316,7 @@
       "type": "xod/core/greater"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "Sk51JH6f-",
-      "label": "",
       "position": {
         "x": 266,
         "y": 744
@@ -340,12 +324,10 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 2
+      "boundLiterals": {
+        "B134j4neZ": "2"
       },
-      "description": "",
       "id": "SkoEgHpfZ",
-      "label": "",
       "position": {
         "x": 906,
         "y": 952
@@ -353,10 +335,9 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": 20
+      "boundLiterals": {
+        "B1x2RV3eZ": "20"
       },
-      "description": "",
       "id": "r1BulBpfZ",
       "label": "20 °C",
       "position": {
@@ -366,10 +347,7 @@
       "type": "xod/core/constant-number"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "r1bvoeB6MZ",
-      "label": "",
       "position": {
         "x": 1034,
         "y": 848
@@ -377,12 +355,10 @@
       "type": "xod/core/greater"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 100
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "100"
       },
-      "description": "",
       "id": "r1vlP4aM-",
-      "label": "",
       "position": {
         "x": 394,
         "y": 536
@@ -390,12 +366,10 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 4
+      "boundLiterals": {
+        "B134j4neZ": "4"
       },
-      "description": "",
       "id": "rJISeBpf-",
-      "label": "",
       "position": {
         "x": 1162,
         "y": 952
@@ -403,12 +377,10 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "Hkqu9oaWb": "Sensor value: "
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Sensor value: \""
       },
-      "description": "",
       "id": "rJV1JHaf-",
-      "label": "",
       "position": {
         "x": 10,
         "y": 744
@@ -416,12 +388,10 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "BkeKcj6ZZ": ", Volts: "
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\", Volts: \""
       },
-      "description": "",
       "id": "rJ_J1Hpfb",
-      "label": "",
       "position": {
         "x": 138,
         "y": 744
@@ -429,12 +399,10 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "HkqmLAOrD1W": 2
+      "boundLiterals": {
+        "HkqmLAOrD1W": "2"
       },
-      "description": "",
       "id": "rJmYxH6G-",
-      "label": "",
       "position": {
         "x": 1034,
         "y": 744
@@ -442,10 +410,7 @@
       "type": "xod/core/add"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rk7sgrafW",
-      "label": "",
       "position": {
         "x": 906,
         "y": 848
@@ -453,12 +418,10 @@
       "type": "xod/core/greater"
     },
     {
-      "boundValues": {
-        "BkeKcj6ZZ": ", degrees C: "
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\", degrees C: \""
       },
-      "description": "",
       "id": "rkQ7yrafZ",
-      "label": "",
       "position": {
         "x": 522,
         "y": 744
@@ -466,12 +429,10 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 3
+      "boundLiterals": {
+        "B134j4neZ": "3"
       },
-      "description": "",
       "id": "rkSHxS6z-",
-      "label": "",
       "position": {
         "x": 1034,
         "y": 952
@@ -479,12 +440,10 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.01
+      "boundLiterals": {
+        "B13SCNhl-": "0.01"
       },
-      "description": "",
       "id": "rkZOU46MZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -492,12 +451,10 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 0.5
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "0.5"
       },
-      "description": "",
       "id": "ry71DVazb",
-      "label": "",
       "position": {
         "x": 394,
         "y": 432
@@ -505,10 +462,9 @@
       "type": "xod/core/subtract"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
-      "description": "",
       "id": "ryR_UV6Mb",
       "label": "Tmp36 input",
       "position": {

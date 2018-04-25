@@ -120,8 +120,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers an update, i.e. reading values again.",
       "id": "SJpVg-jJM",

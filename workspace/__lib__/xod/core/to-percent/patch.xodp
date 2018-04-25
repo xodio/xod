@@ -48,8 +48,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "HJTIija-W": 0
+      "boundLiterals": {
+        "HJTIija-W": "0"
       },
       "id": "HJXqjj6ZZ",
       "position": {
@@ -68,8 +68,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 100
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "100"
       },
       "id": "SkUG5s6bb",
       "position": {
@@ -88,8 +88,8 @@
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {
-        "BkeKcj6ZZ": "%"
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\"%\""
       },
       "id": "ryegsjpW-",
       "position": {

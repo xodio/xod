@@ -457,8 +457,8 @@
       "type": "xod/core/i2c-request-bytes-6"
     },
     {
-      "boundValues": {
-        "r1ypaEoDW": "ON_BOOT"
+      "boundLiterals": {
+        "r1ypaEoDW": "On Boot"
       },
       "id": "BJHibHoPW",
       "position": {
@@ -468,8 +468,8 @@
       "type": "xod/core/i2c-send-bytes-2"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": 32
+      "boundLiterals": {
+        "B1x2RV3eZ": "32"
       },
       "id": "Bk-xzSsPW",
       "label": "#REG1",
@@ -546,8 +546,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "ry7NREoP-": 168
+      "boundLiterals": {
+        "ry7NREoP-": "168"
       },
       "id": "HyHP1HiDb",
       "position": {
@@ -565,8 +565,8 @@
       "type": "xod/core/nth-number-4"
     },
     {
-      "boundValues": {
-        "__out__": 24
+      "boundLiterals": {
+        "__out__": "24"
       },
       "description": "I²C address of the sensor",
       "id": "HyPRoViP-",
@@ -642,8 +642,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": 35
+      "boundLiterals": {
+        "B1x2RV3eZ": "35"
       },
       "id": "SkineHjPZ",
       "label": "#REG4",
@@ -682,8 +682,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "H17P5VsPZ": 35
+      "boundLiterals": {
+        "H17P5VsPZ": "35"
       },
       "id": "rJ-Pgrsv-",
       "position": {
@@ -693,10 +693,10 @@
       "type": "xod/core/i2c-send-bytes-2"
     },
     {
-      "boundValues": {
-        "r1NqAYVdb": 4,
-        "rk850K4u-": 8,
-        "rynt0KE_W": 2
+      "boundLiterals": {
+        "r1NqAYVdb": "4",
+        "rk850K4u-": "8",
+        "rynt0KE_W": "2"
       },
       "id": "rJCtZ5NdW",
       "position": {
@@ -714,8 +714,8 @@
       "type": "xod/patch-nodes/utility"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers a new reading.",
       "id": "rkIkhEsvW",

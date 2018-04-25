@@ -30,8 +30,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Backlight enable/disable",
       "id": "SkkWMb9A-",
@@ -43,8 +43,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__out__": 39
+      "boundLiterals": {
+        "__out__": "39"
       },
       "description": "I²C address of the expander chip.",
       "id": "rJlYT7EfW",

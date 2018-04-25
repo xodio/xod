@@ -77,8 +77,8 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.25
+      "boundLiterals": {
+        "B13SCNhl-": "0.25"
       },
       "id": "Bkc-kpLXb",
       "position": {
@@ -88,8 +88,8 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 11
+      "boundLiterals": {
+        "B134j4neZ": "11"
       },
       "id": "S1_tlaIXb",
       "label": "Red LED",
@@ -100,8 +100,8 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.7
+      "boundLiterals": {
+        "B13SCNhl-": "0.7"
       },
       "id": "SktOxpUmZ",
       "position": {
@@ -111,8 +111,8 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 13
+      "boundLiterals": {
+        "B134j4neZ": "13"
       },
       "id": "Skz7k6Im-",
       "label": "Yellow LED",
@@ -123,8 +123,8 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 12
+      "boundLiterals": {
+        "B134j4neZ": "12"
       },
       "id": "SyXV1687-",
       "label": "Blue LED",

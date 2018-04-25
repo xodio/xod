@@ -11,8 +11,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Speed rate in units per second.",
       "id": "BkweckF8-",
@@ -24,8 +24,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers an update (i.e. recalculation) of `OUT` value. Keep the value set to `Continuously` to achieve the most smooth animation possible.",
       "id": "HJblc1YUZ",

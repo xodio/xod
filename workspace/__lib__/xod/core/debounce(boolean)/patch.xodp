@@ -29,8 +29,8 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {
-        "__out__": 0.03
+      "boundLiterals": {
+        "__out__": "0.03"
       },
       "description": "Debounce time in seconds.",
       "id": "SkqxAC_LW",

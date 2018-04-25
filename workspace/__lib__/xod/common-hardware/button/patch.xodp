@@ -77,8 +77,8 @@
       "type": "xod/core/not"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers update, i.e. reading value again.",
       "id": "ByG3ZyKLW",
@@ -108,8 +108,8 @@
       "type": "xod/core/digital-input"
     },
     {
-      "boundValues": {
-        "SkqxAC_LW": 0.02
+      "boundLiterals": {
+        "SkqxAC_LW": "0.02"
       },
       "id": "rkl8GkKUb",
       "position": {

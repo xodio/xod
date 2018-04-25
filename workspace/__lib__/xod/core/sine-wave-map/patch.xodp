@@ -100,8 +100,8 @@
       "type": "@/divide"
     },
     {
-      "boundValues": {
-        "__out__": 0
+      "boundLiterals": {
+        "__out__": "0"
       },
       "description": "An input time value, i.e. the abscissa",
       "id": "BJNZzE3YJG",
@@ -113,8 +113,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "An iterval between wave peaks, i.e. the period of the function",
       "id": "BJUWz4nt1G",
@@ -144,10 +144,10 @@
       "type": "@/cos"
     },
     {
-      "boundValues": {
-        "HJCWLAdSwyW": -1,
-        "rkpbU0OrwyZ": 1,
-        "ry1z8CuBDy-": 1
+      "boundLiterals": {
+        "HJCWLAdSwyW": "-1",
+        "rkpbU0OrwyZ": "1",
+        "ry1z8CuBDy-": "1"
       },
       "id": "Hksx_nF1G",
       "position": {
@@ -165,9 +165,9 @@
       "type": "@/floor"
     },
     {
-      "boundValues": {
-        "B1GfLR_SPk-": 6.283185307179,
-        "SJ4zUC_BD1-": 2
+      "boundLiterals": {
+        "B1GfLR_SPk-": "6.283185307179",
+        "SJ4zUC_BD1-": "2"
       },
       "id": "S1mWMV3tyf",
       "label": "× 2𝜋",

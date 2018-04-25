@@ -12,8 +12,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "False"
       },
       "description": "The last read signal value",
       "id": "B1gI0urv1W",
@@ -25,8 +25,8 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new read",
       "id": "SyLCdSwJZ",

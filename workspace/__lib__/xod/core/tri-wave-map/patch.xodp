@@ -110,8 +110,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "BypX80uSD1Z": 1
+      "boundLiterals": {
+        "BypX80uSD1Z": "1"
       },
       "id": "BkwiVqKkM",
       "position": {
@@ -131,8 +131,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 2
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "2"
       },
       "id": "S1VYE5t1z",
       "position": {
@@ -142,8 +142,8 @@
       "type": "@/multiply"
     },
     {
-      "boundValues": {
-        "__out__": 0
+      "boundLiterals": {
+        "__out__": "0"
       },
       "description": "An input time value, i.e. the abscissa",
       "id": "S1i0E5KkM",
@@ -163,8 +163,8 @@
       "type": "@/saw-wave-map"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "An iterval between wave peaks, i.e. the period of the function",
       "id": "Sy7eS5tyz",
@@ -176,8 +176,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 1
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
       },
       "id": "rJUcEqKJM",
       "position": {

@@ -34,8 +34,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "False"
       },
       "id": "r18G80_Hvyb",
       "position": {

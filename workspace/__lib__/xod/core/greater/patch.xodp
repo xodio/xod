@@ -2,7 +2,7 @@
   "description": "Outputs true if `IN1` > `IN2`, and false otherwise",
   "nodes": [
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": ""
       },
       "id": "B19RYS3lW",

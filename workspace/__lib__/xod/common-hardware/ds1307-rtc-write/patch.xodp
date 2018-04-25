@@ -301,8 +301,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "__out__": 104
+      "boundLiterals": {
+        "__out__": "104"
       },
       "description": "I²C address of the IC",
       "id": "B1ENIh-eM",
@@ -322,8 +322,8 @@
       "type": "xod/core/i2c-write"
     },
     {
-      "boundValues": {
-        "__out__": "ON_BOOT"
+      "boundLiterals": {
+        "__out__": "On Boot"
       },
       "description": "Trigger a new write of the date/time data provided",
       "id": "B1h8InZgz",
@@ -427,8 +427,8 @@
       "type": "xod/core/i2c-write"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Month value in [1, 12] range",
       "id": "S1EQU3-lz",
@@ -450,8 +450,8 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Week day value in range [1, 7]",
       "id": "SydXI2Wxz",
@@ -506,8 +506,8 @@
       "type": "xod/core/i2c-write"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Day value. Valid range depends on month and can be [1, 28-31].",
       "id": "r1SQLh-gf",
@@ -519,8 +519,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "BJvrLOuyz": 100
+      "boundLiterals": {
+        "BJvrLOuyz": "100"
       },
       "id": "r1UrbTzlf",
       "position": {

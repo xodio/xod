@@ -1,8 +1,8 @@
 {
   "nodes": [
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Time interval between switches to `true`, i.e. the period of the square wave.",
       "id": "BJ5HJ6t1f",
@@ -14,8 +14,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Enabled or not. When set to `false` pauses generation preserving the current phase. When set to `true` again continues counting from the saved phase.\n",
       "id": "ByEPkpYkM",
@@ -55,8 +55,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 0.5
+      "boundLiterals": {
+        "__out__": "0.5"
       },
       "description": "Duty cycle. Ratio of `true` signal duration to the whole `IVAL`.",
       "id": "rJS8ypK1z",

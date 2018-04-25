@@ -2,8 +2,8 @@
   "description": "Pulses on output when any input recieves a pulse",
   "nodes": [
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "Never"
       },
       "id": "ByHmL0uHPk-",
       "position": {

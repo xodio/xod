@@ -18,8 +18,8 @@
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Whether values should pass through",
       "id": "rkMROXFwT-",

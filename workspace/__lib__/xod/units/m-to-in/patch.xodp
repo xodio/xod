@@ -26,8 +26,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 39.3701
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "39.3701"
       },
       "id": "ByA89t_LW",
       "position": {

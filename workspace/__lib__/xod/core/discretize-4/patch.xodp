@@ -237,8 +237,8 @@
       "type": "@/if-else"
     },
     {
-      "boundValues": {
-        "r1AgIROHDJW": 3
+      "boundLiterals": {
+        "r1AgIROHDJW": "3"
       },
       "id": "rJ3Eh6bFb",
       "position": {

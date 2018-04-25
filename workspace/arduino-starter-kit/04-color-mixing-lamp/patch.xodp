@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B1PRkPaM-",
@@ -70,12 +69,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
-      "description": "",
       "id": "BJApywTfW",
-      "label": "",
       "position": {
         "x": 10,
         "y": 224
@@ -83,12 +80,10 @@
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {
-        "rJsaFSvk-": 11
+      "boundLiterals": {
+        "rJsaFSvk-": "11"
       },
-      "description": "",
       "id": "BJbLexP6z-",
-      "label": "",
       "position": {
         "x": 266,
         "y": 328
@@ -96,12 +91,10 @@
       "type": "xod/core/pwm-output"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 16
+      "boundLiterals": {
+        "BJuORNheZ": "16"
       },
-      "description": "",
       "id": "BkQAkPpGb",
-      "label": "",
       "position": {
         "x": 266,
         "y": 224
@@ -109,12 +102,10 @@
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {
-        "rJsaFSvk-": 9
+      "boundLiterals": {
+        "rJsaFSvk-": "9"
       },
-      "description": "",
       "id": "SyQeevTfb",
-      "label": "",
       "position": {
         "x": 10,
         "y": 328
@@ -122,12 +113,10 @@
       "type": "xod/core/pwm-output"
     },
     {
-      "boundValues": {
-        "rJsaFSvk-": 10
+      "boundLiterals": {
+        "rJsaFSvk-": "10"
       },
-      "description": "",
       "id": "r1IgevTG-",
-      "label": "",
       "position": {
         "x": 138,
         "y": 328
@@ -135,12 +124,10 @@
       "type": "xod/core/pwm-output"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 15
+      "boundLiterals": {
+        "BJuORNheZ": "15"
       },
-      "description": "",
       "id": "rJWC1DpG-",
-      "label": "",
       "position": {
         "x": 138,
         "y": 224
@@ -148,12 +135,10 @@
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.01
+      "boundLiterals": {
+        "B13SCNhl-": "0.01"
       },
-      "description": "",
       "id": "rkWFJPpGW",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120

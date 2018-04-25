@@ -58,8 +58,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
       "id": "BJpa2yu7b",
       "position": {
@@ -77,13 +77,13 @@
       "type": "xod/core/to-percent"
     },
     {
-      "boundValues": {
-        "BJJqaX4Gb": 10,
-        "HJysTXVMb": 12,
-        "S1nqa7NMZ": 11,
-        "SkBK6Q4fb": 9,
-        "rJlYT7EfW": 8,
-        "rkbjp7Ezb": 13
+      "boundLiterals": {
+        "BJJqaX4Gb": "10",
+        "HJysTXVMb": "12",
+        "S1nqa7NMZ": "11",
+        "SkBK6Q4fb": "9",
+        "rJlYT7EfW": "8",
+        "rkbjp7Ezb": "13"
       },
       "id": "HJblpkuQb",
       "position": {
@@ -93,8 +93,8 @@
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
-      "boundValues": {
-        "Hkqu9oaWb": "Cactus: "
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Cactus: \""
       },
       "id": "S1fZVed7b",
       "position": {
@@ -104,8 +104,8 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 3
+      "boundLiterals": {
+        "B134j4neZ": "3"
       },
       "id": "Sk9gmgOQW",
       "position": {
@@ -115,8 +115,8 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 0.5
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.5"
       },
       "id": "rk2RnkuX-",
       "position": {

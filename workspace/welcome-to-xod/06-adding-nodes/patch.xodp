@@ -27,9 +27,9 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1oqkTnIb": 10,
-        "HyYh1a3LZ": 1
+      "boundLiterals": {
+        "B1oqkTnIb": "10",
+        "HyYh1a3LZ": "1"
       },
       "id": "Hkg_WP4Kb",
       "position": {

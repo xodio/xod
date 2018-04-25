@@ -89,8 +89,8 @@
       "type": "@/if-else(string)"
     },
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 1
+      "boundLiterals": {
+        "SJqZ8COrDkW": "1"
       },
       "id": "Hk8HB-8fhM",
       "position": {
@@ -137,8 +137,8 @@
       "type": "xod/patch-nodes/variadic-1"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 1
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
       },
       "id": "rkbBH-IGnz",
       "position": {

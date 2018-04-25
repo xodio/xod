@@ -2,8 +2,8 @@
   "description": "Outputs pulses at regular intervals",
   "nodes": [
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Tick interval in seconds",
       "id": "B13SCNhl-",
@@ -33,7 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": ""
       },
       "description": "Pulses on each time interval end",
@@ -46,8 +46,8 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Is the clock enabled, i.e. produces ticks? At the moment when set to true, starts counting from scratch.",
       "id": "r1jzp_DTZ",

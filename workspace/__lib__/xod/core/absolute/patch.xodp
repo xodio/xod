@@ -2,8 +2,8 @@
   "description": "Outputs absolute value of an input number",
   "nodes": [
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "id": "B1LNICdSDJW",
       "position": {

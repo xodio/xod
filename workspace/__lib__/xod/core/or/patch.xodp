@@ -26,8 +26,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "False"
       },
       "id": "SJyXI0OrD1-",
       "position": {

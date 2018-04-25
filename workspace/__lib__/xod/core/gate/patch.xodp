@@ -2,8 +2,8 @@
   "description": "Allows values to pass through only if EN pin is set to true",
   "nodes": [
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Whether values should pass through",
       "id": "B1P1nFwaM",

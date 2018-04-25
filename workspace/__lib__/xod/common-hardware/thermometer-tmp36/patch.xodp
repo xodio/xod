@@ -58,8 +58,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new temperature read",
       "id": "Hk_1fUaMW",
@@ -71,11 +71,11 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "HJCWLAdSwyW": 0.35,
-        "rJbGU0_Hv1Z": 25,
-        "rkpbU0OrwyZ": 125,
-        "ry1z8CuBDy-": 0.15
+      "boundLiterals": {
+        "HJCWLAdSwyW": "0.35",
+        "rJbGU0_Hv1Z": "25",
+        "rkpbU0OrwyZ": "125",
+        "ry1z8CuBDy-": "0.15"
       },
       "id": "Hys7MUTfb",
       "position": {

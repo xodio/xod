@@ -81,8 +81,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers the generator update. It will update the output values.",
       "id": "Bke855F1z",
@@ -102,8 +102,8 @@
       "type": "@/tri-wave-map"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
       "id": "HJ4Sc5FJG",
@@ -115,8 +115,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "An interval between wave peaks, i.e. the period of the signal",
       "id": "HJU8B5tkM",

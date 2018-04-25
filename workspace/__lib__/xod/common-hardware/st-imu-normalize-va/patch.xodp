@@ -83,8 +83,8 @@
       "type": "xod/units/deg-to-rad"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 1000
+      "boundLiterals": {
+        "BytUCdHD1-": "1000"
       },
       "id": "rJOApZXF-",
       "position": {

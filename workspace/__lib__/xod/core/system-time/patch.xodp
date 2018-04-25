@@ -2,8 +2,8 @@
   "description": "Outputs time spent since the program start",
   "nodes": [
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new time read",
       "id": "Bk74I0_SPyb",
@@ -15,8 +15,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "description": "The last time read in seconds",
       "id": "BkEVI0uHwJb",

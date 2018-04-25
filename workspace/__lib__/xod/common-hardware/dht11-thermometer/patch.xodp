@@ -69,8 +69,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 100
+      "boundLiterals": {
+        "BytUCdHD1-": "100"
       },
       "id": "BJHDuWi1M",
       "position": {
@@ -108,8 +108,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers an update, i.e. reading values again.",
       "id": "ryeE45PLZ",

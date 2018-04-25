@@ -165,8 +165,8 @@
       "type": "xod/patch-nodes/deprecated"
     },
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 3
+      "boundLiterals": {
+        "SJqZ8COrDkW": "3"
       },
       "id": "SJ7v8pbYb",
       "position": {

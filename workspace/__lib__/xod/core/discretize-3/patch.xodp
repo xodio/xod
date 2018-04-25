@@ -162,8 +162,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "r1AgIROHDJW": 2
+      "boundLiterals": {
+        "r1AgIROHDJW": "2"
       },
       "id": "HJnuj6bKZ",
       "position": {

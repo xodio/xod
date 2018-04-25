@@ -10,8 +10,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "Never"
       },
       "id": "ryVmUAOrvkb",
       "label": "BOOT",
