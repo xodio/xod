@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ensureLiteral } from 'xod-project';
 
 import PinWidget from './PinWidget';
 
@@ -21,7 +20,7 @@ function BoolWidget(props) {
       <select
         className="inspectorSelectInput"
         id={props.elementId}
-        value={ensureLiteral(props.dataType, props.value)}
+        value={props.value}
         onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
@@ -43,7 +42,7 @@ BoolWidget.propTypes = {
   isBindable: PropTypes.bool,
   direction: PropTypes.string,
 
-  value: PropTypes.bool,
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,

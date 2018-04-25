@@ -5,6 +5,7 @@ export { arrangeByFiles, fsSafeName } from './unpack';
 export {
   saveAll,
   saveArrangedFiles,
+  saveProjectAsXodball,
   saveProjectEntirely,
   saveLibraryEntirely,
   saveAllLibrariesEntirely,

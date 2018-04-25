@@ -1,5 +1,4 @@
 {
-  "name": "",
   "patches": {
     "@/any": {
       "attachments": [
@@ -27,8 +26,8 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "Sk1RMe5sz": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "Never"
           },
           "id": "Sk1RMe5sz",
           "position": {
@@ -118,8 +117,8 @@
           "type": "@/console-log"
         },
         "ryCPMe9sz": {
-          "boundValues": {
-            "HkGPfxcjM": 3
+          "boundLiterals": {
+            "HkGPfxcjM": "3"
           },
           "id": "ryCPMe9sz",
           "position": {
@@ -464,9 +463,9 @@
           "type": "@/pot"
         },
         "SkFcfNz2G": {
-          "boundValues": {
-            "ByLUGVz2M": "don't lose this value as well",
-            "r1-UGNGnM": 222
+          "boundLiterals": {
+            "r1-UGNGnM": "222",
+            "ByLUGVz2M": "\"don't lose this value as well\""
           },
           "id": "SkFcfNz2G",
           "position": {
@@ -476,9 +475,9 @@
           "type": "@/with-non-generic-pins"
         },
         "r1RtzVznz": {
-          "boundValues": {
-            "ByLUGVz2M": "don't lose this value",
-            "r1-UGNGnM": 111
+          "boundLiterals": {
+            "r1-UGNGnM": "111",
+            "ByLUGVz2M": "\"don't lose this value\""
           },
           "id": "r1RtzVznz",
           "position": {
@@ -553,8 +552,8 @@
           "type": "xod/patch-nodes/input-number"
         },
         "HkzlCL7w2M": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "id": "HkzlCL7w2M",
           "position": {
@@ -600,8 +599,8 @@
       ],
       "nodes": {
         "B190L7vnf": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "Never"
           },
           "id": "B190L7vnf",
           "position": {
@@ -715,8 +714,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "HylUEGgciz": {
-          "id": "HylUEGgciz",
           "label": "DUMP",
+          "id": "HylUEGgciz",
           "position": {
             "x": 136,
             "y": 0
@@ -724,8 +723,8 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "Sy84Mlcjz": {
-          "id": "Sy84Mlcjz",
           "label": "LINE",
+          "id": "Sy84Mlcjz",
           "position": {
             "x": 0,
             "y": 0
@@ -746,8 +745,8 @@
       "nodes": {
         "SJgl2rcoz": {
           "description": "Board GPIO port number to read from",
-          "id": "SJgl2rcoz",
           "label": "PORT",
+          "id": "SJgl2rcoz",
           "position": {
             "x": -1,
             "y": -1
@@ -763,12 +762,12 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "rJWgxhS9sf": {
-          "boundValues": {
-            "__out__": "CONTINUOUSLY"
+          "boundLiterals": {
+            "__out__": "Continuously"
           },
           "description": "Triggers new read",
-          "id": "rJWgxhS9sf",
           "label": "UPD",
+          "id": "rJWgxhS9sf",
           "position": {
             "x": 127,
             "y": -1
@@ -776,12 +775,12 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "rkegx3rqoz": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "False"
           },
           "description": "The last read signal value",
-          "id": "rkegx3rqoz",
           "label": "SIG",
+          "id": "rkegx3rqoz",
           "position": {
             "x": -1,
             "y": 207
@@ -802,8 +801,8 @@
       "nodes": {
         "HJfTgQRsjM": {
           "description": "Formatted value",
-          "id": "HJfTgQRsjM",
           "label": "STR",
+          "id": "HJfTgQRsjM",
           "position": {
             "x": -1,
             "y": 207
@@ -819,12 +818,12 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "SkepemRsjf": {
-          "boundValues": {
-            "__out__": 2
+          "boundLiterals": {
+            "__out__": "2"
           },
           "description": "Number of digits after dot",
-          "id": "SkepemRsjf",
           "label": "DIG",
+          "id": "SkepemRsjf",
           "position": {
             "x": 127,
             "y": -1
@@ -833,8 +832,8 @@
         },
         "r16xX0ioz": {
           "description": "Number to format",
-          "id": "r16xX0ioz",
           "label": "NUM",
+          "id": "r16xX0ioz",
           "position": {
             "x": -1,
             "y": -1
@@ -1014,12 +1013,12 @@
       ],
       "nodes": {
         "H1bfDMgqiz": {
-          "boundValues": {
+          "boundLiterals": {
             "__in__": ""
           },
           "description": "The latest read value in range 0.0 … 1.0",
-          "id": "H1bfDMgqiz",
           "label": "VAL",
+          "id": "H1bfDMgqiz",
           "position": {
             "x": 0,
             "y": 204
@@ -1035,12 +1034,12 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "HkGMwGgqsG": {
-          "boundValues": {
-            "__out__": "CONTINUOUSLY"
+          "boundLiterals": {
+            "__out__": "Continuously"
           },
           "description": "Triggers new read",
-          "id": "HkGMwGgqsG",
           "label": "UPD",
+          "id": "HkGMwGgqsG",
           "position": {
             "x": 102,
             "y": 0
@@ -1049,8 +1048,8 @@
         },
         "HkGPfxcjM": {
           "description": "Number of a board ADC port to read from",
-          "id": "HkGPfxcjM",
           "label": "PORT",
+          "id": "HkGPfxcjM",
           "position": {
             "x": -1,
             "y": -1
@@ -1478,5 +1477,6 @@
       },
       "path": "@/with-non-generic-pins(number)"
     }
-  }
+  },
+  "name": ""
 }

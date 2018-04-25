@@ -109,14 +109,14 @@ describe('Node', () => {
 
   describe('getAllBoundValues', () => {
     it('should return empty object for node without bound values', () => {
-      const node = Helper.defaultizeNode({ boundValues: {} });
+      const node = Helper.defaultizeNode({ boundLiterals: {} });
       expect(Node.getAllBoundValues(node))
         .to.be.an('object')
         .and.empty();
     });
     it('should return object with shape { pinKey: pinValue }', () => {
       const node = Helper.defaultizeNode({
-        boundValues: {
+        boundLiterals: {
           a: true,
           b: 10,
         },
@@ -131,14 +131,14 @@ describe('Node', () => {
 
   describe('getBoundValue', () => {
     const node = Helper.defaultizeNode({
-      boundValues: {
+      boundLiterals: {
         existing: 'hey-ho',
       },
     });
     const checkJust = pinName => {
       const value = Node.getBoundValue(pinName, node);
       expect(value.isJust).to.be.true();
-      expect(value.getOrElse(null)).to.be.equal(node.boundValues[pinName]);
+      expect(value.getOrElse(null)).to.be.equal(node.boundLiterals[pinName]);
     };
 
     it('should return Maybe.Nothing for undefined value', () => {
@@ -156,13 +156,13 @@ describe('Node', () => {
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('boundValues')
+        .that.have.property('boundLiterals')
         .that.have.property('test')
         .to.be.true();
     });
     it('should return Node with replaced bound value', () => {
       const node = Helper.defaultizeNode({
-        boundValues: {
+        boundLiterals: {
           test: false,
         },
       });
@@ -171,13 +171,13 @@ describe('Node', () => {
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('boundValues')
+        .that.have.property('boundLiterals')
         .that.have.property('test')
         .to.be.true();
     });
     it('should return Node without affecting other bound values', () => {
       const node = Helper.defaultizeNode({
-        boundValues: {
+        boundLiterals: {
           other: false,
         },
       });
@@ -186,7 +186,7 @@ describe('Node', () => {
 
       expect(newNode)
         .to.be.an('object')
-        .that.have.property('boundValues')
+        .that.have.property('boundLiterals')
         .that.have.property('other')
         .to.be.false();
     });

@@ -144,7 +144,7 @@ export const defaultizeNode = R.merge({
   type: '@/default-type',
   label: '',
   description: '',
-  boundValues: {},
+  boundLiterals: {},
   arityLevel: 1,
 });
 

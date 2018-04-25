@@ -9,7 +9,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "ByXnYHPyb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Duty cycle value in range 0.0 … 1.0",
           "label": "DUTY",
           "id": "ByXnYHPyb",
@@ -21,7 +21,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -33,7 +33,7 @@
           "@@type": "xod-project/Node"
         },
         "rJsaFSvk-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Board PWM port to write to",
           "label": "PORT",
           "id": "rJsaFSvk-",
@@ -61,7 +61,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1QQ_nhUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "B1QQ_nhUb",
@@ -73,7 +73,7 @@
           "@@type": "xod-project/Node"
         },
         "BkRma33U-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "BkRma33U-",
@@ -85,7 +85,7 @@
           "@@type": "xod-project/Node"
         },
         "ByZ7_hnUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "ByZ7_hnUb",
@@ -113,7 +113,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1x2RV3eZ": {
-          "boundValues": {
+          "boundLiterals": {
             "__in__": ""
           },
           "description": "",
@@ -127,7 +127,7 @@
           "@@type": "xod-project/Node"
         },
         "H1PnRN2lW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "H1PnRN2lW",
@@ -155,7 +155,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "BkDHHm3JG~S1XVBXhyf~H114eThI-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "BkDHHm3JG~S1XVBXhyf~H114eThI-",
@@ -167,7 +167,7 @@
           "@@type": "xod-project/Node"
         },
         "BkDHHm3JG~S1XVBXhyf~SyqVe6hLb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "BkDHHm3JG~S1XVBXhyf~SyqVe6hLb",
@@ -179,7 +179,7 @@
           "@@type": "xod-project/Node"
         },
         "H1iBrm2Jf": {
-          "boundValues": {
+          "boundLiterals": {
             "B1x2RV3eZ": 11
           },
           "description": "",

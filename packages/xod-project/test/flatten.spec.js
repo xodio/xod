@@ -301,7 +301,7 @@ describe('Flatten', () => {
               a: {
                 id: 'a',
                 type: '@/foo',
-                boundValues: {
+                boundLiterals: {
                   a: true,
                 },
               },
@@ -325,7 +325,7 @@ describe('Flatten', () => {
               c: {
                 id: 'c',
                 type: 'xod/core/number',
-                boundValues: {
+                boundLiterals: {
                   in: 32,
                 },
               },
@@ -353,14 +353,14 @@ describe('Flatten', () => {
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
       expect(terminalA)
-        .to.have.property('boundValues')
+        .to.have.property('boundLiterals')
         .that.deep.equals({
           __out__: true,
         });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
       expect(terminalB)
-        .to.have.property('boundValues')
+        .to.have.property('boundLiterals')
         .that.empty();
 
       const justNodeWithBoundValueForPinA = R.find(
@@ -368,16 +368,16 @@ describe('Flatten', () => {
         nodes
       );
       expect(justNodeWithBoundValueForPinA)
-        .to.have.property('boundValues')
-        .that.deep.equals(project.patches['@/foo'].nodes.c.boundValues);
+        .to.have.property('boundLiterals')
+        .that.deep.equals(project.patches['@/foo'].nodes.c.boundLiterals);
 
       const justNodeWithBoundValueForPinB = R.find(
         R.propEq('id', 'b~c'),
         nodes
       );
       expect(justNodeWithBoundValueForPinB)
-        .to.have.property('boundValues')
-        .that.deep.equals(project.patches['@/foo'].nodes.c.boundValues);
+        .to.have.property('boundLiterals')
+        .that.deep.equals(project.patches['@/foo'].nodes.c.boundLiterals);
     });
     it('correct structure for blinking.xodball', () => {
       const defaultizedBlinking = Helper.loadXodball(
@@ -406,9 +406,9 @@ describe('Flatten', () => {
         nodes
       );
       expect(terminalString)
-        .to.have.property('boundValues')
+        .to.have.property('boundLiterals')
         .that.deep.equals({
-          __out__: 'LED1',
+          __out__: '"LED1"',
         });
 
       const terminalNumber = R.find(
@@ -416,9 +416,9 @@ describe('Flatten', () => {
         nodes
       );
       expect(terminalNumber)
-        .to.have.property('boundValues')
+        .to.have.property('boundLiterals')
         .that.deep.equals({
-          __out__: 1,
+          __out__: '1',
         });
     });
   });
@@ -1449,7 +1449,7 @@ describe('Flatten', () => {
               f: {
                 id: 'f',
                 type: '@/foo',
-                boundValues: {
+                boundLiterals: {
                   b: 32,
                 },
               },
@@ -1509,9 +1509,9 @@ describe('Flatten', () => {
 
       Helper.expectEitherRight(newProject => {
         expect(newProject.patches['@/main'].nodes['f~a'])
-          .to.have.property('boundValues')
+          .to.have.property('boundLiterals')
           .that.have.property('in')
-          .that.equal(project.patches['@/main'].nodes.f.boundValues.b);
+          .that.equal(project.patches['@/main'].nodes.f.boundLiterals.b);
       }, flatProject);
     });
     it('should return cast-nodes with bound values', () => {
@@ -1526,7 +1526,7 @@ describe('Flatten', () => {
               b: {
                 id: 'b',
                 type: '@/foo',
-                boundValues: {
+                boundLiterals: {
                   a2: 32,
                   a3: 27,
                 },
@@ -1709,13 +1709,13 @@ describe('Flatten', () => {
 
       Helper.expectEitherRight(newProject => {
         expect(newProject.patches['@/main'].nodes['b~a2-to-b~b-pin-in2'])
-          .to.have.property('boundValues')
+          .to.have.property('boundLiterals')
           .that.have.property('__in__')
-          .that.equal(project.patches['@/main'].nodes.b.boundValues.a2);
+          .that.equal(project.patches['@/main'].nodes.b.boundLiterals.a2);
         expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2-pin-in2'])
-          .to.have.property('boundValues')
+          .to.have.property('boundLiterals')
           .that.have.property('__in__')
-          .that.equal(project.patches['@/main'].nodes.b.boundValues.a3);
+          .that.equal(project.patches['@/main'].nodes.b.boundLiterals.a3);
       }, flatProject);
     });
     it('should return flat project with correct bound values', () => {
@@ -1725,13 +1725,13 @@ describe('Flatten', () => {
             nodes: {
               f: {
                 type: '@/foo',
-                boundValues: {
+                boundLiterals: {
                   out: 42,
                 },
               },
               m: {
                 type: 'xod/core/multiply',
-                boundValues: {
+                boundLiterals: {
                   in1: 26,
                 },
               },
@@ -1779,7 +1779,7 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
       Helper.expectEitherRight(newProject => {
         const node = newProject.patches['@/main'].nodes.m;
-        expect(node.boundValues).to.deep.equal({
+        expect(node.boundLiterals).to.deep.equal({
           in1: 26,
           in2: 42,
         });

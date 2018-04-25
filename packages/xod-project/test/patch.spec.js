@@ -598,7 +598,7 @@ describe('Patch', () => {
                 CONST.PIN_DIRECTION.INPUT,
                 CONST.PIN_TYPE.STRING
               ),
-              boundValues: {
+              boundLiterals: {
                 [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT]]: 'hello',
               },
             },
@@ -607,7 +607,7 @@ describe('Patch', () => {
                 CONST.PIN_DIRECTION.OUTPUT,
                 CONST.PIN_TYPE.NUMBER
               ),
-              boundValues: {
+              boundLiterals: {
                 [CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT]]: 42,
               },
             },
@@ -630,14 +630,14 @@ describe('Patch', () => {
                 CONST.PIN_DIRECTION.INPUT,
                 CONST.PIN_TYPE.STRING
               ),
-              boundValues: {},
+              boundLiterals: {},
             },
             outNum: {
               type: PPU.getTerminalPath(
                 CONST.PIN_DIRECTION.OUTPUT,
                 CONST.PIN_TYPE.NUMBER
               ),
-              boundValues: {},
+              boundLiterals: {},
             },
           },
         });

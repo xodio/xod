@@ -68,7 +68,7 @@
     "xod/core/concat": {
       "nodes": {
         "Bk_h9jpZW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "Bk_h9jpZW",
@@ -79,7 +79,7 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "BkeKcj6ZZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "TAIL",
           "id": "BkeKcj6ZZ",
@@ -90,7 +90,7 @@
           "type": "xod/patch-nodes/input-string"
         },
         "Hkqu9oaWb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "HEAD",
           "id": "Hkqu9oaWb",
@@ -101,7 +101,7 @@
           "type": "xod/patch-nodes/input-string"
         },
         "rksccsp-W": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "STR",
           "id": "rksccsp-W",
@@ -126,7 +126,7 @@
     "xod/core/console-log": {
       "nodes": {
         "HJdO9HwJ-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "LINE",
           "id": "HJdO9HwJ-",
@@ -137,7 +137,7 @@
           "type": "xod/patch-nodes/input-string"
         },
         "S1n95SDJb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "DUMP",
           "id": "S1n95SDJb",
@@ -148,7 +148,7 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -219,7 +219,7 @@
     "xod/core/cast-to-string(number)": {
       "nodes": {
         "__in__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__in__",
@@ -230,7 +230,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "__out__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__out__",
@@ -241,7 +241,7 @@
           "type": "xod/patch-nodes/output-string"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",

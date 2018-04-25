@@ -102,7 +102,7 @@ export const Node = Model('Node', {
   type: PatchPath,
   label: $.String,
   description: $.String,
-  boundValues: $.StrMap(DataValue),
+  boundLiterals: $.StrMap(DataValue),
   arityLevel: ArityLevel,
 });
 

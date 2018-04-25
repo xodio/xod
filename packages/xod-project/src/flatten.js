@@ -86,11 +86,6 @@ const terminalOriginalDirectionLens = R.lensProp('originalDirection');
 // :: Applicative f => f a -> [(a -> Applicative a)] -> f a
 const reduceChainOver = R.reduce(R.flip(R.chain));
 
-// :: Project -> String -> Patch
-const getPatchByPath = R.curry((project, nodeType) =>
-  R.compose(explode, Project.getPatchByPath(R.__, project))(nodeType)
-);
-
 const isLeafPatchWithImplsOrTerminal = def(
   'isLeafPatchWithImplsOrTerminal :: Patch -> Boolean',
   R.anyPass([
@@ -732,7 +727,7 @@ const rekeyBoundValues = R.curry((boundValues, node) => {
     })(boundValues);
   }
 
-  return R.prop('boundValues', node);
+  return Node.getAllBoundValues(node);
 });
 
 const convertTerminalToInternalTerminal = R.when(isTerminalNode, node => {
@@ -783,12 +778,19 @@ export const extractPatches = R.curry(
             convertTerminalToInternalTerminal,
             // 1.1. Copy and rekey pins from parent node
             node =>
-              R.assoc('boundValues', rekeyBoundValues(boundValues, node), node)
+              R.assoc(
+                'boundLiterals',
+                rekeyBoundValues(boundValues, node),
+                node
+              )
           ),
           R.converge(extractPatches(project, leafPaths), [
             R.compose(getPrefixedId(prefix), Node.getNodeId),
-            R.prop('boundValues'),
-            R.compose(getPatchByPath(project), Node.getNodeType),
+            Node.getAllBoundValues,
+            R.compose(
+              Project.getPatchByPathUnsafe(R.__, project),
+              Node.getNodeType
+            ),
           ])
         )
       ),

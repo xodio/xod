@@ -1,0 +1,124 @@
+{
+  "name": "",
+  "patches": {
+    "@/main": {
+      "links": {
+        "ByK3KfyTM": {
+          "id": "ByK3KfyTM",
+          "input": {
+            "nodeId": "rJO3Yzkpz",
+            "pinKey": "H1v3lCu8-"
+          },
+          "output": {
+            "nodeId": "button",
+            "pinKey": "BJ--G1tI-"
+          }
+        },
+        "H1o2FMJTM": {
+          "id": "H1o2FMJTM",
+          "input": {
+            "nodeId": "thirdparty-nums",
+            "pinKey": "B1C_iV5xG"
+          },
+          "output": {
+            "nodeId": "rJO3Yzkpz",
+            "pinKey": "BJxRgAO8-"
+          }
+        },
+        "SkE6tzJTG": {
+          "id": "SkE6tzJTG",
+          "input": {
+            "nodeId": "H1GatM16M",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "button",
+            "pinKey": "BJ--G1tI-"
+          }
+        },
+        "rkUaYz1aG": {
+          "id": "rkUaYz1aG",
+          "input": {
+            "nodeId": "thirdparty-nums",
+            "pinKey": "BJExOs4clz"
+          },
+          "output": {
+            "nodeId": "H1GatM16M",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "H1GatM16M": {
+          "id": "H1GatM16M",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "xod/core/pulse-on-true"
+        },
+        "thirdparty-nums": {
+          "boundValues": {
+            "BJxxujN9xf": 80,
+            "HJGluiEqeM": 10,
+            "S1mldsE5lz": 2,
+            "SyluoNqlG": 55
+          },
+          "id": "thirdparty-nums",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "awgrover/midi/note"
+        },
+        "button": {
+          "boundValues": {
+            "ByNiWkt8Z": 13
+          },
+          "id": "button",
+          "position": {
+            "x": 204,
+            "y": 0
+          },
+          "type": "xod/common-hardware/button"
+        },
+        "thirdparty-strings": {
+          "boundValues": {
+            "s1": "1231",
+            "s2": "lala"
+          },
+          "id": "thirdparty-strings",
+          "position": {
+            "x": 340,
+            "y": 204
+          },
+          "type": "nkrkv/my-utils/string-equal"
+        },
+        "thirdparty-mixed": {
+          "boundValues": {
+            "num": 12,
+            "s": "lala",
+            "b": true,
+            "p1": false,
+            "p2": "ON_BOOT"
+          },
+          "id": "thirdparty-mixed",
+          "position": {
+            "x": 340,
+            "y": 204
+          },
+          "type": "another/one/patch"
+        },
+        "rJO3Yzkpz": {
+          "id": "rJO3Yzkpz",
+          "position": {
+            "x": 238,
+            "y": 102
+          },
+          "type": "xod/core/pulse-on-false"
+        }
+      },
+      "path": "@/main"
+    }
+  }
+}

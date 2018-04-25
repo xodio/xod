@@ -4,7 +4,7 @@ import { subtractObject } from 'xod-func-tools';
 import { def } from './types';
 
 export const OPTIONAL_NODE_FIELDS = {
-  boundValues: {},
+  boundLiterals: {},
   description: '',
   label: '',
   arityLevel: 1,

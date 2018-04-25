@@ -14,9 +14,9 @@
             "x": 138,
             "y": 16
           },
-          "boundValues": {
-            "rJJbPFO8b": 123,
-            "B1FlPYuL-": 456
+          "boundLiterals": {
+            "rJJbPFO8b": "123",
+            "B1FlPYuL-": "456"
           }
         },
         "H1LrPtdUZ": {
@@ -42,8 +42,8 @@
             "x": 138,
             "y": 432
           },
-          "boundValues": {
-            "S1n95SDJb": "ON_BOOT"
+          "boundLiterals": {
+            "S1n95SDJb": "On Boot"
           }
         }
       },
@@ -265,7 +265,7 @@
     "xod/core/round": {
       "nodes": {
         "BkF78AurDJW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "X",
           "id": "BkF78AurDJW",
@@ -276,7 +276,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -287,8 +287,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "rkO7L0uSP1Z": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "",
           "label": "RND",
@@ -315,7 +315,7 @@
     "xod/core/console-log": {
       "nodes": {
         "HJdO9HwJ-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "LINE",
           "id": "HJdO9HwJ-",
@@ -326,7 +326,7 @@
           "type": "xod/patch-nodes/input-string"
         },
         "S1n95SDJb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "DUMP",
           "id": "S1n95SDJb",
@@ -337,7 +337,7 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -363,7 +363,7 @@
     "xod/core/buffer": {
       "nodes": {
         "HkXm80uHPyb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "A value to store",
           "label": "NEW",
           "id": "HkXm80uHPyb",
@@ -374,7 +374,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "Hy-QUR_BPkZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Saves `NEW` value in memory",
           "label": "UPD",
           "id": "Hy-QUR_BPkZ",
@@ -385,7 +385,7 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -396,8 +396,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "r1lQLAOBwJb": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "The latest saved value ",
           "label": "MEM",
@@ -424,7 +424,7 @@
     "xod/core/cast-to-string(number)": {
       "nodes": {
         "__in__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__in__",
@@ -435,7 +435,7 @@
           "type": "xod/patch-nodes/input-number"
         },
         "__out__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__out__",
@@ -446,7 +446,7 @@
           "type": "xod/patch-nodes/output-string"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",

@@ -7,7 +7,7 @@
     "xod/core/add": {
       "nodes": {
         "BJnQUR_BwyZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "X",
           "id": "BJnQUR_BwyZ",
@@ -19,7 +19,7 @@
           "@@type": "xod-project/Node"
         },
         "HkqmLAOrD1W": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "Y",
           "id": "HkqmLAOrD1W",
@@ -31,8 +31,8 @@
           "@@type": "xod-project/Node"
         },
         "SyomIRurDJ-": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "",
           "label": "SUM",
@@ -45,7 +45,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -75,9 +75,9 @@
         "HJbQvOPL-~r1yIU_vU-": {
           "id": "HJbQvOPL-~r1yIU_vU-",
           "type": "xod/core/add",
-          "boundValues": {
-            "BJnQUR_BwyZ": 111,
-            "HkqmLAOrD1W": 222
+          "boundLiterals": {
+            "BJnQUR_BwyZ": "111",
+            "HkqmLAOrD1W": "222"
           },
           "description": "",
           "label": "",

@@ -16,7 +16,7 @@
       "links": {},
       "nodes": {
         "HkXm80uHPyb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "A value to store",
           "label": "NEW",
           "id": "HkXm80uHPyb",
@@ -28,7 +28,7 @@
           "@@type": "xod-project/Node"
         },
         "Hy-QUR_BPkZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Saves `NEW` value in memory",
           "label": "UPD",
           "id": "Hy-QUR_BPkZ",
@@ -40,7 +40,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -52,8 +52,8 @@
           "@@type": "xod-project/Node"
         },
         "r1lQLAOBwJb": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "The latest saved value ",
           "label": "MEM",
@@ -82,7 +82,7 @@
       "links": {},
       "nodes": {
         "BkF78AurDJW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "X",
           "id": "BkF78AurDJW",
@@ -94,7 +94,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -106,8 +106,8 @@
           "@@type": "xod-project/Node"
         },
         "rkO7L0uSP1Z": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "",
           "label": "RND",
@@ -136,7 +136,7 @@
       "links": {},
       "nodes": {
         "HJdO9HwJ-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "LINE",
           "id": "HJdO9HwJ-",
@@ -148,7 +148,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "DUMP",
           "id": "S1n95SDJb",
@@ -160,7 +160,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -188,7 +188,7 @@
       "links": {},
       "nodes": {
         "__in__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__in__",
@@ -200,7 +200,7 @@
           "@@type": "xod-project/Node"
         },
         "__out__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "__out__",
@@ -212,7 +212,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -231,9 +231,9 @@
     "@/main": {
       "nodes": {
         "rJuzwF_IZ~H1vZPFOUW~HkU68Y_IW": {
-          "boundValues": {
-            "HkXm80uHPyb": 123,
-            "r1lQLAOBwJb": 456
+          "boundLiterals": {
+            "HkXm80uHPyb": "123",
+            "r1lQLAOBwJb": "456"
           },
           "description": "",
           "label": "",
@@ -246,7 +246,7 @@
           "@@type": "xod-project/Node"
         },
         "BJZPPF_Ib": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "BJZPPF_Ib",
@@ -258,8 +258,8 @@
           "@@type": "xod-project/Node"
         },
         "ryN_PKd8W": {
-          "boundValues": {
-            "S1n95SDJb": "ON_BOOT"
+          "boundLiterals": {
+            "S1n95SDJb": "On Boot"
           },
           "description": "",
           "label": "",
@@ -280,7 +280,7 @@
           "type": "xod/core/cast-to-string(number)",
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },

@@ -22,6 +22,7 @@ export const match = R.curry((regExp, groupIndex, string) =>
 export const ensureMaybe = R.ifElse(R.is(Maybe), R.identity, Maybe);
 
 // :: string -> object -> Maybe<*>
+// TODO: Replace with maybeProp
 export const prop = R.curry(R.compose(Maybe, R.prop));
 
 // :: array -> object -> Maybe<*>

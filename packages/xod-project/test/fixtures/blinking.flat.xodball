@@ -12,7 +12,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -24,7 +24,7 @@
         "pin": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "pin",
           "type": "xod/patch-nodes/input-string",
           "position": {
@@ -36,7 +36,7 @@
         "value": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "value",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -64,7 +64,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -76,7 +76,7 @@
         "a": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "a",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -88,7 +88,7 @@
         "b": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "b",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -100,7 +100,7 @@
         "out": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "out",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -128,7 +128,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -140,7 +140,7 @@
         "toggle": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "toggle",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -152,7 +152,7 @@
         "set": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "set",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -164,7 +164,7 @@
         "reset": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "reset",
           "type": "xod/patch-nodes/input-pulse",
           "position": {
@@ -176,7 +176,7 @@
         "state": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "state",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
@@ -204,7 +204,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -216,7 +216,7 @@
         "interval": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "interval",
           "type": "xod/patch-nodes/input-number",
           "position": {
@@ -228,7 +228,7 @@
         "tick": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "tick",
           "type": "xod/patch-nodes/output-pulse",
           "position": {
@@ -256,7 +256,7 @@
         "noNativeImpl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "noNativeImpl",
           "position": {
             "x": 100,
@@ -268,7 +268,7 @@
         "__in__": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "__in__",
           "type": "xod/patch-nodes/input-boolean",
           "position": {
@@ -280,7 +280,7 @@
         "__out__": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "__out__",
           "type": "xod/patch-nodes/output-number",
           "position": {
@@ -308,7 +308,7 @@
         "SJ7g05EdFe~rJWgAqVOtx": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "SJ7g05EdFe~rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
@@ -320,8 +320,8 @@
         "BJ4l0cVdKe~ryFxRcNdKg": {
           "label": "",
           "description": "",
-          "boundValues": {
-            "pin": "LED1"
+          "boundLiterals": {
+            "pin": "\"LED1\""
           },
           "id": "BJ4l0cVdKe~ryFxRcNdKg",
           "type": "xod/core/digital-output",
@@ -334,7 +334,7 @@
         "BJ4l0cVdKe~HkSgA94OYx": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "BJ4l0cVdKe~HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
@@ -346,7 +346,7 @@
         "BJ4l0cVdKe~rJUgCqNuKl": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "BJ4l0cVdKe~rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
@@ -358,7 +358,7 @@
         "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__": {
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "id": "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__",
           "position": {
             "x": 0,
@@ -370,8 +370,8 @@
         "SJ7g05EdFe~rJxgAqV_tl": {
           "label": "",
           "description": "",
-          "boundValues": {
-            "interval": 1
+          "boundLiterals": {
+            "interval": "1"
           },
           "id": "SJ7g05EdFe~rJxgAqV_tl",
           "type": "xod/core/clock",
