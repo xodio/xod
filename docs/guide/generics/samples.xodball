@@ -1,0 +1,235 @@
+{
+  "name": "",
+  "patches": {
+    "@/if-else-samples": {
+      "nodes": {
+        "HJtoE5P2f": {
+          "id": "HJtoE5P2f",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "type": "xod/core/if-else(number)"
+        },
+        "S1TcN9Dnz": {
+          "id": "S1TcN9Dnz",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/core/if-else"
+        },
+        "rkqo4qPnz": {
+          "id": "rkqo4qPnz",
+          "position": {
+            "x": 340,
+            "y": 102
+          },
+          "type": "xod/core/if-else(string)"
+        }
+      },
+      "path": "@/if-else-samples"
+    },
+    "@/main": {
+      "nodes": {
+        "HJIjL9v2f": {
+          "id": "HJIjL9v2f",
+          "position": {
+            "x": 272,
+            "y": 102
+          },
+          "type": "xod/core/if-else(string)"
+        },
+        "HJXj85w3G": {
+          "id": "HJXj85w3G",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "xod/core/if-else(number)"
+        },
+        "HkZoIcwhG": {
+          "id": "HkZoIcwhG",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/core/if-else(string)"
+        },
+        "S1AjL5DhM": {
+          "id": "S1AjL5DhM",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/core/if-else(string)"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/passes": {
+      "links": {
+        "B1zaLwqwhM": {
+          "id": "B1zaLwqwhM",
+          "input": {
+            "nodeId": "Skl6IvqwnM",
+            "pinKey": "BJI7P8t9Z"
+          },
+          "output": {
+            "nodeId": "S1aLvqwnz",
+            "pinKey": "HJhXDIY9-"
+          }
+        },
+        "H1KvvcPhz": {
+          "id": "H1KvvcPhz",
+          "input": {
+            "nodeId": "H1xHv5DhG",
+            "pinKey": "BJI7P8t9Z"
+          },
+          "output": {
+            "nodeId": "rJvDPqPhG",
+            "pinKey": "SyomIRurDJ-"
+          }
+        },
+        "SkV8w9vnf": {
+          "id": "SkV8w9vnf",
+          "input": {
+            "nodeId": "BJsrDqwnG",
+            "pinKey": "B1TSE9tZ-"
+          },
+          "output": {
+            "nodeId": "Bkzrvcw3M",
+            "pinKey": "HJhXDIY9-"
+          }
+        },
+        "SymcLD5Dhz": {
+          "id": "SymcLD5Dhz",
+          "input": {
+            "nodeId": "r1ZqUw9Dhf",
+            "pinKey": "B1TSE9tZ-"
+          },
+          "output": {
+            "nodeId": "HkgcLPcv3f",
+            "pinKey": "HJhXDIY9-"
+          }
+        },
+        "r1f5IwcPhM": {
+          "id": "r1f5IwcPhM",
+          "input": {
+            "nodeId": "HkgcLPcv3f",
+            "pinKey": "BJI7P8t9Z"
+          },
+          "output": {
+            "nodeId": "H15LvqPnG",
+            "pinKey": "HJhXDIY9-"
+          }
+        },
+        "rJQUD9DhG": {
+          "id": "rJQUD9DhG",
+          "input": {
+            "nodeId": "Bkzrvcw3M",
+            "pinKey": "BJI7P8t9Z"
+          },
+          "output": {
+            "nodeId": "H1xHv5DhG",
+            "pinKey": "HJhXDIY9-"
+          }
+        },
+        "ryQ6Uvcw3z": {
+          "id": "ryQ6Uvcw3z",
+          "input": {
+            "nodeId": "BybaUv9v2G",
+            "pinKey": "B1TSE9tZ-"
+          },
+          "output": {
+            "nodeId": "Skl6IvqwnM",
+            "pinKey": "HJhXDIY9-"
+          }
+        }
+      },
+      "nodes": {
+        "BJsrDqwnG": {
+          "id": "BJsrDqwnG",
+          "position": {
+            "x": 0,
+            "y": 306
+          },
+          "type": "xod/common-hardware/text-lcd-16x2-i2c"
+        },
+        "Bkzrvcw3M": {
+          "id": "Bkzrvcw3M",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/core/defer"
+        },
+        "BybaUv9v2G": {
+          "id": "BybaUv9v2G",
+          "position": {
+            "x": 340,
+            "y": 306
+          },
+          "type": "xod/common-hardware/text-lcd-16x2-i2c"
+        },
+        "H15LvqPnG": {
+          "id": "H15LvqPnG",
+          "position": {
+            "x": 238,
+            "y": 102
+          },
+          "type": "xod/core/defer"
+        },
+        "H1xHv5DhG": {
+          "id": "H1xHv5DhG",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/core/defer"
+        },
+        "HkgcLPcv3f": {
+          "id": "HkgcLPcv3f",
+          "position": {
+            "x": 238,
+            "y": 204
+          },
+          "type": "xod/core/defer"
+        },
+        "S1aLvqwnz": {
+          "id": "S1aLvqwnz",
+          "position": {
+            "x": 408,
+            "y": 102
+          },
+          "type": "xod/core/defer"
+        },
+        "Skl6IvqwnM": {
+          "id": "Skl6IvqwnM",
+          "position": {
+            "x": 408,
+            "y": 204
+          },
+          "type": "xod/core/defer"
+        },
+        "r1ZqUw9Dhf": {
+          "id": "r1ZqUw9Dhf",
+          "position": {
+            "x": 170,
+            "y": 306
+          },
+          "type": "xod/common-hardware/text-lcd-16x2-i2c"
+        },
+        "rJvDPqPhG": {
+          "id": "rJvDPqPhG",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/core/add"
+        }
+      },
+      "path": "@/passes"
+    }
+  }
+}

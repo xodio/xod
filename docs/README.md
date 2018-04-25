@@ -52,6 +52,7 @@ User’s guide
 * [Linking rules](./guide/linking-rules/)
 * [Execution model](./guide/execution-model/)
 * [Variadic nodes](./guide/variadics/)
+* [Generic nodes](./guide/generics/)
 
 ### Making your own nodes
 
@@ -62,6 +63,7 @@ User’s guide
 * [Dealing with state in C++](./guide/cpp-state/)
 * [Dealing with time in C++](./guide/cpp-time/)
 * [Creating variadic patch nodes](./guide/creating-variadics/)
+* [Creating generic patch nodes](./guide/creating-generics/)
 
 ### Doing things sequentially
 
