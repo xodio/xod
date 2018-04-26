@@ -107,6 +107,12 @@ const migrateNodeBoundValuesWithoutTypes = node =>
     R.propOr({}, LEGACY_BOUND_VALUES_PROP)
   )(node);
 
+// :: Node -> Node
+const omitEmptyBoundValues = R.when(
+  R.has(LEGACY_BOUND_VALUES_PROP),
+  R.over(R.lensProp(LEGACY_BOUND_VALUES_PROP), R.reject(R.isEmpty))
+);
+
 // :: Patch -> Project -> Project
 const migratePatchBoundValuesToBoundLiterals = R.curry((patch, project) =>
   R.compose(
@@ -132,6 +138,7 @@ const migratePatchBoundValuesToBoundLiterals = R.curry((patch, project) =>
         Project.getPatchByNode(R.__, project)
       )(node)
     ),
+    R.map(omitEmptyBoundValues),
     Patch.listNodes
   )(patch)
 );
@@ -152,5 +159,3 @@ export const migrateBoundValuesToBoundLiterals = def(
       Project.listPatchesWithoutBuiltIns
     )(project)
 );
-
-export default {};
