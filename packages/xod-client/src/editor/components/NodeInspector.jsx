@@ -32,6 +32,8 @@ const getPinWidgetProps = R.applySpec({
   value: R.prop('value'),
   direction: XP.getPinDirection,
   isConnected: R.prop('isConnected'),
+  isInvalid: R.prop('isInvalid'),
+  deducedType: R.prop('deducedType'),
   isBindable: XP.isPinBindable,
   isLastVariadicGroup: R.prop('isLastVariadicGroup'),
   specializations: R.prop('specializations'),

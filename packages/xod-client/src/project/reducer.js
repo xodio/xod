@@ -26,7 +26,9 @@ import { isNotImplementedInXodNode } from './utils';
 // TODO: rewrite this?
 const selectNodePropertyUpdater = ({ kind, key, value }) => {
   if (kind === NODE_PROPERTY_KIND.PIN) {
-    return XP.setBoundValue(key, value);
+    return value === ''
+      ? XP.removeBoundValue(key)
+      : XP.setBoundValue(key, value);
   }
 
   if (kind === NODE_PROPERTY_KIND.PROP) {

@@ -270,6 +270,32 @@ const assocDeducedPinTypes = R.curry((deducedPinTypes, node) =>
   )
 );
 
+const addInvalidLiteralErrors = R.curry((project, currentPatch, node) => {
+  const invalidBoundValueErrors = XP.getInvalidBoundNodePins(
+    project,
+    currentPatch,
+    node
+  );
+
+  return R.compose(
+    R.over(
+      R.lensProp('pins'),
+      R.map(
+        R.when(
+          pin => R.has(XP.getPinKey(pin), invalidBoundValueErrors),
+          R.assoc('isInvalid', true)
+        )
+      )
+    ),
+    R.reduce(
+      (n, eitherError) =>
+        foldEither(err => addError(err, n), R.always(n), eitherError),
+      R.__,
+      R.values(invalidBoundValueErrors)
+    )
+  )(node);
+});
+
 // :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, deducedPinTypes, project) =>
@@ -277,6 +303,7 @@ export const getRenderableNode = R.curry(
       assocDeducedPinTypes(deducedPinTypes),
       addSpecializationsList(project),
       markDeprecatedNodes(project),
+      addInvalidLiteralErrors(project, currentPatch),
       addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),
       addVariadicProps(project),

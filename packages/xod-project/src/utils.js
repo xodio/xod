@@ -1,6 +1,9 @@
 import * as R from 'ramda';
 import shortid from 'shortid';
 
+import { Either } from 'ramda-fantasy';
+import { isAmong, fail, explodeEither } from 'xod-func-tools';
+
 import * as Node from './node';
 import * as CONST from './constants';
 import { def } from './types';
@@ -181,3 +184,38 @@ const numberDataTypeRegExp = new RegExp(
  * - Infinities: +Inf, -Inf
  */
 export const isValidNumberDataValue = R.test(numberDataTypeRegExp);
+
+//
+// getting type from literal value
+//
+
+export const getTypeFromLiteral = def(
+  'getTypeFromLiteral :: DataValue -> Either Error DataType',
+  literal => {
+    if (!R.is(String, literal))
+      return fail('BAD_LITERAL_VALUE', { value: literal });
+
+    if (isAmong(['True', 'False'], literal))
+      return Either.of(CONST.PIN_TYPE.BOOLEAN);
+
+    if (isAmong(R.values(CONST.INPUT_PULSE_PIN_BINDING_OPTIONS), literal))
+      return Either.of(CONST.PIN_TYPE.PULSE);
+
+    if (R.test(/^".*"$/gi, literal)) return Either.of(CONST.PIN_TYPE.STRING);
+
+    if (isValidNumberDataValue(literal))
+      return Either.of(CONST.PIN_TYPE.NUMBER);
+
+    return fail('BAD_LITERAL_VALUE', { value: literal });
+  }
+);
+
+export const getTypeFromLiteralUnsafe = def(
+  'getTypeFromLiteralUnsafe :: DataValue -> DataType',
+  R.pipe(getTypeFromLiteral, explodeEither)
+);
+
+export const isValidLiteral = def(
+  'isValidLiteral :: DataValue -> Boolean',
+  R.pipe(getTypeFromLiteral, Either.isRight)
+);

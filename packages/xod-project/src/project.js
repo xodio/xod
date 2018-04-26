@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 import {
   foldMaybe,
+  catMaybies,
   explodeMaybe,
   explodeEither,
   notEmpty,
@@ -548,6 +549,77 @@ export const validateLinkPins = def(
   }
 );
 
+// Returns a map of PinKey and `Either.Left`s with errors
+// describing node's invalid bound pins
+export const getInvalidBoundNodePins = def(
+  'getInvalidBoundNodePins :: Project -> Patch -> Node -> Map PinKey (Either Error a)',
+  (project, currentPatch, node) => {
+    const nodeId = Node.getNodeId(node);
+
+    const linkedPins = R.compose(
+      R.map(
+        R.ifElse(
+          Link.isLinkInputNodeIdEquals(nodeId),
+          Link.getLinkInputPinKey,
+          Link.getLinkOutputPinKey
+        )
+      ),
+      Patch.listLinksByNode(node)
+    )(currentPatch);
+
+    const patchPath = Patch.getPatchPath(currentPatch);
+
+    const nodeName = R.either(
+      Node.getNodeLabel,
+      R.pipe(Node.getNodeType, PatchPathUtils.getBaseName)
+    )(node);
+
+    const nodePatch = R.compose(
+      getPatchByPathUnsafe(R.__, project),
+      Node.getNodeType
+    )(node);
+
+    return R.compose(
+      catMaybies,
+      R.mapObjIndexed((literal, pinKey) =>
+        R.compose(
+          R.map(pin => {
+            const pinName = R.either(Pin.getPinLabel, Pin.getPinType)(pin);
+
+            return fail('INVALID_LITERAL_BOUND_TO_PIN', {
+              pinName,
+              literal,
+              trace: [patchPath, nodeName],
+            });
+          }),
+          Patch.getVariadicPinByKey
+        )(node, pinKey, nodePatch)
+      ),
+      R.reject(Utils.isValidLiteral),
+      R.omit(linkedPins),
+      Node.getAllBoundValues
+    )(node);
+  }
+);
+
+const checkForInvalidBoundValues = R.curry((project, checkedPatch) =>
+  R.compose(
+    R.map(R.always(checkedPatch)),
+    R.sequence(Either.of),
+    R.map(node => {
+      const invalidBoundValueErrors = R.compose(
+        R.values,
+        getInvalidBoundNodePins
+      )(project, checkedPatch, node);
+
+      return R.isEmpty(invalidBoundValueErrors)
+        ? Either.of(node)
+        : R.head(invalidBoundValueErrors);
+    }),
+    Patch.listNodes
+  )(checkedPatch)
+);
+
 /**
  * Checks `patch` content to be valid:
  *
@@ -606,6 +678,7 @@ export const validatePatchContents = def(
         const deducedPinTypes = deducePinTypes(checkedPatch, project);
         return checkLinks(checkedPatch, deducedPinTypes);
       })
+      .chain(checkForInvalidBoundValues(project))
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validatePatchForVariadics);
   }
@@ -1025,9 +1098,6 @@ export const omitDeadLinksByNodeId = def(
     )
 );
 
-// :: Node -> PinKey -> Patch -> Maybe DataType
-const getPinType = R.compose(R.map(Pin.getPinType), Patch.getVariadicPinByKey);
-
 // Changes type of a node and preserves links connected to it by changing pin keys.
 // Rebinds values of the same type from old pins keys to new.
 // Assumes that node exists, and new type is compatible with the current one.
@@ -1060,15 +1130,22 @@ export const changeNodeTypeUnsafe = def(
           const pinKeyTo = mapOfCorrespondingPinKeys[pinKeyFrom];
           if (R.isNil(pinKeyTo)) return resultingNode;
 
-          const maybePinTypeFrom = getPinType(node, pinKeyFrom, patchFrom);
-          const maybePinTypeTo = getPinType(node, pinKeyTo, patchTo);
+          if (!Utils.isValidLiteral(boundValue)) return resultingNode;
 
-          if (Maybe.isNothing(maybePinTypeFrom)) return resultingNode;
+          const pinTypeFrom = Utils.getTypeFromLiteralUnsafe(boundValue);
 
-          // TODO: when binding to generics is implemented, also rebind
-          // compatible values from generic pins('42' literal to 'number' pin etc),
-          // and any(?) literals to generic pins
-          return R.equals(maybePinTypeFrom, maybePinTypeTo)
+          const maybePinTo = Patch.getVariadicPinByKey(node, pinKeyTo, patchTo);
+          if (Maybe.isNothing(maybePinTo)) return resultingNode;
+          const pinTo = explodeMaybe(
+            "We just checked that it's a Just",
+            maybePinTo
+          );
+
+          if (!Pin.isPinBindable(pinTo)) return resultingNode;
+
+          const pinTypeTo = Pin.getPinType(pinTo);
+
+          return pinTypeFrom === pinTypeTo || Utils.isGenericType(pinTypeTo)
             ? Node.setBoundValue(pinKeyTo, boundValue, resultingNode)
             : resultingNode;
         }),

@@ -28,6 +28,10 @@
       fill: $color-datatype-generic;
     }
 
+    &.hasConflictingBoundValue {
+      @include symbol-coloring($color-datatype-dead);
+    }
+
     &.string {
       @include symbol-coloring($color-datatype-string);
     }
@@ -44,7 +48,7 @@
       @include symbol-coloring($color-datatype-pulse);
     }
 
-    &.dead {
+    &.dead, &.is-invalid {
       @include symbol-coloring($color-datatype-dead);
     }
   }

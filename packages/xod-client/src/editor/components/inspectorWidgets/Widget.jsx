@@ -133,6 +133,8 @@ export default function composeWidget(Component, widgetProps) {
             title={this.props.title}
             normalizedLabel={this.props.normalizedLabel}
             isConnected={this.props.isConnected}
+            isInvalid={this.props.isInvalid}
+            deducedType={this.props.deducedType}
             isLastVariadicGroup={this.props.isLastVariadicGroup}
             isBindable={this.props.isBindable}
             direction={this.props.direction}
@@ -167,6 +169,8 @@ export default function composeWidget(Component, widgetProps) {
     isConnected: PropTypes.bool,
     isLastVariadicGroup: PropTypes.bool,
     isBindable: PropTypes.bool,
+    isInvalid: PropTypes.bool,
+    deducedType: PropTypes.object,
     focused: PropTypes.bool,
     // dispatchers
     onPropUpdate: PropTypes.func.isRequired,
@@ -183,6 +187,8 @@ export default function composeWidget(Component, widgetProps) {
     isConnected: false,
     isLastVariadicGroup: false,
     isBindable: true,
+    isInvalid: false,
+    deducedType: null,
     direction: '',
     onPropUpdate: noop,
     onPinModeSwitch: noop,

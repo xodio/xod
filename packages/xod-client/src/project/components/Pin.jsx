@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { foldEither } from 'xod-func-tools';
-import { PIN_DIRECTION } from 'xod-project';
+import { isGenericType, PIN_DIRECTION } from 'xod-project';
 
 import {
   PIN_RADIUS,
@@ -56,8 +56,13 @@ const Pin = props => {
     ? foldEither(R.always('conflicting'), R.identity, props.deducedType)
     : null;
 
+  const hasConflictingBoundValue =
+    deducedType === 'conflicting' && !props.isConnected && !!props.value;
+
   const symbolClassNames = classNames('symbol', props.type, deducedType, {
+    hasConflictingBoundValue,
     'is-connected': props.isConnected,
+    'is-invalid': props.isInvalid,
   });
 
   const pinCircleCenter = {
@@ -101,7 +106,9 @@ const Pin = props => {
           r={PIN_INNER_RADIUS}
         />
       ) : null}
-      {deducedType ? genericPinMarker(pinCircleCenter, isOutput) : null}
+      {isGenericType(props.type)
+        ? genericPinMarker(pinCircleCenter, isOutput)
+        : null}
       {variadicDots}
     </g>
   );
@@ -112,10 +119,12 @@ Pin.propTypes = {
   label: PropTypes.string,
   type: PropTypes.string,
   deducedType: PropTypes.object,
+  value: PropTypes.any,
   direction: PropTypes.string,
   position: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   isConnected: PropTypes.bool,
+  isInvalid: PropTypes.bool,
   isAcceptingLinks: PropTypes.bool,
   isLastVariadicGroup: PropTypes.bool,
 };

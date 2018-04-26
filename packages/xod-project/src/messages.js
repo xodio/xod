@@ -177,6 +177,12 @@ export default {
     note: `Can't find the Node "${nodeId}" in the patch with path "${patchPath}"`,
     trace,
   }),
+  INVALID_LITERAL_BOUND_TO_PIN: ({ pinName, literal, trace }) => ({
+    title: 'Bad literal value',
+    note: `Value ${literal} bound to ${pinName} is invalid.`,
+    solution: `If you meant a string, surround it with double quotes: "${literal}".`,
+    trace,
+  }),
   LOOPS_DETECTED: () => ({
     title: 'Loops detected',
     note: 'The program has a cycle',
