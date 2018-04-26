@@ -1326,7 +1326,7 @@ describe('Project', () => {
         label: '',
         type: 'string',
         direction: 'input',
-        value: 'LED1',
+        value: '"LED1"',
         order: 0,
       });
       Helper.assertProps(pins.B1wg0qVOtg, {

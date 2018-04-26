@@ -103,12 +103,10 @@ export const explodeMaybe = def(
   }
 );
 
-export const catMaybies = def(
-  'catMaybies :: [Maybe a] -> [a]',
-  R.compose(
-    R.map(explodeMaybe('Expected Just, but got Nothing.')),
-    R.filter(Maybe.isJust)
-  )
+// :: Iterable Maybe a -> Iterable a
+export const catMaybies = R.compose(
+  R.map(explodeMaybe('Expected Just, but got Nothing.')),
+  R.filter(Maybe.isJust)
 );
 
 /**
@@ -189,4 +187,9 @@ export const leftIf = def(
   'leftIf :: (a -> c) -> (a -> b) -> a -> Either b c',
   (condition, leftFn, val) =>
     condition(val) ? Either.of(val) : Either.Left(leftFn(val))
+);
+
+export const maybeProp = def(
+  'maybeProp :: String -> StrMap a -> Maybe a',
+  R.compose(Maybe, R.prop)
 );

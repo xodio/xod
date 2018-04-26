@@ -103,7 +103,7 @@ export const CONST_NODETYPES = {
 // node types that provide a constant pulse,
 // once(on start) or continuously
 export const PULSE_CONST_NODETYPES = {
-  [INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER]: null, // Do not create Node for `Never`
+  // [INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER]: Do not create Node for `Never`
   [INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]: 'xod/core/boot',
   [INPUT_PULSE_PIN_BINDING_OPTIONS.CONTINUOUSLY]: 'xod/core/continuously',
 };

@@ -23,9 +23,9 @@
       },
       "nodes": {
         "SkjpJD4F-": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 0
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "0"
           },
           "id": "SkjpJD4F-",
           "position": {
@@ -54,9 +54,9 @@
       },
       "nodes": {
         "SyiJgwVtb": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 1
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "1"
           },
           "id": "SyiJgwVtb",
           "position": {
@@ -85,9 +85,9 @@
       },
       "nodes": {
         "BykwlvEF-": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 1
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "1"
           },
           "id": "BykwlvEF-",
           "position": {
@@ -116,9 +116,9 @@
       },
       "nodes": {
         "BJ2tewEKb": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 0
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "0"
           },
           "id": "BJ2tewEKb",
           "position": {
@@ -159,9 +159,9 @@
       },
       "nodes": {
         "B1I7-DEYW": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 0.4
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "0.4"
           },
           "id": "B1I7-DEYW",
           "position": {
@@ -202,9 +202,9 @@
       },
       "nodes": {
         "Hkg_WP4Kb": {
-          "boundValues": {
-            "B1oqkTnIb": 10,
-            "HyYh1a3LZ": 1
+          "boundLiterals": {
+            "B1oqkTnIb": "10",
+            "HyYh1a3LZ": "1"
           },
           "id": "Hkg_WP4Kb",
           "position": {
@@ -233,9 +233,9 @@
       },
       "nodes": {
         "H1l2-vNKW": {
-          "boundValues": {
-            "B1oqkTnIb": 11,
-            "HyYh1a3LZ": 1
+          "boundLiterals": {
+            "B1oqkTnIb": "11",
+            "HyYh1a3LZ": "1"
           },
           "id": "H1l2-vNKW",
           "position": {
@@ -245,9 +245,9 @@
           "type": "xod/common-hardware/led"
         },
         "S1X2Wv4FW": {
-          "boundValues": {
-            "B1oqkTnIb": 10,
-            "HyYh1a3LZ": 1
+          "boundLiterals": {
+            "B1oqkTnIb": "10",
+            "HyYh1a3LZ": "1"
           },
           "id": "S1X2Wv4FW",
           "position": {
@@ -288,8 +288,8 @@
       },
       "nodes": {
         "HknqGwVtb": {
-          "boundValues": {
-            "B1oqkTnIb": 10
+          "boundLiterals": {
+            "B1oqkTnIb": "10"
           },
           "id": "HknqGwVtb",
           "label": "LED1",
@@ -300,8 +300,8 @@
           "type": "xod/common-hardware/led"
         },
         "Syi5GPNFZ": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "Syi5GPNFZ",
           "label": "LED2",
@@ -312,8 +312,8 @@
           "type": "xod/common-hardware/led"
         },
         "r1iTfwEFW": {
-          "boundValues": {
-            "B1x2RV3eZ": 0
+          "boundLiterals": {
+            "B1x2RV3eZ": "0"
           },
           "id": "r1iTfwEFW",
           "position": {
@@ -366,8 +366,8 @@
       },
       "nodes": {
         "HyX57vEFZ": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "HyX57vEFZ",
           "label": "LED2",
@@ -378,8 +378,8 @@
           "type": "xod/common-hardware/led"
         },
         "SJnNBvNYZ": {
-          "boundValues": {
-            "B1x2RV3eZ": 1
+          "boundLiterals": {
+            "B1x2RV3eZ": "1"
           },
           "id": "SJnNBvNYZ",
           "position": {
@@ -389,8 +389,8 @@
           "type": "xod/core/constant-number"
         },
         "rkWQ9mDEtW": {
-          "boundValues": {
-            "B1oqkTnIb": 10
+          "boundLiterals": {
+            "B1oqkTnIb": "10"
           },
           "id": "rkWQ9mDEtW",
           "label": "LED1",
@@ -456,8 +456,8 @@
       },
       "nodes": {
         "SJihHwNKb": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "SJihHwNKb",
           "label": "LED2",
@@ -476,8 +476,8 @@
           "type": "xod/common-hardware/pot"
         },
         "Synz8v4Yb": {
-          "boundValues": {
-            "SJ4zUC_BD1-": 2
+          "boundLiterals": {
+            "SJ4zUC_BD1-": "2"
           },
           "id": "Synz8v4Yb",
           "position": {
@@ -487,8 +487,8 @@
           "type": "xod/core/multiply"
         },
         "r1V3SDEtW": {
-          "boundValues": {
-            "B1oqkTnIb": 10
+          "boundLiterals": {
+            "B1oqkTnIb": "10"
           },
           "id": "r1V3SDEtW",
           "label": "LED1",
@@ -530,8 +530,8 @@
       },
       "nodes": {
         "Syv38wNYW": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "Syv38wNYW",
           "position": {
@@ -580,8 +580,8 @@
       },
       "nodes": {
         "Hy3tvDEKZ": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "Hy3tvDEKZ",
           "position": {
@@ -591,8 +591,8 @@
           "type": "xod/common-hardware/servo"
         },
         "rkEKww4tW": {
-          "boundValues": {
-            "H1s0WI6MZ": 1
+          "boundLiterals": {
+            "H1s0WI6MZ": "1"
           },
           "id": "rkEKww4tW",
           "position": {
@@ -633,8 +633,8 @@
       },
       "nodes": {
         "Bklh_vNFb": {
-          "boundValues": {
-            "H1s0WI6MZ": 1
+          "boundLiterals": {
+            "H1s0WI6MZ": "1"
           },
           "id": "Bklh_vNFb",
           "position": {
@@ -644,10 +644,10 @@
           "type": "xod/common-hardware/thermometer-tmp36"
         },
         "HkZpdP4tW": {
-          "boundValues": {
-            "HJCWLAdSwyW": 0,
-            "rkpbU0OrwyZ": 0,
-            "ry1z8CuBDy-": 0
+          "boundLiterals": {
+            "HJCWLAdSwyW": "0",
+            "rkpbU0OrwyZ": "0",
+            "ry1z8CuBDy-": "0"
           },
           "id": "HkZpdP4tW",
           "position": {
@@ -657,8 +657,8 @@
           "type": "xod/core/map-range"
         },
         "rkK3_PEYb": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "rkK3_PEYb",
           "position": {
@@ -711,8 +711,8 @@
       },
       "nodes": {
         "B1WVFPEtZ": {
-          "boundValues": {
-            "H1s0WI6MZ": 1
+          "boundLiterals": {
+            "H1s0WI6MZ": "1"
           },
           "id": "B1WVFPEtZ",
           "position": {
@@ -722,8 +722,8 @@
           "type": "xod/common-hardware/thermometer-tmp36"
         },
         "BJrNFP4tZ": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "BJrNFP4tZ",
           "position": {
@@ -733,10 +733,10 @@
           "type": "xod/common-hardware/servo"
         },
         "rkK7FPNFb": {
-          "boundValues": {
-            "HJCWLAdSwyW": 50,
-            "rkpbU0OrwyZ": 0.5,
-            "ry1z8CuBDy-": 20
+          "boundLiterals": {
+            "HJCWLAdSwyW": "50",
+            "rkpbU0OrwyZ": "0.5",
+            "ry1z8CuBDy-": "20"
           },
           "id": "rkK7FPNFb",
           "position": {
@@ -777,8 +777,8 @@
       },
       "nodes": {
         "S13FKPEFb": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "S13FKPEFb",
           "position": {
@@ -788,8 +788,8 @@
           "type": "xod/common-hardware/led"
         },
         "rkRFKDVF-": {
-          "boundValues": {
-            "ByNiWkt8Z": 13
+          "boundLiterals": {
+            "ByNiWkt8Z": "13"
           },
           "id": "rkRFKDVF-",
           "position": {
@@ -884,8 +884,8 @@
           "type": "xod/core/not"
         },
         "ByCkcvVYW": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "ByCkcvVYW",
           "position": {
@@ -895,8 +895,8 @@
           "type": "xod/common-hardware/led"
         },
         "ByHgcw4Yb": {
-          "boundValues": {
-            "ByNiWkt8Z": 13
+          "boundLiterals": {
+            "ByNiWkt8Z": "13"
           },
           "id": "ByHgcw4Yb",
           "position": {
@@ -906,8 +906,8 @@
           "type": "xod/common-hardware/button"
         },
         "ByVg5w4F-": {
-          "boundValues": {
-            "ByNiWkt8Z": 12
+          "boundLiterals": {
+            "ByNiWkt8Z": "12"
           },
           "id": "ByVg5w4F-",
           "position": {
@@ -976,8 +976,8 @@
       },
       "nodes": {
         "Hk0_5wNY-": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "Hk0_5wNY-",
           "position": {
@@ -1030,8 +1030,8 @@
       },
       "nodes": {
         "BJszoD4tZ": {
-          "boundValues": {
-            "B1oqkTnIb": 10
+          "boundLiterals": {
+            "B1oqkTnIb": "10"
           },
           "id": "BJszoD4tZ",
           "position": {
@@ -1049,8 +1049,8 @@
           "type": "xod/core/less"
         },
         "H1UNiwVt-": {
-          "boundValues": {
-            "BJuORNheZ": 2
+          "boundLiterals": {
+            "BJuORNheZ": "2"
           },
           "id": "H1UNiwVt-",
           "position": {
@@ -1060,8 +1060,8 @@
           "type": "xod/core/analog-input"
         },
         "S1THoPVFZ": {
-          "boundValues": {
-            "HJbACN3gb": 0
+          "boundLiterals": {
+            "HJbACN3gb": "0"
           },
           "id": "S1THoPVFZ",
           "position": {
@@ -1137,8 +1137,8 @@
       },
       "nodes": {
         "Bkxay1E5Z": {
-          "boundValues": {
-            "HJbACN3gb": 0
+          "boundLiterals": {
+            "HJbACN3gb": "0"
           },
           "id": "Bkxay1E5Z",
           "position": {
@@ -1148,8 +1148,8 @@
           "type": "xod/core/greater"
         },
         "By4w_LqoZ": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "By4w_LqoZ",
           "position": {
@@ -1159,9 +1159,9 @@
           "type": "xod/common-hardware/servo"
         },
         "BywpJ149Z": {
-          "boundValues": {
-            "r1AgIROHDJW": 0,
-            "ryTeUROHD1b": 0
+          "boundLiterals": {
+            "r1AgIROHDJW": "0",
+            "ryTeUROHD1b": "0"
           },
           "id": "BywpJ149Z",
           "position": {
@@ -1171,8 +1171,8 @@
           "type": "xod/core/if-else"
         },
         "H1pMkkVqZ": {
-          "boundValues": {
-            "BJuORNheZ": 2
+          "boundLiterals": {
+            "BJuORNheZ": "2"
           },
           "id": "H1pMkkVqZ",
           "position": {
@@ -1247,8 +1247,8 @@
       },
       "nodes": {
         "B185dU5s-": {
-          "boundValues": {
-            "BkweckF8-": 0
+          "boundLiterals": {
+            "BkweckF8-": "0"
           },
           "id": "B185dU5s-",
           "position": {
@@ -1258,8 +1258,8 @@
           "type": "xod/core/fade"
         },
         "B1ki_85jZ": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "B1ki_85jZ",
           "position": {
@@ -1269,8 +1269,8 @@
           "type": "xod/common-hardware/servo"
         },
         "BkiYd85o-": {
-          "boundValues": {
-            "ryTeUROHD1b": 0
+          "boundLiterals": {
+            "ryTeUROHD1b": "0"
           },
           "id": "BkiYd85o-",
           "position": {
@@ -1288,8 +1288,8 @@
           "type": "xod/core/greater"
         },
         "rJyzdUqjZ": {
-          "boundValues": {
-            "BJuORNheZ": 2
+          "boundLiterals": {
+            "BJuORNheZ": "2"
           },
           "id": "rJyzdUqjZ",
           "position": {
@@ -1352,8 +1352,8 @@
           "type": "xod/core/analog-input"
         },
         "Skw0PzVcZ": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "Skw0PzVcZ",
           "position": {
@@ -1395,8 +1395,8 @@
       },
       "nodes": {
         "By-NXQVqW": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "By-NXQVqW",
           "position": {
@@ -1415,8 +1415,8 @@
           "type": "xod/core/analog-input"
         },
         "rk_NQmEqb": {
-          "boundValues": {
-            "B13SCNhl-": 2
+          "boundLiterals": {
+            "B13SCNhl-": "2"
           },
           "id": "rk_NQmEqb",
           "position": {
@@ -1481,8 +1481,8 @@
       },
       "nodes": {
         "Hy_vm7E9b": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "Hy_vm7E9b",
           "position": {
@@ -1563,8 +1563,8 @@
       },
       "nodes": {
         "ByXLOXV9W": {
-          "boundValues": {
-            "B13SCNhl-": 1
+          "boundLiterals": {
+            "B13SCNhl-": "1"
           },
           "id": "ByXLOXV9W",
           "position": {
@@ -1574,8 +1574,8 @@
           "type": "xod/core/clock"
         },
         "HyA_GKr9W": {
-          "boundValues": {
-            "B1oqkTnIb": 11
+          "boundLiterals": {
+            "B1oqkTnIb": "11"
           },
           "id": "HyA_GKr9W",
           "position": {
@@ -1741,10 +1741,10 @@
       },
       "nodes": {
         "B1Epd2S9Z": {
-          "boundValues": {
-            "HJCWLAdSwyW": 1,
-            "rJbGU0_Hv1Z": -0.017,
-            "rkpbU0OrwyZ": 0.017
+          "boundLiterals": {
+            "HJCWLAdSwyW": "1",
+            "rJbGU0_Hv1Z": "-0.017",
+            "rkpbU0OrwyZ": "0.017"
           },
           "id": "B1Epd2S9Z",
           "position": {
@@ -1762,8 +1762,8 @@
           "type": "xod/core/flip-flop"
         },
         "HkJcYQN5W": {
-          "boundValues": {
-            "B13SCNhl-": 1
+          "boundLiterals": {
+            "B13SCNhl-": "1"
           },
           "id": "HkJcYQN5W",
           "label": "step-clock",
@@ -1774,8 +1774,8 @@
           "type": "xod/core/clock"
         },
         "HyJKY74q-": {
-          "boundValues": {
-            "S1vGmu6Gb": 9
+          "boundLiterals": {
+            "S1vGmu6Gb": "9"
           },
           "id": "HyJKY74q-",
           "position": {
@@ -1794,8 +1794,8 @@
           "type": "xod/core/count"
         },
         "SywtF745W": {
-          "boundValues": {
-            "B13SCNhl-": 30
+          "boundLiterals": {
+            "B13SCNhl-": "30"
           },
           "id": "SywtF745W",
           "label": "long-clock",
@@ -1825,15 +1825,15 @@
       },
       "nodes": {
         "BJLI75r9Z": {
-          "boundValues": {
-            "B1TSE9tZ-": "Make",
-            "BJJqaX4Gb": 5,
-            "H1bLN9F-b": "the links!",
-            "HJysTXVMb": 3,
-            "S1nqa7NMZ": 4,
-            "SkBK6Q4fb": 11,
-            "rJlYT7EfW": 12,
-            "rkbjp7Ezb": 2
+          "boundLiterals": {
+            "B1TSE9tZ-": "\"Make\"",
+            "BJJqaX4Gb": "5",
+            "H1bLN9F-b": "\"the links!\"",
+            "HJysTXVMb": "3",
+            "S1nqa7NMZ": "4",
+            "SkBK6Q4fb": "11",
+            "rJlYT7EfW": "12",
+            "rkbjp7Ezb": "2"
           },
           "id": "BJLI75r9Z",
           "position": {
@@ -1843,8 +1843,8 @@
           "type": "xod/common-hardware/text-lcd-16x2"
         },
         "By6RU3IqZ": {
-          "boundValues": {
-            "B1x2RV3eZ": "Hello"
+          "boundLiterals": {
+            "B1x2RV3eZ": "\"Hello\""
           },
           "id": "By6RU3IqZ",
           "position": {
@@ -1854,8 +1854,8 @@
           "type": "xod/core/constant-string"
         },
         "ryvyP3I9-": {
-          "boundValues": {
-            "B1x2RV3eZ": "world!"
+          "boundLiterals": {
+            "B1x2RV3eZ": "\"world!\""
           },
           "id": "ryvyP3I9-",
           "position": {
@@ -1920,13 +1920,13 @@
       },
       "nodes": {
         "BJFi3y8qZ": {
-          "boundValues": {
-            "BJJqaX4Gb": 5,
-            "HJysTXVMb": 3,
-            "S1nqa7NMZ": 4,
-            "SkBK6Q4fb": 11,
-            "rJlYT7EfW": 12,
-            "rkbjp7Ezb": 2
+          "boundLiterals": {
+            "BJJqaX4Gb": "5",
+            "HJysTXVMb": "3",
+            "S1nqa7NMZ": "4",
+            "SkBK6Q4fb": "11",
+            "rJlYT7EfW": "12",
+            "rkbjp7Ezb": "2"
           },
           "id": "BJFi3y8qZ",
           "position": {
@@ -1936,8 +1936,8 @@
           "type": "xod/common-hardware/text-lcd-16x2"
         },
         "BJV7SDJbG": {
-          "boundValues": {
-            "H1s0WI6MZ": 1
+          "boundLiterals": {
+            "H1s0WI6MZ": "1"
           },
           "id": "BJV7SDJbG",
           "position": {
@@ -2018,8 +2018,8 @@
           "type": "xod/core/concat"
         },
         "By5oDu8qW": {
-          "boundValues": {
-            "BJuORNheZ": 0
+          "boundLiterals": {
+            "BJuORNheZ": "0"
           },
           "id": "By5oDu8qW",
           "label": "Photoresistor",
@@ -2046,8 +2046,8 @@
           "type": "xod/common-hardware/text-lcd-16x2"
         },
         "r19sT1I9-": {
-          "boundValues": {
-            "H1s0WI6MZ": 1
+          "boundLiterals": {
+            "H1s0WI6MZ": "1"
           },
           "id": "r19sT1I9-",
           "position": {

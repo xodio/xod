@@ -26,8 +26,8 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "Sk1RMe5sz": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "Never"
           },
           "id": "Sk1RMe5sz",
           "position": {
@@ -117,8 +117,8 @@
           "type": "@/console-log"
         },
         "ryCPMe9sz": {
-          "boundValues": {
-            "HkGPfxcjM": 3
+          "boundLiterals": {
+            "HkGPfxcjM": "3"
           },
           "id": "ryCPMe9sz",
           "position": {
@@ -463,9 +463,9 @@
           "type": "@/pot"
         },
         "SkFcfNz2G": {
-          "boundValues": {
-            "S1mGOG4MhG": "don't lose this value as well",
-            "H1GGdM4Mhz": 222
+          "boundLiterals": {
+            "H1GGdM4Mhz": "222",
+            "S1mGOG4MhG": "\"don't lose this value as well\""
           },
           "id": "SkFcfNz2G",
           "position": {
@@ -475,9 +475,9 @@
           "type": "@/with-non-generic-pins(number)"
         },
         "r1RtzVznz": {
-          "boundValues": {
-            "S1mGOG4MhG": "don't lose this value",
-            "H1GGdM4Mhz": 111
+          "boundLiterals": {
+            "H1GGdM4Mhz": "111",
+            "S1mGOG4MhG": "\"don't lose this value\""
           },
           "id": "r1RtzVznz",
           "position": {
@@ -552,8 +552,8 @@
           "type": "xod/patch-nodes/input-number"
         },
         "HkzlCL7w2M": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "id": "HkzlCL7w2M",
           "position": {
@@ -599,8 +599,8 @@
       ],
       "nodes": {
         "B190L7vnf": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "Never"
           },
           "id": "B190L7vnf",
           "position": {
@@ -762,8 +762,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "rJWgxhS9sf": {
-          "boundValues": {
-            "__out__": "CONTINUOUSLY"
+          "boundLiterals": {
+            "__out__": "Continuously"
           },
           "description": "Triggers new read",
           "label": "UPD",
@@ -775,8 +775,8 @@
           "type": "xod/patch-nodes/input-pulse"
         },
         "rkegx3rqoz": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "False"
           },
           "description": "The last read signal value",
           "label": "SIG",
@@ -818,8 +818,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "SkepemRsjf": {
-          "boundValues": {
-            "__out__": 2
+          "boundLiterals": {
+            "__out__": "2"
           },
           "description": "Number of digits after dot",
           "label": "DIG",
@@ -1013,7 +1013,7 @@
       ],
       "nodes": {
         "H1bfDMgqiz": {
-          "boundValues": {
+          "boundLiterals": {
             "__in__": ""
           },
           "description": "The latest read value in range 0.0 … 1.0",
@@ -1034,8 +1034,8 @@
           "type": "xod/patch-nodes/not-implemented-in-xod"
         },
         "HkGMwGgqsG": {
-          "boundValues": {
-            "__out__": "CONTINUOUSLY"
+          "boundLiterals": {
+            "__out__": "Continuously"
           },
           "description": "Triggers new read",
           "label": "UPD",

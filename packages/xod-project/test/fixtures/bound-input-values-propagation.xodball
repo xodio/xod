@@ -18,9 +18,9 @@
           },
           "description": "",
           "label": "",
-          "boundValues": {
-            "wrapped-add-in-1": 111,
-            "wrapped-add-in-2": 222
+          "boundLiterals": {
+            "wrapped-add-in-1": "111",
+            "wrapped-add-in-2": "222"
           },
           "@@type": "xod-project/Node"
         }
@@ -37,7 +37,7 @@
         "wrapped-add-in-1": {
           "id": "wrapped-add-in-1",
           "type": "xod/patch-nodes/input-number",
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "position": {
             "x": 10,
@@ -49,7 +49,7 @@
         "wrapped-add-in-2": {
           "id": "wrapped-add-in-2",
           "type": "xod/patch-nodes/input-number",
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "position": {
             "x": 266,
@@ -61,7 +61,7 @@
         "H1jEI_PUW": {
           "id": "H1jEI_PUW",
           "type": "xod/patch-nodes/output-number",
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "position": {
             "x": 138,
@@ -73,7 +73,7 @@
         "r1yIU_vU-": {
           "id": "r1yIU_vU-",
           "type": "xod/core/add",
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "position": {
@@ -130,7 +130,7 @@
     "xod/core/add": {
       "nodes": {
         "BJnQUR_BwyZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "X",
           "id": "BJnQUR_BwyZ",
@@ -142,7 +142,7 @@
           "@@type": "xod-project/Node"
         },
         "HkqmLAOrD1W": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "Y",
           "id": "HkqmLAOrD1W",
@@ -154,8 +154,8 @@
           "@@type": "xod-project/Node"
         },
         "SyomIRurDJ-": {
-          "boundValues": {
-            "__in__": 0
+          "boundLiterals": {
+            "__in__": "0"
           },
           "description": "",
           "label": "SUM",
@@ -168,7 +168,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",

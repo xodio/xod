@@ -127,8 +127,8 @@
       "type": "@/if-else(number)"
     },
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 1
+      "boundLiterals": {
+        "SJqZ8COrDkW": "1"
       },
       "id": "SywfxWUGhf",
       "position": {
@@ -147,8 +147,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 1
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
       },
       "id": "r1WzgZLMhG",
       "position": {

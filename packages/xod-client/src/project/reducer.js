@@ -78,6 +78,14 @@ const omitLibPatches = R.curry((libName, project) =>
   )(project)
 );
 
+// :: [Patch] -> Project -> Project
+const assocPatchListAndMigrate = R.curry((patches, project) =>
+  R.pipe(XP.assocPatchListUnsafe, XP.migrateBoundValuesToBoundLiterals)(
+    patches,
+    project
+  )
+);
+
 export default (state = {}, action) => {
   switch (action.type) {
     //
@@ -101,8 +109,10 @@ export default (state = {}, action) => {
 
     case AT.PROJECT_IMPORT: {
       const importedProject = action.payload;
-
-      return XP.mergePatchesList(XP.listLibraryPatches(state), importedProject);
+      return assocPatchListAndMigrate(
+        XP.listLibraryPatches(state),
+        importedProject
+      );
     }
 
     case AT.PROJECT_OPEN: {
@@ -178,7 +188,7 @@ export default (state = {}, action) => {
       );
 
       return R.compose(
-        XP.assocPatchListUnsafe(patches),
+        assocPatchListAndMigrate(patches),
         R.reduce(R.flip(omitLibPatches), R.__, libNames)
       )(state);
     }

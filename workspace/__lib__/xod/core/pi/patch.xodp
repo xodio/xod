@@ -15,8 +15,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1x2RV3eZ": 3.14159265359
+      "boundLiterals": {
+        "B1x2RV3eZ": "3.14159265359"
       },
       "id": "ByYn3jnU-",
       "position": {

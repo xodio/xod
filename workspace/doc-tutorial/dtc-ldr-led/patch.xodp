@@ -25,8 +25,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 0.5
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.5"
       },
       "id": "H1-HhyuQW",
       "position": {
@@ -36,8 +36,8 @@
       "type": "xod/core/less"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
       "id": "HkVEhkO7b",
       "position": {
@@ -47,8 +47,8 @@
       "type": "xod/core/analog-input"
     },
     {
-      "boundValues": {
-        "rJsaFSvk-": 3
+      "boundLiterals": {
+        "rJsaFSvk-": "3"
       },
       "id": "r1kI3k_mZ",
       "position": {

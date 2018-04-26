@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": ""
       },
       "description": "The latest read value in range 0.0 … 1.0",
@@ -33,8 +33,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new read",
       "id": "SyKd0E2x-",

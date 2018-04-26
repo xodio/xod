@@ -27,8 +27,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1oqkTnIb": 11
+      "boundLiterals": {
+        "B1oqkTnIb": "11"
       },
       "id": "S13FKPEFb",
       "position": {
@@ -38,8 +38,8 @@
       "type": "xod/common-hardware/led"
     },
     {
-      "boundValues": {
-        "ByNiWkt8Z": 13
+      "boundLiterals": {
+        "ByNiWkt8Z": "13"
       },
       "id": "rkRFKDVF-",
       "position": {

@@ -3,7 +3,7 @@
     "comments": {},
     "nodes": {
       "VAL": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "Constant value",
         "id": "VAL",
         "label": "VAL",
@@ -14,7 +14,7 @@
         "type": "xod/patch-nodes/output-boolean"
       },
       "noNativeImpl": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "",
         "id": "noNativeImpl",
         "label": "",
@@ -40,8 +40,8 @@
     "comments": {},
     "nodes": {
       "B1x2RV3eZ": {
-        "boundValues": {
-          "__in__": ""
+        "boundLiterals": {
+          "__in__": "0"
         },
         "description": "",
         "id": "B1x2RV3eZ",
@@ -53,7 +53,7 @@
         "type": "xod/patch-nodes/output-number"
       },
       "H1PnRN2lW": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "",
         "id": "H1PnRN2lW",
         "label": "",
@@ -79,8 +79,8 @@
     "comments": {},
     "nodes": {
       "B1x2RV3eZ": {
-        "boundValues": {
-          "__in__": ""
+        "boundLiterals": {
+          "__in__": "\"\""
         },
         "description": "",
         "id": "B1x2RV3eZ",
@@ -92,7 +92,7 @@
         "type": "xod/patch-nodes/output-string"
       },
       "H1PnRN2lW": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "",
         "id": "H1PnRN2lW",
         "label": "",
@@ -118,7 +118,7 @@
     "comments": {},
     "nodes": {
       "BLKANE3xW": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "",
         "id": "BLKANE3xW",
         "label": "",
@@ -129,7 +129,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "C0nt1n10Wl": {
-        "boundValues": {
+        "boundLiterals": {
           "__in__": "false"
         },
         "description": "Continuous pulses",
@@ -157,7 +157,7 @@
     "comments": {},
     "nodes": {
       "noNativeImpl": {
-        "boundValues": {},
+        "boundLiterals": {},
         "description": "",
         "id": "noNativeImpl",
         "label": "",
@@ -168,7 +168,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "ryVmUAOrvkb": {
-        "boundValues": {
+        "boundLiterals": {
           "__in__": false
         },
         "description": "",

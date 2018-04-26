@@ -81,8 +81,8 @@
       "type": "xod/core/not"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 11
+      "boundLiterals": {
+        "B1oqkTnIb": "11"
       },
       "id": "ByCkcvVYW",
       "position": {
@@ -92,8 +92,8 @@
       "type": "xod/common-hardware/led"
     },
     {
-      "boundValues": {
-        "ByNiWkt8Z": 13
+      "boundLiterals": {
+        "ByNiWkt8Z": "13"
       },
       "id": "ByHgcw4Yb",
       "position": {
@@ -103,8 +103,8 @@
       "type": "xod/common-hardware/button"
     },
     {
-      "boundValues": {
-        "ByNiWkt8Z": 12
+      "boundLiterals": {
+        "ByNiWkt8Z": "12"
       },
       "id": "ByVg5w4F-",
       "position": {

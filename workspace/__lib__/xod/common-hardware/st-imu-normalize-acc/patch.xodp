@@ -56,8 +56,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 16000
+      "boundLiterals": {
+        "BytUCdHD1-": "16000"
       },
       "id": "SJ1TjWXKZ",
       "position": {

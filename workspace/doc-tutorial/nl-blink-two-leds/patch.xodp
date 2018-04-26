@@ -36,8 +36,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B134j4neZ": 12
+      "boundLiterals": {
+        "B134j4neZ": "12"
       },
       "id": "B1dVAhL7W",
       "position": {
@@ -55,8 +55,8 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.25
+      "boundLiterals": {
+        "B13SCNhl-": "0.25"
       },
       "id": "S1Ag03LX-",
       "position": {
@@ -66,8 +66,8 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 13
+      "boundLiterals": {
+        "B134j4neZ": "13"
       },
       "id": "S1omR28X-",
       "position": {

@@ -42,10 +42,10 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "HJCWLAdSwyW": 100,
-        "rJbGU0_Hv1Z": 32,
-        "rkpbU0OrwyZ": 212
+      "boundLiterals": {
+        "HJCWLAdSwyW": "100",
+        "rJbGU0_Hv1Z": "32",
+        "rkpbU0OrwyZ": "212"
       },
       "id": "r1VkETdU-",
       "position": {

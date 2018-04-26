@@ -22,8 +22,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "False"
       },
       "description": "The stored value",
       "id": "HkyxURuSPyW",

@@ -102,4 +102,4 @@ export * from './versionUtils';
 export * from './xodball';
 export * from './typeDeduction';
 export { default as messages } from './messages';
-export { ensureLiteral } from './legacy';
+export { ensureLiteral, migrateBoundValuesToBoundLiterals } from './legacy';

@@ -86,8 +86,8 @@
       "type": "xod/core/add"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 10
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "10"
       },
       "id": "BJ1p9dggf",
       "position": {
@@ -97,8 +97,8 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "ByjTuuxef": 15
+      "boundLiterals": {
+        "ByjTuuxef": "15"
       },
       "id": "S12C5_elM",
       "position": {
@@ -116,8 +116,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "BkvUuuleG": 4
+      "boundLiterals": {
+        "BkvUuuleG": "4"
       },
       "id": "rkojcOgxz",
       "position": {

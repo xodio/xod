@@ -337,8 +337,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Time to be OFF per cycle. In seconds.",
       "id": "SJ1e-CKkf",
@@ -368,8 +368,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Time to be ON per cycle. In seconds.",
       "id": "r1v0xCYJf",
@@ -381,9 +381,9 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "BJnQUR_BwyZ": 1,
-        "HkqmLAOrD1W": 1
+      "boundLiterals": {
+        "BJnQUR_BwyZ": "1",
+        "HkqmLAOrD1W": "1"
       },
       "id": "rJO3UCFkG",
       "position": {
@@ -401,8 +401,8 @@
       "type": "@/flip-flop"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "Number of times the signal should pass the on-off cycle",
       "id": "rknsx0tyf",

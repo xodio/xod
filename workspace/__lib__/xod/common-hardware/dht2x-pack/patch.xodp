@@ -194,8 +194,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "HJbACN3gb": 127
+      "boundLiterals": {
+        "HJbACN3gb": "127"
       },
       "id": "B1JY0go1G",
       "position": {
@@ -222,8 +222,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 127
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "127"
       },
       "id": "Byqq0ljkz",
       "position": {
@@ -284,8 +284,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 10
+      "boundLiterals": {
+        "BytUCdHD1-": "10"
       },
       "id": "Sy8v7bikf",
       "position": {
@@ -312,8 +312,8 @@
       "type": "xod/core/word-to-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 1000
+      "boundLiterals": {
+        "BytUCdHD1-": "1000"
       },
       "description": "Divide by 10 to calculate percents. Divide by 100 to convert to [0, 1] range",
       "id": "r1EHReikf",

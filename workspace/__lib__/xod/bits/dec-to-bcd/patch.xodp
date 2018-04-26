@@ -105,8 +105,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "HylHuulxf": 4
+      "boundLiterals": {
+        "HylHuulxf": "4"
       },
       "id": "HkXfO3bef",
       "position": {
@@ -116,8 +116,8 @@
       "type": "@/shift-left"
     },
     {
-      "boundValues": {
-        "BJvrLOuyz": 10
+      "boundLiterals": {
+        "BJvrLOuyz": "10"
       },
       "id": "Hy9hPhWxG",
       "position": {
@@ -135,8 +135,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 10
+      "boundLiterals": {
+        "BytUCdHD1-": "10"
       },
       "id": "rJvRD3WeG",
       "position": {

@@ -138,10 +138,10 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "B1-BIa-t-": 48,
-        "BJTNLT-Kb": 16,
-        "Bk1HU6btW": 32
+      "boundLiterals": {
+        "B1-BIa-t-": "48",
+        "BJTNLT-Kb": "16",
+        "Bk1HU6btW": "32"
       },
       "id": "r1QJ6a-K-",
       "position": {

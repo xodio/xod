@@ -144,10 +144,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "HJCWLAdSwyW": 1,
-        "rJbGU0_Hv1Z": -0.017,
-        "rkpbU0OrwyZ": 0.017
+      "boundLiterals": {
+        "HJCWLAdSwyW": "1",
+        "rJbGU0_Hv1Z": "-0.017",
+        "rkpbU0OrwyZ": "0.017"
       },
       "id": "B1Epd2S9Z",
       "position": {
@@ -165,8 +165,8 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 1
+      "boundLiterals": {
+        "B13SCNhl-": "1"
       },
       "id": "HkJcYQN5W",
       "label": "step-clock",
@@ -177,8 +177,8 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "S1vGmu6Gb": 9
+      "boundLiterals": {
+        "S1vGmu6Gb": "9"
       },
       "id": "HyJKY74q-",
       "position": {
@@ -197,8 +197,8 @@
       "type": "xod/core/count"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 30
+      "boundLiterals": {
+        "B13SCNhl-": "30"
       },
       "id": "SywtF745W",
       "label": "long-clock",

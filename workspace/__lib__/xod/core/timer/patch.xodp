@@ -29,8 +29,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers the time value update.",
       "id": "S1akTPOJf",
@@ -42,8 +42,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "__out__": true
+      "boundLiterals": {
+        "__out__": "True"
       },
       "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the timer is paused. Set to `true` again to continue time counting.",
       "id": "r1W1Tw_yz",

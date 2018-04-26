@@ -32,8 +32,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "An upper bound of the range.",
       "id": "Hy_U0013b",

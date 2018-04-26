@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "B1A54O6Mb",
@@ -48,12 +47,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "S1vGmu6Gb": 9
+      "boundLiterals": {
+        "S1vGmu6Gb": "9"
       },
-      "description": "",
       "id": "By76Nu6zW",
-      "label": "",
       "position": {
         "x": 10,
         "y": 432
@@ -61,10 +58,7 @@
       "type": "xod/common-hardware/servo"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "HJc-POpzZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 432
@@ -72,12 +66,10 @@
       "type": "xod/core/console-log"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.02
+      "boundLiterals": {
+        "B13SCNhl-": "0.02"
       },
-      "description": "",
       "id": "HkxcNOafZ",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -85,12 +77,10 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
-      "description": "",
       "id": "S1hcEOTz-",
-      "label": "",
       "position": {
         "x": 138,
         "y": 224

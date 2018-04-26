@@ -418,8 +418,8 @@
       "type": "xod/core/i2c-write"
     },
     {
-      "boundValues": {
-        "HyEhduNuZ": 0
+      "boundLiterals": {
+        "HyEhduNuZ": "0"
       },
       "id": "HJXx8dgxf",
       "position": {
@@ -457,8 +457,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "ByjTuuxef": 127
+      "boundLiterals": {
+        "ByjTuuxef": "127"
       },
       "description": "MSB is a control bit",
       "id": "Hy2QFOlgM",
@@ -493,8 +493,8 @@
       "type": "xod/core/i2c-read"
     },
     {
-      "boundValues": {
-        "HkqmLAOrD1W": 2000
+      "boundLiterals": {
+        "HkqmLAOrD1W": "2000"
       },
       "id": "SJdz-pMlz",
       "position": {
@@ -504,8 +504,8 @@
       "type": "xod/core/add"
     },
     {
-      "boundValues": {
-        "Hk3Wdu4dZ": 7
+      "boundLiterals": {
+        "Hk3Wdu4dZ": "7"
       },
       "id": "SyXRHdelG",
       "position": {
@@ -531,8 +531,8 @@
       "type": "xod/core/i2c-end-transmission"
     },
     {
-      "boundValues": {
-        "__out__": 104
+      "boundLiterals": {
+        "__out__": "104"
       },
       "description": "I²C address of the IC",
       "id": "r1MmSdlgM",
@@ -554,8 +554,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers a new reading, i.e. date/time values update",
       "id": "r1o7Hdlgf",
@@ -577,8 +577,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "ByjTuuxef": 63
+      "boundLiterals": {
+        "ByjTuuxef": "63"
       },
       "description": "MSB are control bits",
       "id": "rJHIt_geG",

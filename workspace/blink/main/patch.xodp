@@ -25,9 +25,9 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B13SCNhl-": 0.25,
-        "BJJICN2lW": false
+      "boundLiterals": {
+        "B13SCNhl-": "0.25",
+        "BJJICN2lW": "Never"
       },
       "id": "By6HVYHZb",
       "position": {
@@ -37,9 +37,9 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 13,
-        "HJ6HsEngZ": false
+      "boundLiterals": {
+        "B134j4neZ": "13",
+        "HJ6HsEngZ": "False"
       },
       "id": "SyeDNFBWZ",
       "position": {
@@ -49,10 +49,10 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B1RU0OrDkb": false,
-        "Bkh8A_Sv1-": false,
-        "ryTIROHwkW": false
+      "boundLiterals": {
+        "B1RU0OrDkb": "Never",
+        "Bkh8A_Sv1-": "Never",
+        "ryTIROHwkW": "Never"
       },
       "id": "rkwIEFrWb",
       "position": {

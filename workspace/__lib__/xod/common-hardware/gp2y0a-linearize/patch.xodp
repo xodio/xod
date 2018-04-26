@@ -152,8 +152,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 5
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "5"
       },
       "description": "Converts to voltage: 0V..5V",
       "id": "BymKDSw8W",
@@ -165,8 +165,8 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "SkdIRuBD1b": 1
+      "boundLiterals": {
+        "SkdIRuBD1b": "1"
       },
       "description": "Convert 1/(L+SHFT) → L+SHFT",
       "id": "HJ8g_rP8W",
@@ -204,8 +204,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 0
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "0"
       },
       "id": "Hk1vOrPIZ",
       "position": {
@@ -233,8 +233,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "BytUCdHD1-": 100
+      "boundLiterals": {
+        "BytUCdHD1-": "100"
       },
       "description": "Convert centimeters to meters",
       "id": "rJE5_BwLb",

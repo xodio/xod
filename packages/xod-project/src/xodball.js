@@ -22,7 +22,7 @@ import {
 import { Project, def } from './types';
 
 export const fromXodballData = def(
-  'fromXodballData :: Object -> Either String Project',
+  'fromXodballData :: Object -> Either Error Project',
   R.compose(
     R.map(injectProjectTypeHints),
     foldEither(() => fail('INVALID_XODBALL_FORMAT', {}), Either.of),
@@ -37,7 +37,7 @@ export const fromXodballDataUnsafe = def(
 );
 
 export const fromXodball = def(
-  'fromXodball :: String -> Either String Project',
+  'fromXodball :: String -> Either Error Project',
   jsonString =>
     R.tryCatch(R.pipe(JSON.parse, Either.of), input =>
       fail('NOT_A_JSON', { input })

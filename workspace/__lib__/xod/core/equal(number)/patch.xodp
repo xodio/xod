@@ -2,8 +2,8 @@
   "description": "Outputs true if `IN1` = `IN2`, and false otherwise",
   "nodes": [
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "False"
       },
       "id": "H1E8AuSPkZ",
       "position": {

@@ -34,8 +34,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 57.295779513
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "57.295779513"
       },
       "id": "HkGRCinUW",
       "position": {

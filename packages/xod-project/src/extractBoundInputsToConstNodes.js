@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { explodeEither } from 'xod-func-tools';
+import { explodeEither, maybeProp, catMaybies } from 'xod-func-tools';
 
 import * as Pin from './pin';
 import * as Node from './node';
@@ -111,13 +111,16 @@ const getMapOfNodePinTypes = def(
 const getMapOfExtractablePinPaths = def(
   'getMapOfExtractablePinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
   R.compose(
-    R.map(R.reject(R.isNil)),
+    R.map(catMaybies),
     R.map(
       R.map(
         ([pinType, pinValue]) =>
           pinType === PIN_TYPE.PULSE
-            ? PULSE_CONST_NODETYPES[ensureLiteral(pinType, pinValue)]
-            : CONST_NODETYPES[pinType]
+            ? R.compose(
+                R.chain(maybeProp(R.__, PULSE_CONST_NODETYPES)),
+                ensureLiteral
+              )(pinType, pinValue)
+            : maybeProp(pinType, CONST_NODETYPES)
       )
     ),
     R.converge(R.mergeWith(R.mergeWith(Array.of)), [
@@ -301,6 +304,7 @@ const extractBoundInputsToConstNodes = def(
       entryPointNodes,
       flatProject
     );
+
     const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, origProject);
 
     const newConstNodes = createNodesWithBoundValues(

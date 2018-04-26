@@ -7,7 +7,7 @@
       "comments": {},
       "nodes": {
         "a": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "a",

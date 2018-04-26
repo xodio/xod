@@ -19,7 +19,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "HkaBTLFNb": {
@@ -31,8 +31,8 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {
-            "HJdO9HwJ-": "It works!"
+          "boundLiterals": {
+            "HJdO9HwJ-": "\"It works!\""
           },
           "@@type": "xod-project/Node"
         },
@@ -45,7 +45,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "rkJv68YEZ": {
@@ -57,7 +57,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },
@@ -128,7 +128,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "SJR_6UYV-": {
@@ -140,7 +140,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "SkbFTLFN-": {
@@ -152,7 +152,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "BJpKaIYNW": {
@@ -164,7 +164,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },
@@ -223,7 +223,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "H1QsTLFEW": {
@@ -235,7 +235,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "rkNsaLt4b": {
@@ -247,7 +247,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "BJ5saUt4W": {
@@ -259,7 +259,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },
@@ -318,7 +318,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "ry4d68KEZ": {
@@ -330,7 +330,7 @@
           },
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },
@@ -359,8 +359,8 @@
       "links": {},
       "nodes": {
         "ByHmL0uHPk-": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "False"
           },
           "description": "",
           "id": "ByHmL0uHPk-",
@@ -373,7 +373,7 @@
           "@@type": "xod-project/Node"
         },
         "ByU7LRuSPkW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "ByU7LRuSPkW",
           "label": "P2",
@@ -385,7 +385,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "noNativeImpl",
           "label": "",
@@ -397,7 +397,7 @@
           "@@type": "xod-project/Node"
         },
         "ryv7IRdSP1b": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "ryv7IRdSP1b",
           "label": "P1",
@@ -425,7 +425,7 @@
       "links": {},
       "nodes": {
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "noNativeImpl",
           "label": "",
@@ -437,8 +437,8 @@
           "@@type": "xod-project/Node"
         },
         "ryVmUAOrvkb": {
-          "boundValues": {
-            "__in__": false
+          "boundLiterals": {
+            "__in__": "False"
           },
           "description": "",
           "id": "ryVmUAOrvkb",
@@ -467,7 +467,7 @@
       "links": {},
       "nodes": {
         "HJdO9HwJ-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "HJdO9HwJ-",
           "label": "LINE",
@@ -479,7 +479,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "S1n95SDJb",
           "label": "DUMP",
@@ -491,7 +491,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "noNativeImpl",
           "label": "",

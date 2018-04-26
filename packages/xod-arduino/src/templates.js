@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
-import { unquote } from 'xod-func-tools';
+import { unquote, foldMaybe } from 'xod-func-tools';
 import { ensureLiteral, PIN_TYPE } from 'xod-project';
 
 import { def } from './types';
@@ -119,22 +119,27 @@ Handlebars.registerHelper('global', function global(options) {
 
 Handlebars.registerHelper('cppType', type => cppType(type));
 
+const UNKNOWN_TYPE = 'unknown_type<void>';
+
 // Converts bound value literals or JS-typed data value to a
 // string that is valid and expected C++ literal representing that value
 Handlebars.registerHelper('cppValue', (type, value) =>
   R.compose(
-    R.propOr(R.always('unknown_type<void>'), type, {
-      [PIN_TYPE.PULSE]: R.always('false'),
-      [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
-      [PIN_TYPE.NUMBER]: R.cond([
-        [R.equals('Inf'), R.always('INFINITY')],
-        [R.equals('+Inf'), R.always('INFINITY')],
-        [R.equals('-Inf'), R.always('(-INFINITY)')],
-        [R.equals('NaN'), R.always('NAN')],
-        [R.T, R.identity],
-      ]),
-      [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
-    }),
+    foldMaybe(
+      UNKNOWN_TYPE,
+      R.propOr(R.always(UNKNOWN_TYPE), type, {
+        [PIN_TYPE.PULSE]: R.always('false'),
+        [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
+        [PIN_TYPE.NUMBER]: R.cond([
+          [R.equals('Inf'), R.always('INFINITY')],
+          [R.equals('+Inf'), R.always('INFINITY')],
+          [R.equals('-Inf'), R.always('(-INFINITY)')],
+          [R.equals('NaN'), R.always('NAN')],
+          [R.T, R.identity],
+        ]),
+        [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
+      })
+    ),
     ensureLiteral
   )(type, value)
 );

@@ -14,8 +14,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "rJsaFSvk-": 3
+      "boundLiterals": {
+        "rJsaFSvk-": "3"
       },
       "id": "SyzRqkuXW",
       "position": {
@@ -25,8 +25,8 @@
       "type": "xod/core/pwm-output"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 14
+      "boundLiterals": {
+        "BJuORNheZ": "14"
       },
       "id": "rkBp5y_QZ",
       "position": {

@@ -113,8 +113,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 1
+      "boundLiterals": {
+        "__out__": "1"
       },
       "description": "An iterval between sawtooth peaks, i.e. the period of the function",
       "id": "Bk2ZBdOyf",

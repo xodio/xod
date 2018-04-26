@@ -338,8 +338,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "Hk3Wdu4dZ": 6
+      "boundLiterals": {
+        "Hk3Wdu4dZ": "6"
       },
       "id": "r1Tvyt4_W",
       "position": {

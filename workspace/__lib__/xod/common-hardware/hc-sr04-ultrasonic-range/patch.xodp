@@ -77,8 +77,8 @@
       "type": "@/hc-sr04-ultrasonic-time"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 170
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "170"
       },
       "description": "Multiply by 340 m/s (speed of sound) and divide by 2 (roundtrip)",
       "id": "H17aAZ08Z",
@@ -89,8 +89,8 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Triggers new ultrasonic ping which would result in the output update once sound echo will be captured. Pulses coming within 60 ms window after last one are ignored to fight sensor’s PCB resonance.",
       "id": "SJmoRbAUW",

@@ -1,8 +1,8 @@
 {
   "nodes": [
     {
-      "boundValues": {
-        "__in__": ""
+      "boundLiterals": {
+        "__in__": "\"\""
       },
       "id": "B1x2RV3eZ",
       "label": "VAL",

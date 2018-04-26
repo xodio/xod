@@ -1,5 +1,4 @@
 {
-  "description": "",
   "links": [
     {
       "id": "BkkfSNOfZ",
@@ -136,12 +135,10 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B13SCNhl-": 0.03
+      "boundLiterals": {
+        "B13SCNhl-": "0.03"
       },
-      "description": "",
       "id": "B1j6VV_Gb",
-      "label": "",
       "position": {
         "x": 138,
         "y": 120
@@ -149,10 +146,7 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BJf-rNdMZ",
-      "label": "",
       "position": {
         "x": 394,
         "y": 224
@@ -160,10 +154,7 @@
       "type": "xod/core/boot"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "BkkVBNuGZ",
-      "label": "",
       "position": {
         "x": 522,
         "y": 536
@@ -171,10 +162,9 @@
       "type": "xod/core/not"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.25
+      "boundLiterals": {
+        "B13SCNhl-": "0.25"
       },
-      "description": "",
       "id": "Hy5eHEuM-",
       "label": "250 ms",
       "position": {
@@ -184,10 +174,7 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "S1DqDNOf-",
-      "label": "",
       "position": {
         "x": 266,
         "y": 536
@@ -195,10 +182,9 @@
       "type": "xod/core/not"
     },
     {
-      "boundValues": {
-        "B1ZUA_Hv1W": 2
+      "boundLiterals": {
+        "B1ZUA_Hv1W": "2"
       },
-      "description": "",
       "id": "S1_iNVOGb",
       "label": "Button",
       "position": {
@@ -208,10 +194,7 @@
       "type": "xod/core/digital-input"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "SJ4mB4Oz-",
-      "label": "",
       "position": {
         "x": 394,
         "y": 432
@@ -219,10 +202,9 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 5
+      "boundLiterals": {
+        "B134j4neZ": "5"
       },
-      "description": "",
       "id": "SJm_NVOzZ",
       "label": "Red LED #2",
       "position": {
@@ -232,10 +214,9 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 4
+      "boundLiterals": {
+        "B134j4neZ": "4"
       },
-      "description": "",
       "id": "SyZdNN_GW",
       "label": "Red LED #1",
       "position": {
@@ -245,10 +226,7 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "r1aKwN_GZ",
-      "label": "",
       "position": {
         "x": 266,
         "y": 640
@@ -256,10 +234,9 @@
       "type": "xod/core/and"
     },
     {
-      "boundValues": {
-        "B134j4neZ": 3
+      "boundLiterals": {
+        "B134j4neZ": "3"
       },
-      "description": "",
       "id": "rJivV4OzZ",
       "label": "Green LED",
       "position": {
@@ -269,10 +246,7 @@
       "type": "xod/core/digital-output"
     },
     {
-      "boundValues": {},
-      "description": "",
       "id": "rkFYD4Ofb",
-      "label": "",
       "position": {
         "x": 394,
         "y": 640

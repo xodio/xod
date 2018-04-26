@@ -82,8 +82,8 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "boundValues": {
-        "__out__": " "
+      "boundLiterals": {
+        "__out__": "\" \""
       },
       "description": "Delimiter character or string",
       "id": "rJGQNB4df",

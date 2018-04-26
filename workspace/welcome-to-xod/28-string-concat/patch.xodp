@@ -59,8 +59,8 @@
       "type": "xod/core/concat"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 0
+      "boundLiterals": {
+        "BJuORNheZ": "0"
       },
       "id": "By5oDu8qW",
       "label": "Photoresistor",
@@ -87,8 +87,8 @@
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
-      "boundValues": {
-        "H1s0WI6MZ": 1
+      "boundLiterals": {
+        "H1s0WI6MZ": "1"
       },
       "id": "r19sT1I9-",
       "position": {

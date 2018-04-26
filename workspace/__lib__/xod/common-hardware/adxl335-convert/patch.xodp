@@ -71,8 +71,8 @@
       "type": "xod/patch-nodes/utility"
     },
     {
-      "boundValues": {
-        "SJ4zUC_BD1-": 5
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "5"
       },
       "id": "S1pcrcIKW",
       "position": {
@@ -82,10 +82,10 @@
       "type": "xod/core/multiply"
     },
     {
-      "boundValues": {
-        "HJCWLAdSwyW": 3.3,
-        "rJbGU0_Hv1Z": -3,
-        "rkpbU0OrwyZ": 3
+      "boundLiterals": {
+        "HJCWLAdSwyW": "3.3",
+        "rJbGU0_Hv1Z": "-3",
+        "rkpbU0OrwyZ": "3"
       },
       "id": "SJMTS58KW",
       "position": {

@@ -102,8 +102,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 0.2
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.2"
       },
       "id": "BksoSk7Gb",
       "position": {

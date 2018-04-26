@@ -30,8 +30,8 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "description": "The constrained value",
       "id": "rJWWUAdHDyW",

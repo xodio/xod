@@ -61,8 +61,8 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "BkweckF8-": 0
+      "boundLiterals": {
+        "BkweckF8-": "0"
       },
       "id": "B185dU5s-",
       "position": {
@@ -72,8 +72,8 @@
       "type": "xod/core/fade"
     },
     {
-      "boundValues": {
-        "S1vGmu6Gb": 9
+      "boundLiterals": {
+        "S1vGmu6Gb": "9"
       },
       "id": "B1ki_85jZ",
       "position": {
@@ -83,8 +83,8 @@
       "type": "xod/common-hardware/servo"
     },
     {
-      "boundValues": {
-        "ryTeUROHD1b": 0
+      "boundLiterals": {
+        "ryTeUROHD1b": "0"
       },
       "id": "BkiYd85o-",
       "position": {
@@ -102,8 +102,8 @@
       "type": "xod/core/greater"
     },
     {
-      "boundValues": {
-        "BJuORNheZ": 2
+      "boundLiterals": {
+        "BJuORNheZ": "2"
       },
       "id": "rJyzdUqjZ",
       "position": {

@@ -47,13 +47,13 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "BJJqaX4Gb": 10,
-        "HJysTXVMb": 12,
-        "S1nqa7NMZ": 11,
-        "SkBK6Q4fb": 9,
-        "rJlYT7EfW": 8,
-        "rkbjp7Ezb": 13
+      "boundLiterals": {
+        "BJJqaX4Gb": "10",
+        "HJysTXVMb": "12",
+        "S1nqa7NMZ": "11",
+        "SkBK6Q4fb": "9",
+        "rJlYT7EfW": "8",
+        "rkbjp7Ezb": "13"
       },
       "id": "BkugQ2aW-",
       "position": {
@@ -63,8 +63,8 @@
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
-      "boundValues": {
-        "B13SCNhl-": 0.03
+      "boundLiterals": {
+        "B13SCNhl-": "0.03"
       },
       "id": "H1td7jabb",
       "position": {
@@ -74,11 +74,11 @@
       "type": "xod/core/clock"
     },
     {
-      "boundValues": {
-        "ByYVLkXGW": "...",
-        "H1BmSyQfW": 18,
-        "HJmDrymzW": 2,
-        "SJTLQkXz-": "Crassula: "
+      "boundLiterals": {
+        "ByYVLkXGW": "\"...\"",
+        "H1BmSyQfW": "18",
+        "HJmDrymzW": "2",
+        "SJTLQkXz-": "\"Crassula: \""
       },
       "id": "SJHtPk7Gb",
       "position": {
@@ -88,11 +88,11 @@
       "type": "@/plant"
     },
     {
-      "boundValues": {
-        "ByYVLkXGW": "...",
-        "H1BmSyQfW": 19,
-        "HJmDrymzW": 3,
-        "SJTLQkXz-": "Cactus: "
+      "boundLiterals": {
+        "ByYVLkXGW": "\"...\"",
+        "H1BmSyQfW": "19",
+        "HJmDrymzW": "3",
+        "SJTLQkXz-": "\"Cactus: \""
       },
       "id": "rk1KD1mMZ",
       "position": {

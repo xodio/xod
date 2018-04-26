@@ -15,15 +15,15 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "B1TSE9tZ-": "Make",
-        "BJJqaX4Gb": 5,
-        "H1bLN9F-b": "the links!",
-        "HJysTXVMb": 3,
-        "S1nqa7NMZ": 4,
-        "SkBK6Q4fb": 11,
-        "rJlYT7EfW": 12,
-        "rkbjp7Ezb": 2
+      "boundLiterals": {
+        "B1TSE9tZ-": "\"Make\"",
+        "BJJqaX4Gb": "5",
+        "H1bLN9F-b": "\"the links!\"",
+        "HJysTXVMb": "3",
+        "S1nqa7NMZ": "4",
+        "SkBK6Q4fb": "11",
+        "rJlYT7EfW": "12",
+        "rkbjp7Ezb": "2"
       },
       "id": "BJLI75r9Z",
       "position": {
@@ -33,8 +33,8 @@
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": "Hello"
+      "boundLiterals": {
+        "B1x2RV3eZ": "\"Hello\""
       },
       "id": "By6RU3IqZ",
       "position": {
@@ -44,8 +44,8 @@
       "type": "xod/core/constant-string"
     },
     {
-      "boundValues": {
-        "B1x2RV3eZ": "world!"
+      "boundLiterals": {
+        "B1x2RV3eZ": "\"world!\""
       },
       "id": "ryvyP3I9-",
       "position": {

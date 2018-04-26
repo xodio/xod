@@ -123,8 +123,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 6
+      "boundLiterals": {
+        "__out__": "6"
       },
       "description": "Sensitivity. Can be 6 (default), 12, or 24. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±12g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
       "id": "S1x-AsWKb",
@@ -136,8 +136,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": 24
+      "boundLiterals": {
+        "__out__": "24"
       },
       "description": "I²C address. 24 by default. Some board configurations use 25 instead.",
       "id": "SJFeRsZYW",
@@ -149,8 +149,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Update. Triggers new sensor reading.",
       "id": "Syc-0sWtZ",
@@ -162,15 +162,15 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "BkVN0JQYW": 39,
-        "ByfrajWF-": 12,
-        "HkI8TabKZ": 24,
-        "HyDRXZXKb": 6,
-        "SymAXb7KW": 3,
-        "r10RQb7FZ": 12,
-        "rkKV6s-Yb": 6,
-        "ryrBTjZtZ": 1000
+      "boundLiterals": {
+        "BkVN0JQYW": "39",
+        "ByfrajWF-": "12",
+        "HkI8TabKZ": "24",
+        "HyDRXZXKb": "6",
+        "SymAXb7KW": "3",
+        "r10RQb7FZ": "12",
+        "rkKV6s-Yb": "6",
+        "ryrBTjZtZ": "1000"
       },
       "id": "r1ZJ0iWFW",
       "position": {

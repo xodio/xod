@@ -51,13 +51,13 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "BJJqaX4Gb": 5,
-        "HJysTXVMb": 3,
-        "S1nqa7NMZ": 4,
-        "SkBK6Q4fb": 11,
-        "rJlYT7EfW": 12,
-        "rkbjp7Ezb": 2
+      "boundLiterals": {
+        "BJJqaX4Gb": "5",
+        "HJysTXVMb": "3",
+        "S1nqa7NMZ": "4",
+        "SkBK6Q4fb": "11",
+        "rJlYT7EfW": "12",
+        "rkbjp7Ezb": "2"
       },
       "id": "BJFi3y8qZ",
       "position": {
@@ -67,8 +67,8 @@
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
-      "boundValues": {
-        "H1s0WI6MZ": 1
+      "boundLiterals": {
+        "H1s0WI6MZ": "1"
       },
       "id": "BJV7SDJbG",
       "position": {

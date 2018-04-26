@@ -11,7 +11,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1oqkTnIb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Board port number the LED is connected to. The port should be capable of generating PWM signal.",
           "label": "PORT",
           "id": "B1oqkTnIb",
@@ -23,7 +23,7 @@
           "@@type": "xod-project/Node"
         },
         "H114eThI-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "H114eThI-",
@@ -35,7 +35,7 @@
           "@@type": "xod-project/Node"
         },
         "HyYh1a3LZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Luminance (brightness) value in relative units [0.0, 1.0].",
           "label": "LUM",
           "id": "HyYh1a3LZ",
@@ -47,7 +47,7 @@
           "@@type": "xod-project/Node"
         },
         "SyqVe6hLb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "SyqVe6hLb",
@@ -106,7 +106,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "ByXnYHPyb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Duty cycle value in range 0.0 … 1.0",
           "label": "DUTY",
           "id": "ByXnYHPyb",
@@ -118,7 +118,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "noNativeImpl",
@@ -130,7 +130,7 @@
           "@@type": "xod-project/Node"
         },
         "rJsaFSvk-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "Board PWM port to write to",
           "label": "PORT",
           "id": "rJsaFSvk-",
@@ -158,7 +158,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1QQ_nhUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "B1QQ_nhUb",
@@ -170,7 +170,7 @@
           "@@type": "xod-project/Node"
         },
         "BkRma33U-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "BkRma33U-",
@@ -182,7 +182,7 @@
           "@@type": "xod-project/Node"
         },
         "ByZ7_hnUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "ByZ7_hnUb",
@@ -210,7 +210,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1x2RV3eZ": {
-          "boundValues": {
+          "boundLiterals": {
             "__in__": ""
           },
           "description": "",
@@ -224,7 +224,7 @@
           "@@type": "xod-project/Node"
         },
         "H1PnRN2lW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "H1PnRN2lW",
@@ -265,7 +265,7 @@
             "x": 102,
             "y": 102
           },
-          "boundValues": {
+          "boundLiterals": {
             "B1x2RV3eZ": 11
           }
         }
@@ -295,7 +295,7 @@
             "y": 0
           },
           "label": "PORT",
-          "boundValues": {
+          "boundLiterals": {
             "__out__": 13
           }
         },

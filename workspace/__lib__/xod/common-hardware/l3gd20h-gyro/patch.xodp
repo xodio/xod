@@ -111,16 +111,16 @@
       "type": "@/st-imu-normalize-va"
     },
     {
-      "boundValues": {
-        "BkVN0JQYW": 15,
-        "ByfrajWF-": 500,
-        "HkI8TabKZ": 2000,
-        "HyDRXZXKb": 17.5,
-        "SJ5A7bXFb": 70,
-        "SymAXb7KW": 8.75,
-        "r10RQb7FZ": 70,
-        "rkKV6s-Yb": 250,
-        "ryrBTjZtZ": 2000
+      "boundLiterals": {
+        "BkVN0JQYW": "15",
+        "ByfrajWF-": "500",
+        "HkI8TabKZ": "2000",
+        "HyDRXZXKb": "17.5",
+        "SJ5A7bXFb": "70",
+        "SymAXb7KW": "8.75",
+        "r10RQb7FZ": "70",
+        "rkKV6s-Yb": "250",
+        "ryrBTjZtZ": "2000"
       },
       "id": "HJ0lHkQYW",
       "position": {
@@ -166,8 +166,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 106
+      "boundLiterals": {
+        "__out__": "106"
       },
       "description": "I²C address. 106 by default. Some board configurations use 107 instead.",
       "id": "SJOWBJQKW",
@@ -189,8 +189,8 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "__out__": 250
+      "boundLiterals": {
+        "__out__": "250"
       },
       "description": "Sensitivity. Can be 250 (default), 500, or 2000. Defines bounds of measurements expressed in degrees per second. E.g. max ±500 degrees per second. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
       "id": "rk5-Hy7tW",
@@ -202,8 +202,8 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundValues": {
-        "__out__": "CONTINUOUSLY"
+      "boundLiterals": {
+        "__out__": "Continuously"
       },
       "description": "Update. Triggers new sensor reading.",
       "id": "ryCZH1QKb",

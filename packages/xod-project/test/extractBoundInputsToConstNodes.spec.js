@@ -30,20 +30,20 @@ describe('extractBoundInputsToConstNodes', () => {
       },
       [getInputPinKey(XP.PIN_TYPE.NUMBER)]: {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.NUMBER),
-        boundValues: {
-          __out__: 37,
+        boundLiterals: {
+          __out__: '37',
         },
       },
       'on-boot': {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.PULSE),
-        boundValues: {
-          __out__: 'ON_BOOT', // Legacy
+        boundLiterals: {
+          __out__: 'On Boot',
         },
       },
       continuously: {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.PULSE),
-        boundValues: {
-          __out__: 'CONTINUOUSLY', // Legacy
+        boundLiterals: {
+          __out__: 'Continuously',
         },
       },
       'some-output': {
@@ -60,8 +60,8 @@ describe('extractBoundInputsToConstNodes', () => {
         nodes: {
           'test-node': {
             type: testPatchPath,
-            boundValues: {
-              'some-output': 42,
+            boundLiterals: {
+              'some-output': '42',
             },
           },
         },
@@ -104,6 +104,7 @@ describe('extractBoundInputsToConstNodes', () => {
     );
 
     const project = R.clone(testProject);
+
     const newProject = XP.extractBoundInputsToConstNodes(
       project,
       mainPatchPath,
@@ -148,7 +149,7 @@ describe('extractBoundInputsToConstNodes', () => {
             nodes: {
               [testNodeId]: {
                 type: testPatchPath,
-                boundValues: {
+                boundLiterals: {
                   [boundPinKey]: boundValue,
                 },
               },
@@ -234,13 +235,17 @@ describe('extractBoundInputsToConstNodes', () => {
 
   testBoundPin(
     XP.PIN_TYPE.BOOLEAN,
-    true,
+    'True',
     XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]
   );
-  testBoundPin(XP.PIN_TYPE.NUMBER, 42, XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]);
+  testBoundPin(
+    XP.PIN_TYPE.NUMBER,
+    '42',
+    XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]
+  );
   testBoundPin(
     XP.PIN_TYPE.STRING,
-    'hello',
+    '"hello"',
     XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]
   );
 

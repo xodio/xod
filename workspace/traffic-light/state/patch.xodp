@@ -219,8 +219,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 12
+      "boundLiterals": {
+        "B1oqkTnIb": "12"
       },
       "id": "B1gA1Z6TW",
       "position": {
@@ -239,8 +239,8 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 11
+      "boundLiterals": {
+        "B1oqkTnIb": "11"
       },
       "id": "BJPRkZa6W",
       "position": {
@@ -300,8 +300,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__out__": 2
+      "boundLiterals": {
+        "__out__": "2"
       },
       "id": "SJg7tQjTW",
       "label": "DUR",
@@ -329,8 +329,8 @@
       "type": "xod/core/gate-boolean"
     },
     {
-      "boundValues": {
-        "B1oqkTnIb": 13
+      "boundLiterals": {
+        "B1oqkTnIb": "13"
       },
       "id": "SyITkWa6b",
       "position": {

@@ -22,8 +22,8 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "boundValues": {
-        "__in__": false
+      "boundLiterals": {
+        "__in__": "Never"
       },
       "description": "Pulses with `TRIG` when `GATE` is true",
       "id": "SJUl8Aurv1W",
@@ -35,7 +35,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundValues": {
+      "boundLiterals": {
         "__in__": ""
       },
       "description": "Pulses with `TRIG` when `GATE` is false",

@@ -1,0 +1,50 @@
+{
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "HkNV_4Ahz": {
+          "id": "HkNV_4Ahz",
+          "type": "@/led",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "boundLiterals": {
+            "BktfOERnG": "0.75"
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/led": {
+      "nodes": {
+        "Bk8fdEChM": {
+          "id": "Bk8fdEChM",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "label": "PORT",
+          "boundLiterals": {
+            "__out__": "13"
+          }
+        },
+        "BktfOERnG": {
+          "id": "BktfOERnG",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "label": "LUM",
+          "boundLiterals": {
+            "__out__": "0.5"
+          }
+        }
+      },
+      "path": "@/led"
+    }
+  },
+  "name": ""
+}

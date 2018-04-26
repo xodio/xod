@@ -2,8 +2,8 @@
   "description": "Outputs either input value depending on condition",
   "nodes": [
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
       "id": "S13xLCuHvkW",

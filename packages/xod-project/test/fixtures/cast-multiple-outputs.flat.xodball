@@ -17,7 +17,7 @@
       "comments": {},
       "nodes": {
         "Bk_h9jpZW": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "Bk_h9jpZW",
           "label": "",
@@ -29,7 +29,7 @@
           "@@type": "xod-project/Node"
         },
         "BkeKcj6ZZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "BkeKcj6ZZ",
           "label": "TAIL",
@@ -41,7 +41,7 @@
           "@@type": "xod-project/Node"
         },
         "Hkqu9oaWb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "Hkqu9oaWb",
           "label": "HEAD",
@@ -53,7 +53,7 @@
           "@@type": "xod-project/Node"
         },
         "rksccsp-W": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "rksccsp-W",
           "label": "STR",
@@ -81,7 +81,7 @@
       "comments": {},
       "nodes": {
         "Hk5ccgtI-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "Hk5ccgtI-",
@@ -93,7 +93,7 @@
           "@@type": "xod-project/Node"
         },
         "HkjwYxKUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "OUT_A",
           "id": "HkjwYxKUb",
@@ -105,7 +105,7 @@
           "@@type": "xod-project/Node"
         },
         "rJqjcxYUZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "rJqjcxYUZ",
@@ -117,7 +117,7 @@
           "@@type": "xod-project/Node"
         },
         "rkavKlFUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "OUT_B",
           "id": "rkavKlFUb",
@@ -145,7 +145,7 @@
       "comments": {},
       "nodes": {
         "HJdO9HwJ-": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "HJdO9HwJ-",
           "label": "LINE",
@@ -157,7 +157,7 @@
           "@@type": "xod-project/Node"
         },
         "S1n95SDJb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "S1n95SDJb",
           "label": "DUMP",
@@ -169,7 +169,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "noNativeImpl",
           "label": "",
@@ -197,7 +197,7 @@
       "comments": {},
       "nodes": {
         "__in__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "__in__",
           "label": "",
@@ -209,7 +209,7 @@
           "@@type": "xod-project/Node"
         },
         "__out__": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "__out__",
           "label": "",
@@ -221,7 +221,7 @@
           "@@type": "xod-project/Node"
         },
         "noNativeImpl": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "id": "noNativeImpl",
           "label": "",
@@ -240,7 +240,7 @@
       "comments": {},
       "nodes": {
         "B1VMtgtUb": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "B1VMtgtUb",
@@ -252,7 +252,7 @@
           "@@type": "xod-project/Node"
         },
         "HyXhclKUZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "HyXhclKUZ",
@@ -264,7 +264,7 @@
           "@@type": "xod-project/Node"
         },
         "rk5MteYLZ": {
-          "boundValues": {},
+          "boundLiterals": {},
           "description": "",
           "label": "",
           "id": "rk5MteYLZ",
@@ -284,7 +284,7 @@
           "type": "xod/core/cast-to-string(number)",
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         },
         "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb": {
@@ -296,7 +296,7 @@
           "type": "xod/core/cast-to-string(number)",
           "label": "",
           "description": "",
-          "boundValues": {},
+          "boundLiterals": {},
           "@@type": "xod-project/Node"
         }
       },

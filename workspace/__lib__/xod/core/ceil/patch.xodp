@@ -2,8 +2,8 @@
   "description": "Rounds a number to a minimal integer that is greater than the number",
   "nodes": [
     {
-      "boundValues": {
-        "__in__": 0
+      "boundLiterals": {
+        "__in__": "0"
       },
       "id": "BkdbLAuSPyZ",
       "position": {
