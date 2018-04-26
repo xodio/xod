@@ -2,8 +2,10 @@ import * as R from 'ramda';
 import { Maybe, Either } from 'ramda-fantasy';
 import {
   foldEither,
+  foldMaybe,
   reduceEither,
   explodeEither,
+  explodeMaybe,
   catMaybies,
   fail,
   failOnNothing,
@@ -39,7 +41,7 @@ const getPinTypesFromLinks = (
   getOutwardPinKeyFromLink,
   getOwnPinKeyFromLink,
   previouslyDeducedTypes,
-  getPatchByNodeId, // :: NodeId -> Patch
+  getPatchByNodeId, // :: NodeId -> Maybe Patch
   linksToNode,
   entryPatch
 ) =>
@@ -47,23 +49,27 @@ const getPinTypesFromLinks = (
     catMaybies,
     R.map(link => {
       const outwardNodeId = getOutwardNodeIdFromLink(link);
-      const outwardNode = Patch.getNodeByIdUnsafe(outwardNodeId, entryPatch);
       const outwardPinKey = getOutwardPinKeyFromLink(link);
+      const maybeOutwardNode = Patch.getNodeById(outwardNodeId, entryPatch);
 
       // :: Maybe (PinKey, DataType)
-      return R.compose(
-        R.map(R.pair(getOwnPinKeyFromLink(link))),
-        R.chain(
-          maybeGetTypeFromPreviouslyDeduced(
-            outwardNodeId,
-            outwardPinKey,
-            previouslyDeducedTypes
-          )
-        ),
-        R.map(Pin.getPinType),
-        Patch.getVariadicPinByKey(outwardNode, outwardPinKey),
-        getPatchByNodeId
-      )(outwardNodeId);
+      return R.chain(
+        outwardNode =>
+          R.compose(
+            R.map(R.pair(getOwnPinKeyFromLink(link))),
+            R.chain(
+              maybeGetTypeFromPreviouslyDeduced(
+                outwardNodeId,
+                outwardPinKey,
+                previouslyDeducedTypes
+              )
+            ),
+            R.map(Pin.getPinType),
+            R.chain(Patch.getVariadicPinByKey(outwardNode, outwardPinKey)),
+            getPatchByNodeId
+          )(outwardNodeId),
+        maybeOutwardNode
+      );
     })
   )(linksToNode);
 
@@ -105,7 +111,14 @@ const deducePinTypesForNode = (
   pinTypesFromLinks
 ) => {
   const abstractNodeId = Node.getNodeId(abstractNode);
-  const abstractPatch = getPatchByNodeId(abstractNodeId);
+  const abstractPatch = R.compose(
+    explodeMaybe(
+      `Impossible error: at this point patch ${Node.getNodeType(
+        abstractNode
+      )} is guaranteed to exist`
+    ),
+    getPatchByNodeId
+  )(abstractNodeId);
   // :: Map DataType [PinKey]
   const pinKeysByGenericType = getPinKeysByGenericType(
     abstractNode,
@@ -161,33 +174,31 @@ const omitIntermediateAmbiguousPins = (
   listIntermediatePins
 ) =>
   R.mapObjIndexed((pinTypes, nodeId) =>
-    R.compose(
-      R.omit(R.__, pinTypes),
-      R.filter(
-        R.pipe(R.propOr(Either.Left([]), R.__, pinTypes), Either.isLeft)
+    foldMaybe(
+      {},
+      R.compose(
+        R.omit(R.__, pinTypes),
+        R.filter(
+          R.pipe(R.propOr(Either.Left([]), R.__, pinTypes), Either.isLeft)
+        ),
+        R.map(Pin.getPinKey),
+        listIntermediatePins
       ),
-      R.map(Pin.getPinKey),
-      listIntermediatePins,
-      getPatchByNodeId
-    )(nodeId)
+      getPatchByNodeId(nodeId)
+    )
   );
 
 export const deducePinTypes = def(
   'deducePinTypes :: Patch -> Project -> DeducedPinTypes',
   (patch, project) => {
-    // :: NodeId -> Patch
-    const getPatchByNodeId = Project.getPatchByNodeIdUnsafe(
-      R.__,
-      patch,
-      project
-    );
+    // :: NodeId -> Maybe Patch
+    const getPatchByNodeId = Project.getPatchByNodeId(R.__, patch, project);
 
     // :: [Node]
     const toposortedAbstractNodes = R.compose(
       R.filter(
         R.compose(
-          R.any(Pin.isGenericPin),
-          Patch.listPins,
+          foldMaybe(false, R.pipe(Patch.listPins, R.any(Pin.isGenericPin))),
           getPatchByNodeId,
           Node.getNodeId
         )
@@ -298,9 +309,8 @@ const listGenericNodes = (patch, project) =>
   R.compose(
     R.filter(
       R.compose(
-        R.any(Pin.isGenericPin),
-        Patch.listPins,
-        Project.getPatchByNodeIdUnsafe(R.__, patch, project),
+        foldMaybe(false, R.pipe(Patch.listPins, R.any(Pin.isGenericPin))),
+        Project.getPatchByNodeId(R.__, patch, project),
         Node.getNodeId
       )
     ),
