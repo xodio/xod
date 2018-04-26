@@ -62,8 +62,8 @@ const createPinWidgetsConfig = R.compose(
 );
 
 const NodeLabelWidget = Widgets.composeWidget(
-  Widgets.LabelWidget,
-  getNodeWidgetConfig(WIDGET_TYPE.STRING).props
+  getNodeWidgetConfig(WIDGET_TYPE.LABEL).component,
+  getNodeWidgetConfig(WIDGET_TYPE.LABEL).props
 );
 
 const NodeDescriptionWidget = Widgets.composeWidget(

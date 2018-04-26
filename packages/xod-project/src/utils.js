@@ -146,3 +146,38 @@ export const resolveLinkNodeIds = R.curry((nodeIdMap, links) =>
     links
   )
 );
+
+// =============================================================================
+// RegExp parts for `isValidNumberDataValue`
+// =============================================================================
+
+// Optional sign
+const optSignRegExp = '(-|\\+)?';
+// Digits or digits+dot or dot+digits or digits+dot+digits
+const digitsWithDotRegExp = '(\\d+|\\d+\\.|\\.\\d+|\\d+\\.\\d+)';
+// Optional scientific notation with exponential part
+const scientificPartRegExp = `(e${optSignRegExp}\\d+)?`;
+// Composited number regexp
+const numberRegExp = `^${optSignRegExp}${digitsWithDotRegExp}${scientificPartRegExp}$`;
+// NaN
+const nanRegExp = '^NaN$';
+// Inf, +Inf, -Inf
+const infRegExp = `^${optSignRegExp}Inf$`;
+
+// Whole RegExp for Number DataType
+const numberDataTypeRegExp = new RegExp(
+  `${numberRegExp}|${nanRegExp}|${infRegExp}`
+);
+
+/**
+ * Checks that String has a valid Number.
+ *
+ * Valid:
+ * - Simple numbers: 10, 2.256, -0.123
+ * - Floats with leading decimal point: .35, -.35, +.35
+ * - Floats with trailing decimal point: 5., -3.
+ * - Scientific notation: 5e3, -2e+3, .25e-1, 3.e5
+ * - Not a number value: NaN
+ * - Infinities: +Inf, -Inf
+ */
+export const isValidNumberDataValue = R.test(numberDataTypeRegExp);

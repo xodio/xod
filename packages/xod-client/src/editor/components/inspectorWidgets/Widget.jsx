@@ -1,8 +1,6 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ensureLiteral } from 'xod-project';
-import { PROPERTY_TYPE_PARSE } from '../../../utils/inputFormatting';
 
 import { KEYCODE } from '../../../utils/constants';
 import { noop } from '../../../utils/ramda';
@@ -12,7 +10,7 @@ import { NODE_PROPERTY_KIND } from '../../../project/constants';
 export default function composeWidget(Component, widgetProps) {
   const commonKeyDownHandlers = {
     [KEYCODE.ESCAPE]: function escape(event) {
-      if (this.state.value === this.parseValue(this.props.value)) {
+      if (this.state.value === this.props.value) {
         event.target.blur();
       } else {
         this.updateValue(this.props.value);
@@ -25,8 +23,9 @@ export default function composeWidget(Component, widgetProps) {
       super(props);
       this.type = widgetProps.type;
       this.commitOnChange = widgetProps.commitOnChange;
+      this.normalizeValue = widgetProps.normalizeValue || R.identity;
 
-      const val = this.parseValue(props.value);
+      const val = String(props.value);
       this.state = {
         value: val,
       };
@@ -40,8 +39,6 @@ export default function composeWidget(Component, widgetProps) {
         R.merge(commonKeyDownHandlers),
         R.propOr({}, 'keyDownHandlers')
       )(widgetProps);
-
-      this.parseValue = this.parseValue.bind(this);
 
       this.onChange = this.onChange.bind(this);
       this.onFocus = this.onFocus.bind(this);
@@ -94,16 +91,26 @@ export default function composeWidget(Component, widgetProps) {
       // This check will avoid unwanted commits.
       if (this.state.value === this.lastCommitedValue) return;
 
-      const parsedValue = R.pipe(this.parseValue, ensureLiteral(this.type))(
-        this.state.value
-      );
+      const parsedValue = this.normalizeValue(this.state.value);
 
       // Prevent of commiting value twice on blur and on unmnount in widgets
       // that have a differences in `state.value` and `parsedValue`.
       // E.G.
       // Strings are represented in the inputs just as string 'hello'
       // But parsed value will be '"hello"'.
-      if (parsedValue === this.lastCommitedValue) return;
+      if (parsedValue === this.lastCommitedValue) {
+        // New parsed value could be dropped to default value if User
+        // typed some wrong data. To avoid keep wrong data in the input
+        // we have to update state of the component.
+        // E.G.
+        // Number widget has value: `0`
+        // User typed: `bla-bla-bla` and it's not valid for Number type
+        // We have to drop it back to the `0` value.
+        this.setState({
+          value: this.lastCommitedValue,
+        });
+        return;
+      }
 
       // Store last commited value to avoid commiting the same value twice.
       this.lastCommitedValue = parsedValue;
@@ -114,11 +121,6 @@ export default function composeWidget(Component, widgetProps) {
         this.props.keyName,
         parsedValue
       );
-    }
-
-    parseValue(val) {
-      const parser = PROPERTY_TYPE_PARSE[this.type] || R.identity;
-      return parser(val);
     }
 
     render() {

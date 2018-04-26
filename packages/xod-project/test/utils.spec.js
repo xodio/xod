@@ -1,11 +1,16 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { expect, assert } from 'chai';
 import dirtyChai from 'dirty-chai';
 import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
 
 chai.use(dirtyChai);
+
+// Kludge to overwrite corrupted by dirtyChai asserts
+// TODO: Remove dirtyChai ( https://github.com/xodio/xod/issues/1129 )
+assert.isTrue = a => assert.equal(a, true);
+assert.isFalse = a => assert.equal(a, false);
 
 describe('Utils', () => {
   // transforming node ids
@@ -75,6 +80,53 @@ describe('Utils', () => {
     it('should be valid shortid', () => {
       const id = '123aBc';
       expect(shortid.isValid(id)).to.be.true();
+    });
+  });
+  describe('isValidNumberDataValue', () => {
+    it('valid simple numbers', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('3'));
+      assert.isTrue(Utils.isValidNumberDataValue('0.2'));
+      assert.isTrue(Utils.isValidNumberDataValue('+35.156'));
+      assert.isTrue(Utils.isValidNumberDataValue('-3'));
+      assert.isTrue(Utils.isValidNumberDataValue('-6.46'));
+    });
+    it('valid floats with leading decimal point', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('.2'));
+      assert.isTrue(Utils.isValidNumberDataValue('+.52'));
+      assert.isTrue(Utils.isValidNumberDataValue('-.465'));
+    });
+    it('valid floats with trailing decimal point', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('3.'));
+      assert.isTrue(Utils.isValidNumberDataValue('+13.'));
+      assert.isTrue(Utils.isValidNumberDataValue('-141.'));
+    });
+    it('valid with scientific notation', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('5e3'));
+      assert.isTrue(Utils.isValidNumberDataValue('+3e-4'));
+      assert.isTrue(Utils.isValidNumberDataValue('-2e-12'));
+      assert.isTrue(Utils.isValidNumberDataValue('.25e-1'));
+      assert.isTrue(Utils.isValidNumberDataValue('3.e5'));
+    });
+    it('valid Not a Number value', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('NaN'));
+    });
+    it('valid Infinity numbers', () => {
+      assert.isTrue(Utils.isValidNumberDataValue('Inf'));
+      assert.isTrue(Utils.isValidNumberDataValue('+Inf'));
+      assert.isTrue(Utils.isValidNumberDataValue('-Inf'));
+    });
+    it('invalid values', () => {
+      assert.isFalse(Utils.isValidNumberDataValue('asdas'));
+      assert.isFalse(Utils.isValidNumberDataValue('.'));
+      assert.isFalse(Utils.isValidNumberDataValue('..5'));
+      assert.isFalse(Utils.isValidNumberDataValue('5..'));
+      assert.isFalse(Utils.isValidNumberDataValue('0.3.e6'));
+      assert.isFalse(Utils.isValidNumberDataValue('3e5.3'));
+      assert.isFalse(Utils.isValidNumberDataValue('5..e6'));
+      assert.isFalse(Utils.isValidNumberDataValue('e5'));
+      assert.isFalse(Utils.isValidNumberDataValue('.e5'));
+      assert.isFalse(Utils.isValidNumberDataValue('-+56.3'));
+      assert.isFalse(Utils.isValidNumberDataValue('--35'));
     });
   });
 });
