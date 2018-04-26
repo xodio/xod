@@ -33,9 +33,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundLiterals": {
-        "__in__": ""
-      },
       "description": "Pulses on each time interval end",
       "id": "HJU8CE2lW",
       "label": "TICK",
