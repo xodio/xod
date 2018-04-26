@@ -302,7 +302,7 @@ describe('Flatten', () => {
                 id: 'a',
                 type: '@/foo',
                 boundLiterals: {
-                  a: true,
+                  a: 'true',
                 },
               },
               b: {
@@ -326,7 +326,7 @@ describe('Flatten', () => {
                 id: 'c',
                 type: 'xod/core/number',
                 boundLiterals: {
-                  in: 32,
+                  in: '32',
                 },
               },
             },
@@ -355,7 +355,7 @@ describe('Flatten', () => {
       expect(terminalA)
         .to.have.property('boundLiterals')
         .that.deep.equals({
-          __out__: true,
+          __out__: 'true',
         });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
@@ -1450,7 +1450,7 @@ describe('Flatten', () => {
                 id: 'f',
                 type: '@/foo',
                 boundLiterals: {
-                  b: 32,
+                  b: '32',
                 },
               },
             },
@@ -1527,8 +1527,8 @@ describe('Flatten', () => {
                 id: 'b',
                 type: '@/foo',
                 boundLiterals: {
-                  a2: 32,
-                  a3: 27,
+                  a2: '32',
+                  a3: '27',
                 },
               },
               c: {
@@ -1726,13 +1726,13 @@ describe('Flatten', () => {
               f: {
                 type: '@/foo',
                 boundLiterals: {
-                  out: 42,
+                  out: '42',
                 },
               },
               m: {
                 type: 'xod/core/multiply',
                 boundLiterals: {
-                  in1: 26,
+                  in1: '26',
                 },
               },
             },
@@ -1780,8 +1780,8 @@ describe('Flatten', () => {
       Helper.expectEitherRight(newProject => {
         const node = newProject.patches['@/main'].nodes.m;
         expect(node.boundLiterals).to.deep.equal({
-          in1: 26,
-          in2: 42,
+          in1: '26',
+          in2: '42',
         });
       }, flatProject);
     });
