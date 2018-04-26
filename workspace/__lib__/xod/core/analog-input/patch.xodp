@@ -20,9 +20,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundLiterals": {
-        "__in__": ""
-      },
       "description": "The latest read value in range 0.0 … 1.0",
       "id": "SyBtREhlW",
       "label": "VAL",

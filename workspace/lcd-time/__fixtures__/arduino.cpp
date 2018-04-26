@@ -1096,17 +1096,17 @@ xod__core__continuously::Node node_0 = {
 
 constexpr Number node_1_output_VAL = 10;
 
-constexpr XString node_2_output_VAL = XString();
+constexpr Number node_2_output_VAL = 12;
 
-constexpr Number node_3_output_VAL = 12;
+constexpr Number node_3_output_VAL = 11;
 
-constexpr Number node_4_output_VAL = 11;
+constexpr Number node_4_output_VAL = 9;
 
-constexpr Number node_5_output_VAL = 9;
+constexpr Number node_5_output_VAL = 8;
 
-constexpr Number node_6_output_VAL = 8;
+constexpr Number node_6_output_VAL = 13;
 
-constexpr Number node_7_output_VAL = 13;
+constexpr XString node_7_output_VAL = XString();
 
 constexpr Number node_8_output_TIME = 0;
 xod__core__system_time::Node node_8 = {
@@ -1205,14 +1205,14 @@ void runTransaction() {
             ctxObj._node = &node_10;
 
             // copy data from upstream nodes into context
-            ctxObj._input_RS = node_6_output_VAL;
-            ctxObj._input_EN = node_5_output_VAL;
+            ctxObj._input_RS = node_5_output_VAL;
+            ctxObj._input_EN = node_4_output_VAL;
             ctxObj._input_D4 = node_1_output_VAL;
-            ctxObj._input_D5 = node_4_output_VAL;
-            ctxObj._input_D6 = node_3_output_VAL;
-            ctxObj._input_D7 = node_7_output_VAL;
+            ctxObj._input_D5 = node_3_output_VAL;
+            ctxObj._input_D6 = node_2_output_VAL;
+            ctxObj._input_D7 = node_6_output_VAL;
             ctxObj._input_L1 = node_9.output_OUT;
-            ctxObj._input_L2 = node_2_output_VAL;
+            ctxObj._input_L2 = node_7_output_VAL;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 

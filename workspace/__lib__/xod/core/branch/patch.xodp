@@ -35,9 +35,6 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "boundLiterals": {
-        "__in__": ""
-      },
       "description": "Pulses with `TRIG` when `GATE` is false",
       "id": "SyM2ATB-b",
       "label": "F",
