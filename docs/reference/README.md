@@ -2,9 +2,10 @@
 title: Reference
 ---
 
-# Reference
+Reference
+=========
 
-* [List of supported hardware](./supported-hardware/)
+* [Supported hardware](./supported-hardware/)
 * [Mouse and keyboard shortcuts](./shortcuts/)
 * [C++ node API reference](./node-cpp-api/)
 

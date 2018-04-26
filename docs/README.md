@@ -2,89 +2,148 @@
 title: XOD Documentation
 ---
 
+<style>
+/* Force linked headers to be black, not blue */
+h2 .content a {
+  color: black;
+  text-decoration: underline;
+}
+
+h2.icon.header {
+  padding: 1.5em 0 0.5em 0;
+}
+
+/* Style for tutorial/guide/reference icons */
+.ui.icon.header img {
+  width: 64px;
+  opacity: 0.4;
+}
+
+#showcase-cards .card {
+  width: 340px;
+}
+
+/* No space below a card image */
+#showcase-cards .image {
+  font-size: 0;
+}
+
+/* Keep all images the same size */
+#showcase-cards .card img {
+  width: 100%;
+  height: 191px; /* Aspect ratio 16/9 for 340px width */
+  object-fit: cover;
+}
+</style>
+
 XOD Documentation
 =================
 
-Tutorials
----------
+<div class="ui three column doubling stackable horizontally padded grid">
 
-* [Installing and running XOD](./tutorial/install/)
-* [Required hardware](./tutorial/required-hardware/)
+<!------------------------ Tutorial ------------------------->
+<div class="column">
+<h2 class="ui icon header">
+  <a href="./tutorial/">
+    <img src="./__img__/tutorial.svg" />
+  </a>
+  <div class="content">
+    <a href="./tutorial/">Tutorials</a>
+  </div>
+</h2>
 
-1. [Hello](./tutorial/01-hello/)
-2. [Upload to Arduino](./tutorial/02-deploy/)
-3. [Pins, data, and the Inspector](./tutorial/03-inspector/)
-4. [Fractional numbers and PWM](./tutorial/04-pwm/)
-5. [Wiring configuration](./tutorial/05-wiring/)
-6. [Adding nodes](./tutorial/06-adding-nodes/)
-7. [Node labels](./tutorial/07-labels/)
-8. [Constant nodes](./tutorial/08-constants/)
-9. [Input from a potentiometer](./tutorial/09-pot/)
-10. [Doing math](./tutorial/10-math/)
-11. [Controlling servos](./tutorial/11-servo/)
-12. [Accessing help](./tutorial/12-help/)
-13. [Mapping values](./tutorial/13-map/)
-14. [Adjusting map range](./tutorial/14-map-adjust/)
-15. [Buttons](./tutorial/15-buttons/)
-16. [Logic nodes](./tutorial/16-logic/)
-17. [Reading lightness](./tutorial/17-ldr/)
-18. [Comparing numbers](./tutorial/18-comparisons/)
-19. [If-else branching](./tutorial/19-if-else/)
-20. [Smoother changes](./tutorial/20-fade/)
-21. [Pulses](./tutorial/21-pulses/)
-22. [Clock](./tutorial/22-clock/)
-23. [Pulse Counting](./tutorial/23-count/)
-24. [Flip-flop](./tutorial/24-flip-flop/)
-25. [Using Multiple Timelines](./tutorial/25-multiple-timelines/)
-26. [Showing text on LCD](./tutorial/26-lcd/)
-27. [Displaying sensor values on LCD](./tutorial/27-lcd-data/)
-28. [String concatenation](./tutorial/28-string-concat/)
+<h3 class="ui header">Official</h3>
 
-* [Complex projects?](./tutorial/complex-projects/)
+* [Get started](./tutorial/install/)
+* [Full index](./tutorial/) (28 chapters)
 
-User’s guide
-------------
+<h3>For video lovers</h3>
 
-### Concepts
+<div class="ui relaxed list">
+  {{#each tutvideos}}
+    <div class="item">
+      <img class="ui avatar image" src="{{ avatar }}">
+      <div class="content">
+        <a href="{{ url }}" target="_blank">{{ title }}</a>
+        <div class="description">{{ description }}</div>
+      </div>
+    </div>
+  {{/each}}
+</div>
 
-* [Program structure](./guide/program-structure/)
-* [Data types](./guide/data-types/)
-* [Linking rules](./guide/linking-rules/)
-* [Execution model](./guide/execution-model/)
-* [Variadic nodes](./guide/variadics/)
-* [Generic nodes](./guide/generics/)
+</div><!-- column -->
 
-### Making your own nodes
+<!-------------------------- Guide -------------------------->
+<div class="column">
+<h2 class="ui icon header">
+  <a href="./guide/">
+    <img src="./__img__/guide.svg" />
+  </a>
+  <div class="content">
+    <a href="./guide/">User Guide</a>
+  </div>
+</h2>
 
-* [Creating nodes for XOD in XOD](./guide/nodes-for-xod-in-xod/)
-* [Creating analog sensor driver nodes](./guide/analog-sensor-node/)
-* [Documenting nodes](./guide/documenting-nodes/)
-* [Creating nodes for XOD in C++](./guide/nodes-for-xod-in-cpp/)
-* [Dealing with state in C++](./guide/cpp-state/)
-* [Dealing with time in C++](./guide/cpp-time/)
-* [Creating variadic patch nodes](./guide/creating-variadics/)
-* [Creating generic patch nodes](./guide/creating-generics/)
+[Concepts](./guide/#concepts) — XOD language objects and processes
+described in detail.
 
-### Doing things sequentially
+[Making your own nodes](./guide/#making-your-own-nodes) — the most
+straightforward way to extend XOD and add support for new hardware.
 
-* [Simple traffic light example](./guide/simple-traffic-light/)
+[Case studies](./guide/#case-studies) — how-to’s for common scenarios.
 
-### Projects and libraries
+[Projects and libraries](./guide/#projects-and-libraries) —
+creating, managing, and sharing your works.
 
-* [Working on projects](./guide/projects/)
-* [Using libraries](./guide/using-libraries/)
-* [Creating libraries](./guide/creating-libraries/)
+</div><!-- column -->
 
-Reference
----------
+<!------------------------ Reference ------------------------>
+<div class="column">
+<h2 class="ui icon header">
+  <a href="./reference">
+    <img src="./__img__/reference.svg" />
+  </a>
+  <div class="content">
+    <a href="./reference/">Reference</a>
+  </div>
+</h2>
+<div><!-- A div to force the following list to be the first-child and suppress margins -->
 
-* [List of supported hardware](./reference/supported-hardware/)
+* [Supported hardware](./reference/supported-hardware/) <i class="ui large green microchip icon"></i>
 * [Mouse and keyboard shortcuts](./reference/shortcuts/)
 * [C++ node API reference](./reference/node-cpp-api/)
 
-### Standard library nodes
+</div>
+<h3 class="ui header">Standard library nodes</h3>
 
 * [`xod/core`](/libs/xod/core/)
 * [`xod/common-hardware`](/libs/xod/common-hardware/)
 * [`xod/units`](/libs/xod/units/)
 * [`xod/bits`](/libs/xod/bits/)
+
+</div><!-- column -->
+
+</div><!-- grid -->
+
+---
+
+<h2 id="showcase" class="ui header">
+  <div class="content">
+    Showcase
+    <div class="sub header">Complete devices done with XOD</div>
+  </div>
+</h2>
+
+<div id="showcase-cards" class="ui cards">
+  {{#each showcase}}
+    <div class="card">
+      <div class="image">
+        <a href="{{ url }}" target="_blank"><img src="{{ image }}" /></a>
+      </div>
+      <div class="content">
+        <a class="header" href="{{ url }}" target="_blank">{{ title }}</a>
+        <div class="meta">{{{ description }}} by {{ author }}</div>
+      </div>
+    </div>
+  {{/each}}
+</div>

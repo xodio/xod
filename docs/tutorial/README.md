@@ -1,9 +1,9 @@
 ---
-title: Tutorials
+title: Tutorial
 ---
 
-Tutorials
-=========
+Tutorial
+========
 
 * [Installing and running XOD](./install/)
 * [Required hardware](./required-hardware/)
@@ -30,9 +30,9 @@ Tutorials
 20. [Smoother changes](./20-fade/)
 21. [Pulses](./21-pulses/)
 22. [Clock](./22-clock/)
-23. [Pulse Counting](./23-count/)
+23. [Pulse counting](./23-count/)
 24. [Flip-flop](./24-flip-flop/)
-25. [Using Multiple Timelines](./25-multiple-timelines/)
+25. [Using multiple timelines](./25-multiple-timelines/)
 26. [Showing text on LCD](./26-lcd/)
 27. [Displaying sensor values on LCD](./27-lcd-data/)
 28. [String concatenation](./28-string-concat/)
