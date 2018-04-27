@@ -4,6 +4,56 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Implement generic nodes. Such nodes may work with values type of which
+  is not known in advance. See the user’s guide to learn more.
+* [core] Values of any type bound to pins are now stored as-is using strings.
+  As a good side effect, one may now bind scientific notation numbers (`3e-6`
+  for `0.000003`), infinity (`+Inf`, `-Inf`), and `NaN` in the Inspector.
+  Strings are now always enquoted. When you deal with regular (non-generic)
+  pins, the required quotes will be added for you automatically. (#1164)
+* [ide] Allow relinking of occupied input pins. Now instead of showing an
+  error, IDE removes the existing link, replacing it with the new one. (#1120)
+* [ide] Preserve window position and size across launches. (#1134)
+* [ide] The main window now can be as small as 700px in width. It allows quicker
+  1-to-1 screenshoting for docs and Medium. (#1135)
+* [core] Create marker nodes to indicate a patch is an internal utility or
+  deprecated legacy. In IDE’s project browser such nodes are hidden by default.
+  To show them click the funnel button in the pane header. (#1137, #1141)
+* [cli] Implement a simple tabular testing feature that should become an xUnit
+  of XOD. (#1148)
+* [c++] Add `isSettingUp` node API function to check whether the current
+  evaluation is a part of the very first transaction which is run in `setup()`.
+  (#1152)
+* [core] More informative errors for many “bad program” scenarios. Now they
+  always include a full path trace from the entry point patch to the patch
+  having a problem. (#1155, #1156)
+* [nodes] `xod/core/equal` made generic and now can handle strings.
+* [nodes] `xod/core/select` made generic and now can handle strings and booleans.
+
+### Deprecations and removals
+
+* [nodes] `cast-*-to-*` are deprecated. Use specialized nodes like
+  `format-number` instead.
+* [nodes] `debounce-boolean` is deprecated. Use generic `xod/core/debounce`
+  instead.
+* [nodes] `defer-*` are deprecated. Use generic `xod/core/defer` instead.
+* [nodes] `gate-*` are deprecated. Use generic `xod/core/gate` instead.
+* [nodes] BREAKING :exclamation: The original `gate` (without a type suffix) is
+  renamed to `xod/core/branch`.
+* [nodes] `if-else-string` is deprecated. Use generic `if-else` instead.
+* [nodes] `nth-number` is deprecated. Use generic `nth-input` instead.
+
+### Bug fixes
+
+* [ide] Remove actual C\++ implementation when deleting the
+  `not-implemented-in-xod` node. (#1142)
+* [ide] Make vertical and horizontal lines (links and nodes’ edges) always
+  sharp (#1168)
+
 <a name="0.19.2"></a>
 ## 0.19.2 (2018-03-12)
 
