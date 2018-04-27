@@ -21,6 +21,10 @@ import * as Utils from './utils';
 import * as PPU from './patchPathUtils';
 import { def } from './types';
 
+//
+// Pin types deduction
+//
+
 // :: NodeId -> PinKey -> DeducedPinTypes -> (DataType -> Maybe DataType)
 const maybeGetTypeFromPreviouslyDeduced = R.curry(
   (nodeId, pinKey, previouslyDeducedPinTypes) =>
@@ -234,12 +238,25 @@ export const deducePinTypes = def(
           patch
         );
 
+        const pinTypesFromBoundValues = R.compose(
+          R.toPairs,
+          R.map(Utils.getTypeFromLiteralUnsafe),
+          R.filter(Utils.isValidLiteral),
+          Node.getAllBoundValues
+        )(abstractNode);
+
+        const pinTypesFromLinksAndBoundValues = R.compose(
+          // this will get rid of values bound to linked pins
+          R.uniqBy(R.head),
+          R.concat
+        )(pinTypesFromLinks, pinTypesFromBoundValues);
+
         // :: Map PinKey (Either [DataType] DataType)
         const deducedPinTypesForNode = deducePinTypesForNode(
           abstractNode,
           getPatchByNodeId,
           previouslyDeducedPinTypes,
-          pinTypesFromLinks
+          pinTypesFromLinksAndBoundValues
         );
 
         return R.assoc(
@@ -304,6 +321,10 @@ export const deducePinTypes = def(
     ])(stronglyResolvedTypes, weaklyResolvedTypes);
   }
 );
+
+//
+// Autoresolving abstract nodes
+//
 
 const listGenericNodes = (patch, project) =>
   R.compose(

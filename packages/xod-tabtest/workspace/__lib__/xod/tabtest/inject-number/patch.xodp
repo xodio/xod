@@ -1,9 +1,7 @@
 {
   "nodes": [
     {
-      "boundValues": {
-        "__in__": ""
-      },
+      "boundLiterals": {},
       "id": "B1x2RV3eZ",
       "label": "VAL",
       "position": {

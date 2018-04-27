@@ -46,6 +46,13 @@ class SnackBarMessage extends React.Component {
   getMessageContent() {
     const { message, onClickMessageButton } = this.props;
 
+    const solution = message.payload.solution ? (
+      <React.Fragment>
+        <br />
+        {message.payload.solution}
+      </React.Fragment>
+    ) : null;
+
     const button = R.unless(R.isNil, text => (
       <Button small light onClick={() => onClickMessageButton(message.id)}>
         {text}
@@ -57,6 +64,7 @@ class SnackBarMessage extends React.Component {
         <span className="title">{message.payload.title}</span>
         {this.getMessageTrace()}
         {message.payload.note}
+        {solution}
       </div>,
       <div className="message-buttons" key="buttons">
         {button}

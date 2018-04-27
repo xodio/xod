@@ -113,9 +113,7 @@
       "@@type": "xod-project/Patch",
       "nodes": {
         "B1x2RV3eZ": {
-          "boundLiterals": {
-            "__in__": ""
-          },
+          "boundLiterals": {},
           "description": "",
           "label": "VAL",
           "id": "B1x2RV3eZ",

@@ -14,6 +14,8 @@ const NumberWidget = props => {
       normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
+      isInvalid={props.isInvalid}
+      deducedType={props.deducedType}
       isLastVariadicGroup={props.isLastVariadicGroup}
       isBindable={props.isBindable}
       direction={props.direction}
@@ -37,8 +39,10 @@ NumberWidget.propTypes = {
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
+  isInvalid: PropTypes.bool,
   isLastVariadicGroup: PropTypes.bool,
   isBindable: PropTypes.bool,
+  deducedType: PropTypes.object,
   direction: PropTypes.string,
 
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -318,7 +318,9 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   const isBindable =
     direction === CONST.PIN_DIRECTION.INPUT
       ? true // inputs are always bindable
-      : canBindToOutputs(patch) && type !== CONST.PIN_TYPE.PULSE;
+      : canBindToOutputs(patch) &&
+        type !== CONST.PIN_TYPE.PULSE &&
+        !Utils.isGenericType(type);
   const defaultValue = Node.getBoundValue(
     getPinKeyForTerminalDirection(direction),
     node

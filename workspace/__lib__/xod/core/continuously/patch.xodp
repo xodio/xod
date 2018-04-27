@@ -10,9 +10,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundLiterals": {
-        "__in__": "false"
-      },
       "description": "Continuous pulses",
       "id": "C0nt1n10Wl",
       "label": "TICK",

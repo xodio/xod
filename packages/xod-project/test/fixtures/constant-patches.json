@@ -129,9 +129,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "C0nt1n10Wl": {
-        "boundLiterals": {
-          "__in__": "false"
-        },
+        "boundLiterals": {},
         "description": "Continuous pulses",
         "id": "C0nt1n10Wl",
         "label": "TICK",
@@ -168,9 +166,7 @@
         "type": "xod/patch-nodes/not-implemented-in-xod"
       },
       "ryVmUAOrvkb": {
-        "boundLiterals": {
-          "__in__": false
-        },
+        "boundLiterals": {},
         "description": "",
         "id": "ryVmUAOrvkb",
         "label": "BOOT",

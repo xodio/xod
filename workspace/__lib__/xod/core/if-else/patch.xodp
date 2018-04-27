@@ -2,9 +2,6 @@
   "description": "Outputs either input value depending on condition",
   "nodes": [
     {
-      "boundLiterals": {
-        "__in__": "0"
-      },
       "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
       "id": "S13xLCuHvkW",
       "label": "R",

@@ -273,7 +273,7 @@ describe('extractBoundInputsToConstNodes', () => {
           nodes: {
             [testNodeId]: {
               type: testPatchPath,
-              boundValues: {
+              boundLiterals: {
                 [boundPinKey]: boundValue,
               },
             },

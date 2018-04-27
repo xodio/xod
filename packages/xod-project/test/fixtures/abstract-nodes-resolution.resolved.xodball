@@ -1013,9 +1013,7 @@
       ],
       "nodes": {
         "H1bfDMgqiz": {
-          "boundLiterals": {
-            "__in__": ""
-          },
+          "boundLiterals": {},
           "description": "The latest read value in range 0.0 … 1.0",
           "label": "VAL",
           "id": "H1bfDMgqiz",

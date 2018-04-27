@@ -7,6 +7,7 @@ import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
 import PulseWidget from './pinWidgets/PulsePinWidget';
 import StringWidget from './pinWidgets/StringPinWidget';
+import GenericPinWidget from './pinWidgets/GenericPinWidget';
 import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
 import IOLabelWidget from './IOLabelWidget';
 import DescriptionWidget from './DescriptionWidget';
@@ -110,8 +111,11 @@ const WIDGET_MAPPING = {
 export const getNodeWidgetConfig = type =>
   isGenericType(type)
     ? {
-        component: DisabledInputWidget,
-        props: { type },
+        component: GenericPinWidget,
+        props: {
+          type,
+          keyDownHandlers: submitOnEnter,
+        },
       }
     : WIDGET_MAPPING[type];
 
