@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "main": "src-babel/app/main.js",
   "name": "xod-client-electron",
-  "version": "0.19.4",
+  "version": "0.20.0",
   "scripts": {
     "build:workspace": "cpx \"../../workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
@@ -41,13 +41,13 @@
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "serialport": "^4.0.7",
-    "xod-arduino": "^0.19.4",
-    "xod-arduino-deploy": "^0.19.4",
-    "xod-client": "^0.19.4",
-    "xod-deploy": "^0.19.4",
-    "xod-fs": "^0.19.4",
-    "xod-func-tools": "^0.19.2",
-    "xod-project": "^0.19.4"
+    "xod-arduino": "^0.20.0",
+    "xod-arduino-deploy": "^0.20.0",
+    "xod-client": "^0.20.0",
+    "xod-deploy": "^0.20.0",
+    "xod-fs": "^0.20.0",
+    "xod-func-tools": "^0.20.0",
+    "xod-project": "^0.20.0"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",
