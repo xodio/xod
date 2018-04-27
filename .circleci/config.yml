@@ -27,7 +27,8 @@ defs:
   steps:
     step-install: &step-install
       name: Install Node modules
-      command: yarn
+      # to always install electron-builder etc
+      command: yarn install --production=false
 
     step-bump-version: &step-bump-version
       name: Bump version
