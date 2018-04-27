@@ -575,7 +575,7 @@ export const getInvalidBoundNodePins = def(
     )(node);
 
     const nodePatch = R.compose(
-      getPatchByPathUnsafe(R.__, project),
+      getPatchByPath(R.__, project),
       Node.getNodeType
     )(node);
 
@@ -592,8 +592,8 @@ export const getInvalidBoundNodePins = def(
               trace: [patchPath, nodeName],
             });
           }),
-          Patch.getVariadicPinByKey
-        )(node, pinKey, nodePatch)
+          R.chain(Patch.getVariadicPinByKey(node, pinKey))
+        )(nodePatch)
       ),
       R.reject(Utils.isValidLiteral),
       R.omit(linkedPins),
