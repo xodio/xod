@@ -98,7 +98,7 @@ jobs:
 
   verify-macos:
     macos:
-      xcode: "9.0"
+      xcode: "9.3.0"
     environment:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
     steps:
@@ -146,7 +146,7 @@ jobs:
 
   dist-macos:
     macos:
-      xcode: "9.0"
+      xcode: "9.3.0"
     environment:
       NODE_ENV: production
     steps:
