@@ -464,8 +464,8 @@
         },
         "SkFcfNz2G": {
           "boundLiterals": {
-            "H1GGdM4Mhz": "222",
-            "S1mGOG4MhG": "\"don't lose this value as well\""
+            "S1mGOG4MhG": "\"don't lose this value as well\"",
+            "H1GGdM4Mhz": "222"
           },
           "id": "SkFcfNz2G",
           "position": {
@@ -476,8 +476,8 @@
         },
         "r1RtzVznz": {
           "boundLiterals": {
-            "H1GGdM4Mhz": "111",
-            "S1mGOG4MhG": "\"don't lose this value\""
+            "S1mGOG4MhG": "\"don't lose this value\"",
+            "H1GGdM4Mhz": "111"
           },
           "id": "r1RtzVznz",
           "position": {
@@ -488,6 +488,70 @@
         }
       },
       "path": "@/case4-bound-non-generic-pins"
+    },
+    "@/case5-abstracts-deep-inside-regular-patches": {
+      "links": {
+        "B1VCHOfTz": {
+          "id": "B1VCHOfTz",
+          "input": {
+            "nodeId": "r1LhSOzTM",
+            "pinKey": "r1vuBOM6f"
+          },
+          "output": {
+            "nodeId": "B1xRH_zaG",
+            "pinKey": "H1bfDMgqiz"
+          }
+        },
+        "H19pBuGaz": {
+          "id": "H19pBuGaz",
+          "input": {
+            "nodeId": "BJuaB_M6z",
+            "pinKey": "Sy84Mlcjz"
+          },
+          "output": {
+            "nodeId": "r1LhSOzTM",
+            "pinKey": "Skjqr_Maz"
+          }
+        },
+        "S1fRSdGaG": {
+          "id": "S1fRSdGaG",
+          "input": {
+            "nodeId": "r1LhSOzTM",
+            "pinKey": "B14OSOG6G"
+          },
+          "output": {
+            "nodeId": "B1xRH_zaG",
+            "pinKey": "H1bfDMgqiz"
+          }
+        }
+      },
+      "nodes": {
+        "B1xRH_zaG": {
+          "id": "B1xRH_zaG",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "@/pot"
+        },
+        "BJuaB_M6z": {
+          "id": "BJuaB_M6z",
+          "position": {
+            "x": 102,
+            "y": 306
+          },
+          "type": "@/console-log"
+        },
+        "r1LhSOzTM": {
+          "id": "r1LhSOzTM",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "type": "@/regular-with-abstract-inside"
+        }
+      },
+      "path": "@/case5-abstracts-deep-inside-regular-patches"
     },
     "@/concat": {
       "nodes": {
@@ -1013,7 +1077,6 @@
       ],
       "nodes": {
         "H1bfDMgqiz": {
-          "boundLiterals": {},
           "description": "The latest read value in range 0.0 … 1.0",
           "label": "VAL",
           "id": "H1bfDMgqiz",
@@ -1157,6 +1220,97 @@
         }
       },
       "path": "@/pulse-on-change(number)"
+    },
+    "@/regular-with-abstract-inside": {
+      "links": {
+        "BJpqrufpz": {
+          "id": "BJpqrufpz",
+          "input": {
+            "nodeId": "Skjqr_Maz",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "H10KS_Gpf",
+            "pinKey": "HJfTgQRsjM"
+          }
+        },
+        "H1dYrOfaM": {
+          "id": "H1dYrOfaM",
+          "input": {
+            "nodeId": "Hk0UB_GTM",
+            "pinKey": "BJx1NLmvnG"
+          },
+          "output": {
+            "nodeId": "r1vuBOM6f",
+            "pinKey": "__out__"
+          }
+        },
+        "SJg5HdM6G": {
+          "id": "SJg5HdM6G",
+          "input": {
+            "nodeId": "H10KS_Gpf",
+            "pinKey": "r16xX0ioz"
+          },
+          "output": {
+            "nodeId": "Hk0UB_GTM",
+            "pinKey": "BJfJE8Xwhf"
+          }
+        },
+        "Sk6urdzaM": {
+          "id": "Sk6urdzaM",
+          "input": {
+            "nodeId": "Hk0UB_GTM",
+            "pinKey": "SyJNU7P3z"
+          },
+          "output": {
+            "nodeId": "B14OSOG6G",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "B14OSOG6G": {
+          "id": "B14OSOG6G",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "H10KS_Gpf": {
+          "id": "H10KS_Gpf",
+          "position": {
+            "x": 170,
+            "y": 306
+          },
+          "type": "@/format-number"
+        },
+        "Hk0UB_GTM": {
+          "id": "Hk0UB_GTM",
+          "position": {
+            "x": 170,
+            "y": 204
+          },
+          "type": "@/concat"
+        },
+        "Skjqr_Maz": {
+          "id": "Skjqr_Maz",
+          "position": {
+            "x": 170,
+            "y": 510
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "r1vuBOM6f": {
+          "id": "r1vuBOM6f",
+          "position": {
+            "x": 306,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/regular-with-abstract-inside"
     },
     "@/when-either-changes": {
       "links": {
