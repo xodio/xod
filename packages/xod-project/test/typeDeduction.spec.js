@@ -276,4 +276,16 @@ describe('autoresolveTypes', () => {
       );
     }, autoresolveTypes('@/case4-bound-non-generic-pins', project));
   });
+  it('resolves abstract nodes in patches that have no generic inputs', () => {
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/abstract-nodes-resolution.resolved-abstracts-inside-regular.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.sameDeepMembers(
+        listPatchesWithoutBuiltIns(actualResolvedProject),
+        listPatchesWithoutBuiltIns(expectedResolvedProject)
+      );
+    }, autoresolveTypes('@/case5-abstracts-deep-inside-regular-patches', project));
+  });
 });

@@ -326,18 +326,6 @@ export const deducePinTypes = def(
 // Autoresolving abstract nodes
 //
 
-const listGenericNodes = (patch, project) =>
-  R.compose(
-    R.filter(
-      R.compose(
-        foldMaybe(false, R.pipe(Patch.listPins, R.any(Pin.isGenericPin))),
-        Project.getPatchByNodeId(R.__, patch, project),
-        Node.getNodeId
-      )
-    ),
-    Patch.listNodes
-  )(patch);
-
 // returns [ (DataType, DataType) ]
 // something like [ [t1, string], [t2, number] ]
 const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
@@ -495,13 +483,27 @@ export const autoresolveTypes = def(
         R.compose(
           deducedTypes =>
             reduceEither(
-              (updatedProject, genericNode) =>
-                R.compose(
+              (updatedProject, node) => {
+                const nodeType = Node.getNodeType(node);
+
+                const hasGenericPins = R.compose(
+                  foldMaybe(
+                    false,
+                    R.pipe(Patch.listPins, R.any(Pin.isGenericPin))
+                  ),
+                  Project.getPatchByPath
+                )(nodeType, updatedProject);
+
+                if (!hasGenericPins) {
+                  return autoresolveTypes(nodeType, updatedProject);
+                }
+
+                return R.compose(
                   R.map(
                     ([specializationPatchPath, projectWithSpecialization]) =>
                       Project.changeNodeTypeUnsafe(
                         entryPatchPath,
-                        Node.getNodeId(genericNode),
+                        Node.getNodeId(node),
                         specializationPatchPath,
                         projectWithSpecialization
                       )
@@ -510,13 +512,14 @@ export const autoresolveTypes = def(
                     findOrCreateSpecialization(
                       autoresolveTypes,
                       updatedProject,
-                      genericNode
+                      node
                     )
                   ),
                   getDeducedTypesForGenericPins
-                )(updatedProject, genericNode, deducedTypes),
+                )(updatedProject, node, deducedTypes);
+              },
               project,
-              listGenericNodes(entryPatch, project)
+              Patch.listNodes(entryPatch)
             ),
           deducePinTypes
         )(entryPatch, project)
