@@ -25,6 +25,9 @@
   &.number {
     @include link-parts-coloring($color-datatype-number);
   }
+  &.byte {
+    @include link-parts-coloring($color-datatype-byte);
+  }
 
   &.boolean {
     @include link-parts-coloring($color-datatype-boolean);

@@ -75,6 +75,45 @@
       }
     ]
   },
+  "xod/core/constant-byte": {
+    "comments": {},
+    "nodes": {
+      "B1x2RV3eZ": {
+        "boundLiterals": {
+          "__in__": "00h"
+        },
+        "description": "",
+        "id": "B1x2RV3eZ",
+        "label": "VAL",
+        "position": {
+          "x": 10,
+          "y": 120
+        },
+        "type": "xod/patch-nodes/output-byte"
+      },
+      "H1PnRN2lW": {
+        "boundLiterals": {},
+        "description": "",
+        "id": "H1PnRN2lW",
+        "label": "",
+        "position": {
+          "x": 10,
+          "y": 16
+        },
+        "type": "xod/patch-nodes/not-implemented-in-xod"
+      }
+    },
+    "links": {},
+    "path": "xod/core/constant-byte",
+    "description": "",
+    "attachments": [
+      {
+        "filename": "patch.cpp",
+        "encoding": "utf8",
+        "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid) {\n  reemitValue<output_VAL>(nid);\n}\n"
+      }
+    ]
+  },
   "xod/core/constant-string": {
     "comments": {},
     "nodes": {
