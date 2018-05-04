@@ -1,0 +1,5 @@
+COND	T	F	R
+false	00h	FFh	FFh
+true	00h	FFh	00h
+false	32d	42d	42d
+true	00001101b	01001100b	00001101b
