@@ -18,6 +18,7 @@ type dataType =
   | Pulse
   | Boolean
   | Number
+  | Byte
   | String;
 
 type direction =
@@ -50,6 +51,7 @@ let getType = (pin: t) : dataType => {
   | "pulse" => Pulse
   | "boolean" => Boolean
   | "number" => Number
+  | "byte" => Byte
   | "string" => String
   | _ =>
     Js.Exn.raiseTypeError(

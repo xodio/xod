@@ -10,6 +10,7 @@ type dataType =
   | Pulse
   | Boolean
   | Number
+  | Byte
   | String;
 
 let getDirection: t => direction;

@@ -16,6 +16,7 @@ module Value: {
     | Number(float)
     | Boolean(bool)
     | String(string)
+    | Byte(int)
     | Invalid(string);
 };
 
