@@ -1,0 +1,56 @@
+{
+  "description": "Outputs either input value depending on condition",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
+      "id": "S13xLCuHvkW",
+      "label": "R",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Condition value",
+      "id": "S1yZIA_rDJZ",
+      "label": "COND",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Value to be output if condition is false",
+      "id": "r1AgIROHDJW",
+      "label": "F",
+      "position": {
+        "x": 266,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Value to be output if condition is true",
+      "id": "ryTeUROHD1b",
+      "label": "T",
+      "position": {
+        "x": 138,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

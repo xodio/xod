@@ -1,0 +1,40 @@
+{
+  "description": "Outputs true if `IN1` = `IN2`, and false otherwise",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__in__": "False"
+      },
+      "id": "H1E8AuSPkZ",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "HJG8C_SPkb",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJXICuSwyW",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}
