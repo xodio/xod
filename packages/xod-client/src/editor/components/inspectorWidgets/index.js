@@ -17,6 +17,7 @@ import composeWidget from './Widget';
 
 import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
+import normalizeByte from '../../../utils/normalizeByte';
 
 const widgetKeyDownHandlers = {
   up: function up(event) {
@@ -72,6 +73,14 @@ const WIDGET_MAPPING = {
         ]),
         R.toLower
       ),
+    },
+  },
+  [WIDGET_TYPE.BYTE]: {
+    component: NumberWidget,
+    props: {
+      type: PIN_TYPE.BYTE,
+      keyDownHandlers: submitOnEnter,
+      normalizeValue: normalizeByte,
     },
   },
   [WIDGET_TYPE.STRING]: {
