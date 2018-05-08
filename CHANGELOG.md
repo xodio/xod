@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+<a name="0.20.2"></a>
+## 0.20.2 (2018-05-08)
+
+### Bug fixes
+
+* [core] Fix crash on creating a variadic patch with non-matching pin types. (#1194)
+* [core] Recognize legacy defer nodes(`xod/core/defer-*`) and don't complain about a graph cycle when they are used. (#1195)
+
 <a name="0.20.1"></a>
 ## 0.20.1 (2018-04-29)
 
