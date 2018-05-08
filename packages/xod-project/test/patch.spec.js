@@ -1505,7 +1505,7 @@ describe('Patch', () => {
         const res = Patch.computeVariadicPins(patch);
 
         Helper.expectEitherError(
-          'NOT_ENOUGH_VARIADIC_INPUTS {"trace":["@/default-patch-path"],"arityStep":2,"outputsCount":1,"minInputs":3}',
+          'NOT_ENOUGH_VARIADIC_INPUTS {"trace":["@/default-patch-path"],"arityStep":2,"outputCount":1,"minInputs":3}',
           res
         );
       });
