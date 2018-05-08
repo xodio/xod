@@ -1,0 +1,30 @@
+- title: Automatic Trash Bin
+  image: ./__img__/trash-bin.jpg
+  url: "https://www.youtube.com/watch?v=KHysNei2bq8"
+  author: Alex Gyver
+  description: YouTube video
+
+- title: Automatic Air Humidifier
+  image: ./__img__/automatic-humidifier.jpg
+  url: "https://www.youtube.com/watch?v=8elsCIGOCWE"
+  author: Alex Gyver
+  description: YouTube video
+
+- title: Self-Driving Robot
+  image: ./__img__/self-driving-robot.jpeg
+  url: "https://medium.com/xodlang/create-a-self-driving-robot-in-xod-part-1-8f0cdf8adac7"
+  author: Tommy Warner
+  description: |
+    Article series (
+    <a
+      href="https://medium.com/xodlang/create-a-self-driving-robot-in-xod-part-1-8f0cdf8adac7">1,</a><a
+      href="https://medium.com/xodlang/create-a-self-driving-robot-in-xod-part-2-a3a39bc4604f">2,</a><a
+      href="https://medium.com/@tdubya17/servo-control-part-three-fe81ff54075e">3,</a><a
+      href="https://medium.com/@tdubya17/hacking-nodes-with-c-part-four-3d84723d671d">4</a>
+    )
+
+- title: Rechargeable Solar Lamp
+  image: ./__img__/rechargeable-solar-lamp.jpeg
+  url: "http://www.instructables.com/id/XOD-powered-Rechargeable-Solar-Lamp/"
+  author: Victorian DeLorean
+  description: Instructables article
