@@ -168,7 +168,7 @@ const nanRegExp = '^NaN$';
 const infRegExp = `^${optSignRegExp}Inf$`;
 
 // Whole RegExp for Number DataType
-const numberDataTypeRegExp = new RegExp(
+export const numberDataTypeRegExp = new RegExp(
   `${numberRegExp}|${nanRegExp}|${infRegExp}`
 );
 
