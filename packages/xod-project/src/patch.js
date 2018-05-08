@@ -1138,14 +1138,14 @@ export const computeVariadicPins = def(
     }
 
     const outputs = listOutputPins(patch);
-    const outputsCount = outputs.length;
+    const outputCount = outputs.length;
 
-    if (outputsCount === 0) {
+    if (outputCount === 0) {
       return fail('VARIADIC_HAS_NO_OUTPUTS', { trace: [patchPath] });
     }
 
     const inputs = listInputPins(patch);
-    const inputsCount = inputs.length;
+    const inputCount = inputs.length;
     const arityStep = R.compose(
       explodeMaybe(
         'Imposible error: we should catch Patch without arity markers on first check'
@@ -1153,19 +1153,19 @@ export const computeVariadicPins = def(
       getArityStepFromPatch
     )(patch);
 
-    if (inputsCount - arityStep < outputsCount) {
-      const minInputs = R.add(outputsCount, arityStep);
+    if (inputCount - arityStep < outputCount) {
+      const minInputs = R.add(outputCount, arityStep);
       return fail('NOT_ENOUGH_VARIADIC_INPUTS', {
         trace: [patchPath],
         arityStep,
-        outputsCount,
+        outputCount,
         minInputs,
       });
     }
 
     const valPins = R.takeLast(arityStep, inputs);
     const accPins = R.compose(
-      R.takeLast(outputsCount),
+      R.takeLast(outputCount),
       R.slice(0, R.negate(arityStep))
     )(inputs);
 
