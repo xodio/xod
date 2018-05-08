@@ -94,11 +94,11 @@ export default {
     note: `A variadic-${arityStep} patch with ${outputCount} outputs should have at least ${minInputs} inputs`,
     trace,
   }),
-  WRONG_VARIADIC_PIN_TYPES: ({ inputPinLabels, outputPinLabels, trace }) => ({
+  WRONG_VARIADIC_PIN_TYPES: ({ accPinLabels, outPinLabels, trace }) => ({
     title: 'Invalid variadic patch',
-    note: `Types of inputs ${inputPinLabels.join(
+    note: `Types of inputs ${accPinLabels.join(
       ', '
-    )} should match the types of outputs ${outputPinLabels.join(', ')}`,
+    )} should match the types of outputs ${outPinLabels.join(', ')}`,
     trace,
   }),
   VARIADIC_HAS_NO_OUTPUTS: ({ trace }) => ({
