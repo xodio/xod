@@ -175,11 +175,11 @@ const deferNodeSpecializationRegExp = new RegExp(
 );
 
 // :: PatchPath -> Boolean
-export const isDeferNodeType = R.either(
+export const isDeferNodeType = R.anyPass([
   R.equals('xod/core/defer'),
   R.test(deferNodeSpecializationRegExp),
-  R.test(legacyDeferNodeRegExp)
-);
+  R.test(legacyDeferNodeRegExp),
+]);
 
 //
 // constant-* nodes
