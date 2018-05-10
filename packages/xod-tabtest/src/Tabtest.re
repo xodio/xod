@@ -31,6 +31,7 @@ module Probe = {
       | Pulse => "pulse"
       | Boolean => "boolean"
       | Number => "number"
+      | Byte => "byte"
       | String => "string"
       }
     );
