@@ -9,23 +9,27 @@ import composeMessage from './composeMessage';
 import * as EC from './errorCodes';
 
 const UNKNOWN_ERROR = err =>
-  composeMessage('Unknown error occurred', err.message || JSON.stringify(err));
+  composeMessage('You have found a bug', err.message || JSON.stringify(err));
 
+// :: StrMap(Error -> { title :: String, note :: Nullable(String) })
 const ERROR_FORMATTERS = {
-  // Errors that will showed in the upload popup
-  [EC.TRANSPILE_ERROR]: err => `Error occurred during transpilation: ${err}`,
+  [EC.TRANSPILE_ERROR]: err =>
+    composeMessage('Transpilation failed', R.toString(err)),
   [EC.PORT_NOT_FOUND]: err =>
-    `Could not find Arduino device on port: ${
-      err.port.comName
-    }. Available ports: ${R.map(R.prop('comName'), err.ports)}`,
-  [EC.UPLOAD_ERROR]: err => `Error occured during uploading: ${err}`,
+    composeMessage(
+      'Serial port not found',
+      `Tried to use ${err.port.comName}, ` +
+        `but available ports are: ${R.map(R.prop('comName'), err.ports)}`
+    ),
+  [EC.UPLOAD_ERROR]: err => composeMessage('Upload failed', R.toString(err)),
   [EC.INDEX_LIST_ERROR]: err =>
-    `Could not connect to Arduino Packages Index at ${err.request.path}: ${
-      err.error.message
-    }`,
-  [EC.CANT_INSTALL_ARCHITECTURE]: err => `Could not install tools: ${err}`,
+    composeMessage(
+      'Package index not available',
+      `A request to ${err.request.path} failed: ${err.error.message}`
+    ),
+  [EC.CANT_INSTALL_ARCHITECTURE]: err =>
+    composeMessage('Tools failed to install', R.toString(err)),
 
-  // Snackbar errors
   [XFS_EC.INVALID_WORKSPACE_PATH]: err =>
     composeMessage(
       'Invalid workspace path',
