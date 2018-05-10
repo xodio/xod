@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": "B23RV3eJq",
+      "label": "VAL",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "KL2nRN2xR",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ export const PIN_TYPE = {
   NUMBER: 'number',
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
+  BYTE: 'byte',
   DEAD: 'dead',
   // generic types
   T1: 't1',
@@ -33,6 +34,7 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.NUMBER]: '0',
   [PIN_TYPE.BOOLEAN]: 'False',
   [PIN_TYPE.PULSE]: INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER,
+  [PIN_TYPE.BYTE]: '00h',
   [PIN_TYPE.DEAD]: '',
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
@@ -67,6 +69,10 @@ export const STATIC_TYPES_COMPATIBILITY = {
     [PIN_TYPE.STRING]: true,
     [PIN_TYPE.DEAD]: false,
   },
+  [PIN_TYPE.BYTE]: {
+    [PIN_TYPE.BYTE]: true,
+    [PIN_TYPE.STRING]: true,
+  },
   // nothing can be cast to or from pulse
   [PIN_TYPE.PULSE]: {
     [PIN_TYPE.BOOLEAN]: false,
@@ -98,6 +104,7 @@ export const CONST_NODETYPES = {
   number: 'xod/core/constant-number',
   boolean: 'xod/core/constant-boolean',
   string: 'xod/core/constant-string',
+  byte: 'xod/core/constant-byte',
 };
 
 // node types that provide a constant pulse,

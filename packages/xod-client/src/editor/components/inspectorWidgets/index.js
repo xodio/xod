@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { unquote, enquote } from 'xod-func-tools';
-import { PIN_TYPE, isGenericType, isValidNumberDataValue } from 'xod-project';
+import { PIN_TYPE, isGenericType } from 'xod-project';
 
 import HintWidget from './HintWidget';
 import BoolWidget from './pinWidgets/BoolPinWidget';
@@ -17,6 +17,9 @@ import composeWidget from './Widget';
 
 import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
+import normalizeByte from '../../../utils/normalizeByte';
+import normalizeNumber from '../../../utils/normalizeNumber';
+import normalizeGenericValue from '../../../utils/normalizeGenericValue';
 
 const widgetKeyDownHandlers = {
   up: function up(event) {
@@ -58,20 +61,15 @@ const WIDGET_MAPPING = {
     props: {
       type: PIN_TYPE.NUMBER,
       keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
-      normalizeValue: R.compose(
-        // If value is not valid number — fallback to '0'.
-        R.unless(isValidNumberDataValue, R.always('0')),
-        // Let user type `nan`, `+inf`, `-inf` values with wrong case
-        // and type `+Inf` without plus symbol — correct it automatically
-        R.cond([
-          [R.equals('nan'), R.always('NaN')],
-          [R.equals('inf'), R.always('Inf')],
-          [R.equals('+inf'), R.always('+Inf')],
-          [R.equals('-inf'), R.always('-Inf')],
-          [R.T, R.identity],
-        ]),
-        R.toLower
-      ),
+      normalizeValue: normalizeNumber,
+    },
+  },
+  [WIDGET_TYPE.BYTE]: {
+    component: NumberWidget,
+    props: {
+      type: PIN_TYPE.BYTE,
+      keyDownHandlers: submitOnEnter,
+      normalizeValue: normalizeByte,
     },
   },
   [WIDGET_TYPE.STRING]: {
@@ -115,6 +113,8 @@ export const getNodeWidgetConfig = type =>
         props: {
           type,
           keyDownHandlers: submitOnEnter,
+          // normalize only almost valid byte values
+          normalizeValue: normalizeGenericValue,
         },
       }
     : WIDGET_MAPPING[type];

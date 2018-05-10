@@ -18,10 +18,11 @@ $color-canvas-face-text: #a7a7a7;
 $color-canvas-selected: #4ed5ed;
 $color-highlight: #eeeeee;
 
-$color-datatype-string: #be9133;
-$color-datatype-number: #2e8f6c;
-$color-datatype-boolean: #9F5497;
-$color-datatype-pulse: #6965BD;
+$color-datatype-string: $apricot-shadow;
+$color-datatype-number: $emerald;
+$color-datatype-boolean: $magenta;
+$color-datatype-pulse: $violet;
+$color-datatype-byte: $olive;
 $color-datatype-generic: $chalk;
 $color-datatype-dead: $error;
 
