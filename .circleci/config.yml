@@ -187,7 +187,7 @@ jobs:
             # Adjust metadata to give proper filenames for download
             # (otherwise they are dirname%3Ffilename where %3F is a slash)
             ls dist -1 | xargs -n 1 -I {} \
-              gsutil setmeta -h "Content-Disposition: attachment; filename="{}"" $GS_PATH/{}
+              gsutil setmeta -h 'Content-Disposition: attachment; filename="{}"' $GS_PATH/{}
 
 #==============================================================================
 #
