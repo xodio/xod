@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
-import { explodeMaybe, reverseLookup } from 'xod-func-tools';
+import { explodeMaybe, reverseLookup, maybeProp } from 'xod-func-tools';
 // TODO: rename to XP
 import * as Project from 'xod-project';
 import { def } from './types';
@@ -248,11 +248,8 @@ const getOutputPinLabelByLink = def(
       explodeMaybe(
         `Can’t find pin with key ${pinKey} for link ${link} on patch ${patch}`
       ),
-      R.map(
-        R.compose(Project.getPinLabel, R.head, Project.normalizePinLabels, R.of)
-      ),
-      R.chain(Project.getPinByKey(pinKey)),
-      R.chain(Project.getPatchByNode(R.__, project)),
+      R.chain(maybeProp(pinKey)),
+      R.map(getNodePinLabels(R.__, project)),
       Project.getNodeById(R.__, patch),
       Project.getLinkOutputNodeId
     )(link);
