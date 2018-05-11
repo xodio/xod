@@ -1,0 +1,29 @@
+{
+  "description": "Converts number to a 8-bit signed integer presented as one byte. An input for the the conversion should be between -127.00 and 127.00.",
+  "nodes": [
+    {
+      "id": "Sykxm_ZyQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJ-xX_bkX",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rka1Q_Z1m",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

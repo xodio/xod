@@ -1,0 +1,59 @@
+{
+  "description": "Converts 32-bit unsigned integer presented as four bytes to a number. A result of the conversion will be between 0.00 and 4294967000.00.",
+  "nodes": [
+    {
+      "id": "B1gEDm_W1Q",
+      "label": "B1",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "ByVwQObkm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SJRsfob1m",
+      "label": "B2",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "Sybnfsbkm",
+      "label": "B3",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "r1WVwX_W1Q",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "rJvDQd-Jm",
+      "label": "B0",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}
