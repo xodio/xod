@@ -1,0 +1,29 @@
+{
+  "description": "Converts 8-bit unsigned integer presented as one byte to a number. A result of the conversion will be between 0.00 and 255.00.",
+  "nodes": [
+    {
+      "id": "S113G_ZJm",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "Sk43MO-Jm",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Skf3G_Zym",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

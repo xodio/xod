@@ -1,0 +1,59 @@
+{
+  "description": "Converts a number to 32-bit IEEE-754 encoded floating point number presented as four bytes. An input for the the conversion should be between -3.4E+38 to 3.4E+38 with an accuracy of 7 digits. It means, a float number greater than seven digits in length will be inaccurate and lose a fractional part.",
+  "nodes": [
+    {
+      "description": "Most significant byte",
+      "id": "BJZZOrkz0z",
+      "label": "B0",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "H1HdHyG0M",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S1WOHyM0f",
+      "label": "B2",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "SynDrkGRG",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "rJyurJzAG",
+      "label": "B3",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rke-dBJMCG",
+      "label": "B1",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}
