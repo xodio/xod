@@ -272,13 +272,15 @@ class App extends client.App {
         }
       }
       if (payload.failure) {
-        console.error(payload.error); // eslint-disable-line no-console
-        const failureMessage = R.compose(R.join('\n\n'), R.reject(R.isNil))([
-          payload.message,
+        console.error(payload); // eslint-disable-line no-console
+        const stanza = payload.message; // result of legacy `composeMessage`
+        const joinNonNil = sep => R.compose(R.join(sep), R.reject(R.isNil));
+        const messageForConsole = joinNonNil('\n\n')([
+          joinNonNil('. ')([stanza.title, stanza.note]),
           payload.error.stdout,
           payload.stderr,
         ]);
-        proc.fail(failureMessage, payload.percentage);
+        proc.fail(messageForConsole, payload.percentage);
       }
       // Remove listener if process is finished.
       ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
