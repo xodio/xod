@@ -127,6 +127,8 @@ class App extends client.App {
   }
 
   onLoadChange(event) {
+    if (event.target.files.length === 0) return;
+
     const file = event.target.files[0];
     const reader = new window.FileReader();
 
