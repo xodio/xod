@@ -26,7 +26,7 @@ export const ensureLiteral = def(
       case PIN_TYPE.PULSE:
         return R.compose(
           R.when(
-            R.equals(false),
+            R.either(R.equals(false), R.equals('false')),
             R.always(INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER)
           ),
           R.when(
