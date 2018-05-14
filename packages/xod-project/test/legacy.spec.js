@@ -73,6 +73,12 @@ describe('Legacy', () => {
         ensureLiteral(PIN_TYPE.PULSE, false),
         'Never'
       );
+      // Sometimes Never was a string "false"
+      // when User binds `Never` to terminal in the Inspector
+      assert.strictEqualJustValue(
+        ensureLiteral(PIN_TYPE.PULSE, 'false'),
+        'Never'
+      );
       assert.strictEqualJustValue(
         ensureLiteral(PIN_TYPE.PULSE, 'NEVER'),
         'Never'
