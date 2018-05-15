@@ -132,7 +132,8 @@ the program, then also delete it in the license file.
 Contributing
 ------------
 
-Feel free to contribute to the project! Make sure to read [contribution
+Feel free to contribute to the project! See the general [Contibutor’s
+guide](https://xod.io/docs/contributing/) and [GitHub contribution
 guidelines](./CONTRIBUTING.md).
 
 Jetbrains users can benefit from [XOD Jetbrains Live

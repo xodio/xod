@@ -4,7 +4,7 @@ title: XOD Documentation
 
 <style>
 /* Force linked headers to be black, not blue */
-h2 .content a {
+h2 a {
   color: black;
   text-decoration: underline;
 }
@@ -65,6 +65,7 @@ XOD Documentation
       <img class="ui avatar image" src="{{ avatar }}">
       <div class="content">
         <a href="{{ url }}" target="_blank">{{ title }}</a>
+        <!-- counter _blank underscore ↑ -->
         <div class="description">{{ description }}</div>
       </div>
     </div>
@@ -139,11 +140,19 @@ creating, managing, and sharing your works.
     <div class="card">
       <div class="image">
         <a href="{{ url }}" target="_blank"><img src="{{ image }}" /></a>
+        <!-- counter _blank underscore ↑ -->
       </div>
       <div class="content">
         <a class="header" href="{{ url }}" target="_blank">{{ title }}</a>
+        <!-- counter _blank underscore ↑ -->
         <div class="meta">{{{ description }}} by {{ author }}</div>
       </div>
     </div>
   {{/each}}
 </div>
+
+<h2 id="contributing" class="ui header"><a href="./contributing/">Contributing</a></h2>
+
+Looking for the ways to improve the documentation, XOD language, or the
+ecosystem? There are many opportunities and we’re happy to accept any help.
+Read the summary in the [Contributor’s guide](./contributing/).
