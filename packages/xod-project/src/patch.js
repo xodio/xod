@@ -103,12 +103,20 @@ export const setPatchDescription = def(
   R.assoc('description')
 );
 
+const attachmentsLens = R.lens(
+  R.prop('attachments'),
+  R.pipe(
+    R.assoc('attachments'),
+    R.over(R.lensProp('attachments'), R.sortBy(R.prop('filename')))
+  )
+);
+
 /**
  * Returns a Patch with associated attachments list.
  */
 export const setPatchAttachments = def(
   'setPatchAttachments :: [Attachment] -> Patch -> Patch',
-  R.assoc('attachments')
+  R.set(attachmentsLens)
 );
 
 /**
@@ -116,7 +124,7 @@ export const setPatchAttachments = def(
  */
 export const getPatchAttachments = def(
   'getPatchAttachments :: Patch -> [Attachment]',
-  R.prop('attachments')
+  R.view(attachmentsLens)
 );
 
 /**
@@ -135,8 +143,6 @@ export const getImpl = def(
     getPatchAttachments
   )
 );
-
-const attachmentsLens = R.lensProp('attachments');
 
 /**
  * Returns true if patch has a native implementation attached.

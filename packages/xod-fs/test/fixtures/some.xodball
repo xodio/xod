@@ -101,14 +101,14 @@
           "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n"
         },
         {
-          "filename": "patch.cpp",
-          "encoding": "utf8",
-          "content": "// Impl loaded fine!\n"
-        },
-        {
           "filename": "img/20x20.png",
           "encoding": "base64",
           "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC"
+        },
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// Impl loaded fine!\n"
         }
       ]
     }
