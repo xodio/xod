@@ -805,7 +805,7 @@ const toposortGraph = def(
  * This will not affect correctness of the resulting program,
  * and gives some optimisation possibilities.
  */
-const sendDeferNodesToBottom = def(
+export const sendDeferNodesToBottom = def(
   'sendDeferNodesToBottom :: Patch -> [NodeId] -> [NodeId]',
   (patch, toposortedNodeIds) =>
     R.compose(
