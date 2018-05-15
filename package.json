@@ -22,6 +22,7 @@
     "dist:electron": "electron-builder --publish always --projectDir ./packages/xod-client-electron",
     "doc": "lerna run doc",
     "doc:fz": "cd docs && make",
+    "dockerize:browser": "docker build packages/xod-client-browser",
     "flow": "flow check",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/*/test-func tools packages/*/tools packages/*/benchmark --ext js,jsx --max-warnings 0",
