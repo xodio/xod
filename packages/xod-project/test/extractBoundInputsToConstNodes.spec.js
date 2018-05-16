@@ -87,7 +87,6 @@ describe('extractBoundInputsToConstNodes', () => {
     const project = R.clone(testProject);
 
     const newProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );
@@ -112,7 +111,6 @@ describe('extractBoundInputsToConstNodes', () => {
     const project = R.clone(testProject);
 
     const newProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );
@@ -167,7 +165,6 @@ describe('extractBoundInputsToConstNodes', () => {
       });
 
       const transformedProject = XP.extractBoundInputsToConstNodes(
-        project,
         mainPatchPath,
         project
       );
@@ -291,7 +288,6 @@ describe('extractBoundInputsToConstNodes', () => {
     });
 
     const transformedProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );

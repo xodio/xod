@@ -1,66 +1,98 @@
 {
-  "authors": [],
-  "description": "",
-  "license": "",
-  "version": "0.0.0",
   "patches": {
-    "xod/core/add": {
+    "@/main": {
       "nodes": {
-        "BJnQUR_BwyZ": {
-          "boundLiterals": {},
-          "description": "",
-          "label": "X",
-          "id": "BJnQUR_BwyZ",
-          "position": {
-            "x": 10,
-            "y": 16
+        "HJbQvOPL-~r1yIU_vU-": {
+          "boundLiterals": {
+            "HkqmLAOrD1W": "222",
+            "BJnQUR_BwyZ": "111"
           },
-          "type": "xod/patch-nodes/input-number",
-          "@@type": "xod-project/Node"
-        },
-        "HkqmLAOrD1W": {
-          "boundLiterals": {},
-          "description": "",
-          "label": "Y",
-          "id": "HkqmLAOrD1W",
+          "id": "HJbQvOPL-~r1yIU_vU-",
+          "type": "xod/core/add",
           "position": {
             "x": 138,
-            "y": 16
-          },
-          "type": "xod/patch-nodes/input-number",
-          "@@type": "xod-project/Node"
-        },
-        "SyomIRurDJ-": {
-          "boundLiterals": {
-            "__in__": "0"
-          },
-          "description": "",
-          "label": "SUM",
-          "id": "SyomIRurDJ-",
-          "position": {
-            "x": 10,
-            "y": 224
-          },
-          "type": "xod/patch-nodes/output-number",
-          "@@type": "xod-project/Node"
-        },
-        "noNativeImpl": {
-          "boundLiterals": {},
-          "description": "",
-          "label": "",
-          "id": "noNativeImpl",
-          "position": {
-            "x": 100,
-            "y": 100
-          },
-          "type": "xod/patch-nodes/not-implemented-in-xod",
-          "@@type": "xod-project/Node"
+            "y": 120
+          }
         }
       },
-      "links": {},
-      "path": "xod/core/add",
-      "description": "Adds two numbers",
-      "comments": {},
+      "path": "@/main"
+    },
+    "@/wrapped-add": {
+      "links": {
+        "rJG8IODUb": {
+          "id": "rJG8IODUb",
+          "output": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "SyomIRurDJ-"
+          },
+          "input": {
+            "nodeId": "H1jEI_PUW",
+            "pinKey": "__in__"
+          }
+        },
+        "H14LUuwLW": {
+          "id": "H14LUuwLW",
+          "output": {
+            "nodeId": "wrapped-add-in-2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "HkqmLAOrD1W"
+          }
+        },
+        "ryILL_wIW": {
+          "id": "ryILL_wIW",
+          "output": {
+            "nodeId": "wrapped-add-in-1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "r1yIU_vU-",
+            "pinKey": "BJnQUR_BwyZ"
+          }
+        }
+      },
+      "nodes": {
+        "wrapped-add-in-1": {
+          "label": "IN_1",
+          "id": "wrapped-add-in-1",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 10,
+            "y": 16
+          }
+        },
+        "wrapped-add-in-2": {
+          "label": "IN_2",
+          "id": "wrapped-add-in-2",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 266,
+            "y": 16
+          }
+        },
+        "H1jEI_PUW": {
+          "label": "OUT_1",
+          "id": "H1jEI_PUW",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 138,
+            "y": 328
+          }
+        },
+        "r1yIU_vU-": {
+          "id": "r1yIU_vU-",
+          "type": "xod/core/add",
+          "position": {
+            "x": 138,
+            "y": 120
+          }
+        }
+      },
+      "path": "@/wrapped-add"
+    },
+    "xod/core/add": {
       "attachments": [
         {
           "filename": "patch.cpp",
@@ -68,34 +100,54 @@
           "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(NodeId nid, State* state) {\n    auto x = getValue<input_X>(nid);\n    auto y = getValue<input_Y>(nid);\n    emitValue<output_SUM>(nid, x + y);\n}\n"
         }
       ],
-      "@@type": "xod-project/Patch"
-    },
-    "@/main": {
+      "description": "Adds two numbers",
       "nodes": {
-        "HJbQvOPL-~r1yIU_vU-": {
-          "id": "HJbQvOPL-~r1yIU_vU-",
-          "type": "xod/core/add",
-          "boundLiterals": {
-            "BJnQUR_BwyZ": "111",
-            "HkqmLAOrD1W": "222"
+        "BJnQUR_BwyZ": {
+          "label": "X",
+          "id": "BJnQUR_BwyZ",
+          "position": {
+            "x": 10,
+            "y": 16
           },
-          "description": "",
-          "label": "",
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkqmLAOrD1W": {
+          "label": "Y",
+          "id": "HkqmLAOrD1W",
           "position": {
             "x": 138,
-            "y": 120
+            "y": 16
           },
-          "@@type": "xod-project/Node"
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyomIRurDJ-": {
+          "boundLiterals": {
+            "__in__": "0"
+          },
+          "label": "SUM",
+          "id": "SyomIRurDJ-",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
         }
       },
-      "links": {},
-      "path": "@/main",
-      "description": "",
-      "comments": {},
-      "attachments": [],
-      "@@type": "xod-project/Patch"
+      "path": "xod/core/add"
     }
   },
-  "name": "",
-  "@@type": "xod-project/Project"
+  "authors": [
+    "xod"
+  ],
+  "license": "MIT",
+  "version": "0.0.1",
+  "name": "bound-values-propagation-test"
 }

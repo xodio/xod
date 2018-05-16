@@ -1,5 +1,5 @@
 import R from 'ramda';
-import chai, { expect } from 'chai';
+import chai, { assert, expect } from 'chai';
 import dirtyChai from 'dirty-chai';
 import { explodeEither } from 'xod-func-tools';
 
@@ -536,44 +536,21 @@ describe('Flatten', () => {
         flatProject
       );
     });
-    it('should ignore not referred patches', () => {
-      const flatProject = flatten(project, '@/foo');
-
-      Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          '@/empty',
-          '@/foo',
-        ]);
-        expect(newProject.patches['@/foo']).to.be.deep.equal(
-          project.patches['@/foo']
-        );
-      }, flatProject);
-    });
-    it('should return patch and its dependencies', () => {
-      const flatProject = flatten(project, '@/main');
-
-      Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
-          '@/main',
-        ]);
-        expect(newProject.patches['@/main'].nodes).to.be.deep.equal(
-          project.patches['@/main'].nodes
-        );
-      }, flatProject);
-    });
     it('should return patch with links', () => {
-      const flatProject = flatten(project, '@/main');
+      const eitherFlatProject = flatten(project, '@/main');
 
-      Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
+      Helper.expectEitherRight(flatProject => {
+        assert.sameMembers(R.keys(flatProject.patches), [
           '@/main',
+          '@/foo',
+          '@/empty',
+          'xod/core/or',
         ]);
-        expect(newProject.patches['@/main'].links).to.be.deep.equal(
+        assert.deepEqual(
+          flatProject.patches['@/main'].links,
           project.patches['@/main'].links
         );
-      }, flatProject);
+      }, eitherFlatProject);
     });
   });
 
@@ -711,51 +688,21 @@ describe('Flatten', () => {
       },
     });
 
-    it('should ignore not referred patches', () => {
-      const flatProject = flatten(project, '@/foo');
+    it('should modify only entry patch', () => {
+      const eitherFlatProject = flatten(project, '@/main');
 
-      Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
-          '@/foo',
-        ]);
-        expect(newProject.patches['xod/core/or']).to.be.deep.equal(
-          project.patches['xod/core/or']
+      Helper.expectEitherRight(flatProject => {
+        assert.deepEqual(
+          Project.dissocPatch('@/main', flatProject),
+          Project.dissocPatch('@/main', project)
         );
-        expect(newProject.patches['@/foo'].nodes).to.be.deep.equal(
-          project.patches['@/foo'].nodes
-        );
-      }, flatProject);
-    });
-
-    it('should return patch and its dependencies', () => {
-      const flatProject = flatten(project, '@/main');
-
-      Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
-          '@/main',
-        ]);
-        expect(newProject.patches['xod/core/or']).to.be.deep.equal(
-          project.patches['xod/core/or']
-        );
-        expect(R.values(newProject.patches['@/main'].nodes)[0])
-          .to.have.property('type')
-          .that.equals('xod/core/or');
-      }, flatProject);
+      }, eitherFlatProject);
     });
 
     it('should return nodes with prefixed ids', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
-          '@/main',
-        ]);
-        expect(newProject.patches['xod/core/or']).to.be.deep.equal(
-          project.patches['xod/core/or']
-        );
         expect(R.values(newProject.patches['@/main'].nodes)[0])
           .to.have.property('id')
           .that.equal('a~a');
@@ -774,10 +721,6 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(R.keys(newProject.patches)).to.be.deep.equal([
-          'xod/core/or',
-          '@/main',
-        ]);
         expect(R.values(newProject.patches['@/main'].links)).to.have.lengthOf(
           4
         );
@@ -786,11 +729,14 @@ describe('Flatten', () => {
 
     it('should correctly flatten blinking.xodball', () => {
       const blinking = Helper.loadXodball('./fixtures/blinking.xodball');
-      const blinkingFlat = Helper.loadXodball(
-        './fixtures/blinking.flat.xodball'
+      const expected = Helper.loadXodball('./fixtures/blinking.flat.xodball');
+
+      const eitherFlatProject = flatten(blinking, '@/main');
+
+      Helper.expectEitherRight(
+        flat => expect(flat).to.be.deep.equal(expected),
+        eitherFlatProject
       );
-      const flattened = R.unnest(flatten(blinking, '@/main'));
-      expect(flattened).to.deep.equal(blinkingFlat);
     });
 
     it('should correctly flatten deeply-nested.xodball', () => {
@@ -874,16 +820,6 @@ describe('Flatten', () => {
             links: {},
           },
         },
-      });
-
-      it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main');
-        Helper.expectEitherRight(newProject => {
-          expect(R.keys(newProject.patches)).to.be.deep.equal([
-            'xod/core/number',
-            '@/main',
-          ]);
-        }, flatProject);
       });
 
       it('should return @/main without cast node and link to it', () => {
@@ -1036,18 +972,8 @@ describe('Flatten', () => {
 
           const flatProject = flatten(project, '@/main');
           const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
-          const expectedPaths =
-            typeIn === typeOut
-              ? [`xod/core/${typeIn}`, expectedPath, '@/main']
-              : [
-                  `xod/core/${typeIn}`,
-                  `xod/core/${typeOut}`,
-                  expectedPath,
-                  '@/main',
-                ];
 
           Helper.expectEitherRight(newProject => {
-            expect(R.keys(newProject.patches)).to.be.deep.equal(expectedPaths);
             expect(newProject.patches[expectedPath]).to.be.deep.equal(
               project.patches[expectedPath]
             );
@@ -1192,18 +1118,8 @@ describe('Flatten', () => {
 
           const flatProject = flatten(project, '@/main');
           const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
-          const expectedPaths =
-            typeIn === typeOut
-              ? [`xod/core/${typeIn}`, expectedPath, '@/main']
-              : [
-                  `xod/core/${typeIn}`,
-                  `xod/core/${typeOut}`,
-                  expectedPath,
-                  '@/main',
-                ];
 
           Helper.expectEitherRight(newProject => {
-            expect(R.keys(newProject.patches)).to.be.deep.equal(expectedPaths);
             expect(newProject.patches[expectedPath]).to.be.deep.equal(
               project.patches[expectedPath]
             );
@@ -1301,17 +1217,6 @@ describe('Flatten', () => {
         },
       });
 
-      it('should return patches without cast patch', () => {
-        const flatProject = flatten(project, '@/main');
-
-        Helper.expectEitherRight(newProject => {
-          expect(R.keys(newProject.patches)).to.be.deep.equal([
-            'xod/core/number',
-            '@/main',
-          ]);
-        }, flatProject);
-      });
-
       it('should return two flattened nodes', () => {
         const flatProject = flatten(project, '@/main');
 
@@ -1407,7 +1312,7 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherError(
-          'CAST_PATCH_NOT_FOUND {"patchPath":"xod/core/cast-to-number(boolean)"}',
+          'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/core/cast-to-number(boolean)","patchPath":"@/untitled-patch","trace":["@/untitled-patch"]}',
           flatProject
         );
       });

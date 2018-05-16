@@ -235,54 +235,12 @@ const updatePatch = def(
     )(patch)
 );
 
-const getPathsFromMapOfPinPaths = def(
-  'getPathsFromMapOfPinPaths :: Map NodeId (Map PinKey PatchPath) -> [PatchPath]',
-  R.compose(R.uniq, nestedValues)
-);
-
-const getPatchesFromProject = def(
-  'getPatchesFromProject :: [PatchPath] -> Project -> [Patch]',
-  (paths, project) =>
-    R.map(path => Project.getPatchByPathUnsafe(path, project), paths)
-);
-
-const getTuplesOfPatches = def(
-  'getTuplesOfPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> [Pair PatchPath Patch]',
-  (mapOfPinPaths, project) =>
-    R.compose(
-      R.converge(R.zip, [R.identity, getPatchesFromProject(R.__, project)]),
-      getPathsFromMapOfPinPaths
-    )(mapOfPinPaths)
-);
-
-const assocPatchesToProject = def(
-  'assocPatchesToProject :: [Pair PatchPath Patch] -> Project -> Project',
-  (patchPairs, project) =>
-    R.reduce(
-      (proj, pair) => explodeEither(Project.assocPatch(pair[0], pair[1], proj)),
-      project,
-      patchPairs
-    )
-);
-
-// :: { NodeId: { PinKey: PatchPath } } -> Project -> Project -> Project
-const copyConstPatches = def(
-  'copyConstPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> Project -> Project',
-  (mapOfPinPaths, sourceProject, targetProject) =>
-    R.compose(assocPatchesToProject(R.__, targetProject), getTuplesOfPatches)(
-      mapOfPinPaths,
-      sourceProject
-    )
-);
-
-// It copies patches of needed const*TYPE* into flat project,
 // Replaces curried pins with new nodes with curried value (inValue)
 // And creates links from them
-// And returns updated flat project
 const extractBoundInputsToConstNodes = def(
-  'extractBoundInputsToConstNodes :: Project -> PatchPath -> Project -> Project',
-  (flatProject, path, origProject) => {
-    const entryPointPatch = Project.getPatchByPathUnsafe(path, flatProject);
+  'extractBoundInputsToConstNodes :: PatchPath -> Project -> Project',
+  (path, project) => {
+    const entryPointPatch = Project.getPatchByPathUnsafe(path, project);
     const entryPointNodes = Patch.listNodes(entryPointPatch);
     const entryPointLinks = Patch.listLinks(entryPointPatch);
 
@@ -290,22 +248,22 @@ const extractBoundInputsToConstNodes = def(
       entryPointNodes,
       entryPointLinks
     );
-    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, flatProject);
+    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, project);
     const pinsToOmit = R.mergeWith(R.concat, occupiedNodePins, outputNodePins);
     const allInputPinValues = R.compose(
       R.mapObjIndexed((pins, nodeId) =>
         R.omit(R.propOr([], nodeId, pinsToOmit), pins)
       ),
-      getMapOfNodePinValues(flatProject)
+      getMapOfNodePinValues(project)
     )(entryPointNodes);
 
     const extractablePinPaths = getMapOfExtractablePinPaths(
       allInputPinValues,
       entryPointNodes,
-      flatProject
+      project
     );
 
-    const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, origProject);
+    const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, project);
 
     const newConstNodes = createNodesWithBoundValues(
       allInputPinValues,
@@ -314,18 +272,12 @@ const extractBoundInputsToConstNodes = def(
     );
     const newLinks = createLinksFromCurriedPins(newConstNodes, constPinKeys);
     const newPatch = R.compose(
-      R.compose(
-        squashSingleOutputNodes('xod/core/boot'),
-        squashSingleOutputNodes('xod/core/continuously')
-      ),
+      squashSingleOutputNodes('xod/core/boot'),
+      squashSingleOutputNodes('xod/core/continuously'),
       updatePatch(newLinks, newConstNodes, allInputPinValues)
     )(entryPointPatch);
 
-    return R.compose(
-      explodeEither,
-      Project.assocPatch(path, newPatch),
-      copyConstPatches(extractablePinPaths, origProject)
-    )(flatProject);
+    return Project.assocPatchUnsafe(path, newPatch, project);
   }
 );
 

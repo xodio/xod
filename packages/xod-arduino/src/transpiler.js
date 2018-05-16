@@ -320,6 +320,31 @@ const createTNodes = def(
 );
 
 /**
+ * Leaves only patches that are used in an entry patch(and entry patch itself).
+ * Assumes that entry patch is flattened.
+ */
+const removeUnusedNodes = def(
+  'removeUnusedNodes :: PatchPath -> Project -> Project',
+  (flatEntryPatchPath, project) => {
+    const nodeTypesUsedInEntryPatch = R.compose(
+      R.uniq,
+      R.map(Project.getNodeType),
+      Project.listNodes,
+      // we already checked several times that entry patch exists
+      Project.getPatchByPathUnsafe(flatEntryPatchPath)
+    )(project);
+
+    const unusedPatchPaths = R.compose(
+      R.without([...nodeTypesUsedInEntryPatch, flatEntryPatchPath]),
+      R.map(Project.getPatchPath),
+      Project.listPatches
+    )(project);
+
+    return Project.omitPatches(unusedPatchPaths, project);
+  }
+);
+
+/**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
  * and it has a ready-to-use values, nothing needed to compute anymore.
@@ -358,12 +383,10 @@ const transformProjectWithImpls = def(
           })(proj)
         );
       }),
-      R.chain(
-        R.compose(
-          toposortProject(path),
-          Project.extractBoundInputsToConstNodes(R.__, path, project)
-        )
-      ),
+      R.chain(toposortProject(path)),
+      // end preparing project for transpilation. TODO: extract it into a separate function
+      R.map(removeUnusedNodes(path)),
+      R.map(Project.extractBoundInputsToConstNodes(path)),
       R.chain(Project.flatten(R.__, path)),
       R.map(Project.expandVariadicNodes(path)),
       R.chain(Project.autoresolveTypes(path)),
@@ -372,6 +395,7 @@ const transformProjectWithImpls = def(
         R.chain(Project.updatePatch(path, Project.removeDebugNodes))
       ),
       Project.validatePatchReqursively(path)
+      // begin preparing project for transpilation
     )(project)
 );
 

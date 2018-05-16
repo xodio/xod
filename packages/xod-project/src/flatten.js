@@ -83,9 +83,6 @@ const isInternalTerminalNode = R.compose(
 
 const terminalOriginalDirectionLens = R.lensProp('originalDirection');
 
-// :: Applicative f => f a -> [(a -> Applicative a)] -> f a
-const reduceChainOver = R.reduce(R.flip(R.chain));
-
 const isLeafPatchWithImplsOrTerminal = def(
   'isLeafPatchWithImplsOrTerminal :: Patch -> Boolean',
   R.anyPass([
@@ -620,41 +617,6 @@ const createCastNodes = R.curry((patchTuples, nodes, links) =>
   )(links)
 );
 
-// :: Patch -> String[]
-const getCastNodeTypesFromPatch = R.compose(
-  R.filter(PatchPathUtils.isCastPatchPath),
-  R.map(Node.getNodeType),
-  Patch.listNodes
-);
-
-// :: Project -> String -> Either Error Patch
-const getEitherPatchByPath = R.curry((project, path) =>
-  R.compose(
-    failOnNothing('CAST_PATCH_NOT_FOUND', { patchPath: path }),
-    Project.getPatchByPath(R.__, project)
-  )(path)
-);
-
-// :: Project -> String[] -> [[Path, Patch]] -> [[Path, Either Error Patch]]
-const addCastPatches = R.curry((project, castTypes, leafPatches) =>
-  R.compose(
-    R.concat(R.map(Either.of, leafPatches)),
-    R.map(path =>
-      getEitherPatchByPath(project, path).map(patch => [path, patch])
-    ),
-    R.uniq
-  )(castTypes)
-);
-
-// :: [[Path, Patch]] -> [[Path, Patch]]
-const removeTerminalPatches = R.reject(
-  R.compose(PatchPathUtils.isInternalTerminalNodeType, R.prop(0))
-);
-
-const removeNotImplementedInXodNodes = R.reject(
-  R.compose(R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH), R.prop(0))
-);
-
 // :: [[Path, Patch]] -> [[Path, Patch]]
 const filterTuplesByUniqPaths = R.uniqWith(R.eqBy(R.prop(0)));
 
@@ -852,49 +814,6 @@ const convertPatch = def(
     })(patch)
 );
 
-/**
- * Creating new flattened project by:
- * - converting patches
- * - updating leaf patches
- * - associating leaf patches
- * - associating converted patch
- *
- * See {@link flatten} docs (2-5)
- *
- * @private
- * @function convertProject
- * @param {Project} project
- * @param {String} path
- * @param {Patch} patch
- * @param {Array<Array<Path, Patch>>} leafPatches
- * @returns {Either<Error|Project>}
- */
-const convertProject = def(
-  'convertProject :: Project -> PatchPath -> Patch -> [Pair PatchPath Patch] -> Either Error Project',
-  (project, path, patch, leafPatches) => {
-    // Patch
-    const convertedPatch = convertPatch(project, leafPatches, patch);
-    // String[]
-    const usedCastNodeTypes = getCastNodeTypesFromPatch(convertedPatch);
-    // Right Project
-    const newProject = Either.of(Project.createProject());
-
-    return R.compose(
-      R.chain(reduceChainOver(newProject)),
-      R.map(
-        R.compose(
-          R.map(R.apply(Project.assocPatch)),
-          R.append([path, convertedPatch]),
-          removeNotImplementedInXodNodes,
-          removeTerminalPatches
-        )
-      ),
-      R.sequence(Either.of),
-      addCastPatches(project, usedCastNodeTypes)
-    )(leafPatches);
-  }
-);
-
 //
 // It represents a first step of flattening.
 // (see flatten docs (1))
@@ -920,7 +839,10 @@ const flattenProject = def(
   'flattenProject :: Project -> PatchPath -> Patch -> Either Error Project',
   (project, path, patch) =>
     R.compose(
-      R.chain(convertProject(project, path, patch)),
+      R.chain(leafPatches => {
+        const convertedPatch = convertPatch(project, leafPatches, patch);
+        return Project.assocPatch(path, convertedPatch, project);
+      }),
       // TODO: extract preparing leaf patches into a separate function?
       // end preparing leaf patches list
       R.map(R.map(extendTerminalPins)),
@@ -999,12 +921,7 @@ const checkEntryPatchIsNotAbstract = def(
  *
  *    2.4. Assoc new nodes and new links to a new patch.
  *
- * 3. Get a list of used cast patches in the new patch and copy them
- *    from project to the list of leaf patches (from (1)) and remove terminal patches.
- *
- * 4. Assoc leaf patches to a new project
- *
- * 5. Assoc the new patch to the old path.
+ * 3. Replace original entry patch with the flattened one.
  *
  * @function flatten
  * @param {Project} inputProject

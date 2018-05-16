@@ -179,10 +179,6 @@ export default {
     title: "Can't transpile selected Patch",
     note: `Can’t use abstract patch "${patchPath}" as entry point`,
   }),
-  CAST_PATCH_NOT_FOUND: ({ patchPath }) => ({
-    title: 'Cast patch not found',
-    note: `Casting patch "${patchPath}" is not found in the project`,
-  }),
   ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH: ({ patchPath }) => ({
     title: 'Entry point patch not found',
     note: `Entry point patch not found by path "${patchPath}"`,

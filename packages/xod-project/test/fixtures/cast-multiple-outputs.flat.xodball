@@ -368,6 +368,6 @@
       "@@type": "xod-project/Patch"
     }
   },
-  "name": "",
+  "name": "cast-collapsing-test",
   "@@type": "xod-project/Project"
 }
