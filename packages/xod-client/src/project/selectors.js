@@ -70,11 +70,21 @@ export const getCurrentPatch = createSelector(
   (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
+const samePatchesInProject = (prev, next) => {
+  if (prev === next) return true;
+  const prevPatches = XP.listPatches(prev);
+  const nextPatches = XP.listPatches(next);
+  return XP.patchListEqualsBy(XP.samePatchValidity)(prevPatches, nextPatches);
+};
+
 export const getDeducedPinTypes = createMemoizedSelector(
-  [getProject, getCurrentPatch],
-  [R.equals, R.equals],
-  (project, maybeCurrentPatch) =>
-    foldMaybe({}, patch => XP.deducePinTypes(patch, project), maybeCurrentPatch)
+  [getProject, getCurrentPatchPath],
+  [samePatchesInProject],
+  (project, maybeCurrentPatchPath) =>
+    R.compose(
+      Maybe.maybe({}, patch => XP.deducePinTypes(patch, project)),
+      R.chain(XP.getPatchByPath(R.__, project))
+    )(maybeCurrentPatchPath)
 );
 
 // :: { LinkId: Link } -> { NodeId: { PinKey: Boolean } }
