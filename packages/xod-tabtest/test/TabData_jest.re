@@ -48,17 +48,25 @@ describe("TSV parser", () => {
   });
   test("recognizes types", () => {
     let tsv =
-      "Number\tBoolean\tString\n"
-      ++ "+.5\ttrue\t\"Hello\"\n"
-      ++ "1.3\tfalse\t\"Some \"quoted\" string\"";
+      "Number\tBoolean\tByte\tString\n"
+      ++ "+.5\ttrue\t00h\t\"Hello\"\n"
+      ++ "-42\ttrue\t00001101b\t\"World\"\n"
+      ++ "1.3\tfalse\t255d\t\"Some \"quoted\" string\"";
     let expected: TabData.t = [
       Map.String.empty
       |. Map.String.set("Number", Number(0.5))
       |. Map.String.set("Boolean", Boolean(true))
+      |. Map.String.set("Byte", Byte(0))
       |. Map.String.set("String", String("Hello")),
+      Map.String.empty
+      |. Map.String.set("Number", Number(-42.0))
+      |. Map.String.set("Boolean", Boolean(true))
+      |. Map.String.set("Byte", Byte(13))
+      |. Map.String.set("String", String("World")),
       Map.String.empty
       |. Map.String.set("Number", Number(1.3))
       |. Map.String.set("Boolean", Boolean(false))
+      |. Map.String.set("Byte", Byte(255))
       |. Map.String.set("String", String({|Some "quoted" string|})),
     ];
     expect(TabData.parse(tsv)) |> toEqual(expected);

@@ -2,11 +2,21 @@
 
 ## Bug Report or Tweak Template <!-- Delete the header -->
 
+### Environment
+
+- Scope: desktop IDE, browser IDE, CLI
+- Version: 0.xx.x | dev <!-- Hit “Help” in the IDE main menu to view -->
+- OS: Windows 10 | macOS High Sierra (10.13) | Ubuntu 18.04
+- Machine: i3, 4 GB RAM
+
 ### Steps to reproduce
 
 1. Open this
 2. Press that
 3. Click here and there
+
+If the test program is not trivial, attach its `.xodball`. You’ll have to zip
+the file as GitHub does not accept file attachments with custom extensions.
 
 ### Expected behavior
 
@@ -14,14 +24,19 @@ What should happen?
 
 ### Actual behavior
 
-What’s happen now
+What’s happen now?
 
-### Console output
+If it will make the issue more illustrative, attach screenshots or GIF’s of
+what’s going on.
 
-Are there any errors in the console? Copy and paste the output
-with all details provided by the browser or application.
+### Console output <!-- if any -->
 
-### How to fix
+Are there any errors in the console? Press `Ctrl+Shift+I` to open the developer
+tools and find the “Console” tab there. Error are shown in red. Expand an
+error, then copy and paste the output verbatim.  Use fenced code blocks (triple
+backticks) to preserve formatting.
+
+### How to fix <!-- if you know -->
 
 If you have an idea on how the bug can be fixed, provide a short
 description.

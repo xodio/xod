@@ -34,6 +34,12 @@ describe('extractBoundInputsToConstNodes', () => {
           __out__: '37',
         },
       },
+      [getInputPinKey(XP.PIN_TYPE.BYTE)]: {
+        type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.BYTE),
+        boundLiterals: {
+          __out__: 'FAh',
+        },
+      },
       'on-boot': {
         type: XP.getTerminalPath(XP.PIN_DIRECTION.INPUT, XP.PIN_TYPE.PULSE),
         boundLiterals: {
@@ -117,6 +123,7 @@ describe('extractBoundInputsToConstNodes', () => {
         findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.NUMBER]),
         findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.BOOLEAN]),
         findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.STRING]),
+        findNodeByType(XP.CONST_NODETYPES[XP.PIN_TYPE.BYTE]),
         findNodeByType(
           XP.PULSE_CONST_NODETYPES[XP.INPUT_PULSE_PIN_BINDING_OPTIONS.ON_BOOT]
         ),
@@ -294,7 +301,7 @@ describe('extractBoundInputsToConstNodes', () => {
     const nodesByNodeType = getNodesByNodeTypes(patch);
     assert.lengthOf(
       R.values(nodesByNodeType),
-      6,
+      7,
       'constant nodes with default pin values must be created'
     );
 
@@ -308,7 +315,7 @@ describe('extractBoundInputsToConstNodes', () => {
     const links = XP.listLinks(patch);
     assert.lengthOf(
       links,
-      5,
+      6,
       'links from constant nodes with default pin values must be created'
     );
   });

@@ -168,7 +168,7 @@ const nanRegExp = '^NaN$';
 const infRegExp = `^${optSignRegExp}Inf$`;
 
 // Whole RegExp for Number DataType
-const numberDataTypeRegExp = new RegExp(
+export const numberDataTypeRegExp = new RegExp(
   `${numberRegExp}|${nanRegExp}|${infRegExp}`
 );
 
@@ -202,6 +202,9 @@ export const getTypeFromLiteral = def(
       return Either.of(CONST.PIN_TYPE.PULSE);
 
     if (R.test(/^".*"$/gi, literal)) return Either.of(CONST.PIN_TYPE.STRING);
+
+    if (R.test(/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/gi, literal))
+      return Either.of(CONST.PIN_TYPE.BYTE);
 
     if (isValidNumberDataValue(literal))
       return Either.of(CONST.PIN_TYPE.NUMBER);

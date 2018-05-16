@@ -48,6 +48,10 @@
       @include symbol-coloring($color-datatype-pulse);
     }
 
+    &.byte {
+      @include symbol-coloring($color-datatype-byte);
+    }
+
     &.dead, &.is-invalid {
       @include symbol-coloring($color-datatype-dead);
     }

@@ -1,0 +1,16 @@
+- title: XOD Channel
+  avatar: ./__img__/xod.jpg
+  description: "3 episodes, ~5m each"
+  url: "https://www.youtube.com/watch?v=qxjLH_3US04&list=PLVqjnBJ_sf9t343WLHiXHUaunl1z-IT8j"
+- title: DroneBot Workshop
+  avatar: ./__img__/drone-bot-workshop.jpg
+  description: "2 episodes, ~50m each"
+  url: "https://www.youtube.com/watch?v=L_FkrZTduVc"
+- title: Mert Arduino and Tech
+  avatar: ./__img__/mert.jpg
+  description: "8 episodes, ~5m each"
+  url: "https://www.youtube.com/playlist?list=PL2GAS4vHuGW3jXdIxdYspRLZ-gRw8fAh3"
+- title: Puddin
+  avatar: ./__img__/puddin.jpg
+  description: "4 episodes, ~15m each"
+  url: "https://www.youtube.com/watch?v=9gZqTq0-NJQ&list=PLTmLCQdY9K61pwT_K0j1zokCnIQkjhsQb&index=1"

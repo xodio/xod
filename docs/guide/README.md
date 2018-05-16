@@ -1,11 +1,13 @@
 ---
-title: User’s Guide
+title: User Guide
 ---
 
-User’s Guide
-============
+User Guide
+==========
 
 ## Concepts
+
+XOD language objects and processes described in detail.
 
 * [Program structure](./program-structure/)
 * [Data types](./data-types/)
@@ -16,6 +18,8 @@ User’s Guide
 
 ## Making your own nodes
 
+The most straightforward way to extend XOD and add support for new hardware.
+
 * [Creating nodes for XOD in XOD](./nodes-for-xod-in-xod/)
 * [Creating analog sensor driver nodes](./analog-sensor-node/)
 * [Documenting nodes](./documenting-nodes/)
@@ -25,11 +29,13 @@ User’s Guide
 * [Creating variadic patch nodes](./creating-variadics/)
 * [Creating generic patch nodes](./creating-generics/)
 
-## Doing things sequentially
+## Case studies
 
-* [Simple traffic light example](./simple-traffic-light/)
+* [Simple traffic light example](./simple-traffic-light/) — doing things sequentially
 
-### Projects and libraries
+## Projects and libraries
+
+How to create, manage, and share your work.
 
 * [Working on projects](./projects/)
 * [Using libraries](./using-libraries/)

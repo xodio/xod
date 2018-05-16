@@ -1,8 +1,8 @@
 import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
-import { unquote, foldMaybe } from 'xod-func-tools';
-import { ensureLiteral, PIN_TYPE } from 'xod-project';
+import { unquote } from 'xod-func-tools';
+import { PIN_TYPE } from 'xod-project';
 
 import { def } from './types';
 
@@ -55,6 +55,7 @@ const cppType = def(
     [PIN_TYPE.BOOLEAN]: 'Logic',
     [PIN_TYPE.NUMBER]: 'Number',
     [PIN_TYPE.STRING]: 'XString',
+    [PIN_TYPE.BYTE]: 'uint8_t',
   })
 );
 
@@ -65,6 +66,31 @@ const cppStringLiteral = def(
     R.isEmpty,
     R.always('XString()'),
     str => `XStringCString("${R.replace(/"/g, '\\"', str)}")`
+  )
+);
+
+// Formats XOD byte literal into C++ byte literal
+// E.G.
+// 00011101b -> 0x1D
+// FAh -> 0xFA
+// 29d -> 0x1D
+const cppByteLiteral = def(
+  'cppByteLiteral :: String -> String',
+  R.compose(
+    R.concat('0x'),
+    R.toUpper,
+    x => x.toString(16),
+    R.converge(parseInt, [
+      R.init,
+      R.compose(
+        R.prop(R.__, {
+          b: 2,
+          h: 16,
+          d: 10,
+        }),
+        R.last
+      ),
+    ])
   )
 );
 
@@ -124,24 +150,19 @@ const UNKNOWN_TYPE = 'unknown_type<void>';
 // Converts bound value literals or JS-typed data value to a
 // string that is valid and expected C++ literal representing that value
 Handlebars.registerHelper('cppValue', (type, value) =>
-  R.compose(
-    foldMaybe(
-      UNKNOWN_TYPE,
-      R.propOr(R.always(UNKNOWN_TYPE), type, {
-        [PIN_TYPE.PULSE]: R.always('false'),
-        [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
-        [PIN_TYPE.NUMBER]: R.cond([
-          [R.equals('Inf'), R.always('INFINITY')],
-          [R.equals('+Inf'), R.always('INFINITY')],
-          [R.equals('-Inf'), R.always('(-INFINITY)')],
-          [R.equals('NaN'), R.always('NAN')],
-          [R.T, R.identity],
-        ]),
-        [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
-      })
-    ),
-    ensureLiteral
-  )(type, value)
+  R.propOr(R.always(UNKNOWN_TYPE), type, {
+    [PIN_TYPE.PULSE]: R.always('false'),
+    [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
+    [PIN_TYPE.NUMBER]: R.cond([
+      [R.equals('Inf'), R.always('INFINITY')],
+      [R.equals('+Inf'), R.always('INFINITY')],
+      [R.equals('-Inf'), R.always('(-INFINITY)')],
+      [R.equals('NaN'), R.always('NAN')],
+      [R.T, R.identity],
+    ]),
+    [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
+    [PIN_TYPE.BYTE]: cppByteLiteral,
+  })(value)
 );
 
 // A helper to quickly introduce a new filtered {{each ...}} loop
