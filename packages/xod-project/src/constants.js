@@ -187,6 +187,12 @@ export const ABSTRACT_MARKER_PATH = 'xod/patch-nodes/abstract';
 export const DEPRECATED_MARKER_PATH = 'xod/patch-nodes/deprecated';
 
 /**
+ * Path for a 'magic' terminal patch, whose instance is
+ * used in constructor nodes of custom types.
+ */
+export const OUTPUT_SELF_PATH = 'xod/patch-nodes/output-self';
+
+/**
  * Path for a 'magic' patch, whose instance is placed
  * to mark utility nodes.
  */

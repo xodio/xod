@@ -656,6 +656,53 @@ describe('Patch', () => {
         assert.deepEqual({ inStr: '""', outNum: '0' }, pinDefaultValues);
       });
     });
+
+    describe('output-self terminals', () => {
+      it('should produce output pin with the type named after constructor patch', () => {
+        const testPatch = Helper.defaultizePatch({
+          path: '@/my-custom-type',
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+              position: { x: 0, y: 100 },
+            },
+          },
+        });
+
+        const pin = R.compose(R.head, Patch.listOutputPins)(testPatch);
+
+        assert.equal(Pin.getPinType(pin), '@/my-custom-type');
+      });
+      it('should allow more than one output-self pins', () => {
+        const testPatch = Helper.defaultizePatch({
+          path: '@/my-custom-type',
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+              position: { x: 0, y: 100 },
+            },
+            outSelf2: {
+              type: CONST.OUTPUT_SELF_PATH,
+              position: { x: 100, y: 100 },
+            },
+            outSelf3: {
+              type: CONST.OUTPUT_SELF_PATH,
+              position: { x: 200, y: 100 },
+            },
+          },
+        });
+
+        const pinTypes = R.compose(R.map(Pin.getPinType), Patch.listOutputPins)(
+          testPatch
+        );
+
+        assert.deepEqual(pinTypes, [
+          '@/my-custom-type',
+          '@/my-custom-type',
+          '@/my-custom-type',
+        ]);
+      });
+    });
   });
 
   describe('comments', () => {
@@ -2018,6 +2065,96 @@ describe('Patch', () => {
             abstractPatch,
             validSpecializationPatch
           )
+        );
+      });
+    });
+  });
+
+  describe('constructor patches', () => {
+    describe('validateConstructorPatch', () => {
+      it('should ignore regular patches', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            foo: {
+              type: PPU.getLocalPath('whatever'),
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(patch),
+          Patch.validateConstructorPatch(patch)
+        );
+      });
+
+      it('should check that constructor patch has no generic pins', () => {
+        const constructorPatchWithGenericInput = Helper.defaultizePatch({
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+            },
+            genIn: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.INPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          'CONSTRUCTOR_PATCH_CANT_HAVE_GENERIC_PINS {"trace":["@/default-patch-path"]}',
+          Patch.validateConstructorPatch(constructorPatchWithGenericInput)
+        );
+
+        const constructorPatchWithGenericOutput = Helper.defaultizePatch({
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+            },
+            genOut: {
+              type: PPU.getTerminalPath(
+                CONST.PIN_DIRECTION.OUTPUT,
+                CONST.PIN_TYPE.T1
+              ),
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          'CONSTRUCTOR_PATCH_CANT_HAVE_GENERIC_PINS {"trace":["@/default-patch-path"]}',
+          Patch.validateConstructorPatch(constructorPatchWithGenericOutput)
+        );
+      });
+
+      it('should check that constructor patch has a C++ implementation', () => {
+        const constructorPatchWithoutCppImpl = Helper.defaultizePatch({
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+            },
+          },
+        });
+
+        Helper.expectEitherError(
+          'CONSTRUCTOR_PATCH_MUST_BE_NIIX {"trace":["@/default-patch-path"]}',
+          Patch.validateConstructorPatch(constructorPatchWithoutCppImpl)
+        );
+
+        const constructorPatchWithCppImpl = Helper.defaultizePatch({
+          nodes: {
+            outSelf: {
+              type: CONST.OUTPUT_SELF_PATH,
+            },
+            impl: {
+              type: CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(constructorPatchWithCppImpl),
+          Patch.validateConstructorPatch(constructorPatchWithCppImpl)
         );
       });
     });

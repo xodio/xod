@@ -71,7 +71,7 @@ export const PatchBaseName = NullaryType('PatchBaseName', isValidPatchBasename);
 export const PatchPath = NullaryType('PatchPath', isValidPatchPath);
 export const LibName = NullaryType('LibName', isLibName);
 export const PinDirection = EnumType('PinDirection', R.values(C.PIN_DIRECTION));
-export const DataType = EnumType('DataType', R.values(C.PIN_TYPE));
+export const DataType = AliasType('DataType', $.String);
 export const DataValue = NullaryType('DataValue', XF.notNil);
 export const Version = NullaryType('Version', isValidVersion);
 

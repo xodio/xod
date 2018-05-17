@@ -7,8 +7,10 @@ import {
   isPathLocal,
   isPathLibrary,
   isValidPatchPath,
+  isValidPatchBasename,
   terminalPatchPathRegExp,
 } from './internal/patchPathUtils';
+import { isBuiltInType } from './utils';
 
 export {
   isLocalMarker,
@@ -50,6 +52,20 @@ export const getLocalPath = baseName => `@/${baseName}`;
  */
 export const validatePath = patchPath =>
   failOnFalse('INVALID_PATCH_PATH', { patchPath }, isValidPatchPath)(patchPath);
+
+/**
+ * User-defined patch names can't begin with `input-` or `output-`.
+ * Those are reserved for terminals, which are auto-generated.
+ */
+const reservedBaseNameRegExp = R.compose(
+  dirs => new RegExp(`^(${dirs})-`),
+  R.join('|'),
+  R.values
+)(CONST.PIN_DIRECTION);
+export const isValidUserDefinedPatchBasename = R.both(
+  isValidPatchBasename,
+  R.complement(R.test(reservedBaseNameRegExp))
+);
 
 /**
  * @function getBaseName
@@ -100,7 +116,20 @@ export const getTerminalDirection = R.compose(
 
 export const getTerminalDataType = def(
   'getTerminalDataType :: PatchPath -> DataType',
-  R.compose(R.nth(2), R.match(terminalPatchPathRegExp))
+  terminalPatchPath => {
+    const baseType = R.match(terminalPatchPathRegExp, terminalPatchPath)[2];
+
+    // using isBuiltInType from ./utils here won't catch
+    // stuff like `someone/my-lib/number`
+    const isBuiltInPrimitiveType = R.startsWith(
+      `${PATCH_NODES_LIB_NAME}/`,
+      terminalPatchPath
+    );
+
+    return isBuiltInPrimitiveType
+      ? baseType
+      : `${getLibraryName(terminalPatchPath)}/${baseType}`;
+  }
 );
 
 // :: String -> Boolean
@@ -115,10 +144,18 @@ export const isOutputTerminalPath = R.compose(
   getTerminalDirection
 );
 
-// ::
-export const getTerminalPath = R.curry(
-  (direction, type) => `${PATCH_NODES_LIB_NAME}/${direction}-${type}`
-);
+// :: PinDirection -> DataType -> PatchPath
+export const getTerminalPath = R.curry((direction, type) => {
+  if (isBuiltInType(type)) {
+    return `${PATCH_NODES_LIB_NAME}/${direction}-${type}`;
+  }
+
+  // for complex types, `type` is a path to constructor patch
+  const constructorLibraryName = getLibraryName(type);
+  const constructorBaseName = getBaseName(type);
+
+  return `${constructorLibraryName}/${direction}-${constructorBaseName}`;
+});
 
 //
 // utils for variadic marker nodes
@@ -205,6 +242,9 @@ export const getInternalTerminalPath = def(
 // :: String -> String
 export const convertToInternalTerminalPath = R.compose(
   getInternalTerminalPath,
+  // we can safely convert custom terminals to generics
+  // since they never have bound values
+  R.unless(t => isBuiltInType(t), R.always(CONST.PIN_TYPE.T1)),
   getTerminalDataType
 );
 

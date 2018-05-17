@@ -145,6 +145,7 @@ const getDisabledWidget = type => ({
 export const getNodeWidgetConfig = R.cond([
   [isGenericType, getGenericTypeWidget],
   [R.has(R.__, WIDGET_MAPPING), R.prop(R.__, WIDGET_MAPPING)],
+  // This must be a custom type then
   [R.T, getDisabledWidget],
 ]);
 

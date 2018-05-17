@@ -10,12 +10,16 @@
 
 .Link {
   .line {
-    stroke: $color-datatype-generic;
+    stroke: $color-datatype-custom;
     stroke-width: 2px;
   }
 
   .end {
-    fill:  $color-datatype-generic;
+    fill: $color-datatype-custom;
+  }
+
+  &.t1, &.t2, &.t3 {
+    @include link-parts-coloring($color-datatype-generic);
   }
 
   &.string {

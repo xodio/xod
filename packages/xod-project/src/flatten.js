@@ -92,18 +92,9 @@ const isLeafPatchWithImplsOrTerminal = def(
   ])
 );
 
-const isPatchNotImplementedInXod = def(
-  'isPatchNotImplementedInXod :: Patch -> Boolean',
-  R.compose(
-    R.contains(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
-    R.map(Node.getNodeType),
-    Patch.listNodes
-  )
-);
-
 const isLeafPatchWithoutImpls = def(
   'isLeafPatchWithoutImpls :: Patch -> Boolean',
-  R.both(R.complement(Patch.hasImpl), isPatchNotImplementedInXod)
+  R.both(R.complement(Patch.hasImpl), Patch.isPatchNotImplementedInXod)
 );
 
 // :: [Path, Patch] -> [Path, Patch]
@@ -857,7 +848,7 @@ const checkEntryPatchIsNative = def(
   'checkEntryPatchIsNative :: Patch -> Either Error Patch',
   patch =>
     R.ifElse(
-      isPatchNotImplementedInXod,
+      Patch.isPatchNotImplementedInXod,
       () =>
         fail('CPP_AS_ENTRY_POINT', { patchPath: Patch.getPatchPath(patch) }),
       Either.of

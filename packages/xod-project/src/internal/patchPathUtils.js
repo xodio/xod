@@ -106,10 +106,9 @@ export const isValidPatchPath = R.either(isPathLocal, isPathLibrary);
 
 export const TERMINALS_LIB_NAME = 'xod/patch-nodes';
 const directions = R.values(CONST.PIN_DIRECTION);
-const dataTypes = R.values(CONST.PIN_TYPE);
 
 export const terminalPatchPathRegExp = new RegExp(
-  `^${TERMINALS_LIB_NAME}/(${directions.join('|')})-(${dataTypes.join('|')})$`
+  `.*/(${directions.join('|')})-(.*)$`
 );
 
 // :: String -> Boolean

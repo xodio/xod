@@ -15,42 +15,13 @@ import {
   isDirtienessEnabled,
 } from './directives';
 
+import { toInt, createPatchNames } from './utils';
+
 //-----------------------------------------------------------------------------
 //
 // Utils
 //
 //-----------------------------------------------------------------------------
-
-// :: x -> Number
-const toInt = R.flip(parseInt)(10);
-
-const kebabToSnake = R.replace(/-/g, '_');
-
-// foo(number,string) -> foo__number__string
-const sanitizeTypeSpecification = R.compose(
-  R.replace(/\(|,/g, '__'),
-  R.replace(')', '')
-);
-
-const createPatchNames = def(
-  'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
-  R.compose(
-    R.map(kebabToSnake),
-    R.applySpec({
-      owner: R.ifElse(
-        Project.isPathLibrary,
-        Project.getOwnerName,
-        R.always('')
-      ),
-      libName: R.ifElse(
-        Project.isPathLibrary,
-        R.pipe(R.split('/'), R.nth(1)),
-        R.always('')
-      ),
-      patchName: R.pipe(Project.getBaseName, sanitizeTypeSpecification),
-    })
-  )
-);
 
 const findPatchByPath = def(
   'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',

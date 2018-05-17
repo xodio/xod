@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -25,7 +26,13 @@ const TerminalNodeBody = props => {
         y={yOffset + (isInput ? -1 : 1)}
       />
       <circle
-        className={classNames('outline', XP.getTerminalDataType(props.type))}
+        className={classNames(
+          'outline',
+          R.compose(
+            R.unless(XP.isBuiltInType, R.always('custom')),
+            XP.getTerminalDataType
+          )(props.type)
+        )}
         {...circleProps}
       />
     </g>

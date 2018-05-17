@@ -2,7 +2,12 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { PIN_DIRECTION, PIN_TYPE, isGenericType } from 'xod-project';
+import {
+  PIN_DIRECTION,
+  PIN_TYPE,
+  isGenericType,
+  isBuiltInType,
+} from 'xod-project';
 
 import PinIcon from './PinIcon';
 
@@ -13,22 +18,21 @@ const isLinkedInput = R.both(
   R.prop('isConnected')
 );
 
-const isNonBindableOutput = R.both(
-  R.pipe(R.prop('direction'), R.equals(PIN_DIRECTION.OUTPUT)),
-  R.complement(R.prop('isBindable'))
-);
+const isNonBindableOutput = R.complement(R.prop('isBindable'));
 
 const isBindingForbidden = R.anyPass([isLinkedInput, isNonBindableOutput]);
 
 const isPulsePin = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.PULSE));
 const isDeadPinType = R.pipe(R.prop('dataType'), R.equals(PIN_TYPE.DEAD));
 const isGenericPin = R.pipe(R.prop('dataType'), isGenericType);
+const isCustomTypePin = R.pipe(R.prop('dataType'), R.complement(isBuiltInType));
 
 const getReason = R.cond([
   [isDeadPinType, R.always('dead pin')],
   [isLinkedInput, R.always('linked')],
   [R.both(isNonBindableOutput, isPulsePin), R.always('pulse')],
   [R.both(isNonBindableOutput, isGenericPin), R.always('generic output')],
+  [isCustomTypePin, R.always('custom type')],
   // the only option left is that it's not bindable
   // because it belongs to a functional node
   [R.T, R.always('computed')],

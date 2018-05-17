@@ -6,6 +6,8 @@ import { PIN_TYPE } from 'xod-project';
 
 import { def } from './types';
 
+import { createPatchNames } from './utils';
+
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
@@ -47,18 +49,29 @@ const mergeAndListPins = (direction, node) =>
     ])
   )(node);
 
+const getNSName = R.compose(
+  R.join('__'),
+  R.props(['owner', 'libName', 'patchName'])
+);
+
+const builtInTypeNames = {
+  [PIN_TYPE.PULSE]: 'Logic',
+  [PIN_TYPE.BOOLEAN]: 'Logic',
+  [PIN_TYPE.NUMBER]: 'Number',
+  [PIN_TYPE.STRING]: 'XString',
+  [PIN_TYPE.BYTE]: 'uint8_t',
+  [PIN_TYPE.PORT]: 'uint8_t',
+  [PIN_TYPE.PORT_ANALOG]: 'uint8_t',
+};
+
 // Converts DataType value to a corresponding C++ storage type
 const cppType = def(
   'cppType :: DataType -> String',
-  R.propOr('unknown_type<void>', R.__, {
-    [PIN_TYPE.PULSE]: 'Logic',
-    [PIN_TYPE.BOOLEAN]: 'Logic',
-    [PIN_TYPE.NUMBER]: 'Number',
-    [PIN_TYPE.STRING]: 'XString',
-    [PIN_TYPE.BYTE]: 'uint8_t',
-    [PIN_TYPE.PORT]: 'uint8_t',
-    [PIN_TYPE.PORT_ANALOG]: 'uint8_t',
-  })
+  R.ifElse(
+    R.has(R.__, builtInTypeNames),
+    R.prop(R.__, builtInTypeNames),
+    R.pipe(createPatchNames, getNSName, ns => `${ns}::Type`)
+  )
 );
 
 // Formats a plain JS string into C++ string object
@@ -123,10 +136,7 @@ Handlebars.registerHelper('mergePins', function mergePins() {
 });
 
 // Generate patch-level namespace name
-Handlebars.registerHelper(
-  'ns',
-  R.compose(R.join('__'), R.props(['owner', 'libName', 'patchName']))
-);
+Handlebars.registerHelper('ns', getNSName);
 
 // Debug helper
 Handlebars.registerHelper('json', JSON.stringify);
@@ -161,12 +171,10 @@ Handlebars.registerHelper('global', function global(options) {
 
 Handlebars.registerHelper('cppType', type => cppType(type));
 
-const UNKNOWN_TYPE = 'unknown_type<void>';
-
 // Converts bound value literals or JS-typed data value to a
 // string that is valid and expected C++ literal representing that value
 Handlebars.registerHelper('cppValue', (type, value) =>
-  R.propOr(R.always(UNKNOWN_TYPE), type, {
+  R.propOr(R.always(`{ /* ${type} */ }`), type, {
     [PIN_TYPE.PULSE]: R.always('false'),
     [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
     [PIN_TYPE.NUMBER]: R.cond([
