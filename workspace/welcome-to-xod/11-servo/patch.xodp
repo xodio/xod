@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Controlling servos in XOD is just as easy as controlling LEDs. There is a special node called `servo`. You will find it in `xod/common-hardware`.\n\n## Instructions\n\n1. Connect a servo to the Arduino as shown on the [scheme](https://goo.gl/Kqu3Ty).\n\n2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the `servo` node.\n\n3. Upload the patch to the Arduino.\n\nDone! Turn the potentiometer knob, and watch the servo turn!\n",
+      "content": "Controlling servos in XOD is just as easy as controlling LEDs. There is a special node called `servo`. You will find it in `xod/common-hardware`.\n\n## Instructions\n\n1. Connect a servo to the Arduino as shown on the [scheme](https://xod.io/docs/tutorial/11-servo/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_11).\n\n2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the `servo` node.\n\n3. Upload the patch to the Arduino.\n\nDone! Turn the potentiometer knob, and watch the servo turn!\n",
       "id": "BJ52b_at-",
       "position": {
         "x": -34,
