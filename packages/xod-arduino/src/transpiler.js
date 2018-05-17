@@ -86,7 +86,27 @@ const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) =>
     R.compose(
-      R.values,
+      // patches must appear in the same order
+      // as respective nodes in a toposorted graph
+      tpatchesMap =>
+        R.compose(
+          R.map(patchPath => tpatchesMap[patchPath]),
+          R.uniq,
+          R.map(R.nth(1)),
+          R.sortBy(R.head),
+          // at this point nodes in entry patch have
+          // their order in a toposorted graph as an id
+          R.map(
+            R.converge(R.pair, [
+              R.pipe(Project.getNodeId, parseInt),
+              Project.getNodeType,
+            ])
+          ),
+          Project.listNodes,
+          // we already checked that entry patchh exists
+          Project.getPatchByPathUnsafe(entryPath)
+        )(project),
+      // :: Map PatchPath TPatch
       R.mapObjIndexed((patch, path) => {
         const names = createPatchNames(path);
         const impl = explodeMaybe(
