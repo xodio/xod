@@ -290,7 +290,7 @@ const extractBoundInputsToConstNodes = def(
       entryPointNodes,
       entryPointLinks
     );
-    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, origProject);
+    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, flatProject);
     const pinsToOmit = R.mergeWith(R.concat, occupiedNodePins, outputNodePins);
     const allInputPinValues = R.compose(
       R.mapObjIndexed((pins, nodeId) =>
