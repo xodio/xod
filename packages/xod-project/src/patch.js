@@ -48,6 +48,7 @@ import {
   isVariadicPath,
   getArityStepFromPatchPath,
   getSpecializationPatchPath,
+  normalizeTypeNameForAbstractsResolution,
 } from './patchPathUtils';
 
 /**
@@ -1640,7 +1641,14 @@ export const checkSpecializationMatchesAbstraction = def(
       R.sortBy(R.head),
       R.toPairs,
       // something like { t1: 'number', t2: 'string', etc }
-      R.map(R.pipe(R.head, R.nth(1), Pin.getPinType)),
+      R.map(
+        R.pipe(
+          R.head,
+          R.nth(1),
+          Pin.getPinType,
+          normalizeTypeNameForAbstractsResolution
+        )
+      ),
       R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
     )(genericPinPairs);
     const actualSpecializationBaseName = R.compose(getBaseName, getPatchPath)(

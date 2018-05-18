@@ -1,0 +1,546 @@
+{
+  "name": "custom-types",
+  "patches": {
+    "@/if-else": {
+      "nodes": {
+        "HJFwO6FJm": {
+          "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
+          "id": "HJFwO6FJm",
+          "label": "R",
+          "position": {
+            "x": -1,
+            "y": 207
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "HyzYvd6FJQ": {
+          "description": "Value to be output if condition is false",
+          "id": "HyzYvd6FJQ",
+          "label": "F",
+          "position": {
+            "x": 255,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "S1btvd6t17": {
+          "id": "S1btvd6t17",
+          "position": {
+            "x": 89,
+            "y": 83
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "SkltDOatJQ": {
+          "description": "Condition value",
+          "id": "SkltDOatJQ",
+          "label": "COND",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "Sy7twd6Yy7": {
+          "description": "Value to be output if condition is true",
+          "id": "Sy7twd6Yy7",
+          "label": "T",
+          "position": {
+            "x": 127,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        }
+      },
+      "path": "@/if-else"
+    },
+    "@/if-else(vector-2d)": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto cond = getValue<input_COND>(ctx);\n    auto trueVal = getValue<input_T>(ctx);\n    auto falseVal = getValue<input_F>(ctx);\n    emitValue<output_R>(ctx, cond ? trueVal : falseVal);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BklL7OTtkQ": {
+          "description": "Condition value",
+          "id": "BklL7OTtkQ",
+          "label": "COND",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-boolean"
+        },
+        "ByLQOTF1X": {
+          "id": "ByLQOTF1X",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HkZ7i6Fkm": {
+          "id": "HkZ7i6Fkm",
+          "label": "F",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "@/input-vector-2d"
+        },
+        "SkU4oTtJX": {
+          "id": "SkU4oTtJX",
+          "label": "R",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/output-vector-2d"
+        },
+        "rkAMi6Y1X": {
+          "id": "rkAMi6Y1X",
+          "label": "T",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "@/input-vector-2d"
+        }
+      },
+      "path": "@/if-else(vector-2d)"
+    },
+    "@/less": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto lhs = getValue<input_IN1>(ctx);\n    auto rhs = getValue<input_IN2>(ctx);\n    emitValue<output_OUT>(ctx, lhs < rhs);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "By-EMtTt1m": {
+          "id": "By-EMtTt1m",
+          "position": {
+            "x": 33,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "H1g4zt6KyQ": {
+          "id": "H1g4zt6KyQ",
+          "position": {
+            "x": 33,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-boolean"
+        },
+        "HkNGYatk7": {
+          "id": "HkNGYatk7",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SkMVMtpFJQ": {
+          "id": "SkMVMtpFJQ",
+          "position": {
+            "x": 31,
+            "y": 99
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/less"
+    },
+    "@/main": {
+      "links": {
+        "S1DYO6tJQ": {
+          "id": "S1DYO6tJQ",
+          "input": {
+            "nodeId": "ryY__TYyQ",
+            "pinKey": "SkxQIOaFyQ"
+          },
+          "output": {
+            "nodeId": "ryUY_aY1X",
+            "pinKey": "HyZNWdTK1Q"
+          }
+        },
+        "S1FytptJX": {
+          "id": "S1FytptJX",
+          "input": {
+            "nodeId": "SJVTdaFJQ",
+            "pinKey": "H1rJKpKy7"
+          },
+          "output": {
+            "nodeId": "ryY__TYyQ",
+            "pinKey": "Bk87LupFy7"
+          }
+        },
+        "SkWcdpFJm": {
+          "id": "SkWcdpFJm",
+          "input": {
+            "nodeId": "ryY__TYyQ",
+            "pinKey": "rJfmLdTFym-$1"
+          },
+          "output": {
+            "nodeId": "SJ0Ydpt1m",
+            "pinKey": "HyZNWdTK1Q"
+          }
+        }
+      },
+      "nodes": {
+        "SJ0Ydpt1m": {
+          "boundLiterals": {
+            "rJEbuTFyX": "56",
+            "rkeE-O6K1X": "45"
+          },
+          "id": "SJ0Ydpt1m",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "type": "@/vector-2d"
+        },
+        "SJVTdaFJQ": {
+          "id": "SJVTdaFJQ",
+          "position": {
+            "x": 170,
+            "y": 408
+          },
+          "type": "@/vector-2d-to-x-y"
+        },
+        "ryUY_aY1X": {
+          "boundLiterals": {
+            "rJEbuTFyX": "23",
+            "rkeE-O6K1X": "12"
+          },
+          "id": "ryUY_aY1X",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "@/vector-2d"
+        },
+        "ryY__TYyQ": {
+          "arityLevel": 2,
+          "id": "ryY__TYyQ",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "@/nth-input"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/nth-input": {
+      "links": {
+        "By44KpFy7": {
+          "id": "By44KpFy7",
+          "input": {
+            "nodeId": "B1-VYTYJQ",
+            "pinKey": "HkNGYatk7"
+          },
+          "output": {
+            "nodeId": "ry7XIOaYJX",
+            "pinKey": "__out__"
+          }
+        },
+        "H157LuTtJQ": {
+          "id": "H157LuTtJQ",
+          "input": {
+            "nodeId": "S1WQUuptk7",
+            "pinKey": "Sy7twd6Yy7"
+          },
+          "output": {
+            "nodeId": "SkxQIOaFyQ",
+            "pinKey": "__out__"
+          }
+        },
+        "Hk_X8_TK1X": {
+          "id": "Hk_X8_TK1X",
+          "input": {
+            "nodeId": "Bk87LupFy7",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "S1WQUuptk7",
+            "pinKey": "HJFwO6FJm"
+          }
+        },
+        "Hy3mLdTtkX": {
+          "id": "Hy3mLdTtkX",
+          "input": {
+            "nodeId": "S1WQUuptk7",
+            "pinKey": "HyzYvd6FJQ"
+          },
+          "output": {
+            "nodeId": "rJfmLdTFym",
+            "pinKey": "__out__"
+          }
+        },
+        "r1zIK6t1m": {
+          "id": "r1zIK6t1m",
+          "input": {
+            "nodeId": "SkE78daK1Q",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SJRBtpt17",
+            "pinKey": "SygW7K6tyX"
+          }
+        },
+        "rJgBY6FJX": {
+          "id": "rJgBY6FJX",
+          "input": {
+            "nodeId": "S1WQUuptk7",
+            "pinKey": "SkltDOatJQ"
+          },
+          "output": {
+            "nodeId": "B1-VYTYJQ",
+            "pinKey": "H1g4zt6KyQ"
+          }
+        },
+        "ryW8YTtyX": {
+          "id": "ryW8YTtyX",
+          "input": {
+            "nodeId": "SJRBtpt17",
+            "pinKey": "Hk-QY6FJQ"
+          },
+          "output": {
+            "nodeId": "ry7XIOaYJX",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "B1-VYTYJQ": {
+          "boundLiterals": {
+            "By-EMtTt1m": "1"
+          },
+          "id": "B1-VYTYJQ",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/less"
+        },
+        "Bk87LupFy7": {
+          "description": "The selected value. Equals to one of `Xi` input.",
+          "id": "Bk87LupFy7",
+          "position": {
+            "x": 101,
+            "y": 305
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "HJvXIO6YkQ": {
+          "id": "HJvXIO6YkQ",
+          "position": {
+            "x": 271,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/variadic-1"
+        },
+        "S1WQUuptk7": {
+          "id": "S1WQUuptk7",
+          "position": {
+            "x": 101,
+            "y": 203
+          },
+          "type": "@/if-else"
+        },
+        "SJRBtpt17": {
+          "boundLiterals": {
+            "r1zbmtTYJX": "1"
+          },
+          "id": "SJRBtpt17",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/subtract"
+        },
+        "SkE78daK1Q": {
+          "description": "Utility output needed for expanding node. Shoud be ignored by the end user.\n",
+          "id": "SkE78daK1Q",
+          "label": "_",
+          "position": {
+            "x": -1,
+            "y": 305
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "SkxQIOaFyQ": {
+          "id": "SkxQIOaFyQ",
+          "label": "X0",
+          "position": {
+            "x": 135,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "rJfmLdTFym": {
+          "id": "rJfmLdTFym",
+          "label": "X1",
+          "position": {
+            "x": 169,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "ry7XIOaYJX": {
+          "description": "Index to select. All values below 1 are considered to be 0. Values of 1 and above are considered to be 1.",
+          "id": "ry7XIOaYJX",
+          "label": "IDX",
+          "position": {
+            "x": 67,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/nth-input"
+    },
+    "@/subtract": {
+      "attachments": [
+        {
+          "content": "\n#pragma XOD dirtieness disable\n\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto x = getValue<input_IN1>(ctx);\n    auto y = getValue<input_IN2>(ctx);\n    emitValue<output_OUT>(ctx, x - y);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Hk-QY6FJQ": {
+          "id": "Hk-QY6FJQ",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyW-Xt6FJX": {
+          "id": "SyW-Xt6FJX",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SygW7K6tyX": {
+          "boundLiterals": {
+            "__in__": "0"
+          },
+          "id": "SygW7K6tyX",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "r1zbmtTYJX": {
+          "id": "r1zbmtTYJX",
+          "position": {
+            "x": 101,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/subtract"
+    },
+    "@/vector-2d": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\nstruct Type {\n    Number x;\n    Number y;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto x = getValue<input_IN1>(ctx);\n    auto y = getValue<input_IN2>(ctx);\n\n    Type vec = { x, y };\n    emitValue<output_OUT>(ctx, vec);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "B1fEZd6FyQ": {
+          "id": "B1fEZd6FyQ",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "HyZNWdTK1Q": {
+          "id": "HyZNWdTK1Q",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "rJEbuTFyX": {
+          "id": "rJEbuTFyX",
+          "position": {
+            "x": 67,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rkeE-O6K1X": {
+          "id": "rkeE-O6K1X",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/vector-2d"
+    },
+    "@/vector-2d-to-x-y": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto vec = getValue<input_IN>(ctx);\n\n    emitValue<output_X>(ctx, vec.x);\n    emitValue<output_Y>(ctx, vec.y);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "ByeanO6FJQ": {
+          "id": "ByeanO6FJQ",
+          "label": "X",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "H1rJKpKy7": {
+          "id": "H1rJKpKy7",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-vector-2d"
+        },
+        "HJ6hdTFk7": {
+          "id": "HJ6hdTFk7",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Sk-anO6tkQ": {
+          "id": "Sk-anO6tkQ",
+          "label": "Y",
+          "position": {
+            "x": 67,
+            "y": 203
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/vector-2d-to-x-y"
+    }
+  }
+}

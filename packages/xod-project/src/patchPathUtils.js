@@ -3,6 +3,7 @@ import { failOnFalse } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
+import { isBuiltInType } from './utils';
 import {
   isPathLocal,
   isPathLibrary,
@@ -10,7 +11,6 @@ import {
   isValidPatchBasename,
   terminalPatchPathRegExp,
 } from './internal/patchPathUtils';
-import { isBuiltInType } from './utils';
 
 export {
   isLocalMarker,
@@ -156,6 +156,13 @@ export const getTerminalPath = R.curry((direction, type) => {
 
   return `${constructorLibraryName}/${direction}-${constructorBaseName}`;
 });
+
+export const normalizeTypeNameForAbstractsResolution = R.unless(
+  t => isBuiltInType(t),
+  // for complex types matching is done by
+  // a type basename (color, not bob/fun/color)
+  getBaseName
+);
 
 //
 // utils for variadic marker nodes

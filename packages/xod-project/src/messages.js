@@ -56,6 +56,7 @@ export default {
   CONFLICTING_SPECIALIZATIONS_FOR_ABSTRACT_PATCH: ({
     patchPath,
     conflictingSpecializations,
+    trace,
   }) => ({
     title: `Conflicting specializations for abstrat patch ${patchPath}`,
     note: `To continue, explicitly switch to ${enumerate(
@@ -63,6 +64,7 @@ export default {
       ' or ',
       conflictingSpecializations
     )}`,
+    trace,
   }),
   SPECIALIZATION_PATCH_CANT_BE_ABSTRACT: ({ trace }) => ({
     title: 'This error should not be visible to end user yet',
@@ -215,8 +217,7 @@ export default {
   }) => ({
     title: 'Program contains bad links',
     note: `Type ${fromType} can’t cast to ${toType} directly.`,
-    solution:
-      'Replace bad links with a nodes, that are represent a logic how you want to cast these types',
+    solution: `Replace bad links with nodes that explicitly convert ${fromType} to ${toType}`,
     trace,
   }),
   INCOMPATIBLE_PINS__LINK_CAUSES_TYPE_CONFLICT: ({ types, trace }) => ({
