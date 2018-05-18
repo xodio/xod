@@ -70,8 +70,9 @@ export const getCurrentPatch = createSelector(
   (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
-export const getDeducedPinTypes = createSelector(
+export const getDeducedPinTypes = createMemoizedSelector(
   [getProject, getCurrentPatch],
+  [R.equals, R.equals],
   (project, maybeCurrentPatch) =>
     foldMaybe({}, patch => XP.deducePinTypes(patch, project), maybeCurrentPatch)
 );

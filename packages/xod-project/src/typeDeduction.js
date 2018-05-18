@@ -10,6 +10,8 @@ import {
   fail,
   failOnNothing,
   prependTraceToError,
+  toSet,
+  inSet,
 } from 'xod-func-tools';
 
 import * as Link from './link';
@@ -20,6 +22,7 @@ import * as Pin from './pin';
 import * as Utils from './utils';
 import * as PPU from './patchPathUtils';
 import { def } from './types';
+import { sortGraph } from './gmath';
 
 //
 // Pin types deduction
@@ -199,7 +202,7 @@ export const deducePinTypes = def(
     const getPatchByNodeId = Project.getPatchByNodeId(R.__, patch, project);
 
     // :: [Node]
-    const toposortedAbstractNodes = R.compose(
+    const abstractNodes = R.compose(
       R.filter(
         R.compose(
           foldMaybe(false, R.pipe(Patch.listPins, R.any(Pin.isGenericPin))),
@@ -207,11 +210,41 @@ export const deducePinTypes = def(
           Node.getNodeId
         )
       ),
+      Patch.listNodes
+    )(patch);
+
+    // :: [NodeId]
+    const abstractNodeIds = R.map(Node.getNodeId, abstractNodes);
+    // :: [NodeId]
+    const withoutDeferNodeIds = R.compose(
+      R.map(Node.getNodeId),
+      R.reject(R.compose(PPU.isDeferNodeType, Node.getNodeType))
+    )(abstractNodes);
+
+    // :: [[NodeId, NodeId]]
+    const linksBetweenAbstractNodes = R.compose(
+      R.map(Link.getLinkNodeIds),
+      R.filter(
+        R.both(
+          // We use `toSet` and `inSet` cause it is faster than `isAmong` function.
+          R.pipe(Link.getLinkInputNodeId, inSet(R.__, toSet(abstractNodeIds))),
+          R.pipe(
+            Link.getLinkOutputNodeId,
+            inSet(R.__, toSet(withoutDeferNodeIds))
+          )
+        )
+      ),
+      Patch.listLinks
+    )(patch);
+
+    // :: [Node]
+    const toposortedAbstractNodes = R.compose(
       catMaybies,
       R.map(Patch.getNodeById(R.__, patch)), // :: [Maybe Node]
       foldEither(R.always([]), R.identity), // :: [NodeId]
-      Patch.getTopology // :: Either Error [NodeId]
-    )(patch);
+      R.map(Patch.sendDeferNodesToBottom(patch)),
+      sortGraph // :: Either Error [NodeId]
+    )(abstractNodeIds, linksBetweenAbstractNodes);
 
     // :: Map NodeId [Link]
     const linksByInputNodeId = R.compose(
