@@ -11,6 +11,12 @@
 
 ### Steps to reproduce
 
+Try to narrow down your scenario to a minimal working/failing example. That is,
+if you have a big program causing a problem, start with deleting parts not
+relevant to the issue and observing the result: is the problem still there?
+Repeat until you get the most straightforward sequence of steps to reproduce
+the problem without any noise surrounding it.
+
 1. Open this
 2. Press that
 3. Click here and there
