@@ -40,4 +40,5 @@ export default R.cond([
   [R.test(almostByte), normalizeByte],
   [R.test(almostBool), capitalize],
   [R.test(almostPulse), normalizePulse],
+  [R.T, R.identity],
 ]);
