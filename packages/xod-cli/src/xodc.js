@@ -31,7 +31,7 @@ Usage:
   xodc transpile [--output=<filename>] [--workspace=<dir>] <input> <patchPath>
   xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
   xodc install [--swagger=<swagger>] [--workspace=<dir>] <libUri>
-  xodc tabtest [--workspace=<dir>] [--output-dir=<dir>] <projectPath> [<patchPath>]
+  xodc tabtest [--workspace=<dir>] [--output-dir=<dir>] [--no-build] <projectPath> [<patchPath>]
   xodc resave [--workspace=<workspace>] <input> <output>
 
 Commands:
@@ -71,6 +71,7 @@ const programs = {
     tabtest(o['<projectPath>'], o['<patchPath>'], {
       outputDir: o['--output-dir'],
       workspace: o['--workspace'],
+      noBuild: o['--no-build'],
     }),
   resave: o => resave(o['<input>'], o['<output>'], o['--workspace']),
 };

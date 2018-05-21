@@ -77,6 +77,15 @@ export default (projectPath, patchPath, opts) => {
       ? Tabtest.generatePatchSuite(project, patchPath)
       : Tabtest.generateProjectSuite(project);
 
+  const build = () =>
+    opts.noBuild
+      ? Promise.resolve()
+      : Promise.resolve()
+          .then(tapProgress('Compiling...'))
+          .then(() => spawn('make', [], childProcessOpts))
+          .then(tapProgress('Testing...'))
+          .then(() => spawn('make', ['test'], childProcessOpts));
+
   msg.notice(`Preparing test directory: ${outDir} ...`);
 
   fs
@@ -92,9 +101,6 @@ export default (projectPath, patchPath, opts) => {
     .then(R.append(fs.copy(tabtestSources, outDir)))
     .then(R.append(fs.copy(catch2Sources, outDir)))
     .then(allPromises)
-    .then(tapProgress('Compiling...'))
-    .then(() => spawn('make', [], childProcessOpts))
-    .then(tapProgress('Testing...'))
-    .then(() => spawn('make', ['test'], childProcessOpts))
+    .then(build)
     .catch(showErrorAndExit);
 };
