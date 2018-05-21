@@ -1,6 +1,9 @@
 
-SRC:=$(wildcard *.cpp)
-OBJ:=$(SRC:.cpp=.o) $(FRAMEWORK_SRC:.cpp=.o)
+SOURCES := $(wildcard *.cpp)
+SKETCHES := $(wildcard *.sketch.cpp)
+OBJECTS := $(SOURCES:.cpp=.o)
+RUNNERS := $(SKETCHES:.sketch.cpp=.run)
+FRAMEWORK_OBJECTS := main.o Arduino.o
 
 CXX:=g++
 CXX_FLAGS:=-std=c++11 -I.
@@ -8,12 +11,15 @@ CXX_FLAGS:=-std=c++11 -I.
 %.o: %.cpp
 	$(CXX) $(CXX_FLAGS) -o $@ -c $<
 
-runTest: $(OBJ)
+%.run: %.sketch.o $(FRAMEWORK_OBJECTS)
 	$(CXX) -o $@ $^
 
 .PHONY: all
-all: runTest
+all: $(RUNNERS)
 
 .PHONY: test
-test: runTest
-	./runTest
+test: $(RUNNERS)
+	@for x in $(RUNNERS); do \
+	  echo ./$$x; \
+	  ./$$x; \
+	done

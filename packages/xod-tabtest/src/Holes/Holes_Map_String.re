@@ -18,3 +18,11 @@ let keepMap = (xs: t('v), fn: 'v => option('v2)) : t('v2) =>
   keepMapWithKey(xs, (_, v) => fn(v));
 
 let innerJoin = (xs, ys) => keepMap(xs, v => ys |. Map.String.get(v));
+
+let mergeOverride = (xs, ys) =>
+  Map.String.merge(xs, ys, (_key, ox, oy) =>
+    switch (oy) {
+    | Some(y) => Some(y)
+    | None => ox
+    }
+  );

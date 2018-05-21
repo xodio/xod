@@ -5,3 +5,5 @@ let getFilename: t => string;
 let getContent: t => string;
 
 let getEncoding: t => string;
+
+let isTabtest: t => bool;

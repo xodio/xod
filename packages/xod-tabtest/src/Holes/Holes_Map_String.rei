@@ -23,3 +23,7 @@ let mapKeys: (t('a), k => k) => t('a);
     mapped to a value defined by the second map lookup. If a key/value is missing from
     either side, the pair will not appear in the result */
 let innerJoin: (t(k), t('v)) => t('v);
+
+/** Merges two maps extending the first map with contents of the second. If a key
+    presents in both maps, the value of the second map wins. */
+let mergeOverride: (t('v), t('v)) => t('v);

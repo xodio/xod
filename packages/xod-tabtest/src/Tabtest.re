@@ -249,7 +249,7 @@ module TestCase = {
   };
 };
 
-let generateSuite = (project, patchPathToTest) : XResult.t(t) => {
+let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
   let patchUnderTestOpt = Project.getPatchByPath(project, patchPathToTest);
   let tsvOpt = patchUnderTestOpt |. Option.flatMap(Patch.getTabtestContent);
   switch (patchUnderTestOpt, tsvOpt) {
@@ -266,9 +266,16 @@ let generateSuite = (project, patchPathToTest) : XResult.t(t) => {
   | (Some(patchUnderTest), Some(tsv)) =>
     let bench = Bench.create(project, patchUnderTest);
     let probes = bench.probes;
-    let benchPatchPath = "@/tabtest-bench";
+    let benchPatchPath = "tabtest-" ++ patchPathToTest;
+    let safeBasename =
+      PatchPath.getBaseName(patchPathToTest)
+      |> Js.String.replace("(", "__")
+      |> Js.String.replace(",", "__")
+      |> Js.String.replace(")", "");
+    let sketchFilename = safeBasename ++ ".sketch.cpp";
+    let testFilename = safeBasename ++ ".catch.inl";
     let tabData = TabData.parse(tsv);
-    let sketchFooter = "\n\n#include \"test.inl\"\n";
+    let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
     Project.assocPatch(project, benchPatchPath, bench.patch)
     |. Holes.Result.flatMap(Transpiler.transpile(_, benchPatchPath))
     |. Holes.Result.map(program => {
@@ -277,8 +284,21 @@ let generateSuite = (project, patchPathToTest) : XResult.t(t) => {
          let testCase =
            TestCase.generate(patchPathToTest, tabData, idMap, probes);
          Map.String.empty
-         |. Map.String.set("sketch.cpp", program.code ++ sketchFooter)
-         |. Map.String.set("test.inl", testCase);
+         |. Map.String.set(sketchFilename, program.code ++ sketchFooter)
+         |. Map.String.set(testFilename, testCase);
        });
   };
 };
+
+let generateProjectSuite = project : XResult.t(t) =>
+  project
+  |. Project.listLocalPatches
+  |. List.keep(Patch.hasTabtest)
+  |. List.map(Patch.getPath)
+  |. List.reduce(Js.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
+       Holes.Result.lift2(
+         Holes.Map.String.mergeOverride,
+         accFiles,
+         generatePatchSuite(project, patchPath),
+       )
+     );

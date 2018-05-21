@@ -8,3 +8,5 @@ external getContent : t => string = "getAttachmentContent";
 
 [@bs.module "xod-project"]
 external getEncoding : t => string = "getAttachmentEncoding";
+
+let isTabtest = att => getFilename(att) == "patch.test.tsv";
