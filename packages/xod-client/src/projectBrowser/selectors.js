@@ -52,9 +52,26 @@ const getLocalPatchesList = createSelector(
   XP.listLocalPatches
 );
 
+const patchListChangesKeepBrowserLook = XP.patchListEqualsBy(
+  R.both(XP.sameCategoryMarkers, XP.samePatchValidity)
+);
+
+const libChangesKeepBrowserLook = R.either(
+  (prev, next) => prev === next,
+  (prev, next) => {
+    const prevLibPatches = XP.listLibraryPatches(prev);
+    const nextLibPatches = XP.listLibraryPatches(next);
+    return XP.patchListEqualsBy(
+      XP.samePatchValidity,
+      prevLibPatches,
+      nextLibPatches
+    );
+  }
+);
+
 export const getLocalPatches = createMemoizedSelector(
   [getLocalPatchesList, ProjectSelectors.getProject],
-  [R.equals],
+  [patchListChangesKeepBrowserLook, libChangesKeepBrowserLook],
   (patches, project) =>
     R.compose(
       R.sortBy(XP.getPatchPath),

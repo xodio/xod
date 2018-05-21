@@ -20,6 +20,11 @@ chai.use(dirtyChai);
 
 const emptyPatch = Helper.defaultizePatch({});
 
+// Kludge to overwrite corrupted by dirtyChai asserts
+// TODO: Remove dirtyChai ( https://github.com/xodio/xod/issues/1129 )
+assert.isTrue = a => assert.equal(a, true);
+assert.isFalse = a => assert.equal(a, false);
+
 describe('Patch', () => {
   // constructors
   describe('createPatch', () => {
@@ -1356,6 +1361,141 @@ describe('Patch', () => {
         });
 
         assert.strictEqual(Patch.removeDebugNodes(origPatch), origPatch);
+      });
+    });
+
+    describe('sameNodesList', () => {
+      it('returns false if Node added', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({
+          nodes: {
+            a: {},
+            b: {},
+            c: {},
+          },
+        });
+        assert.isFalse(Patch.sameNodesList(prevPatch, nextPatch));
+      });
+      it('returns false if Node deleted', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({ nodes: { a: {} } });
+        assert.isFalse(Patch.sameNodesList(prevPatch, nextPatch));
+      });
+      it('returns true if nothing changed', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        assert.isTrue(Patch.sameNodesList(prevPatch, nextPatch));
+      });
+    });
+
+    describe('sameCategoryMarkers', () => {
+      it('returns false if Utility marker added', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({
+          nodes: {
+            a: {},
+            b: {},
+            c: { type: CONST.UTILITY_MARKER_PATH },
+          },
+        });
+        assert.isFalse(Patch.sameCategoryMarkers(prevPatch, nextPatch));
+      });
+      it('returns false if Deprecated marker added', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({
+          nodes: {
+            a: {},
+            b: {},
+            c: { type: CONST.DEPRECATED_MARKER_PATH },
+          },
+        });
+        assert.isFalse(Patch.sameCategoryMarkers(prevPatch, nextPatch));
+      });
+      it('returns true if no Utility/Deprecated markers added', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({
+          nodes: {
+            a: {},
+            b: {},
+            c: {},
+          },
+        });
+        assert.isTrue(Patch.sameCategoryMarkers(prevPatch, nextPatch));
+      });
+      it('returns true if nothing changed', () => {
+        const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        const nextPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });
+        assert.isTrue(Patch.sameCategoryMarkers(prevPatch, nextPatch));
+      });
+    });
+
+    describe('sameNodeTypes', () => {
+      it('returns false if some Node changed type', () => {
+        const prev = Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/a' },
+            b: { type: '@/b' },
+          },
+        });
+        const next = Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/c' },
+            b: { type: '@/b' },
+          },
+        });
+        const next2 = Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/b' },
+            b: { type: '@/b' },
+          },
+        });
+
+        assert.isFalse(Patch.sameNodeTypes(prev, next));
+        assert.isFalse(Patch.sameNodeTypes(prev, next2));
+      });
+      it('returns true for the same list of Nodes', () => {
+        const prev = Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/a' },
+            b: { type: '@/b' },
+          },
+        });
+        const next = Helper.defaultizePatch({
+          nodes: {
+            a: { type: '@/a' },
+            b: { type: '@/b' },
+          },
+        });
+
+        assert.isTrue(Patch.sameNodeTypes(prev, next));
+      });
+    });
+
+    describe('sameNodeBoundValues', () => {
+      it('returns false if some Nodes changed bound values', () => {
+        const prev = Helper.defaultizePatch({
+          nodes: {
+            a: { boundLiterals: { aaa: '123', bbb: '321' } },
+            b: { boundLiterals: { xxx: '"lala"', yyy: 'Never' } },
+          },
+        });
+        const next = R.assocPath(
+          ['nodes', 'a', 'boundLiterals', 'aaa'],
+          '42.5',
+          prev
+        );
+
+        assert.isFalse(Patch.sameNodeBoundValues(prev, next));
+      });
+      it('returns true if no bound values changed', () => {
+        const prev = Helper.defaultizePatch({
+          nodes: {
+            a: { boundLiterals: { aaa: '123', bbb: '321' } },
+            b: { boundLiterals: { xxx: '"lala"', yyy: 'Never' } },
+          },
+        });
+
+        assert.isTrue(Patch.sameNodeBoundValues(prev, prev));
       });
     });
   });
