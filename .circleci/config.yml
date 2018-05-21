@@ -114,6 +114,32 @@ jobs:
       - run: *step-test-func
       - run: *step-verify-git-clean
 
+  test-cpp:
+    docker:
+      - image: xodio/cci-node:9.2-v3
+    environment:
+      TAB_SUITE_DIR: /tmp/xod-tabtest
+    steps:
+      - checkout
+      - restore_cache: *restore-node_modules
+      - run: *step-install
+      - run:
+          name: Build CLI
+          command: yarn build:cli
+      - run:
+          name: Generate tabtests
+          command: |
+            ls -d workspace/__lib__/xod/* | xargs -n 1 \
+              yarn xodc tabtest \
+                --no-build \
+                --output-dir=$TAB_SUITE_DIR
+      - run:
+          name: Build tabtests
+          command: make -C $TAB_SUITE_DIR
+      - run:
+          name: Run tabtests
+          command: make -C $TAB_SUITE_DIR test
+
   #--------------------------------------------------------------------
   # Distro jobs
   #--------------------------------------------------------------------
@@ -262,11 +288,12 @@ workflows:
     jobs:
       - verify-linux
       - verify-macos
+      - test-cpp
       - dockerize-ide:
           filters: *release-filters
       - push-docker-images:
           filters: *release-filters
-          requires: [ dockerize-ide, verify-linux ]
+          requires: [ dockerize-ide, verify-linux, test-cpp ]
       - dist-linux:
           filters: *release-filters
       - dist-macos:
@@ -276,5 +303,6 @@ workflows:
           requires:
             - verify-linux
             - verify-macos
+            - test-cpp
             - dist-linux
             - dist-macos
