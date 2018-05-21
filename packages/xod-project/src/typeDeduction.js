@@ -371,6 +371,7 @@ const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
     return fail('NO_DEDUCED_TYPES_FOUND_FOR_GENERIC_NODE', {
       genericNodeId,
       genericNodeType,
+      trace: [genericNodeType],
     });
   }
 
@@ -383,6 +384,7 @@ const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
     return fail('CONFLICTING_TYPES_FOR_NODE', {
       genericNodeId,
       genericNodeType,
+      trace: [genericNodeType],
     });
   }
 
@@ -404,6 +406,7 @@ const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
     return fail('UNRESOLVED_GENERIC_PIN', {
       genericNodeId,
       genericNodeType,
+      trace: [genericNodeType],
       unresolvedPinType: R.head(unresolvedGeneric),
     });
   }
