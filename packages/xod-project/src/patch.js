@@ -11,6 +11,10 @@ import {
   foldMaybe,
   fail,
   failOnNothing,
+  setOfKeys,
+  inSet,
+  diffSet,
+  sameKeysetBy,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -180,6 +184,8 @@ export const removeImpl = def(
 //
 // =============================================================================
 
+const getNodes = R.prop('nodes');
+
 /**
  * Checks that node id to be equal specified value
  *
@@ -201,7 +207,7 @@ export const nodeIdEquals = def(
  */
 export const listNodes = def(
   'listNodes :: Patch -> [Node]',
-  R.compose(R.values, R.prop('nodes'))
+  R.compose(R.values, getNodes)
 );
 
 /**
@@ -453,6 +459,8 @@ export const isTerminalPatch = def(
 //
 // =============================================================================
 
+const getLinks = R.prop('links');
+
 /**
  * @function listLinks
  * @param {Patch} patch - a patch to operate on
@@ -460,7 +468,7 @@ export const isTerminalPatch = def(
  */
 export const listLinks = def(
   'listLinks :: Patch -> [Link]',
-  R.compose(R.values, R.prop('links'))
+  R.compose(R.values, getLinks)
 );
 
 /**
@@ -1081,6 +1089,30 @@ export const isUtilityPatch = def(
   )
 );
 
+/**
+ * Compares two lists of Patches by comparator function
+ */
+export const patchListEqualsBy = def(
+  'patchListEqualsBy :: (Patch -> Patch -> Boolean) -> [Patch] -> [Patch] -> Boolean',
+  (compFn, prevPatchesList, nextPatchesList) => {
+    if (prevPatchesList === nextPatchesList) return true;
+    if (prevPatchesList.length !== nextPatchesList.length) return false;
+    const prevPatchesMap = R.indexBy(getPatchPath, prevPatchesList);
+    const nextPatchesMap = R.indexBy(getPatchPath, nextPatchesList);
+
+    const prevPatchPaths = setOfKeys(prevPatchesMap);
+    const nextPatchPaths = setOfKeys(nextPatchesMap);
+    const diffPatchPaths = diffSet(prevPatchPaths, nextPatchPaths);
+    if (diffPatchPaths.size > 0) return false;
+
+    return R.all(pp => {
+      const patchPath = getPatchPath(pp);
+      const np = nextPatchesMap[patchPath];
+      return compFn(pp, np);
+    })(prevPatchesList);
+  }
+);
+
 // =============================================================================
 //
 // Variadic Utils and Getters
@@ -1565,4 +1597,83 @@ export const checkSpecializationMatchesAbstraction = def(
 
     return Either.of(specializationPatch);
   }
+);
+
+// =============================================================================
+//
+// Functions that checks whether something could change
+//
+// =============================================================================
+
+export const sameNodesList = def(
+  'sameNodesList :: Patch -> Patch -> Boolean',
+  sameKeysetBy(getNodes)
+);
+export const sameLinksList = def(
+  'sameLinksList :: Patch -> Patch -> Boolean',
+  sameKeysetBy(getLinks)
+);
+
+const getSetOfNodeTypesFromPatch = R.compose(
+  setOfKeys,
+  R.indexBy(Node.getNodeType),
+  listNodes
+);
+
+export const sameCategoryMarkers = def(
+  'sameCategoryMarkers :: Patch -> Patch -> Boolean',
+  (prevPatch, nextPatch) => {
+    const prevNodeTypes = getSetOfNodeTypesFromPatch(prevPatch);
+    const nextNodeTypes = getSetOfNodeTypesFromPatch(nextPatch);
+    const diff = diffSet(prevNodeTypes, nextNodeTypes);
+    return !R.either(
+      inSet(CONST.DEPRECATED_MARKER_PATH),
+      inSet(CONST.UTILITY_MARKER_PATH)
+    )(diff);
+  }
+);
+
+export const sameNodeTypes = def(
+  'sameNodeTypes :: Patch -> Patch -> Boolean',
+  (prevPatch, nextPatch) => {
+    const prevNodes = listNodes(prevPatch);
+    const nextNodes = getNodes(nextPatch);
+
+    return R.all(prevNode => {
+      const nodeId = Node.getNodeId(prevNode);
+      return (
+        nextNodes[nodeId] &&
+        Node.getNodeType(nextNodes[nodeId]) === Node.getNodeType(prevNode)
+      );
+    })(prevNodes);
+  }
+);
+
+export const sameNodeBoundValues = def(
+  'sameNodeBoundValues :: Patch -> Patch -> Boolean',
+  (prevPatch, nextPatch) => {
+    const prevNodes = listNodes(prevPatch);
+    const nextNodes = getNodes(nextPatch);
+    return R.all(prevNode => {
+      const nodeId = Node.getNodeId(prevNode);
+      return (
+        nextNodes[nodeId] &&
+        Node.getAllBoundValues(prevNode) ===
+          Node.getAllBoundValues(nextNodes[nodeId])
+      );
+    })(prevNodes);
+  }
+);
+
+export const sameDeducedTypes = def(
+  'sameDeducedTypes :: Patch -> Patch -> Boolean',
+  R.allPass([sameLinksList, sameNodeTypes, sameNodeBoundValues])
+);
+
+/**
+ * Checks Patch for changes that could affect its validity.
+ */
+export const samePatchValidity = def(
+  'samePatchValidity :: Patch -> Patch -> Boolean',
+  R.allPass([sameNodesList, sameLinksList, sameNodeTypes, sameNodeBoundValues])
 );
