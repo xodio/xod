@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { Either } from 'ramda-fantasy';
-import { foldMaybe, foldEither, $Maybe } from 'xod-func-tools';
+import { foldMaybe, foldEither, $Maybe, fail } from 'xod-func-tools';
 import { Project, isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
 import {
   transformProject,
@@ -40,7 +40,7 @@ export default class App extends React.Component {
   }
 
   onShowCodeArduino() {
-    return R.compose(
+    R.compose(
       foldEither(
         R.compose(
           this.props.actions.addError,
@@ -54,12 +54,21 @@ export default class App extends React.Component {
   }
 
   transformProjectForTranspiler(debug = false) {
-    const transformFn = debug ? transformProjectWithDebug : transformProject;
-    return foldMaybe(
-      Either.Left(NO_PATCH_TO_TRANSPILE),
-      curPatchPath => transformFn(this.props.project, curPatchPath),
-      this.props.currentPatchPath
-    );
+    try {
+      const transformFn = debug ? transformProjectWithDebug : transformProject;
+      return foldMaybe(
+        Either.Left(NO_PATCH_TO_TRANSPILE),
+        curPatchPath => transformFn(this.props.project, curPatchPath),
+        this.props.currentPatchPath
+      );
+    } catch (unexpectedError) {
+      // eslint-disable-next-line no-console
+      console.error(unexpectedError);
+
+      return fail('UNEXPECTED_ERROR', {
+        message: unexpectedError.message,
+      });
+    }
   }
 
   renderPopupShowCode() {

@@ -1,4 +1,11 @@
 import { composeErrorFormatters } from 'xod-func-tools';
 import { messages as xpMessages } from 'xod-project';
 
-export default composeErrorFormatters([xpMessages]);
+import formatUnexpectedError from '../messages/formatUnexpectedError';
+
+export default composeErrorFormatters([
+  xpMessages,
+  {
+    UNEXPECTED_ERROR: formatUnexpectedError,
+  },
+]);
