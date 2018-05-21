@@ -19,6 +19,10 @@ import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
 import normalizeByte from '../../../utils/normalizeByte';
 import normalizeNumber from '../../../utils/normalizeNumber';
+import {
+  normalizePort,
+  normalizeAnalogPort,
+} from '../../../utils/normalizePort';
 import normalizeGenericValue from '../../../utils/normalizeGenericValue';
 
 const widgetKeyDownHandlers = {
@@ -104,20 +108,45 @@ const WIDGET_MAPPING = {
       type: PIN_TYPE.DEAD,
     },
   },
+  [WIDGET_TYPE.PORT]: {
+    component: NumberWidget,
+    props: {
+      type: PIN_TYPE.PORT,
+      keyDownHandlers: submitOnEnter,
+      normalizeValue: normalizePort,
+    },
+  },
+  [WIDGET_TYPE.PORT_ANALOG]: {
+    component: NumberWidget,
+    props: {
+      type: PIN_TYPE.PORT_ANALOG,
+      keyDownHandlers: submitOnEnter,
+      normalizeValue: normalizeAnalogPort,
+    },
+  },
 };
 
-export const getNodeWidgetConfig = type =>
-  isGenericType(type)
-    ? {
-        component: GenericPinWidget,
-        props: {
-          type,
-          keyDownHandlers: submitOnEnter,
-          // normalize only almost valid byte values
-          normalizeValue: normalizeGenericValue,
-        },
-      }
-    : WIDGET_MAPPING[type];
+const getGenericTypeWidget = type => ({
+  component: GenericPinWidget,
+  props: {
+    type,
+    keyDownHandlers: submitOnEnter,
+    // normalize only almost valid byte values
+    normalizeValue: normalizeGenericValue,
+  },
+});
+
+const getDisabledWidget = type => ({
+  component: DisabledInputWidget,
+  props: { type },
+});
+
+// :: PinType -> WidgetConfig
+export const getNodeWidgetConfig = R.cond([
+  [isGenericType, getGenericTypeWidget],
+  [R.has(R.__, WIDGET_MAPPING), R.prop(R.__, WIDGET_MAPPING)],
+  [R.T, getDisabledWidget],
+]);
 
 export default {
   HintWidget,

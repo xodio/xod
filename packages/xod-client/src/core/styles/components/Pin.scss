@@ -48,6 +48,10 @@
       @include symbol-coloring($color-datatype-pulse);
     }
 
+    &.port, &.port-analog {
+      @include symbol-coloring($color-datatype-port);
+    }
+
     &.byte {
       @include symbol-coloring($color-datatype-byte);
     }

@@ -1,0 +1,21 @@
+{
+  "nodes": [
+    {
+      "id": "B1x2RV3eZ",
+      "label": "VAL",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-port-analog"
+    },
+    {
+      "id": "H1PnRN2lW",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

@@ -37,6 +37,10 @@
     @include link-parts-coloring($color-datatype-pulse);
   }
 
+  &.port, &.port-analog {
+    @include link-parts-coloring($color-datatype-port);
+  }
+
   &.is-selected, &.is-dead.is-selected {
     @include link-parts-coloring($color-canvas-selected);
   }

@@ -209,6 +209,10 @@ export const getTypeFromLiteral = def(
     if (isValidNumberDataValue(literal))
       return Either.of(CONST.PIN_TYPE.NUMBER);
 
+    if (R.test(/^(A|D)\d{0,3}$/gi, literal)) {
+      return Either.of(CONST.PIN_TYPE.PORT);
+    }
+
     return fail('BAD_LITERAL_VALUE', { value: literal });
   }
 );
