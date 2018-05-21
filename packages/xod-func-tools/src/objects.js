@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { def } from './types';
+import { setOfKeys, diffSet } from './sets';
 
 /**
  * Returns an object provided with all `null` and `undefined` values omitted
@@ -116,4 +117,29 @@ export const reverseLookup = def(
 export const invertMap = def(
   'invertMap :: Map a b -> Map b a',
   R.compose(R.fromPairs, R.map(R.reverse), R.toPairs)
+);
+
+/**
+ * Function compares two arguments by keys, produced by
+ * calling transformation function on each of arguments.
+ *
+ * E.G.
+ * Compare array of some objects:
+ * sameKeysetBy(R.indexBy(R.prop('id')), [{ id: 'a' }], [{ id: 'b' }]) -> false
+ */
+export const sameKeysetBy = def(
+  'sameKeysetBy :: (b -> StrMap a) -> b -> b -> Boolean',
+  (mapGetter, prev, next) => {
+    if (prev === next) return true;
+
+    const prevMap = mapGetter(prev);
+    const nextMap = mapGetter(next);
+    const prevMapKeys = setOfKeys(prevMap);
+    const nextMapKeys = setOfKeys(nextMap);
+    const diffMapKeys = diffSet(prevMapKeys, nextMapKeys);
+    // If there is some keys added/deleted — something changed
+    if (diffMapKeys.size > 0) return false;
+
+    return true;
+  }
 );

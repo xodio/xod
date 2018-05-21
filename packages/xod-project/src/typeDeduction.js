@@ -10,7 +10,7 @@ import {
   fail,
   failOnNothing,
   prependTraceToError,
-  toSet,
+  setOf,
   inSet,
 } from 'xod-func-tools';
 
@@ -226,11 +226,11 @@ export const deducePinTypes = def(
       R.map(Link.getLinkNodeIds),
       R.filter(
         R.both(
-          // We use `toSet` and `inSet` cause it is faster than `isAmong` function.
-          R.pipe(Link.getLinkInputNodeId, inSet(R.__, toSet(abstractNodeIds))),
+          // We use `setOf` and `inSet` cause it is faster than `isAmong` function.
+          R.pipe(Link.getLinkInputNodeId, inSet(R.__, setOf(abstractNodeIds))),
           R.pipe(
             Link.getLinkOutputNodeId,
-            inSet(R.__, toSet(withoutDeferNodeIds))
+            inSet(R.__, setOf(withoutDeferNodeIds))
           )
         )
       ),
