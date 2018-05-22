@@ -1,6 +1,6 @@
 {
   "name": "xod-client",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "XOD project: Client application",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
@@ -58,11 +58,11 @@
     "url-parse": "^1.1.9",
     "url-search-params-polyfill": "^2.0.1",
     "vec-la-fp": "^1.5.2",
-    "xod-arduino": "^0.20.2",
-    "xod-func-tools": "^0.20.0",
-    "xod-patch-search": "^0.20.2",
-    "xod-pm": "^0.20.2",
-    "xod-project": "^0.20.2"
+    "xod-arduino": "^0.20.3",
+    "xod-func-tools": "^0.20.3",
+    "xod-patch-search": "^0.20.3",
+    "xod-pm": "^0.20.3",
+    "xod-project": "^0.20.3"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.17",
