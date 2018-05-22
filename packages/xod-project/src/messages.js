@@ -64,6 +64,55 @@ export default {
       conflictingSpecializations
     )}`,
   }),
+  SPECIALIZATION_PATCH_CANT_BE_ABSTRACT: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_PATCH_MUST_HAVE_SAME_ARITY_LEVEL: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_PATCH_CANT_HAVE_GENERIC_PINS: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  SPECIALIZATION_HAS_WRONG_NAME: ({ trace }) => ({
+    title: 'This error should not be visible to end user yet',
+    trace,
+  }),
+  NO_DEDUCED_TYPES_FOUND_FOR_GENERIC_NODE: ({ trace }) => ({
+    title: "Can't deduce types for patch",
+    solution: 'Connect links or bind values to generic inputs',
+    trace,
+  }),
+  CONFLICTING_TYPES_FOR_NODE: ({ trace }) => ({
+    title: 'Node has conflicting types',
+    solution:
+      'Make sure links and values connected to each generic terminal have the same type',
+    trace,
+  }),
+  UNRESOLVED_GENERIC_PIN: ({ trace, unresolvedPinType }) => ({
+    title: "Can't resolve type for pin",
+    note: `Pin with type ${unresolvedPinType} can't be resolved`,
+    solution: `Connect a link or bind a value to it`,
+    trace,
+  }),
   UNRESOLVED_ABSTRACT_NODES_LEFT: ({ unresolvedNodeTypes }) => ({
     title: 'Project contains unresolved abstract nodes',
     note: `Make sure node${
@@ -187,6 +236,11 @@ export default {
     title: 'Loops detected',
     note: 'The program has a cycle',
     solution: 'Use xod/core/defer node to break the cycle',
+  }),
+  BAD_LITERAL_VALUE: ({ value }) => ({
+    title: 'Bad literal value',
+    note: `${value} is not a valid literal`,
+    solution: `If you meant a string, surround it with double quotes: "${value}".`,
   }),
 
   // Patch rebasing
