@@ -31,7 +31,7 @@ Usage:
   xodc transpile [--output=<filename>] [--workspace=<dir>] <input> <patchPath>
   xodc publish [--swagger=<swagger>] [--orgname=<orgname>] [<projectDir>]
   xodc install [--swagger=<swagger>] [--workspace=<dir>] <libUri>
-  xodc tabtest [--workspace=<dir>] <input> <patchPath>
+  xodc tabtest [--workspace=<dir>] [--output-dir=<dir>] [--no-build] <projectPath> [<patchPath>]
   xodc resave [--workspace=<workspace>] <input> <output>
 
 Commands:
@@ -68,8 +68,10 @@ const programs = {
   install: o =>
     install(o['--swagger'] || PM_SWAGGER_URL, o['<libUri>'], o['--workspace']),
   tabtest: o =>
-    tabtest(o['<input>'], o['<patchPath>'], {
+    tabtest(o['<projectPath>'], o['<patchPath>'], {
+      outputDir: o['--output-dir'],
       workspace: o['--workspace'],
+      noBuild: o['--no-build'],
     }),
   resave: o => resave(o['<input>'], o['<output>'], o['--workspace']),
 };

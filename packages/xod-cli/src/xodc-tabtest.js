@@ -55,14 +55,14 @@ const spawn = (cmd, args, opts) =>
 
 const tapProgress = note => R.tap(() => msg.notice(note));
 
-export default (input, patchPath, program) => {
+export default (projectPath, patchPath, opts) => {
   const workspaces = [
-    getWorkspacePath(program.workspace),
+    getWorkspacePath(opts.workspace),
     tabtestWorkspace,
     bundledWorkspace,
   ];
 
-  const outDir = path.join(os.tmpdir(), 'xod-tabtest');
+  const outDir = opts.outputDir || path.join(os.tmpdir(), 'xod-tabtest');
   const childProcessOpts = {
     stdio: 'inherit',
     shell: true,
@@ -72,14 +72,28 @@ export default (input, patchPath, program) => {
   const saveOutFile = ([filename, content]) =>
     fs.outputFile(path.join(outDir, filename), content);
 
+  const generateSuite = project =>
+    patchPath
+      ? Tabtest.generatePatchSuite(project, patchPath)
+      : Tabtest.generateProjectSuite(project);
+
+  const build = () =>
+    opts.noBuild
+      ? Promise.resolve()
+      : Promise.resolve()
+          .then(tapProgress('Compiling...'))
+          .then(() => spawn('make', [], childProcessOpts))
+          .then(tapProgress('Testing...'))
+          .then(() => spawn('make', ['test'], childProcessOpts));
+
   msg.notice(`Preparing test directory: ${outDir} ...`);
 
   fs
     .ensureDir(outDir)
     .then(tapProgress('Loading project...'))
-    .then(() => loadProject(workspaces, input))
+    .then(() => loadProject(workspaces, projectPath))
     .then(tapProgress('Generating C++ code...'))
-    .then(project => Tabtest.generateSuite(project, patchPath))
+    .then(generateSuite)
     .then(foldEither(err => showErrorAndExit(err), R.identity))
     .then(R.toPairs)
     .then(tapProgress('Saving files...'))
@@ -87,9 +101,6 @@ export default (input, patchPath, program) => {
     .then(R.append(fs.copy(tabtestSources, outDir)))
     .then(R.append(fs.copy(catch2Sources, outDir)))
     .then(allPromises)
-    .then(tapProgress('Compiling...'))
-    .then(() => spawn('make', [], childProcessOpts))
-    .then(tapProgress('Testing...'))
-    .then(() => spawn('make', ['test'], childProcessOpts))
+    .then(build)
     .catch(showErrorAndExit);
 };

@@ -1,4 +1,16 @@
+open Belt;
+
 type t = Js.Types.obj_val;
+
+[@bs.module "xod-project"]
+external _listPatches : t => array(Patch.t) = "listPatches";
+
+let listPatches = project => _listPatches(project) |. List.fromArray;
+
+[@bs.module "xod-project"]
+external _listLocalPatches : t => array(Patch.t) = "listLocalPatches";
+
+let listLocalPatches = project => _listLocalPatches(project) |. List.fromArray;
 
 [@bs.module "xod-project"]
 external _assocPatch : (PatchPath.t, Patch.t, t) => Either.t(Js.Exn.t, t) =

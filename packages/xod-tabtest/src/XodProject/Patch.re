@@ -66,6 +66,8 @@ let getAttachments = t => _getAttachments(t) |. List.fromArray;
 
 let getTabtestContent = t =>
   getAttachments(t)
-  |. List.keep(att => Attachment.getFilename(att) == "patch.test.tsv")
+  |. List.keep(Attachment.isTabtest)
   |. List.head
   |. Option.map(Attachment.getContent);
+
+let hasTabtest = t => getAttachments(t) |. List.some(Attachment.isTabtest);

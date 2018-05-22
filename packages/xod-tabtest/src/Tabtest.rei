@@ -7,4 +7,7 @@ open Belt;
 type t = Map.String.t(string);
 
 /** Returns a test suite for the given patch of a project */
-let generateSuite: (Project.t, Patch.path) => XResult.t(t);
+let generatePatchSuite: (Project.t, Patch.path) => XResult.t(t);
+
+/** Returns a test suite for all patches with tabtests in the given project */
+let generateProjectSuite: Project.t => XResult.t(t);

@@ -25,3 +25,5 @@ let findPinByLabel:
 let getAttachments: t => list(Attachment.t);
 
 let getTabtestContent: t => option(string);
+
+let hasTabtest: t => bool;

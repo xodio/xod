@@ -76,3 +76,23 @@ describe("Inner join", () =>
     expect(outMap) |> toEqualMap(expectedMap);
   })
 );
+
+describe("mergeOverride", () =>
+  test("merges preferring keys from second arg", () => {
+    let left =
+      Map.String.empty
+      |. Map.String.set("quad", "four")
+      |. Map.String.set("hexa", "six");
+    let right =
+      Map.String.empty
+      |. Map.String.set("quad", "4")
+      |. Map.String.set("octo", "8");
+    let outMap = Holes.Map.String.mergeOverride(left, right);
+    let expectedMap =
+      Map.String.empty
+      |. Map.String.set("quad", "4")
+      |. Map.String.set("hexa", "six")
+      |. Map.String.set("octo", "8");
+    expect(outMap) |> toEqualMap(expectedMap);
+  })
+);
