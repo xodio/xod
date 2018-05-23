@@ -267,7 +267,7 @@ export const saveLibraries = def(
             R.filter(
               R.compose(R.equals(libName), XP.getLibraryName, XP.getPatchPath)
             ),
-            XP.listPatchesWithoutBuiltIns
+            XP.listGenuinePatches
           )(project);
         }
 
@@ -299,8 +299,8 @@ export const saveAll = def(
   'saveAll :: Path -> Path -> Project -> Project -> Promise', // Promise Project Error
   (workspacePath, projectPath, projectBefore, projectAfter) => {
     const changes = calculateDiff(
-      XP.listPatchesWithoutBuiltIns(projectBefore),
-      XP.listPatchesWithoutBuiltIns(projectAfter)
+      XP.listGenuinePatches(projectBefore),
+      XP.listGenuinePatches(projectAfter)
     );
 
     return Promise.all([

@@ -13,7 +13,7 @@ import {
   listLibraryPatches,
   omitPatches,
   injectProjectTypeHints,
-  listPatchesWithoutBuiltIns,
+  listGenuinePatches,
 } from './project';
 import {
   addMissingOptionalProjectFields,
@@ -67,6 +67,6 @@ export const prepareLibPatchesToInsertIntoProject = def(
           R.over(R.lensProp('path'), R.replace('@', libName))
         )
       ),
-      listPatchesWithoutBuiltIns
+      listGenuinePatches
     )(project)
 );

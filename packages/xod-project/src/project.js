@@ -215,11 +215,11 @@ export const listPatches = def(
 );
 
 /**
- * @function listPatchesWithoutBuiltIns
+ * @function listGenuinePatches
  * @param {Project} project - project bundle
  * @returns {Patch[]} list of patches that were added to project, excluding built-ins
  */
-export const listPatchesWithoutBuiltIns = def(
+export const listGenuinePatches = def(
   'listPatches :: Project -> [Patch]',
   R.compose(R.filter(Patch.isGenuinePatch), R.values, R.prop('patches'))
 );
@@ -292,7 +292,7 @@ export const listLibraryNamesUsedInProject = def(
     R.uniq,
     R.unnest,
     R.map(Patch.listLibraryNamesUsedInPatch),
-    listPatchesWithoutBuiltIns
+    listGenuinePatches
   )
 );
 

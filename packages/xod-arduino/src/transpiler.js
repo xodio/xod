@@ -167,7 +167,7 @@ const createTPatches = def(
       }),
       R.omit([entryPath]),
       R.indexBy(Project.getPatchPath),
-      Project.listPatchesWithoutBuiltIns
+      Project.listGenuinePatches
     )(project)
 );
 

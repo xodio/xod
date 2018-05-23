@@ -1026,19 +1026,19 @@ describe('Project', () => {
         ]);
       });
     });
-    describe('listPatchesWithoutBuiltIns', () => {
+    describe('listGenuinePatches', () => {
       it('should return empty array for empty project', () => {
-        assert.deepEqual([], Project.listPatchesWithoutBuiltIns(emptyProject));
+        assert.deepEqual([], Project.listGenuinePatches(emptyProject));
       });
       it('should return array with patches for non-empty project', () => {
-        expect(Project.listPatchesWithoutBuiltIns(project))
+        expect(Project.listGenuinePatches(project))
           .to.be.instanceof(Array)
           .and.have.lengthOf(4);
       });
       it('should omit auto-generated terminals for custom types', () => {
         const patchPaths = R.compose(
           R.map(Patch.getPatchPath),
-          Project.listPatchesWithoutBuiltIns
+          Project.listGenuinePatches
         )(projectWithCustomTypes);
 
         assert.sameMembers(patchPaths, [
@@ -1272,7 +1272,7 @@ describe('Project', () => {
         )
       ),
       R.indexBy(Patch.getPatchPath),
-      Project.listPatchesWithoutBuiltIns
+      Project.listGenuinePatches
     );
 
     it('should return the same Project with updated NodeTypes of lib patches', () => {

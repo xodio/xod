@@ -5,7 +5,7 @@ import * as Helper from './helpers';
 import {
   getPatchByPathUnsafe,
   assocPatchUnsafe,
-  listPatchesWithoutBuiltIns,
+  listGenuinePatches,
 } from '../src/project';
 import { PIN_TYPE } from '../src/constants';
 
@@ -225,8 +225,8 @@ describe('autoresolveTypes', () => {
 
     Helper.expectEitherRight(actualResolvedProject => {
       assert.sameDeepMembers(
-        listPatchesWithoutBuiltIns(actualResolvedProject),
-        listPatchesWithoutBuiltIns(expectedResolvedProject)
+        listGenuinePatches(actualResolvedProject),
+        listGenuinePatches(expectedResolvedProject)
       );
     }, autoresolveTypes('@/case1-ok', project));
   });
@@ -259,8 +259,8 @@ describe('autoresolveTypes', () => {
 
     Helper.expectEitherRight(actualResolvedProject => {
       assert.sameDeepMembers(
-        listPatchesWithoutBuiltIns(actualResolvedProject),
-        listPatchesWithoutBuiltIns(expectedResolvedProject)
+        listGenuinePatches(actualResolvedProject),
+        listGenuinePatches(expectedResolvedProject)
       );
     }, autoresolveTypes('@/case3-variadics', project));
   });
@@ -271,8 +271,8 @@ describe('autoresolveTypes', () => {
 
     Helper.expectEitherRight(actualResolvedProject => {
       assert.sameDeepMembers(
-        listPatchesWithoutBuiltIns(actualResolvedProject),
-        listPatchesWithoutBuiltIns(expectedResolvedProject)
+        listGenuinePatches(actualResolvedProject),
+        listGenuinePatches(expectedResolvedProject)
       );
     }, autoresolveTypes('@/case4-bound-non-generic-pins', project));
   });
@@ -283,8 +283,8 @@ describe('autoresolveTypes', () => {
 
     Helper.expectEitherRight(actualResolvedProject => {
       assert.sameDeepMembers(
-        listPatchesWithoutBuiltIns(actualResolvedProject),
-        listPatchesWithoutBuiltIns(expectedResolvedProject)
+        listGenuinePatches(actualResolvedProject),
+        listGenuinePatches(expectedResolvedProject)
       );
     }, autoresolveTypes('@/case5-abstracts-deep-inside-regular-patches', project));
   });
