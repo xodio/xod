@@ -42,6 +42,8 @@ $PinInfo-padding-bottom: 10px;
       &.number { color: $color-datatype-number }
       &.string { color: $color-datatype-string }
       &.generic { color: $color-datatype-generic }
+      &.byte { color: $color-datatype-byte }
+      &.port, &.port-analog { color: $color-datatype-port }
     }
 
     .description {

@@ -21,6 +21,8 @@
     &.number { stroke: $color-datatype-number; }
     &.boolean { stroke: $color-datatype-boolean; }
     &.pulse { stroke: $color-datatype-pulse; }
+    &.byte { stroke: $color-datatype-byte; }
+    &.port, &.port-analog { stroke: $color-datatype-port; }
     &.dead { stroke: $color-datatype-dead; }
   }
 

@@ -56,6 +56,8 @@ const cppType = def(
     [PIN_TYPE.NUMBER]: 'Number',
     [PIN_TYPE.STRING]: 'XString',
     [PIN_TYPE.BYTE]: 'uint8_t',
+    [PIN_TYPE.PORT]: 'uint8_t',
+    [PIN_TYPE.PORT_ANALOG]: 'uint8_t',
   })
 );
 
@@ -92,6 +94,20 @@ const cppByteLiteral = def(
       ),
     ])
   )
+);
+
+// Formats XOD port literal into C++ literal
+// E.G.
+// 3 -> 3
+// D13 -> 13
+// A3 -> PIN_A3
+const cppPortLiteral = def(
+  'cppPortLiteral :: String -> String',
+  R.cond([
+    [R.test(/^D\d+$/i), R.tail],
+    [R.test(/^A\d+$/i), R.pipe(R.tail, R.concat('PIN_A'))],
+    [R.T, R.identity],
+  ])
 );
 
 // =============================================================================
@@ -162,6 +178,8 @@ Handlebars.registerHelper('cppValue', (type, value) =>
     ]),
     [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
     [PIN_TYPE.BYTE]: cppByteLiteral,
+    [PIN_TYPE.PORT]: cppPortLiteral,
+    [PIN_TYPE.PORT_ANALOG]: cppPortLiteral,
   })(value)
 );
 
