@@ -45,7 +45,7 @@ describe('xod-patch-search/index', () => {
     it('searches: "number"', () =>
       assert.equal(
         idx.search('number')[0].item.path,
-        'xod/core/nth-number' // Cause it has a `number` in the path and it alphabetically sorted (that's why not *-to-string)
+        'xod/bits/number-to-f32'
       ));
 
     it('searches: "lib:xod/patch-nodes number"', () => {
