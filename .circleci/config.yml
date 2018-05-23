@@ -234,7 +234,7 @@ jobs:
           name: Querying version tag
           command: |
             mkdir $PKG/image
-            QUERY="console.log('v' + require('$PKG/package.json').version)"
+            QUERY="console.log(require('$PKG/package.json').version)"
             TAG=$(node -e "$QUERY")
             IMAGE_TAG="$IMAGE_NAME:$TAG"
             echo "Tag set to: $TAG"
