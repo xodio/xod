@@ -315,7 +315,7 @@ export const getPatchByPath = def(
  * @throws Error if patch was not found
  */
 export const getPatchByPathUnsafe = def(
-  'getPatchByPath :: PatchPath -> Project -> Patch',
+  'getPatchByPathUnsafe :: PatchPath -> Project -> Patch',
   (path, project) =>
     explodeMaybe(
       `Can't find the patch in the project with specified path: "${path}"`,
