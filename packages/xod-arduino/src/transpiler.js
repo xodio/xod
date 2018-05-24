@@ -15,24 +15,18 @@ import {
   isDirtienessEnabled,
 } from './directives';
 
-import { toInt, createPatchNames } from './utils';
-
 //-----------------------------------------------------------------------------
 //
 // Utils
 //
 //-----------------------------------------------------------------------------
 
+// :: x -> Number
+const toInt = R.flip(parseInt)(10);
+
 const findPatchByPath = def(
   'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',
-  (path, patches) =>
-    R.compose(
-      R.find(R.__, patches),
-      R.allPass,
-      R.map(R.apply(R.propEq)),
-      R.toPairs,
-      createPatchNames
-    )(path)
+  (path, patches) => R.find(R.propEq('patchPath', path), patches)
 );
 
 const getLinksInputNodeIds = def(
@@ -82,35 +76,39 @@ const toposortProject = def(
 //
 //-----------------------------------------------------------------------------
 
+const arrangeTPatchesInTopologicalOrder = def(
+  'arrangeTPatchesInTopologicalOrder :: PatchPath -> Project -> Map PatchPath TPatch -> [TPatch]',
+  (entryPath, project, tpatchesMap) =>
+    R.compose(
+      R.map(patchPath => tpatchesMap[patchPath]),
+      R.uniq,
+      R.map(R.nth(1)),
+      R.sortBy(R.head),
+      // at this point nodes in entry patch have
+      // their order in a toposorted graph as an id
+      R.map(
+        R.converge(R.pair, [
+          R.pipe(Project.getNodeId, parseInt),
+          Project.getNodeType,
+        ])
+      ),
+      Project.listNodes,
+      // we already checked that entry patchh exists
+      Project.getPatchByPathUnsafe(entryPath)
+    )(project)
+);
+
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) =>
     R.compose(
       // patches must appear in the same order
       // as respective nodes in a toposorted graph
-      tpatchesMap =>
-        R.compose(
-          R.map(patchPath => tpatchesMap[patchPath]),
-          R.uniq,
-          R.map(R.nth(1)),
-          R.sortBy(R.head),
-          // at this point nodes in entry patch have
-          // their order in a toposorted graph as an id
-          R.map(
-            R.converge(R.pair, [
-              R.pipe(Project.getNodeId, parseInt),
-              Project.getNodeType,
-            ])
-          ),
-          Project.listNodes,
-          // we already checked that entry patchh exists
-          Project.getPatchByPathUnsafe(entryPath)
-        )(project),
+      arrangeTPatchesInTopologicalOrder(entryPath, project),
       // :: Map PatchPath TPatch
-      R.mapObjIndexed((patch, path) => {
-        const names = createPatchNames(path);
+      R.mapObjIndexed((patch, patchPath) => {
         const impl = explodeMaybe(
-          `Implementation for ${path} not found`,
+          `Implementation for ${patchPath} not found`,
           Project.getImpl(patch)
         );
 
@@ -149,19 +147,19 @@ const createTPatches = def(
         )(patch);
 
         const isThisIsThat = {
-          isDefer: Project.isDeferNodeType(path),
-          isConstant: Project.isConstantNodeType(path),
+          isDefer: Project.isDeferNodeType(patchPath),
+          isConstant: Project.isConstantNodeType(patchPath),
           usesTimeouts: areTimeoutsEnabled(impl),
           usesNodeId: isNodeIdEnabled(impl),
         };
 
         return R.mergeAll([
-          names,
           isThisIsThat,
           {
             outputs,
             inputs,
             impl,
+            patchPath,
           },
         ]);
       }),
@@ -351,10 +349,11 @@ const transformProjectWithImpls = def(
         );
 
         if (nodeWithTooManyOutputs) {
-          const { owner, libName, patchName } = nodeWithTooManyOutputs;
           return Either.Left(
             new Error(
-              `Native node ${owner}/${libName}/${patchName} has more than 7 outputs`
+              `Native node ${
+                nodeWithTooManyOutputs.patchPath
+              } has more than 7 outputs`
             )
           );
         }
@@ -416,7 +415,3 @@ export const transformProjectWithDebug = def(
 );
 
 export const transpile = renderProject;
-
-export const forUnitTests = {
-  createPatchNames,
-};

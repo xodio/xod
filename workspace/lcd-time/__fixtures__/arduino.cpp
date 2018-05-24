@@ -760,7 +760,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__continuously
 
 //-----------------------------------------------------------------------------
-// xod/core/system_time implementation
+// xod/core/system-time implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__system_time {
 
@@ -845,7 +845,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__system_time
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_to_string__number implementation
+// xod/core/cast-to-string(number) implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_to_string__number {
 
@@ -931,7 +931,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__cast_to_string__number
 
 //-----------------------------------------------------------------------------
-// xod/common_hardware/text_lcd_16x2 implementation
+// xod/common-hardware/text-lcd-16x2 implementation
 //-----------------------------------------------------------------------------
 namespace xod__common_hardware__text_lcd_16x2 {
 

@@ -810,7 +810,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__clock
 
 //-----------------------------------------------------------------------------
-// xod/core/flip_flop implementation
+// xod/core/flip-flop implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__flip_flop {
 
@@ -929,7 +929,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__flip_flop
 
 //-----------------------------------------------------------------------------
-// xod/core/digital_output implementation
+// xod/core/digital-output implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__digital_output {
 

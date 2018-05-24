@@ -685,7 +685,7 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_to_pulse__boolean implementation
+// xod/core/cast-to-pulse(boolean) implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_to_pulse__boolean {
 
@@ -1093,7 +1093,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__greater
 
 //-----------------------------------------------------------------------------
-// xod/core/cast_to_string__number implementation
+// xod/core/cast-to-string(number) implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_to_string__number {
 
@@ -1179,7 +1179,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__cast_to_string__number
 
 //-----------------------------------------------------------------------------
-// xod/common_hardware/text_lcd_16x2 implementation
+// xod/common-hardware/text-lcd-16x2 implementation
 //-----------------------------------------------------------------------------
 namespace xod__common_hardware__text_lcd_16x2 {
 
@@ -1323,7 +1323,7 @@ void evaluate(Context ctx) {
 } // namespace xod__common_hardware__text_lcd_16x2
 
 //-----------------------------------------------------------------------------
-// xod/core/defer__boolean implementation
+// xod/core/defer(boolean) implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__defer__boolean {
 

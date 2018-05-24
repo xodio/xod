@@ -2,11 +2,9 @@ import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
 import { unquote } from 'xod-func-tools';
-import { PIN_TYPE } from 'xod-project';
+import * as XP from 'xod-project';
 
 import { def } from './types';
-
-import { createPatchNames } from './utils';
 
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
@@ -24,6 +22,25 @@ import runtimeCpp from '../platform/runtime.cpp';
 // Utils and helpers
 //
 // =============================================================================
+
+const kebabToSnake = R.replace(/-/g, '_');
+
+// foo(number,string) -> foo__number__string
+const sanitizeTypeSpecification = R.compose(
+  R.replace(/\(|,/g, '__'),
+  R.replace(')', '')
+);
+
+// :: PatchPath -> String
+const patchPathToNSName = R.converge(
+  R.pipe(Array.of, R.map(kebabToSnake), R.join('__')),
+  [
+    R.ifElse(XP.isPathLibrary, XP.getOwnerName, R.always('')),
+    R.ifElse(XP.isPathLibrary, R.pipe(R.split('/'), R.nth(1)), R.always('')),
+    R.pipe(XP.getBaseName, sanitizeTypeSpecification),
+  ]
+);
+
 const trimTrailingWhitespace = R.replace(/\s+$/gm, '\n');
 
 const omitLocalIncludes = R.replace(/#include ".*$/gm, '');
@@ -49,19 +66,14 @@ const mergeAndListPins = (direction, node) =>
     ])
   )(node);
 
-const getNSName = R.compose(
-  R.join('__'),
-  R.props(['owner', 'libName', 'patchName'])
-);
-
 const builtInTypeNames = {
-  [PIN_TYPE.PULSE]: 'Logic',
-  [PIN_TYPE.BOOLEAN]: 'Logic',
-  [PIN_TYPE.NUMBER]: 'Number',
-  [PIN_TYPE.STRING]: 'XString',
-  [PIN_TYPE.BYTE]: 'uint8_t',
-  [PIN_TYPE.PORT]: 'uint8_t',
-  [PIN_TYPE.PORT_ANALOG]: 'uint8_t',
+  [XP.PIN_TYPE.PULSE]: 'Logic',
+  [XP.PIN_TYPE.BOOLEAN]: 'Logic',
+  [XP.PIN_TYPE.NUMBER]: 'Number',
+  [XP.PIN_TYPE.STRING]: 'XString',
+  [XP.PIN_TYPE.BYTE]: 'uint8_t',
+  [XP.PIN_TYPE.PORT]: 'uint8_t',
+  [XP.PIN_TYPE.PORT_ANALOG]: 'uint8_t',
 };
 
 // Converts DataType value to a corresponding C++ storage type
@@ -70,7 +82,8 @@ const cppType = def(
   R.ifElse(
     R.has(R.__, builtInTypeNames),
     R.prop(R.__, builtInTypeNames),
-    R.pipe(createPatchNames, getNSName, ns => `${ns}::Type`)
+    // it is a custom type
+    R.pipe(patchPathToNSName, ns => `${ns}::Type`)
   )
 );
 
@@ -136,7 +149,7 @@ Handlebars.registerHelper('mergePins', function mergePins() {
 });
 
 // Generate patch-level namespace name
-Handlebars.registerHelper('ns', getNSName);
+Handlebars.registerHelper('ns', R.pipe(R.prop('patchPath'), patchPathToNSName));
 
 // Debug helper
 Handlebars.registerHelper('json', JSON.stringify);
@@ -145,7 +158,7 @@ Handlebars.registerHelper('json', JSON.stringify);
 Handlebars.registerHelper(
   'decltype',
   (type, value) =>
-    type === PIN_TYPE.STRING && unquote(value) !== ''
+    type === XP.PIN_TYPE.STRING && unquote(value) !== ''
       ? 'static XStringCString'
       : `constexpr ${cppType(type)}`
 );
@@ -164,7 +177,7 @@ Handlebars.registerHelper('global', function global(options) {
     '}}',
     options.fn(this),
     'namespace xod {',
-    `namespace ${this.owner}__${this.libName}__${this.patchName} {`,
+    `namespace ${patchPathToNSName(this.patchPath)} {`,
     '// --- Back to local namespace ---',
   ].join('\n');
 });
@@ -175,19 +188,19 @@ Handlebars.registerHelper('cppType', type => cppType(type));
 // string that is valid and expected C++ literal representing that value
 Handlebars.registerHelper('cppValue', (type, value) =>
   R.propOr(R.always(`{ /* ${type} */ }`), type, {
-    [PIN_TYPE.PULSE]: R.always('false'),
-    [PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
-    [PIN_TYPE.NUMBER]: R.cond([
+    [XP.PIN_TYPE.PULSE]: R.always('false'),
+    [XP.PIN_TYPE.BOOLEAN]: v => (v === 'True' ? 'true' : 'false'),
+    [XP.PIN_TYPE.NUMBER]: R.cond([
       [R.equals('Inf'), R.always('INFINITY')],
       [R.equals('+Inf'), R.always('INFINITY')],
       [R.equals('-Inf'), R.always('(-INFINITY)')],
       [R.equals('NaN'), R.always('NAN')],
       [R.T, R.identity],
     ]),
-    [PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
-    [PIN_TYPE.BYTE]: cppByteLiteral,
-    [PIN_TYPE.PORT]: cppPortLiteral,
-    [PIN_TYPE.PORT_ANALOG]: cppPortLiteral,
+    [XP.PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
+    [XP.PIN_TYPE.BYTE]: cppByteLiteral,
+    [XP.PIN_TYPE.PORT]: cppPortLiteral,
+    [XP.PIN_TYPE.PORT_ANALOG]: cppPortLiteral,
   })(value)
 );
 
@@ -252,9 +265,7 @@ export const renderPatchContext = def(
 );
 export const renderImpl = def('renderImpl :: TPatch -> String', data => {
   const ctx = R.applySpec({
-    owner: R.prop('owner'),
-    libName: R.prop('libName'),
-    patchName: R.prop('patchName'),
+    patchPath: R.prop('patchPath'),
     GENERATED_CODE: renderPatchContext,
   })(data);
 
