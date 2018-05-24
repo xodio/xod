@@ -35,15 +35,10 @@ const listPatches = R.compose(XP.listPatches, getProject);
 
 // :: (Patch -> a) -> Project -> Maybe PatchPath -> a
 const getIndexedPatchEntitiesBy = R.curry((getter, project, maybePatchPath) =>
-  foldMaybe(
-    {},
-    R.compose(
-      R.indexBy(R.prop('id')),
-      getter,
-      XP.getPatchByPathUnsafe(R.__, project)
-    ),
-    maybePatchPath
-  )
+  R.compose(
+    foldMaybe({}, R.compose(R.indexBy(R.prop('id')), getter)),
+    R.chain(XP.getPatchByPath(R.__, project))
+  )(maybePatchPath)
 );
 
 // :: State -> StrMap Comment
@@ -179,6 +174,7 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
           R.always(renderableNode)
         ),
         XP.validatePatchContents(R.__, project),
+        // we just checked that patch exists
         XP.getPatchByPathUnsafe(R.__, project)
       )
     ),

@@ -74,12 +74,17 @@ export const isPatchPathTaken = (state, newPatchPath) => {
 
 // :: PatchPath -> Project -> Position
 export const getInitialPatchOffset = R.compose(
-  getOptimalPanningOffset,
-  R.converge(R.concat, [
-    R.compose(R.map(XP.getNodePosition), XP.listNodes),
-    R.compose(R.map(XP.getCommentPosition), XP.listComments),
-  ]),
-  XP.getPatchByPathUnsafe
+  foldMaybe(
+    { x: 0, y: 0 },
+    R.compose(
+      getOptimalPanningOffset,
+      R.converge(R.concat, [
+        R.compose(R.map(XP.getNodePosition), XP.listNodes),
+        R.compose(R.map(XP.getCommentPosition), XP.listComments),
+      ])
+    )
+  ),
+  XP.getPatchByPath
 );
 
 // extract information from Patch that is required to render it with Node component

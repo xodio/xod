@@ -287,6 +287,14 @@ export const switchPatchUnsafe = patchPath => ({
 export const switchPatch = patchPath => (dispatch, getState) => {
   const state = getState();
 
+  const patchDoesNotExist = R.compose(
+    Maybe.isNothing,
+    XP.getPatchByPath(patchPath),
+    ProjectSelectors.getProject
+  )(state);
+
+  if (patchDoesNotExist) return;
+
   const isSamePatchPath = foldMaybe(
     false,
     R.equals(patchPath),
