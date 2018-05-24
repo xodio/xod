@@ -1920,7 +1920,7 @@ describe('Patch', () => {
 
       it('should check that patches have equal number of inputs and outputs', () => {
         Helper.expectEitherError(
-          'SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS {"desiredInputsNumber":3}',
+          'SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS {"desiredInputsNumber":3,"abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1931,7 +1931,7 @@ describe('Patch', () => {
         );
 
         Helper.expectEitherError(
-          'SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS {"desiredOutputsNumber":2}',
+          'SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS {"desiredOutputsNumber":2,"abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1944,7 +1944,7 @@ describe('Patch', () => {
 
       it('should check that static pins match', () => {
         Helper.expectEitherError(
-          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {}',
+          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {"abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1955,7 +1955,7 @@ describe('Patch', () => {
         );
 
         Helper.expectEitherError(
-          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {}',
+          'SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH {"abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1968,7 +1968,7 @@ describe('Patch', () => {
 
       it('should check constrains for generic pins', () => {
         Helper.expectEitherError(
-          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"string, number"}',
+          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"string, number","abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1979,7 +1979,7 @@ describe('Patch', () => {
         );
 
         Helper.expectEitherError(
-          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"number, string"}',
+          'SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC {"genericType":"t1","typeNames":"number, string","abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
@@ -1992,7 +1992,7 @@ describe('Patch', () => {
 
       it('should check patch basename', () => {
         Helper.expectEitherError(
-          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(number,string)"}',
+          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(number,string)","abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(

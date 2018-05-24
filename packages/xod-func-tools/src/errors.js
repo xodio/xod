@@ -63,7 +63,12 @@ export const composeErrorFormatters = def(
         // Fallback to ugly/default error message
         // if there is no messages for this type of error
         // or error has no type at all
-        return { note: err.message };
+        return {
+          title: 'Error',
+          note: err.message,
+          solution:
+            'The error has no formatter, which is a bug. Report the issue to XOD developers.',
+        };
       }
       return formatter(err.payload);
     },

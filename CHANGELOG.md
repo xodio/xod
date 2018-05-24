@@ -4,13 +4,40 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+<a name="0.20.3"></a>
+## 0.20.3 (2018-05-22)
+
+### Bug fixes
+
+* [build] Fix macOS distro download filename. Now it has proper `.dmg`
+  extension. (#1198)
+* [core] Fix opening projects saved prior to 0.20.0 with some pins explicitly
+  bound to `Never`. Notably, the bug led to a transpilation error when using
+  `digital-output` from own `xod/core` fork. (#1207)
+* [core] Fix untitled outputs name assignment for C\++. Previously, all
+  untitled outputs got name `output_OUT`. Now they are `output_OUT1`,
+  `output_OUT2`, and so on. (#1204)
+* [core] Fix C\++ generation from generic nodes containing
+  `not-implemented-in-xod` which previously was silently failing. (#1225)
+* [ide] Minimize performance regression in 0.20.x caused by generics resolution
+  (#1213, #1214)
+* [ide] Fix occasional `[Object object]` errors when deploying. Now they are
+  still there but formatted properly. (#1203)
+* [ide] Format transpilation errors that previously appeared as cryptic
+  objects. (#1230)
+* [ide] Fix uncaught error handling. Now they pop up as a regular error for
+  easier reporting. (#1230)
+* [ide] Fix canceling when opening a project. Previously it broke the current
+  project (#1202)
+
 <a name="0.20.2"></a>
 ## 0.20.2 (2018-05-08)
 
 ### Bug fixes
 
 * [core] Fix crash on creating a variadic patch with non-matching pin types. (#1194)
-* [core] Recognize legacy defer nodes(`xod/core/defer-*`) and don't complain about a graph cycle when they are used. (#1195)
+* [core] Recognize legacy defer nodes(`xod/core/defer-*`) and don't complain
+  about a graph cycle when they are used. (#1195)
 
 <a name="0.20.1"></a>
 ## 0.20.1 (2018-04-29)
