@@ -1510,6 +1510,8 @@ export const checkSpecializationMatchesAbstraction = def(
       R.compose(R.map(R.length), R.groupBy(Pin.getPinDirection), listPins)
     )([abstractPatch, specializationPatch]);
 
+    const abstractPatchPath = getPatchPath(abstractPatch);
+
     // check that patch has a proper number of inputs and outputs
     if (
       numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT] !==
@@ -1518,6 +1520,7 @@ export const checkSpecializationMatchesAbstraction = def(
       return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_INPUTS', {
         desiredInputsNumber:
           numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.INPUT],
+        abstractPatchPath,
       });
     }
 
@@ -1528,6 +1531,7 @@ export const checkSpecializationMatchesAbstraction = def(
       return fail('SPECIALIZATION_PATCH_MUST_HAVE_N_OUTPUTS', {
         desiredOutputsNumber:
           numberOfPinsInAbstractPatchByDirection[CONST.PIN_DIRECTION.OUTPUT],
+        abstractPatchPath,
       });
     }
 
@@ -1551,7 +1555,9 @@ export const checkSpecializationMatchesAbstraction = def(
     );
     // TODO: `find` instead of `any` and explain which one does not match?
     if (!staticTypesMatch) {
-      return fail('SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH', {});
+      return fail('SPECIALIZATION_STATIC_PINS_DO_NOT_MATCH', {
+        abstractPatchPath,
+      });
     }
 
     const ambiguousGenerics = R.compose(
@@ -1570,6 +1576,7 @@ export const checkSpecializationMatchesAbstraction = def(
       return fail('SPECIALIZATION_HAS_CONFLICTING_TYPES_FOR_GENERIC', {
         genericType,
         typeNames,
+        abstractPatchPath,
       });
     }
 
@@ -1592,6 +1599,7 @@ export const checkSpecializationMatchesAbstraction = def(
     if (expectedSpecializationBaseName !== actualSpecializationBaseName) {
       return fail('SPECIALIZATION_HAS_WRONG_NAME', {
         expectedSpecializationBaseName,
+        abstractPatchPath,
       });
     }
 

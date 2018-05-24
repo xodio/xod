@@ -1,6 +1,6 @@
 {
   "name": "xod-project",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "API functions to work on XOD project state",
   "keywords": [],
   "license": "AGPL-3.0",
@@ -20,7 +20,7 @@
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",
     "shortid": "^2.2.6",
-    "xod-func-tools": "^0.20.0"
+    "xod-func-tools": "^0.20.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
