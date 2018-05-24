@@ -101,10 +101,19 @@ export default {
     solution: 'Connect links or bind values to generic inputs',
     trace,
   }),
-  CONFLICTING_TYPES_FOR_NODE: ({ trace }) => ({
-    title: 'Node has conflicting types',
+  CONFLICTING_TYPES_FOR_NODE: ({
+    trace,
+    genericPinType,
+    conflictingTypes,
+  }) => ({
+    title: 'Generic types don’t match',
+    note: `Types ${enumerate(
+      ', ',
+      ' and ',
+      conflictingTypes
+    )} conflict; ${genericPinType} can’t be resolved unambiguously.`,
     solution:
-      'Make sure links and values connected to each generic terminal have the same type',
+      'Either add nodes to a single type, or switch to a particular node specialization.',
     trace,
   }),
   UNRESOLVED_GENERIC_PIN: ({ trace, unresolvedPinType }) => ({
