@@ -56,7 +56,7 @@
       @include symbol-coloring($color-datatype-byte);
     }
 
-    &.dead, &.is-invalid {
+    &.dead, &.is-invalid, &.conflicting {
       @include symbol-coloring($color-datatype-dead);
     }
   }
