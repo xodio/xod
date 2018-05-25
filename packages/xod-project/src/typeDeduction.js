@@ -258,6 +258,23 @@ export const deducePinTypes = def(
       R.reject(R.isEmpty),
       R.reduce((previouslyDeducedPinTypes, abstractNode) => {
         const abstractNodeId = Node.getNodeId(abstractNode);
+        const abstractNodeBoundValues = Node.getAllBoundValues(abstractNode);
+        // :: Map PinKey DataValue
+        const pinValuesForAbstractNode = R.compose(
+          R.reject(R.isEmpty),
+          foldMaybe(
+            abstractNodeBoundValues,
+            R.merge(R.__, abstractNodeBoundValues)
+          ),
+          R.map(
+            R.compose(
+              R.map(Pin.getPinDefaultValue),
+              R.indexBy(Pin.getPinKey),
+              Patch.listPins
+            )
+          ),
+          Project.getPatchByNode
+        )(abstractNode, project);
         const linksToNode = R.propOr([], abstractNodeId, linksByInputNodeId);
 
         // :: [(PinKey, DataType)]
@@ -274,9 +291,8 @@ export const deducePinTypes = def(
         const pinTypesFromBoundValues = R.compose(
           R.toPairs,
           R.map(Utils.getTypeFromLiteralUnsafe),
-          R.filter(Utils.isValidLiteral),
-          Node.getAllBoundValues
-        )(abstractNode);
+          R.filter(Utils.isValidLiteral)
+        )(pinValuesForAbstractNode);
 
         const pinTypesFromLinksAndBoundValues = R.compose(
           // this will get rid of values bound to linked pins
