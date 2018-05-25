@@ -380,6 +380,7 @@ export const deducePinTypes = def(
 const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
   const genericNodeId = Node.getNodeId(genericNode);
   const genericNodeType = Node.getNodeType(genericNode);
+  const genericPatch = Project.getPatchByPathUnsafe(genericNodeType, project);
 
   const eitherPinTypes = R.propOr({}, genericNodeId, deducedTypes);
 
@@ -391,21 +392,31 @@ const getDeducedTypesForGenericPins = (project, genericNode, deducedTypes) => {
     });
   }
 
-  const conflictingTypes = R.compose(
-    R.find(Either.isLeft),
-    R.values // TODO: do we need pinKeys in error?
+  const conflictingPin = R.compose(
+    R.find(R.pipe(R.nth(1), Either.isLeft)),
+    R.toPairs
   )(eitherPinTypes);
 
-  if (conflictingTypes) {
+  if (conflictingPin) {
+    const [conflictingPinKey, eitherConflictingTypes] = conflictingPin;
+    const genericPinType = R.compose(
+      Pin.getPinType,
+      // if types were deduced for it, it certainly exists
+      Patch.getPinByKeyUnsafe(conflictingPinKey)
+    )(genericPatch);
+
     return fail('CONFLICTING_TYPES_FOR_NODE', {
-      genericNodeId,
-      genericNodeType,
+      conflictingTypes: foldEither(
+        R.identity,
+        R.identity,
+        eitherConflictingTypes
+      ),
+      genericPinType,
       trace: [genericNodeType],
     });
   }
 
   const pinTypes = R.map(explodeEither, eitherPinTypes);
-  const genericPatch = Project.getPatchByPathUnsafe(genericNodeType, project);
   const deducedTypesForGenerics = R.compose(
     R.sortBy(R.head),
     R.uniqBy(R.head),
