@@ -74,7 +74,7 @@ const samePatchesInProject = (prev, next) => {
 
 export const getDeducedPinTypes = createMemoizedSelector(
   [getProject, getCurrentPatchPath],
-  [samePatchesInProject],
+  [samePatchesInProject, R.identical],
   (project, maybeCurrentPatchPath) =>
     R.compose(
       Maybe.maybe({}, patch => XP.deducePinTypes(patch, project)),
