@@ -22,6 +22,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/math/clip` instead",
+      "id": "HJevYbjKkQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "The input value",
       "id": "Hk2H0A13-",
       "label": "X",

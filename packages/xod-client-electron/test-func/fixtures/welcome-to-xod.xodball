@@ -619,7 +619,7 @@
           }
         },
         "rJ1d3KptZ": {
-          "content": "If you have finished the previous experiment, you will have noticed that the thermometer node returns an output temperature value to the `Tc` pin in degrees Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is 0°, 1 is 180°).\n\nThe practical task is to make the servo rotate smoothly from 0 to 90°, reflecting a temperature change from 20°C to 50°C.\n\nYou can actually do this using a few math nodes, but we have a special node for such cases. This node is called the `map-range` node.\n\n## Instructions\n\n1. Connect a TMP36 thermometer to the Arduino as shown on the [scheme](https://xod.io/docs/tutorial/13-map/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_13).\n\n2. Link the `Tc` pin to the `X` pin on the `map-range` node.\n\n3. Define the input range. In our case, it will be numbers from 20 to 50. Open the Inspector for the `map-range`, and then set `Smin` to 20 and `Smax` to 50.\n\n4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.\n\n5. Link the `Xm` output to the `VAL` servo input.\n\nTry to heat the thermometer with a hot object (e.g. a paper knife heaten with a lightfire). At a temperature of 35°C (half the input range), the servo should rotate to 45°, which is half the output range.",
+          "content": "If you have finished the previous experiment, you will have noticed that the thermometer node returns an output temperature value to the `Tc` pin in degrees Celsius. The `servo` node can work only with values ranging from 0 to 1 (0 is 0°, 1 is 180°).\n\nThe practical task is to make the servo rotate smoothly from 0 to 90°, reflecting a temperature change from 20°C to 50°C.\n\nYou can actually do this using a few math nodes, but we have a special node for such cases. This node is called the `map` node.\n\n## Instructions\n\n1. Connect a TMP36 thermometer to the Arduino as shown on the [scheme](https://xod.io/docs/tutorial/13-map/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_13).\n\n2. Link the `Tc` pin to the `X` pin on the `map` node.\n\n3. Define the input range. In our case, it will be numbers from 20 to 50. Open the Inspector for the `map`, and then set `Smin` to 20 and `Smax` to 50.\n\n4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.\n\n5. Link the `Xm` output to the `VAL` servo input.\n\nTry to heat the thermometer with a hot object (e.g. a paper knife heaten with a lightfire). At a temperature of 35°C (half the input range), the servo should rotate to 45°, which is half the output range.",
           "id": "rJ1d3KptZ",
           "position": {
             "x": -34,
@@ -654,7 +654,7 @@
             "x": 306,
             "y": 102
           },
-          "type": "xod/core/map-range"
+          "type": "xod/math/map"
         },
         "rkK3_PEYb": {
           "boundLiterals": {
@@ -673,7 +673,7 @@
     "@/14-map-adjust": {
       "comments": {
         "r1WPI5CKb": {
-          "content": "The `map-range` node will now linearly map the 20–50°C range to 0–90°.Let’s raise the sensitivity. Say, we want to map 15–30°C to 0–90° rotation.\n\nHowever, what will happen if the `X` pin of the `map-range` receives data that\nis outside the input range (10 or 42, for example)? The output value which is\na servo angle will fall outside the desired range too.\n\nFor such cases there is a sibling node called `map-clip-range`. It works the\nsame way, but any input that is out of range will be rounded to `Smin` or\n`Smax`.  Thus, if `X` receives a value of 10, the `map-clip-range` node will accept it as 15, and 42 will be accepted as 30.\n\n## Instructions\n\n1. Replace the `map-range` node with a `map-clip-range` node. They both are located in `xod/core`.\n\n2. Set the input range (`Smin` and `Smax`) to 15–30.\n\n3. Set the output range (`Tmin` and `Tmax`) to 0–0.5.\n\n4. (Optional) If you prefer °F, you can easily translate the data from the thermometer with the `c-to-f` node from `xod/units`. The range will be 59–95°F.\n\n5. Upload.\n\nNow the servo is more sensitive to the changes of the temperature sensor.",
+          "content": "The `map` node will now linearly map the 20–50°C range to 0–90°.Let’s raise the sensitivity. Say, we want to map 15–30°C to 0–90° rotation.\n\nHowever, what will happen if the `X` pin of the `map` receives data that\nis outside the input range (10 or 42, for example)? The output value which is\na servo angle will fall outside the desired range too.\n\nFor such cases there is a sibling node called `map-clip`. It works the\nsame way, but any input that is out of range will be rounded to `Smin` or\n`Smax`.  Thus, if `X` receives a value of 10, the `map-clip` node will accept it as 15, and 42 will be accepted as 30.\n\n## Instructions\n\n1. Replace the `map` node with a `map-clip` node. They both are located in `xod/math`.\n\n2. Set the input range (`Smin` and `Smax`) to 15–30.\n\n3. Set the output range (`Tmin` and `Tmax`) to 0–0.5.\n\n4. (Optional) If you prefer °F, you can easily translate the data from the thermometer with the `c-to-f` node from `xod/units`. The range will be 59–95°F.\n\n5. Upload.\n\nNow the servo is more sensitive to the changes of the temperature sensor.",
           "id": "r1WPI5CKb",
           "position": {
             "x": -68,
@@ -743,7 +743,7 @@
             "x": 272,
             "y": 102
           },
-          "type": "xod/core/map-range"
+          "type": "xod/math/map"
         }
       },
       "path": "@/14-map-adjust"
@@ -1634,7 +1634,7 @@
           }
         },
         "S14Ht0S9b": {
-          "content": "The `flip-flop` node changes the state on the `MEM` pin from 0 to 1 every 30 seconds. Fortunately, the boolean and number data types are compatible with each other — `true` and `false` are automatically converted to `1` and `0` for the `map-range` `X` input\n",
+          "content": "The `flip-flop` node changes the state on the `MEM` pin from 0 to 1 every 30 seconds. Fortunately, the boolean and number data types are compatible with each other — `true` and `false` are automatically converted to `1` and `0` for the `map` `X` input\n",
           "id": "S14Ht0S9b",
           "position": {
             "x": 510,
@@ -1658,7 +1658,7 @@
           }
         },
         "r1VItCB9b": {
-          "content": "The `map-range` node is used to set the rotation angle of the servo for one send from `count`.",
+          "content": "The `map` node is used to set the rotation angle of the servo for one send from `count`.",
           "id": "r1VItCB9b",
           "position": {
             "x": 578,
@@ -1670,7 +1670,7 @@
           }
         },
         "ry1duHkZM": {
-          "content": "By using multiple independent pulse signals, we can create complex programs to control our devices. Here, we use two clock nodes to rotate the servo in one direction and then the other.\n\nThis patch is a little bigger than what we've seen so far. A good rule of thumb in XOD is to *read the patch from the bottom up*. That way you can see the cause and effect relationship created by the flow of the patch. First, you see the result and then what caused it!\n\nPay close attention to the `map-range` node. Instead of using it in the standard manner, we are simply using it to flip the sign of the output value.\n\n## Instructions\n\n1. Assemble the [servo drive circuit](https://xod.io/docs/tutorial/25-multiple-timelines/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_25).\n2. Upload the patch to the Arduino.\n\nThe servo should now start ticking in one direction for 30 seconds and then in the other direction for 30 seconds.",
+          "content": "By using multiple independent pulse signals, we can create complex programs to control our devices. Here, we use two clock nodes to rotate the servo in one direction and then the other.\n\nThis patch is a little bigger than what we've seen so far. A good rule of thumb in XOD is to *read the patch from the bottom up*. That way you can see the cause and effect relationship created by the flow of the patch. First, you see the result and then what caused it!\n\nPay close attention to the `map` node. Instead of using it in the standard manner, we are simply using it to flip the sign of the output value.\n\n## Instructions\n\n1. Assemble the [servo drive circuit](https://xod.io/docs/tutorial/25-multiple-timelines/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_25).\n2. Upload the patch to the Arduino.\n\nThe servo should now start ticking in one direction for 30 seconds and then in the other direction for 30 seconds.",
           "id": "ry1duHkZM",
           "position": {
             "x": 34,
@@ -1751,7 +1751,7 @@
             "x": 374,
             "y": 204
           },
-          "type": "xod/core/map-range"
+          "type": "xod/math/map"
         },
         "H1p5Y7E9-": {
           "id": "H1p5Y7E9-",
@@ -2105,7 +2105,7 @@
             "x": 170,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "BJq6nPwHz": {
           "id": "BJq6nPwHz",
@@ -2113,7 +2113,7 @@
             "x": 272,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "ByP63PPHf": {
           "id": "ByP63PPHf",
@@ -2121,7 +2121,7 @@
             "x": 204,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "H1D22DDBf": {
           "id": "H1D22DDBf",
@@ -2129,7 +2129,7 @@
             "x": 136,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "HySThPDBM": {
           "id": "HySThPDBM",
@@ -2137,7 +2137,7 @@
             "x": 238,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "SJpThvwSf": {
           "id": "SJpThvwSf",
@@ -2145,7 +2145,7 @@
             "x": 306,
             "y": 510
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "Sy6n2DvHM": {
           "id": "Sy6n2DvHM",
@@ -2153,7 +2153,7 @@
             "x": 374,
             "y": 408
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "r1AmpwvHf": {
           "id": "r1AmpwvHf",
@@ -2169,7 +2169,7 @@
             "x": 68,
             "y": 408
           },
-          "type": "xod/core/ceil"
+          "type": "xod/math/ceil"
         },
         "rJnXTwvSM": {
           "id": "rJnXTwvSM",

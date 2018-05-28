@@ -2,6 +2,15 @@
   "description": "Computes the power of `BASE` raised to the power exponent `EXP`",
   "nodes": [
     {
+      "description": "Use `xod/math/pow` instead",
+      "id": "B1Ml4jY1Q",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "BkC5cn2LW",
       "label": "EXP",
       "position": {

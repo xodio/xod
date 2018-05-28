@@ -1,0 +1,29 @@
+{
+  "description": "Computes logarithm of a number to base 10.",
+  "nodes": [
+    {
+      "id": "H1g7mXQ7yf",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HkQQXQ7kf",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1-mQXQmkf",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

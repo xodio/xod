@@ -44,7 +44,7 @@
         "x": 170,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "BJq6nPwHz",
@@ -52,7 +52,7 @@
         "x": 272,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "ByP63PPHf",
@@ -60,7 +60,7 @@
         "x": 204,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "H1D22DDBf",
@@ -68,7 +68,7 @@
         "x": 136,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "HySThPDBM",
@@ -76,7 +76,7 @@
         "x": 238,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "SJpThvwSf",
@@ -84,7 +84,7 @@
         "x": 306,
         "y": 510
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "Sy6n2DvHM",
@@ -92,7 +92,7 @@
         "x": 374,
         "y": 408
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "r1AmpwvHf",
@@ -108,7 +108,7 @@
         "x": 68,
         "y": 408
       },
-      "type": "xod/core/ceil"
+      "type": "xod/math/ceil"
     },
     {
       "id": "rJnXTwvSM",

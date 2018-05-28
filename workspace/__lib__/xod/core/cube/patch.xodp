@@ -10,6 +10,15 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod/math/cube` instead",
+      "id": "BJiFfoK17",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "BkRma33U-",
       "position": {
         "x": 10,

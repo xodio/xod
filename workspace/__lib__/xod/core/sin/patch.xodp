@@ -26,6 +26,15 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Use `xod/math/sin` instead",
+      "id": "rJIPEjtJQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

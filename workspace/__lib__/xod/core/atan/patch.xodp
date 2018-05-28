@@ -2,6 +2,15 @@
   "description": "Calculates arc tangent.",
   "nodes": [
     {
+      "description": "Use `xod/math/atan` instead",
+      "id": "B1nd-sKyX",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Input tangent value",
       "id": "B1sgpxRLW",
       "position": {

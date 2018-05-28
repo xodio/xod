@@ -13,6 +13,15 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod/math/abs` instead",
+      "id": "ByrwboYym",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "H1SVIAuBDJZ",
       "position": {
         "x": 102,

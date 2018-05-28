@@ -1,0 +1,112 @@
+{
+  "description": "Computes logarithm of `X` to base `B`.",
+  "links": [
+    {
+      "id": "H13uQQX1M",
+      "input": {
+        "nodeId": "Sy7_XQmkG",
+        "pinKey": "rJ_-QmmJz"
+      },
+      "output": {
+        "nodeId": "BygImmmkG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HknKQmXkM",
+      "input": {
+        "nodeId": "rJcFmQQ1G",
+        "pinKey": "rJ_-QmmJz"
+      },
+      "output": {
+        "nodeId": "S16BQmmkG",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJR57X7yG",
+      "input": {
+        "nodeId": "Skc977QJM",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "rJcFmQQ1G",
+        "pinKey": "rk6bX7Q1M"
+      }
+    },
+    {
+      "id": "rJaqQm71M",
+      "input": {
+        "nodeId": "Skc977QJM",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "Sy7_XQmkG",
+        "pinKey": "rk6bX7Q1M"
+      }
+    },
+    {
+      "id": "rkgsQ7mkf",
+      "input": {
+        "nodeId": "BJlTr7Qmyz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Skc977QJM",
+        "pinKey": "BkqLCOSw1W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJlTr7Qmyz",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BygImmmkG",
+      "label": "X",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S16BQmmkG",
+      "label": "B",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Skc977QJM",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/divide"
+    },
+    {
+      "id": "Sy7_XQmkG",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/log-e"
+    },
+    {
+      "id": "rJcFmQQ1G",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/log-e"
+    }
+  ]
+}

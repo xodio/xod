@@ -27,6 +27,15 @@
         "y": 224
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Use `xod/math/asin` instead",
+      "id": "S1uu-sY1m",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

@@ -35,6 +35,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/math/map` instead",
+      "id": "S1L1QiKk7",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "noNativeImpl",
       "position": {
         "x": 100,

@@ -24,6 +24,15 @@
         "y": 101
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Use `xod/math/log-10` instead",
+      "id": "rJwpfsYkX",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

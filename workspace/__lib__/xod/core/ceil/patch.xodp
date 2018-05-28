@@ -27,6 +27,15 @@
         "y": 100
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Use `xod/math/ceil` instead",
+      "id": "rke7YZjK1X",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

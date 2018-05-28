@@ -26,6 +26,15 @@
       "type": "@/constant-number"
     },
     {
+      "description": "Use `xod/math/pi` instead",
+      "id": "HkUk4oKJ7",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "rJpy6in8-",
       "position": {
         "x": 10,

@@ -1,0 +1,32 @@
+{
+  "description": "Rounds a number to a minimal integer that is greater than the number",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "id": "BkdbLAuSPyZ",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "H1v-80uHDyZ",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

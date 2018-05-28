@@ -161,6 +161,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/math/map-clip` instead",
+      "id": "r10CMiKyX",
+      "position": {
+        "x": 374,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "The resulting mapped and clipped value of `X`.",
       "id": "rJFmgJehW",
       "label": "Xmc",
