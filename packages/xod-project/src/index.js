@@ -58,6 +58,7 @@ export {
   getArityStepFromPatch,
   isVariadicPatch,
   isAbstractPatch,
+  isGenuinePatch,
   isPatchNotImplementedInXod,
   doesPatchHaveGenericPins,
   validateAbstractPatch,
