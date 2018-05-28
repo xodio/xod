@@ -58,7 +58,7 @@
         },
         "HkWRBRxigf": {
           "id": "HkWRBRxigf",
-          "type": "xod/core/map-range",
+          "type": "xod/math/map",
           "position": {
             "x": 68,
             "y": 306
