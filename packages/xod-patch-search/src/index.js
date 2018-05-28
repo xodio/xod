@@ -149,6 +149,23 @@ const filterSpecializationNodes = R.curry((query, idx) =>
   )(query)
 );
 
+const filterNodesByLib = R.curry((query, idx) =>
+  R.ifElse(
+    R.startsWith('lib:'),
+    R.compose(
+      libName =>
+        R.filter(R.compose(R.contains(libName), R.path(['item', 'lib'])), idx),
+      // TODO: Remove `R.join` after updating on newer Ramda (>0.24.1)
+      //       cause it will work fine with strings
+      //       Can not update now on 0.25.0, cause it have performance issues
+      R.join(''),
+      R.takeWhile(x => x !== ' '),
+      R.drop(4)
+    ),
+    R.always(idx)
+  )(query)
+);
+
 // :: String -> String
 const takeQueryWithoutBrackets = R.compose(R.nth(0), R.split('('));
 
@@ -161,6 +178,7 @@ export const createIndex = data => {
       R.compose(
         reduceResults,
         filterSpecializationNodes(query),
+        filterNodesByLib(query),
         refineScore(query),
         idx.search.bind(idx),
         takeQueryWithoutBrackets
