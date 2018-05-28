@@ -1,0 +1,41 @@
+{
+  "description": "Converts number to a 16-bit signed integer presented as 2 bytes. An input for the the conversion should be between -32768.00 and 32767.00.",
+  "nodes": [
+    {
+      "id": "H1pA-5-1Q",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyeaAWqZ1m",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "S1-yMqZyX",
+      "label": "B0",
+      "position": {
+        "x": 33,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "rk-pCZq-y7",
+      "label": "B1",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}

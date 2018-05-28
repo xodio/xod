@@ -1,0 +1,41 @@
+{
+  "description": "Converts 16-bit unsigned integer presented as two bytes to a number. A result of the conversion will be between 0.00 and 65535.00.",
+  "nodes": [
+    {
+      "id": "B1-bx4ubkX",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "SyeZeEuWkX",
+      "label": "B1",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rJWx4db1X",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "rkGbgVdWJm",
+      "label": "B0",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

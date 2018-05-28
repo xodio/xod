@@ -1,0 +1,59 @@
+{
+  "description": "Converts number to a 32-bit signed integer presented as 4 bytes. An input for the the conversion should be between -2147483600.00 and 2147483600.00.",
+  "nodes": [
+    {
+      "id": "BJ7LVmsW17",
+      "label": "B2",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "ByU47iWJ7",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJMINQjbyQ",
+      "label": "B1",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "HkEL4XsWkX",
+      "label": "B3",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "SyWIVQjWJ7",
+      "label": "B0",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rkgLVmsWJm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
