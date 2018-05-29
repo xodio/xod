@@ -131,6 +131,19 @@ export default {
     } linked`,
   }),
 
+  // Constructor patches
+  CONSTRUCTOR_PATCH_CANT_HAVE_GENERIC_PINS: ({ trace }) => ({
+    title: 'Invalid constructor patch',
+    note: "Constructor patches can't have generic pins",
+    trace,
+  }),
+  CONSTRUCTOR_PATCH_MUST_BE_NIIX: ({ trace }) => ({
+    title: 'Invalid constructor patch',
+    note: 'Constructor patches must be implemented in C++',
+    solution: 'Add a not-implemented-in-xod node and provide an implementation',
+    trace,
+  }),
+
   // Variadics
   NO_VARIADIC_MARKERS: ({ trace }) => ({
     title: "Can't compute variadic pins",
@@ -178,10 +191,6 @@ export default {
   ABSTRACT_AS_ENTRY_POINT: ({ patchPath }) => ({
     title: "Can't transpile selected Patch",
     note: `Can’t use abstract patch "${patchPath}" as entry point`,
-  }),
-  CAST_PATCH_NOT_FOUND: ({ patchPath }) => ({
-    title: 'Cast patch not found',
-    note: `Casting patch "${patchPath}" is not found in the project`,
   }),
   ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH: ({ patchPath }) => ({
     title: 'Entry point patch not found',

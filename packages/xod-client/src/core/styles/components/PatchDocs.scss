@@ -36,6 +36,7 @@ $PinInfo-padding-bottom: 10px;
       font-family: $font-family-normal;
       font-size: $font-size-m;
       font-weight: 700;
+      color: $color-datatype-custom;
 
       &.boolean { color: $color-datatype-boolean }
       &.pulse { color: $color-datatype-pulse }

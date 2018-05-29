@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isValidPatchBasename, PATCH_BASENAME_RULES } from 'xod-project';
+import {
+  isValidUserDefinedPatchBasename,
+  PATCH_BASENAME_RULES,
+} from 'xod-project';
 import { POPUP_ID } from '../../popups/constants';
 import { isPopupVisible } from '../../popups/selectors';
 
@@ -41,7 +44,7 @@ class ProjectBrowserPopups extends React.PureComponent {
         onConfirm={this.props.onPatchCreate}
         onClose={this.props.onCloseAllPopups}
         inputMask={patchBasenameMask}
-        inputValidator={isValidPatchBasename}
+        inputValidator={isValidUserDefinedPatchBasename}
         helpText={PATCH_BASENAME_RULES}
       >
         Type the name for new patch:
@@ -60,7 +63,7 @@ class ProjectBrowserPopups extends React.PureComponent {
         onConfirm={this.onPatchRenameConfirmed}
         onClose={this.props.onCloseAllPopups}
         inputMask={patchBasenameMask}
-        inputValidator={isValidPatchBasename}
+        inputValidator={isValidUserDefinedPatchBasename}
         helpText={PATCH_BASENAME_RULES}
       >
         Type new name for patch &laquo;{selectedPatchName}&raquo;:

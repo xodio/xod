@@ -117,7 +117,7 @@ export const redoPatch = patchPath => ({
 });
 
 export const addPatch = baseName => (dispatch, getState) => {
-  if (!XP.isValidPatchBasename(baseName)) {
+  if (!XP.isValidUserDefinedPatchBasename(baseName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
   }
 
@@ -140,7 +140,7 @@ export const renamePatch = (oldPatchPath, newBaseName) => (
   dispatch,
   getState
 ) => {
-  if (!XP.isValidPatchBasename(newBaseName)) {
+  if (!XP.isValidUserDefinedPatchBasename(newBaseName)) {
     return dispatch(addError(PROJECT_BROWSER_ERRORS.INVALID_PATCH_NAME));
   }
 

@@ -24,6 +24,7 @@
     &.byte { stroke: $color-datatype-byte; }
     &.port, &.port-analog { stroke: $color-datatype-port; }
     &.dead { stroke: $color-datatype-dead; }
+    &.self, &.custom { stroke: $color-datatype-custom; }
   }
 
   &.is-errored {

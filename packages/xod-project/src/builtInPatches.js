@@ -7,6 +7,7 @@ import {
   PIN_DIRECTION as DIRECTION,
   OPPOSITE_DIRECTION,
   TERMINAL_PIN_KEYS,
+  OUTPUT_SELF_PATH,
   NOT_IMPLEMENTED_IN_XOD_PATH,
   ABSTRACT_MARKER_PATH,
   DEPRECATED_MARKER_PATH,
@@ -19,7 +20,11 @@ import {
   getTerminalPath,
   getInternalTerminalPath,
   getVariadicPath,
+  getTerminalDataType,
+  getTerminalDirection,
 } from './patchPathUtils';
+
+import { isBuiltInType } from './utils';
 
 /**
  * Input terminal patches have output pins, and vice versa:
@@ -44,14 +49,21 @@ const getTerminalPins = R.curry((direction, type) => {
     0, // order
     label,
     '', // description
-    true, // bindable? terminal's pins are always bindable
-    DEFAULT_VALUE_OF_TYPE[type]
+    // bindable? terminal's pins are always bindable for built-in types
+    isBuiltInType(type),
+    R.propOr('', type, DEFAULT_VALUE_OF_TYPE)
   );
 
   return R.objOf(pinKey, pin);
 });
 
+export const getCustomTypeTerminalPins = R.converge(getTerminalPins, [
+  getTerminalDirection,
+  getTerminalDataType,
+]);
+
 const BUILT_IN_MARKERS = [
+  OUTPUT_SELF_PATH,
   NOT_IMPLEMENTED_IN_XOD_PATH,
   ABSTRACT_MARKER_PATH,
   DEPRECATED_MARKER_PATH,

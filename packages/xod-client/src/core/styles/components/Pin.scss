@@ -21,11 +21,15 @@
 .Pin {
   .symbol {
     fill: $color-pin-fill;
-    stroke: $color-datatype-generic;
+    stroke: $color-datatype-custom;
     stroke-width: 2px;
 
+    &.t1, &.t2, &.t3 {
+      @include symbol-coloring($color-datatype-generic);
+    }
+
     &.is-connected {
-      fill: $color-datatype-generic;
+      fill: $color-datatype-custom;
     }
 
     &.hasConflictingBoundValue {

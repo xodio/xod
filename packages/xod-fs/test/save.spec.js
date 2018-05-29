@@ -115,12 +115,12 @@ describe('Save project and libraries', () => {
   });
 
   const firstChanges = calculateDiff(
-    XP.listPatchesWithoutBuiltIns(emptyProject),
-    XP.listPatchesWithoutBuiltIns(firstProject)
+    XP.listGenuinePatches(emptyProject),
+    XP.listGenuinePatches(firstProject)
   );
   const secondChanges = calculateDiff(
-    XP.listPatchesWithoutBuiltIns(firstProject),
-    XP.listPatchesWithoutBuiltIns(secondProject)
+    XP.listGenuinePatches(firstProject),
+    XP.listGenuinePatches(secondProject)
   );
 
   const assertPathExists = (...pathParts) =>

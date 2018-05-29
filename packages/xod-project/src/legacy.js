@@ -156,6 +156,6 @@ export const migrateBoundValuesToBoundLiterals = def(
           )(patch),
         project
       ),
-      Project.listPatchesWithoutBuiltIns
+      Project.listGenuinePatches
     )(project)
 );

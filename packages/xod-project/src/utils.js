@@ -76,18 +76,25 @@ export const isGenericType = R.test(/^t[1-3]$/);
  */
 export const defaultValueOfType = def(
   'defaultValueOfType :: DataType -> DataValue',
-  R.flip(R.prop)(CONST.DEFAULT_VALUE_OF_TYPE)
+  R.flip(R.propOr(''))(CONST.DEFAULT_VALUE_OF_TYPE)
 );
 
 export const canCastTypes = def(
   'canCastTypes :: DataType -> DataType -> Boolean',
   (from, to) => {
+    if (from === to) return true;
+
     if (isGenericType(from) || isGenericType(to)) {
       return true;
     }
 
     return R.pathOr(false, [from, to], CONST.STATIC_TYPES_COMPATIBILITY);
   }
+);
+
+export const isBuiltInType = def(
+  'isBuiltInType :: String -> Boolean',
+  isAmong(R.values(CONST.PIN_TYPE))
 );
 
 // =============================================================================

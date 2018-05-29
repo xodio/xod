@@ -87,7 +87,6 @@ describe('extractBoundInputsToConstNodes', () => {
     const project = R.clone(testProject);
 
     const newProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );
@@ -112,7 +111,6 @@ describe('extractBoundInputsToConstNodes', () => {
     const project = R.clone(testProject);
 
     const newProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );
@@ -167,7 +165,6 @@ describe('extractBoundInputsToConstNodes', () => {
       });
 
       const transformedProject = XP.extractBoundInputsToConstNodes(
-        project,
         mainPatchPath,
         project
       );
@@ -269,7 +266,7 @@ describe('extractBoundInputsToConstNodes', () => {
     false
   );
 
-  it('discards any other values bound to pulse pins', () => {
+  it("ignores 'Never' values bound to pulse pins", () => {
     const boundValue = XP.INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER;
     const boundPinKey = getInputPinKey(XP.PIN_TYPE.PULSE);
     const testNodeId = 'test-node';
@@ -291,7 +288,6 @@ describe('extractBoundInputsToConstNodes', () => {
     });
 
     const transformedProject = XP.extractBoundInputsToConstNodes(
-      project,
       mainPatchPath,
       project
     );
@@ -305,18 +301,83 @@ describe('extractBoundInputsToConstNodes', () => {
       'constant nodes with default pin values must be created'
     );
 
-    const testNode = nodesByNodeType[testPatchPath];
-
-    assert.isTrue(
-      XP.getBoundValue(boundPinKey, testNode).isNothing,
-      `bound value for ${boundPinKey} must be deleted from test node`
+    const maybeBoundValue = XP.getBoundValue(
+      boundPinKey,
+      nodesByNodeType[testPatchPath]
     );
+    assert(maybeBoundValue.isJust);
+    assert.equal(maybeBoundValue.getOrElse(undefined), boundValue);
 
     const links = XP.listLinks(patch);
     assert.lengthOf(
       links,
       6,
       'links from constant nodes with default pin values must be created'
+    );
+  });
+
+  it('creates constructors for unbound custom types', () => {
+    const projectWithCustomTypes = Helper.defaultizeProject({
+      patches: R.merge(constantPatches, {
+        // custom type constructor that takes a primitive type as a parameter
+        'someone/lib/custom': {
+          nodes: {
+            inNumber: {
+              type: XP.getTerminalPath(
+                XP.PIN_DIRECTION.INPUT,
+                XP.PIN_TYPE.NUMBER
+              ),
+            },
+            outSelf: { type: XP.OUTPUT_SELF_PATH },
+          },
+        },
+        // custom type constructor that takes other custom type a parameter
+        '@/my-custom': {
+          nodes: {
+            inCustom: { type: 'someone/lib/input-custom' },
+            outSelf: { type: XP.OUTPUT_SELF_PATH },
+          },
+        },
+        // a node that uses our complex custom type
+        '@/test-node': {
+          nodes: {
+            inPairOfCustoms: { type: '@/input-my-custom' },
+          },
+        },
+        '@/main': {
+          nodes: {
+            testNode: {
+              type: '@/test-node',
+            },
+          },
+        },
+      }),
+    });
+
+    const transformedProject = XP.extractBoundInputsToConstNodes(
+      '@/main',
+      projectWithCustomTypes
+    );
+
+    const transformedPatch = XP.getPatchByPathUnsafe(
+      '@/main',
+      transformedProject
+    );
+
+    assert.lengthOf(
+      XP.listLinks(transformedPatch),
+      // between @/test-node, @/my-custom, someone/lib/custom and constant-number
+      3
+    );
+
+    assert.sameMembers(
+      R.compose(R.map(XP.getNodeType), XP.listNodes)(transformedPatch),
+      [
+        '@/test-node',
+        '@/my-custom',
+        'someone/lib/custom',
+        'xod/core/constant-number',
+      ]
     );
   });
 });

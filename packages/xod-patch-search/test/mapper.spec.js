@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { listPatchesWithoutBuiltIns } from 'xod-project';
+import { listGenuinePatches } from 'xod-project';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
 import createPatchIndexData from '../src/mapper';
@@ -34,7 +34,7 @@ describe('xod-patch-search/mapper', () => {
   const project = defaultizeProject(fixture);
 
   it('returns a correct index data', () => {
-    const patches = listPatchesWithoutBuiltIns(project);
+    const patches = listGenuinePatches(project);
     const indexData = createPatchIndexData(patches);
 
     assert.lengthOf(indexData, 3);

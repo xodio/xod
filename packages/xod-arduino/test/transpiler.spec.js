@@ -5,14 +5,7 @@ import { assert } from 'chai';
 
 import { explode, foldEither, explodeEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
-import {
-  transpile,
-  transformProject,
-  getNodeIdsMap,
-  forUnitTests,
-} from '../src/transpiler';
-
-const { createPatchNames } = forUnitTests;
+import { transpile, transformProject, getNodeIdsMap } from '../src/transpiler';
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) =>
@@ -59,7 +52,7 @@ describe('xod-arduino transpiler', () => {
       .then(
         foldEither(
           err => {
-            assert.include(err.message, 'too_many_outputs');
+            assert.include(err.message, '@/too-many-outputs');
             assert.include(err.message, 'has more than 7 outputs');
           },
           () => assert(false, 'expecting Either.Left')
@@ -72,17 +65,17 @@ describe('xod-arduino transpiler', () => {
         R.pipe(transformProject(R.__, '@/main'), explodeEither, R.prop('nodes'))
       )
       .then(nodes => {
-        const patchNames = R.compose(R.pluck('patchName'), R.pluck('patch'))(
+        const patchPaths = R.compose(R.pluck('patchPath'), R.pluck('patch'))(
           nodes
         );
 
-        assert.deepEqual(patchNames, [
-          'constant_number', // IVAL
-          'constant_boolean', // EN
-          'constant_number', // PORT
-          'clock',
-          'flip_flop',
-          'digital_output',
+        assert.deepEqual(patchPaths, [
+          'xod/core/constant-number', // IVAL
+          'xod/core/constant-boolean', // EN
+          'xod/core/constant-number', // PORT
+          'xod/core/clock',
+          'xod/core/flip-flop',
+          'xod/core/digital-output',
         ]);
 
         const ids = R.pluck('id', nodes);
@@ -113,23 +106,5 @@ describe('getNodeIdsMap', () => {
           expected
         )
       );
-  });
-});
-
-describe('createPatchNames()', () => {
-  it('correctly splits library patch paths', () => {
-    assert.deepEqual(createPatchNames('bob-alice/bar-baz/qux-digun'), {
-      owner: 'bob_alice',
-      libName: 'bar_baz',
-      patchName: 'qux_digun',
-    });
-  });
-
-  it('correctly splits local patch paths', () => {
-    assert.deepEqual(createPatchNames('@/qux-bar'), {
-      owner: '',
-      libName: '',
-      patchName: 'qux_bar',
-    });
   });
 });

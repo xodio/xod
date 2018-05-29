@@ -685,26 +685,21 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
-// xod/common_hardware/text_lcd_16x2 implementation
+// xod/core/cast-to-pulse(boolean) implementation
 //-----------------------------------------------------------------------------
-namespace xod__common_hardware__text_lcd_16x2 {
+namespace xod__core__cast_to_pulse__boolean {
 
-// --- Enter global namespace ---
-}}
-#include <LiquidCrystal.h>
-
-namespace xod {
-namespace xod__common_hardware__text_lcd_16x2 {
-// --- Back to local namespace ---
 struct State {
-    LiquidCrystal* lcd;
+  bool state = false;
 };
 
 struct Node {
     State state;
+    Logic output_OUT;
 
     union {
         struct {
+            bool isOutputDirty_OUT : 1;
             bool isNodeDirty : 1;
         };
 
@@ -712,36 +707,17 @@ struct Node {
     };
 };
 
-struct input_RS { };
-struct input_EN { };
-struct input_D4 { };
-struct input_D5 { };
-struct input_D6 { };
-struct input_D7 { };
-struct input_L1 { };
-struct input_L2 { };
+struct input_IN { };
+struct output_OUT { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_RS> { using T = Number; };
-template<> struct ValueType<input_EN> { using T = Number; };
-template<> struct ValueType<input_D4> { using T = Number; };
-template<> struct ValueType<input_D5> { using T = Number; };
-template<> struct ValueType<input_D6> { using T = Number; };
-template<> struct ValueType<input_D7> { using T = Number; };
-template<> struct ValueType<input_L1> { using T = XString; };
-template<> struct ValueType<input_L2> { using T = XString; };
+template<> struct ValueType<input_IN> { using T = Logic; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_RS;
-    Number _input_EN;
-    Number _input_D4;
-    Number _input_D5;
-    Number _input_D6;
-    Number _input_D7;
-    XString _input_L1;
-    XString _input_L2;
+    Logic _input_IN;
 
 };
 
@@ -750,33 +726,15 @@ using Context = ContextObject*;
 template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
-            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2" \
-            "");
+            " input_IN" \
+            " output_OUT");
 }
 
-template<> Number getValue<input_RS>(Context ctx) {
-    return ctx->_input_RS;
+template<> Logic getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
 }
-template<> Number getValue<input_EN>(Context ctx) {
-    return ctx->_input_EN;
-}
-template<> Number getValue<input_D4>(Context ctx) {
-    return ctx->_input_D4;
-}
-template<> Number getValue<input_D5>(Context ctx) {
-    return ctx->_input_D5;
-}
-template<> Number getValue<input_D6>(Context ctx) {
-    return ctx->_input_D6;
-}
-template<> Number getValue<input_D7>(Context ctx) {
-    return ctx->_input_D7;
-}
-template<> XString getValue<input_L1>(Context ctx) {
-    return ctx->_input_L1;
-}
-template<> XString getValue<input_L2>(Context ctx) {
-    return ctx->_input_L2;
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -789,44 +747,29 @@ template<typename InputT> bool isInputDirty(Context ctx) {
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            "");
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
+    ctx->_node->isOutputDirty_OUT = true;
 }
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
 }
 
-void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
-    lcd->setCursor(0, lineIndex);
-    uint8_t whitespace = 16;
-    for (auto it = str->iterate(); it; ++it, --whitespace)
-        lcd->write(*it);
-
-    // Clear the rest of the line
-    while (whitespace--)
-        lcd->write(' ');
-}
-
 void evaluate(Context ctx) {
     State* state = getState(ctx);
-    auto lcd = state->lcd;
-    if (!state->lcd) {
-        state->lcd = lcd = new LiquidCrystal(
-            (int)getValue<input_RS>(ctx),
-            (int)getValue<input_EN>(ctx),
-            (int)getValue<input_D4>(ctx),
-            (int)getValue<input_D5>(ctx),
-            (int)getValue<input_D6>(ctx),
-            (int)getValue<input_D7>(ctx));
+    auto newValue = getValue<input_IN>(ctx);
 
-        lcd->begin(16, 2);
-    }
+    if (newValue == true && state->state == false)
+        emitValue<output_OUT>(ctx, 1);
 
-    printLine(lcd, 0, getValue<input_L1>(ctx));
-    printLine(lcd, 1, getValue<input_L2>(ctx));
+    state->state = newValue;
 }
 
-} // namespace xod__common_hardware__text_lcd_16x2
+} // namespace xod__core__cast_to_pulse__boolean
 
 //-----------------------------------------------------------------------------
 // xod/core/clock implementation
@@ -1062,7 +1005,325 @@ void evaluate(Context ctx) {
 } // namespace xod__core__count
 
 //-----------------------------------------------------------------------------
-// xod/core/defer__boolean implementation
+// xod/core/greater implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__greater {
+
+#pragma XOD dirtieness disable
+
+struct State {
+};
+
+struct Node {
+    State state;
+    Logic output_OUT;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_IN1 { };
+struct input_IN2 { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN1> { using T = Number; };
+template<> struct ValueType<input_IN2> { using T = Number; };
+template<> struct ValueType<output_OUT> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_IN1;
+    Number _input_IN2;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN1 input_IN2" \
+            " output_OUT");
+}
+
+template<> Number getValue<input_IN1>(Context ctx) {
+    return ctx->_input_IN1;
+}
+template<> Number getValue<input_IN2>(Context ctx) {
+    return ctx->_input_IN2;
+}
+template<> Logic getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, Logic val) {
+    ctx->_node->output_OUT = val;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    auto lhs = getValue<input_IN1>(ctx);
+    auto rhs = getValue<input_IN2>(ctx);
+    emitValue<output_OUT>(ctx, lhs > rhs);
+}
+
+} // namespace xod__core__greater
+
+//-----------------------------------------------------------------------------
+// xod/core/cast-to-string(number) implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__cast_to_string__number {
+
+#pragma XOD dirtieness disable
+
+struct State {
+    char str[16];
+    CStringView view;
+    State() : view(str) { }
+};
+
+struct Node {
+    State state;
+    XString output_OUT;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_IN { };
+struct output_OUT { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_IN> { using T = Number; };
+template<> struct ValueType<output_OUT> { using T = XString; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_IN;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_IN" \
+            " output_OUT");
+}
+
+template<> Number getValue<input_IN>(Context ctx) {
+    return ctx->_input_IN;
+}
+template<> XString getValue<output_OUT>(Context ctx) {
+    return ctx->_node->output_OUT;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_OUT");
+}
+
+template<> void emitValue<output_OUT>(Context ctx, XString val) {
+    ctx->_node->output_OUT = val;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    auto state = getState(ctx);
+    auto num = getValue<input_IN>(ctx);
+    dtostrf(num, 0, 2, state->str);
+    emitValue<output_OUT>(ctx, XString(&state->view));
+}
+
+} // namespace xod__core__cast_to_string__number
+
+//-----------------------------------------------------------------------------
+// xod/common-hardware/text-lcd-16x2 implementation
+//-----------------------------------------------------------------------------
+namespace xod__common_hardware__text_lcd_16x2 {
+
+// --- Enter global namespace ---
+}}
+#include <LiquidCrystal.h>
+
+namespace xod {
+namespace xod__common_hardware__text_lcd_16x2 {
+// --- Back to local namespace ---
+struct State {
+    LiquidCrystal* lcd;
+};
+
+struct Node {
+    State state;
+
+    union {
+        struct {
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_RS { };
+struct input_EN { };
+struct input_D4 { };
+struct input_D5 { };
+struct input_D6 { };
+struct input_D7 { };
+struct input_L1 { };
+struct input_L2 { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_RS> { using T = Number; };
+template<> struct ValueType<input_EN> { using T = Number; };
+template<> struct ValueType<input_D4> { using T = Number; };
+template<> struct ValueType<input_D5> { using T = Number; };
+template<> struct ValueType<input_D6> { using T = Number; };
+template<> struct ValueType<input_D7> { using T = Number; };
+template<> struct ValueType<input_L1> { using T = XString; };
+template<> struct ValueType<input_L2> { using T = XString; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_RS;
+    Number _input_EN;
+    Number _input_D4;
+    Number _input_D5;
+    Number _input_D6;
+    Number _input_D7;
+    XString _input_L1;
+    XString _input_L2;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2" \
+            "");
+}
+
+template<> Number getValue<input_RS>(Context ctx) {
+    return ctx->_input_RS;
+}
+template<> Number getValue<input_EN>(Context ctx) {
+    return ctx->_input_EN;
+}
+template<> Number getValue<input_D4>(Context ctx) {
+    return ctx->_input_D4;
+}
+template<> Number getValue<input_D5>(Context ctx) {
+    return ctx->_input_D5;
+}
+template<> Number getValue<input_D6>(Context ctx) {
+    return ctx->_input_D6;
+}
+template<> Number getValue<input_D7>(Context ctx) {
+    return ctx->_input_D7;
+}
+template<> XString getValue<input_L1>(Context ctx) {
+    return ctx->_input_L1;
+}
+template<> XString getValue<input_L2>(Context ctx) {
+    return ctx->_input_L2;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "");
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
+    lcd->setCursor(0, lineIndex);
+    uint8_t whitespace = 16;
+    for (auto it = str->iterate(); it; ++it, --whitespace)
+        lcd->write(*it);
+
+    // Clear the rest of the line
+    while (whitespace--)
+        lcd->write(' ');
+}
+
+void evaluate(Context ctx) {
+    State* state = getState(ctx);
+    auto lcd = state->lcd;
+    if (!state->lcd) {
+        state->lcd = lcd = new LiquidCrystal(
+            (int)getValue<input_RS>(ctx),
+            (int)getValue<input_EN>(ctx),
+            (int)getValue<input_D4>(ctx),
+            (int)getValue<input_D5>(ctx),
+            (int)getValue<input_D6>(ctx),
+            (int)getValue<input_D7>(ctx));
+
+        lcd->begin(16, 2);
+    }
+
+    printLine(lcd, 0, getValue<input_L1>(ctx));
+    printLine(lcd, 1, getValue<input_L2>(ctx));
+}
+
+} // namespace xod__common_hardware__text_lcd_16x2
+
+//-----------------------------------------------------------------------------
+// xod/core/defer(boolean) implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__defer__boolean {
 
@@ -1155,267 +1416,6 @@ void evaluate(Context ctx) {
 }
 
 } // namespace xod__core__defer__boolean
-
-//-----------------------------------------------------------------------------
-// xod/core/greater implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__greater {
-
-#pragma XOD dirtieness disable
-
-struct State {
-};
-
-struct Node {
-    State state;
-    Logic output_OUT;
-
-    union {
-        struct {
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_IN1 { };
-struct input_IN2 { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN1> { using T = Number; };
-template<> struct ValueType<input_IN2> { using T = Number; };
-template<> struct ValueType<output_OUT> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_IN1;
-    Number _input_IN2;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN1 input_IN2" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_IN1>(Context ctx) {
-    return ctx->_input_IN1;
-}
-template<> Number getValue<input_IN2>(Context ctx) {
-    return ctx->_input_IN2;
-}
-template<> Logic getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Logic val) {
-    ctx->_node->output_OUT = val;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    auto lhs = getValue<input_IN1>(ctx);
-    auto rhs = getValue<input_IN2>(ctx);
-    emitValue<output_OUT>(ctx, lhs > rhs);
-}
-
-} // namespace xod__core__greater
-
-//-----------------------------------------------------------------------------
-// xod/core/cast_to_pulse__boolean implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__cast_to_pulse__boolean {
-
-struct State {
-  bool state = false;
-};
-
-struct Node {
-    State state;
-    Logic output_OUT;
-
-    union {
-        struct {
-            bool isOutputDirty_OUT : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Logic; };
-template<> struct ValueType<output_OUT> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-    Logic _input_IN;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Logic getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> Logic getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Logic val) {
-    ctx->_node->output_OUT = val;
-    ctx->_node->isOutputDirty_OUT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    auto newValue = getValue<input_IN>(ctx);
-
-    if (newValue == true && state->state == false)
-        emitValue<output_OUT>(ctx, 1);
-
-    state->state = newValue;
-}
-
-} // namespace xod__core__cast_to_pulse__boolean
-
-//-----------------------------------------------------------------------------
-// xod/core/cast_to_string__number implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__cast_to_string__number {
-
-#pragma XOD dirtieness disable
-
-struct State {
-    char str[16];
-    CStringView view;
-    State() : view(str) { }
-};
-
-struct Node {
-    State state;
-    XString output_OUT;
-
-    union {
-        struct {
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Number; };
-template<> struct ValueType<output_OUT> { using T = XString; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_IN;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> XString getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, XString val) {
-    ctx->_node->output_OUT = val;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    auto num = getValue<input_IN>(ctx);
-    dtostrf(num, 0, 2, state->str);
-    emitValue<output_OUT>(ctx, XString(&state->view));
-}
-
-} // namespace xod__core__cast_to_string__number
 
 } // namespace xod
 

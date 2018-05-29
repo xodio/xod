@@ -13,13 +13,13 @@ namespace xod {
 {{#each this}}
 {{#unless isConstant}}
 //-----------------------------------------------------------------------------
-// {{ owner }}/{{ libName }}/{{ patchName }} implementation
+// {{ patchPath }} implementation
 //-----------------------------------------------------------------------------
-namespace {{ owner }}__{{ libName }}__{{ patchName }} {
+namespace {{ns this }} {
 
 {{ implementation }}
 
-} // namespace {{ owner }}__{{ libName }}__{{ patchName }}
+} // namespace {{ns this }}
 
 {{/unless}}
 {{/each}}

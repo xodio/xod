@@ -22,3 +22,17 @@ export const enumerate = R.curry((separator, lastSeparator, items) => {
     R.join(lastSeparator)
   )(lastItems);
 });
+
+export const memoizeOnlyLast = f => {
+  let lastArg;
+  let result;
+
+  return arg => {
+    if (arg !== lastArg) {
+      result = f(arg);
+      lastArg = arg;
+    }
+
+    return result;
+  };
+};

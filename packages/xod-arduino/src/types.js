@@ -53,9 +53,7 @@ const TPatchInput = Model('TPatchInput', {
 });
 
 export const TPatch = Model('TPatch', {
-  owner: $.String,
-  libName: $.String,
-  patchName: $.String,
+  patchPath: $.String,
   isDefer: $.Boolean,
   isConstant: $.Boolean,
   usesTimeouts: $.Boolean,

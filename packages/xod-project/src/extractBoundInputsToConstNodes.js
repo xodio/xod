@@ -1,6 +1,6 @@
 import * as R from 'ramda';
-
-import { explodeEither, maybeProp, catMaybies } from 'xod-func-tools';
+import { Maybe } from 'ramda-fantasy';
+import { explodeEither, maybeProp, catMaybies, isAmong } from 'xod-func-tools';
 
 import * as Pin from './pin';
 import * as Node from './node';
@@ -8,16 +8,15 @@ import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
 import { ensureLiteral } from './legacy';
-import { PIN_TYPE, CONST_NODETYPES, PULSE_CONST_NODETYPES } from './constants';
+import {
+  PIN_TYPE,
+  CONST_NODETYPES,
+  PULSE_CONST_NODETYPES,
+  INPUT_PULSE_PIN_BINDING_OPTIONS,
+} from './constants';
 import squashSingleOutputNodes from './optimizers/squashSingleOutputNodes';
+import { isBuiltInType } from './utils';
 import { def } from './types';
-
-const CONST_PATCH_PATHS = R.compose(
-  R.reject(R.isNil),
-  R.uniq,
-  R.values,
-  R.merge
-)(CONST_NODETYPES, PULSE_CONST_NODETYPES);
 
 const getMapOfNodePinsWithLinks = def(
   'getMapOfNodePinsWithLinks :: [Node] -> [Link] -> Map NodeId [PinKey]',
@@ -57,6 +56,9 @@ const getNodePinValues = def(
     R.map(
       node =>
         R.compose(
+          // 'Never' is not extracted to a constant node.
+          // It literally menas "do nothing", so it's just ignored.
+          R.reject(R.equals(INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER)),
           R.merge(Node.getAllBoundValues(node)),
           R.map(Node.getBoundValueOrDefault(R.__, node)),
           R.indexBy(Pin.getPinKey),
@@ -87,7 +89,7 @@ const isCurriedInNodePin = def(
   'isCurriedInNodePin :: Map NodeId (Map PinKey DataValue) -> NodeId -> Pin -> Boolean',
   (nodePinValues, nodeId, pin) => {
     const pinKey = Pin.getPinKey(pin);
-    const nodePins = R.prop(nodeId, nodePinValues);
+    const nodePins = R.propOr({}, nodeId, nodePinValues);
     return R.has(pinKey, nodePins);
   }
 );
@@ -95,33 +97,40 @@ const isCurriedInNodePin = def(
 const getMapOfNodePinTypes = def(
   'getMapOfNodePinTypes :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey DataType)',
   (mapOfNodePinValues, curriedNodes, project) =>
-    R.mapObjIndexed(
-      (patchPath, nodeId) =>
+    R.compose(
+      R.mapObjIndexed((patchPath, nodeId) =>
         R.compose(
           R.map(Pin.getPinType),
           R.indexBy(Pin.getPinKey),
           R.filter(isCurriedInNodePin(mapOfNodePinValues, nodeId)),
           Patch.listPins,
           Project.getPatchByPathUnsafe
-        )(patchPath, project),
-      getMapOfNodeTypes(curriedNodes)
-    )
+        )(patchPath, project)
+      ),
+      getMapOfNodeTypes
+    )(curriedNodes)
 );
 
 const getMapOfExtractablePinPaths = def(
   'getMapOfExtractablePinPaths :: Map NodeId (Map PinKey DataValue) -> [Node] -> Project -> Map NodeId (Map PinKey PatchPath)',
   R.compose(
+    R.reject(R.isEmpty),
     R.map(catMaybies),
     R.map(
-      R.map(
-        ([pinType, pinValue]) =>
-          pinType === PIN_TYPE.PULSE
-            ? R.compose(
-                R.chain(maybeProp(R.__, PULSE_CONST_NODETYPES)),
-                ensureLiteral
-              )(pinType, pinValue)
-            : maybeProp(pinType, CONST_NODETYPES)
-      )
+      R.map(([pinType, pinValue]) => {
+        if (!isBuiltInType(pinType)) {
+          // for complex types, type name _is_ the name of constructor node
+          return Maybe.Just(pinType);
+        }
+
+        // type is a built-in primivive
+        return pinType === PIN_TYPE.PULSE
+          ? R.compose(
+              R.chain(maybeProp(R.__, PULSE_CONST_NODETYPES)),
+              ensureLiteral
+            )(pinType, pinValue)
+          : maybeProp(pinType, CONST_NODETYPES);
+      })
     ),
     R.converge(R.mergeWith(R.mergeWith(Array.of)), [
       getMapOfNodePinTypes,
@@ -139,12 +148,20 @@ const getMapOfPathsToPinKeys = def(
         R.compose(
           constPinKey => [constPath, constPinKey],
           Pin.getPinKey,
+          // TODO: add more logic here about 'output-self'?
           R.head,
           Patch.listOutputPins,
           Project.getPatchByPathUnsafe(R.__, project)
         )(constPath)
       )
     )(constantPaths)
+);
+
+// do not transfer bound values to 'pulse constants'
+// and constructors for custom types
+// :: PatchPath -> Boolean
+const doesConstNodeNeedBoundValue = R.compose(isAmong, R.values)(
+  CONST_NODETYPES
 );
 
 const createNodesWithBoundValues = def(
@@ -154,17 +171,16 @@ const createNodesWithBoundValues = def(
       (pinsData, nodeId) =>
         R.compose(
           R.mapObjIndexed((pinValue, pinKey) => {
-            const type = R.path([nodeId, pinKey], extractablePinPaths);
-            const constPinKey = R.prop(type, mapOfPinKeys);
+            const nodeType = R.path([nodeId, pinKey], extractablePinPaths);
+            const constPinKey = R.prop(nodeType, mapOfPinKeys);
 
             return R.compose(
-              R.unless(
-                R.always(R.equals(PIN_TYPE.PULSE, type)),
-                // do not transfer bound values to 'pulse constants'
+              R.when(
+                () => doesConstNodeNeedBoundValue(nodeType),
                 Node.setBoundValue(constPinKey, pinValue)
               ),
               Node.createNode({ x: 0, y: 0 })
-            )(type);
+            )(nodeType);
           }),
           R.pickBy((pinValue, pinKey) =>
             R.path([nodeId, pinKey], extractablePinPaths)
@@ -235,54 +251,12 @@ const updatePatch = def(
     )(patch)
 );
 
-const getPathsFromMapOfPinPaths = def(
-  'getPathsFromMapOfPinPaths :: Map NodeId (Map PinKey PatchPath) -> [PatchPath]',
-  R.compose(R.uniq, nestedValues)
-);
-
-const getPatchesFromProject = def(
-  'getPatchesFromProject :: [PatchPath] -> Project -> [Patch]',
-  (paths, project) =>
-    R.map(path => Project.getPatchByPathUnsafe(path, project), paths)
-);
-
-const getTuplesOfPatches = def(
-  'getTuplesOfPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> [Pair PatchPath Patch]',
-  (mapOfPinPaths, project) =>
-    R.compose(
-      R.converge(R.zip, [R.identity, getPatchesFromProject(R.__, project)]),
-      getPathsFromMapOfPinPaths
-    )(mapOfPinPaths)
-);
-
-const assocPatchesToProject = def(
-  'assocPatchesToProject :: [Pair PatchPath Patch] -> Project -> Project',
-  (patchPairs, project) =>
-    R.reduce(
-      (proj, pair) => explodeEither(Project.assocPatch(pair[0], pair[1], proj)),
-      project,
-      patchPairs
-    )
-);
-
-// :: { NodeId: { PinKey: PatchPath } } -> Project -> Project -> Project
-const copyConstPatches = def(
-  'copyConstPatches :: Map NodeId (Map PinKey PatchPath) -> Project -> Project -> Project',
-  (mapOfPinPaths, sourceProject, targetProject) =>
-    R.compose(assocPatchesToProject(R.__, targetProject), getTuplesOfPatches)(
-      mapOfPinPaths,
-      sourceProject
-    )
-);
-
-// It copies patches of needed const*TYPE* into flat project,
 // Replaces curried pins with new nodes with curried value (inValue)
 // And creates links from them
-// And returns updated flat project
 const extractBoundInputsToConstNodes = def(
-  'extractBoundInputsToConstNodes :: Project -> PatchPath -> Project -> Project',
-  (flatProject, path, origProject) => {
-    const entryPointPatch = Project.getPatchByPathUnsafe(path, flatProject);
+  'extractBoundInputsToConstNodes :: PatchPath -> Project -> Project',
+  (path, project) => {
+    const entryPointPatch = Project.getPatchByPathUnsafe(path, project);
     const entryPointNodes = Patch.listNodes(entryPointPatch);
     const entryPointLinks = Patch.listLinks(entryPointPatch);
 
@@ -290,42 +264,53 @@ const extractBoundInputsToConstNodes = def(
       entryPointNodes,
       entryPointLinks
     );
-    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, flatProject);
+    const outputNodePins = getMapOfNodeOutputPins(entryPointNodes, project);
     const pinsToOmit = R.mergeWith(R.concat, occupiedNodePins, outputNodePins);
     const allInputPinValues = R.compose(
+      R.reject(R.isEmpty),
       R.mapObjIndexed((pins, nodeId) =>
         R.omit(R.propOr([], nodeId, pinsToOmit), pins)
       ),
-      getMapOfNodePinValues(flatProject)
+      getMapOfNodePinValues(project) // :: Map NodeId (Map PinKey DataValue)
     )(entryPointNodes);
+
+    if (R.isEmpty(allInputPinValues)) {
+      return project;
+    }
 
     const extractablePinPaths = getMapOfExtractablePinPaths(
       allInputPinValues,
       entryPointNodes,
-      flatProject
+      project
     );
 
-    const constPinKeys = getMapOfPathsToPinKeys(CONST_PATCH_PATHS, origProject);
+    const utilisedConstantsPatchPaths = R.compose(
+      R.uniq,
+      R.chain(R.values),
+      R.values
+    )(extractablePinPaths);
+    const constPinKeys = getMapOfPathsToPinKeys(
+      utilisedConstantsPatchPaths,
+      project
+    );
 
     const newConstNodes = createNodesWithBoundValues(
       allInputPinValues,
       extractablePinPaths,
       constPinKeys
     );
+
     const newLinks = createLinksFromCurriedPins(newConstNodes, constPinKeys);
     const newPatch = R.compose(
-      R.compose(
-        squashSingleOutputNodes('xod/core/boot'),
-        squashSingleOutputNodes('xod/core/continuously')
-      ),
+      squashSingleOutputNodes('xod/core/boot'),
+      squashSingleOutputNodes('xod/core/continuously'),
       updatePatch(newLinks, newConstNodes, allInputPinValues)
     )(entryPointPatch);
 
-    return R.compose(
-      explodeEither,
-      Project.assocPatch(path, newPatch),
-      copyConstPatches(extractablePinPaths, origProject)
-    )(flatProject);
+    return extractBoundInputsToConstNodes(
+      path,
+      Project.assocPatchUnsafe(path, newPatch, project)
+    );
   }
 );
 

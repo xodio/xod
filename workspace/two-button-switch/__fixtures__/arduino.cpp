@@ -685,6 +685,185 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
+// xod/core/continuously implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__continuously {
+
+struct State {
+};
+
+struct Node {
+    State state;
+    TimeMs timeoutAt;
+    Logic output_TICK;
+
+    union {
+        struct {
+            bool isOutputDirty_TICK : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct output_TICK { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<output_TICK> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            "" \
+            " output_TICK");
+}
+
+template<> Logic getValue<output_TICK>(Context ctx) {
+    return ctx->_node->output_TICK;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_TICK");
+}
+
+template<> void emitValue<output_TICK>(Context ctx, Logic val) {
+    ctx->_node->output_TICK = val;
+    ctx->_node->isOutputDirty_TICK = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    emitValue<output_TICK>(ctx, 1);
+    setTimeout(ctx, 0);
+}
+
+} // namespace xod__core__continuously
+
+//-----------------------------------------------------------------------------
+// xod/core/digital-input implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__digital_input {
+
+struct State {
+    int configuredPort = -1;
+};
+
+struct Node {
+    State state;
+    Logic output_SIG;
+
+    union {
+        struct {
+            bool isOutputDirty_SIG : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct input_PORT { };
+struct input_UPD { };
+struct output_SIG { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<input_PORT> { using T = Number; };
+template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<output_SIG> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+    Number _input_PORT;
+    Logic _input_UPD;
+
+    bool _isInputDirty_UPD;
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            " input_PORT input_UPD" \
+            " output_SIG");
+}
+
+template<> Number getValue<input_PORT>(Context ctx) {
+    return ctx->_input_PORT;
+}
+template<> Logic getValue<input_UPD>(Context ctx) {
+    return ctx->_input_UPD;
+}
+template<> Logic getValue<output_SIG>(Context ctx) {
+    return ctx->_node->output_SIG;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            " input_UPD");
+    return false;
+}
+
+template<> bool isInputDirty<input_UPD>(Context ctx) {
+    return ctx->_isInputDirty_UPD;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_SIG");
+}
+
+template<> void emitValue<output_SIG>(Context ctx, Logic val) {
+    ctx->_node->output_SIG = val;
+    ctx->_node->isOutputDirty_SIG = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
+    State* state = getState(ctx);
+    const int port = (int)getValue<input_PORT>(ctx);
+    if (port != state->configuredPort) {
+        ::pinMode(port, INPUT);
+        // Store configured port so to avoid repeating `pinMode` on
+        // subsequent requests
+        state->configuredPort = port;
+    }
+
+    emitValue<output_SIG>(ctx, ::digitalRead(port));
+}
+
+} // namespace xod__core__digital_input
+
+//-----------------------------------------------------------------------------
 // xod/core/branch implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__branch {
@@ -794,111 +973,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__branch
 
 //-----------------------------------------------------------------------------
-// xod/core/digital_input implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__digital_input {
-
-struct State {
-    int configuredPort = -1;
-};
-
-struct Node {
-    State state;
-    Logic output_SIG;
-
-    union {
-        struct {
-            bool isOutputDirty_SIG : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct input_PORT { };
-struct input_UPD { };
-struct output_SIG { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_PORT> { using T = Number; };
-template<> struct ValueType<input_UPD> { using T = Logic; };
-template<> struct ValueType<output_SIG> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_PORT;
-    Logic _input_UPD;
-
-    bool _isInputDirty_UPD;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_PORT input_UPD" \
-            " output_SIG");
-}
-
-template<> Number getValue<input_PORT>(Context ctx) {
-    return ctx->_input_PORT;
-}
-template<> Logic getValue<input_UPD>(Context ctx) {
-    return ctx->_input_UPD;
-}
-template<> Logic getValue<output_SIG>(Context ctx) {
-    return ctx->_node->output_SIG;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_UPD");
-    return false;
-}
-
-template<> bool isInputDirty<input_UPD>(Context ctx) {
-    return ctx->_isInputDirty_UPD;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_SIG");
-}
-
-template<> void emitValue<output_SIG>(Context ctx, Logic val) {
-    ctx->_node->output_SIG = val;
-    ctx->_node->isOutputDirty_SIG = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
-        return;
-
-    State* state = getState(ctx);
-    const int port = (int)getValue<input_PORT>(ctx);
-    if (port != state->configuredPort) {
-        ::pinMode(port, INPUT);
-        // Store configured port so to avoid repeating `pinMode` on
-        // subsequent requests
-        state->configuredPort = port;
-    }
-
-    emitValue<output_SIG>(ctx, ::digitalRead(port));
-}
-
-} // namespace xod__core__digital_input
-
-//-----------------------------------------------------------------------------
-// xod/core/flip_flop implementation
+// xod/core/flip-flop implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__flip_flop {
 
@@ -1017,7 +1092,7 @@ void evaluate(Context ctx) {
 } // namespace xod__core__flip_flop
 
 //-----------------------------------------------------------------------------
-// xod/core/digital_output implementation
+// xod/core/digital-output implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__digital_output {
 
@@ -1100,81 +1175,6 @@ void evaluate(Context ctx) {
 }
 
 } // namespace xod__core__digital_output
-
-//-----------------------------------------------------------------------------
-// xod/core/continuously implementation
-//-----------------------------------------------------------------------------
-namespace xod__core__continuously {
-
-struct State {
-};
-
-struct Node {
-    State state;
-    TimeMs timeoutAt;
-    Logic output_TICK;
-
-    union {
-        struct {
-            bool isOutputDirty_TICK : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
-};
-
-struct output_TICK { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<output_TICK> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            "" \
-            " output_TICK");
-}
-
-template<> Logic getValue<output_TICK>(Context ctx) {
-    return ctx->_node->output_TICK;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_TICK");
-}
-
-template<> void emitValue<output_TICK>(Context ctx, Logic val) {
-    ctx->_node->output_TICK = val;
-    ctx->_node->isOutputDirty_TICK = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    emitValue<output_TICK>(ctx, 1);
-    setTimeout(ctx, 0);
-}
-
-} // namespace xod__core__continuously
 
 } // namespace xod
 

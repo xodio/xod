@@ -24,44 +24,9 @@ import {
 // :: x -> Number
 const toInt = R.flip(parseInt)(10);
 
-const kebabToSnake = R.replace(/-/g, '_');
-
-// foo(number,string) -> foo__number__string
-const sanitizeTypeSpecification = R.compose(
-  R.replace(/\(|,/g, '__'),
-  R.replace(')', '')
-);
-
-const createPatchNames = def(
-  'createPatchNames :: PatchPath -> { owner :: String, libName :: String, patchName :: String }',
-  R.compose(
-    R.map(kebabToSnake),
-    R.applySpec({
-      owner: R.ifElse(
-        Project.isPathLibrary,
-        Project.getOwnerName,
-        R.always('')
-      ),
-      libName: R.ifElse(
-        Project.isPathLibrary,
-        R.pipe(R.split('/'), R.nth(1)),
-        R.always('')
-      ),
-      patchName: R.pipe(Project.getBaseName, sanitizeTypeSpecification),
-    })
-  )
-);
-
 const findPatchByPath = def(
   'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',
-  (path, patches) =>
-    R.compose(
-      R.find(R.__, patches),
-      R.allPass,
-      R.map(R.apply(R.propEq)),
-      R.toPairs,
-      createPatchNames
-    )(path)
+  (path, patches) => R.find(R.propEq('patchPath', path), patches)
 );
 
 const getLinksInputNodeIds = def(
@@ -111,15 +76,39 @@ const toposortProject = def(
 //
 //-----------------------------------------------------------------------------
 
+const arrangeTPatchesInTopologicalOrder = def(
+  'arrangeTPatchesInTopologicalOrder :: PatchPath -> Project -> Map PatchPath TPatch -> [TPatch]',
+  (entryPath, project, tpatchesMap) =>
+    R.compose(
+      R.map(patchPath => tpatchesMap[patchPath]),
+      R.uniq,
+      R.map(R.nth(1)),
+      R.sortBy(R.head),
+      // at this point nodes in entry patch have
+      // their order in a toposorted graph as an id
+      R.map(
+        R.converge(R.pair, [
+          R.pipe(Project.getNodeId, parseInt),
+          Project.getNodeType,
+        ])
+      ),
+      Project.listNodes,
+      // we already checked that entry patchh exists
+      Project.getPatchByPathUnsafe(entryPath)
+    )(project)
+);
+
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) =>
     R.compose(
-      R.values,
-      R.mapObjIndexed((patch, path) => {
-        const names = createPatchNames(path);
+      // patches must appear in the same order
+      // as respective nodes in a toposorted graph
+      arrangeTPatchesInTopologicalOrder(entryPath, project),
+      // :: Map PatchPath TPatch
+      R.mapObjIndexed((patch, patchPath) => {
         const impl = explodeMaybe(
-          `Implementation for ${path} not found`,
+          `Implementation for ${patchPath} not found`,
           Project.getImpl(patch)
         );
 
@@ -158,25 +147,25 @@ const createTPatches = def(
         )(patch);
 
         const isThisIsThat = {
-          isDefer: Project.isDeferNodeType(path),
-          isConstant: Project.isConstantNodeType(path),
+          isDefer: Project.isDeferNodeType(patchPath),
+          isConstant: Project.isConstantNodeType(patchPath),
           usesTimeouts: areTimeoutsEnabled(impl),
           usesNodeId: isNodeIdEnabled(impl),
         };
 
         return R.mergeAll([
-          names,
           isThisIsThat,
           {
             outputs,
             inputs,
             impl,
+            patchPath,
           },
         ]);
       }),
       R.omit([entryPath]),
       R.indexBy(Project.getPatchPath),
-      Project.listPatchesWithoutBuiltIns
+      Project.listGenuinePatches
     )(project)
 );
 
@@ -320,6 +309,31 @@ const createTNodes = def(
 );
 
 /**
+ * Leaves only patches that are used in an entry patch(and entry patch itself).
+ * Assumes that entry patch is flattened.
+ */
+const removeUnusedNodes = def(
+  'removeUnusedNodes :: PatchPath -> Project -> Project',
+  (flatEntryPatchPath, project) => {
+    const nodeTypesUsedInEntryPatch = R.compose(
+      R.uniq,
+      R.map(Project.getNodeType),
+      Project.listNodes,
+      // we already checked several times that entry patch exists
+      Project.getPatchByPathUnsafe(flatEntryPatchPath)
+    )(project);
+
+    const unusedPatchPaths = R.compose(
+      R.without([...nodeTypesUsedInEntryPatch, flatEntryPatchPath]),
+      R.map(Project.getPatchPath),
+      Project.listPatches
+    )(project);
+
+    return Project.omitPatches(unusedPatchPaths, project);
+  }
+);
+
+/**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
  * and it has a ready-to-use values, nothing needed to compute anymore.
@@ -335,10 +349,11 @@ const transformProjectWithImpls = def(
         );
 
         if (nodeWithTooManyOutputs) {
-          const { owner, libName, patchName } = nodeWithTooManyOutputs;
           return Either.Left(
             new Error(
-              `Native node ${owner}/${libName}/${patchName} has more than 7 outputs`
+              `Native node ${
+                nodeWithTooManyOutputs.patchPath
+              } has more than 7 outputs`
             )
           );
         }
@@ -358,12 +373,10 @@ const transformProjectWithImpls = def(
           })(proj)
         );
       }),
-      R.chain(
-        R.compose(
-          toposortProject(path),
-          Project.extractBoundInputsToConstNodes(R.__, path, project)
-        )
-      ),
+      R.chain(toposortProject(path)),
+      // end preparing project for transpilation. TODO: extract it into a separate function
+      R.map(removeUnusedNodes(path)),
+      R.map(Project.extractBoundInputsToConstNodes(path)),
       R.chain(Project.flatten(R.__, path)),
       R.map(Project.expandVariadicNodes(path)),
       R.chain(Project.autoresolveTypes(path)),
@@ -372,6 +385,7 @@ const transformProjectWithImpls = def(
         R.chain(Project.updatePatch(path, Project.removeDebugNodes))
       ),
       Project.validatePatchReqursively(path)
+      // begin preparing project for transpilation
     )(project)
 );
 
@@ -401,7 +415,3 @@ export const transformProjectWithDebug = def(
 );
 
 export const transpile = renderProject;
-
-export const forUnitTests = {
-  createPatchNames,
-};

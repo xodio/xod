@@ -1,171 +1,6 @@
 {
-  "authors": [],
-  "description": "",
-  "license": "",
-  "version": "0.0.0",
   "patches": {
-    "xod/core/boot": {
-      "comments": {},
-      "description": "Outputs a single pulse when the program starts",
-      "links": {},
-      "nodes": {
-        "noNativeImpl": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "noNativeImpl",
-          "label": "",
-          "position": {
-            "x": 100,
-            "y": 100
-          },
-          "type": "xod/patch-nodes/not-implemented-in-xod",
-          "@@type": "xod-project/Node"
-        },
-        "ryVmUAOrvkb": {
-          "boundLiterals": {
-            "__in__": "False"
-          },
-          "description": "",
-          "id": "ryVmUAOrvkb",
-          "label": "BOOT",
-          "position": {
-            "x": 10,
-            "y": 224
-          },
-          "type": "xod/patch-nodes/output-pulse",
-          "@@type": "xod-project/Node"
-        }
-      },
-      "path": "xod/core/boot",
-      "attachments": [
-        {
-          "filename": "patch.cpp",
-          "encoding": "utf8",
-          "content": "// ..."
-        }
-      ],
-      "@@type": "xod-project/Patch"
-    },
-    "xod/core/console-log": {
-      "comments": {},
-      "description": "Outputs a line of text to the board standard debug interface",
-      "links": {},
-      "nodes": {
-        "HJdO9HwJ-": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "HJdO9HwJ-",
-          "label": "LINE",
-          "position": {
-            "x": 10,
-            "y": 16
-          },
-          "type": "xod/patch-nodes/input-string",
-          "@@type": "xod-project/Node"
-        },
-        "S1n95SDJb": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "S1n95SDJb",
-          "label": "DUMP",
-          "position": {
-            "x": 138,
-            "y": 16
-          },
-          "type": "xod/patch-nodes/input-pulse",
-          "@@type": "xod-project/Node"
-        },
-        "noNativeImpl": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "noNativeImpl",
-          "label": "",
-          "position": {
-            "x": 100,
-            "y": 100
-          },
-          "type": "xod/patch-nodes/not-implemented-in-xod",
-          "@@type": "xod-project/Node"
-        }
-      },
-      "path": "xod/core/console-log",
-      "attachments": [
-        {
-          "filename": "patch.cpp",
-          "encoding": "utf8",
-          "content": "// ..."
-        }
-      ],
-      "@@type": "xod-project/Patch"
-    },
-    "xod/core/any": {
-      "comments": {},
-      "description": "Pulses on output when any input recieves a pulse",
-      "links": {},
-      "nodes": {
-        "ByHmL0uHPk-": {
-          "boundLiterals": {
-            "__in__": "False"
-          },
-          "description": "",
-          "id": "ByHmL0uHPk-",
-          "label": "ANY",
-          "position": {
-            "x": 10,
-            "y": 224
-          },
-          "type": "xod/patch-nodes/output-pulse",
-          "@@type": "xod-project/Node"
-        },
-        "ByU7LRuSPkW": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "ByU7LRuSPkW",
-          "label": "P2",
-          "position": {
-            "x": 138,
-            "y": 16
-          },
-          "type": "xod/patch-nodes/input-pulse",
-          "@@type": "xod-project/Node"
-        },
-        "noNativeImpl": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "noNativeImpl",
-          "label": "",
-          "position": {
-            "x": 100,
-            "y": 100
-          },
-          "type": "xod/patch-nodes/not-implemented-in-xod",
-          "@@type": "xod-project/Node"
-        },
-        "ryv7IRdSP1b": {
-          "boundLiterals": {},
-          "description": "",
-          "id": "ryv7IRdSP1b",
-          "label": "P1",
-          "position": {
-            "x": 10,
-            "y": 16
-          },
-          "type": "xod/patch-nodes/input-pulse",
-          "@@type": "xod-project/Node"
-        }
-      },
-      "path": "xod/core/any",
-      "attachments": [
-        {
-          "filename": "patch.cpp",
-          "encoding": "utf8",
-          "content": "// ..."
-        }
-      ],
-      "@@type": "xod-project/Patch"
-    },
     "@/main": {
-      "comments": {},
       "nodes": {
         "HkwBT8KVb": {
           "id": "HkwBT8KVb",
@@ -173,25 +8,18 @@
           "position": {
             "x": 138,
             "y": 16
-          },
-          "label": "",
-          "description": "",
-          "boundLiterals": {},
-          "@@type": "xod-project/Node"
+          }
         },
         "HkaBTLFNb": {
+          "boundLiterals": {
+            "HJdO9HwJ-": "\"It works!\""
+          },
           "id": "HkaBTLFNb",
           "type": "xod/core/console-log",
           "position": {
             "x": 138,
             "y": 328
-          },
-          "label": "",
-          "description": "",
-          "boundLiterals": {
-            "HJdO9HwJ-": "\"It works!\""
-          },
-          "@@type": "xod-project/Node"
+          }
         },
         "H1qL68Y4W~rku9aItN-~BJpKaIYNW": {
           "id": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
@@ -199,11 +27,7 @@
           "position": {
             "x": 138,
             "y": 120
-          },
-          "label": "",
-          "description": "",
-          "boundLiterals": {},
-          "@@type": "xod-project/Node"
+          }
         }
       },
       "links": {
@@ -216,8 +40,7 @@
           "input": {
             "nodeId": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
             "pinKey": "ryv7IRdSP1b"
-          },
-          "@@type": "xod-project/Link"
+          }
         },
         "H1qL68Y4W~rku9aItN-~SJ-9T8FN-": {
           "id": "H1qL68Y4W~rku9aItN-~SJ-9T8FN-",
@@ -228,8 +51,7 @@
           "input": {
             "nodeId": "H1qL68Y4W~rku9aItN-~BJpKaIYNW",
             "pinKey": "ByU7LRuSPkW"
-          },
-          "@@type": "xod-project/Link"
+          }
         },
         "ryIhT8KVW": {
           "id": "ryIhT8KVW",
@@ -240,16 +62,317 @@
           "input": {
             "nodeId": "HkaBTLFNb",
             "pinKey": "S1n95SDJb"
-          },
-          "@@type": "xod-project/Link"
+          }
         }
       },
-      "path": "@/main",
-      "description": "",
-      "attachments": [],
-      "@@type": "xod-project/Patch"
+      "path": "@/main"
+    },
+    "@/wrapped-any": {
+      "links": {
+        "Bkg5aItE-": {
+          "id": "Bkg5aItE-",
+          "output": {
+            "nodeId": "S1p_6UtVb",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJpKaIYNW",
+            "pinKey": "ryv7IRdSP1b"
+          }
+        },
+        "SJ-9T8FN-": {
+          "id": "SJ-9T8FN-",
+          "output": {
+            "nodeId": "SJR_6UYV-",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJpKaIYNW",
+            "pinKey": "ByU7LRuSPkW"
+          }
+        },
+        "SJQ9TUKNb": {
+          "id": "SJQ9TUKNb",
+          "output": {
+            "nodeId": "BJpKaIYNW",
+            "pinKey": "ByHmL0uHPk-"
+          },
+          "input": {
+            "nodeId": "SkbFTLFN-",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "nodes": {
+        "S1p_6UtVb": {
+          "id": "S1p_6UtVb",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 10,
+            "y": 16
+          }
+        },
+        "SJR_6UYV-": {
+          "id": "SJR_6UYV-",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 266,
+            "y": 16
+          }
+        },
+        "SkbFTLFN-": {
+          "id": "SkbFTLFN-",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 138,
+            "y": 328
+          }
+        },
+        "BJpKaIYNW": {
+          "id": "BJpKaIYNW",
+          "type": "xod/core/any",
+          "position": {
+            "x": 138,
+            "y": 120
+          }
+        }
+      },
+      "path": "@/wrapped-any"
+    },
+    "@/double-wrapped-any": {
+      "links": {
+        "BJPo6IF4Z": {
+          "id": "BJPo6IF4Z",
+          "output": {
+            "nodeId": "H1QsTLFEW",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rku9aItN-",
+            "pinKey": "S1p_6UtVb"
+          }
+        },
+        "B1OjTLKE-": {
+          "id": "B1OjTLKE-",
+          "output": {
+            "nodeId": "rkNsaLt4b",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rku9aItN-",
+            "pinKey": "SJR_6UYV-"
+          }
+        },
+        "BJRoaItNW": {
+          "id": "BJRoaItNW",
+          "output": {
+            "nodeId": "rku9aItN-",
+            "pinKey": "SkbFTLFN-"
+          },
+          "input": {
+            "nodeId": "BJ5saUt4W",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "nodes": {
+        "rku9aItN-": {
+          "id": "rku9aItN-",
+          "type": "@/wrapped-any",
+          "position": {
+            "x": 138,
+            "y": 120
+          }
+        },
+        "H1QsTLFEW": {
+          "id": "H1QsTLFEW",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 10,
+            "y": 16
+          }
+        },
+        "rkNsaLt4b": {
+          "id": "rkNsaLt4b",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 266,
+            "y": 16
+          }
+        },
+        "BJ5saUt4W": {
+          "id": "BJ5saUt4W",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 138,
+            "y": 328
+          }
+        }
+      },
+      "path": "@/double-wrapped-any"
+    },
+    "@/identity-pulse": {
+      "links": {
+        "B1Pd6LFEZ": {
+          "id": "B1Pd6LFEZ",
+          "output": {
+            "nodeId": "HJ2Da8KNZ",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "ry4d68KEZ",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "nodes": {
+        "HJ2Da8KNZ": {
+          "id": "HJ2Da8KNZ",
+          "type": "xod/patch-nodes/input-pulse",
+          "position": {
+            "x": 138,
+            "y": 16
+          }
+        },
+        "ry4d68KEZ": {
+          "id": "ry4d68KEZ",
+          "type": "xod/patch-nodes/output-pulse",
+          "position": {
+            "x": 138,
+            "y": 224
+          }
+        }
+      },
+      "path": "@/identity-pulse"
+    },
+    "xod/core/any": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
+      "description": "Pulses on output when any input recieves a pulse",
+      "nodes": {
+        "ByHmL0uHPk-": {
+          "boundLiterals": {
+            "__in__": "False"
+          },
+          "label": "ANY",
+          "id": "ByHmL0uHPk-",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        },
+        "ByU7LRuSPkW": {
+          "label": "P2",
+          "id": "ByU7LRuSPkW",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "ryv7IRdSP1b": {
+          "label": "P1",
+          "id": "ryv7IRdSP1b",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        }
+      },
+      "path": "xod/core/any"
+    },
+    "xod/core/boot": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
+      "description": "Outputs a single pulse when the program starts",
+      "nodes": {
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "ryVmUAOrvkb": {
+          "boundLiterals": {
+            "__in__": "False"
+          },
+          "label": "BOOT",
+          "id": "ryVmUAOrvkb",
+          "position": {
+            "x": 10,
+            "y": 224
+          },
+          "type": "xod/patch-nodes/output-pulse"
+        }
+      },
+      "path": "xod/core/boot"
+    },
+    "xod/core/console-log": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "// ..."
+        }
+      ],
+      "description": "Outputs a line of text to the board standard debug interface",
+      "nodes": {
+        "HJdO9HwJ-": {
+          "label": "LINE",
+          "id": "HJdO9HwJ-",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-string"
+        },
+        "S1n95SDJb": {
+          "label": "DUMP",
+          "id": "S1n95SDJb",
+          "position": {
+            "x": 138,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "noNativeImpl": {
+          "id": "noNativeImpl",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/console-log"
     }
   },
-  "name": "",
-  "@@type": "xod-project/Project"
+  "authors": [
+    "xod"
+  ],
+  "license": "MIT",
+  "version": "0.0.1",
+  "name": "deep-nesting"
 }

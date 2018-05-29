@@ -182,24 +182,32 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
   )(renderableNode)
 );
 
+const addMarkerErrors = (predicate, validator) =>
+  R.curry((patch, renderableNode) =>
+    R.when(predicate, node =>
+      R.compose(
+        foldEither(err => addError(err, node), R.always(node)),
+        validator
+      )(patch)
+    )(renderableNode)
+  );
+
 // :: Patch -> RenderableNode -> RenderableNode
-const addVariadicErrors = R.curry((patch, renderableNode) =>
-  R.when(R.compose(XP.isVariadicPath, XP.getNodeType), node =>
-    R.compose(
-      foldEither(err => addError(err, node), R.always(node)),
-      XP.validatePatchForVariadics
-    )(patch)
-  )(renderableNode)
+const addVariadicErrors = addMarkerErrors(
+  R.pipe(XP.getNodeType, XP.isVariadicPath),
+  XP.validatePatchForVariadics
 );
 
 // :: Patch -> RenderableNode -> RenderableNode
-const addAbstractPatchErrors = R.curry((patch, renderableNode) =>
-  R.when(R.compose(R.equals(XP.ABSTRACT_MARKER_PATH), XP.getNodeType), node =>
-    R.compose(
-      foldEither(err => addError(err, node), R.always(node)),
-      XP.validateAbstractPatch
-    )(patch)
-  )(renderableNode)
+const addAbstractPatchErrors = addMarkerErrors(
+  R.pipe(XP.getNodeType, R.equals(XP.ABSTRACT_MARKER_PATH)),
+  XP.validateAbstractPatch
+);
+
+// :: Patch -> RenderableNode -> RenderableNode
+const addConstructorPatchErrors = addMarkerErrors(
+  R.pipe(XP.getNodeType, R.equals(XP.OUTPUT_SELF_PATH)),
+  XP.validateConstructorPatch
 );
 
 /**
@@ -311,6 +319,7 @@ export const getRenderableNode = R.curry(
       addSpecializationsList(project),
       markDeprecatedNodes(project),
       addInvalidLiteralErrors(project, currentPatch),
+      addConstructorPatchErrors(currentPatch),
       addAbstractPatchErrors(currentPatch),
       addVariadicErrors(currentPatch),
       addVariadicProps(project),
