@@ -20,6 +20,15 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Use `xod/gpio/analog-read` instead",
+      "id": "SJtJAJsJm",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "The latest read value in range 0.0 … 1.0",
       "id": "SyBtREhlW",
       "label": "VAL",

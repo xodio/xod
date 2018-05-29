@@ -72,16 +72,17 @@ describe('xod-arduino transpiler', () => {
         assert.deepEqual(patchPaths, [
           'xod/core/constant-number', // IVAL
           'xod/core/constant-boolean', // EN
-          'xod/core/constant-number', // PORT
+          'xod/core/constant-port', // PORT
+          'xod/core/continuously', // UPD
           'xod/core/clock',
           'xod/core/flip-flop',
-          'xod/core/digital-output',
+          'xod/gpio/digital-write',
         ]);
 
         const ids = R.pluck('id', nodes);
         assert.deepEqual(
           ids,
-          [0, 1, 2, 3, 4, 5],
+          [0, 1, 2, 3, 4, 5, 6],
           'Node IDs were not arranged in topological order'
         );
       }));
@@ -90,9 +91,9 @@ describe('xod-arduino transpiler', () => {
 describe('getNodeIdsMap', () => {
   it('should return correct NodeIdsMap', () => {
     const expected = {
-      By6HVYHZb: '3',
-      rkwIEFrWb: '4',
-      SyeDNFBWZ: '5',
+      By6HVYHZb: '4',
+      rkwIEFrWb: '5',
+      SyeDNFBWZ: '6',
     };
 
     return loadProject([wsPath()], wsPath('blink'))

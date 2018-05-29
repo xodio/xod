@@ -60,7 +60,7 @@
     },
     {
       "boundLiterals": {
-        "BJuORNheZ": "0"
+        "SkuhqCqym": "A0"
       },
       "id": "By5oDu8qW",
       "label": "Photoresistor",
@@ -68,7 +68,7 @@
         "x": 578,
         "y": 612
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "id": "S1ykdOLqb",

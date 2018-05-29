@@ -38,7 +38,7 @@
     },
     {
       "boundLiterals": {
-        "B134j4neZ": "13",
+        "rJjXFA9JQ": "D13",
         "HJ6HsEngZ": "False"
       },
       "id": "SyeDNFBWZ",
@@ -46,7 +46,7 @@
         "x": 0,
         "y": 204
       },
-      "type": "xod/core/digital-output"
+      "type": "xod/gpio/digital-write"
     },
     {
       "boundLiterals": {

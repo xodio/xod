@@ -25,6 +25,15 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
+      "description": "Use `xod/gpio/digital-read` instead",
+      "id": "H1oxA1o17",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "Continuously"
       },

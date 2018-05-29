@@ -46,7 +46,7 @@
         "x": 306,
         "y": 204
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "boundLiterals": {
