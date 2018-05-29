@@ -23,7 +23,7 @@ First, you see the result and then what caused it!
 
 ![Patch](./patch.png)
 
-Pay close attention to the `map-range` node. Instead of using it in the standard
+Pay close attention to the `map` node. Instead of using it in the standard
 manner, we are simply using it to flip the sign of the output value.
 
 ## Test circuit

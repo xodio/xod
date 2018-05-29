@@ -109,8 +109,8 @@ Here are some nodes you’ll use to work with numbers:
 * [`equal`](/libs/xod/core/equal/)
 * [`less`](/libs/xod/core/less/)
 * [`greater`](/libs/xod/core/greater/)
-* [`constrain`](/libs/xod/core/constrain/)
-* [`map-range`](/libs/xod/core/map-range/)
+* [`clip`](/libs/xod/math/clip/)
+* [`map`](/libs/xod/math/map/)
 
 ### Unit ranges
 
@@ -359,7 +359,7 @@ the first position, i.e. `42` becomes `[42]`.
 Conversely, if a value of type `List T` is connected to an input of type `T` in
 a functional node, the node *maps* each element of the list and the resulting
 value is a list type. For example, if `[-1, 2, 3, -4, -5]` were passed to an
-[absolute](/libs/xod/core/absolute/) node, which usually operates on single
+[abs](/libs/xod/math/abs/) node, which usually operates on single
 numbers, the result would be `[1, 2, 3, 4, 5]`.
 
 If two lists are given as the two inputs of a functional node, the node

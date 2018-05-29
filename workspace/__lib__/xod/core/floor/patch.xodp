@@ -2,6 +2,15 @@
   "description": "Rounds a number to a maximal integer that is less than the number",
   "nodes": [
     {
+      "description": "Use `xod/math/floor` instead",
+      "id": "HkJsMsYJ7",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SklxICdHP1b",
       "position": {
         "x": 102,

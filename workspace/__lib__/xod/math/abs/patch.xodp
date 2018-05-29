@@ -1,0 +1,32 @@
+{
+  "description": "Outputs absolute value of an input number",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "id": "B1LNICdSDJW",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "H1SVIAuBDJZ",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

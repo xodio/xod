@@ -1,0 +1,31 @@
+{
+  "description": "Calculates sine of an angle.",
+  "nodes": [
+    {
+      "id": "Bkpwy22I-",
+      "position": {
+        "x": 10,
+        "y": 224
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ByG_k32UZ",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Angle in radians.",
+      "id": "HJiwJ33LW",
+      "label": "RAD",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

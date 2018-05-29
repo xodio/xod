@@ -1,0 +1,32 @@
+{
+  "description": "Rounds a number to nearest integer",
+  "nodes": [
+    {
+      "id": "BkF78AurDJW",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "id": "rkO7L0uSP1Z",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

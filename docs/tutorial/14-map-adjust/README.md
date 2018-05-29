@@ -12,17 +12,17 @@ To get a better learning experience we recommend to install the
 <a href="/ide/">browser-based IDE</a>, and you’ll see the same tutorial there.
 </div>
 
-After the previous lesson, the `map-range` node linearly maps the
+After the previous lesson, the `map` node linearly maps the
 20–50°C range to the 0–90° servo rotation. Let’s raise the sensitivity.
 Say, we want to map 15–30°C to 0–90° rotation.
 
-However, what will happen if the `X` pin of the `map-range` receives data that
+However, what will happen if the `X` pin of the `map` receives data that
 is outside the input range (10 or 42, for example)? The output value which is
 a servo angle will fall outside the desired range too.
 
-For such cases there is a sibling node called `map-clip-range`. It works the
+For such cases there is a sibling node called `map-clip`. It works the
 same way, but any input that is out of range will be rounded to `Smin` or
-`Smax`.  Thus, if `X` receives a value of 10, the `map-clip-range` node will
+`Smax`.  Thus, if `X` receives a value of 10, the `map-clip` node will
 accept it as 15, and 42 will be accepted as 30.
 
 ![Patch](./patch.png)
@@ -40,7 +40,7 @@ The circuit is the same as for the previous lesson.
 
 ## How-to
 
-Just use the `map-clip-range` instead of the `map-range` if you want the
+Just use the `map-clip` instead of the `map` if you want the
 output range to be guaranteed.
 
 If you prefer °F, you can easily translate the data from the

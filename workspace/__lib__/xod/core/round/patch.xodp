@@ -18,6 +18,15 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Use `xod/math/round` instead",
+      "id": "rJnLEoFJX",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__in__": "0"
       },

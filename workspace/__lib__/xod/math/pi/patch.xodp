@@ -1,0 +1,37 @@
+{
+  "description": "Provides math 𝜋 (Pi) = 3.14159265359",
+  "links": [
+    {
+      "id": "B1bepin8W",
+      "input": {
+        "nodeId": "rJpy6in8-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByYn3jnU-",
+        "pinKey": "B1x2RV3eZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "3.14159265359"
+      },
+      "id": "ByYn3jnU-",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "id": "rJpy6in8-",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

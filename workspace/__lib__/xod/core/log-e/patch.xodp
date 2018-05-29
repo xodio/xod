@@ -24,6 +24,15 @@
         "y": 204
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Use `xod/math/log-e` instead",
+      "id": "ryD0fjtyQ",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

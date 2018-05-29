@@ -85,6 +85,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/math/log-bx` instead",
+      "id": "SJeRzitkX",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "Skc977QJM",
       "position": {
         "x": 0,

@@ -22,7 +22,7 @@ The practical task is to make the servo rotate smoothly from 0 to 90°,
 reflecting a temperature change from 20°C to 50°C.
 
 You can actually do this using few math nodes, but XOD has a special node for
-such cases. This node is called the `map-range` node.
+such cases. This node is called the `map` node.
 
 ![Patch](./patch.png)
 
@@ -50,7 +50,7 @@ The circuit is the same as for the previous lesson.
 
 ## How-to
 
-1. Add the `xod/core/map-range` node to your patch.
+1. Add the `xod/math/map` node to your patch.
 2. Link the `X` input to a value to be mapped.
 3. Set input (source) range bounds with `Smin` and `Smax` (e.g. 20 and 50).
 4. Set output (target) range bounds with `Tmin` and `Tmax` (e.g. 0 and 0.5).

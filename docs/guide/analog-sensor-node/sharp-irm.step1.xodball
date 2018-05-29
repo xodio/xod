@@ -131,7 +131,7 @@
         },
         "HkbVixief": {
           "id": "HkbVixief",
-          "type": "xod/core/map-range",
+          "type": "xod/math/map",
           "position": {
             "x": 102,
             "y": 204

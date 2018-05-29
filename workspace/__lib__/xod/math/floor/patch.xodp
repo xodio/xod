@@ -1,0 +1,32 @@
+{
+  "description": "Rounds a number to a maximal integer that is less than the number",
+  "nodes": [
+    {
+      "id": "SklxICdHP1b",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "id": "rkWeUCdBDkZ",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

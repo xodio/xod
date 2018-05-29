@@ -30,6 +30,15 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Use `xod/math/clip` instead",
+      "id": "r1RTZjKy7",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__in__": "0"
       },

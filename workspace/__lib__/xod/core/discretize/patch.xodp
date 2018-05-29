@@ -70,6 +70,15 @@
   ],
   "nodes": [
     {
+      "description": "Use `xod/math/discretize` instead",
+      "id": "BJPnGsF1m",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "HJw2cTbFW",
       "position": {
         "x": 68,
