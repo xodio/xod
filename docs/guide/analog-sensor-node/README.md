@@ -57,7 +57,7 @@ correctness. Here is our patch:
 
 ![Single patch implementation](./step1.patch.png)
 
-Bind the `PORT` value of `analog-input` to the board pin number you’ve
+Bind the `PORT` value of `analog-sensor` to the board pin number you’ve
 connected the sensor. Upload with debugger enabled, slowly move a book or sheet
 of paper ahead of the sensor and observe value change. Do measurements look
 realistic? Cool! We have a “body” for our new node.

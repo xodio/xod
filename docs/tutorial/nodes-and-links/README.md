@@ -28,7 +28,7 @@ work and communicates with other nodes.
 
 Let’s talk about each node one by one from bottom to top.
 
-### digital-output
+### digital-write
 
 This node represents a single physical output pin on the board. It can be
 either in a high (enabled) or low (disabled) state. We use it to switch our LED
@@ -38,7 +38,7 @@ The node has two *inputs*. They are `PORT` and `SIG`.
 
 The `PORT` defines what physical pin corresponds to the node. Select the node
 by clicking on it. You’ll see the *Inspector* sidebar with the properties of
-the selected node, i.e. our `digital-output`.
+the selected node, i.e. our `digital-write`.
 
 ![Inspector](./inspector.png)
 
@@ -83,7 +83,7 @@ What happens in our blink program? Take a look:
 
 1. The `clock` node ticks at regular intervals
 3. Each tick pulse goes to the `flip-flop` and toggles its state
-4. The `flip-flop` provides its state value to the `digital-output`
+4. The `flip-flop` provides its state value to the `digital-write`
 
 As a result, we see the LED blinking.
 
@@ -99,8 +99,8 @@ That’s not too interesting. Let’s add another LED. Improve your circuit:
 
 ![LED on pin 13 and 12](./led-on-pin-13-and-12.fz.png)
 
-Place a new `digital-output` node. To do this, use the Project Browser sidebar.
-The `digital-output` node is available in the `xod/core` library. Hover the
+Place a new `digital-write` node. To do this, use the Project Browser sidebar.
+The `digital-write` node is available in the `xod/core` library. Hover the
 cursor over the item and click the (+).
 
 ![Project Browser](./project-browser.png)
@@ -111,7 +111,7 @@ as the search query and you will quickly find the node you’re looking for.
 Press Enter or double click on an item found to place it.
 
 You’ll see a new node appear in the main workspace. Drag it to the slot you
-want. The one next to the existing `digital-output` would be fine. In
+want. The one next to the existing `digital-write` would be fine. In
 Inspector, set the `PORT` for the new node to 12, since it will control our new
 LED.
 
@@ -124,11 +124,11 @@ Upload the updated program to the board. Whoa! Both LED’s are blinking.
 
 Now let’s improve our program some more and make the lights blink
 alternately. To do this, we need to add a signal inversion into either of
-links connecting the `flip-flop` and `digital-output`s.
+links connecting the `flip-flop` and `digital-write`s.
 
 The `not` node under `xod/core` does exactly that. Delete the existing link,
 place a `not` node, and add new links so that the signal from our `flip-flop`
-to the `digital-output` goes through it:
+to the `digital-write` goes through it:
 
 ![Blink two LEDs with inversion](./blink-two-leds-inv.patch.png)
 
@@ -145,7 +145,7 @@ state:
 
 ![Blink with disjoint clusters](./blink-disjoint.patch.png)
 
-Now we have three `digital-output` nodes. It can be hard to understand which
+Now we have three `digital-write` nodes. It can be hard to understand which
 node corresponds to each LED, so it would be better to give them clear labels.
 To set a custom label for a node, select it and provide the label via
 Inspector:

@@ -22,7 +22,7 @@ message to trigger something else. It does not transmit any data. However, it
 is useful when you need to convey that an event has occurred or tell something
 else to work.
 
-For example, say you only want an `analog-input` node to receive information
+For example, say you only want an `analog-sensor` node to receive information
 from a board port at certain intervals, and not all the time. This frequency
 can be set with the help of pulses.
 

@@ -41,20 +41,20 @@ program that looks like the one below:
 
 ![Pot and LED patch](./pot-led.patch.png)
 
-We use `pwm-output` from `xod/core` to provide a PWM signal to our LED. The
+We use `pwm-write` from `xod/gpio` to provide a PWM signal to our LED. The
 `DUTY` input defines the duty cycle. The value 0.0 denotes the always-low
 signal (LED is off), 0.33 is for a 33% cycle (one-third of full brightness),
 0.5 is for 50% brightness, etc. up to 1.0 for the always-high signal when the
 LED is 100% on.
 
-Be sure to set the `PORT` input value to 3 with Inspector.
+Be sure to set the `PORT` input value to D3 with Inspector.
 
-Next we use `analog-input` from `xod/core` to read values from the
+Next we use `analog-read` from `xod/gpio` to read values from the
 potentiometer. Read values are available on its output `VAL` and take the value
 0.0 for one of the potentiometer's limits, 1.0 for the other, and fractional
 values for anything between them.
 
-For the `PORT` value on the `analog-input`, use value 14 which corresponds to
+For the `PORT` value on the `analog-read`, use value 14 which corresponds to
 pin A0 on the board.
 
 <div class="ui segment">
@@ -147,7 +147,7 @@ any popular text LCD to build a circuit like one below:
 ![LDR, LED, and LCD circuit](./ldr-led-lcd.fz.png)
 
 Add the `text-lcd-16x2` node from `xod/common-hardware` and give it the value
-of `analog-input` as an input for the first line (`L1`). Link the output of the
+of `analog-read` as an input for the first line (`L1`). Link the output of the
 `less` node to the `L2` input.
 
 ![LDR, LED, and LCD patch](./ldr-led-lcd.patch.png)

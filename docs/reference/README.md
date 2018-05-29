@@ -14,6 +14,7 @@ Reference
 
 * [`xod/core`](/libs/xod/core/)
 * [`xod/math`](/libs/xod/math/)
+* [`xod/gpio`](/libs/xod/gpio/)
 * [`xod/common-hardware`](/libs/xod/common-hardware/)
 * [`xod/units`](/libs/xod/units/)
 * [`xod/bits`](/libs/xod/bits/)

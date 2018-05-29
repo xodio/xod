@@ -48,7 +48,7 @@ The circuit is the same as for the previous lesson.
 
 ![Screencast](./screencast.gif)
 
-In the example shown, if the `analog-input` node (our photoresistor) returns a
+In the example shown, if the `analog-sensor` node (our photoresistor) returns a
 value greater than the threshold, the `greater` node will set the `OUT` pin to
 `true`, and the LED will turn on.
 

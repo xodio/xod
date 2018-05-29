@@ -23,7 +23,7 @@ Interfacing with hardware
 
 If you want to use a sensor or an electronic module that you haven’t found
 support for, it’s quite possible that all you need is a few standard nodes
-like `analog-input` or `digital-output`.
+like `analog-read` or `digital-write`.
 
 Refer to the item's documentation to understand how you can talk with the
 hardware.
@@ -34,7 +34,7 @@ Write a native wrapper
 You can implement new nodes not only in XOD, but also with C++.
 You can even wrap an existing native library to make it available in XOD.
 
-See the implementation of `analog-input`, `digital-output`, and `text-lcd-16x2`
+See the implementation of `analog-read`, `digital-write`, and `text-lcd-16x2`
 for examples of how to do this.
 
 Tell us what you need
