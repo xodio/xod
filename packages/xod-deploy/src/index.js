@@ -1,6 +1,5 @@
 export { compile, saveCompiledBinary } from './cloudCompiler';
 export * from './serialport';
-export { installTool } from './toolManager';
 export {
   getUploadConfig,
   upload,

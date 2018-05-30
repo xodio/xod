@@ -211,6 +211,24 @@ export const installTools = R.curry((fqbn, packagesDir, packageIndex) => {
   return downloadAndExtract(archiveUrl, toolsDir, 0);
 });
 
+// :: Path -> Path -> URL -> Promise InstallResult Error
+export const installTool = R.curry((toolsDir, toolName, archiveUrl) => {
+  const installedToolDir = path.resolve(toolsDir, toolName);
+
+  if (
+    isDirSync(installedToolDir) &&
+    !doesStaleArchiveExist(archiveUrl, toolsDir)
+  ) {
+    return Promise.resolve({
+      path: toolsDir,
+      downloaded: false,
+      installed: true,
+    });
+  }
+
+  return downloadAndExtract(archiveUrl, toolsDir, 0);
+});
+
 // :: FQBN -> PackagesDirPath -> PackageIndex ->
 //    Promise { hardware: InstallResult, tools: InstallResult } Error
 export const installArchitecture = R.curry((fqbn, packagesDir, packageIndex) =>

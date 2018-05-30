@@ -222,7 +222,7 @@ const deployToArduino = ({ payload, sendProgress, sendSuccess }) => {
 // =============================================================================
 
 // :: UploadConfig -> Promise Path Error
-const installTool = R.converge(xd.installTool(uploadToolsPath), [
+const installTool = R.converge(xad.installTool(uploadToolsPath), [
   xd.getToolVersionPath,
   xd.getToolUrl,
 ]);
