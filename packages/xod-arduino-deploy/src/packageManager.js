@@ -15,24 +15,24 @@ import * as Utils from './utils';
 // =============================================================================
 
 // :: Path -> Boolean
-const isDir = dir => {
+const isFileSync = filePath => {
   try {
-    return fse.statSync(dir).isDirectory();
+    return fse.statSync(filePath).isFile();
   } catch (err) {
     if (err.code === 'ENOENT') return false;
     throw err;
   }
 };
 
-// :: Path -> Promise Boolean Error
-const isFile = filePath =>
-  fse
-    .stat(filePath)
-    .then(stat => stat.isFile())
-    .catch(err => {
-      if (err.code === 'ENOENT') return false;
-      return Promise.reject(err);
-    });
+// :: Path -> Boolean
+const isDirSync = dirPath => {
+  try {
+    return fse.statSync(dirPath).isDirectory();
+  } catch (err) {
+    if (err.code === 'ENOENT') return false;
+    throw err;
+  }
+};
 
 // =============================================================================
 //
@@ -45,21 +45,29 @@ export const downloadFileFromUrl = R.curry((url, destinationPath) =>
   fetch(url)
     .then(tapP(() => fse.ensureDir(path.dirname(destinationPath))))
     .then(res => {
-      const file = fse.createWriteStream(destinationPath);
+      const partPath = `${destinationPath}.part`;
+      const file = fse.createWriteStream(partPath);
       return new Promise((resolve, reject) => {
         res.body
           .pipe(file)
           .on('error', reject)
           .on('finish', () => {
-            file.close(() => resolve(destinationPath));
+            file.close(() => resolve(partPath));
           });
       });
     })
+    .then(partPath => fse.rename(partPath, destinationPath))
+    .then(R.always(destinationPath))
 );
 
 // :: Path -> Promise Path Error
-export const extractBzip2 = archivePath =>
+export const extractBzip2IfNecessary = archivePath =>
   new Promise((resolve, reject) => {
+    if (path.extname(archivePath) !== '.bz2') {
+      resolve(archivePath);
+      return;
+    }
+
     const resultPath = archivePath.substr(
       0,
       archivePath.length - '.bz2'.length
@@ -84,14 +92,12 @@ export const extractBzip2 = archivePath =>
  * Details: https://github.com/npm/node-tar#tarxoptions-filelist-callback-alias-tarextract
  */
 // :: Path -> Number -> Promise Path Error
-export const extractArchive = (archivePath, strip = 0) => {
-  const dir = path.dirname(archivePath);
-
-  return tar
-    .x({ file: archivePath, cwd: dir, strip })
-    .then(() => fse.remove(archivePath))
-    .then(() => dir);
-};
+export const extractArchive = (archivePath, strip = 0) =>
+  extractBzip2IfNecessary(archivePath).then(tarPath =>
+    tar
+      .x({ file: tarPath, cwd: path.dirname(tarPath), strip })
+      .then(() => fse.remove(tarPath))
+  );
 
 // InstallResult :: { path: Path, installed: Boolean, downloaded: Boolean }
 // :: URL -> Path -> Path -> Number -> Promise InstallResult Error
@@ -99,28 +105,12 @@ export const downloadAndExtract = R.curry((url, unpackDest, strip) => {
   const archiveName = path.basename(url);
   const archivePath = path.join(unpackDest, archiveName);
 
-  let downloaded = false;
-
-  return isFile(archivePath)
-    .then(
-      isExist =>
-        !isExist ? downloadFileFromUrl(url, archivePath) : Promise.resolve()
-    )
-    .then(() => {
-      downloaded = true;
-    })
-    .then(() => {
-      // if its bzip — extract bzip first, and then extract as usual
-      if (path.extname(archivePath) === '.bz2') {
-        return extractBzip2(archivePath);
-      }
-      return archivePath;
-    })
-    .then(tarPath => extractArchive(tarPath, strip))
+  return downloadFileFromUrl(url, archivePath)
+    .then(() => extractArchive(archivePath, strip))
     .then(() => ({
       path: unpackDest,
-      downloaded,
       installed: true,
+      downloaded: true,
     }));
 });
 
@@ -132,13 +122,13 @@ export const downloadAndExtract = R.curry((url, unpackDest, strip) => {
 
 // :: FQBN -> PackagesDirPath -> Boolean
 export const doesHardwareExist = R.compose(
-  isDir,
+  isDirSync,
   Utils.getArchitectureDirectory
 );
 
 // :: Tool -> ToolsDirPath -> Boolean
 export const doesToolExist = R.curry((toolsDir, tool) =>
-  R.compose(isDir, Utils.getToolVersionDirectory)(
+  R.compose(isDirSync, Utils.getToolVersionDirectory)(
     tool.name,
     tool.version,
     toolsDir
@@ -146,10 +136,11 @@ export const doesToolExist = R.curry((toolsDir, tool) =>
 );
 
 // :: [Tool] -> ToolsDirPath -> Boolean
-export const doesAllToolsExist = R.curry((toolsDir, tools) =>
+export const doAllToolsExist = R.curry((toolsDir, tools) =>
   R.all(doesToolExist(toolsDir), tools)
 );
 
+// TODO: unused?!
 // :: FQBN -> PackageIndex -> Path -> Boolean
 export const doesArchitectureInstalled = R.curry(
   (fqbn, packageIndex, packagesDir) => {
@@ -164,6 +155,16 @@ export const doesArchitectureInstalled = R.curry(
   }
 );
 
+// Because we delete archive after extracting it,
+// its presence means the last time installation process
+// went wrong and we need to start over
+const doesStaleArchiveExist = (archiveUrl, unpackDest) => {
+  const archiveName = path.basename(archiveUrl);
+  const archivePath = path.join(unpackDest, archiveName);
+
+  return isFileSync(archivePath);
+};
+
 // =============================================================================
 //
 // Install hardware and tools
@@ -173,8 +174,13 @@ export const doesArchitectureInstalled = R.curry(
 // :: FQBN -> PackagesDirPath -> PackageIndex -> Promise InstallResult Error
 export const installHardware = R.curry((fqbn, packagesDir, packageIndex) => {
   const architectureDir = Utils.getArchitectureDirectory(fqbn, packagesDir);
+  const architecture = Utils.getArchitectureByFqbn(fqbn, packageIndex);
+  const archiveUrl = R.prop('url', architecture);
 
-  if (doesHardwareExist(fqbn, packagesDir)) {
+  if (
+    doesHardwareExist(fqbn, packagesDir) &&
+    !doesStaleArchiveExist(archiveUrl, architectureDir)
+  ) {
     return Promise.resolve({
       path: architectureDir,
       downloaded: false,
@@ -182,18 +188,19 @@ export const installHardware = R.curry((fqbn, packagesDir, packageIndex) => {
     });
   }
 
-  const architecture = Utils.getArchitectureByFqbn(fqbn, packageIndex);
-  const url = R.prop('url', architecture);
-
-  return downloadAndExtract(url, architectureDir, 1);
+  return downloadAndExtract(archiveUrl, architectureDir, 1);
 });
 
 // :: FQBN -> PackagesDirPath -> PackageIndex -> Promise InstallResult Error
 export const installTools = R.curry((fqbn, packagesDir, packageIndex) => {
   const tools = Utils.getToolsByFqbn(fqbn, packageIndex);
   const toolsDir = Utils.getToolsDirectory(fqbn, packagesDir);
+  const archiveUrl = Utils.getToolsUrl(fqbn, packageIndex);
 
-  if (doesAllToolsExist(toolsDir, tools)) {
+  if (
+    doAllToolsExist(toolsDir, tools) &&
+    !doesStaleArchiveExist(archiveUrl, toolsDir)
+  ) {
     return Promise.resolve({
       path: toolsDir,
       downloaded: false,
@@ -201,9 +208,7 @@ export const installTools = R.curry((fqbn, packagesDir, packageIndex) => {
     });
   }
 
-  const url = Utils.getToolsUrl(fqbn, packageIndex);
-
-  return downloadAndExtract(url, toolsDir, 0);
+  return downloadAndExtract(archiveUrl, toolsDir, 0);
 });
 
 // :: FQBN -> PackagesDirPath -> PackageIndex ->
