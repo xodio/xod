@@ -1,7 +1,8 @@
 import * as R from 'ramda';
+import { maybePath } from 'xod-func-tools';
+
 import * as Pin from './pin';
 import * as Utils from './utils';
-import * as Tools from './func-tools';
 import * as CONST from './constants';
 import { def } from './types';
 import {
@@ -267,7 +268,7 @@ const pathToBoundValue = pinKey => ['boundLiterals', pinKey];
  */
 export const getBoundValue = def(
   'getBoundValue :: PinKey -> Node -> Maybe DataValue',
-  R.useWith(Tools.path, [pathToBoundValue, R.identity])
+  R.useWith(maybePath, [pathToBoundValue, R.identity])
 );
 
 export const getBoundValueOrDefault = def(

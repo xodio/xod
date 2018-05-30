@@ -193,3 +193,13 @@ export const maybeProp = def(
   'maybeProp :: String -> StrMap a -> Maybe a',
   R.compose(Maybe, R.prop)
 );
+
+export const maybePath = def(
+  'maybePath :: [String] -> Object -> Maybe a',
+  R.compose(Maybe, R.path)
+);
+
+export const maybeFind = def(
+  'maybeFind :: (a -> Boolean) -> [a] -> Maybe a',
+  R.compose(Maybe, R.find)
+);
