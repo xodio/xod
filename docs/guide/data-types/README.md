@@ -169,6 +169,25 @@ You have to use explicit conversion nodes from the standard
 [`xod/bits`](https://xod.io/libs/xod/bits/) library. It also provides other
 bitwise operation nodes.
 
+Port type
+---------
+
+The port type is used to denote physical ports on a board. For hystorical
+reasons, the term “port” is used rather than “pin” to clearly distinguish the
+pins of XOD nodes (software thing) and pins for wires (hardware thing).
+You will see pins of the port type often when place nodes representing
+physical pieces of hardware like LEDs and buttons.
+
+Values of the port type look like `A0`, `A3`, `D3`, `D13`. For example,
+`A3` describe the board port with the third analog channel on it which
+is commonly printed on a board as is: “A3”. The `D3` value denotes the
+third digital port which is commonly printed on a board as “D3” or just “3”.
+
+Values of the port type must not change their values at runtime: they
+should stay constant. In other words, your button must not physically jump from
+`D2` to `D10` once the program started. Although the immutability is not currently
+checked, it will be enforced future versions.
+
 Casting rules
 -------------
 
@@ -180,7 +199,10 @@ type to another.
 It is often desirable to convert a signal value from one type to
 another, i.e. to link a pin with one type to a pin of another type.
 
-For some type pairs, this is possible without any intermediate conversion
+Some types are not castable at all. For example, the port type cannot cast to
+any other type; other types cannot cast to port either.
+
+For some type pairs, it is possible without any intermediate conversion
 nodes:
 
 <table class="ui definition single line table">
