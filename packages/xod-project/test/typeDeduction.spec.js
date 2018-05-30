@@ -288,4 +288,21 @@ describe('autoresolveTypes', () => {
       );
     }, autoresolveTypes('@/case5-abstracts-deep-inside-regular-patches', project));
   });
+
+  it('resolves custom types on generics', () => {
+    const projectWithCustomTypes = Helper.loadXodball(
+      './fixtures/custom-types.xodball'
+    );
+
+    const expectedResolvedProject = Helper.loadXodball(
+      './fixtures/custom-types.resolved.xodball'
+    );
+
+    Helper.expectEitherRight(actualResolvedProject => {
+      assert.sameDeepMembers(
+        listGenuinePatches(actualResolvedProject),
+        listGenuinePatches(expectedResolvedProject)
+      );
+    }, autoresolveTypes('@/main', projectWithCustomTypes));
+  });
 });

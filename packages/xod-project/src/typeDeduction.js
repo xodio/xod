@@ -483,6 +483,7 @@ const findOrCreateSpecialization = R.curry(
 
     const expectedSpecializationName = R.compose(
       PPU.getSpecializationPatchPath(PPU.getBaseName(genericNodeType)),
+      R.map(PPU.normalizeTypeNameForAbstractsResolution),
       R.map(R.nth(1))
     )(deducedTypesForGenericPins);
 
@@ -519,6 +520,7 @@ const findOrCreateSpecialization = R.curry(
       // let's try to create a specialization
       const specializationPatchPath = R.compose(
         PPU.getSpecializationPatchPath(genericNodeType),
+        R.map(PPU.normalizeTypeNameForAbstractsResolution),
         R.map(R.nth(1))
       )(deducedTypesForGenericPins);
 
