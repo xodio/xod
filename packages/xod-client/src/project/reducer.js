@@ -94,19 +94,16 @@ export default (state = {}, action) => {
     // Project
     //
     case AT.PROJECT_CREATE: {
-      const oldLocalPatchesPaths = R.compose(
-        R.map(XP.getPatchPath),
-        XP.listLocalPatches
+      const libraryPatches = R.compose(
+        R.filter(XP.isGenuinePatch),
+        XP.listLibraryPatches
       )(state);
 
-      const mainPatch = XP.createPatch();
+      const mainPatch = XP.setPatchPath(MAIN_PATCH_PATH, XP.createPatch());
 
-      return R.compose(
-        explodeEither,
-        XP.assocPatch(MAIN_PATCH_PATH, mainPatch),
-        XP.setProjectName(''),
-        XP.omitPatches(oldLocalPatchesPaths)
-      )(state);
+      const newProject = XP.createProject();
+
+      return XP.mergePatchesList([mainPatch, ...libraryPatches], newProject);
     }
 
     case AT.PROJECT_IMPORT: {
