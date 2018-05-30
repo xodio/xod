@@ -59,11 +59,11 @@ pins. The values describe the “what”, while the pulse describes the “when�
 
 Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 
-* [`flip-flop`](/libs/xod/core/flip-flop/)
-* [`clock`](/libs/xod/core/clock/)
-* [`count`](/libs/xod/core/count/)
-* [`branch`](/libs/xod/core/branch/)
-* [`any`](/libs/xod/core/any/)
+* [`flip-flop`](https://xod.io/libs/xod/core/flip-flop/)
+* [`clock`](https://xod.io/libs/xod/core/clock/)
+* [`count`](https://xod.io/libs/xod/core/count/)
+* [`branch`](https://xod.io/libs/xod/core/branch/)
+* [`any`](https://xod.io/libs/xod/core/any/)
 
 Boolean type
 ------------
@@ -79,10 +79,10 @@ greater than 25°?).
 
 Here are short list of nodes you’ll use a lot working with logical values:
 
-* [`and`](/libs/xod/core/and/)
-* [`or`](/libs/xod/core/or/)
-* [`not`](/libs/xod/core/not/)
-* [`if-else`](/libs/xod/core/if-else/)
+* [`and`](https://xod.io/libs/xod/core/and/)
+* [`or`](https://xod.io/libs/xod/core/or/)
+* [`not`](https://xod.io/libs/xod/core/not/)
+* [`if-else`](https://xod.io/libs/xod/core/if-else/)
 
 Number type
 -----------
@@ -115,15 +115,15 @@ floating point.
 
 Here are some nodes you’ll use to work with numbers:
 
-* [`add`](/libs/xod/core/add/)
-* [`subtract`](/libs/xod/core/subtract/)
-* [`multiply`](/libs/xod/core/multiply/)
-* [`divide`](/libs/xod/core/divide/)
-* [`equal`](/libs/xod/core/equal/)
-* [`less`](/libs/xod/core/less/)
-* [`greater`](/libs/xod/core/greater/)
-* [`map`](/libs/xod/math/map/)
-* [`clip`](/libs/xod/math/clip/)
+* [`add`](https://xod.io/libs/xod/core/add/)
+* [`subtract`](https://xod.io/libs/xod/core/subtract/)
+* [`multiply`](https://xod.io/libs/xod/core/multiply/)
+* [`divide`](https://xod.io/libs/xod/core/divide/)
+* [`equal`](https://xod.io/libs/xod/core/equal/)
+* [`less`](https://xod.io/libs/xod/core/less/)
+* [`greater`](https://xod.io/libs/xod/core/greater/)
+* [`map`](https://xod.io/libs/xod/math/map/)
+* [`clip`](https://xod.io/libs/xod/math/clip/)
 
 ### Unit ranges
 
@@ -259,5 +259,5 @@ Here are details:
 Other convertions can’t always be done unambigously and thus are not allowed.
 Use additional nodes to make casting explicit in such cases:
 
-* [`format-number`](/libs/xod/core/format-number/)
-* [`to-percent`](/libs/xod/core/to-percent/)
+* [`format-number`](https://xod.io/libs/xod/core/format-number/)
+* [`to-percent`](https://xod.io/libs/xod/core/to-percent/)
