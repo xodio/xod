@@ -16,10 +16,11 @@ import {
   diffSet,
   sameKeysetBy,
   prependTraceToError,
+  maybeProp,
+  maybeFind,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
-import * as Tools from './func-tools';
 import * as Comment from './comment';
 import * as Node from './node';
 import * as Link from './link';
@@ -416,7 +417,7 @@ const getPins = R.cond([
  */
 export const getPinByKey = def(
   'getPinByKey :: PinKey -> Patch -> Maybe Pin',
-  (key, patch) => R.compose(Tools.prop(key), getPins)(patch)
+  (key, patch) => R.compose(maybeProp(key), getPins)(patch)
 );
 
 /**
@@ -517,7 +518,7 @@ export const linkIdEquals = def(
  */
 export const getLinkById = def(
   'getLinkById :: LinkId -> Patch -> Maybe Link',
-  (id, patch) => R.compose(Tools.find(linkIdEquals(id)), listLinks)(patch)
+  (id, patch) => R.compose(maybeFind(linkIdEquals(id)), listLinks)(patch)
 );
 
 export const getLinkByIdUnsafe = def(
@@ -1379,7 +1380,7 @@ export const listPinsIncludingVariadics = def(
 export const getVariadicPinByKey = def(
   'getPinByKey :: Node -> PinKey -> Patch -> Maybe Pin',
   (node, key, patch) =>
-    R.compose(Tools.prop(key), addVariadicPins(node, patch), getPins)(patch)
+    R.compose(maybeProp(key), addVariadicPins(node, patch), getPins)(patch)
 );
 
 // =============================================================================
