@@ -16,9 +16,9 @@ you can map voltage to a value on a logarithmic scale, or you can interpet
 the voltage as a series of 0’s and 1’s arriving at a predefined rate, and
 then convert them into bytes by grouping them into sets of eight.
 
-XOD has native support for various data types — no need to use any
-tricks. For example, there are data types that hold arbitrary numbers or
-text strings.
+XOD has native support for various data types — no need to use any tricks. For
+example, there are data types that hold arbitrary numbers, bytes, logic values,
+or text strings.
 
 <div class="ui segment">
 <span class="ui ribbon label">Pro Tip</span>
@@ -34,55 +34,15 @@ from silly mistakes.
 </div>
 
 As mentioned above, a data type is a characteristic of a pin. You can say “Node
-`foo` has output pin `BAR` of number type”. That means that the `BAR` pin
+`foo` has output pin `OUT` of number type”. That means that the `OUT` pin
 carries a number value in every `foo` node. You can also say “Node `foo` has
-input pin `QUX` of boolean type”. That means the `foo` node always expects 0 or
-1 value connected to its `QUX` pin.
+input pin `IN1` of boolean type”. That means the `foo` node always expects True
+or False value connected to its `IN1` pin.
 
-Pulse type
-----------
-
-The pulse type is special, because it doesn’t actually carry any data on its
-own. It is only used to indicate that something has just happened or that
-something should happen right now.
-
-Pulses are similar to clock or interrupt signals in digital electronics where
-all we’re interested in is the *moments* when the signal rises to Vcc or
-falls to ground. They don’t carry any additional useful information.
-
-A pulse signal can tell us that we’ve got a new TCP packet from the network,
-an NFC card has been detected, or some time interval has elapsed. We use a
-pulse signal to trigger an SMS send command or reset a counter.
-
-Pulse signals are quite often accompanied by other value types on neighbor
-pins. The values describe the “what”, while the pulse describes the “when”.
-
-Here is a short list of nodes you’ll use a lot in conjunction with pulses:
-
-* [`flip-flop`](https://xod.io/libs/xod/core/flip-flop/)
-* [`clock`](https://xod.io/libs/xod/core/clock/)
-* [`count`](https://xod.io/libs/xod/core/count/)
-* [`branch`](https://xod.io/libs/xod/core/branch/)
-* [`any`](https://xod.io/libs/xod/core/any/)
-
-Boolean type
-------------
-
-Boolean values can be either *True* or *False*. Alternatively, you can think of
-them as a choice between of one/zero, yes/no, on/off, high/low, or
-enabled/disabled.
-
-Logical values are ubiquitous. They are adequate to implement simple digital
-sensors (is a button pressed or not?), control simple actuators (should a relay
-close?), and carry the results of logical operations (is the temperature
-greater than 25°?).
-
-Here are short list of nodes you’ll use a lot working with logical values:
-
-* [`and`](https://xod.io/libs/xod/core/and/)
-* [`or`](https://xod.io/libs/xod/core/or/)
-* [`not`](https://xod.io/libs/xod/core/not/)
-* [`if-else`](https://xod.io/libs/xod/core/if-else/)
+Generally, you may link inputs and outputs of the same type only. However,
+some pairs of different types are allowed to be linked too. A conversion rule
+is applied, which is known as *casting*. To learn which types may be implicitly
+cast to which, see the [Data types reference](/docs/reference/data-types/#casting-rules).
 
 Number type
 -----------
@@ -138,9 +98,28 @@ to emit 33% brightness and 1.0 to turn on it at maximum brightness.
 Some nodes use ranges from -1 to 1. For example, a motor node use -1 for
 full backward, -0.2 for 20% backward, 0 to stop, and 1 to run full forward.
 
-Unit ranges are convenient to use, but entirely unnecessary. It’s up to a
+Unit ranges are convenient to use, but entirely conventional. It’s up to a
 node’s implementation to decide what to do if an input value falls out of the
 range. A common behavior is to clip the input to the desired range.
+
+Boolean type
+------------
+
+Boolean values can be either *True* or *False*. Alternatively, you can think of
+them as a choice between of one/zero, yes/no, on/off, high/low, or
+enabled/disabled.
+
+Logical values are ubiquitous. They are adequate to implement simple digital
+sensors (is a button pressed or not?), control simple actuators (should a relay
+close?), and carry the results of logical operations (is the temperature
+greater than 25°?).
+
+Here are short list of nodes you’ll use a lot working with logical values:
+
+* [`and`](https://xod.io/libs/xod/core/and/)
+* [`or`](https://xod.io/libs/xod/core/or/)
+* [`not`](https://xod.io/libs/xod/core/not/)
+* [`if-else`](https://xod.io/libs/xod/core/if-else/)
 
 String type
 -----------
@@ -188,98 +167,28 @@ should stay constant. In other words, your button must not physically jump from
 `D2` to `D10` once the program started. Although the immutability is not currently
 checked, it will be enforced future versions.
 
-Casting rules
--------------
+Pulse type
+----------
 
-What should happen if a pin of one type is connected to a pin of another
-type? Some combinations are forbidden and you’ll get an error if you try to
-link such pins. Other combinations are valid, and values are *cast* from one
-type to another.
+The pulse type is special, because it doesn’t actually carry any data on its
+own. It is only used to indicate that something has just happened or that
+something should happen right now.
 
-It is often desirable to convert a signal value from one type to
-another, i.e. to link a pin with one type to a pin of another type.
+Pulses are similar to clock or interrupt signals in digital electronics where
+all we’re interested in is the *moments* when the signal rises to Vcc or
+falls to ground. They don’t carry any additional useful information.
 
-Some types are not castable at all. For example, the port type cannot cast to
-any other type; other types cannot cast to port either.
+A pulse signal can tell us that we’ve got a new TCP packet from the network,
+an NFC card has been detected, or some time interval has elapsed. We use a
+pulse signal to trigger an SMS send command or reset a counter.
 
-For some type pairs, it is possible without any intermediate conversion
-nodes:
+Pulse signals are quite often accompanied by other value types on neighbor
+pins. The values describe the “what”, while the pulse describes the “when”.
 
-<table class="ui definition single line table">
-  <thead>
-    <tr>
-      <th></th>
-      <th>→ Pulse</th>
-      <th>→ Boolean</th>
-      <th>→ Number</th>
-      <th>→ Byte</th>
-      <th>→ String</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Pulse →</td>
-      <td></td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-    </tr>
-    <tr>
-      <td>Boolean →</td>
-      <td>yes</td>
-      <td></td>
-      <td>yes</td>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>Number →</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-      <td></td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>Byte →</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-      <td class="disabled">no</td>
-      <td></td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>String →</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 
-Here are details:
-
-- **Boolean → Pulse**. Rising edge is considered to be a pulse. That is when
-  the value was `False` and just became `True` a single pulse is emitted.
-- **Boolean → Number**. `False` converts to `0.0` and `True` converts to `1.0`.
-- **Boolean → Byte**. `False` converts to `0000 0000` and `True` converts to
-  `0000 0001`.
-- **Boolean → String**. `True` converts to `"true"` and `False` converts to
-  `"false"`.
-- **Number → Boolean**. Zero converts to `False`, any other value converts to
-  `True`.
-- **Number → String**. Converts with two digits after decimal, e.g.
-  `3.14159` → `"3.14"` and `0` → `"0.00"`.
-- **Byte → Boolean**. `0000 0000` converts to `False`, any other value converts
-  to `True`.
-- **Byte → String**. Converts as a two-digit hexadecimal number with h-suffix,
-  e.g. `0000 1101` → `0Dh`.
-
-Other convertions can’t always be done unambigously and thus are not allowed.
-Use additional nodes to make casting explicit in such cases:
-
-* [`format-number`](https://xod.io/libs/xod/core/format-number/)
-* [`to-percent`](https://xod.io/libs/xod/core/to-percent/)
+* [`flip-flop`](https://xod.io/libs/xod/core/flip-flop/)
+* [`clock`](https://xod.io/libs/xod/core/clock/)
+* [`count`](https://xod.io/libs/xod/core/count/)
+* [`branch`](https://xod.io/libs/xod/core/branch/)
+* [`any`](https://xod.io/libs/xod/core/any/)

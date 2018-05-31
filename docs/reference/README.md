@@ -7,6 +7,7 @@ Reference
 
 * [Supported hardware](./supported-hardware/)
 * [Mouse and keyboard shortcuts](./shortcuts/)
+* [Data types reference](./data-types/)
 * [C++ node API reference](./node-cpp-api/)
 
 ## Standard library nodes

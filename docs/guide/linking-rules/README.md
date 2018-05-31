@@ -30,7 +30,7 @@ If an input and an output have the same [data type](../data-types/), they may
 be linked as is.
 
 However, if they have different types, they can only be linked if the output
-type can be [cast](../data-types/#casting-rules) into the input type.
+type can be [cast](/docs/reference/data-types/#casting-rules) into the input type.
 
 Once you start linking, pins that are suitable for the other end of the link
 are highlighted.

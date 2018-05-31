@@ -112,6 +112,7 @@ creating, managing, and sharing your works.
 
 * [Supported hardware](./reference/supported-hardware/) <i class="ui large green microchip icon"></i>
 * [Mouse and keyboard shortcuts](./reference/shortcuts/)
+* [Data types reference](./reference/data-types/)
 * [C++ node API reference](./reference/node-cpp-api/)
 
 </div>
