@@ -1,0 +1,63 @@
+{
+  "description": "Begins a transmission to the I²C slave device",
+  "nodes": [
+    {
+      "id": "B13jr_VOW",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers the transmission start",
+      "id": "BJfKruVdb",
+      "label": "SEND",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the transmission successfully starts. Chain it to a `write-byte` node.",
+      "id": "HJbjB_Nd-",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "I²C interface object",
+      "id": "HJkfWmny7",
+      "label": "I2C",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-i2c"
+    },
+    {
+      "description": "Triggers when the transmission fails to start. E.g., the `ADDR` is invalid.",
+      "id": "SyUMZQ2JQ",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "I²C address of the target slave device",
+      "id": "SyssEEhJm",
+      "label": "ADDR",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

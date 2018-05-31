@@ -1,0 +1,63 @@
+{
+  "description": "Reads the next byte received from an I²C device after `request` succeeded.",
+  "nodes": [
+    {
+      "description": "The byte read",
+      "id": "SJeoE43JQ",
+      "label": "BYTE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Triggers the read. Use another `read-byte` or `request` as a source signal.",
+      "id": "SkylK_Ed-",
+      "label": "READ",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when read fails. E.g., due to the buffer underflow.",
+      "id": "SygH-3mhyX",
+      "label": "ERR",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SyvJYdVdW",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "I²C interface object",
+      "id": "ryBWhQhkm",
+      "label": "I2C",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-i2c"
+    },
+    {
+      "description": "Pulses when read completes successfully. When multiple bytes should be read, send it to the next `read-byte` node in a chain.",
+      "id": "rypZF_Nub",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

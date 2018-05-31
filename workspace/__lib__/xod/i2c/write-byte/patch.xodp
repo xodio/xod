@@ -1,0 +1,63 @@
+{
+  "description": "Pushes a byte to send queue.",
+  "nodes": [
+    {
+      "description": "I²C interface object",
+      "id": "BJrcyE3y7",
+      "label": "I2C",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-i2c"
+    },
+    {
+      "description": "Datum to write",
+      "id": "S1FFN4nkm",
+      "label": "BYTE",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Pushes the `BYTE` to the send queue. Use pulse outputs from `begin-transmission` or another `write-byte` as a source signal.",
+      "id": "S1dKPuVdW",
+      "label": "SEND",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the `BYTE` queued successfully. Send the output pulse to another `write-byte` in a chain or an `end-transmission` node.",
+      "id": "SJB3vO4uZ",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1j2DdNO-",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when the write fails. E.g., due to buffer overflow.",
+      "id": "rJxr5J42ym",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
