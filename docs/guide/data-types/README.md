@@ -192,3 +192,19 @@ Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 * [`count`](https://xod.io/libs/xod/core/count/)
 * [`branch`](https://xod.io/libs/xod/core/branch/)
 * [`any`](https://xod.io/libs/xod/core/any/)
+
+Generic types
+-------------
+
+The generic types are not specific types on their own, but rather placeholders
+that resolve to specific types when the program compiles. They have names `t1`,
+`t2`, and `t3`.
+
+The generic types are used when a node performs an operation on values and it
+does not matter what the actual types are. For example,
+[`if-else`](https://xod.io/libs/xod/core/if-else/) outputs either of input
+values depending on condition. The condition is boolean, but the values and the
+output are generic `t1` as the node work the same way regardless of the actual
+type.
+
+To learn more about generic types, see [Generic Nodes](../generics/)
