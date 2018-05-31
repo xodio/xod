@@ -15,7 +15,7 @@
         "x": -1,
         "y": -1
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "rkgbMp6-lf",
@@ -23,7 +23,7 @@
         "x": -1,
         "y": 203
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/output-byte"
     }
   ]
 }

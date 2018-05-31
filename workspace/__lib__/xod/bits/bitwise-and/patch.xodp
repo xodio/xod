@@ -7,7 +7,7 @@
         "x": 68,
         "y": 102
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "HkpP80W_f",
@@ -23,7 +23,7 @@
         "x": 34,
         "y": 306
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "S1_audxxf",
@@ -39,7 +39,7 @@
         "x": 34,
         "y": 102
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     }
   ]
 }

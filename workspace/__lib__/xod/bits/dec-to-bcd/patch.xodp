@@ -24,14 +24,14 @@
       }
     },
     {
-      "id": "H1dyQ0WxG",
+      "id": "HJ-tLrpyX",
       "input": {
         "nodeId": "B1gyXAWlz",
-        "pinKey": "r1zA16pbxM"
+        "pinKey": "SkC1aTZeM"
       },
       "output": {
-        "nodeId": "HkXfO3bef",
-        "pinKey": "SkEHO_lef"
+        "nodeId": "r1COLrakX",
+        "pinKey": "By_EX_bk7"
       }
     },
     {
@@ -46,6 +46,39 @@
       }
     },
     {
+      "id": "HJlYLH6JQ",
+      "input": {
+        "nodeId": "r1COLrakX",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "Hy9hPhWxG",
+        "pinKey": "Hku_LuOyz"
+      }
+    },
+    {
+      "id": "S1jFLS61Q",
+      "input": {
+        "nodeId": "B1gyXAWlz",
+        "pinKey": "r1zA16pbxM"
+      },
+      "output": {
+        "nodeId": "HySKISpyX",
+        "pinKey": "By_EX_bk7"
+      }
+    },
+    {
+      "id": "SJcYIB61Q",
+      "input": {
+        "nodeId": "HySKISpyX",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "HkXfO3bef",
+        "pinKey": "SkEHO_lef"
+      }
+    },
+    {
       "id": "SkX6vhWlf",
       "input": {
         "nodeId": "Hy9hPhWxG",
@@ -54,17 +87,6 @@
       "output": {
         "nodeId": "H12cvhZeG",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "Sksk70WgM",
-      "input": {
-        "nodeId": "B1gyXAWlz",
-        "pinKey": "SkC1aTZeM"
-      },
-      "output": {
-        "nodeId": "Hy9hPhWxG",
-        "pinKey": "Hku_LuOyz"
       }
     },
     {
@@ -86,13 +108,13 @@
         "x": 34,
         "y": 204
       },
-      "type": "xod/core/floor"
+      "type": "xod/math/floor"
     },
     {
       "id": "B1gyXAWlz",
       "position": {
         "x": 68,
-        "y": 408
+        "y": 510
       },
       "type": "@/bitwise-or"
     },
@@ -127,12 +149,28 @@
       "type": "xod/core/modulo"
     },
     {
+      "id": "HySKISpyX",
+      "position": {
+        "x": 34,
+        "y": 408
+      },
+      "type": "@/number-to-u8"
+    },
+    {
       "id": "S1TsDnbgM",
       "position": {
         "x": 68,
-        "y": 510
+        "y": 612
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "r1COLrakX",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "@/number-to-u8"
     },
     {
       "boundLiterals": {
