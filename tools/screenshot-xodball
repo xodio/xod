@@ -1,0 +1,114 @@
+#! /usr/bin/env node
+
+/* eslint-disable import/no-extraneous-dependencies */
+
+require('babel-register');
+const puppeteer = require('puppeteer');
+
+const {
+  startServer,
+  stopServer,
+  PORT,
+} = require('xod-client-browser/tools/staticServer');
+const {
+  default: Menubar,
+} = require('xod-client-browser/test-func/pageObjects/Menubar');
+const {
+  default: ProjectBrowser,
+} = require('xod-client-browser/test-func/pageObjects/ProjectBrowser');
+const {
+  default: PatchGroupItemContextMenu,
+} = require('xod-client-browser/test-func/pageObjects/PatchGroupItemContextMenu');
+const {
+  default: EditorTab,
+} = require('xod-client-browser/test-func/pageObjects/EditorTab');
+
+if (process.argv.length < 5) {
+  // eslint-disable-next-line no-console
+  console.error(
+    'Usage: screenshot-xodball path/to/xodball patch-base-name output/path [height]'
+  );
+  process.exit(1);
+}
+
+const [
+  pathToXodball,
+  patchBaseName,
+  screenshotDestPath,
+  desiredScreenshotHeight,
+] = process.argv.slice(2);
+
+const patchboardTopLeft = {
+  x: 202,
+  y: 64,
+};
+const desiredScreenshotSize = {
+  width: 700,
+  height: parseInt(desiredScreenshotHeight, 10) || 700,
+};
+const deploymentPanelHeight = 26;
+
+const width = patchboardTopLeft.x + desiredScreenshotSize.width;
+const height =
+  patchboardTopLeft.y + desiredScreenshotSize.height + deploymentPanelHeight;
+
+(async () => {
+  await startServer();
+
+  const browser = await puppeteer.launch({
+    headless: false,
+    slowMo: 10,
+    args: [`--window-size=${width},${height}`, '--no-sandbox'],
+  });
+
+  // setup
+  const page = await browser.newPage();
+  await page.goto(`http://localhost:${PORT}/`);
+  await page.setViewport({ width, height });
+  await page.waitForSelector('.Workarea');
+
+  const menubar = await Menubar.findOnPage(page);
+  const projectBrowser = await ProjectBrowser.findOnPage(page);
+
+  // because we always start with 'welcome-to-xod' project
+  const localPatchGroup = await projectBrowser.findPatchGroup('welcome-to-xod');
+  await localPatchGroup.clickOnTrigger();
+
+  // close the default tab from 'welcome-to-xod'
+  const defaultActiveTab = await EditorTab.findActive(page);
+  await defaultActiveTab.close();
+
+  // open xodball
+  await menubar.clickTopLevelItem('File');
+  const xodballInput = await page.$('#openProjectButton');
+  await xodballInput.uploadFile(pathToXodball);
+
+  // wait for open tab to make sure xodball has loaded
+  await page.waitFor('.TabsItem.is-active');
+  // and the default tab right away
+  const activeTab = await EditorTab.findActive(page);
+  await activeTab.close();
+
+  // open patch
+  const patchGroupItem = await localPatchGroup.findPatchGroupItem(
+    patchBaseName
+  );
+  await patchGroupItem.click();
+  await patchGroupItem.rightClickContextMenuTrigger();
+  const contextMenu = await PatchGroupItemContextMenu.findOnPage(page);
+  await contextMenu.clickOpen();
+  // wait for patch to open
+  await page.waitFor('.TabsItem.is-active');
+
+  await menubar.clickTopLevelItem('View');
+  await menubar.clickMenuItem('Pan to Center');
+
+  await page.screenshot({
+    path: screenshotDestPath,
+    clip: Object.assign({}, patchboardTopLeft, desiredScreenshotSize),
+  });
+
+  await browser.close();
+  await stopServer();
+  process.exit(0);
+})();
