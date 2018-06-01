@@ -131,14 +131,10 @@ const cppByteLiteral = def(
 // E.G.
 // 3 -> 3
 // D13 -> 13
-// A3 -> PIN_A3
+// A3 -> A3
 const cppPortLiteral = def(
   'cppPortLiteral :: String -> String',
-  R.cond([
-    [R.test(/^D\d+$/i), R.tail],
-    [R.test(/^A\d+$/i), R.pipe(R.tail, R.concat('PIN_A'))],
-    [R.T, R.identity],
-  ])
+  R.when(R.test(/^D\d+$/i), R.tail)
 );
 
 // =============================================================================
