@@ -26,15 +26,6 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "Use `xod/math/add` instead",
-      "id": "SyQOZitJ7",
-      "position": {
-        "x": 136,
-        "y": 102
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "boundLiterals": {
         "__in__": "0"
       },
