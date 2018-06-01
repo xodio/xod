@@ -12,73 +12,37 @@ This is very much like integrated circuits’ signals in electronics, though
 hardware signals are quite limited as to what data they can carry. They are
 simply voltages with a value somewhere between zero volts and few volts.
 Various tricks are used to express meaningful values like numbers. For example,
-you could map voltage to a value on a logarithmic scale, or you could interpet
+you can map voltage to a value on a logarithmic scale, or you can interpet
 the voltage as a series of 0’s and 1’s arriving at a predefined rate, and
 then convert them into bytes by grouping them into sets of eight.
 
-XOD has native support for various data types — no need to use any
-tricks. For example, there are data types that hold arbitrary numbers or
-text strings.
+XOD has native support for various data types — no need to use any tricks. For
+example, there are data types that hold arbitrary numbers, bytes, logic values,
+or text strings.
 
 <div class="ui segment">
 <span class="ui ribbon label">Pro Tip</span>
-<p>You may know there are languages with static typing (C, C++, Java,
-Haskell) and languages with dynamic typing (JS, Python, Ruby). A long flamewar
-has been waged as to which is better.</p>
 
-<p>XOD is in the static-typing camp, e.g. a pin can’t have a number value
+You might know there are languages with static typing (C, C++, Java,
+Haskell) and languages with dynamic typing (JS, Python, Ruby). A long flamewar
+has been waged as to which is better.
+
+XOD is in the static-typing camp, that is a pin can’t have a number value
 now, and a text string value two seconds later. This lets the IDE protect you
-from silly mistakes.</p>
+from silly mistakes.
+
 </div>
 
-As mentioned above, a data type is a characteristic of a pin. You can say
-“Node FOO has output pin BAR of number type”. That means that the BAR pin
-carries a number value in every FOO node. You can also say “Node FOO has
-input pin QUX of boolean type”. That means the FOO node always expects 0 or 1
-value connected to its QUX pin.
+As mentioned above, a data type is a characteristic of a pin. You can say “Node
+`foo` has output pin `OUT` of number type”. That means that the `OUT` pin
+carries a number value in every `foo` node. You can also say “Node `foo` has
+input pin `IN1` of boolean type”. That means the `foo` node always expects True
+or False value connected to its `IN1` pin.
 
-Pulse type
-----------
-
-The pulse type is special, because it doesn't actually carry any data on its
-own. It is only used to indicate that something has just happened or that
-something should happen right now.
-
-Pulses are similar to clock or interrupt signals in digital electronics.
-All we’re interested in is the *moments* when the signal rises to Vcc or
-falls to ground. They don’t carry any additional useful information.
-
-A pulse signal can tell us that we’ve got a new TCP packet from the network,
-an NFC card has been detected, or some time interval has passed. We would use a
-pulse signal to trigger an SMS send command or reset a counter.
-
-Pulse signals are quite often accompanied by other value types on neighboring
-pins. The values describe the “what”, while the pulse describes the “when”.
-
-Here is a short list of nodes you’ll use a lot in conjunction with pulses:
-
-* [`clock`](/libs/xod/core/clock/)
-* [`branch`](/libs/xod/core/branch/)
-* [`any`](/libs/xod/core/any/)
-
-Boolean type
-------------
-
-Boolean values can be either *true* or *false*. Alternatively, you can think of
-them as a choice between of one/zero, yes/no, on/off, high/low, or
-enabled/disabled.
-
-Logical values are ubiquitous. They are adequate to implement simple digital
-sensors (is a button pressed or not?), control simple actuators (should a relay
-close?), and carry the results of logical operations (is the temperature
-greater than 25°?).
-
-Here are short list of nodes you’ll use a lot working with logical values:
-
-* [`and`](/libs/xod/core/and/)
-* [`or`](/libs/xod/core/or/)
-* [`not`](/libs/xod/core/not/)
-* [`if-else`](/libs/xod/core/if-else/)
+Generally, you may link inputs and outputs of the same type only. However,
+some pairs of different types are allowed to be linked too. A conversion rule
+is applied, which is known as *casting*. To learn which types may be implicitly
+cast to which, see the [Data types reference](/docs/reference/data-types/#casting-rules).
 
 Number type
 -----------
@@ -87,30 +51,39 @@ Numbers are everywhere. The number data type is used to transfer sensor
 readings, set motor speeds, perform arithmetic computations and comparisons,
 and so on.
 
-Number values in XOD can be fractional numbers and positive and negative
-infinity.
+Number values in XOD can be integer or fractional numbers, positive and
+negative infinity, or a special NaN (not a number) value.
 
-Precision and the range of representable values depend on the capabilities of
-the target platform. In any event, the number type is enough to operate on
-numbers with six significant digits in range ±10<sup>38</sup>.
+The number type has a limited precision with following characteristics:
+
+- Integers in range ±16 millions are exactly represented
+- Bigger integers in range 3×10<sup>38</sup> are rounded to a multiple of
+  2/4/8/16, etc depending on how big they are
+- Fractional numbers are exactly represented if have six or less significant
+  digits in total
+- Fractional numbers with more than six significant digits are represented with
+  precision loss
 
 <div class="ui segment">
 <span class="ui ribbon label">Pro Tip</span>
-The underlying format for number values is IEEE 754 floating point with
-single or double precision. It depends on a target platform.
+
+The underlying format for number values is
+[32-bit IEEE 754](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
+floating point.
+
 </div>
 
 Here are some nodes you’ll use to work with numbers:
 
-* [`add`](/libs/xod/core/add/)
-* [`subtract`](/libs/xod/core/subtract/)
-* [`multiply`](/libs/xod/core/multiply/)
-* [`divide`](/libs/xod/core/divide/)
-* [`equal`](/libs/xod/core/equal/)
-* [`less`](/libs/xod/core/less/)
-* [`greater`](/libs/xod/core/greater/)
-* [`clip`](/libs/xod/math/clip/)
-* [`map`](/libs/xod/math/map/)
+* [`add`](https://xod.io/libs/xod/core/add/)
+* [`subtract`](https://xod.io/libs/xod/core/subtract/)
+* [`multiply`](https://xod.io/libs/xod/core/multiply/)
+* [`divide`](https://xod.io/libs/xod/core/divide/)
+* [`equal`](https://xod.io/libs/xod/core/equal/)
+* [`less`](https://xod.io/libs/xod/core/less/)
+* [`greater`](https://xod.io/libs/xod/core/greater/)
+* [`map`](https://xod.io/libs/xod/math/map/)
+* [`clip`](https://xod.io/libs/xod/math/clip/)
 
 ### Unit ranges
 
@@ -125,9 +98,28 @@ to emit 33% brightness and 1.0 to turn on it at maximum brightness.
 Some nodes use ranges from -1 to 1. For example, a motor node use -1 for
 full backward, -0.2 for 20% backward, 0 to stop, and 1 to run full forward.
 
-Unit ranges are convenient to use, but entirely unnecessary.  It’s up to a
-node's implementation to decide what to do if an input value falls out of the
-range. A common behavior is to clamp the input to the desired range.
+Unit ranges are convenient to use, but entirely conventional. It’s up to a
+node’s implementation to decide what to do if an input value falls out of the
+range. A common behavior is to clip the input to the desired range.
+
+Boolean type
+------------
+
+Boolean values can be either *True* or *False*. Alternatively, you can think of
+them as a choice between of one/zero, yes/no, on/off, high/low, or
+enabled/disabled.
+
+Logical values are ubiquitous. They are adequate to implement simple digital
+sensors (is a button pressed or not?), control simple actuators (should a relay
+close?), and carry the results of logical operations (is the temperature
+greater than 25°?).
+
+Here are short list of nodes you’ll use a lot working with logical values:
+
+* [`and`](https://xod.io/libs/xod/core/and/)
+* [`or`](https://xod.io/libs/xod/core/or/)
+* [`not`](https://xod.io/libs/xod/core/not/)
+* [`if-else`](https://xod.io/libs/xod/core/if-else/)
 
 String type
 -----------
@@ -143,230 +135,76 @@ Computers don’t actually like text, but humans do. You’ll use text to parse
 high-level input like an SMS or tweet, and display values to humans, or send
 them via some web-service.
 
-<div class="ui segment">
-<span class="ui red ribbon label">XOD T0D0</span>
-The types described below are not yet implemented in XOD. For now, we'll just
-describe how things <em>could</em> look in future. We invite you
-to join the <a href="//forum.xod.io">discussion on our forum</a>. You could
-affect our design decisions.
-</div>
-
-Integer type
-------------
-
-Although the number type is often enough to process numeric values,
-sometimes it’s preferrable to work with an integer type.
-
-Integers have no problems with precision loss, are processed faster, and
-make much more sense for some purposes, such as as getting a substring from
-a string at a particular index and of a particular length.
-
-The integer type can represent integral values in the range of rougly ±2
-billion.
-
-<div class="ui segment">
-<span class="ui ribbon label">Pro Tip</span>
-The underlying type for integer values is a signed 32-bit integer.
-</div>
-
 Byte type
 ---------
 
 Bytes are the fundamental building blocks of low-level computing. Many hardware
 peripherals send or consume a sequence of bytes to interact with a controller.
+Essentially a byte is a group of eight bits which are either 0 or 1.
 
-In XOD, a byte is a distinct data type that is used to perform low-level
-operations. It can’t be directly interchanged with other types. You’ll
-use some conversion nodes to convert byte values to and from more useful types
-such as:
+In XOD, the byte is a distinct data type that is used to perform low-level
+operations. It can’t be directly interchanged with numbers as it happens in C++.
+You have to use explicit conversion nodes from the standard
+[`xod/bits`](https://xod.io/libs/xod/bits/) library. It also provides other
+bitwise operation nodes.
 
-Tuples
-------
+Port type
+---------
 
-Tuples are simply groups of other values with a predefined order and size.
+The port type is used to denote physical ports on a board. For hystorical
+reasons, the term “port” is used rather than “pin” to clearly distinguish the
+pins of XOD nodes (software thing) and pins for wires (hardware thing).
+You will see pins of the port type often when place nodes representing
+physical pieces of hardware like LEDs and buttons.
 
-For example, `Tuple3 Number Number Number` could be used to denote a point in
-3D-space. In that case, it would contain X in the first position, Y in second,
-and Z in the third.
+Values of the port type look like `A0`, `A3`, `D3`, `D13`. For example,
+`A3` describe the board port with the third analog channel on it which
+is commonly printed on a board as is: “A3”. The `D3` value denotes the
+third digital port which is commonly printed on a board as “D3” or just “3”.
 
-Or `Tuple2 Byte Integer` could be used to encode a message for a particular IC
-chip.
+Values of the port type must not change their values at runtime: they
+should stay constant. In other words, your button must not physically jump from
+`D2` to `D10` once the program started. Although the immutability is not currently
+checked, it will be enforced future versions.
 
-<div class="ui segment">
-<span class="ui ribbon label">Pro Tip</span>
-If you’re familar with C or Arduino, think of tuples as structs whose
-members are accessed by their index rather than by their name.
-</div>
+Pulse type
+----------
 
-You can easily pack and unpack single values to and from tuples using the
-following nodes:
+The pulse type is special, because it doesn’t actually carry any data on its
+own. It is only used to indicate that something has just happened or that
+something should happen right now.
 
-Lists
------
+Pulses are similar to clock or interrupt signals in digital electronics where
+all we’re interested in is the *moments* when the signal rises to Vcc or
+falls to ground. They don’t carry any additional useful information.
 
-Lists are sequences of values of a particular type. Unlike tuples, their length
-is not predefined: they can grow or shrink as the program runs. And they can
-only contain values of a single type.
+A pulse signal can tell us that we’ve got a new TCP packet from the network,
+an NFC card has been detected, or some time interval has elapsed. We use a
+pulse signal to trigger an SMS send command or reset a counter.
 
-For example:
-- `List Number` can represent a history of temperature readings
-- `List Byte` might be a packet to send or receive from the network
-- `List (Tuple Number Number Number)` could represent the trajectory of a
-   robotic hand as a sequence of points in 3D-space.
-- `List (List Number)` represents a dynamically-sized 2D-table of numbers.
+Pulse signals are quite often accompanied by other value types on neighbor
+pins. The values describe the “what”, while the pulse describes the “when”.
 
-Common operations on lists include:
+Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 
-Errors
-------
+* [`flip-flop`](https://xod.io/libs/xod/core/flip-flop/)
+* [`clock`](https://xod.io/libs/xod/core/clock/)
+* [`count`](https://xod.io/libs/xod/core/count/)
+* [`branch`](https://xod.io/libs/xod/core/branch/)
+* [`any`](https://xod.io/libs/xod/core/any/)
 
-Error is not an independent type per se. Instead, it augments other types with
-special values to denote computational errors.
-
-For example, dividing an integer by zero would result in error value
-rather than integer value.Similarly, an attempt to get an element from
-an empty list would result in another error value.
-
-Error values are viral. Once a functional node gets an error value on one of
-its inputs all it outputs get error values too.
-
-There are few nodes that you would use to generate your own errors and handle
-potential errors.
-
-Casting rules
+Generic types
 -------------
 
-What should happen if a pin of one type is connected to a pin of another
-type? Some combinations are forbidden and you’ll get an error if you try to
-link such pins. Other combinations are valid, and values are *cast* from one
-type to another.
+The generic types are not specific types on their own, but rather placeholders
+that resolve to specific types when the program compiles. They have names `t1`,
+`t2`, and `t3`.
 
-It is often desirable to convert a signal value from one type to
-another, i.e. to link a pin with one type to a pin of another type.
+The generic types are used when a node performs an operation on values and it
+does not matter what the actual types are. For example,
+[`if-else`](https://xod.io/libs/xod/core/if-else/) outputs either of input
+values depending on condition. The condition is boolean, but the values and the
+output are generic `t1` as the node work the same way regardless of the actual
+type.
 
-For some type pairs, this is possible without any intermediate conversion
-nodes:
-
-<table class="ui definition single line table">
-  <thead>
-    <tr>
-      <th></th>
-      <th>→ Pulse</th>
-      <th>→ Boolean</th>
-      <th>→ Number</th>
-      <th>→ Integer</th>
-      <th>→ Byte</th>
-      <th>→ String</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Pulse →</td>
-      <td></td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-    </tr>
-    <tr>
-      <td>Boolean →</td>
-      <td>yes</td>
-      <td></td>
-      <td>yes</td>
-      <td>yes</td>
-      <td>yes</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>Number →</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-      <td></td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>Integer →</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-      <td>yes</td>
-      <td></td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>Byte →</td>
-      <td class="disabled">no</td>
-      <td>yes</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td></td>
-      <td>yes</td>
-    </tr>
-    <tr>
-      <td>String →</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td class="disabled">no</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-
-Here are details:
-
-- **Boolean → Pulse**. Rising edge is considered to be a pulse. E.g. when the
-  value was `false` and just became `true` a single pulse is emitted.
-- **Boolean → Number**. `false` converts to `0.0` and `true` converts to `1.0`.
-- **Boolean → Integer**. `false` converts to `0` and `true` converts to `1`.
-- **Boolean → Byte**. `false` converts to `0000 0000` and `true` converts to
-  `0000 0001`.
-- **Boolean → String**. `false` converts to `"true"` and `false` converts to
-  `"false"`.
-- **Number → Boolean**. Zero converts to `false`, any other value converts to
-  `true`.
-- **Number → String**. Converts with two digits after decimal, e.g.
-  `3.14159` → `"3.14"` and `0` → `"0.00"`.
-- **Integer → Boolean**. Zero converts to `false`, any other value converts to
-  `true`.
-- **Integer → Number**. Converted as is. Precision loss is possible for large
-  values.
-- **Integer → String**. Converted as is.
-- **Byte → Boolean**. `0000 0000` converts to `false`, any other value converts
-  to `true`.
-
-Other convertions can’t always be done unambigously and thus are not allowed.
-Use additional nodes to make casting explicit in such cases:
-
-* [`format-number`](/libs/xod/core/format-number/)
-* [`to-percent`](/libs/xod/core/to-percent/)
-
-### List lifting
-
-There are times when we have an output of a particular type `T` and an
-input of the corresponding list type `List T`. Or vice versa. Conceptually,
-these are two very different types. However, XOD can make an implicit
-cast to link them properly. This transformation is known as “lifting”.
-
-If a value of type `T` is connected to an input of type `List T`, the
-value is considered to be a single element list with that value in
-the first position, i.e. `42` becomes `[42]`.
-
-Conversely, if a value of type `List T` is connected to an input of type `T` in
-a functional node, the node *maps* each element of the list and the resulting
-value is a list type. For example, if `[-1, 2, 3, -4, -5]` were passed to an
-[abs](/libs/xod/math/abs/) node, which usually operates on single
-numbers, the result would be `[1, 2, 3, 4, 5]`.
-
-If two lists are given as the two inputs of a functional node, the node
-operates element-wise on the lists, i.e. given `[1, 2, 3]` for `X` and `[40,
-50, 60]` for `Y`, the [add](/libs/xod/core/add/) node would output `[41, 52,
-63]`.
-
-If the lists differ in length, the lifting operation treats each of the lists
-as if it was as short as the shortest list, i.e. given `[1, 2, 3, 4]` and `[40,
-50]`, the “add” node would output `[41, 52]`.
+To learn more about generic types, see [Generic Nodes](../generics/)
