@@ -193,6 +193,21 @@ Here is a short list of nodes you’ll use a lot in conjunction with pulses:
 * [`branch`](https://xod.io/libs/xod/core/branch/)
 * [`any`](https://xod.io/libs/xod/core/any/)
 
+Custom types
+------------
+
+When built-in types are not enough to express some domain, you can add new
+types to the XOD type system. Custom types can be composites of other types or
+wrap C++ classes.
+
+Consider custom type values like black boxes which cannot do anything on their
+own. The author of a custom type will always put some nodes which operate on
+such values to perform meaningful actions, query their data, and allow creating
+or updating the values.
+
+Read [Defining Custom Types](../custom-types/) to learn how to introduce your
+own types.
+
 Generic types
 -------------
 
