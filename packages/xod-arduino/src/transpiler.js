@@ -98,6 +98,68 @@ const arrangeTPatchesInTopologicalOrder = def(
     )(project)
 );
 
+const convertPatchToTPatch = def(
+  'convertPatchToTPatch :: Patch -> TPatch',
+  patch => {
+    const patchPath = Project.getPatchPath(patch);
+    const impl = explodeMaybe(
+      `Implementation for ${patchPath} not found`,
+      Project.getImpl(patch)
+    );
+
+    const isDirtyable = pin =>
+      Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
+      isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
+
+    const outputs = R.compose(
+      R.map(
+        R.applySpec({
+          type: Project.getPinType,
+          pinKey: Project.getPinLabel,
+          value: R.compose(Project.defaultValueOfType, Project.getPinType),
+          isDirtyable,
+          isDirtyOnBoot: R.compose(
+            R.not,
+            R.equals(Project.PIN_TYPE.PULSE),
+            Project.getPinType
+          ),
+        })
+      ),
+      Project.normalizePinLabels,
+      Project.listOutputPins
+    )(patch);
+
+    const inputs = R.compose(
+      R.map(
+        R.applySpec({
+          type: Project.getPinType,
+          pinKey: Project.getPinLabel,
+          isDirtyable,
+        })
+      ),
+      Project.normalizePinLabels,
+      Project.listInputPins
+    )(patch);
+
+    const isThisIsThat = {
+      isDefer: Project.isDeferNodeType(patchPath),
+      isConstant: Project.isConstantNodeType(patchPath),
+      usesTimeouts: areTimeoutsEnabled(impl),
+      usesNodeId: isNodeIdEnabled(impl),
+    };
+
+    return R.mergeAll([
+      isThisIsThat,
+      {
+        outputs,
+        inputs,
+        impl,
+        patchPath,
+      },
+    ]);
+  }
+);
+
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> [TPatch]',
   (entryPath, project) =>
@@ -106,64 +168,8 @@ const createTPatches = def(
       // as respective nodes in a toposorted graph
       arrangeTPatchesInTopologicalOrder(entryPath, project),
       // :: Map PatchPath TPatch
-      R.mapObjIndexed((patch, patchPath) => {
-        const impl = explodeMaybe(
-          `Implementation for ${patchPath} not found`,
-          Project.getImpl(patch)
-        );
-
-        const isDirtyable = pin =>
-          Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
-          isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
-
-        const outputs = R.compose(
-          R.map(
-            R.applySpec({
-              type: Project.getPinType,
-              pinKey: Project.getPinLabel,
-              value: R.compose(Project.defaultValueOfType, Project.getPinType),
-              isDirtyable,
-              isDirtyOnBoot: R.compose(
-                R.not,
-                R.equals(Project.PIN_TYPE.PULSE),
-                Project.getPinType
-              ),
-            })
-          ),
-          Project.normalizePinLabels,
-          Project.listOutputPins
-        )(patch);
-
-        const inputs = R.compose(
-          R.map(
-            R.applySpec({
-              type: Project.getPinType,
-              pinKey: Project.getPinLabel,
-              isDirtyable,
-            })
-          ),
-          Project.normalizePinLabels,
-          Project.listInputPins
-        )(patch);
-
-        const isThisIsThat = {
-          isDefer: Project.isDeferNodeType(patchPath),
-          isConstant: Project.isConstantNodeType(patchPath),
-          usesTimeouts: areTimeoutsEnabled(impl),
-          usesNodeId: isNodeIdEnabled(impl),
-        };
-
-        return R.mergeAll([
-          isThisIsThat,
-          {
-            outputs,
-            inputs,
-            impl,
-            patchPath,
-          },
-        ]);
-      }),
-      R.omit([entryPath]),
+      R.map(convertPatchToTPatch),
+      R.dissoc(entryPath),
       R.indexBy(Project.getPatchPath),
       Project.listGenuinePatches
     )(project)
