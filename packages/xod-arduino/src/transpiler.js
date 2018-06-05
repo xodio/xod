@@ -51,12 +51,10 @@ const toposortProject = def(
     R.compose(
       R.chain(nodeIdsMap =>
         R.compose(
-          R.map(
-            R.applySpec({
-              project: R.identity,
-              nodeIdsMap: R.always(nodeIdsMap),
-            })
-          ),
+          R.map(transformedProject => ({
+            transformedProject,
+            nodeIdsMap,
+          })),
           () =>
             Project.updatePatch(
               path,
@@ -160,10 +158,54 @@ const convertPatchToTPatch = def(
   }
 );
 
+const getMissingExplicitConstructorTypes = def(
+  'getMissingExplicitConstructorTypes :: PatchPath -> Project -> [PatchPath]',
+  (entryPath, project) => {
+    // :: [Patch]
+    const usedPatches = R.compose(
+      // we are sure that all thote patches exist since running flatten
+      R.map(Project.getPatchByPathUnsafe(R.__, project)),
+      R.uniq,
+      R.map(Project.getNodeType),
+      Project.listNodes,
+      // we are sure that entry patch exists since running flatten
+      Project.getPatchByPathUnsafe(entryPath)
+    )(project);
+
+    // :: [PatchPath]
+    const explicitlyUsedConstructors = R.compose(
+      R.map(Project.getPatchPath),
+      R.filter(Project.isConstructorPatch)
+    )(usedPatches);
+
+    // :: [PatchPath]
+    const referencedCustomTypes = R.compose(
+      R.reject(Project.isBuiltInType),
+      R.uniq,
+      R.map(Project.getPinType),
+      R.chain(Project.listPins)
+    )(usedPatches);
+
+    return R.without(explicitlyUsedConstructors, referencedCustomTypes);
+  }
+);
+
 const createTPatches = def(
-  'createTPatches :: PatchPath -> Project -> [TPatch]',
-  (entryPath, project) =>
+  'createTPatches :: PatchPath -> Project -> Project -> [TPatch]',
+  (entryPath, project, originalProject) =>
     R.compose(
+      // Include constructor patches for custom types
+      // that are used without an explicit constructor.
+      // Otherwise, generated source code won't have
+      // type definitions for them.
+      tPatches =>
+        R.compose(
+          // Those construction patches must be at the very top
+          R.concat(R.__, tPatches),
+          R.map(convertPatchToTPatch),
+          R.map(Project.getPatchByPathUnsafe(R.__, originalProject)),
+          getMissingExplicitConstructorTypes
+        )(entryPath, project),
       // patches must appear in the same order
       // as respective nodes in a toposorted graph
       arrangeTPatchesInTopologicalOrder(entryPath, project),
@@ -372,8 +414,8 @@ const transformProjectWithImpls = def(
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
       // :: Either Error TProject
-      R.map(({ project: proj, nodeIdsMap }) => {
-        const patches = createTPatches(path, proj);
+      R.map(({ transformedProject, nodeIdsMap }) => {
+        const patches = createTPatches(path, transformedProject, project);
 
         return R.merge(
           {
@@ -382,7 +424,7 @@ const transformProjectWithImpls = def(
           R.applySpec({
             patches: R.always(patches),
             nodes: createTNodes(path, patches, nodeIdsMap),
-          })(proj)
+          })(transformedProject)
         );
       }),
       R.chain(toposortProject(path)),

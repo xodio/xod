@@ -1,0 +1,131 @@
+{
+  "name": "",
+  "patches": {
+    "@/alternative-constructor": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\n{{ GENERATED_CODE }}\n\nusing Type = Number;\n\nvoid evaluate(Context ctx) {\n    emitValue<output_OUT>(ctx, (Number)1337);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BJNznEEgm": {
+          "id": "BJNznEEgm",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "@/output-my-type"
+        },
+        "H1dGnVEg7": {
+          "id": "H1dGnVEg7",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/alternative-constructor"
+    },
+    "@/cast-to-string(my-type)": {
+      "attachments": [
+        {
+          "content": "#pragma XOD dirtieness disable\n\nstruct State {\n    char str[16];\n    CStringView view;\n    State() : view(str) { }\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto state = getState(ctx);\n    auto num = getValue<input_IN>(ctx);\n    dtostrf(num, 0, 0, state->str);\n    emitValue<output_OUT>(ctx, XString(&state->view));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "SkzDTNNxQ": {
+          "id": "SkzDTNNxQ",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "rk7EpN4eQ": {
+          "id": "rk7EpN4eQ",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "ryP7pNNlm": {
+          "id": "ryP7pNNlm",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/input-my-type"
+        }
+      },
+      "path": "@/cast-to-string(my-type)"
+    },
+    "@/main": {
+      "links": {
+        "r1LqpEEe7": {
+          "id": "r1LqpEEe7",
+          "input": {
+            "nodeId": "S1BqT4VeX",
+            "pinKey": "ryP7pNNlm"
+          },
+          "output": {
+            "nodeId": "rJ97hNVxQ",
+            "pinKey": "BJNznEEgm"
+          }
+        }
+      },
+      "nodes": {
+        "S1BqT4VeX": {
+          "id": "S1BqT4VeX",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/cast-to-string(my-type)"
+        },
+        "rJ97hNVxQ": {
+          "id": "rJ97hNVxQ",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "@/alternative-constructor"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/my-type": {
+      "attachments": [
+        {
+          "content": "struct State {\n};\n\nusing Type = Number;\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    emitValue<output_OUT>(ctx, (Number)42);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Syee24Vx7": {
+          "id": "Syee24Vx7",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "rJKxnE4eX": {
+          "id": "rJKxnE4eX",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/my-type"
+    }
+  }
+}

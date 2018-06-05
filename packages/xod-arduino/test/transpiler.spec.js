@@ -86,6 +86,29 @@ describe('xod-arduino transpiler', () => {
           'Node IDs were not arranged in topological order'
         );
       }));
+  it('ensures definitions for all used custom types are included', () =>
+    loadProject(
+      [wsPath()],
+      path.resolve(
+        __dirname,
+        './fixtures/ensure-custom-types-are-defined.xodball'
+      )
+    )
+      .then(transformProject(R.__, '@/main'))
+      .then(explodeEither)
+      .then(tProject => {
+        const actualPatchPaths = R.compose(
+          R.map(R.prop('patchPath')),
+          R.prop('patches')
+        )(tProject);
+
+        assert.deepEqual(actualPatchPaths, [
+          // implementation of "original" type constructor was added at the top
+          '@/my-type',
+          '@/alternative-constructor',
+          '@/cast-to-string(my-type)',
+        ]);
+      }));
 });
 
 describe('getNodeIdsMap', () => {
