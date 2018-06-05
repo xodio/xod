@@ -34,6 +34,15 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Use `xod/i2c/begin-transmission` instead.",
+      "id": "r1dfDm4gX",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

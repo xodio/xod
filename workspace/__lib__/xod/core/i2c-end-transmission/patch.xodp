@@ -18,6 +18,15 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Use `xod/i2c/end-transmission` instead.",
+      "id": "rJvVP7NlQ",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "ryviw_EOb",
       "label": "DONE",
       "position": {

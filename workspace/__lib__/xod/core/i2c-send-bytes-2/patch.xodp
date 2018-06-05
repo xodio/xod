@@ -126,6 +126,15 @@
       "type": "@/i2c-end-transmission"
     },
     {
+      "description": "Use a chain of `xod/i2c/begin-transmission` + `xod/i2c/write` + `xod/i2c/end-transmission` instead.",
+      "id": "S1xy2v74lm",
+      "position": {
+        "x": 442,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SkDMTNjwW",
       "label": "DONE",
       "position": {
