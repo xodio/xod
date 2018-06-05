@@ -20,7 +20,7 @@ photoresistor node in XOD.
 Yet, we have basic nodes for working with the digital and analog ports of the
 Arduino. A photoresistor is a pretty primitive device, and all we need to do is
 read its value from the analog port on the Arduino. To do so, we will use an
-`analog-input` node.
+`analog-sensor` node.
 
 ![Patch](./patch.png)
 

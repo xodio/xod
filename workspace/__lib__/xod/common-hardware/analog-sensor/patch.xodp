@@ -1,0 +1,120 @@
+{
+  "description": "Reads analog signal value from analog sensor",
+  "links": [
+    {
+      "id": "HkDlNcCJQ",
+      "input": {
+        "nodeId": "BJdJV9RkX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1niX9AJQ",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
+      "id": "Syag4cRJQ",
+      "input": {
+        "nodeId": "BkoeN9Ay7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1niX9AJQ",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "r1A0QqRJ7",
+      "input": {
+        "nodeId": "r1niX9AJQ",
+        "pinKey": "SkuhqCqym"
+      },
+      "output": {
+        "nodeId": "r1l3XcR17",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJlkN5R1Q",
+      "input": {
+        "nodeId": "r1niX9AJQ",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "SkUhQ5RkQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryFyXyJeX",
+      "input": {
+        "nodeId": "H1P1711gm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1niX9AJQ",
+        "pinKey": "HJgzpqacyX"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Fires on reading complete\n",
+      "id": "BJdJV9RkX",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The latest read value in range 0.0 … 1.0",
+      "id": "BkoeN9Ay7",
+      "label": "VAL",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires if update failed. E.g. `PORT` is not an ADC port.\n",
+      "id": "H1P1711gm",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Triggers new read",
+      "id": "SkUhQ5RkQ",
+      "label": "UPD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Analog port to read from. Should start with `A` to succeed.\n",
+      "id": "r1l3XcR17",
+      "label": "PORT",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "r1niX9AJQ",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/gpio/analog-read"
+    }
+  ]
+}

@@ -22,6 +22,15 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "description": "Use `xod/gpio/digital-write` instead",
+      "id": "r1fbAJskX",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "rkwUj42xb",
       "position": {
         "x": 138,

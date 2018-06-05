@@ -97,7 +97,7 @@ describe('creating blink patch', () => {
   it('adds rest of the nodes needed for blink patch', async () => {
     // please note that nodes must be added in this specific order,
     // or else the order of implementations in transpiled code is different from fixture
-    await projectBrowser.addNodeViaContextMenu('xod/core', 'digital-output');
+    await projectBrowser.addNodeViaContextMenu('xod/gpio', 'digital-write');
     const [digitalOutputNode] = await getSelectedNodes(page);
     await digitalOutputNode.drag(150, 250);
 
@@ -109,7 +109,7 @@ describe('creating blink patch', () => {
   it('creates links between nodes', async () => {
     const clockNode = await Node.findByName(page, 'clock');
     const flipFlopNode = await Node.findByName(page, 'flip-flop');
-    const digitalOutputNode = await Node.findByName(page, 'digital-output');
+    const digitalOutputNode = await Node.findByName(page, 'digital-write');
 
     const clockTickPin = await clockNode.findPinByName('TICK');
 
@@ -148,13 +148,13 @@ describe('creating blink patch', () => {
   it('binds values to outputs in Inspector', async () => {
     const inspector = await Inspector.findOnPage(page);
     const clockNode = await Node.findByName(page, 'clock');
-    const digitalOutputNode = await Node.findByName(page, 'digital-output');
+    const digitalOutputNode = await Node.findByName(page, 'digital-write');
 
     await clockNode.click();
     await inspector.setPinValue('IVAL', '0.25');
 
     await digitalOutputNode.click();
-    await inspector.setPinValue('PORT', '13');
+    await inspector.setPinValue('PORT', 'D13');
   });
 
   it('shows transpiled code for arduino', async () => {

@@ -146,7 +146,7 @@
           url: https://www.seeedstudio.com/Mod-Red-LED-p-1142.html
     - part: Relay
       nodes:
-        - xod/core/digital-output
+        - xod/gpio/digital-write
       shopping:
         - shop: Adafruit
           sku: "#2935"

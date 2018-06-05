@@ -685,6 +685,81 @@ void loop() {
 namespace xod {
 
 //-----------------------------------------------------------------------------
+// xod/core/continuously implementation
+//-----------------------------------------------------------------------------
+namespace xod__core__continuously {
+
+struct State {
+};
+
+struct Node {
+    State state;
+    TimeMs timeoutAt;
+    Logic output_TICK;
+
+    union {
+        struct {
+            bool isOutputDirty_TICK : 1;
+            bool isNodeDirty : 1;
+        };
+
+        DirtyFlags dirtyFlags;
+    };
+};
+
+struct output_TICK { };
+
+template<typename PinT> struct ValueType { using T = void; };
+template<> struct ValueType<output_TICK> { using T = Logic; };
+
+struct ContextObject {
+    Node* _node;
+
+};
+
+using Context = ContextObject*;
+
+template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            "" \
+            " output_TICK");
+}
+
+template<> Logic getValue<output_TICK>(Context ctx) {
+    return ctx->_node->output_TICK;
+}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "");
+    return false;
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_TICK");
+}
+
+template<> void emitValue<output_TICK>(Context ctx, Logic val) {
+    ctx->_node->output_TICK = val;
+    ctx->_node->isOutputDirty_TICK = true;
+}
+
+State* getState(Context ctx) {
+    return &ctx->_node->state;
+}
+
+void evaluate(Context ctx) {
+    emitValue<output_TICK>(ctx, 1);
+    setTimeout(ctx, 0);
+}
+
+} // namespace xod__core__continuously
+
+//-----------------------------------------------------------------------------
 // xod/core/clock implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__clock {
@@ -929,19 +1004,22 @@ void evaluate(Context ctx) {
 } // namespace xod__core__flip_flop
 
 //-----------------------------------------------------------------------------
-// xod/core/digital-output implementation
+// xod/gpio/digital-write implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__digital_output {
+namespace xod__gpio__digital_write {
 
 struct State {
-    int configuredPort = -1;
 };
 
 struct Node {
     State state;
+    Logic output_DONE;
+    Logic output_ERR;
 
     union {
         struct {
+            bool isOutputDirty_DONE : 1;
+            bool isOutputDirty_ERR : 1;
             bool isNodeDirty : 1;
         };
 
@@ -951,17 +1029,25 @@ struct Node {
 
 struct input_PORT { };
 struct input_SIG { };
+struct input_UPD { };
+struct output_DONE { };
+struct output_ERR { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_PORT> { using T = Number; };
+template<> struct ValueType<input_PORT> { using T = uint8_t; };
 template<> struct ValueType<input_SIG> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<output_ERR> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_PORT;
+    uint8_t _input_PORT;
     Logic _input_SIG;
+    Logic _input_UPD;
 
+    bool _isInputDirty_UPD;
 };
 
 using Context = ContextObject*;
@@ -969,28 +1055,50 @@ using Context = ContextObject*;
 template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
-            " input_PORT input_SIG" \
-            "");
+            " input_PORT input_SIG input_UPD" \
+            " output_DONE output_ERR");
 }
 
-template<> Number getValue<input_PORT>(Context ctx) {
+template<> uint8_t getValue<input_PORT>(Context ctx) {
     return ctx->_input_PORT;
 }
 template<> Logic getValue<input_SIG>(Context ctx) {
     return ctx->_input_SIG;
 }
+template<> Logic getValue<input_UPD>(Context ctx) {
+    return ctx->_input_UPD;
+}
+template<> Logic getValue<output_DONE>(Context ctx) {
+    return ctx->_node->output_DONE;
+}
+template<> Logic getValue<output_ERR>(Context ctx) {
+    return ctx->_node->output_ERR;
+}
 
 template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
-            "");
+            " input_UPD");
     return false;
+}
+
+template<> bool isInputDirty<input_UPD>(Context ctx) {
+    return ctx->_isInputDirty_UPD;
 }
 
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            "");
+            " output_DONE output_ERR");
+}
+
+template<> void emitValue<output_DONE>(Context ctx, Logic val) {
+    ctx->_node->output_DONE = val;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+template<> void emitValue<output_ERR>(Context ctx, Logic val) {
+    ctx->_node->output_ERR = val;
+    ctx->_node->isOutputDirty_ERR = true;
 }
 
 State* getState(Context ctx) {
@@ -998,20 +1106,23 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    const int port = (int)getValue<input_PORT>(ctx);
-    if (port != state->configuredPort) {
-        ::pinMode(port, OUTPUT);
-        // Store configured port so to avoid repeating `pinMode` call if just
-        // SIG is updated
-        state->configuredPort = port;
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
+    const uint8_t port = getValue<input_PORT>(ctx);
+    bool err = (port < 0 || port > NUM_DIGITAL_PINS - 1);
+    if (err) {
+        emitValue<output_ERR>(ctx, 1);
+        return;
     }
 
+    ::pinMode(port, OUTPUT);
     const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
+    emitValue<output_DONE>(ctx, 1);
 }
 
-} // namespace xod__core__digital_output
+} // namespace xod__gpio__digital_write
 
 } // namespace xod
 
@@ -1032,27 +1143,42 @@ constexpr Number node_0_output_VAL = 0.25;
 
 constexpr Logic node_1_output_VAL = true;
 
-constexpr Number node_2_output_VAL = 13;
+constexpr uint8_t node_2_output_VAL = 13;
 
 constexpr Logic node_3_output_TICK = false;
-xod__core__clock::Node node_3 = {
-    xod__core__clock::State(), // state default
+xod__core__continuously::Node node_3 = {
+    xod__core__continuously::State(), // state default
     0, // timeoutAt
     node_3_output_TICK, // output TICK default
     false, // TICK dirty
     true // node itself dirty
 };
 
-constexpr Logic node_4_output_MEM = false;
-xod__core__flip_flop::Node node_4 = {
+constexpr Logic node_4_output_TICK = false;
+xod__core__clock::Node node_4 = {
+    xod__core__clock::State(), // state default
+    0, // timeoutAt
+    node_4_output_TICK, // output TICK default
+    false, // TICK dirty
+    true // node itself dirty
+};
+
+constexpr Logic node_5_output_MEM = false;
+xod__core__flip_flop::Node node_5 = {
     xod__core__flip_flop::State(), // state default
-    node_4_output_MEM, // output MEM default
+    node_5_output_MEM, // output MEM default
     true, // MEM dirty
     true // node itself dirty
 };
 
-xod__core__digital_output::Node node_5 = {
-    xod__core__digital_output::State(), // state default
+constexpr Logic node_6_output_DONE = false;
+constexpr Logic node_6_output_ERR = false;
+xod__gpio__digital_write::Node node_6 = {
+    xod__gpio__digital_write::State(), // state default
+    node_6_output_DONE, // output DONE default
+    node_6_output_ERR, // output ERR default
+    false, // DONE dirty
+    false, // ERR dirty
     true // node itself dirty
 };
 
@@ -1064,6 +1190,7 @@ void runTransaction() {
 
     // Check for timeouts
     detail::checkTriggerTimeout(&node_3);
+    detail::checkTriggerTimeout(&node_4);
 
     // defer-* nodes are always at the very bottom of the graph, so no one will
     // recieve values emitted by them. We must evaluate them before everybody
@@ -1073,13 +1200,29 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
 
     // Evaluate all dirty nodes
-    { // xod__core__clock #3
+    { // xod__core__continuously #3
         if (node_3.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(3);
 
-            xod__core__clock::ContextObject ctxObj;
+            xod__core__continuously::ContextObject ctxObj;
             ctxObj._node = &node_3;
+
+            // copy data from upstream nodes into context
+
+            xod__core__continuously::evaluate(&ctxObj);
+
+            // mark downstream nodes dirty
+            node_6.isNodeDirty |= node_3.isOutputDirty_TICK;
+        }
+    }
+    { // xod__core__clock #4
+        if (node_4.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(4);
+
+            xod__core__clock::ContextObject ctxObj;
+            ctxObj._node = &node_4;
 
             // copy data from upstream nodes into context
             ctxObj._input_EN = node_1_output_VAL;
@@ -1091,43 +1234,46 @@ void runTransaction() {
             xod__core__clock::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
-            node_4.isNodeDirty |= node_3.isOutputDirty_TICK;
+            node_5.isNodeDirty |= node_4.isOutputDirty_TICK;
         }
     }
-    { // xod__core__flip_flop #4
-        if (node_4.isNodeDirty) {
-            XOD_TRACE_F("Eval node #");
-            XOD_TRACE_LN(4);
-
-            xod__core__flip_flop::ContextObject ctxObj;
-            ctxObj._node = &node_4;
-
-            // copy data from upstream nodes into context
-            ctxObj._input_TGL = node_3.output_TICK;
-
-            ctxObj._isInputDirty_SET = false;
-            ctxObj._isInputDirty_RST = false;
-            ctxObj._isInputDirty_TGL = node_3.isOutputDirty_TICK;
-
-            xod__core__flip_flop::evaluate(&ctxObj);
-
-            // mark downstream nodes dirty
-            node_5.isNodeDirty |= node_4.isOutputDirty_MEM;
-        }
-    }
-    { // xod__core__digital_output #5
+    { // xod__core__flip_flop #5
         if (node_5.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(5);
 
-            xod__core__digital_output::ContextObject ctxObj;
+            xod__core__flip_flop::ContextObject ctxObj;
             ctxObj._node = &node_5;
 
             // copy data from upstream nodes into context
-            ctxObj._input_PORT = node_2_output_VAL;
-            ctxObj._input_SIG = node_4.output_MEM;
+            ctxObj._input_TGL = node_4.output_TICK;
 
-            xod__core__digital_output::evaluate(&ctxObj);
+            ctxObj._isInputDirty_SET = false;
+            ctxObj._isInputDirty_RST = false;
+            ctxObj._isInputDirty_TGL = node_4.isOutputDirty_TICK;
+
+            xod__core__flip_flop::evaluate(&ctxObj);
+
+            // mark downstream nodes dirty
+            node_6.isNodeDirty |= node_5.isOutputDirty_MEM;
+        }
+    }
+    { // xod__gpio__digital_write #6
+        if (node_6.isNodeDirty) {
+            XOD_TRACE_F("Eval node #");
+            XOD_TRACE_LN(6);
+
+            xod__gpio__digital_write::ContextObject ctxObj;
+            ctxObj._node = &node_6;
+
+            // copy data from upstream nodes into context
+            ctxObj._input_PORT = node_2_output_VAL;
+            ctxObj._input_SIG = node_5.output_MEM;
+            ctxObj._input_UPD = node_3.output_TICK;
+
+            ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
+
+            xod__gpio__digital_write::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
         }
@@ -1137,7 +1283,9 @@ void runTransaction() {
     node_3.dirtyFlags = 0;
     node_4.dirtyFlags = 0;
     node_5.dirtyFlags = 0;
+    node_6.dirtyFlags = 0;
     detail::clearStaleTimeout(&node_3);
+    detail::clearStaleTimeout(&node_4);
 
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());

@@ -1,355 +1,355 @@
 {
   "name": "sharp-irm",
   "patches": {
-    "@/main": {
-      "comments": {
-        "HJcjI-olf": {
-          "id": "HJcjI-olf",
-          "position": {
-            "x": 204,
-            "y": 102
-          },
-          "size": {
-            "width": 136,
-            "height": 51
-          },
-          "content": "Look! We can read three sensors at once"
-        }
-      },
-      "links": {
-        "BJlK0ljez": {
-          "id": "BJlK0ljez",
-          "output": {
-            "nodeId": "BytOAxolG",
-            "pinKey": "SkTw0gjgf"
-          },
-          "input": {
-            "nodeId": "HyIFsxjgG",
-            "pinKey": "HkXK-dGob"
-          }
-        },
-        "Hy-YhGZjez": {
-          "id": "Hy-YhGZjez",
-          "output": {
-            "nodeId": "H1xY2GWjez",
-            "pinKey": "SkTw0gjgf"
-          },
-          "input": {
-            "nodeId": "HJF3MWjgG",
-            "pinKey": "HkXK-dGob"
-          }
-        },
-        "HJWihGWsxG": {
-          "id": "HJWihGWsxG",
-          "output": {
-            "nodeId": "Hyxo2G-jxf",
-            "pinKey": "SkTw0gjgf"
-          },
-          "input": {
-            "nodeId": "B1s3zWoeM",
-            "pinKey": "HkXK-dGob"
-          }
-        }
-      },
-      "nodes": {
-        "HyIFsxjgG": {
-          "id": "HyIFsxjgG",
-          "type": "xod/core/watch",
-          "position": {
-            "x": -68,
-            "y": 204
-          }
-        },
-        "BytOAxolG": {
-          "id": "BytOAxolG",
-          "type": "@/gp2y0a02-range-meter",
-          "position": {
-            "x": -68,
-            "y": 102
-          },
-          "boundValues": {
-            "HJ7vCgjef": 1
-          }
-        },
-        "HJF3MWjgG": {
-          "id": "HJF3MWjgG",
-          "type": "xod/core/watch",
-          "position": {
-            "x": -204,
-            "y": 204
-          }
-        },
-        "H1xY2GWjez": {
-          "id": "H1xY2GWjez",
-          "type": "@/gp2y0a02-range-meter",
-          "position": {
-            "x": -204,
-            "y": 102
-          }
-        },
-        "B1s3zWoeM": {
-          "id": "B1s3zWoeM",
-          "type": "xod/core/watch",
-          "position": {
-            "x": 68,
-            "y": 204
-          }
-        },
-        "Hyxo2G-jxf": {
-          "id": "Hyxo2G-jxf",
-          "type": "@/gp2y0a02-range-meter",
-          "position": {
-            "x": 68,
-            "y": 102
-          },
-          "boundValues": {
-            "HJ7vCgjef": 2
-          }
-        }
-      },
-      "path": "@/main"
-    },
     "@/gp2y0a02-range-meter": {
-      "nodes": {
-        "HkRSAlixf": {
-          "id": "HkRSAlixf",
-          "type": "xod/core/analog-input",
-          "position": {
-            "x": 68,
-            "y": 102
-          }
-        },
-        "Skg0rRxjeM": {
-          "id": "Skg0rRxjeM",
-          "type": "xod/core/multiply",
-          "position": {
-            "x": 68,
-            "y": 306
-          },
-          "boundValues": {
-            "SJ4zUC_BD1-": 5
-          }
-        },
-        "HkWRBRxigf": {
-          "id": "HkWRBRxigf",
-          "type": "xod/math/map",
-          "position": {
-            "x": 68,
-            "y": 408
-          },
-          "boundValues": {
-            "ry1z8CuBDy-": 1.25,
-            "HJCWLAdSwyW": 2,
-            "rJbGU0_Hv1Z": 0.02,
-            "rkpbU0OrwyZ": 0.033
-          }
-        },
-        "SyfABRgjgG": {
-          "id": "SyfABRgjgG",
-          "type": "xod/core/divide",
-          "position": {
-            "x": 34,
-            "y": 510
-          },
-          "boundValues": {
-            "SkdIRuBD1b": 1
-          }
-        },
-        "rJQABAgilM": {
-          "id": "rJQABAgilM",
-          "type": "xod/core/divide",
-          "position": {
-            "x": 34,
-            "y": 612
-          },
-          "boundValues": {
-            "BytUCdHD1-": 100
-          }
-        },
-        "HJ7vCgjef": {
-          "id": "HJ7vCgjef",
-          "type": "xod/patch-nodes/input-number",
-          "position": {
-            "x": 34,
-            "y": 0
-          },
-          "label": "PORT"
-        },
-        "SkTw0gjgf": {
-          "id": "SkTw0gjgf",
-          "type": "xod/patch-nodes/output-number",
-          "position": {
-            "x": 34,
-            "y": 714
-          },
-          "label": "Dm"
-        },
-        "SyeOgZsgG": {
-          "id": "SyeOgZsgG",
-          "type": "xod/patch-nodes/input-pulse",
-          "position": {
-            "x": 170,
-            "y": 0
-          },
-          "label": "UPD",
-          "boundValues": {
-            "__out__": "CONTINUOUSLY"
-          }
-        },
-        "BJqdlWogG": {
-          "id": "BJqdlWogG",
-          "type": "xod/patch-nodes/input-number",
-          "position": {
-            "x": 102,
-            "y": 204
-          },
-          "label": "AVcc",
-          "boundValues": {
-            "__out__": 5
-          }
-        }
-      },
-      "links": {
-        "Hy4CHCeigf": {
-          "id": "Hy4CHCeigf",
-          "output": {
-            "nodeId": "Skg0rRxjeM",
-            "pinKey": "BkQzLCurwJZ"
-          },
-          "input": {
-            "nodeId": "HkWRBRxigf",
-            "pinKey": "BJlzICOSv1-"
-          }
-        },
-        "rkHCSAxslf": {
-          "id": "rkHCSAxslf",
-          "output": {
-            "nodeId": "HkRSAlixf",
-            "pinKey": "SyBtREhlW"
-          },
-          "input": {
-            "nodeId": "Skg0rRxjeM",
-            "pinKey": "B1GfLR_SPk-"
-          }
-        },
-        "BJ80H0xixG": {
-          "id": "BJ80H0xixG",
-          "output": {
-            "nodeId": "HkWRBRxigf",
-            "pinKey": "H12bIR_SPyZ"
-          },
-          "input": {
-            "nodeId": "SyfABRgjgG",
-            "pinKey": "BytUCdHD1-"
-          }
-        },
-        "BJw0SRgoeG": {
-          "id": "BJw0SRgoeG",
-          "output": {
-            "nodeId": "SyfABRgjgG",
-            "pinKey": "BkqLCOSw1W"
-          },
-          "input": {
-            "nodeId": "rJQABAgilM",
-            "pinKey": "SkdIRuBD1b"
-          }
-        },
-        "ByHvAgilf": {
-          "id": "ByHvAgilf",
-          "output": {
-            "nodeId": "HJ7vCgjef",
-            "pinKey": "__out__"
-          },
-          "input": {
-            "nodeId": "HkRSAlixf",
-            "pinKey": "BJuORNheZ"
-          }
-        },
-        "rkxd0lixz": {
-          "id": "rkxd0lixz",
-          "output": {
-            "nodeId": "rJQABAgilM",
-            "pinKey": "BkqLCOSw1W"
-          },
-          "input": {
-            "nodeId": "SkTw0gjgf",
-            "pinKey": "__in__"
-          }
-        },
-        "SJbdeZoeM": {
-          "id": "SJbdeZoeM",
-          "output": {
-            "nodeId": "SyeOgZsgG",
-            "pinKey": "__out__"
-          },
-          "input": {
-            "nodeId": "HkRSAlixf",
-            "pinKey": "SyKd0E2x-"
-          }
-        },
-        "SkxtlZjxG": {
-          "id": "SkxtlZjxG",
-          "output": {
-            "nodeId": "BJqdlWogG",
-            "pinKey": "__out__"
-          },
-          "input": {
-            "nodeId": "Skg0rRxjeM",
-            "pinKey": "SJ4zUC_BD1-"
-          }
-        }
-      },
       "comments": {
-        "SJu0H0xsxz": {
-          "id": "SJu0H0xsxz",
-          "position": {
-            "x": 170,
-            "y": 306
-          },
-          "size": {
-            "width": 170,
-            "height": 51
-          },
-          "content": "Multiply by AVcc to get the voltage level"
-        },
-        "H1FCSCxsxf": {
-          "id": "H1FCSCxsxf",
-          "position": {
-            "x": 272,
-            "y": 408
-          },
-          "size": {
-            "width": 136,
-            "height": 51
-          },
-          "content": "Map the voltage to inverse distance (1/cm)"
-        },
-        "rJqArResef": {
-          "id": "rJqArResef",
-          "position": {
-            "x": 136,
-            "y": 510
-          },
-          "size": {
-            "width": 136,
-            "height": 51
-          },
-          "content": "Invert the distance"
-        },
         "Bko0B0xsgz": {
+          "content": "Divide by 100 to convert centimeters to meters",
           "id": "Bko0B0xsgz",
           "position": {
             "x": 136,
             "y": 612
           },
           "size": {
-            "width": 170,
-            "height": 51
+            "height": 51,
+            "width": 170
+          }
+        },
+        "H1FCSCxsxf": {
+          "content": "Map the voltage to inverse distance (1/cm)",
+          "id": "H1FCSCxsxf",
+          "position": {
+            "x": 272,
+            "y": 408
           },
-          "content": "Divide by 100 to convert centimeters to meters"
+          "size": {
+            "height": 51,
+            "width": 136
+          }
+        },
+        "SJu0H0xsxz": {
+          "content": "Multiply by AVcc to get the voltage level",
+          "id": "SJu0H0xsxz",
+          "position": {
+            "x": 170,
+            "y": 306
+          },
+          "size": {
+            "height": 51,
+            "width": 170
+          }
+        },
+        "rJqArResef": {
+          "content": "Invert the distance",
+          "id": "rJqArResef",
+          "position": {
+            "x": 136,
+            "y": 510
+          },
+          "size": {
+            "height": 51,
+            "width": 136
+          }
+        }
+      },
+      "links": {
+        "BJ80H0xixG": {
+          "id": "BJ80H0xixG",
+          "input": {
+            "nodeId": "SyfABRgjgG",
+            "pinKey": "BytUCdHD1-"
+          },
+          "output": {
+            "nodeId": "HkWRBRxigf",
+            "pinKey": "H12bIR_SPyZ"
+          }
+        },
+        "BJw0SRgoeG": {
+          "id": "BJw0SRgoeG",
+          "input": {
+            "nodeId": "rJQABAgilM",
+            "pinKey": "SkdIRuBD1b"
+          },
+          "output": {
+            "nodeId": "SyfABRgjgG",
+            "pinKey": "BkqLCOSw1W"
+          }
+        },
+        "ByLeGi0ym": {
+          "id": "ByLeGi0ym",
+          "input": {
+            "nodeId": "SJAyGsRJQ",
+            "pinKey": "SkUhQ5RkQ"
+          },
+          "output": {
+            "nodeId": "SyeOgZsgG",
+            "pinKey": "__out__"
+          }
+        },
+        "HJfxGiRJX": {
+          "id": "HJfxGiRJX",
+          "input": {
+            "nodeId": "Skg0rRxjeM",
+            "pinKey": "B1GfLR_SPk-"
+          },
+          "output": {
+            "nodeId": "SJAyGsRJQ",
+            "pinKey": "BkoeN9Ay7"
+          }
+        },
+        "Hk0xGjCJm": {
+          "id": "Hk0xGjCJm",
+          "input": {
+            "nodeId": "SJAyGsRJQ",
+            "pinKey": "r1l3XcR17"
+          },
+          "output": {
+            "nodeId": "HkhxMoR1X",
+            "pinKey": "__out__"
+          }
+        },
+        "Hy4CHCeigf": {
+          "id": "Hy4CHCeigf",
+          "input": {
+            "nodeId": "HkWRBRxigf",
+            "pinKey": "BJlzICOSv1-"
+          },
+          "output": {
+            "nodeId": "Skg0rRxjeM",
+            "pinKey": "BkQzLCurwJZ"
+          }
+        },
+        "SkxtlZjxG": {
+          "id": "SkxtlZjxG",
+          "input": {
+            "nodeId": "Skg0rRxjeM",
+            "pinKey": "SJ4zUC_BD1-"
+          },
+          "output": {
+            "nodeId": "BJqdlWogG",
+            "pinKey": "__out__"
+          }
+        },
+        "rkxd0lixz": {
+          "id": "rkxd0lixz",
+          "input": {
+            "nodeId": "SkTw0gjgf",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "rJQABAgilM",
+            "pinKey": "BkqLCOSw1W"
+          }
+        }
+      },
+      "nodes": {
+        "BJqdlWogG": {
+          "boundLiterals": {
+            "__out__": "5"
+          },
+          "id": "BJqdlWogG",
+          "label": "AVcc",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "HkWRBRxigf": {
+          "boundLiterals": {
+            "HJCWLAdSwyW": "2",
+            "rJbGU0_Hv1Z": "0.02",
+            "rkpbU0OrwyZ": "0.033",
+            "ry1z8CuBDy-": "1.25"
+          },
+          "id": "HkWRBRxigf",
+          "position": {
+            "x": 68,
+            "y": 408
+          },
+          "type": "xod/math/map"
+        },
+        "HkhxMoR1X": {
+          "id": "HkhxMoR1X",
+          "label": "PORT",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-port"
+        },
+        "SJAyGsRJQ": {
+          "id": "SJAyGsRJQ",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/common-hardware/analog-sensor"
+        },
+        "SkTw0gjgf": {
+          "id": "SkTw0gjgf",
+          "label": "Dm",
+          "position": {
+            "x": 34,
+            "y": 714
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "Skg0rRxjeM": {
+          "boundLiterals": {
+            "SJ4zUC_BD1-": "5"
+          },
+          "id": "Skg0rRxjeM",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "xod/core/multiply"
+        },
+        "SyeOgZsgG": {
+          "boundLiterals": {
+            "__out__": "Continuously"
+          },
+          "id": "SyeOgZsgG",
+          "label": "UPD",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-pulse"
+        },
+        "SyfABRgjgG": {
+          "boundLiterals": {
+            "SkdIRuBD1b": "1"
+          },
+          "id": "SyfABRgjgG",
+          "position": {
+            "x": 34,
+            "y": 510
+          },
+          "type": "xod/core/divide"
+        },
+        "rJQABAgilM": {
+          "boundLiterals": {
+            "BytUCdHD1-": "100"
+          },
+          "id": "rJQABAgilM",
+          "position": {
+            "x": 34,
+            "y": 612
+          },
+          "type": "xod/core/divide"
         }
       },
       "path": "@/gp2y0a02-range-meter"
+    },
+    "@/main": {
+      "comments": {
+        "HJcjI-olf": {
+          "content": "Look! We can read three sensors at once",
+          "id": "HJcjI-olf",
+          "position": {
+            "x": 204,
+            "y": 102
+          },
+          "size": {
+            "height": 51,
+            "width": 136
+          }
+        }
+      },
+      "links": {
+        "BJlK0ljez": {
+          "id": "BJlK0ljez",
+          "input": {
+            "nodeId": "HyIFsxjgG",
+            "pinKey": "HkXK-dGob"
+          },
+          "output": {
+            "nodeId": "BytOAxolG",
+            "pinKey": "SkTw0gjgf"
+          }
+        },
+        "HJWihGWsxG": {
+          "id": "HJWihGWsxG",
+          "input": {
+            "nodeId": "B1s3zWoeM",
+            "pinKey": "HkXK-dGob"
+          },
+          "output": {
+            "nodeId": "Hyxo2G-jxf",
+            "pinKey": "SkTw0gjgf"
+          }
+        },
+        "Hy-YhGZjez": {
+          "id": "Hy-YhGZjez",
+          "input": {
+            "nodeId": "HJF3MWjgG",
+            "pinKey": "HkXK-dGob"
+          },
+          "output": {
+            "nodeId": "H1xY2GWjez",
+            "pinKey": "SkTw0gjgf"
+          }
+        }
+      },
+      "nodes": {
+        "B1s3zWoeM": {
+          "id": "B1s3zWoeM",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/core/watch"
+        },
+        "BytOAxolG": {
+          "boundLiterals": {
+            "HJ7vCgjef": "1"
+          },
+          "id": "BytOAxolG",
+          "position": {
+            "x": -68,
+            "y": 102
+          },
+          "type": "@/gp2y0a02-range-meter"
+        },
+        "H1xY2GWjez": {
+          "id": "H1xY2GWjez",
+          "position": {
+            "x": -204,
+            "y": 102
+          },
+          "type": "@/gp2y0a02-range-meter"
+        },
+        "HJF3MWjgG": {
+          "id": "HJF3MWjgG",
+          "position": {
+            "x": -204,
+            "y": 204
+          },
+          "type": "xod/core/watch"
+        },
+        "HyIFsxjgG": {
+          "id": "HyIFsxjgG",
+          "position": {
+            "x": -68,
+            "y": 204
+          },
+          "type": "xod/core/watch"
+        },
+        "Hyxo2G-jxf": {
+          "boundLiterals": {
+            "HJ7vCgjef": "2"
+          },
+          "id": "Hyxo2G-jxf",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "@/gp2y0a02-range-meter"
+        }
+      },
+      "path": "@/main"
     }
   }
 }

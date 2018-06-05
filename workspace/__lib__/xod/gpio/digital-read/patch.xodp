@@ -2,14 +2,14 @@
   "description": "Reads digital signal value from board GPIO port",
   "nodes": [
     {
-      "description": "Board GPIO port number to read from",
-      "id": "B1ZUA_Hv1W",
+      "description": "Board port to read from",
+      "id": "B143qAq1Q",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 33,
+        "y": -1
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "boundLiterals": {
@@ -19,19 +19,20 @@
       "id": "B1gI0urv1W",
       "label": "SIG",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 34,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
-      "description": "Use `xod/gpio/digital-read` instead",
-      "id": "H1oxA1o17",
+      "description": "Fires if update failed. E.g. `PORT` does not exist.",
+      "id": "S1fi5aqyQ",
+      "label": "ERR",
       "position": {
         "x": 170,
-        "y": 102
+        "y": 204
       },
-      "type": "xod/patch-nodes/deprecated"
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
@@ -41,18 +42,28 @@
       "id": "SyLCdSwJZ",
       "label": "UPD",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 102,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "x": 68,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "rkw3cp9k7",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

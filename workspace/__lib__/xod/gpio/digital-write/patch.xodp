@@ -1,0 +1,66 @@
+{
+  "description": "Outputs high or low signal on a board port",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "BygApTqym",
+      "label": "UPD",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "State to write",
+      "id": "HJ6HsEngZ",
+      "label": "SIG",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Board port to write to",
+      "id": "rJjXFA9JQ",
+      "label": "PORT",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires if write failed. E.g. `PORT` does not exist.",
+      "id": "rJl2TqpqyX",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkwUj42xb",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Fires on writing complete",
+      "id": "ry3pcpqyX",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

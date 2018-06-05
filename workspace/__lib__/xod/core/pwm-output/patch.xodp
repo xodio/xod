@@ -2,6 +2,15 @@
   "description": "Outputs hardware-supported PWM signal on a board port",
   "nodes": [
     {
+      "description": "Use `xod/gpio/pwm-write` instead",
+      "id": "BJ-fAJsyQ",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Duty cycle value in range 0.0 … 1.0",
       "id": "ByXnYHPyb",
       "label": "DUTY",

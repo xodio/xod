@@ -59,14 +59,14 @@
     },
     {
       "boundLiterals": {
-        "BJuORNheZ": "2"
+        "SkuhqCqym": "A2"
       },
       "id": "H1UNiwVt-",
       "position": {
         "x": 272,
         "y": 0
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "boundLiterals": {
