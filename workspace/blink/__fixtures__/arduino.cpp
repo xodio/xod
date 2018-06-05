@@ -1009,7 +1009,6 @@ void evaluate(Context ctx) {
 namespace xod__gpio__digital_write {
 
 struct State {
-    int configuredPort = -1;
 };
 
 struct Node {
@@ -1117,14 +1116,7 @@ void evaluate(Context ctx) {
         return;
     }
 
-    State* state = getState(ctx);
-    if (port != state->configuredPort) {
-        ::pinMode(port, OUTPUT);
-        // Store configured port so to avoid repeating `pinMode` call if just
-        // SIG is updated
-        state->configuredPort = port;
-    }
-
+    ::pinMode(port, OUTPUT);
     const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
     emitValue<output_DONE>(ctx, 1);
