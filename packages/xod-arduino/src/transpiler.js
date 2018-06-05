@@ -333,6 +333,28 @@ const removeUnusedNodes = def(
   }
 );
 
+const checkForNativePatchesWithTooManyOutputs = def(
+  'checkForNativePatchesWithTooManyOutputs :: TProject -> Either Error TProject',
+  tProject => {
+    const nodeWithTooManyOutputs = R.find(
+      R.pipe(R.prop('outputs'), R.length, R.lt(7)),
+      tProject.patches
+    );
+
+    if (nodeWithTooManyOutputs) {
+      return Either.Left(
+        new Error(
+          `Native node ${
+            nodeWithTooManyOutputs.patchPath
+          } has more than 7 outputs`
+        )
+      );
+    }
+
+    return Either.of(tProject);
+  }
+);
+
 /**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
@@ -342,24 +364,8 @@ const transformProjectWithImpls = def(
   'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
   (project, path, opts) =>
     R.compose(
-      R.chain(tProject => {
-        const nodeWithTooManyOutputs = R.find(
-          R.pipe(R.prop('outputs'), R.length, R.lt(7)),
-          tProject.patches
-        );
-
-        if (nodeWithTooManyOutputs) {
-          return Either.Left(
-            new Error(
-              `Native node ${
-                nodeWithTooManyOutputs.patchPath
-              } has more than 7 outputs`
-            )
-          );
-        }
-
-        return Either.of(tProject);
-      }),
+      R.chain(checkForNativePatchesWithTooManyOutputs),
+      // :: Either Error TProject
       R.map(({ project: proj, nodeIdsMap }) => {
         const patches = createTPatches(path, proj);
 
