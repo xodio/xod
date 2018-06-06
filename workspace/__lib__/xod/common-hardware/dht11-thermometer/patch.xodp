@@ -13,6 +13,28 @@
       }
     },
     {
+      "id": "BJ27eqSgX",
+      "input": {
+        "nodeId": "rJeq4CYSl7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "HJgDdJqrxm"
+      }
+    },
+    {
+      "id": "Bk5QlcHlm",
+      "input": {
+        "nodeId": "Syc4CYBxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJg4_Wo1M",
+        "pinKey": "S1Dd1qSgQ"
+      }
+    },
+    {
       "id": "BkTvdbokf",
       "input": {
         "nodeId": "HkgBE9D8Z",
@@ -105,13 +127,33 @@
         "x": 0,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "Syc4CYBxQ",
+      "label": "DONE",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "rJeq4CYSl7",
+      "label": "ERR",
+      "position": {
+        "x": 272,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
         "__out__": "Continuously"
       },
-      "description": "Triggers an update, i.e. reading values again.",
+      "description": "Triggers new read",
       "id": "ryeE45PLZ",
       "label": "UPD",
       "position": {

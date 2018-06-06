@@ -24,6 +24,17 @@
       }
     },
     {
+      "id": "Bk5483BeQ",
+      "input": {
+        "nodeId": "BJeINL2HlQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "B129S2SeX"
+      }
+    },
+    {
       "id": "H1Aqn-Xtb",
       "input": {
         "nodeId": "HJzzRiWt-",
@@ -32,6 +43,17 @@
       "output": {
         "nodeId": "B1VqnZXtb",
         "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "H1dE8hSlm",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "BJvFHnSlQ"
+      },
+      "output": {
+        "nodeId": "rJ-L4LnBeQ",
+        "pinKey": "__out__"
       }
     },
     {
@@ -57,6 +79,17 @@
       }
     },
     {
+      "id": "Hy2VLhBeQ",
+      "input": {
+        "nodeId": "H1LNU3Hl7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "ByyoB2Hxm"
+      }
+    },
+    {
       "id": "S1KsnbXt-",
       "input": {
         "nodeId": "rkPG0s-YZ",
@@ -65,6 +98,17 @@
       "output": {
         "nodeId": "Syrjh-XFb",
         "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "r12yHevlX",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "Sky8yewgQ"
+      },
+      "output": {
+        "nodeId": "SJvJreweQ",
+        "pinKey": "__out__"
       }
     },
     {
@@ -111,6 +155,16 @@
       "type": "@/st-imu-normalize-acc"
     },
     {
+      "description": "Fires when reading is done",
+      "id": "BJeINL2HlQ",
+      "label": "DONE",
+      "position": {
+        "x": 237,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "description": "Acceleration along Y axis. Expressed in ɡ units.",
       "id": "BySz0iWtW",
       "label": "Yg",
@@ -119,6 +173,16 @@
         "y": 306
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "H1LNU3Hl7",
+      "label": "ERR",
+      "position": {
+        "x": 271,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Acceleration along X axis. Expressed in ɡ units.",
@@ -138,23 +202,36 @@
       "id": "S1x-AsWKb",
       "label": "SENS",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "boundLiterals": {
-        "__out__": "24"
+        "__out__": "18h"
       },
-      "description": "I²C address. 24 by default. Some board configurations use 25 instead.",
+      "description": "I²C address. 18h by default. Some board configurations use 19h instead.",
       "id": "SJFeRsZYW",
       "label": "ADDR",
       "position": {
-        "x": 34,
+        "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the sensor and sets sensitivity",
+      "id": "SJvJreweQ",
+      "label": "INIT",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
       "boundLiterals": {
@@ -164,7 +241,7 @@
       "id": "Syc-0sWtZ",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "x": 476,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -195,6 +272,15 @@
         "y": 102
       },
       "type": "@/st-imu-generic-sensor"
+    },
+    {
+      "id": "rJ-L4LnBeQ",
+      "label": "I2C",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
     },
     {
       "description": "Acceleration along Z axis. Expressed in ɡ units.",

@@ -2,6 +2,16 @@
   "description": "Appends lines of text to a file on SD card",
   "nodes": [
     {
+      "description": "Fires when write is done",
+      "id": "B1WaLt8gm",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "description": "CS (chip select) pin the SD card reader is connected to. Also known as SS (slave select).",
       "id": "BJGhy4lgG",
       "label": "CS",
@@ -9,7 +19,7 @@
         "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Perform file open, write, flush, close cycle",
@@ -26,7 +36,7 @@
       "id": "HJcUcHexf",
       "label": "ERR",
       "position": {
-        "x": 68,
+        "x": 136,
         "y": 204
       },
       "type": "xod/patch-nodes/output-boolean"

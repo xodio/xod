@@ -2,22 +2,42 @@
   "description": "Measures sound roundtrip time with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).",
   "nodes": [
     {
+      "description": "Fires when ping is done",
+      "id": "B10vYoHlQ",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "description": "Board port to which sensor’s `trig` pin is connected.",
       "id": "Bk2zMWALZ",
       "label": "TRIG",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires if ping failed",
+      "id": "H1iPYsSe7",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Last measured sound roundtrip time in seconds.",
       "id": "Syn7fWCLZ",
       "label": "Ts",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -26,10 +46,10 @@
       "id": "rJ0fMWALb",
       "label": "ECHO",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "boundLiterals": {
@@ -39,16 +59,16 @@
       "id": "rJPQfbCIW",
       "label": "PING",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 272,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "rkJUMWRIW",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

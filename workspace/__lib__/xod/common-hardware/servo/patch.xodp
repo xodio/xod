@@ -2,10 +2,30 @@
   "description": "Drives a standard hobby servo",
   "nodes": [
     {
+      "description": "Fires if write failed. E.g. `PORT` does not exist.",
+      "id": "BJgBlMF8xm",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires on writing complete",
+      "id": "Hk-rxfFUxm",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "id": "HkmSQOafZ",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,18 +34,31 @@
       "id": "S1vGmu6Gb",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "SkrgGYLxQ",
+      "label": "UPD",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
       "description": "Desired servo angle or value in unit range [0.0, 1.0]. For standard servo 0.0 would be mapped to 0° and 1.0 would be 180°.",
       "id": "r1sfQ_6fb",
       "label": "VAL",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     }

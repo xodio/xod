@@ -1,0 +1,311 @@
+{
+  "links": [
+    {
+      "id": "B1pI5AJPx7",
+      "input": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "B1vdYXhkQ"
+      },
+      "output": {
+        "nodeId": "Bkz8cAkwxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJ-TA1veX",
+      "input": {
+        "nodeId": "B1Y2A1Dl7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1ysAyDlX",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "BJcLcRJvlQ",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Bkz8cAkwxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJhLcRJPl7",
+      "input": {
+        "nodeId": "rkIUqA1Pl7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "BkEx8qA1vxQ",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HJ4LcCkvlX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkjIcA1DlQ",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "SyssEEhJm"
+      },
+      "output": {
+        "nodeId": "SJuUqAkwl7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkrhAkwxX",
+      "input": {
+        "nodeId": "S1ysAyDlX",
+        "pinKey": "ByU7LRuSPkW-$2"
+      },
+      "output": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "SyewuY7nJm"
+      }
+    },
+    {
+      "id": "BktI5R1vg7",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "HJkfWmny7"
+      },
+      "output": {
+        "nodeId": "Bkz8cAkwxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByXx8cAyPxX",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "HJbjB_Nd-"
+      }
+    },
+    {
+      "id": "Hk0sAkwlQ",
+      "input": {
+        "nodeId": "S1ysAyDlX",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "HkfgU5CkvxQ",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HJmLcR1wxQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1beLqCJwlm",
+      "input": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "Sk0U9C1wlm",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "SkkxL5CJPlX",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Bkz8cAkwxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sksi0yDg7",
+      "input": {
+        "nodeId": "S1ysAyDlX",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "SyUMZQ2JQ"
+      }
+    },
+    {
+      "id": "rJexI90JPxX",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "rkgIqA1Dgm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJx3R1Pl7",
+      "input": {
+        "nodeId": "S1ysAyDlX",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "rJxr5J42ym"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Y2A1Dl7",
+      "label": "ERR",
+      "position": {
+        "x": 476,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Bkz8cAkwxm",
+      "label": "I2C",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "ByDL5CJDg7",
+      "position": {
+        "x": 407,
+        "y": 203
+      },
+      "type": "xod/i2c/end-transmission"
+    },
+    {
+      "boundLiterals": {
+        "BJfKruVdb": "On Boot"
+      },
+      "id": "H1IcA1DxQ",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/i2c/begin-transmission"
+    },
+    {
+      "id": "H1ZLc0yvlm",
+      "position": {
+        "x": 271,
+        "y": 203
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "HJ4LcCkvlX",
+      "label": "KEY",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "HJmLcR1wxQ",
+      "label": "VAL",
+      "position": {
+        "x": 305,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "arityLevel": 3,
+      "id": "S1ysAyDlX",
+      "position": {
+        "x": 476,
+        "y": 306
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "SJuUqAkwl7",
+      "label": "ADDR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rJWBeeweQ",
+      "position": {
+        "x": -68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "boundLiterals": {
+        "S1FFN4nkm": "20h"
+      },
+      "id": "rJrLcCJDeQ",
+      "position": {
+        "x": 135,
+        "y": 203
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "rkIUqA1Pl7",
+      "label": "DONE",
+      "position": {
+        "x": 408,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkgIqA1Dgm",
+      "label": "W",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

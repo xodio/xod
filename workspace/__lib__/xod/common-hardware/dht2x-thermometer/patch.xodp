@@ -79,6 +79,28 @@
       }
     },
     {
+      "id": "SkkBlcHeX",
+      "input": {
+        "nodeId": "B1DVgcBeX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "S1Dd1qSgQ"
+      }
+    },
+    {
+      "id": "ryZHxcHeX",
+      "input": {
+        "nodeId": "BJewNgqHxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkpQeWs1M",
+        "pinKey": "HJgDdJqrxm"
+      }
+    },
+    {
       "id": "rygYlWiJM",
       "input": {
         "nodeId": "ry6debo1z",
@@ -91,6 +113,26 @@
     }
   ],
   "nodes": [
+    {
+      "description": "Fires on reading complete",
+      "id": "B1DVgcBeX",
+      "label": "DONE",
+      "position": {
+        "x": 238,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires if update failed.",
+      "id": "BJewNgqHxQ",
+      "label": "ERR",
+      "position": {
+        "x": 272,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
     {
       "description": "Relative humidity in ragne [0.0, 1.0]",
       "id": "BJx9xZi1f",
@@ -140,7 +182,7 @@
         "x": 102,
         "y": 102
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "id": "ry6debo1z",

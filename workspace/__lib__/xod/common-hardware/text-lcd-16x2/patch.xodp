@@ -6,8 +6,8 @@
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
-        "x": 906,
-        "y": 16
+        "x": 408,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -16,18 +16,18 @@
       "id": "BJJqaX4Gb",
       "label": "D4",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Text for the second line",
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
-        "x": 1034,
-        "y": 16
+        "x": 476,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -36,36 +36,59 @@
       "id": "HJysTXVMb",
       "label": "D6",
       "position": {
-        "x": 522,
-        "y": 16
+        "x": 272,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "Hkc3rF8xX",
+      "label": "UPD",
+      "position": {
+        "x": 544,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
       "description": "Board GPIO port with LCD D5 pin",
       "id": "S1nqa7NMZ",
       "label": "D5",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 204,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires when write is done",
+      "id": "SJecnSYLx7",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Board GPIO port with LCD EN pin",
       "id": "SkBK6Q4fb",
       "label": "EN",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 68,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "id": "SkRdV5YWW",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 0,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -74,20 +97,20 @@
       "id": "rJlYT7EfW",
       "label": "RS",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Board GPIO port with LCD D7 pin",
       "id": "rkbjp7Ezb",
       "label": "D7",
       "position": {
-        "x": 650,
-        "y": 16
+        "x": 340,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     }
   ]
 }

@@ -120,6 +120,9 @@ void evaluate(Context ctx) {
             emitValue<output_D1>(ctx, data[1]);
             emitValue<output_D2>(ctx, data[2]);
             emitValue<output_D3>(ctx, data[3]);
+            emitValue<output_DONE>(ctx, 1);
+        } else {
+            emitValue<output_ERR>(ctx, 1);
         }
 
         enterIdleState(port);

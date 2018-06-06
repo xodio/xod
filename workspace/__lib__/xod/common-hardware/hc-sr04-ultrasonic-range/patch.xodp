@@ -13,6 +13,17 @@
       }
     },
     {
+      "id": "BJkcYireQ",
+      "input": {
+        "nodeId": "rJutFjHxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "H1iPYsSe7"
+      }
+    },
+    {
       "id": "By8aRWCIb",
       "input": {
         "nodeId": "H17aAZ08Z",
@@ -32,6 +43,17 @@
       "output": {
         "nodeId": "rJa50WCL-",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1CtFirxm",
+      "input": {
+        "nodeId": "ryguFKiSlQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkS50ZRUb",
+        "pinKey": "B10vYoHlQ"
       }
     },
     {
@@ -63,16 +85,16 @@
       "id": "BJllkG0Ub",
       "label": "Dm",
       "position": {
-        "x": 138,
-        "y": 328
+        "x": 34,
+        "y": 306
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BkS50ZRUb",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 34,
+        "y": 102
       },
       "type": "@/hc-sr04-ultrasonic-time"
     },
@@ -83,8 +105,8 @@
       "description": "Multiply by 340 m/s (speed of sound) and divide by 2 (roundtrip)",
       "id": "H17aAZ08Z",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 34,
+        "y": 204
       },
       "type": "xod/core/multiply"
     },
@@ -96,8 +118,8 @@
       "id": "SJmoRbAUW",
       "label": "PING",
       "position": {
-        "x": 266,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -106,20 +128,40 @@
       "id": "r1xoR-C8-",
       "label": "ECHO",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Board port to which sensor’s `trig` pin is connected.",
       "id": "rJa50WCL-",
       "label": "TRIG",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires if ping failed",
+      "id": "rJutFjHxQ",
+      "label": "ERR",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires when ping is done",
+      "id": "ryguFKiSlQ",
+      "label": "DONE",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

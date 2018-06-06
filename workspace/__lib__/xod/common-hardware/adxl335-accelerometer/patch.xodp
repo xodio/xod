@@ -24,6 +24,17 @@
       }
     },
     {
+      "id": "BkfwhKHl7",
+      "input": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "SkuhqCqym"
+      },
+      "output": {
+        "nodeId": "BkdA4cUFW",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "By27I9UYZ",
       "input": {
         "nodeId": "H1EVB58Y-",
@@ -35,10 +46,10 @@
       }
     },
     {
-      "id": "BypfrcIKZ",
+      "id": "By4w2FBgX",
       "input": {
         "nodeId": "BJibrqIt-",
-        "pinKey": "BJuORNheZ"
+        "pinKey": "SkuhqCqym"
       },
       "output": {
         "nodeId": "rk9RE5ItW",
@@ -57,17 +68,6 @@
       }
     },
     {
-      "id": "HJVzBqUtW",
-      "input": {
-        "nodeId": "HkrZrcIt-",
-        "pinKey": "BJuORNheZ"
-      },
-      "output": {
-        "nodeId": "BkdA4cUFW",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "Hk6XL5IYb",
       "input": {
         "nodeId": "rk17898F-",
@@ -76,6 +76,39 @@
       "output": {
         "nodeId": "BJibrqIt-",
         "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "S1FEnYrgX",
+      "input": {
+        "nodeId": "r1GEnKBxX",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "HJgzpqacyX"
+      }
+    },
+    {
+      "id": "S1qj3trem",
+      "input": {
+        "nodeId": "Syl_tntHxX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJdYhFBl7",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "SJ4q3trgX",
+      "input": {
+        "nodeId": "SJdYhFBl7",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "HkrZrcIt-",
+        "pinKey": "BkGpcpcJQ"
       }
     },
     {
@@ -90,6 +123,17 @@
       }
     },
     {
+      "id": "SJD93tSg7",
+      "input": {
+        "nodeId": "SJdYhFBl7",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "BJibrqIt-",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
       "id": "SJlNU9LFW",
       "input": {
         "nodeId": "B18QI9LKZ",
@@ -101,14 +145,36 @@
       }
     },
     {
-      "id": "SyAMHq8tW",
+      "id": "Sy8D2YHxQ",
       "input": {
         "nodeId": "rJAbScLFZ",
-        "pinKey": "BJuORNheZ"
+        "pinKey": "SkuhqCqym"
       },
       "output": {
         "nodeId": "BynRV5UKb",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJj4htSlQ",
+      "input": {
+        "nodeId": "r1GEnKBxX",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "BJibrqIt-",
+        "pinKey": "HJgzpqacyX"
+      }
+    },
+    {
+      "id": "rkA4ntSl7",
+      "input": {
+        "nodeId": "r1GEnKBxX",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "rJAbScLFZ",
+        "pinKey": "HJgzpqacyX"
       }
     },
     {
@@ -132,14 +198,36 @@
         "nodeId": "B18QI9LKZ",
         "pinKey": "ryCtrcUtb"
       }
+    },
+    {
+      "id": "ryS2nKBgm",
+      "input": {
+        "nodeId": "ry4YhtBxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1GEnKBxX",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rytchtBxQ",
+      "input": {
+        "nodeId": "SJdYhFBl7",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "rJAbScLFZ",
+        "pinKey": "BkGpcpcJQ"
+      }
     }
   ],
   "nodes": [
     {
       "id": "B18QI9LKZ",
       "position": {
-        "x": 170,
-        "y": 204
+        "x": 238,
+        "y": 306
       },
       "type": "@/adxl335-convert"
     },
@@ -147,7 +235,7 @@
       "id": "B1OMIqIYb",
       "position": {
         "x": 34,
-        "y": 204
+        "y": 306
       },
       "type": "@/adxl335-convert"
     },
@@ -156,20 +244,23 @@
       "id": "B1sBHcItb",
       "label": "Z",
       "position": {
-        "x": 170,
-        "y": 306
+        "x": 238,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BJibrqIt-",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 102
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Board port to which the X axis output is connected. Should be capable of analog reading analog values.",
       "id": "BkdA4cUFW",
       "label": "Px",
@@ -177,17 +268,20 @@
         "x": 34,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Board port to which the Z axis output is connected. Should be capable of analog reading analog values.",
       "id": "BynRV5UKb",
       "label": "Pz",
       "position": {
-        "x": 170,
+        "x": 238,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Non-adjusted acceleration along X axis in range [-3, 3]",
@@ -195,7 +289,7 @@
       "label": "X",
       "position": {
         "x": 34,
-        "y": 306
+        "y": 408
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -205,43 +299,74 @@
         "x": 34,
         "y": 102
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "description": "Non-adjusted acceleration along Y axis in range [-3, 3]",
       "id": "S1DHH5LFb",
       "label": "Y",
       "position": {
-        "x": 102,
-        "y": 306
+        "x": 136,
+        "y": 408
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "arityLevel": 2,
+      "id": "SJdYhFBl7",
+      "position": {
+        "x": 340,
+        "y": 306
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "Syl_tntHxX",
+      "label": "DONE",
+      "position": {
+        "x": 340,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "arityLevel": 2,
+      "id": "r1GEnKBxX",
+      "position": {
+        "x": 442,
+        "y": 306
+      },
+      "type": "xod/core/any"
+    },
+    {
       "id": "rJAbScLFZ",
       "position": {
-        "x": 170,
+        "x": 238,
         "y": 102
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "id": "rk17898F-",
       "position": {
-        "x": 102,
-        "y": 204
+        "x": 136,
+        "y": 306
       },
       "type": "@/adxl335-convert"
     },
     {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Board port to which the Y axis output is connected. Should be capable of analog reading analog values.",
       "id": "rk9RE5ItW",
       "label": "Py",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "boundLiterals": {
@@ -251,10 +376,20 @@
       "id": "rkEkrcLKb",
       "label": "UPD",
       "position": {
-        "x": 272,
+        "x": 340,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires if reading failed.",
+      "id": "ry4YhtBxQ",
+      "label": "ERR",
+      "position": {
+        "x": 442,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

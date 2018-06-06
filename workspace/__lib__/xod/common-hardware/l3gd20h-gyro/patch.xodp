@@ -2,6 +2,17 @@
   "description": "Reads angular velocity from a gyroscope based on L3GD20H IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.",
   "links": [
     {
+      "id": "Bk1TNeDlm",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "Sky8yewgQ"
+      },
+      "output": {
+        "nodeId": "r1Kh4gDxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "BkbiR-XKb",
       "input": {
         "nodeId": "ByK90ZXY-",
@@ -32,6 +43,39 @@
       "output": {
         "nodeId": "ByK90ZXY-",
         "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "HkF-I2Bem",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "BJvFHnSlQ"
+      },
+      "output": {
+        "nodeId": "HJWI-L3Bl7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HksZI2Bg7",
+      "input": {
+        "nodeId": "ryg8WUnrgQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "B129S2SeX"
+      }
+    },
+    {
+      "id": "S1TbIhre7",
+      "input": {
+        "nodeId": "SkIbLnrxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "ByyoB2Hxm"
       }
     },
     {
@@ -130,6 +174,15 @@
       "type": "@/st-imu-generic-sensor"
     },
     {
+      "id": "HJWI-L3Bl7",
+      "label": "I2C",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
       "id": "Hk05CbQtb",
       "position": {
         "x": 102,
@@ -167,16 +220,16 @@
     },
     {
       "boundLiterals": {
-        "__out__": "106"
+        "__out__": "6Ah"
       },
-      "description": "I²C address. 106 by default. Some board configurations use 107 instead.",
+      "description": "I²C address. 0x6A by default. Some board configurations use 0x6B instead.",
       "id": "SJOWBJQKW",
       "label": "ADDR",
       "position": {
-        "x": 34,
+        "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     },
     {
       "description": "Roll angular velocity. I.e. spin around Y axis. Expressed in radians per second.",
@@ -189,6 +242,29 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Fires if reading failed",
+      "id": "SkIbLnrxQ",
+      "label": "ERR",
+      "position": {
+        "x": 271,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the sensor and sets sensitivity",
+      "id": "r1Kh4gDxm",
+      "label": "INIT",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "boundLiterals": {
         "__out__": "250"
       },
@@ -196,7 +272,7 @@
       "id": "rk5-Hy7tW",
       "label": "SEN",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -209,10 +285,20 @@
       "id": "ryCZH1QKb",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "x": 476,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "ryg8WUnrgQ",
+      "label": "DONE",
+      "position": {
+        "x": 237,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

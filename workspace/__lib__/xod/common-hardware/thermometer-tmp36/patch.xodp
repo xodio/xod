@@ -2,14 +2,36 @@
   "description": "Drives a digital thermometer based on TMP36 IC",
   "links": [
     {
-      "id": "H1INzUaMW",
+      "id": "BJ2e7t8em",
       "input": {
-        "nodeId": "Hys7MUTfb",
-        "pinKey": "BJlzICOSv1-"
+        "nodeId": "S1UemY8eX",
+        "pinKey": "SyKd0E2x-"
       },
       "output": {
-        "nodeId": "S13MzIpMZ",
-        "pinKey": "SyBtREhlW"
+        "nodeId": "Hk_1fUaMW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1NQ7KIxm",
+      "input": {
+        "nodeId": "S1UemY8eX",
+        "pinKey": "SkuhqCqym"
+      },
+      "output": {
+        "nodeId": "H1s0WI6MZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy7UQKLx7",
+      "input": {
+        "nodeId": "H1lsrQY8lX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1UemY8eX",
+        "pinKey": "HJgzpqacyX"
       }
     },
     {
@@ -24,38 +46,51 @@
       }
     },
     {
-      "id": "SkWXz8aGW",
+      "id": "Syk-Qt8e7",
       "input": {
-        "nodeId": "S13MzIpMZ",
-        "pinKey": "SyKd0E2x-"
+        "nodeId": "Hys7MUTfb",
+        "pinKey": "BJlzICOSv1-"
       },
       "output": {
-        "nodeId": "Hk_1fUaMW",
-        "pinKey": "__out__"
+        "nodeId": "S1UemY8eX",
+        "pinKey": "SyBtREhlW"
       }
     },
     {
-      "id": "rJy7MLpfW",
+      "id": "r1g87Y8lm",
       "input": {
-        "nodeId": "S13MzIpMZ",
-        "pinKey": "BJuORNheZ"
+        "nodeId": "rkoSQYUxm",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "H1s0WI6MZ",
-        "pinKey": "__out__"
+        "nodeId": "S1UemY8eX",
+        "pinKey": "BkGpcpcJQ"
       }
     }
   ],
   "nodes": [
     {
+      "description": "Fires if update failed. E.g. `PORT` is not an ADC port.",
+      "id": "H1lsrQY8lX",
+      "label": "ERR",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Board ADC port with the sensor",
       "id": "H1s0WI6MZ",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 136,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "boundLiterals": {
@@ -65,8 +100,8 @@
       "id": "Hk_1fUaMW",
       "label": "UPD",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -79,28 +114,38 @@
       },
       "id": "Hys7MUTfb",
       "position": {
-        "x": 10,
-        "y": 328
+        "x": 0,
+        "y": 204
       },
-      "type": "xod/core/map-range"
+      "type": "xod/math/map"
     },
     {
-      "id": "S13MzIpMZ",
+      "id": "S1UemY8eX",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 170,
+        "y": 102
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
     },
     {
       "description": "The last read temperature in °C",
       "id": "rkFgMITM-",
       "label": "Tc",
       "position": {
-        "x": 10,
-        "y": 432
+        "x": 0,
+        "y": 306
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "rkoSQYUxm",
+      "label": "DONE",
+      "position": {
+        "x": 204,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

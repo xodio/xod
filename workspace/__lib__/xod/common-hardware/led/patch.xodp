@@ -2,6 +2,28 @@
   "description": "Drives a generic single color dimmable LED. The conversion between luminance and LED power is biased so that change in brightness on range 0…1 is percepted more or less uniformly by a human.",
   "links": [
     {
+      "id": "ByOBjd8lm",
+      "input": {
+        "nodeId": "HJP1juIl7",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "SyqVe6hLb",
+        "pinKey": "B1QQ_nhUb"
+      }
+    },
+    {
+      "id": "H1UOs_IlX",
+      "input": {
+        "nodeId": "HJP1juIl7",
+        "pinKey": "B14R6TcyQ"
+      },
+      "output": {
+        "nodeId": "SkW3wouIeQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Hk64xTn8-",
       "input": {
         "nodeId": "SyqVe6hLb",
@@ -13,25 +35,36 @@
       }
     },
     {
-      "id": "Sk0NgTnUW",
+      "id": "r1rBsO8em",
       "input": {
-        "nodeId": "H114eThI-",
-        "pinKey": "ByXnYHPyb"
-      },
-      "output": {
-        "nodeId": "SyqVe6hLb",
-        "pinKey": "B1QQ_nhUb"
-      }
-    },
-    {
-      "id": "rk4NeanI-",
-      "input": {
-        "nodeId": "H114eThI-",
-        "pinKey": "rJsaFSvk-"
+        "nodeId": "HJP1juIl7",
+        "pinKey": "Syro9C9yQ"
       },
       "output": {
         "nodeId": "B1oqkTnIb",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryNuouUxX",
+      "input": {
+        "nodeId": "rJxhvs_Lx7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJP1juIl7",
+        "pinKey": "SkwRqaq17"
+      }
+    },
+    {
+      "id": "ryQ_jO8xQ",
+      "input": {
+        "nodeId": "r13Dj_IxQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJP1juIl7",
+        "pinKey": "S1eDAq69yX"
       }
     }
   ],
@@ -41,36 +74,69 @@
       "id": "B1oqkTnIb",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
-      "id": "H114eThI-",
+      "id": "HJP1juIl7",
       "position": {
-        "x": 10,
-        "y": 224
+        "x": 0,
+        "y": 204
       },
-      "type": "xod/core/pwm-output"
+      "type": "xod/gpio/pwm-write"
     },
     {
       "description": "Luminance (brightness) value in relative units [0.0, 1.0].",
       "id": "HyYh1a3LZ",
       "label": "LUM",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 34,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "SkW3wouIeQ",
+      "label": "UPD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "id": "SyqVe6hLb",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 34,
+        "y": 102
       },
-      "type": "xod/core/cube"
+      "type": "xod/math/cube"
+    },
+    {
+      "description": "Fires if write failed. E.g. `PORT` does not exist.",
+      "id": "r13Dj_IxQ",
+      "label": "ERR",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires on writing complete",
+      "id": "rJxhvs_Lx7",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }
