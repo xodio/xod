@@ -59,6 +59,7 @@ export {
   isVariadicPatch,
   isAbstractPatch,
   isGenuinePatch,
+  isConstructorPatch,
   isPatchNotImplementedInXod,
   doesPatchHaveGenericPins,
   validateAbstractPatch,

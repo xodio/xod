@@ -51,12 +51,10 @@ const toposortProject = def(
     R.compose(
       R.chain(nodeIdsMap =>
         R.compose(
-          R.map(
-            R.applySpec({
-              project: R.identity,
-              nodeIdsMap: R.always(nodeIdsMap),
-            })
-          ),
+          R.map(transformedProject => ({
+            transformedProject,
+            nodeIdsMap,
+          })),
           () =>
             Project.updatePatch(
               path,
@@ -98,72 +96,122 @@ const arrangeTPatchesInTopologicalOrder = def(
     )(project)
 );
 
+const convertPatchToTPatch = def(
+  'convertPatchToTPatch :: Patch -> TPatch',
+  patch => {
+    const patchPath = Project.getPatchPath(patch);
+    const impl = explodeMaybe(
+      `Implementation for ${patchPath} not found`,
+      Project.getImpl(patch)
+    );
+
+    const isDirtyable = pin =>
+      Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
+      isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
+
+    const outputs = R.compose(
+      R.map(
+        R.applySpec({
+          type: Project.getPinType,
+          pinKey: Project.getPinLabel,
+          value: R.compose(Project.defaultValueOfType, Project.getPinType),
+          isDirtyable,
+          isDirtyOnBoot: R.compose(
+            R.not,
+            R.equals(Project.PIN_TYPE.PULSE),
+            Project.getPinType
+          ),
+        })
+      ),
+      Project.normalizePinLabels,
+      Project.listOutputPins
+    )(patch);
+
+    const inputs = R.compose(
+      R.map(
+        R.applySpec({
+          type: Project.getPinType,
+          pinKey: Project.getPinLabel,
+          isDirtyable,
+        })
+      ),
+      Project.normalizePinLabels,
+      Project.listInputPins
+    )(patch);
+
+    const isThisIsThat = {
+      isDefer: Project.isDeferNodeType(patchPath),
+      isConstant: Project.isConstantNodeType(patchPath),
+      usesTimeouts: areTimeoutsEnabled(impl),
+      usesNodeId: isNodeIdEnabled(impl),
+    };
+
+    return R.mergeAll([
+      isThisIsThat,
+      {
+        outputs,
+        inputs,
+        impl,
+        patchPath,
+      },
+    ]);
+  }
+);
+
+const getMissingExplicitConstructorTypes = def(
+  'getMissingExplicitConstructorTypes :: PatchPath -> Project -> [PatchPath]',
+  (entryPath, project) => {
+    // :: [Patch]
+    const usedPatches = R.compose(
+      // we are sure that all thote patches exist since running flatten
+      R.map(Project.getPatchByPathUnsafe(R.__, project)),
+      R.uniq,
+      R.map(Project.getNodeType),
+      Project.listNodes,
+      // we are sure that entry patch exists since running flatten
+      Project.getPatchByPathUnsafe(entryPath)
+    )(project);
+
+    // :: [PatchPath]
+    const explicitlyUsedConstructors = R.compose(
+      R.map(Project.getPatchPath),
+      R.filter(Project.isConstructorPatch)
+    )(usedPatches);
+
+    // :: [PatchPath]
+    const referencedCustomTypes = R.compose(
+      R.reject(Project.isBuiltInType),
+      R.uniq,
+      R.map(Project.getPinType),
+      R.chain(Project.listPins)
+    )(usedPatches);
+
+    return R.without(explicitlyUsedConstructors, referencedCustomTypes);
+  }
+);
+
 const createTPatches = def(
-  'createTPatches :: PatchPath -> Project -> [TPatch]',
-  (entryPath, project) =>
+  'createTPatches :: PatchPath -> Project -> Project -> [TPatch]',
+  (entryPath, project, originalProject) =>
     R.compose(
+      // Include constructor patches for custom types
+      // that are used without an explicit constructor.
+      // Otherwise, generated source code won't have
+      // type definitions for them.
+      tPatches =>
+        R.compose(
+          // Those construction patches must be at the very top
+          R.concat(R.__, tPatches),
+          R.map(convertPatchToTPatch),
+          R.map(Project.getPatchByPathUnsafe(R.__, originalProject)),
+          getMissingExplicitConstructorTypes
+        )(entryPath, project),
       // patches must appear in the same order
       // as respective nodes in a toposorted graph
       arrangeTPatchesInTopologicalOrder(entryPath, project),
       // :: Map PatchPath TPatch
-      R.mapObjIndexed((patch, patchPath) => {
-        const impl = explodeMaybe(
-          `Implementation for ${patchPath} not found`,
-          Project.getImpl(patch)
-        );
-
-        const isDirtyable = pin =>
-          Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
-          isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
-
-        const outputs = R.compose(
-          R.map(
-            R.applySpec({
-              type: Project.getPinType,
-              pinKey: Project.getPinLabel,
-              value: R.compose(Project.defaultValueOfType, Project.getPinType),
-              isDirtyable,
-              isDirtyOnBoot: R.compose(
-                R.not,
-                R.equals(Project.PIN_TYPE.PULSE),
-                Project.getPinType
-              ),
-            })
-          ),
-          Project.normalizePinLabels,
-          Project.listOutputPins
-        )(patch);
-
-        const inputs = R.compose(
-          R.map(
-            R.applySpec({
-              type: Project.getPinType,
-              pinKey: Project.getPinLabel,
-              isDirtyable,
-            })
-          ),
-          Project.normalizePinLabels,
-          Project.listInputPins
-        )(patch);
-
-        const isThisIsThat = {
-          isDefer: Project.isDeferNodeType(patchPath),
-          isConstant: Project.isConstantNodeType(patchPath),
-          usesTimeouts: areTimeoutsEnabled(impl),
-          usesNodeId: isNodeIdEnabled(impl),
-        };
-
-        return R.mergeAll([
-          isThisIsThat,
-          {
-            outputs,
-            inputs,
-            impl,
-            patchPath,
-          },
-        ]);
-      }),
-      R.omit([entryPath]),
+      R.map(convertPatchToTPatch),
+      R.dissoc(entryPath),
       R.indexBy(Project.getPatchPath),
       Project.listGenuinePatches
     )(project)
@@ -333,6 +381,28 @@ const removeUnusedNodes = def(
   }
 );
 
+const checkForNativePatchesWithTooManyOutputs = def(
+  'checkForNativePatchesWithTooManyOutputs :: TProject -> Either Error TProject',
+  tProject => {
+    const nodeWithTooManyOutputs = R.find(
+      R.pipe(R.prop('outputs'), R.length, R.lt(7)),
+      tProject.patches
+    );
+
+    if (nodeWithTooManyOutputs) {
+      return Either.Left(
+        new Error(
+          `Native node ${
+            nodeWithTooManyOutputs.patchPath
+          } has more than 7 outputs`
+        )
+      );
+    }
+
+    return Either.of(tProject);
+  }
+);
+
 /**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
@@ -342,26 +412,10 @@ const transformProjectWithImpls = def(
   'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
   (project, path, opts) =>
     R.compose(
-      R.chain(tProject => {
-        const nodeWithTooManyOutputs = R.find(
-          R.pipe(R.prop('outputs'), R.length, R.lt(7)),
-          tProject.patches
-        );
-
-        if (nodeWithTooManyOutputs) {
-          return Either.Left(
-            new Error(
-              `Native node ${
-                nodeWithTooManyOutputs.patchPath
-              } has more than 7 outputs`
-            )
-          );
-        }
-
-        return Either.of(tProject);
-      }),
-      R.map(({ project: proj, nodeIdsMap }) => {
-        const patches = createTPatches(path, proj);
+      R.chain(checkForNativePatchesWithTooManyOutputs),
+      // :: Either Error TProject
+      R.map(({ transformedProject, nodeIdsMap }) => {
+        const patches = createTPatches(path, transformedProject, project);
 
         return R.merge(
           {
@@ -370,7 +424,7 @@ const transformProjectWithImpls = def(
           R.applySpec({
             patches: R.always(patches),
             nodes: createTNodes(path, patches, nodeIdsMap),
-          })(proj)
+          })(transformedProject)
         );
       }),
       R.chain(toposortProject(path)),
