@@ -11,6 +11,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/i2c/request` instead.",
+      "id": "BkRBwmNxm",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Number of bytes to request",
       "id": "Hk3Wdu4dZ",
       "label": "N",

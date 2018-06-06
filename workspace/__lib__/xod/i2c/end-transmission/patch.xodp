@@ -1,0 +1,53 @@
+{
+  "description": "Ends a transmission to a slave device initiated with `begin-transmission`. All bytes queued for writing with `write-byte` will flush at the moment of this node trigerring.",
+  "nodes": [
+    {
+      "description": "I²C interface object",
+      "id": "B1vdYXhkQ",
+      "label": "I2C",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-i2c"
+    },
+    {
+      "id": "SJJbvdEOb",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers the transmission end. Use `DONE` output of a `write-byte` as the source of the pulse.",
+      "id": "Sk2oU_Vdb",
+      "label": "SEND",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Triggers when the transmission fails to end/flush.",
+      "id": "SyewuY7nJm",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when the transmission successfully completes.",
+      "id": "ryviw_EOb",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

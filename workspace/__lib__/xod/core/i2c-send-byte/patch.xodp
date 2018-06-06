@@ -87,6 +87,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use a chain of `xod/i2c/begin-transmission` + `xod/i2c/write` + `xod/i2c/end-transmission` instead.",
+      "id": "SJMtwXVg7",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SJkn0d4d-",
       "position": {
         "x": 266,

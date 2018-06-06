@@ -243,6 +243,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/i2c/request` along with a chain of `xod/i2c/read` instead.",
+      "id": "H1qLPQEgX",
+      "position": {
+        "x": 374,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "HJM8TViP-",
       "label": "B5",
       "position": {

@@ -1,0 +1,76 @@
+{
+  "description": "Requests N bytes from a given slave I²C device",
+  "nodes": [
+    {
+      "description": "Slave device I²C address to request from",
+      "id": "BkRw4E3kX",
+      "label": "ADDR",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "I2C interface object",
+      "id": "Hk1dRQh17",
+      "label": "I2C",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-i2c"
+    },
+    {
+      "description": "Pulses if request failed. E.g., due to an invalid `ADDR`.",
+      "id": "S1eJu0Q2JQ",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Sends the request",
+      "id": "SJjmdOVOW",
+      "label": "SEND",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the request is successfully send. Send it to a `read-byte`.",
+      "id": "Sk7BudNdZ",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "01h"
+      },
+      "description": "Number of bytes to request",
+      "id": "r1NONEn1m",
+      "label": "N",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkoN_dNOW",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

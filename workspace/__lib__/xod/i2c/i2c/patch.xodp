@@ -1,0 +1,21 @@
+{
+  "description": "I²C interface object constructor. Returns hardware I²C #0.",
+  "nodes": [
+    {
+      "id": "HyvnPf3kQ",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "Sy_mOfh1X",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

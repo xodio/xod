@@ -1,6 +1,15 @@
 {
   "nodes": [
     {
+      "description": "Use `xod/i2c/read` instead.",
+      "id": "H1frwmNlm",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Timeout value. Exit after this delay if no data is available.",
       "id": "HyEhduNuZ",
       "label": "TOUT",

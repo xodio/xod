@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "I²C (aka I2C, IIC, TWI) bus interfacing",
+  "license": "AGPL-3.0",
+  "name": "i2c",
+  "version": "0.21.0"
+}
