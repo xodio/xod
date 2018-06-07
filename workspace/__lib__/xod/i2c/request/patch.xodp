@@ -53,7 +53,7 @@
     },
     {
       "boundLiterals": {
-        "__out__": "01h"
+        "__out__": "1"
       },
       "description": "Number of bytes to request",
       "id": "r1NONEn1m",
