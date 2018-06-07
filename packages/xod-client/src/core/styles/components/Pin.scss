@@ -52,7 +52,7 @@
       @include symbol-coloring($color-datatype-pulse);
     }
 
-    &.port, &.port-analog {
+    &.port {
       @include symbol-coloring($color-datatype-port);
     }
 
