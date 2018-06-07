@@ -14,5 +14,5 @@ void evaluate(Context ctx) {
     auto tMax = getValue<input_Tmax>(ctx);
     auto k = (x - sMin) / (sMax - sMin);
     auto xm = tMin + k * (tMax - tMin);
-    emitValue<output_Xm>(ctx, xm);
+    emitValue<output_OUT>(ctx, xm);
 }
