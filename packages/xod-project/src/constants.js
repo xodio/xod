@@ -17,7 +17,6 @@ export const PIN_TYPE = {
   PULSE: 'pulse',
   BYTE: 'byte',
   PORT: 'port',
-  PORT_ANALOG: 'port-analog',
   DEAD: 'dead',
   // generic types
   T1: 't1',
@@ -38,7 +37,6 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.PULSE]: INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER,
   [PIN_TYPE.BYTE]: '00h',
   [PIN_TYPE.PORT]: 'D0',
-  [PIN_TYPE.PORT_ANALOG]: 'A0',
   [PIN_TYPE.DEAD]: '',
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
@@ -88,10 +86,6 @@ export const STATIC_TYPES_COMPATIBILITY = {
   [PIN_TYPE.PORT]: {
     [PIN_TYPE.PORT]: true,
   },
-  [PIN_TYPE.PORT_ANALOG]: {
-    [PIN_TYPE.PORT]: true,
-    [PIN_TYPE.PORT_ANALOG]: true,
-  },
 };
 
 // node types that provide a constant value
@@ -101,7 +95,6 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
-  [PIN_TYPE.PORT_ANALOG]: 'xod/core/constant-port-analog',
 };
 
 // node types that provide a constant pulse,

@@ -41,7 +41,7 @@
     @include link-parts-coloring($color-datatype-pulse);
   }
 
-  &.port, &.port-analog {
+  &.port {
     @include link-parts-coloring($color-datatype-port);
   }
 
