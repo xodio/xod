@@ -28,6 +28,7 @@ The most straightforward way to extend XOD and add support for new hardware.
 * [Dealing with time in C++](./cpp-time/)
 * [Creating variadic patch nodes](./creating-variadics/)
 * [Creating generic patch nodes](./creating-generics/)
+* [Defining custom types](./custom-types/)
 
 ## Case studies
 
