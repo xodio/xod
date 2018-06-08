@@ -108,7 +108,7 @@
         },
         "SyMtAcxJz": {
           "id": "SyMtAcxJz",
-          "type": "xod/core/defer-pulse",
+          "type": "xod/core/defer(pulse)",
           "position": {
             "x": 238,
             "y": -102
@@ -207,7 +207,7 @@
         "B1Kwp5e1M": {
           "id": "B1Kwp5e1M",
           "position": {
-            "x": 238,
+            "x": 272,
             "y": 102
           },
           "size": {

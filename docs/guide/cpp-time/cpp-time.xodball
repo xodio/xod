@@ -75,7 +75,7 @@
           "id": "H18u4egzz",
           "type": "xod/common-hardware/button",
           "position": {
-            "x": 170,
+            "x": 204,
             "y": 0
           },
           "boundValues": {
