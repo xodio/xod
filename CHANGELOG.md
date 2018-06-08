@@ -4,6 +4,57 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Add a custom type system which allows defining own complex types.
+  (#1216, #1224)
+* [core] Add a new built-in type: `Port`. Port specifies a board hardware pin
+  like `A4` or `D4`. Port specification became more straightforward rather than
+  plain numbers used before. (#1232)
+* [core] Add a new built-in type: `Byte`. A byte is a group of eight bits
+  specified in a binary, decimal, or hexadecimal form. (#1192)
+* [core] Clarify error messages related to generic type conflicts. (#1246)
+* [nodes] Add byte-to-number and number-to-byte conversion nodes to
+  [`xod/bits`](https://xod.io/libs/xod/bits/). (#1186)
+* [nodes] Make nodes in `xod/bits` use the new Byte type. (#1261)
+* [nodes] Make nodes in `xod/common-hardware` use the new Byte and Port types.
+  They now also expose unified pins for an explicit update, update
+  acknowledgment, and error signaling. (#1274)
+* [nodes] Nodes related to mathematics moved from `xod/core` to
+  [`xod/math`](https://xod.io/libs/xod/math/) (#1251)
+* [nodes] Nodes related to general purpose input/output moved from `xod/core`
+  to [`xod/gpio`](https://xod.io/libs/xod/gpio/) (#1256)
+* [nodes] Nodes for the I²C bus communication moved from `xod/core` to
+  [`xod/i2c`](https://xod.io/libs/xod/i2c/) (#1270)
+* [tutorial] Links in the `welcome-to-xod` tutorial no longer use goo.gl link
+  shortener and point to web-pages directly (#1217)
+
+### Deprecations and removals
+
+* All nodes related to mathematics in `xod/core` are deprecated now. Use
+  corresponding nodes from `xod/math` instead.
+* Nodes `analog-input`, `pwm-output`, `digital-input`, and `digital-output`
+  from `xod/core` are deprecated now. Use `analog-read`, `pwm-write`,
+  `digital-read`, `digital-write` from the new `xod/gpio`, or
+  `xod/common-hardware/analog-sensor` instead.
+* Plain numbers for pins defining a port are deprecated now. Although value `3`
+  is still valid, prefer explicit `A3` or `D3`. IDE will auto-correct wrong
+  values on input commit.
+* Plain numbers for pins storing a byte are deprecated now. Although value `3`
+  is still valid, prefer explicit `3d`, `03h`, or `11b`. IDE will auto-correct
+  wrong values on input commit.
+
+### Bug fixes
+
+* [core] Correctly pick up values bound to generic terminals and use them as
+  default values for pins created by these terminals. (#1250)
+* [ide] Fix some cases when generic pins were not colored even if their types
+  can be deduced. (#1248)
+* [ide] Reset project preferences when creating a new project. (#1252)
+* [ide] Make toolchain installation immune to download interruptions. (#1255)
+
 <a name="0.20.3"></a>
 ## 0.20.3 (2018-05-22)
 
