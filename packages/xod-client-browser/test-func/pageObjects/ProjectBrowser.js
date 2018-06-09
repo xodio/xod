@@ -5,7 +5,7 @@ import PatchGroupItemContextMenu from './PatchGroupItemContextMenu';
 
 class ProjectBrowser extends BasePageObject {
   async findPatchGroup(title) {
-    const patchGroupElementHandle = await this.elementHandle.xpath(
+    const [patchGroupElementHandle] = await this.elementHandle.$x(
       `//*[@class="PatchGroup"][.//text()="${title}"]`
     );
     if (!patchGroupElementHandle) return null;

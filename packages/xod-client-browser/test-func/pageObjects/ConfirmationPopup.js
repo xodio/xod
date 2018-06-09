@@ -13,7 +13,7 @@ class ConfirmationPopup extends BasePageObject {
   }
 
   async clickConfirm() {
-    const button = await this.elementHandle.xpath(
+    const [button] = await this.elementHandle.$x(
       '//button[.//text()="Confirm"]'
     );
     await button.click();

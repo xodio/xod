@@ -17,7 +17,7 @@ class EditorTab extends BasePageObject {
 }
 
 EditorTab.findByName = async (page, tabName) => {
-  const elementHandle = await page.xpath(
+  const [elementHandle] = await page.$x(
     `//*[@class="TabsItem"][.//text()="${tabName}"]`
   );
 
