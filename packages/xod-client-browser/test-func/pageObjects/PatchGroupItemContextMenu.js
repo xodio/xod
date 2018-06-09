@@ -5,6 +5,9 @@ class PatchGroupItemContextMenu extends BasePageObject {
     const item = await this.elementHandle.$(
       `.react-contextmenu-item[data-id="${itemId}"]`
     );
+    // Hover before Click is workaround over strange error:
+    // https://github.com/GoogleChrome/puppeteer/issues/1769
+    await item.hover();
     await item.click();
   }
 
