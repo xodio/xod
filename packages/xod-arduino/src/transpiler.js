@@ -2,8 +2,7 @@ import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
 import { explodeMaybe, reverseLookup, maybeProp } from 'xod-func-tools';
-// TODO: rename to XP
-import * as Project from 'xod-project';
+import * as XP from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';
@@ -31,7 +30,7 @@ const findPatchByPath = def(
 
 const getLinksInputNodeIds = def(
   'getLinksInputNodeIds :: [Link] -> [TNodeId]',
-  R.compose(R.uniq, R.map(R.compose(toInt, Project.getLinkInputNodeId)))
+  R.compose(R.uniq, R.map(R.compose(toInt, XP.getLinkInputNodeId)))
 );
 
 const getPatchByNodeId = def(
@@ -39,9 +38,9 @@ const getPatchByNodeId = def(
   (project, entryPath, patches, nodeId) =>
     R.compose(
       findPatchByPath(R.__, patches),
-      Project.getNodeType,
-      Project.getNodeByIdUnsafe(nodeId),
-      Project.getPatchByPathUnsafe
+      XP.getNodeType,
+      XP.getNodeByIdUnsafe(nodeId),
+      XP.getPatchByPathUnsafe
     )(entryPath, project)
 );
 
@@ -56,15 +55,11 @@ const toposortProject = def(
             nodeIdsMap,
           })),
           () =>
-            Project.updatePatch(
-              path,
-              Project.applyNodeIdMap(R.__, nodeIdsMap),
-              project
-            )
+            XP.updatePatch(path, XP.applyNodeIdMap(R.__, nodeIdsMap), project)
         )(nodeIdsMap)
       ),
-      Project.getTopologyMap,
-      Project.getPatchByPathUnsafe
+      XP.getTopologyMap,
+      XP.getPatchByPathUnsafe
     )(path, project)
 );
 
@@ -85,63 +80,60 @@ const arrangeTPatchesInTopologicalOrder = def(
       // at this point nodes in entry patch have
       // their order in a toposorted graph as an id
       R.map(
-        R.converge(R.pair, [
-          R.pipe(Project.getNodeId, parseInt),
-          Project.getNodeType,
-        ])
+        R.converge(R.pair, [R.pipe(XP.getNodeId, parseInt), XP.getNodeType])
       ),
-      Project.listNodes,
+      XP.listNodes,
       // we already checked that entry patchh exists
-      Project.getPatchByPathUnsafe(entryPath)
+      XP.getPatchByPathUnsafe(entryPath)
     )(project)
 );
 
 const convertPatchToTPatch = def(
   'convertPatchToTPatch :: Patch -> TPatch',
   patch => {
-    const patchPath = Project.getPatchPath(patch);
+    const patchPath = XP.getPatchPath(patch);
     const impl = explodeMaybe(
       `Implementation for ${patchPath} not found`,
-      Project.getImpl(patch)
+      XP.getImpl(patch)
     );
 
     const isDirtyable = pin =>
-      Project.getPinType(pin) === Project.PIN_TYPE.PULSE ||
+      XP.getPinType(pin) === XP.PIN_TYPE.PULSE ||
       isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
 
     const outputs = R.compose(
       R.map(
         R.applySpec({
-          type: Project.getPinType,
-          pinKey: Project.getPinLabel,
-          value: R.compose(Project.defaultValueOfType, Project.getPinType),
+          type: XP.getPinType,
+          pinKey: XP.getPinLabel,
+          value: R.compose(XP.defaultValueOfType, XP.getPinType),
           isDirtyable,
           isDirtyOnBoot: R.compose(
             R.not,
-            R.equals(Project.PIN_TYPE.PULSE),
-            Project.getPinType
+            R.equals(XP.PIN_TYPE.PULSE),
+            XP.getPinType
           ),
         })
       ),
-      Project.normalizePinLabels,
-      Project.listOutputPins
+      XP.normalizePinLabels,
+      XP.listOutputPins
     )(patch);
 
     const inputs = R.compose(
       R.map(
         R.applySpec({
-          type: Project.getPinType,
-          pinKey: Project.getPinLabel,
+          type: XP.getPinType,
+          pinKey: XP.getPinLabel,
           isDirtyable,
         })
       ),
-      Project.normalizePinLabels,
-      Project.listInputPins
+      XP.normalizePinLabels,
+      XP.listInputPins
     )(patch);
 
     const isThisIsThat = {
-      isDefer: Project.isDeferNodeType(patchPath),
-      isConstant: Project.isConstantNodeType(patchPath),
+      isDefer: XP.isDeferNodeType(patchPath),
+      isConstant: XP.isConstantNodeType(patchPath),
       usesTimeouts: areTimeoutsEnabled(impl),
       usesNodeId: isNodeIdEnabled(impl),
     };
@@ -164,26 +156,26 @@ const getMissingExplicitConstructorTypes = def(
     // :: [Patch]
     const usedPatches = R.compose(
       // we are sure that all thote patches exist since running flatten
-      R.map(Project.getPatchByPathUnsafe(R.__, project)),
+      R.map(XP.getPatchByPathUnsafe(R.__, project)),
       R.uniq,
-      R.map(Project.getNodeType),
-      Project.listNodes,
+      R.map(XP.getNodeType),
+      XP.listNodes,
       // we are sure that entry patch exists since running flatten
-      Project.getPatchByPathUnsafe(entryPath)
+      XP.getPatchByPathUnsafe(entryPath)
     )(project);
 
     // :: [PatchPath]
     const explicitlyUsedConstructors = R.compose(
-      R.map(Project.getPatchPath),
-      R.filter(Project.isConstructorPatch)
+      R.map(XP.getPatchPath),
+      R.filter(XP.isConstructorPatch)
     )(usedPatches);
 
     // :: [PatchPath]
     const referencedCustomTypes = R.compose(
-      R.reject(Project.isBuiltInType),
+      R.reject(XP.isBuiltInType),
       R.uniq,
-      R.map(Project.getPinType),
-      R.chain(Project.listPins)
+      R.map(XP.getPinType),
+      R.chain(XP.listPins)
     )(usedPatches);
 
     return R.without(explicitlyUsedConstructors, referencedCustomTypes);
@@ -203,7 +195,7 @@ const createTPatches = def(
           // Those construction patches must be at the very top
           R.concat(R.__, tPatches),
           R.map(convertPatchToTPatch),
-          R.map(Project.getPatchByPathUnsafe(R.__, originalProject)),
+          R.map(XP.getPatchByPathUnsafe(R.__, originalProject)),
           getMissingExplicitConstructorTypes
         )(entryPath, project),
       // patches must appear in the same order
@@ -212,14 +204,14 @@ const createTPatches = def(
       // :: Map PatchPath TPatch
       R.map(convertPatchToTPatch),
       R.dissoc(entryPath),
-      R.indexBy(Project.getPatchPath),
-      Project.listGenuinePatches
+      R.indexBy(XP.getPatchPath),
+      XP.listGenuinePatches
     )(project)
 );
 
 const getPinLabelsMap = def(
   'getPinLabelsMap :: [Pin] -> Map PinKey PinLabel',
-  R.compose(R.map(Project.getPinLabel), R.indexBy(Project.getPinKey))
+  R.compose(R.map(XP.getPinLabel), R.indexBy(XP.getPinKey))
 );
 
 const getNodePinsUnsafe = def(
@@ -229,13 +221,13 @@ const getNodePinsUnsafe = def(
       explodeMaybe(
         `Can’t get node pins of node ${node}. Referred type missing?`
       ),
-      Project.getNodePins
+      XP.getNodePins
     )(node, project)
 );
 
 const getNodePinLabels = def(
   'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
-  R.compose(getPinLabelsMap, Project.normalizePinLabels, getNodePinsUnsafe)
+  R.compose(getPinLabelsMap, XP.normalizePinLabels, getNodePinsUnsafe)
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values
@@ -248,16 +240,16 @@ const getDefaultPinValue = def(
   (pinKey, node, project) =>
     R.compose(
       explodeMaybe(`Can’t find pin with key ${pinKey} for node ${node}"`),
-      R.map(R.compose(Project.defaultValueOfType, Project.getPinType)),
-      R.chain(Project.getPinByKey(pinKey)),
-      Project.getPatchByNode(R.__, project)
+      R.map(R.compose(XP.defaultValueOfType, XP.getPinType)),
+      R.chain(XP.getPinByKey(pinKey)),
+      XP.getPatchByNode(R.__, project)
     )(node)
 );
 
 const getTNodeOutputs = def(
   'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
-    const nodeId = Project.getNodeId(node);
+    const nodeId = XP.getNodeId(node);
     const nodePins = getNodePinLabels(node, project);
 
     return R.compose(
@@ -265,14 +257,14 @@ const getTNodeOutputs = def(
       R.mapObjIndexed((links, pinKey) => ({
         to: getLinksInputNodeIds(links),
         pinKey: nodePins[pinKey],
-        value: Project.getBoundValue(pinKey, node).getOrElse(
+        value: XP.getBoundValue(pinKey, node).getOrElse(
           getDefaultPinValue(pinKey, node, project)
         ),
       })),
-      R.groupBy(Project.getLinkOutputPinKey),
-      R.filter(Project.isLinkOutputNodeIdEquals(nodeId)),
-      Project.listLinksByNode(node),
-      Project.getPatchByPathUnsafe
+      R.groupBy(XP.getLinkOutputPinKey),
+      R.filter(XP.isLinkOutputNodeIdEquals(nodeId)),
+      XP.listLinksByNode(node),
+      XP.getPatchByPathUnsafe
     )(entryPath, project);
   }
 );
@@ -280,15 +272,15 @@ const getTNodeOutputs = def(
 const getOutputPinLabelByLink = def(
   'getOutputPinLabelByLink :: Project -> Patch -> Link -> PinLabel',
   (project, patch, link) => {
-    const pinKey = Project.getLinkOutputPinKey(link);
+    const pinKey = XP.getLinkOutputPinKey(link);
     return R.compose(
       explodeMaybe(
         `Can’t find pin with key ${pinKey} for link ${link} on patch ${patch}`
       ),
       R.chain(maybeProp(pinKey)),
       R.map(getNodePinLabels(R.__, project)),
-      Project.getNodeById(R.__, patch),
-      Project.getLinkOutputNodeId
+      XP.getNodeById(R.__, patch),
+      XP.getLinkOutputNodeId
     )(link);
   }
 );
@@ -301,14 +293,14 @@ const getTPatchOutputByLabel = def(
 const getTNodeInputs = def(
   'getTNodeInputs :: Project -> PatchPath -> [TPatch] -> Node -> [TNodeInput]',
   (project, entryPath, patches, node) => {
-    const patch = Project.getPatchByPathUnsafe(entryPath, project);
-    const nodeId = Project.getNodeId(node);
+    const patch = XP.getPatchByPathUnsafe(entryPath, project);
+    const nodeId = XP.getNodeId(node);
     const nodePins = getNodePinLabels(node, project);
 
     // :: Link -> TPatch
     const getUpstreamNodePatch = R.compose(
       getPatchByNodeId(project, entryPath, patches),
-      Project.getLinkOutputNodeId
+      XP.getLinkOutputNodeId
     );
 
     // :: Link -> PinLabel
@@ -316,8 +308,8 @@ const getTNodeInputs = def(
 
     // :: Link -> TNodeInput
     const constructTNodeInput = R.applySpec({
-      pinKey: R.compose(R.prop(R.__, nodePins), Project.getLinkInputPinKey),
-      fromNodeId: R.compose(toInt, Project.getLinkOutputNodeId),
+      pinKey: R.compose(R.prop(R.__, nodePins), XP.getLinkInputPinKey),
+      fromNodeId: R.compose(toInt, XP.getLinkOutputNodeId),
       fromPatch: getUpstreamNodePatch,
       fromPinKey: getUpstreamPinLabel,
       fromOutput: R.converge(getTPatchOutputByLabel, [
@@ -328,8 +320,8 @@ const getTNodeInputs = def(
 
     return R.compose(
       R.map(constructTNodeInput),
-      R.filter(Project.isLinkInputNodeIdEquals(nodeId)),
-      Project.listLinksByNode(node)
+      R.filter(XP.isLinkInputNodeIdEquals(nodeId)),
+      XP.listLinksByNode(node)
     )(patch);
   }
 );
@@ -341,18 +333,15 @@ const createTNodes = def(
       R.sortBy(R.prop('id')),
       R.map(
         R.applySpec({
-          id: R.compose(toInt, Project.getNodeId),
-          originalId: R.compose(
-            reverseLookup(R.__, nodeIdsMap),
-            Project.getNodeId
-          ),
-          patch: R.compose(findPatchByPath(R.__, patches), Project.getNodeType),
+          id: R.compose(toInt, XP.getNodeId),
+          originalId: R.compose(reverseLookup(R.__, nodeIdsMap), XP.getNodeId),
+          patch: R.compose(findPatchByPath(R.__, patches), XP.getNodeType),
           outputs: getTNodeOutputs(project, entryPath),
           inputs: getTNodeInputs(project, entryPath, patches),
         })
       ),
-      Project.listNodes,
-      Project.getPatchByPathUnsafe
+      XP.listNodes,
+      XP.getPatchByPathUnsafe
     )(entryPath, project)
 );
 
@@ -365,19 +354,19 @@ const removeUnusedNodes = def(
   (flatEntryPatchPath, project) => {
     const nodeTypesUsedInEntryPatch = R.compose(
       R.uniq,
-      R.map(Project.getNodeType),
-      Project.listNodes,
+      R.map(XP.getNodeType),
+      XP.listNodes,
       // we already checked several times that entry patch exists
-      Project.getPatchByPathUnsafe(flatEntryPatchPath)
+      XP.getPatchByPathUnsafe(flatEntryPatchPath)
     )(project);
 
     const unusedPatchPaths = R.compose(
       R.without([...nodeTypesUsedInEntryPatch, flatEntryPatchPath]),
-      R.map(Project.getPatchPath),
-      Project.listPatches
+      R.map(XP.getPatchPath),
+      XP.listPatches
     )(project);
 
-    return Project.omitPatches(unusedPatchPaths, project);
+    return XP.omitPatches(unusedPatchPaths, project);
   }
 );
 
@@ -430,15 +419,15 @@ const transformProjectWithImpls = def(
       R.chain(toposortProject(path)),
       // end preparing project for transpilation. TODO: extract it into a separate function
       R.map(removeUnusedNodes(path)),
-      R.map(Project.extractBoundInputsToConstNodes(path)),
-      R.chain(Project.flatten(R.__, path)),
-      R.map(Project.expandVariadicNodes(path)),
-      R.chain(Project.autoresolveTypes(path)),
+      R.map(XP.extractBoundInputsToConstNodes(path)),
+      R.chain(XP.flatten(R.__, path)),
+      R.map(XP.expandVariadicNodes(path)),
+      R.chain(XP.autoresolveTypes(path)),
       R.unless(
         () => opts.debug,
-        R.chain(Project.updatePatch(path, Project.removeDebugNodes))
+        R.chain(XP.updatePatch(path, XP.removeDebugNodes))
       ),
-      Project.validatePatchReqursively(path)
+      XP.validatePatchReqursively(path)
       // begin preparing project for transpilation
     )(project)
 );
