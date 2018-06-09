@@ -73,6 +73,7 @@
     "postcss": "^6.0.16",
     "postcss-loader": "^2.0.10",
     "prettier": "^1.11.1",
+    "puppeteer": "^1.4.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.3",

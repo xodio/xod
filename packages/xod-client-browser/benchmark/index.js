@@ -1,4 +1,5 @@
 import path from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import puppeteer from 'puppeteer';
 
 import { startServer, stopServer, PORT } from '../tools/staticServer';

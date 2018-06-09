@@ -2,7 +2,10 @@ import hasClass from '../utils/hasClass';
 import BasePageObject from './BasePageObject';
 
 class PatchGroupItem extends BasePageObject {
-  click() {
+  async click() {
+    // Hover before Click is workaround over strange error:
+    // https://github.com/GoogleChrome/puppeteer/issues/1769
+    await this.elementHandle.hover();
     return this.elementHandle.click();
   }
 

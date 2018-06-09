@@ -1,5 +1,6 @@
 /* global browser, assert */
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import puppeteer from 'puppeteer';
 import { assert } from 'chai';
 import R from 'ramda';

@@ -2,14 +2,14 @@ import BasePageObject from './BasePageObject';
 
 class Menubar extends BasePageObject {
   async clickTopLevelItem(title) {
-    const item = await this.elementHandle.xpath(
+    const [item] = await this.elementHandle.$x(
       `//*[@class="Menubar-submenu-title"][.//text()="${title}"]`
     );
     await item.click();
   }
 
   async clickMenuItem(title) {
-    const item = await this.page.xpath(
+    const [item] = await this.page.$x(
       `//*[@class="Menubar-clickable-item"][starts-with(text(), "${title}")]`
     );
     await item.click();
