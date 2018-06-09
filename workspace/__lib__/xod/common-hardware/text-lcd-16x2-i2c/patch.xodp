@@ -6,7 +6,7 @@
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
-        "x": 136,
+        "x": 170,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -16,16 +16,39 @@
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
-        "x": 170,
+        "x": 204,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Fires when write is done",
+      "id": "HJlMoNFIx7",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "HkMi4t8xX",
+      "label": "UPD",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "id": "SkRdV5YWW",
       "position": {
-        "x": 68,
-        "y": 204
+        "x": 34,
+        "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,14 +60,14 @@
       "id": "SkkWMb9A-",
       "label": "BL",
       "position": {
-        "x": 68,
+        "x": 102,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     },
     {
       "boundLiterals": {
-        "__out__": "39"
+        "__out__": "27h"
       },
       "description": "I²C address of the expander chip.",
       "id": "rJlYT7EfW",
@@ -53,7 +76,7 @@
         "x": 34,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     }
   ]
 }

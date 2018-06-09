@@ -9,7 +9,7 @@
         "x": 34,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "id": "B1wPwUMNM",
@@ -28,6 +28,16 @@
         "y": 204
       },
       "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "S1bbjqBgm",
+      "label": "ERR",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

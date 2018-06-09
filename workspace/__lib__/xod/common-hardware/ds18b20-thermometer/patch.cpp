@@ -131,8 +131,10 @@ void evaluate(Context ctx) {
     auto port = getValue<input_PORT>(ctx);
     Number tc;
     bool success = readTemperature(port, &tc);
-    if (!success)
+    if (!success) {
+        emitValue<output_ERR>(ctx, 1);
         return;
+    }
 
     emitValue<output_Tc>(ctx, tc);
     emitValue<output_DONE>(ctx, 1);

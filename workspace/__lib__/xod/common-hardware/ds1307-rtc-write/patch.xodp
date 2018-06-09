@@ -2,14 +2,14 @@
   "description": "Writes a new date/time value to a DS1307, DS1337, DS1338, or DS3231 real-time clock IC. Useful as a throw-away node to setup the RTC once after you install a backup battery.",
   "links": [
     {
-      "id": "B1HFUnZgf",
+      "id": "B1rL95SeQ",
       "input": {
-        "nodeId": "HkMt83-xG",
-        "pinKey": "HkLOB_EuZ"
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$2"
       },
       "output": {
-        "nodeId": "B1ENIh-eM",
-        "pinKey": "__out__"
+        "nodeId": "r1QyD2WgG",
+        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -21,17 +21,6 @@
       "output": {
         "nodeId": "H1WQ8hZlf",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "Bk-CK3Zxf",
-      "input": {
-        "nodeId": "rJlHkD3Zgf",
-        "pinKey": "H1jODuEOW"
-      },
-      "output": {
-        "nodeId": "BJTpKhbeM",
-        "pinKey": "S1TsDnbgM"
       }
     },
     {
@@ -68,6 +57,17 @@
       }
     },
     {
+      "id": "H1C15qBlm",
+      "input": {
+        "nodeId": "rJlHkD3Zgf",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "BJTpKhbeM",
+        "pinKey": "S1TsDnbgM"
+      }
+    },
+    {
       "id": "H1UWw2Zgf",
       "input": {
         "nodeId": "r1QyD2WgG",
@@ -101,6 +101,28 @@
       }
     },
     {
+      "id": "HJ3Kq9reX",
+      "input": {
+        "nodeId": "B1eXyv2Zlf",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJJk95Be7",
+      "input": {
+        "nodeId": "B1eXyv2Zlf",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "r1-1chZlG",
+        "pinKey": "S1TsDnbgM"
+      }
+    },
+    {
       "id": "HJuWw3bef",
       "input": {
         "nodeId": "rJM1Dnbgz",
@@ -109,6 +131,17 @@
       "output": {
         "nodeId": "r1QyD2WgG",
         "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "HkTaKqBe7",
+      "input": {
+        "nodeId": "HJWkD2-xG",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HJiJ9hbez",
+        "pinKey": "S1TsDnbgM"
       }
     },
     {
@@ -134,14 +167,47 @@
       }
     },
     {
-      "id": "S1Bm9hWxf",
+      "id": "Hkvc55SgQ",
       "input": {
-        "nodeId": "HJWkD2-xG",
-        "pinKey": "H1jODuEOW"
+        "nodeId": "rJlHkD3Zgf",
+        "pinKey": "BJrcyE3y7"
       },
       "output": {
-        "nodeId": "HJiJ9hbez",
-        "pinKey": "S1TsDnbgM"
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy79qqBgm",
+      "input": {
+        "nodeId": "SyryPhWgz",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyLFq9rlm",
+      "input": {
+        "nodeId": "rJM1Dnbgz",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyOvccBlm",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$8"
+      },
+      "output": {
+        "nodeId": "HkMt83-xG",
+        "pinKey": "SyUMZQ2JQ"
       }
     },
     {
@@ -156,6 +222,50 @@
       }
     },
     {
+      "id": "S1NPq9SlX",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$7"
+      },
+      "output": {
+        "nodeId": "SyupI2ZeM",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "S1Yk55BeQ",
+      "input": {
+        "nodeId": "SyryPhWgz",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "Hy3RF2Zef",
+        "pinKey": "S1TsDnbgM"
+      }
+    },
+    {
+      "id": "SJCUqcSxm",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$5"
+      },
+      "output": {
+        "nodeId": "SyryPhWgz",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "SJVJ9cSem",
+      "input": {
+        "nodeId": "HyVJP3bez",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HyRRF2ZgG",
+        "pinKey": "S1TsDnbgM"
+      }
+    },
+    {
       "id": "SJhLcn-lz",
       "input": {
         "nodeId": "ByEJc3ZlG",
@@ -164,6 +274,17 @@
       "output": {
         "nodeId": "r1SQLh-gf",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJjLccrgQ",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$4"
+      },
+      "output": {
+        "nodeId": "HyVJP3bez",
+        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -211,6 +332,17 @@
       }
     },
     {
+      "id": "SykIqqHgm",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "HJWkD2-xG",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
       "id": "r1BWw3Zxf",
       "input": {
         "nodeId": "B1eXyv2Zlf",
@@ -222,21 +354,109 @@
       }
     },
     {
-      "id": "r1CL5n-eM",
+      "id": "r1OI99re7",
       "input": {
-        "nodeId": "r1QyD2WgG",
-        "pinKey": "H1jODuEOW"
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$3"
       },
       "output": {
-        "nodeId": "ByEJc3ZlG",
-        "pinKey": "S1TsDnbgM"
+        "nodeId": "B1eXyv2Zlf",
+        "pinKey": "rJxr5J42ym"
       }
     },
     {
-      "id": "r1jI5hWeG",
+      "id": "r1bt95SeQ",
+      "input": {
+        "nodeId": "BywsI3-lz",
+        "pinKey": "B1vdYXhkQ"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1iht9HlQ",
+      "input": {
+        "nodeId": "HkMt83-xG",
+        "pinKey": "SyssEEhJm"
+      },
+      "output": {
+        "nodeId": "B1ENIh-eM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1kOc9Be7",
+      "input": {
+        "nodeId": "B1k455HgQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "r1pHccSem",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "BywsI3-lz",
+        "pinKey": "SyewuY7nJm"
+      }
+    },
+    {
+      "id": "r1xc55Hlm",
+      "input": {
+        "nodeId": "HyVJP3bez",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJM89crem",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "rJM1Dnbgz",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "rk1o5qrgX",
+      "input": {
+        "nodeId": "HkMt83-xG",
+        "pinKey": "HJkfWmny7"
+      },
+      "output": {
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkZDccreQ",
+      "input": {
+        "nodeId": "rkHSqcSxm",
+        "pinKey": "ByU7LRuSPkW-$6"
+      },
+      "output": {
+        "nodeId": "rJlHkD3Zgf",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "ry4Rt5HgQ",
       "input": {
         "nodeId": "rJM1Dnbgz",
-        "pinKey": "H1jODuEOW"
+        "pinKey": "S1FFN4nkm"
       },
       "output": {
         "nodeId": "rkv1ch-eM",
@@ -244,25 +464,25 @@
       }
     },
     {
-      "id": "r1jwcnZgz",
+      "id": "ryVK5cHxm",
       "input": {
-        "nodeId": "HyVJP3bez",
-        "pinKey": "H1jODuEOW"
+        "nodeId": "HJWkD2-xG",
+        "pinKey": "BJrcyE3y7"
       },
       "output": {
-        "nodeId": "HyRRF2ZgG",
-        "pinKey": "S1TsDnbgM"
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
       }
     },
     {
-      "id": "ryOwchWgf",
+      "id": "ryYYc9rgQ",
       "input": {
-        "nodeId": "B1eXyv2Zlf",
-        "pinKey": "H1jODuEOW"
+        "nodeId": "r1QyD2WgG",
+        "pinKey": "BJrcyE3y7"
       },
       "output": {
-        "nodeId": "r1-1chZlG",
-        "pinKey": "S1TsDnbgM"
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
       }
     },
     {
@@ -277,13 +497,24 @@
       }
     },
     {
-      "id": "ryk_chWxf",
+      "id": "ryi999SgX",
       "input": {
-        "nodeId": "SyryPhWgz",
-        "pinKey": "H1jODuEOW"
+        "nodeId": "SyupI2ZeM",
+        "pinKey": "BJrcyE3y7"
       },
       "output": {
-        "nodeId": "Hy3RF2Zef",
+        "nodeId": "Sy_d99HlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryq0F9rx7",
+      "input": {
+        "nodeId": "r1QyD2WgG",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "ByEJc3ZlG",
         "pinKey": "S1TsDnbgM"
       }
     },
@@ -302,24 +533,24 @@
   "nodes": [
     {
       "boundLiterals": {
-        "__out__": "104"
+        "__out__": "68h"
       },
       "description": "I²C address of the IC",
       "id": "B1ENIh-eM",
       "label": "ADDR",
       "position": {
-        "x": 408,
+        "x": -374,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "B1eXyv2Zlf",
       "position": {
-        "x": -34,
+        "x": 0,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "boundLiterals": {
@@ -327,17 +558,27 @@
       },
       "description": "Trigger a new write of the date/time data provided",
       "id": "B1h8InZgz",
-      "label": "W",
+      "label": "UPD",
       "position": {
-        "x": 442,
+        "x": 510,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Fires if write failed",
+      "id": "B1k455HgQ",
+      "label": "ERR",
+      "position": {
+        "x": -238,
+        "y": 612
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "id": "BJTpKhbeM",
       "position": {
-        "x": 272,
+        "x": 306,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -345,7 +586,7 @@
     {
       "id": "ByEJc3ZlG",
       "position": {
-        "x": -136,
+        "x": -102,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -356,14 +597,14 @@
         "x": -340,
         "y": 408
       },
-      "type": "xod/core/i2c-end-transmission"
+      "type": "xod/i2c/end-transmission"
     },
     {
       "description": "Year value in [2000, 2099] range",
       "id": "H1WQ8hZlf",
       "label": "YEAR",
       "position": {
-        "x": -340,
+        "x": -306,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -371,15 +612,15 @@
     {
       "id": "HJWkD2-xG",
       "position": {
-        "x": -340,
+        "x": -306,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "id": "HJiJ9hbez",
       "position": {
-        "x": -340,
+        "x": -306,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -389,7 +630,7 @@
       "id": "Hk678nbeG",
       "label": "SEC",
       "position": {
-        "x": 272,
+        "x": 306,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -397,15 +638,15 @@
     {
       "id": "HkMt83-xG",
       "position": {
-        "x": 408,
+        "x": 442,
         "y": 204
       },
-      "type": "xod/core/i2c-begin-transmission"
+      "type": "xod/i2c/begin-transmission"
     },
     {
       "id": "Hy3RF2Zef",
       "position": {
-        "x": 170,
+        "x": 204,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -413,7 +654,7 @@
     {
       "id": "HyRRF2ZgG",
       "position": {
-        "x": 68,
+        "x": 102,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -421,10 +662,10 @@
     {
       "id": "HyVJP3bez",
       "position": {
-        "x": 68,
+        "x": 102,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "boundLiterals": {
@@ -434,7 +675,7 @@
       "id": "S1EQU3-lz",
       "label": "MO",
       "position": {
-        "x": -238,
+        "x": -204,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -445,9 +686,18 @@
       "label": "DONE",
       "position": {
         "x": -340,
-        "y": 510
+        "y": 612
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Sy_d99HlQ",
+      "label": "I2C",
+      "position": {
+        "x": -442,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
     },
     {
       "boundLiterals": {
@@ -457,7 +707,7 @@
       "id": "SydXI2Wxz",
       "label": "WD",
       "position": {
-        "x": -34,
+        "x": 0,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -467,7 +717,7 @@
       "id": "SyjmLn-lz",
       "label": "HOUR",
       "position": {
-        "x": 68,
+        "x": 102,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -475,24 +725,24 @@
     {
       "id": "SyryPhWgz",
       "position": {
-        "x": 170,
+        "x": 204,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "description": "Starting register address",
       "id": "SyupI2ZeM",
       "position": {
-        "x": 374,
+        "x": 408,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "id": "r1-1chZlG",
       "position": {
-        "x": -34,
+        "x": 0,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"
@@ -500,10 +750,10 @@
     {
       "id": "r1QyD2WgG",
       "position": {
-        "x": -136,
+        "x": -102,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "boundLiterals": {
@@ -513,7 +763,7 @@
       "id": "r1SQLh-gf",
       "label": "DAY",
       "position": {
-        "x": -136,
+        "x": -102,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -524,7 +774,7 @@
       },
       "id": "r1UrbTzlf",
       "position": {
-        "x": -340,
+        "x": -306,
         "y": 102
       },
       "type": "xod/core/modulo"
@@ -534,7 +784,7 @@
       "id": "r1nQLhbez",
       "label": "MIN",
       "position": {
-        "x": 170,
+        "x": 204,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -542,23 +792,32 @@
     {
       "id": "rJM1Dnbgz",
       "position": {
-        "x": -238,
+        "x": -204,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
     },
     {
       "id": "rJlHkD3Zgf",
       "position": {
-        "x": 272,
+        "x": 306,
         "y": 306
       },
-      "type": "xod/core/i2c-write"
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "arityLevel": 9,
+      "id": "rkHSqcSxm",
+      "position": {
+        "x": -238,
+        "y": 510
+      },
+      "type": "xod/core/any"
     },
     {
       "id": "rkv1ch-eM",
       "position": {
-        "x": -238,
+        "x": -204,
         "y": 204
       },
       "type": "xod/bits/dec-to-bcd"

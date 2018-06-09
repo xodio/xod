@@ -2,14 +2,25 @@
   "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range).",
   "links": [
     {
-      "id": "B1cJqHvL-",
+      "id": "B169UsSlQ",
       "input": {
-        "nodeId": "ryby9rDLZ",
-        "pinKey": "BJuORNheZ"
+        "nodeId": "r1Q58iHg7",
+        "pinKey": "SyKd0E2x-"
       },
       "output": {
-        "nodeId": "SkDkcrvI-",
+        "nodeId": "H1ny9SPLW",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkOqIiHgQ",
+      "input": {
+        "nodeId": "Bk5lqHvIZ",
+        "pinKey": "SyTBDSwIZ"
+      },
+      "output": {
+        "nodeId": "r1Q58iHg7",
+        "pinKey": "SyBtREhlW"
       }
     },
     {
@@ -24,25 +35,36 @@
       }
     },
     {
-      "id": "By1e9rPI-",
+      "id": "Bks5UoHxQ",
       "input": {
-        "nodeId": "ryby9rDLZ",
-        "pinKey": "SyKd0E2x-"
+        "nodeId": "r1Q58iHg7",
+        "pinKey": "SkuhqCqym"
       },
       "output": {
-        "nodeId": "H1ny9SPLW",
+        "nodeId": "SkDkcrvI-",
         "pinKey": "__out__"
       }
     },
     {
-      "id": "ByFW5Bv8-",
+      "id": "Hymmc8irx7",
       "input": {
-        "nodeId": "Bk5lqHvIZ",
-        "pinKey": "SyTBDSwIZ"
+        "nodeId": "rJgQ9IjSgX",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "ryby9rDLZ",
-        "pinKey": "SyBtREhlW"
+        "nodeId": "r1Q58iHg7",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
+      "id": "rkMX5LiBgQ",
+      "input": {
+        "nodeId": "HkZ75LjrxX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1Q58iHg7",
+        "pinKey": "HJgzpqacyX"
       }
     }
   ],
@@ -57,8 +79,8 @@
       },
       "id": "Bk5lqHvIZ",
       "position": {
-        "x": 138,
-        "y": 224
+        "x": 34,
+        "y": 204
       },
       "type": "@/gp2y0a-linearize"
     },
@@ -70,38 +92,61 @@
       "id": "H1ny9SPLW",
       "label": "UPD",
       "position": {
-        "x": 138,
-        "y": 16
+        "x": 238,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "HkZ75LjrxX",
+      "label": "ERR",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Measured distance in meters. Trustworhy only for distances in [0.04, 0.30] meters range.",
       "id": "S10ecHDUW",
       "label": "Dm",
       "position": {
-        "x": 266,
-        "y": 328
+        "x": 34,
+        "y": 306
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Board port number the sensor is connected to.",
       "id": "SkDkcrvI-",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "x": 204,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
-      "id": "ryby9rDLZ",
+      "id": "r1Q58iHg7",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 204,
+        "y": 102
       },
-      "type": "xod/core/analog-input"
+      "type": "xod/gpio/analog-read"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "rJgQ9IjSgX",
+      "label": "DONE",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

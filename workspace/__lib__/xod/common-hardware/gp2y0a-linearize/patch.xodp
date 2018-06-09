@@ -183,7 +183,7 @@
         "x": 138,
         "y": 224
       },
-      "type": "xod/core/map-range"
+      "type": "xod/math/map"
     },
     {
       "id": "HJSHFHwI-",

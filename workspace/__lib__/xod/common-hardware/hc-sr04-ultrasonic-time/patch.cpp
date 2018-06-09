@@ -69,6 +69,10 @@ void evaluate(Context ctx) {
     // We should not ping too often as the PCB of the sensor could resonate
     state->cooldownUntil = millis() + HCSR04_COOLDOWN_MS;
 
-    if (status == HCSR04_OK)
+    if (status == HCSR04_OK) {
         emitValue<output_Ts>(ctx, Number(t) / 1000000.0);
+        emitValue<output_DONE>(ctx, 1);
+    } else {
+        emitValue<output_ERR>(ctx, 1);
+    }
 }

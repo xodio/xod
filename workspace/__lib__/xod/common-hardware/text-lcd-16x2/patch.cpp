@@ -21,6 +21,9 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {
@@ -37,4 +40,6 @@ void evaluate(Context ctx) {
 
     printLine(lcd, 0, getValue<input_L1>(ctx));
     printLine(lcd, 1, getValue<input_L2>(ctx));
+
+    emitValue<output_DONE>(ctx, 1);
 }

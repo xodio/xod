@@ -57,7 +57,27 @@
         "x": -1,
         "y": -1
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires if update failed.",
+      "id": "HJgDdJqrxm",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "S1Dd1qSgQ",
+      "label": "DONE",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

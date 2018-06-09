@@ -89,6 +89,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
       "description": "Triggers new read",
       "id": "SkUhQ5RkQ",
       "label": "UPD",
@@ -99,6 +102,9 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
       "description": "Analog port to read from. Should start with `A` to succeed.\n",
       "id": "r1l3XcR17",
       "label": "PORT",

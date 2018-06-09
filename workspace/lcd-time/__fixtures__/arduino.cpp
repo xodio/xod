@@ -948,9 +948,11 @@ struct State {
 
 struct Node {
     State state;
+    Logic output_DONE;
 
     union {
         struct {
+            bool isOutputDirty_DONE : 1;
             bool isNodeDirty : 1;
         };
 
@@ -966,29 +968,35 @@ struct input_D6 { };
 struct input_D7 { };
 struct input_L1 { };
 struct input_L2 { };
+struct input_UPD { };
+struct output_DONE { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_RS> { using T = Number; };
-template<> struct ValueType<input_EN> { using T = Number; };
-template<> struct ValueType<input_D4> { using T = Number; };
-template<> struct ValueType<input_D5> { using T = Number; };
-template<> struct ValueType<input_D6> { using T = Number; };
-template<> struct ValueType<input_D7> { using T = Number; };
+template<> struct ValueType<input_RS> { using T = uint8_t; };
+template<> struct ValueType<input_EN> { using T = uint8_t; };
+template<> struct ValueType<input_D4> { using T = uint8_t; };
+template<> struct ValueType<input_D5> { using T = uint8_t; };
+template<> struct ValueType<input_D6> { using T = uint8_t; };
+template<> struct ValueType<input_D7> { using T = uint8_t; };
 template<> struct ValueType<input_L1> { using T = XString; };
 template<> struct ValueType<input_L2> { using T = XString; };
+template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_RS;
-    Number _input_EN;
-    Number _input_D4;
-    Number _input_D5;
-    Number _input_D6;
-    Number _input_D7;
+    uint8_t _input_RS;
+    uint8_t _input_EN;
+    uint8_t _input_D4;
+    uint8_t _input_D5;
+    uint8_t _input_D6;
+    uint8_t _input_D7;
     XString _input_L1;
     XString _input_L2;
+    Logic _input_UPD;
 
+    bool _isInputDirty_UPD;
 };
 
 using Context = ContextObject*;
@@ -996,26 +1004,26 @@ using Context = ContextObject*;
 template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
-            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2" \
-            "");
+            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2 input_UPD" \
+            " output_DONE");
 }
 
-template<> Number getValue<input_RS>(Context ctx) {
+template<> uint8_t getValue<input_RS>(Context ctx) {
     return ctx->_input_RS;
 }
-template<> Number getValue<input_EN>(Context ctx) {
+template<> uint8_t getValue<input_EN>(Context ctx) {
     return ctx->_input_EN;
 }
-template<> Number getValue<input_D4>(Context ctx) {
+template<> uint8_t getValue<input_D4>(Context ctx) {
     return ctx->_input_D4;
 }
-template<> Number getValue<input_D5>(Context ctx) {
+template<> uint8_t getValue<input_D5>(Context ctx) {
     return ctx->_input_D5;
 }
-template<> Number getValue<input_D6>(Context ctx) {
+template<> uint8_t getValue<input_D6>(Context ctx) {
     return ctx->_input_D6;
 }
-template<> Number getValue<input_D7>(Context ctx) {
+template<> uint8_t getValue<input_D7>(Context ctx) {
     return ctx->_input_D7;
 }
 template<> XString getValue<input_L1>(Context ctx) {
@@ -1024,18 +1032,33 @@ template<> XString getValue<input_L1>(Context ctx) {
 template<> XString getValue<input_L2>(Context ctx) {
     return ctx->_input_L2;
 }
+template<> Logic getValue<input_UPD>(Context ctx) {
+    return ctx->_input_UPD;
+}
+template<> Logic getValue<output_DONE>(Context ctx) {
+    return ctx->_node->output_DONE;
+}
 
 template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
-            "");
+            " input_UPD");
     return false;
+}
+
+template<> bool isInputDirty<input_UPD>(Context ctx) {
+    return ctx->_isInputDirty_UPD;
 }
 
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            "");
+            " output_DONE");
+}
+
+template<> void emitValue<output_DONE>(Context ctx, Logic val) {
+    ctx->_node->output_DONE = val;
+    ctx->_node->isOutputDirty_DONE = true;
 }
 
 State* getState(Context ctx) {
@@ -1054,6 +1077,9 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {
@@ -1070,6 +1096,8 @@ void evaluate(Context ctx) {
 
     printLine(lcd, 0, getValue<input_L1>(ctx));
     printLine(lcd, 1, getValue<input_L2>(ctx));
+
+    emitValue<output_DONE>(ctx, 1);
 }
 
 } // namespace xod__common_hardware__text_lcd_16x2
@@ -1089,28 +1117,28 @@ namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
-constexpr Logic node_0_output_TICK = false;
-xod__core__continuously::Node node_0 = {
+constexpr uint8_t node_0_output_VAL = 10;
+
+constexpr uint8_t node_1_output_VAL = 12;
+
+constexpr uint8_t node_2_output_VAL = 11;
+
+constexpr uint8_t node_3_output_VAL = 9;
+
+constexpr uint8_t node_4_output_VAL = 8;
+
+constexpr uint8_t node_5_output_VAL = 13;
+
+constexpr XString node_6_output_VAL = XString();
+
+constexpr Logic node_7_output_TICK = false;
+xod__core__continuously::Node node_7 = {
     xod__core__continuously::State(), // state default
     0, // timeoutAt
-    node_0_output_TICK, // output TICK default
+    node_7_output_TICK, // output TICK default
     false, // TICK dirty
     true // node itself dirty
 };
-
-constexpr Number node_1_output_VAL = 10;
-
-constexpr Number node_2_output_VAL = 12;
-
-constexpr Number node_3_output_VAL = 11;
-
-constexpr Number node_4_output_VAL = 9;
-
-constexpr Number node_5_output_VAL = 8;
-
-constexpr Number node_6_output_VAL = 13;
-
-constexpr XString node_7_output_VAL = XString();
 
 constexpr Number node_8_output_TIME = 0;
 xod__core__system_time::Node node_8 = {
@@ -1126,8 +1154,11 @@ xod__core__cast_to_string__number::Node node_9 = {
     true // node itself dirty
 };
 
+constexpr Logic node_10_output_DONE = false;
 xod__common_hardware__text_lcd_16x2::Node node_10 = {
     xod__common_hardware__text_lcd_16x2::State(), // state default
+    node_10_output_DONE, // output DONE default
+    false, // DONE dirty
     true // node itself dirty
 };
 
@@ -1138,7 +1169,7 @@ void runTransaction() {
     XOD_TRACE_LN(g_transactionTime);
 
     // Check for timeouts
-    detail::checkTriggerTimeout(&node_0);
+    detail::checkTriggerTimeout(&node_7);
 
     // defer-* nodes are always at the very bottom of the graph, so no one will
     // recieve values emitted by them. We must evaluate them before everybody
@@ -1148,20 +1179,21 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
 
     // Evaluate all dirty nodes
-    { // xod__core__continuously #0
-        if (node_0.isNodeDirty) {
+    { // xod__core__continuously #7
+        if (node_7.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
-            XOD_TRACE_LN(0);
+            XOD_TRACE_LN(7);
 
             xod__core__continuously::ContextObject ctxObj;
-            ctxObj._node = &node_0;
+            ctxObj._node = &node_7;
 
             // copy data from upstream nodes into context
 
             xod__core__continuously::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
-            node_8.isNodeDirty |= node_0.isOutputDirty_TICK;
+            node_8.isNodeDirty |= node_7.isOutputDirty_TICK;
+            node_10.isNodeDirty |= node_7.isOutputDirty_TICK;
         }
     }
     { // xod__core__system_time #8
@@ -1173,9 +1205,9 @@ void runTransaction() {
             ctxObj._node = &node_8;
 
             // copy data from upstream nodes into context
-            ctxObj._input_UPD = node_0.output_TICK;
+            ctxObj._input_UPD = node_7.output_TICK;
 
-            ctxObj._isInputDirty_UPD = node_0.isOutputDirty_TICK;
+            ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
             xod__core__system_time::evaluate(&ctxObj);
 
@@ -1209,14 +1241,17 @@ void runTransaction() {
             ctxObj._node = &node_10;
 
             // copy data from upstream nodes into context
-            ctxObj._input_RS = node_5_output_VAL;
-            ctxObj._input_EN = node_4_output_VAL;
-            ctxObj._input_D4 = node_1_output_VAL;
-            ctxObj._input_D5 = node_3_output_VAL;
-            ctxObj._input_D6 = node_2_output_VAL;
-            ctxObj._input_D7 = node_6_output_VAL;
+            ctxObj._input_RS = node_4_output_VAL;
+            ctxObj._input_EN = node_3_output_VAL;
+            ctxObj._input_D4 = node_0_output_VAL;
+            ctxObj._input_D5 = node_2_output_VAL;
+            ctxObj._input_D6 = node_1_output_VAL;
+            ctxObj._input_D7 = node_5_output_VAL;
             ctxObj._input_L1 = node_9.output_OUT;
-            ctxObj._input_L2 = node_7_output_VAL;
+            ctxObj._input_L2 = node_6_output_VAL;
+            ctxObj._input_UPD = node_7.output_TICK;
+
+            ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
@@ -1225,11 +1260,11 @@ void runTransaction() {
     }
 
     // Clear dirtieness and timeouts for all nodes and pins
-    node_0.dirtyFlags = 0;
+    node_7.dirtyFlags = 0;
     node_8.dirtyFlags = 0;
     node_9.dirtyFlags = 0;
     node_10.dirtyFlags = 0;
-    detail::clearStaleTimeout(&node_0);
+    detail::clearStaleTimeout(&node_7);
 
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());

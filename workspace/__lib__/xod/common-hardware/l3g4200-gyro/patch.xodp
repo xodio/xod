@@ -13,6 +13,17 @@
       }
     },
     {
+      "id": "ByZhVgwgm",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "Sky8yewgQ"
+      },
+      "output": {
+        "nodeId": "H13sVewxm",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "HJKwIkXKZ",
       "input": {
         "nodeId": "HJ0lHkQYW",
@@ -32,6 +43,28 @@
       "output": {
         "nodeId": "ByK90ZXY-",
         "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "Hy5gL2HeX",
+      "input": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "BJvFHnSlQ"
+      },
+      "output": {
+        "nodeId": "SJFJUhHxX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1Be82Sx7",
+      "input": {
+        "nodeId": "Syj0BnHxX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "B129S2SeX"
       }
     },
     {
@@ -90,6 +123,17 @@
       }
     },
     {
+      "id": "ryPlU2Sg7",
+      "input": {
+        "nodeId": "BkeiArnBgm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ0lHkQYW",
+        "pinKey": "ByyoB2Hxm"
+      }
+    },
+    {
       "id": "ryk9SymtW",
       "input": {
         "nodeId": "HJ0lHkQYW",
@@ -103,12 +147,35 @@
   ],
   "nodes": [
     {
+      "description": "Fires if reading failed",
+      "id": "BkeiArnBgm",
+      "label": "ERR",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "id": "ByK90ZXY-",
       "position": {
         "x": 34,
         "y": 204
       },
       "type": "@/st-imu-normalize-va"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the sensor and sets sensitivity",
+      "id": "H13sVewxm",
+      "label": "INIT",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
       "boundLiterals": {
@@ -166,17 +233,26 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundLiterals": {
-        "__out__": "104"
-      },
-      "description": "I²C address. 104 by default. Some board configurations use 105 instead.",
-      "id": "SJOWBJQKW",
-      "label": "ADDR",
+      "id": "SJFJUhHxX",
+      "label": "I2C",
       "position": {
         "x": 34,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "SJOWBJQKW",
+      "label": "ADDR",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
     },
     {
       "description": "Roll angular velocity. I.e. spin around Y axis. Expressed in radians per second.",
@@ -189,6 +265,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Fires when reading is done",
+      "id": "Syj0BnHxX",
+      "label": "DONE",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "boundLiterals": {
         "__out__": "250"
       },
@@ -196,7 +282,7 @@
       "id": "rk5-Hy7tW",
       "label": "SEN",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -209,7 +295,7 @@
       "id": "ryCZH1QKb",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "x": 476,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

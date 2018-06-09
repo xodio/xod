@@ -92,7 +92,7 @@
         "x": 68,
         "y": 204
       },
-      "type": "xod/core/map-range"
+      "type": "xod/math/map"
     },
     {
       "id": "ryCtrcUtb",

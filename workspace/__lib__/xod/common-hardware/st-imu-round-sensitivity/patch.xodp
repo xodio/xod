@@ -13,6 +13,17 @@
       }
     },
     {
+      "id": "B1Mh9iSlm",
+      "input": {
+        "nodeId": "r1lUy5N_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry-B5jBlm",
+        "pinKey": "r1ctYrM3G"
+      }
+    },
+    {
       "id": "B1fa2abKZ",
       "input": {
         "nodeId": "HJinnpbFb",
@@ -46,17 +57,6 @@
       }
     },
     {
-      "id": "H151aa-KZ",
-      "input": {
-        "nodeId": "r1lUy5N_b",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "r1QJ6a-K-",
-        "pinKey": "H1HILaWFb"
-      }
-    },
-    {
       "id": "HyVahpWFZ",
       "input": {
         "nodeId": "HJinnpbFb",
@@ -79,10 +79,10 @@
       }
     },
     {
-      "id": "SkwJ6TZtb",
+      "id": "SkYhcjSx7",
       "input": {
-        "nodeId": "r1QJ6a-K-",
-        "pinKey": "r1m4LpWKb"
+        "nodeId": "ry-B5jBlm",
+        "pinKey": "SJ-BNy8s2G"
       },
       "output": {
         "nodeId": "HJinnpbFb",
@@ -138,24 +138,11 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "boundLiterals": {
-        "B1-BIa-t-": "48",
-        "BJTNLT-Kb": "16",
-        "Bk1HU6btW": "32"
-      },
-      "id": "r1QJ6a-K-",
-      "position": {
-        "x": 136,
-        "y": 306
-      },
-      "type": "xod/core/nth-number-4"
-    },
-    {
       "description": "Value for CTRL_REG4 to set the sensitivity selected",
       "id": "r1lUy5N_b",
       "label": "REG",
       "position": {
-        "x": 136,
+        "x": 170,
         "y": 408
       },
       "type": "xod/patch-nodes/output-number"
@@ -169,6 +156,21 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "arityLevel": 3,
+      "boundLiterals": {
+        "BkrwKrGhG": "0",
+        "HypuFHG3z": "16",
+        "HypuFHG3z-$1": "32",
+        "HypuFHG3z-$2": "48"
+      },
+      "id": "ry-B5jBlm",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/core/nth-input"
     },
     {
       "description": "Level 4 sensitivity provided by the sensor, e.g. ±16g",

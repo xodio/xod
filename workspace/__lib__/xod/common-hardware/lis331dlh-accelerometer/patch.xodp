@@ -2,6 +2,17 @@
   "description": "Reads acceleration from an accelerometer based on LIS331DLH IC by STMicroelectronics. It is expected the accelerometer is connected to the first hardware I²C bus.",
   "links": [
     {
+      "id": "BJwfLnSlm",
+      "input": {
+        "nodeId": "H1gEM8nHxm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "B129S2SeX"
+      }
+    },
+    {
       "id": "BkFgn-XFW",
       "input": {
         "nodeId": "Hk013Z7t-",
@@ -46,6 +57,17 @@
       }
     },
     {
+      "id": "SyIMI2He7",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "BJvFHnSlQ"
+      },
+      "output": {
+        "nodeId": "S1-EzU2rlm",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "SyvlnbmYZ",
       "input": {
         "nodeId": "HJzzRiWt-",
@@ -65,6 +87,28 @@
       "output": {
         "nodeId": "Hk013Z7t-",
         "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "r1cz8nrlQ",
+      "input": {
+        "nodeId": "SkEzUhHlX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "ByyoB2Hxm"
+      }
+    },
+    {
+      "id": "r1yRVxDem",
+      "input": {
+        "nodeId": "r1ZJ0iWFW",
+        "pinKey": "Sky8yewgQ"
+      },
+      "output": {
+        "nodeId": "Byq6VeDl7",
+        "pinKey": "__out__"
       }
     },
     {
@@ -113,12 +157,35 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the sensor and sets sensitivity",
+      "id": "Byq6VeDl7",
+      "label": "INIT",
+      "position": {
+        "x": 442,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "id": "H13Jn-mK-",
       "position": {
         "x": 34,
         "y": 204
       },
       "type": "@/st-imu-normalize-acc"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "H1gEM8nHxm",
+      "label": "DONE",
+      "position": {
+        "x": 237,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Acceleration along X axis. Expressed in ɡ units.",
@@ -139,6 +206,15 @@
       "type": "@/st-imu-normalize-acc"
     },
     {
+      "id": "S1-EzU2rlm",
+      "label": "I2C",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
       "id": "S1-e3WXFZ",
       "position": {
         "x": 102,
@@ -154,23 +230,33 @@
       "id": "S1x-AsWKb",
       "label": "SENS",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "boundLiterals": {
-        "__out__": "24"
+        "__out__": "18h"
       },
-      "description": "I²C address. 24 by default. Some board configurations use 25 instead.",
+      "description": "I²C address. 18h by default. Some board configurations use 19h instead.",
       "id": "SJFeRsZYW",
       "label": "ADDR",
       "position": {
-        "x": 34,
+        "x": 68,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "SkEzUhHlX",
+      "label": "ERR",
+      "position": {
+        "x": 271,
+        "y": 305
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
@@ -180,7 +266,7 @@
       "id": "Syc-0sWtZ",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "x": 476,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

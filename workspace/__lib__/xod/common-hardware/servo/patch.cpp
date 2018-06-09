@@ -11,12 +11,21 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     State* state = getState(ctx);
     auto port = (int)getValue<input_PORT>(ctx);
+    if (port < 0 || port > NUM_DIGITAL_PINS - 1) {
+        emitValue<output_ERR>(ctx, 1);
+        return;
+    }
+
     if (port != state->configuredPort) {
         state->servo.attach(port);
         state->configuredPort = port;
     }
 
     state->servo.write(getValue<input_VAL>(ctx) * 180);
+    emitValue<output_DONE>(ctx, 1);
 }

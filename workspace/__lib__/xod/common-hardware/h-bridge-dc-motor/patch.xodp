@@ -13,9 +13,20 @@
       }
     },
     {
-      "id": "BkB3Az0Ub",
+      "id": "B1wJ_sBlQ",
       "input": {
-        "nodeId": "HkbcAGCIb",
+        "nodeId": "BkVCDire7",
+        "pinKey": "H1SVIAuBDJZ"
+      },
+      "output": {
+        "nodeId": "SJpVAGRUW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJlqwoBl7",
+      "input": {
+        "nodeId": "SkntwoSeX",
         "pinKey": "HJ6HsEngZ"
       },
       "output": {
@@ -24,21 +35,87 @@
       }
     },
     {
-      "id": "BkroRMAU-",
+      "id": "BJr1djSxQ",
       "input": {
-        "nodeId": "HJyFCMA8W",
-        "pinKey": "rJsaFSvk-"
+        "nodeId": "Hk65Porlm",
+        "pinKey": "ByXnYHPyb"
       },
       "output": {
-        "nodeId": "HknX0fRU-",
+        "nodeId": "BkVCDire7",
+        "pinKey": "B1LNICdSDJW"
+      }
+    },
+    {
+      "id": "BkPgdirx7",
+      "input": {
+        "nodeId": "Hk65Porlm",
+        "pinKey": "B14R6TcyQ"
+      },
+      "output": {
+        "nodeId": "Bk53PjBeX",
         "pinKey": "__out__"
       }
     },
     {
-      "id": "H1xoCzRI-",
+      "id": "H19euiSl7",
       "input": {
-        "nodeId": "HkbcAGCIb",
-        "pinKey": "B134j4neZ"
+        "nodeId": "SkntwoSeX",
+        "pinKey": "BygApTqym"
+      },
+      "output": {
+        "nodeId": "Bk53PjBeX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1FQOoHgX",
+      "input": {
+        "nodeId": "B1_bdsSeX",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SkntwoSeX",
+        "pinKey": "rJl2TqpqyX"
+      }
+    },
+    {
+      "id": "H1U7OoBxQ",
+      "input": {
+        "nodeId": "ryS-dirgQ",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "Hk65Porlm",
+        "pinKey": "SkwRqaq17"
+      }
+    },
+    {
+      "id": "HJWX_sSlX",
+      "input": {
+        "nodeId": "ryezMusBx7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryS-dirgQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "Sk47OoBlX",
+      "input": {
+        "nodeId": "ryS-dirgQ",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SkntwoSeX",
+        "pinKey": "ry3pcpqyX"
+      }
+    },
+    {
+      "id": "Skm9voHxX",
+      "input": {
+        "nodeId": "SkntwoSeX",
+        "pinKey": "rJjXFA9JQ"
       },
       "output": {
         "nodeId": "S18NCzAIb",
@@ -46,90 +123,150 @@
       }
     },
     {
-      "id": "rJ7ykmC8Z",
+      "id": "Sy9m_oHem",
       "input": {
-        "nodeId": "HJyFCMA8W",
-        "pinKey": "ByXnYHPyb"
+        "nodeId": "B1_bdsSeX",
+        "pinKey": "ByU7LRuSPkW"
       },
       "output": {
-        "nodeId": "Hy6CCMRLb",
-        "pinKey": "B1LNICdSDJW"
+        "nodeId": "Hk65Porlm",
+        "pinKey": "S1eDAq69yX"
       }
     },
     {
-      "id": "rkS1kX0LW",
+      "id": "SywowoSxX",
       "input": {
-        "nodeId": "Hy6CCMRLb",
-        "pinKey": "H1SVIAuBDJZ"
+        "nodeId": "Hk65Porlm",
+        "pinKey": "Syro9C9yQ"
       },
       "output": {
-        "nodeId": "SJpVAGRUW",
+        "nodeId": "HknX0fRU-",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rklV_org7",
+      "input": {
+        "nodeId": "r1GfdoBgQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1_bdsSeX",
+        "pinKey": "ByHmL0uHPk-"
       }
     }
   ],
   "nodes": [
     {
+      "id": "B1_bdsSeX",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new write",
+      "id": "Bk53PjBeX",
+      "label": "UPD",
+      "position": {
+        "x": 408,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BkVCDire7",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/math/abs"
+    },
+    {
       "id": "H1To0fRL-",
       "position": {
-        "x": 138,
-        "y": 120
+        "x": 34,
+        "y": 204
       },
       "type": "xod/core/less"
     },
     {
-      "id": "HJyFCMA8W",
+      "id": "Hk65Porlm",
       "position": {
-        "x": 394,
-        "y": 328
+        "x": 136,
+        "y": 306
       },
-      "type": "xod/core/pwm-output"
-    },
-    {
-      "id": "HkbcAGCIb",
-      "position": {
-        "x": 10,
-        "y": 328
-      },
-      "type": "xod/core/digital-output"
+      "type": "xod/gpio/pwm-write"
     },
     {
       "description": "Board port to which the PWM (aka Enable) pin of the H-Bridge is connected. The port should be capable of producting PWM signal.",
       "id": "HknX0fRU-",
       "label": "PWM",
       "position": {
-        "x": 266,
-        "y": 120
+        "x": 136,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "Hy6CCMRLb",
-      "position": {
-        "x": 394,
-        "y": 120
-      },
-      "type": "xod/core/absolute"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Board port to which the direction pin of the H-Bridge is connected.",
       "id": "S18NCzAIb",
       "label": "DIR",
       "position": {
-        "x": 10,
-        "y": 120
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-port"
     },
     {
       "description": "Desired speed of the motor in [-1.0, 1.0] range. Negative values denote clockwise rotation, zero denotes full stop, positive values denote counterclockwise direction.",
       "id": "SJpVAGRUW",
       "label": "SPD",
       "position": {
-        "x": 394,
-        "y": 16
+        "x": 272,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkntwoSeX",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/gpio/digital-write"
+    },
+    {
+      "description": "Fires if write failed",
+      "id": "r1GfdoBgQ",
+      "label": "ERR",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ryS-dirgQ",
+      "position": {
+        "x": 0,
+        "y": 408
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "Fires when writing is done",
+      "id": "ryezMusBx7",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

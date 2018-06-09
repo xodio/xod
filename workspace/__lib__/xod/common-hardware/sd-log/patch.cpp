@@ -47,4 +47,5 @@ void evaluate(Context ctx) {
     file.flush();
     file.close();
     emitValue<output_ERR>(ctx, false);
+    emitValue<output_DONE>(ctx, 1);
 }
