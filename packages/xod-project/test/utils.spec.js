@@ -1,16 +1,8 @@
 import R from 'ramda';
-import chai, { expect, assert } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
-
-chai.use(dirtyChai);
-
-// Kludge to overwrite corrupted by dirtyChai asserts
-// TODO: Remove dirtyChai ( https://github.com/xodio/xod/issues/1129 )
-assert.isTrue = a => assert.equal(a, true);
-assert.isFalse = a => assert.equal(a, false);
 
 describe('Utils', () => {
   // transforming node ids
@@ -37,12 +29,10 @@ describe('Utils', () => {
     ];
 
     it('guidToIdx: should return an empty map for empty nodes', () => {
-      expect(Utils.guidToIdx({}))
-        .to.be.an('object')
-        .and.to.be.empty();
+      assert.deepEqual(Utils.guidToIdx({}), {});
     });
     it('guidToIdx: should return a map oldId to newId', () => {
-      expect(Utils.guidToIdx(nodes)).to.be.deep.equal({
+      assert.deepEqual(Utils.guidToIdx(nodes), {
         a: '0',
         b: '1',
         c: '2',
@@ -50,12 +40,11 @@ describe('Utils', () => {
     });
 
     it('resolveNodeIds: should return nodes with new ids', () => {
-      expect(Utils.resolveNodeIds(nodesIdMap, nodes)).to.be.deep.equal(
-        expectedNodes
-      );
+      assert.deepEqual(Utils.resolveNodeIds(nodesIdMap, nodes), expectedNodes);
     });
     it('resolveLinkNodeIds: should return links with resolved node ids', () => {
-      expect(Utils.resolveLinkNodeIds(nodesIdMap, links)).to.be.deep.equal(
+      assert.deepEqual(
+        Utils.resolveLinkNodeIds(nodesIdMap, links),
         expectedLinks
       );
     });
@@ -65,21 +54,21 @@ describe('Utils', () => {
   describe('generateId', () => {
     it('should be valid shortid', () => {
       const id = Utils.generateId();
-      expect(shortid.isValid(id)).to.be.true();
+      assert.isTrue(shortid.isValid(id));
     });
     it('should return new ids each time', () => {
       const ids = R.uniq(R.times(Utils.generateId, 5));
-      expect(ids).to.have.lengthOf(5);
+      assert.lengthOf(ids, 5);
     });
   });
   describe('validateId', () => {
     it('should return false for invalid id', () => {
       const id = 'i have spaces и немного кириллицы';
-      expect(shortid.isValid(id)).to.be.false();
+      assert.isFalse(shortid.isValid(id));
     });
     it('should be valid shortid', () => {
       const id = '123aBc';
-      expect(shortid.isValid(id)).to.be.true();
+      assert.isTrue(shortid.isValid(id));
     });
   });
   describe('isValidNumberDataValue', () => {

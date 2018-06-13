@@ -3801,10 +3801,6 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
-dirty-chai@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/dirty-chai/-/dirty-chai-1.2.2.tgz#78495e619635f7fe44219aa4c837849bf183142e"
-
 discontinuous-range@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/discontinuous-range/-/discontinuous-range-1.0.0.tgz#e38331f0844bba49b9a9cb71c771585aab1bc65a"

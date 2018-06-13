@@ -1,4 +1,4 @@
-import { expect, assert } from 'chai';
+import { assert } from 'chai';
 import fs from 'fs';
 import path from 'path';
 import { removeSync } from 'fs-extra';
@@ -25,7 +25,7 @@ describe('Backup', () => {
       .make()
       .then(() => readDir(tempPath))
       .then(files => {
-        expect(files).to.have.lengthOf(7);
+        assert.lengthOf(files, 7);
         done();
       })
       .catch(err => done(err));
@@ -56,14 +56,13 @@ describe('Backup', () => {
       .then(() => rBackup.make())
       .then(() => readDir(temppath))
       .then(files => {
-        expect(files).to.have.lengthOf(1);
+        assert.lengthOf(files, 1);
       })
       .then(() => fs.renameSync(filepath, `${filepath}_broken`))
       .then(() => rBackup.restore())
       .then(() => readDir(dirpath))
       .then(files => {
-        expect(files).to.have.lengthOf(1);
-        expect(files[0]).to.be.equal(filepath);
+        assert.deepEqual(files, [filepath]);
         done();
       })
       .catch(err => done(err));

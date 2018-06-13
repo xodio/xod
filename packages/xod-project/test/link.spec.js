@@ -1,9 +1,6 @@
-import chai, { expect } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 
 import * as Link from '../src/link';
-
-chai.use(dirtyChai);
 
 describe('Link', () => {
   // constructors
@@ -21,31 +18,25 @@ describe('Link', () => {
     const newLink = Link.createLink(to.pin, to.node, from.pin, from.node);
 
     it('should return created link with `id` and `pins` keys', () => {
-      expect(newLink)
-        .to.be.an('object')
-        .to.have.keys(['@@type', 'id', 'input', 'output']);
+      assert.hasAllKeys(newLink, ['@@type', 'id', 'input', 'output']);
     });
     it('should have `input` and `output` objects with keys `pinKey` and `nodeId`', () => {
-      expect(newLink)
-        .to.have.property('input')
-        .that.have.keys(['pinKey', 'nodeId']);
-      expect(newLink)
-        .to.have.property('output')
-        .that.have.keys(['pinKey', 'nodeId']);
+      assert.hasAllKeys(newLink.input, ['pinKey', 'nodeId']);
+      assert.hasAllKeys(newLink.output, ['pinKey', 'nodeId']);
 
-      expect(newLink.output.pinKey).to.be.equal(from.pin);
-      expect(newLink.output.nodeId).to.be.equal(from.nodeId);
-      expect(newLink.input.pinKey).to.be.equal(to.pin);
-      expect(newLink.input.nodeId).to.be.equal(to.nodeId);
+      assert.equal(newLink.output.pinKey, from.pin);
+      assert.equal(newLink.output.nodeId, from.nodeId);
+      assert.equal(newLink.input.pinKey, to.pin);
+      assert.equal(newLink.input.nodeId, to.nodeId);
     });
   });
   // properties
   describe('getLinkId', () => {
     it('should return id string for Node object', () => {
-      expect(Link.getLinkId({ id: '@/test' })).to.be.equal('@/test');
+      assert.equal(Link.getLinkId({ id: '@/test' }), '@/test');
     });
     it('should return id string for string', () => {
-      expect(Link.getLinkId('@/test')).to.be.equal('@/test');
+      assert.equal(Link.getLinkId('@/test'), '@/test');
     });
   });
   describe('getters', () => {
@@ -58,31 +49,31 @@ describe('Link', () => {
     describe('getLinkInputNodeId', () => {
       it('should return input node id', () => {
         const result = Link.getLinkInputNodeId(link);
-        expect(result).to.be.equal(link.input.nodeId);
+        assert.equal(result, link.input.nodeId);
       });
     });
     describe('getLinkOutputNodeId', () => {
       it('should return output node id', () => {
         const result = Link.getLinkOutputNodeId(link);
-        expect(result).to.be.equal(link.output.nodeId);
+        assert.equal(result, link.output.nodeId);
       });
     });
     describe('getLinkInputPinKey', () => {
       it('should return input pin key', () => {
         const result = Link.getLinkInputPinKey(link);
-        expect(result).to.be.equal(link.input.pinKey);
+        assert.equal(result, link.input.pinKey);
       });
     });
     describe('getLinkOutputPinKey', () => {
       it('should return output pin key', () => {
         const result = Link.getLinkOutputPinKey(link);
-        expect(result).to.be.equal(link.output.pinKey);
+        assert.equal(result, link.output.pinKey);
       });
     });
     describe('getLinkNodeIds', () => {
       it('should return Array with nodeIds: [output, input]', () => {
         const result = Link.getLinkNodeIds(link);
-        expect(result).to.be.deep.equal(['@/from', '@/to']);
+        assert.deepEqual(result, ['@/from', '@/to']);
       });
     });
   });
@@ -95,19 +86,13 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(
-        Link.isLinkInputNodeIdEquals('@/non-existent', link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkInputNodeIdEquals('@/non-existent', link));
     });
     it('should return false for nodeId from output', () => {
-      expect(
-        Link.isLinkInputNodeIdEquals(link.output.nodeId, link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkInputNodeIdEquals(link.output.nodeId, link));
     });
     it('should return true for nodeId from input', () => {
-      expect(
-        Link.isLinkInputNodeIdEquals(link.input.nodeId, link)
-      ).to.be.true();
+      assert.isTrue(Link.isLinkInputNodeIdEquals(link.input.nodeId, link));
     });
   });
   describe('isLinkOutputNodeIdEquals', () => {
@@ -118,19 +103,13 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(
-        Link.isLinkOutputNodeIdEquals('@/non-existent', link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkOutputNodeIdEquals('@/non-existent', link));
     });
     it('should return false for nodeId from input', () => {
-      expect(
-        Link.isLinkOutputNodeIdEquals(link.input.nodeId, link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkOutputNodeIdEquals(link.input.nodeId, link));
     });
     it('should return true for nodeId from output', () => {
-      expect(
-        Link.isLinkOutputNodeIdEquals(link.output.nodeId, link)
-      ).to.be.true();
+      assert.isTrue(Link.isLinkOutputNodeIdEquals(link.output.nodeId, link));
     });
   });
   describe('isLinkInputPinKeyEquals', () => {
@@ -141,19 +120,13 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(
-        Link.isLinkInputPinKeyEquals('non-existent-pin', link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkInputPinKeyEquals('non-existent-pin', link));
     });
     it('should return false for pinKey from output', () => {
-      expect(
-        Link.isLinkInputPinKeyEquals(link.output.pinKey, link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkInputPinKeyEquals(link.output.pinKey, link));
     });
     it('should return true for pinKey from input', () => {
-      expect(
-        Link.isLinkInputPinKeyEquals(link.input.pinKey, link)
-      ).to.be.true();
+      assert.isTrue(Link.isLinkInputPinKeyEquals(link.input.pinKey, link));
     });
   });
   describe('isLinkOutputPinKeyEquals', () => {
@@ -164,19 +137,13 @@ describe('Link', () => {
     };
 
     it('should return false for non-existent nodeId', () => {
-      expect(
-        Link.isLinkOutputPinKeyEquals('non-existent-pin', link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkOutputPinKeyEquals('non-existent-pin', link));
     });
     it('should return false for pinKey from input', () => {
-      expect(
-        Link.isLinkOutputPinKeyEquals(link.input.pinKey, link)
-      ).to.be.false();
+      assert.isFalse(Link.isLinkOutputPinKeyEquals(link.input.pinKey, link));
     });
     it('should return true for pinKey from output', () => {
-      expect(
-        Link.isLinkOutputPinKeyEquals(link.output.pinKey, link)
-      ).to.be.true();
+      assert.isTrue(Link.isLinkOutputPinKeyEquals(link.output.pinKey, link));
     });
   });
 });

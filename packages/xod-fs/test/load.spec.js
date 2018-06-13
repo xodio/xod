@@ -1,4 +1,4 @@
-import chai, { assert, expect } from 'chai';
+import chai, { assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import * as XP from 'xod-project';
 
@@ -21,8 +21,7 @@ describe('Loader', () => {
 
   it('getLocalProjects: return an array of local projects in workspace', () =>
     Loader.getLocalProjects(workspace).then(projects => {
-      expect(projects).to.have.lengthOf(1);
-      expect(projects).to.deep.equal([
+      assert.deepEqual(projects, [
         {
           path: path.resolve(workspace, projectPath),
           content: {
@@ -38,7 +37,7 @@ describe('Loader', () => {
 
   it('getProjects: return an array of projects in workspace, including libs', () =>
     Loader.getProjects(workspace).then(projects => {
-      expect(projects).to.have.lengthOf(5);
+      assert.lengthOf(projects, 5);
     }));
   it('getProjects: reject CANT_ENUMERATE_PROJECTS for non-existent workspace', () =>
     expectRejectedWithCode(
@@ -48,7 +47,7 @@ describe('Loader', () => {
 
   it('getLocalProjects: return an array of local projects in workspace', () =>
     Loader.getLocalProjects(workspace).then(projects => {
-      expect(projects).to.have.lengthOf(1);
+      assert.lengthOf(projects, 1);
     }));
   it('getLocalProjects: reject CANT_ENUMERATE_PROJECTS for non-existent workspace', () =>
     expectRejectedWithCode(
