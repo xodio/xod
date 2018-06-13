@@ -8,6 +8,6 @@ export default () => next => action => {
     // eslint-disable-next-line no-console
     console.error(err);
 
-    return next(addError(formatUnexpectedError(err), true));
+    return next(addError(formatUnexpectedError(err)));
   }
 };
