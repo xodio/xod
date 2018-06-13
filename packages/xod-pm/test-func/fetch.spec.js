@@ -80,16 +80,15 @@ describe('fetching data', () => {
   });
 
   describe('fetchLibsWithDependencies()', () => {
-    it('returns Promise with list with two xodballs: xod/common-hardware and xod/core', () =>
+    it('returns Promise with xod/common-hardware and its dependencies', () =>
       F.fetchLibsWithDependencies(
         PM_SWAGGER_URL,
         [],
         ['xod/common-hardware']
       ).then(projectsMap => {
-        assert.lengthOf(R.keys(projectsMap), 4);
         assert.sameMembers(
           R.compose(R.map(getProjectName), R.values)(projectsMap),
-          ['common-hardware', 'core', 'bits', 'units']
+          ['bits', 'common-hardware', 'core', 'gpio', 'i2c', 'math', 'units']
         );
       }));
     it('returns rejected Promise with error code "CANT_PARSE_LIBRARY_REQUEST" for bad request', () =>
