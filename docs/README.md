@@ -120,8 +120,11 @@ creating, managing, and sharing your works.
 
 * [`xod/core`](/libs/xod/core/)
 * [`xod/common-hardware`](/libs/xod/common-hardware/)
-* [`xod/units`](/libs/xod/units/)
 * [`xod/bits`](/libs/xod/bits/)
+* [`xod/gpio`](/libs/xod/gpio/)
+* [`xod/i2c`](/libs/xod/i2c/)
+* [`xod/math`](/libs/xod/math/)
+* [`xod/units`](/libs/xod/units/)
 
 </div><!-- column -->
 
