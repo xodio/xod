@@ -19,7 +19,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@glennsl/bs-revamp": "^0.1.1",
-    "bs-platform": "^2.2.3",
+    "bs-platform": "^3.1.5",
     "handlebars": "^4.0.6",
     "hm-def": "^0.3.2",
     "ramda": "^0.24.1",

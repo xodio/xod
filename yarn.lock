@@ -2294,9 +2294,9 @@ browserslist@^2.10.0:
     caniuse-lite "^1.0.30000780"
     electron-to-chromium "^1.3.28"
 
-bs-platform@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-2.2.3.tgz#d905ae10a5f3621e6a739041dfa0b58483a2174f"
+bs-platform@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-3.1.5.tgz#fb34ee4702bc9163848d5537096c4f31ebaeed40"
 
 bser@^2.0.0:
   version "2.0.0"
