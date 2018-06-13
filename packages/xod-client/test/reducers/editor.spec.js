@@ -1,5 +1,5 @@
 import R from 'ramda';
-import chai from 'chai';
+import { assert } from 'chai';
 import thunk from 'redux-thunk';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import configureStore from 'redux-mock-store';
@@ -113,7 +113,7 @@ describe('Editor reducer', () => {
       const id = '1';
       store.dispatch(Actions.selectNode(id));
 
-      chai.expect(Selectors.getSelection(store.getState())).to.deep.equal([
+      assert.deepEqual(Selectors.getSelection(store.getState()), [
         {
           entity: SELECTION_ENTITY_TYPE.NODE,
           id,
@@ -125,7 +125,7 @@ describe('Editor reducer', () => {
       const id = '1';
       store.dispatch(Actions.selectLink(id));
 
-      chai.expect(Selectors.getSelection(store.getState())).to.deep.equal([
+      assert.deepEqual(Selectors.getSelection(store.getState()), [
         {
           entity: SELECTION_ENTITY_TYPE.LINK,
           id,
@@ -138,7 +138,7 @@ describe('Editor reducer', () => {
       store.dispatch(Actions.selectLink(id));
       store.dispatch(Actions.deselectAll());
 
-      chai.expect(store.getState()).to.deep.equal(mockState);
+      assert.deepEqual(store.getState(), mockState);
     });
     it('should select pin', () => {
       const nodeId = '1';
@@ -146,7 +146,7 @@ describe('Editor reducer', () => {
       const expectedActions = [Actions.setPinSelection(nodeId, pinKey)];
 
       store.dispatch(Actions.setPinSelection(nodeId, pinKey));
-      chai.expect(store.getActions()).to.deep.equal(expectedActions);
+      assert.deepEqual(store.getActions(), expectedActions);
     });
     it('should deselect pin on second click', () => {
       store = testStore(mockState);
@@ -156,7 +156,7 @@ describe('Editor reducer', () => {
       store.dispatch(Actions.linkPin(nodeId, pinKey));
       store.dispatch(Actions.linkPin(nodeId, pinKey));
 
-      chai.expect(Selectors.getLinkingPin(store.getState())).to.be.a('null');
+      assert.isNull(Selectors.getLinkingPin(store.getState()));
     });
   });
 
@@ -206,21 +206,21 @@ describe('Editor reducer', () => {
       const tabIds = R.keys(store.getState().editor.tabs);
       const newTabId = R.reject(isAmong(['a', 'b']), tabIds)[0];
 
-      chai.expect(tabIds).to.have.lengthOf(3);
-      chai.expect(store.getState().editor.currentTabId).to.be.equal(newTabId);
+      assert.lengthOf(tabIds, 3);
+      assert.equal(store.getState().editor.currentTabId, newTabId);
     });
     it('should close a tab and switch to another one there are any left open', () => {
       store.dispatch(Actions.closeTab('a'));
 
-      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(1);
-      chai.expect(store.getState().editor.currentTabId).to.be.equal('b');
+      assert.lengthOf(R.keys(store.getState().editor.tabs), 1);
+      assert.equal(store.getState().editor.currentTabId, 'b');
     });
     it('should close the tab and set currentPatchPath to null if that was the last tab', () => {
       store.dispatch(Actions.closeTab('a'));
       store.dispatch(Actions.closeTab('b'));
 
-      chai.expect(R.keys(store.getState().editor.tabs)).to.have.lengthOf(0);
-      chai.expect(store.getState().editor.currentTabId).to.be.equal(null);
+      assert.isEmpty(store.getState().editor.tabs);
+      assert.isNull(store.getState().editor.currentTabId);
     });
     it('should sort tabs', () => true);
   });

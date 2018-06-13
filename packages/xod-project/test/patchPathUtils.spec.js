@@ -1,17 +1,9 @@
-import chai, { expect, assert } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 
 import * as CONST from '../src/constants';
 import * as PatchPathUtils from '../src/patchPathUtils';
 
 import * as Helper from './helpers';
-
-chai.use(dirtyChai);
-
-// Kludge to overwrite corrupted by dirtyChai asserts
-// TODO: Remove dirtyChai ( https://github.com/xodio/xod/issues/1129 )
-assert.isTrue = a => assert.equal(a, true);
-assert.isFalse = a => assert.equal(a, false);
 
 describe('PatchPathUtils', () => {
   describe('getBaseName', () => {
@@ -19,7 +11,7 @@ describe('PatchPathUtils', () => {
       const baseName = 'test';
       const path = `@/folder/${baseName}`;
       const result = PatchPathUtils.getBaseName(path);
-      expect(result).to.be.equal(baseName);
+      assert.equal(result, baseName);
     });
   });
 
@@ -233,7 +225,7 @@ describe('PatchPathUtils', () => {
 
       /* istanbul ignore next */
       Helper.expectEitherRight(val => {
-        expect(val).to.be.equal(path);
+        assert.equal(val, path);
       }, result);
     });
   });
@@ -244,15 +236,15 @@ describe('PatchPathUtils', () => {
 
     it('should return true for localPath', () => {
       const result = PatchPathUtils.isPathLocal(localPath);
-      expect(result).to.be.true();
+      assert.isTrue(result);
     });
     it('should return false for not a path', () => {
       const result = PatchPathUtils.isPathLocal({});
-      expect(result).to.be.false();
+      assert.isFalse(result);
     });
     it('should return false for libPath', () => {
       const result = PatchPathUtils.isPathLocal(libPath);
-      expect(result).to.be.false();
+      assert.isFalse(result);
     });
   });
   describe('isPathLibrary', () => {
@@ -261,15 +253,15 @@ describe('PatchPathUtils', () => {
 
     it('should return true for libPath', () => {
       const result = PatchPathUtils.isPathLibrary(libPath);
-      expect(result).to.be.true();
+      assert.isTrue(result);
     });
     it('should return false for not a path', () => {
       const result = PatchPathUtils.isPathLocal({});
-      expect(result).to.be.false();
+      assert.isFalse(result);
     });
     it('should return false for localPath', () => {
       const result = PatchPathUtils.isPathLibrary(localPath);
-      expect(result).to.be.false();
+      assert.isFalse(result);
     });
   });
 
@@ -280,11 +272,11 @@ describe('PatchPathUtils', () => {
 
     it('should return library name for libPath', () => {
       const result = PatchPathUtils.getLibraryName(libPath);
-      expect(result).to.be.equal(libName);
+      assert.equal(result, libName);
     });
     it('should return @ for localPath', () => {
       const result = PatchPathUtils.getLibraryName(localPath);
-      expect(result).to.be.equal('@');
+      assert.equal(result, '@');
     });
   });
 

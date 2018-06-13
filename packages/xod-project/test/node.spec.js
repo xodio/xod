@@ -1,12 +1,9 @@
-import chai, { expect } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 
 import * as Node from '../src/node';
 import * as CONST from '../src/constants';
 
 import * as Helper from './helpers';
-
-chai.use(dirtyChai);
 
 const emptyNode = Helper.defaultizeNode({});
 
@@ -23,9 +20,9 @@ describe('Node', () => {
     const newNode = Node.duplicateNode(node);
 
     it('should return node object with same properties but new id', () => {
-      expect(newNode.id).not.equals(node.id);
-      expect(newNode.position).deep.equal(node.position);
-      expect(newNode.type).deep.equal(node.type);
+      assert.notEqual(newNode.id, node.id);
+      assert.deepEqual(newNode.position, node.position);
+      assert.deepEqual(newNode.type, node.type);
     });
     it('should return copy of node always with new id', () => {
       const newNode1 = Node.duplicateNode(node);
@@ -33,26 +30,26 @@ describe('Node', () => {
       const newNode3 = Node.duplicateNode(node);
       const newNode4 = Node.duplicateNode(node);
 
-      expect(newNode1.id).not.equals(newNode2.id);
-      expect(newNode2.id).not.equals(newNode3.id);
-      expect(newNode3.id).not.equals(newNode4.id);
+      assert.notEqual(newNode1.id, newNode2.id);
+      assert.notEqual(newNode2.id, newNode3.id);
+      assert.notEqual(newNode3.id, newNode4.id);
     });
     it('should return not the same object', () => {
-      expect(newNode).not.equals(node);
+      assert.notEqual(newNode, node);
     });
   });
   // properties
   describe('getNodeId', () => {
     it('should return id string for Node object', () => {
-      expect(Node.getNodeId({ id: '@/test' })).to.be.equal('@/test');
+      assert.equal(Node.getNodeId({ id: '@/test' }), '@/test');
     });
     it('should return id string for string', () => {
-      expect(Node.getNodeId('@/test')).to.be.equal('@/test');
+      assert.equal(Node.getNodeId('@/test'), '@/test');
     });
   });
   describe('getNodeType', () => {
     it('should return type', () => {
-      expect(Node.getNodeType(nodeOfType('@/test'))).to.be.equal('@/test');
+      assert.equal(Node.getNodeType(nodeOfType('@/test')), '@/test');
     });
   });
   describe('setNodeType', () => {
@@ -60,39 +57,27 @@ describe('Node', () => {
       const node = nodeOfType('@/test');
       const newNode = Node.setNodeType('@/test-passed', node);
 
-      expect(Node.getNodeType(newNode)).to.be.equal('@/test-passed');
+      assert.equal(Node.getNodeType(newNode), '@/test-passed');
     });
   });
   describe('getNodePosition', () => {
     it('should return node position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      expect(Node.getNodePosition(node))
-        .to.be.an('object')
-        .that.have.keys(['x', 'y']);
+      assert.hasAllKeys(Node.getNodePosition(node), ['x', 'y']);
     });
   });
   describe('setNodePosition', () => {
     it('should return node in new position', () => {
       const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      const newNode = Node.setNodePosition({ x: 1, y: 1 }, node);
+      const newNode = Node.setNodePosition({ x: 10, y: 10 }, node);
 
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('position');
-
-      expect(newNode.position)
-        .to.have.property('x')
-        .to.be.equal(1);
-
-      expect(newNode.position)
-        .to.have.property('y')
-        .to.be.equal(1);
+      assert.deepEqual(Node.getNodePosition(newNode), { x: 10, y: 10 });
     });
   });
   describe('getNodeLabel', () => {
     it('should return node label', () => {
       const node = Helper.defaultizeNode({ label: 'nodeLabel' });
-      expect(Node.getNodeLabel(node)).to.be.equal('nodeLabel');
+      assert.equal(Node.getNodeLabel(node), 'nodeLabel');
     });
   });
   describe('setNodeLabel', () => {
@@ -100,19 +85,14 @@ describe('Node', () => {
       const label = 'new label';
       const newNode = Node.setNodeLabel(label, emptyNode);
 
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('label')
-        .that.equals(label);
+      assert.equal(Node.getNodeLabel(newNode), label);
     });
   });
 
   describe('getAllBoundValues', () => {
     it('should return empty object for node without bound values', () => {
       const node = Helper.defaultizeNode({ boundLiterals: {} });
-      expect(Node.getAllBoundValues(node))
-        .to.be.an('object')
-        .and.empty();
+      assert.isEmpty(Node.getAllBoundValues(node));
     });
     it('should return object with shape { pinKey: pinValue }', () => {
       const node = Helper.defaultizeNode({
@@ -122,7 +102,7 @@ describe('Node', () => {
         },
       });
 
-      expect(Node.getAllBoundValues(node)).to.be.deep.equal({
+      assert.deepEqual(Node.getAllBoundValues(node), {
         a: true,
         b: 10,
       });
@@ -137,13 +117,13 @@ describe('Node', () => {
     });
     const checkJust = pinName => {
       const value = Node.getBoundValue(pinName, node);
-      expect(value.isJust).to.be.true();
-      expect(value.getOrElse(null)).to.be.equal(node.boundLiterals[pinName]);
+      assert.isTrue(value.isJust);
+      assert.equal(value.getOrElse(null), node.boundLiterals[pinName]);
     };
 
     it('should return Maybe.Nothing for undefined value', () => {
       const value = Node.getBoundValue('non-existent', node);
-      expect(value.isNothing).to.be.true();
+      assert.isTrue(value.isNothing);
     });
     it('should return Maybe.Just for defined bound value of a pin', () => {
       const pinName = 'existing';
@@ -154,11 +134,7 @@ describe('Node', () => {
     it('should return Node with new bound pin value', () => {
       const newNode = Node.setBoundValue('test', true, emptyNode);
 
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundLiterals')
-        .that.have.property('test')
-        .to.be.true();
+      Helper.expectMaybeJust(Node.getBoundValue('test', newNode), true);
     });
     it('should return Node with replaced bound value', () => {
       const node = Helper.defaultizeNode({
@@ -169,11 +145,7 @@ describe('Node', () => {
 
       const newNode = Node.setBoundValue('test', true, node);
 
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundLiterals')
-        .that.have.property('test')
-        .to.be.true();
+      Helper.expectMaybeJust(Node.getBoundValue('test', newNode), true);
     });
     it('should return Node without affecting other bound values', () => {
       const node = Helper.defaultizeNode({
@@ -183,50 +155,41 @@ describe('Node', () => {
       });
 
       const newNode = Node.setBoundValue('test', true, node);
-
-      expect(newNode)
-        .to.be.an('object')
-        .that.have.property('boundLiterals')
-        .that.have.property('other')
-        .to.be.false();
+      Helper.expectMaybeJust(Node.getBoundValue('other', newNode), false);
     });
   });
   // checks
   describe('isInputPinNode', () => {
     it('should return false for type not equal to xod/patch-nodes/input-*', () => {
-      expect(Node.isInputPinNode(nodeOfType('@/input'))).to.be.false();
+      assert.isFalse(Node.isInputPinNode(nodeOfType('@/input')));
     });
     it('should return true for type equal to xod/patch-nodes/input-*', () => {
-      expect(
+      assert.isTrue(
         Node.isInputPinNode(nodeOfType('xod/patch-nodes/input-number'))
-      ).to.be.true();
+      );
     });
   });
   describe('isOutputPinNode', () => {
     it('should return false for type not equal to xod/patch-nodes/output-*', () => {
-      expect(
-        Node.isOutputPinNode(nodeOfType('test/test/output'))
-      ).to.be.false();
+      assert.isFalse(Node.isOutputPinNode(nodeOfType('test/test/output')));
     });
     it('should return true for type equal to xod/patch-nodes/output-*', () => {
-      expect(
+      assert.isTrue(
         Node.isOutputPinNode(nodeOfType('xod/patch-nodes/output-number'))
-      ).to.be.true();
+      );
     });
   });
   describe('isPinNode', () => {
     it('should return false for type not equal to xod/patch-nodes/input-* or xod/patch-nodes/output-*', () => {
-      expect(Node.isPinNode(nodeOfType('test/test/output'))).to.be.false();
+      assert.isFalse(Node.isPinNode(nodeOfType('test/test/output')));
     });
     it('should return true for type equal to xod/patch-nodes/input*', () => {
-      expect(
-        Node.isPinNode(nodeOfType('xod/patch-nodes/input-number'))
-      ).to.be.true();
+      assert.isTrue(Node.isPinNode(nodeOfType('xod/patch-nodes/input-number')));
     });
     it('should return true for type equal to xod/patch-nodes/output*', () => {
-      expect(
+      assert.isTrue(
         Node.isPinNode(nodeOfType('xod/patch-nodes/output-number'))
-      ).to.be.true();
+      );
     });
   });
   // etc
@@ -235,13 +198,13 @@ describe('Node', () => {
       const res = Node.getPinNodeDataType(
         nodeOfType('xod/patch-nodes/input-number')
       );
-      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
+      assert.equal(res, CONST.PIN_TYPE.NUMBER);
     });
     it('should return `number` for xod/patch-nodes/output-number', () => {
       const res = Node.getPinNodeDataType(
         nodeOfType('xod/patch-nodes/input-number')
       );
-      expect(res).to.be.equal(CONST.PIN_TYPE.NUMBER);
+      assert.equal(res, CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinNodeDirection', () => {
@@ -249,13 +212,13 @@ describe('Node', () => {
       const res = Node.getPinNodeDirection(
         nodeOfType('xod/patch-nodes/input-number')
       );
-      expect(res).to.be.equal('input');
+      assert.equal(res, 'input');
     });
     it('should return `output` for `xod/patch-nodes/output-number`', () => {
       const res = Node.getPinNodeDirection(
         nodeOfType('xod/patch-nodes/output-number')
       );
-      expect(res).to.be.equal('output');
+      assert.equal(res, 'output');
     });
   });
 });

@@ -1,50 +1,47 @@
-import chai, { expect, assert } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 
 import * as Pin from '../src/pin';
 import * as CONST from '../src/constants';
 
 import * as Helper from './helpers';
 
-chai.use(dirtyChai);
-
 describe('Pin', () => {
   // props required
   describe('getPinType', () => {
     it('should return pin type', () => {
       const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.NUMBER });
-      expect(Pin.getPinType(pin)).to.be.equal(CONST.PIN_TYPE.NUMBER);
+      assert.equal(Pin.getPinType(pin), CONST.PIN_TYPE.NUMBER);
     });
   });
   describe('getPinKey', () => {
     it('should return pin key for pin object', () => {
       const pin = Helper.defaultizePin({ key: 'a' });
-      expect(Pin.getPinKey(pin)).to.be.equal('a');
+      assert.equal(Pin.getPinKey(pin), 'a');
     });
     it('should return string for string', () => {
       const pin = 'a';
-      expect(Pin.getPinKey(pin)).to.be.equal('a');
+      assert.equal(Pin.getPinKey(pin), 'a');
     });
   });
 
   describe('getPinLabel', () => {
     it('should return pin label', () => {
       const pin = Helper.defaultizePin({ label: 'LED1' });
-      expect(Pin.getPinLabel(pin)).to.be.equal('LED1');
+      assert.equal(Pin.getPinLabel(pin), 'LED1');
     });
   });
 
   describe('getPinDescription', () => {
     it('should return pin description', () => {
       const pin = Helper.defaultizePin({ description: 'my awesome pin' });
-      expect(Pin.getPinDescription(pin)).to.be.equal('my awesome pin');
+      assert.equal(Pin.getPinDescription(pin), 'my awesome pin');
     });
   });
 
   describe('getPinOrder', () => {
     it('should return pin order', () => {
       const pin = Helper.defaultizePin({ order: 66 });
-      expect(Pin.getPinOrder(pin)).to.be.equal(66);
+      assert.equal(Pin.getPinOrder(pin), 66);
     });
   });
 
@@ -54,43 +51,43 @@ describe('Pin', () => {
       const pin = Helper.defaultizePin({
         direction: CONST.PIN_DIRECTION.OUTPUT,
       });
-      expect(Pin.isInputPin(pin)).to.be.false();
-      expect(Pin.isOutputPin(pin)).to.be.true();
+      assert.isFalse(Pin.isInputPin(pin));
+      assert.isTrue(Pin.isOutputPin(pin));
     });
     it('should honor input direction', () => {
       const pin = Helper.defaultizePin({
         direction: CONST.PIN_DIRECTION.INPUT,
       });
-      expect(Pin.isInputPin(pin)).to.be.true();
-      expect(Pin.isOutputPin(pin)).to.be.false();
+      assert.isTrue(Pin.isInputPin(pin));
+      assert.isFalse(Pin.isOutputPin(pin));
     });
   });
   describe('isTerminalPin', () => {
     it('should return false for non-terminal pin', () => {
       const pin = Helper.defaultizePin({ key: 'a' });
-      expect(Pin.isTerminalPin(pin)).to.be.false();
+      assert.isFalse(Pin.isTerminalPin(pin));
     });
     it('should return true for terminal input', () => {
       const pin = Helper.defaultizePin({
         key: CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.INPUT],
       });
-      expect(Pin.isTerminalPin(pin)).to.be.true();
+      assert.isTrue(Pin.isTerminalPin(pin));
     });
     it('should return true for terminal output', () => {
       const pin = Helper.defaultizePin({
         key: CONST.TERMINAL_PIN_KEYS[CONST.PIN_DIRECTION.OUTPUT],
       });
-      expect(Pin.isTerminalPin(pin)).to.be.true();
+      assert.isTrue(Pin.isTerminalPin(pin));
     });
   });
   describe('isPulsePin', () => {
     it('should return false for non-pulse pin', () => {
       const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.STRING });
-      expect(Pin.isPulsePin(pin)).to.be.false();
+      assert.isFalse(Pin.isPulsePin(pin));
     });
     it('should return true for pulse pin', () => {
       const pin = Helper.defaultizePin({ type: CONST.PIN_TYPE.PULSE });
-      expect(Pin.isPulsePin(pin)).to.be.true();
+      assert.isTrue(Pin.isPulsePin(pin));
     });
   });
   describe('normalizePinLabels', () => {
@@ -114,7 +111,7 @@ describe('Pin', () => {
         { label: 'OUT', direction: CONST.PIN_DIRECTION.OUTPUT },
       ].map(Helper.defaultizePin);
 
-      expect(Pin.normalizePinLabels(pins)).to.be.deep.equal(pinsExpected);
+      assert.deepEqual(Pin.normalizePinLabels(pins), pinsExpected);
     });
   });
 

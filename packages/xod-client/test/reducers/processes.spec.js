@@ -1,4 +1,4 @@
-import chai from 'chai';
+import { assert } from 'chai';
 import { default as reducer } from '../../src/processes/reducer';
 import { getLastId } from '../../src/processes/selectors';
 import { STATUS } from '../../src/utils/constants';
@@ -34,7 +34,7 @@ describe('Processes reducer', () => {
         },
       };
 
-      chai.expect(newState).to.deep.equal(expectedState);
+      assert.deepEqual(newState, expectedState);
     });
 
     it(`should update a process with status ${STATUS.PROGRESSED}`, () => {
@@ -57,7 +57,7 @@ describe('Processes reducer', () => {
         },
       };
 
-      chai.expect(newState).to.deep.equal(expectedState);
+      assert.deepEqual(newState, expectedState);
     });
 
     it(`should update a process with status ${STATUS.SUCCEEDED}`, () => {
@@ -80,7 +80,7 @@ describe('Processes reducer', () => {
         },
       };
 
-      chai.expect(newState).to.deep.equal(expectedState);
+      assert.deepEqual(newState, expectedState);
     });
 
     it(`should update a process with status ${STATUS.FAILED}`, () => {
@@ -103,7 +103,7 @@ describe('Processes reducer', () => {
         },
       };
 
-      chai.expect(newState).to.deep.equal(expectedState);
+      assert.deepEqual(newState, expectedState);
     });
 
     it(`should delete a process after accepting status ${
@@ -122,7 +122,7 @@ describe('Processes reducer', () => {
 
       const expectedState = {};
 
-      chai.expect(newState).to.deep.equal(expectedState);
+      assert.deepEqual(newState, expectedState);
     });
   });
 });

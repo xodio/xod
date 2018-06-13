@@ -1,11 +1,8 @@
 import R from 'ramda';
 import { Either } from 'ramda-fantasy';
-import chai, { assert } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
 
 import * as Helper from './helpers';
-
-chai.use(dirtyChai);
 
 describe('Helpers', () => {
   describe('expectEither', () => {

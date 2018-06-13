@@ -1,17 +1,16 @@
 import R from 'ramda';
-import chai, { assert, expect } from 'chai';
-import dirtyChai from 'dirty-chai';
+import { assert } from 'chai';
+import { Maybe } from 'ramda-fantasy';
 import { explodeEither } from 'xod-func-tools';
 
 import * as Helper from './helpers';
 import * as Project from '../src/project';
 import * as Patch from '../src/patch';
+import * as Node from '../src/node';
 import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { getCastPatchPath, getTerminalPath } from '../src/patchPathUtils';
-
-chai.use(dirtyChai);
 
 describe('Flatten', () => {
   describe('extractPatches', () => {
@@ -83,7 +82,7 @@ describe('Flatten', () => {
       );
       const result = R.map(R.map(R.unnest), extracted);
 
-      expect(result).to.be.deep.equal([
+      assert.deepEqual(result, [
         [project.patches['@/main'].nodes.a, project.patches['@/main'].nodes.b],
         [project.patches['@/main'].links.l],
       ]);
@@ -252,46 +251,49 @@ describe('Flatten', () => {
         )
       )(extracted[1]);
 
-      expect([nodes, links]).to.be.deep.equal([
+      assert.deepEqual(
+        [nodes, links],
         [
-          { id: 'a~a', type: 'xod/core/or' },
-          { id: 'a~b', type: 'xod/core/or' },
-          { id: 'b~a', type: 'xod/core/or' },
-          { id: 'b~b', type: 'xod/internal/terminal-boolean' },
-          { id: 'b~c~a', type: 'xod/core/or' },
-          { id: 'b~c~b', type: 'xod/core/or' },
-          { id: 'b~d', type: 'xod/internal/terminal-boolean' },
-          { id: 'c', type: 'xod/core/or' },
-          { id: 'd', type: 'xod/core/or' },
-        ],
-        [
-          {
-            id: 'a~l',
-            output: { nodeId: 'a~a', pinKey: 'out' },
-            input: { nodeId: 'a~b', pinKey: 'in1' },
-          },
-          {
-            id: 'b~c~l',
-            output: { nodeId: 'b~c~a', pinKey: 'out' },
-            input: { nodeId: 'b~c~b', pinKey: 'in1' },
-          },
-          {
-            id: 'b~l',
-            output: { nodeId: 'b~a', pinKey: 'out' },
-            input: { nodeId: 'b~b', pinKey: '__in__' },
-          },
-          {
-            id: 'l',
-            output: { nodeId: 'b~b', pinKey: '__out__' },
-            input: { nodeId: 'c', pinKey: 'in2' },
-          },
-          {
-            id: 'l2',
-            output: { nodeId: 'd', pinKey: 'out' },
-            input: { nodeId: 'c', pinKey: 'in1' },
-          },
-        ],
-      ]);
+          [
+            { id: 'a~a', type: 'xod/core/or' },
+            { id: 'a~b', type: 'xod/core/or' },
+            { id: 'b~a', type: 'xod/core/or' },
+            { id: 'b~b', type: 'xod/internal/terminal-boolean' },
+            { id: 'b~c~a', type: 'xod/core/or' },
+            { id: 'b~c~b', type: 'xod/core/or' },
+            { id: 'b~d', type: 'xod/internal/terminal-boolean' },
+            { id: 'c', type: 'xod/core/or' },
+            { id: 'd', type: 'xod/core/or' },
+          ],
+          [
+            {
+              id: 'a~l',
+              output: { nodeId: 'a~a', pinKey: 'out' },
+              input: { nodeId: 'a~b', pinKey: 'in1' },
+            },
+            {
+              id: 'b~c~l',
+              output: { nodeId: 'b~c~a', pinKey: 'out' },
+              input: { nodeId: 'b~c~b', pinKey: 'in1' },
+            },
+            {
+              id: 'b~l',
+              output: { nodeId: 'b~a', pinKey: 'out' },
+              input: { nodeId: 'b~b', pinKey: '__in__' },
+            },
+            {
+              id: 'l',
+              output: { nodeId: 'b~b', pinKey: '__out__' },
+              input: { nodeId: 'c', pinKey: 'in2' },
+            },
+            {
+              id: 'l2',
+              output: { nodeId: 'd', pinKey: 'out' },
+              input: { nodeId: 'c', pinKey: 'in1' },
+            },
+          ],
+        ]
+      );
     });
     it('correctly pinned nodes', () => {
       const project = Helper.defaultizeProject({
@@ -352,32 +354,30 @@ describe('Flatten', () => {
       const nodes = result[0];
 
       const terminalA = R.find(R.propEq('id', 'a~a'), nodes);
-      expect(terminalA)
-        .to.have.property('boundLiterals')
-        .that.deep.equals({
-          __out__: 'true',
-        });
+      assert.deepEqual(terminalA.boundLiterals, {
+        __out__: 'true',
+      });
 
       const terminalB = R.find(R.propEq('id', 'b~a'), nodes);
-      expect(terminalB)
-        .to.have.property('boundLiterals')
-        .that.empty();
+      assert.isEmpty(terminalB.boundLiterals);
 
       const justNodeWithBoundValueForPinA = R.find(
         R.propEq('id', 'a~c'),
         nodes
       );
-      expect(justNodeWithBoundValueForPinA)
-        .to.have.property('boundLiterals')
-        .that.deep.equals(project.patches['@/foo'].nodes.c.boundLiterals);
+      assert.deepEqual(
+        justNodeWithBoundValueForPinA.boundLiterals,
+        project.patches['@/foo'].nodes.c.boundLiterals
+      );
 
       const justNodeWithBoundValueForPinB = R.find(
         R.propEq('id', 'b~c'),
         nodes
       );
-      expect(justNodeWithBoundValueForPinB)
-        .to.have.property('boundLiterals')
-        .that.deep.equals(project.patches['@/foo'].nodes.c.boundLiterals);
+      assert.deepEqual(
+        justNodeWithBoundValueForPinB.boundLiterals,
+        project.patches['@/foo'].nodes.c.boundLiterals
+      );
     });
     it('correct structure for blinking.xodball', () => {
       const defaultizedBlinking = Helper.loadXodball(
@@ -405,21 +405,17 @@ describe('Flatten', () => {
         R.propEq('id', 'BJ4l0cVdKe~S1ulA9NuFx'),
         nodes
       );
-      expect(terminalString)
-        .to.have.property('boundLiterals')
-        .that.deep.equals({
-          __out__: '"LED1"',
-        });
+      assert.deepEqual(terminalString.boundLiterals, {
+        __out__: '"LED1"',
+      });
 
       const terminalNumber = R.find(
         R.propEq('id', 'SJ7g05EdFe~B1eR5EOYg'),
         nodes
       );
-      expect(terminalNumber)
-        .to.have.property('boundLiterals')
-        .that.deep.equals({
-          __out__: '1',
-        });
+      assert.deepEqual(terminalNumber.boundLiterals, {
+        __out__: '1',
+      });
     });
   });
 
@@ -703,9 +699,12 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(R.values(newProject.patches['@/main'].nodes)[0])
-          .to.have.property('id')
-          .that.equal('a~a');
+        const maybeNode = R.compose(
+          Patch.getNodeById('a~a'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+
+        assert.isTrue(Maybe.isJust(maybeNode));
       }, flatProject);
     });
 
@@ -713,7 +712,12 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(newProject.patches['@/main'].nodes).to.have.not.property('b~d');
+        const maybeNode = R.compose(
+          Patch.getNodeById('b~d'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+
+        Helper.expectMaybeNothing(maybeNode);
       }, flatProject);
     });
 
@@ -721,9 +725,12 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(R.values(newProject.patches['@/main'].links)).to.have.lengthOf(
-          4
-        );
+        const links = R.compose(
+          Patch.listLinks,
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+
+        assert.lengthOf(links, 4);
       }, flatProject);
     });
 
@@ -734,7 +741,7 @@ describe('Flatten', () => {
       const eitherFlatProject = flatten(blinking, '@/main');
 
       Helper.expectEitherRight(
-        flat => expect(flat).to.be.deep.equal(expected),
+        flat => assert.deepEqual(flat, expected),
         eitherFlatProject
       );
     });
@@ -749,7 +756,7 @@ describe('Flatten', () => {
       const eitherErrorOrFlat = flatten(deeplyNestedProject, '@/main');
 
       Helper.expectEitherRight(
-        flat => expect(flat).to.be.deep.equal(expected),
+        flat => assert.deepEqual(flat, expected),
         eitherErrorOrFlat
       );
     });
@@ -826,12 +833,15 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherRight(newProject => {
-          expect(R.keys(newProject.patches['@/main'].nodes)).to.be.deep.equal([
-            'a',
-          ]);
-          expect(R.values(newProject.patches['@/main'].links)).to.have.lengthOf(
-            0
+          const mainPatch = Project.getPatchByPathUnsafe('@/main', newProject);
+
+          const nodeIds = R.compose(R.map(Node.getNodeId), Patch.listNodes)(
+            mainPatch
           );
+          assert.deepEqual(nodeIds, ['a']);
+
+          const links = Patch.listLinks(mainPatch);
+          assert.isEmpty(links);
         }, flatProject);
       });
     });
@@ -974,8 +984,9 @@ describe('Flatten', () => {
           const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
 
           Helper.expectEitherRight(newProject => {
-            expect(newProject.patches[expectedPath]).to.be.deep.equal(
-              project.patches[expectedPath]
+            assert.deepEqual(
+              Project.getPatchByPathUnsafe(expectedPath, newProject),
+              Project.getPatchByPathUnsafe(expectedPath, project)
             );
           }, flatProject);
         });
@@ -1120,8 +1131,9 @@ describe('Flatten', () => {
           const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
 
           Helper.expectEitherRight(newProject => {
-            expect(newProject.patches[expectedPath]).to.be.deep.equal(
-              project.patches[expectedPath]
+            assert.deepEqual(
+              Project.getPatchByPathUnsafe(expectedPath, newProject),
+              Project.getPatchByPathUnsafe(expectedPath, project)
             );
           }, flatProject);
         });
@@ -1221,10 +1233,13 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherRight(newProject => {
-          expect(R.keys(newProject.patches['@/main'].nodes)).to.be.deep.equal([
-            'a~a',
-            'b',
-          ]);
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/main')
+          )(newProject);
+
+          assert.sameMembers(nodeIds, ['a~a', 'b']);
         }, flatProject);
       });
 
@@ -1232,11 +1247,13 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherRight(newProject => {
-          expect(R.values(newProject.patches['@/main'].links))
-            .to.have.lengthOf(1)
-            .and.have.property(0)
-            .that.deep.equal({
-              '@@type': 'xod-project/Link',
+          const actualLinks = R.compose(
+            Patch.listLinks,
+            Project.getPatchByPathUnsafe('@/main')
+          )(newProject);
+
+          assert.deepEqual(actualLinks, [
+            Helper.defaultizeLink({
               id: 'l',
               input: {
                 nodeId: 'b',
@@ -1246,7 +1263,8 @@ describe('Flatten', () => {
                 nodeId: 'a~a',
                 pinKey: 'out',
               },
-            });
+            }),
+          ]);
         }, flatProject);
       });
     });
@@ -1335,11 +1353,11 @@ describe('Flatten', () => {
         const expectedProject = Helper.loadXodball(
           './fixtures/cast-multiple-outputs.flat.xodball'
         );
-        const flatProject = flatten(inputProject, '@/main');
+        const eitherFlatProject = flatten(inputProject, '@/main');
 
         Helper.expectEitherRight(
-          flat => expect(flat).to.deep.equal(expectedProject),
-          flatProject
+          actualProject => assert.deepEqual(actualProject, expectedProject),
+          eitherFlatProject
         );
       });
     });
@@ -1413,10 +1431,19 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(newProject.patches['@/main'].nodes['f~a'])
-          .to.have.property('boundLiterals')
-          .that.have.property('in')
-          .that.equal(project.patches['@/main'].nodes.f.boundLiterals.b);
+        const maybeActualBoundValue = R.compose(
+          Node.getBoundValue('in'),
+          Patch.getNodeByIdUnsafe('f~a'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+
+        const maybeExpectedBoundValue = R.compose(
+          Node.getBoundValue('b'),
+          Patch.getNodeByIdUnsafe('f'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(project);
+
+        assert.deepEqual(maybeActualBoundValue, maybeExpectedBoundValue);
       }, flatProject);
     });
     it('should return cast-nodes with bound values', () => {
@@ -1613,14 +1640,29 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(newProject => {
-        expect(newProject.patches['@/main'].nodes['b~a2-to-b~b-pin-in2'])
-          .to.have.property('boundLiterals')
-          .that.have.property('__in__')
-          .that.equal(project.patches['@/main'].nodes.b.boundLiterals.a2);
-        expect(newProject.patches['@/main'].nodes['b~a3-to-b~b2-pin-in2'])
-          .to.have.property('boundLiterals')
-          .that.have.property('__in__')
-          .that.equal(project.patches['@/main'].nodes.b.boundLiterals.a3);
+        const maybeActualBoundValue = R.compose(
+          Node.getBoundValue('__in__'),
+          Patch.getNodeByIdUnsafe('b~a2-to-b~b-pin-in2'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+        const maybeExpectedBoundValue = R.compose(
+          Node.getBoundValue('a2'),
+          Patch.getNodeByIdUnsafe('b'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(project);
+        assert.deepEqual(maybeActualBoundValue, maybeExpectedBoundValue);
+
+        const maybeActualBoundValue2 = R.compose(
+          Node.getBoundValue('__in__'),
+          Patch.getNodeByIdUnsafe('b~a3-to-b~b2-pin-in2'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+        const maybeExpectedBoundValue2 = R.compose(
+          Node.getBoundValue('a3'),
+          Patch.getNodeByIdUnsafe('b'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(project);
+        assert.deepEqual(maybeActualBoundValue2, maybeExpectedBoundValue2);
       }, flatProject);
     });
     it('should return flat project with correct bound values', () => {
@@ -1683,8 +1725,13 @@ describe('Flatten', () => {
       });
       const flatProject = flatten(project, '@/main');
       Helper.expectEitherRight(newProject => {
-        const node = newProject.patches['@/main'].nodes.m;
-        expect(node.boundLiterals).to.deep.equal({
+        const actualBoundValues = R.compose(
+          Node.getAllBoundValues,
+          Patch.getNodeByIdUnsafe('m'),
+          Project.getPatchByPathUnsafe('@/main')
+        )(newProject);
+
+        assert.deepEqual(actualBoundValues, {
           in1: '26',
           in2: '42',
         });
@@ -1701,7 +1748,7 @@ describe('Flatten', () => {
       const flatProject = flatten(project, '@/main');
 
       Helper.expectEitherRight(
-        proj => expect(proj).to.deep.equal(expectedProject),
+        proj => assert.deepEqual(proj, expectedProject),
         flatProject
       );
     });
@@ -1716,7 +1763,7 @@ describe('Flatten', () => {
       const flatProject = flatten(inputProject, '@/main');
 
       Helper.expectEitherRight(
-        project => expect(project).to.deep.equal(expectedProject),
+        project => assert.deepEqual(project, expectedProject),
         flatProject
       );
     });
@@ -1730,7 +1777,7 @@ describe('Flatten', () => {
       const flatProject = flatten(inputProject, '@/main');
 
       Helper.expectEitherRight(
-        project => expect(project).to.deep.equal(expectedProject),
+        project => assert.deepEqual(project, expectedProject),
         flatProject
       );
     });
@@ -1800,8 +1847,9 @@ describe('Flatten', () => {
         const flatProject = flatten(project, '@/main');
 
         Helper.expectEitherRight(newProject => {
-          expect(newProject.patches['@/main']).to.be.deep.equal(
-            project.patches['@/main']
+          assert.deepEqual(
+            Project.getPatchByPathUnsafe('@/main', newProject),
+            Project.getPatchByPathUnsafe('@/main', project)
           );
         }, flatProject);
       });
