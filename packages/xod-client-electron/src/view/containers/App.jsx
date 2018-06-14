@@ -124,10 +124,6 @@ class App extends client.App {
       this.showCreateWorkspacePopup(path, force)
     );
     ipcRenderer.on(EVENTS.WORKSPACE_ERROR, (event, error) => {
-      // TODO: Catch CANT_OPEN_SELECTED_PROJECT and show something else
-      //       (its strange to ask to switch workspace if project has broken).
-      this.showPopupSetWorkspaceNotCancellable();
-      console.error(error); // eslint-disable-line no-console
       this.props.actions.addError(formatError(error));
     });
     ipcRenderer.on(EVENTS.REQUEST_CLOSE_WINDOW, () => {
@@ -651,11 +647,11 @@ class App extends client.App {
   }
 
   showPopupSetWorkspace() {
-    this.props.actions.requestSwitchWorkspace({ disposable: false });
+    this.props.actions.requestSwitchWorkspace({ disposable: true });
   }
 
   showPopupSetWorkspaceNotCancellable() {
-    this.props.actions.requestSwitchWorkspace({ disposable: true });
+    this.props.actions.requestSwitchWorkspace({ disposable: false });
   }
 
   showCreateWorkspacePopup(path, force) {
