@@ -1,0 +1,15 @@
+{
+  "name": "xod-arduino",
+  "version": "0.21.0",
+  "sources": [
+    "src"
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": false
+  },
+  "suffix": ".js",
+  "bs-dependencies": [],
+  "namespace": true,
+  "refmt": 3
+}

@@ -14,7 +14,7 @@
   "main": "lib/js/src/Tabtest_Js.bs.js",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
-    "bs-platform": "^2.2.3"
+    "bs-platform": "^3.1.5"
   },
   "jest": {
     "testMatch": [

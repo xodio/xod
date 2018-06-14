@@ -3,9 +3,12 @@
   "version": "0.21.0",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
-    "build": "babel src/ -d dist/ --source-maps",
+    "build:js": "babel src/ -d dist/ --source-maps",
+    "build:re": "bsb -make-world",
+    "build": "yarn build:js && yarn build:re",
     "dev": "yarn run build --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
+    "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js",
     "test-cpp": "./tools/test-cpp.sh && ./tools/test-avr-size.sh"
   },
@@ -15,6 +18,8 @@
   "license": "AGPL-3.0",
   "main": "dist/index.js",
   "dependencies": {
+    "@glennsl/bs-revamp": "^0.1.1",
+    "bs-platform": "^3.1.5",
     "handlebars": "^4.0.6",
     "hm-def": "^0.3.2",
     "ramda": "^0.24.1",
