@@ -10,14 +10,22 @@ import {
   SAVE_ALL,
 } from '../project/actionTypes';
 
+const updateLastSavedProject = state =>
+  R.assoc('lastSavedProject', getProject(state), state);
+
 export default function trackLastSavedChanges(state, action) {
   switch (action.type) {
     case PROJECT_CREATE:
     case PROJECT_OPEN:
     case PROJECT_IMPORT:
-    case SAVE_ALL:
     case PROJECT_OPEN_WORKSPACE: {
-      return R.assoc('lastSavedProject', getProject(state), state);
+      return updateLastSavedProject(state);
+    }
+    case SAVE_ALL: {
+      if (R.path(['data', 'updateLastSavedProject'], action)) {
+        return updateLastSavedProject(state);
+      }
+      return state;
     }
 
     default:

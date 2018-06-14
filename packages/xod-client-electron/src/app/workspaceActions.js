@@ -60,8 +60,6 @@ const requestCreateWorkspace = R.curry((send, workspacePath, force = false) =>
 const requestShowProject = R.curry((send, project) =>
   send(EVENTS.REQUEST_SHOW_PROJECT, project)
 );
-// :: (String -> a -> ()) -> ()
-const notifySaveAllComplete = send => () => send(EVENTS.SAVE_ALL, true);
 
 // :: (String -> a -> ()) -> Path -> Path -> Promise Path Error
 export const updateWorkspace = R.curry((send, oldPath, newPath) => {
@@ -184,12 +182,12 @@ export const onSaveAll = R.curry(
         saveData.oldProject,
         saveData.newProject
       ),
-      R.tap(notifySaveAllComplete(send)),
       R.tap(() => {
         if (saveData.updateProjectPath) {
           updateProjectPath(saveData.projectPath);
         }
-      })
+      }),
+      R.always(saveData) // To keep payload in `complete` state of event
     )().catch(handleError(send))
 );
 

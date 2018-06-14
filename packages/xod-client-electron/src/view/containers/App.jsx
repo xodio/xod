@@ -339,7 +339,7 @@ class App extends client.App {
 
   onSave(onAfterSave = noop) {
     if (this.state.projectPath) {
-      this.saveAs(this.state.projectPath, false)
+      this.saveAs(this.state.projectPath, false, true)
         .then(onAfterSave)
         .catch(noop);
     } else {
@@ -347,13 +347,14 @@ class App extends client.App {
     }
   }
 
-  saveAs(filePath, shouldUpdateProjectPath) {
+  saveAs(filePath, shouldUpdateProjectPath, shouldUpdateLastSavedProject) {
     return new Promise((resolve, reject) => {
       this.props.actions.saveAll({
         oldProject: this.props.lastSavedProject,
         newProject: this.props.project,
         projectPath: filePath,
         updateProjectPath: shouldUpdateProjectPath,
+        updateLastSavedProject: shouldUpdateLastSavedProject,
       });
 
       ipcRenderer.once(
@@ -376,7 +377,7 @@ class App extends client.App {
       ),
       filePath => {
         if (!filePath) return;
-        this.saveAs(filePath, true)
+        this.saveAs(filePath, true, true)
           .then(onAfterSave)
           .catch(noop);
       }
@@ -391,7 +392,7 @@ class App extends client.App {
       ),
       filePath => {
         if (!filePath) return;
-        this.saveAs(filePath, false).catch(noop);
+        this.saveAs(filePath, false, false).catch(noop);
       }
     );
   }
