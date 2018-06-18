@@ -10,7 +10,6 @@ import {
   addConfirmation,
   addError,
   SAVE_ALL,
-  composeMessage,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
@@ -60,13 +59,13 @@ const processCompleted = finishProcess(successProcess);
 
 const processFailed = finishProcess(failProcess);
 
-export const createAsyncAction = ({
+const createAsyncAction = ({
   eventName,
   actionType,
   messages: {
-    process: processMsg = '',
-    complete: completeMsg = '',
-    error: errorMsg = '',
+    process: processMsg,
+    complete: completeMsg,
+    error: errorMsg,
   } = {},
   notify = true,
   silent = false,
@@ -97,7 +96,7 @@ export const createAsyncAction = ({
         processCompleted({ processId, actionType, payload }, dispatch);
       }
       if (notify) {
-        dispatch(addConfirmation(composeMessage(completeMsg)));
+        dispatch(addConfirmation(completeMsg));
       }
 
       onComplete(payload, dispatch);
@@ -122,7 +121,7 @@ export const createAsyncAction = ({
         processFailed({ processId, actionType, payload: err }, dispatch);
       }
       if (notify) {
-        dispatch(addError(composeMessage(errorMsg)));
+        dispatch(addError(errorMsg));
       }
 
       onError(err, dispatch);
@@ -142,7 +141,7 @@ export const saveAll = createAsyncAction({
   eventName: EVENTS.SAVE_ALL,
   actionType: SAVE_ALL,
   messages: {
-    process: MESSAGES.SAVE_ALL_PROCESSED,
+    process: null,
     complete: MESSAGES.SAVE_ALL_SUCCEED,
     error: MESSAGES.SAVE_ALL_FAILED,
   },

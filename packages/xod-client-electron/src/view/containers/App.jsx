@@ -247,7 +247,7 @@ class App extends client.App {
       if (payload.success) {
         proc.success(payload.message);
 
-        this.props.actions.addConfirmation({ title: UPLOAD_MESSAGES.SUCCESS });
+        this.props.actions.addConfirmation(UPLOAD_MESSAGES.SUCCESS);
 
         if (debug) {
           foldEither(
