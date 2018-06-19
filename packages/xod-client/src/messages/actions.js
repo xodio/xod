@@ -1,21 +1,23 @@
+import * as R from 'ramda';
 import * as ActionType from './actionTypes';
 import { MESSAGE_TYPE } from './constants';
 import { STATUS } from '../utils/constants';
 
 const getTimestamp = () => new Date().getTime();
 
-export const addMessage = (
-  type,
-  messageData,
-  persistent = false,
-  id = null
-) => ({
+const getDefaultPersistencyByType = R.equals(MESSAGE_TYPE.ERROR);
+
+export const addMessage = (type, messageData, id = null) => ({
   type: ActionType.MESSAGE_ADD,
   payload: messageData,
   meta: {
     id,
     type,
-    persistent,
+    persistent: R.propOr(
+      getDefaultPersistencyByType(type),
+      'persistent',
+      messageData
+    ),
     timestamp: getTimestamp(),
     status: STATUS.STARTED,
   },

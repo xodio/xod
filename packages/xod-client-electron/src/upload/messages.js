@@ -1,3 +1,5 @@
 export default {
-  SUCCESS: 'Uploaded successfully',
+  SUCCESS: {
+    title: 'Uploaded successfully',
+  },
 };

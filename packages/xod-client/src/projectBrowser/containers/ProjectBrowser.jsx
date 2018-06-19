@@ -20,7 +20,6 @@ import { isAmong, notEquals, $Maybe, foldMaybe } from 'xod-func-tools';
 import * as ProjectActions from '../../project/actions';
 import * as ProjectBrowserActions from '../actions';
 import * as EditorActions from '../../editor/actions';
-import * as MessagesActions from '../../messages/actions';
 import * as PopupActions from '../../popups/actions';
 
 import * as ProjectBrowserSelectors from '../selectors';
@@ -451,7 +450,6 @@ const mapDispatchToProps = dispatch => ({
 
       closeAllPopups: PopupActions.hideAllPopups,
 
-      addNotification: MessagesActions.addNotification,
       showLibSuggester: EditorActions.showLibSuggester,
       showHelpbox: EditorActions.showHelpbox,
 
