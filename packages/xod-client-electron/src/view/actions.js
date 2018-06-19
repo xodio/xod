@@ -121,7 +121,12 @@ const createAsyncAction = ({
         processFailed({ processId, actionType, payload: err }, dispatch);
       }
       if (notify) {
-        dispatch(addError(errorMsg));
+        const extendedErrorMessage = R.mergeWith(
+          (a, b) => `${a}. ${b}`,
+          errorMsg,
+          { note: err.message }
+        );
+        dispatch(addError(extendedErrorMessage));
       }
 
       onError(err, dispatch);
