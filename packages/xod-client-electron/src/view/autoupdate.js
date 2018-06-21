@@ -14,7 +14,6 @@ export const subscribeAutoUpdaterEvents = (ipcRenderer, App) => {
     console.log('Update available: ', info); // eslint-disable-line no-console
     App.props.actions.addNotification(
       updateAvailableMessage(info.version),
-      true,
       UPDATE_IDE_MESSAGE_ID
     );
   });
