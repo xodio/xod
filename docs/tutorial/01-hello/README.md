@@ -20,9 +20,9 @@ visual objects instead.
 ## Patch board
 
 The large gray field with a box is your program. It’s called a *patch*. In this
-patch you can see one interesting object – the `led` node — a grey
-rectangle with two little green circles. You will be able to make complicated
-programs, using these rectangles.
+patch you can see one interesting object – the `led` node — a grey rectangle
+with little circles. You will be able to make complicated programs, using these
+rectangles.
 
 You can move nodes by dragging them. Position on the patch board does not
 affect your program, but can make it more readable.

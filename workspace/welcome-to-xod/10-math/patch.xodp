@@ -4,7 +4,7 @@
       "content": "It’s a `multiply` node.\n- Inputs `IN1` and `IN2` are numbers to multiply\n- Output `OUT` is the product of the `IN1` and `IN2`",
       "id": "BJj5fP6YZ",
       "position": {
-        "x": 510,
+        "x": 544,
         "y": 102
       },
       "size": {
@@ -52,7 +52,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "B1oqkTnIb": "11"
+        "B1oqkTnIb": "D11"
       },
       "id": "SJihHwNKb",
       "label": "LED2",
@@ -65,7 +65,7 @@
     {
       "id": "SyclTC1hb",
       "position": {
-        "x": 306,
+        "x": 340,
         "y": 0
       },
       "type": "xod/common-hardware/pot"
@@ -76,14 +76,14 @@
       },
       "id": "Synz8v4Yb",
       "position": {
-        "x": 408,
+        "x": 442,
         "y": 102
       },
       "type": "xod/core/multiply"
     },
     {
       "boundLiterals": {
-        "B1oqkTnIb": "10"
+        "B1oqkTnIb": "D10"
       },
       "id": "r1V3SDEtW",
       "label": "LED1",

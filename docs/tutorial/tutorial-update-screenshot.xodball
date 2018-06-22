@@ -825,19 +825,27 @@
     },
     "@/17-ldr": {
       "links": {
-        "r1RTImHZ7": {
-          "id": "r1RTImHZ7",
+        "HkNIBFcWX": {
+          "id": "HkNIBFcWX",
           "input": {
             "nodeId": "Hk0_5wNY-",
             "pinKey": "HyYh1a3LZ"
           },
           "output": {
-            "nodeId": "Hku68QSW7",
-            "pinKey": "SyBtREhlW"
+            "nodeId": "HJyUHF5ZX",
+            "pinKey": "BkoeN9Ay7"
           }
         }
       },
       "nodes": {
+        "HJyUHF5ZX": {
+          "id": "HJyUHF5ZX",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/common-hardware/analog-sensor"
+        },
         "Hk0_5wNY-": {
           "boundLiterals": {
             "B1oqkTnIb": "11"
@@ -848,14 +856,6 @@
             "y": 204
           },
           "type": "xod/common-hardware/led"
-        },
-        "Hku68QSW7": {
-          "id": "Hku68QSW7",
-          "position": {
-            "x": 272,
-            "y": 0
-          },
-          "type": "xod/gpio/analog-read"
         }
       },
       "path": "@/17-ldr"
@@ -873,17 +873,6 @@
           },
           "type": "xod/common-hardware/led"
         },
-        "H1UNiwVt-": {
-          "boundLiterals": {
-            "SkuhqCqym": "A2"
-          },
-          "id": "H1UNiwVt-",
-          "position": {
-            "x": 340,
-            "y": -102
-          },
-          "type": "xod/gpio/analog-read"
-        },
         "SknJWbY-m": {
           "id": "SknJWbY-m",
           "position": {
@@ -899,6 +888,14 @@
             "y": 0
           },
           "type": "xod/core/less"
+        },
+        "ryMPSF5ZX": {
+          "id": "ryMPSF5ZX",
+          "position": {
+            "x": 340,
+            "y": -102
+          },
+          "type": "xod/common-hardware/analog-sensor"
         }
       },
       "path": "@/18-comparisons"
@@ -916,15 +913,15 @@
             "pinKey": "S13xLCuHvkW"
           }
         },
-        "SkhI7bE5Z": {
-          "id": "SkhI7bE5Z",
+        "SJQOHF5bm": {
+          "id": "SJQOHF5bm",
           "input": {
             "nodeId": "Bkxay1E5Z",
             "pinKey": "rJg00Nhe-"
           },
           "output": {
-            "nodeId": "H1pMkkVqZ",
-            "pinKey": "SyBtREhlW"
+            "nodeId": "SJTwHK9-7",
+            "pinKey": "BkoeN9Ay7"
           }
         },
         "r1Z_QZEcb": {
@@ -974,16 +971,13 @@
           },
           "type": "xod/core/if-else"
         },
-        "H1pMkkVqZ": {
-          "boundLiterals": {
-            "SkuhqCqym": "A2"
-          },
-          "id": "H1pMkkVqZ",
+        "SJTwHK9-7": {
+          "id": "SJTwHK9-7",
           "position": {
             "x": 238,
             "y": -102
           },
-          "type": "xod/gpio/analog-read"
+          "type": "xod/common-hardware/analog-sensor"
         }
       },
       "path": "@/19-if-else"

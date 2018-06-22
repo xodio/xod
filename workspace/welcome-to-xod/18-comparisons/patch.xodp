@@ -25,7 +25,7 @@
       }
     },
     {
-      "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-input` node to the left pin on the `greater` node.\n\n2. Set a value of 0.4 on the right pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the output pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `OUT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the right pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
+      "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-sensor` node to the left pin on the `greater` node.\n\n2. Set a value of 0.4 on the right pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the output pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `OUT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the right pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
       "id": "H1dIB11c-",
       "position": {
         "x": -68,
@@ -40,7 +40,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "B1oqkTnIb": "10"
+        "B1oqkTnIb": "D10"
       },
       "id": "BJszoD4tZ",
       "position": {
@@ -50,23 +50,23 @@
       "type": "xod/common-hardware/led"
     },
     {
+      "boundLiterals": {
+        "r1l3XcR17": "A2"
+      },
+      "id": "Bk-M6BcbX",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/common-hardware/analog-sensor"
+    },
+    {
       "id": "BygDsvVFZ",
       "position": {
         "x": 272,
         "y": 306
       },
       "type": "xod/core/less"
-    },
-    {
-      "boundLiterals": {
-        "SkuhqCqym": "A2"
-      },
-      "id": "H1UNiwVt-",
-      "position": {
-        "x": 272,
-        "y": 0
-      },
-      "type": "xod/gpio/analog-read"
     },
     {
       "boundLiterals": {
