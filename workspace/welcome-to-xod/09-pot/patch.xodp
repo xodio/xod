@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Let’s try some more practice. Now, we will control the LEDs’ brightness with a potentiometer. All you need to do is to replace the `constant-number` node with a `pot` node and transfer the brightness value to LED1 and LED2 from this pot node, instead of the `constant-number`.\n\n## Instructions\n\n1. Delete the links between the pins. To do this, click on a link, then press Delete or Backspace key.\n\n2. Delete the `constant-number` node. Click on it and press Delete or Backspace.\n\n3. Find the `pot` node in the Project Browser inside the `xod/common-hardware` library.\n\n4. Connect a potentiometer to the Arduino according to the [scheme](https://xod.io/docs/tutorial/09-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_09).\n\n5. Set the `PORT` pin value on the `pot` node to 0, bacause it’s connected to analog Arduino port A0. \n\n6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.\n\n7. Upload the patch to the Arduino.\n\nIf you turn the potentiometer knob, it will affect the brightness of the LEDs. Depending on the angle of the knob, the `pot` node returns a value from 0.0 to 1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both LED nodes.",
+      "content": "Let’s try some more practice. Now, we will control the LEDs’ brightness with a potentiometer. All you need to do is to replace the `constant-number` node with a `pot` node and transfer the brightness value to LED1 and LED2 from this pot node, instead of the `constant-number`.\n\n## Instructions\n\n1. Delete the links between the pins. To do this, click on a link, then press Delete or Backspace key.\n\n2. Delete the `constant-number` node. Click on it and press Delete or Backspace.\n\n3. Find the `pot` node in the Project Browser inside the `xod/common-hardware` library.\n\n4. Connect a potentiometer to the Arduino according to the [scheme](https://xod.io/docs/tutorial/09-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_09).\n\n5. Set the `PORT` pin value on the `pot` node to A0, bacause it’s connected to analog Arduino port A0. \n\n6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.\n\n7. Upload the patch to the Arduino.\n\nIf you turn the potentiometer knob, it will affect the brightness of the LEDs. Depending on the angle of the knob, the `pot` node returns a value from 0.0 to 1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both LED nodes.",
       "id": "Sk8zxUaKW",
       "position": {
         "x": -34,
@@ -40,7 +40,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "B1oqkTnIb": "11"
+        "B1oqkTnIb": "D11"
       },
       "id": "HyX57vEFZ",
       "label": "LED2",
@@ -63,7 +63,7 @@
     },
     {
       "boundLiterals": {
-        "B1oqkTnIb": "10"
+        "B1oqkTnIb": "D10"
       },
       "id": "rkWQ9mDEtW",
       "label": "LED1",

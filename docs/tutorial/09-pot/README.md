@@ -29,7 +29,7 @@ find it in the `xod/common-hardware` library.
 ## How-to
 
 1. Add the `pot` node to your patch.
-2. Set the `PORT` pin value on the `pot` node to 0 if you have connected
+2. Set the `PORT` pin value on the `pot` node to A0 if you have connected
    the potentiometer to Arduino port A0 as shown above.
 3. Link the `pot` node `VAL` pin to input pins of nodes to control.
 

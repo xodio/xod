@@ -16,7 +16,8 @@ A node is a visual representation of some physical device (such as the ports on
 an Arduino) or some function (adding, subtracting and more complicated stuff).
 
 The `led` is a simple LED controlling node. It can control only a one-colored
-LED. The node has only input pins — `PORT` and `LUM`.
+LED. The node has input pins `PORT` and `LUM` along with a few other pins you
+can ignore for now.
 
 ![Patch](./patch.png)
 

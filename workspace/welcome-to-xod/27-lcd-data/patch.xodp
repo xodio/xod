@@ -4,7 +4,7 @@
       "content": "Note: the number data type is compatible with the string data type. Sensor values can be transmitted without additional conversions. They will be transmitted with an accuracy of two decimal places.",
       "id": "BJEtTI1Wz",
       "position": {
-        "x": 748,
+        "x": 782,
         "y": 1122
       },
       "size": {
@@ -52,12 +52,12 @@
   "nodes": [
     {
       "boundLiterals": {
-        "BJJqaX4Gb": "5",
-        "HJysTXVMb": "3",
-        "S1nqa7NMZ": "4",
-        "SkBK6Q4fb": "11",
-        "rJlYT7EfW": "12",
-        "rkbjp7Ezb": "2"
+        "BJJqaX4Gb": "D5",
+        "HJysTXVMb": "D3",
+        "S1nqa7NMZ": "D4",
+        "SkBK6Q4fb": "D11",
+        "rJlYT7EfW": "D12",
+        "rkbjp7Ezb": "D2"
       },
       "id": "BJFi3y8qZ",
       "position": {
@@ -68,7 +68,7 @@
     },
     {
       "boundLiterals": {
-        "H1s0WI6MZ": "1"
+        "H1s0WI6MZ": "A1"
       },
       "id": "BJV7SDJbG",
       "position": {
