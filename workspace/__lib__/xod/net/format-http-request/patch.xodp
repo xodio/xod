@@ -1,0 +1,391 @@
+{
+  "comments": [
+    {
+      "content": "Request line",
+      "id": "B1ecjzKbQ",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      }
+    },
+    {
+      "content": "Connection header",
+      "id": "H1PunGYWQ",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      }
+    },
+    {
+      "content": "Host header",
+      "id": "HJjnoMY-7",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      }
+    },
+    {
+      "content": "Content-Length header",
+      "id": "HJs0AMtW7",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "size": {
+        "height": 51,
+        "width": 204
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1w8oMt-X",
+      "input": {
+        "nodeId": "B1uzjGKbm",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "SkQFtMKZm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1-91QtWQ",
+      "input": {
+        "nodeId": "H1CtJXY-7",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "HkOFkQK-m",
+        "pinKey": "H1kQ1XtbQ"
+      }
+    },
+    {
+      "id": "H1vq1mFWQ",
+      "input": {
+        "nodeId": "HkOFkQK-m",
+        "pinKey": "rkKfJ7Y-7"
+      },
+      "output": {
+        "nodeId": "Sy5v9zFZ7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJzoJXF-Q",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "rJJHNrVuM-$3"
+      },
+      "output": {
+        "nodeId": "Hyd95MK-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkT9JmY-7",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "rJJHNrVuM-$5"
+      },
+      "output": {
+        "nodeId": "Sy5v9zFZ7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy0UsMKWm",
+      "input": {
+        "nodeId": "B1uzjGKbm",
+        "pinKey": "BkeKcj6ZZ-$1"
+      },
+      "output": {
+        "nodeId": "HkcCKGYZ7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hyot2MKW7",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "HynENHNOz"
+      },
+      "output": {
+        "nodeId": "B1uzjGKbm",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SktWnzKW7",
+      "input": {
+        "nodeId": "rJrZnMFbm",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rJiucMFW7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SypFnGF-X",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "rJJHNrVuM"
+      },
+      "output": {
+        "nodeId": "SkYijzKWm",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "r1JAJXFb7",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "rJJHNrVuM-$1"
+      },
+      "output": {
+        "nodeId": "ByRaCGKZQ",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "r1fqkXFZ7",
+      "input": {
+        "nodeId": "ByRaCGKZQ",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "H1CtJXY-7",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
+      "id": "r1oU3GtWX",
+      "input": {
+        "nodeId": "HyU8nzK-m",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "rJrZnMFbm",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rJunsfK-7",
+      "input": {
+        "nodeId": "SkYijzKWm",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "BJqntfKbm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJwoymK-7",
+      "input": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "rJJHNrVuM-$2"
+      },
+      "output": {
+        "nodeId": "HyU8nzK-m",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "rywihMtWQ",
+      "input": {
+        "nodeId": "H1leYGFbm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJTfozKZm",
+        "pinKey": "HJrBNr4dG"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "arityLevel": 3,
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\" \"",
+        "BkeKcj6ZZ-$2": "\" HTTP/1.1\""
+      },
+      "id": "B1uzjGKbm",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "arityLevel": 6,
+      "boundLiterals": {
+        "rJGQNB4df": "\"\\r\\n\""
+      },
+      "id": "BJTfozKZm",
+      "position": {
+        "x": 0,
+        "y": 510
+      },
+      "type": "xod/core/join"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "id": "BJqntfKbm",
+      "label": "HOST",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Content-Length: \""
+      },
+      "id": "ByRaCGKZQ",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "0"
+      },
+      "id": "H1CtJXY-7",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "type": "xod/core/format-number"
+    },
+    {
+      "id": "H1leYGFbm",
+      "position": {
+        "x": 0,
+        "y": 612
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "HkOFkQK-m",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/length(string)"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "id": "HkcCKGYZ7",
+      "label": "PATH",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Connection: \""
+      },
+      "id": "HyU8nzK-m",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Additional headers",
+      "id": "Hyd95MK-m",
+      "label": "HDRS",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"GET\""
+      },
+      "description": "HTTP Method",
+      "id": "SkQFtMKZm",
+      "label": "METH",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Host: \""
+      },
+      "id": "SkYijzKWm",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Request body(optional)",
+      "id": "Sy5v9zFZ7",
+      "label": "BODY",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Keep-alive\n",
+      "id": "rJiucMFW7",
+      "label": "KA",
+      "position": {
+        "x": 374,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "\"close\"",
+        "ryTeUROHD1b": "\"keep-alive\""
+      },
+      "id": "rJrZnMFbm",
+      "position": {
+        "x": 374,
+        "y": 306
+      },
+      "type": "xod/core/if-else"
+    }
+  ]
+}
