@@ -52,7 +52,7 @@
       "content": "The `servo` node receives a value from 0 to 1 in the `VAL` pin, which corresponds to the rotation of the shaft from 0° to 180°, respectively.",
       "id": "SJ7uYCrqb",
       "position": {
-        "x": 476,
+        "x": 510,
         "y": 510
       },
       "size": {
@@ -178,7 +178,7 @@
     },
     {
       "boundLiterals": {
-        "S1vGmu6Gb": "9"
+        "S1vGmu6Gb": "D9"
       },
       "id": "HyJKY74q-",
       "position": {

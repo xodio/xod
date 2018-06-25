@@ -59,18 +59,6 @@
       "type": "xod/core/concat"
     },
     {
-      "boundLiterals": {
-        "SkuhqCqym": "A0"
-      },
-      "id": "By5oDu8qW",
-      "label": "Photoresistor",
-      "position": {
-        "x": 578,
-        "y": 612
-      },
-      "type": "xod/gpio/analog-read"
-    },
-    {
       "id": "S1ykdOLqb",
       "position": {
         "x": 544,
@@ -79,6 +67,26 @@
       "type": "xod/core/concat"
     },
     {
+      "boundLiterals": {
+        "r1l3XcR17": "A2"
+      },
+      "id": "SJ5JxLq-X",
+      "label": "Photoresistor",
+      "position": {
+        "x": 578,
+        "y": 612
+      },
+      "type": "xod/common-hardware/analog-sensor"
+    },
+    {
+      "boundLiterals": {
+        "BJJqaX4Gb": "D5",
+        "HJysTXVMb": "D3",
+        "S1nqa7NMZ": "D4",
+        "SkBK6Q4fb": "D11",
+        "rJlYT7EfW": "D12",
+        "rkbjp7Ezb": "D2"
+      },
       "id": "SJHcpyUqb",
       "position": {
         "x": 238,
@@ -88,7 +96,7 @@
     },
     {
       "boundLiterals": {
-        "H1s0WI6MZ": "1"
+        "H1s0WI6MZ": "A1"
       },
       "id": "r19sT1I9-",
       "position": {

@@ -1,15 +1,15 @@
 {
   "comments": [
     {
-      "content": "- `PORT` — a digital port on the Arduino that the button is connected to\n- `PRS` — returns true value when the button is pressed and false otherwise",
+      "content": "- `PORT` — a port on the Arduino that the button is connected to\n- `PRS` — returns true value when the button is pressed and false otherwise",
       "id": "H1IQRsAKW",
       "position": {
-        "x": 374,
+        "x": 408,
         "y": 102
       },
       "size": {
-        "height": 51,
-        "width": 544
+        "height": 153,
+        "width": 272
       }
     },
     {
@@ -28,7 +28,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "B1oqkTnIb": "11"
+        "B1oqkTnIb": "D11"
       },
       "id": "S13FKPEFb",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundLiterals": {
-        "ByNiWkt8Z": "13"
+        "ByNiWkt8Z": "D13"
       },
       "id": "rkRFKDVF-",
       "position": {
