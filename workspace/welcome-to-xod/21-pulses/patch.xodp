@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "In the tenth patch, we briefly mentioned the blue `UPD` input pin and the *pulse* data type.\n\nThis type is very different from all the others. All values ​​in the XOD are transferred to the links continuously, even if the values ​​haven't changed. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nFor example, say you only want an `analog-input` node to receive information from a board port at certain intervals, and not all the time. This frequency can be set with the help of pulses. Each time a pulse arrives on the `UPD` pin, the node reads the analog port and outputs the value to the `VAL` pin. This value will be stored there until it changes to another value.\n\n## Instructions\n\n1. Make a [circuit with a servo and pot](https://xod.io/docs/tutorial/21-pulses/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_21).\n2. Open the Inspector for the `pot` node.\n3. Change the `UPD` value to `On boot`.\n4. Upload the patch to the Arduino.\n\nNow try to turn the potentiometer knob and press the reset button on the board itself. As you can see, the potentiometer updates now only once when the Arduino is turned on.",
+      "content": "In the tenth patch, we briefly mentioned the blue `UPD` input pin and the *pulse* data type.\n\nThis type is very different from all the others. All values ​​in the XOD are transferred to the links continuously, even if the values ​​haven't changed. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nFor example, say you only want a `pot` node to receive information from a board port at certain intervals, and not all the time. This frequency can be set with the help of pulses. Each time a pulse arrives on the `UPD` pin, the node reads the analog port and outputs the value to the `VAL` pin. This value will be stored there until it changes to another value.\n\n## Instructions\n\n1. Make a [circuit with a servo and pot](https://xod.io/docs/tutorial/21-pulses/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_21).\n2. Open the Inspector for the `pot` node.\n3. Change the `UPD` value to `On boot`.\n4. Upload the patch to the Arduino.\n\nNow try to turn the potentiometer knob and press the reset button on the board itself. As you can see, the potentiometer updates now only once when the Arduino is turned on.",
       "id": "r1ElrF2lM",
       "position": {
         "x": -34,
@@ -13,10 +13,10 @@
       }
     },
     {
-      "content": "The behavior of a pulse pin can be set in the Inspector. For a pot the choice means:\n\n* `Never`: Never produce pulses, i.e. Do not take readings from the analog port at all.\n* `On boot`: Generate a pulse once at startup. We will update the state exactly once.\n* `Continuously`: Generate pulses constantly, i.e. take the readings from the analog port with the highest possible rate.\n\n",
+      "content": "The behavior of a pulse pin can be set in the Inspector. For a pot the choice means:\n\n* `Never`: Never produce pulses. That is, do not take readings or make updates at all.\n* `On boot`: Generate a pulse once at startup. Updates the state exactly once.\n* `Continuously`: Generate pulses constantly, i.e. take the readings or make updates with the highest possible rate.\n\n",
       "id": "r1TWu48HM",
       "position": {
-        "x": 408,
+        "x": 476,
         "y": 204
       },
       "size": {
@@ -43,14 +43,14 @@
       "id": "H1O2DMN5b",
       "label": "pot",
       "position": {
-        "x": 306,
+        "x": 340,
         "y": 204
       },
       "type": "xod/gpio/analog-read"
     },
     {
       "boundLiterals": {
-        "S1vGmu6Gb": "9"
+        "S1vGmu6Gb": "D9"
       },
       "id": "Skw0PzVcZ",
       "position": {

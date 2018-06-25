@@ -26,17 +26,6 @@
       }
     },
     {
-      "id": "SJqnuU9iZ",
-      "input": {
-        "nodeId": "BkqfdIqob",
-        "pinKey": "rJg00Nhe-"
-      },
-      "output": {
-        "nodeId": "rJyzdUqjZ",
-        "pinKey": "SyBtREhlW"
-      }
-    },
-    {
       "id": "r1Bo_Uqj-",
       "input": {
         "nodeId": "B1ki_85jZ",
@@ -45,6 +34,17 @@
       "output": {
         "nodeId": "B185dU5s-",
         "pinKey": "BJ0M5JKUW"
+      }
+    },
+    {
+      "id": "rJmgRH5-7",
+      "input": {
+        "nodeId": "BkqfdIqob",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "rJ1l0H9Z7",
+        "pinKey": "BkoeN9Ay7"
       }
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "boundLiterals": {
-        "S1vGmu6Gb": "9"
+        "S1vGmu6Gb": "D9"
       },
       "id": "B1ki_85jZ",
       "position": {
@@ -103,14 +103,14 @@
     },
     {
       "boundLiterals": {
-        "SkuhqCqym": "A2"
+        "r1l3XcR17": "A2"
       },
-      "id": "rJyzdUqjZ",
+      "id": "rJ1l0H9Z7",
       "position": {
         "x": 306,
         "y": 0
       },
-      "type": "xod/gpio/analog-read"
+      "type": "xod/common-hardware/analog-sensor"
     }
   ]
 }

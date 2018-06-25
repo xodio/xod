@@ -22,7 +22,7 @@ message to trigger something else. It does not transmit any data. However, it
 is useful when you need to convey that an event has occurred or tell something
 else to work.
 
-For example, say you only want an `analog-sensor` node to receive information
+For example, say you only want an `pot` node to receive information
 from a board port at certain intervals, and not all the time. This frequency
 can be set with the help of pulses.
 
@@ -32,15 +32,17 @@ Each time a pulse arrives on the `UPD` pin, the node reads the analog port and
 outputs the value to the `VAL` pin. This value will be stored there until it
 changes to another value.
 
+The same is for the `servo`. It will send the updated value to the hardware
+only when receives a pulse to `UPD`.
+
 The behavior of the `UPD` pin can also be set in the Inspector. For a pot the
 choice means:
 
-* `Never`: Never produce pulses, i.e. Do not take readings from the analog port
+* `Never`: Never produce pulses. That is, do not take readings or make updates
   at all.
-* `On boot`: Generate a pulse once at startup. We will update the state exactly
-  once.
-* `Continuously`: Generate pulses constantly, i.e. take the readings from the
-  analog port with the highest possible rate.
+* `On boot`: Generate a pulse once at startup. Updates the state exactly once.
+* `Continuously`: Generate pulses constantly, i.e. take the readings or make
+  updates with the highest possible rate.
 
 ## Test circuit
 

@@ -16,19 +16,19 @@
       "content": "This node allows one to read data from TMP36 thermometers.\n- `PORT` — an analog Arduino port the thermometer is connected to.\n- `Tc` — the temperature value.",
       "id": "H13O5OpYb",
       "position": {
-        "x": 374,
+        "x": 408,
         "y": 0
       },
       "size": {
         "height": 153,
-        "width": 340
+        "width": 272
       }
     }
   ],
   "nodes": [
     {
       "boundLiterals": {
-        "S1vGmu6Gb": "9"
+        "S1vGmu6Gb": "D9"
       },
       "id": "Hy3tvDEKZ",
       "position": {
@@ -39,7 +39,7 @@
     },
     {
       "boundLiterals": {
-        "H1s0WI6MZ": "1"
+        "H1s0WI6MZ": "A1"
       },
       "id": "rkEKww4tW",
       "position": {
