@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
     "build:js": "babel src/ -d dist/ --source-maps",

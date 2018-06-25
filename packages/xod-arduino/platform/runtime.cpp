@@ -180,7 +180,7 @@ TimeMs transactionTime() {
 }
 
 bool isSettingUp() {
-    return !g_isSettingUp;
+    return g_isSettingUp;
 }
 
 template<typename ContextT>
