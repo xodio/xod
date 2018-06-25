@@ -8,15 +8,27 @@
   "patches": {
     "@/01-hello": {
       "comments": {
+        "H1Xt8V5bm": {
+          "content": "BTW, I am a comment. Even though I am here, I do not affect the patch because I am invisible to it. I am visible only to you. You can move me, too.\n",
+          "id": "H1Xt8V5bm",
+          "position": {
+            "x": 476,
+            "y": 306
+          },
+          "size": {
+            "height": 153,
+            "width": 238
+          }
+        },
         "SyzEUkjK-": {
-          "content": "Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. In this patch, there is only one object of interest: the `led` node, a grey rectangle with two little green circles. You will be able to make complicated programs using this rectangles. \n\nFirst, try to move the rectangle. Its position on the workspace does not affect your program but can make it more readable. \n\nBTW, I am a comment. Even though I am here, I do not affect the patch because I am invisible to it. I am visible only to you. You can move me, too.\n\n## Instructions\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. This is a special tutorial project you’re working with right now. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, we are in patch `01-hello`. The next part of the tutorial is in patch `02-deploy`. Double-click it, and let's meet there!\n\nIf anything goes wrong or you have no idea what to do, we have [hints for every patch](https://xod.io/docs/tutorial/01-hello/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_01) on the web.",
+          "content": "Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. In this patch, there is only one object of interest: the `led` node, a grey rectangle with little circles. You will be able to make complicated programs using this rectangles. \n\nFirst, try to move the rectangle. Its position on the workspace does not affect your program but can make it more readable. \n\n## Instructions\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. This is a special tutorial project you’re working with right now. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, we are in patch `01-hello`. The next part of the tutorial is in patch `02-deploy`. Double-click it, and let's meet there!\n\nIf anything goes wrong or you have no idea what to do, we have [hints for every patch](https://xod.io/docs/tutorial/01-hello/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_01) on the web.",
           "id": "SyzEUkjK-",
           "position": {
             "x": 0,
             "y": 0
           },
           "size": {
-            "height": 765,
+            "height": 663,
             "width": 306
           }
         }
@@ -24,7 +36,7 @@
       "nodes": {
         "SkjpJD4F-": {
           "boundLiterals": {
-            "B1oqkTnIb": "11",
+            "B1oqkTnIb": "D11",
             "HyYh1a3LZ": "0"
           },
           "id": "SkjpJD4F-",
@@ -55,7 +67,7 @@
       "nodes": {
         "SyiJgwVtb": {
           "boundLiterals": {
-            "B1oqkTnIb": "11",
+            "B1oqkTnIb": "D11",
             "HyYh1a3LZ": "1"
           },
           "id": "SyiJgwVtb",
@@ -71,7 +83,7 @@
     "@/03-inspector": {
       "comments": {
         "H1nSnynt-": {
-          "content": "The LED is on because of the `led` node.\nA node is a visual representation of some physical device (such as the ports on an Arduino) or some function (adding, subtracting, or more complicated stuff).\n\nThe small colored circles on the nodes are called *pins*. Pins are divided into inputs and outputs. Inputs are always on the top side of the nodes, outputs on the bottom.\n\nThe `led` node is a simple LED-controlling node. It can control only one single-colored LED. The node has only input pins: `PORT` and `LUM`. \n\nPins are used to transfer data between nodes. Nodes process these values and take some action or give a result. In our case, the `led` node transfers the led brightnes value (set in `LUM`) to the Arduino port (set in `PORT`).\n\n## Instructions\n\n1. Click on the `led` node. You will see the Inspector under the list of projects. You can set the node parameters in the Inspector.\n\n2. In the Inspector, change the `LUM` value from 1 to 0.\n\n3. Upload the program to the Arduino. To do so, select Deploy → Upload to Arduino from the menu.\n\nThe LED will switch off after the upload because Arduino sent a value of 0 to the LED's pin. Physically speaking, it stopped delivering voltage to the pin.",
+          "content": "The LED is on because of the `led` node.\nA node is a visual representation of some physical device (such as the ports on an Arduino) or some function (adding, subtracting, or more complicated stuff).\n\nThe small colored circles on the nodes are called *pins*. Pins are divided into inputs and outputs. Inputs are always on the top side of the nodes, outputs on the bottom.\n\nThe `led` node is a simple LED-controlling node. It can control only one single-colored LED. The node has input pins `PORT` and `LUM` along with a few other pins you can ignore for now.\n\nPins are used to transfer data between nodes. Nodes process these values and take some action or give a result. In our case, the `led` node transfers the led brightnes value (set in `LUM`) to the Arduino port (set in `PORT`).\n\n## Instructions\n\n1. Click on the `led` node. You will see the Inspector under the list of projects. You can set the node parameters in the Inspector.\n\n2. In the Inspector, change the `LUM` value from 1 to 0.\n\n3. Upload the program to the Arduino. To do so, select Deploy → Upload to Arduino from the menu.\n\nThe LED will switch off after the upload because Arduino sent a value of 0 to the LED's pin. Physically speaking, it stopped delivering voltage to the pin.",
           "id": "H1nSnynt-",
           "position": {
             "x": -68,
@@ -86,7 +98,7 @@
       "nodes": {
         "BykwlvEF-": {
           "boundLiterals": {
-            "B1oqkTnIb": "11",
+            "B1oqkTnIb": "D11",
             "HyYh1a3LZ": "1"
           },
           "id": "BykwlvEF-",
@@ -117,7 +129,7 @@
       "nodes": {
         "BJ2tewEKb": {
           "boundLiterals": {
-            "B1oqkTnIb": "11",
+            "B1oqkTnIb": "D11",
             "HyYh1a3LZ": "0"
           },
           "id": "BJ2tewEKb",
@@ -133,19 +145,19 @@
     "@/05-wiring": {
       "comments": {
         "BJ7AzfhK-": {
-          "content": "- `PORT` assigns the number of the Arduino’s digital port to be used.\n- `LUM` controls the brightness (value is between 0 and 1).",
+          "content": "- `PORT` assigns the Arduino’s port to be used. The value should start with either `D` (digital) or `A` (analog).\n- `LUM` controls the brightness value. Should be between 0 and 1.",
           "id": "BJ7AzfhK-",
           "position": {
-            "x": 408,
+            "x": 442,
             "y": 204
           },
           "size": {
-            "height": 51,
-            "width": 510
+            "height": 153,
+            "width": 272
           }
         },
         "rkZofM3KW": {
-          "content": "Now you know what `LUM` pin does.\nHowever, an LED could be connected to any digital port on an Arduino. So you need to inform the node of the port number that you are about to use. You can do it with the `PORT` pin.\n\n## Instructions\n\n1. Reconnect the LED to digital port 10 on Arduino ([scheme](https://xod.io/docs/tutorial/05-wiring/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_05)).\n\n2. Change the `PORT` pin value to 10 and the `LUM` value to 1.\n\n3. Upload your patch to the Arduino.\n\nThe LED should turn on at Arduino's port 10.\n",
+          "content": "Now you know what `LUM` pin does.\nHowever, an LED could be connected to any digital port on an Arduino. So you need to inform the node of the port number that you are about to use. You can do it with the `PORT` pin.\n\n## Instructions\n\n1. Reconnect the LED to digital port 10 on Arduino ([scheme](https://xod.io/docs/tutorial/05-wiring/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_05)).\n2. Change the `PORT` pin value to D10 and the `LUM` value to 1.\n3. Upload your patch to the Arduino.\n\nThe LED should turn on at Arduino's port 10.\n",
           "id": "rkZofM3KW",
           "position": {
             "x": -34,
@@ -203,7 +215,7 @@
       "nodes": {
         "Hkg_WP4Kb": {
           "boundLiterals": {
-            "B1oqkTnIb": "10",
+            "B1oqkTnIb": "D10",
             "HyYh1a3LZ": "1"
           },
           "id": "Hkg_WP4Kb",
@@ -234,7 +246,7 @@
       "nodes": {
         "H1l2-vNKW": {
           "boundLiterals": {
-            "B1oqkTnIb": "11",
+            "B1oqkTnIb": "D11",
             "HyYh1a3LZ": "1"
           },
           "id": "H1l2-vNKW",
@@ -246,7 +258,7 @@
         },
         "S1X2Wv4FW": {
           "boundLiterals": {
-            "B1oqkTnIb": "10",
+            "B1oqkTnIb": "D10",
             "HyYh1a3LZ": "1"
           },
           "id": "S1X2Wv4FW",
@@ -289,7 +301,7 @@
       "nodes": {
         "HknqGwVtb": {
           "boundLiterals": {
-            "B1oqkTnIb": "10"
+            "B1oqkTnIb": "D10"
           },
           "id": "HknqGwVtb",
           "label": "LED1",
@@ -301,7 +313,7 @@
         },
         "Syi5GPNFZ": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "Syi5GPNFZ",
           "label": "LED2",
@@ -328,7 +340,7 @@
     "@/09-pot": {
       "comments": {
         "Sk8zxUaKW": {
-          "content": "Let’s try some more practice. Now, we will control the LEDs’ brightness with a potentiometer. All you need to do is to replace the `constant-number` node with a `pot` node and transfer the brightness value to LED1 and LED2 from this pot node, instead of the `constant-number`.\n\n## Instructions\n\n1. Delete the links between the pins. To do this, click on a link, then press Delete or Backspace key.\n\n2. Delete the `constant-number` node. Click on it and press Delete or Backspace.\n\n3. Find the `pot` node in the Project Browser inside the `xod/common-hardware` library.\n\n4. Connect a potentiometer to the Arduino according to the [scheme](https://xod.io/docs/tutorial/09-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_09).\n\n5. Set the `PORT` pin value on the `pot` node to 0, bacause it’s connected to analog Arduino port A0. \n\n6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.\n\n7. Upload the patch to the Arduino.\n\nIf you turn the potentiometer knob, it will affect the brightness of the LEDs. Depending on the angle of the knob, the `pot` node returns a value from 0.0 to 1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both LED nodes.",
+          "content": "Let’s try some more practice. Now, we will control the LEDs’ brightness with a potentiometer. All you need to do is to replace the `constant-number` node with a `pot` node and transfer the brightness value to LED1 and LED2 from this pot node, instead of the `constant-number`.\n\n## Instructions\n\n1. Delete the links between the pins. To do this, click on a link, then press Delete or Backspace key.\n\n2. Delete the `constant-number` node. Click on it and press Delete or Backspace.\n\n3. Find the `pot` node in the Project Browser inside the `xod/common-hardware` library.\n\n4. Connect a potentiometer to the Arduino according to the [scheme](https://xod.io/docs/tutorial/09-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_09).\n\n5. Set the `PORT` pin value on the `pot` node to A0, bacause it’s connected to analog Arduino port A0. \n\n6. Link the `pot` node `VAL` pin to the `LUM` pins on the LED1 and LED2 nodes.\n\n7. Upload the patch to the Arduino.\n\nIf you turn the potentiometer knob, it will affect the brightness of the LEDs. Depending on the angle of the knob, the `pot` node returns a value from 0.0 to 1.0 to the `VAL` pin, and that value is transferred to the `LUM` pins of both LED nodes.",
           "id": "Sk8zxUaKW",
           "position": {
             "x": -34,
@@ -367,7 +379,7 @@
       "nodes": {
         "HyX57vEFZ": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "HyX57vEFZ",
           "label": "LED2",
@@ -390,7 +402,7 @@
         },
         "rkWQ9mDEtW": {
           "boundLiterals": {
-            "B1oqkTnIb": "10"
+            "B1oqkTnIb": "D10"
           },
           "id": "rkWQ9mDEtW",
           "label": "LED1",
@@ -409,7 +421,7 @@
           "content": "It’s a `multiply` node.\n- Inputs `IN1` and `IN2` are numbers to multiply\n- Output `OUT` is the product of the `IN1` and `IN2`",
           "id": "BJj5fP6YZ",
           "position": {
-            "x": 510,
+            "x": 544,
             "y": 102
           },
           "size": {
@@ -457,7 +469,7 @@
       "nodes": {
         "SJihHwNKb": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "SJihHwNKb",
           "label": "LED2",
@@ -470,7 +482,7 @@
         "SyclTC1hb": {
           "id": "SyclTC1hb",
           "position": {
-            "x": 306,
+            "x": 340,
             "y": 0
           },
           "type": "xod/common-hardware/pot"
@@ -481,14 +493,14 @@
           },
           "id": "Synz8v4Yb",
           "position": {
-            "x": 408,
+            "x": 442,
             "y": 102
           },
           "type": "xod/core/multiply"
         },
         "r1V3SDEtW": {
           "boundLiterals": {
-            "B1oqkTnIb": "10"
+            "B1oqkTnIb": "D10"
           },
           "id": "r1V3SDEtW",
           "label": "LED1",
@@ -516,10 +528,10 @@
           }
         },
         "HkDByupFW": {
-          "content": "- `PORT` — digital port on the Arduino that the servo is connected to\n- `VAL` — a value ranging from 0 to 1; it turns the servo shaft from 0 to 180°\n",
+          "content": "- `PORT` — Arduino port that the servo is connected to\n- `VAL` — a value ranging from 0 to 1; it turns the servo shaft from 0 to 180°\n",
           "id": "HkDByupFW",
           "position": {
-            "x": 408,
+            "x": 442,
             "y": 204
           },
           "size": {
@@ -531,7 +543,7 @@
       "nodes": {
         "Syv38wNYW": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "Syv38wNYW",
           "position": {
@@ -569,19 +581,19 @@
           "content": "This node allows one to read data from TMP36 thermometers.\n- `PORT` — an analog Arduino port the thermometer is connected to.\n- `Tc` — the temperature value.",
           "id": "H13O5OpYb",
           "position": {
-            "x": 374,
+            "x": 408,
             "y": 0
           },
           "size": {
             "height": 153,
-            "width": 340
+            "width": 272
           }
         }
       },
       "nodes": {
         "Hy3tvDEKZ": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "Hy3tvDEKZ",
           "position": {
@@ -592,7 +604,7 @@
         },
         "rkEKww4tW": {
           "boundLiterals": {
-            "H1s0WI6MZ": "1"
+            "H1s0WI6MZ": "A1"
           },
           "id": "rkEKww4tW",
           "position": {
@@ -634,7 +646,7 @@
       "nodes": {
         "Bklh_vNFb": {
           "boundLiterals": {
-            "H1s0WI6MZ": "1"
+            "H1s0WI6MZ": "A1"
           },
           "id": "Bklh_vNFb",
           "position": {
@@ -658,7 +670,7 @@
         },
         "rkK3_PEYb": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "rkK3_PEYb",
           "position": {
@@ -712,7 +724,7 @@
       "nodes": {
         "B1WVFPEtZ": {
           "boundLiterals": {
-            "H1s0WI6MZ": "1"
+            "H1s0WI6MZ": "A1"
           },
           "id": "B1WVFPEtZ",
           "position": {
@@ -723,7 +735,7 @@
         },
         "BJrNFP4tZ": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "BJrNFP4tZ",
           "position": {
@@ -751,15 +763,15 @@
     "@/15-buttons": {
       "comments": {
         "H1IQRsAKW": {
-          "content": "- `PORT` — a digital port on the Arduino that the button is connected to\n- `PRS` — returns true value when the button is pressed and false otherwise",
+          "content": "- `PORT` — a port on the Arduino that the button is connected to\n- `PRS` — returns true value when the button is pressed and false otherwise",
           "id": "H1IQRsAKW",
           "position": {
-            "x": 374,
+            "x": 408,
             "y": 102
           },
           "size": {
-            "height": 51,
-            "width": 544
+            "height": 153,
+            "width": 272
           }
         },
         "r1BpRoRt-": {
@@ -778,7 +790,7 @@
       "nodes": {
         "S13FKPEFb": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "S13FKPEFb",
           "position": {
@@ -789,7 +801,7 @@
         },
         "rkRFKDVF-": {
           "boundLiterals": {
-            "ByNiWkt8Z": "13"
+            "ByNiWkt8Z": "D13"
           },
           "id": "rkRFKDVF-",
           "position": {
@@ -885,7 +897,7 @@
         },
         "ByCkcvVYW": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "ByCkcvVYW",
           "position": {
@@ -896,7 +908,7 @@
         },
         "ByHgcw4Yb": {
           "boundLiterals": {
-            "ByNiWkt8Z": "13"
+            "ByNiWkt8Z": "D13"
           },
           "id": "ByHgcw4Yb",
           "position": {
@@ -907,7 +919,7 @@
         },
         "ByVg5w4F-": {
           "boundLiterals": {
-            "ByNiWkt8Z": "12"
+            "ByNiWkt8Z": "D12"
           },
           "id": "ByVg5w4F-",
           "position": {
@@ -962,7 +974,7 @@
     "@/17-ldr": {
       "comments": {
         "H1AsRpAtZ": {
-          "content": "Let’s introduce a new sensor to measure an ambient light level.  A\nphotoresistor (aka light dependent resistor or LDR) would do a great job of\nmeasuring the parameter. However, there is a small problem: we do not have a\nphotoresistor node in XOD.\n\nYet, we have basic nodes for working with the digital and analog ports of the Arduino. A photoresistor is a pretty primitive device, and all we need to do is read its value from the analog port on the Arduino. To do so, we will use an `analog-input` node.\n\n## Instructions\n\n1. Assemble the [circuit with LDR and LED](https://xod.io/docs/tutorial/17-ldr/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_17).\n\n2. Find the `analog-input` node in `xod/core` and add it to the patch.\n\n3. Read the description of the node on the help page. Pay attention to the range of values the node returns.\n\n4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin of the led node.\n\n5. Upload the patch to the Arduino.\n\nCover the photoresistor with your hand, and watch how the brightness of the LED changes.",
+          "content": "Let’s introduce a new sensor to measure an ambient light level.  A\nphotoresistor (aka light dependent resistor or LDR) would do a great job of\nmeasuring the parameter. However, there is a small problem: we do not have a\nphotoresistor node in XOD.\n\nYet, we have basic nodes for working with the digital and analog ports of the Arduino. A photoresistor is a pretty primitive device, and all we need to do is read its value from the analog port on the Arduino. To do so, we will use an `analog-sensor` node.\n\n## Instructions\n\n1. Assemble the [circuit with LDR and LED](https://xod.io/docs/tutorial/17-ldr/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_17).\n\n2. Find the `analog-sensor` node in `xod/common-hardware` and add it to the patch.\n\n3. Read the description of the node on the help page. Pay attention to the range of values the node returns.\n\n4. Link the `VAL` output pin of the `analog-input` node to the `LUM` pin of the led node.\n\n5. Upload the patch to the Arduino.\n\nCover the photoresistor with your hand, and watch how the brightness of the LED changes.",
           "id": "H1AsRpAtZ",
           "position": {
             "x": -68,
@@ -977,7 +989,7 @@
       "nodes": {
         "Hk0_5wNY-": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "Hk0_5wNY-",
           "position": {
@@ -1016,7 +1028,7 @@
           }
         },
         "H1dIB11c-": {
-          "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-input` node to the left pin on the `greater` node.\n\n2. Set a value of 0.4 on the right pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the output pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `OUT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the right pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
+          "content": "Now for comparisons. XOD has `greater`-than and `less`-than nodes to do simple mathematical comparisons.\n\n## Instructions\n\n1. Link the `VAL` pin of the `analog-sensor` node to the left pin on the `greater` node.\n\n2. Set a value of 0.4 on the right pin. You can still do this in the Inspector. This is the value we will compare the photoresistor value with.\n\n3. Link the output pin on the `greater` node to the `LUM` pin of the `led` node.\n\nNow, if the `analog-input` node (our photoresistor) returns a value greater than 0.4, the `greater` node will set the `OUT` pin to “true,” and the LED will turn on.\n\nTry to set the comparison value manually using a potentiometer. Tips:\n1. Connect the potentiometer and add another `analog-input` node from `xod/core`. Define the `PORT` value for the Arduino port that the potentiometer is connected to.\n\n2. Link the output of this node to the right pin of the `greater` node.\n\nNow the threshold value is not fixed but is defined by the potentiometer.",
           "id": "H1dIB11c-",
           "position": {
             "x": -68,
@@ -1031,7 +1043,7 @@
       "nodes": {
         "BJszoD4tZ": {
           "boundLiterals": {
-            "B1oqkTnIb": "10"
+            "B1oqkTnIb": "D10"
           },
           "id": "BJszoD4tZ",
           "position": {
@@ -1040,6 +1052,17 @@
           },
           "type": "xod/common-hardware/led"
         },
+        "Bk-M6BcbX": {
+          "boundLiterals": {
+            "r1l3XcR17": "A2"
+          },
+          "id": "Bk-M6BcbX",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/common-hardware/analog-sensor"
+        },
         "BygDsvVFZ": {
           "id": "BygDsvVFZ",
           "position": {
@@ -1047,17 +1070,6 @@
             "y": 306
           },
           "type": "xod/core/less"
-        },
-        "H1UNiwVt-": {
-          "boundLiterals": {
-            "SkuhqCqym": "A2"
-          },
-          "id": "H1UNiwVt-",
-          "position": {
-            "x": 272,
-            "y": 0
-          },
-          "type": "xod/gpio/analog-read"
         },
         "S1THoPVFZ": {
           "boundLiterals": {
@@ -1101,6 +1113,17 @@
         }
       },
       "links": {
+        "HJ7oTSqbQ": {
+          "id": "HJ7oTSqbQ",
+          "input": {
+            "nodeId": "Bkxay1E5Z",
+            "pinKey": "rJg00Nhe-"
+          },
+          "output": {
+            "nodeId": "SkliaBq-Q",
+            "pinKey": "BkoeN9Ay7"
+          }
+        },
         "Hk5wdU9oW": {
           "id": "Hk5wdU9oW",
           "input": {
@@ -1110,17 +1133,6 @@
           "output": {
             "nodeId": "BywpJ149Z",
             "pinKey": "S13xLCuHvkW"
-          }
-        },
-        "SkhI7bE5Z": {
-          "id": "SkhI7bE5Z",
-          "input": {
-            "nodeId": "Bkxay1E5Z",
-            "pinKey": "rJg00Nhe-"
-          },
-          "output": {
-            "nodeId": "H1pMkkVqZ",
-            "pinKey": "SyBtREhlW"
           }
         },
         "r1Z_QZEcb": {
@@ -1149,7 +1161,7 @@
         },
         "By4w_LqoZ": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "By4w_LqoZ",
           "position": {
@@ -1170,16 +1182,16 @@
           },
           "type": "xod/core/if-else"
         },
-        "H1pMkkVqZ": {
+        "SkliaBq-Q": {
           "boundLiterals": {
-            "SkuhqCqym": "A2"
+            "r1l3XcR17": "A2"
           },
-          "id": "H1pMkkVqZ",
+          "id": "SkliaBq-Q",
           "position": {
             "x": 238,
             "y": -102
           },
-          "type": "xod/gpio/analog-read"
+          "type": "xod/common-hardware/analog-sensor"
         }
       },
       "path": "@/19-if-else"
@@ -1211,17 +1223,6 @@
             "pinKey": "S13xLCuHvkW"
           }
         },
-        "SJqnuU9iZ": {
-          "id": "SJqnuU9iZ",
-          "input": {
-            "nodeId": "BkqfdIqob",
-            "pinKey": "rJg00Nhe-"
-          },
-          "output": {
-            "nodeId": "rJyzdUqjZ",
-            "pinKey": "SyBtREhlW"
-          }
-        },
         "r1Bo_Uqj-": {
           "id": "r1Bo_Uqj-",
           "input": {
@@ -1231,6 +1232,17 @@
           "output": {
             "nodeId": "B185dU5s-",
             "pinKey": "BJ0M5JKUW"
+          }
+        },
+        "rJmgRH5-7": {
+          "id": "rJmgRH5-7",
+          "input": {
+            "nodeId": "BkqfdIqob",
+            "pinKey": "rJg00Nhe-"
+          },
+          "output": {
+            "nodeId": "rJ1l0H9Z7",
+            "pinKey": "BkoeN9Ay7"
           }
         },
         "ryOhdLqs-": {
@@ -1259,7 +1271,7 @@
         },
         "B1ki_85jZ": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "B1ki_85jZ",
           "position": {
@@ -1287,16 +1299,16 @@
           },
           "type": "xod/core/greater"
         },
-        "rJyzdUqjZ": {
+        "rJ1l0H9Z7": {
           "boundLiterals": {
-            "SkuhqCqym": "A2"
+            "r1l3XcR17": "A2"
           },
-          "id": "rJyzdUqjZ",
+          "id": "rJ1l0H9Z7",
           "position": {
             "x": 306,
             "y": 0
           },
-          "type": "xod/gpio/analog-read"
+          "type": "xod/common-hardware/analog-sensor"
         }
       },
       "path": "@/20-fade"
@@ -1304,7 +1316,7 @@
     "@/21-pulses": {
       "comments": {
         "r1ElrF2lM": {
-          "content": "In the tenth patch, we briefly mentioned the blue `UPD` input pin and the *pulse* data type.\n\nThis type is very different from all the others. All values ​​in the XOD are transferred to the links continuously, even if the values ​​haven't changed. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nFor example, say you only want an `analog-input` node to receive information from a board port at certain intervals, and not all the time. This frequency can be set with the help of pulses. Each time a pulse arrives on the `UPD` pin, the node reads the analog port and outputs the value to the `VAL` pin. This value will be stored there until it changes to another value.\n\n## Instructions\n\n1. Make a [circuit with a servo and pot](https://xod.io/docs/tutorial/21-pulses/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_21).\n2. Open the Inspector for the `pot` node.\n3. Change the `UPD` value to `On boot`.\n4. Upload the patch to the Arduino.\n\nNow try to turn the potentiometer knob and press the reset button on the board itself. As you can see, the potentiometer updates now only once when the Arduino is turned on.",
+          "content": "In the tenth patch, we briefly mentioned the blue `UPD` input pin and the *pulse* data type.\n\nThis type is very different from all the others. All values ​​in the XOD are transferred to the links continuously, even if the values ​​haven't changed. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nFor example, say you only want a `pot` node to receive information from a board port at certain intervals, and not all the time. This frequency can be set with the help of pulses. Each time a pulse arrives on the `UPD` pin, the node reads the analog port and outputs the value to the `VAL` pin. This value will be stored there until it changes to another value.\n\n## Instructions\n\n1. Make a [circuit with a servo and pot](https://xod.io/docs/tutorial/21-pulses/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_21).\n2. Open the Inspector for the `pot` node.\n3. Change the `UPD` value to `On boot`.\n4. Upload the patch to the Arduino.\n\nNow try to turn the potentiometer knob and press the reset button on the board itself. As you can see, the potentiometer updates now only once when the Arduino is turned on.",
           "id": "r1ElrF2lM",
           "position": {
             "x": -34,
@@ -1316,10 +1328,10 @@
           }
         },
         "r1TWu48HM": {
-          "content": "The behavior of a pulse pin can be set in the Inspector. For a pot the choice means:\n\n* `Never`: Never produce pulses, i.e. Do not take readings from the analog port at all.\n* `On boot`: Generate a pulse once at startup. We will update the state exactly once.\n* `Continuously`: Generate pulses constantly, i.e. take the readings from the analog port with the highest possible rate.\n\n",
+          "content": "The behavior of a pulse pin can be set in the Inspector. For a pot the choice means:\n\n* `Never`: Never produce pulses. That is, do not take readings or make updates at all.\n* `On boot`: Generate a pulse once at startup. Updates the state exactly once.\n* `Continuously`: Generate pulses constantly, i.e. take the readings or make updates with the highest possible rate.\n\n",
           "id": "r1TWu48HM",
           "position": {
-            "x": 408,
+            "x": 476,
             "y": 204
           },
           "size": {
@@ -1346,14 +1358,14 @@
           "id": "H1O2DMN5b",
           "label": "pot",
           "position": {
-            "x": 306,
+            "x": 340,
             "y": 204
           },
           "type": "xod/gpio/analog-read"
         },
         "Skw0PzVcZ": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "Skw0PzVcZ",
           "position": {
@@ -1396,7 +1408,7 @@
       "nodes": {
         "By-NXQVqW": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "By-NXQVqW",
           "position": {
@@ -1482,7 +1494,7 @@
       "nodes": {
         "Hy_vm7E9b": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "Hy_vm7E9b",
           "position": {
@@ -1575,7 +1587,7 @@
         },
         "HyA_GKr9W": {
           "boundLiterals": {
-            "B1oqkTnIb": "11"
+            "B1oqkTnIb": "D11"
           },
           "id": "HyA_GKr9W",
           "position": {
@@ -1649,7 +1661,7 @@
           "content": "The `servo` node receives a value from 0 to 1 in the `VAL` pin, which corresponds to the rotation of the shaft from 0° to 180°, respectively.",
           "id": "SJ7uYCrqb",
           "position": {
-            "x": 476,
+            "x": 510,
             "y": 510
           },
           "size": {
@@ -1775,7 +1787,7 @@
         },
         "HyJKY74q-": {
           "boundLiterals": {
-            "S1vGmu6Gb": "9"
+            "S1vGmu6Gb": "D9"
           },
           "id": "HyJKY74q-",
           "position": {
@@ -1827,13 +1839,13 @@
         "BJLI75r9Z": {
           "boundLiterals": {
             "B1TSE9tZ-": "\"Make\"",
-            "BJJqaX4Gb": "5",
+            "BJJqaX4Gb": "D5",
             "H1bLN9F-b": "\"the links!\"",
-            "HJysTXVMb": "3",
-            "S1nqa7NMZ": "4",
-            "SkBK6Q4fb": "11",
-            "rJlYT7EfW": "12",
-            "rkbjp7Ezb": "2"
+            "HJysTXVMb": "D3",
+            "S1nqa7NMZ": "D4",
+            "SkBK6Q4fb": "D11",
+            "rJlYT7EfW": "D12",
+            "rkbjp7Ezb": "D2"
           },
           "id": "BJLI75r9Z",
           "position": {
@@ -1873,7 +1885,7 @@
           "content": "Note: the number data type is compatible with the string data type. Sensor values can be transmitted without additional conversions. They will be transmitted with an accuracy of two decimal places.",
           "id": "BJEtTI1Wz",
           "position": {
-            "x": 748,
+            "x": 782,
             "y": 1122
           },
           "size": {
@@ -1921,12 +1933,12 @@
       "nodes": {
         "BJFi3y8qZ": {
           "boundLiterals": {
-            "BJJqaX4Gb": "5",
-            "HJysTXVMb": "3",
-            "S1nqa7NMZ": "4",
-            "SkBK6Q4fb": "11",
-            "rJlYT7EfW": "12",
-            "rkbjp7Ezb": "2"
+            "BJJqaX4Gb": "D5",
+            "HJysTXVMb": "D3",
+            "S1nqa7NMZ": "D4",
+            "SkBK6Q4fb": "D11",
+            "rJlYT7EfW": "D12",
+            "rkbjp7Ezb": "D2"
           },
           "id": "BJFi3y8qZ",
           "position": {
@@ -1937,7 +1949,7 @@
         },
         "BJV7SDJbG": {
           "boundLiterals": {
-            "H1s0WI6MZ": "1"
+            "H1s0WI6MZ": "A1"
           },
           "id": "BJV7SDJbG",
           "position": {
@@ -2017,18 +2029,6 @@
           },
           "type": "xod/core/concat"
         },
-        "By5oDu8qW": {
-          "boundLiterals": {
-            "SkuhqCqym": "A0"
-          },
-          "id": "By5oDu8qW",
-          "label": "Photoresistor",
-          "position": {
-            "x": 578,
-            "y": 612
-          },
-          "type": "xod/gpio/analog-read"
-        },
         "S1ykdOLqb": {
           "id": "S1ykdOLqb",
           "position": {
@@ -2037,7 +2037,27 @@
           },
           "type": "xod/core/concat"
         },
+        "SJ5JxLq-X": {
+          "boundLiterals": {
+            "r1l3XcR17": "A2"
+          },
+          "id": "SJ5JxLq-X",
+          "label": "Photoresistor",
+          "position": {
+            "x": 578,
+            "y": 612
+          },
+          "type": "xod/common-hardware/analog-sensor"
+        },
         "SJHcpyUqb": {
+          "boundLiterals": {
+            "BJJqaX4Gb": "D5",
+            "HJysTXVMb": "D3",
+            "S1nqa7NMZ": "D4",
+            "SkBK6Q4fb": "D11",
+            "rJlYT7EfW": "D12",
+            "rkbjp7Ezb": "D2"
+          },
           "id": "SJHcpyUqb",
           "position": {
             "x": 238,
@@ -2047,7 +2067,7 @@
         },
         "r19sT1I9-": {
           "boundLiterals": {
-            "H1s0WI6MZ": "1"
+            "H1s0WI6MZ": "A1"
           },
           "id": "r19sT1I9-",
           "position": {
