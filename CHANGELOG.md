@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+<a name="0.21.1"></a>
+## 0.21.1 (2018-06-25)
+
+### Bug fixes
+
+* [c++] Fix `isSettingUp` function that returned opposite value. (#1297)
+* [tutorial] Update tutorial to use proper PORT literals, mention new pins and nodes. (#1296)
+
 <a name="0.21.0"></a>
 ## 0.21.0 (2018-06-09)
 
