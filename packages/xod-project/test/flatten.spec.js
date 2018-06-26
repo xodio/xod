@@ -1734,6 +1734,19 @@ describe('Flatten', () => {
         flatProject
       );
     });
+    it('should allow constant node values to propagate down', () => {
+      const inputProject = Helper.loadXodball(
+        './fixtures/constant-propagation-through-bound-output.xodball'
+      );
+      const expectedProject = Helper.loadXodball(
+        './fixtures/constant-propagation-through-bound-output.flat.xodball'
+      );
+      const flatProject = flatten(inputProject, '@/main');
+
+      Helper.expectEitherRight(project => {
+        assert.deepEqual(project, expectedProject);
+      }, flatProject);
+    });
   });
 
   describe('implementations', () => {
