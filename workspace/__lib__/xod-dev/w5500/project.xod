@@ -1,0 +1,6 @@
+{
+  "description": "Supprot for ethernet shields that use Wiznet W5500 chipset.",
+  "license": "AGPL-3.0",
+  "name": "w5500",
+  "version": "0.22.0"
+}

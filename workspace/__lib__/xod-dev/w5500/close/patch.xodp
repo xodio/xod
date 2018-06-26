@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {
+      "id": "BJsYpQtZm",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJldxXCv-m",
+      "label": "STOP",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJ53A_vzQ",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
+    },
+    {
+      "id": "rybOeQRDb7",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

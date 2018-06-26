@@ -1,0 +1,30 @@
+{
+  "nodes": [
+    {
+      "id": "Sk9A4oDMm",
+      "label": "INET",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    },
+    {
+      "id": "r15ySjwzQ",
+      "label": "IP",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/net/output-ip-address"
+    },
+    {
+      "id": "rkNlrjDfm",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
