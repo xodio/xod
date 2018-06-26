@@ -59,7 +59,6 @@ const getNodePinValues = def(
           // 'Never' is not extracted to a constant node.
           // It literally menas "do nothing", so it's just ignored.
           R.reject(R.equals(INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER)),
-          R.merge(Node.getAllBoundValues(node)),
           R.map(Node.getBoundValueOrDefault(R.__, node)),
           R.indexBy(Pin.getPinKey),
           Patch.listPins,

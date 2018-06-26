@@ -70,8 +70,8 @@ describe('xod-arduino transpiler', () => {
         );
 
         assert.deepEqual(patchPaths, [
-          'xod/core/constant-number', // IVAL
           'xod/core/constant-boolean', // EN
+          'xod/core/constant-number', // IVAL
           'xod/core/constant-port', // PORT
           'xod/core/continuously', // UPD
           'xod/core/clock',
