@@ -9,3 +9,4 @@ native nodes’ implementations.
 * `LiquidCrystal_I2C` -- https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library
 * `SD` -- the standard library
 * `Servo` -- the standard library
+* `Ethernet2` -- https://github.com/xodio/Ethernet2 (modified  https://github.com/adafruit/Ethernet2)

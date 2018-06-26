@@ -1,0 +1,33 @@
+---------------
+DHCP.cpp
+
+// DHCP Library v0.3 - April 25, 2009
+// Author: Jordan Terrell - blog.jordanterrell.com
+
+---------------
+DNS.cpp
+
+// Arduino DNS client for WizNet5100-based Ethernet shield
+// (c) Copyright 2009-2010 MCQN Ltd.
+// Released under Apache License, version 2.0
+
+---------------
+Ethernet2: 
+ modified 12 Aug 2013
+ by Soohwan Kim (suhwan@wiznet.co.kr)
+
+---------------
+UDP.cpp: bjoern@cs.stanford.edu 12/30/2008
+
+---------------
+
+Twitter.cpp - Arduino library to Post messages to Twitter using OAuth.
+  Copyright (c) NeoCat 2010-2011. All right reserved.
+
+---------------
+Wiz5500.cpp
+
+Copyright (c) 2010 by WIZnet <support@wiznet.co.kr>
+
+--------------
+Various by Arduino.org team
