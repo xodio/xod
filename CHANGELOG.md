@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+<a name="0.21.2"></a>
+## 0.21.2 (2018-06-27)
+
+### Bug fixes
+
+ * [core] Fix transpilation error caused by values bound to collapsed variadic node. (#1306)
+ * [nodes] Fix implementation of [`xod/math/clip`](https://xod.io/libs/xod/math/clip). (#1307)
+ * [core] Fix a very rare case where constant values could be overwritten. (#1308)
+
 <a name="0.21.1"></a>
 ## 0.21.1 (2018-06-25)
 
