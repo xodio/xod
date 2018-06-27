@@ -1117,15 +1117,15 @@ namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
-constexpr uint8_t node_0_output_VAL = 10;
+constexpr uint8_t node_0_output_VAL = 8;
 
-constexpr uint8_t node_1_output_VAL = 12;
+constexpr uint8_t node_1_output_VAL = 9;
 
-constexpr uint8_t node_2_output_VAL = 11;
+constexpr uint8_t node_2_output_VAL = 10;
 
-constexpr uint8_t node_3_output_VAL = 9;
+constexpr uint8_t node_3_output_VAL = 11;
 
-constexpr uint8_t node_4_output_VAL = 8;
+constexpr uint8_t node_4_output_VAL = 12;
 
 constexpr uint8_t node_5_output_VAL = 13;
 
@@ -1241,11 +1241,11 @@ void runTransaction() {
             ctxObj._node = &node_10;
 
             // copy data from upstream nodes into context
-            ctxObj._input_RS = node_4_output_VAL;
-            ctxObj._input_EN = node_3_output_VAL;
-            ctxObj._input_D4 = node_0_output_VAL;
-            ctxObj._input_D5 = node_2_output_VAL;
-            ctxObj._input_D6 = node_1_output_VAL;
+            ctxObj._input_RS = node_0_output_VAL;
+            ctxObj._input_EN = node_1_output_VAL;
+            ctxObj._input_D4 = node_2_output_VAL;
+            ctxObj._input_D5 = node_3_output_VAL;
+            ctxObj._input_D6 = node_4_output_VAL;
             ctxObj._input_D7 = node_5_output_VAL;
             ctxObj._input_L1 = node_9.output_OUT;
             ctxObj._input_L2 = node_6_output_VAL;
