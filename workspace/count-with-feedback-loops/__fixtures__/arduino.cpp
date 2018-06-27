@@ -1543,15 +1543,15 @@ xod__core__cast_to_pulse__boolean::Node node_0 = {
     true // node itself dirty
 };
 
-constexpr uint8_t node_1_output_VAL = 10;
+constexpr uint8_t node_1_output_VAL = 8;
 
-constexpr uint8_t node_2_output_VAL = 12;
+constexpr uint8_t node_2_output_VAL = 9;
 
-constexpr uint8_t node_3_output_VAL = 11;
+constexpr uint8_t node_3_output_VAL = 10;
 
-constexpr uint8_t node_4_output_VAL = 9;
+constexpr uint8_t node_4_output_VAL = 11;
 
-constexpr uint8_t node_5_output_VAL = 8;
+constexpr uint8_t node_5_output_VAL = 12;
 
 constexpr uint8_t node_6_output_VAL = 13;
 
@@ -1566,9 +1566,9 @@ xod__core__continuously::Node node_8 = {
     true // node itself dirty
 };
 
-constexpr Number node_9_output_VAL = 1;
+constexpr Logic node_9_output_VAL = true;
 
-constexpr Logic node_10_output_VAL = true;
+constexpr Number node_10_output_VAL = 1;
 
 constexpr Number node_11_output_VAL = 1;
 
@@ -1701,8 +1701,8 @@ void runTransaction() {
             ctxObj._node = &node_13;
 
             // copy data from upstream nodes into context
-            ctxObj._input_EN = node_10_output_VAL;
-            ctxObj._input_IVAL = node_9_output_VAL;
+            ctxObj._input_EN = node_9_output_VAL;
+            ctxObj._input_IVAL = node_10_output_VAL;
 
             ctxObj._isInputDirty_RST = false;
             ctxObj._isInputDirty_EN = g_isSettingUp;
@@ -1780,11 +1780,11 @@ void runTransaction() {
             ctxObj._node = &node_17;
 
             // copy data from upstream nodes into context
-            ctxObj._input_RS = node_5_output_VAL;
-            ctxObj._input_EN = node_4_output_VAL;
-            ctxObj._input_D4 = node_1_output_VAL;
-            ctxObj._input_D5 = node_3_output_VAL;
-            ctxObj._input_D6 = node_2_output_VAL;
+            ctxObj._input_RS = node_1_output_VAL;
+            ctxObj._input_EN = node_2_output_VAL;
+            ctxObj._input_D4 = node_3_output_VAL;
+            ctxObj._input_D5 = node_4_output_VAL;
+            ctxObj._input_D6 = node_5_output_VAL;
             ctxObj._input_D7 = node_6_output_VAL;
             ctxObj._input_L1 = node_16.output_OUT;
             ctxObj._input_L2 = node_7_output_VAL;

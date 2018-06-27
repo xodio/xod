@@ -400,6 +400,18 @@ const getValueToBind = R.curry((nodesById, linksChain) => {
   )(linksChain);
 
   const topNode = R.last(outputNodesFromLinkChain);
+
+  // special case — top node is a constant
+  const topNodeIsConstant = R.compose(
+    PatchPathUtils.isConstantNodeType,
+    Node.getNodeType
+  )(topNode);
+  if (topNodeIsConstant) {
+    // no need to rebind anything — links chain can be safely collapsed,
+    // and value from constant node will freely propagate down
+    return Maybe.Nothing();
+  }
+
   const isTopNodeTerminal = isInternalTerminalNode(topNode);
 
   // Example:

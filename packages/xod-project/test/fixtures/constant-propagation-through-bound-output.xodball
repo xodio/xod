@@ -1,0 +1,136 @@
+{
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "rkoe9Wgf7": {
+          "id": "rkoe9Wgf7",
+          "type": "@/must-output-42",
+          "position": {
+            "x": 68,
+            "y": 0
+          }
+        },
+        "Bk3g9Zlf7": {
+          "id": "Bk3g9Zlf7",
+          "type": "@/foo",
+          "position": {
+            "x": 68,
+            "y": 102
+          }
+        }
+      },
+      "links": {
+        "SkpxcWlMX": {
+          "id": "SkpxcWlMX",
+          "output": {
+            "nodeId": "rkoe9Wgf7",
+            "pinKey": "BJYhtWgfX"
+          },
+          "input": {
+            "nodeId": "Bk3g9Zlf7",
+            "pinKey": "rJyl5Zgfm"
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/must-output-42": {
+      "nodes": {
+        "BJYhtWgfX": {
+          "id": "BJYhtWgfX",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "boundLiterals": {
+            "__in__": "21"
+          }
+        },
+        "SyO0tZeMX": {
+          "id": "SyO0tZeMX",
+          "type": "xod/core/constant-number",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "boundLiterals": {
+            "B1x2RV3eZ": "42"
+          }
+        }
+      },
+      "links": {
+        "S1cAKWez7": {
+          "id": "S1cAKWez7",
+          "output": {
+            "nodeId": "SyO0tZeMX",
+            "pinKey": "B1x2RV3eZ"
+          },
+          "input": {
+            "nodeId": "BJYhtWgfX",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "path": "@/must-output-42"
+    },
+    "@/foo": {
+      "nodes": {
+        "rJyl5Zgfm": {
+          "id": "rJyl5Zgfm",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 34,
+            "y": 0
+          }
+        },
+        "SJUgcWxz7": {
+          "id": "SJUgcWxz7",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 34,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/foo",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n"
+        }
+      ]
+    },
+    "xod/core/constant-number": {
+      "nodes": {
+        "B1x2RV3eZ": {
+          "label": "VAL",
+          "id": "B1x2RV3eZ",
+          "position": {
+            "x": 10,
+            "y": 120
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "H1PnRN2lW": {
+          "id": "H1PnRN2lW",
+          "position": {
+            "x": 10,
+            "y": 16
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/core/constant-number",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf8",
+          "content": "struct State {};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n"
+        }
+      ]
+    }
+  },
+  "name": "constant-propagation-through-bound-output"
+}

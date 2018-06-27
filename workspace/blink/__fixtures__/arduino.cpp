@@ -1139,9 +1139,9 @@ namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
-constexpr Number node_0_output_VAL = 0.25;
+constexpr Logic node_0_output_VAL = true;
 
-constexpr Logic node_1_output_VAL = true;
+constexpr Number node_1_output_VAL = 0.25;
 
 constexpr uint8_t node_2_output_VAL = 13;
 
@@ -1225,8 +1225,8 @@ void runTransaction() {
             ctxObj._node = &node_4;
 
             // copy data from upstream nodes into context
-            ctxObj._input_EN = node_1_output_VAL;
-            ctxObj._input_IVAL = node_0_output_VAL;
+            ctxObj._input_EN = node_0_output_VAL;
+            ctxObj._input_IVAL = node_1_output_VAL;
 
             ctxObj._isInputDirty_RST = false;
             ctxObj._isInputDirty_EN = g_isSettingUp;
