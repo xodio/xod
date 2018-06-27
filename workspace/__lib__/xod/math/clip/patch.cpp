@@ -14,5 +14,5 @@ void evaluate(Context ctx) {
         x > rMax ? rMax :
         x < rMin ? rMin : x;
 
-    emitValue<output_Xc>(ctx, xc);
+    emitValue<output_OUT>(ctx, xc);
 }
