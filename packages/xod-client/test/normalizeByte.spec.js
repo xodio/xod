@@ -22,6 +22,8 @@ describe('normalizeByte', () => {
     test('-2', '0d'); // underflow
     test('999', '255d'); // overflow
     test('-3d', '0d');
+    test('5C', '00h');
+    test('15abc', '00h');
   });
   describe('bin', () => {
     test('10001000b', '10001000b');

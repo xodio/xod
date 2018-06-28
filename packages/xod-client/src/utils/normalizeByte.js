@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import { DEFAULT_VALUE_OF_TYPE, PIN_TYPE } from 'xod-project';
 
+const parseDec = x => parseInt(x, 10);
 const parseBin = x => parseInt(x, 2);
 const parseHex = x => parseInt(x, 16);
 
@@ -33,10 +34,15 @@ const toHex = R.compose(
 // 15 -> 15d
 const toDec = R.pipe(limitByte, x => x.toString(10), R.concat(R.__, 'd'));
 
-const decValueOrDefault = R.pipe(
-  x => parseInt(x, 10),
-  R.ifElse(x => isNaN(x), R.always(DEFAULT_VALUE_OF_TYPE[PIN_TYPE.BYTE]), toDec)
-);
+const decValueOrDefault = inputStr =>
+  R.compose(
+    R.ifElse(
+      parsed => isNaN(parsed) || parsed.toString(10) !== inputStr,
+      R.always(DEFAULT_VALUE_OF_TYPE[PIN_TYPE.BYTE]),
+      toDec
+    ),
+    parseDec
+  )(inputStr);
 
 // :: String -> String
 export default R.cond([
