@@ -1,0 +1,215 @@
+{
+  "description": "Reads temprature, pressure, altitude from a barometer based on LPS331 chip by STMicroelectronics. ",
+  "links": [
+    {
+      "id": "BJhNE6D-m",
+      "input": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "Hk7Yk6D-m"
+      },
+      "output": {
+        "nodeId": "rkGKVETPbQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkB5AyuZ7",
+      "input": {
+        "nodeId": "rJ3dCyO-7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "rkPHR1O-Q"
+      }
+    },
+    {
+      "id": "H1aN4avWQ",
+      "input": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "SJ-7KJ6wbX"
+      },
+      "output": {
+        "nodeId": "BkWFEEpPZm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJrBEawWQ",
+      "input": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "HJE0JTDWQ"
+      },
+      "output": {
+        "nodeId": "By7FVEaD-X",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1HUN6P-Q",
+      "input": {
+        "nodeId": "r17IVTPZQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "SyM-ETvZm"
+      }
+    },
+    {
+      "id": "SkZvLAOZX",
+      "input": {
+        "nodeId": "H1A88Cub7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "SJlVI0O-7"
+      }
+    },
+    {
+      "id": "r1ZS4awZX",
+      "input": {
+        "nodeId": "B1xtN4aPWX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "By4t7avZX"
+      }
+    },
+    {
+      "id": "ry8HNaPWQ",
+      "input": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "H1lV0yTDbQ"
+      },
+      "output": {
+        "nodeId": "SkNYEEaDWQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryMBVTwb7",
+      "input": {
+        "nodeId": "SyYN4TwbQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJByNpv-Q",
+        "pinKey": "HkeEKQaPWm"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Fires when reading is done",
+      "id": "B1xtN4aPWX",
+      "label": "DONE",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "01011100b"
+      },
+      "description": "I²C address. 0b1011100 by default.",
+      "id": "BkWFEEpPZm",
+      "label": "ADDR",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the sensor ",
+      "id": "By7FVEaD-X",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Geometric altitude value in meters ",
+      "id": "H1A88Cub7",
+      "label": "ALTT",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Update. Triggers new sensor reading.",
+      "id": "SkNYEEaDWQ",
+      "label": "UPD",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "SyYN4TwbQ",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Temperature in degrees C",
+      "id": "r17IVTPZQ",
+      "label": "Tc",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Pressure in millibars (mbar)/hectopascals",
+      "id": "rJ3dCyO-7",
+      "label": "hPa",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "BJg7Fk6P-X": "20h"
+      },
+      "id": "rJByNpv-Q",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/st-barometer-generic-sensor"
+    },
+    {
+      "id": "rkGKVETPbQ",
+      "label": "I2C",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    }
+  ]
+}
