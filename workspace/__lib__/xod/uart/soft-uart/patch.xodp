@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "9600"
+      },
+      "id": "Sy0-yt8ZQ",
+      "label": "BAUD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Syz-kKUWX",
+      "label": "RX",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "r1mZktLZm",
+      "label": "TX",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rJ6x1t8b7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rycxytIZQ",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/output-uart"
+    }
+  ]
+}

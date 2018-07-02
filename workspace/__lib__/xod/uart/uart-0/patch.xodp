@@ -1,0 +1,33 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "115200"
+      },
+      "id": "BytfJKIWX",
+      "label": "BAUD",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJQ39d8bm",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sk450OL-X",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/output-uart"
+    }
+  ]
+}

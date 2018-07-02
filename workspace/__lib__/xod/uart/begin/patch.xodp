@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "id": "B1SyPhUWm",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "id": "H16YPnI-Q",
+      "label": "UPD",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJ1ZDhUWm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJV3I2I-Q",
+      "label": "UART",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-uart"
+    }
+  ]
+}

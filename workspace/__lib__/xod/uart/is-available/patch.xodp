@@ -1,0 +1,48 @@
+{
+  "nodes": [
+    {
+      "id": "By_OfMFW7",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-uart"
+    },
+    {
+      "id": "HJnKfztbm",
+      "label": "N",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJrtMztWm",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S1dYzzYWm",
+      "label": "Y",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkytzGK-7",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

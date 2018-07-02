@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "BkHrP2I-m",
+      "label": "UART",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "@/input-uart"
+    },
+    {
+      "id": "HJxHrv3I-m",
+      "label": "DONE",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Hy-rrDnUZm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "id": "Hyz0PhIbm",
+      "label": "SEND",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJaSP2UZm",
+      "label": "BYTE",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "ryQ_w28Zm",
+      "label": "ERR",
+      "position": {
+        "x": 33,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
