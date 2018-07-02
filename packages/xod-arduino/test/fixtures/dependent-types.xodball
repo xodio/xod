@@ -1,0 +1,348 @@
+{
+  "name": "",
+  "patches": {
+    "@/a": {
+      "links": {
+        "S1WU7kbtG7": {
+          "id": "S1WU7kbtG7",
+          "input": {
+            "nodeId": "rJgUmJbKzm",
+            "pinKey": "rkBIsgKf7"
+          },
+          "output": {
+            "nodeId": "ryUQ1bFfQ",
+            "pinKey": "H1BR5lKMX"
+          }
+        },
+        "rJ671bFGQ": {
+          "id": "rJ671bFGQ",
+          "input": {
+            "nodeId": "HysQyZKfX",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "rJgUmJbKzm",
+            "pinKey": "H1lvoxKGQ"
+          }
+        }
+      },
+      "nodes": {
+        "HysQyZKfX": {
+          "id": "HysQyZKfX",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/output-dependent-type"
+        },
+        "rJgUmJbKzm": {
+          "id": "rJgUmJbKzm",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "type": "@/dependent-type"
+        },
+        "ryUQ1bFfQ": {
+          "boundLiterals": {
+            "Hk4QoetzQ": "25",
+            "SyQ7slYzX": "10"
+          },
+          "id": "ryUQ1bFfQ",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "@/independent-type"
+        }
+      },
+      "path": "@/a"
+    },
+    "@/b": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    ValueType<output_OUT>::T r;\n    r.a = 42;\n    r.b = 88;\n    emitValue<output_OUT>(ctx, r);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "ByLLybKz7": {
+          "id": "ByLLybKz7",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/output-independent-type"
+        },
+        "SyYLkZtzQ": {
+          "id": "SyYLkZtzQ",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/b"
+    },
+    "@/dependent-on-two": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\nusing Type = uint32_t;\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto ind = getValue<input_IND>(ctx);\n    auto dep = getValue<input_DEP>(ctx);\n\n    Type res = dep / (ind.a + ind.b);\n    emitValue<output_OUT>(ctx, res);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BJU6sgKMm": {
+          "id": "BJU6sgKMm",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "By-3ixKzm": {
+          "id": "By-3ixKzm",
+          "label": "DEP",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-dependent-type"
+        },
+        "S1XnogFz7": {
+          "id": "S1XnogFz7",
+          "label": "IND",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "@/input-independent-type"
+        },
+        "rycpjeYM7": {
+          "id": "rycpjeYM7",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/dependent-on-two"
+    },
+    "@/dependent-type": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\nusing Type = uint32_t;\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto in = getValue<input_IN>(ctx);\n    Type res = in.a * in.b;\n    emitValue<output_OUT>(ctx, res);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Bk7volFGQ": {
+          "id": "Bk7volFGQ",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "H1lvoxKGQ": {
+          "id": "H1lvoxKGQ",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "rkBIsgKf7": {
+          "id": "rkBIsgKf7",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-independent-type"
+        }
+      },
+      "path": "@/dependent-type"
+    },
+    "@/independent-type": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\nstruct Type {\n    Number a;\n    Number b;\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    Type obj;\n    obj.a = getValue<input_A>(ctx);\n    obj.b = getValue<input_B>(ctx);\n    emitValue<output_OUT>(ctx, obj);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "H1BR5lKMX": {
+          "id": "H1BR5lKMX",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "H1gA5gKzQ": {
+          "id": "H1gA5gKzQ",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Hk4QoetzQ": {
+          "id": "Hk4QoetzQ",
+          "label": "B",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SyQ7slYzX": {
+          "id": "SyQ7slYzX",
+          "label": "A",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/independent-type"
+    },
+    "@/main": {
+      "links": {
+        "By_BnltGQ": {
+          "id": "By_BnltGQ",
+          "input": {
+            "nodeId": "HJwrneFG7",
+            "pinKey": "HJdO9HwJ-"
+          },
+          "output": {
+            "nodeId": "SyzHhlYGX",
+            "pinKey": "BJL-neFz7"
+          }
+        },
+        "H1fNJbYzm": {
+          "id": "H1fNJbYzm",
+          "input": {
+            "nodeId": "S1w4hlFGX",
+            "pinKey": "By-3ixKzm"
+          },
+          "output": {
+            "nodeId": "HkWNkZFzQ",
+            "pinKey": "HysQyZKfX"
+          }
+        },
+        "HJXHhgKzQ": {
+          "id": "HJXHhgKzQ",
+          "input": {
+            "nodeId": "SyzHhlYGX",
+            "pinKey": "HyRlnlFG7"
+          },
+          "output": {
+            "nodeId": "S1w4hlFGX",
+            "pinKey": "BJU6sgKMm"
+          }
+        },
+        "rJFt1WKfX": {
+          "id": "rJFt1WKfX",
+          "input": {
+            "nodeId": "S1w4hlFGX",
+            "pinKey": "S1XnogFz7"
+          },
+          "output": {
+            "nodeId": "SJdKyZKMX",
+            "pinKey": "ByLLybKz7"
+          }
+        }
+      },
+      "nodes": {
+        "HJwrneFG7": {
+          "boundLiterals": {
+            "S1n95SDJb": "On Boot"
+          },
+          "id": "HJwrneFG7",
+          "position": {
+            "x": 136,
+            "y": 306
+          },
+          "type": "xod/core/console-log"
+        },
+        "HkWNkZFzQ": {
+          "id": "HkWNkZFzQ",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/a"
+        },
+        "S1w4hlFGX": {
+          "id": "S1w4hlFGX",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/dependent-on-two"
+        },
+        "SJdKyZKMX": {
+          "id": "SJdKyZKMX",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "@/b"
+        },
+        "SyzHhlYGX": {
+          "id": "SyzHhlYGX",
+          "position": {
+            "x": 102,
+            "y": 306
+          },
+          "type": "@/to-number"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/to-number": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    auto in = getValue<input_IN>(ctx);\n    emitValue<output_OUT>(ctx, (Number) in);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "BJL-neFz7": {
+          "id": "BJL-neFz7",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "HyRlnlFG7": {
+          "id": "HyRlnlFG7",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/input-dependent-on-two"
+        },
+        "r15bhltMQ": {
+          "id": "r15bhltMQ",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/to-number"
+    }
+  }
+}

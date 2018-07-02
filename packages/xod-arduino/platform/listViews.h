@@ -296,8 +296,8 @@ template<typename T> class ConcatListView : public ListView<T> {
 
   private:
     friend class Cursor;
-    const List<T> _left;
-    const List<T> _right;
+    List<T> _left;
+    List<T> _right;
 };
 
 //----------------------------------------------------------------------------

@@ -1,7 +1,13 @@
 import * as R from 'ramda';
 import { Either } from 'ramda-fantasy';
 
-import { explodeMaybe, reverseLookup, maybeProp } from 'xod-func-tools';
+import {
+  explodeMaybe,
+  reverseLookup,
+  maybeProp,
+  foldEither,
+  isAmong,
+} from 'xod-func-tools';
 import * as XP from 'xod-project';
 import { def } from './types';
 
@@ -150,9 +156,12 @@ const convertPatchToTPatch = def(
   }
 );
 
-const getMissingExplicitConstructorTypes = def(
-  'getMissingExplicitConstructorTypes :: PatchPath -> Project -> [PatchPath]',
-  (entryPath, project) => {
+// :: Patch -> [PatchPath]
+const getReferencedCustomTypes = R.compose(R.map(XP.getPinType), XP.listPins);
+
+const getConstructorPatchPaths = def(
+  'getConstructorPatchPaths :: PatchPath -> Project -> Project -> [PatchPath]',
+  (entryPath, project, originalProject) => {
     // :: [Patch]
     const usedPatches = R.compose(
       // we are sure that all thote patches exist since running flatten
@@ -165,21 +174,54 @@ const getMissingExplicitConstructorTypes = def(
     )(project);
 
     // :: [PatchPath]
-    const explicitlyUsedConstructors = R.compose(
-      R.map(XP.getPatchPath),
-      R.filter(XP.isConstructorPatch)
-    )(usedPatches);
-
-    // :: [PatchPath]
     const referencedCustomTypes = R.compose(
       R.reject(XP.isBuiltInType),
       R.uniq,
-      R.map(XP.getPinType),
-      R.chain(XP.listPins)
+      R.chain(getReferencedCustomTypes)
     )(usedPatches);
 
-    return R.without(explicitlyUsedConstructors, referencedCustomTypes);
+    // [PatchPath]
+    return R.compose(
+      R.uniq,
+      R.concat(R.__, referencedCustomTypes),
+      foldEither(R.always([]), R.reverse),
+      // Either [PatchPath]
+      // but without referenced custom types
+      R.converge(XP.sortGraph, [R.pipe(R.flatten, R.uniq), R.identity]),
+      // [[PatchPath, PatchPath]]
+      R.unnest,
+      R.map(typePath =>
+        R.compose(
+          R.map(referencedType => [typePath, referencedType]),
+          R.reject(R.either(XP.isBuiltInType, R.equals(typePath))),
+          R.uniq,
+          getReferencedCustomTypes,
+          XP.getPatchByPathUnsafe(R.__, originalProject)
+        )(typePath)
+      )
+    )(referencedCustomTypes);
   }
+);
+
+const addConstructionPatchesAtTheTop = def(
+  'addConstructionPatchesAtTheTop :: [TPatch] -> [PatchPath] -> Project -> [TPatch]',
+  (tPatches, constructorsPatchPaths, originalProject) =>
+    R.compose(
+      R.concat(
+        R.__,
+        // reject construction patches from a list of used patches
+        // cause it will be placed at the top of the graph
+        R.reject(
+          R.compose(isAmong(constructorsPatchPaths), R.prop('patchPath'))
+        )(tPatches)
+      ),
+      R.map(
+        R.compose(
+          convertPatchToTPatch,
+          XP.getPatchByPathUnsafe(R.__, originalProject)
+        )
+      )
+    )(constructorsPatchPaths)
 );
 
 const createTPatches = def(
@@ -192,12 +234,9 @@ const createTPatches = def(
       // type definitions for them.
       tPatches =>
         R.compose(
-          // Those construction patches must be at the very top
-          R.concat(R.__, tPatches),
-          R.map(convertPatchToTPatch),
-          R.map(XP.getPatchByPathUnsafe(R.__, originalProject)),
-          getMissingExplicitConstructorTypes
-        )(entryPath, project),
+          addConstructionPatchesAtTheTop(tPatches, R.__, originalProject),
+          getConstructorPatchPaths
+        )(entryPath, project, originalProject),
       // patches must appear in the same order
       // as respective nodes in a toposorted graph
       arrangeTPatchesInTopologicalOrder(entryPath, project),
