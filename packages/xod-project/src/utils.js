@@ -196,6 +196,17 @@ export const isValidNumberDataValue = R.test(numberDataTypeRegExp);
 // getting type from literal value
 //
 
+export const isLikeCharLiteral = def(
+  'isLikeCharLiteral :: String -> Boolean',
+  R.test(/^'\\?.'$/)
+);
+
+const unescapedCharLiterals = ["'''", "'\\'"];
+export const isValidCharLiteral = def(
+  'isValidCharLiteral :: String -> Boolean',
+  R.both(isLikeCharLiteral, R.complement(isAmong(unescapedCharLiterals)))
+);
+
 export const getTypeFromLiteral = def(
   'getTypeFromLiteral :: DataValue -> Either Error DataType',
   literal => {
@@ -210,7 +221,12 @@ export const getTypeFromLiteral = def(
 
     if (R.test(/^".*"$/gi, literal)) return Either.of(CONST.PIN_TYPE.STRING);
 
-    if (R.test(/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/gi, literal))
+    if (
+      R.either(
+        isValidCharLiteral,
+        R.test(/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/gi)
+      )(literal)
+    )
       return Either.of(CONST.PIN_TYPE.BYTE);
 
     if (isValidNumberDataValue(literal))

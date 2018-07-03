@@ -1,5 +1,9 @@
 import * as R from 'ramda';
-import { DEFAULT_VALUE_OF_TYPE, PIN_TYPE } from 'xod-project';
+import {
+  DEFAULT_VALUE_OF_TYPE,
+  PIN_TYPE,
+  isLikeCharLiteral,
+} from 'xod-project';
 
 const parseDec = x => parseInt(x, 10);
 const parseBin = x => parseInt(x, 2);
@@ -44,8 +48,15 @@ const decValueOrDefault = inputStr =>
     parseDec
   )(inputStr);
 
+const escapeSpecialChars = R.cond([
+  [R.equals("'''"), R.always("'\\''")],
+  [R.equals("'\\'"), R.always("'\\\\'")],
+  [R.T, R.identity],
+]);
+
 // :: String -> String
 export default R.cond([
+  [isLikeCharLiteral, escapeSpecialChars],
   // 0b1011 -> 00001011b
   [R.startsWith('0b'), R.pipe(R.drop(2), parseBin, toBin)],
   // 1011b -> 00001011b
