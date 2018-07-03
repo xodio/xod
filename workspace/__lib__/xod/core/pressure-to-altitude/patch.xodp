@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "content": "Pascals to mbar.",
+      "id": "BksNEbYMm",
+      "position": {
+        "x": -102,
+        "y": -102
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      }
+    },
+    {
+      "content": "The altimeter setting.\nThe standard pressure level of 1013.25 mbar",
+      "id": "S1wLE-tG7",
+      "position": {
+        "x": -102,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    }
+  ],
+  "description": "Converts pressure in pascals to altitude in meters, using 1976 US Standard Atmosphere model. This formula only applies to a height of 11 km, or about 36000 ft.",
+  "links": [
+    {
+      "id": "BkrphkKMX",
+      "input": {
+        "nodeId": "Sya2nJFGQ",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "ryfQ2JYGm",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "S1bN2yFz7",
+      "input": {
+        "nodeId": "ryfQ2JYGm",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SkG8Lv1FMQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJqO6kFfQ",
+      "input": {
+        "nodeId": "SkUUPyKGX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByoLpkYzQ",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "SybupyYG7",
+      "input": {
+        "nodeId": "ByoLpkYzQ",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "r1wQ6kYzQ",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "SywbTkKf7",
+      "input": {
+        "nodeId": "r1HohyKM7",
+        "pinKey": "Hya9cnh8W"
+      },
+      "output": {
+        "nodeId": "Sya2nJFGQ",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "rJ_ETyFM7",
+      "input": {
+        "nodeId": "r1wQ6kYzQ",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "r1HohyKM7",
+        "pinKey": "Syoiqh2LZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "44330.8"
+      },
+      "id": "ByoLpkYzQ",
+      "position": {
+        "x": -238,
+        "y": 306
+      },
+      "type": "@/multiply"
+    },
+    {
+      "description": "Pressure value in pascals.",
+      "id": "SkG8Lv1FMQ",
+      "label": "Ppa",
+      "position": {
+        "x": -204,
+        "y": -204
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Altitude above the sea lvl in meters ",
+      "id": "SkUUPyKGX",
+      "label": "ALT",
+      "position": {
+        "x": -238,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "1013.25"
+      },
+      "id": "Sya2nJFGQ",
+      "position": {
+        "x": -204,
+        "y": 0
+      },
+      "type": "@/divide"
+    },
+    {
+      "id": "Syb88wJFzQ",
+      "position": {
+        "x": -272,
+        "y": -204
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "boundLiterals": {
+        "BkC5cn2LW": "0.190263"
+      },
+      "id": "r1HohyKM7",
+      "position": {
+        "x": -204,
+        "y": 102
+      },
+      "type": "xod/math/pow"
+    },
+    {
+      "boundLiterals": {
+        "BypX80uSD1Z": "1"
+      },
+      "id": "r1wQ6kYzQ",
+      "position": {
+        "x": -238,
+        "y": 204
+      },
+      "type": "@/subtract"
+    },
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "0.01"
+      },
+      "id": "ryfQ2JYGm",
+      "position": {
+        "x": -204,
+        "y": -102
+      },
+      "type": "@/multiply"
+    }
+  ]
+}
