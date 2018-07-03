@@ -1,0 +1,74 @@
+{
+  "nodes": [
+    {
+      "id": "Bkketeubm",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "S1_Gx3UZQ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SJXA13U-X",
+      "label": "SSID",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SkJze3IbX",
+      "label": "PWD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SyMXl3L-7",
+      "label": "ERR",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkrMNi7GQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "ryC6138ZX",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "id": "ryRzln8Zm",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

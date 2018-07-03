@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    {
+      "id": "BJ7rhkFWQ",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ByhGn1KbX",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "id": "HkQ7nkKbm",
+      "label": "UPD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "r1eWhsQMm",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "rJCBnJK-7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "ryWdIjmzX",
+      "label": "IP",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/net/output-ip-address"
+    }
+  ]
+}

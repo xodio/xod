@@ -1,0 +1,79 @@
+{
+  "nodes": [
+    {
+      "description": "The socket connected",
+      "id": "BkCXYbaMX",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/net/output-socket"
+    },
+    {
+      "id": "H1MhKxI9Z7",
+      "position": {
+        "x": 33,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "H1nYg85WQ",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "id": "HyPkZLq-m",
+      "label": "PORT",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJm3Yx85b7",
+      "label": "UPD",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "r1bnKl8qbm",
+      "label": "ERR",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rJhjx85W7",
+      "label": "HOST",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rkofqomfm",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    }
+  ]
+}

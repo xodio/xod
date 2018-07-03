@@ -1,0 +1,62 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "id": "B1oX8RlMQ",
+      "label": "UPD",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BJ4IIRlG7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HkIVUAxzm",
+      "label": "YES",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1nVLAgMX",
+      "label": "NO",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "SkjkcZpfQ",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
+    },
+    {
+      "description": "An internet connection",
+      "id": "rklvsoQGm",
+      "label": "INET",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    }
+  ]
+}
