@@ -90,7 +90,7 @@
         "x": 0,
         "y": 204
       },
-      "type": "@/divide"
+      "type": "xod/core/divide"
     },
     {
       "id": "Sy7_XQmkG",
