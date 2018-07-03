@@ -1,0 +1,311 @@
+{
+  "links": [
+    {
+      "id": "B1yxW4y6P-X",
+      "input": {
+        "nodeId": "ryc-V1pPZX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1-ZNJ6w-Q",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "BJ-x-VkTP-Q",
+      "input": {
+        "nodeId": "SyMWN16D-m",
+        "pinKey": "SyssEEhJm"
+      },
+      "output": {
+        "nodeId": "HywZE1aPWX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1YxW4JpPWm",
+      "input": {
+        "nodeId": "HyKWVJ6PZm",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "rklbVJTv-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1n-EJTwWm",
+      "input": {
+        "nodeId": "r1-ZNJ6w-Q",
+        "pinKey": "B1vdYXhkQ"
+      },
+      "output": {
+        "nodeId": "rklbVJTv-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJQgW4JTv-Q",
+      "input": {
+        "nodeId": "SyMWN16D-m",
+        "pinKey": "HJkfWmny7"
+      },
+      "output": {
+        "nodeId": "rklbVJTv-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkDxbNJaw-7",
+      "input": {
+        "nodeId": "r1-ZNJ6w-Q",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "SJ7b4kaPZQ",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "HkUgbEJ6Pb7",
+      "input": {
+        "nodeId": "SJ7b4kaPZQ",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "H1HWNypP-Q",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyHxWE16wWQ",
+      "input": {
+        "nodeId": "ryLbN1TwWm",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "HyKWVJ6PZm",
+        "pinKey": "rJxr5J42ym"
+      }
+    },
+    {
+      "id": "HyT-N1TP-X",
+      "input": {
+        "nodeId": "SyZVk6PbX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryLbN1TwWm",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HyclZEJpw-m",
+      "input": {
+        "nodeId": "ryLbN1TwWm",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SyMWN16D-m",
+        "pinKey": "SyUMZQ2JQ"
+      }
+    },
+    {
+      "id": "SJ0bVk6Db7",
+      "input": {
+        "nodeId": "SJ7b4kaPZQ",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "rklbVJTv-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJEeZNJ6vWQ",
+      "input": {
+        "nodeId": "HyKWVJ6PZm",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "SyMWN16D-m",
+        "pinKey": "HJbjB_Nd-"
+      }
+    },
+    {
+      "id": "SJzlbNk6D-X",
+      "input": {
+        "nodeId": "ryLbN1TwWm",
+        "pinKey": "ByU7LRuSPkW-$2"
+      },
+      "output": {
+        "nodeId": "r1-ZNJ6w-Q",
+        "pinKey": "SyewuY7nJm"
+      }
+    },
+    {
+      "id": "Syxl-EJaPbQ",
+      "input": {
+        "nodeId": "HyKWVJ6PZm",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "BkNZEy6PWX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1deZVkpP-Q",
+      "input": {
+        "nodeId": "SJ7b4kaPZQ",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "HyKWVJ6PZm",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "r1seZNkpPW7",
+      "input": {
+        "nodeId": "SyMWN16D-m",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "H1i-E1pDbQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJnxb41TPW7",
+      "input": {
+        "nodeId": "ryLbN1TwWm",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "SJ7b4kaPZQ",
+        "pinKey": "rJxr5J42ym"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkNZEy6PWX",
+      "label": "REG",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "H1HWNypP-Q",
+      "label": "VAL",
+      "position": {
+        "x": 372,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "H1i-E1pDbQ",
+      "label": "W",
+      "position": {
+        "x": 509,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HkOWN1pD-7",
+      "position": {
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "boundLiterals": {
+        "S1FFN4nkm": "20h"
+      },
+      "id": "HyKWVJ6PZm",
+      "position": {
+        "x": 202,
+        "y": 203
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "HywZE1aPWX",
+      "label": "ADDR",
+      "position": {
+        "x": 101,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "SJ7b4kaPZQ",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "boundLiterals": {
+        "BJfKruVdb": "On Boot"
+      },
+      "id": "SyMWN16D-m",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/i2c/begin-transmission"
+    },
+    {
+      "id": "SyZVk6PbX",
+      "label": "ERR",
+      "position": {
+        "x": 543,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1-ZNJ6w-Q",
+      "position": {
+        "x": 578,
+        "y": 204
+      },
+      "type": "xod/i2c/end-transmission"
+    },
+    {
+      "id": "rklbVJTv-m",
+      "label": "I2C",
+      "position": {
+        "x": 66,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "arityLevel": 3,
+      "id": "ryLbN1TwWm",
+      "position": {
+        "x": 543,
+        "y": 306
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "ryc-V1pPZX",
+      "label": "DONE",
+      "position": {
+        "x": 475,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
