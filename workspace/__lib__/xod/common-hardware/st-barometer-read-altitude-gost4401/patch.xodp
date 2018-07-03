@@ -1,0 +1,47 @@
+{
+  "nodes": [
+    {
+      "id": "HJNsHRdWQ",
+      "label": "ALTT",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Hkj4XRuZQ",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SkRrXCubX",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "SkiCQ0O-X",
+      "label": "Pa",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Sy3aQCu-7",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
