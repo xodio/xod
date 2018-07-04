@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "BJXXLBwPfQ",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "id": "BJfXLrPDzm",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H1b7LrDPGm",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HkhKBPPfX",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-ethernet-shield-device"
+    },
+    {
+      "id": "rJ6H7ovfQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-inet"
+    },
+    {
+      "id": "ryx7LHwPfm",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "nodes": [
+    {
+      "id": "BJo1fvrZQ",
+      "label": "DONE",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "BJrKIOvzQ",
+      "label": "SOCK",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/net/output-socket"
+    },
+    {
+      "id": "Byx-7vSZX",
+      "label": "CONN",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HyEmmowMm",
+      "label": "INET",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"www.google.com\""
+      },
+      "description": "Server name",
+      "id": "S10pBvSb7",
+      "label": "SRV",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "S1RkGwrbm",
+      "label": "ERR",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Sk4JMPrZX",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "id": "r1Oj-DrWX",
+      "label": "PORT",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

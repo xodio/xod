@@ -1,0 +1,68 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "0d"
+      },
+      "description": "Third octet",
+      "id": "BJ-GeebB-Q",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0d"
+      },
+      "description": "Second octet",
+      "id": "HyMxxWSWQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "r1wK2bgbQ",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJkt2WxZm",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0d"
+      },
+      "description": "First octet",
+      "id": "ryMGggZH-Q",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0d"
+      },
+      "description": "Fourth octet",
+      "id": "ryefxxZBZm",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

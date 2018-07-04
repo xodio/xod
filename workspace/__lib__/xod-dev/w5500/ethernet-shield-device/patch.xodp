@@ -1,0 +1,42 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "D10"
+      },
+      "id": "HyvDHC7G7",
+      "label": "CS",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "SJfNS0XfX",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "r194BCmfX",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rkKSHAXMQ",
+      "label": "MAC",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/net/input-mac-address"
+    }
+  ]
+}

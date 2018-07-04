@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "id": "B1e1bZMxWm",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "Hkhe-flbQ",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "HykbbzxZ7",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rJfMAblZX",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rk1-AWlbm",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-ip-address"
+    },
+    {
+      "id": "ryxbZMeWQ",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}

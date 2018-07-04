@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "H13jTqDf7",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sy7nT9vz7",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "SyUoa5vMm",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

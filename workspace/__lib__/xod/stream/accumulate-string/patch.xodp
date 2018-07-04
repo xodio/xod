@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "HJi_30PZX",
+      "label": "CHAR",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "16"
+      },
+      "description": "Length of the resulting string. Must be a constant value. Any changes during program execution will be ignored.",
+      "id": "HkAv2Av-X",
+      "label": "CAP",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyLm6CwbX",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HyvKhAv-7",
+      "label": "RST",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when resulting string is updated",
+      "id": "S1K4pADWX",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1s7pCDbQ",
+      "label": "STR",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "description": "Pulses when string reached maximum length and pushed value was ignored",
+      "id": "SkwBVl_bX",
+      "label": "FULL",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1NYhRDZ7",
+      "label": "PUSH",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
