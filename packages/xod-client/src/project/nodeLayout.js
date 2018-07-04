@@ -1,4 +1,6 @@
 import * as R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
+import { foldMaybe } from 'xod-func-tools';
 
 const BASE_SIZE_UNIT = 17;
 
@@ -160,21 +162,28 @@ export const snapNodeSizeToSlots = R.compose(
   sizeToPoint
 );
 
-// :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Position
+// :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Maybe Position
 export const findPosition = R.uncurryN(3)((xFn, yFn) =>
-  R.converge((x, y) => ({ x, y }), [
-    R.compose(xFn, R.map(R.prop('x'))),
-    R.compose(yFn, R.map(R.prop('y'))),
-  ])
+  R.ifElse(
+    R.isEmpty,
+    R.always(Maybe.Nothing()),
+    R.compose(
+      Maybe.Just,
+      R.converge((x, y) => ({ x, y }), [
+        R.compose(xFn, R.map(R.prop('x'))),
+        R.compose(yFn, R.map(R.prop('y'))),
+      ])
+    )
+  )
 );
 
-// :: [Position] -> Position
+// :: [Position] -> Maybe Position
 export const getTopLeftPosition = findPosition(
   R.apply(Math.min),
   R.apply(Math.min)
 );
 
-// :: [Position] -> Position
+// :: [Position] -> Maybe Position
 export const getBottomRightPosition = findPosition(
   R.apply(Math.max),
   R.apply(Math.max)
@@ -182,12 +191,10 @@ export const getBottomRightPosition = findPosition(
 
 // Given a list of positions of all entities, returns optimal patch panning offset
 // :: [Position] -> Position
-export const getOptimalPanningOffset = R.ifElse(
-  R.isEmpty,
-  R.always(DEFAULT_PANNING_OFFSET),
-  R.compose(
-    addPoints(DEFAULT_PANNING_OFFSET),
-    R.map(R.negate),
-    getTopLeftPosition
-  )
+export const getOptimalPanningOffset = R.compose(
+  foldMaybe(
+    DEFAULT_PANNING_OFFSET,
+    R.pipe(R.map(R.negate), addPoints(DEFAULT_PANNING_OFFSET))
+  ),
+  getTopLeftPosition
 );

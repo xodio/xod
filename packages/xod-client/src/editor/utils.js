@@ -92,6 +92,7 @@ export const getNewSelection = R.compose(
 
 // :: ClipboardEntities -> Position
 export const getBBoxTopLeftPosition = R.compose(
+  foldMaybe({ x: 0, y: 0 }, R.identity),
   getTopLeftPosition,
   R.converge(R.concat, [
     R.compose(R.map(XP.getNodePosition), R.prop('nodes')),
@@ -124,6 +125,7 @@ const getCommentBottomRightPosition = R.converge(addPoints, [
 export const getBBoxBottomRightPosition = R.curry(
   (currentPatch, project, entities) =>
     R.compose(
+      foldMaybe({ x: 0, y: 0 }, R.identity),
       getBottomRightPosition,
       R.converge(R.concat, [
         R.compose(
