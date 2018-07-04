@@ -15,6 +15,14 @@
         "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S1Mtd-qGX",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
     }
   ]
 }

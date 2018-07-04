@@ -9,7 +9,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_STOP>(ctx))
+    if (!isInputDirty<input_CLS>(ctx))
         return;
 
     auto client = EthernetClient(getValue<input_SOCK>(ctx));

@@ -1,6 +1,8 @@
 {
+  "description": "Creates a string from a stream of characters by appending each new character to the end of the string until maximum capacity is reached.",
   "nodes": [
     {
+      "description": "New character to be pushed at the end of the string",
       "id": "HJi_30PZX",
       "label": "CHAR",
       "position": {
@@ -13,7 +15,7 @@
       "boundLiterals": {
         "__out__": "16"
       },
-      "description": "Length of the resulting string. Must be a constant value. Any changes during program execution will be ignored.",
+      "description": "Capacity of the string buffer. Defines the maximum length. Must be a constant value. Any changes during program execution will be ignored.",
       "id": "HkAv2Av-X",
       "label": "CAP",
       "position": {
@@ -31,6 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Empty the accumulated string and start over",
       "id": "HyvKhAv-7",
       "label": "RST",
       "position": {
@@ -50,6 +53,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "String that is accumulated so far",
       "id": "S1s7pCDbQ",
       "label": "STR",
       "position": {
@@ -59,7 +63,7 @@
       "type": "xod/patch-nodes/output-string"
     },
     {
-      "description": "Pulses when string reached maximum length and pushed value was ignored",
+      "description": "Pulses when string reached maximum length and pushed character was ignored",
       "id": "SkwBVl_bX",
       "label": "FULL",
       "position": {
@@ -69,6 +73,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Push new character",
       "id": "r1NYhRDZ7",
       "label": "PUSH",
       "position": {

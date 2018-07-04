@@ -1,6 +1,8 @@
 {
+  "description": "Open TCP connection to specified server",
   "nodes": [
     {
+      "description": "Pulses when connection is successfully open",
       "id": "BJo1fvrZQ",
       "label": "DONE",
       "position": {
@@ -10,6 +12,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Socket",
       "id": "BJrKIOvzQ",
       "label": "SOCK",
       "position": {
@@ -19,6 +22,7 @@
       "type": "xod/net/output-socket"
     },
     {
+      "description": "Open connection",
       "id": "Byx-7vSZX",
       "label": "CONN",
       "position": {
@@ -28,6 +32,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Internet connection",
       "id": "HyEmmowMm",
       "label": "INET",
       "position": {
@@ -50,6 +55,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Pulses when opening failed",
       "id": "S1RkGwrbm",
       "label": "ERR",
       "position": {
@@ -70,6 +76,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
+      "description": "Port number",
       "id": "r1Oj-DrWX",
       "label": "PORT",
       "position": {

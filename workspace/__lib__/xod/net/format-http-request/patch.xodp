@@ -49,6 +49,7 @@
       }
     }
   ],
+  "description": "Assembles HTTP request message",
   "links": [
     {
       "id": "B1w8oMt-X",
@@ -246,6 +247,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
+      "description": "The domain name of the server and the TCP port number on which the server is listening(like xod.io:80)",
       "id": "BJqntfKbm",
       "label": "HOST",
       "position": {
@@ -277,6 +279,7 @@
       "type": "xod/core/format-number"
     },
     {
+      "description": "HTTP request message",
       "id": "H1leYGFbm",
       "position": {
         "x": 0,
@@ -296,6 +299,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
+      "description": "Path to requested resource",
       "id": "HkcCKGYZ7",
       "label": "PATH",
       "position": {
@@ -319,7 +323,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "Additional headers",
+      "description": "Additional HTTP headers",
       "id": "Hyd95MK-m",
       "label": "HDRS",
       "position": {
@@ -332,7 +336,7 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "HTTP Method",
+      "description": "HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "SkQFtMKZm",
       "label": "METH",
       "position": {
@@ -366,7 +370,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "Keep-alive\n",
+      "description": "Whether connection should be kept alive",
       "id": "rJiucMFW7",
       "label": "KA",
       "position": {

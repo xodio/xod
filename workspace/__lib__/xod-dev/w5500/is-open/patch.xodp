@@ -1,6 +1,8 @@
 {
+  "description": "Checks if TCP connection is open",
   "nodes": [
     {
+      "description": "Pulses if connection is open",
       "id": "BJQB3m4tZ7",
       "label": "Y",
       "position": {
@@ -10,6 +12,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Pulses if connection is closed",
       "id": "BJzB2QNFbQ",
       "label": "N",
       "position": {
@@ -19,6 +22,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Socket",
       "id": "Hke2RdvMm",
       "label": "SOCK",
       "position": {
@@ -28,6 +32,7 @@
       "type": "xod/net/input-socket"
     },
     {
+      "description": "Perform the check",
       "id": "Hyxr3m4tZQ",
       "label": "CHK",
       "position": {

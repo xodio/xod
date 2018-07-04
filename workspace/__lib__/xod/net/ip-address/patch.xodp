@@ -1,10 +1,11 @@
 {
+  "description": "Assembles an IP address from 4 octets",
   "nodes": [
     {
       "boundLiterals": {
         "__out__": "0d"
       },
-      "description": "Third octet",
+      "description": "3rd octet",
       "id": "BJ-GeebB-Q",
       "position": {
         "x": 102,
@@ -16,7 +17,7 @@
       "boundLiterals": {
         "__out__": "0d"
       },
-      "description": "Second octet",
+      "description": "2nd octet",
       "id": "HyMxxWSWQ",
       "position": {
         "x": 68,
@@ -33,6 +34,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "IP address",
       "id": "rJkt2WxZm",
       "position": {
         "x": 34,
@@ -44,7 +46,7 @@
       "boundLiterals": {
         "__out__": "0d"
       },
-      "description": "First octet",
+      "description": "1st octet",
       "id": "ryMGggZH-Q",
       "position": {
         "x": 34,
@@ -56,7 +58,7 @@
       "boundLiterals": {
         "__out__": "0d"
       },
-      "description": "Fourth octet",
+      "description": "4th octet",
       "id": "ryefxxZBZm",
       "position": {
         "x": 136,

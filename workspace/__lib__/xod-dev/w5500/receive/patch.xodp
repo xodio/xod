@@ -1,4 +1,5 @@
 {
+  "description": "Read response from opened connection as a stream of bytes until it closes",
   "links": [
     {
       "id": "B1LlEQpuwzX",
@@ -196,6 +197,7 @@
       "type": "xod/core/defer"
     },
     {
+      "description": "Begin reading",
       "id": "BJFL2dvMX",
       "label": "BGN",
       "position": {
@@ -262,6 +264,7 @@
       "type": "xod/core/any"
     },
     {
+      "description": "Socket",
       "id": "rJyDi_wGQ",
       "label": "SOCK",
       "position": {

@@ -1,6 +1,8 @@
 {
+  "description": "Closes TCP connection",
   "nodes": [
     {
+      "description": "Pulses when connection is closed",
       "id": "BJsYpQtZm",
       "label": "DONE",
       "position": {
@@ -10,8 +12,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Close connection",
       "id": "SJldxXCv-m",
-      "label": "STOP",
+      "label": "CLS",
       "position": {
         "x": 68,
         "y": 0
@@ -19,6 +22,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Socket",
       "id": "rJ53A_vzQ",
       "label": "SOCK",
       "position": {

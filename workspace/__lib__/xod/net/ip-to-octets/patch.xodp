@@ -1,6 +1,8 @@
 {
+  "description": "Splits an IP address into 4 octets",
   "nodes": [
     {
+      "description": "3rd octet",
       "id": "B1e1bZMxWm",
       "position": {
         "x": 102,
@@ -9,6 +11,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "1st octet",
       "id": "Hkhe-flbQ",
       "position": {
         "x": 34,
@@ -17,6 +20,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "2nd octet",
       "id": "HykbbzxZ7",
       "position": {
         "x": 68,
@@ -33,6 +37,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "IP address",
       "id": "rk1-AWlbm",
       "position": {
         "x": 34,
@@ -41,6 +46,7 @@
       "type": "@/input-ip-address"
     },
     {
+      "description": "4th octet",
       "id": "ryxbZMeWQ",
       "position": {
         "x": 136,
