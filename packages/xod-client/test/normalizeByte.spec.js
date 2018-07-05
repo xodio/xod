@@ -32,4 +32,17 @@ describe('normalizeByte', () => {
     test('1111111111b', '11111111b'); // overflow
     test('-101b', '00000000b'); // underflow
   });
+  describe('char', () => {
+    test("'a'", "'a'");
+    test("'\\n'", "'\\n'");
+    // auto-escaping of ''' and '\'
+    test("'''", "'\\''");
+    test("'\\'", "'\\\\'");
+    // invalid input
+    test("''", '00h');
+    test("'a", '00h');
+    test("a'", '00h');
+    test("'a'h", '00h');
+    test("'too many'", '00h');
+  });
 });

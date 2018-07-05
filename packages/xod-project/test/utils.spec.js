@@ -3,6 +3,8 @@ import { assert } from 'chai';
 import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
+import { PIN_TYPE } from '../src/constants';
+import * as Helpers from './helpers';
 
 describe('Utils', () => {
   // transforming node ids
@@ -116,6 +118,64 @@ describe('Utils', () => {
       assert.isFalse(Utils.isValidNumberDataValue('.e5'));
       assert.isFalse(Utils.isValidNumberDataValue('-+56.3'));
       assert.isFalse(Utils.isValidNumberDataValue('--35'));
+    });
+  });
+
+  describe('getTypeFromLiteral', () => {
+    const expectType = (literal, expectedType) =>
+      R.compose(
+        Helpers.expectEitherRight(actualType =>
+          assert.strictEqual(
+            actualType,
+            expectedType,
+            `${literal} should be a ${expectedType}`
+          )
+        ),
+        Utils.getTypeFromLiteral
+      )(literal);
+
+    it('should recognise string literals', () => {
+      expectType('""', PIN_TYPE.STRING);
+      expectType('"Hello there"', PIN_TYPE.STRING);
+    });
+
+    it('should recognise number literals', () => {
+      expectType('0', PIN_TYPE.NUMBER);
+      expectType('111', PIN_TYPE.NUMBER);
+      expectType('123.45', PIN_TYPE.NUMBER);
+      expectType('-50.5', PIN_TYPE.NUMBER);
+      expectType('NaN', PIN_TYPE.NUMBER);
+      // test for isValidNumberDataValue covers the rest
+    });
+
+    it('should recognise boolean literals', () => {
+      expectType('True', PIN_TYPE.BOOLEAN);
+      expectType('False', PIN_TYPE.BOOLEAN);
+    });
+
+    it('should recognise pulse literals', () => {
+      expectType('Never', PIN_TYPE.PULSE);
+      expectType('Continuously', PIN_TYPE.PULSE);
+      expectType('On Boot', PIN_TYPE.PULSE);
+    });
+
+    it('should recognise byte literals', () => {
+      expectType('01011010b', PIN_TYPE.BYTE);
+      expectType('12d', PIN_TYPE.BYTE);
+      expectType('025d', PIN_TYPE.BYTE);
+      expectType('255d', PIN_TYPE.BYTE);
+      expectType('3Ah', PIN_TYPE.BYTE);
+      expectType("'a'", PIN_TYPE.BYTE);
+      expectType("'\\n'", PIN_TYPE.BYTE);
+      expectType("'\\\\'", PIN_TYPE.BYTE);
+      expectType("'\\''", PIN_TYPE.BYTE);
+    });
+
+    it('should recognise port literals', () => {
+      expectType('A0', PIN_TYPE.PORT);
+      expectType('A13', PIN_TYPE.PORT);
+      expectType('D0', PIN_TYPE.PORT);
+      expectType('D13', PIN_TYPE.PORT);
     });
   });
 });

@@ -102,26 +102,32 @@ const cppStringLiteral = def(
 // FAh -> 0xFA
 // 29d -> 0x1D
 // 10 -> 0xA
+// and leave char literals as is
+// 'a' -> 'a'
+// '\n' -> '\n'
 const cppByteLiteral = def(
   'cppByteLiteral :: String -> String',
-  R.compose(
-    R.concat('0x'),
-    R.toUpper,
-    x => x.toString(16),
-    R.ifElse(
-      R.test(/(b|h|d)$/),
-      R.converge(parseInt, [
-        R.init,
-        R.compose(
-          R.prop(R.__, {
-            b: 2,
-            h: 16,
-            d: 10,
-          }),
-          R.last
-        ),
-      ]),
-      plainDecimal => parseInt(plainDecimal, 10)
+  R.unless(
+    XP.isValidCharLiteral,
+    R.compose(
+      R.concat('0x'),
+      R.toUpper,
+      x => x.toString(16),
+      R.ifElse(
+        R.test(/(b|h|d)$/),
+        R.converge(parseInt, [
+          R.init,
+          R.compose(
+            R.prop(R.__, {
+              b: 2,
+              h: 16,
+              d: 10,
+            }),
+            R.last
+          ),
+        ]),
+        plainDecimal => parseInt(plainDecimal, 10)
+      )
     )
   )
 );

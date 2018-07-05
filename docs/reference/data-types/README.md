@@ -279,6 +279,14 @@ In some inputs IDE or CLI can normalize almost valid literals like lower-cased
       <td class="right aligned"><code>006d</code></td>
       <td>The leading zeros are allowed but may be omitted</td>
     </tr>
+    <tr>
+      <td class="right aligned"><code>'a'</code></td>
+      <td>A character surrounded by single quotes is translated to a byte value equal to its ASCII code</td>
+    </tr>
+    <tr>
+      <td class="right aligned"><code>'\n'</code></td>
+      <td>A backslashed character specifies a <a href="https://en.wikipedia.org/wiki/Control_character">control ASCII character</a> like line feed, carriage return, tab, etc</td>
+    </tr>
   </tbody>
 </table>
 
