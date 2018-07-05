@@ -323,7 +323,7 @@
     {
       "boundLiterals": {
         "S1a8PX0Wm": "On Boot",
-        "S1bGvmAWQ": "34d"
+        "S1bGvmAWQ": "'\"'"
       },
       "id": "H11vZoAZm",
       "position": {
@@ -356,8 +356,8 @@
     },
     {
       "boundLiterals": {
-        "S1x50vdwz7": "\"/ip\"",
-        "Sk5CwuDGX": "\"httpbin.org\""
+        "S1x50vdwz7": "\"/httpbin/ip\"",
+        "Sk5CwuDGX": "\"api.xod.io\""
       },
       "id": "HkZ1lKDMX",
       "position": {
