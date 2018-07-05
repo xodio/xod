@@ -1,16 +1,19 @@
+// clang-format off
 {{#global}}
 #include <SoftwareSerial.h>
 {{/global}}
-
+// clang-format on
 
 class SoftwareUart : public Uart {
-  private:
+private:
     SoftwareSerial _serial;
     uint8_t _rx;
     uint8_t _tx;
 
-  public:
-    SoftwareUart(uint8_t rx, uint8_t tx, long baud = 9600) : Uart(baud), _serial(rx, tx) {
+public:
+    SoftwareUart(uint8_t rx, uint8_t tx, long baud = 9600)
+        : Uart(baud)
+        , _serial(rx, tx) {
         _rx = rx;
         _tx = tx;
     }
@@ -20,18 +23,19 @@ class SoftwareUart : public Uart {
     void flush();
 
     bool available() {
-        return (bool) _serial.available();
+        return (bool)_serial.available();
     }
 
     bool writeByte(uint8_t byte) {
-      return (bool) _serial.write(byte);
+        return (bool)_serial.write(byte);
     }
 
     bool readByte(uint8_t* out) {
-      int data = _serial.read();
-      if (data == -1) return false;
-      *out = data;
-      return true;
+        int data = _serial.read();
+        if (data == -1)
+            return false;
+        *out = data;
+        return true;
     }
 
     uint8_t getRX() {
@@ -43,20 +47,20 @@ class SoftwareUart : public Uart {
     }
 
     SoftwareSerial* toSoftwareSerial() {
-      return &_serial;
+        return &_serial;
     }
 };
 
 void SoftwareUart::begin() {
-  _started = true;
-  _serial.begin(getBaudRate());
+    _started = true;
+    _serial.begin(getBaudRate());
 };
 void SoftwareUart::end() {
-  _started = false;
-  _serial.end();
+    _started = false;
+    _serial.end();
 };
 void SoftwareUart::flush() {
-  _serial.flush();
+    _serial.flush();
 }
 
 struct State {
@@ -64,13 +68,15 @@ struct State {
     SoftwareUart* uart;
 };
 
+// clang-format off
 {{ GENERATED_CODE }}
+// clang-format on
 
 void evaluate(Context ctx) {
     auto state = getState(ctx);
     uint8_t rx = getValue<input_RX>(ctx);
     uint8_t tx = getValue<input_TX>(ctx);
-    long baud = (long) getValue<input_BAUD>(ctx);
+    long baud = (long)getValue<input_BAUD>(ctx);
     state->uart = new (state->mem) SoftwareUart(rx, tx, baud);
     emitValue<output_UART>(ctx, state->uart);
 }

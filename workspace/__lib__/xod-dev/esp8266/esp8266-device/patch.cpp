@@ -1,6 +1,8 @@
+// clang-format off
 {{#global}}
 #include <ESP8266UART.h>
 {{/global}}
+// clang-format on
 
 struct State {
     uint8_t mem[sizeof(ESP8266)];
@@ -11,7 +13,9 @@ struct Type {
     ESP8266* wifi;
 };
 
+// clang-format off
 {{ GENERATED_CODE }}
+// clang-format on
 
 void evaluate(Context ctx) {
     if (!isInputDirty<input_INIT>(ctx))

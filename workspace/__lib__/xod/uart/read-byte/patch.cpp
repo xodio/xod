@@ -1,7 +1,9 @@
 struct State {
 };
 
+// clang-format off
 {{ GENERATED_CODE }}
+// clang-format on
 
 void evaluate(Context ctx) {
     if (!isInputDirty<input_READ>(ctx))

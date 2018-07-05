@@ -5,7 +5,8 @@ private:
     uint8_t _tx;
 
 public:
-    UsbUart(Serial_ serial, long baud = 9600) : Uart(baud) {
+    UsbUart(Serial_ serial, long baud = 9600)
+        : Uart(baud) {
         _serial = serial;
     }
 
@@ -54,13 +55,13 @@ void UsbUart::flush() {
     _serial.flush();
 }
 
-template<typename T>
+template <typename T>
 struct ChooseUartWrapper {
-  using UartT = HardwareUart;
+    using UartT = HardwareUart;
 };
-template<>
+template <>
 struct ChooseUartWrapper<Serial_> {
-  using UartT = UsbUart;
+    using UartT = UsbUart;
 };
 
 struct State {
@@ -68,7 +69,9 @@ struct State {
     ChooseUartWrapper<typeof SerialUSB>::UartT* uart;
 };
 
+// clang-format off
 {{ GENERATED_CODE }}
+// clang-format on
 
 void evaluate(Context ctx) {
     auto state = getState(ctx);

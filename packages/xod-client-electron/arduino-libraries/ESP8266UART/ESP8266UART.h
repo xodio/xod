@@ -48,7 +48,7 @@ namespace xod {
 class Uart;
 }
 class ESP8266 {
-  private:
+private:
     xod::Uart* _uart;
 #ifdef ESP8266_DEBUG
     Stream* _debug = nullptr;
@@ -67,9 +67,9 @@ protected:
         }
     }
     void debugChar(char ch) {
-      if (_debug) {
-        _debug->print(ch);
-      }
+        if (_debug) {
+            _debug->print(ch);
+        }
     }
 #endif
 
@@ -206,30 +206,29 @@ public:
 };
 
 void ESP8266::begin() {
-  _uart->begin();
+    _uart->begin();
 }
 
 bool ESP8266::kick() {
-  writeCmd(AT, EOL);
-  return cmdOK(OK, ERROR, 5000);
+    writeCmd(AT, EOL);
+    return cmdOK(OK, ERROR, 5000);
 }
 
 bool ESP8266::setStationMode() {
-  writeCmd(CWMODE_SET);
-  println("1");
-  return cmdOK(OK, ERROR, 1000);
+    writeCmd(CWMODE_SET);
+    println("1");
+    return cmdOK(OK, ERROR, 1000);
 }
 
 bool ESP8266::connect(const char* ssid, const char* password) {
-  writeCmd(CWJAP);
-  print(ssid);
-  writeCmd(COMMA_2);
-  print(password);
-  writeCmd(DOUBLE_QUOTE, EOL);
-  cmdOK(OK, FAIL, 15000);
-  return isConnectedToAP();
+    writeCmd(CWJAP);
+    print(ssid);
+    writeCmd(COMMA_2);
+    print(password);
+    writeCmd(DOUBLE_QUOTE, EOL);
+    cmdOK(OK, FAIL, 15000);
+    return isConnectedToAP();
 }
-
 
 bool ESP8266::isConnectedToAP() {
     writeCmd(CIFSR, EOL);
@@ -257,38 +256,42 @@ uint32_t ESP8266::getIP() {
 }
 
 bool ESP8266::createTCP(const char* addr, uint32_t port) {
-  char _port[32];
-  writeCmd(CIPSTART);
-  writeCmd(TCP);
-  writeCmd(COMMA_2);
-  print(addr);
-  writeCmd(COMMA_1);
-  dtostrf(port, 0, 0, _port);
-  println(_port);
+    char _port[32];
+    writeCmd(CIPSTART);
+    writeCmd(TCP);
+    writeCmd(COMMA_2);
+    print(addr);
+    writeCmd(COMMA_1);
+    dtostrf(port, 0, 0, _port);
+    println(_port);
 
-  bool ok = cmdOK(OK, ERROR, 5000);
-  if (ok) _connected = true;
-  return ok;
+    bool ok = cmdOK(OK, ERROR, 5000);
+    if (ok)
+        _connected = true;
+    return ok;
 }
 
 bool ESP8266::releaseTCP() {
-  if (!_connected) return true;
-  writeCmd(CIPCLOSE, EOL);
-  bool ok = cmdOK(OK, ERROR, 5000);
-  if (ok) _connected = false;
-  return ok;
+    if (!_connected)
+        return true;
+    writeCmd(CIPCLOSE, EOL);
+    bool ok = cmdOK(OK, ERROR, 5000);
+    if (ok)
+        _connected = false;
+    return ok;
 }
 
 bool ESP8266::send(char* message) {
-  writeCmd(CIPSEND);
+    writeCmd(CIPSEND);
 
-  size_t len = sprintf(message, "%s", message);
-  char reqLen[len];
-  dtostrf(len, 0, 0, reqLen);
-  println(reqLen);
+    size_t len = sprintf(message, "%s", message);
+    char reqLen[len];
+    dtostrf(len, 0, 0, reqLen);
+    println(reqLen);
 
-  bool prompt = cmdOK(PROMPT, LINK_IS_NOT);
-  if (!prompt) return false;
+    bool prompt = cmdOK(PROMPT, LINK_IS_NOT);
+    if (!prompt)
+        return false;
 
     print(message);
     bool ok = cmdOK(SEND_OK, nullptr, 5000);
@@ -296,15 +299,15 @@ bool ESP8266::send(char* message) {
 }
 
 bool ESP8266::read(char* outBuff) {
-  if(_uart->available()) {
-    *outBuff = _uart->toStream()->read();
-    return true;
-  }
-  return false;
+    if (_uart->available()) {
+        *outBuff = _uart->toStream()->read();
+        return true;
+    }
+    return false;
 }
 
 bool ESP8266::isSocketOpen() {
-  return _connected;
+    return _connected;
 }
 
 bool ESP8266::receive(char* r) {
@@ -320,16 +323,16 @@ bool ESP8266::receive(char* r) {
         }
     }
 
-  if (_pkgSize > 0) {
-    if (_uart->available()) {
-      if (read(r)) {
-        _pkgSize--;
-        return true;
-      }
+    if (_pkgSize > 0) {
+        if (_uart->available()) {
+            if (read(r)) {
+                _pkgSize--;
+                return true;
+            }
+        }
     }
-  }
 
-  return false;
+    return false;
 }
 
 #endif /* #ifndef __ESP8266_UART_H__ */
