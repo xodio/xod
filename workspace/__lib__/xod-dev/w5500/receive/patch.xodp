@@ -1,5 +1,5 @@
 {
-  "description": "Read a response from the opened connection as a stream of bytes until it closes",
+  "description": "Read a response from an opened connection as a stream of bytes until it closes",
   "links": [
     {
       "id": "B1LlEQpuwzX",
@@ -264,7 +264,7 @@
       "type": "xod/core/any"
     },
     {
-      "description": "The socket",
+      "description": "A socket",
       "id": "rJyDi_wGQ",
       "label": "SOCK",
       "position": {

@@ -1,5 +1,5 @@
 {
-  "description": "Gets the local IP address",
+  "description": "Gets a local IP address",
   "nodes": [
     {
       "description": "Internet connection",

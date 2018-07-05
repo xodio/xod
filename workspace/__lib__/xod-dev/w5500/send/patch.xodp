@@ -1,5 +1,5 @@
 {
-  "description": "Send a message through the opened TCP connection",
+  "description": "Send a message through an opened TCP connection",
   "nodes": [
     {
       "description": "Pulses when sending failed (for example, the connection is not open)",
@@ -50,7 +50,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "The socket",
+      "description": "A socket",
       "id": "ryg9suwMX",
       "label": "SOCK",
       "position": {

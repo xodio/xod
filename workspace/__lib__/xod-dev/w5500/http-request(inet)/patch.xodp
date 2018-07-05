@@ -290,7 +290,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
-      "description": "The TCP port number on which the server is listening",
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80.",
       "id": "Byx8eOuwM7",
       "label": "PORT",
       "position": {
@@ -341,7 +341,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "The request body(optional)",
+      "description": "The request body (optional)",
       "id": "HyQqRPuDzm",
       "label": "BODY",
       "position": {
@@ -364,7 +364,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
-      "description": "The path to the requested resource",
+      "description": "A path to the requested resource",
       "id": "S1x50vdwz7",
       "label": "PATH",
       "position": {
@@ -428,7 +428,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "The internet connection",
+      "description": "An internet connection",
       "id": "rJsfmiDfQ",
       "label": "INET",
       "position": {
@@ -451,7 +451,7 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "The HTTP method (e.g., GET, POST, PUT, or DELETE)",
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "ryG9Av_PfQ",
       "label": "METH",
       "position": {

@@ -1,5 +1,5 @@
 {
-  "description": "Let the values pass through until the value specified in S is encountered",
+  "description": "Lets values pass through until the value specified in S is encountered",
   "links": [
     {
       "id": "B1b8djCWm",
@@ -162,7 +162,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
-      "description": "Start letting the values through until another S",
+      "description": "Lets values through until another S.",
       "id": "S1a8PX0Wm",
       "label": "RST",
       "position": {

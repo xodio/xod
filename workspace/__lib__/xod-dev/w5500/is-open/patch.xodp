@@ -22,7 +22,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "The socket",
+      "description": "A socket",
       "id": "Hke2RdvMm",
       "label": "SOCK",
       "position": {

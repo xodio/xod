@@ -1,5 +1,5 @@
 {
-  "description": "Let the values pass through only after the value specified in S is encountered",
+  "description": "Lets values pass through only after the value specified in S is encountered",
   "links": [
     {
       "id": "ByFqJd70b7",
@@ -133,7 +133,7 @@
       "type": "xod/core/defer"
     },
     {
-      "description": "Stops letting the values through until another S",
+      "description": "Do not let values through until another S",
       "id": "B1S9JuXRbX",
       "label": "RST",
       "position": {
@@ -207,7 +207,7 @@
       "type": "xod/patch-nodes/input-t1"
     },
     {
-      "description": "A value that passed through",
+      "description": "The last value passed through",
       "id": "r1M51O7Rbm",
       "position": {
         "x": 0,

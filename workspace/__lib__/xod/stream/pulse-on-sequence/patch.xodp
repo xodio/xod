@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "The next character in a stream",
+      "description": "The next character in the stream",
       "id": "HkAtN5CbX",
       "position": {
         "x": 34,

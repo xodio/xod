@@ -1,5 +1,5 @@
 {
-  "description": "Converts an IP address to string",
+  "description": "Converts an IP address to a string",
   "links": [
     {
       "id": "BJHQpQWbX",
@@ -178,7 +178,7 @@
       "type": "xod/core/join"
     },
     {
-      "description": "The IP address as string",
+      "description": "The IP address as a string",
       "id": "By1xaQb-m",
       "position": {
         "x": 68,

@@ -1,8 +1,8 @@
 {
-  "description": "Create a string from a stream of characters by appending each new character to the end of the string until a maximum capacity is reached.",
+  "description": "Creates a string from a stream of characters by appending each new character to the end of the string until the maximum capacity is reached.",
   "nodes": [
     {
-      "description": "The new character to be pushed at the end of the string",
+      "description": "A new character to be pushed to the end of the string",
       "id": "HJi_30PZX",
       "label": "CHAR",
       "position": {

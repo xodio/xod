@@ -1,5 +1,5 @@
 {
-  "description": "Lets the characters pass through only after a specified sequence is encountered",
+  "description": "Lets characters pass through only after a specified sequence is encountered",
   "links": [
     {
       "id": "BJ6bvoR-7",
@@ -134,7 +134,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
-      "description": "Stop passing the characters through until next SEQ",
+      "description": "Stop passing characters through until next SEQ",
       "id": "BJhHwoRb7",
       "label": "RST",
       "position": {

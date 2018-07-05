@@ -5,7 +5,7 @@
       "boundLiterals": {
         "__out__": "D10"
       },
-      "description": "The chip select port",
+      "description": "A chip select port",
       "id": "HyvDHC7G7",
       "label": "CS",
       "position": {
@@ -33,7 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "The MAC address",
+      "description": "A MAC address. Should be unique for a device. Often printed on the bottom or a package.",
       "id": "rkKSHAXMQ",
       "label": "MAC",
       "position": {

@@ -12,7 +12,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "The socket",
+      "description": "The socket connected",
       "id": "BJrKIOvzQ",
       "label": "SOCK",
       "position": {
@@ -32,7 +32,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "The internet connection",
+      "description": "An internet connection",
       "id": "HyEmmowMm",
       "label": "INET",
       "position": {
@@ -76,7 +76,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
-      "description": "The port number",
+      "description": "A destination server port number",
       "id": "r1Oj-DrWX",
       "label": "PORT",
       "position": {

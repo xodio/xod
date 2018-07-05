@@ -1,5 +1,5 @@
 {
-  "description": "Read a single byte of the response from the opened connection",
+  "description": "Read a single byte of the response from an opened connection",
   "nodes": [
     {
       "description": "Read the byte",
@@ -12,7 +12,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "The socket",
+      "description": "A socket",
       "id": "HJSh0OPfQ",
       "label": "SOCK",
       "position": {

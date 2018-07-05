@@ -1,5 +1,5 @@
 {
-  "description": "Let the values pass through only if COND is true",
+  "description": "Lets values pass through only if COND is true",
   "nodes": [
     {
       "id": "B1dMI7RWX",
@@ -37,7 +37,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Decides whether the values should be let through",
+      "description": "Decides whether values should be let through",
       "id": "SyN0S7RZ7",
       "label": "COND",
       "position": {

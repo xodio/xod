@@ -299,7 +299,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
-      "description": "A path to the requested resource",
+      "description": "A path to the requested resource. For example: /foo/bar?q=13",
       "id": "HkcCKGYZ7",
       "label": "PATH",
       "position": {
@@ -336,7 +336,7 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "The HTTP method (e.g., GET, POST, PUT, or DELETE)",
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "SkQFtMKZm",
       "label": "METH",
       "position": {
@@ -360,7 +360,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "The request body(optional)",
+      "description": "The request body (optional)",
       "id": "Sy5v9zFZ7",
       "label": "BODY",
       "position": {
