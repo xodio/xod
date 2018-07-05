@@ -1,8 +1,8 @@
 {
-  "description": "Establish internet connection with manual configuration",
+  "description": "Establish an internet connection configured manually",
   "nodes": [
     {
-      "description": "Internet connection",
+      "description": "The internet connection",
       "id": "B1UUEfYMX",
       "label": "INET",
       "position": {
@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Pulses on successful connection",
+      "description": "Pulses on a successful connection",
       "id": "H1ZLMdSLWQ",
       "label": "DONE",
       "position": {
@@ -30,7 +30,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "IP address of the gateway. By default is the same as IP but with last octet being '1'",
+      "description": "An IP address of the gateway. Defaults to `IP` with the last octet being `1`",
       "id": "HyVxSMFzQ",
       "label": "GTW",
       "position": {
@@ -43,7 +43,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
-      "description": "Establish connection",
+      "description": "Establish the connection",
       "id": "Syz8zur8WQ",
       "label": "CONN",
       "position": {
@@ -53,7 +53,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Subnet mask. 255.255.255.0 by default",
+      "description": "A subnet mask. Defaults to `255.255.255.0`",
       "id": "r1XbSzFz7",
       "label": "SBN",
       "position": {
@@ -63,7 +63,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
-      "description": "IP address of the DNS server. By default is the same as IP but with last octet being '1'",
+      "description": "An IP address of the DNS server. Defaults to `IP` with the last octet being `1`",
       "id": "rkZSNzKz7",
       "label": "DNS",
       "position": {
@@ -73,7 +73,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
-      "description": "Pulses if connection failed",
+      "description": "Pulses if the connection failed",
       "id": "rkgIz_SLW7",
       "label": "ERR",
       "position": {
@@ -93,7 +93,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
-      "description": "Device configuration",
+      "description": "A W5500-based internet provider device",
       "id": "rygPuMYz7",
       "label": "DEV",
       "position": {

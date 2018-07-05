@@ -1,8 +1,8 @@
 {
-  "description": "Creates a string from a stream of characters by appending each new character to the end of the string until maximum capacity is reached.",
+  "description": "Create a string from a stream of characters by appending each new character to the end of the string until a maximum capacity is reached.",
   "nodes": [
     {
-      "description": "New character to be pushed at the end of the string",
+      "description": "The new character to be pushed at the end of the string",
       "id": "HJi_30PZX",
       "label": "CHAR",
       "position": {
@@ -15,7 +15,7 @@
       "boundLiterals": {
         "__out__": "16"
       },
-      "description": "Capacity of the string buffer. Defines the maximum length. Must be a constant value. Any changes during program execution will be ignored.",
+      "description": "The capacity of the string buffer. Defines the maximum length. Must be a constant value. Any changes during program execution will be ignored.",
       "id": "HkAv2Av-X",
       "label": "CAP",
       "position": {

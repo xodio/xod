@@ -1,5 +1,5 @@
 {
-  "description": "Lets values pass through only if COND is true",
+  "description": "Let the values pass through only if COND is true",
   "nodes": [
     {
       "id": "B1dMI7RWX",
@@ -10,7 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Value that passed through",
+      "description": "A value that passed through",
       "id": "HyqbI70-7",
       "position": {
         "x": 0,
@@ -19,7 +19,7 @@
       "type": "xod/patch-nodes/output-t1"
     },
     {
-      "description": "Value to be pushed through",
+      "description": "A value to be pushed through",
       "id": "S1618X0bX",
       "position": {
         "x": 0,
@@ -37,7 +37,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Decides whether values should be let through",
+      "description": "Decides whether the values should be let through",
       "id": "SyN0S7RZ7",
       "label": "COND",
       "position": {
@@ -47,7 +47,7 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "description": "Try to push new value through",
+      "description": "Try to push a new value through",
       "id": "rJ5aSXCWm",
       "position": {
         "x": 102,

@@ -1,5 +1,5 @@
 {
-  "description": "Checks if there is incoming data to be read with `read-byte`",
+  "description": "Checks if there is any incoming data to be read with `read-byte`",
   "nodes": [
     {
       "id": "B1Dse0wbm",
@@ -10,7 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Socket",
+      "description": "The socket",
       "id": "BkzF0dvfQ",
       "label": "SOCK",
       "position": {

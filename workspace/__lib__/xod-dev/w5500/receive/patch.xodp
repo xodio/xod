@@ -1,5 +1,5 @@
 {
-  "description": "Read response from opened connection as a stream of bytes until it closes",
+  "description": "Read a response from the opened connection as a stream of bytes until it closes",
   "links": [
     {
       "id": "B1LlEQpuwzX",
@@ -180,7 +180,7 @@
   ],
   "nodes": [
     {
-      "description": "Last byte read",
+      "description": "The last read byte",
       "id": "B1gVQTOwfQ",
       "position": {
         "x": 102,
@@ -247,7 +247,7 @@
       "type": "@/has-available-byte"
     },
     {
-      "description": "Pulses when new byte is read",
+      "description": "Pulses when a new byte is read",
       "id": "SyZVX6_Df7",
       "position": {
         "x": 136,
@@ -264,7 +264,7 @@
       "type": "xod/core/any"
     },
     {
-      "description": "Socket",
+      "description": "The socket",
       "id": "rJyDi_wGQ",
       "label": "SOCK",
       "position": {
@@ -274,7 +274,7 @@
       "type": "xod/net/input-socket"
     },
     {
-      "description": "Pulses when connection is closed",
+      "description": "Pulses when the connection is closed",
       "id": "ryU4XT_PMX",
       "label": "CLS",
       "position": {

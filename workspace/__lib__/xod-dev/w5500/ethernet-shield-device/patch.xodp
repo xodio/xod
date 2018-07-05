@@ -5,7 +5,7 @@
       "boundLiterals": {
         "__out__": "D10"
       },
-      "description": "Chip select port",
+      "description": "The chip select port",
       "id": "HyvDHC7G7",
       "label": "CS",
       "position": {
@@ -15,7 +15,7 @@
       "type": "xod/patch-nodes/input-port"
     },
     {
-      "description": "Ethernet shield configuration",
+      "description": "A W5500-based internet provider device",
       "id": "SJfNS0XfX",
       "label": "DEV",
       "position": {
@@ -33,7 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "MAC address of the shield",
+      "description": "The MAC address",
       "id": "rkKSHAXMQ",
       "label": "MAC",
       "position": {

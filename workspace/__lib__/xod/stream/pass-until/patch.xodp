@@ -1,5 +1,5 @@
 {
-  "description": "Lets values pass through until value specified in S is encountered",
+  "description": "Let the values pass through until the value specified in S is encountered",
   "links": [
     {
       "id": "B1b8djCWm",
@@ -114,7 +114,7 @@
   ],
   "nodes": [
     {
-      "description": "Value to be pushed through",
+      "description": "A value to be pushed through",
       "id": "BJYbP7CZm",
       "position": {
         "x": 102,
@@ -142,7 +142,7 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "description": "Value that passed through",
+      "description": "A value that passed through",
       "id": "By5Vv7C-7",
       "position": {
         "x": 34,
@@ -162,7 +162,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
-      "description": "Start letting values through until another S",
+      "description": "Start letting the values through until another S",
       "id": "S1a8PX0Wm",
       "label": "RST",
       "position": {
@@ -190,7 +190,7 @@
       "type": "xod/core/pulse-on-true"
     },
     {
-      "description": "Try to push new value through",
+      "description": "Try to push a new value through",
       "id": "r1CWwm0b7",
       "position": {
         "x": 204,

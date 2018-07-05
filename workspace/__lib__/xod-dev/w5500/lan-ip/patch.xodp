@@ -1,5 +1,5 @@
 {
-  "description": "Gets local IP address",
+  "description": "Gets the local IP address",
   "nodes": [
     {
       "description": "Internet connection",
@@ -12,7 +12,7 @@
       "type": "@/input-inet"
     },
     {
-      "description": "IP address",
+      "description": "The IP address",
       "id": "r15ySjwzQ",
       "label": "IP",
       "position": {
@@ -22,7 +22,6 @@
       "type": "xod/net/output-ip-address"
     },
     {
-      "description": "Gets local IP",
       "id": "rkNlrjDfm",
       "position": {
         "x": 34,

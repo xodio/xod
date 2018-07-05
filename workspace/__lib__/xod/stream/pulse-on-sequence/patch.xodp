@@ -2,7 +2,7 @@
   "description": "Pulses each time when a specified sequence of characters is encountered",
   "nodes": [
     {
-      "description": "Push next character",
+      "description": "Push the next character",
       "id": "B14qE5RZ7",
       "position": {
         "x": 136,
@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Next character in a stream",
+      "description": "The next character in a stream",
       "id": "HkAtN5CbX",
       "position": {
         "x": 34,
@@ -29,7 +29,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
-      "description": "Searched sequence",
+      "description": "The searched sequence",
       "id": "Hy9qN5AZm",
       "label": "SEQ",
       "position": {

@@ -70,7 +70,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
-      "description": "MAC address",
+      "description": "The MAC address",
       "id": "SJqcJZSW7",
       "position": {
         "x": 0,

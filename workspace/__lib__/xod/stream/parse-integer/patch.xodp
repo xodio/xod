@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Resulting integer",
+      "description": "The resulting integer",
       "id": "Sk6oKXA-Q",
       "label": "NUM",
       "position": {
@@ -40,7 +40,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Reset parsed number to 0 and start over",
+      "description": "Reset the parsed number to 0 and start over",
       "id": "r1JWmAxzQ",
       "label": "RST",
       "position": {
@@ -50,7 +50,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Next character to be procesed",
+      "description": "The next character to be processed",
       "id": "rJ55KmC-X",
       "label": "CHAR",
       "position": {

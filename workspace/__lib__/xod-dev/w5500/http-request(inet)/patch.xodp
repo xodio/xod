@@ -1,5 +1,5 @@
 {
-  "description": "Performs an HTTP request and returns response as a stream of characters",
+  "description": "Performs an HTTP request and returns the response as a stream of characters",
   "links": [
     {
       "id": "B1tS0uqfm",
@@ -258,7 +258,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "HkcCKGYZ7": "\"/ip\""
+        "HkcCKGYZ7": "\"/\""
       },
       "id": "B1eIvL_wzQ",
       "position": {
@@ -290,7 +290,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
-      "description": "TCP port number on which the server is listening",
+      "description": "The TCP port number on which the server is listening",
       "id": "Byx8eOuwM7",
       "label": "PORT",
       "position": {
@@ -308,7 +308,7 @@
       "type": "xod/core/any"
     },
     {
-      "description": "Pulses when new response character is received",
+      "description": "Pulses when a new response character is received",
       "id": "H1eCETuwMQ",
       "label": "RCV",
       "position": {
@@ -341,7 +341,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "Request body(optional)",
+      "description": "The request body(optional)",
       "id": "HyQqRPuDzm",
       "label": "BODY",
       "position": {
@@ -351,7 +351,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "Last received character from the response",
+      "description": "The last received character from the response",
       "id": "S1RETdDM7",
       "label": "CHAR",
       "position": {
@@ -364,7 +364,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
-      "description": "Path to requested resource",
+      "description": "The path to the requested resource",
       "id": "S1x50vdwz7",
       "label": "PATH",
       "position": {
@@ -408,7 +408,7 @@
       "type": "@/send"
     },
     {
-      "description": "Pulses when all response data is received and connection is closed",
+      "description": "Pulses when all response data is received and the connection is closed",
       "id": "r1ZRN6uvMQ",
       "label": "DONE",
       "position": {
@@ -418,7 +418,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Pulses if request failed",
+      "description": "Pulses if the request failed",
       "id": "rJMAEpOvGX",
       "label": "ERR",
       "position": {
@@ -428,7 +428,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Internet connection",
+      "description": "The internet connection",
       "id": "rJsfmiDfQ",
       "label": "INET",
       "position": {
@@ -438,7 +438,7 @@
       "type": "@/input-inet"
     },
     {
-      "description": "Begin request",
+      "description": "Begin the request",
       "id": "rkIxO_wfm",
       "label": "INIT",
       "position": {
@@ -451,7 +451,7 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "HTTP method (e.g., GET, POST, PUT, or DELETE)",
+      "description": "The HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "ryG9Av_PfQ",
       "label": "METH",
       "position": {

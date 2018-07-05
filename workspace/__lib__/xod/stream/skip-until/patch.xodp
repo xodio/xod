@@ -1,5 +1,5 @@
 {
-  "description": "Lets values pass through only after value specified in S is encountered",
+  "description": "Let the values pass through only after the value specified in S is encountered",
   "links": [
     {
       "id": "ByFqJd70b7",
@@ -133,7 +133,7 @@
       "type": "xod/core/defer"
     },
     {
-      "description": "Stops letting values through until another S",
+      "description": "Stops letting the values through until another S",
       "id": "B1S9JuXRbX",
       "label": "RST",
       "position": {
@@ -143,7 +143,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Values after this one will be passed through",
+      "description": "All values after this one will be passed through",
       "id": "BJ-qyu70ZX",
       "label": "S",
       "position": {
@@ -170,7 +170,7 @@
       "type": "@/pass-if"
     },
     {
-      "description": "Try to push new value through",
+      "description": "Try to push a new value through",
       "id": "HJec1dQCZ7",
       "position": {
         "x": 170,
@@ -198,7 +198,7 @@
       "type": "xod/core/flip-flop"
     },
     {
-      "description": "Value to be pushed through",
+      "description": "A value to be pushed through",
       "id": "Skc1_Q0-X",
       "position": {
         "x": 68,
@@ -207,7 +207,7 @@
       "type": "xod/patch-nodes/input-t1"
     },
     {
-      "description": "Value that passed through",
+      "description": "A value that passed through",
       "id": "r1M51O7Rbm",
       "position": {
         "x": 0,
