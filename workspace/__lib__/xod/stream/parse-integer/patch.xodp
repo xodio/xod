@@ -1,6 +1,8 @@
 {
+  "description": "Read an integer number from a stream of characters. Stop when a non-numeric character was encountered",
   "nodes": [
     {
+      "description": "Pulses when the non-numerical character was encountered",
       "id": "BksptX0b7",
       "label": "END",
       "position": {
@@ -18,6 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "The resulting integer",
       "id": "Sk6oKXA-Q",
       "label": "NUM",
       "position": {
@@ -27,6 +30,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Push a new character to process",
       "id": "Sy1it7R-m",
       "label": "PUSH",
       "position": {
@@ -36,6 +40,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Reset the parsed number to 0 and start over",
       "id": "r1JWmAxzQ",
       "label": "RST",
       "position": {
@@ -45,6 +50,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "The next character to be processed",
       "id": "rJ55KmC-X",
       "label": "CHAR",
       "position": {

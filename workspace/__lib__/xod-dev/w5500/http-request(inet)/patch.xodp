@@ -1,5 +1,28 @@
 {
+  "description": "Performs an HTTP request and returns the response as a stream of characters",
   "links": [
+    {
+      "id": "B1tS0uqfm",
+      "input": {
+        "nodeId": "BksmRd5M7",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "Byx8eOuwM7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJEVAd5fm",
+      "input": {
+        "nodeId": "Hk11AO9GQ",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "Sk5CwuDGX",
+        "pinKey": "__out__"
+      }
+    },
     {
       "id": "BJkfuOwfQ",
       "input": {
@@ -45,6 +68,17 @@
       }
     },
     {
+      "id": "H1x4CuqzQ",
+      "input": {
+        "nodeId": "Hk11AO9GQ",
+        "pinKey": "BkeKcj6ZZ-$1"
+      },
+      "output": {
+        "nodeId": "BksmRd5M7",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
       "id": "HJk86OwGm",
       "input": {
         "nodeId": "rJMAEpOvGX",
@@ -63,17 +97,6 @@
       },
       "output": {
         "nodeId": "S1x50vdwz7",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "HkIMOdDM7",
-      "input": {
-        "nodeId": "B1eIvL_wzQ",
-        "pinKey": "BJqntfKbm"
-      },
-      "output": {
-        "nodeId": "Sk5CwuDGX",
         "pinKey": "__out__"
       }
     },
@@ -97,6 +120,17 @@
       "output": {
         "nodeId": "ByLwI_vG7",
         "pinKey": "BJrKIOvzQ"
+      }
+    },
+    {
+      "id": "Sk9EC_5Mm",
+      "input": {
+        "nodeId": "B1eIvL_wzQ",
+        "pinKey": "BJqntfKbm"
+      },
+      "output": {
+        "nodeId": "Hk11AO9GQ",
+        "pinKey": "rksccsp-W"
       }
     },
     {
@@ -224,20 +258,31 @@
   "nodes": [
     {
       "boundLiterals": {
-        "HkcCKGYZ7": "\"/ip\""
+        "HkcCKGYZ7": "\"/\""
       },
       "id": "B1eIvL_wzQ",
       "position": {
         "x": 238,
-        "y": 204
+        "y": 306
       },
       "type": "xod/net/format-http-request"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "0"
+      },
+      "id": "BksmRd5M7",
+      "position": {
+        "x": 340,
+        "y": 102
+      },
+      "type": "xod/core/format-number"
     },
     {
       "id": "ByLwI_vG7",
       "position": {
         "x": 34,
-        "y": 204
+        "y": 306
       },
       "type": "@/open-tcp"
     },
@@ -245,6 +290,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80.",
       "id": "Byx8eOuwM7",
       "label": "PORT",
       "position": {
@@ -257,12 +303,14 @@
       "id": "H1LrpdwGQ",
       "position": {
         "x": 238,
-        "y": 510
+        "y": 612
       },
       "type": "xod/core/any"
     },
     {
+      "description": "Pulses when a new response character is received",
       "id": "H1eCETuwMQ",
+      "label": "RCV",
       "position": {
         "x": 102,
         "y": 714
@@ -273,15 +321,27 @@
       "id": "HJmdi_wGm",
       "position": {
         "x": 34,
-        "y": 510
+        "y": 612
       },
       "type": "@/receive"
+    },
+    {
+      "arityLevel": 2,
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\":\""
+      },
+      "id": "Hk11AO9GQ",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/core/concat"
     },
     {
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "Request body(optional)",
+      "description": "The request body (optional)",
       "id": "HyQqRPuDzm",
       "label": "BODY",
       "position": {
@@ -291,7 +351,9 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "The last received character from the response",
       "id": "S1RETdDM7",
+      "label": "CHAR",
       "position": {
         "x": 34,
         "y": 714
@@ -302,6 +364,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
+      "description": "A path to the requested resource",
       "id": "S1x50vdwz7",
       "label": "PATH",
       "position": {
@@ -327,6 +390,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
+      "description": "The domain name of the server",
       "id": "Sk5CwuDGX",
       "label": "HOST",
       "position": {
@@ -339,11 +403,12 @@
       "id": "SkfKidwf7",
       "position": {
         "x": 68,
-        "y": 408
+        "y": 510
       },
       "type": "@/send"
     },
     {
+      "description": "Pulses when all response data is received and the connection is closed",
       "id": "r1ZRN6uvMQ",
       "label": "DONE",
       "position": {
@@ -353,6 +418,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Pulses if the request failed",
       "id": "rJMAEpOvGX",
       "label": "ERR",
       "position": {
@@ -362,6 +428,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "An internet connection",
       "id": "rJsfmiDfQ",
       "label": "INET",
       "position": {
@@ -371,6 +438,7 @@
       "type": "@/input-inet"
     },
     {
+      "description": "Begin the request",
       "id": "rkIxO_wfm",
       "label": "INIT",
       "position": {
@@ -383,7 +451,7 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "HTTP Method",
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "ryG9Av_PfQ",
       "label": "METH",
       "position": {

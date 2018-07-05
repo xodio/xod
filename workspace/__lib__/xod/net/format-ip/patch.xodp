@@ -1,4 +1,5 @@
 {
+  "description": "Converts an IP address to a string",
   "links": [
     {
       "id": "BJHQpQWbX",
@@ -177,6 +178,7 @@
       "type": "xod/core/join"
     },
     {
+      "description": "The IP address as a string",
       "id": "By1xaQb-m",
       "position": {
         "x": 68,
@@ -185,12 +187,13 @@
       "type": "xod/patch-nodes/output-string"
     },
     {
+      "description": "The IP address",
       "id": "H17mp7ZZX",
       "position": {
         "x": 102,
         "y": 0
       },
-      "type": "xod/net/input-ip-address"
+      "type": "@/input-ip-address"
     },
     {
       "boundLiterals": {
@@ -252,10 +255,10 @@
     {
       "id": "rkXE1TQb-7",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 102
       },
-      "type": "xod/net/ip-to-octets"
+      "type": "@/ip-to-octets"
     },
     {
       "boundLiterals": {

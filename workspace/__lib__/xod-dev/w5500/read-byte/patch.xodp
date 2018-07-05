@@ -1,6 +1,8 @@
 {
+  "description": "Read a single byte of the response from an opened connection",
   "nodes": [
     {
+      "description": "Read the byte",
       "id": "H1PYmAwb7",
       "label": "READ",
       "position": {
@@ -10,6 +12,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "A socket",
       "id": "HJSh0OPfQ",
       "label": "SOCK",
       "position": {
@@ -27,6 +30,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "The last read byte",
       "id": "HyOdm0D-Q",
       "label": "B",
       "position": {
@@ -36,6 +40,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "Pulses when the byte is read",
       "id": "rkEq7RDWQ",
       "label": "DONE",
       "position": {

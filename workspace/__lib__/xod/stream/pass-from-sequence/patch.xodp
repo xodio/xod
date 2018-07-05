@@ -1,4 +1,5 @@
 {
+  "description": "Lets characters pass through only after a specified sequence is encountered",
   "links": [
     {
       "id": "BJ6bvoR-7",
@@ -124,6 +125,7 @@
   ],
   "nodes": [
     {
+      "description": "A character to be pushed through",
       "id": "B18iIoA-m",
       "position": {
         "x": -1,
@@ -132,6 +134,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
+      "description": "Stop passing characters through until next SEQ",
       "id": "BJhHwoRb7",
       "label": "RST",
       "position": {
@@ -168,6 +171,7 @@
       "type": "xod/core/flip-flop"
     },
     {
+      "description": "A character that passed through",
       "id": "SkSGwoAZQ",
       "position": {
         "x": 0,
@@ -176,6 +180,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "Pulses when a character passes through",
       "id": "SkYZwiRbm",
       "position": {
         "x": 34,
@@ -192,6 +197,7 @@
       "type": "@/pass-if"
     },
     {
+      "description": "The searched sequence",
       "id": "rkZ8oIj0-m",
       "label": "SEQ",
       "position": {
@@ -201,6 +207,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Try to push a new character through",
       "id": "rklUo8jA-Q",
       "position": {
         "x": 34,

@@ -9,7 +9,7 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_INIT>(ctx))
+    if (!isInputDirty<input_CONN>(ctx))
         return;
 
     auto dev = getValue<input_DEV>(ctx);

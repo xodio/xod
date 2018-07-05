@@ -1,4 +1,5 @@
 {
+  "description": "Lets values pass through until the value specified in S is encountered",
   "links": [
     {
       "id": "B1b8djCWm",
@@ -113,6 +114,7 @@
   ],
   "nodes": [
     {
+      "description": "A value to be pushed through",
       "id": "BJYbP7CZm",
       "position": {
         "x": 102,
@@ -140,6 +142,7 @@
       "type": "xod/core/flip-flop"
     },
     {
+      "description": "A value that passed through",
       "id": "By5Vv7C-7",
       "position": {
         "x": 34,
@@ -159,6 +162,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Lets values through until another S.",
       "id": "S1a8PX0Wm",
       "label": "RST",
       "position": {
@@ -168,6 +172,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "This and any values after it are ignored",
       "id": "S1bGvmAWQ",
       "label": "S",
       "position": {
@@ -185,6 +190,7 @@
       "type": "xod/core/pulse-on-true"
     },
     {
+      "description": "Try to push a new value through",
       "id": "r1CWwm0b7",
       "position": {
         "x": 204,
@@ -193,6 +199,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses when a value passes through",
       "id": "r1XBwQCWQ",
       "position": {
         "x": 102,

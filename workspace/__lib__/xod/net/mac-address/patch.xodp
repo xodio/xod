@@ -1,4 +1,5 @@
 {
+  "description": "Assembles a MAC address from 6 octets",
   "nodes": [
     {
       "boundLiterals": {
@@ -69,6 +70,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
+      "description": "The MAC address",
       "id": "SJqcJZSW7",
       "position": {
         "x": 0,

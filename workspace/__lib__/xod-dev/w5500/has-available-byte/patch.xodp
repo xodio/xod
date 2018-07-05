@@ -1,4 +1,5 @@
 {
+  "description": "Checks if there is any incoming data to be read with `read-byte`",
   "nodes": [
     {
       "id": "B1Dse0wbm",
@@ -9,6 +10,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "The socket",
       "id": "BkzF0dvfQ",
       "label": "SOCK",
       "position": {
@@ -18,6 +20,7 @@
       "type": "xod/net/input-socket"
     },
     {
+      "description": "Pulses if there is no incoming data",
       "id": "S15XzCDbQ",
       "label": "N",
       "position": {
@@ -27,6 +30,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Pulses if there is at least one byte",
       "id": "SJBQf0wZQ",
       "label": "Y",
       "position": {
@@ -36,6 +40,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Perform the check",
       "id": "rJqbl0v-m",
       "label": "CHK",
       "position": {

@@ -1,6 +1,8 @@
 {
+  "description": "Establish an internet connection configured manually",
   "nodes": [
     {
+      "description": "The internet connection",
       "id": "B1UUEfYMX",
       "label": "INET",
       "position": {
@@ -18,6 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Pulses on a successful connection",
       "id": "H1ZLMdSLWQ",
       "label": "DONE",
       "position": {
@@ -27,6 +30,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "An IP address of the gateway. Defaults to `IP` with the last octet being `1`",
       "id": "HyVxSMFzQ",
       "label": "GTW",
       "position": {
@@ -39,8 +43,9 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Establish the connection",
       "id": "Syz8zur8WQ",
-      "label": "INIT",
+      "label": "CONN",
       "position": {
         "x": 374,
         "y": 0
@@ -48,6 +53,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "A subnet mask. Defaults to `255.255.255.0`",
       "id": "r1XbSzFz7",
       "label": "SBN",
       "position": {
@@ -57,6 +63,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
+      "description": "An IP address of the DNS server. Defaults to `IP` with the last octet being `1`",
       "id": "rkZSNzKz7",
       "label": "DNS",
       "position": {
@@ -66,6 +73,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
+      "description": "Pulses if the connection failed",
       "id": "rkgIz_SLW7",
       "label": "ERR",
       "position": {
@@ -75,6 +83,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Own IP address",
       "id": "rkuXdr8-Q",
       "label": "IP",
       "position": {
@@ -84,6 +93,7 @@
       "type": "xod/net/input-ip-address"
     },
     {
+      "description": "A W5500-based internet provider device",
       "id": "rygPuMYz7",
       "label": "DEV",
       "position": {

@@ -1,6 +1,8 @@
 {
+  "description": "Gets a local IP address",
   "nodes": [
     {
+      "description": "Internet connection",
       "id": "Sk9A4oDMm",
       "label": "INET",
       "position": {
@@ -10,6 +12,7 @@
       "type": "@/input-inet"
     },
     {
+      "description": "The IP address",
       "id": "r15ySjwzQ",
       "label": "IP",
       "position": {

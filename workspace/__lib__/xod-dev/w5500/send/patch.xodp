@@ -1,6 +1,8 @@
 {
+  "description": "Send a message through an opened TCP connection",
   "nodes": [
     {
+      "description": "Pulses when sending failed (for example, the connection is not open)",
       "id": "ByzTg3LZX",
       "label": "ERR",
       "position": {
@@ -18,8 +20,9 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "The message to send",
       "id": "Sk8_R9L-X",
-      "label": "LINE",
+      "label": "MSG",
       "position": {
         "x": 170,
         "y": 0
@@ -27,8 +30,9 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Send the message",
       "id": "SkLcRqIZm",
-      "label": "PRN",
+      "label": "SND",
       "position": {
         "x": 272,
         "y": 0
@@ -36,6 +40,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses when the message is successfully  sent",
       "id": "r1NYAqIZ7",
       "label": "DONE",
       "position": {
@@ -45,6 +50,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "A socket",
       "id": "ryg9suwMX",
       "label": "SOCK",
       "position": {

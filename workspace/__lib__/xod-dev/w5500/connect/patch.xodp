@@ -1,4 +1,5 @@
 {
+  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
   "nodes": [
     {
       "id": "BJXXLBwPfQ",
@@ -12,8 +13,9 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Establish the connection",
       "id": "BJfXLrPDzm",
-      "label": "INIT",
+      "label": "CONN",
       "position": {
         "x": 102,
         "y": 0
@@ -21,6 +23,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses on a successful connection",
       "id": "H1b7LrDPGm",
       "label": "DONE",
       "position": {
@@ -30,6 +33,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "A W5500-based internet provider device",
       "id": "HkhKBPPfX",
       "label": "DEV",
       "position": {
@@ -39,6 +43,7 @@
       "type": "@/input-ethernet-shield-device"
     },
     {
+      "description": "An internet connection",
       "id": "rJ6H7ovfQ",
       "label": "INET",
       "position": {
@@ -48,6 +53,7 @@
       "type": "@/output-inet"
     },
     {
+      "description": "Pulses if the connection failed",
       "id": "ryx7LHwPfm",
       "label": "ERR",
       "position": {

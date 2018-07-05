@@ -1,9 +1,11 @@
 {
+  "description": "Represents a W5500-based Ethernet Shield device",
   "nodes": [
     {
       "boundLiterals": {
         "__out__": "D10"
       },
+      "description": "A chip select port",
       "id": "HyvDHC7G7",
       "label": "CS",
       "position": {
@@ -13,6 +15,7 @@
       "type": "xod/patch-nodes/input-port"
     },
     {
+      "description": "A W5500-based internet provider device",
       "id": "SJfNS0XfX",
       "label": "DEV",
       "position": {
@@ -30,6 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "A MAC address. Should be unique for a device. Often printed on the bottom or a package.",
       "id": "rkKSHAXMQ",
       "label": "MAC",
       "position": {
