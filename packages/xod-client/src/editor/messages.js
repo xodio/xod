@@ -1,20 +1,25 @@
 export const PATCH_FOR_NODE_IS_MISSING = 'Patch for this node is missing.';
 
 export const libInstalled = (libName, version) => ({
-  title: `${libName} @ ${version} installed successfully`,
+  title: `Installed successfully`,
+  note: `${libName} version ${version} is now available in your project browser.`,
 });
 
 export const CLIPBOARD_RECURSION_PASTE_ERROR = {
-  title: 'Canʼt paste a patch into itself',
+  title: 'Cannot paste recursively',
+  note:
+    'You’re trying to add a node into its own implementation. That’s forbidden.',
   persistent: false,
 };
 export const clipboardMissingPatchPasteError = missingPatches => ({
-  title: 'Canʼt paste',
-  note: `Canʼt find following patches: ${missingPatches}`,
+  title: 'Invalid paste',
+  note: `The clipboard contains references to missing patches: ${missingPatches}.`,
+  solution: 'Try to install libraries which provide the required patches.',
 });
 
 export const LIB_SUGGESTER_TYPE_TO_BEGIN =
   'Type owner/libname to find a library';
+
 export const LIB_SUGGESTER_NOTHING_FOUND = 'No library found';
 
 export const NO_PATCH_TO_TRANSPILE = {
