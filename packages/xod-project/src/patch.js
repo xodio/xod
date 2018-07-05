@@ -337,12 +337,13 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
     : Node.getPinNodeDataType(node);
 
   const isBindable =
-    direction === CONST.PIN_DIRECTION.INPUT
-      ? true // inputs are always bindable
+    Utils.isBuiltInType(type) && // pins of custom types are never bindable
+    (direction === CONST.PIN_DIRECTION.INPUT
+      ? true // input pins of built-in types are always bindable
       : canBindToOutputs(patch) &&
         !isOutputSelf &&
         type !== CONST.PIN_TYPE.PULSE &&
-        !Utils.isGenericType(type);
+        !Utils.isGenericType(type));
   const defaultValue = Node.getBoundValue(
     getPinKeyForTerminalDirection(direction),
     node
