@@ -1,9 +1,11 @@
 {
+  "description": "Initialize ESP8266 device without configuring it",
   "nodes": [
     {
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Trigger initializing of ESP8266 device",
       "id": "B1GyDl_ZX",
       "label": "INIT",
       "position": {
@@ -13,6 +15,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "An ESP8266 internet provider device",
       "id": "H1h4js8Zm",
       "label": "DEV",
       "position": {
@@ -22,6 +25,7 @@
       "type": "xod/patch-nodes/output-self"
     },
     {
+      "description": "Pulses when ESP8266 initialized",
       "id": "Hk3kwl_-X",
       "label": "DONE",
       "position": {
@@ -39,7 +43,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Now supports only SoftwareUart",
+      "description": "An UART object, that connected with ESP8266 device",
       "id": "rJPbiiLb7",
       "label": "UART",
       "position": {

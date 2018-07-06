@@ -1,11 +1,13 @@
 {
+  "description": "Checks if a TCP connection is open",
   "nodes": [
     {
       "boundLiterals": {
         "__out__": "Continuously"
       },
+      "description": "Perform the check",
       "id": "B1oX8RlMQ",
-      "label": "UPD",
+      "label": "CHK",
       "position": {
         "x": 136,
         "y": 0
@@ -21,8 +23,9 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Pulses if the connection is open",
       "id": "HkIVUAxzm",
-      "label": "YES",
+      "label": "Y",
       "position": {
         "x": 0,
         "y": 204
@@ -30,8 +33,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Pulses if the connection is closed",
       "id": "S1nVLAgMX",
-      "label": "NO",
+      "label": "N",
       "position": {
         "x": 68,
         "y": 204

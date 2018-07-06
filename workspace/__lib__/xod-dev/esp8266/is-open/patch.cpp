@@ -7,13 +7,13 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_CHK>(ctx))
         return;
 
     auto inet = getValue<input_INET>(ctx);
     if (inet.wifi->isSocketOpen()) {
-        emitValue<output_YES>(ctx, 1);
+        emitValue<output_Y>(ctx, 1);
     } else {
-        emitValue<output_NO>(ctx, 1);
+        emitValue<output_N>(ctx, 1);
     }
 }

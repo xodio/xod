@@ -1,6 +1,8 @@
 {
+  "description": "Waits for the transmission of outgoing serial data to complete and then clears UART buffer.",
   "nodes": [
     {
+      "description": "An UART object",
       "id": "BkiJZ2wWQ",
       "label": "UART",
       "position": {
@@ -10,6 +12,7 @@
       "type": "@/input-uart"
     },
     {
+      "description": "Pulses when all outgoing data sent",
       "id": "H1gsyZ3PZm",
       "label": "DONE",
       "position": {
@@ -30,6 +33,7 @@
       "boundLiterals": {
         "__out__": "Never"
       },
+      "description": "Flush outgoing buffer when all data transmitted",
       "id": "ryGs1Z2vW7",
       "label": "UPD",
       "position": {

@@ -1,4 +1,5 @@
 {
+  "description": "Closes an open TCP connection",
   "nodes": [
     {
       "description": "A socket",
@@ -13,7 +14,7 @@
     {
       "description": "Close the connection",
       "id": "Bkfix0w5b7",
-      "label": "UPD",
+      "label": "CLS",
       "position": {
         "x": 136,
         "y": 0
@@ -21,6 +22,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses when the connection is closed",
       "id": "HyloeRvqZX",
       "label": "DONE",
       "position": {
@@ -30,6 +32,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Pulses when error occured",
       "id": "r1NjgRvq-m",
       "label": "ERR",
       "position": {
@@ -39,6 +42,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "An internet connection",
       "id": "rkW8SftM7",
       "label": "INET",
       "position": {

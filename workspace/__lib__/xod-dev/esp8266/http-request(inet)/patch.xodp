@@ -1,4 +1,5 @@
 {
+  "description": "Performs an HTTP request and returns the response as a stream of characters",
   "links": [
     {
       "id": "B15JgXpGm",
@@ -322,6 +323,7 @@
   ],
   "nodes": [
     {
+      "description": "The last received character from the response",
       "id": "B1H7ZMYf7",
       "label": "CHAR",
       "position": {
@@ -331,6 +333,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "Begin the request",
       "id": "B1Hr6eztMm",
       "label": "INIT",
       "position": {
@@ -354,6 +357,7 @@
       "boundLiterals": {
         "__out__": "\"/\""
       },
+      "description": "A path to the requested resource",
       "id": "BkWSpgGFGQ",
       "label": "PATH",
       "position": {
@@ -363,6 +367,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "An internet connection",
       "id": "BkqTeMtMm",
       "label": "INET",
       "position": {
@@ -375,6 +380,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80",
       "id": "ByraezFMm",
       "label": "PORT",
       "position": {
@@ -407,6 +413,7 @@
       "type": "@/send"
     },
     {
+      "description": "Pulses if the request failed",
       "id": "HyPhbGtGm",
       "label": "ERR",
       "position": {
@@ -439,9 +446,9 @@
       "boundLiterals": {
         "__out__": "\"GET\""
       },
-      "description": "HTTP Method",
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
       "id": "Sk8BplzFzX",
-      "label": "MTD",
+      "label": "METH",
       "position": {
         "x": 204,
         "y": 0
@@ -449,8 +456,9 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Pulses when a new response character is received",
       "id": "SkNh-fFGm",
-      "label": "RCVD",
+      "label": "RCV",
       "position": {
         "x": 68,
         "y": 612
@@ -486,7 +494,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
-      "description": "Request body(optional)",
+      "description": "The request body (optional)",
       "id": "r1gH6eMKM7",
       "label": "BODY",
       "position": {
@@ -499,6 +507,7 @@
       "boundLiterals": {
         "__out__": "\"\""
       },
+      "description": "A domain name of the server",
       "id": "rkQBTlMYzm",
       "label": "HOST",
       "position": {
@@ -521,6 +530,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "Pulses when all response data is received and the connection is closed",
       "id": "ryLnZfFMQ",
       "label": "END",
       "position": {

@@ -1,8 +1,10 @@
 {
+  "description": "Read a single byte of the response from an opened connection",
   "nodes": [
     {
+      "description": "Read the byte",
       "id": "Bylu3eO9bQ",
-      "label": "UPD",
+      "label": "READ",
       "position": {
         "x": 136,
         "y": 0
@@ -18,6 +20,7 @@
       "type": "xod/patch-nodes/utility"
     },
     {
+      "description": "Pulses if TCP connection closed or can't read the byte",
       "id": "HJ-_3x_9WQ",
       "label": "ERR",
       "position": {
@@ -45,6 +48,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Pulses when the byte is read",
       "id": "rJEd3lucbQ",
       "label": "DONE",
       "position": {
@@ -54,8 +58,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "The last read byte",
       "id": "rJRkr0xfX",
-      "label": "RES",
+      "label": "CHAR",
       "position": {
         "x": 0,
         "y": 204
@@ -63,6 +68,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "An internet connection",
       "id": "rytFismz7",
       "label": "INET",
       "position": {

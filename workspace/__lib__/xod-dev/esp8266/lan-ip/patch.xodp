@@ -1,6 +1,8 @@
 {
+  "description": "Gets a local IP address",
   "nodes": [
     {
+      "description": "An internet connection",
       "id": "r1MjIjmMQ",
       "label": "INET",
       "position": {
@@ -18,6 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "A local IP address",
       "id": "ryCpUsmMQ",
       "label": "IP",
       "position": {

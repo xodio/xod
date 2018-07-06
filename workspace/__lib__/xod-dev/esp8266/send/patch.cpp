@@ -7,10 +7,10 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_SEND>(ctx))
         return;
 
-    auto req = getValue<input_REQ>(ctx);
+    auto req = getValue<input_MSG>(ctx);
     auto inet = getValue<input_INET>(ctx);
 
     char _req[length(req) + 1] = { 0 };

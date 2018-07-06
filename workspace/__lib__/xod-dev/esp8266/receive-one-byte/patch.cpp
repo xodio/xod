@@ -6,7 +6,7 @@ struct State {};
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_READ>(ctx))
         return;
 
     auto inet = getValue<input_INET>(ctx);
@@ -17,7 +17,7 @@ void evaluate(Context ctx) {
 
     char r = '\0';
     if (inet.wifi->receive(&r)) {
-        emitValue<output_RES>(ctx, (uint8_t)r);
+        emitValue<output_CHAR>(ctx, (uint8_t)r);
         emitValue<output_DONE>(ctx, 1);
     } else {
         emitValue<output_ERR>(ctx, 1);

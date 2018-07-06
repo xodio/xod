@@ -1,4 +1,5 @@
 {
+  "description": "Sends a message through an opened TCP/UDP connection",
   "nodes": [
     {
       "description": "A socket",
@@ -19,8 +20,9 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Send the message",
       "id": "HJmbIb89bm",
-      "label": "UPD",
+      "label": "SEND",
       "position": {
         "x": 204,
         "y": 0
@@ -28,6 +30,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses when sending failed (for example, the connection is not open)",
       "id": "HkWZL-Lc-7",
       "label": "ERR",
       "position": {
@@ -37,8 +40,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "The message to send",
       "id": "S1NWLb89WQ",
-      "label": "REQ",
+      "label": "MSG",
       "position": {
         "x": 136,
         "y": 0
@@ -46,6 +50,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "An internet connection",
       "id": "S1SRqomzX",
       "label": "INET",
       "position": {
@@ -55,6 +60,7 @@
       "type": "@/input-inet"
     },
     {
+      "description": "Pulses when the message is successfully sent",
       "id": "r1WUb8qWX",
       "label": "DONE",
       "position": {

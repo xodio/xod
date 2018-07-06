@@ -1,6 +1,8 @@
 {
+  "description": "Writes a single byte in the UART",
   "nodes": [
     {
+      "description": "An UART object",
       "id": "BkHrP2I-m",
       "label": "UART",
       "position": {
@@ -10,6 +12,7 @@
       "type": "@/input-uart"
     },
     {
+      "description": "Pulses when byte was successfully written",
       "id": "HJxHrv3I-m",
       "label": "DONE",
       "position": {
@@ -30,6 +33,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Trigger writting of the byte",
       "id": "Hyz0PhIbm",
       "label": "SEND",
       "position": {
@@ -39,6 +43,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Byte to write",
       "id": "rJaSP2UZm",
       "label": "BYTE",
       "position": {
@@ -48,6 +53,7 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
+      "description": "Pulses when writting of byte has been failed",
       "id": "ryQ_w28Zm",
       "label": "ERR",
       "position": {

@@ -1,6 +1,8 @@
 {
+  "description": "Begins communication with UART and sets defined baud rate.",
   "nodes": [
     {
+      "description": "Pulses when UART communication began",
       "id": "B1SyPhUWm",
       "label": "DONE",
       "position": {
@@ -13,6 +15,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Begin UART communication",
       "id": "H16YPnI-Q",
       "label": "UPD",
       "position": {
@@ -30,6 +33,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "An UART object",
       "id": "rJV3I2I-Q",
       "label": "UART",
       "position": {

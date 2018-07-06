@@ -1,6 +1,8 @@
 {
+  "description": "Constructor of HardwareUart, provides serial communication on default hardware serial ports.",
   "nodes": [
     {
+      "description": "An UART object",
       "id": "ByJ65dU-X",
       "label": "UART",
       "position": {
@@ -13,6 +15,7 @@
       "boundLiterals": {
         "__out__": "115200"
       },
+      "description": "Speed of data transmission in bits per second (baud rate).",
       "id": "H1DwMu5bX",
       "label": "BAUD",
       "position": {

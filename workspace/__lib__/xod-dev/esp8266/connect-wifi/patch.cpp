@@ -6,7 +6,7 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_CONN>(ctx))
         return;
 
     auto device = getValue<input_DEV>(ctx);

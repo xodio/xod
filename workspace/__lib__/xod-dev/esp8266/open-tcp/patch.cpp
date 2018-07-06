@@ -7,7 +7,7 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_CONN>(ctx))
         return;
 
     auto host = getValue<input_HOST>(ctx);

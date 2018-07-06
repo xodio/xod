@@ -7,7 +7,7 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
+    if (!isInputDirty<input_SET>(ctx))
         return;
 
     auto dev = getValue<input_DEV>(ctx);

@@ -1,4 +1,5 @@
 {
+  "description": "Open a TCP connection to the specified server",
   "nodes": [
     {
       "description": "The socket connected",
@@ -19,6 +20,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Pulses when the TCP connection is successfully open",
       "id": "H1nYg85WQ",
       "label": "DONE",
       "position": {
@@ -31,6 +33,7 @@
       "boundLiterals": {
         "__out__": "80"
       },
+      "description": "A destination server port number",
       "id": "HyPkZLq-m",
       "label": "PORT",
       "position": {
@@ -40,8 +43,9 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Open the connection",
       "id": "SJm3Yx85b7",
-      "label": "UPD",
+      "label": "CONN",
       "position": {
         "x": 204,
         "y": 0
@@ -49,6 +53,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Pulses when opening failed",
       "id": "r1bnKl8qbm",
       "label": "ERR",
       "position": {
@@ -58,6 +63,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Server name or IP address",
       "id": "rJhjx85W7",
       "label": "HOST",
       "position": {
@@ -67,6 +73,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "description": "An internet connection",
       "id": "rkofqomfm",
       "label": "INET",
       "position": {

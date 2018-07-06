@@ -1,4 +1,5 @@
 {
+  "description": "Read a response from an opened connection as a stream of bytes until it closes",
   "links": [
     {
       "id": "BJoojo7G7",
@@ -165,8 +166,9 @@
       "type": "@/receive-one-byte"
     },
     {
+      "description": "The last read byte",
       "id": "BJN-og_zzm",
-      "label": "RES",
+      "label": "CHAR",
       "position": {
         "x": 0,
         "y": 408
@@ -174,8 +176,9 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "Pulses when a new byte is read",
       "id": "ByXZseuGGm",
-      "label": "PUSH",
+      "label": "RCV",
       "position": {
         "x": 68,
         "y": 408
@@ -183,8 +186,9 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Begin reading",
       "id": "Byl-jxOGGQ",
-      "label": "UPD",
+      "label": "BGN",
       "position": {
         "x": 34,
         "y": 0
@@ -235,6 +239,7 @@
       "type": "xod/core/any"
     },
     {
+      "description": "An internet connection",
       "id": "rJMIsjQMQ",
       "label": "INET",
       "position": {
@@ -244,8 +249,9 @@
       "type": "@/input-inet"
     },
     {
+      "description": "Pulses when the connection is closed",
       "id": "rJb-iluMG7",
-      "label": "END",
+      "label": "CLS",
       "position": {
         "x": 136,
         "y": 408

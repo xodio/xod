@@ -1,6 +1,8 @@
 {
+  "description": "Reads one byte from UART",
   "nodes": [
     {
+      "description": "An UART object",
       "id": "HkeKDhI-7",
       "label": "UART",
       "position": {
@@ -10,6 +12,7 @@
       "type": "@/input-uart"
     },
     {
+      "description": "Pulses when byte received",
       "id": "Hkeetvn8-Q",
       "label": "DONE",
       "position": {
@@ -19,6 +22,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Received byte from UART",
       "id": "Skw_dnU-Q",
       "label": "BYTE",
       "position": {
@@ -28,6 +32,7 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "description": "Pulses when UART have not available byte to read or reading failed",
       "id": "r17lKDnLW7",
       "label": "ERR",
       "position": {
@@ -40,6 +45,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Trigger reading of one byte from UART",
       "id": "r1bXu3LWm",
       "label": "READ",
       "position": {

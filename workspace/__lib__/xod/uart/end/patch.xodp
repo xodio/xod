@@ -4,6 +4,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "End UART communication",
       "id": "HJO3D3UZX",
       "label": "UPD",
       "position": {
@@ -13,6 +14,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "An UART object",
       "id": "Sk9EvnL-7",
       "label": "UART",
       "position": {
@@ -22,6 +24,7 @@
       "type": "@/input-uart"
     },
     {
+      "description": "Pulses when UART communication ended",
       "id": "Ske5EPhI-X",
       "label": "DONE",
       "position": {

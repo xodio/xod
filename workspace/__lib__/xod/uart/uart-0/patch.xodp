@@ -1,9 +1,11 @@
 {
+  "description": "Constructor of HardwareUart, provides serial communication through Serial.",
   "nodes": [
     {
       "boundLiterals": {
         "__out__": "115200"
       },
+      "description": "Speed of data transmission in bits per second (baud rate).",
       "id": "BytfJKIWX",
       "label": "BAUD",
       "position": {
@@ -21,6 +23,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "An UART object",
       "id": "Sk450OL-X",
       "label": "UART",
       "position": {

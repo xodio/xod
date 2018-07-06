@@ -1,16 +1,6 @@
 {
+  "description": "Configures UART communication of ESP8266 device with main board.\nIt sends \"AT+UART_CUR=...\" command.",
   "links": [
-    {
-      "id": "B1XU3dmM7",
-      "input": {
-        "nodeId": "Sy-InOmfQ",
-        "pinKey": "HkXK-dGob"
-      },
-      "output": {
-        "nodeId": "ByAr2u7Gm",
-        "pinKey": "HkU3vNoTW"
-      }
-    },
     {
       "id": "BJec43Lb7",
       "input": {
@@ -42,17 +32,6 @@
       "output": {
         "nodeId": "BJQtV2IZQ",
         "pinKey": "HJrBNr4dG"
-      }
-    },
-    {
-      "id": "ByZFUndQMQ",
-      "input": {
-        "nodeId": "ryxYU3OQMQ",
-        "pinKey": "HkXK-dGob"
-      },
-      "output": {
-        "nodeId": "rJYL3dQGQ",
-        "pinKey": "HkU3vNoTW"
       }
     },
     {
@@ -111,17 +90,6 @@
       }
     },
     {
-      "id": "S1HU3_mzQ",
-      "input": {
-        "nodeId": "ByAr2u7Gm",
-        "pinKey": "SkSuD6LMb"
-      },
-      "output": {
-        "nodeId": "rkUIu6Pbm",
-        "pinKey": "rkl6IK3L-7"
-      }
-    },
-    {
       "id": "S1n_VhLZX",
       "input": {
         "nodeId": "Sys_4h8-X",
@@ -130,28 +98,6 @@
       "output": {
         "nodeId": "ryjaznU-7",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJOI3_7G7",
-      "input": {
-        "nodeId": "SJ8IhumGX",
-        "pinKey": "SkSuD6LMb"
-      },
-      "output": {
-        "nodeId": "rkUIu6Pbm",
-        "pinKey": "S1maLFnU-Q"
-      }
-    },
-    {
-      "id": "SkpL3uQMQ",
-      "input": {
-        "nodeId": "rJYL3dQGQ",
-        "pinKey": "SkSuD6LMb"
-      },
-      "output": {
-        "nodeId": "HyTHF6w-7",
-        "pinKey": "Ske5EPhI-X"
       }
     },
     {
@@ -218,17 +164,6 @@
       "output": {
         "nodeId": "rk3nfhLWQ",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJbU8n_7Mm",
-      "input": {
-        "nodeId": "BklIUhumzQ",
-        "pinKey": "HkXK-dGob"
-      },
-      "output": {
-        "nodeId": "SJ8IhumGX",
-        "pinKey": "HkU3vNoTW"
       }
     },
     {
@@ -323,6 +258,7 @@
       "type": "xod/core/join"
     },
     {
+      "description": "Pulses when configure command was sent and possibly answer received. If it not received it could means that device already communicates with other settings (possibly, desired settings).",
       "id": "BJpRMhI-X",
       "label": "DONE",
       "position": {
@@ -343,22 +279,7 @@
       "type": "xod/core/format-number"
     },
     {
-      "id": "BklIUhumzQ",
-      "position": {
-        "x": 340,
-        "y": 510
-      },
-      "type": "xod/core/watch"
-    },
-    {
-      "id": "ByAr2u7Gm",
-      "position": {
-        "x": 102,
-        "y": 510
-      },
-      "type": "xod/core/delay"
-    },
-    {
+      "description": "An UART object",
       "id": "HJc6c6DbQ",
       "label": "UART",
       "position": {
@@ -371,6 +292,7 @@
       "boundLiterals": {
         "__out__": "115200"
       },
+      "description": "Target baud rate for communication",
       "id": "HJmUM2IZQ",
       "label": "BAUD",
       "position": {
@@ -383,6 +305,7 @@
       "boundLiterals": {
         "__out__": "0"
       },
+      "description": "Parity bit.\nPossible values: 0 for None, 1 — Odd and 2 — Even",
       "id": "Hk7az3LWQ",
       "label": "P",
       "position": {
@@ -395,6 +318,7 @@
       "boundLiterals": {
         "__out__": "8"
       },
+      "description": "Data bits.\nPossible values: 5, 6, 7, 8.",
       "id": "HkK9z2U-7",
       "label": "DB",
       "position": {
@@ -431,14 +355,6 @@
       "type": "xod/core/any"
     },
     {
-      "id": "SJ8IhumGX",
-      "position": {
-        "x": 238,
-        "y": 510
-      },
-      "type": "xod/core/delay"
-    },
-    {
       "boundLiterals": {
         "HJTIija-W": "0"
       },
@@ -448,14 +364,6 @@
         "y": 102
       },
       "type": "xod/core/format-number"
-    },
-    {
-      "id": "Sy-InOmfQ",
-      "position": {
-        "x": 204,
-        "y": 510
-      },
-      "type": "xod/core/watch"
     },
     {
       "boundLiterals": {
@@ -488,17 +396,10 @@
       "type": "xod/core/concat"
     },
     {
-      "id": "rJYL3dQGQ",
-      "position": {
-        "x": 170,
-        "y": 408
-      },
-      "type": "xod/core/delay"
-    },
-    {
       "boundLiterals": {
         "__out__": "0"
       },
+      "description": "Stop bits.\nPossible values: 1 for 1-bit stop bit, 2 — 1.5-bit stop bit and 3 — 2-bit stop bit.",
       "id": "rk3nfhLWQ",
       "label": "SB",
       "position": {
@@ -527,6 +428,7 @@
       "boundLiterals": {
         "__out__": "On Boot"
       },
+      "description": "Trigger configuring of UART communication on ESP8266 device",
       "id": "ryKmKaw-m",
       "label": "UPD",
       "position": {
@@ -539,6 +441,7 @@
       "boundLiterals": {
         "__out__": "0"
       },
+      "description": "Flow control.\nPossible values: 0 for disable, 1 — RTS, 2 — CTC, 3 — both RTS and CTC",
       "id": "ryjaznU-7",
       "label": "FC",
       "position": {
@@ -546,14 +449,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "ryxYU3OQMQ",
-      "position": {
-        "x": 272,
-        "y": 408
-      },
-      "type": "xod/core/watch"
     }
   ]
 }

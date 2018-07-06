@@ -1,6 +1,8 @@
 {
+  "description": "Checks does UART have an available bytes to read",
   "nodes": [
     {
+      "description": "An UART object",
       "id": "By_OfMFW7",
       "label": "UART",
       "position": {
@@ -10,6 +12,7 @@
       "type": "@/input-uart"
     },
     {
+      "description": "Pulses when there is nothing to read from UART",
       "id": "HJnKfztbm",
       "label": "N",
       "position": {
@@ -27,6 +30,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Pulses when UART have available bytes",
       "id": "S1dYzzYWm",
       "label": "Y",
       "position": {
@@ -36,6 +40,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Check does UART have an available bytes to read",
       "id": "rkytzGK-7",
       "label": "UPD",
       "position": {

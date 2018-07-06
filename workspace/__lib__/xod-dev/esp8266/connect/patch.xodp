@@ -1,4 +1,5 @@
 {
+  "description": "Establish an internet connection via Wi-Fi using ESP8266",
   "links": [
     {
       "id": "B1LfBjXGX",
@@ -124,6 +125,7 @@
   ],
   "nodes": [
     {
+      "description": "Pulses on a successful connection\n",
       "id": "B1N47NimzX",
       "label": "DONE",
       "position": {
@@ -133,6 +135,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "An ESP8266 device connected as internet provider",
       "id": "BJQEQEjmGm",
       "label": "DEV",
       "position": {
@@ -150,8 +153,9 @@
       "type": "@/get-local-ip"
     },
     {
+      "description": "Establish the connection",
       "id": "HkVQVo7fX",
-      "label": "UPD",
+      "label": "CONN",
       "position": {
         "x": 101,
         "y": -1
@@ -159,6 +163,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Wi-Fi network password",
       "id": "HkbN7Vj7fm",
       "label": "PWD",
       "position": {
@@ -176,6 +181,7 @@
       "type": "@/inet"
     },
     {
+      "description": "Name of the Wi-Fi network",
       "id": "SJlVXVsQfX",
       "label": "SSID",
       "position": {
@@ -193,6 +199,7 @@
       "type": "@/connect-wifi"
     },
     {
+      "description": "An internet connection",
       "id": "r1iQVs7fm",
       "label": "INET",
       "position": {
@@ -202,6 +209,7 @@
       "type": "@/output-inet"
     },
     {
+      "description": "Pulses if the connection failed\n",
       "id": "rkzN74sXzQ",
       "label": "ERR",
       "position": {
