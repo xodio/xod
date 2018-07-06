@@ -286,7 +286,14 @@ class ProjectBrowser extends React.Component {
 
     return R.compose(
       R.map(R.prop('component')),
-      R.sortBy(R.prop('name')),
+      R.sortBy(
+        R.compose(
+          // so that "foo/something" comes before "foo-bar/something",
+          // like in proper file managers
+          R.replace('/', '*'),
+          R.prop('name')
+        )
+      ),
       R.concat
     )(libComponents, installingLibsComponents);
   }
