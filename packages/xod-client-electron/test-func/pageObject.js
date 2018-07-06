@@ -339,7 +339,7 @@ function waitUntilProjectSaved(client) {
   return client.waitForExist('.SnackBarMessage*=Saved', 5000);
 }
 function waitUntilLibraryInstalled(client) {
-  return client.waitForExist('.SnackBarMessage*=installed', 10000);
+  return client.waitForExist('.SnackBarMessage*=Installed', 10000);
 }
 
 //-----------------------------------------------------------------------------
