@@ -13,11 +13,11 @@ void evaluate(Context ctx) {
         return;
 
     auto client = EthernetClient(getValue<input_SOCK>(ctx));
-    auto line = getValue<input_LINE>(ctx);
+    auto msg = getValue<input_MSG>(ctx);
 
     size_t lastWriteSize;
 
-    for (auto it = line->iterate(); it; ++it) {
+    for (auto it = msg->iterate(); it; ++it) {
         lastWriteSize = client.write((char)*it);
         if (lastWriteSize == 0) {
             emitValue<output_ERR>(ctx, 1);
