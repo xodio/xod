@@ -22,7 +22,7 @@ export default function trackLastSavedChanges(state, action) {
       return updateLastSavedProject(state);
     }
     case SAVE_ALL: {
-      if (R.path(['data', 'updateLastSavedProject'], action)) {
+      if (R.path(['payload', 'data', 'updateLastSavedProject'], action)) {
         return updateLastSavedProject(state);
       }
       return state;

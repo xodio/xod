@@ -169,7 +169,7 @@ class App extends client.App {
           throw new Error('Expected projectPath to be present');
         }
 
-        this.saveAs(projectPath, true).catch(noop);
+        this.saveAs(projectPath, true, false).catch(noop);
       });
       ipcRenderer.on(TRIGGER_LOAD_PROJECT, projectPath => {
         if (!projectPath) {
