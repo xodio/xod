@@ -43,7 +43,7 @@
     "react-hotkeys": "^0.10.0",
     "react-infinite": "^0.12.1",
     "react-redux": "^4.0.6",
-    "react-reflex": "^2.0.11",
+    "react-reflex": "^2.2.7",
     "react-remarkable": "^1.1.3",
     "react-resize-detector": "^1.1.0",
     "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",
