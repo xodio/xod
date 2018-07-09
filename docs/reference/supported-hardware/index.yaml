@@ -543,3 +543,55 @@
           sku: BOB-12708
           flavor: Brk
           url: https://www.sparkfun.com/products/12708
+
+- section: "Network adapters"
+  parts:
+    - part: ESP8266
+      kind: Wi-Fi adapter
+      vendor: Espressif
+      nodes:
+        - xod-dev/esp8266/esp8266
+      shopping:
+        - shop: DFRobot
+          sku: TEL0092
+          flavor: Mod
+          url: https://www.dfrobot.com/product-1279.html
+        - shop: Seeed
+          sku: 317060016
+          flavor: Mod
+          url: https://www.seeedstudio.com/WiFi-Serial-Transceiver-Module-w%26-ESP8266-1MB-Flash-p-2485.html
+        - shop: SparkFun
+          sku: WRL-13678
+          flavor: Mod
+          url: https://www.sparkfun.com/products/13678
+        - shop: SparkFun
+          sku: WRL-13287
+          flavor: Brk/Sh
+          url: https://www.sparkfun.com/products/13287
+    - part: W5500
+      kind: Ethernet adapter
+      vendor: WIZnet
+      nodes:
+        - xod-dev/w5500/w5500-device
+        - xod-dev/w5500/ethernet-shield
+      shopping:
+        - shop: Adafruit
+          sku: "#2971"
+          flavor: Sh
+          url: https://www.adafruit.com/product/2971
+        - shop: Adafruit
+          sku: "#3201"
+          flavor: Mod
+          url: https://www.adafruit.com/product/3201
+        - shop: DFRobot
+          sku: DFR0342
+          flavor: Sh
+          url: https://www.dfrobot.com/product-1286.html
+        - shop: Seeed
+          sku: 103030021
+          flavor: Sh
+          url: https://www.seeedstudio.com/W5500-Ethernet-Shield-p-2433.html
+        - shop: SparkFun
+          sku: DEV-11166
+          flavor: Sh
+          url: https://www.sparkfun.com/products/11166

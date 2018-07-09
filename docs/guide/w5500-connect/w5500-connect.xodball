@@ -1,0 +1,145 @@
+{
+  "name": "",
+  "patches": {
+    "@/10-ethernet-shield": {
+      "nodes": {
+        "r1ZN38GmQ": {
+          "id": "r1ZN38GmQ",
+          "position": {
+            "x": 102,
+            "y": 102
+          },
+          "type": "xod-dev/w5500/ethernet-shield"
+        }
+      },
+      "path": "@/10-ethernet-shield"
+    },
+    "@/20-lan-ip-output": {
+      "links": {
+        "ByY_hUzQX": {
+          "id": "ByY_hUzQX",
+          "input": {
+            "nodeId": "H1xLhLf7m",
+            "pinKey": "HkMi4t8xX"
+          },
+          "output": {
+            "nodeId": "ryfO3IM77",
+            "pinKey": "HJEOEHzm7"
+          }
+        },
+        "Byvun8MmX": {
+          "id": "Byvun8MmX",
+          "input": {
+            "nodeId": "ryfO3IM77",
+            "pinKey": "r1X4NSMXm"
+          },
+          "output": {
+            "nodeId": "r1qHnIzQQ",
+            "pinKey": "HyrGXPmMQ7"
+          }
+        },
+        "H1O_2UMQ7": {
+          "id": "H1O_2UMQ7",
+          "input": {
+            "nodeId": "H1xLhLf7m",
+            "pinKey": "H1bLN9F-b"
+          },
+          "output": {
+            "nodeId": "ryfO3IM77",
+            "pinKey": "rysPErzmm"
+          }
+        },
+        "H1vPnLzmX": {
+          "id": "H1vPnLzmX",
+          "input": {
+            "nodeId": "H1xLhLf7m",
+            "pinKey": "B1TSE9tZ-"
+          },
+          "output": {
+            "nodeId": "BkMPnIf7Q",
+            "pinKey": "By1xaQb-m"
+          }
+        },
+        "SkHD2IzXX": {
+          "id": "SkHD2IzXX",
+          "input": {
+            "nodeId": "BkMPnIf7Q",
+            "pinKey": "H17mp7ZZX"
+          },
+          "output": {
+            "nodeId": "rki8n8Mm7",
+            "pinKey": "r15ySjwzQ"
+          }
+        },
+        "SkVP2LzQX": {
+          "id": "SkVP2LzQX",
+          "input": {
+            "nodeId": "rki8n8Mm7",
+            "pinKey": "Sk9A4oDMm"
+          },
+          "output": {
+            "nodeId": "r1qHnIzQQ",
+            "pinKey": "SJmf7PmzX7"
+          }
+        },
+        "rJr_2Uf7m": {
+          "id": "rJr_2Uf7m",
+          "input": {
+            "nodeId": "ryfO3IM77",
+            "pinKey": "rJgVVBzQm"
+          },
+          "output": {
+            "nodeId": "r1qHnIzQQ",
+            "pinKey": "B1eGmvQMQm"
+          }
+        }
+      },
+      "nodes": {
+        "BkMPnIf7Q": {
+          "id": "BkMPnIf7Q",
+          "position": {
+            "x": 136,
+            "y": 306
+          },
+          "type": "xod/net/format-ip"
+        },
+        "H1xLhLf7m": {
+          "boundLiterals": {
+            "rJlYT7EfW": "3Ah"
+          },
+          "id": "H1xLhLf7m",
+          "position": {
+            "x": 68,
+            "y": 408
+          },
+          "type": "xod/common-hardware/text-lcd-16x2-i2c"
+        },
+        "r1qHnIzQQ": {
+          "id": "r1qHnIzQQ",
+          "position": {
+            "x": 136,
+            "y": 102
+          },
+          "type": "xod-dev/w5500/ethernet-shield"
+        },
+        "rki8n8Mm7": {
+          "id": "rki8n8Mm7",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod-dev/w5500/lan-ip"
+        },
+        "ryfO3IM77": {
+          "id": "ryfO3IM77",
+          "position": {
+            "x": 170,
+            "y": 306
+          },
+          "type": "xod/core/format-progress"
+        }
+      },
+      "path": "@/20-lan-ip-output"
+    }
+  }
+}
