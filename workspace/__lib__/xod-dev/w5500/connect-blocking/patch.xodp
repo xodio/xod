@@ -58,7 +58,7 @@
         "x": 0,
         "y": 204
       },
-      "type": "@/output-inet"
+      "type": "@/output-w5500-inet"
     },
     {
       "description": "Pulses if the connection failed",

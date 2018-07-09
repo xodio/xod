@@ -57,7 +57,7 @@
         "x": 68,
         "y": 0
       },
-      "type": "@/input-inet"
+      "type": "@/input-esp8266-inet"
     },
     {
       "description": "Pulses when the message is successfully sent",

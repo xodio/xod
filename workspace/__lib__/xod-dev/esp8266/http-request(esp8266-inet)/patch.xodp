@@ -374,7 +374,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-inet"
+      "type": "@/input-esp8266-inet"
     },
     {
       "boundLiterals": {

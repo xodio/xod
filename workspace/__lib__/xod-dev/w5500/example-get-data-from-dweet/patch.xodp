@@ -430,7 +430,7 @@
         "x": 544,
         "y": 204
       },
-      "type": "@/http-request(inet)"
+      "type": "@/http-request(w5500-inet)"
     },
     {
       "boundLiterals": {

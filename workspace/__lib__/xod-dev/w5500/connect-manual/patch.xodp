@@ -135,7 +135,7 @@
         "x": 0,
         "y": 306
       },
-      "type": "@/output-inet"
+      "type": "@/output-w5500-inet"
     },
     {
       "id": "BkhXCAlXQ",

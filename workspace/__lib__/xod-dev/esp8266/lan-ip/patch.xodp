@@ -9,7 +9,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-inet"
+      "type": "@/input-esp8266-inet"
     },
     {
       "id": "rkj3Ij7Mm",

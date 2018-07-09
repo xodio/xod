@@ -307,7 +307,7 @@
         "x": 238,
         "y": 306
       },
-      "type": "@/http-request(inet)"
+      "type": "@/http-request(esp8266-inet)"
     },
     {
       "id": "H1kG3jmMX",
