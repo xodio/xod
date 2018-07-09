@@ -6,6 +6,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   flex-shrink: 0;
+  box-sizing: content-box;
 
   background: $sidebar-color-bg;
 
@@ -94,4 +95,11 @@
       }
     }
   }
+}
+
+
+.Sidebar .custom-scroll {
+  .outer-container { width: 200px; }
+  .inner-container { margin-right: -2em; padding-right: 0; }
+  .content-wrapper { margin-right: 0; padding-right: 0; width: 200px; }
 }
