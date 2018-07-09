@@ -117,6 +117,12 @@ const rawItems = {
   toggleAccountPane: {
     label: 'Toggle Account Pane',
   },
+  toggleProjectBrowser: {
+    label: 'Toggle Project Browser',
+  },
+  toggleInspector: {
+    label: 'Toggle Inspector',
+  },
   panToOrigin: {
     label: 'Pan to Origin',
     command: COMMAND.PAN_TO_ORIGIN,

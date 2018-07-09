@@ -258,6 +258,12 @@ class App extends client.App {
         onClick(items.uploadToArduino, this.onUpload),
       ]),
       submenu(items.view, [
+        onClick(items.toggleProjectBrowser, () =>
+          this.props.actions.togglePanel(client.PANEL_IDS.PROJECT_BROWSER)
+        ),
+        onClick(items.toggleInspector, () =>
+          this.props.actions.togglePanel(client.PANEL_IDS.INSPECTOR)
+        ),
         onClick(items.toggleHelp, this.props.actions.toggleHelp),
         onClick(items.toggleDebugger, this.props.actions.toggleDebugger),
         onClick(items.toggleAccountPane, () =>

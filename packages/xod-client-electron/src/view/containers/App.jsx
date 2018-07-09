@@ -572,6 +572,12 @@ class App extends client.App {
     const viewMenu = {
       label: 'View',
       submenu: [
+        client.menu.onClick(client.menu.items.toggleProjectBrowser, () =>
+          this.props.actions.togglePanel(client.PANEL_IDS.PROJECT_BROWSER)
+        ),
+        client.menu.onClick(client.menu.items.toggleInspector, () =>
+          this.props.actions.togglePanel(client.PANEL_IDS.INSPECTOR)
+        ),
         client.menu.onClick(
           client.menu.items.toggleHelp,
           this.props.actions.toggleHelp
