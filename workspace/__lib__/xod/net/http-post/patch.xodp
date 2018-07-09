@@ -1,0 +1,264 @@
+{
+  "description": "Performs an HTTP POST request and returns the response as a stream of characters",
+  "links": [
+    {
+      "id": "ByMgBEyZ-X7",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "BJbecH5x-Xm"
+      },
+      "output": {
+        "nodeId": "SJDB4yWbmX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BypH41ZWQ7",
+      "input": {
+        "nodeId": "r1uBVJbWQQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "SJGl9r9l-m7"
+      }
+    },
+    {
+      "id": "H11gBVy-ZQQ",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "S1geqrqgWmX"
+      },
+      "output": {
+        "nodeId": "BJUBVyW-QX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkRS4Jb-Q7",
+      "input": {
+        "nodeId": "SyVSV1bbX7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "SJPcScgbQX"
+      }
+    },
+    {
+      "id": "HyZerEk-WXX",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "HJzqrceZQm"
+      },
+      "output": {
+        "nodeId": "H1GH4kWWQ7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1XlHVJW-mX",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "H1e9S9e-mQ"
+      },
+      "output": {
+        "nodeId": "r1-H4y-bQX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1hB41--Xm",
+      "input": {
+        "nodeId": "SJSH41WWQX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "S1sqHqebm7"
+      }
+    },
+    {
+      "id": "SkqBNy-WmX",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "S1SP9lW7X"
+      },
+      "output": {
+        "nodeId": "B1YSVyZb7X",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyegrNJb-m7",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "rkE5B5xbXQ"
+      },
+      "output": {
+        "nodeId": "ry7BNy--mQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkjHVkbZQ7",
+      "input": {
+        "nodeId": "SygSEJZ-77",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "H15S9xWQX"
+      }
+    },
+    {
+      "id": "rywHyZ-XQ",
+      "input": {
+        "nodeId": "BJH4J-bXX",
+        "pinKey": "Hkygqrcx-mQ"
+      },
+      "output": {
+        "nodeId": "HkZry--mm",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "An internet connection",
+      "id": "B1YSVyZb7X",
+      "label": "INET",
+      "position": {
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "boundLiterals": {
+        "S1c9Hcl-7m": "\"POST\""
+      },
+      "id": "BJH4J-bXX",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/http-request"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "A domain name of the server",
+      "id": "BJUBVyW-QX",
+      "label": "HOST",
+      "position": {
+        "x": 65,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "description": "A path to the requested resource",
+      "id": "H1GH4kWWQ7",
+      "label": "PATH",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "The request body",
+      "id": "HkZry--mm",
+      "label": "BODY",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Additional headers",
+      "id": "SJDB4yWbmX",
+      "label": "HDRS",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses when a new response character is received",
+      "id": "SJSH41WWQX",
+      "label": "RCV",
+      "position": {
+        "x": 67,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses if the request failed",
+      "id": "SyVSV1bbX7",
+      "label": "ERR",
+      "position": {
+        "x": 203,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The last received character from the response",
+      "id": "SygSEJZ-77",
+      "label": "CHAR",
+      "position": {
+        "x": -1,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Initiate the request",
+      "id": "r1-H4y-bQX",
+      "label": "INIT",
+      "position": {
+        "x": 408,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when all response data is received and the connection is closed",
+      "id": "r1uBVJbWQQ",
+      "label": "END",
+      "position": {
+        "x": 135,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80",
+      "id": "ry7BNy--mQ",
+      "label": "PORT",
+      "position": {
+        "x": 133,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

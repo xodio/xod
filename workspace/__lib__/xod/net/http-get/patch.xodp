@@ -1,0 +1,237 @@
+{
+  "description": "Performs an HTTP GET request and returns the response as a stream of characters",
+  "links": [
+    {
+      "id": "B132AxWQQ",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "BJbecH5x-Xm"
+      },
+      "output": {
+        "nodeId": "SJuviRxZmm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByMnAxZmQ",
+      "input": {
+        "nodeId": "Hk7voRlZQX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "SJPcScgbQX"
+      }
+    },
+    {
+      "id": "HkynRe-QX",
+      "input": {
+        "nodeId": "rJrPsAgWXm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "S1sqHqebm7"
+      }
+    },
+    {
+      "id": "HyZhCeWm7",
+      "input": {
+        "nodeId": "SyKDiAgbXQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "SJGl9r9l-m7"
+      }
+    },
+    {
+      "id": "S1BhCg-77",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "S1geqrqgWmX"
+      },
+      "output": {
+        "nodeId": "HkPwjCgZmX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJpoAeZm7",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "S1SP9lW7X"
+      },
+      "output": {
+        "nodeId": "Bk5vjCxW7Q",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkIhAx-7X",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "rkE5B5xbXQ"
+      },
+      "output": {
+        "nodeId": "H1GDoAgWmQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy0iAxZQX",
+      "input": {
+        "nodeId": "SkDiRgZQX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "H15S9xWQX"
+      }
+    },
+    {
+      "id": "r1030ebQX",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "H1e9S9e-mQ"
+      },
+      "output": {
+        "nodeId": "rkxwo0lWmm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk9h0gZ7m",
+      "input": {
+        "nodeId": "r1CcCxb7X",
+        "pinKey": "HJzqrceZQm"
+      },
+      "output": {
+        "nodeId": "SkWvi0lWQ7",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "An internet connection",
+      "id": "Bk5vjCxW7Q",
+      "label": "INET",
+      "position": {
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80",
+      "id": "H1GDoAgWmQ",
+      "label": "PORT",
+      "position": {
+        "x": 133,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses if the request failed",
+      "id": "Hk7voRlZQX",
+      "label": "ERR",
+      "position": {
+        "x": 203,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "A domain name of the server",
+      "id": "HkPwjCgZmX",
+      "label": "HOST",
+      "position": {
+        "x": 65,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Additional headers",
+      "id": "SJuviRxZmm",
+      "label": "HDRS",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "The last received character from the response",
+      "id": "SkDiRgZQX",
+      "label": "CHAR",
+      "position": {
+        "x": -1,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "description": "A path to the requested resource",
+      "id": "SkWvi0lWQ7",
+      "label": "PATH",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses when all response data is received and the connection is closed",
+      "id": "SyKDiAgbXQ",
+      "label": "END",
+      "position": {
+        "x": 135,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1CcCxb7X",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/http-request"
+    },
+    {
+      "description": "Pulses when a new response character is received",
+      "id": "rJrPsAgWXm",
+      "label": "RCV",
+      "position": {
+        "x": 67,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Initiate the request",
+      "id": "rkxwo0lWmm",
+      "label": "INIT",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
