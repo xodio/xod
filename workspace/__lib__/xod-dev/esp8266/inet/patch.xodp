@@ -1,0 +1,51 @@
+{
+  "description": "Represents an internet connection",
+  "nodes": [
+    {
+      "id": "B1YazjXG7",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Local IP address",
+      "id": "Bk6fJYwzm",
+      "label": "IP",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/net/input-ip-address"
+    },
+    {
+      "description": "An ESP8266 device connected as internet provider",
+      "id": "By8zkKPfm",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "description": "An internet connection",
+      "id": "HkEpzjmG7",
+      "label": "INET",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "r1AJSauG7",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

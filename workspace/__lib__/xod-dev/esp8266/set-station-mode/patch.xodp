@@ -1,0 +1,53 @@
+{
+  "description": "Set ESP8266 in the station mode",
+  "nodes": [
+    {
+      "id": "BJwn87t-m",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An ESP8266 internet provider device",
+      "id": "Bk-iLQKZ7",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "description": "Set station mode",
+      "id": "HJHjLXYbQ",
+      "label": "SET",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses if answer did not received",
+      "id": "HyWhI7tbm",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when station mode setted successfully",
+      "id": "ry6iLQtbX",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

@@ -112,3 +112,4 @@ export * from './xodball';
 export * from './typeDeduction';
 export { default as messages } from './messages';
 export { ensureLiteral, migrateBoundValuesToBoundLiterals } from './legacy';
+export { sortGraph } from './gmath';

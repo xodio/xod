@@ -1,0 +1,219 @@
+{
+  "description": "Reads all available bytes from UART one by one.",
+  "links": [
+    {
+      "id": "B1hb4zYW7",
+      "input": {
+        "nodeId": "SJbWXMY-Q",
+        "pinKey": "rkytzGK-7"
+      },
+      "output": {
+        "nodeId": "HkYbVft-X",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "B1tX7fY-7",
+      "input": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "r1bXu3LWm"
+      },
+      "output": {
+        "nodeId": "SJbWXMY-Q",
+        "pinKey": "S1dYzzYWm"
+      }
+    },
+    {
+      "id": "BJSPaFmf7",
+      "input": {
+        "nodeId": "B1TNbyu-X",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "r17lKDnLW7"
+      }
+    },
+    {
+      "id": "BkCbNMKbX",
+      "input": {
+        "nodeId": "HkYbVft-X",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "rkc7Wyu-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkbTaFQMQ",
+      "input": {
+        "nodeId": "rkVBb1uZ7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "Skw_dnU-Q"
+      }
+    },
+    {
+      "id": "HkpB6K7fX",
+      "input": {
+        "nodeId": "r1_4-kdbm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "Hkeetvn8-Q"
+      }
+    },
+    {
+      "id": "HkzWZJO-Q",
+      "input": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "HkeKDhI-7"
+      },
+      "output": {
+        "nodeId": "SJaxW1ubX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy4WXfFZQ",
+      "input": {
+        "nodeId": "SJbWXMY-Q",
+        "pinKey": "By_OfMFW7"
+      },
+      "output": {
+        "nodeId": "SJaxW1ubX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkDDpYmfm",
+      "input": {
+        "nodeId": "rJ2IpKQMX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJbWXMY-Q",
+        "pinKey": "HJnKfztbm"
+      }
+    },
+    {
+      "id": "SkxGNzFZX",
+      "input": {
+        "nodeId": "HkYbVft-X",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJQWNzYb7",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "rknV6KXzQ",
+      "input": {
+        "nodeId": "rJQWNzYb7",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "HJKlW1dZm",
+        "pinKey": "Hkeetvn8-Q"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Pulses when error of reading new byte occured",
+      "id": "B1TNbyu-X",
+      "label": "ERR",
+      "position": {
+        "x": 238,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJKlW1dZm",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "@/read-byte"
+    },
+    {
+      "id": "HkYbVft-X",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "An UART object",
+      "id": "SJaxW1ubX",
+      "label": "UART",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "@/input-uart"
+    },
+    {
+      "id": "SJbWXMY-Q",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "@/is-available"
+    },
+    {
+      "description": "Pulses when new byte received",
+      "id": "r1_4-kdbm",
+      "label": "RCV",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when UART has no more available bytes to read",
+      "id": "rJ2IpKQMX",
+      "label": "END",
+      "position": {
+        "x": 306,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rJQWNzYb7",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "description": "The last received byte from the UART",
+      "id": "rkVBb1uZ7",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Trigger reading bytes from UART",
+      "id": "rkc7Wyu-m",
+      "label": "READ",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

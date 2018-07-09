@@ -109,6 +109,38 @@ describe('xod-arduino transpiler', () => {
           '@/cast-to-string(my-type)',
         ]);
       }));
+
+  it('correctly sorts construction patches', () => {
+    const xodball = path.resolve(
+      __dirname,
+      './fixtures/dependent-types.xodball'
+    );
+
+    return loadProject([wsPath()], xodball)
+      .then(transformProject(R.__, '@/main'))
+      .then(explodeEither)
+      .then(tProject => {
+        const actualPatchPaths = R.compose(
+          R.map(R.prop('patchPath')),
+          R.prop('patches')
+        )(tProject);
+
+        assert.deepEqual(actualPatchPaths, [
+          '@/independent-type',
+          '@/dependent-type',
+          '@/dependent-on-two',
+          '@/b',
+          'xod/core/constant-number',
+          '@/to-number',
+        ]);
+
+        // assert.strictEqual(
+        //   result,
+        //   expectedCpp,
+        //   'expected and actual C++ don’t match'
+        // )
+      });
+  });
 });
 
 describe('getNodeIdsMap', () => {

@@ -1,0 +1,56 @@
+{
+  "description": "Constructor of SoftwareUart, provides serial communication on any digital pins.",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "9600"
+      },
+      "description": "Speed of data transmission in bits per second (baud rate).",
+      "id": "Sy0-yt8ZQ",
+      "label": "BAUD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Digital port on the device for receiving data",
+      "id": "Syz-kKUWX",
+      "label": "RX",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Digital port on the device for transmiting data",
+      "id": "r1mZktLZm",
+      "label": "TX",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rJ6x1t8b7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An UART object",
+      "id": "rycxytIZQ",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/output-uart"
+    }
+  ]
+}

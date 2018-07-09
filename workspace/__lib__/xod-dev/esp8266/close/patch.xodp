@@ -1,0 +1,63 @@
+{
+  "description": "Closes an open TCP connection",
+  "nodes": [
+    {
+      "description": "A socket",
+      "id": "BJOL9baMX",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
+    },
+    {
+      "description": "Close the connection",
+      "id": "Bkfix0w5b7",
+      "label": "CLS",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the connection is closed",
+      "id": "HyloeRvqZX",
+      "label": "DONE",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when error occured",
+      "id": "r1NjgRvq-m",
+      "label": "ERR",
+      "position": {
+        "x": 67,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "rkW8SftM7",
+      "label": "INET",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    },
+    {
+      "id": "rkjxRwc-7",
+      "position": {
+        "x": 33,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

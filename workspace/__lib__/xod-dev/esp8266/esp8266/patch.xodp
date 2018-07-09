@@ -1,0 +1,324 @@
+{
+  "comments": [
+    {
+      "content": "<<< If error occured here it means that ESP already communicating with another baudrate (possibly, target baudrate), so just go further.\n\nIt could happen if board was not resetted before upload.",
+      "id": "HJQsQ7YWm",
+      "position": {
+        "x": 306,
+        "y": 306
+      },
+      "size": {
+        "height": 153,
+        "width": 340
+      }
+    }
+  ],
+  "description": "Initialize ESP8266 and configure it to communicate at a specific baud rate",
+  "links": [
+    {
+      "id": "BJrpLlObX",
+      "input": {
+        "nodeId": "rkN6UxuZX",
+        "pinKey": "rJV3I2I-Q"
+      },
+      "output": {
+        "nodeId": "B1u35TvW7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJtaUe_Zm",
+      "input": {
+        "nodeId": "HJSYExuW7",
+        "pinKey": "ryKmKaw-m"
+      },
+      "output": {
+        "nodeId": "rkN6UxuZX",
+        "pinKey": "B1SyPhUWm"
+      }
+    },
+    {
+      "id": "BkFF4g_bQ",
+      "input": {
+        "nodeId": "HJSYExuW7",
+        "pinKey": "HJc6c6DbQ"
+      },
+      "output": {
+        "nodeId": "B1u35TvW7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkXUwldbQ",
+      "input": {
+        "nodeId": "S1bUPlu-X",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "H1h4js8Zm"
+      }
+    },
+    {
+      "id": "HJ8DPld-7",
+      "input": {
+        "nodeId": "HJSYExuW7",
+        "pinKey": "HJmUM2IZQ"
+      },
+      "output": {
+        "nodeId": "SkGwvedbQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyRCukTMQ",
+      "input": {
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "r1Z43NYbX"
+      },
+      "output": {
+        "nodeId": "rk30OyaMX",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "Hyl1KJ6Mm",
+      "input": {
+        "nodeId": "rk30OyaMX",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "Hk3kwl_-X"
+      }
+    },
+    {
+      "id": "SJHLJI9-m",
+      "input": {
+        "nodeId": "BkpSyI9b7",
+        "pinKey": "HyBX8HqWX"
+      },
+      "output": {
+        "nodeId": "SkGwvedbQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJj9n_mMQ",
+      "input": {
+        "nodeId": "BkpSyI9b7",
+        "pinKey": "B1tHLS9Wm"
+      },
+      "output": {
+        "nodeId": "HJSYExuW7",
+        "pinKey": "BJpRMhI-X"
+      }
+    },
+    {
+      "id": "Sk11DluWm",
+      "input": {
+        "nodeId": "rkN6UxuZX",
+        "pinKey": "H16YPnI-Q"
+      },
+      "output": {
+        "nodeId": "SkoRLg_ZQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkDRd16GQ",
+      "input": {
+        "nodeId": "rJU0d1TGX",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "BypE34YZm"
+      }
+    },
+    {
+      "id": "SkZyVvcb7",
+      "input": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "rJPbiiLb7"
+      },
+      "output": {
+        "nodeId": "B1u35TvW7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Skm8JL9-Q",
+      "input": {
+        "nodeId": "BkpSyI9b7",
+        "pinKey": "Hkkm8Sq-X"
+      },
+      "output": {
+        "nodeId": "B1u35TvW7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy1snEFZX",
+      "input": {
+        "nodeId": "S1IevgdZX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "BkP4hVFZ7"
+      }
+    },
+    {
+      "id": "rJL5kIc-m",
+      "input": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "B1GyDl_ZX"
+      },
+      "output": {
+        "nodeId": "BkpSyI9b7",
+        "pinKey": "rkQEISqZX"
+      }
+    },
+    {
+      "id": "ryGKhNKZm",
+      "input": {
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "Bksm24tZ7"
+      },
+      "output": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "H1h4js8Zm"
+      }
+    },
+    {
+      "id": "ryJ1KJaGQ",
+      "input": {
+        "nodeId": "rk30OyaMX",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJU0d1TGX",
+        "pinKey": "HJhXDIY9-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "An UART interface to which ESP8266 is wired",
+      "id": "B1u35TvW7",
+      "label": "UART",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/uart/input-uart"
+    },
+    {
+      "id": "BkpSyI9b7",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/uart/change-baud-rate"
+    },
+    {
+      "boundLiterals": {
+        "HJmUM2IZQ": "9600",
+        "rk3nfhLWQ": "1"
+      },
+      "id": "HJSYExuW7",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "@/esp8266-config"
+    },
+    {
+      "description": "Pulses when ESP8266 initialized and configured",
+      "id": "S1IevgdZX",
+      "label": "DONE",
+      "position": {
+        "x": 170,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An ESP8266 device connected as an  internet provider",
+      "id": "S1bUPlu-X",
+      "label": "DEV",
+      "position": {
+        "x": 102,
+        "y": 714
+      },
+      "type": "@/output-esp8266-device"
+    },
+    {
+      "id": "S1m2qTw-Q",
+      "position": {
+        "x": 102,
+        "y": 510
+      },
+      "type": "@/esp8266-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "9600"
+      },
+      "description": "The target baud rate for communicating with ESP8266",
+      "id": "SkGwvedbQ",
+      "label": "BAUD",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Initialize ESP8266",
+      "id": "SkoRLg_ZQ",
+      "label": "INIT",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJU0d1TGX",
+      "position": {
+        "x": 238,
+        "y": 612
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "id": "rk30OyaMX",
+      "position": {
+        "x": 204,
+        "y": 510
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "rkN6UxuZX",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/uart/begin"
+    },
+    {
+      "id": "rkeK2VY-m",
+      "position": {
+        "x": 170,
+        "y": 612
+      },
+      "type": "@/kick"
+    }
+  ]
+}

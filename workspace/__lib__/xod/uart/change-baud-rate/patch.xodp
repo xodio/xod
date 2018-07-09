@@ -1,0 +1,53 @@
+{
+  "description": "Changes baud rate of passed UART object. If UART already has started communication it will end it up and begin again with new baud rate.",
+  "nodes": [
+    {
+      "description": "Trigger update baud rate",
+      "id": "B1tHLS9Wm",
+      "label": "UPD",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "An UART object",
+      "id": "Hkkm8Sq-X",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-uart"
+    },
+    {
+      "description": "A new baud rate to set",
+      "id": "HyBX8HqWX",
+      "label": "BAUD",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses when baud rate changed",
+      "id": "rkQEISqZX",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ryxU8H5-m",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

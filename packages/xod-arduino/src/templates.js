@@ -14,6 +14,8 @@ import programTpl from '../platform/program.tpl.cpp';
 import preambleH from '../platform/preamble.h';
 import listViewsH from '../platform/listViews.h';
 import listFuncsH from '../platform/listFuncs.h';
+import uartH from '../platform/uart.h';
+import memoryH from '../platform/memory.h';
 import stlH from '../platform/stl.h';
 import runtimeCpp from '../platform/runtime.cpp';
 
@@ -305,6 +307,8 @@ export const renderProject = def(
       config,
       stlH,
       listViewsH,
+      memoryH,
+      uartH,
       omitLocalIncludes(listFuncsH),
       runtimeCpp,
       impls,

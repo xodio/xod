@@ -1,0 +1,33 @@
+{
+  "description": "Gets a local IP address",
+  "nodes": [
+    {
+      "description": "An internet connection",
+      "id": "r1MjIjmMQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    },
+    {
+      "id": "rkj3Ij7Mm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A local IP address",
+      "id": "ryCpUsmMQ",
+      "label": "IP",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/net/output-ip-address"
+    }
+  ]
+}

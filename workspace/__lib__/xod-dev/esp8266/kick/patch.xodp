@@ -1,0 +1,53 @@
+{
+  "description": "Checks that ESP8266 initialized and answers for AT commands",
+  "nodes": [
+    {
+      "description": "Pulses when answer received",
+      "id": "BkP4hVFZ7",
+      "label": "OK",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An ESP8266 device connected as internet provider",
+      "id": "Bksm24tZ7",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "description": "Pulses when no answer received",
+      "id": "BypE34YZm",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJEHhNKbX",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Perform the check",
+      "id": "r1Z43NYbX",
+      "label": "KICK",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "description": "Constructor of HardwareUart, provides serial communication on default hardware serial ports.",
+  "nodes": [
+    {
+      "description": "An UART object",
+      "id": "ByJ65dU-X",
+      "label": "UART",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "115200"
+      },
+      "description": "Speed of data transmission in bits per second (baud rate).",
+      "id": "H1DwMu5bX",
+      "label": "BAUD",
+      "position": {
+        "x": 33,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1taqd8Z7",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

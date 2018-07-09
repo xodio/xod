@@ -1,0 +1,81 @@
+{
+  "description": "Establish an internet connection via Wi-Fi using ESP8266",
+  "nodes": [
+    {
+      "description": "Establish the connection\nconnect",
+      "id": "Bkketeubm",
+      "label": "CONN",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "S1_Gx3UZQ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Name of the Wi-Fi network",
+      "id": "SJXA13U-X",
+      "label": "SSID",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Wi-Fi network passwo",
+      "id": "SkJze3IbX",
+      "label": "PWD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses if the connection failed\n",
+      "id": "SyMXl3L-7",
+      "label": "ERR",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkrMNi7GQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "An ESP8266 device connected as internet provider",
+      "id": "ryC6138ZX",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "description": "Pulses on a successful connection\n",
+      "id": "ryRzln8Zm",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

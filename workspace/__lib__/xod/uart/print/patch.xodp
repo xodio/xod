@@ -1,0 +1,66 @@
+{
+  "description": "Writes a string bytes per byte into UART.",
+  "nodes": [
+    {
+      "id": "B1-6LFh8-7",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers write of a string into UART",
+      "id": "H1VpIKnLb7",
+      "label": "SEND",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "An UART object",
+      "id": "HkT8KhLWm",
+      "label": "UART",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "@/input-uart"
+    },
+    {
+      "description": "Pulses when something went wrong and all string was not written",
+      "id": "S1maLFnU-Q",
+      "label": "ERR",
+      "position": {
+        "x": 33,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when all String has been written",
+      "id": "rkl6IK3L-7",
+      "label": "DONE",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "String to be sent into UART.\nCould contain \"\\r\\n\" symbols to sent few lines.",
+      "id": "ryGwYhIZm",
+      "label": "DATA",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

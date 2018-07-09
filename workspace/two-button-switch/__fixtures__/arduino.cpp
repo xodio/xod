@@ -354,8 +354,8 @@ template<typename T> class ConcatListView : public ListView<T> {
 
   private:
     friend class Cursor;
-    const List<T> _left;
-    const List<T> _right;
+    List<T> _left;
+    List<T> _right;
 };
 
 //----------------------------------------------------------------------------
@@ -382,6 +382,131 @@ class XStringCString : public XString {
 } // namespace xod
 
 #endif
+
+/*=============================================================================
+ *
+ *
+ * Functions to work with memory
+ *
+ *
+ =============================================================================*/
+#ifndef XOD_NO_PLACEMENT_NEW
+// Placement `new` for Arduino
+void* operator new(size_t, void* ptr) {
+    return ptr;
+}
+#endif
+
+/*=============================================================================
+ *
+ *
+ * UART Classes, that wraps Serials
+ *
+ *
+ =============================================================================*/
+
+class HardwareSerial;
+class SoftwareSerial;
+
+namespace xod {
+
+class Uart {
+  private:
+    long _baud;
+
+  protected:
+    bool _started = false;
+
+  public:
+    Uart(long baud) {
+        _baud = baud;
+    }
+
+    virtual void begin() = 0;
+
+    virtual void end() = 0;
+
+    virtual void flush() = 0;
+
+    virtual bool available() = 0;
+
+    virtual bool writeByte(uint8_t) = 0;
+
+    virtual bool readByte(uint8_t*) = 0;
+
+    virtual SoftwareSerial* toSoftwareSerial() {
+      return nullptr;
+    }
+
+    virtual HardwareSerial* toHardwareSerial() {
+      return nullptr;
+    }
+
+    void changeBaudRate(long baud) {
+      _baud = baud;
+      if (_started) {
+        end();
+        begin();
+      }
+    }
+
+    long getBaudRate() const {
+      return _baud;
+    }
+
+    Stream* toStream() {
+      Stream* stream = (Stream*) toHardwareSerial();
+      if (stream) return stream;
+      return (Stream*) toSoftwareSerial();
+    }
+};
+
+class HardwareUart : public Uart {
+  private:
+    HardwareSerial* _serial;
+
+  public:
+    HardwareUart(HardwareSerial& hserial, uint32_t baud = 115200) : Uart(baud) {
+      _serial = &hserial;
+    }
+
+    void begin();
+    void end();
+    void flush();
+
+    bool available() {
+      return (bool) _serial->available();
+    }
+
+    bool writeByte(uint8_t byte) {
+      return (bool) _serial->write(byte);
+    }
+
+    bool readByte(uint8_t* out) {
+      int data = _serial->read();
+      if (data == -1) return false;
+      *out = data;
+      return true;
+    }
+
+    HardwareSerial* toHardwareSerial() {
+      return _serial;
+    }
+};
+
+void HardwareUart::begin() {
+  _started = true;
+  _serial->begin(getBaudRate());
+};
+void HardwareUart::end() {
+  _started = false;
+  _serial->end();
+};
+void HardwareUart::flush() {
+  _serial->flush();
+};
+
+} // namespace xod
 
 /*=============================================================================
  *
@@ -1191,13 +1316,25 @@ namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Number node_0_output_VAL = 12;
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Number node_1_output_VAL = 11;
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Number node_2_output_VAL = 13;
+#pragma GCC diagnostic pop
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_3_output_TICK = false;
+#pragma GCC diagnostic pop
 xod__core__continuously::Node node_3 = {
     xod__core__continuously::State(), // state default
     0, // timeoutAt
@@ -1206,7 +1343,10 @@ xod__core__continuously::Node node_3 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_4_output_SIG = false;
+#pragma GCC diagnostic pop
 xod__core__digital_input::Node node_4 = {
     xod__core__digital_input::State(), // state default
     node_4_output_SIG, // output SIG default
@@ -1214,7 +1354,10 @@ xod__core__digital_input::Node node_4 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_5_output_SIG = false;
+#pragma GCC diagnostic pop
 xod__core__digital_input::Node node_5 = {
     xod__core__digital_input::State(), // state default
     node_5_output_SIG, // output SIG default
@@ -1222,8 +1365,11 @@ xod__core__digital_input::Node node_5 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_6_output_T = false;
 constexpr Logic node_6_output_F = false;
+#pragma GCC diagnostic pop
 xod__core__branch::Node node_6 = {
     xod__core__branch::State(), // state default
     node_6_output_T, // output T default
@@ -1233,8 +1379,11 @@ xod__core__branch::Node node_6 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_7_output_T = false;
 constexpr Logic node_7_output_F = false;
+#pragma GCC diagnostic pop
 xod__core__branch::Node node_7 = {
     xod__core__branch::State(), // state default
     node_7_output_T, // output T default
@@ -1244,7 +1393,10 @@ xod__core__branch::Node node_7 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Logic node_8_output_MEM = false;
+#pragma GCC diagnostic pop
 xod__core__flip_flop::Node node_8 = {
     xod__core__flip_flop::State(), // state default
     node_8_output_MEM, // output MEM default
@@ -1252,6 +1404,9 @@ xod__core__flip_flop::Node node_8 = {
     true // node itself dirty
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+#pragma GCC diagnostic pop
 xod__core__digital_output::Node node_9 = {
     xod__core__digital_output::State(), // state default
     true // node itself dirty

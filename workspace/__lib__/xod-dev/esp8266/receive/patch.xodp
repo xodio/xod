@@ -1,0 +1,262 @@
+{
+  "description": "Read a response from an opened connection as a stream of bytes until it closes",
+  "links": [
+    {
+      "id": "BJoojo7G7",
+      "input": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "rklvsoQGm"
+      },
+      "output": {
+        "nodeId": "rJMIsjQMQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkXbAl_ff7",
+      "input": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "Bylu3eO9bQ"
+      },
+      "output": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "HkIVUAxzm"
+      }
+    },
+    {
+      "id": "BkghoKzMQ",
+      "input": {
+        "nodeId": "SybWRluGz7",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "H1xMoiFfMm",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "ByslctGf7",
+      "input": {
+        "nodeId": "BJN-og_zzm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "rJRkr0xfX"
+      }
+    },
+    {
+      "id": "HyIEyifz7",
+      "input": {
+        "nodeId": "H1xMoiFfMm",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "HJ-_3x_9WQ"
+      }
+    },
+    {
+      "id": "Hyx-qWTG7",
+      "input": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "Hkg0YZ6fQ"
+      },
+      "output": {
+        "nodeId": "HJaAFbTzQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1bgZOzGX",
+      "input": {
+        "nodeId": "SybWRluGz7",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "H15J-_zMQ",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "SJTgcZTGX",
+      "input": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "SkjkcZpfQ"
+      },
+      "output": {
+        "nodeId": "HJaAFbTzQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkV0YKfz7",
+      "input": {
+        "nodeId": "ByXZseuGGm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "rJEd3lucbQ"
+      }
+    },
+    {
+      "id": "Skpijo7f7",
+      "input": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "rytFismz7"
+      },
+      "output": {
+        "nodeId": "rJMIsjQMQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyVgbOMMX",
+      "input": {
+        "nodeId": "SybWRluGz7",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "Byl-jxOGGQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkJxW_fMQ",
+      "input": {
+        "nodeId": "H15J-_zMQ",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "B1bRgdMMX",
+        "pinKey": "rJEd3lucbQ"
+      }
+    },
+    {
+      "id": "ry-M2FMMX",
+      "input": {
+        "nodeId": "rJb-iluMG7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "S1nVLAgMX"
+      }
+    },
+    {
+      "id": "ryM-0xdffX",
+      "input": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "B1oX8RlMQ"
+      },
+      "output": {
+        "nodeId": "SybWRluGz7",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1bRgdMMX",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "@/receive-one-byte"
+    },
+    {
+      "description": "The last read byte",
+      "id": "BJN-og_zzm",
+      "label": "CHAR",
+      "position": {
+        "x": 0,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Pulses when a new byte is read",
+      "id": "ByXZseuGGm",
+      "label": "RCV",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Begin reading",
+      "id": "Byl-jxOGGQ",
+      "label": "BGN",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H15J-_zMQ",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "id": "H1xMoiFfMm",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "description": "A socket",
+      "id": "HJaAFbTzQ",
+      "label": "SOCK",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
+    },
+    {
+      "id": "S1lZAxOMfm",
+      "position": {
+        "x": -34,
+        "y": 204
+      },
+      "type": "@/is-open"
+    },
+    {
+      "arityLevel": 2,
+      "id": "SybWRluGz7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "An internet connection",
+      "id": "rJMIsjQMQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-inet"
+    },
+    {
+      "description": "Pulses when the connection is closed",
+      "id": "rJb-iluMG7",
+      "label": "CLS",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

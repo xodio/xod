@@ -12,9 +12,12 @@ namespace xod {
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 {{#each nodes}}
 {{~ mergePins }}
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 {{#each outputs }}
 {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
 {{/each}}
+#pragma GCC diagnostic pop
 {{#unless patch.isConstant}}
 {{ ns patch }}::Node node_{{ id }} = {
     {{ ns patch }}::State(), // state default

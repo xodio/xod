@@ -1,0 +1,222 @@
+{
+  "description": "Establish an internet connection via Wi-Fi using ESP8266",
+  "links": [
+    {
+      "id": "B1LfBjXGX",
+      "input": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "SkJze3IbX"
+      },
+      "output": {
+        "nodeId": "HkbN7Vj7fm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJLYLo7zX",
+      "input": {
+        "nodeId": "B1N47NimzX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJqfBoXfX",
+        "pinKey": "BJ7rhkFWQ"
+      }
+    },
+    {
+      "id": "BJgQSs7GQ",
+      "input": {
+        "nodeId": "BJqfBoXfX",
+        "pinKey": "HkQ7nkKbm"
+      },
+      "output": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "ryRzln8Zm"
+      }
+    },
+    {
+      "id": "HkB1ro7GX",
+      "input": {
+        "nodeId": "r1iQVs7fm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyyyriXM7",
+        "pinKey": "HkEpzjmG7"
+      }
+    },
+    {
+      "id": "HkPzSsXfX",
+      "input": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "Bkketeubm"
+      },
+      "output": {
+        "nodeId": "HkVQVo7fX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkQGrsQMQ",
+      "input": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "ryC6138ZX"
+      },
+      "output": {
+        "nodeId": "BJQEQEjmGm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJ0MBo7fX",
+      "input": {
+        "nodeId": "BJqfBoXfX",
+        "pinKey": "ByhGn1KbX"
+      },
+      "output": {
+        "nodeId": "BJQEQEjmGm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rktt8iXfX",
+      "input": {
+        "nodeId": "rkzN74sXzQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "SyMXl3L-7"
+      }
+    },
+    {
+      "id": "ryNfSimMQ",
+      "input": {
+        "nodeId": "SyffroXGQ",
+        "pinKey": "SJXA13U-X"
+      },
+      "output": {
+        "nodeId": "SJlVXVsQfX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryTl29PGm",
+      "input": {
+        "nodeId": "HyyyriXM7",
+        "pinKey": "Bk6fJYwzm"
+      },
+      "output": {
+        "nodeId": "BJqfBoXfX",
+        "pinKey": "ryWdIjmzX"
+      }
+    },
+    {
+      "id": "rynxhcDMX",
+      "input": {
+        "nodeId": "HyyyriXM7",
+        "pinKey": "By8zkKPfm"
+      },
+      "output": {
+        "nodeId": "BJQEQEjmGm",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Pulses on a successful connection\n",
+      "id": "B1N47NimzX",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An ESP8266 device connected as internet provider",
+      "id": "BJQEQEjmGm",
+      "label": "DEV",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "@/input-esp8266-device"
+    },
+    {
+      "id": "BJqfBoXfX",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/get-local-ip"
+    },
+    {
+      "description": "Establish the connection",
+      "id": "HkVQVo7fX",
+      "label": "CONN",
+      "position": {
+        "x": 101,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Wi-Fi network password",
+      "id": "HkbN7Vj7fm",
+      "label": "PWD",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "HyyyriXM7",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "@/inet"
+    },
+    {
+      "description": "Name of the Wi-Fi network",
+      "id": "SJlVXVsQfX",
+      "label": "SSID",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SyffroXGQ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/connect-wifi"
+    },
+    {
+      "description": "An internet connection",
+      "id": "r1iQVs7fm",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 408
+      },
+      "type": "@/output-inet"
+    },
+    {
+      "description": "Pulses if the connection failed\n",
+      "id": "rkzN74sXzQ",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
