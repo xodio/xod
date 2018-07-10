@@ -1,6 +1,140 @@
 {
   "name": "custom-types",
   "patches": {
+    "@/foo": {
+      "nodes": {
+        "Hkj0PGzXQ": {
+          "id": "Hkj0PGzXQ",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "SJ4AwMz7m": {
+          "id": "SJ4AwMz7m",
+          "position": {
+            "x": 102,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "rk_7_GGXX": {
+          "id": "rk_7_GGXX",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/abstract"
+        },
+        "rygB_fGQX": {
+          "id": "rygB_fGQX",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/foo"
+    },
+    "@/foo(vector-2d)": {
+      "comments": {
+        "SJN8dGfmm": {
+          "content": "totally artificial example of a specialization that uses abstract nodes",
+          "id": "SJN8dGfmm",
+          "position": {
+            "x": 238,
+            "y": 0
+          },
+          "size": {
+            "height": 51,
+            "width": 272
+          }
+        }
+      },
+      "links": {
+        "BJ4ouMG7m": {
+          "id": "BJ4ouMG7m",
+          "input": {
+            "nodeId": "BkWiuGMmm",
+            "pinKey": "ry7XIOaYJX"
+          },
+          "output": {
+            "nodeId": "S1SY_zMmm",
+            "pinKey": "__out__"
+          }
+        },
+        "BycjuzfmX": {
+          "id": "BycjuzfmX",
+          "input": {
+            "nodeId": "BkWiuGMmm",
+            "pinKey": "SkxQIOaFyQ"
+          },
+          "output": {
+            "nodeId": "rJqtOMzXX",
+            "pinKey": "__out__"
+          }
+        },
+        "HJoiuMMQm": {
+          "id": "HJoiuMMQm",
+          "input": {
+            "nodeId": "BkWiuGMmm",
+            "pinKey": "rJfmLdTFym"
+          },
+          "output": {
+            "nodeId": "rJqtOMzXX",
+            "pinKey": "__out__"
+          }
+        },
+        "SkUjuMMmX": {
+          "id": "SkUjuMMmX",
+          "input": {
+            "nodeId": "HkG9_GfXX",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "BkWiuGMmm",
+            "pinKey": "Bk87LupFy7"
+          }
+        }
+      },
+      "nodes": {
+        "BkWiuGMmm": {
+          "id": "BkWiuGMmm",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "@/nth-input"
+        },
+        "HkG9_GfXX": {
+          "id": "HkG9_GfXX",
+          "position": {
+            "x": 68,
+            "y": 408
+          },
+          "type": "@/output-vector-2d"
+        },
+        "S1SY_zMmm": {
+          "id": "S1SY_zMmm",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "rJqtOMzXX": {
+          "id": "rJqtOMzXX",
+          "position": {
+            "x": 170,
+            "y": 0
+          },
+          "type": "@/input-vector-2d"
+        }
+      },
+      "path": "@/foo(vector-2d)"
+    },
     "@/if-else": {
       "nodes": {
         "HJFwO6FJm": {
@@ -157,6 +291,28 @@
     },
     "@/main": {
       "links": {
+        "B1sCOGf7X": {
+          "id": "B1sCOGf7X",
+          "input": {
+            "nodeId": "HJPCufGXX",
+            "pinKey": "H1rJKpKy7"
+          },
+          "output": {
+            "nodeId": "HylCOGMQX",
+            "pinKey": "Hkj0PGzXQ"
+          }
+        },
+        "HJH0uMMQm": {
+          "id": "HJH0uMMQm",
+          "input": {
+            "nodeId": "HylCOGMQX",
+            "pinKey": "SJ4AwMz7m"
+          },
+          "output": {
+            "nodeId": "SJ0Ydpt1m",
+            "pinKey": "HyZNWdTK1Q"
+          }
+        },
         "S1DYO6tJQ": {
           "id": "S1DYO6tJQ",
           "input": {
@@ -192,6 +348,22 @@
         }
       },
       "nodes": {
+        "HJPCufGXX": {
+          "id": "HJPCufGXX",
+          "position": {
+            "x": 476,
+            "y": 408
+          },
+          "type": "@/vector-2d-to-x-y"
+        },
+        "HylCOGMQX": {
+          "id": "HylCOGMQX",
+          "position": {
+            "x": 476,
+            "y": 204
+          },
+          "type": "@/foo"
+        },
         "SJ0Ydpt1m": {
           "boundLiterals": {
             "rJEbuTFyX": "56",

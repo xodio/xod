@@ -534,8 +534,14 @@ const findOrCreateSpecialization = R.curry(
       )(project);
     }
 
-    const specialization = R.head(matchingSpecializations);
-    return Either.of([Patch.getPatchPath(specialization), project]);
+    const specializationPatchPath = R.compose(Patch.getPatchPath, R.head)(
+      matchingSpecializations
+    );
+    return R.compose(
+      R.map(R.pair(specializationPatchPath)),
+      // in case specialization itself uses generic nodes
+      autoresolveTypes(specializationPatchPath)
+    )(project);
   }
 );
 
