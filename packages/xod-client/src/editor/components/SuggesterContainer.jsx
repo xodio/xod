@@ -32,7 +32,7 @@ class SuggesterContainer extends React.Component {
 
   getScrollPosition() {
     if (this.scrollRef) {
-      const contentWrapper = this.scrollRef.refs.contentWrapper;
+      const contentWrapper = this.scrollRef.contentWrapper;
 
       const highlighted = contentWrapper.getElementsByClassName(
         'is-highlighted'

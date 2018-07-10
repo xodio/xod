@@ -9763,9 +9763,9 @@ react-contextmenu@^2.9.1:
     classnames "^2.2.5"
     object-assign "^4.1.0"
 
-react-custom-scroll@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-custom-scroll/-/react-custom-scroll-2.0.1.tgz#4775761a48d66c4b1e576c0705fc6a59fc0d89b6"
+react-custom-scroll@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/react-custom-scroll/-/react-custom-scroll-3.2.2.tgz#c22dab0c3eab0138cb8d8afd1565c835feb01b6a"
 
 react-dnd-html5-backend@^2.5.1:
   version "2.5.4"

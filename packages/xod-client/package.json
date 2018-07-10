@@ -33,7 +33,7 @@
     "react-codemirror": "^1.0.0",
     "react-collapsible": "^2.0.3",
     "react-contextmenu": "^2.9.1",
-    "react-custom-scroll": "^2.0.0",
+    "react-custom-scroll": "^3.2.2",
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
     "react-dom": "^16.2",

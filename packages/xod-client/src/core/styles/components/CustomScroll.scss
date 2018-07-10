@@ -18,6 +18,13 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
+    &::-webkit-scrollbar {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      width: 0;
+    }
+
     &:after{
       content: '';
       position: absolute;
