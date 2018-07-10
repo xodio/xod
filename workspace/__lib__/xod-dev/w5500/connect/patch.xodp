@@ -1,14 +1,88 @@
 {
-  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
-  "nodes": [
+  "comments": [
     {
-      "id": "BJXXLBwPfQ",
+      "content": "give everything else a chance to initialize before `connect` blocks execution",
+      "id": "S1T3RAg77",
       "position": {
-        "x": -1,
-        "y": 101
+        "x": 102,
+        "y": 102
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "size": {
+        "height": 51,
+        "width": 272
+      }
+    }
+  ],
+  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
+  "links": [
+    {
+      "id": "BJ-ApRx7m",
+      "input": {
+        "nodeId": "H1b7LrDPGm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rynaT0e7Q",
+        "pinKey": "H1b7LrDPGm"
+      }
     },
+    {
+      "id": "BJSJRRl7Q",
+      "input": {
+        "nodeId": "rynaT0e7Q",
+        "pinKey": "BJfXLrPDzm"
+      },
+      "output": {
+        "nodeId": "r1G10Al7X",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "H1QRTClQm",
+      "input": {
+        "nodeId": "ryx7LHwPfm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rynaT0e7Q",
+        "pinKey": "ryx7LHwPfm"
+      }
+    },
+    {
+      "id": "HJU1CAxQm",
+      "input": {
+        "nodeId": "r1G10Al7X",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "BJfXLrPDzm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyxCp0x77",
+      "input": {
+        "nodeId": "rJ6H7ovfQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rynaT0e7Q",
+        "pinKey": "rJ6H7ovfQ"
+      }
+    },
+    {
+      "id": "SJ0ppAx7Q",
+      "input": {
+        "nodeId": "rynaT0e7Q",
+        "pinKey": "HkhKBPPfX"
+      },
+      "output": {
+        "nodeId": "HkhKBPPfX",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
     {
       "boundLiterals": {
         "__out__": "On Boot"
@@ -17,7 +91,7 @@
       "id": "BJfXLrPDzm",
       "label": "CONN",
       "position": {
-        "x": 102,
+        "x": 68,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -27,8 +101,8 @@
       "id": "H1b7LrDPGm",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 204
+        "x": 68,
+        "y": 306
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -43,22 +117,38 @@
       "type": "@/input-ethernet-shield-device"
     },
     {
+      "id": "r1G10Al7X",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/core/defer"
+    },
+    {
       "description": "An internet connection",
       "id": "rJ6H7ovfQ",
       "label": "INET",
       "position": {
         "x": 0,
-        "y": 204
+        "y": 306
       },
       "type": "@/output-inet"
+    },
+    {
+      "id": "rynaT0e7Q",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/connect-blocking"
     },
     {
       "description": "Pulses if the connection failed",
       "id": "ryx7LHwPfm",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "x": 136,
+        "y": 306
       },
       "type": "xod/patch-nodes/output-pulse"
     }

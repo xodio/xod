@@ -1,0 +1,74 @@
+{
+  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
+  "nodes": [
+    {
+      "id": "BJXXLBwPfQ",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Establish the connection",
+      "id": "BJfXLrPDzm",
+      "label": "CONN",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "ByF36Re7Q",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Pulses on a successful connection",
+      "id": "H1b7LrDPGm",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A W5500-based internet provider device",
+      "id": "HkhKBPPfX",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-ethernet-shield-device"
+    },
+    {
+      "description": "An internet connection",
+      "id": "rJ6H7ovfQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-inet"
+    },
+    {
+      "description": "Pulses if the connection failed",
+      "id": "ryx7LHwPfm",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

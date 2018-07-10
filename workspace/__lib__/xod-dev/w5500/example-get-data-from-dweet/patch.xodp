@@ -11,18 +11,6 @@
         "height": 51,
         "width": 442
       }
-    },
-    {
-      "content": "`connect-dhcp` is blocking.\nGive lcd-display a chance to update",
-      "id": "SJdsubtwM7",
-      "position": {
-        "x": 306,
-        "y": 204
-      },
-      "size": {
-        "height": 51,
-        "width": 204
-      }
     }
   ],
   "links": [
@@ -93,17 +81,6 @@
       }
     },
     {
-      "id": "By8s_WFDGX",
-      "input": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "BJfXLrPDzm"
-      },
-      "output": {
-        "nodeId": "HkZiObFPfm",
-        "pinKey": "HJhXDIY9-"
-      }
-    },
-    {
       "id": "ByemSsPGX",
       "input": {
         "nodeId": "Sy3fSoPzX",
@@ -145,17 +122,6 @@
       "output": {
         "nodeId": "BJwS3FmMX",
         "pinKey": "rkWHDAW_f"
-      }
-    },
-    {
-      "id": "HkNsuWtvzQ",
-      "input": {
-        "nodeId": "HkZiObFPfm",
-        "pinKey": "BJI7P8t9Z"
-      },
-      "output": {
-        "nodeId": "Hysd-tDzX",
-        "pinKey": "ryVmUAOrvkb"
       }
     },
     {
@@ -494,14 +460,6 @@
       "type": "xod/net/mac-address"
     },
     {
-      "id": "HkZiObFPfm",
-      "position": {
-        "x": 272,
-        "y": 204
-      },
-      "type": "xod/core/defer"
-    },
-    {
       "boundLiterals": {
         "B1TSE9tZ-": "\"IP:\"",
         "H1bLN9F-b": "\"\"",
@@ -513,14 +471,6 @@
         "y": 1020
       },
       "type": "xod/common-hardware/text-lcd-16x2-i2c"
-    },
-    {
-      "id": "Hysd-tDzX",
-      "position": {
-        "x": 408,
-        "y": 102
-      },
-      "type": "xod/core/boot"
     },
     {
       "id": "SJQsuZKDMX",

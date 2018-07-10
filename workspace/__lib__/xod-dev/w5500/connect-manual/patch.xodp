@@ -1,5 +1,131 @@
 {
+  "comments": [
+    {
+      "content": "give everything else a chance to initialize before `connect` blocks execution",
+      "id": "r1NFR0e7X",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 272
+      }
+    }
+  ],
   "description": "Establish an internet connection configured manually",
+  "links": [
+    {
+      "id": "BkVfCCxXX",
+      "input": {
+        "nodeId": "H1ZLMdSLWQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "H1ZLMdSLWQ"
+      }
+    },
+    {
+      "id": "ByFzCReX7",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "rkuXdr8-Q"
+      },
+      "output": {
+        "nodeId": "rkuXdr8-Q",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BykmARxm7",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "r1XbSzFz7"
+      },
+      "output": {
+        "nodeId": "r1XbSzFz7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJZVRAlX7",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "Syz8zur8WQ"
+      },
+      "output": {
+        "nodeId": "BkhXCAlXQ",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "HyjG0CeQX",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "rkZSNzKz7"
+      },
+      "output": {
+        "nodeId": "rkZSNzKz7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S11VCRxXQ",
+      "input": {
+        "nodeId": "BkhXCAlXQ",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "Syz8zur8WQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkIGCAgmm",
+      "input": {
+        "nodeId": "rkgIz_SLW7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "rkgIz_SLW7"
+      }
+    },
+    {
+      "id": "r1ffAAlm7",
+      "input": {
+        "nodeId": "B1UUEfYMX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "B1UUEfYMX"
+      }
+    },
+    {
+      "id": "r1uf0CeX7",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "rygPuMYz7"
+      },
+      "output": {
+        "nodeId": "rygPuMYz7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rypGCAxQX",
+      "input": {
+        "nodeId": "HJ6-RRlQm",
+        "pinKey": "HyVxSMFzQ"
+      },
+      "output": {
+        "nodeId": "HyVxSMFzQ",
+        "pinKey": "__out__"
+      }
+    }
+  ],
   "nodes": [
     {
       "description": "The internet connection",
@@ -7,17 +133,17 @@
       "label": "INET",
       "position": {
         "x": 0,
-        "y": 204
+        "y": 306
       },
       "type": "@/output-inet"
     },
     {
-      "id": "BkXLMdSIWm",
+      "id": "BkhXCAlXQ",
       "position": {
-        "x": -1,
-        "y": 101
+        "x": 272,
+        "y": 102
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "type": "xod/core/defer"
     },
     {
       "description": "Pulses on a successful connection",
@@ -25,16 +151,24 @@
       "label": "DONE",
       "position": {
         "x": 102,
-        "y": 204
+        "y": 306
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJ6-RRlQm",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/connect-manual-blocking"
     },
     {
       "description": "An IP address of the gateway. Defaults to `IP` with the last octet being `1`",
       "id": "HyVxSMFzQ",
       "label": "GTW",
       "position": {
-        "x": 238,
+        "x": 204,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -47,7 +181,7 @@
       "id": "Syz8zur8WQ",
       "label": "CONN",
       "position": {
-        "x": 374,
+        "x": 340,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -57,7 +191,7 @@
       "id": "r1XbSzFz7",
       "label": "SBN",
       "position": {
-        "x": 306,
+        "x": 272,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -67,7 +201,7 @@
       "id": "rkZSNzKz7",
       "label": "DNS",
       "position": {
-        "x": 170,
+        "x": 136,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -78,7 +212,7 @@
       "label": "ERR",
       "position": {
         "x": 204,
-        "y": 204
+        "y": 306
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -87,7 +221,7 @@
       "id": "rkuXdr8-Q",
       "label": "IP",
       "position": {
-        "x": 102,
+        "x": 68,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
