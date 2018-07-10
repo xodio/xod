@@ -114,7 +114,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-ethernet-shield-device"
+      "type": "@/input-w5500-device"
     },
     {
       "id": "r1G10Al7X",

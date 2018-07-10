@@ -234,7 +234,7 @@
         "x": -2,
         "y": -2
       },
-      "type": "@/input-ethernet-shield-device"
+      "type": "@/input-w5500-device"
     }
   ]
 }

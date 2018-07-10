@@ -48,7 +48,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-ethernet-shield-device"
+      "type": "@/input-w5500-device"
     },
     {
       "description": "An internet connection",

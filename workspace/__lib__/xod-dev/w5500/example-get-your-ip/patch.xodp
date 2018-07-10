@@ -12,17 +12,6 @@
       }
     },
     {
-      "id": "BJmhHPPfQ",
-      "input": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "HkhKBPPfX"
-      },
-      "output": {
-        "nodeId": "HJlrfkEMm",
-        "pinKey": "SJfNS0XfX"
-      }
-    },
-    {
       "id": "Bko0TFmfm",
       "input": {
         "nodeId": "B1-jimffX",
@@ -34,25 +23,14 @@
       }
     },
     {
-      "id": "By-kUwwMQ",
+      "id": "H1HgOmGXQ",
       "input": {
-        "nodeId": "r1yCTFQGX",
-        "pinKey": "rJUjrCTUb"
+        "nodeId": "SJrwBjPMQ",
+        "pinKey": "Sk9A4oDMm"
       },
       "output": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "H1b7LrDPGm"
-      }
-    },
-    {
-      "id": "H1OY7ivGX",
-      "input": {
-        "nodeId": "HkZ1lKDMX",
-        "pinKey": "rJsfmiDfQ"
-      },
-      "output": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "rJ6H7ovfQ"
+        "nodeId": "BJo1OQMQm",
+        "pinKey": "SJmf7PmzX7"
       }
     },
     {
@@ -67,14 +45,14 @@
       }
     },
     {
-      "id": "Hk3SMyEzm",
+      "id": "HJLbOmG7m",
       "input": {
-        "nodeId": "HJlrfkEMm",
-        "pinKey": "rkKSHAXMQ"
+        "nodeId": "HkZ1lKDMX",
+        "pinKey": "rJsfmiDfQ"
       },
       "output": {
-        "nodeId": "rJMFpLF0-7",
-        "pinKey": "SJqcJZSW7"
+        "nodeId": "BJo1OQMQm",
+        "pinKey": "SJmf7PmzX7"
       }
     },
     {
@@ -100,6 +78,17 @@
       }
     },
     {
+      "id": "S1AxOmfXX",
+      "input": {
+        "nodeId": "HkZ1lKDMX",
+        "pinKey": "rkIxO_wfm"
+      },
+      "output": {
+        "nodeId": "BJo1OQMQm",
+        "pinKey": "B1eGmvQMQm"
+      }
+    },
+    {
       "id": "S1uCpYQGX",
       "input": {
         "nodeId": "BkYKp8YCZm",
@@ -108,6 +97,17 @@
       "output": {
         "nodeId": "r1yCTFQGX",
         "pinKey": "S1yaHC6UW"
+      }
+    },
+    {
+      "id": "SJBCo7GQ7",
+      "input": {
+        "nodeId": "r1yCTFQGX",
+        "pinKey": "rygjH06LW"
+      },
+      "output": {
+        "nodeId": "HyjY6UKRbQ",
+        "pinKey": "By1xaQb-m"
       }
     },
     {
@@ -130,28 +130,6 @@
       "output": {
         "nodeId": "SJrwBjPMQ",
         "pinKey": "r15ySjwzQ"
-      }
-    },
-    {
-      "id": "SyrMxFPz7",
-      "input": {
-        "nodeId": "HkZ1lKDMX",
-        "pinKey": "rkIxO_wfm"
-      },
-      "output": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "H1b7LrDPGm"
-      }
-    },
-    {
-      "id": "SytwSiPG7",
-      "input": {
-        "nodeId": "SJrwBjPMQ",
-        "pinKey": "Sk9A4oDMm"
-      },
-      "output": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "rJ6H7ovfQ"
       }
     },
     {
@@ -185,6 +163,17 @@
       "output": {
         "nodeId": "Skg7RtXGm",
         "pinKey": "S1yaHC6UW"
+      }
+    },
+    {
+      "id": "rJH4Z4f7Q",
+      "input": {
+        "nodeId": "r1yCTFQGX",
+        "pinKey": "rJUjrCTUb"
+      },
+      "output": {
+        "nodeId": "BJo1OQMQm",
+        "pinKey": "B1eGmvQMQm"
       }
     },
     {
@@ -232,25 +221,14 @@
       }
     },
     {
-      "id": "ry7l8PwG7",
+      "id": "ryjldQfXX",
       "input": {
         "nodeId": "r1yCTFQGX",
         "pinKey": "rJUjrCTUb-$1"
       },
       "output": {
-        "nodeId": "SJoiSDPz7",
-        "pinKey": "ryx7LHwPfm"
-      }
-    },
-    {
-      "id": "ryJ1RYXzQ",
-      "input": {
-        "nodeId": "r1yCTFQGX",
-        "pinKey": "rygjH06LW"
-      },
-      "output": {
-        "nodeId": "HyjY6UKRbQ",
-        "pinKey": "By1xaQb-m"
+        "nodeId": "BJo1OQMQm",
+        "pinKey": "HyrGXPmMQ7"
       }
     }
   ],
@@ -262,6 +240,14 @@
         "y": 816
       },
       "type": "xod/core/any"
+    },
+    {
+      "id": "BJo1OQMQm",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "@/ethernet-shield"
     },
     {
       "boundLiterals": {
@@ -301,17 +287,6 @@
     },
     {
       "boundLiterals": {
-        "HyvDHC7G7": "D10"
-      },
-      "id": "HJlrfkEMm",
-      "position": {
-        "x": 170,
-        "y": 102
-      },
-      "type": "@/ethernet-shield-device"
-    },
-    {
-      "boundLiterals": {
         "S1x50vdwz7": "\"/httpbin/ip\"",
         "Sk5CwuDGX": "\"api.xod.io\""
       },
@@ -340,14 +315,6 @@
         "y": 612
       },
       "type": "xod/net/format-ip"
-    },
-    {
-      "id": "SJoiSDPz7",
-      "position": {
-        "x": 170,
-        "y": 204
-      },
-      "type": "@/connect"
     },
     {
       "id": "SJrwBjPMQ",
@@ -384,22 +351,6 @@
         "y": 714
       },
       "type": "xod/core/select"
-    },
-    {
-      "boundLiterals": {
-        "H1GI-g-SW7": "EFh",
-        "HkZ8bgWBZ7": "BEh",
-        "HyUblWBbQ": "DEh",
-        "HylLbx-S-X": "ADh",
-        "SJVUWgWHWm": "EDh",
-        "ryXU-eWSbQ": "FEh"
-      },
-      "id": "rJMFpLF0-7",
-      "position": {
-        "x": 170,
-        "y": 0
-      },
-      "type": "xod/net/mac-address"
     }
   ]
 }
