@@ -48,6 +48,17 @@
       }
     },
     {
+      "id": "B1ScumfQm",
+      "input": {
+        "nodeId": "Sy3fSoPzX",
+        "pinKey": "Sk9A4oDMm"
+      },
+      "output": {
+        "nodeId": "SJxudQzQm",
+        "pinKey": "SJmf7PmzX7"
+      }
+    },
+    {
       "id": "B1lCnYmGX",
       "input": {
         "nodeId": "ryy32Fmf7",
@@ -70,36 +81,14 @@
       }
     },
     {
-      "id": "BJvcWFPG7",
-      "input": {
-        "nodeId": "BJwS3FmMX",
-        "pinKey": "rJUjrCTUb-$1"
-      },
-      "output": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "ryx7LHwPfm"
-      }
-    },
-    {
-      "id": "ByemSsPGX",
-      "input": {
-        "nodeId": "Sy3fSoPzX",
-        "pinKey": "Sk9A4oDMm"
-      },
-      "output": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "rJ6H7ovfQ"
-      }
-    },
-    {
-      "id": "ByppXFDM7",
+      "id": "BJ1Y_XMXX",
       "input": {
         "nodeId": "rJUC-Clz7",
         "pinKey": "ryv7IRdSP1b"
       },
       "output": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "H1b7LrDPGm"
+        "nodeId": "SJxudQzQm",
+        "pinKey": "B1eGmvQMQm"
       }
     },
     {
@@ -125,6 +114,28 @@
       }
     },
     {
+      "id": "HJHF_Qzmm",
+      "input": {
+        "nodeId": "BJwS3FmMX",
+        "pinKey": "rJUjrCTUb-$1"
+      },
+      "output": {
+        "nodeId": "SJxudQzQm",
+        "pinKey": "HyrGXPmMQ7"
+      }
+    },
+    {
+      "id": "HkEuuQz7X",
+      "input": {
+        "nodeId": "HJRobYvGm",
+        "pinKey": "rJsfmiDfQ"
+      },
+      "output": {
+        "nodeId": "SJxudQzQm",
+        "pinKey": "SJmf7PmzX7"
+      }
+    },
+    {
       "id": "HyNbTY7G7",
       "input": {
         "nodeId": "Hkx1uZAeMQ",
@@ -147,17 +158,6 @@
       }
     },
     {
-      "id": "S1EaNsDMm",
-      "input": {
-        "nodeId": "HJRobYvGm",
-        "pinKey": "rJsfmiDfQ"
-      },
-      "output": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "rJ6H7ovfQ"
-      }
-    },
-    {
       "id": "S1Rt3KQz7",
       "input": {
         "nodeId": "Hkx1uZAeMQ",
@@ -177,17 +177,6 @@
       "output": {
         "nodeId": "HJ-mdCeGX",
         "pinKey": "HJhXDIY9-"
-      }
-    },
-    {
-      "id": "S1wjO-tvz7",
-      "input": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "HkhKBPPfX"
-      },
-      "output": {
-        "nodeId": "HJfiObFDMQ",
-        "pinKey": "SJfNS0XfX"
       }
     },
     {
@@ -221,6 +210,17 @@
       "output": {
         "nodeId": "HJRobYvGm",
         "pinKey": "S1RETdDM7"
+      }
+    },
+    {
+      "id": "SkztO7MQ7",
+      "input": {
+        "nodeId": "BJwS3FmMX",
+        "pinKey": "rJUjrCTUb"
+      },
+      "output": {
+        "nodeId": "SJxudQzQm",
+        "pinKey": "B1eGmvQMQm"
       }
     },
     {
@@ -265,17 +265,6 @@
       "output": {
         "nodeId": "HJRobYvGm",
         "pinKey": "r1ZRN6uvMQ"
-      }
-    },
-    {
-      "id": "r1SjubYwfX",
-      "input": {
-        "nodeId": "HJfiObFDMQ",
-        "pinKey": "rkKSHAXMQ"
-      },
-      "output": {
-        "nodeId": "HJxsubFDMm",
-        "pinKey": "SJqcJZSW7"
       }
     },
     {
@@ -342,17 +331,6 @@
       "output": {
         "nodeId": "ryy32Fmf7",
         "pinKey": "rkWHDAW_f"
-      }
-    },
-    {
-      "id": "ry4q-tDGX",
-      "input": {
-        "nodeId": "BJwS3FmMX",
-        "pinKey": "rJUjrCTUb"
-      },
-      "output": {
-        "nodeId": "SJQsuZKDMX",
-        "pinKey": "H1b7LrDPGm"
       }
     },
     {
@@ -430,34 +408,7 @@
         "x": 544,
         "y": 204
       },
-      "type": "@/http-request(inet)"
-    },
-    {
-      "boundLiterals": {
-        "HyvDHC7G7": "D10"
-      },
-      "id": "HJfiObFDMQ",
-      "position": {
-        "x": 170,
-        "y": 204
-      },
-      "type": "@/ethernet-shield-device"
-    },
-    {
-      "boundLiterals": {
-        "H1GI-g-SW7": "EFh",
-        "HkZ8bgWBZ7": "BEh",
-        "HyUblWBbQ": "DEh",
-        "HylLbx-S-X": "ADh",
-        "SJVUWgWHWm": "EDh",
-        "ryXU-eWSbQ": "FEh"
-      },
-      "id": "HJxsubFDMm",
-      "position": {
-        "x": 170,
-        "y": 102
-      },
-      "type": "xod/net/mac-address"
+      "type": "@/http-request(w5500-inet)"
     },
     {
       "boundLiterals": {
@@ -473,12 +424,12 @@
       "type": "xod/common-hardware/text-lcd-16x2-i2c"
     },
     {
-      "id": "SJQsuZKDMX",
+      "id": "SJxudQzQm",
       "position": {
-        "x": 170,
-        "y": 306
+        "x": 102,
+        "y": 0
       },
-      "type": "@/connect"
+      "type": "@/ethernet-shield"
     },
     {
       "id": "Sy3fSoPzX",

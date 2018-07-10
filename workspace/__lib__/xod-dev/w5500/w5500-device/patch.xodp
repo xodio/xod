@@ -1,5 +1,5 @@
 {
-  "description": "Represents a W5500-based Ethernet Shield device",
+  "description": "Represents a W5500-based ethernet device",
   "nodes": [
     {
       "boundLiterals": {

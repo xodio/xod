@@ -435,7 +435,7 @@
         "x": 34,
         "y": 0
       },
-      "type": "@/input-inet"
+      "type": "@/input-w5500-inet"
     },
     {
       "description": "Begin the request",

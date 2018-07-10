@@ -178,7 +178,7 @@
         "x": 0,
         "y": 306
       },
-      "type": "@/inet"
+      "type": "@/esp8266-inet"
     },
     {
       "description": "Name of the Wi-Fi network",
@@ -206,7 +206,7 @@
         "x": 0,
         "y": 408
       },
-      "type": "@/output-inet"
+      "type": "@/output-esp8266-inet"
     },
     {
       "description": "Pulses if the connection failed\n",

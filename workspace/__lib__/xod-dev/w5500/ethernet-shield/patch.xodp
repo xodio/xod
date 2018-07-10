@@ -1,0 +1,151 @@
+{
+  "description": "Initialise w5500-based ethernet shield and establish internet connection",
+  "links": [
+    {
+      "id": "BkaVvmzXQ",
+      "input": {
+        "nodeId": "HyrGXPmMQ7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByZZgDmzmm",
+        "pinKey": "ryx7LHwPfm"
+      }
+    },
+    {
+      "id": "ByiNw7MQQ",
+      "input": {
+        "nodeId": "B1eGmvQMQm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByZZgDmzmm",
+        "pinKey": "H1b7LrDPGm"
+      }
+    },
+    {
+      "id": "HJ9bF7M77",
+      "input": {
+        "nodeId": "ByZZgDmzmm",
+        "pinKey": "BJfXLrPDzm"
+      },
+      "output": {
+        "nodeId": "Bkf7wmGXX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hyf-lDXzmQ",
+      "input": {
+        "nodeId": "ByZZgDmzmm",
+        "pinKey": "HkhKBPPfX"
+      },
+      "output": {
+        "nodeId": "SkWevXGQQ",
+        "pinKey": "SJfNS0XfX"
+      }
+    },
+    {
+      "id": "SJXblvmGXm",
+      "input": {
+        "nodeId": "SkWevXGQQ",
+        "pinKey": "rkKSHAXMQ"
+      },
+      "output": {
+        "nodeId": "r1lWgwmzQm",
+        "pinKey": "SJqcJZSW7"
+      }
+    },
+    {
+      "id": "rJ5NvXMm7",
+      "input": {
+        "nodeId": "SJmf7PmzX7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByZZgDmzmm",
+        "pinKey": "rJ6H7ovfQ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Pulses on a successful connection",
+      "id": "B1eGmvQMQm",
+      "label": "DONE",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Establish the connection",
+      "id": "Bkf7wmGXX",
+      "label": "CONN",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "ByZZgDmzmm",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "@/connect"
+    },
+    {
+      "description": "Pulses if the connection failed",
+      "id": "HyrGXPmMQ7",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SJmf7PmzX7",
+      "label": "INET",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "@/output-w5500-inet"
+    },
+    {
+      "boundLiterals": {
+        "HyvDHC7G7": "D10"
+      },
+      "id": "SkWevXGQQ",
+      "position": {
+        "x": -34,
+        "y": 204
+      },
+      "type": "@/w5500-device"
+    },
+    {
+      "boundLiterals": {
+        "H1GI-g-SW7": "'x'",
+        "HkZ8bgWBZ7": "00h",
+        "HyUblWBbQ": "00000010b",
+        "HylLbx-S-X": "00h",
+        "SJVUWgWHWm": "'d'",
+        "ryXU-eWSbQ": "'o'"
+      },
+      "id": "r1lWgwmzQm",
+      "position": {
+        "x": -34,
+        "y": 102
+      },
+      "type": "xod/net/mac-address"
+    }
+  ]
+}

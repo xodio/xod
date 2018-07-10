@@ -135,7 +135,7 @@
         "x": 0,
         "y": 306
       },
-      "type": "@/output-inet"
+      "type": "@/output-w5500-inet"
     },
     {
       "id": "BkhXCAlXQ",
@@ -234,7 +234,7 @@
         "x": -2,
         "y": -2
       },
-      "type": "@/input-ethernet-shield-device"
+      "type": "@/input-w5500-device"
     }
   ]
 }

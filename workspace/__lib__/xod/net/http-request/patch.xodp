@@ -1,0 +1,151 @@
+{
+  "description": "Performs an HTTP request and returns the response as a stream of characters",
+  "nodes": [
+    {
+      "id": "BJ9_qeWXm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Additional headers",
+      "id": "BJbecH5x-Xm",
+      "label": "HDRS",
+      "position": {
+        "x": 339,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "The last received character from the response",
+      "id": "H15S9xWQX",
+      "label": "CHAR",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Initiate the request",
+      "id": "H1e9S9e-mQ",
+      "label": "INIT",
+      "position": {
+        "x": 475,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "description": "A path to the requested resource",
+      "id": "HJzqrceZQm",
+      "label": "PATH",
+      "position": {
+        "x": 271,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "The request body (optional)",
+      "id": "Hkygqrcx-mQ",
+      "label": "BODY",
+      "position": {
+        "x": 407,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "An internet connection",
+      "id": "S1SP9lW7X",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"GET\""
+      },
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
+      "id": "S1c9Hcl-7m",
+      "label": "METH",
+      "position": {
+        "x": 203,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "A domain name of the server",
+      "id": "S1geqrqgWmX",
+      "label": "HOST",
+      "position": {
+        "x": 66,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses when a new response character is received",
+      "id": "S1sqHqebm7",
+      "label": "RCV",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when all response data is received and the connection is closed",
+      "id": "SJGl9r9l-m7",
+      "label": "END",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses if the request failed",
+      "id": "SJPcScgbQX",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80",
+      "id": "rkE5B5xbXQ",
+      "label": "PORT",
+      "position": {
+        "x": 134,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
