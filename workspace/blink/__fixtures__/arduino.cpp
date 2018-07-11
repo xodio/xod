@@ -1263,26 +1263,26 @@ void evaluate(Context ctx) {
 namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+
 constexpr Logic node_0_output_VAL = true;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr Number node_1_output_VAL = 0.25;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_2_output_VAL = 13;
+
+constexpr Logic node_3_output_TICK = false;
+
+constexpr Logic node_4_output_TICK = false;
+
+constexpr Logic node_5_output_MEM = false;
+
+constexpr Logic node_6_output_DONE = false;
+constexpr Logic node_6_output_ERR = false;
+
 #pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_3_output_TICK = false;
-#pragma GCC diagnostic pop
 xod__core__continuously::Node node_3 = {
     xod__core__continuously::State(), // state default
     0, // timeoutAt
@@ -1290,11 +1290,6 @@ xod__core__continuously::Node node_3 = {
     false, // TICK dirty
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_4_output_TICK = false;
-#pragma GCC diagnostic pop
 xod__core__clock::Node node_4 = {
     xod__core__clock::State(), // state default
     0, // timeoutAt
@@ -1302,23 +1297,12 @@ xod__core__clock::Node node_4 = {
     false, // TICK dirty
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_5_output_MEM = false;
-#pragma GCC diagnostic pop
 xod__core__flip_flop::Node node_5 = {
     xod__core__flip_flop::State(), // state default
     node_5_output_MEM, // output MEM default
     true, // MEM dirty
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_6_output_DONE = false;
-constexpr Logic node_6_output_ERR = false;
-#pragma GCC diagnostic pop
 xod__gpio__digital_write::Node node_6 = {
     xod__gpio__digital_write::State(), // state default
     node_6_output_DONE, // output DONE default

@@ -1241,46 +1241,33 @@ void evaluate(Context ctx) {
 namespace xod {
 
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+
 constexpr uint8_t node_0_output_VAL = 8;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_1_output_VAL = 9;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_2_output_VAL = 10;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_3_output_VAL = 11;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_4_output_VAL = 12;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr uint8_t node_5_output_VAL = 13;
-#pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 constexpr XString node_6_output_VAL = XString();
+
+constexpr Logic node_7_output_TICK = false;
+
+constexpr Number node_8_output_TIME = 0;
+
+constexpr XString node_9_output_OUT = XString();
+
+constexpr Logic node_10_output_DONE = false;
+
 #pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_7_output_TICK = false;
-#pragma GCC diagnostic pop
 xod__core__continuously::Node node_7 = {
     xod__core__continuously::State(), // state default
     0, // timeoutAt
@@ -1288,31 +1275,16 @@ xod__core__continuously::Node node_7 = {
     false, // TICK dirty
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Number node_8_output_TIME = 0;
-#pragma GCC diagnostic pop
 xod__core__system_time::Node node_8 = {
     xod__core__system_time::State(), // state default
     node_8_output_TIME, // output TIME default
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr XString node_9_output_OUT = XString();
-#pragma GCC diagnostic pop
 xod__core__cast_to_string__number::Node node_9 = {
     xod__core__cast_to_string__number::State(), // state default
     node_9_output_OUT, // output OUT default
     true // node itself dirty
 };
-
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-constexpr Logic node_10_output_DONE = false;
-#pragma GCC diagnostic pop
 xod__common_hardware__text_lcd_16x2::Node node_10 = {
     xod__common_hardware__text_lcd_16x2::State(), // state default
     node_10_output_DONE, // output DONE default
