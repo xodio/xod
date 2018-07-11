@@ -1,4 +1,7 @@
 {
+  "authors": [
+    "XOD"
+  ],
   "description": "Support for ethernet shields that use Wiznet W5500 chipset.",
   "license": "AGPL-3.0",
   "name": "w5500",
