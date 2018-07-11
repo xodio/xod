@@ -9,9 +9,12 @@ for commit guidelines.
 
 ### Bug fixes
 
- * [core] Fix transpilation error caused by values bound to collapsed variadic node. (#1306)
- * [nodes] Fix implementation of [`xod/math/clip`](https://xod.io/libs/xod/math/clip). (#1307)
- * [core] Fix a very rare case where constant values could be overwritten. (#1308)
+* [core] Fix transpilation error caused by values bound to collapsed variadic
+  node. (#1306)
+* [nodes] Fix implementation of
+  [`xod/math/clip`](https://xod.io/libs/xod/math/clip). (#1307)
+* [core] Fix a very rare case where constant values could be overwritten.
+  (#1308)
 
 <a name="0.21.1"></a>
 ## 0.21.1 (2018-06-25)
@@ -19,7 +22,8 @@ for commit guidelines.
 ### Bug fixes
 
 * [c++] Fix `isSettingUp` function that returned opposite value. (#1297)
-* [tutorial] Update tutorial to use proper PORT literals, mention new pins and nodes. (#1296)
+* [tutorial] Update tutorial to use proper PORT literals, mention new pins and
+  nodes. (#1296)
 
 <a name="0.21.0"></a>
 ## 0.21.0 (2018-06-09)
