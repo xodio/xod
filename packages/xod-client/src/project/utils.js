@@ -30,12 +30,6 @@ export const getLinkingError = R.curry((pin1, pin2) => {
   // same direction?
   if (pin1.direction === pin2.direction) return LINK_ERRORS.SAME_DIRECTION;
 
-  // very primitive case of a feedback loop
-  // TODO: this needs to be much more complicated (and implemented in xod-project)
-  if (pin1.nodeId === pin2.nodeId) {
-    return LINK_ERRORS.SAME_NODE;
-  }
-
   const inputPin = XP.isInputPin(pin1) ? pin1 : pin2;
   const outputPin = XP.isOutputPin(pin1) ? pin1 : pin2;
 

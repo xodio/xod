@@ -15,14 +15,6 @@ export const LINK_ERRORS = {
       'Try creating a link between an input (pin on top) and output (pin at bottom)',
     persistent: false,
   },
-  [LE.SAME_NODE]: {
-    title: 'No-no-no',
-    note:
-      'Links between pins of the same node are not allowed for historical reasons. ' +
-      'See: https://github.com/xodio/xod/issues/1328',
-    solution: 'Place xod/core/defer as a medium for a workaround.',
-    persistent: true,
-  },
   [LE.INCOMPATIBLE_TYPES]: {
     title: 'Incompatible pin types',
     note: `No implicit cast exist to convert the output type to the input type.`,

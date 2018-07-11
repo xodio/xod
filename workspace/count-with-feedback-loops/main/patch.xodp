@@ -23,6 +23,17 @@
       }
     },
     {
+      "id": "HJdlw87XX",
+      "input": {
+        "nodeId": "HJ-gr3Aqb",
+        "pinKey": "H1bLN9F-b"
+      },
+      "output": {
+        "nodeId": "HyUxwL7mm",
+        "pinKey": "ByNj1PLXXX"
+      }
+    },
+    {
       "id": "Sk-3086YM",
       "input": {
         "nodeId": "rJwoRITYG",
@@ -31,6 +42,17 @@
       "output": {
         "nodeId": "ryyAS2RqW",
         "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "Sy3lD8mQ7",
+      "input": {
+        "nodeId": "HyUxwL7mm",
+        "pinKey": "r1GoJwIQmX"
+      },
+      "output": {
+        "nodeId": "HyUxwL7mm",
+        "pinKey": "H17jyPL7X7"
       }
     },
     {
@@ -68,10 +90,18 @@
       },
       "id": "HJ-gr3Aqb",
       "position": {
-        "x": 238,
-        "y": 306
+        "x": 306,
+        "y": 510
       },
       "type": "xod/common-hardware/text-lcd-16x2"
+    },
+    {
+      "id": "HyUxwL7mm",
+      "position": {
+        "x": 578,
+        "y": 306
+      },
+      "type": "@/counter"
     },
     {
       "boundLiterals": {
