@@ -34,6 +34,12 @@ The most straightforward way to extend XOD and add support for new hardware.
 
 * [Simple traffic light example](./simple-traffic-light/) — doing things sequentially
 
+IoT and network communication:
+
+* [Quick setup of W5500 Ethernet Shield for Internet and LAN communication](./w5500-connect/)
+* [Advanced setup of W5500](./w5500-advanced/)
+* [Fetching data from web API’s with HTTP GET requests](./http-get/)
+
 ## Projects and libraries
 
 How to create, manage, and share your work.

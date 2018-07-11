@@ -1,0 +1,159 @@
+{
+  "description": "Outputs one of “...”, “OK”, “ERR” depending on the pulse which came last. Useful for demonstrating progress of a long-running process.",
+  "links": [
+    {
+      "id": "B10wEHz7X",
+      "input": {
+        "nodeId": "rysPErzmm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJqfNrGXm",
+        "pinKey": "S1yaHC6UW"
+      }
+    },
+    {
+      "id": "B1Ud4HfXm",
+      "input": {
+        "nodeId": "HJEOEHzm7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJqfNrGXm",
+        "pinKey": "rkWHDAW_f"
+      }
+    },
+    {
+      "id": "Bk3N4SMQX",
+      "input": {
+        "nodeId": "SJtNErGmQ",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "BJEV4BMmQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1lwVSfXQ",
+      "input": {
+        "nodeId": "BJqfNrGXm",
+        "pinKey": "rJUjrCTUb-$1"
+      },
+      "output": {
+        "nodeId": "SJtNErGmQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "SJa84Szm7",
+      "input": {
+        "nodeId": "SJtNErGmQ",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJsINSz7m",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "SyFY4SG77",
+      "input": {
+        "nodeId": "BJqfNrGXm",
+        "pinKey": "rJUjrCTUb"
+      },
+      "output": {
+        "nodeId": "r1X4NSMXm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1PK4HM7Q",
+      "input": {
+        "nodeId": "BJqfNrGXm",
+        "pinKey": "rkmiHCaIZ"
+      },
+      "output": {
+        "nodeId": "rJgVVBzQm",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJEV4BMmQ",
+      "label": "RST",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "arityLevel": 2,
+      "boundLiterals": {
+        "S10qrR6UZ": "\"OK\"",
+        "rygjH06LW": "\"ERR\"",
+        "rygjH06LW-$1": "\"...\""
+      },
+      "id": "BJqfNrGXm",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "@/select"
+    },
+    {
+      "description": "Pulses whenever the string output changes",
+      "id": "HJEOEHzm7",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJtNErGmQ",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "@/any"
+    },
+    {
+      "id": "r1X4NSMXm",
+      "label": "ERR",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJgVVBzQm",
+      "label": "OK",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJsINSz7m",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "@/boot"
+    },
+    {
+      "description": "The resulting string. The starting value is “...”",
+      "id": "rysPErzmm",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}

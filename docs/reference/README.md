@@ -12,9 +12,13 @@ Reference
 
 ## Standard library nodes
 
-* [`xod/core`](/libs/xod/core/)
-* [`xod/math`](/libs/xod/math/)
-* [`xod/gpio`](/libs/xod/gpio/)
-* [`xod/common-hardware`](/libs/xod/common-hardware/)
-* [`xod/units`](/libs/xod/units/)
-* [`xod/bits`](/libs/xod/bits/)
+* [`xod/bits`](https://xod.io/libs/xod/bits/)
+* [`xod/common-hardware`](https://xod.io/libs/xod/common-hardware/)
+* [`xod/core`](https://xod.io/libs/xod/core/) <i class="ui small yellow star outline icon"></i>
+* [`xod/gpio`](https://xod.io/libs/xod/gpio/)
+* [`xod/i2c`](https://xod.io/libs/xod/i2c/)
+* [`xod/math`](https://xod.io/libs/xod/math/)
+* [`xod/net`](https://xod.io/libs/xod/net/)
+* [`xod/stream`](https://xod.io/libs/xod/stream/)
+* [`xod/uart`](https://xod.io/libs/xod/uart/)
+* [`xod/units`](https://xod.io/libs/xod/units/)
