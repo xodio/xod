@@ -286,6 +286,17 @@
           flavor: Raw
           url: https://www.sparkfun.com/products/11050
 
+    - part: LPS331
+      kind: Barometer, Altimeter
+      vendor: ST
+      nodes:
+        - xod/common-hardware/lps331-barometer
+      shopping:
+        - shop: Pololu
+          sku: 2126
+          flavor: Mod
+          url: https://www.pololu.com/product/2126
+
     - part: TMP36
       kind: Thermometer
       vendor: Analog Devices
