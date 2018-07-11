@@ -4,14 +4,70 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Most of the error messages appearing on the snackbar made persistent,
+  that is they don’t hide automatically. (#1284)
+* [ide] Don’t try to auto-fix ambiguous byte literals like `15abc` or `7C` in
+  the inspector. (#1313)
+* [core] Now a character surrounded by single quotes (`'G'`) is a valid byte
+  literal which denotes a corresponding value from the ASCII table. (#1317)
+* [core] Make some error messages more clear and consistent (#1330).
+* [ide] Add View menu items to toggle the project browser and inspector (#1340).
+* [ide] Allow links between inputs and outputs of the same node. It will
+  transpile successfully if the node contains a `defer` on the loop path inside
+  it. (#1349).
+
+### New nodes
+
+* [`xod/core/length(string)`](https://xod.io/libs/xod/core/length(string))
+* [`xod/common-hardware/lps331-barometer`](https://xod.io/libs/xod/common-hardware/lps331-barometer/)
+
+Libraries for dealing with the internet connection and UART interface:
+
+* [`xod/uart`](https://xod.io/libs/xod/uart/)
+* [`xod/stream`](https://xod.io/libs/xod/stream/)
+* [`xod/net`](https://xod.io/libs/xod/net/)
+* [`xod-dev/esp8266`](https://xod.io/libs/xod-dev/esp8266/)
+* [`xod-dev/w5500`](https://xod.io/libs/xod-dev/w5500/)
+
+### Bug fixes
+
+* [core] Properly transpile programs with patch specializations containing
+  abstract nodes. They were not resolved recursively. (#1343)
+* [core] Adjust code generation so that it produces no warnings other than
+  unknown `#pragma`’s. It also fixes compiler errors for the string
+  concatenation when compiling for Arduino Due. (#1347)
+* [ide] When saving a project with File → Save Copy As don’t mark the original
+  ongoing project as saved. (#1282)
+* [ide] Do not show a hard to escape suggestion to switch the workspace when a
+  damaged project failed to load. (#1290)
+* [ide] View → Pan to Origin used to break IDE when hit on an empty patch.
+  Fixed. (#1314)
+* [ide] Inspector now always show a disabled input with a “custom type”
+  placeholder for custom type pins. (#1331)
+* [nodes] Fix [`xod/math/log-bx`](https://xod.io/libs/xod/math/log-bx) broken
+  during the recent `xod/math` extraction. (#1320)
+* [ide] Tweak library sorting in the project browser so that `x/foo` comes
+  before `x/foo-bar`. (#1332)
+* [ide] Creating a patch with a very long name no longer cause project browser
+  controls elements to shift out of its view area. (#1338)
+* [ide] Get rid of white stripes appearing near sidebars on some computers,
+  notably, on Linux and when zooming in. (#1339, #1344)
+
 <a name="0.21.2"></a>
 ## 0.21.2 (2018-06-27)
 
 ### Bug fixes
 
- * [core] Fix transpilation error caused by values bound to collapsed variadic node. (#1306)
- * [nodes] Fix implementation of [`xod/math/clip`](https://xod.io/libs/xod/math/clip). (#1307)
- * [core] Fix a very rare case where constant values could be overwritten. (#1308)
+* [core] Fix transpilation error caused by values bound to collapsed variadic
+  node. (#1306)
+* [nodes] Fix implementation of
+  [`xod/math/clip`](https://xod.io/libs/xod/math/clip). (#1307)
+* [core] Fix a very rare case where constant values could be overwritten.
+  (#1308)
 
 <a name="0.21.1"></a>
 ## 0.21.1 (2018-06-25)
@@ -19,7 +75,8 @@ for commit guidelines.
 ### Bug fixes
 
 * [c++] Fix `isSettingUp` function that returned opposite value. (#1297)
-* [tutorial] Update tutorial to use proper PORT literals, mention new pins and nodes. (#1296)
+* [tutorial] Update tutorial to use proper PORT literals, mention new pins and
+  nodes. (#1296)
 
 <a name="0.21.0"></a>
 ## 0.21.0 (2018-06-09)
