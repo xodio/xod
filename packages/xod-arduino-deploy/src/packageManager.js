@@ -1,3 +1,5 @@
+import https from 'https';
+import http from 'http';
 import * as R from 'ramda';
 import path from 'path';
 import fse from 'fs-extra';
@@ -7,6 +9,16 @@ import bz2 from 'unbzip2-stream';
 import { tapP } from 'xod-func-tools';
 
 import * as Utils from './utils';
+
+// =============================================================================
+//
+// HTTP/HTTPS agents
+//
+// =============================================================================
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
+const httpAgent = new http.Agent({});
 
 // =============================================================================
 //
@@ -41,8 +53,10 @@ const isDirSync = dirPath => {
 // =============================================================================
 
 // :: URL -> Path -> Promise Path Error
-export const downloadFileFromUrl = R.curry((url, destinationPath) =>
-  fetch(url)
+export const downloadFileFromUrl = R.curry((url, destinationPath) => {
+  const agent = R.startsWith('https', url) ? httpsAgent : httpAgent;
+
+  return fetch(url, { agent })
     .then(tapP(() => fse.ensureDir(path.dirname(destinationPath))))
     .then(res => {
       const partPath = `${destinationPath}.part`;
@@ -57,8 +71,8 @@ export const downloadFileFromUrl = R.curry((url, destinationPath) =>
       });
     })
     .then(partPath => fse.rename(partPath, destinationPath))
-    .then(R.always(destinationPath))
-);
+    .then(R.always(destinationPath));
+});
 
 // :: Path -> Promise Path Error
 export const extractBzip2IfNecessary = archivePath =>
