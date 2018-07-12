@@ -235,6 +235,12 @@ export default {
     note: `Can't find the Pin "${pinKey}" in the patch with path "${patchPath}"`,
     trace,
   }),
+  CLASHING_PIN_LABELS: ({ label, pinKeys, trace }) => ({
+    title: 'Clashing pin names',
+    note: `${pinKeys.length} pins are named ${label}`,
+    solution: 'Give the pins unique names',
+    trace,
+  }),
   DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND: ({ nodeType, trace }) => ({
     title: 'Dead reference error',
     note: `Patch "${nodeType}" is not found in the project`,

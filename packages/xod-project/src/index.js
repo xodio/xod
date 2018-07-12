@@ -22,6 +22,7 @@ export {
   listInputPins,
   listOutputPins,
   isTerminalPatch,
+  validatePinLabels,
   listLinks,
   linkIdEquals,
   getLinkById,

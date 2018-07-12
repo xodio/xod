@@ -153,12 +153,11 @@ const mergePinDataFromPatch = R.curry((project, curPatch, node) =>
   )(node, curPatch, project)
 );
 
+const errorsLens = R.lens(R.propOr([], 'errors'), R.assoc('errors'));
+
 // :: Error -> RenderableNode|RenderableLink -> RenderableNode|RenderableLink
 const addError = R.curry((error, renderableEntity) =>
-  R.compose(
-    R.over(R.lensProp('errors'), R.append(error)),
-    R.unless(R.has('errors'), R.assoc('errors', []))
-  )(renderableEntity)
+  R.over(errorsLens, R.append(error), renderableEntity)
 );
 
 // :: Project -> RenderableNode -> RenderableNode
@@ -331,6 +330,29 @@ export const getRenderableNode = R.curry(
     )(node)
 );
 
+const markNodesCausingErrors = R.curry((currentPatch, nodes) => {
+  // :: Map NodeId Error
+  const errorsMap = R.compose(
+    foldEither(
+      err =>
+        R.compose(
+          R.fromPairs,
+          R.map(R.pair(R.__, err)),
+          R.path(['payload', 'pinKeys']) // those are affected terminal node ids
+        )(err),
+      R.always({})
+    ),
+    XP.validatePinLabels
+  )(currentPatch);
+
+  if (R.isEmpty(errorsMap)) return nodes;
+
+  return R.map(node => {
+    const nodeId = XP.getNodeId(node);
+    return R.has(nodeId, errorsMap) ? addError(errorsMap[nodeId], node) : node;
+  }, nodes);
+});
+
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
   [
@@ -351,16 +373,18 @@ export const getRenderableNodes = createMemoizedSelector(
     foldMaybe(
       {},
       currentPatch =>
-        R.map(
-          getRenderableNode(
-            R.__,
-            currentPatch,
-            connectedPins,
-            deducedPinTypes,
-            project
-          ),
-          currentPatchNodes
-        ),
+        R.compose(
+          markNodesCausingErrors(currentPatch),
+          R.map(
+            getRenderableNode(
+              R.__,
+              currentPatch,
+              connectedPins,
+              deducedPinTypes,
+              project
+            )
+          )
+        )(currentPatchNodes),
       maybeCurrentPatch
     )
 );
