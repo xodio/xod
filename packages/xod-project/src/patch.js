@@ -502,7 +502,7 @@ export const validatePinLabels = def(
       ),
       R.filter(groupedPins => groupedPins.length > 1),
       R.groupBy(Pin.getPinLabel),
-      Pin.normalizePinLabels,
+      Pin.normalizeEmptyPinLabels,
       listPins
     )(patch)
 );
@@ -974,7 +974,7 @@ export const getNondeadNodePins = def(
           R.mergeWith(R.merge, R.__, patchPins),
           R.map(R.compose(R.objOf('normalizedLabel'), Pin.getPinLabel)),
           R.indexBy(Pin.getPinKey),
-          Pin.normalizePinLabels,
+          Pin.normalizeEmptyPinLabels,
           R.values
         )(patchPins),
       R.indexBy(Pin.getPinKey),

@@ -121,7 +121,7 @@ const convertPatchToTPatch = def(
           ),
         })
       ),
-      XP.normalizePinLabels,
+      XP.normalizeEmptyPinLabels,
       XP.listOutputPins
     )(patch);
 
@@ -133,7 +133,7 @@ const convertPatchToTPatch = def(
           isDirtyable,
         })
       ),
-      XP.normalizePinLabels,
+      XP.normalizeEmptyPinLabels,
       XP.listInputPins
     )(patch);
 
@@ -266,7 +266,7 @@ const getNodePinsUnsafe = def(
 
 const getNodePinLabels = def(
   'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
-  R.compose(getPinLabelsMap, XP.normalizePinLabels, getNodePinsUnsafe)
+  R.compose(getPinLabelsMap, XP.normalizeEmptyPinLabels, getNodePinsUnsafe)
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values

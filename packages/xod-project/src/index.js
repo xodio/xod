@@ -93,7 +93,7 @@ export {
   isInputPin,
   isOutputPin,
   isTerminalPin,
-  normalizePinLabels,
+  normalizeEmptyPinLabels,
   isPinBindable,
   isPulsePin,
 } from './pin';
