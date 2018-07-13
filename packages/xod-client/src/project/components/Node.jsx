@@ -12,6 +12,7 @@ import { isPinSelected } from '../../editor/utils';
 import RegularNodeBody from './nodeParts/RegularNodeBody';
 import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
+import ConstantNodeBody from './nodeParts/ConstantNodeBody';
 
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
@@ -105,6 +106,7 @@ class Node extends React.Component {
     return R.cond([
       [XP.isTerminalPatchPath, () => <TerminalNodeBody {...this.props} />],
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
+      [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
       [R.T, () => <RegularNodeBody {...this.props} />],
     ])(type);
   }
