@@ -38,7 +38,7 @@ let getDirection = (pin: t) : direction => {
 };
 
 [@bs.module "xod-project"]
-external _normalizeLabels : array(t) => array(t) = "normalizePinLabels";
+external _normalizeLabels : array(t) => array(t) = "normalizeEmptyPinLabels";
 
 let normalizeLabels = pins =>
   pins |. List.toArray |. _normalizeLabels |. List.fromArray;

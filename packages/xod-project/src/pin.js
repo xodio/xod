@@ -241,45 +241,34 @@ const getPinLabelByDirection = def(
 );
 
 /**
- * Returns a list of Pins with unique Pin Labels.
- * For each non-unique pin label it adds an incrementing one-based integer
- * suffix.
- * Also, if Pin has an empty label it became "IN" or "OUT" depending on its
- * direction.
- * E.G., Pin labels will be converted into:
- * - "A" -> "A1"
- * - "A" -> "A2"
- * - "B" -> "B1"
- * - "B" -> "B2"
- * - "C" -> "C"
+ * Gives pins with empty labels unique names
+ * E.G.,
  * - "" (input) -> "IN1"
  * - "" (input) -> "IN2"
  * - "" (output) -> "OUT"
- *
- * This function is useful for transpilers, that want to use
- * normalized pin labels instead of shortIds (real pinKeys,
- * that refers to NodeIds) and in the clients to show which
- * pinKeys user can use in the native implementations.
  */
-export const normalizePinLabels = def(
-  'normalizePinLabels :: [Pin] -> [Pin]',
+export const normalizeEmptyPinLabels = def(
+  'normalizeEmptyPinLabels :: [Pin] -> [Pin]',
   R.compose(
     R.unnest,
-    R.values,
-    R.map(
-      R.when(
-        R.compose(R.gt(R.__, 1), R.length),
-        R.addIndex(R.map)((pin, idx) =>
-          setPinLabel(`${getPinLabel(pin)}${idx + 1}`, pin)
-        )
+    R.over(
+      R.lensIndex(0),
+      R.compose(
+        R.unnest,
+        R.values,
+        R.map(
+          R.when(
+            R.compose(R.gt(R.__, 1), R.length),
+            R.addIndex(R.map)((pin, idx) =>
+              setPinLabel(`${getPinLabel(pin)}${idx + 1}`, pin)
+            )
+          )
+        ),
+        R.groupBy(getPinLabel),
+        R.map(pin => setPinLabel(getPinLabelByDirection(pin), pin))
       )
     ),
-    R.groupBy(getPinLabel),
-    R.map(
-      R.when(isPinLabelEmpty, pin =>
-        setPinLabel(getPinLabelByDirection(pin), pin)
-      )
-    )
+    R.partition(isPinLabelEmpty)
   )
 );
 

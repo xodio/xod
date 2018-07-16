@@ -90,28 +90,49 @@ describe('Pin', () => {
       assert.isTrue(Pin.isPulsePin(pin));
     });
   });
-  describe('normalizePinLabels', () => {
-    it('should return list of pins with unique labels', () => {
+  describe('normalizeEmptyPinLabels', () => {
+    const { INPUT, OUTPUT } = CONST.PIN_DIRECTION;
+
+    it('should leave pins with labels untouched', () => {
       const pins = [
-        { label: 'A' },
-        { label: 'A' },
-        { label: 'B' },
-        { label: 'IN', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: '', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: '', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: '', direction: CONST.PIN_DIRECTION.OUTPUT },
-      ].map(Helper.defaultizePin);
-      const pinsExpected = [
-        { label: 'A1' },
-        { label: 'A2' },
-        { label: 'B' },
-        { label: 'IN1', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: 'IN2', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: 'IN3', direction: CONST.PIN_DIRECTION.INPUT },
-        { label: 'OUT', direction: CONST.PIN_DIRECTION.OUTPUT },
+        { label: 'A', direction: INPUT },
+        { label: 'A', direction: INPUT },
+        { label: 'A', direction: OUTPUT },
       ].map(Helper.defaultizePin);
 
-      assert.deepEqual(Pin.normalizePinLabels(pins), pinsExpected);
+      assert.deepEqual(Pin.normalizeEmptyPinLabels(pins), pins);
+    });
+
+    it('should generate unique labels for pins with empty labels', () => {
+      const pins = [
+        { label: '', direction: INPUT },
+        { label: '', direction: INPUT },
+        { label: '', direction: OUTPUT },
+      ].map(Helper.defaultizePin);
+      const pinsExpected = [
+        { label: 'IN1', direction: INPUT },
+        { label: 'IN2', direction: INPUT },
+        { label: 'OUT', direction: OUTPUT },
+      ].map(Helper.defaultizePin);
+
+      assert.deepEqual(Pin.normalizeEmptyPinLabels(pins), pinsExpected);
+    });
+
+    it('should allow clashes of generated labels with existing labels', () => {
+      const pins = [
+        { label: '', direction: INPUT },
+        { label: '', direction: OUTPUT },
+        { label: '', direction: OUTPUT },
+        { label: 'IN', direction: OUTPUT },
+      ].map(Helper.defaultizePin);
+      const pinsExpected = [
+        { label: 'IN', direction: INPUT },
+        { label: 'OUT1', direction: OUTPUT },
+        { label: 'OUT2', direction: OUTPUT },
+        { label: 'IN', direction: OUTPUT },
+      ].map(Helper.defaultizePin);
+
+      assert.deepEqual(Pin.normalizeEmptyPinLabels(pins), pinsExpected);
     });
   });
 
