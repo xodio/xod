@@ -889,7 +889,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__system_time {
 
-#pragma XOD dirtieness disable
+//#pragma XOD dirtieness disable
 
 struct State {
 };
@@ -974,7 +974,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__cast_to_string__number {
 
-#pragma XOD dirtieness disable
+//#pragma XOD dirtieness disable
 
 struct State {
     char str[16];

@@ -5,7 +5,12 @@ import { assert } from 'chai';
 
 import { explode, foldEither, explodeEither } from 'xod-func-tools';
 import { loadProject } from 'xod-fs';
-import { transpile, transformProject, getNodeIdsMap } from '../src/transpiler';
+import {
+  transpile,
+  transformProject,
+  getNodeIdsMap,
+  commentXodPragmas,
+} from '../src/transpiler';
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) =>
@@ -140,6 +145,27 @@ describe('xod-arduino transpiler', () => {
         //   'expected and actual C++ don’t match'
         // )
       });
+  });
+
+  it('correctly comments XOD pragmas', () => {
+    const input = [
+      '      #pragma XOD blah blah',
+      '      #  pragma   XOD  lala',
+      '         #pragma XOD hey ho',
+      '      //#pragma XOD should not be commented',
+      '      #pragma XODULAR should not be commented',
+      '      Serial.println("#pragma XOD should not be commented");',
+    ].join('\n');
+    const expected = [
+      '//#pragma XOD blah blah',
+      '//#pragma XOD  lala',
+      '//#pragma XOD hey ho',
+      '      //#pragma XOD should not be commented',
+      '      #pragma XODULAR should not be commented',
+      '      Serial.println("#pragma XOD should not be commented");',
+    ].join('\n');
+    const result = commentXodPragmas(input);
+    assert.strictEqual(result, expected);
   });
 });
 
