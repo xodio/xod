@@ -153,12 +153,11 @@ const mergePinDataFromPatch = R.curry((project, curPatch, node) =>
   )(node, curPatch, project)
 );
 
+const errorsLens = R.lens(R.propOr([], 'errors'), R.assoc('errors'));
+
 // :: Error -> RenderableNode|RenderableLink -> RenderableNode|RenderableLink
 const addError = R.curry((error, renderableEntity) =>
-  R.compose(
-    R.over(R.lensProp('errors'), R.append(error)),
-    R.unless(R.has('errors'), R.assoc('errors', []))
-  )(renderableEntity)
+  R.over(errorsLens, R.append(error), renderableEntity)
 );
 
 // :: Project -> RenderableNode -> RenderableNode
@@ -180,34 +179,6 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
     ),
     R.prop('type')
   )(renderableNode)
-);
-
-const addMarkerErrors = (predicate, validator) =>
-  R.curry((patch, renderableNode) =>
-    R.when(predicate, node =>
-      R.compose(
-        foldEither(err => addError(err, node), R.always(node)),
-        validator
-      )(patch)
-    )(renderableNode)
-  );
-
-// :: Patch -> RenderableNode -> RenderableNode
-const addVariadicErrors = addMarkerErrors(
-  R.pipe(XP.getNodeType, XP.isVariadicPath),
-  XP.validatePatchForVariadics
-);
-
-// :: Patch -> RenderableNode -> RenderableNode
-const addAbstractPatchErrors = addMarkerErrors(
-  R.pipe(XP.getNodeType, R.equals(XP.ABSTRACT_MARKER_PATH)),
-  XP.validateAbstractPatch
-);
-
-// :: Patch -> RenderableNode -> RenderableNode
-const addConstructorPatchErrors = addMarkerErrors(
-  R.pipe(XP.getNodeType, R.equals(XP.OUTPUT_SELF_PATH)),
-  XP.validateConstructorPatch
 );
 
 /**
@@ -319,9 +290,6 @@ export const getRenderableNode = R.curry(
       addSpecializationsList(project),
       markDeprecatedNodes(project),
       addInvalidLiteralErrors(project, currentPatch),
-      addConstructorPatchErrors(currentPatch),
-      addAbstractPatchErrors(currentPatch),
-      addVariadicErrors(currentPatch),
       addVariadicProps(project),
       addDeadRefErrors(project),
       addNodePositioning,
@@ -330,6 +298,71 @@ export const getRenderableNode = R.curry(
       mergePinDataFromPatch(project, currentPatch)
     )(node)
 );
+
+const getMarkerNodesErrorMap = (predicate, validator) => patch => {
+  const markerNodeIds = R.compose(
+    R.map(XP.getNodeId),
+    R.filter(predicate),
+    XP.listNodes
+  )(patch);
+
+  if (R.isEmpty(markerNodeIds)) return {};
+
+  return foldEither(
+    err => R.compose(R.fromPairs, R.map(R.pair(R.__, err)))(markerNodeIds),
+    R.always({}),
+    validator(patch)
+  );
+};
+
+// :: Patch -> Map NodeId Error
+const getVariadicMarkersErrorMap = getMarkerNodesErrorMap(
+  R.pipe(XP.getNodeType, XP.isVariadicPath),
+  XP.validatePatchForVariadics
+);
+
+// :: Patch -> Map NodeId Error
+const getAbstractMarkersErrorMap = getMarkerNodesErrorMap(
+  R.pipe(XP.getNodeType, R.equals(XP.ABSTRACT_MARKER_PATH)),
+  XP.validateAbstractPatch
+);
+
+// :: Patch -> Map NodeId Error
+const getConstructorMarkersErrorMap = getMarkerNodesErrorMap(
+  R.pipe(XP.getNodeType, R.equals(XP.OUTPUT_SELF_PATH)),
+  XP.validateConstructorPatch
+);
+
+// :: Patch -> Map NodeId Error
+const getTerminalsErrorMap = R.compose(
+  foldEither(
+    err =>
+      R.compose(
+        R.fromPairs,
+        R.map(R.pair(R.__, err)),
+        R.path(['payload', 'pinKeys']) // those are affected terminal node ids
+      )(err),
+    R.always({})
+  ),
+  XP.validatePinLabels
+);
+
+const markNodesCausingErrors = R.curry((currentPatch, nodes) => {
+  // :: Map NodeId Error
+  const errorsMap = R.mergeAll([
+    getTerminalsErrorMap(currentPatch),
+    getVariadicMarkersErrorMap(currentPatch),
+    getAbstractMarkersErrorMap(currentPatch),
+    getConstructorMarkersErrorMap(currentPatch),
+  ]);
+
+  if (R.isEmpty(errorsMap)) return nodes;
+
+  return R.map(node => {
+    const nodeId = XP.getNodeId(node);
+    return R.has(nodeId, errorsMap) ? addError(errorsMap[nodeId], node) : node;
+  }, nodes);
+});
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
@@ -351,16 +384,18 @@ export const getRenderableNodes = createMemoizedSelector(
     foldMaybe(
       {},
       currentPatch =>
-        R.map(
-          getRenderableNode(
-            R.__,
-            currentPatch,
-            connectedPins,
-            deducedPinTypes,
-            project
-          ),
-          currentPatchNodes
-        ),
+        R.compose(
+          markNodesCausingErrors(currentPatch),
+          R.map(
+            getRenderableNode(
+              R.__,
+              currentPatch,
+              connectedPins,
+              deducedPinTypes,
+              project
+            )
+          )
+        )(currentPatchNodes),
       maybeCurrentPatch
     )
 );
