@@ -614,6 +614,7 @@ export const getInvalidBoundNodePins = def(
   }
 );
 
+// part of `validatePatchContents`
 const checkForInvalidBoundValues = R.curry((project, checkedPatch) =>
   R.compose(
     R.map(R.always(checkedPatch)),
@@ -632,23 +633,13 @@ const checkForInvalidBoundValues = R.curry((project, checkedPatch) =>
   )(checkedPatch)
 );
 
-/**
- * Checks `patch` content to be valid:
- *
- * - all nodes have existent types (patches),
- * - valid pinKeys in the links
- * @function validatePatchContents
- * @param {Patch} patch
- * @param {Project} project
- * @returns {Either<Error|Patch>}
- */
-// TODO: Try to simplify this mess :-D
-export const validatePatchContents = def(
-  'validatePatchContents :: Patch -> Project -> Either Error Patch',
-  (patch, project) => {
+// part of `validatePatchContents`
+const checkPatchForDeadNodes = def(
+  'checkPatchForDeadNodes :: Project -> Patch -> Either Error Patch',
+  (project, patch) => {
     const patchPath = Patch.getPatchPath(patch);
-    // :: patch -> Either Error Patch
-    const checkNodeTypes = R.compose(
+
+    return R.compose(
       R.map(R.always(patch)),
       R.sequence(Either.of),
       R.chain(
@@ -666,35 +657,51 @@ export const validatePatchContents = def(
         )
       ),
       Patch.listNodes
-    );
+    )(patch);
+  }
+);
 
-    // :: patch -> Either Error Patch
-    const checkLinks = (checkedPatch, deducedPinTypes) =>
-      R.compose(
-        R.ifElse(
-          R.isEmpty,
-          R.always(Either.of(checkedPatch)),
-          R.compose(
-            R.map(R.always(checkedPatch)),
-            R.sequence(Either.of),
-            R.map(
-              validateLinkPins(R.__, checkedPatch, project, deducedPinTypes)
-            )
-          )
-        ),
-        Patch.listLinks
-      )(checkedPatch);
+// part of `validatePatchContents`
+const checkPatchForDeadLinksAndPins = def(
+  'checkPatchForDeadLinksAndPins :: Project -> Patch -> Either Error Patch',
+  (project, patch) => {
+    const deducedPinTypes = deducePinTypes(patch, project);
 
-    return checkNodeTypes(patch)
-      .chain(checkedPatch => {
-        const deducedPinTypes = deducePinTypes(checkedPatch, project);
-        return checkLinks(checkedPatch, deducedPinTypes);
-      })
+    return R.compose(
+      R.ifElse(
+        R.isEmpty,
+        R.always(Either.of(patch)),
+        R.compose(
+          R.map(R.always(patch)),
+          R.sequence(Either.of),
+          R.map(validateLinkPins(R.__, patch, project, deducedPinTypes))
+        )
+      ),
+      Patch.listLinks
+    )(patch);
+  }
+);
+
+/**
+ * Checks `patch` content to be valid:
+ *
+ * - all nodes have existent types (patches),
+ * - valid pinKeys in the links
+ * @function validatePatchContents
+ * @param {Patch} patch
+ * @param {Project} project
+ * @returns {Either<Error|Patch>}
+ */
+export const validatePatchContents = def(
+  'validatePatchContents :: Patch -> Project -> Either Error Patch',
+  (patch, project) =>
+    checkPatchForDeadNodes(project, patch)
+      .chain(checkPatchForDeadLinksAndPins(project))
+      .chain(Patch.validatePinLabels)
       .chain(checkForInvalidBoundValues(project))
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validateConstructorPatch)
-      .chain(Patch.validatePatchForVariadics);
-  }
+      .chain(Patch.validatePatchForVariadics)
 );
 
 /**

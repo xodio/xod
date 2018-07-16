@@ -82,49 +82,51 @@ export const getInitialPatchOffset = R.compose(
 );
 
 // extract information from Patch that is required to render it with Node component
-export const patchToNodeProps = R.curry((shouldNormalizePinLabels, patch) => {
-  const pins = XP.listPins(patch);
-  const size = calcutaleNodeSizeFromPins(pins);
-  const type = XP.getPatchPath(patch);
-  const isVariadic = XP.isVariadicPatch(patch);
-  const arityStep = foldMaybe(0, R.identity, XP.getArityStepFromPatch(patch));
+export const patchToNodeProps = R.curry(
+  (shouldnormalizeEmptyPinLabels, patch) => {
+    const pins = XP.listPins(patch);
+    const size = calcutaleNodeSizeFromPins(pins);
+    const type = XP.getPatchPath(patch);
+    const isVariadic = XP.isVariadicPatch(patch);
+    const arityStep = foldMaybe(0, R.identity, XP.getArityStepFromPatch(patch));
 
-  return {
-    id: type,
-    type,
-    label: '',
-    position: { x: 0, y: 0 },
-    size,
-    isVariadic,
-    pins: R.compose(
-      R.when(
-        () => isVariadic,
-        renderablePins =>
-          R.compose(
-            R.merge(renderablePins),
-            R.indexBy(R.prop('keyName')),
-            R.map(R.assoc('isLastVariadicGroup', true)),
-            R.takeLast(arityStep),
-            R.sortBy(XP.getPinOrder),
-            R.filter(XP.isInputPin),
-            R.values
-          )(renderablePins)
-      ),
-      R.indexBy(R.prop('keyName')),
-      R.map(
-        R.applySpec({
-          key: XP.getPinKey,
-          keyName: XP.getPinKey,
-          type: XP.getPinType,
-          direction: XP.getPinDirection,
-          label: XP.getPinLabel,
-          position: calculatePinPosition(size),
-        })
-      ),
-      shouldNormalizePinLabels ? XP.normalizePinLabels : R.identity
-    )(pins),
-  };
-});
+    return {
+      id: type,
+      type,
+      label: '',
+      position: { x: 0, y: 0 },
+      size,
+      isVariadic,
+      pins: R.compose(
+        R.when(
+          () => isVariadic,
+          renderablePins =>
+            R.compose(
+              R.merge(renderablePins),
+              R.indexBy(R.prop('keyName')),
+              R.map(R.assoc('isLastVariadicGroup', true)),
+              R.takeLast(arityStep),
+              R.sortBy(XP.getPinOrder),
+              R.filter(XP.isInputPin),
+              R.values
+            )(renderablePins)
+        ),
+        R.indexBy(R.prop('keyName')),
+        R.map(
+          R.applySpec({
+            key: XP.getPinKey,
+            keyName: XP.getPinKey,
+            type: XP.getPinType,
+            direction: XP.getPinDirection,
+            label: XP.getPinLabel,
+            position: calculatePinPosition(size),
+          })
+        ),
+        shouldnormalizeEmptyPinLabels ? XP.normalizeEmptyPinLabels : R.identity
+      )(pins),
+    };
+  }
+);
 
 export const isPatchDeadTerminal = R.compose(
   R.ifElse(

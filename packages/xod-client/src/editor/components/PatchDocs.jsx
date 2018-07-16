@@ -124,7 +124,7 @@ const PatchDocs = ({ patch, minimal }) => {
 
   const [inputPins, outputPins] = R.compose(
     R.partition(XP.isInputPin),
-    XP.normalizePinLabels,
+    XP.normalizeEmptyPinLabels,
     R.map(pin =>
       R.assoc('isVariadic', R.contains(XP.getPinKey(pin), variadicPinKeys), pin)
     ),
