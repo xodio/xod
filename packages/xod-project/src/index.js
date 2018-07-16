@@ -22,6 +22,7 @@ export {
   listInputPins,
   listOutputPins,
   isTerminalPatch,
+  validatePinLabels,
   listLinks,
   linkIdEquals,
   getLinkById,
@@ -92,7 +93,7 @@ export {
   isInputPin,
   isOutputPin,
   isTerminalPin,
-  normalizePinLabels,
+  normalizeEmptyPinLabels,
   isPinBindable,
   isPulsePin,
 } from './pin';
