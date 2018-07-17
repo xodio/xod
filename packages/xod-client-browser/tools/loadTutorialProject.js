@@ -10,8 +10,13 @@ const workspaceDir =
   path.resolve(projectDir, '..');
 const targetPath = path.resolve(__dirname, '../tutorialProject.json');
 
-loadProject([workspaceDir], projectDir).then(project => {
-  const json = JSON.stringify(project, null, 2);
-  fs.writeFileSync(targetPath, json);
-  process.exit(0);
-});
+loadProject([workspaceDir], projectDir)
+  .then(project => {
+    const json = JSON.stringify(project, null, 2);
+    fs.writeFileSync(targetPath, json);
+    process.exit(0);
+  })
+  .catch(err => {
+    process.stderr.write(err.message);
+    process.exit(1);
+  });
