@@ -1,10 +1,7 @@
 import client from 'xod-client';
 import { ipcRenderer } from 'electron';
 import { sendStopDebuggerSession } from './ipcActions';
-import {
-  DEBUG_SESSION_STOPPED_ON_CHANGE,
-  DEBUG_SESSION_STOPPED_ON_TAB_CLOSE,
-} from '../shared/messages';
+import { DEBUG_SESSION_STOPPED_ON_TAB_CLOSE } from '../shared/messages';
 
 export default store => next => action => {
   const state = store.getState();
@@ -16,8 +13,7 @@ export default store => next => action => {
 
   // Stop debug session if something changed in the Project
   if (isDebugSession && prevProject !== newProject) {
-    sendStopDebuggerSession(ipcRenderer);
-    store.dispatch(client.addError(DEBUG_SESSION_STOPPED_ON_CHANGE));
+    store.dispatch(client.markDebugSessionOutdated());
   }
 
   // Stop debug session if Debugger tab is closed

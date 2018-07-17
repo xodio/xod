@@ -20,11 +20,6 @@ export const SAVE_ALL_SUCCEED = {
   title: 'Saved successfully!',
 };
 
-export const DEBUG_SESSION_STOPPED_ON_CHANGE = {
-  title: 'Debug session stopped',
-  note: 'Your project has been changed.',
-  persistent: false,
-};
 export const DEBUG_SESSION_STOPPED_ON_TAB_CLOSE = {
   title: 'Debug session stopped',
   note: 'You closed the debugger tab.',

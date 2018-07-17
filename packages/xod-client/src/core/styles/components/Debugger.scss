@@ -7,6 +7,17 @@
   }
 }
 
+.debugging-outdated {
+  color: $apricot-light;
+  font-family: $font-family-normal;
+  font-size: $font-size-m;
+  padding: 12px;
+
+  span {
+    margin-left: .25em;
+  }
+}
+
 .Debugger {
   bottom: 0;
   height: 220px;

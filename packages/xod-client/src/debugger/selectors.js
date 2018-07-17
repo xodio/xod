@@ -18,6 +18,11 @@ export const isDebuggerVisible = R.compose(
   getDebuggerState
 );
 
+export const isDebugSessionOutdated = R.compose(
+  R.prop('isOutdated'),
+  getDebuggerState
+);
+
 export const getLog = R.compose(R.prop('log'), getDebuggerState);
 
 export const getUploadLog = R.compose(R.prop('uploadLog'), getDebuggerState);

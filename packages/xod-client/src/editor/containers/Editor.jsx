@@ -43,6 +43,7 @@ import SnackBar from '../../messages/containers/SnackBar';
 import Helpbox from './Helpbox';
 
 import Tooltip from '../../tooltip/components/Tooltip';
+import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
@@ -225,11 +226,37 @@ class Editor extends React.Component {
       />
     ) : null;
 
+    const renderProgramChangedWarning = () =>
+      this.props.isDebugSessionOutdated ? (
+        <TooltipHOC
+          content={
+            <div>
+              The program on screen is newer than the program running on the
+              board.<br />
+              Watches and overall behavior can be incorrect. Stop debugging and
+              upload again to synchronize.
+            </div>
+          }
+          render={(onMouseOver, onMouseMove, onMouseLeave) => (
+            <div
+              className="debugging-outdated"
+              onMouseOver={onMouseOver}
+              onMouseMove={onMouseMove}
+              onMouseLeave={onMouseLeave}
+            >
+              Program changed
+              <Icon name="question-circle" />
+            </div>
+          )}
+        />
+      ) : null;
+
     const debuggerBreadcrumbs = foldMaybe(
       null,
       tab =>
         tab.id === DEBUGGER_TAB_ID && this.props.isDebugSessionRunning ? (
           <Breadcrumbs>
+            {renderProgramChangedWarning()}
             <button
               className="debug-session-stop-button Button Button--light"
               onClick={this.props.stopDebuggerSession}
@@ -286,6 +313,7 @@ Editor.propTypes = {
   patchesIndex: PropTypes.object,
   isHelpboxVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
+  isDebugSessionOutdated: PropTypes.bool,
   suggesterIsVisible: PropTypes.bool,
   suggesterPlacePosition: PropTypes.object,
   isLibSuggesterVisible: PropTypes.bool,
@@ -329,6 +357,7 @@ const mapStateToProps = R.applySpec({
   isLibSuggesterVisible: EditorSelectors.isLibSuggesterVisible,
   isHelpboxVisible: EditorSelectors.isHelpboxVisible,
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
+  isDebugSessionOutdated: DebuggerSelectors.isDebugSessionOutdated,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
 });
 
