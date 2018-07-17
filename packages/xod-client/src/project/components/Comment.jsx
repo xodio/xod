@@ -6,9 +6,7 @@ import classNames from 'classnames';
 
 import { noop } from '../../utils/ramda';
 
-import { NODE_CORNER_RADIUS } from '../nodeLayout';
-
-const HANDLE_SIZE = 12;
+import { NODE_CORNER_RADIUS, RESIZE_HANDLE_SIZE } from '../nodeLayout';
 
 // see https://github.com/jonschlinkert/remarkable#options
 const remarkableOptions = {
@@ -154,8 +152,8 @@ class Comment extends React.Component {
           className="CommentResizeHandle"
           d={`
               M${position.x + size.width} ${position.y + size.height}
-              v ${-HANDLE_SIZE}
-              l ${-HANDLE_SIZE} ${HANDLE_SIZE}
+              v ${-RESIZE_HANDLE_SIZE}
+              l ${-RESIZE_HANDLE_SIZE} ${RESIZE_HANDLE_SIZE}
               Z
             `}
         />
@@ -181,10 +179,10 @@ class Comment extends React.Component {
         <rect
           className="resizeHandleOverlay"
           onMouseDown={this.onResizeHandleMouseDown}
-          x={position.x + size.width - HANDLE_SIZE}
-          y={position.y + size.height - HANDLE_SIZE}
-          width={HANDLE_SIZE}
-          height={HANDLE_SIZE}
+          x={position.x + size.width - RESIZE_HANDLE_SIZE}
+          y={position.y + size.height - RESIZE_HANDLE_SIZE}
+          width={RESIZE_HANDLE_SIZE}
+          height={RESIZE_HANDLE_SIZE}
         />
       </g>
     );

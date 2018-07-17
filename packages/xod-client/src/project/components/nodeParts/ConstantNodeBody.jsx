@@ -13,6 +13,7 @@ const ConstantNodeBody = props => (
   <RegularNodeBody
     {...props}
     label={props.label || getConstantValue(props) || XP.getBaseName(props.type)}
+    isResizable
   />
 );
 

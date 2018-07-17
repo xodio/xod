@@ -6,6 +6,7 @@ import { noop } from 'xod-func-tools';
 import { NODE_CORNER_RADIUS } from '../../nodeLayout';
 import NodeLabel from './NodeLabel';
 import VariadicHandle from './VariadicHandle';
+import ResizeHandle from './ResizeHandle';
 
 const NODE_BODY_RECT_PROPS = {
   rx: NODE_CORNER_RADIUS,
@@ -39,6 +40,7 @@ const RegularNodeBody = props => (
         }}
       />
     ) : null}
+    {props.isResizable ? <ResizeHandle {...props} /> : null}
   </g>
 );
 
@@ -51,11 +53,13 @@ RegularNodeBody.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   isVariadic: PropTypes.bool,
+  isResizable: PropTypes.bool,
   size: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }),
   onVariadicHandleDown: PropTypes.func,
+  onResizeHandleMouseDown: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
 };
 
 export default RegularNodeBody;

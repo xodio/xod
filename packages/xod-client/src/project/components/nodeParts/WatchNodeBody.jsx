@@ -5,6 +5,7 @@ import * as XP from 'xod-project';
 
 import { NODE_CORNER_RADIUS } from '../../nodeLayout';
 import NodeLabel from './NodeLabel';
+import ResizeHandle from './ResizeHandle';
 
 const NODE_BODY_RECT_PROPS = {
   rx: NODE_CORNER_RADIUS,
@@ -23,6 +24,7 @@ const WatchNodeBody = props => (
       height={props.size.height}
     />
     <rect className="outline" {...NODE_BODY_RECT_PROPS} />
+    <ResizeHandle {...props} />
   </g>
 );
 
@@ -35,6 +37,7 @@ WatchNodeBody.propTypes = {
   }),
   nodeValue: PropTypes.string,
   isDebugSession: PropTypes.bool,
+  onResizeHandleMouseDown: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
 };
 
 export default WatchNodeBody;

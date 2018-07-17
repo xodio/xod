@@ -17,6 +17,7 @@
     stroke: $color-node-outline;
     stroke-width: 2px;
 
+    // For terminals:
     &.string { stroke: $color-datatype-string; }
     &.number { stroke: $color-datatype-number; }
     &.boolean { stroke: $color-datatype-boolean; }
@@ -39,6 +40,11 @@
 
   &.is-variadic {}
 
+  .NodeResizeHandle {
+    fill: $color-node-outline;
+    cursor: nwse-resize;
+  }
+
   .watch-node {
     .body {
       fill: $color-watch-node-fill;
@@ -46,8 +52,8 @@
     .outline {
       stroke: $color-watch-node-outline;
     }
-    .nodeLabel {
-      text-overflow: clip;
+    .NodeResizeHandle {
+      fill: $color-watch-node-outline;
     }
 
     &.active {
@@ -60,22 +66,31 @@
       .nodeLabel {
         color: $color-watch-node-active-text;
       }
+      .NodeResizeHandle {
+        fill: $color-watch-node-active-outline;
+      }
     }
   }
 
   .nodeLabelContainer {
-    display:flex;
+    display: flex;
+    overflow: hidden;
     align-items: center;
     justify-content: center;
-    height: 100%;
+
+    // move from under pins
+    margin: 12px 4px;
+    height: calc(100% - 24px);
   }
 
   .nodeLabel {
+    display: block;
+    text-align: center;
     padding: 0 2px;
     font-size: 12px;
     font-family: $font-family-condensed;
     color: $color-canvas-face-text;
-    white-space: nowrap;
+    white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: default;
@@ -97,6 +112,13 @@
     .VariadicHandle--grip {
       stroke: $color-highlight;
     }
+
+    .NodeResizeHandle {
+      fill: $color-highlight;
+    }
+    .watch-node .NodeResizeHandle {
+      fill: $color-watch-node-highlight-outline;
+    }
   }
 
   &.is-dragged {
@@ -114,6 +136,10 @@
 
     .VariadicHandle--grip {
       stroke: $color-canvas-selected !important;
+    }
+
+    .NodeResizeHandle {
+      fill: $color-canvas-selected !important;
     }
   }
 

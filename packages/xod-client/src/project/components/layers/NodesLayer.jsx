@@ -20,6 +20,7 @@ const NodesLayer = ({
   isDebugSession,
   nodeValues,
   onVariadicHandleDown,
+  onResizeHandleMouseDown,
   noNodeHovering,
 }) => {
   const pinLinkabilityValidator = getPinLinkabilityValidator(linkingPin, nodes);
@@ -54,6 +55,7 @@ const NodesLayer = ({
             nodeValue={R.prop(node.id, nodeValues)}
             onVariadicHandleDown={onVariadicHandleDown}
             noNodeHovering={noNodeHovering}
+            onResizeHandleMouseDown={onResizeHandleMouseDown}
           />
         )),
         R.values
@@ -78,6 +80,7 @@ NodesLayer.propTypes = {
   isDebugSession: PropTypes.bool,
   nodeValues: PropTypes.objectOf(PropTypes.string),
   onVariadicHandleDown: PropTypes.func,
+  onResizeHandleMouseDown: PropTypes.func,
   noNodeHovering: PropTypes.bool,
 };
 

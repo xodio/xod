@@ -4,6 +4,7 @@ export const EDITOR_MODE = {
   SELECTING: 'selecting',
   MOVING_SELECTION: 'moving_selection',
   RESIZING_COMMENT: 'resizing_comment',
+  RESIZING_NODE: 'resizing_node',
   LINKING: 'linking',
   PANNING: 'panning',
   ACCEPTING_DRAGGED_PATCH: 'accepting_dragged_patch',

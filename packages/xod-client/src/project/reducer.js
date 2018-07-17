@@ -42,6 +42,16 @@ const selectNodePropertyUpdater = ({ kind, key, value = '' }) => {
   return R.identity;
 };
 
+const updateNodeWith = (updaterFn, id, patchPath, state) => {
+  const updatedNode = R.compose(
+    updaterFn,
+    XP.getNodeByIdUnsafe(id),
+    XP.getPatchByPathUnsafe(patchPath)
+  )(state);
+
+  return R.over(XP.lensPatch(patchPath), XP.assocNode(updatedNode), state);
+};
+
 const updateCommentWith = (updaterFn, id, patchPath, state) => {
   const updatedComment = R.compose(
     updaterFn,
@@ -329,6 +339,12 @@ export default (state = {}, action) => {
       const { nodeId, patchPath, nodeType } = action.payload;
 
       return XP.changeNodeTypeUnsafe(patchPath, nodeId, nodeType, state);
+    }
+
+    case AT.NODE_RESIZE: {
+      const { id, patchPath, size } = action.payload;
+
+      return updateNodeWith(XP.setNodeSize(size), id, patchPath, state);
     }
 
     //
