@@ -23,8 +23,6 @@ import {
 
 const isSelectionModifierPressed = event => event.metaKey || event.ctrlKey;
 
-let patchSvgRef = null;
-
 const selectingMode = {
   getInitialState() {
     return {
@@ -35,33 +33,37 @@ const selectingMode = {
     };
   },
 
-  onEntityMouseDown({ props, setState }, entityType, event, entityId) {
+  onEntityMouseDown(api, entityType, event, entityId) {
     if (isMiddleButtonPressed(event)) return;
+    const patchSvgRef = api.getStorage().patchSvgRef;
+    const mousePosition = getMousePosition(
+      patchSvgRef,
+      api.props.offset,
+      event
+    );
 
-    const mousePosition = getMousePosition(patchSvgRef, props.offset, event);
-
-    if (isEntitySelected(entityType, props.selection, entityId)) {
+    if (isEntitySelected(entityType, api.props.selection, entityId)) {
       if (isSelectionModifierPressed(event)) {
-        props.actions.deselectEntity(entityType, entityId);
-        setState({ isMouseDownOnMovableObject: false });
+        api.props.actions.deselectEntity(entityType, entityId);
+        api.setState({ isMouseDownOnMovableObject: false });
       } else {
         // Don't set selection to this single entity
         // to allow user to move already selected group of entities.
         // We'll handle it in `onEntityMouseUp`
-        setState({
+        api.setState({
           isMouseDownOnMovableObject: true,
           dragStartPosition: mousePosition,
         });
       }
     } else if (isSelectionModifierPressed(event)) {
-      props.actions.addEntityToSelection(entityType, entityId);
-      setState({
+      api.props.actions.addEntityToSelection(entityType, entityId);
+      api.setState({
         isMouseDownOnMovableObject: true,
         dragStartPosition: mousePosition,
       });
     } else {
-      props.actions.selectEntity(entityType, entityId);
-      setState({
+      api.props.actions.selectEntity(entityType, entityId);
+      api.setState({
         isMouseDownOnMovableObject: true,
         dragStartPosition: mousePosition,
       });
@@ -86,7 +88,11 @@ const selectingMode = {
 
     api.goToMode(EDITOR_MODE.RESIZING_COMMENT, {
       resizedCommentId: commentId,
-      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      dragStartPosition: getMousePosition(
+        api.getStorage().patchSvgRef,
+        api.props.offset,
+        event
+      ),
     });
   },
   onNodeResizeHandleMouseDown(api, event, nodeId) {
@@ -94,7 +100,11 @@ const selectingMode = {
 
     api.goToMode(EDITOR_MODE.RESIZING_NODE, {
       resizedNodeId: nodeId,
-      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      dragStartPosition: getMousePosition(
+        api.getStorage().patchSvgRef,
+        api.props.offset,
+        event
+      ),
     });
   },
   onVariadicHandleDown(api, event, nodeId) {
@@ -102,7 +112,11 @@ const selectingMode = {
 
     api.goToMode(EDITOR_MODE.CHANGING_ARITY_LEVEL, {
       nodeId,
-      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      dragStartPosition: getMousePosition(
+        api.getStorage().patchSvgRef,
+        api.props.offset,
+        event
+      ),
     });
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
@@ -111,7 +125,7 @@ const selectingMode = {
     const didSelectPin = api.props.actions.doPinSelection(nodeId, pinKey);
     if (didSelectPin) {
       const mousePosition = getMousePosition(
-        patchSvgRef,
+        api.getStorage().patchSvgRef,
         api.props.offset,
         event
       );
@@ -133,7 +147,7 @@ const selectingMode = {
   },
   onMouseDown(api, event) {
     const mousePosition = getMousePosition(
-      patchSvgRef,
+      api.getStorage().patchSvgRef,
       api.props.offset,
       event
     );
@@ -148,7 +162,11 @@ const selectingMode = {
     if (api.state.isMouseDownOnBackground) {
       api.goToMode(EDITOR_MODE.MARQUEE_SELECTING, {
         mouseStartPosition: api.state.mouseDownPosition,
-        mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
+        mousePosition: getMousePosition(
+          api.getStorage().patchSvgRef,
+          api.props.offset,
+          event
+        ),
       });
     }
 
@@ -156,7 +174,11 @@ const selectingMode = {
 
     api.goToMode(EDITOR_MODE.MOVING_SELECTION, {
       dragStartPosition: api.state.dragStartPosition,
-      mousePosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      mousePosition: getMousePosition(
+        api.getStorage().patchSvgRef,
+        api.props.offset,
+        event
+      ),
     });
   },
   onMouseUp(api) {
@@ -195,14 +217,18 @@ const selectingMode = {
   },
   onBackgroundDoubleClick(api, event) {
     R.compose(api.props.onDoubleClick, snapPositionToSlots, getMousePosition)(
-      patchSvgRef,
+      api.getStorage().patchSvgRef,
       api.props.offset,
       event
     );
   },
   onBackgroundMouseDown(api, event) {
     api.setState({
-      mouseDownPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+      mouseDownPosition: getMousePosition(
+        api.getStorage().patchSvgRef,
+        api.props.offset,
+        event
+      ),
       isMouseDownOnBackground: true,
     });
   },
@@ -231,9 +257,7 @@ const selectingMode = {
           onMouseDown={bindApi(api, this.onMouseDown)}
           onMouseMove={bindApi(api, this.onMouseMove)}
           onMouseUp={bindApi(api, this.onMouseUp)}
-          svgRef={svg => {
-            patchSvgRef = svg;
-          }}
+          svgRef={svg => api.setStorage({ patchSvgRef: svg })}
         >
           <Layers.Background
             width={api.props.size.width}

@@ -481,13 +481,18 @@ export const getRenderableSelection = createMemoizedSelector(
       [SELECTION_ENTITY_TYPE.COMMENT]: renderableComments,
     };
 
-    return R.map(
-      ({ entity, id }) => ({
-        entityType: entity,
-        data: renderables[entity][id],
-      }),
-      selection
-    );
+    return R.compose(
+      R.reject(R.isNil),
+      R.map(
+        ({ entity, id }) =>
+          renderables[entity][id]
+            ? {
+                entityType: entity,
+                data: renderables[entity][id],
+              }
+            : null
+      )
+    )(selection);
   }
 );
 

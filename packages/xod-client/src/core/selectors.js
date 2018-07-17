@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
+import { maybeProp } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import * as User from '../user/selectors';
@@ -49,8 +50,8 @@ export const getPatchForQuickHelp = createSelector(
   [Project.getProject, Editor.getSelection, Project.getCurrentPatchNodes],
   (project, editorSelection, currentPatchNodes) =>
     R.compose(
-      R.chain(XP.getPatchByPath(R.__, project)),
-      R.map(R.compose(XP.getNodeType, ({ id }) => currentPatchNodes[id])),
+      R.chain(R.pipe(XP.getNodeType, XP.getPatchByPath(R.__, project))),
+      R.chain(({ id }) => maybeProp(id, currentPatchNodes)),
       Maybe,
       R.find(R.propEq('entity', SELECTION_ENTITY_TYPE.NODE))
     )(editorSelection)

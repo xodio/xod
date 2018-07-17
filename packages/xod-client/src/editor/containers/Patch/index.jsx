@@ -74,11 +74,19 @@ class Patch extends React.Component {
       hoveredNodeId: null,
     };
 
+    // Storage for mode data without forcing update of component
+    // E.G. store here refs on the components
+    this.storage = {
+      [mode]: {},
+    };
+
     this.goToMode = this.goToMode.bind(this);
     this.goToDefaultMode = this.goToDefaultMode.bind(this);
     this.getModeState = this.getModeState.bind(this);
     this.setModeState = this.setModeState.bind(this);
     this.setModeStateThrottled = throttle(100, true, this.setModeState);
+    this.setModeStorage = this.setModeStorage.bind(this);
+    this.getModeStorage = this.getModeStorage.bind(this);
   }
 
   getChildContext() {
@@ -119,6 +127,8 @@ class Patch extends React.Component {
       getCurrentMode: () => this.state.currentMode,
       state: this.getModeState(mode),
       setState: R.partial(this.setModeState, [mode]),
+      getStorage: this.getModeStorage(mode),
+      setStorage: R.partial(this.setModeStorage, [mode]),
       goToMode: this.goToMode,
       goToDefaultMode: this.goToDefaultMode,
     };
@@ -145,12 +155,20 @@ class Patch extends React.Component {
     );
   }
 
+  getModeStorage(mode) {
+    return () => this.storage[mode] || {};
+  }
+  setModeStorage(mode, newData) {
+    this.storage[mode] = R.merge(this.storage[mode], newData);
+  }
+
   goToMode(newMode, payload) {
     const newModeState = MODE_HANDLERS[newMode].getInitialState(
       this.props,
       payload
     );
     this.setModeState(newMode, newModeState);
+    this.storage[newMode] = this.storage[newMode] || {};
   }
 
   goToDefaultMode(payload) {
