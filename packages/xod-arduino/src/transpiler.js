@@ -94,6 +94,11 @@ const arrangeTPatchesInTopologicalOrder = def(
     )(project)
 );
 
+export const commentXodPragmas = def(
+  'commentXodPragmas :: String -> String',
+  R.replace(/^\s*#\s*pragma\s+XOD\s/gm, '//#pragma XOD ')
+);
+
 const convertPatchToTPatch = def(
   'convertPatchToTPatch :: Patch -> TPatch',
   patch => {
@@ -149,7 +154,7 @@ const convertPatchToTPatch = def(
       {
         outputs,
         inputs,
-        impl,
+        impl: commentXodPragmas(impl),
         patchPath,
       },
     ]);
