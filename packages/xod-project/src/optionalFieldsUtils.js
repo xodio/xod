@@ -8,6 +8,7 @@ export const OPTIONAL_NODE_FIELDS = {
   description: '',
   label: '',
   arityLevel: 1,
+  size: { width: 0, height: 0 },
 };
 
 export const OPTIONAL_PATCH_FIELDS = {

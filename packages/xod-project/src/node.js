@@ -59,6 +59,7 @@ export const createNode = def(
     description: '',
     boundLiterals: {},
     arityLevel: 1,
+    size: { width: 0, height: 0 },
   })
 );
 
@@ -164,6 +165,13 @@ export const setNodePosition = def(
 export const getNodePosition = def(
   'getNodePosition :: Node -> Position',
   R.prop('position')
+);
+
+export const getNodeSize = def('getNodeSize :: Node -> Size', R.prop('size'));
+
+export const setNodeSize = def(
+  'setNodeSize :: Size -> Node -> Node',
+  R.assoc('size')
 );
 
 /**

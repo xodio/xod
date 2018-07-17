@@ -88,6 +88,7 @@ export const defaultizeNode = R.merge({
   '@@type': 'xod-project/Node',
   id: '$$defaultNodeId',
   position: { x: 0, y: 0 },
+  size: { width: 0, height: 0 },
   type: '@/default-type',
   label: '',
   description: '',
