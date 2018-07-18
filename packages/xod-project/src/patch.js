@@ -46,6 +46,7 @@ import {
   isBuiltInLibName,
   isLocalMarker,
   isVariadicPath,
+  isExpandedVariadicPatchBasename,
   getArityStepFromPatchPath,
   getSpecializationPatchPath,
   normalizeTypeNameForAbstractsResolution,
@@ -485,25 +486,30 @@ export const isTerminalPatch = def(
 export const validatePinLabels = def(
   'validatePinLabels :: Patch -> Either Error Patch',
   patch =>
-    R.compose(
-      R.ifElse(
-        R.isEmpty,
-        R.always(Either.of(patch)),
-        R.compose(
-          ([label, pins]) =>
-            fail('CLASHING_PIN_LABELS', {
-              label,
-              pinKeys: R.map(Pin.getPinKey, pins),
-              trace: [getPatchPath(patch)],
-            }),
-          R.head,
-          R.toPairs
-        )
-      ),
-      R.filter(groupedPins => groupedPins.length > 1),
-      R.groupBy(Pin.getPinLabel),
-      Pin.normalizeEmptyPinLabels,
-      listPins
+    R.ifElse(
+      R.pipe(getPatchPath, getBaseName, isExpandedVariadicPatchBasename),
+      // duplicate labels appear in expanded variadic patches by design
+      Either.of,
+      R.compose(
+        R.ifElse(
+          R.isEmpty,
+          R.always(Either.of(patch)),
+          R.compose(
+            ([label, pins]) =>
+              fail('CLASHING_PIN_LABELS', {
+                label,
+                pinKeys: R.map(Pin.getPinKey, pins),
+                trace: [getPatchPath(patch)],
+              }),
+            R.head,
+            R.toPairs
+          )
+        ),
+        R.filter(groupedPins => groupedPins.length > 1),
+        R.groupBy(Pin.getPinLabel),
+        Pin.normalizeEmptyPinLabels,
+        listPins
+      )
     )(patch)
 );
 

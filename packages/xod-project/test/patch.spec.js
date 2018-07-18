@@ -780,6 +780,39 @@ describe('Patch', () => {
           Patch.validatePinLabels(patchWithClashingPinLabels)
         );
       });
+
+      it('does not complain about duplicate labels of expanded variadic patches', () => {
+        const expandedVariadicPatch = Helper.defaultizePatch({
+          path: '@/my-variadic-$2',
+          nodes: {
+            in: {
+              type: 'xod/patch-nodes/input-boolean',
+              label: 'IN',
+            },
+            foo: {
+              type: 'xod/patch-nodes/input-boolean',
+              label: 'FOO',
+            },
+            'foo-$1': {
+              type: 'xod/patch-nodes/input-boolean',
+              label: 'FOO',
+            },
+            'foo-$2': {
+              type: 'xod/patch-nodes/input-boolean',
+              label: 'FOO',
+            },
+            out: {
+              type: 'xod/patch-nodes/output-boolean',
+              label: 'OUT',
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(expandedVariadicPatch),
+          Patch.validatePinLabels(expandedVariadicPatch)
+        );
+      });
     });
   });
 
