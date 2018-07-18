@@ -96,6 +96,11 @@ export const PinRef = Model('PinRef', {
   pinKey: PinKey,
 });
 
+export const Size = Model('Size', {
+  width: $.Number,
+  height: $.Number,
+});
+
 export const Node = Model('Node', {
   id: NodeId,
   position: Position,
@@ -104,6 +109,7 @@ export const Node = Model('Node', {
   description: $.String,
   boundLiterals: $.StrMap(DataValue),
   arityLevel: ArityLevel,
+  size: Size,
 });
 
 export const Link = Model('Link', {
@@ -116,11 +122,6 @@ export const Attachment = Model('Attachment', {
   filename: $.String,
   encoding: $.String,
   content: $.String,
-});
-
-export const Size = Model('Size', {
-  width: $.Number,
-  height: $.Number,
 });
 
 export const Comment = Model('Comment', {

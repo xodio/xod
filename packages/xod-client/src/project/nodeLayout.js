@@ -22,6 +22,8 @@ export const LINK_HOTSPOT_SIZE = {
 
 export const NODE_CORNER_RADIUS = 5;
 
+export const RESIZE_HANDLE_SIZE = 12;
+
 export const PIN_RADIUS = 6;
 export const PIN_INNER_RADIUS = PIN_RADIUS - 2;
 export const PIN_RADIUS_WITH_OUTER_STROKE = PIN_RADIUS + 3;
@@ -77,14 +79,20 @@ export const calculatePinPosition = R.curry((nodeSize, pin) => {
  * @param node - dereferenced node
  */
 export const addNodePositioning = node => {
-  const size = R.compose(calcutaleNodeSizeFromPins, R.values)(node.pins);
+  const calculatedSize = R.compose(calcutaleNodeSizeFromPins, R.values)(
+    node.pins
+  );
+  const size = {
+    width: Math.max(calculatedSize.width, node.size.width),
+    height: Math.max(calculatedSize.height, node.size.height),
+  };
 
   const pins = R.map(pin => {
     const position = calculatePinPosition(size, pin);
     return R.merge(pin, { position });
   }, node.pins);
 
-  return R.merge(node, { size, pins });
+  return R.merge(node, { size, pins, originalSize: calculatedSize });
 };
 
 export const addNodesPositioning = R.map(addNodePositioning);

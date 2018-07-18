@@ -89,6 +89,14 @@ const selectingMode = {
       dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
     });
   },
+  onNodeResizeHandleMouseDown(api, event, nodeId) {
+    if (isMiddleButtonPressed(event)) return;
+
+    api.goToMode(EDITOR_MODE.RESIZING_NODE, {
+      resizedNodeId: nodeId,
+      dragStartPosition: getMousePosition(patchSvgRef, api.props.offset, event),
+    });
+  },
   onVariadicHandleDown(api, event, nodeId) {
     if (isMiddleButtonPressed(event)) return;
 
@@ -271,6 +279,10 @@ const selectingMode = {
               ])}
               onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
               onVariadicHandleDown={bindApi(api, this.onVariadicHandleDown)}
+              onResizeHandleMouseDown={bindApi(
+                api,
+                this.onNodeResizeHandleMouseDown
+              )}
             />
             <Layers.LinksOverlay
               links={api.props.links}

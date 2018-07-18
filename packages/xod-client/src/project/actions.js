@@ -258,6 +258,18 @@ export const resizeComment = (id, size) => (dispatch, getState) =>
     })
   );
 
+export const resizeNode = (id, size) => (dispatch, getState) =>
+  getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.NODE_RESIZE,
+      payload: {
+        id,
+        size,
+        patchPath,
+      },
+    })
+  );
+
 export const editComment = (id, content) => (dispatch, getState) =>
   getCurrentPatchPath(getState()).map(patchPath =>
     dispatch({

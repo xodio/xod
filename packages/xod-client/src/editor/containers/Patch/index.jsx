@@ -32,6 +32,7 @@ import linkingMode from './modes/linking';
 import panningMode from './modes/panning';
 import movingMode from './modes/moving';
 import resizingCommentMode from './modes/resizingComment';
+import resizingNodeMode from './modes/resizingNode';
 import acceptingDraggedPatchMode from './modes/acceptingDraggedPatch';
 import debuggingMode from './modes/debugging';
 import marqueeSelectingMode from './modes/marqueeSelecting';
@@ -45,6 +46,7 @@ const MODE_HANDLERS = {
   [EDITOR_MODE.PANNING]: panningMode,
   [EDITOR_MODE.MOVING_SELECTION]: movingMode,
   [EDITOR_MODE.RESIZING_COMMENT]: resizingCommentMode,
+  [EDITOR_MODE.RESIZING_NODE]: resizingNodeMode,
   [EDITOR_MODE.ACCEPTING_DRAGGED_PATCH]: acceptingDraggedPatchMode,
   [EDITOR_MODE.DEBUGGING]: debuggingMode,
   [EDITOR_MODE.MARQUEE_SELECTING]: marqueeSelectingMode,
@@ -239,6 +241,7 @@ const mapDispatchToProps = dispatch => ({
       editComment: ProjectActions.editComment,
       moveSelection: EditorActions.moveSelection,
       resizeComment: ProjectActions.resizeComment,
+      resizeNode: ProjectActions.resizeNode,
       deselectAll: EditorActions.deselectAll,
       deleteSelection: EditorActions.deleteSelection,
       selectLink: EditorActions.selectLink,
