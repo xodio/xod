@@ -94,6 +94,30 @@ describe('PatchPathUtils', () => {
       );
     });
   });
+
+  describe('isExpandedVariadicPatchBasename', () => {
+    it('should ensure that it is a valid basename that contains variadic level suffix', () => {
+      assert.isTrue(PatchPathUtils.isExpandedVariadicPatchBasename('join-$5'));
+      assert.isTrue(
+        PatchPathUtils.isExpandedVariadicPatchBasename('sp(number,string)-$5')
+      );
+
+      assert.isFalse(
+        PatchPathUtils.isExpandedVariadicPatchBasename('my-regular-patch-123')
+      );
+      assert.isFalse(
+        PatchPathUtils.isExpandedVariadicPatchBasename(
+          'some-specialization(number,string)'
+        )
+      );
+      assert.isFalse(
+        PatchPathUtils.isExpandedVariadicPatchBasename(
+          'not-even-a-valid-basename-$b'
+        )
+      );
+    });
+  });
+
   describe('isValidPatchPath', () => {
     it('should accept local paths', () => {
       assert.isTrue(PatchPathUtils.isValidPatchPath('@/some-identifier'));

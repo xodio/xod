@@ -17,6 +17,7 @@ export {
   isValidIdentifier,
   isValidPatchBasename,
   isSpecializationPatchBasename,
+  isExpandedVariadicPatchBasename,
   isPathLocal,
   isPathLibrary,
   isLibName,

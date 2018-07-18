@@ -22,22 +22,25 @@ const alphanumericWithHypens = `${alphanumeric}(-${alphanumeric})*`;
 const alphanumericWithHypensAndCommans = `${alphanumeric}(-${alphanumeric}|,${alphanumeric})*`;
 
 // -$5
-const variadicLevel = '(-\\$\\d+){0,1}';
+const variadicLevel = '(-\\$\\d+)';
+const maybeVariadicLevel = `${variadicLevel}{0,1}`;
 
 // (foo-2-bar,foo-5-bar)
 const types = `(\\(${alphanumericWithHypensAndCommans}\\)){0,1}`;
 
 // foo2(foo-2-bar,foo-5-bar)-$5
 const patchBaseNameRegExp = new RegExp(
-  `^${alphanumericWithHypens}${types}${variadicLevel}$`
+  `^${alphanumericWithHypens}${types}${maybeVariadicLevel}$`
 );
 
 const specializationPatchBasenameRegExp = new RegExp(
-  `^${alphanumericWithHypens}\\(${alphanumericWithHypensAndCommans}\\)${variadicLevel}$`
+  `^${alphanumericWithHypens}\\(${alphanumericWithHypensAndCommans}\\)${maybeVariadicLevel}$`
 );
 
 // foo-2-bar
 const identifierRegExp = new RegExp(`^${alphanumericWithHypens}$`);
+
+const variadicBasenameRegExp = new RegExp(`${variadicLevel}$`);
 
 // =============================================================================
 // Validating functions
@@ -123,4 +126,9 @@ export const isBuiltInLibName = R.equals(TERMINALS_LIB_NAME);
 // :: PatchPath -> Boolean
 export const isSpecializationPatchBasename = R.test(
   specializationPatchBasenameRegExp
+);
+
+export const isExpandedVariadicPatchBasename = R.both(
+  R.test(variadicBasenameRegExp),
+  isValidPatchBasename
 );
