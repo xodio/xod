@@ -1,13 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-STARTING_DIR=$PWD
-export SHOT="$PWD/tools/screenshot-xodball"
-
-updaters=($(find ./docs -iname update-screenshots.sh))
-for updater in "${updaters[@]}"; do
-  echo -n "$updater ..."
-  cd $(dirname $updater)
-  ./update-screenshots.sh
-  cd "$STARTING_DIR"
-  echo " done"
-done
+export SHOT="$(dirname "$(readlink -f "$0")")/screenshot-xodball"
+find . -iname "update-screenshots.sh" \
+  -execdir sh -c 'pwd && ./update-screenshots.sh' \;
