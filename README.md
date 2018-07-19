@@ -61,8 +61,7 @@ subcommands:
 - `yarn test-cpp` — run C++ code tests
 - `yarn test-func` — run functional tests
 - `yarn lint` — run the linter to check code style
-- `yarn flow` — perform static type checking with Flow
-- `yarn verify` — build, lint, typecheck, test; run this prior to a pull request
+- `yarn verify` — build, lint, test; run this prior to a pull request
 - `yarn ci` — install & verify; CI-server uses this command
 - `yarn start:electron` — starts desktop IDE
 - `yarn start:spectron-repl` — starts functional tests environment
