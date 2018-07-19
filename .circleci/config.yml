@@ -49,10 +49,6 @@ defs:
       name: Build electron IDE app
       command: yarn build:electron
 
-    step-flow: &step-flow
-      name: Flow type check
-      command: yarn flow
-
     step-lint: &step-lint
       name: Lint
       command: yarn lint
@@ -90,7 +86,6 @@ jobs:
       - save_cache: *cache-node_modules
       - run: *step-build
       - run: *step-verify-git-clean
-      - run: *step-flow
       - run: *step-lint
       - run: *step-test
       - run: *step-test-func
@@ -108,7 +103,6 @@ jobs:
       - save_cache: *cache-node_modules
       - run: *step-build
       - run: *step-verify-git-clean
-      - run: *step-flow
       - run: *step-lint
       - run: *step-test
       - run: *step-test-func

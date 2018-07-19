@@ -11,7 +11,6 @@ module.exports = {
     'react',
     'import',
     'mocha',
-    'flowtype',
     'xod-fp',
     'prettier',
   ],
@@ -22,7 +21,6 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/react',
     'plugin:react/recommended',
-    'plugin:flowtype/recommended',
     'airbnb',
     'prettier',
     'prettier/flowtype',
@@ -62,14 +60,10 @@ module.exports = {
       allowAfterThis: true,
       allowAfterSuper: true
     }],
-    // Built-in `no-duplicate-imports` rule does not support Flow
-    // The check is delegated to `import/no-duplicates` below
-    'no-duplicate-imports': 'off',
     'new-cap': ['error', {
       'capIsNewExceptions': ['Maybe', 'Either', 'Tuple', 'StrMap'],
       'capIsNewExceptionPattern': '^(Maybe|Either)\..'
     }],
-    'import/no-duplicates': 'error',
     'import/no-extraneous-dependencies': ['error', {
       devDependencies: [
         '**/*.spec.js',
