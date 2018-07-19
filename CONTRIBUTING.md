@@ -1,6 +1,6 @@
 There are several ways you can contribute to XOD. This document is dedicated to
 contributing to code and issues. Other ways are described in the
-[Contributor’s guide](/docs/contributing/).
+[Contributor’s guide](https://xod.io/docs/contributing/).
 
 ## Improving issues
 

@@ -7,8 +7,9 @@ XOD
 XOD is a visual programming language for microcontrollers. For documentation
 and downloads visit https://xod.io.
 
-This repository contains sources for XOD language core, XOD IDE, XOD standard
-library, and XOD documentation.
+This repository contains sources for XOD language core, XOD IDE and XOD standard
+library. XOD documentation is in the [xod-docs](https://github.com/xodio/xod-docs)
+repository.
 
 Development copy setup
 ----------------------
@@ -42,7 +43,6 @@ split up in few directories:
   to see it’s own `README` and get an idea what it is for
 - `tools/` — utility scripts to assist build process and routine maintenance
   tasks
-- `docs/` — documentation source for https://xod.io/docs/
 - `workspace/` — XOD standard library, default projects, and end-to-end
   fixtures
 
