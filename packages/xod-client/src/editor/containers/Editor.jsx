@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys, FocusTrap } from 'react-hotkeys';
 import * as XP from 'xod-project';
-import { Icon } from 'react-fa';
 import debounce from 'throttle-debounce/debounce';
 
 import * as Actions from '../actions';
@@ -24,7 +23,6 @@ import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import {
   FOCUS_AREAS,
-  DEBUGGER_TAB_ID,
   TAB_TYPES,
   IMPL_TEMPLATE,
   SIDEBAR_IDS,
@@ -37,13 +35,12 @@ import Suggester from '../components/Suggester';
 import PanelContextMenu from '../components/PanelContextMenu';
 import LibSuggester from '../components/LibSuggester';
 import Debugger from '../../debugger/containers/Debugger';
-import Breadcrumbs from '../../debugger/containers/Breadcrumbs';
+import DebuggerTopPane from '../../debugger/containers/DebuggerTopPane';
 import Sidebar from './Sidebar';
 import SnackBar from '../../messages/containers/SnackBar';
 import Helpbox from './Helpbox';
 
 import Tooltip from '../../tooltip/components/Tooltip';
-import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
@@ -226,48 +223,6 @@ class Editor extends React.Component {
       />
     ) : null;
 
-    const renderProgramChangedWarning = () =>
-      this.props.isDebugSessionOutdated ? (
-        <TooltipHOC
-          content={
-            <div>
-              The program on screen is newer than the program running on the
-              board.<br />
-              Watches and overall behavior can be incorrect. Stop debugging and
-              upload again to synchronize.
-            </div>
-          }
-          render={(onMouseOver, onMouseMove, onMouseLeave) => (
-            <div
-              className="debugging-outdated"
-              onMouseOver={onMouseOver}
-              onMouseMove={onMouseMove}
-              onMouseLeave={onMouseLeave}
-            >
-              Program changed
-              <Icon name="question-circle" />
-            </div>
-          )}
-        />
-      ) : null;
-
-    const debuggerBreadcrumbs = foldMaybe(
-      null,
-      tab =>
-        tab.id === DEBUGGER_TAB_ID && this.props.isDebugSessionRunning ? (
-          <Breadcrumbs>
-            {renderProgramChangedWarning()}
-            <button
-              className="debug-session-stop-button Button Button--light"
-              onClick={this.props.stopDebuggerSession}
-            >
-              <Icon name="stop" /> Stop debug
-            </button>
-          </Breadcrumbs>
-        ) : null,
-      this.props.currentTab
-    );
-
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
@@ -279,7 +234,12 @@ class Editor extends React.Component {
         {libSuggester}
         <FocusTrap className="Workarea" onFocus={this.onWorkareaFocus}>
           <Tabs />
-          {debuggerBreadcrumbs}
+          <DebuggerTopPane
+            currentTab={this.props.currentTab}
+            isDebugSessionRunning={this.props.isDebugSessionRunning}
+            isDebugSessionOutdated={this.props.isDebugSessionOutdated}
+            stopDebuggerSession={this.props.stopDebuggerSession}
+          />
           <div className="Workarea-inner">
             {this.renderOpenedPatchTab()}
             {this.renderOpenedImplementationEditorTabs()}
