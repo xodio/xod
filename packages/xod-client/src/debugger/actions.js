@@ -40,3 +40,7 @@ export const drillDown = (patchPath, nodeId) => ({
     nodeId,
   },
 });
+
+export const markDebugSessionOutdated = () => ({
+  type: AT.MARK_DEBUG_SESSION_OUTDATED,
+});

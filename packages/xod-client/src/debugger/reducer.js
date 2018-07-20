@@ -8,6 +8,7 @@ import {
   DEBUGGER_LOG_CLEAR,
   DEBUG_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
+  MARK_DEBUG_SESSION_OUTDATED,
 } from './actionTypes';
 
 import { UPLOAD_STATUS, UPLOAD_MSG_TYPE } from './constants';
@@ -137,6 +138,7 @@ export default (state = initialState, action) => {
         addMessageToLog(action.payload.message),
         R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap)),
         R.assoc('isRunning', true),
+        R.assoc('isOutdated', false),
         showDebuggerPane
       )(state);
     case DEBUG_SESSION_STOPPED:
@@ -146,6 +148,8 @@ export default (state = initialState, action) => {
         R.assoc('nodeIdsMap', {}),
         R.assoc('isRunning', false)
       )(state);
+    case MARK_DEBUG_SESSION_OUTDATED:
+      return R.assoc('isOutdated', true, state);
     default:
       return state;
   }

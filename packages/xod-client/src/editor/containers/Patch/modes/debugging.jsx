@@ -4,93 +4,21 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 
-import { EDITOR_MODE, SELECTION_ENTITY_TYPE } from '../../../constants';
-import { isEntitySelected } from '../../../utils';
-import { isInputTarget } from '../../../../utils/browser';
-import { COMMAND } from '../../../../utils/constants';
+import { SELECTION_ENTITY_TYPE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import {
-  bindApi,
-  getMousePosition,
-  getOffsetMatrix,
-  isMiddleButtonPressed,
-} from '../modeUtils';
+import selectingMode from './selecting';
+import { bindApi, getOffsetMatrix } from '../modeUtils';
 
-const isSelectionModifierPressed = event => event.metaKey || event.ctrlKey;
-
-let patchSvgRef = null;
-
-const debuggingMode = {
-  getInitialState() {
-    return {};
-  },
-
-  onEntityMouseDown({ props, setState }, entityType, event, entityId) {
-    if (isMiddleButtonPressed(event)) return;
-
-    if (isEntitySelected(entityType, props.selection, entityId)) {
-      if (isSelectionModifierPressed(event)) {
-        props.actions.deselectEntity(entityType, entityId);
-        setState({ isMouseDownOnMovableObject: false });
-      }
-    } else if (isSelectionModifierPressed(event)) {
-      props.actions.addEntityToSelection(entityType, entityId);
-    } else {
-      props.actions.selectEntity(entityType, entityId);
-    }
-  },
-  onEntityMouseUp({ props, setState }, entityType, event, entityId) {
-    if (isMiddleButtonPressed(event)) return;
-
-    if (
-      !isSelectionModifierPressed(event) &&
-      isEntitySelected(entityType, props.selection, entityId) &&
-      props.selection.length > 1
-    ) {
-      props.actions.selectEntity(entityType, entityId);
-    }
-  },
-
-  onMouseDown(api, event) {
-    if (!isMiddleButtonPressed(event)) return;
-
-    const mousePosition = getMousePosition(
-      patchSvgRef,
-      api.props.offset,
-      event
-    );
-    api.goToMode(EDITOR_MODE.PANNING, {
-      isPanning: true,
-      panningStartPosition: mousePosition,
-    });
-  },
-  onKeyDown(api, event) {
-    if (isInputTarget(event)) return;
-
-    if (event.key === ' ' && !api.state.isMouseDownOnMovableObject) {
-      api.goToMode(EDITOR_MODE.PANNING, { isPanning: false });
-    }
-  },
-  onBackgroundClick(api, event) {
-    // to prevent misclicks when selecting multiple entities
-    if (isSelectionModifierPressed(event)) return;
-
-    api.props.actions.deselectAll();
-  },
+const debuggingMode = R.merge(selectingMode, {
   onNodeDoubleClick(api, nodeId, patchPath) {
     if (patchPath === XP.NOT_IMPLEMENTED_IN_XOD_PATH) {
       api.props.actions.openImplementationEditor();
     } else {
       api.props.actions.drillDown(patchPath, nodeId);
     }
-  },
-  getHotkeyHandlers(api) {
-    return {
-      [COMMAND.DESELECT]: api.props.actions.deselectAll,
-    };
   },
   render(api) {
     return (
@@ -101,15 +29,17 @@ const debuggingMode = {
       >
         <PatchSVG
           onMouseDown={bindApi(api, this.onMouseDown)}
-          svgRef={svg => {
-            patchSvgRef = svg;
-          }}
+          onMouseMove={bindApi(api, this.onMouseMove)}
+          onMouseUp={bindApi(api, this.onMouseUp)}
+          svgRef={svg => api.setStorage({ patchSvgRef: svg })}
         >
           <Layers.Background
             width={api.props.size.width}
             height={api.props.size.height}
-            offset={api.props.offset}
             onClick={bindApi(api, this.onBackgroundClick)}
+            onDoubleClick={bindApi(api, this.onBackgroundDoubleClick)}
+            onMouseDown={bindApi(api, this.onBackgroundMouseDown)}
+            offset={api.props.offset}
           />
           <g transform={getOffsetMatrix(api.props.offset)}>
             <Layers.Comments
@@ -123,6 +53,11 @@ const debuggingMode = {
                 api,
                 SELECTION_ENTITY_TYPE.COMMENT,
               ])}
+              onResizeHandleMouseDown={bindApi(
+                api,
+                this.onCommentResizeHandleMouseDown
+              )}
+              onFinishEditing={api.props.actions.editComment}
             />
             <Layers.Links
               links={api.props.links}
@@ -143,20 +78,27 @@ const debuggingMode = {
                 SELECTION_ENTITY_TYPE.NODE,
               ])}
               onDoubleClick={bindApi(api, this.onNodeDoubleClick)}
+              onVariadicHandleDown={bindApi(api, this.onVariadicHandleDown)}
+              onResizeHandleMouseDown={bindApi(
+                api,
+                this.onNodeResizeHandleMouseDown
+              )}
             />
             <Layers.LinksOverlay
               links={api.props.links}
               selection={api.props.selection}
+              onClick={bindApi(api, this.onLinkClick)}
             />
             <Layers.NodePinsOverlay
               nodes={api.props.nodes}
               linkingPin={api.props.linkingPin}
+              onPinMouseDown={bindApi(api, this.onPinMouseDown)}
             />
           </g>
         </PatchSVG>
       </HotKeys>
     );
   },
-};
+});
 
 export default debuggingMode;

@@ -64,6 +64,9 @@ const defaultState = {
   downloadProgressPopupError: null,
 };
 
+const stopDebuggerSession = () =>
+  debuggerIPC.sendStopDebuggerSession(ipcRenderer);
+
 class App extends client.App {
   constructor(props) {
     super(props);
@@ -181,6 +184,29 @@ class App extends client.App {
 
     // request for data from main process
     props.actions.fetchGrant();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const props = this.props;
+    // Custom checks for some props
+    // All other props will be checked for ===
+    const propChecks = {
+      currentPatchPath: (prev, next) => prev.equals(next), // Maybe.equals
+      popups: R.equals,
+      popupsData: R.equals,
+    };
+    const propEquality = R.mapObjIndexed((val, key) =>
+      R.ifElse(
+        R.has(key),
+        R.pipe(R.prop(key), check => check(val, nextProps[key])),
+        () => val === nextProps[key]
+      )(propChecks)
+    )(props);
+
+    return (
+      R.any(R.equals(false), R.values(propEquality)) ||
+      !R.equals(this.state, nextState)
+    );
   }
 
   onResize() {
@@ -722,9 +748,7 @@ class App extends client.App {
         />
         <client.Editor
           size={this.state.size}
-          stopDebuggerSession={() =>
-            debuggerIPC.sendStopDebuggerSession(ipcRenderer)
-          }
+          stopDebuggerSession={stopDebuggerSession}
           onUploadClick={this.onUploadToArduinoClicked}
           onUploadAndDebugClick={this.onUploadToArduinoAndDebugClicked}
         />
