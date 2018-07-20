@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
-import { $Maybe, foldMaybe } from 'xod-func-tools';
+import { $Maybe, foldMaybe, noop } from 'xod-func-tools';
 import { Icon } from 'react-fa';
 import { shouldUpdate } from 'recompose';
 
@@ -56,12 +56,13 @@ DebuggerTopPane.propTypes = {
   currentTab: sanctuaryPropType($Maybe($.Object)),
   isDebugSessionRunning: PropTypes.bool,
   isDebugSessionOutdated: PropTypes.bool,
-  stopDebuggerSession: PropTypes.func.isRequired,
+  stopDebuggerSession: PropTypes.func,
 };
 
 DebuggerTopPane.defaultProps = {
   isDebugSessionRunning: false,
   isDebugSessionOutdated: false,
+  stopDebuggerSession: noop,
 };
 
 export default shouldUpdate(
