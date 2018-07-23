@@ -3,7 +3,7 @@ import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { foldMaybe, foldEither, explodeMaybe } from 'xod-func-tools';
+import { foldMaybe, foldEither, explodeMaybe, maybeProp } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -17,6 +17,7 @@ import {
   getCurrentPatchPath,
   getLinkingPin,
 } from '../editor/selectors';
+import { getDeducedTypes } from '../hinting/selectors';
 import { isPatchDeadTerminal, getRenderablePinType } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
@@ -65,20 +66,13 @@ export const getCurrentPatch = createSelector(
   (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
-const samePatchesInProject = (prev, next) => {
-  if (prev === next) return true;
-  const prevPatches = XP.listPatches(prev);
-  const nextPatches = XP.listPatches(next);
-  return XP.patchListEqualsBy(XP.samePatchValidity)(prevPatches, nextPatches);
-};
-
 export const getDeducedPinTypes = createMemoizedSelector(
-  [getProject, getCurrentPatchPath],
-  [samePatchesInProject, R.identical],
-  (project, maybeCurrentPatchPath) =>
+  [getCurrentPatchPath, getDeducedTypes],
+  [R.identical, R.equals],
+  (maybeCurrentPatchPath, deducedPinTypes) =>
     R.compose(
-      Maybe.maybe({}, patch => XP.deducePinTypes(patch, project)),
-      R.chain(XP.getPatchByPath(R.__, project))
+      foldMaybe({}, R.identity),
+      R.chain(maybeProp(R.__, deducedPinTypes))
     )(maybeCurrentPatchPath)
 );
 
@@ -164,9 +158,7 @@ const addError = R.curry((error, renderableEntity) =>
 const addDeadRefErrors = R.curry((project, renderableNode) =>
   R.compose(
     R.ifElse(
-      R.compose(Maybe.isNothing, XP.getPatchByPath(R.__, project)),
-      // TODO: Replace this custom error with rich error from xod-project
-      type => addError(new Error(missingPatchForNode(type)), renderableNode),
+      XP.hasPatch(R.__, project),
       R.compose(
         foldEither(
           err => addError(err, renderableNode),
@@ -175,7 +167,9 @@ const addDeadRefErrors = R.curry((project, renderableNode) =>
         XP.validatePatchContents(R.__, project),
         // we just checked that patch exists
         XP.getPatchByPathUnsafe(R.__, project)
-      )
+      ),
+      // TODO: Replace this custom error with rich error from xod-project
+      type => addError(new Error(missingPatchForNode(type)), renderableNode)
     ),
     R.prop('type')
   )(renderableNode)

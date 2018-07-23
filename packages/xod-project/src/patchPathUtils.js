@@ -263,6 +263,9 @@ const internalTerminalRegExp = new RegExp(
 // :: PatchPath -> Boolean
 export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
 
+// :: PatchPath -> Boolean
+export const isTerminalSelf = R.equals(CONST.OUTPUT_SELF_PATH);
+
 export const resolvePatchPath = def(
   'resolvePatchPath :: PatchPath -> PatchPath -> PatchPath',
   R.cond([
