@@ -1,8 +1,18 @@
 export default {
   deducedTypes: {
-    // PatchPath: { NodeId: { PinKey: PinType } },
+    // PatchPath: { NodeId: { PinKey: Either [PinType] PinType } },
   },
   errors: {
-    // PatchPath: { NodeId: [Error] },
+    /**
+    PatchPath: {
+      errors: [Error],
+      nodes: {
+        NodeId: {
+          errors: [Error],
+          PinKey: PinType,
+        },
+      },
+    },
+    **/
   },
 };

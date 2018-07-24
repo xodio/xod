@@ -1,5 +1,4 @@
 import * as R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
