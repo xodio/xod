@@ -1,5 +1,5 @@
 {
-  "name": "xod-arduino",
+  "name": "xod-func-tools",
   "version": "0.22.0",
   "sources": [
     "src"
@@ -9,11 +9,7 @@
     "in-source": true
   },
   "suffix": ".bs.js",
-  "bs-dependencies": [
-    "holes",
-    "xod-func-tools",
-    "xod-project"
-  ],
+  "bs-dependencies": [],
   "namespace": true,
   "refmt": 3
 }

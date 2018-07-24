@@ -1,4 +1,6 @@
 open Belt;
+open XodFuncTools;
+open XodProject;
 
 module TProject = {
   type t;
@@ -9,15 +11,15 @@ type program = {
   nodeIdMap: Map.String.t(string),
 };
 
-[@bs.module "xod-arduino"]
+[@bs.module ".."]
 external _transformProject :
   (Project.t, string) => Either.t(Js.Exn.t, TProject.t) =
   "transformProject";
 
-[@bs.module "xod-arduino"]
+[@bs.module ".."]
 external _transpile : TProject.t => string = "transpile";
 
-[@bs.module "xod-arduino"]
+[@bs.module ".."]
 external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";
 
 let transpile = (project, patchPath) : XResult.t(program) =>

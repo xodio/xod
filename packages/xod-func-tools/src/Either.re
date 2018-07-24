@@ -1,13 +1,13 @@
 type t('left, 'right) = Js.Types.obj_val;
 
-[@bs.module "xod-func-tools"]
+[@bs.module ".."]
 external foldEither : ('left => 'a, 'right => 'a, t('left, 'right)) => 'a =
   "";
 
-[@bs.module "xod-func-tools"]
+[@bs.module ".."]
 external eitherLeft : 'left => t('left, 'right) = "";
 
-[@bs.module "xod-func-tools"]
+[@bs.module ".."]
 external eitherRight : 'right => t('left, 'right) = "";
 
 let toResult = either =>

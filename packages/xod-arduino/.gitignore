@@ -1,3 +1,5 @@
 test-cpp/run-tests
 test-cpp/run-tests.dSYM
 .pio-build
+
+*.bs.js

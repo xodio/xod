@@ -1,8 +1,8 @@
 // This is the configuration file used by BuckleScript's build system bsb. Its documentation lives here: http://bucklescript.github.io/bucklescript/docson/#build-schema.json
 // BuckleScript comes with its own parser for bsconfig.json, which is normal JSON, with the extra support of comments and trailing commas.
 {
-  "name": "xod-tabtest",
-  "version": "0.22.0",
+  "name": "holes",
+  "version": "0.1.0",
   "sources": [
     {
       "dir" : "src",
@@ -19,15 +19,11 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "holes",
-    "xod-func-tools",
-    "xod-project",
-    "xod-arduino"
   ],
   "bs-dev-dependencies": ["@glennsl/bs-jest"],
   "warnings": {
     "error" : "+101"
   },
-  "namespace": true,
+  "namespace": false,
   "refmt": 3
 }

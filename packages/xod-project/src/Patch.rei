@@ -1,3 +1,5 @@
+open XodFuncTools;
+
 type t;
 
 type path = PatchPath.t;

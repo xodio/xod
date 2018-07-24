@@ -1,6 +1,6 @@
 type t('a) = Js.Types.obj_val;
 
-[@bs.module "xod-func-tools"]
+[@bs.module ".."]
 external foldMaybe : ('b, 'a => 'b, t('a)) => 'b = "";
 
 let toOption = maybe =>

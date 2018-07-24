@@ -1,12 +1,12 @@
 type t;
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external getFilename : t => string = "getAttachmentFilename";
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external getContent : t => string = "getAttachmentContent";
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external getEncoding : t => string = "getAttachmentEncoding";
 
 let isTabtest = att => getFilename(att) == "patch.test.tsv";

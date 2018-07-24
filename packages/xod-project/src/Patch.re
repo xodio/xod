@@ -1,19 +1,20 @@
 open Belt;
+open XodFuncTools;
 
 type t = Js.Types.obj_val;
 
 type path = PatchPath.t;
 
-[@bs.module "xod-project"] external create : unit => t = "createPatch";
+[@bs.module ".."] external create : unit => t = "createPatch";
 
-[@bs.module "xod-project"] external getPath : t => path = "getPatchPath";
+[@bs.module ".."] external getPath : t => path = "getPatchPath";
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external _assocNode : (Node.t, t) => t = "assocNode";
 
 let assocNode = (patch, node) => _assocNode(node, patch);
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external _assocLink : (Link.t, t) => Either.t(Js.Exn.t, t) = "assocLink";
 
 let assocLink = (patch, link) => _assocLink(link, patch) |> Either.toResult;
@@ -26,7 +27,7 @@ let assocLinkExn = (link, patch) =>
     Js.Exn.raiseError(err |> Js.Exn.message |. Option.getWithDefault(""))
   };
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external _listPins : t => array(Pin.t) = "listPins";
 
 let listPins = patch => _listPins(patch) |. List.fromArray;
@@ -59,7 +60,7 @@ let findPinByLabel = (patch, label, ~normalize, ~direction) : option(Pin.t) =>
       }
   );
 
-[@bs.module "xod-project"]
+[@bs.module ".."]
 external _getAttachments : t => array(Attachment.t) = "getPatchAttachments";
 
 let getAttachments = t => _getAttachments(t) |. List.fromArray;

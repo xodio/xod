@@ -1,10 +1,10 @@
 {
-  "name": "xod-tabtest",
-  "version": "0.22.0",
+  "name": "holes",
+  "version": "0.1.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world",
-    "dev": "bsb -w",
+    "dev:re": "bsb -w",
     "test": "jest"
   },
   "keywords": [
@@ -12,7 +12,7 @@
   ],
   "author": "XOD",
   "license": "AGPL-3.0",
-  "main": "src/Tabtest_Js.bs.js",
+  "main": "src/Holes.bs.js",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
     "bs-platform": "^3.1.5"

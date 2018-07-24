@@ -1,3 +1,5 @@
+open XodFuncTools;
+
 type t;
 
 let listPatches: t => list(Patch.t);

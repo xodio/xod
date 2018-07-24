@@ -1,0 +1,44 @@
+// @see https://reasonml.chat/t/best-practices-for-using-reasonml-in-a-monorepo/161/4
+{
+  "name": "xod",
+  "version": "0.22.0",
+  "namespace": false,
+  "sources": [
+    {
+      "dir": "packages/holes/src",
+      "subdirs": true
+    },
+    {
+      "dir": "packages/xod-arduino/src",
+      "subdirs": true
+    },
+    {
+      "dir": "packages/xod-func-tools/src",
+      "subdirs": true
+    },
+    {
+      "dir": "packages/xod-project/src",
+      "subdirs": true
+    },
+    {
+      "dir": "packages/xod-tabtest/src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+    "holes",
+    "xod-func-tools",
+    "xod-arduino",
+    "xod-project",
+    "xod-tabtest"
+  ],
+  "warnings": {
+    "error": "+101"
+  },
+  "refmt": 3
+}

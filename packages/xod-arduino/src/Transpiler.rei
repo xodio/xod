@@ -1,4 +1,6 @@
 open Belt;
+open XodFuncTools;
+open XodProject;
 
 type program = {
   code: string,

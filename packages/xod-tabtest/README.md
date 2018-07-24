@@ -1,4 +1,3 @@
-
 # xod-tabtest
 
 The package implements tabular test features for XOD patches. A patch may
@@ -16,8 +15,3 @@ from browser IDE, desktop IDE, or CLI.
 
 * `src/Tabtest_Js.re` defines public API for JavaScript consumers.
 * `src/*.rei` define public API for ReasonML consumers.
-* `src/XodYYY/*.re` are bindings to other packages implemented in JS.
-   They should eventually move elsewhere.
-* `src/Holes/*.re` provide some basic functional programming helpers
-  that are (yet) missing in the standard
-  [Belt](https://bucklescript.github.io/bucklescript/api/Belt.html) library.
