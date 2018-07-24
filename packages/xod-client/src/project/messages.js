@@ -37,6 +37,3 @@ export const NODETYPE_ERRORS = {
     solution: 'Delete all offending links first and try again.',
   },
 };
-
-export const missingPatchForNode = patchPath =>
-  `Patch with type "${patchPath}" is not found in the project`;

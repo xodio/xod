@@ -9,6 +9,11 @@ export default (state = initialState, action) => {
       return R.assoc('deducedTypes', action.payload, state);
     case AT.UPDATE_ERRORS:
       return R.assoc('errors', action.payload, state);
+    case AT.UPDATE_HINTING:
+      return R.compose(
+        R.assoc('deducedTypes', action.payload.deducedTypes),
+        R.assoc('errors', action.payload.errors)
+      )(state);
     default:
       return state;
   }

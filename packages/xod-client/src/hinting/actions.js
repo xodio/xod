@@ -9,3 +9,8 @@ export const updateErrors = errors => ({
   type: AT.UPDATE_ERRORS,
   payload: errors,
 });
+
+export const updateHinting = (deducedTypes, errors) => ({
+  type: AT.UPDATE_HINTING,
+  payload: { deducedTypes, errors },
+});

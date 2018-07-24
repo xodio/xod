@@ -4,12 +4,29 @@ export default {
   },
   errors: {
     /**
-    PatchPath: {
-      errors: [Error],
+    [PatchPath]: {
+      errors: {
+        [ErrorType]: [Error]
+      },
       nodes: {
-        NodeId: {
-          errors: [Error],
-          PinKey: PinType,
+        [NodeId]: {
+          errors: {
+            [ErrorType]: [Error]
+          },
+          pins: {
+            [PinKey]: {
+              errors: {
+                [ErrorType]: [Error]
+              },
+            },
+          } ,
+        },
+      },
+      links: {
+        [LinkId]: {
+          errors: {
+            [ErrorType]: [Error]
+          },
         },
       },
     },
