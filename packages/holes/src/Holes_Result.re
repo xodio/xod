@@ -1,4 +1,4 @@
-type t('good, 'bad) = Js.Result.t('good, 'bad);
+type t('good, 'bad) = Belt.Result.t('good, 'bad);
 
 let map = (res: t('goodA, 'bad), fn: 'goodA => 'goodB) : t('goodB, 'bad) =>
   switch (res) {

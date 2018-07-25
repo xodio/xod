@@ -1,7 +1,7 @@
 /** Missing functionality for the Result type */
 /* Local alias */
 type t('good, 'bad) =
-  Js.Result.t('good, 'bad);
+  Belt.Result.t('good, 'bad);
 
 /** Monadic map over the result. Given a mapping function which operates
   over regular values (x -> y), lift it up to map from Ok(x) to Ok(y).

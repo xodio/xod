@@ -297,7 +297,7 @@ let generateProjectSuite = project : XResult.t(t) =>
   |. Project.listLocalPatches
   |. List.keep(Patch.hasTabtest)
   |. List.map(Patch.getPath)
-  |. List.reduce(Js.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
+  |. List.reduce(Belt.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
        Holes.Result.lift2(
          Holes.Map.String.mergeOverride,
          accFiles,
