@@ -32,7 +32,6 @@ export const foldEither = Either.either;
  * This is adapter to move easily from `ramda-fantasy` to another
  * package providing Maybies.
  *
- * @private
  * @function foldMaybe
  * @param {*} nothingVal
  * @param {Function} justFn
@@ -41,6 +40,28 @@ export const foldEither = Either.either;
  * @throws Error
  */
 export const foldMaybe = Maybe.maybe;
+
+/**
+ * Function to extract value from `Maybe` by providing
+ * a function for `Nothing` and function for `Just`.
+ *
+ * This is some kind of "lazy" `foldMaybe`.
+ * In cases when value for `Nothing` is calculated by
+ * another function it provides some kind of "laziness".
+ * So it will call `nothingFn` only when Maybe is really `Nothing`.
+ *
+ * @function foldMaybeWith
+ * @param {Function} nothingFn
+ * @param {Function} justFn
+ * @param {Maybe} maybeObject
+ * @returns {*}
+ * @throws Error
+ */
+export const foldMaybeWith = R.curry((nothingFn, justFn, maybe) =>
+  R.ifElse(Maybe.isJust, foldMaybe('IMPOSSIBLE', justFn), () => nothingFn())(
+    maybe
+  )
+);
 
 /**
  * DEPRECATED: Use of this function lead to meaningless error messages that

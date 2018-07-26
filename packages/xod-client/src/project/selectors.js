@@ -254,7 +254,14 @@ const addPinErrors = R.curry((patchPath, errors, renderableNode) =>
   )
 );
 
-// :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
+// getRenderableNode ::
+//    Node ->
+//    Patch ->
+//    { nodeId: { pinKey: Boolean } } ->
+//    Map PatchPath DeducedPinTypes ->
+//    Project ->
+//    Map PatchPath PatchErrors ->
+//    RenderableNode
 export const getRenderableNode = R.curry(
   (node, currentPatch, connectedPins, deducedPinTypes, project, errors) => {
     const curPatchPath = XP.getPatchPath(currentPatch);

@@ -28,11 +28,9 @@ export const requestOpenProject = data => ({
   payload: data,
 });
 
-export const createProject = () => dispatch => {
-  dispatch({
-    type: ActionType.PROJECT_CREATE,
-  });
-};
+export const createProject = () => ({
+  type: ActionType.PROJECT_CREATE,
+});
 
 export const updateProjectMeta = ({ name, license, description, version }) => ({
   type: ActionType.PROJECT_UPDATE_META,

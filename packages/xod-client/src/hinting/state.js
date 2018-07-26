@@ -4,16 +4,16 @@ export default {
   },
   errors: {
     /**
-    [PatchPath]: {
+    [PatchPath]: PatchErrors :: {
       errors: {
         [ErrorType]: [Error]
       },
       nodes: {
-        [NodeId]: {
+        [NodeId]: NodeErrors :: {
           errors: {
             [ErrorType]: [Error]
           },
-          pins: {
+          pins: PinErrors :: {
             [PinKey]: {
               errors: {
                 [ErrorType]: [Error]
@@ -23,7 +23,7 @@ export default {
         },
       },
       links: {
-        [LinkId]: {
+        [LinkId]: LinkErrors :: {
           errors: {
             [ErrorType]: [Error]
           },

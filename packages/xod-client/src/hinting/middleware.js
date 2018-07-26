@@ -4,8 +4,8 @@ import { getProject } from '../project/selectors';
 
 import { getDeducedTypes, getErrors } from './selectors';
 import { updateDeducedTypes, updateErrors, updateHinting } from './actions';
-import { shallDeduceTypes, deducePinTypesForProject } from './typeDeduction';
-import { shallValidate, validateProject } from './validators';
+import { shallDeduceTypes, deduceTypes } from './typeDeduction';
+import { shallValidate, validateProject } from './validation';
 
 // =============================================================================
 //
@@ -23,7 +23,7 @@ export default store => next => action => {
 
   const prevDeducedTypes = getDeducedTypes(newState);
   const nextDeducedTypes = shallDeduceTypes(newProject, action)
-    ? deducePinTypesForProject(newProject, action, prevDeducedTypes)
+    ? deduceTypes(newProject, action, prevDeducedTypes)
     : prevDeducedTypes;
   const willUpdateDeducedTypes = notEquals(prevDeducedTypes, nextDeducedTypes);
 
@@ -34,11 +34,11 @@ export default store => next => action => {
   const willUpdateErrors = notEquals(prevErrors, nextErrors);
 
   if (willUpdateDeducedTypes && willUpdateErrors) {
-    next(updateHinting(nextDeducedTypes, nextErrors));
+    store.dispatch(updateHinting(nextDeducedTypes, nextErrors));
   } else if (willUpdateDeducedTypes) {
-    next(updateDeducedTypes(nextDeducedTypes));
+    store.dispatch(updateDeducedTypes(nextDeducedTypes));
   } else if (willUpdateErrors) {
-    next(updateErrors(nextErrors));
+    store.dispatch(updateErrors(nextErrors));
   }
 
   return act;

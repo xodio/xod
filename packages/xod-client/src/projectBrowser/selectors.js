@@ -2,7 +2,6 @@ import * as R from 'ramda';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { notEmpty } from 'xod-func-tools';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
@@ -48,14 +47,7 @@ const markUtilityPatches = patch =>
 
 const getPatchPaths = R.pipe(R.indexBy(XP.getPatchPath), R.keys);
 // :: [Patch] -> [Patch] -> Boolean
-const samePatchPaths = R.useWith(
-  R.equals,
-  [
-    getPatchPaths,
-    getPatchPaths,
-  ]
-);
-//R.pipe(R.differenceWith(XP.getPatchPath), notEmpty);
+const samePatchPaths = R.useWith(R.equals, [getPatchPaths, getPatchPaths]);
 
 const getLocalPatchesList = createSelector(
   ProjectSelectors.getProject,

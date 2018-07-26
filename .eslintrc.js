@@ -77,6 +77,9 @@ module.exports = {
     }],
     'mocha/no-skipped-tests': 'error',
     'mocha/no-exclusive-tests': 'error',
+    'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_'
+    }],
 
     'react/forbid-prop-types' : 'off' // TODO: enable and make custom propTypes
   },
