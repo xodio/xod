@@ -79,6 +79,7 @@ export {
   sameDeducedTypes,
   samePatchValidity,
   validateBuses,
+  hasNodeWithType,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,

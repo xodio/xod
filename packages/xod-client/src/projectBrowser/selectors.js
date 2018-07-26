@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
+import { notEmpty } from 'xod-func-tools';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
@@ -45,36 +46,26 @@ const markDeprecatedPatches = patch =>
 const markUtilityPatches = patch =>
   R.assoc('isUtility', XP.isUtilityPatch(patch), patch);
 
+const getPatchPaths = R.pipe(R.indexBy(XP.getPatchPath), R.keys);
+// :: [Patch] -> [Patch] -> Boolean
+const samePatchPaths = R.useWith(
+  R.equals,
+  [
+    getPatchPaths,
+    getPatchPaths,
+  ]
+);
+//R.pipe(R.differenceWith(XP.getPatchPath), notEmpty);
+
 const getLocalPatchesList = createSelector(
   ProjectSelectors.getProject,
   XP.listLocalPatches
 );
 
-const patchListChangesKeepBrowserLook = XP.patchListEqualsBy(
-  R.both(XP.sameCategoryMarkers, XP.samePatchValidity)
-);
-
-const libChangesKeepBrowserLook = R.either(
-  (prev, next) => prev === next,
-  (prev, next) => {
-    const prevLibPatches = XP.listLibraryPatches(prev);
-    const nextLibPatches = XP.listLibraryPatches(next);
-    return XP.patchListEqualsBy(
-      XP.samePatchValidity,
-      prevLibPatches,
-      nextLibPatches
-    );
-  }
-);
-
 export const getLocalPatches = createMemoizedSelector(
-  [
-    getLocalPatchesList,
-    ProjectSelectors.getProject,
-    HintingSelectors.getErrors,
-  ],
-  [patchListChangesKeepBrowserLook, libChangesKeepBrowserLook, R.equals],
-  (patches, project, errors) =>
+  [HintingSelectors.getErrors, getLocalPatchesList],
+  [R.equals, samePatchPaths],
+  (errors, patches) =>
     R.compose(
       R.sortBy(XP.getPatchPath),
       R.map(
@@ -104,13 +95,9 @@ const getLibraryPatchesList = createSelector(
 );
 
 export const getLibs = createMemoizedSelector(
-  [
-    getLibraryPatchesList,
-    HintingSelectors.getErrors,
-    ProjectSelectors.getProject,
-  ],
-  [R.equals, R.equals],
-  (patches, project, errors) =>
+  [HintingSelectors.getErrors, getLibraryPatchesList],
+  [R.equals, samePatchPaths],
+  (errors, patches) =>
     R.compose(
       R.map(R.sort(R.ascend(XP.getPatchPath))),
       R.groupBy(R.pipe(XP.getPatchPath, XP.getLibraryName)),

@@ -405,26 +405,33 @@ export const getRenderableSelection = createMemoizedSelector(
 // Suggester
 //
 
-// :: Maybe PatchPath -> Patch -> Boolean
-const patchEqualsToCurPatchPath = R.curry((maybeCurrentPatchPath, patch) =>
-  R.compose(
-    R.equals(foldMaybe('', R.identity, maybeCurrentPatchPath)),
-    XP.getPatchPath
-  )(patch)
-);
-
-// :: State -> [PatchSearchIndex]
-export const getPatchSearchIndex = createSelector(
+// :: State -> { search: (String -> [SearchResult])}
+export const getPatchSearchIndex = createMemoizedSelector(
   [listPatches, getCurrentPatchPath],
+  [R.equals],
   (patches, maybeCurPatchPath) =>
     R.compose(
+      // A little optimization to avoid updating SearchIndex on each patch switch
+      ({ search }) => ({
+        // :: String -> [SearchResult]
+        search: R.compose(
+          R.reject(
+            R.pathSatisfies(
+              R.equals(
+                foldMaybe('__NO_OPENED_PATCH__', R.identity, maybeCurPatchPath)
+              ),
+              ['item', 'path']
+            )
+          ),
+          search
+        ),
+      }),
       createIndexFromPatches,
       R.reject(
         R.anyPass([
           isPatchDeadTerminal,
           XP.isUtilityPatch,
           XP.isDeprecatedPatch,
-          patchEqualsToCurPatchPath(maybeCurPatchPath),
         ])
       )
     )(patches)

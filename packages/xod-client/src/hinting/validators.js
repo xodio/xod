@@ -249,42 +249,55 @@ const getNodeErrorsForPatch = R.compose(R.objOf('nodes'), getNodeErrors);
 // :: Project -> Patch -> Map PatchPath DeducedPinTypes -> { nodes: NodeErrors }
 const getLinkErrorsForPatch = R.compose(R.objOf('links'), getLinkErrors);
 
-// :: Project -> Map PatchPath DeducedPinTypes -> [Patch] -> Map PatchPath (Maybe PatchErrors)
-const validatePatches = R.curry((project, allDeducedPinTypes, patches) =>
-  R.compose(
-    R.map(
-      R.ifElse(
-        R.allPass([
-          R.pipe(R.prop('errors'), R.isEmpty),
-          R.pipe(R.prop('nodes'), R.isEmpty),
-          R.pipe(R.prop('links'), R.isEmpty),
-        ]),
-        Maybe.Nothing,
-        Maybe.of
-      )
-    ),
-    R.map(patch =>
-      R.mergeAll([
-        { errors: [], nodes: {}, links: {} },
-        getLinkErrorsForPatch(project, patch, allDeducedPinTypes),
-        getNodeErrorsForPatch(project, patch),
-      ])
-    ),
-    R.indexBy(XP.getPatchPath)
-  )(patches)
+// :: Project -> Map PatchPath DeducedPinTypes -> Nullable PatchPath -> [Patch] -> Map PatchPath (Maybe PatchErrors)
+const validatePatches = R.curry(
+  (project, allDeducedPinTypes, changedPatchPath, patches) =>
+    R.compose(
+      R.map(
+        R.ifElse(
+          R.allPass([
+            R.pipe(R.prop('errors'), R.isEmpty),
+            R.pipe(R.prop('nodes'), R.isEmpty),
+            R.pipe(R.prop('links'), R.isEmpty),
+          ]),
+          Maybe.Nothing,
+          Maybe.of
+        )
+      ),
+      R.map(patch =>
+        R.mergeAll([
+          { errors: [], nodes: {}, links: {} },
+          getLinkErrorsForPatch(project, patch, allDeducedPinTypes),
+          getNodeErrorsForPatch(project, patch),
+        ])
+      ),
+      indexedPatches =>
+        changedPatchPath
+          ? R.filter(
+              R.either(
+                XP.hasNodeWithType(changedPatchPath),
+                R.pipe(XP.getPatchPath, R.equals(changedPatchPath))
+              ),
+              indexedPatches
+            )
+          : indexedPatches,
+      R.indexBy(XP.getPatchPath)
+    )(patches)
 );
 
-// :: Project -> Map PatchPath DeducedPinTypes -> Map PatchPath (Maybe PatchErrors)
-const validateLocalPatches = (project, allDeducedPinTypes) =>
-  R.compose(validatePatches(project, allDeducedPinTypes), XP.listLocalPatches)(
-    project
-  );
+// :: Project -> Map PatchPath DeducedPinTypes -> Nullable PatchPath -> Map PatchPath (Maybe PatchErrors)
+const validateLocalPatches = (project, allDeducedPinTypes, changedPatchPath) =>
+  R.compose(
+    validatePatches(project, allDeducedPinTypes, changedPatchPath),
+    XP.listLocalPatches
+  )(project);
 
-// :: Project -> Map PatchPath DeducedPinTypes -> Map PatchPath (Maybe PatchErrors)
-const validateAllPatches = (project, allDeducedPinTypes) =>
-  R.compose(validatePatches(project, allDeducedPinTypes), XP.listPatches)(
-    project
-  );
+// :: Project -> Map PatchPath DeducedPinTypes -> Nullable PatchPath -> Map PatchPath (Maybe PatchErrors)
+const validateAllPatches = (project, allDeducedPinTypes, changedPatchPath) =>
+  R.compose(
+    validatePatches(project, allDeducedPinTypes, changedPatchPath),
+    XP.listPatches
+  )(project);
 
 // :: Action -> Project -> Map PatchPath DeducedPinTypes -> Map PatchPath (Maybe PatchErrors)
 const generalValidator = (action, project, allDeducedPinTypes) => {
@@ -294,20 +307,20 @@ const generalValidator = (action, project, allDeducedPinTypes) => {
     return R.compose(
       R.compose(
         R.when(
-          Maybe.isJust,
+          R.pipe(R.values, R.head, Maybe.isJust),
           () =>
             XP.isPathLocal(patchPath)
-              ? validateLocalPatches(project, allDeducedPinTypes)
-              : validateAllPatches(project, allDeducedPinTypes)
+              ? validateLocalPatches(project, allDeducedPinTypes, patchPath)
+              : validateAllPatches(project, allDeducedPinTypes, patchPath)
         ),
-        validatePatches(project, allDeducedPinTypes),
+        validatePatches(project, allDeducedPinTypes, null),
         R.of
       ),
       XP.getPatchByPathUnsafe
     )(patchPath, project);
   }
 
-  return validateAllPatches(project, allDeducedPinTypes);
+  return validateAllPatches(project, allDeducedPinTypes, null);
 };
 
 // :: Map PatchPath (Map NodeId [Error]) -> Map PatchPath PatchErrors
