@@ -9,7 +9,7 @@ import {
 } from '../src/project';
 import { PIN_TYPE } from '../src/constants';
 
-import { deducePinTypes, autoresolveTypes } from '../src/typeDeduction';
+import { autoresolveTypes, deducePinTypes } from '../src';
 
 describe('deducePinTypes', () => {
   const project = Helper.loadXodball('./fixtures/pin-types-deduction.xodball');

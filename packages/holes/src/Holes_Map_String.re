@@ -26,3 +26,7 @@ let mergeOverride = (xs, ys) =>
     | None => ox
     }
   );
+
+let fromDict = d => d |. Js.Dict.entries |. Map.String.fromArray;
+
+let toDict = m => m |. Map.String.toArray |. Js.Dict.fromArray;

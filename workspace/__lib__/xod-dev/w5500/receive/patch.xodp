@@ -46,6 +46,17 @@
       }
     },
     {
+      "id": "H1J-MSQE7",
+      "input": {
+        "nodeId": "BkQE7auwGQ",
+        "pinKey": "Hke2RdvMm"
+      },
+      "output": {
+        "nodeId": "Byh0WrXN7",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "H1JgN7advzX",
       "input": {
         "nodeId": "SJq4maODzQ",
@@ -54,17 +65,6 @@
       "output": {
         "nodeId": "BkQE7auwGQ",
         "pinKey": "BJQB3m4tZ7"
-      }
-    },
-    {
-      "id": "HJYY1YDzX",
-      "input": {
-        "nodeId": "SkVmp_wMQ",
-        "pinKey": "BkzF0dvfQ"
-      },
-      "output": {
-        "nodeId": "rJyDi_wGQ",
-        "pinKey": "__out__"
       }
     },
     {
@@ -79,6 +79,17 @@
       }
     },
     {
+      "id": "HkGFzGS74Q",
+      "input": {
+        "nodeId": "HJfVXa_vMX",
+        "pinKey": "rJ53A_vzQ"
+      },
+      "output": {
+        "nodeId": "S1rzGSQ47",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Hy-lEQ6Ovzm",
       "input": {
         "nodeId": "B1gVQTOwfQ",
@@ -87,17 +98,6 @@
       "output": {
         "nodeId": "SJHV7pdPMQ",
         "pinKey": "HyOdm0D-Q"
-      }
-    },
-    {
-      "id": "HypKJYDMm",
-      "input": {
-        "nodeId": "BkQE7auwGQ",
-        "pinKey": "Hke2RdvMm"
-      },
-      "output": {
-        "nodeId": "rJyDi_wGQ",
-        "pinKey": "__out__"
       }
     },
     {
@@ -134,6 +134,17 @@
       }
     },
     {
+      "id": "SkLeGr7Nm",
+      "input": {
+        "nodeId": "rkvkGBmN7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJyDi_wGQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "SyxgNm6uDfQ",
       "input": {
         "nodeId": "r1uVX6OvMm",
@@ -145,24 +156,13 @@
       }
     },
     {
-      "id": "rJycJtvzm",
+      "id": "rkmeffHQ4Q",
       "input": {
-        "nodeId": "HJfVXa_vMX",
-        "pinKey": "rJ53A_vzQ"
+        "nodeId": "SkVmp_wMQ",
+        "pinKey": "BkzF0dvfQ"
       },
       "output": {
-        "nodeId": "rJyDi_wGQ",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rkjYktvGQ",
-      "input": {
-        "nodeId": "SJHV7pdPMQ",
-        "pinKey": "HJSh0OPfQ"
-      },
-      "output": {
-        "nodeId": "rJyDi_wGQ",
+        "nodeId": "r1hbfSmNX",
         "pinKey": "__out__"
       }
     },
@@ -175,6 +175,17 @@
       "output": {
         "nodeId": "r1uVX6OvMm",
         "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rylOZzHmN7",
+      "input": {
+        "nodeId": "SJHV7pdPMQ",
+        "pinKey": "HJSh0OPfQ"
+      },
+      "output": {
+        "nodeId": "ryXWGr7VQ",
+        "pinKey": "__out__"
       }
     }
   ],
@@ -191,7 +202,7 @@
     {
       "id": "BJFE7puwGm",
       "position": {
-        "x": 340,
+        "x": 408,
         "y": 408
       },
       "type": "xod/core/defer"
@@ -209,18 +220,36 @@
     {
       "id": "BkQE7auwGQ",
       "position": {
-        "x": 204,
+        "x": 238,
         "y": 306
       },
       "type": "@/is-open"
     },
     {
+      "id": "Byh0WrXN7",
+      "label": "SOCK",
+      "position": {
+        "x": 204,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
       "id": "HJfVXa_vMX",
+      "position": {
+        "x": 238,
+        "y": 510
+      },
+      "type": "@/close"
+    },
+    {
+      "id": "S1rzGSQ47",
+      "label": "SOCK",
       "position": {
         "x": 204,
         "y": 510
       },
-      "type": "@/close"
+      "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "SJHV7pdPMQ",
@@ -241,7 +270,7 @@
     {
       "id": "SkVmp_wMQ",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 204
       },
       "type": "@/has-available-byte"
@@ -254,6 +283,15 @@
         "y": 612
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1hbfSmNX",
+      "label": "SOCK",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "r1uVX6OvMm",
@@ -274,14 +312,32 @@
       "type": "xod/net/input-socket"
     },
     {
+      "id": "rkvkGBmN7",
+      "label": "SOCK",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
       "description": "Pulses when the connection is closed",
       "id": "ryU4XT_PMX",
       "label": "CLS",
       "position": {
-        "x": 204,
+        "x": 238,
         "y": 612
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ryXWGr7VQ",
+      "label": "SOCK",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/from-bus"
     }
   ]
 }

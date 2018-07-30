@@ -9,15 +9,27 @@ type path = PatchPath.t;
 
 [@bs.module ".."] external getPath : t => path = "getPatchPath";
 
-[@bs.module ".."]
-external _assocNode : (Node.t, t) => t = "assocNode";
+[@bs.module ".."] external _assocNode : (Node.t, t) => t = "assocNode";
 
 let assocNode = (patch, node) => _assocNode(node, patch);
+
+[@bs.module ".."] external _dissocNode : (Node.id, t) => t = "dissocNode";
+
+let dissocNode = (patch, nodeId) => _dissocNode(nodeId, patch);
+
+[@bs.module ".."] external _listNodes : t => array(Node.t) = "listNodes";
+
+let listNodes = patch => _listNodes(patch) |. List.fromArray;
 
 [@bs.module ".."]
 external _assocLink : (Link.t, t) => Either.t(Js.Exn.t, t) = "assocLink";
 
 let assocLink = (patch, link) => _assocLink(link, patch) |> Either.toResult;
+
+[@bs.module ".."]
+external _upsertLinks : (array(Link.t), t) => Either.t(Js.Exn.t, t) = "upsertLinks";
+
+let upsertLinks = (patch, links) => _upsertLinks(List.toArray(links), patch) |> Either.toResult;
 
 let assocLinkExn = (link, patch) =>
   switch (assocLink(link, patch)) {
@@ -27,8 +39,11 @@ let assocLinkExn = (link, patch) =>
     Js.Exn.raiseError(err |> Js.Exn.message |. Option.getWithDefault(""))
   };
 
-[@bs.module ".."]
-external _listPins : t => array(Pin.t) = "listPins";
+[@bs.module ".."] external _listLinks : t => array(Link.t) = "listLinks";
+
+let listLinks = patch => _listLinks(patch) |. List.fromArray;
+
+[@bs.module ".."] external _listPins : t => array(Pin.t) = "listPins";
 
 let listPins = patch => _listPins(patch) |. List.fromArray;
 

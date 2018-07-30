@@ -1,0 +1,283 @@
+{
+  "patches": {
+    "@/foo": {
+      "nodes": {
+        "H1027Hn47": {
+          "id": "H1027Hn47",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 34,
+            "y": 0
+          }
+        },
+        "SyraXrnNX": {
+          "id": "SyraXrnNX",
+          "type": "xod/patch-nodes/input-string",
+          "position": {
+            "x": 136,
+            "y": 0
+          }
+        },
+        "rk3TQH2EQ": {
+          "id": "rk3TQH2EQ",
+          "type": "xod/patch-nodes/input-boolean",
+          "position": {
+            "x": 238,
+            "y": 0
+          }
+        },
+        "SJURmrhV7": {
+          "id": "SJURmrhV7",
+          "type": "xod/patch-nodes/output-boolean",
+          "position": {
+            "x": 238,
+            "y": 204
+          }
+        },
+        "Bkg1ESh4Q": {
+          "id": "Bkg1ESh4Q",
+          "type": "xod/patch-nodes/output-string",
+          "position": {
+            "x": 136,
+            "y": 204
+          }
+        },
+        "HJbxErnVQ": {
+          "id": "HJbxErnVQ",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 34,
+            "y": 204
+          }
+        },
+        "BJweVH3EQ": {
+          "id": "BJweVH3EQ",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 34,
+            "y": 102
+          }
+        }
+      },
+      "path": "@/foo",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n"
+        }
+      ]
+    },
+    "@/1-no-to-bus-node": {
+      "nodes": {
+        "rkIfVSnVm": {
+          "id": "rkIfVSnVm",
+          "type": "@/foo",
+          "position": {
+            "x": 34,
+            "y": 306
+          }
+        },
+        "Bk47NB2NQ": {
+          "id": "Bk47NB2NQ",
+          "type": "xod/patch-nodes/from-bus",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "label": "A"
+        },
+        "rJL4VB2Em": {
+          "id": "rJL4VB2Em",
+          "type": "xod/patch-nodes/from-bus",
+          "position": {
+            "x": 102,
+            "y": 204
+          },
+          "label": "B"
+        },
+        "H1xr4Bn4m": {
+          "id": "H1xr4Bn4m",
+          "type": "@/foo",
+          "position": {
+            "x": 34,
+            "y": 0
+          }
+        },
+        "BJ_HEr2N7": {
+          "id": "BJ_HEr2N7",
+          "type": "xod/patch-nodes/to-bus",
+          "position": {
+            "x": 34,
+            "y": 102
+          },
+          "label": "A"
+        }
+      },
+      "links": {
+        "HkLm4H24m": {
+          "id": "HkLm4H24m",
+          "output": {
+            "nodeId": "Bk47NB2NQ",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rkIfVSnVm",
+            "pinKey": "H1027Hn47"
+          }
+        },
+        "H1FN4HnEm": {
+          "id": "H1FN4HnEm",
+          "output": {
+            "nodeId": "rJL4VB2Em",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "rkIfVSnVm",
+            "pinKey": "rk3TQH2EQ"
+          }
+        },
+        "By548Er3Nm": {
+          "id": "By548Er3Nm",
+          "output": {
+            "nodeId": "H1xr4Bn4m",
+            "pinKey": "HJbxErnVQ"
+          },
+          "input": {
+            "nodeId": "BJ_HEr2N7",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "path": "@/1-no-to-bus-node"
+    },
+    "@/2-conflicting-to-bus-nodes": {
+      "nodes": {
+        "Sk3cES2NX": {
+          "id": "Sk3cES2NX",
+          "type": "@/foo",
+          "position": {
+            "x": -1,
+            "y": 305
+          }
+        },
+        "HJx2c4SnNX": {
+          "id": "HJx2c4SnNX",
+          "type": "xod/patch-nodes/from-bus",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "label": "A"
+        },
+        "Syz254rn4X": {
+          "id": "Syz254rn4X",
+          "type": "@/foo",
+          "position": {
+            "x": -1,
+            "y": -1
+          }
+        },
+        "rkQ39Nr3E7": {
+          "id": "rkQ39Nr3E7",
+          "type": "xod/patch-nodes/to-bus",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "label": "A"
+        },
+        "ryh-sNS2Vm": {
+          "id": "ryh-sNS2Vm",
+          "type": "xod/patch-nodes/to-bus",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "label": "A"
+        }
+      },
+      "links": {
+        "ByEnqVHhNX": {
+          "id": "ByEnqVHhNX",
+          "output": {
+            "nodeId": "HJx2c4SnNX",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Sk3cES2NX",
+            "pinKey": "H1027Hn47"
+          }
+        },
+        "SkLn9ES2EQ": {
+          "id": "SkLn9ES2EQ",
+          "output": {
+            "nodeId": "Syz254rn4X",
+            "pinKey": "HJbxErnVQ"
+          },
+          "input": {
+            "nodeId": "rkQ39Nr3E7",
+            "pinKey": "__in__"
+          }
+        },
+        "r1Es4S3N7": {
+          "id": "r1Es4S3N7",
+          "output": {
+            "nodeId": "Syz254rn4X",
+            "pinKey": "SJURmrhV7"
+          },
+          "input": {
+            "nodeId": "ryh-sNS2Vm",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "path": "@/2-conflicting-to-bus-nodes"
+    },
+    "@/3-floating-to-bus": {
+      "nodes": {
+        "HyE0VHnVQ": {
+          "id": "HyE0VHnVQ",
+          "type": "@/foo",
+          "position": {
+            "x": -1,
+            "y": 305
+          }
+        },
+        "B1l4CNSh4m": {
+          "id": "B1l4CNSh4m",
+          "type": "xod/patch-nodes/from-bus",
+          "position": {
+            "x": -1,
+            "y": 203
+          },
+          "label": "A"
+        },
+        "Hy7EREB3Em": {
+          "id": "Hy7EREB3Em",
+          "type": "xod/patch-nodes/to-bus",
+          "position": {
+            "x": -1,
+            "y": 101
+          },
+          "label": "A"
+        }
+      },
+      "links": {
+        "rkVNCNBnVQ": {
+          "id": "rkVNCNBnVQ",
+          "output": {
+            "nodeId": "B1l4CNSh4m",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "HyE0VHnVQ",
+            "pinKey": "H1027Hn47"
+          }
+        }
+      },
+      "path": "@/3-floating-to-bus"
+    }
+  },
+  "name": "buses"
+}

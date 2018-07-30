@@ -10,10 +10,10 @@
   "scripts": {
     "build:js": "babel src/ -d dist/ --source-maps",
     "build:re": "bsb -make-world",
-    "build": "yarn build:js && yarn build:re",
+    "build": "yarn build:re && yarn build:js",
     "dev:re": "yarn run build:re -w",
     "dev": "yarn run build:js --watch",
-    "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
+    "refmt": "find src/ test/ -name '*.re' -or -name '*.rei' -type f -exec refmt --in-place {} +",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "test": "mocha test/**/*.spec.js",
     "clean:dist": "rimraf ./dist ./lib ./src/**/*.bs.js",
@@ -25,6 +25,7 @@
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",
     "shortid": "^2.2.6",
+    "holes": "^0.1.0",
     "xod-func-tools": "^0.21.0"
   },
   "devDependencies": {

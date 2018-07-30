@@ -20,7 +20,7 @@ module Probe = {
   let getTargetPin = (probe: t) => probe.targetPin;
   /* Returns full patch path for the probe of a given type. The probe patch
      nodes are stocked up in the `workspace` inside the package */
-  let patchPath = (tp: Pin.dataType, dir: Pin.direction) : string =>
+  let patchPath = (tp: Pin.primitiveDataType, dir: Pin.direction) : string =>
     "xod/tabtest/"
     ++ (
       switch (dir) {
@@ -39,7 +39,7 @@ module Probe = {
     );
   /* Creates a new probe node matching the type of pin provided */
   let create = pin => {
-    node: Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin))),
+    node: Node.create(patchPath(Pin.getPrimitiveTypeExn(pin), Pin.getDirection(pin))),
     targetPin: pin,
   };
   /* Returns a key of the only pin (conventionally labeled "VAL") for a

@@ -28,7 +28,7 @@ import * as Pin from './pin';
 import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
-import { deducePinTypes } from './typeDeduction';
+import { deducePinTypes } from './TypeDeduction_Js.bs';
 
 /**
  * Root of a project’s state tree
@@ -702,6 +702,7 @@ export const validatePatchContents = def(
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validateConstructorPatch)
       .chain(Patch.validatePatchForVariadics)
+      .chain(Patch.validateBuses)
 );
 
 /**
@@ -1074,6 +1075,7 @@ const getDependenciesMap = (project, patchPaths, depsMap) => {
   const currentPatchDeps = R.compose(
     R.map(Node.getNodeType),
     Patch.listNodes,
+    // TODO: make safer?
     getPatchByPathUnsafe(currentPatchPath)
   )(project);
 

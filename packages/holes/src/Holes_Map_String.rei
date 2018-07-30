@@ -27,3 +27,9 @@ let innerJoin: (t(k), t('v)) => t('v);
 /** Merges two maps extending the first map with contents of the second. If a key
     presents in both maps, the value of the second map wins. */
 let mergeOverride: (t('v), t('v)) => t('v);
+
+/** Converts Js.Dict to Map.String */
+let fromDict: Js.Dict.t('v) => t('v);
+
+/** Converts  Map.String to Js.Dict */
+let toDict: t('v) => Js.Dict.t('v);

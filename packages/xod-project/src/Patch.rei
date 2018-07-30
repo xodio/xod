@@ -10,9 +10,17 @@ let getPath: t => path;
 
 let assocNode: (t, Node.t) => t;
 
+let dissocNode: (t, Node.id) => t;
+
+let listNodes: t => list(Node.t);
+
 let assocLink: (t, Link.t) => XResult.t(t);
 
 let assocLinkExn: (t, Link.t) => t;
+
+let upsertLinks: (t, list(Link.t)) => XResult.t(t);
+
+let listLinks: t => list(Link.t);
 
 let listPins: t => list(Pin.t);
 

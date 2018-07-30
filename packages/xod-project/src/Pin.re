@@ -14,12 +14,14 @@ type t = {
   "isBindable": bool,
 };
 
-type dataType =
+type primitiveDataType =
   | Pulse
   | Boolean
   | Number
   | Byte
   | String;
+
+type dataType = string;
 
 type direction =
   | Input
@@ -45,7 +47,7 @@ let normalizeLabels = pins =>
 
 let getKey = pin => pin##key;
 
-let getType = (pin: t) : dataType => {
+let getPrimitiveTypeExn = (pin: t) : primitiveDataType => {
   let tp = pin##_type;
   switch (tp) {
   | "pulse" => Pulse

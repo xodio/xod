@@ -5,7 +5,7 @@
   "scripts": {
     "build:js": "babel src/ -d dist/ --source-maps",
     "build:re": "bsb -make-world",
-    "build": "yarn build:js && yarn build:re",
+    "build": "yarn build:re && yarn build:js",
     "dev:re": "yarn run build:re -w",
     "dev": "yarn run build:js --watch",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
@@ -27,6 +27,7 @@
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",
+    "holes": "^0.1.0",
     "xod-func-tools": "^0.21.0",
     "xod-project": "^0.22.0"
   },
