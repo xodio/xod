@@ -6,6 +6,7 @@
   "scripts": {
     "build": "babel src -d dist",
     "dev": "yarn run build --watch",
+    "clean:dist": "rimraf ./dist",
     "test": "mocha test/**/*.spec.js",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },

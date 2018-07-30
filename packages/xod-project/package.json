@@ -16,6 +16,7 @@
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "doc": "documentation build --format html --output doc --sort-order alpha src/",
     "test": "mocha test/**/*.spec.js",
+    "clean:dist": "rimraf ./dist ./lib ./src/**/*.bs.js",
     "test:watch": "yarn run test --watch"
   },
   "dependencies": {

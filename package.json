@@ -14,7 +14,7 @@
     "build:cli": "lerna run build --scope xod-cli --include-filtered-dependencies --stream",
     "build:electron": "lerna run build --scope xod-client-electron --include-filtered-dependencies --stream",
     "clean": "yarn run clean:dist && yarn run clean:node_modules",
-    "clean:dist": "rimraf packages/*/dist packages/xod-cli/bin packages/xod-client-electron/src-babel",
+    "clean:dist": "lerna run clean:dist",
     "clean:node_modules": "rimraf node_modules packages/*/node_modules",
     "dev:browser": "lerna run --stream --parallel dev --scope xod-client-browser --include-filtered-dependencies",
     "dev:cli": "lerna run --stream --parallel dev --scope xod-cli --include-filtered-dependencies",

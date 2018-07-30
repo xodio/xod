@@ -4,6 +4,7 @@
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world",
+    "clean:dist": "rimraf ./lib ./src/**/*.bs.js ./test/**/*.bs.js",
     "dev": "bsb -w",
     "test": "jest"
   },

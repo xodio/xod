@@ -11,6 +11,7 @@
     "build:gui": "webpack --colors",
     "build:app": "babel src/app/ -d src-babel/app/ && babel src/shared/ -d src-babel/shared/",
     "build": "yarn build:gui && yarn build:app && yarn build:workspace",
+    "clean:dist": "rimraf ./src-babel",
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "test": "electron-mocha ./test",
