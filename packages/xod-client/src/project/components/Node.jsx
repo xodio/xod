@@ -13,11 +13,17 @@ import RegularNodeBody from './nodeParts/RegularNodeBody';
 import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 import ConstantNodeBody from './nodeParts/ConstantNodeBody';
+import BusNodeBody from './nodeParts/BusNodeBody';
 
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
 import nodeHoverContextType from '../../editor/nodeHoverContextType';
 import formatErrorMessage from '../../core/formatErrorMessage';
+
+const isBusNodeType = R.either(
+  R.equals(XP.TO_BUS_PATH),
+  R.equals(XP.FROM_BUS_PATH)
+);
 
 const renderTooltipContent = (nodeType, nodeLabel, isDeprecated, errText) =>
   R.compose(
@@ -107,6 +113,7 @@ class Node extends React.Component {
       [XP.isTerminalPatchPath, () => <TerminalNodeBody {...this.props} />],
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
       [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
+      [isBusNodeType, () => <BusNodeBody {...this.props} />],
       [R.T, () => <RegularNodeBody {...this.props} />],
     ])(type);
   }
