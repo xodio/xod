@@ -2,9 +2,9 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { maybeProp, foldMaybe, foldEither } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
+import { getRenderablePinType } from '../../utils';
 import NodeLabel from './NodeLabel';
 
 const polygonPointsGetters = {
@@ -32,14 +32,7 @@ const BusNodeBody = ({ type, size, pins, label }) => {
   };
 
   const dataType = R.compose(
-    foldMaybe(
-      XP.PIN_TYPE.T1,
-      foldEither(
-        R.always('conflicting'),
-        R.unless(XP.isBuiltInType, R.always('custom'))
-      )
-    ),
-    maybeProp('deducedType'),
+    getRenderablePinType,
     R.head, // bus nodes have exactly one pin
     R.values
   )(pins);
