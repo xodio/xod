@@ -64,7 +64,7 @@
     "imports-loader": "^0.7.1",
     "lerna": "2.11.0",
     "mocha": "^3.3.0",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.9.2",
     "postcss": "^6.0.16",
     "postcss-loader": "^2.0.10",
     "prettier": "^1.11.1",
