@@ -26,7 +26,7 @@
     "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.2",
     "ramda": "^0.24.1",
-    "serialport": "^5.0.0",
+    "serialport": "^6.2.2",
     "tar": "^4.0.1",
     "unbzip2-stream": "^1.2.5",
     "ws": "^3.1.0",

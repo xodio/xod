@@ -28,7 +28,7 @@
     "node-fetch": "^1.7.1",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
-    "serialport": "^4.0.7",
+    "serialport": "^6.2.2",
     "tar": "^3.1.8",
     "unbzip2-stream": "^1.2.5",
     "xod-fs": "^0.23.0",
