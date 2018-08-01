@@ -1,9 +1,9 @@
-import R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { foldEither } from 'xod-func-tools';
 import { isGenericType, PIN_DIRECTION } from 'xod-project';
+
+import { getRenderablePinType } from '../utils';
 
 import {
   PIN_RADIUS,
@@ -52,14 +52,12 @@ const Pin = props => {
     'is-output': isOutput,
   });
 
-  const deducedType = props.deducedType
-    ? foldEither(R.always('conflicting'), R.identity, props.deducedType)
-    : null;
+  const renderableType = getRenderablePinType(props);
 
   const hasConflictingBoundValue =
-    deducedType === 'conflicting' && !props.isConnected && !!props.value;
+    renderableType === 'conflicting' && !props.isConnected && !!props.value;
 
-  const symbolClassNames = classNames('symbol', props.type, deducedType, {
+  const symbolClassNames = classNames('symbol', renderableType, {
     hasConflictingBoundValue,
     'is-connected': props.isConnected,
     'is-invalid': props.isInvalid,
@@ -99,9 +97,9 @@ const Pin = props => {
         {...pinCircleCenter}
         r={PIN_RADIUS}
       />
-      {deducedType && props.isConnected ? (
+      {props.deducedType && props.isConnected ? (
         <circle
-          className={classNames('symbol', 'is-connected', deducedType)}
+          className={classNames('symbol', 'is-connected', renderableType)}
           {...pinCircleCenter}
           r={PIN_INNER_RADIUS}
         />

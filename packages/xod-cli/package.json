@@ -6,6 +6,7 @@
     "build:workspace": "cpx \"../../workspace/__lib__/**\" \"./__lib__\"",
     "build:src": "babel src/ -d bin/ --source-maps",
     "build": "yarn run build:src && yarn run build:workspace",
+    "clean:dist": "rimraf ./bin ./__lib__",
     "dev": "yarn run build --watch",
     "test": "mocha test/**/*.spec.js"
   },

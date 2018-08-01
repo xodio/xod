@@ -268,6 +268,25 @@ export default {
     solution: `If you meant a string, surround it with double quotes: "${value}".`,
   }),
 
+  ORPHAN_FROM_BUS_NODES: ({ label, trace }) => ({
+    title: 'No bus source',
+    trace,
+    note: `Bus '${label}' does not exist`,
+    solution: `Create a 'to-bus' node with label '${label}' to define the required bus.`,
+  }),
+  CONFLICTING_TO_BUS_NODES: ({ label, trace }) => ({
+    title: 'Multiple bus sources',
+    trace,
+    note: `Bus '${label}' has multiple conflicting sources`,
+    solution: `Delete or rename one of 'to-bus' nodes so that the bus gets a single source of data.`,
+  }),
+  FLOATING_TO_BUS_NODES: ({ label, trace }) => ({
+    title: 'Bus floats',
+    trace,
+    note: `Bus '${label}' source is not linked anywhere`,
+    solution: `Link the 'to-bus' node with label '${label}' to an output pin of another node.`,
+  }),
+
   // Patch rebasing
   CANT_REBASE_PATCH__OCCUPIED_PATH: ({ newPath }) => ({
     title: `Can't rebase patch`,

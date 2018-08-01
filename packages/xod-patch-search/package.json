@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist",
+    "clean:dist": "rimraf ./dist",
     "dev": "yarn run build --watch",
     "test": "mocha test/**/*.spec.js"
   },

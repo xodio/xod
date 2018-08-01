@@ -1,4 +1,6 @@
 open Belt;
+open XodFuncTools;
+open XodProject;
 
 /* Filename -> Content */
 type t = Map.String.t(string);
@@ -18,7 +20,7 @@ module Probe = {
   let getTargetPin = (probe: t) => probe.targetPin;
   /* Returns full patch path for the probe of a given type. The probe patch
      nodes are stocked up in the `workspace` inside the package */
-  let patchPath = (tp: Pin.dataType, dir: Pin.direction) : string =>
+  let patchPath = (tp: Pin.primitiveDataType, dir: Pin.direction) : string =>
     "xod/tabtest/"
     ++ (
       switch (dir) {
@@ -37,7 +39,7 @@ module Probe = {
     );
   /* Creates a new probe node matching the type of pin provided */
   let create = pin => {
-    node: Node.create(patchPath(Pin.getType(pin), Pin.getDirection(pin))),
+    node: Node.create(patchPath(Pin.getPrimitiveTypeExn(pin), Pin.getDirection(pin))),
     targetPin: pin,
   };
   /* Returns a key of the only pin (conventionally labeled "VAL") for a
@@ -277,7 +279,7 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let tabData = TabData.parse(tsv);
     let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
     Project.assocPatch(project, benchPatchPath, bench.patch)
-    |. Holes.Result.flatMap(Transpiler.transpile(_, benchPatchPath))
+    |. Holes.Result.flatMap(XodArduino.Transpiler.transpile(_, benchPatchPath))
     |. Holes.Result.map(program => {
          let idMap =
            Holes.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
@@ -295,7 +297,7 @@ let generateProjectSuite = project : XResult.t(t) =>
   |. Project.listLocalPatches
   |. List.keep(Patch.hasTabtest)
   |. List.map(Patch.getPath)
-  |. List.reduce(Js.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
+  |. List.reduce(Belt.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
        Holes.Result.lift2(
          Holes.Map.String.mergeOverride,
          accFiles,

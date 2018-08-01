@@ -1742,6 +1742,87 @@ export const validateConstructorPatch = def(
 
 // =============================================================================
 //
+// Functions for working with buses
+//
+// =============================================================================
+
+export const validateBuses = def(
+  'validateBuses :: Patch -> Either Error Patch',
+  patch => {
+    const nodes = listNodes(patch);
+
+    const toBusNodes = R.filter(
+      R.pipe(Node.getNodeType, R.equals(CONST.TO_BUS_PATH)),
+      nodes
+    );
+
+    // :: Map NodeLabel [Node]
+    const toBusNodesByLabel = R.groupBy(Node.getNodeLabel, toBusNodes);
+
+    // :: [Node] | Undefined
+    const toBusNodesWithConflictingLabel = R.compose(
+      R.find(ns => ns.length > 1),
+      R.values
+    )(toBusNodesByLabel);
+
+    if (toBusNodesWithConflictingLabel) {
+      const label = R.compose(Node.getNodeLabel, R.head)(
+        toBusNodesWithConflictingLabel
+      );
+      const nodeIds = R.map(Node.getNodeId, toBusNodesWithConflictingLabel);
+
+      return fail('CONFLICTING_TO_BUS_NODES', {
+        trace: [getPatchPath(patch)],
+        nodeIds,
+        label,
+      });
+    }
+
+    // :: Map NodeId [Link]
+    const linksByInputNodeId = R.compose(
+      R.groupBy(Link.getLinkInputNodeId),
+      listLinks
+    )(patch);
+
+    // :: [Node] | Undefined
+    const floatingToBusNode = R.compose(
+      R.head,
+      R.reject(nId => R.has(Node.getNodeId(nId), linksByInputNodeId))
+    )(toBusNodes);
+
+    if (floatingToBusNode) {
+      return fail('FLOATING_TO_BUS_NODES', {
+        trace: [getPatchPath(patch)],
+        label: Node.getNodeLabel(floatingToBusNode),
+        nodeIds: [Node.getNodeId(floatingToBusNode)],
+      });
+    }
+
+    // :: (NodeLabel, [Node]) | Undefined
+    const orphanBusNodes = R.compose(
+      R.head,
+      R.toPairs,
+      R.omit(R.keys(toBusNodesByLabel)),
+      R.groupBy(Node.getNodeLabel),
+      R.filter(R.pipe(Node.getNodeType, R.equals(CONST.FROM_BUS_PATH)))
+    )(nodes);
+
+    if (orphanBusNodes) {
+      const [label, fbNodes] = orphanBusNodes;
+
+      return fail('ORPHAN_FROM_BUS_NODES', {
+        label,
+        nodeIds: R.map(Node.getNodeId, fbNodes),
+        trace: [getPatchPath(patch)],
+      });
+    }
+
+    return Either.of(patch);
+  }
+);
+
+// =============================================================================
+//
 // Functions that checks whether something could change
 //
 // =============================================================================

@@ -35,5 +35,10 @@ storiesOf('PatchDocs', module)
   ))
   .add('output terminal', () => (
     <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/output-number', emptyProject)} />
+  ))
+  .add('to-bus', () => (
+    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/to-bus', emptyProject)} />
+  ))
+  .add('from-bus', () => (
+    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/from-bus', emptyProject)} />
   ));
-

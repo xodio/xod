@@ -4,6 +4,7 @@
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world",
+    "clean:dist": "rimraf ./lib ./src/**/*.bs.js ./test/**/*.bs.js",
     "dev": "bsb -w",
     "test": "jest"
   },
@@ -12,14 +13,20 @@
   ],
   "author": "XOD",
   "license": "AGPL-3.0",
-  "main": "lib/js/src/Tabtest_Js.bs.js",
+  "main": "src/Tabtest_Js.bs.js",
+  "dependencies": {
+    "holes": "^0.1.0",
+    "xod-func-tools": "^0.21.0",
+    "xod-project": "^0.22.0",
+    "xod-arduino": "^0.22.0"
+  },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
     "bs-platform": "^3.1.5"
   },
   "jest": {
     "testMatch": [
-      "**/lib/js/test/**/*_jest.bs.js"
+      "**/test/**/*_jest.bs.js"
     ]
   }
 }

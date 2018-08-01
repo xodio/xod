@@ -1,0 +1,15 @@
+{
+  "name": "xod-func-tools",
+  "version": "0.22.0",
+  "sources": [
+    "src"
+  ],
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [],
+  "namespace": true,
+  "refmt": 3
+}

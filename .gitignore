@@ -1,6 +1,7 @@
 .idea/
 .tmp/
 .merlin
+.bsb.lock
 
 node_modules/
 packages/*/dist/

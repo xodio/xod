@@ -4,6 +4,7 @@ import * as XF from 'xod-func-tools';
 
 import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
+import * as Project from '../src/project';
 import * as Node from '../src/node';
 import * as Link from '../src/link';
 import * as Comment from '../src/comment';
@@ -1191,6 +1192,41 @@ describe('Patch', () => {
       Helper.expectEitherRight(
         validLink => assert.equal(validLink, link),
         valid
+      );
+    });
+  });
+
+  describe('validateBuses', () => {
+    const project = Helper.loadXodball('./fixtures/buses.xodball');
+
+    it('detects "orphan" from-bus nodes', () => {
+      const patch = Project.getPatchByPathUnsafe('@/1-no-to-bus-node', project);
+
+      Helper.expectEitherError(
+        'ORPHAN_FROM_BUS_NODES {"label":"B","nodeIds":["rJL4VB2Em"],"trace":["@/1-no-to-bus-node"]}',
+        Patch.validateBuses(patch)
+      );
+    });
+    it('detects conflicting to-bus nodes', () => {
+      const patch = Project.getPatchByPathUnsafe(
+        '@/2-conflicting-to-bus-nodes',
+        project
+      );
+
+      Helper.expectEitherError(
+        'CONFLICTING_TO_BUS_NODES {"trace":["@/2-conflicting-to-bus-nodes"],"nodeIds":["rkQ39Nr3E7","ryh-sNS2Vm"],"label":"A"}',
+        Patch.validateBuses(patch)
+      );
+    });
+    it('detects "floating" to-bus nodes', () => {
+      const patch = Project.getPatchByPathUnsafe(
+        '@/3-floating-to-bus',
+        project
+      );
+
+      Helper.expectEitherError(
+        'FLOATING_TO_BUS_NODES {"trace":["@/3-floating-to-bus"],"label":"A","nodeIds":["Hy7EREB3Em"]}',
+        Patch.validateBuses(patch)
       );
     });
   });

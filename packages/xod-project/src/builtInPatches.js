@@ -14,6 +14,9 @@ import {
   UTILITY_MARKER_PATH,
   DEFAULT_VALUE_OF_TYPE,
   MAX_ARITY_STEP,
+  TO_BUS_PATH,
+  FROM_BUS_PATH,
+  PIN_DIRECTION,
 } from './constants';
 
 import {
@@ -72,8 +75,27 @@ const BUILT_IN_MARKERS = [
 
 const PINS_FOR_BUILT_IN_MARKERS = R.map(path => [path, {}])(BUILT_IN_MARKERS);
 
+const getBusNodePins = direction => ({
+  [TERMINAL_PIN_KEYS[direction]]: createPin(
+    TERMINAL_PIN_KEYS[direction],
+    PIN_TYPE.T1,
+    direction,
+    0, // order
+    '', // label
+    '', // description
+    false, // bindable?
+    '' // default value
+  ),
+});
+
+const PINS_FOR_BUS_NODES = [
+  [TO_BUS_PATH, getBusNodePins(PIN_DIRECTION.INPUT)],
+  [FROM_BUS_PATH, getBusNodePins(PIN_DIRECTION.OUTPUT)],
+];
+
 export const PINS_OF_PATCH_NODES = R.compose(
   R.fromPairs,
+  R.concat(PINS_FOR_BUS_NODES),
   R.concat(PINS_FOR_BUILT_IN_MARKERS),
   R.concat(
     R.map(arityStep => [getVariadicPath(arityStep), {}])(

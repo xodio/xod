@@ -2,7 +2,7 @@
 // BuckleScript comes with its own parser for bsconfig.json, which is normal JSON, with the extra support of comments and trailing commas.
 {
   "name": "xod-tabtest",
-  "version": "0.19.2",
+  "version": "0.22.0",
   "sources": [
     {
       "dir" : "src",
@@ -14,10 +14,15 @@
     }
   ],
   "package-specs": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "in-source": true
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
+    "holes",
+    "xod-func-tools",
+    "xod-project",
+    "xod-arduino"
   ],
   "bs-dev-dependencies": ["@glennsl/bs-jest"],
   "warnings": {

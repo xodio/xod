@@ -1,3 +1,5 @@
 bin/
 dist/
 node_modules/
+
+**/*.bs.js

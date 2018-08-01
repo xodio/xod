@@ -471,6 +471,7 @@ const transformProjectWithImpls = def(
         () => opts.debug,
         R.chain(XP.updatePatch(path, XP.removeDebugNodes))
       ),
+      R.map(XP.jumperizePatchRecursively(path)),
       XP.validatePatchReqursively(path)
       // begin preparing project for transpilation
     )(project)

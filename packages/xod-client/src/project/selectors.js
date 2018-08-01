@@ -347,10 +347,24 @@ const getTerminalsErrorMap = R.compose(
   XP.validatePinLabels
 );
 
+const getBusesErrorMap = R.compose(
+  foldEither(
+    err =>
+      R.compose(
+        R.fromPairs,
+        R.map(R.pair(R.__, err)),
+        R.path(['payload', 'nodeIds'])
+      )(err),
+    R.always({})
+  ),
+  XP.validateBuses
+);
+
 const markNodesCausingErrors = R.curry((currentPatch, nodes) => {
   // :: Map NodeId Error
   const errorsMap = R.mergeAll([
     getTerminalsErrorMap(currentPatch),
+    getBusesErrorMap(currentPatch),
     getVariadicMarkersErrorMap(currentPatch),
     getAbstractMarkersErrorMap(currentPatch),
     getConstructorMarkersErrorMap(currentPatch),

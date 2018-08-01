@@ -1,0 +1,26 @@
+{
+  "name": "holes",
+  "version": "0.1.0",
+  "scripts": {
+    "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
+    "build": "bsb -make-world",
+    "dev:re": "bsb -w",
+    "clean:dist": "rimraf ./lib ./src/**/*.bs.js ./test/**/*.bs.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "XOD",
+  "license": "AGPL-3.0",
+  "main": "src/Holes.bs.js",
+  "devDependencies": {
+    "@glennsl/bs-jest": "^0.4.2",
+    "bs-platform": "^3.1.5"
+  },
+  "jest": {
+    "testMatch": [
+      "**/test/**/*_jest.bs.js"
+    ]
+  }
+}
