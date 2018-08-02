@@ -3,6 +3,7 @@ import { assert } from 'chai';
 import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
+import * as Node from '../src/node';
 import { PIN_TYPE } from '../src/constants';
 import * as Helpers from './helpers';
 
@@ -18,7 +19,10 @@ describe('Utils', () => {
       { id: 'x', input: { nodeId: 'b' }, output: { nodeId: 'a' } },
       { id: 'y', input: { nodeId: 'c' }, output: { nodeId: 'b' } },
     ];
-    const nodesIdMap = Utils.guidToIdx(nodes);
+    const nodesIdMap = R.compose(
+      R.fromPairs,
+      R.addIndex(R.map)((node, idx) => [Node.getNodeId(node), idx.toString()])
+    )(nodes);
 
     const expectedNodes = [
       { id: '0', was: 'a' },
@@ -29,17 +33,6 @@ describe('Utils', () => {
       { id: 'x', input: { nodeId: '1' }, output: { nodeId: '0' } },
       { id: 'y', input: { nodeId: '2' }, output: { nodeId: '1' } },
     ];
-
-    it('guidToIdx: should return an empty map for empty nodes', () => {
-      assert.deepEqual(Utils.guidToIdx({}), {});
-    });
-    it('guidToIdx: should return a map oldId to newId', () => {
-      assert.deepEqual(Utils.guidToIdx(nodes), {
-        a: '0',
-        b: '1',
-        c: '2',
-      });
-    });
 
     it('resolveNodeIds: should return nodes with new ids', () => {
       assert.deepEqual(Utils.resolveNodeIds(nodesIdMap, nodes), expectedNodes);

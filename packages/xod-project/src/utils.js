@@ -4,7 +4,6 @@ import shortid from 'shortid';
 import { Either } from 'ramda-fantasy';
 import { isAmong, fail, explodeEither } from 'xod-func-tools';
 
-import * as Node from './node';
 import * as CONST from './constants';
 import { def } from './types';
 
@@ -102,20 +101,6 @@ export const isBuiltInType = def(
 // Transforming node ids in the patch
 //
 // =============================================================================
-
-/**
- * Returns a map of original node ids to new ids,
- * based on index.
- *
- * @private
- * @function guidToIdx
- * @param {Array<Node>} nodes
- * @returns {Object.<string, number>}
- */
-export const guidToIdx = R.compose(
-  R.fromPairs,
-  R.addIndex(R.map)((node, idx) => [Node.getNodeId(node), idx.toString()])
-);
 
 /**
  * Returns a list of nodes with ids resolved
