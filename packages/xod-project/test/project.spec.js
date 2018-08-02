@@ -7,10 +7,12 @@ import * as Node from '../src/node';
 import * as Pin from '../src/pin';
 import * as Patch from '../src/patch';
 import * as Project from '../src/project';
-import { BUILT_IN_PATCH_PATHS } from '../src/builtInPatches';
 import { OUTPUT_SELF_PATH } from '../src/constants';
+import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
 import * as Helper from './helpers';
+
+const BUILT_IN_PATCH_PATHS = R.keys(BUILT_IN_PATCHES);
 
 const emptyProject = Helper.defaultizeProject({});
 
@@ -998,7 +1000,7 @@ describe('Project', () => {
     describe('listPatches', () => {
       it('should return built-in patches for empty project', () => {
         assert.sameMembers(
-          R.values(Project.BUILT_IN_PATCHES),
+          R.values(BUILT_IN_PATCHES),
           Project.listPatches(emptyProject)
         );
       });
@@ -1075,7 +1077,7 @@ describe('Project', () => {
     describe('listLibraryPatches', () => {
       it('should return built-in patches for empty project', () => {
         assert.sameMembers(
-          R.values(Project.BUILT_IN_PATCHES),
+          R.values(BUILT_IN_PATCHES),
           Project.listLibraryPatches(emptyProject)
         );
       });
@@ -1086,7 +1088,7 @@ describe('Project', () => {
             project.patches['some/external/patch-2'],
             project.patches['another/one/external'],
           ],
-          R.values(Project.BUILT_IN_PATCHES)
+          R.values(BUILT_IN_PATCHES)
         );
         assert.sameMembers(expected, Project.listLibraryPatches(project));
       });

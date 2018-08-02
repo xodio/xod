@@ -20,7 +20,7 @@ import * as Link from './link';
 import { def } from './types';
 import { isGenericType } from './utils';
 import * as PatchPathUtils from './patchPathUtils';
-import { getPinKeyForTerminalDirection } from './builtInPatches';
+import { getPinKeyForTerminalDirection } from './builtinTerminalPatches';
 
 // =============================================================================
 //
