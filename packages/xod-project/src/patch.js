@@ -33,8 +33,7 @@ import {
   getHardcodedPinsForPatchPath,
   getPinKeyForTerminalDirection,
   getCustomTypeTerminalPins,
-  BUILT_IN_PATCH_PATHS,
-} from './builtInPatches';
+} from './builtinTerminalPatches';
 import {
   getBaseName,
   getLocalPath,
@@ -51,6 +50,8 @@ import {
   getSpecializationPatchPath,
   normalizeTypeNameForAbstractsResolution,
 } from './patchPathUtils';
+
+import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
 /**
  * An object representing single patch in a project
@@ -337,8 +338,14 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
     ? getPatchPath(patch)
     : Node.getPinNodeDataType(node);
 
+  const isBusPatch = R.compose(
+    isAmong([CONST.FROM_BUS_PATH, CONST.TO_BUS_PATH]),
+    getPatchPath
+  )(patch);
+
   const isBindable =
     Utils.isBuiltInType(type) && // pins of custom types are never bindable
+    !isBusPatch && // pins of bus nodes are never bindable
     (direction === CONST.PIN_DIRECTION.INPUT
       ? true // input pins of built-in types are always bindable
       : canBindToOutputs(patch) &&
@@ -1156,7 +1163,10 @@ export const isGenuinePatch = def(
   'isGenuinePatch :: Patch -> Boolean',
   R.compose(
     R.not,
-    R.anyPass([isAmong(BUILT_IN_PATCH_PATHS), isTerminalPatchPath]),
+    R.anyPass([
+      patchPath => R.has(patchPath, BUILT_IN_PATCHES),
+      isTerminalPatchPath,
+    ]),
     getPatchPath
   )
 );

@@ -17,7 +17,6 @@ import {
   failOnNothing,
   prependTraceToError,
 } from 'xod-func-tools';
-import { BUILT_IN_PATCH_PATHS } from './builtInPatches';
 
 import * as CONST from './constants';
 
@@ -29,6 +28,8 @@ import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
 import { deducePinTypes } from './TypeDeduction_Js.bs';
+
+import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
 /**
  * Root of a project’s state tree
@@ -169,17 +170,8 @@ export const injectProjectTypeHints = def(
 //
 // =============================================================================
 
-/*
- Just empty patches.
- Pins etc will be hardcoded elsewhere.
- */
-export const BUILT_IN_PATCHES = R.compose(
-  R.indexBy(Patch.getPatchPath),
-  R.map(path => R.pipe(Patch.createPatch, Patch.setPatchPath(path))())
-)(BUILT_IN_PATCH_PATHS);
-
 // :: String -> Boolean
-export const isPathBuiltIn = R.flip(R.contains)(BUILT_IN_PATCH_PATHS);
+export const isPathBuiltIn = R.has(R.__, BUILT_IN_PATCHES);
 
 // :: Project -> Map PatchPath Patch
 const getPatches = memoizeOnlyLast(project => {

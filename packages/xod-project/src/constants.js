@@ -194,7 +194,7 @@ export const UTILITY_MARKER_PATH = 'xod/patch-nodes/utility';
 export const FROM_BUS_PATH = 'xod/patch-nodes/from-bus';
 export const TO_BUS_PATH = 'xod/patch-nodes/to-bus';
 
-export const JUMPER_PATCH_PATH = 'xod/core/jumper';
+export const JUMPER_PATCH_PATH = 'xod/patch-nodes/jumper';
 
 export const IMPL_FILENAME = 'patch.cpp';
 

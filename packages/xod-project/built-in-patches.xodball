@@ -1,0 +1,89 @@
+{
+  "name": "built-in-patches",
+  "patches": {
+    "@/abstract": {
+      "path": "@/abstract"
+    },
+    "@/deprecated": {
+      "path": "@/deprecated"
+    },
+    "@/from-bus": {
+      "nodes": {
+        "__out__": {
+          "id": "__out__",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/from-bus"
+    },
+    "@/jumper": {
+      "links": {
+        "HkrhyNMEQ": {
+          "id": "HkrhyNMEQ",
+          "input": {
+            "nodeId": "__out__",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "__in__",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "__in__": {
+          "id": "__in__",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        },
+        "__out__": {
+          "id": "__out__",
+          "position": {
+            "x": 34,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-t1"
+        }
+      },
+      "path": "@/jumper"
+    },
+    "@/not-implemented-in-xod": {
+      "path": "@/not-implemented-in-xod"
+    },
+    "@/output-self": {
+      "path": "@/output-self"
+    },
+    "@/to-bus": {
+      "nodes": {
+        "__in__": {
+          "id": "__in__",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-t1"
+        }
+      },
+      "path": "@/to-bus"
+    },
+    "@/utility": {
+      "path": "@/utility"
+    },
+    "@/variadic-1": {
+      "path": "@/variadic-1"
+    },
+    "@/variadic-2": {
+      "path": "@/variadic-2"
+    },
+    "@/variadic-3": {
+      "path": "@/variadic-3"
+    }
+  }
+}

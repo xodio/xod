@@ -48,10 +48,10 @@ describe('xod-patch-search/index', () => {
         'xod/bits/number-to-f32'
       ));
 
-    it('searches: "lib:xod/patch-nodes number"', () => {
+    it('searches: "lib:xod/patch-nodes pulse"', () => {
       assert.equal(
-        idx.search('lib:xod/patch-nodes number')[0].item.path,
-        'xod/patch-nodes/input-number' // The same as above + filtered by lib
+        idx.search('lib:xod/patch-nodes pulse')[0].item.path,
+        'xod/patch-nodes/output-pulse' // The same as above + filtered by lib
       );
     });
 

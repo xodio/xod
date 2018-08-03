@@ -10,7 +10,9 @@
   "scripts": {
     "build:js": "babel src/ -d dist/ --source-maps",
     "build:re": "bsb -make-world",
-    "build": "yarn build:re && yarn build:js",
+    "build:built-in-patches": "node ./tools/loadBuiltinPatches.js",
+    "build:dummy-built-in-patches": "node ./tools/makeDummyBuiltinPatches.js",
+    "build": "yarn build:dummy-built-in-patches && yarn build:re && yarn build:js && yarn build:built-in-patches",
     "dev:re": "yarn run build:re -w",
     "dev": "yarn run build:js --watch",
     "refmt": "find src/ test/ -name '*.re' -or -name '*.rei' -type f -exec refmt --in-place {} +",
