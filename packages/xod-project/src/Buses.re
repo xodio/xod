@@ -17,7 +17,7 @@ let getMatchingBusNodes = patch => {
   let toBusNodesByLabel =
     nodes
     |. List.keep(n => Node.getType(n) == toBusPatchPath)
-    |. Holes.List.groupBy(Node.getLabel)
+    |. Holes.List.groupByString(Node.getLabel)
     /* having multiple `to-bus` nodes with the same label is forbidden,
        so exclude them from type resolution */
     |. Map.String.keep((_, ns) => List.length(ns) == 1)
@@ -28,7 +28,7 @@ let getMatchingBusNodes = patch => {
   } else {
     nodes
     |. List.keep(n => Node.getType(n) == fromBusPatchPath)
-    |. Holes.List.groupBy(Node.getLabel)
+    |. Holes.List.groupByString(Node.getLabel)
     |. Map.String.keep((label, _) =>
          Map.String.has(toBusNodesByLabel, label)
        )
@@ -47,7 +47,7 @@ let getMatchingBusNodes = patch => {
 let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
   (patch, matchingBusNodes) => {
     let linksByOutputNodeId =
-      patch |. Patch.listLinks |. Holes.List.groupBy(Link.getOutputNodeId);
+      patch |. Patch.listLinks |. Holes.List.groupByString(Link.getOutputNodeId);
 
     List.reduce(
       matchingBusNodes,

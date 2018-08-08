@@ -2,10 +2,10 @@ open Belt;
 open Jest;
 open Expect;
 
-describe("groupBy", () =>
-  test("splits a list into a sublists stored in a map", () => {
+describe("groupByString", () =>
+  test("splits a list into a sublists stored in a Map.String", () => {
     let outMap =
-      Holes.List.groupBy(
+      Holes.List.groupByString(
         ["foo", "Foo", "Bar", "FOO", "bAr", "baz"],
         String.lowercase,
       );
