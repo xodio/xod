@@ -279,7 +279,7 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let tabData = TabData.parse(tsv);
     let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
     Project.assocPatch(project, benchPatchPath, bench.patch)
-    |. Holes.Result.flatMap(XodArduino.Transpiler.transpile(_, benchPatchPath))
+    |. XodArduino.Transpiler.transpile(_, benchPatchPath)
     |. Holes.Result.map(program => {
          let idMap =
            Holes.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
