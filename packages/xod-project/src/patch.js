@@ -738,7 +738,7 @@ export const omitLinks = def(
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
 export const assocNode = def(
-  'assocNode :: Node -> Patch -> Patch', // TODO: inconsistency with Project.assocPatch
+  'assocNode :: Node -> Patch -> Patch',
   (node, patch) => R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
 );
 
@@ -827,7 +827,6 @@ export const getCommentByIdUnsafe = def(
     )
 );
 
-// TODO: inconsistency with Project.assocPatch, see also `assocNode`
 export const assocComment = def(
   'assocComment :: Comment -> Patch -> Patch',
   (comment, patch) =>

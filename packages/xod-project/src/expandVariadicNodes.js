@@ -321,7 +321,7 @@ export default def(
 
     return R.compose(
       ...expandedNodeTypeUpdaters,
-      Project.assocPatchListUnsafe(expandedPatches)
+      Project.upsertPatches(expandedPatches)
     )(project);
   }
 );

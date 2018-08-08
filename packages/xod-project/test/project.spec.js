@@ -759,7 +759,7 @@ describe('Project', () => {
 
   // entity setters
   describe('assocPatch', () => {
-    it('should return Either.Left if patch is not valid', () => {
+    it('should return Project with associated invalid Patch', () => {
       const invalidPatch = R.pipe(
         Patch.createPatch,
         Patch.assocNode(Node.createNode({ x: 0, y: 0 }, 'not/existing/type'))
@@ -769,18 +769,21 @@ describe('Project', () => {
         invalidPatch,
         emptyProject
       );
-      assert.isTrue(newProject.isLeft);
+      assert.sameMembers(
+        R.compose(R.map(Patch.getPatchPath), Project.listLocalPatches)(
+          newProject
+        ),
+        ['@/test']
+      );
     });
-    it('should return Either.Right with associated patch', () => {
+    it('should return Project with associated patch', () => {
       const path = '@/test';
       const patch = Patch.createPatch();
       const newProject = Project.assocPatch(path, patch, emptyProject);
-      Helper.expectEitherRight(proj => {
-        assert.deepEqual(
-          Project.getPatchByPathUnsafe(path, proj),
-          Patch.setPatchPath(path, patch)
-        );
-      }, newProject);
+      assert.deepEqual(
+        Project.getPatchByPathUnsafe(path, newProject),
+        Patch.setPatchPath(path, patch)
+      );
     });
     it('should not remove other patches from project', () => {
       const oldPath = '@/old';
@@ -793,33 +796,34 @@ describe('Project', () => {
         },
       });
       const newProject = Project.assocPatch(newPath, newPatch, project);
-      Helper.expectEitherRight(proj => {
-        assert.deepEqual(Project.getPatchByPathUnsafe(oldPath, proj), oldPatch);
-        assert.deepEqual(Project.getPatchByPathUnsafe(newPath, proj), newPatch);
-      }, newProject);
+
+      assert.deepEqual(
+        Project.getPatchByPathUnsafe(oldPath, newProject),
+        oldPatch
+      );
+      assert.deepEqual(
+        Project.getPatchByPathUnsafe(newPath, newProject),
+        newPatch
+      );
     });
   });
-  describe('assocPatchList', () => {
+  describe('upsertPatches', () => {
     const patches = R.map(Helper.defaultizePatch, [
       { path: '@/main' },
       { path: '@/foo' },
       { path: 'xod/test/a' },
     ]);
-    it('should return Right Projct with associated patches', () => {
-      const res = Project.assocPatchList(patches, emptyProject);
-      Helper.expectEitherRight(
-        proj =>
-          R.forEach(expectedPatch => {
-            const patchPath = Patch.getPatchPath(expectedPatch);
-            assert.deepEqual(
-              Project.getPatchByPathUnsafe(patchPath, proj),
-              expectedPatch
-            );
-          }, patches),
-        res
-      );
+    it('should return Project with associated patches', () => {
+      const proj = Project.upsertPatches(patches, emptyProject);
+      R.forEach(expectedPatch => {
+        const patchPath = Patch.getPatchPath(expectedPatch);
+        assert.deepEqual(
+          Project.getPatchByPathUnsafe(patchPath, proj),
+          expectedPatch
+        );
+      }, patches);
     });
-    it('should return Left Error, cause one of patches is invalid', () => {
+    it('should return Project with associated patches, even if some of them is invalid', () => {
       const invalidPatches = R.append(
         Helper.defaultizePatch({
           path: '@/wrong',
@@ -827,10 +831,10 @@ describe('Project', () => {
         }),
         patches
       );
-      const res = Project.assocPatchList(invalidPatches, emptyProject);
-      Helper.expectEitherError(
-        'DEAD_REFERENCE__PATCH_FOR_NODE_NOT_FOUND {"nodeType":"xod/test/not-existent-one","patchPath":"@/wrong","trace":["@/wrong"]}',
-        res
+      const proj = Project.upsertPatches(invalidPatches, emptyProject);
+      assert.sameMembers(
+        R.compose(R.map(Patch.getPatchPath), Project.listGenuinePatches)(proj),
+        ['@/main', '@/foo', 'xod/test/a', '@/wrong']
       );
     });
   });
@@ -1292,7 +1296,7 @@ describe('Project', () => {
     });
     it('returns Either Error about missing pins', () => {
       const newPatch = Helper.defaultizePatch({});
-      const projectWithNotExistingPatch = Project.assocPatchUnsafe(
+      const projectWithNotExistingPatch = Project.assocPatch(
         '@/not-existing-patch',
         newPatch,
         project

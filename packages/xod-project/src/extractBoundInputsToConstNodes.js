@@ -307,7 +307,7 @@ const extractBoundInputsToConstNodes = def(
 
     return extractBoundInputsToConstNodes(
       path,
-      Project.assocPatchUnsafe(path, newPatch, project)
+      Project.assocPatch(path, newPatch, project)
     );
   }
 );

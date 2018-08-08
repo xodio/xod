@@ -94,7 +94,7 @@ const omitLibPatches = R.curry((libName, project) =>
 
 // :: [Patch] -> Project -> Project
 const assocPatchListAndMigrate = R.curry((patches, project) =>
-  R.pipe(XP.assocPatchListUnsafe, XP.migrateBoundValuesToBoundLiterals)(
+  R.pipe(XP.upsertPatches, XP.migrateBoundValuesToBoundLiterals)(
     patches,
     project
   )
@@ -156,7 +156,7 @@ export default (state = {}, action) => {
 
       const patch = XP.createPatch();
 
-      return R.compose(explodeEither, XP.assocPatch(patchPath, patch))(state);
+      return XP.assocPatch(patchPath, patch, state);
     }
 
     case AT.PATCH_RENAME: {

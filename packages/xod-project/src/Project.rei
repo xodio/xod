@@ -12,4 +12,4 @@ let getPatchByNode: (t, Node.t) => option(Patch.t);
 
 let getPatchDependencies: (t, Patch.path) => list(Patch.path);
 
-let assocPatchList: (t, list(Patch.t)) => t;
+let upsertPatches: (t, list(Patch.t)) => t;

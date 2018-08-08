@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import {
   listLocalPatches,
-  assocPatchUnsafe,
+  assocPatch,
   getPatchPath,
   getPatchByPathUnsafe,
 } from 'xod-project';
@@ -45,7 +45,7 @@ const moveThroughHistory = R.curry(
     const replacementPatchState = R.head(patchHistory[takeReplacementFrom]);
 
     return R.compose(
-      R.over(projectLens, assocPatchUnsafe(patchPath, replacementPatchState)),
+      R.over(projectLens, assocPatch(patchPath, replacementPatchState)),
       R.assocPath(
         ['projectHistory', patchPath],
         R.compose(
