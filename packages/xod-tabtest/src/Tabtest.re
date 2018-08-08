@@ -144,7 +144,7 @@ module Bench = {
              patch:
                bench.patch
                |. Patch.assocNode(probeNode)
-               |. Patch.assocLinkExn(link),
+               |. Patch.assocLink(link),
              probes: [probe, ...bench.probes],
              probeMap:
                bench.probeMap

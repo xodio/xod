@@ -36,7 +36,6 @@ export const convertPatchFileContentsToPatch = def(
   'convertPatchFileContentsToPatch :: PatchFileContents -> Patch',
   fsPatch =>
     R.compose(
-      XF.explodeEither,
       XP.upsertLinks(
         R.map(R.assoc('@@type', 'xod-project/Link'), fsPatch.links)
       ),

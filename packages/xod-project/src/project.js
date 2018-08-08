@@ -1211,11 +1211,7 @@ export const changeNodeTypeUnsafe = def(
 
     return R.over(
       lensPatch(patchPath),
-      R.compose(
-        explodeEither,
-        Patch.upsertLinks(updatedLinks),
-        Patch.assocNode(updatedNode)
-      ),
+      R.compose(Patch.upsertLinks(updatedLinks), Patch.assocNode(updatedNode)),
       project
     );
   }

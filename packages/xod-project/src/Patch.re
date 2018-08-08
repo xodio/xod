@@ -35,25 +35,15 @@ let upsertNodes = (patch, nodes) =>
 
 let listNodes = patch => _listNodes(patch) |. List.fromArray;
 
-[@bs.module ".."]
-external _assocLink : (Link.t, t) => Either.t(Js.Exn.t, t) = "assocLink";
+[@bs.module ".."] external _assocLink : (Link.t, t) => t = "assocLink";
 
-let assocLink = (patch, link) => _assocLink(link, patch) |> Either.toResult;
+let assocLink = (patch, link) => _assocLink(link, patch);
 
 [@bs.module ".."]
-external _upsertLinks : (array(Link.t), t) => Either.t(Js.Exn.t, t) =
-  "upsertLinks";
+external _upsertLinks : (array(Link.t), t) => t = "upsertLinks";
 
 let upsertLinks = (patch, links) =>
-  _upsertLinks(List.toArray(links), patch) |> Either.toResult;
-
-let assocLinkExn = (link, patch) =>
-  switch (assocLink(link, patch)) {
-  | Ok(patch') => patch'
-  | Error(err) =>
-    /* TODO: use a rerise mechanism */
-    Js.Exn.raiseError(err |> Js.Exn.message |. Option.getWithDefault(""))
-  };
+  _upsertLinks(List.toArray(links), patch);
 
 [@bs.module ".."] external _listLinks : t => array(Link.t) = "listLinks";
 

@@ -810,7 +810,6 @@ const convertPatch = def(
       const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
       return R.compose(
-        explodeEither,
         Patch.upsertLinks(newLinks),
         Patch.upsertNodes(newNodes)
       )(Patch.createPatch());

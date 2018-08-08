@@ -75,8 +75,7 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
         jPatch
         |. Patch.assocNode(Node.setType(jumperPatchPath, toBusNode))
         |. dissocFromBusNodes
-        |. Patch.upsertLinks(linksFromJumperToBusDestinations)
-        |. Result.getExn;
+        |. Patch.upsertLinks(linksFromJumperToBusDestinations);
       },
     );
   };

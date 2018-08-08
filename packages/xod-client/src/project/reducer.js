@@ -252,7 +252,6 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath),
         R.compose(
-          explodeEither,
           XP.upsertLinks(entities.links),
           XP.upsertComments(entities.comments),
           XP.upsertNodes(entities.nodes),
@@ -386,7 +385,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath),
-        R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink), explodeEither),
+        R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink)),
         state
       );
     }
@@ -441,8 +440,7 @@ export default (state = {}, action) => {
         R.pipe(
           XP.omitLinks(conflictingLinks),
           XP.assocNode(busNode),
-          XP.assocLink(link),
-          explodeEither
+          XP.assocLink(link)
         ),
         state
       );
