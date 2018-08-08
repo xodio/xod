@@ -4,18 +4,10 @@ type id = string;
 
 type label = string;
 
-type position = {
-  .
-  "x": int,
-  "y": int,
-};
-
-let origin = {"x": 0, "y": 0};
-
 [@bs.module ".."]
-external _create : (position, PatchPath.t) => t = "createNode";
+external _create : (Position.t, PatchPath.t) => t = "createNode";
 
-let create = patchPath => _create(origin, patchPath);
+let create = patchPath => _create(Position.origin, patchPath);
 
 [@bs.module ".."] external getId : t => id = "getNodeId";
 
