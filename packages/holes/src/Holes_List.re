@@ -9,3 +9,13 @@ let groupByString = (values, getKey) =>
       }
     )
   );
+
+let groupBy = (values, id, getKey) =>
+  List.reduceReverse(values, Map.make(~id), (accMap, nextVal) =>
+    Map.update(accMap, getKey(nextVal), existingVals =>
+      switch (existingVals) {
+      | Some(vs) => Some([nextVal, ...vs])
+      | None => Some([nextVal])
+      }
+    )
+  );
