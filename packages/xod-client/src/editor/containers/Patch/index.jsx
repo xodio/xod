@@ -278,6 +278,8 @@ const mapDispatchToProps = dispatch => ({
       openImplementationEditor: EditorActions.openImplementationEditor,
       patchWorkareaResized: EditorActions.patchWorkareaResized,
       changeArityLevel: ProjectActions.changeArityLevel,
+      splitLinksToBuses: EditorActions.splitLinksToBuses,
+      addBusNode: ProjectActions.addBusNode,
     },
     dispatch
   ),

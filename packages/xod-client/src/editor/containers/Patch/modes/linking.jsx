@@ -45,10 +45,23 @@ const linkingMode = {
     api.props.actions.linkPin(nodeId, pinKey);
     api.goToDefaultMode();
   },
+  onCreateBus(api) {
+    const { nodeId, pinKey } = api.props.linkingPin;
+    const node = api.props.nodes[nodeId];
+
+    api.props.actions.addBusNode(
+      api.props.patchPath,
+      api.state.mousePosition,
+      node,
+      pinKey
+    );
+    api.goToDefaultMode();
+  },
   onBackgroundClick: abort,
   getHotkeyHandlers(api) {
     return {
       [COMMAND.DESELECT]: () => abort(api),
+      [COMMAND.MAKE_BUS]: bindApi(api, this.onCreateBus),
     };
   },
   render(api) {

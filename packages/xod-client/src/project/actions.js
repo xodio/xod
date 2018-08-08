@@ -359,3 +359,23 @@ export const changeNodeSpecialization = (nodeId, newNodeType) => (
     })
   );
 };
+
+export const addBusNode = (patchPath, position, renderableNode, pinKey) => {
+  const pin = renderableNode.pins[pinKey];
+
+  const label = XP.isPinNode(renderableNode)
+    ? XP.getNodeLabel(renderableNode)
+    : XP.getPinLabel(pin);
+
+  return {
+    type: ActionType.ADD_BUS_NODE,
+    payload: {
+      patchPath,
+      pinKey,
+      pinDirection: pin.direction,
+      nodeId: XP.getNodeId(renderableNode),
+      label,
+      position,
+    },
+  };
+};

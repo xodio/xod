@@ -1,7 +1,7 @@
-import { flip, curry } from 'ramda';
+import { curry } from 'ramda';
 
 // because functions exported from Reason are uncurried
-import { jumperizePatchRecursivelyU } from './Buses_Js.bs';
+import { jumperizePatchRecursivelyU, splitLinksToBusesU } from './Buses_Js.bs';
 
 export * from './project';
 export {
@@ -119,10 +119,10 @@ export * from './xodball';
 export * from './typeDeduction';
 export * from './TypeDeduction_Js.bs';
 export { default as autoresolveTypes } from './autoresolveTypes';
-export const jumperizePatchRecursively = curry(
-  flip(jumperizePatchRecursivelyU)
-);
 export { default as messages } from './messages';
 export { ensureLiteral, migrateBoundValuesToBoundLiterals } from './legacy';
 export { sortGraph } from './gmath';
 export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
+
+export const jumperizePatchRecursively = curry(jumperizePatchRecursivelyU);
+export const splitLinksToBuses = curry(splitLinksToBusesU);

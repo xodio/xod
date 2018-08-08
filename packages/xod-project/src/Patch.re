@@ -19,6 +19,13 @@ let dissocNode = (patch, nodeId) => _dissocNode(nodeId, patch);
 
 [@bs.module ".."] external _listNodes : t => array(Node.t) = "listNodes";
 
+[@bs.module ".."] external _getNodeById : (Node.id, t) => XodFuncTools.Maybe.t(Node.t) = "getNodeById";
+let getNodeById = (patch, nodeId) => _getNodeById(nodeId, patch) |> Maybe.toOption;
+
+[@bs.module ".."] external _upsertNodes : (array(Node.t), t) => t = "upsertNodes";
+
+let upsertNodes = (patch, nodes) => _upsertNodes(List.toArray(nodes), patch);
+
 let listNodes = patch => _listNodes(patch) |. List.fromArray;
 
 [@bs.module ".."]
@@ -46,6 +53,14 @@ let listLinks = patch => _listLinks(patch) |. List.fromArray;
 [@bs.module ".."] external _listPins : t => array(Pin.t) = "listPins";
 
 let listPins = patch => _listPins(patch) |. List.fromArray;
+
+[@bs.module ".."] external _omitLinks : (array(Link.t), t) => t = "omitLinks";
+
+let omitLinks = (patch, links) => _omitLinks(List.toArray(links), patch);
+
+[@bs.module ".."] external _getPinByKey : (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
+
+let getPinByKey = (patch, pinKey) => _getPinByKey(pinKey, patch) |> Maybe.toOption;
 
 let listInputPins = patch =>
   patch |. listPins |. List.keep(pin => Pin.getDirection(pin) == Pin.Input);

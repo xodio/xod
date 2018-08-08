@@ -14,7 +14,9 @@ import {
   addPoints,
   nodeSizeInSlotsToPixels,
   slotPositionToPixels,
+  snapPositionToSlots,
   snapNodePositionToSlots,
+  getBusNodePositionForPin,
 } from './nodeLayout';
 import {
   NODE_PROPERTY_KIND,
@@ -385,6 +387,63 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath),
         R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink), explodeEither),
+        state
+      );
+    }
+
+    case AT.LINKS_SPLIT_TO_BUSES: {
+      const { patchPath, linkIds } = action.payload;
+
+      return XP.splitLinksToBuses(
+        getBusNodePositionForPin,
+        patchPath,
+        linkIds,
+        state
+      );
+    }
+
+    case AT.ADD_BUS_NODE: {
+      const {
+        patchPath,
+        pinKey,
+        pinDirection,
+        nodeId,
+        label,
+        position,
+      } = action.payload;
+
+      const busNodePosition = snapPositionToSlots(position);
+      const busNodeType =
+        pinDirection === XP.PIN_DIRECTION.INPUT
+          ? XP.FROM_BUS_PATH
+          : XP.TO_BUS_PATH;
+
+      const busNode = R.compose(XP.setNodeLabel(label), XP.createNode)(
+        busNodePosition,
+        busNodeType
+      );
+
+      const link =
+        pinDirection === XP.PIN_DIRECTION.INPUT
+          ? XP.createLink(pinKey, nodeId, '__out__', XP.getNodeId(busNode))
+          : XP.createLink('__in__', XP.getNodeId(busNode), pinKey, nodeId);
+
+      const conflictingLinks = R.compose(
+        XP.listLinksByPin(
+          XP.getLinkInputPinKey(link),
+          XP.getLinkInputNodeId(link)
+        ),
+        XP.getPatchByPathUnsafe(patchPath)
+      )(state);
+
+      return R.over(
+        XP.lensPatch(patchPath),
+        R.pipe(
+          XP.omitLinks(conflictingLinks),
+          XP.assocNode(busNode),
+          XP.assocLink(link),
+          explodeEither
+        ),
         state
       );
     }

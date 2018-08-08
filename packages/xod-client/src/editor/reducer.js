@@ -408,6 +408,7 @@ const editorReducer = (state = {}, action) => {
       );
     case EAT.EDITOR_DESELECT_PIN:
     case PAT.LINK_ADD:
+    case PAT.ADD_BUS_NODE:
       return R.set(R.compose(currentTabLens, linkingPinLens), null, state);
 
     //

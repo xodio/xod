@@ -248,6 +248,8 @@ class App extends client.App {
         onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
         onClick(items.insertComment, this.props.actions.addComment),
         items.separator,
+        onClick(items.splitLinksToBuses, this.props.actions.splitLinksToBuses),
+        items.separator,
         onClick(
           items.projectPreferences,
           this.props.actions.showProjectPreferences
