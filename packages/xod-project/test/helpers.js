@@ -7,14 +7,7 @@ import R from 'ramda';
 import { Either, Maybe } from 'ramda-fantasy';
 import { foldEither, mapIndexed } from 'xod-func-tools';
 
-import {
-  PIN_DIRECTION,
-  PIN_TYPE,
-  ABSTRACT_MARKER_PATH,
-  NOT_IMPLEMENTED_IN_XOD_PATH,
-} from '../src/constants';
-import { fromXodballDataUnsafe } from '../src/xodball';
-import { getTerminalPath } from '../src/patchPathUtils';
+import * as XP from '../src';
 
 export const expectEitherRight = R.curry((testFunction, object) => {
   foldEither(
@@ -99,9 +92,9 @@ export const defaultizeNode = R.merge({
 export const defaultizePin = R.merge({
   '@@type': 'xod-project/Pin',
   key: '$$defaultPinKey',
-  direction: PIN_DIRECTION.INPUT,
+  direction: XP.PIN_DIRECTION.INPUT,
   label: '$$defaultLabel',
-  type: PIN_TYPE.NUMBER,
+  type: XP.PIN_TYPE.NUMBER,
   defaultValue: 0,
   order: 0,
   description: '$$defaultDesription',
@@ -155,7 +148,7 @@ const generateTerminals = R.curry((direction, types) =>
     mapIndexed((type, index) => [
       `${direction}-${index}-${type}`,
       {
-        type: getTerminalPath(direction, type),
+        type: XP.getTerminalPath(direction, type),
         position: { x: index, y: 0 },
       },
     ])
@@ -166,8 +159,8 @@ export const createPatchStub = R.curry(
   (extraNodes, inputTypes, outputTypes) => ({
     nodes: R.mergeAll([
       extraNodes,
-      generateTerminals(PIN_DIRECTION.INPUT, inputTypes),
-      generateTerminals(PIN_DIRECTION.OUTPUT, outputTypes),
+      generateTerminals(XP.PIN_DIRECTION.INPUT, inputTypes),
+      generateTerminals(XP.PIN_DIRECTION.OUTPUT, outputTypes),
     ]),
   })
 );
@@ -175,16 +168,84 @@ export const createPatchStub = R.curry(
 export const createAbstractPatch = R.compose(
   defaultizePatch,
   createPatchStub({
-    abstarct: { type: ABSTRACT_MARKER_PATH },
+    abstarct: { type: XP.ABSTRACT_MARKER_PATH },
   })
 );
 
 export const createSpecializationPatch = R.compose(
   defaultizePatch,
   createPatchStub({
-    niix: { type: NOT_IMPLEMENTED_IN_XOD_PATH },
+    niix: { type: XP.NOT_IMPLEMENTED_IN_XOD_PATH },
   })
 );
+
+// Prepares patch for structural comparison.
+// Replacing node ids with deterministically computed ones,
+// and omits link ids
+// :: (Node -> String) -> Patch -> { nodes: [Node], links: [LinkWithoutId] }
+const derandomizeEntityIds = (computeNodeId, patch) => {
+  const originalNodes = XP.listNodes(patch);
+
+  // check that generated ids are unique for a given patch
+  const nodesWithTheSameComputedIds = R.compose(
+    R.find(ns => ns.length > 1),
+    R.values,
+    R.groupBy(computeNodeId)
+  )(originalNodes);
+
+  assert.isUndefined(
+    nodesWithTheSameComputedIds,
+    'computeNodeId must generate unique ids'
+  );
+
+  // :: OriginalId -> ComputedId
+  const getReplacementId = R.compose(
+    R.flip(R.prop),
+    R.fromPairs,
+    R.map(n => [XP.getNodeId(n), computeNodeId(n)])
+  )(originalNodes);
+
+  const nodes = R.map(
+    R.over(R.lensProp('id'), getReplacementId),
+    originalNodes
+  );
+
+  const links = R.compose(
+    R.map(
+      R.compose(
+        R.dissoc('id'),
+        R.over(R.lensPath(['input', 'nodeId']), getReplacementId),
+        R.over(R.lensPath(['output', 'nodeId']), getReplacementId)
+      )
+    ),
+    XP.listLinks
+  )(patch);
+
+  return {
+    nodes,
+    links,
+  };
+};
+
+export const assertPatchesAreStructurallyEqual = (
+  computeNodeId,
+  actual,
+  expected
+) => {
+  const dActual = derandomizeEntityIds(computeNodeId, actual);
+  const dExpected = derandomizeEntityIds(computeNodeId, expected);
+
+  assert.sameDeepMembers(
+    dActual.nodes,
+    dExpected.nodes,
+    'nodes are structurally equal'
+  );
+  assert.sameDeepMembers(
+    dActual.links,
+    dExpected.links,
+    'links are structurally equal'
+  );
+};
 
 // Loading files
 
@@ -194,4 +255,4 @@ export const loadJSON = R.compose(
   filePath => resolve(__dirname, filePath)
 );
 
-export const loadXodball = R.compose(fromXodballDataUnsafe, loadJSON);
+export const loadXodball = R.compose(XP.fromXodballDataUnsafe, loadJSON);
