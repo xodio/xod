@@ -1075,7 +1075,13 @@ export const upsertDeadPins = def(
           R.mapObjIndexed((group, direction) =>
             mapIndexed(
               // Adds a correct order as a third element of each Array
-              (data, idx) => R.append(idx + pinsByDir[direction].length, data),
+              (data, idx) =>
+                R.compose(
+                  R.append(R.__, data),
+                  R.add(idx),
+                  foldMaybe(0, R.length),
+                  maybeProp(direction)
+                )(pinsByDir),
               group
             )
           ),
