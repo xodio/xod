@@ -144,7 +144,10 @@ export const isNotImplementedInXodNode = R.compose(
 
 export const getRenderablePinType = pin =>
   R.compose(
-    R.unless(XP.isBuiltInType, R.always('custom')),
+    R.unless(
+      R.either(XP.isBuiltInType, R.equals('conflicting')),
+      R.always('custom')
+    ),
     foldMaybe(
       XP.getPinType(pin),
       foldEither(R.always('conflicting'), R.identity)
