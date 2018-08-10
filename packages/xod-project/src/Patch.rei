@@ -14,6 +14,10 @@ let dissocNode: (t, Node.id) => t;
 
 let listNodes: t => list(Node.t);
 
+let upsertNodes: (t, list(Node.t)) => t;
+
+let getNodeById: (t, Node.id) => option(Node.t);
+
 let assocLink: (t, Link.t) => XResult.t(t);
 
 let assocLinkExn: (t, Link.t) => t;
@@ -22,7 +26,11 @@ let upsertLinks: (t, list(Link.t)) => XResult.t(t);
 
 let listLinks: t => list(Link.t);
 
+let omitLinks: (t, list(Link.t)) => t;
+
 let listPins: t => list(Pin.t);
+
+let getPinByKey: (t, Pin.key) => option(Pin.t);
 
 let listInputPins: t => list(Pin.t);
 

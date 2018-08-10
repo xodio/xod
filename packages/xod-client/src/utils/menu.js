@@ -92,6 +92,10 @@ const rawItems = {
     label: 'Insert Node...',
     command: COMMAND.INSERT_NODE,
   },
+  splitLinksToBuses: {
+    label: 'Convert Selected Links to Buses',
+    command: COMMAND.MAKE_BUS,
+  },
 
   deploy: {
     label: 'Deploy',

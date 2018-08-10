@@ -239,11 +239,17 @@ const selectingMode = {
       api.props.actions.switchPatch(patchPath);
     }
   },
+  onSplitLinksToBuses(api, event) {
+    if (isInputTarget(event)) return;
+
+    api.props.actions.splitLinksToBuses();
+  },
   getHotkeyHandlers(api) {
     return {
       [COMMAND.SELECT_ALL]: bindApi(api, this.onSelectAll),
       [COMMAND.DELETE_SELECTION]: bindApi(api, this.onDeleteSelection),
       [COMMAND.DESELECT]: api.props.actions.deselectAll,
+      [COMMAND.MAKE_BUS]: bindApi(api, this.onSplitLinksToBuses),
     };
   },
   render(api) {

@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
+import * as XP from 'xod-project';
 import { foldMaybe } from 'xod-func-tools';
 
 const BASE_SIZE_UNIT = 17;
@@ -206,3 +207,17 @@ export const getOptimalPanningOffset = R.compose(
   ),
   getTopLeftPosition
 );
+
+// :: Node -> Pin -> Position
+export const getBusNodePositionForPin = (node, pin) => {
+  const nodePosition = XP.getNodePosition(node);
+  const pinDirection = XP.getPinDirection(pin);
+  const pinOrder = XP.getPinOrder(pin);
+
+  return {
+    x: nodePosition.x + pinOrder * SLOT_SIZE.WIDTH,
+    y:
+      nodePosition.y +
+      SLOT_SIZE.HEIGHT * (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
+  };
+};

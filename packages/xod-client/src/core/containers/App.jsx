@@ -214,4 +214,5 @@ App.actions = {
   toggleAccountPane: actions.toggleAccountPane,
   fetchGrant: actions.fetchGrant,
   togglePanel: actions.togglePanel,
+  splitLinksToBuses: actions.splitLinksToBuses,
 };

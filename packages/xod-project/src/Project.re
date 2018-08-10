@@ -14,11 +14,10 @@ let listLocalPatches = project =>
   _listLocalPatches(project) |. List.fromArray;
 
 [@bs.module ".."]
-external _assocPatch : (PatchPath.t, Patch.t, t) => Either.t(Js.Exn.t, t) =
-  "assocPatch";
+external _assocPatch : (PatchPath.t, Patch.t, t) => t =
+  "assocPatchUnsafe";
 
-let assocPatch = (project, path, patch) =>
-  _assocPatch(path, patch, project) |. Either.toResult;
+let assocPatch = (project, path, patch) => _assocPatch(path, patch, project);
 
 [@bs.module ".."]
 external _getPatchByPath : (PatchPath.t, t) => Maybe.t(Patch.t) =

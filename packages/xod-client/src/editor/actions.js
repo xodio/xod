@@ -23,6 +23,7 @@ import {
 } from './messages';
 
 import * as ActionType from './actionTypes';
+import * as ProjectActionType from '../project/actionTypes';
 
 import {
   addNode,
@@ -650,4 +651,25 @@ export const toggleHelp = () => (dispatch, getState) => {
   }
 
   return dispatch(togglePanel(PANEL_IDS.HELPBAR));
+};
+
+export const splitLinksToBuses = () => (dispatch, getState) => {
+  const state = getState();
+
+  Selectors.getCurrentPatchPath(state).map(patchPath => {
+    const linkIds = R.compose(
+      getSelectedEntityIdsOfType(SELECTION_ENTITY_TYPE.LINK),
+      Selectors.getSelection
+    )(state);
+
+    if (R.isEmpty(linkIds)) return null;
+
+    return dispatch({
+      type: ProjectActionType.LINKS_SPLIT_TO_BUSES,
+      payload: {
+        linkIds,
+        patchPath,
+      },
+    });
+  });
 };

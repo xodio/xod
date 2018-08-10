@@ -30,6 +30,8 @@ export const COMMAND = {
   SAVE_COPY_AS: 'saveCopyAs',
 
   INSERT_NODE: 'insertNode',
+
+  MAKE_BUS: 'makeBus',
 };
 
 export const HOTKEY = {
@@ -55,6 +57,8 @@ export const HOTKEY = {
   [COMMAND.TOGGLE_HELP]: ['h'],
   [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
   [COMMAND.INSERT_NODE]: ['i'],
+
+  [COMMAND.MAKE_BUS]: ['b'],
 
   [COMMAND.PAN_TO_ORIGIN]: ['home'],
   [COMMAND.PAN_TO_CENTER]: ['ctrl+home', 'command+home'],

@@ -13,3 +13,11 @@ let getType: t => PatchPath.t;
 let setType: (PatchPath.t, t) => t;
 
 let getLabel: t => label;
+
+let setLabel: (t, label) => t;
+
+let getPosition: t => Position.t;
+
+let setPosition: (t, Position.t) => t;
+
+let isPinNode: t => bool;
