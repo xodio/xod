@@ -1,9 +1,8 @@
-
 /** C++ code as a plain string */
 type code = string;
 
 /** A single parsed #pragma XOD la la la directive */
-module Pragma {
+module Pragma: {
   /** List of tokens excluding leading `#pragma` and `XOD` */
   type t = list(string);
 };

@@ -1,4 +1,3 @@
-
 let getWithLazyDefault: (option('a), unit => 'a) => 'a =
   (opt, getDefault) =>
     switch (opt) {

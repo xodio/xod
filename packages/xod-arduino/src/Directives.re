@@ -7,14 +7,12 @@ module Endis = {
     | Enable
     | Disable
     | Auto;
-
   let toBoolean = (hint, default) =>
     switch (hint) {
     | Enable => true
     | Disable => false
     | Auto => default
     };
-
   let fromString = tok =>
     switch (tok) {
     | "enable" => Enable
@@ -42,15 +40,11 @@ module Re = {
       sub,
       str,
     );
-
   let remove = (~flags="gm", str, regex) => replace(~flags, str, regex, "");
-
   let test = (~flags="gm", str, regex) =>
     Js.Re.test(str, Js.Re.fromStringWithFlags(regex, ~flags));
-
   let matches = (~flags="gm", str, regex) => {
     let reObj = Js.Re.fromStringWithFlags(regex, ~flags);
-
     /* Extracts the current match, ignoring capturing groups.
        Assumption: 0-th always exists and refers to the full match */
     let fullMatch = execResult =>
@@ -59,13 +53,11 @@ module Re = {
       |. Array.getExn(0)
       |. Js.Nullable.toOption
       |. Option.getExn;
-
     let rec captureNext = () : list(string) =>
       switch (Js.Re.exec(str, reObj)) {
       | None => []
       | Some(result) => List.add(captureNext(), fullMatch(result))
       };
-
     captureNext();
   };
 };
@@ -84,33 +76,27 @@ module Code = {
   let stripLineComments = code => code |. Re.remove(lineCommentRegexp);
   let stripCppComments = code =>
     code |. stripBlockComments |. stripLineComments;
-
   let doesReferSymbol = (symbol, code) =>
     code |. stripCppComments |. Re.test("\\b" ++ symbol ++ "\\b");
-
   let doesReferTemplateSymbol = (symbol, templateArg, code) =>
     code
     |. stripCppComments
     |. Re.test("\\b" ++ symbol ++ "\\s*\\<\\s*" ++ templateArg ++ "\\s*\\>");
-
   let pragmaHeadRegexp = {|#\s*pragma\s+XOD\s+|};
   let pragmaLineRegexp = pragmaHeadRegexp ++ ".*";
   let identifierOrStringRegexp = {foo|[\w._-]+|".*?"|foo};
   let enclosingQuotesRegexp = {|^"|"$|};
   let isOutput = identifier => Re.test(identifier, {|^output_|});
-
   let tokenizePragma = (pragmaLine: string) : Pragma.t =>
     pragmaLine
     |. Re.remove(pragmaHeadRegexp)
     |. Re.matches(identifierOrStringRegexp)
     |. List.map(token => Re.remove(token, enclosingQuotesRegexp));
-
   let findXodPragmas = code : list(Pragma.t) =>
     code
     |. stripCppComments
     |. Re.matches(pragmaLineRegexp)
     |. List.map(tokenizePragma);
-
   /*
       Returns whether a particular #pragma feature enabled, disabled, or set to auto.
       Default is auto
@@ -157,4 +143,5 @@ let isDirtienessEnabled = (code, identifier) =>
      );
 
 let findXodPragmas = Code.findXodPragmas;
+
 let stripCppComments = Code.stripCppComments;

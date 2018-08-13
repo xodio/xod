@@ -1,4 +1,5 @@
 open Belt;
+
 open XodFuncTools;
 
 type t = Js.Types.obj_val;
@@ -19,12 +20,18 @@ let dissocNode = (patch, nodeId) => _dissocNode(nodeId, patch);
 
 [@bs.module ".."] external _listNodes : t => array(Node.t) = "listNodes";
 
-[@bs.module ".."] external _getNodeById : (Node.id, t) => XodFuncTools.Maybe.t(Node.t) = "getNodeById";
-let getNodeById = (patch, nodeId) => _getNodeById(nodeId, patch) |> Maybe.toOption;
+[@bs.module ".."]
+external _getNodeById : (Node.id, t) => XodFuncTools.Maybe.t(Node.t) =
+  "getNodeById";
 
-[@bs.module ".."] external _upsertNodes : (array(Node.t), t) => t = "upsertNodes";
+let getNodeById = (patch, nodeId) =>
+  _getNodeById(nodeId, patch) |> Maybe.toOption;
 
-let upsertNodes = (patch, nodes) => _upsertNodes(List.toArray(nodes), patch);
+[@bs.module ".."]
+external _upsertNodes : (array(Node.t), t) => t = "upsertNodes";
+
+let upsertNodes = (patch, nodes) =>
+  _upsertNodes(List.toArray(nodes), patch);
 
 let listNodes = patch => _listNodes(patch) |. List.fromArray;
 
@@ -34,9 +41,11 @@ external _assocLink : (Link.t, t) => Either.t(Js.Exn.t, t) = "assocLink";
 let assocLink = (patch, link) => _assocLink(link, patch) |> Either.toResult;
 
 [@bs.module ".."]
-external _upsertLinks : (array(Link.t), t) => Either.t(Js.Exn.t, t) = "upsertLinks";
+external _upsertLinks : (array(Link.t), t) => Either.t(Js.Exn.t, t) =
+  "upsertLinks";
 
-let upsertLinks = (patch, links) => _upsertLinks(List.toArray(links), patch) |> Either.toResult;
+let upsertLinks = (patch, links) =>
+  _upsertLinks(List.toArray(links), patch) |> Either.toResult;
 
 let assocLinkExn = (link, patch) =>
   switch (assocLink(link, patch)) {
@@ -58,9 +67,11 @@ let listPins = patch => _listPins(patch) |. List.fromArray;
 
 let omitLinks = (patch, links) => _omitLinks(List.toArray(links), patch);
 
-[@bs.module ".."] external _getPinByKey : (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
+[@bs.module ".."]
+external _getPinByKey : (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
 
-let getPinByKey = (patch, pinKey) => _getPinByKey(pinKey, patch) |> Maybe.toOption;
+let getPinByKey = (patch, pinKey) =>
+  _getPinByKey(pinKey, patch) |> Maybe.toOption;
 
 let listInputPins = patch =>
   patch |. listPins |. List.keep(pin => Pin.getDirection(pin) == Pin.Input);

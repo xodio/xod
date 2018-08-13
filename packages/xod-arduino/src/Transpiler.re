@@ -1,5 +1,7 @@
 open Belt;
+
 open XodFuncTools;
+
 open XodProject;
 
 module TProject = {
@@ -16,8 +18,7 @@ external _transformProject :
   (Project.t, string) => Either.t(Js.Exn.t, TProject.t) =
   "transformProject";
 
-[@bs.module ".."]
-external _transpile : TProject.t => string = "transpile";
+[@bs.module ".."] external _transpile : TProject.t => string = "transpile";
 
 [@bs.module ".."]
 external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";

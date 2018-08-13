@@ -1,5 +1,7 @@
 open Belt;
+
 open Jest;
+
 open Expect;
 
 describe("groupByString", () =>
@@ -9,7 +11,6 @@ describe("groupByString", () =>
         ["foo", "Foo", "Bar", "FOO", "bAr", "baz"],
         String.lowercase,
       );
-
     let expectedMap =
       Map.String.fromArray([|
         ("foo", ["foo", "Foo", "FOO"]),
@@ -45,24 +46,28 @@ let toEqualMap = (ym, expectation) => {
 describe("groupBy", () =>
   test("splits a list into a sublists stored in a Map", () => {
     module Cmp =
-      Belt.Id.MakeComparable({
-        type t = (int, int);
-        let cmp = Pervasives.compare;
-      });
-
+      Belt.Id.MakeComparable(
+        {
+          type t = (int, int);
+          let cmp = Pervasives.compare;
+        },
+      );
     let outMap =
       Holes.List.groupBy(
         [(1, "aaa"), (1, "bbb"), (2, "aaa"), (1, "cccc")],
         (module Cmp),
-        ((n, s)) => (n, String.length(s)),
+        ((n, s)) =>
+        (n, String.length(s))
       );
-
     let expectedMap =
-      Map.fromArray([|
-        ((1, 3), [(1, "aaa"), (1, "bbb")]),
-        ((2, 3), [(2, "aaa")]),
-        ((1, 4), [(1, "cccc")]),
-      |], ~id=(module Cmp));
+      Map.fromArray(
+        [|
+          ((1, 3), [(1, "aaa"), (1, "bbb")]),
+          ((2, 3), [(2, "aaa")]),
+          ((1, 4), [(1, "cccc")]),
+        |],
+        ~id=(module Cmp),
+      );
     expect(outMap) |> toEqualMap(expectedMap);
   })
 );

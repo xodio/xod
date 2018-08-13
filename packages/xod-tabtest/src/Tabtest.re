@@ -1,5 +1,7 @@
 open Belt;
+
 open XodFuncTools;
+
 open XodProject;
 
 /* Filename -> Content */
@@ -39,7 +41,10 @@ module Probe = {
     );
   /* Creates a new probe node matching the type of pin provided */
   let create = pin => {
-    node: Node.create(patchPath(Pin.getPrimitiveTypeExn(pin), Pin.getDirection(pin))),
+    node:
+      Node.create(
+        patchPath(Pin.getPrimitiveTypeExn(pin), Pin.getDirection(pin)),
+      ),
     targetPin: pin,
   };
   /* Returns a key of the only pin (conventionally labeled "VAL") for a

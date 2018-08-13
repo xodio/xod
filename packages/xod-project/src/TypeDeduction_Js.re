@@ -1,5 +1,4 @@
-let deducePinTypes:
-  (Patch.t, Project.t) => TypeDeduction.ResultsMap.t_Js =
+let deducePinTypes: (Patch.t, Project.t) => TypeDeduction.ResultsMap.t_Js =
   (patch, project) =>
     patch
     |. TypeDeduction.deducePinTypes(project)
