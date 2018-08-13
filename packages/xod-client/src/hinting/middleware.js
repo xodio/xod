@@ -1,5 +1,3 @@
-import { notEquals } from 'xod-func-tools';
-
 import { getProject } from '../project/selectors';
 
 import { getDeducedTypes, getErrors } from './selectors';
@@ -21,18 +19,21 @@ export default store => next => action => {
 
   if (oldProject === newProject) return newState;
 
+  // Type deducing
   const prevDeducedTypes = getDeducedTypes(newState);
   const nextDeducedTypes = shallDeduceTypes(newProject, action)
     ? deduceTypes(newProject, action, prevDeducedTypes)
     : prevDeducedTypes;
   const willUpdateDeducedTypes = notEquals(prevDeducedTypes, nextDeducedTypes);
 
+  // Validation
   const prevErrors = getErrors(newState);
   const nextErrors = shallValidate(action, newProject, nextDeducedTypes)
     ? validateProject(action, newProject, nextDeducedTypes, prevErrors)
     : prevErrors;
   const willUpdateErrors = notEquals(prevErrors, nextErrors);
 
+  // Dispatch changes, if needed
   if (willUpdateDeducedTypes || willUpdateErrors) {
     store.dispatch(
       updateHinting(

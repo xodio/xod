@@ -3,7 +3,7 @@ import * as XP from 'xod-project';
 import { foldMaybeWith } from 'xod-func-tools';
 
 import { defaultValidateFunctions } from './validation.funcs';
-import { getActingPatchPath } from './errorCollectors';
+import { getActingPatchPath } from './actionUtils';
 
 // PinValidateFn :: Patch -> Project -> Map PinKey PinErrors
 // NodeValidateFn :: Patch -> Project -> Map NodeId NodeErrors

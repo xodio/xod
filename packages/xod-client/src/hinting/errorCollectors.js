@@ -62,5 +62,3 @@ export const getAllErrorsForPatch = R.curry((patchPath, errors) =>
     maybeProp(patchPath)
   )(errors)
 );
-
-export const getActingPatchPath = maybePath(['payload', 'patchPath']);
