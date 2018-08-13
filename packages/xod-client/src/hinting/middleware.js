@@ -3,7 +3,7 @@ import { notEquals } from 'xod-func-tools';
 import { getProject } from '../project/selectors';
 
 import { getDeducedTypes, getErrors } from './selectors';
-import { updateDeducedTypes, updateErrors, updateHinting } from './actions';
+import updateHinting from './actions';
 import { shallDeduceTypes, deduceTypes } from './typeDeduction';
 import { shallValidate, validateProject } from './validation';
 
@@ -33,12 +33,13 @@ export default store => next => action => {
     : prevErrors;
   const willUpdateErrors = notEquals(prevErrors, nextErrors);
 
-  if (willUpdateDeducedTypes && willUpdateErrors) {
-    store.dispatch(updateHinting(nextDeducedTypes, nextErrors));
-  } else if (willUpdateDeducedTypes) {
-    store.dispatch(updateDeducedTypes(nextDeducedTypes));
-  } else if (willUpdateErrors) {
-    store.dispatch(updateErrors(nextErrors));
+  if (willUpdateDeducedTypes || willUpdateErrors) {
+    store.dispatch(
+      updateHinting(
+        willUpdateDeducedTypes ? nextDeducedTypes : null,
+        willUpdateErrors ? nextErrors : null
+      )
+    );
   }
 
   return act;

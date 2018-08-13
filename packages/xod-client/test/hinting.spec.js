@@ -25,7 +25,7 @@ import * as PAT from '../src/project/actionTypes';
 
 import { getProject } from '../src/project/selectors';
 
-import * as HAT from '../src/hinting/actionTypes';
+import UPDATE_HINTING from '../src/hinting/actionType';
 import { UPDATE_ERRORS_POLICY as POLICY } from '../src/hinting/validation.internal';
 
 // =============================================================================
@@ -37,17 +37,16 @@ import { UPDATE_ERRORS_POLICY as POLICY } from '../src/hinting/validation.intern
 const assertActionTypeEqual = (type, action) => assert.equal(action.type, type);
 
 const assertActionUpdatesErrors = action =>
-  assert.oneOf(
+  assert.equal(
     action.type,
-    [HAT.UPDATE_ERRORS, HAT.UPDATE_HINTING],
-    'Expected an action that updates errors'
+    UPDATE_HINTING,
+    'Expected an action that updates hinting'
   );
 
 // :: Action -> ErrorsUpdateData
 const getErrorsUpdateData = action =>
   R.cond([
-    [R.propEq('type', HAT.UPDATE_HINTING), R.path(['payload', 'errors'])],
-    [R.propEq('type', HAT.UPDATE_ERRORS), R.prop('payload')],
+    [R.propEq('type', UPDATE_HINTING), R.path(['payload', 'errors'])],
     [R.T, assertActionUpdatesErrors],
   ])(action);
 
