@@ -79,6 +79,7 @@ export {
   sameDeducedTypes,
   samePatchValidity,
   validateBuses,
+  hasNodeWithType,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,
@@ -102,6 +103,7 @@ export {
   normalizeEmptyPinLabels,
   isPinBindable,
   isPulsePin,
+  isGenericPin,
 } from './pin';
 export * from './link';
 export * from './constants';

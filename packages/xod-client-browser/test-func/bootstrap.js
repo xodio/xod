@@ -1,4 +1,4 @@
-/* global browser, assert */
+/* global browser */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import puppeteer from 'puppeteer';

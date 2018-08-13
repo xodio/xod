@@ -97,7 +97,7 @@ const changingArityLevel = {
           R.values,
           R.prop('pins')
         )(renderableNode),
-      getRenderableNode(R.__, currentPatch, connectedPins, {}, project),
+      getRenderableNode(R.__, currentPatch, connectedPins, {}, project, {}),
       XP.setNodeArityLevel(api.state.desiredArityLevel),
       XP.getNodeByIdUnsafe(api.state.nodeId)
     )(currentPatch);

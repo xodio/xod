@@ -1,9 +1,8 @@
 import * as R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
-import { foldMaybe, foldEither, explodeMaybe } from 'xod-func-tools';
+import { foldMaybe, maybeProp } from 'xod-func-tools';
 import { createIndexFromPatches } from 'xod-patch-search';
 
 import {
@@ -17,11 +16,16 @@ import {
   getCurrentPatchPath,
   getLinkingPin,
 } from '../editor/selectors';
+import {
+  getDeducedTypes,
+  getErrors,
+  getLinkErrors,
+  getNodeErrors,
+  getPinErrors,
+} from '../hinting/selectors';
 import { isPatchDeadTerminal, getRenderablePinType } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
-
-import { missingPatchForNode } from './messages';
 
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
@@ -65,20 +69,13 @@ export const getCurrentPatch = createSelector(
   (patchPath, project) => R.chain(XP.getPatchByPath(R.__, project), patchPath)
 );
 
-const samePatchesInProject = (prev, next) => {
-  if (prev === next) return true;
-  const prevPatches = XP.listPatches(prev);
-  const nextPatches = XP.listPatches(next);
-  return XP.patchListEqualsBy(XP.samePatchValidity)(prevPatches, nextPatches);
-};
-
 export const getDeducedPinTypes = createMemoizedSelector(
-  [getProject, getCurrentPatchPath],
-  [samePatchesInProject, R.identical],
-  (project, maybeCurrentPatchPath) =>
+  [getCurrentPatchPath, getDeducedTypes],
+  [R.identical, R.equals],
+  (maybeCurrentPatchPath, deducedPinTypes) =>
     R.compose(
-      Maybe.maybe({}, patch => XP.deducePinTypes(patch, project)),
-      R.chain(XP.getPatchByPath(R.__, project))
+      foldMaybe({}, R.identity),
+      R.chain(maybeProp(R.__, deducedPinTypes))
     )(maybeCurrentPatchPath)
 );
 
@@ -160,25 +157,12 @@ const addError = R.curry((error, renderableEntity) =>
   R.over(errorsLens, R.append(error), renderableEntity)
 );
 
-// :: Project -> RenderableNode -> RenderableNode
-const addDeadRefErrors = R.curry((project, renderableNode) =>
+// :: PatchErrors -> RenderableNode -> RenderableNode
+const addNodeErrors = R.curry((patchPath, errors, renderableNode) =>
   R.compose(
-    R.ifElse(
-      R.compose(Maybe.isNothing, XP.getPatchByPath(R.__, project)),
-      // TODO: Replace this custom error with rich error from xod-project
-      type => addError(new Error(missingPatchForNode(type)), renderableNode),
-      R.compose(
-        foldEither(
-          err => addError(err, renderableNode),
-          R.always(renderableNode)
-        ),
-        XP.validatePatchContents(R.__, project),
-        // we just checked that patch exists
-        XP.getPatchByPathUnsafe(R.__, project)
-      )
-    ),
-    R.prop('type')
-  )(renderableNode)
+    R.reduce(R.flip(addError), renderableNode),
+    getNodeErrors(patchPath, renderableNode.id, renderableNode.type)
+  )(errors)
 );
 
 /**
@@ -256,127 +240,45 @@ const assocDeducedPinTypes = R.curry((deducedPinTypes, node) =>
   )
 );
 
-const addInvalidLiteralErrors = R.curry((project, currentPatch, node) => {
-  const invalidBoundValueErrors = XP.getInvalidBoundNodePins(
-    project,
-    currentPatch,
-    node
-  );
-
-  return R.compose(
-    R.over(
-      R.lensProp('pins'),
-      R.map(
-        R.when(
-          pin => R.has(XP.getPinKey(pin), invalidBoundValueErrors),
-          R.assoc('isInvalid', true)
-        )
-      )
+const addPinErrors = R.curry((patchPath, errors, renderableNode) =>
+  R.over(
+    R.lensProp('pins'),
+    R.map(pin =>
+      R.compose(
+        R.assoc('isInvalid', R.__, pin),
+        R.ifElse(R.isEmpty, R.F, R.T),
+        getPinErrors(patchPath, renderableNode.id, XP.getPinKey(pin))
+      )(errors)
     ),
-    R.reduce(
-      (n, eitherError) =>
-        foldEither(err => addError(err, n), R.always(n), eitherError),
-      R.__,
-      R.values(invalidBoundValueErrors)
-    )
-  )(node);
-});
+    renderableNode
+  )
+);
 
-// :: Node -> Patch -> { nodeId: { pinKey: Boolean } } -> Project -> RenderableNode
+// getRenderableNode ::
+//    Node ->
+//    Patch ->
+//    { nodeId: { pinKey: Boolean } } ->
+//    Map PatchPath DeducedPinTypes ->
+//    Project ->
+//    Map PatchPath PatchErrors ->
+//    RenderableNode
 export const getRenderableNode = R.curry(
-  (node, currentPatch, connectedPins, deducedPinTypes, project) =>
-    R.compose(
+  (node, currentPatch, connectedPins, deducedPinTypes, project, errors) => {
+    const curPatchPath = XP.getPatchPath(currentPatch);
+    return R.compose(
       assocDeducedPinTypes(deducedPinTypes),
       addSpecializationsList(project),
       markDeprecatedNodes(project),
-      addInvalidLiteralErrors(project, currentPatch),
+      addPinErrors(curPatchPath, errors),
       addVariadicProps(project),
-      addDeadRefErrors(project),
+      addNodeErrors(curPatchPath, errors),
       addNodePositioning,
       assocPinIsConnected(connectedPins),
       assocNodeIdToPins,
       mergePinDataFromPatch(project, currentPatch)
-    )(node)
+    )(node);
+  }
 );
-
-const getMarkerNodesErrorMap = (predicate, validator) => patch => {
-  const markerNodeIds = R.compose(
-    R.map(XP.getNodeId),
-    R.filter(predicate),
-    XP.listNodes
-  )(patch);
-
-  if (R.isEmpty(markerNodeIds)) return {};
-
-  return foldEither(
-    err => R.compose(R.fromPairs, R.map(R.pair(R.__, err)))(markerNodeIds),
-    R.always({}),
-    validator(patch)
-  );
-};
-
-// :: Patch -> Map NodeId Error
-const getVariadicMarkersErrorMap = getMarkerNodesErrorMap(
-  R.pipe(XP.getNodeType, XP.isVariadicPath),
-  XP.validatePatchForVariadics
-);
-
-// :: Patch -> Map NodeId Error
-const getAbstractMarkersErrorMap = getMarkerNodesErrorMap(
-  R.pipe(XP.getNodeType, R.equals(XP.ABSTRACT_MARKER_PATH)),
-  XP.validateAbstractPatch
-);
-
-// :: Patch -> Map NodeId Error
-const getConstructorMarkersErrorMap = getMarkerNodesErrorMap(
-  R.pipe(XP.getNodeType, R.equals(XP.OUTPUT_SELF_PATH)),
-  XP.validateConstructorPatch
-);
-
-// :: Patch -> Map NodeId Error
-const getTerminalsErrorMap = R.compose(
-  foldEither(
-    err =>
-      R.compose(
-        R.fromPairs,
-        R.map(R.pair(R.__, err)),
-        R.path(['payload', 'pinKeys']) // those are affected terminal node ids
-      )(err),
-    R.always({})
-  ),
-  XP.validatePinLabels
-);
-
-const getBusesErrorMap = R.compose(
-  foldEither(
-    err =>
-      R.compose(
-        R.fromPairs,
-        R.map(R.pair(R.__, err)),
-        R.path(['payload', 'nodeIds'])
-      )(err),
-    R.always({})
-  ),
-  XP.validateBuses
-);
-
-const markNodesCausingErrors = R.curry((currentPatch, nodes) => {
-  // :: Map NodeId Error
-  const errorsMap = R.mergeAll([
-    getTerminalsErrorMap(currentPatch),
-    getBusesErrorMap(currentPatch),
-    getVariadicMarkersErrorMap(currentPatch),
-    getAbstractMarkersErrorMap(currentPatch),
-    getConstructorMarkersErrorMap(currentPatch),
-  ]);
-
-  if (R.isEmpty(errorsMap)) return nodes;
-
-  return R.map(node => {
-    const nodeId = XP.getNodeId(node);
-    return R.has(nodeId, errorsMap) ? addError(errorsMap[nodeId], node) : node;
-  }, nodes);
-});
 
 // :: State -> StrMap RenderableNode
 export const getRenderableNodes = createMemoizedSelector(
@@ -386,28 +288,28 @@ export const getRenderableNodes = createMemoizedSelector(
     getCurrentPatchNodes,
     getConnectedPins,
     getDeducedPinTypes,
+    getErrors,
   ],
-  [R.equals, R.equals, R.equals, R.equals, R.equals],
+  [R.equals, R.equals, R.equals, R.equals, R.equals, R.equals],
   (
     project,
     maybeCurrentPatch,
     currentPatchNodes,
     connectedPins,
-    deducedPinTypes
+    deducedPinTypes,
+    errors
   ) =>
     foldMaybe(
       {},
       currentPatch =>
-        R.compose(
-          markNodesCausingErrors(currentPatch),
-          R.map(
-            getRenderableNode(
-              R.__,
-              currentPatch,
-              connectedPins,
-              deducedPinTypes,
-              project
-            )
+        R.map(
+          getRenderableNode(
+            R.__,
+            currentPatch,
+            connectedPins,
+            deducedPinTypes,
+            project,
+            errors
           )
         )(currentPatchNodes),
       maybeCurrentPatch
@@ -422,39 +324,35 @@ export const getRenderableLinks = createMemoizedSelector(
     getCurrentPatch,
     getProject,
     getDeducedPinTypes,
+    getErrors,
   ],
-  [R.equals, R.equals, R.equals, R.equals, R.equals],
-  (nodes, links, curPatch, project, deducedPinTypes) =>
+  [R.equals, R.equals, R.equals, R.equals, R.equals, R.equals],
+  (nodes, links, curPatch, project, deducedPinTypes, errors) =>
     R.compose(
       addLinksPositioning(nodes),
-      R.map(link =>
-        R.compose(
-          newLink => {
-            const outputNodeId = XP.getLinkOutputNodeId(link);
-            const outputPinKey = XP.getLinkOutputPinKey(link);
-            return R.assoc(
-              'type',
-              getRenderablePinType(nodes[outputNodeId].pins[outputPinKey]),
-              newLink
-            );
-          },
-          foldEither(
-            R.pipe(addError(R.__, link), R.assoc('dead', true)),
-            R.identity
-          ),
-          R.map(R.always(link)),
-          XP.validateLinkPins
-        )(
-          link,
-          explodeMaybe(
-            'Imposible error: RenderableLinks will be computed only for current patch',
-            curPatch
-          ),
-          project,
-          deducedPinTypes
-        )
-      )
-    )(links)
+      foldMaybe([], patchPath =>
+        R.map(link =>
+          R.compose(
+            newLink => {
+              const outputNodeId = XP.getLinkOutputNodeId(link);
+              const outputPinKey = XP.getLinkOutputPinKey(link);
+              return R.assoc(
+                'type',
+                getRenderablePinType(nodes[outputNodeId].pins[outputPinKey]),
+                newLink
+              );
+            },
+            R.ifElse(
+              R.isEmpty,
+              R.always(link),
+              R.compose(R.assoc('dead', true), R.reduce(R.flip(addError), link))
+            ),
+            getLinkErrors(patchPath, XP.getLinkId(link))
+          )(errors)
+        )(links)
+      ),
+      R.map(XP.getPatchPath)
+    )(curPatch)
 );
 
 // :: State -> StrMap RenderableComment
@@ -514,26 +412,33 @@ export const getRenderableSelection = createMemoizedSelector(
 // Suggester
 //
 
-// :: Maybe PatchPath -> Patch -> Boolean
-const patchEqualsToCurPatchPath = R.curry((maybeCurrentPatchPath, patch) =>
-  R.compose(
-    R.equals(foldMaybe('', R.identity, maybeCurrentPatchPath)),
-    XP.getPatchPath
-  )(patch)
-);
-
-// :: State -> [PatchSearchIndex]
-export const getPatchSearchIndex = createSelector(
+// :: State -> { search: (String -> [SearchResult])}
+export const getPatchSearchIndex = createMemoizedSelector(
   [listPatches, getCurrentPatchPath],
+  [R.equals],
   (patches, maybeCurPatchPath) =>
     R.compose(
+      // A little optimization to avoid updating SearchIndex on each patch switch
+      ({ search }) => ({
+        // :: String -> [SearchResult]
+        search: R.compose(
+          R.reject(
+            R.pathSatisfies(
+              R.equals(
+                foldMaybe('__NO_OPENED_PATCH__', R.identity, maybeCurPatchPath)
+              ),
+              ['item', 'path']
+            )
+          ),
+          search
+        ),
+      }),
       createIndexFromPatches,
       R.reject(
         R.anyPass([
           isPatchDeadTerminal,
           XP.isUtilityPatch,
           XP.isDeprecatedPatch,
-          patchEqualsToCurPatchPath(maybeCurPatchPath),
         ])
       )
     )(patches)

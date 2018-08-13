@@ -1,11 +1,11 @@
 import * as R from 'ramda';
-import { Either } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 import * as ProjectSelectors from '../project/selectors';
+import * as HintingSelectors from '../hinting/selectors';
 import { isPatchDeadTerminal } from '../project/utils';
 
 export const getProjectBrowser = R.prop('projectBrowser');
@@ -30,13 +30,11 @@ export const getProjectName = createSelector(
   R.compose(R.when(R.isEmpty, R.always('My Project')), XP.getProjectName)
 );
 
-// :: Project -> Patch -> Patch
-const markDeadPatches = R.curry((project, patch) =>
-  R.compose(
-    R.assoc('dead', R.__, patch),
-    Either.isLeft,
-    XP.validatePatchContents
-  )(patch, project)
+// :: HintingErrors -> Patch -> Patch
+const markDeadPatches = R.curry((errors, patch) =>
+  R.pipe(XP.getPatchPath, R.has(R.__, errors), R.assoc('dead', R.__, patch))(
+    patch
+  )
 );
 
 // :: Patch -> Patch
@@ -47,39 +45,26 @@ const markDeprecatedPatches = patch =>
 const markUtilityPatches = patch =>
   R.assoc('isUtility', XP.isUtilityPatch(patch), patch);
 
+const getPatchPaths = R.pipe(R.indexBy(XP.getPatchPath), R.keys);
+// :: [Patch] -> [Patch] -> Boolean
+const samePatchPaths = R.useWith(R.equals, [getPatchPaths, getPatchPaths]);
+
 const getLocalPatchesList = createSelector(
   ProjectSelectors.getProject,
   XP.listLocalPatches
 );
 
-const patchListChangesKeepBrowserLook = XP.patchListEqualsBy(
-  R.both(XP.sameCategoryMarkers, XP.samePatchValidity)
-);
-
-const libChangesKeepBrowserLook = R.either(
-  (prev, next) => prev === next,
-  (prev, next) => {
-    const prevLibPatches = XP.listLibraryPatches(prev);
-    const nextLibPatches = XP.listLibraryPatches(next);
-    return XP.patchListEqualsBy(
-      XP.samePatchValidity,
-      prevLibPatches,
-      nextLibPatches
-    );
-  }
-);
-
 export const getLocalPatches = createMemoizedSelector(
-  [getLocalPatchesList, ProjectSelectors.getProject],
-  [patchListChangesKeepBrowserLook, libChangesKeepBrowserLook],
-  (patches, project) =>
+  [HintingSelectors.getErrors, getLocalPatchesList],
+  [R.equals, samePatchPaths],
+  (errors, patches) =>
     R.compose(
       R.sortBy(XP.getPatchPath),
       R.map(
         R.compose(
           markUtilityPatches,
           markDeprecatedPatches,
-          markDeadPatches(project)
+          markDeadPatches(errors)
         )
       )
     )(patches)
@@ -102,9 +87,9 @@ const getLibraryPatchesList = createSelector(
 );
 
 export const getLibs = createMemoizedSelector(
-  [getLibraryPatchesList, ProjectSelectors.getProject],
-  [R.equals],
-  (patches, project) =>
+  [HintingSelectors.getErrors, getLibraryPatchesList],
+  [R.equals, samePatchPaths],
+  (errors, patches) =>
     R.compose(
       R.map(R.sort(R.ascend(XP.getPatchPath))),
       R.groupBy(R.pipe(XP.getPatchPath, XP.getLibraryName)),
@@ -113,7 +98,7 @@ export const getLibs = createMemoizedSelector(
         R.compose(
           markUtilityPatches,
           markDeprecatedPatches,
-          markDeadPatches(project)
+          markDeadPatches(errors)
         )
       )
     )(patches)

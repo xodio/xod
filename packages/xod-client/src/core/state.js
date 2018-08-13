@@ -3,6 +3,7 @@ import editorState from '../editor/state';
 import projectState from '../project/state';
 import debuggerState from '../debugger/state';
 import projectBrowserState from '../projectBrowser/state';
+import hintingState from '../hinting/state';
 
 export default {
   user: userState,
@@ -14,4 +15,5 @@ export default {
   errors: {},
   processes: {},
   lastSavedProject: projectState,
+  hinting: hintingState,
 };

@@ -797,6 +797,14 @@ export const upsertNodes = def(
   (nodeList, patch) => R.reduce(R.flip(assocNode), patch, nodeList)
 );
 
+export const hasNodeWithType = def(
+  'hasNodeWithType :: PatchPath -> Patch -> Boolean',
+  (nodeType, patch) =>
+    R.compose(R.any(R.pipe(Node.getNodeType, R.equals(nodeType))), listNodes)(
+      patch
+    )
+);
+
 // =============================================================================
 //
 // Comments

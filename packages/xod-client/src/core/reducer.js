@@ -10,6 +10,7 @@ import errorsReducer from '../messages/reducer';
 import processesReducer from '../processes/reducer';
 import popupsReducer from '../popups/reducer';
 import debuggerReducer from '../debugger/reducer';
+import hintingReducer from '../hinting/reducer';
 
 import keepIntegrityAfterNavigatingHistory from './keepIntegrityAfterNavigatingHistory';
 import trackLastSavedChanges from './trackLastSavedChanges';
@@ -32,6 +33,7 @@ const combineRootReducers = extraReducers => {
       errors: errorsReducer,
       processes: processesReducer,
       debugger: debuggerReducer,
+      hinting: hintingReducer,
     },
     extraReducers
   );

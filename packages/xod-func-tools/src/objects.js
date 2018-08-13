@@ -143,3 +143,6 @@ export const sameKeysetBy = def(
     return true;
   }
 );
+
+// :: [StrMap [a]] -> StrMap [a]
+export const mergeAllWithConcat = R.reduce(R.mergeWith(R.concat), {});

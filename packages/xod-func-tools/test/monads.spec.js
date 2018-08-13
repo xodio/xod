@@ -8,6 +8,7 @@ import {
   explodeEither,
   foldEither,
   foldMaybe,
+  foldMaybeWith,
   catMaybies,
   eitherToPromise,
   maybeToPromise,
@@ -68,6 +69,30 @@ describe('moands', () => {
         foldMaybe('not works', identity, Maybe.Just('it works')),
         'it works'
       );
+    });
+  });
+  describe('foldMaybeWith()', () => {
+    it('should return function result for Nothing', () => {
+      assert.equal(foldMaybeWith(() => 42, () => null, Maybe.Nothing()), 42);
+    });
+    it('should return function result for Just', () => {
+      assert.equal(foldMaybeWith(() => null, a => a, Maybe.Just(42)), 42);
+    });
+    it('should not call function for Nothing when Maybe is Just', () => {
+      let called = false;
+
+      assert.equal(
+        foldMaybeWith(
+          () => {
+            called = true;
+          },
+          a => a,
+          Maybe.Just(42)
+        ),
+        42
+      );
+
+      assert.isFalse(called);
     });
   });
 
