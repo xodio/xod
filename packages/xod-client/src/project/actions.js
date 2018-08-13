@@ -168,7 +168,7 @@ export const deletePatch = patchPath => ({
 export const updatePatchDescription = (patchDescription, patchPath) => ({
   type: ActionType.PATCH_DESCRIPTION_UPDATE,
   payload: {
-    path: patchPath,
+    patchPath,
     description: patchDescription,
   },
 });

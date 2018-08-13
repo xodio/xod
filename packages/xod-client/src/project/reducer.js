@@ -171,8 +171,8 @@ export default (state = {}, action) => {
     }
 
     case AT.PATCH_DESCRIPTION_UPDATE: {
-      const { path, description } = action.payload;
-      const patchLens = XP.lensPatch(path);
+      const { patchPath, description } = action.payload;
+      const patchLens = XP.lensPatch(patchPath);
       return R.over(patchLens, XP.setPatchDescription(description), state);
     }
 

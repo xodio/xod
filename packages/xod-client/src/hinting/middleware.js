@@ -1,9 +1,15 @@
+import { notEquals } from 'xod-func-tools';
+
 import { getProject } from '../project/selectors';
 
-import { getDeducedTypes, getErrors } from './selectors';
+import { getDeducedTypes, getErrors, getPatchSearchData } from './selectors';
 import updateHinting from './actions';
 import { shallDeduceTypes, deduceTypes } from './typeDeduction';
 import { shallValidate, validateProject } from './validation';
+import {
+  shallUpdatePatchSearchData,
+  getNewPatchSearchData,
+} from './patchSearchData';
 
 // =============================================================================
 //
@@ -33,12 +39,20 @@ export default store => next => action => {
     : prevErrors;
   const willUpdateErrors = notEquals(prevErrors, nextErrors);
 
+  // Patch Search Indexing
+  const prevSearchIndex = getPatchSearchData(newState);
+  const nextSearchIndex = shallUpdatePatchSearchData(newProject, action)
+    ? getNewPatchSearchData(prevSearchIndex, newProject, action)
+    : prevSearchIndex;
+  const willUpdateSearchIndex = notEquals(prevSearchIndex, nextSearchIndex);
+
   // Dispatch changes, if needed
-  if (willUpdateDeducedTypes || willUpdateErrors) {
+  if (willUpdateDeducedTypes || willUpdateErrors || willUpdateSearchIndex) {
     store.dispatch(
       updateHinting(
         willUpdateDeducedTypes ? nextDeducedTypes : null,
-        willUpdateErrors ? nextErrors : null
+        willUpdateErrors ? nextErrors : null,
+        willUpdateSearchIndex ? nextSearchIndex : null
       )
     );
   }

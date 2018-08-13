@@ -15,6 +15,11 @@ export const getDeducedTypes = R.compose(
   getHintingState
 );
 
+export const getPatchSearchData = R.compose(
+  R.prop('patchSearchData'),
+  getHintingState
+);
+
 export const getErrors = R.compose(R.prop('errors'), getHintingState);
 
 // :: PatchPath -> NodeId -> PatchPath -> Map PatchPath PatchErrors -> [Error]

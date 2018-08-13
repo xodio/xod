@@ -62,6 +62,8 @@ const assertErrorsWith = R.curry((assertsFn, action) =>
   )
 );
 
+const assertErrorsUnchanged = R.compose(assert.isNull, getErrorsUpdateData);
+
 // =============================================================================
 //
 // Tests
@@ -141,8 +143,9 @@ describe('Hinting', () => {
 
     it('do not validates anything on the patch description change', () => {
       store.dispatch(updatePatchDescription('yo', '@/main'));
-      assert.lengthOf(dispatchedActions, 1);
+      assert.lengthOf(dispatchedActions, 2);
       assertActionTypeEqual(PAT.PATCH_DESCRIPTION_UPDATE, dispatchedActions[0]);
+      assertErrorsUnchanged(dispatchedActions[1]);
     });
 
     describe('node property update', () => {
