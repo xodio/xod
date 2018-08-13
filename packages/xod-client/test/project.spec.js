@@ -5,7 +5,6 @@ import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
 import { defaultizeProject } from 'xod-project/test/helpers';
 
-import { explodeEither } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import initialState from '../src/core/state';
@@ -56,7 +55,6 @@ describe('project reducer', () => {
 
       const expectedPatches = R.compose(
         XP.listLocalPatches,
-        explodeEither,
         XP.assocPatch(XP.getLocalPath('main'), XP.createPatch()),
         XP.createProject
       )();

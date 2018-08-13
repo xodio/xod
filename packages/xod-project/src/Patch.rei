@@ -1,5 +1,3 @@
-open XodFuncTools;
-
 type t;
 
 type path = PatchPath.t;
@@ -18,11 +16,9 @@ let upsertNodes: (t, list(Node.t)) => t;
 
 let getNodeById: (t, Node.id) => option(Node.t);
 
-let assocLink: (t, Link.t) => XResult.t(t);
+let assocLink: (t, Link.t) => t;
 
-let assocLinkExn: (t, Link.t) => t;
-
-let upsertLinks: (t, list(Link.t)) => XResult.t(t);
+let upsertLinks: (t, list(Link.t)) => t;
 
 let listLinks: t => list(Link.t);
 

@@ -1066,21 +1066,6 @@ describe('Patch', () => {
     });
   });
 
-  describe('assocLink', () => {
-    // TODO: Add patch for assocLink
-    // const patch = {
-    //   nodes: {
-    //     in: { id: 'in' },
-    //     out: { id: 'out' },
-    //   },
-    // };
-    // it('should return Either.Left for invalid link', () => {
-    //   expect(Patch.assocLink({}, {}).isLeft).to.be.true();
-    // })
-    // it('should return Either.Right with patch and assigned new link', () => {
-    //
-    // });
-  });
   describe('dissocLink', () => {
     const patch = Helper.defaultizePatch({
       links: {
@@ -1137,11 +1122,7 @@ describe('Patch', () => {
 
       const patchWithLinks = Patch.upsertLinks(newLinks, patchWithNodes);
 
-      assert.isTrue(patchWithLinks.isRight);
-      assert.sameDeepMembers(
-        Patch.listLinks(XF.explodeEither(patchWithLinks)),
-        newLinks
-      );
+      assert.sameDeepMembers(Patch.listLinks(patchWithLinks), newLinks);
     });
   });
 

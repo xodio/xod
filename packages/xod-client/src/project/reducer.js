@@ -94,7 +94,7 @@ const omitLibPatches = R.curry((libName, project) =>
 
 // :: [Patch] -> Project -> Project
 const assocPatchListAndMigrate = R.curry((patches, project) =>
-  R.pipe(XP.assocPatchListUnsafe, XP.migrateBoundValuesToBoundLiterals)(
+  R.pipe(XP.upsertPatches, XP.migrateBoundValuesToBoundLiterals)(
     patches,
     project
   )
@@ -156,7 +156,7 @@ export default (state = {}, action) => {
 
       const patch = XP.createPatch();
 
-      return R.compose(explodeEither, XP.assocPatch(patchPath, patch))(state);
+      return XP.assocPatch(patchPath, patch, state);
     }
 
     case AT.PATCH_RENAME: {
@@ -252,7 +252,6 @@ export default (state = {}, action) => {
       return R.over(
         XP.lensPatch(patchPath),
         R.compose(
-          explodeEither,
           XP.upsertLinks(entities.links),
           XP.upsertComments(entities.comments),
           XP.upsertNodes(entities.nodes),
@@ -386,7 +385,7 @@ export default (state = {}, action) => {
 
       return R.over(
         XP.lensPatch(patchPath),
-        R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink), explodeEither),
+        R.pipe(XP.omitLinks(oldLinks), XP.assocLink(newLink)),
         state
       );
     }
@@ -441,8 +440,7 @@ export default (state = {}, action) => {
         R.pipe(
           XP.omitLinks(conflictingLinks),
           XP.assocNode(busNode),
-          XP.assocLink(link),
-          explodeEither
+          XP.assocLink(link)
         ),
         state
       );

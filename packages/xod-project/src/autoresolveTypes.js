@@ -175,7 +175,7 @@ const findOrCreateSpecialization = R.curry(
       return R.compose(
         R.map(R.pair(specializationPatchPath)), // :: Either Error (PatchPath, Project)
         autoresolveTypes(specializationPatchPath), // :: Either Error Project
-        Project.assocPatchUnsafe(
+        Project.assocPatch(
           specializationPatchPath,
           specializeTerminals(deducedTypesForGenericPins, genericPatch)
         )

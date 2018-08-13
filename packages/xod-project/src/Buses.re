@@ -75,8 +75,7 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
         jPatch
         |. Patch.assocNode(Node.setType(jumperPatchPath, toBusNode))
         |. dissocFromBusNodes
-        |. Patch.upsertLinks(linksFromJumperToBusDestinations)
-        |. Result.getExn;
+        |. Patch.upsertLinks(linksFromJumperToBusDestinations);
       },
     );
   };
@@ -87,7 +86,7 @@ let jumperizePatchRecursively = (project, entryPatchPath) =>
   |. List.add(entryPatchPath)
   |. List.keepMap(Project.getPatchByPath(project))
   |. List.map(p => jumperizePatch(p, getMatchingBusNodes(p)))
-  |> Project.assocPatchList(project);
+  |> Project.upsertPatches(project);
 
 /* move to Link module? */
 type linkEnd = (Node.id, Pin.key);
@@ -239,6 +238,5 @@ let splitLinksToBuses:
       |. Patch.omitLinks(linksToSplit)
       |. Patch.upsertNodes(nodesToUpsert)
       |. Patch.upsertLinks(linksToUpsert)
-      |. Result.getExn  /* TODO: should theese even return Result after #1369 ? */
       |> Project.assocPatch(project, patchPath);
     };

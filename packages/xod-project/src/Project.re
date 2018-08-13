@@ -15,7 +15,7 @@ let listLocalPatches = project =>
   _listLocalPatches(project) |. List.fromArray;
 
 [@bs.module ".."]
-external _assocPatch : (PatchPath.t, Patch.t, t) => t = "assocPatchUnsafe";
+external _assocPatch : (PatchPath.t, Patch.t, t) => t = "assocPatch";
 
 let assocPatch = (project, path, patch) => _assocPatch(path, patch, project);
 
@@ -37,8 +37,7 @@ let getPatchDependencies = (project, patchPath) =>
   _getPatchDependencies(patchPath, project) |. Belt.List.fromArray;
 
 [@bs.module ".."]
-external _assocPatchListUnsafe : (array(Patch.t), t) => t =
-  "assocPatchListUnsafe";
+external _upsertPatches : (array(Patch.t), t) => t = "upsertPatches";
 
-let assocPatchList = (project, patchList) =>
-  _assocPatchListUnsafe(Belt.List.toArray(patchList), project);
+let upsertPatches = (project, patchList) =>
+  _upsertPatches(Belt.List.toArray(patchList), project);

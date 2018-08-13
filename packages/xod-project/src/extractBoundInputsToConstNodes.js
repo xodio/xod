@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { explodeEither, maybeProp, catMaybies, isAmong } from 'xod-func-tools';
+import { maybeProp, catMaybies, isAmong } from 'xod-func-tools';
 
 import * as Pin from './pin';
 import * as Node from './node';
@@ -243,7 +243,6 @@ const updatePatch = def(
   'updatePatch :: Map NodeId (Map PinKey Link) -> Map NodeId (Map PinKey Node) -> Map NodeId (Map PinKey DataValue) -> Patch -> Patch',
   (mapOfLinks, mapOfNodes, mapOfPinValues, patch) =>
     R.compose(
-      explodeEither,
       Patch.upsertLinks(nestedValues(mapOfLinks)),
       Patch.upsertNodes(nestedValues(mapOfNodes)),
       uncurryAndAssocNodes(mapOfPinValues)
@@ -308,7 +307,7 @@ const extractBoundInputsToConstNodes = def(
 
     return extractBoundInputsToConstNodes(
       path,
-      Project.assocPatchUnsafe(path, newPatch, project)
+      Project.assocPatch(path, newPatch, project)
     );
   }
 );

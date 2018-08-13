@@ -4,7 +4,6 @@ import { Maybe, Either } from 'ramda-fantasy';
 import {
   explode,
   explodeMaybe,
-  explodeEither,
   catMaybies,
   fail,
   failOnNothing,
@@ -810,7 +809,6 @@ const convertPatch = def(
       const [newNodes, newLinks] = createCastNodes(leafPatches, nodes, links);
 
       return R.compose(
-        explodeEither,
         Patch.upsertLinks(newLinks),
         Patch.upsertNodes(newNodes)
       )(Patch.createPatch());
@@ -842,10 +840,13 @@ const flattenProject = def(
   'flattenProject :: Project -> PatchPath -> Patch -> Either Error Project',
   (project, path, patch) =>
     R.compose(
-      R.chain(leafPatches => {
-        const convertedPatch = convertPatch(project, leafPatches, patch);
-        return Project.assocPatch(path, convertedPatch, project);
-      }),
+      R.chain(leafPatches =>
+        R.compose(
+          R.map(Project.assocPatch(path, R.__, project)),
+          Project.validatePatchContents(R.__, project),
+          convertPatch
+        )(project, leafPatches, patch)
+      ),
       // TODO: extract preparing leaf patches into a separate function?
       // end preparing leaf patches list
       R.map(R.map(extendTerminalPins)),

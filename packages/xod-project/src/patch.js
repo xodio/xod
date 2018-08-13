@@ -4,7 +4,6 @@ import {
   explodeMaybe,
   explodeEither,
   notNil,
-  reduceEither,
   isAmong,
   mapIndexed,
   notEmpty,
@@ -682,16 +681,12 @@ export const validateLink = def(
  * @function assocLink
  * @param {Link} link - new link
  * @param {Patch} patch - a patch to operate on
- * @returns {Either<Error|Patch>} error or a copy of the `patch` with changes applied
+ * @returns {Patch} a copy of the `patch` with changes applied
  * @see {@link validateLink}
  */
 export const assocLink = def(
-  'assocLink :: Link -> Patch -> Either Error Patch',
-  (link, patch) =>
-    validateLink(link, patch).map(validLink => {
-      const id = Link.getLinkId(validLink);
-      return R.assocPath(['links', id], validLink, patch);
-    })
+  'assocLink :: Link -> Patch -> Patch',
+  (link, patch) => R.assocPath(['links', Link.getLinkId(link)], link, patch)
 );
 
 /**
@@ -713,8 +708,8 @@ export const dissocLink = def(
  * Returns a Patch with associated list of Links
  */
 export const upsertLinks = def(
-  'upsertLinks :: [Link] -> Patch -> Either Error Patch',
-  (linkList, patch) => reduceEither(R.flip(assocLink), patch, linkList)
+  'upsertLinks :: [Link] -> Patch -> Patch',
+  (linkList, patch) => R.reduce(R.flip(assocLink), patch, linkList)
 );
 
 /**
@@ -743,7 +738,7 @@ export const omitLinks = def(
  * @returns {Patch} a copy of the `patch` with the node replaced
  */
 export const assocNode = def(
-  'assocNode :: Node -> Patch -> Patch', // TODO: inconsistency with Project.assocPatch
+  'assocNode :: Node -> Patch -> Patch',
   (node, patch) => R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
 );
 
@@ -832,7 +827,6 @@ export const getCommentByIdUnsafe = def(
     )
 );
 
-// TODO: inconsistency with Project.assocPatch, see also `assocNode`
 export const assocComment = def(
   'assocComment :: Comment -> Patch -> Patch',
   (comment, patch) =>

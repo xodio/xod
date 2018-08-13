@@ -257,9 +257,7 @@ export const saveLibraries = def(
             saveLibraryEntirely(owner, R.__, workspacePath),
             patches =>
               R.compose(
-                XP.assocPatchListUnsafe(
-                  R.map(convertLibPatchToLocalPatch, patches)
-                ),
+                XP.upsertPatches(R.map(convertLibPatchToLocalPatch, patches)),
                 XP.setProjectDescription(`My fork of "${libName}"`),
                 XP.setProjectName(name),
                 XP.createProject

@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { isAmong, explodeEither } from 'xod-func-tools';
+import { isAmong } from 'xod-func-tools';
 
 import * as Node from '../node';
 import * as Link from '../link';
@@ -11,7 +11,6 @@ const replacePatchContents = def(
   'replacePatchContents :: [Node] -> [Link] -> Patch -> Patch',
   (newNodes, newLinks, patch) =>
     R.compose(
-      explodeEither,
       Patch.upsertLinks(newLinks),
       Patch.upsertNodes(newNodes),
       Patch.setPatchDescription(Patch.getPatchDescription(patch)),

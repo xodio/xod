@@ -226,7 +226,6 @@ const expandPatch = R.curry((desiredArityLevel, patch) => {
   const expansionNodeIds = R.map(Node.getNodeId, expansionNodes);
 
   return R.compose(
-    explodeEither,
     Patch.upsertLinks([
       ...createLinksToSharedTerminals(expansionNodes, variadicPinKeys),
       ...createLinksFromLastNodeToOutputs(expansionNodeIds, variadicPinKeys),
@@ -322,7 +321,7 @@ export default def(
 
     return R.compose(
       ...expandedNodeTypeUpdaters,
-      Project.assocPatchListUnsafe(expandedPatches)
+      Project.upsertPatches(expandedPatches)
     )(project);
   }
 );

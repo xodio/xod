@@ -116,7 +116,7 @@ const omitEmptyBoundValues = R.when(
 // :: Patch -> Project -> Project
 const migratePatchBoundValuesToBoundLiterals = R.curry((patch, project) =>
   R.compose(
-    Project.assocPatchUnsafe(Patch.getPatchPath(patch), R.__, project),
+    Project.assocPatch(Patch.getPatchPath(patch), R.__, project),
     Patch.upsertNodes(R.__, patch),
     R.map(node =>
       R.compose(

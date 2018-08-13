@@ -4,7 +4,7 @@ import { Either } from 'ramda-fantasy';
 import * as Helper from './helpers';
 import {
   getPatchByPathUnsafe,
-  assocPatchUnsafe,
+  assocPatch,
   listGenuinePatches,
 } from '../src/project';
 import { PIN_TYPE } from '../src/constants';
@@ -241,7 +241,7 @@ describe('autoresolveTypes', () => {
       '@/pulse-on-change(number)',
       project
     );
-    const projectWithConflictingSpecialization = assocPatchUnsafe(
+    const projectWithConflictingSpecialization = assocPatch(
       'some/other-library/pulse-on-change(number)',
       conflictingSpecialization,
       project
