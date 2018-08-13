@@ -8,6 +8,7 @@ import { def } from './types';
 import {
   isInputTerminalPath,
   isOutputTerminalPath,
+  isTerminalPatchPath,
   getTerminalDataType,
   isPathLocal,
   getBaseName,
@@ -212,6 +213,16 @@ export const isInputPinNode = def(
 export const isOutputPinNode = def(
   'isOutputPinNode :: Node -> Boolean',
   R.compose(isOutputTerminalPath, getNodeType)
+);
+
+/**
+ * @function isTerminalNode
+ * @param {Node} node
+ * @returns {boolean}
+ */
+export const isTerminalNode = def(
+  'isTerminalNode :: Node -> Boolean',
+  R.compose(isTerminalPatchPath, getNodeType)
 );
 
 /**
