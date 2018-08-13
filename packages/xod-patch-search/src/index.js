@@ -92,20 +92,41 @@ const refineScore = R.curry((query, result) =>
   )(result)
 );
 
+// :: [String] -> String -> Number
+const countTokensInString = R.curry((tokens, string) =>
+  R.compose(R.length, R.filter(R.contains(R.__, string)))(tokens)
+);
+
 const refineScoreForSpecializationNode = R.curry((query, result) =>
-  R.compose(
-    sortByScoreOrAlphabetically,
-    R.map(item => {
-      const tokens = query.trim().split(',');
-      const tokensInItem = R.filter(R.contains(R.__, item.item.path), tokens);
-      const tokensInItemCount = tokensInItem.length;
-
-      const newScore =
-        tokensInItemCount > 0 ? item.score / tokensInItemCount : Infinity;
-
-      return R.assoc('score', newScore, item);
-    })
-  )(result)
+  R.ifElse(
+    R.contains('('),
+    R.compose(
+      sortByScoreOrAlphabetically,
+      foldMaybe(result, typesString =>
+        R.compose(
+          types =>
+            R.map(item =>
+              R.compose(
+                R.assoc('score', R.__, item),
+                R.ifElse(
+                  R.gt(R.__, 0),
+                  count => item.score / count,
+                  R.always(Infinity)
+                ),
+                countTokensInString(types),
+                R.path(['item', 'path'])
+              )(item)
+            )(result),
+          R.split(','),
+          R.trim
+        )(typesString)
+      ),
+      Maybe,
+      R.nth(1),
+      R.match(/\((.+)\){0,1}$/)
+    ),
+    R.always(result)
+  )(query)
 );
 
 const getAverageScore = resultList =>
@@ -130,31 +151,18 @@ const reduceResults = rawResults => {
   return results;
 };
 
-const itemPathContainsOpeningBracket = R.pathSatisfies(R.contains('('), [
-  'item',
-  'path',
-]);
+const itemPathContainsOpeningBracket = R.propSatisfies(R.contains('('), 'path');
 
-const filterSpecializationNodes = R.curry((query, idx) =>
-  R.ifElse(
-    R.contains('('),
-    R.compose(
-      R.reject(R.complement(itemPathContainsOpeningBracket)),
-      foldMaybe(idx, refineScoreForSpecializationNode(R.__, idx)),
-      Maybe,
-      R.nth(1),
-      R.match(/\((.+)\){0,1}$/)
-    ),
-    () => R.reject(itemPathContainsOpeningBracket)(idx)
-  )(query)
-);
+const filterSpecializationNodes = R.curry((query, idx) => {
+  const filterFn = R.contains('(', query) ? R.filter : R.reject;
+  return filterFn(itemPathContainsOpeningBracket, idx);
+});
 
 const filterNodesByLib = R.curry((query, idx) =>
   R.ifElse(
     R.startsWith('lib:'),
     R.compose(
-      libName =>
-        R.filter(R.compose(R.contains(libName), R.path(['item', 'lib'])), idx),
+      libName => R.filter(R.compose(R.contains(libName), R.prop('lib')), idx),
       // TODO: Remove `R.join` after updating on newer Ramda (>0.24.1)
       //       cause it will work fine with strings
       //       Can not update now on 0.25.0, cause it have performance issues
@@ -172,20 +180,33 @@ const takeQueryWithoutBrackets = R.compose(R.nth(0), R.split('('));
 // :: [IndexData] -> SearchIndex
 export const createIndex = data => {
   const idx = new Fuse(data, options);
-
   return {
-    search: query =>
-      R.compose(
-        reduceResults,
+    search: query => {
+      const originalCollection = idx.list;
+      const filteredCollection = R.compose(
         filterSpecializationNodes(query),
-        filterNodesByLib(query),
+        filterNodesByLib(query)
+      )(originalCollection);
+
+      return R.compose(
+        // After all, return it back
+        R.tap(() => idx.setCollection(originalCollection)),
+        reduceResults,
+        refineScoreForSpecializationNode(query),
         refineScore(query),
         idx.search.bind(idx),
-        takeQueryWithoutBrackets
-      )(query),
+        takeQueryWithoutBrackets,
+        // Before all, filter collection
+        R.tap(() => idx.setCollection(filteredCollection))
+      )(query);
+    },
+    setCollection: idx.setCollection.bind(idx),
+    getCollection: () => R.clone(idx.list),
   };
 };
 // :: [Patch] -> SearchIndex
 export const createIndexFromPatches = R.compose(createIndex, createIndexData);
+
+export const createOrUpdateIndexFromPatches = R.compose(createIndexData);
 
 export { default as createIndexData } from './mapper';
