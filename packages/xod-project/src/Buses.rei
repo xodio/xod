@@ -14,7 +14,7 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t;
 /** "Jumperizes" a patch with a given path and all patches it depends on */
 let jumperizePatchRecursively: (Project.t, Patch.path) => Project.t;
 
-/** Splits links with given ids into buses. 
+/** Splits links with given ids into buses.
     Buses are named after output pin labels, so name conflicts are possible. */
 let splitLinksToBuses:
   ((Node.t, Pin.t) => Position.t, Patch.path, list(Link.id), Project.t) =>

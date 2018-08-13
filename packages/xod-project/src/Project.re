@@ -1,4 +1,5 @@
 open Belt;
+
 open XodFuncTools;
 
 type t = Js.Types.obj_val;
@@ -14,8 +15,7 @@ let listLocalPatches = project =>
   _listLocalPatches(project) |. List.fromArray;
 
 [@bs.module ".."]
-external _assocPatch : (PatchPath.t, Patch.t, t) => t =
-  "assocPatchUnsafe";
+external _assocPatch : (PatchPath.t, Patch.t, t) => t = "assocPatchUnsafe";
 
 let assocPatch = (project, path, patch) => _assocPatch(path, patch, project);
 

@@ -10,7 +10,6 @@ type matchingBusNodes = list((Node.t, list(Node.t)));
 
 let getMatchingBusNodes = patch => {
   let nodes = Patch.listNodes(patch);
-
   let toBusNodesByLabel =
     nodes
     |. List.keep(n => Node.getType(n) == toBusPatchPath)
@@ -19,7 +18,6 @@ let getMatchingBusNodes = patch => {
        so exclude them from type resolution */
     |. Map.String.keep((_, ns) => List.length(ns) == 1)
     |. Holes.Map.String.keepMap(List.head);
-
   if (Map.String.isEmpty(toBusNodesByLabel)) {
     []; /* short-curcuit for optimization */
   } else {
@@ -47,13 +45,11 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
       patch
       |. Patch.listLinks
       |. Holes.List.groupByString(Link.getOutputNodeId);
-
     List.reduce(
       matchingBusNodes,
       patch,
       (jPatch, (toBusNode, fromBusNodes)) => {
         let jumperNodeId = Node.getId(toBusNode);
-
         let linksFromJumperToBusDestinations =
           fromBusNodes
           |. List.map(fromBusNode =>
@@ -72,12 +68,10 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
                  ~fromNode=jumperNodeId,
                )
              );
-
         let dissocFromBusNodes = patchWithFromBusNodes =>
           List.reduce(fromBusNodes, patchWithFromBusNodes, (accP, n) =>
             Patch.dissocNode(accP, Node.getId(n))
           );
-
         jPatch
         |. Patch.assocNode(Node.setType(jumperPatchPath, toBusNode))
         |. dissocFromBusNodes
@@ -102,10 +96,12 @@ let getLinkOutput: Link.t => linkEnd =
   link => (Link.getOutputNodeId(link), Link.getOutputPinKey(link));
 
 module LinkEndComparator =
-  Belt.Id.MakeComparable({
-    type t = linkEnd;
-    let cmp = Pervasives.compare;
-  });
+  Belt.Id.MakeComparable(
+    {
+      type t = linkEnd;
+      let cmp = Pervasives.compare;
+    },
+  );
 
 let splitLinksToBuses:
   ((Node.t, Pin.t) => Position.t, Patch.path, list(Link.id), Project.t) =>
@@ -127,7 +123,6 @@ let splitLinksToBuses:
                |. Option.mapWithDefault(false, n =>
                     Node.getType(n) == toBusPatchPath
                   );
-
              let isOutputConnectedToBusNode =
                link
                |> Link.getOutputNodeId
@@ -135,10 +130,8 @@ let splitLinksToBuses:
                |. Option.mapWithDefault(false, n =>
                     Node.getType(n) == fromBusPatchPath
                   );
-
              ! isOutputConnectedToBusNode && ! isInputConnectedToBusNode;
            });
-
       let (linksToUpsert, nodesToUpsert): (list(Link.t), list(Node.t)) =
         linksToSplit
         |. Holes.List.groupBy((module LinkEndComparator), getLinkOutput)
@@ -175,21 +168,17 @@ let splitLinksToBuses:
                              Node.isPinNode(outputNode) ?
                                Node.getLabel(outputNode) :
                                Pin.getLabel(outputPin);
-
                            let busPosition =
                              getBusPosition(outputNode, outputPin);
-
                            (label, busPosition);
                          })
                       /* something has to be very wrong.
                          for example, we attempt to split a dead link */
                       |. Option.getWithDefault(("", Position.origin));
-
                     let toBusNode =
                       Node.create(toBusPatchPath)
                       |. Node.setLabel(busLabel)
                       |. Node.setPosition(toBusPosition);
-
                     (
                       Link.create(
                         ~fromNode=nodeId,
@@ -200,9 +189,7 @@ let splitLinksToBuses:
                       toBusNode,
                     );
                   });
-
              let busNodesLabel = toBusNode |> Node.getLabel;
-
              let fromBusNodesAndLinks: list((Link.t, Node.t)) =
                links
                |. List.keepMap(link =>
@@ -213,7 +200,6 @@ let splitLinksToBuses:
                   )
                |. List.keepMap(((linkToSplit, destinationNode)) => {
                     let destinationPinKey = linkToSplit |> Link.getInputPinKey;
-
                     destinationNode
                     |> Project.getPatchByNode(project)
                     |. Option.flatMap(
@@ -222,12 +208,10 @@ let splitLinksToBuses:
                     |. Option.map(destinationPin => {
                          let fromBusPosition =
                            getBusPosition(destinationNode, destinationPin);
-
                          let fromBusNode =
                            Node.create(fromBusPatchPath)
                            |. Node.setLabel(busNodesLabel)
                            |. Node.setPosition(fromBusPosition);
-
                          (
                            Link.create(
                              ~toNode=Node.getId(destinationNode),
@@ -239,7 +223,6 @@ let splitLinksToBuses:
                          );
                        });
                   });
-
              List.reduce(
                fromBusNodesAndLinks,
                ([linkToBus], [toBusNode]),
@@ -252,7 +235,6 @@ let splitLinksToBuses:
         |. List.reduce(([], []), ((ls1, ns1), (ls2, ns2)) =>
              (List.concat(ls1, ls2), List.concat(ns1, ns2))
            );
-
       patch
       |. Patch.omitLinks(linksToSplit)
       |. Patch.upsertNodes(nodesToUpsert)

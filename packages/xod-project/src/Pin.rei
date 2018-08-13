@@ -14,12 +14,12 @@ type primitiveDataType =
   | String;
 
 /* TODO: "upgrade" to variant?
-  something like
-   | Primitive(primitiveDataType)
-   | Custom(string)
-   | Generic(genericType)
-   | Dead
-*/
+     something like
+      | Primitive(primitiveDataType)
+      | Custom(string)
+      | Generic(genericType)
+      | Dead
+   */
 type dataType = string;
 
 let getDirection: t => direction;

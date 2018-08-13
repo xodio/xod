@@ -2,7 +2,8 @@ open Belt;
 
 module FFI = {
   [@bs.module "xod-fs"]
-  external loadProject : (array(string), string) => Js.Promise.t(XodProject.Project.t) =
+  external loadProject :
+    (array(string), string) => Js.Promise.t(XodProject.Project.t) =
     "loadProject";
 };
 
