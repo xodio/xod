@@ -19,50 +19,18 @@ const baseProps = {
 storiesOf('Link', module)
   .addDecorator(story => (
     <svg>
-      <rect width={(pFrom.x * 2) + pTo.x} height={(pFrom.y * 2) + pTo.x} fill="#676767" />
-      <circle
-        cx={pFrom.x}
-        cy={pFrom.y}
-        r="1"
-        fill="red"
+      <rect
+        width={pFrom.x * 2 + pTo.x}
+        height={pFrom.y * 2 + pTo.x}
+        fill="#676767"
       />
-      <circle
-        cx={pTo.x}
-        cy={pTo.y}
-        r="1"
-        fill="red"
-      />
+      <circle cx={pFrom.x} cy={pFrom.y} r="1" fill="red" />
+      <circle cx={pTo.x} cy={pTo.y} r="1" fill="red" />
       {story()}
     </svg>
   ))
-  .add('string', () => (
-    <XODLink
-      {...baseProps}
-      type="string"
-    />
-  ))
-  .add('bool', () => (
-    <XODLink
-      {...baseProps}
-      type="boolean"
-    />
-  ))
-  .add('number', () => (
-    <XODLink
-      {...baseProps}
-      type="number"
-    />
-  ))
-  .add('pulse', () => (
-    <XODLink
-      {...baseProps}
-      type="pulse"
-    />
-  ))
-  .add('selected', () => (
-    <XODLink
-      {...baseProps}
-      isSelected
-    />
-  ));
-
+  .add('string', () => <XODLink {...baseProps} type="string" />)
+  .add('bool', () => <XODLink {...baseProps} type="boolean" />)
+  .add('number', () => <XODLink {...baseProps} type="number" />)
+  .add('pulse', () => <XODLink {...baseProps} type="pulse" />)
+  .add('selected', () => <XODLink {...baseProps} isSelected />);

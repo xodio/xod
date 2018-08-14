@@ -24,7 +24,7 @@
     "doc:fz": "cd docs && make",
     "dockerize:browser": "docker build packages/xod-client-browser",
     "lerna": "lerna",
-    "lint": "eslint packages/*/src packages/*/test packages/*/test-func tools packages/*/tools packages/*/benchmark --ext js,jsx --max-warnings 0",
+    "lint": "eslint packages/*/src packages/*/test packages/*/test-func tools packages/*/tools packages/*/stories packages/*/benchmark --ext js,jsx --max-warnings 0",
     "start:electron": "lerna run start --scope xod-client-electron --stream",
     "start:spectron-repl": "./tools/spectron-repl",
     "storybook": "lerna run storybook --stream --scope xod-client",
