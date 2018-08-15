@@ -4,7 +4,7 @@ import { assert } from 'chai';
 import { listPatches } from 'xod-project';
 import { loadProject } from 'xod-fs';
 
-import { createIndex, createIndexData } from '../src/index';
+import { createPatchSearcher, createIndexData } from '../src/index';
 
 const workspace = path.resolve(__dirname, '../../../workspace');
 const getProjectPath = projectName => path.resolve(workspace, projectName);
@@ -13,24 +13,24 @@ const fixture = p => path.resolve(__dirname, './fixtures/', p);
 describe('xod-patch-search/index', () => {
   describe('general search', () => {
     let indexData = [];
-    let idx = {};
+    let search = {};
     before(() =>
       loadProject([workspace], getProjectPath('welcome-to-xod'))
         .then(listPatches)
         .then(createIndexData)
         .then(iData => {
           indexData = iData;
-          idx = createIndex(indexData);
+          search = createPatchSearcher();
         })
     );
 
     it('searches by path correctly', () => {
-      const result = idx.search('path:number');
+      const result = search(indexData, 'path:number');
       assert.equal(result[0].item.path, 'xod/core/nth-number');
     });
 
     it('searches by lib correctly', () => {
-      const result = idx.search('lib:xod/core');
+      const result = search(indexData, 'lib:xod/core');
       const expectedLength = R.compose(
         R.length,
         // We have to reject patches with path contains "(",
@@ -44,19 +44,19 @@ describe('xod-patch-search/index', () => {
 
     it('searches: "number"', () =>
       assert.equal(
-        idx.search('number')[0].item.path,
+        search(indexData, 'number')[0].item.path,
         'xod/bits/number-to-f32'
       ));
 
     it('searches: "lib:xod/patch-nodes pulse"', () => {
       assert.equal(
-        idx.search('lib:xod/patch-nodes pulse')[0].item.path,
+        search(indexData, 'lib:xod/patch-nodes pulse')[0].item.path,
         'xod/patch-nodes/output-pulse' // The same as above + filtered by lib
       );
     });
 
     it('searches: "meter"', () => {
-      const results = idx.search('meter');
+      const results = search(indexData, 'meter');
       const foundPatchPaths = R.map(R.path(['item', 'path']), results);
       assert.equal(
         results[0].item.path,
@@ -67,12 +67,12 @@ describe('xod-patch-search/index', () => {
 
     it('searches: "temp"', () =>
       assert.equal(
-        idx.search('temp')[0].item.path,
+        search(indexData, 'temp')[0].item.path,
         'xod/units/c-to-f' // Cause this node has a `temperature` in the description
       ));
 
     it('searches: "therm"', () => {
-      const results = idx.search('therm');
+      const results = search(indexData, 'therm');
       assert.equal(
         results[0].item.path,
         'xod/common-hardware/thermometer-tmp36' // Cause this node has a `thermometer` in the path and it alphabetically sorted
@@ -84,7 +84,7 @@ describe('xod-patch-search/index', () => {
     });
 
     it('searches: "ult"', () => {
-      const results = idx.search('ult');
+      const results = search(indexData, 'ult');
       assert.equal(
         results[0].item.path,
         'xod/common-hardware/hc-sr04-ultrasonic-range'
@@ -99,18 +99,18 @@ describe('xod-patch-search/index', () => {
 
   describe('abstract nodes and specializations', () => {
     let indexData = [];
-    let idx = {};
+    let search = {};
     before(() =>
       loadProject([workspace], fixture('abstract-and-specializations.xodball'))
         .then(listPatches)
         .then(createIndexData)
         .then(iData => {
           indexData = iData;
-          idx = createIndex(indexData);
+          search = createPatchSearcher();
         })
     );
     it('searches abstract node "when-either-ch" and doesn\'t show specialization nodes', () => {
-      const results = idx.search('when-either-ch');
+      const results = search(indexData, 'when-either-ch');
       const patchPaths = R.map(R.path(['item', 'path']), results);
 
       assert.equal(results[0].item.path, '@/when-either-changes');
@@ -122,7 +122,7 @@ describe('xod-patch-search/index', () => {
       );
     });
     it('searches all specialization nodes for "when-either-ch("', () => {
-      const results = idx.search('when-either-ch(');
+      const results = search(indexData, 'when-either-ch(');
       const patchPaths = R.map(R.path(['item', 'path']), results);
 
       assert.isFalse(R.contains('@/when-either-changes', patchPaths));
@@ -134,7 +134,7 @@ describe('xod-patch-search/index', () => {
       );
     });
     it('searches both specialization nodes for "when-either-ch(mber"', () => {
-      const results = idx.search('when-either-ch(mber');
+      const results = search(indexData, 'when-either-ch(mber');
       const patchPaths = R.map(R.path(['item', 'path']), results);
       const specializations = R.take(2, patchPaths);
 
@@ -148,7 +148,7 @@ describe('xod-patch-search/index', () => {
       );
     });
     it('searches one specialization node for "when-(tr"', () => {
-      const results = idx.search('when-(tr');
+      const results = search(indexData, 'when-(tr');
 
       assert.equal(
         results[0].item.path,
@@ -156,7 +156,7 @@ describe('xod-patch-search/index', () => {
       );
     });
     it('searches one specialization node for "when-either-ch(ring"', () => {
-      const results = idx.search('when-either-ch(ring');
+      const results = search(indexData, 'when-either-ch(ring');
       const patchPaths = R.map(R.path(['item', 'path']), results);
 
       assert.equal(
@@ -166,7 +166,7 @@ describe('xod-patch-search/index', () => {
       assert.isFalse(R.contains('@/when-either-changes', patchPaths));
     });
     it('searches one specialization node for "when-either-ch(number,boolean)"', () => {
-      const results = idx.search('when-either-ch(number,boolean)');
+      const results = search(indexData, 'when-either-ch(number,boolean)');
 
       assert.equal(
         results[0].item.path,
@@ -174,7 +174,7 @@ describe('xod-patch-search/index', () => {
       );
     });
     it('searches no specialization node for "when-either-ch(pulse)"', () => {
-      const results = idx.search('when-either-ch(pulse)');
+      const results = search(indexData, 'when-either-ch(pulse)');
 
       assert.lengthOf(results, 0);
     });

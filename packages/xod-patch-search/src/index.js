@@ -4,8 +4,6 @@ import { Maybe } from 'ramda-fantasy';
 import { getBaseName } from 'xod-project';
 import { foldMaybe } from 'xod-func-tools';
 
-import createIndexData from './mapper';
-
 const options = {
   shouldSort: true,
   tokenize: true,
@@ -177,36 +175,28 @@ const filterNodesByLib = R.curry((query, idx) =>
 // :: String -> String
 const takeQueryWithoutBrackets = R.compose(R.nth(0), R.split('('));
 
-// :: [IndexData] -> SearchIndex
-export const createIndex = data => {
-  const idx = new Fuse(data, options);
-  return {
-    search: query => {
-      const originalCollection = idx.list;
-      const filteredCollection = R.compose(
-        filterSpecializationNodes(query),
-        filterNodesByLib(query)
-      )(originalCollection);
+// :: () -> ([IndexData] -> String -> [SearchResult])
+export const createPatchSearcher = () => {
+  const idx = new Fuse([], options);
 
-      return R.compose(
-        // After all, return it back
-        R.tap(() => idx.setCollection(originalCollection)),
-        reduceResults,
-        refineScoreForSpecializationNode(query),
-        refineScore(query),
-        idx.search.bind(idx),
-        takeQueryWithoutBrackets,
-        // Before all, filter collection
-        R.tap(() => idx.setCollection(filteredCollection))
-      )(query);
-    },
-    setCollection: idx.setCollection.bind(idx),
-    getCollection: () => R.clone(idx.list),
-  };
+  // :: [IndexData] -> String -> [SearchResult]
+  return R.curry((data, query) => {
+    const filteredCollection = R.compose(
+      filterSpecializationNodes(query),
+      filterNodesByLib(query)
+    )(data);
+
+    return R.compose(
+      reduceResults,
+      refineScoreForSpecializationNode(query),
+      refineScore(query),
+      idx.search.bind(idx),
+      takeQueryWithoutBrackets,
+      // Before all, set index data
+      R.tap(() => idx.setCollection(filteredCollection))
+    )(query);
+  });
 };
-// :: [Patch] -> SearchIndex
-export const createIndexFromPatches = R.compose(createIndex, createIndexData);
 
-export const createOrUpdateIndexFromPatches = R.compose(createIndexData);
-
+// :: [Patch] -> [IndexData]
 export { default as createIndexData } from './mapper';
