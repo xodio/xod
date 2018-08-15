@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import * as XP from 'xod-project';
-import { foldMaybe, catMaybies, isAmong } from 'xod-func-tools';
+import { foldMaybe, catMaybies } from 'xod-func-tools';
 
 import * as PAT from '../project/actionTypes';
 import * as EAT from '../editor/actionTypes';
@@ -21,6 +21,7 @@ import {
   validateBoundValues,
   validateLinkPins,
 } from './validation.funcs';
+import { bulkActionChangesTerminalNodes } from './actionUtils';
 
 /**
  * HOW IT WORKS AND HOW TO MAINTAIN IT
@@ -105,14 +106,7 @@ const shallValidateFunctions = {
     return R.compose(
       foldMaybe(
         false,
-        R.both(
-          XP.isVariadicPatch,
-          R.compose(
-            R.all(R.pipe(XP.getNodeType, XP.isTerminalPatchPath)),
-            R.filter(R.pipe(XP.getNodeId, isAmong(action.payload.nodeIds))),
-            XP.listNodes
-          )
-        )
+        R.both(XP.isVariadicPatch, bulkActionChangesTerminalNodes(action))
       ),
       XP.getPatchByPath(action.payload.patchPath)
     )(project);

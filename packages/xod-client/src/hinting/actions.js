@@ -1,16 +1,6 @@
-import * as AT from './actionTypes';
+import UPDATE_HINTING from './actionType';
 
-export const updateDeducedTypes = deducedTypes => ({
-  type: AT.UPDATE_DEDUCED_TYPES,
-  payload: deducedTypes,
-});
-
-export const updateErrors = errors => ({
-  type: AT.UPDATE_ERRORS,
-  payload: errors,
-});
-
-export const updateHinting = (deducedTypes, errors) => ({
-  type: AT.UPDATE_HINTING,
-  payload: { deducedTypes, errors },
+export default (deducedTypes, errors, patchSearchData) => ({
+  type: UPDATE_HINTING,
+  payload: { deducedTypes, errors, patchSearchData },
 });

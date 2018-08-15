@@ -11,7 +11,7 @@ import {
 
 import * as PAT from '../project/actionTypes';
 
-import { getActingPatchPath } from './errorCollectors';
+import { getActingPatchPath } from './actionUtils';
 
 // =============================================================================
 //

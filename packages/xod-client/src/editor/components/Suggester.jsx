@@ -126,13 +126,13 @@ class Suggester extends React.Component {
   }
 
   getSuggestions(value) {
-    const { index } = this.props;
+    const { searchPatches } = this.props;
     const inputValue = value.trim().toLowerCase();
 
-    if (inputValue.length === 0) {
+    if (inputValue.length <= 1) {
       return [];
     }
-    return index.search(regExpEscape(inputValue));
+    return R.compose(R.take(20), searchPatches, regExpEscape)(inputValue);
   }
 
   storeRef(autosuggest) {
@@ -247,7 +247,7 @@ Suggester.defaultProps = {
 
 Suggester.propTypes = {
   extraClassName: PropTypes.string,
-  index: PropTypes.object,
+  searchPatches: PropTypes.func.isRequired,
   onAddNode: PropTypes.func.isRequired,
   onHighlight: PropTypes.func,
   onBlur: PropTypes.func,

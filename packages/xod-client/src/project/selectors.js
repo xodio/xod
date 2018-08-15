@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import * as XP from 'xod-project';
 import { foldMaybe, maybeProp } from 'xod-func-tools';
-import { createIndexFromPatches } from 'xod-patch-search';
+import { createPatchSearcher } from 'xod-patch-search';
 
 import {
   addNodePositioning,
@@ -22,16 +22,14 @@ import {
   getLinkErrors,
   getNodeErrors,
   getPinErrors,
+  getPatchSearchData,
 } from '../hinting/selectors';
-import { isPatchDeadTerminal, getRenderablePinType } from '../project/utils';
+import { getRenderablePinType } from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 
 export const getProject = R.prop('project');
 export const projectLens = R.lensProp('project');
-
-// :: State -> [Patch]
-const listPatches = R.compose(XP.listPatches, getProject);
 
 //
 // Patch
@@ -412,34 +410,17 @@ export const getRenderableSelection = createMemoizedSelector(
 // Suggester
 //
 
-// :: State -> { search: (String -> [SearchResult])}
-export const getPatchSearchIndex = createMemoizedSelector(
-  [listPatches, getCurrentPatchPath],
-  [R.equals],
-  (patches, maybeCurPatchPath) =>
+// :: [PatchSearchData] -> String -> [SearchResult]
+const getPatchSearcher = R.memoizeWith(R.always('fuze'), createPatchSearcher);
+
+// :: State -> (String -> [SearchResult])
+export const getSearchPatchesFn = createMemoizedSelector(
+  [getPatchSearcher, getPatchSearchData, getCurrentPatchPath],
+  [R.equals, R.equals, R.equals],
+  (searchFn, indexData, maybeCurPatchPath) =>
     R.compose(
-      // A little optimization to avoid updating SearchIndex on each patch switch
-      ({ search }) => ({
-        // :: String -> [SearchResult]
-        search: R.compose(
-          R.reject(
-            R.pathSatisfies(
-              R.equals(
-                foldMaybe('__NO_OPENED_PATCH__', R.identity, maybeCurPatchPath)
-              ),
-              ['item', 'path']
-            )
-          ),
-          search
-        ),
-      }),
-      createIndexFromPatches,
-      R.reject(
-        R.anyPass([
-          isPatchDeadTerminal,
-          XP.isUtilityPatch,
-          XP.isDeprecatedPatch,
-        ])
-      )
-    )(patches)
+      searchFn,
+      curPatch => R.reject(R.propEq('path', curPatch), indexData),
+      foldMaybe('__NO_OPENED_PATCH__', R.identity)
+    )(maybeCurPatchPath)
 );

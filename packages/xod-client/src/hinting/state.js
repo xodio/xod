@@ -32,4 +32,15 @@ export default {
     },
     **/
   },
+  patchSearchData: [
+    /**
+     * {
+     *   path: PatchPath,
+     *   lib: String,
+     *   keywords: [String],
+     *   description: String,
+     *   fullDescription: String,
+     * },
+     */
+  ],
 };
