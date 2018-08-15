@@ -17,9 +17,11 @@ import {
   openProject,
   updateProjectMeta,
   addPatch,
+  renamePatch,
   updatePatchDescription,
   updateNodeProperty,
   bulkMoveNodesAndComments,
+  addNode,
 } from '../src/project/actions';
 import * as PAT from '../src/project/actionTypes';
 
@@ -43,12 +45,15 @@ const assertActionUpdatesErrors = action =>
     'Expected an action that updates hinting'
   );
 
-// :: Action -> ErrorsUpdateData
+// :: Action -> Nullable ErrorsUpdateData
 const getErrorsUpdateData = action =>
   R.cond([
     [R.propEq('type', UPDATE_HINTING), R.path(['payload', 'errors'])],
     [R.T, assertActionUpdatesErrors],
   ])(action);
+
+// :: Action -> Nullable [PatchSearchData]
+const getPatchSearchData = R.path(['payload', 'patchSearchData']);
 
 const assertPolicyEquals = (policy, action) => {
   const errData = getErrorsUpdateData(action);
@@ -62,7 +67,17 @@ const assertErrorsWith = R.curry((assertsFn, action) =>
   )
 );
 
+// :: (Function with asserts) -> Action -> _
+const assertPatchSearchDataWith = R.curry((assertsFn, action) =>
+  R.compose(data => assertsFn(data), getPatchSearchData)(action)
+);
+
 const assertErrorsUnchanged = R.compose(assert.isNull, getErrorsUpdateData);
+
+const assertPatchSearchDataUnchanged = R.compose(
+  assert.isNull,
+  getPatchSearchData
+);
 
 // =============================================================================
 //
@@ -74,22 +89,25 @@ describe('Hinting', () => {
   let store;
   let dispatchedActions = [];
 
+  const createMockStore = () =>
+    createStore(
+      generateReducers({}),
+      initialState,
+      applyMiddleware(
+        thunk,
+        hintingMiddleware,
+        // Next middleware collects dispatched actions for testing purposes
+        () => next => action => {
+          dispatchedActions = R.append(action, dispatchedActions);
+          return next(action);
+        }
+      )
+    );
+
   describe('Validation', () => {
     beforeEach(() => {
       dispatchedActions = [];
-      store = createStore(
-        generateReducers({}),
-        initialState,
-        applyMiddleware(
-          thunk,
-          hintingMiddleware,
-          // Next middleware collects dispatched actions for testing purposes
-          () => next => action => {
-            dispatchedActions = R.append(action, dispatchedActions);
-            return next(action);
-          }
-        )
-      );
+      store = createMockStore();
     });
 
     it('validates all patches on creating new project', () => {
@@ -235,6 +253,59 @@ describe('Hinting', () => {
           dispatchedActions[0]
         );
       });
+    });
+  });
+
+  describe('Patch Search Data', () => {
+    beforeEach(() => {
+      dispatchedActions = [];
+      store = createMockStore();
+    });
+
+    it('updates data on creating new project', () => {
+      store.dispatch(createProject());
+      assert.lengthOf(dispatchedActions, 2);
+      assertPatchSearchDataWith(assert.isNotEmpty, dispatchedActions[1]);
+    });
+
+    it('updates data on changing patch description', () => {
+      store.dispatch(updatePatchDescription('yo', '@/main'));
+      assert.lengthOf(dispatchedActions, 2);
+      assertActionTypeEqual(PAT.PATCH_DESCRIPTION_UPDATE, dispatchedActions[0]);
+      assertErrorsUnchanged(dispatchedActions[1]);
+      assertPatchSearchDataWith(
+        R.compose(
+          desc => assert.strictEqual(desc, 'yo'),
+          R.prop('description'),
+          R.find(R.propEq('path', '@/main'))
+        ),
+        dispatchedActions[1]
+      );
+    });
+
+    it('updates data on renaming patch', () => {
+      store.dispatch(renamePatch('@/main', 'new-one'));
+      assert.lengthOf(dispatchedActions, 2);
+      assertPatchSearchDataWith(data => {
+        assert.notExists(R.find(R.propEq('path', '@/main'), data));
+        assert.exists(R.find(R.propEq('path', '@/new-one'), data));
+      }, dispatchedActions[1]);
+    });
+
+    it('updates data on adding new patch', () => {
+      store.dispatch(addPatch('hey-ho'));
+      assert.lengthOf(dispatchedActions, 2);
+      assertPatchSearchDataWith(data => {
+        assert.exists(R.find(R.propEq('path', '@/hey-ho'), data));
+      }, dispatchedActions[1]);
+    });
+
+    it('do not updates data on node add', () => {
+      store.dispatch(
+        addNode('xod/patch-nodes/input-number', { x: 0, y: 0 }, '@/main')
+      );
+      assert.lengthOf(dispatchedActions, 2);
+      assertPatchSearchDataUnchanged(dispatchedActions[1]);
     });
   });
 });
