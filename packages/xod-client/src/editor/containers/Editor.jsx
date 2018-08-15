@@ -201,11 +201,11 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { patchesIndex } = this.props;
+    const { searchPatches } = this.props;
 
     const suggester = this.props.suggesterIsVisible ? (
       <Suggester
-        index={patchesIndex}
+        searchPatches={searchPatches}
         onAddNode={this.onAddNode}
         onBlur={this.hideSuggester}
         onHighlight={this.props.actions.highlightSugessterItem}
@@ -270,7 +270,7 @@ Editor.propTypes = {
   project: PropTypes.object,
   currentTab: sanctuaryPropType($Maybe($.Object)),
   implEditorTabs: PropTypes.array,
-  patchesIndex: PropTypes.object,
+  searchPatches: PropTypes.func.isRequired,
   isHelpboxVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
   isDebugSessionOutdated: PropTypes.bool,
@@ -311,7 +311,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
   currentTab: EditorSelectors.getCurrentTab,
   implEditorTabs: EditorSelectors.getImplEditorTabs,
-  patchesIndex: ProjectSelectors.getPatchSearchIndex,
+  searchPatches: ProjectSelectors.getSearchPatchesFn,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
   isLibSuggesterVisible: EditorSelectors.isLibSuggesterVisible,
