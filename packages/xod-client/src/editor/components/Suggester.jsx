@@ -129,10 +129,10 @@ class Suggester extends React.Component {
     const { searchPatches } = this.props;
     const inputValue = value.trim().toLowerCase();
 
-    if (inputValue.length === 0) {
+    if (inputValue.length <= 1) {
       return [];
     }
-    return searchPatches(regExpEscape(inputValue));
+    return R.compose(R.take(20), searchPatches, regExpEscape)(inputValue);
   }
 
   storeRef(autosuggest) {
