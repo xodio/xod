@@ -143,7 +143,7 @@ export const checkPort = port =>
  * @param {String} code
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
-export const uploadToArduino = (pab, port, code) => {
+export const uploadToArduino = (pab, port, code, onBuildStdout = () => {}) => {
   // Create tmpDir in userData instead of os.tmpdir() to avoid error "readdirent: result too large
   const sketchFile = pjoin(artifactTmpDir, 'xod-arduino-sketch.cpp');
   const buildDir = pjoin(artifactTmpDir, 'build');
@@ -158,7 +158,8 @@ export const uploadToArduino = (pab, port, code) => {
         arduinoLibrariesPath,
         buildDir,
         port,
-        arduinoBuilderPath
+        arduinoBuilderPath,
+        onBuildStdout
       )
     )
     .then(tapP(clearTmp))
@@ -198,7 +199,14 @@ const deployToArduino = ({ payload, sendProgress, sendSuccess }) => {
         ),
       })),
     ({ port, pab }) =>
-      uploadToArduino(xad.strigifyFQBN(pab), port, payload.code),
+      uploadToArduino(
+        xad.strigifyFQBN(pab),
+        port,
+        payload.code,
+        buildStdout => {
+          sendProgress(buildStdout, 60)();
+        }
+      ),
     result => {
       if (result.exitCode !== 0) {
         return Promise.reject(
@@ -419,6 +427,8 @@ export const uploadToArduinoHandler = (event, payload) => {
         };
       }
     );
+
+  // :: (message, percentage, error) -> a -> a
   const sendSuccess = send('success');
   const sendProgress = send('progress');
   const sendFailure = send('failure');
@@ -428,17 +438,15 @@ export const uploadToArduinoHandler = (event, payload) => {
       formatError
     )(err);
 
-  const opts = {
-    payload,
-    sendProgress,
-    sendSuccess,
-  };
-
   const deployFn = payload.cloud
     ? deployToArduinoThroughCloud
     : deployToArduino;
 
-  return deployFn(opts).catch(convertAndSendError);
+  return deployFn({
+    payload,
+    sendProgress,
+    sendSuccess,
+  }).catch(convertAndSendError);
 };
 
 export const listPortsHandler = event =>

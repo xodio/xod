@@ -6,12 +6,16 @@ import {
   TOGGLE_DEBUGGER_PANEL,
   DEBUGGER_LOG_ADD_MESSAGES,
   DEBUGGER_LOG_CLEAR,
+  DEBUGGER_LOG_START_SKIPPING_NEW_LINES,
+  DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES,
+  DEBUGGER_LOG_TOGGLE_XOD_PROTOCOL_MESSAGES,
   DEBUG_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
   MARK_DEBUG_SESSION_OUTDATED,
+  SELECT_DEBUGGER_TAB,
 } from './actionTypes';
 
-import { UPLOAD_STATUS, UPLOAD_MSG_TYPE } from './constants';
+import { UPLOAD_STATUS, UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
 import * as MSG from './messages';
 
 import {
@@ -22,7 +26,7 @@ import {
 
 import initialState from './state';
 
-const MAX_LOG_MESSAGES = 1000;
+const MAX_LOG_CHARACTERS = 10000;
 
 // =============================================================================
 //
@@ -30,21 +34,56 @@ const MAX_LOG_MESSAGES = 1000;
 //
 // =============================================================================
 
-const overDebugLog = R.over(R.lensProp('log'));
-const overUploadLog = R.over(R.lensProp('uploadLog'));
+const formatMessage = msg => {
+  switch (msg.type) {
+    case UPLOAD_MSG_TYPE.SYSTEM:
+      return `=== ${msg.message} ===`;
 
-const addMessageToLog = R.curry((message, state) =>
-  overDebugLog(
-    R.compose(R.takeLast(MAX_LOG_MESSAGES), R.append(message)),
-    state
-  )
+    case UPLOAD_MSG_TYPE.ERROR: {
+      const stack = msg.stack ? `\n${msg.stack}` : '';
+      return `${msg.message}${stack}`;
+    }
+
+    case UPLOAD_MSG_TYPE.LOG:
+      return `↘ ${msg.message}`;
+
+    case UPLOAD_MSG_TYPE.XOD:
+      return `↘ ${msg.prefix} ${msg.timecode} ${msg.nodeId} ${msg.content}`;
+
+    default:
+      return msg.message;
+  }
+};
+
+const overCompilerLog = R.over(R.lensPath([LOG_TAB_TYPE.COMPILER, 'log']));
+const overUploaderLog = R.over(R.lensPath([LOG_TAB_TYPE.UPLOADER, 'log']));
+const overDebuggerLog = R.over(R.lensPath([LOG_TAB_TYPE.DEBUGGER, 'log']));
+
+const overStageError = stage => R.over(R.lensPath([stage, 'error']));
+
+const appendMessage = R.curry((msg, prevLog) =>
+  R.compose(
+    R.when(
+      log => log.length > MAX_LOG_CHARACTERS,
+      R.compose(
+        log => `=== Older lines are truncated ===\n${log}`,
+        log => log.slice(log.indexOf('\n') + 1),
+        log => log.slice(-MAX_LOG_CHARACTERS)
+      )
+    ),
+    log => {
+      const formattedMessage = formatMessage(msg);
+      return log === '' ? formattedMessage : `${log}\n${formatMessage(msg)}`;
+    }
+  )(prevLog)
 );
 
-const addMessageListToLog = R.curry((messages, state) =>
-  overDebugLog(
-    R.compose(R.takeLast(MAX_LOG_MESSAGES), R.concat(R.__, messages)),
-    state
-  )
+const addMessageToDebuggerLog = R.curry((message, state) =>
+  overDebuggerLog(appendMessage(message), state)
+);
+
+const addMessageListToDebuggerLog = R.curry((messages, state) =>
+  overDebuggerLog(R.reduce(R.flip(appendMessage), R.__, messages), state)
 );
 
 const updateWatchNodeValues = R.curry((messageList, state) => {
@@ -61,8 +100,6 @@ const updateWatchNodeValues = R.curry((messageList, state) => {
 
 const showDebuggerPane = R.assoc('isVisible', true);
 
-const splitMessage = R.compose(R.reject(R.isEmpty), R.split('\n'));
-
 // =============================================================================
 //
 // Reducer
@@ -71,14 +108,23 @@ const splitMessage = R.compose(R.reject(R.isEmpty), R.split('\n'));
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SELECT_DEBUGGER_TAB:
+      return R.assoc('currentTab', action.payload, state);
     case UPLOAD: {
       const { payload, meta: { status } } = action;
 
       if (status === UPLOAD_STATUS.STARTED) {
         return R.compose(
+          R.assoc('currentTab', LOG_TAB_TYPE.COMPILER),
+          R.assoc('currentStage', LOG_TAB_TYPE.COMPILER),
           R.assoc('uploadProgress', 0),
-          R.assoc('log', []),
-          R.assoc('uploadLog', [createSystemMessage(MSG.TRANSPILING)])
+          overCompilerLog(appendMessage(createFlasherMessage(MSG.TRANSPILING))),
+          overCompilerLog(R.always('')),
+          overUploaderLog(R.always('')),
+          overDebuggerLog(R.always('')),
+          overStageError(LOG_TAB_TYPE.COMPILER)(R.always('')),
+          overStageError(LOG_TAB_TYPE.UPLOADER)(R.always('')),
+          overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))
         )(state);
       }
       if (status === UPLOAD_STATUS.PROGRESSED) {
@@ -86,29 +132,28 @@ export default (state = initialState, action) => {
 
         return R.compose(
           R.assoc('uploadProgress', percentage),
-          overUploadLog(R.append(createSystemMessage(message)))
+          overCompilerLog(appendMessage(createFlasherMessage(message)))
         )(state);
       }
       if (status === UPLOAD_STATUS.SUCCEEDED) {
-        const messages = R.compose(
-          R.append(createSystemMessage(MSG.SUCCES)),
-          R.map(createFlasherMessage),
-          splitMessage
-        )(payload.message);
-
         return R.compose(
           R.assoc('uploadProgress', null),
-          overUploadLog(R.concat(R.__, messages))
+          R.assoc('currentTab', LOG_TAB_TYPE.UPLOADER),
+          R.assoc('currentStage', LOG_TAB_TYPE.UPLOADER),
+          overUploaderLog(
+            R.compose(
+              appendMessage(createSystemMessage(MSG.SUCCES)),
+              appendMessage(createFlasherMessage(payload.message))
+            )
+          )
         )(state);
       }
       if (status === UPLOAD_STATUS.FAILED) {
-        const messages = R.compose(R.map(createErrorMessage), splitMessage)(
-          payload.message
-        );
-
         return R.compose(
           R.assoc('uploadProgress', null),
-          overUploadLog(R.concat(R.__, messages)),
+          overStageError(state.currentStage)(
+            appendMessage(createErrorMessage(payload.message))
+          ),
           showDebuggerPane
         )(state);
       }
@@ -117,25 +162,75 @@ export default (state = initialState, action) => {
     }
     case TOGGLE_DEBUGGER_PANEL:
       return R.over(R.lensProp('isVisible'), R.not, state);
+    case DEBUGGER_LOG_START_SKIPPING_NEW_LINES:
+      return R.assoc('isSkippingNewSerialLogLines', true, state);
+    case DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES:
+      return R.compose(
+        R.assoc('isSkippingNewSerialLogLines', false),
+        R.assoc('numberOfSkippedSerialLogLines', 0),
+        overDebuggerLog(
+          appendMessage(
+            createSystemMessage(
+              `Skipped ${state.numberOfSkippedSerialLogLines} lines`
+            )
+          )
+        )
+      )(state);
+    case DEBUGGER_LOG_TOGGLE_XOD_PROTOCOL_MESSAGES:
+      return R.over(
+        R.lensProp('isCapturingDebuggerProtocolMessages'),
+        R.not,
+        state
+      );
     case DEBUGGER_LOG_ADD_MESSAGES: {
-      const showPanelOnErrorMessages = R.any(
-        R.propEq('type', UPLOAD_MSG_TYPE.ERROR),
-        action.payload
-      )
-        ? showDebuggerPane
-        : R.identity;
+      const allMessages = action.payload;
+
+      const [errorMessages, logMessages] = R.compose(
+        R.partition(R.propEq('type', UPLOAD_MSG_TYPE.ERROR)),
+        state.isCapturingDebuggerProtocolMessages
+          ? R.identity
+          : R.reject(R.propEq('type', UPLOAD_MSG_TYPE.XOD))
+      )(allMessages);
+
+      const showPanelOnErrorMessages = R.isEmpty(errorMessages)
+        ? R.identity
+        : showDebuggerPane;
+
+      const addErrorMessage = R.isEmpty(errorMessages)
+        ? R.identity
+        : overStageError(state.currentStage)(appendMessage(errorMessages[0]));
+
+      const addMessagesOrIncrementSkippedLines = state.isSkippingNewSerialLogLines
+        ? R.over(
+            R.lensProp('numberOfSkippedSerialLogLines'),
+            R.add(R.length(logMessages))
+          )
+        : addMessageListToDebuggerLog(logMessages);
 
       return R.compose(
         showPanelOnErrorMessages,
-        addMessageListToLog(action.payload),
-        updateWatchNodeValues(action.payload)
+        addErrorMessage,
+        addMessagesOrIncrementSkippedLines,
+        updateWatchNodeValues(allMessages)
       )(state);
     }
     case DEBUGGER_LOG_CLEAR:
-      return R.compose(R.assoc('log', []), R.assoc('uploadLog', []))(state);
+      return R.compose(
+        // TODO: should reset skip state?
+        overCompilerLog(R.always('')),
+        overUploaderLog(R.always('')),
+        overDebuggerLog(R.always('')),
+        overStageError(LOG_TAB_TYPE.COMPILER)(R.always('')),
+        overStageError(LOG_TAB_TYPE.UPLOADER)(R.always('')),
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))
+      )(state);
     case DEBUG_SESSION_STARTED:
       return R.compose(
-        addMessageToLog(action.payload.message),
+        addMessageToDebuggerLog(action.payload.message),
+        R.assoc('currentTab', LOG_TAB_TYPE.DEBUGGER),
+        R.assoc('currentStage', LOG_TAB_TYPE.DEBUGGER),
+        R.assoc('isSkippingNewSerialLogLines', false),
+        R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap)),
         R.assoc('isRunning', true),
         R.assoc('isOutdated', false),
@@ -143,7 +238,9 @@ export default (state = initialState, action) => {
       )(state);
     case DEBUG_SESSION_STOPPED:
       return R.compose(
-        addMessageToLog(action.payload.message),
+        addMessageToDebuggerLog(action.payload.message),
+        R.assoc('isSkippingNewSerialLogLines', false),
+        R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
         R.assoc('isRunning', false)

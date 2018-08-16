@@ -6,7 +6,7 @@ export const createSystemMessage = message => ({
 });
 
 export const createFlasherMessage = message => ({
-  type: UPLOAD_MSG_TYPE.FLASHER,
+  type: UPLOAD_MSG_TYPE.UPLOADER,
   message,
 });
 

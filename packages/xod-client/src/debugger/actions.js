@@ -13,6 +13,23 @@ export const clearDebuggerLog = () => ({
   type: AT.DEBUGGER_LOG_CLEAR,
 });
 
+export const startSkippingNewLogLines = () => ({
+  type: AT.DEBUGGER_LOG_START_SKIPPING_NEW_LINES,
+});
+
+export const stopSkippingNewLogLines = () => ({
+  type: AT.DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES,
+});
+
+export const toggleCapturingDebuggerProtocolMessages = () => ({
+  type: AT.DEBUGGER_LOG_TOGGLE_XOD_PROTOCOL_MESSAGES,
+});
+
+export const selectDebuggerTab = tab => ({
+  type: AT.SELECT_DEBUGGER_TAB,
+  payload: tab,
+});
+
 export const startDebuggerSession = (
   message,
   nodeIdsMap,

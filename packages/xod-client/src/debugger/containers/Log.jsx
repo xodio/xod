@@ -2,52 +2,91 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Infinite from 'react-infinite';
+import { bindActionCreators } from 'redux';
+import { noop } from 'xod-func-tools';
 
-import { getLog, getUploadLog } from '../selectors';
-import SystemMessage from '../components/SystemMessage';
-import ErrorMessage from '../components/ErrorMessage';
-import LogMessage from '../components/LogMessage';
-import XodMessage from '../components/XodMessage';
+import * as selectors from '../selectors';
+import * as actions from '../actions';
+import { LOG_TAB_TYPE } from '../constants';
 
-const hasType = R.curry((type, messageData) =>
-  R.propEq('type', type, messageData)
-);
+import Autoscrolled from '../components/Autoscrolled';
 
-const renderLogMessage = (messageData, idx) =>
-  R.compose(
-    Renderer => <Renderer key={idx} data={messageData} />,
-    R.cond([
-      [hasType('system'), R.always(SystemMessage)],
-      [hasType('error'), R.always(ErrorMessage)],
-      [hasType('xod'), R.always(XodMessage)],
-      [R.T, R.always(LogMessage)],
-    ])
-  )(messageData);
+class Log extends React.PureComponent {
+  constructor(props) {
+    super(props);
 
-const Log = ({ log, uploadLog, rejectedMessageTypes }) => (
-  <Infinite
-    className="log"
-    elementHeight={19}
-    containerHeight={196}
-    displayBottomUpwards
-  >
-    {uploadLog
-      .concat(log)
-      .filter(msg => !rejectedMessageTypes.includes(msg.type))
-      .map(renderLogMessage)}
-  </Infinite>
-);
+    this.logEnd = null;
+
+    this.onFollowLog = this.onFollowLog.bind(this);
+  }
+
+  onFollowLog() {
+    if (this.logEnd) {
+      this.logEnd.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    this.props.stopSkippingNewLogLines();
+  }
+
+  render() {
+    const {
+      log,
+      error,
+      isSkippingNewSerialLogLines,
+      numberOfSkippedSerialLogLines,
+      isSkipOnScrollEnabled,
+      startSkippingNewLogLines,
+    } = this.props;
+
+    return (
+      <Autoscrolled
+        onScrolledFromBottom={
+          isSkipOnScrollEnabled ? startSkippingNewLogLines : noop
+        }
+      >
+        {log}
+        {R.isEmpty(error) ? null : <div className="error">{error}</div>}
+        <div ref={el => (this.logEnd = el)} />
+        {isSkipOnScrollEnabled && isSkippingNewSerialLogLines ? (
+          <div className="skipped">
+            <button className="Button Button--small" onClick={this.onFollowLog}>
+              Follow log ({numberOfSkippedSerialLogLines} new lines skipped)
+            </button>
+          </div>
+        ) : null}
+      </Autoscrolled>
+    );
+  }
+}
 
 Log.propTypes = {
-  log: PropTypes.arrayOf(PropTypes.object),
-  uploadLog: PropTypes.arrayOf(PropTypes.object),
-  rejectedMessageTypes: PropTypes.arrayOf(PropTypes.string),
+  log: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired,
+  isSkippingNewSerialLogLines: PropTypes.bool.isRequired,
+  numberOfSkippedSerialLogLines: PropTypes.number.isRequired,
+  isSkipOnScrollEnabled: PropTypes.bool.isRequired,
+  startSkippingNewLogLines: PropTypes.func.isRequired,
+  stopSkippingNewLogLines: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
-  log: getLog,
-  uploadLog: getUploadLog,
+  log: selectors.getLogForCurrentTab,
+  error: selectors.getErrorForCurrentTab,
+  isSkipOnScrollEnabled: R.pipe(
+    selectors.getCurrentDebuggerTab,
+    R.equals(LOG_TAB_TYPE.DEBUGGER)
+  ),
+  isSkippingNewSerialLogLines: selectors.isSkippingNewSerialLogLines,
+  numberOfSkippedSerialLogLines: selectors.getNumberOfSkippedSerialLogLines,
 });
 
-export default connect(mapStateToProps, {})(Log);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      startSkippingNewLogLines: actions.startSkippingNewLogLines,
+      stopSkippingNewLogLines: actions.stopSkippingNewLogLines,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(Log);

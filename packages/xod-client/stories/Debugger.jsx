@@ -6,7 +6,7 @@ import { action } from '@storybook/addon-actions';
 
 import Debugger from '../src/debugger/containers/Debugger';
 import DebuggerReducer from '../src/debugger/reducer';
-import { getLog } from '../src/debugger/selectors';
+import { getLogForCurrentTab } from '../src/debugger/selectors';
 import {
   addMessagesToDebuggerLog,
   startDebuggerSession,
@@ -128,9 +128,9 @@ const startDebugSession = store => {
 };
 
 // Container that shows Log length
-const LogLength = connect(state => ({ log: getLog(state) }))(({ log }) => (
-  <div>Log length: {log.length}</div>
-));
+const LogLength = connect(state => ({ log: getLogForCurrentTab(state) }))(
+  ({ log }) => <div>Log length: {log.length}</div>
+);
 
 // =============================================================================
 //

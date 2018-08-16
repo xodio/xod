@@ -4,7 +4,7 @@ export const CODE_TRANSPILED =
   'Project was successfully transpiled. Searching for device...';
 export const PORT_FOUND =
   'Port with connected Arduino was found. Installing toolchains...';
-export const TOOLCHAIN_INSTALLED = 'Toolchain is installed. Uploading...';
+export const TOOLCHAIN_INSTALLED = 'Toolchain is installed. Compiling...';
 export const CLOUD_TOOLCHAIN_INSTALLED =
   'Toolchain is installed. Compiling code in the cloud...';
 export const CODE_COMPILED = 'Code compiled succesfully. Uploading...';

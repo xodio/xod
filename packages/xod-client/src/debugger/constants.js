@@ -10,5 +10,12 @@ export const UPLOAD_MSG_TYPE = {
   LOG: 'log',
   ERROR: 'error',
   SYSTEM: 'system',
-  FLASHER: 'flasher',
+  COMPILER: 'compiler',
+  UPLOADER: 'uploader',
+};
+
+export const LOG_TAB_TYPE = {
+  COMPILER: UPLOAD_MSG_TYPE.COMPILER,
+  UPLOADER: UPLOAD_MSG_TYPE.UPLOADER,
+  DEBUGGER: UPLOAD_MSG_TYPE.LOG,
 };

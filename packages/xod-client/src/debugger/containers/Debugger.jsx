@@ -8,8 +8,8 @@ import { ContextMenuTrigger, ContextMenu, MenuItem } from 'react-contextmenu';
 import { Icon } from 'react-fa';
 import { foldMaybe } from 'xod-func-tools';
 
-import { getUploadProgress, isDebuggerVisible } from '../selectors';
-import { UPLOAD_MSG_TYPE } from '../constants';
+import { LOG_TAB_TYPE } from '../constants';
+import * as selectors from '../selectors';
 import * as DA from '../actions';
 import Log from './Log';
 
@@ -22,37 +22,27 @@ const DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID =
 
 const checkmark = active => (active ? <span className="state">✔</span> : null);
 
+const TAB_NAMES = {
+  [LOG_TAB_TYPE.COMPILER]: 'Compiler',
+  [LOG_TAB_TYPE.UPLOADER]: 'Uploader',
+  [LOG_TAB_TYPE.DEBUGGER]: 'Debugger',
+};
+
+const TAB_ORDER = [
+  LOG_TAB_TYPE.COMPILER,
+  LOG_TAB_TYPE.UPLOADER,
+  LOG_TAB_TYPE.DEBUGGER,
+];
+
 class Debugger extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      messageTypeFilter: {
-        [UPLOAD_MSG_TYPE.FLASHER]: true,
-        [UPLOAD_MSG_TYPE.XOD]: false,
-      },
-    };
-
-    this.toggleDebugMessages = this.toggleMessageType.bind(
-      this,
-      UPLOAD_MSG_TYPE.XOD
-    );
-    this.toggleUploadMessages = this.toggleMessageType.bind(
-      this,
-      UPLOAD_MSG_TYPE.FLASHER
-    );
-  }
-
-  toggleMessageType(type) {
-    this.setState(R.over(R.lensPath(['messageTypeFilter', type]), R.not));
-  }
-
   renderControlsForExpandedState() {
-    const { isExpanded, actions } = this.props;
+    const {
+      isExpanded,
+      isCapturingDebuggerProtocolMessages,
+      actions,
+    } = this.props;
 
     if (!isExpanded) return null;
-
-    const { messageTypeFilter } = this.state;
 
     return (
       <React.Fragment>
@@ -71,16 +61,31 @@ class Debugger extends React.Component {
           <span />
         </ContextMenuTrigger>
         <ContextMenu id={DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID}>
-          <MenuItem onClick={this.toggleUploadMessages}>
-            {checkmark(messageTypeFilter[UPLOAD_MSG_TYPE.FLASHER])}
-            Upload Log
-          </MenuItem>
-          <MenuItem onClick={this.toggleDebugMessages}>
-            {checkmark(messageTypeFilter[UPLOAD_MSG_TYPE.XOD])}
+          <MenuItem onClick={actions.toggleCapturingDebuggerProtocolMessages}>
+            {checkmark(isCapturingDebuggerProtocolMessages)}
             Watched Values
           </MenuItem>
         </ContextMenu>
       </React.Fragment>
+    );
+  }
+
+  renderTabSelector() {
+    const { currentTab, actions } = this.props;
+
+    return (
+      <ul role="menu" className="tab-selector">
+        {TAB_ORDER.map(tabName => (
+          <li // eslint-disable-line jsx-a11y/no-static-element-interactions
+            role="menuitem"
+            key={tabName}
+            onClick={() => actions.selectTab(tabName)}
+            className={cn('tab', { active: tabName === currentTab })}
+          >
+            {TAB_NAMES[tabName]}
+          </li>
+        ))}
+      </ul>
     );
   }
 
@@ -108,11 +113,6 @@ class Debugger extends React.Component {
         </div>
       ),
       maybeUploadProgress
-    );
-
-    const { messageTypeFilter } = this.state;
-    const rejectedMessageTypes = R.compose(R.keys, R.filter(R.equals(false)))(
-      messageTypeFilter
     );
 
     return (
@@ -149,9 +149,12 @@ class Debugger extends React.Component {
         </div>
 
         {isExpanded ? (
-          <div className="container">
-            <Log rejectedMessageTypes={rejectedMessageTypes} />
-          </div>
+          <React.Fragment>
+            {this.renderTabSelector()}
+            <div className="container">
+              <Log />
+            </div>
+          </React.Fragment>
         ) : null}
       </div>
     );
@@ -161,20 +164,28 @@ class Debugger extends React.Component {
 Debugger.propTypes = {
   maybeUploadProgress: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
+  isCapturingDebuggerProtocolMessages: PropTypes.bool.isRequired,
+  currentTab: PropTypes.string.isRequired,
   actions: PropTypes.objectOf(PropTypes.func),
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
-  maybeUploadProgress: getUploadProgress,
-  isExpanded: isDebuggerVisible,
+  maybeUploadProgress: selectors.getUploadProgress,
+  currentTab: selectors.getCurrentDebuggerTab,
+  isExpanded: selectors.isDebuggerVisible,
+  isCapturingDebuggerProtocolMessages:
+    selectors.isCapturingDebuggerProtocolMessages,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       toggleDebugger: DA.toggleDebugger,
+      toggleCapturingDebuggerProtocolMessages:
+        DA.toggleCapturingDebuggerProtocolMessages,
       clearLog: DA.clearDebuggerLog,
+      selectTab: DA.selectDebuggerTab,
     },
     dispatch
   ),
