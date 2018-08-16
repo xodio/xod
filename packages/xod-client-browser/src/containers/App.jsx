@@ -134,6 +134,10 @@ class App extends client.App {
 
     reader.onload = e => {
       this.onLoad(e.target.result);
+
+      // drop the value of the file input to make possible to open
+      // the project with the same path again
+      this.menuRefs.openProject.value = '';
     };
 
     reader.readAsText(file);
