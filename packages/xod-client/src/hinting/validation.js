@@ -125,9 +125,13 @@ const shallValidateFunctions = {
         R.either(
           // If changed label — do not validate
           () => key !== 'label',
-          // But if it's terminal or self Node — validate
+          // But if it's terminal, bus or self-marker Node — validate
           R.compose(
-            R.either(XP.isTerminalPatchPath, XP.isTerminalSelf),
+            R.anyPass([
+              XP.isTerminalPatchPath,
+              XP.isTerminalSelf,
+              XP.isBusPatchPath,
+            ]),
             XP.getNodeType
           )
         )
