@@ -1,3 +1,4 @@
+import path from 'path';
 import * as R from 'ramda';
 import { assert } from 'chai';
 import thunk from 'redux-thunk';
@@ -9,7 +10,11 @@ import { loadXodball } from 'xod-project/test/helpers';
 import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import hintingMiddleware from '../src/hinting/middleware';
-import { getPatchErrors } from '../src/hinting/selectors';
+import {
+  getPatchErrors,
+  getDeducedTypes,
+  getPatchSearchData,
+} from '../src/hinting/selectors';
 
 import { switchPatchUnsafe } from '../src/editor/actions';
 import {
@@ -53,7 +58,7 @@ const getErrorsUpdateData = action =>
   ])(action);
 
 // :: Action -> Nullable [PatchSearchData]
-const getPatchSearchData = R.path(['payload', 'patchSearchData']);
+const getPatchSearchDataFromAction = R.path(['payload', 'patchSearchData']);
 
 const assertPolicyEquals = (policy, action) => {
   const errData = getErrorsUpdateData(action);
@@ -69,14 +74,14 @@ const assertErrorsWith = R.curry((assertsFn, action) =>
 
 // :: (Function with asserts) -> Action -> _
 const assertPatchSearchDataWith = R.curry((assertsFn, action) =>
-  R.compose(data => assertsFn(data), getPatchSearchData)(action)
+  R.compose(data => assertsFn(data), getPatchSearchDataFromAction)(action)
 );
 
 const assertErrorsUnchanged = R.compose(assert.isNull, getErrorsUpdateData);
 
 const assertPatchSearchDataUnchanged = R.compose(
   assert.isNull,
-  getPatchSearchData
+  getPatchSearchDataFromAction
 );
 
 // =============================================================================
@@ -104,7 +109,7 @@ describe('Hinting', () => {
       )
     );
 
-  describe('Validation', () => {
+  describe('Branch: Validation', () => {
     beforeEach(() => {
       dispatchedActions = [];
       store = createMockStore();
@@ -256,7 +261,7 @@ describe('Hinting', () => {
     });
   });
 
-  describe('Patch Search Data', () => {
+  describe('Branch: Patch Search Data', () => {
     beforeEach(() => {
       dispatchedActions = [];
       store = createMockStore();
@@ -306,6 +311,27 @@ describe('Hinting', () => {
       );
       assert.lengthOf(dispatchedActions, 2);
       assertPatchSearchDataUnchanged(dispatchedActions[1]);
+    });
+  });
+
+  describe('All branches', () => {
+    beforeEach(() => {
+      dispatchedActions = [];
+      store = createMockStore();
+    });
+
+    it('updates all hinting branches on load project with errors', () => {
+      const proj = loadXodball(
+        path.resolve(
+          __dirname,
+          './fixtures/broken-project-with-custom-types.xodball'
+        )
+      );
+      store.dispatch(openProject(proj));
+      const state = store.getState();
+      assert.isNotEmpty(getDeducedTypes(state));
+      assert.isNotEmpty(getPatchErrors(state));
+      assert.isNotEmpty(getPatchSearchData(state));
     });
   });
 });
