@@ -120,6 +120,12 @@ export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 // :: String -> Boolean
 export const isWatchPatchPath = R.test(/^xod\/core\/watch$/);
 
+// :: String -> Boolean
+export const isBusPatchPath = R.either(
+  R.equals(CONST.FROM_BUS_PATH),
+  R.equals(CONST.TO_BUS_PATH)
+);
+
 // :: LibName -> Boolean
 export const isBuiltInLibName = R.equals(TERMINALS_LIB_NAME);
 
