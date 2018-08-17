@@ -7,6 +7,7 @@ import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactResizeDetector from 'react-resize-detector';
+import { noop } from 'xod-func-tools';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -193,8 +194,15 @@ class Patch extends React.Component {
 
   handleScroll(event) {
     event.preventDefault();
+
+    const { currentMode } = this.state;
+    const modeHandler = MODE_HANDLERS[currentMode];
+
     return R.compose(
       this.dispatchOffsetUpdate,
+      R.tap(() =>
+        (modeHandler.onMouseMove || noop)(this.getApi(currentMode), event)
+      ),
       R.tap(newOffset => this.setState({ offset: newOffset })),
       R.evolve({
         x: R.add(event.deltaX),
