@@ -19,7 +19,9 @@ storiesOf('PatchDocs', module)
     <PatchDocs patch={tutorialProject.patches['xod/core/map-range']} />
   ))
   .add('big node, no outputs (text-lcd-16x2)', () => (
-    <PatchDocs patch={tutorialProject.patches['xod/common-hardware/text-lcd-16x2']} />
+    <PatchDocs
+      patch={tutorialProject.patches['xod/common-hardware/text-lcd-16x2']}
+    />
   ))
   .add('no inputs (boot)', () => (
     <PatchDocs patch={tutorialProject.patches['xod/core/boot']} />
@@ -31,14 +33,28 @@ storiesOf('PatchDocs', module)
     <PatchDocs patch={tutorialProject.patches['xod/core/select']} />
   ))
   .add('input terminal', () => (
-    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/input-pulse', emptyProject)} />
+    <PatchDocs
+      patch={XP.getPatchByPathUnsafe(
+        'xod/patch-nodes/input-pulse',
+        emptyProject
+      )}
+    />
   ))
   .add('output terminal', () => (
-    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/output-number', emptyProject)} />
+    <PatchDocs
+      patch={XP.getPatchByPathUnsafe(
+        'xod/patch-nodes/output-number',
+        emptyProject
+      )}
+    />
   ))
   .add('to-bus', () => (
-    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/to-bus', emptyProject)} />
+    <PatchDocs
+      patch={XP.getPatchByPathUnsafe('xod/patch-nodes/to-bus', emptyProject)}
+    />
   ))
   .add('from-bus', () => (
-    <PatchDocs patch={XP.getPatchByPathUnsafe('xod/patch-nodes/from-bus', emptyProject)} />
+    <PatchDocs
+      patch={XP.getPatchByPathUnsafe('xod/patch-nodes/from-bus', emptyProject)}
+    />
   ));

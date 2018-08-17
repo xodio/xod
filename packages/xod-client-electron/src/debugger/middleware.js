@@ -11,7 +11,6 @@ export default store => next => action => {
 
   const newProject = client.getProject(store.getState());
 
-  // Stop debug session if something changed in the Project
   if (isDebugSession && prevProject !== newProject) {
     store.dispatch(client.markDebugSessionOutdated());
   }

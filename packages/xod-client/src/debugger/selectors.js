@@ -23,9 +23,35 @@ export const isDebugSessionOutdated = R.compose(
   getDebuggerState
 );
 
-export const getLog = R.compose(R.prop('log'), getDebuggerState);
+export const isSkippingNewSerialLogLines = R.compose(
+  R.prop('isSkippingNewSerialLogLines'),
+  getDebuggerState
+);
 
-export const getUploadLog = R.compose(R.prop('uploadLog'), getDebuggerState);
+export const getNumberOfSkippedSerialLogLines = R.compose(
+  R.prop('numberOfSkippedSerialLogLines'),
+  getDebuggerState
+);
+
+export const isCapturingDebuggerProtocolMessages = R.compose(
+  R.prop('isCapturingDebuggerProtocolMessages'),
+  getDebuggerState
+);
+
+export const getCurrentDebuggerTab = R.compose(
+  R.prop('currentTab'),
+  getDebuggerState
+);
+
+export const getLogForCurrentTab = createSelector(
+  [getDebuggerState, getCurrentDebuggerTab],
+  (debuggerState, currentTab) => R.path([currentTab, 'log'], debuggerState)
+);
+
+export const getErrorForCurrentTab = createSelector(
+  [getDebuggerState, getCurrentDebuggerTab],
+  (debuggerState, currentTab) => R.path([currentTab, 'error'], debuggerState)
+);
 
 export const getDebuggerNodeIdsMap = R.compose(
   R.prop('nodeIdsMap'),

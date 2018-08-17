@@ -7,33 +7,19 @@ import { storiesOf } from '@storybook/react';
 import '../src/core/styles/main.scss';
 
 storiesOf('Modal (SkyLight)', module)
-  .addDecorator(story => (
-    <div>
-      {story()}
-    </div>
-  ))
+  .addDecorator(story => <div>{story()}</div>)
   .add('default', () => (
-    <SkyLightStateless
-      isVisible
-      title="Popup title"
-    >
+    <SkyLightStateless isVisible title="Popup title">
       The actual content is not styled
     </SkyLightStateless>
   ))
   .add('unclosable', () => (
-    <SkyLightStateless
-      isVisible
-      isClosable={false}
-      title="Popup title"
-    >
+    <SkyLightStateless isVisible isClosable={false} title="Popup title">
       You cant close me! Ha-ha-ha!
     </SkyLightStateless>
   ))
   .add('with some content', () => (
-    <SkyLightStateless
-      isVisible
-      title="Popup title"
-    >
+    <SkyLightStateless isVisible title="Popup title">
       <div className="ModalBody">
         <div className="ModalContent">
           Spawn new workspace in <code>~/xod</code>?
@@ -46,10 +32,7 @@ storiesOf('Modal (SkyLight)', module)
     </SkyLightStateless>
   ))
   .add('with some light content', () => (
-    <SkyLightStateless
-      isVisible
-      title="Popup title"
-    >
+    <SkyLightStateless isVisible title="Popup title">
       <div className="ModalBody ModalBody--light">
         <div className="ModalContent">
           Spawn new workspace in <code>~/xod</code>?
@@ -62,10 +45,7 @@ storiesOf('Modal (SkyLight)', module)
     </SkyLightStateless>
   ))
   .add('with some code', () => (
-    <SkyLightStateless
-      isVisible
-      title="Transpiled code"
-    >
+    <SkyLightStateless isVisible title="Transpiled code">
       <textarea className="Codebox" value="console.log('Hello world');" />
       <div className="ModalBody ModalBody--light">
         <div className="ModalFooter">
@@ -75,10 +55,7 @@ storiesOf('Modal (SkyLight)', module)
     </SkyLightStateless>
   ))
   .add('with a form', () => (
-    <SkyLightStateless
-      isVisible
-      title="Create new patch"
-    >
+    <SkyLightStateless isVisible title="Create new patch">
       <form>
         <div className="ModalBody">
           <div className="ModalContent">
@@ -91,27 +68,17 @@ storiesOf('Modal (SkyLight)', module)
             <span className="helpText">Here are some validation rules</span>
           </div>
           <div className="ModalFooter">
-            <button
-              type="submit"
-              className="Button"
-            >
+            <button type="submit" className="Button">
               Create
             </button>
-            <button
-              className="Button"
-            >
-              Cancel
-            </button>
+            <button className="Button">Cancel</button>
           </div>
         </div>
       </form>
     </SkyLightStateless>
   ))
   .add('with mixed conntent', () => (
-    <SkyLightStateless
-      isVisible
-      title="Setup Arduino IDE"
-    >
+    <SkyLightStateless isVisible title="Setup Arduino IDE">
       <div className="ModalBody ModalBody--light">
         <div className="ModalContent">
           <p>
@@ -124,8 +91,10 @@ storiesOf('Modal (SkyLight)', module)
           </p>
           <hr />
           <p>
-            <strong>Don&apos;t have an installed Arduino IDE?</strong><br />
-            You need an installed Arduino IDE to compile and upload XOD programs to Arduino boards.
+            <strong>Don&apos;t have an installed Arduino IDE?</strong>
+            <br />
+            You need an installed Arduino IDE to compile and upload XOD programs
+            to Arduino boards.
           </p>
           <button className="Button Button--light">
             Download & install Arduino IDE
@@ -135,10 +104,7 @@ storiesOf('Modal (SkyLight)', module)
     </SkyLightStateless>
   ))
   .add('with project selector (dark)', () => (
-    <SkyLightStateless
-      isVisible
-      title="Select project"
-    >
+    <SkyLightStateless isVisible title="Select project">
       <div className="ModalBody ModalBody">
         <div className="ModalContent">
           <ul className="ProjectList">
@@ -166,9 +132,7 @@ storiesOf('Modal (SkyLight)', module)
                   <span>Path:</span>
                   ~/my-workspace/oops
                 </p>
-                <p className="message">
-                  Something is wrong with this project!
-                </p>
+                <p className="message">Something is wrong with this project!</p>
               </div>
             </li>
             <li className="project">
@@ -190,10 +154,7 @@ storiesOf('Modal (SkyLight)', module)
     </SkyLightStateless>
   ))
   .add('with progress bar', () => (
-    <SkyLightStateless
-      isVisible
-      title="Uploading to Arduino"
-    >
+    <SkyLightStateless isVisible title="Uploading to Arduino">
       <div className="ModalBody">
         <ProgressBar
           percent={50}
@@ -204,10 +165,7 @@ storiesOf('Modal (SkyLight)', module)
           trailColor="#373737"
           className="ProgressBar"
         />
-        <div className="ModalFooter">
-          something is going on
-        </div>
+        <div className="ModalFooter">something is going on</div>
       </div>
     </SkyLightStateless>
   ));
-

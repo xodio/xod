@@ -55,10 +55,7 @@ storiesOf('Comment', module)
     </svg>
   ))
   .add('default', () => (
-    <Comment
-      {...baseProps}
-      content={contentThatRequiresWordWrap}
-    />
+    <Comment {...baseProps} content={contentThatRequiresWordWrap} />
   ))
   .add('markdown content', () => (
     <Comment

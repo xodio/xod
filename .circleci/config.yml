@@ -28,7 +28,7 @@ defs:
     step-install: &step-install
       name: Install Node modules
       # to always instal some essential tools(electron-builder etc)
-      command: NODE_ENV=development yarn install
+      command: NODE_ENV=development yarn install --force
 
     step-bump-version: &step-bump-version
       name: Bump version

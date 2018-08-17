@@ -117,16 +117,39 @@
     }
   }
 
+  .tab-selector {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: $grey;
+
+    .tab {
+      display: inline-block;
+      cursor: pointer;
+
+      padding: 4px 1ex 4px;
+
+      &.active {
+        cursor: default;
+        border-bottom: 2px solid $cyan;
+      }
+    }
+  }
+
   .container {
     display: block;
-    height: 196px;
+    position: relative;
+    height: 165px;
 
     background: $sidebar-color-bg;
     border-left: 1px solid $color-canvas-background;
   }
 
   .log {
-    max-height: 196px;
+    height: 161px;
+    overflow-y: scroll;
+
+    white-space: pre-wrap;
 
     * {
       user-select: text;
@@ -145,60 +168,32 @@
       border-radius: 3px;
     }
 
-    pre {
-      margin: 0;
-    }
+    display: block;
+    margin: 0;
+    padding: 2px;
 
-    .line {
-      display: block;
-      margin: 0;
-      padding: 2px;
+    font-family: $font-family-mono;
+    font-size: $font-size-m;
+    word-break: break-all;
+    user-select: text;
 
-      font-family: $font-family-mono;
-      font-size: $font-size-m;
-      word-break: break-all;
-      user-select: text;
+    margin-right: 2px;
+    margin-left: 2px;
 
-      &:hover {
-        background-color: $sidebar-color-bg-even;
-      }
+    cursor: text;
 
-      & > * {
-        margin-right: 2px;
-        margin-left: 2px;
-
-        cursor: text;
-      }
-      & > *:nth(0) {
-        margin-left: 0;
-      }
-      .prefix {
-        color: $chalk-light;
-      }
-      .timestamp {
-        color: $color-datatype-number;
-      }
-      .nodeId {
-        text-decoration: underline;
-        color: $color-datatype-boolean;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-      .content {
-        display: inline-block;
-        color: $color-comment-text;
-        font-family: $font-family-mono;
-        white-space: pre-wrap;
-      }
-    }
-
-    .line.error {
+    .error {
       background: rgba(255,0,0,.25);
-      &:hover {
-        background: rgba(255,0,0,.4);
-      }
+      cursor: text;
+    }
+
+    .skipped {
+      position: absolute;
+      box-sizing: border-box;
+      bottom: 0;
+      width: 100%;
+      text-align: right;
+      padding: 0 28px 7px;
     }
   }
 }

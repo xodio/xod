@@ -49,4 +49,3 @@ storiesOf('Menubar', module)
 
     return <Menubar items={menuBarItems} />;
   });
-
