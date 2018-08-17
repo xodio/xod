@@ -23,11 +23,7 @@ const linkingMode = {
   },
 
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(
-      patchSvgRef,
-      api.props.offset,
-      event
-    );
+    const mousePosition = getMousePosition(patchSvgRef, api.getOffset(), event);
     api.setState({ mousePosition });
   },
   onPinMouseDown(api, event, nodeId, pinKey) {
@@ -77,9 +73,9 @@ const linkingMode = {
             width={api.props.size.width}
             height={api.props.size.height}
             onClick={bindApi(api, this.onBackgroundClick)}
-            offset={api.props.offset}
+            offset={api.getOffset()}
           />
-          <g transform={getOffsetMatrix(api.props.offset)}>
+          <g transform={getOffsetMatrix(api.getOffset())}>
             <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}

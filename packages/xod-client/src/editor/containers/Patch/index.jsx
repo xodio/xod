@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import throttle from 'throttle-debounce/throttle';
+import { throttle, debounce } from 'throttle-debounce';
 import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
@@ -72,6 +72,7 @@ class Patch extends React.Component {
         [mode]: MODE_HANDLERS[mode].getInitialState(props),
       },
       hoveredNodeId: null,
+      offset: this.props.offset,
     };
 
     // Storage for mode data without forcing update of component
@@ -87,6 +88,12 @@ class Patch extends React.Component {
     this.setModeStateThrottled = throttle(100, true, this.setModeState);
     this.setModeStorage = this.setModeStorage.bind(this);
     this.getModeStorage = this.getModeStorage.bind(this);
+
+    this.dispatchOffsetUpdate = debounce(
+      500,
+      this.dispatchOffsetUpdate.bind(this)
+    );
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   getChildContext() {
@@ -102,6 +109,9 @@ class Patch extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.offset !== this.state.offset) {
+      this.setState({ offset: nextProps.offset });
+    }
     if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
       this.goToMode(DEFAULT_MODES[nextProps.tabType]);
     }
@@ -131,6 +141,7 @@ class Patch extends React.Component {
       setStorage: R.partial(this.setModeStorage, [mode]),
       goToMode: this.goToMode,
       goToDefaultMode: this.goToDefaultMode,
+      getOffset: () => this.state.offset,
     };
   }
 
@@ -176,6 +187,22 @@ class Patch extends React.Component {
     this.goToMode(DEFAULT_MODES[tabType], payload);
   }
 
+  dispatchOffsetUpdate(newOffset) {
+    this.props.actions.setOffset(newOffset);
+  }
+
+  handleScroll(event) {
+    event.preventDefault();
+    return R.compose(
+      this.dispatchOffsetUpdate,
+      R.tap(newOffset => this.setState({ offset: newOffset })),
+      R.evolve({
+        x: R.add(event.deltaX),
+        y: R.add(event.deltaY),
+      })
+    )(this.state.offset);
+  }
+
   render() {
     const { currentMode } = this.state;
     /**
@@ -196,6 +223,7 @@ class Patch extends React.Component {
         ref={r => {
           this.dropTargetRootRef = r;
         }}
+        onWheel={this.handleScroll}
       >
         <ReactResizeDetector
           handleWidth

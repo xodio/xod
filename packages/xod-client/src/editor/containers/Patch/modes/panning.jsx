@@ -24,12 +24,12 @@ const getCurrentOffset = api => {
     api.state.isPanning
   ) {
     return addPoints(
-      api.props.offset,
+      api.getOffset(),
       subtractPoints(api.state.mousePosition, api.state.panningStartPosition)
     );
   }
 
-  return api.props.offset;
+  return api.getOffset();
 };
 
 const panningMode = {
@@ -48,11 +48,7 @@ const panningMode = {
   },
 
   onMouseDown(api, event) {
-    const mousePosition = getMousePosition(
-      patchSvgRef,
-      api.props.offset,
-      event
-    );
+    const mousePosition = getMousePosition(patchSvgRef, api.getOffset(), event);
 
     api.setState({
       isPanning: true,
@@ -61,11 +57,7 @@ const panningMode = {
     });
   },
   onMouseMove(api, event) {
-    const mousePosition = getMousePosition(
-      patchSvgRef,
-      api.props.offset,
-      event
-    );
+    const mousePosition = getMousePosition(patchSvgRef, api.getOffset(), event);
 
     api.setState({ mousePosition });
   },

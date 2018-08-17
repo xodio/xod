@@ -29,9 +29,9 @@ const acceptingDraggedPatchMode = {
           <Layers.Background
             width={api.props.size.width}
             height={api.props.size.height}
-            offset={api.props.offset}
+            offset={api.getOffset()}
           />
-          <g transform={getOffsetMatrix(api.props.offset)}>
+          <g transform={getOffsetMatrix(api.getOffset())}>
             <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
