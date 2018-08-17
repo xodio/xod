@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] The buses concept is introduced. (#1392, #1397)
+* [ide] Dramatic optimizations while working with patches and debugging: moving
+  nodes, binding values, creating links, searching for nodes, watching values,
+  etc. (#1396, #1400, #1402, #1404)
+* [ide] Show constant nodes’ values as their labels unless overriden rather
+  than static `constant-number`, `constant-string`, etc. (#1366)
+* [ide] Do not auto-stop a debug session on patch changes, show a note about
+  the change instead. (#1374)
+* [ide] Split deployment pane output into several tabs dedicated to Compiler,
+  Uploader, and Debugger. (#1409)
+* [ide] Make constant and watch nodes resizable like comments. (#1375)
+* [core] Comment out XOD pragmas in C\++ code so that GCC produces no
+  compilation warnings. (#1360)
+
+### Bug fixes
+
+* [core] Detect and report pin name clashes. (#1356)
+* [ide] Make possible re-opening the same project. (#1407)
+* [nodes] Fix the `uart` node for Uno-like boards which previously produced
+  a compilation error about undefined `SERIAL_PORT_HARDWARE_OPEN`. (#1382)
+
 <a name="0.22.0"></a>
 ## 0.22.0 (2018-07-11)
 
