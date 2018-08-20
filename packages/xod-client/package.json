@@ -25,6 +25,7 @@
     "escape-string-regexp": "^1.0.5",
     "font-awesome": "^4.6.3",
     "line-intersection": "^1.0.8",
+    "normalize-wheel": "^1.0.1",
     "prop-types": "^15.5.10",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",

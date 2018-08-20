@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactResizeDetector from 'react-resize-detector';
 import { noop } from 'xod-func-tools';
+import normalizeWheel from 'normalize-wheel';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -198,6 +199,7 @@ class Patch extends React.Component {
     const { currentMode } = this.state;
     const modeHandler = MODE_HANDLERS[currentMode];
 
+    const wheel = normalizeWheel(event);
     return R.compose(
       this.dispatchOffsetUpdate,
       R.tap(() =>
@@ -205,8 +207,8 @@ class Patch extends React.Component {
       ),
       R.tap(newOffset => this.setState({ offset: newOffset })),
       R.evolve({
-        x: R.subtract(R.__, event.deltaX),
-        y: R.subtract(R.__, event.deltaY),
+        x: R.subtract(R.__, wheel.pixelX),
+        y: R.subtract(R.__, wheel.pixelY),
       })
     )(this.state.offset);
   }
