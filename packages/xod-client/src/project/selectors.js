@@ -328,7 +328,7 @@ export const getRenderableLinks = createMemoizedSelector(
   (nodes, links, curPatch, project, deducedPinTypes, errors) =>
     R.compose(
       addLinksPositioning(nodes),
-      foldMaybe([], patchPath =>
+      foldMaybe({}, patchPath =>
         R.map(link =>
           R.compose(
             newLink => {
