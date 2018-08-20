@@ -205,8 +205,8 @@ class Patch extends React.Component {
       ),
       R.tap(newOffset => this.setState({ offset: newOffset })),
       R.evolve({
-        x: R.add(event.deltaX),
-        y: R.add(event.deltaY),
+        x: R.subtract(R.__, event.deltaX),
+        y: R.subtract(R.__, event.deltaY),
       })
     )(this.state.offset);
   }
