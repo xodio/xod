@@ -1,15 +1,17 @@
+$tab-height: 26px;
+
 .TabsItem {
   display: inline-block;
 
   margin: 4px 1px 0 0;
   padding: 0 10px 0 14px;
-  height: 26px;
+  height: $tab-height;
+  line-height: $tab-height + 1; // add 1px to compensate optical center
 
   box-sizing: border-box;
 
   background: $color-tabs-unactive-background;
   color: $color-tabs-unactive-text;
-  line-height: 30px;
 
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -44,19 +46,22 @@
   .tab-name {
     display: inline-block;
     margin-right: 6px;
-
-    vertical-align: middle;
+    height: $tab-height;
+    vertical-align: bottom;
   }
 
   .tab-close {
     display: inline-block;
-    padding: 6px;
 
     color: $color-tabs-unactive-text;
     font-size: $font-size-l;
-    line-height: 1;
 
-    vertical-align: middle;
+    box-sizing: border-box;
+    padding: 0 6px;
+    height: $tab-height;
+    vertical-align: bottom;
+    text-align: center;
+
 
     &:hover, &:focus {
       cursor: default;
