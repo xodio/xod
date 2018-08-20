@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
 import { isAmong, foldMaybe, notNil } from 'xod-func-tools';
 import { createIndexData } from 'xod-patch-search';
@@ -25,6 +26,9 @@ const createPatchSearchDataForPatch = R.curry((prevIndex, patch) =>
     R.of
   )(patch)
 );
+
+// :: Patch -> Boolean
+const shouldRejectPatch = R.either(XP.isDeprecatedPatch, XP.isUtilityPatch);
 
 // =============================================================================
 //
@@ -77,6 +81,7 @@ export const getNewPatchSearchData = R.curry((prevIndex, project, action) =>
               createPatchSearchDataForPatch(prevIndex)
             )
           ),
+          R.chain(R.ifElse(shouldRejectPatch, Maybe.Nothing, Maybe.of)),
           XP.getPatchByPath(action.payload.newPatchPath)
         )(project),
     ],
@@ -84,10 +89,17 @@ export const getNewPatchSearchData = R.curry((prevIndex, project, action) =>
       R.pathSatisfies(notNil, ['payload', 'patchPath']),
       R.compose(
         foldMaybe(prevIndex, createPatchSearchDataForPatch(prevIndex)),
+        R.chain(R.ifElse(shouldRejectPatch, Maybe.Nothing, Maybe.of)),
         XP.getPatchByPath(R.__, project),
         R.path(['payload', 'patchPath'])
       ),
     ],
-    [R.T, () => R.compose(createIndexData, XP.listPatches)(project)],
+    [
+      R.T,
+      () =>
+        R.compose(createIndexData, R.reject(shouldRejectPatch), XP.listPatches)(
+          project
+        ),
+    ],
   ])(action)
 );
