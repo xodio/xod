@@ -79,7 +79,8 @@
     justify-content: center;
 
     // move from under pins
-    margin: 12px 4px;
+    // leave 1px margin on the sides to avoid "gluing" of two nearest labels
+    margin: 12px 1px;
     height: calc(100% - 24px);
   }
 
