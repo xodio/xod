@@ -77,6 +77,9 @@ class Patch extends React.Component {
       offset: this.props.offset,
     };
 
+    // Store is shift key was pressed on the first triggered Wheel event
+    this.shiftKey = false;
+
     // Storage for mode data without forcing update of component
     // E.G. store here refs on the components
     this.storage = {
@@ -96,6 +99,8 @@ class Patch extends React.Component {
       this.dispatchOffsetUpdate.bind(this)
     );
     this.handleScroll = this.handleScroll.bind(this);
+    this.setShiftKey = debounce(50, true, this.setShiftKey.bind(this));
+    this.getShiftKey = this.getShiftKey.bind(this);
   }
 
   getChildContext() {
@@ -179,6 +184,13 @@ class Patch extends React.Component {
     this.storage[mode] = R.merge(this.storage[mode], newData);
   }
 
+  getShiftKey() {
+    return this.shiftKey;
+  }
+  setShiftKey(val) {
+    this.shiftKey = val;
+  }
+
   goToMode(newMode, payload) {
     const newModeState = MODE_HANDLERS[newMode].getInitialState(
       this.props,
@@ -202,8 +214,27 @@ class Patch extends React.Component {
 
     const { currentMode } = this.state;
     const modeHandler = MODE_HANDLERS[currentMode];
+    const normalizedWheel = normalizeWheel(event);
 
-    const wheel = normalizeWheel(event);
+    // Set shift key with debounce on first call
+    // It needed to avoid unexpected horizontal scroll on press Shift
+    // while Patch scrolls with acceleration
+    this.setShiftKey(event.shiftKey);
+
+    // Most OS does not provide deltaX for horizontal scrolling
+    // so we have to check is the shift key pressed and does
+    // deltaX equal to zero
+    const wheel =
+      this.getShiftKey() && event.deltaX === 0
+        ? {
+            x: normalizedWheel.pixelY,
+            y: normalizedWheel.pixelX,
+          }
+        : {
+            x: normalizedWheel.pixelX,
+            y: normalizedWheel.pixelY,
+          };
+
     return R.compose(
       this.dispatchOffsetUpdate,
       R.tap(() =>
@@ -211,8 +242,8 @@ class Patch extends React.Component {
       ),
       R.tap(newOffset => this.setState({ offset: newOffset })),
       R.evolve({
-        x: R.subtract(R.__, wheel.pixelX),
-        y: R.subtract(R.__, wheel.pixelY),
+        x: R.subtract(R.__, wheel.x),
+        y: R.subtract(R.__, wheel.y),
       })
     )(this.state.offset);
   }
@@ -230,7 +261,6 @@ class Patch extends React.Component {
      * context and pass into render function of Modes.
      */
     const project = ProjectSelectors.getProject(this.context.store.getState());
-
     return this.props.connectDropTarget(
       <div
         className={cn('PatchWrapper-container', currentMode)}
