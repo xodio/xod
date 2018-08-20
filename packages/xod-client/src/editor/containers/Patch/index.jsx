@@ -92,7 +92,7 @@ class Patch extends React.Component {
     this.getModeStorage = this.getModeStorage.bind(this);
 
     this.dispatchOffsetUpdate = debounce(
-      500,
+      200,
       this.dispatchOffsetUpdate.bind(this)
     );
     this.handleScroll = this.handleScroll.bind(this);
@@ -111,7 +111,10 @@ class Patch extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.offset !== this.state.offset) {
+    if (
+      !R.equals(nextProps.offset, this.state.offset) &&
+      !R.equals(nextProps.offset, this.props.offset)
+    ) {
       this.setState({ offset: nextProps.offset });
     }
     if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
@@ -144,6 +147,7 @@ class Patch extends React.Component {
       goToMode: this.goToMode,
       goToDefaultMode: this.goToDefaultMode,
       getOffset: () => this.state.offset,
+      setOffset: offset => this.setState({ offset }),
     };
   }
 

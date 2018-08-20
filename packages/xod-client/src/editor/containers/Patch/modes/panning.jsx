@@ -65,6 +65,7 @@ const panningMode = {
     if (api.state.isPanning) {
       const offset = getCurrentOffset(api);
       api.setState({ isPanning: false });
+      api.setOffset(offset);
       api.props.actions.setOffset(offset);
     }
 
