@@ -17,15 +17,20 @@ describe('Stripping C++ comments', () => {
     );
   }
 
-  it('leaves code as is when no comments', () => {
+  it('leaves code as is when no comments, but trim white spaces', () => {
     const code = `
       #define FOO 42
       int main() {
         return 0;
       }
       `;
+    const expected = `
+      #define FOO 42
+      int main() {
+        return 0;
+      }`;
 
-    assertStrippedEqual(code, code);
+    assertStrippedEqual(code, expected);
   });
 
   it('strips line comments', () => {
@@ -35,8 +40,7 @@ describe('Stripping C++ comments', () => {
       `;
 
     const expected = `
-      const int a = 42;
-      `;
+            const int a = 42;`;
 
     assertStrippedEqual(code, expected);
   });
@@ -53,9 +57,7 @@ describe('Stripping C++ comments', () => {
       `;
 
     const expected = `
-
-      const int a = 42;
-      `;
+      const int a = 42;`;
 
     assertStrippedEqual(code, expected);
   });
@@ -72,8 +74,7 @@ describe('Stripping C++ comments', () => {
 
     const expected = `
       const int a = 42;
-      I’m an improperly nested comment */
-      `;
+      I’m an improperly nested comment */`;
 
     assertStrippedEqual(code, expected);
   });
@@ -89,10 +90,22 @@ describe('Stripping C++ comments', () => {
 
     const expected = `
       const int a = 42;
-      I’m an improperly nested comment */
-      `;
+            I’m an improperly nested comment */`;
 
     assertStrippedEqual(code, expected);
+  });
+
+  it('do not strips comments inside strings', () => {
+    const code = `
+      const char a = "Hello, //world!";
+      const char[] = 'Invalid char, // but it will left too';`;
+    assertStrippedEqual(code, code);
+  });
+
+  it('do not strips double slash in URLs', () => {
+    const code = `
+      https://xod.io`;
+    assertStrippedEqual(code, code);
   });
 });
 
