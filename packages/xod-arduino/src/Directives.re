@@ -140,4 +140,16 @@ let isDirtienessEnabled = (code, identifier) =>
 
 let findXodPragmas = Code.findXodPragmas;
 
+let urlRegexp = {|^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$|};
+
+let findRequireUrls = code =>
+  code
+  |. Code.findXodPragmas
+  |. List.reduce([], (acc, v) =>
+       switch (v) {
+       | ["require", url] => Re.test(url, urlRegexp) ? [url, ...acc] : acc
+       | _ => acc
+       }
+     );
+
 let stripCppComments = Code.stripCppComments;

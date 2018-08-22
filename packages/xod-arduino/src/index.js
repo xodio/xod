@@ -3,4 +3,5 @@ export {
   transformProject,
   transformProjectWithDebug,
   getNodeIdsMap,
+  getRequireUrls,
 } from './transpiler';

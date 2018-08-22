@@ -18,6 +18,7 @@ import {
   areTimeoutsEnabled,
   isNodeIdEnabled,
   isDirtienessEnabled,
+  findRequireUrls,
 } from './directives';
 
 //-----------------------------------------------------------------------------
@@ -156,6 +157,7 @@ const convertPatchToTPatch = def(
         inputs,
         impl: commentXodPragmas(impl),
         patchPath,
+        requirements: findRequireUrls(impl),
       },
     ]);
   }
@@ -500,6 +502,11 @@ export const transformProjectWithDebug = def(
     });
     return transformProjectWithImpls(project, patchPath, options);
   }
+);
+
+export const getRequireUrls = def(
+  'getRequireUrls :: TProject -> [String]',
+  R.compose(R.uniq, R.unnest, R.pluck('requirements'), R.prop('patches'))
 );
 
 export const transpile = renderProject;
