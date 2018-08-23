@@ -11,6 +11,15 @@ import * as Utils from './utils';
 //
 // =============================================================================
 
+/**
+ * Transforms paths to libraries into arduino-builder arguments.
+ * E.G.
+ * ['/tmp/libs', '/usr/a/libs'] -> ['-libraries="/tmp/libs"', '-libraries="/usr/a/libs"']
+ *
+ * :: [String] -> [String]
+ */
+const composeLibArgs = R.map(p => `-libraries="${p}"`);
+
 export const composeCommand = (
   sketchFilePath,
   fqbn,

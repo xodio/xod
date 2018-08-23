@@ -592,6 +592,13 @@ array-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/array-equal/-/array-equal-1.0.0.tgz#8c2a5ef2472fd9ea742b04c77a75093ba2757c93"
 
+array-events@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/array-events/-/array-events-0.2.0.tgz#ff42ac53e66f485d6f883234c32252bc2286130e"
+  dependencies:
+    async-arrays "*"
+    extended-emitter "*"
+
 array-filter@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/array-filter/-/array-filter-0.0.1.tgz#7da8cf2e26628ed732803581fd21f67cacd2eeec"
@@ -732,6 +739,12 @@ ast-types@0.10.1:
 astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
+
+async-arrays@*:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/async-arrays/-/async-arrays-1.0.1.tgz#347af2b70f2a7a5767a2d5679cc42bbf1c220fd9"
+  dependencies:
+    sift "*"
 
 async-each@^1.0.0:
   version "1.0.1"
@@ -1979,6 +1992,12 @@ bindings@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.0.tgz#b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7"
 
+bit-mask@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bit-mask/-/bit-mask-1.0.2.tgz#42f708362119611d6223cd53202c79428bf70b81"
+  dependencies:
+    array-events "^0.2.0"
+
 bl@^1.0.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.1.tgz#cac328f7bee45730d404b692203fcb590e172d5e"
@@ -2408,6 +2427,10 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
+call-me-maybe@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/call-me-maybe/-/call-me-maybe-1.0.1.tgz#26d208ea89e37b5cbde60250a15f031c16a4d66b"
+
 caller-path@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/caller-path/-/caller-path-0.1.0.tgz#94085ef63581ecd3daa92444a8fe94e82577751f"
@@ -2502,6 +2525,19 @@ chai-as-promised@^6.0.0:
   resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-6.0.0.tgz#1a02a433a6f24dafac63b9c96fa1684db1aa8da6"
   dependencies:
     check-error "^1.0.2"
+
+chai-as-promised@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.1.tgz#08645d825deb8696ee61725dbf590c012eb00ca0"
+  dependencies:
+    check-error "^1.0.2"
+
+chai-fs@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/chai-fs/-/chai-fs-2.0.0.tgz#35ae039fbbb0710f5122aae17faba1e8f41107c6"
+  dependencies:
+    bit-mask "^1.0.1"
+    readdir-enhanced "^1.4.0"
 
 chai@^4.1.2:
   version "4.1.2"
@@ -4369,6 +4405,10 @@ es6-promise@^4.0.3, es6-promise@^4.0.5:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"
 
+es6-promise@^4.1.0:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.4.tgz#dc4221c2b16518760bd8c39a52d8f356fc00ed29"
+
 es6-promisify@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-5.0.0.tgz#5109d62f3e56ea967c4b63505aef08291c8a5203"
@@ -4798,6 +4838,13 @@ extend@^3.0.0, extend@~3.0.0, extend@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
 
+extended-emitter@*:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/extended-emitter/-/extended-emitter-1.0.2.tgz#a2521ab93f3b1b69a35ff3a35da9889385a99ba0"
+  dependencies:
+    sift "*"
+    wolfy87-eventemitter "*"
+
 external-editor@^2.0.1, external-editor@^2.0.4:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/external-editor/-/external-editor-2.0.5.tgz#52c249a3981b9ba187c7cacf5beb50bf1d91a6bc"
@@ -4847,7 +4894,7 @@ extract-zip@^1.0.3, extract-zip@^1.6.5:
     mkdirp "0.5.0"
     yauzl "2.4.1"
 
-extract-zip@^1.6.6:
+extract-zip@^1.6.6, extract-zip@^1.6.7:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-1.6.7.tgz#a840b4b8af6403264c8db57f4f1a74333ef81fe9"
   dependencies:
@@ -5470,6 +5517,10 @@ glob-stream@^5.3.2:
     through2 "^0.6.0"
     to-absolute-glob "^0.1.1"
     unique-stream "^2.0.2"
+
+glob-to-regexp@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/glob-to-regexp/-/glob-to-regexp-0.3.0.tgz#8c5a1494d2066c570cc3bfe4496175acc4d502ab"
 
 glob2base@^0.0.12:
   version "0.0.12"
@@ -10031,6 +10082,14 @@ readable-stream@~2.1.0:
     string_decoder "~0.10.x"
     util-deprecate "~1.0.1"
 
+readdir-enhanced@^1.4.0:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/readdir-enhanced/-/readdir-enhanced-1.5.2.tgz#61463048690ac6a455b75b62fa78a88f8dc85e53"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    es6-promise "^4.1.0"
+    glob-to-regexp "^0.3.0"
+
 readdirp@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/readdirp/-/readdirp-2.1.0.tgz#4ed0ad060df3073300c48440373f72d1cc642d78"
@@ -10897,6 +10956,10 @@ shellwords@^0.1.1:
 shortid@^2.2.6, shortid@^2.2.8:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
+
+sift@*:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-6.0.0.tgz#f93a778e5cbf05a5024ebc391e6b32511a6d1f82"
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
@@ -12592,6 +12655,10 @@ widest-line@^1.0.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+wolfy87-eventemitter@*:
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.2.5.tgz#e7af2adbb84e481c65edeb2a2e01032c8ff1b88f"
 
 wordwrap@0.0.2:
   version "0.0.2"
