@@ -15,6 +15,13 @@ export const rejectWithCode = R.curry((code, err) =>
 // :: [Promise a] -> Promise a
 export const allPromises = promises => Promise.all(promises);
 
+/**
+ * Helper for function compositions where Promises appears
+ * near the end of the function chain. Otherwise, use `composeP`.
+ */
+// :: (a -> b) -> Promise a -> Promise b
+export const then = R.curry((fn, promise) => promise.then(fn));
+
 // :: Number -> Promise.Resolved ()
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
