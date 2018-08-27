@@ -25,6 +25,10 @@ import * as settings from './settings';
 import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
 import * as WA from './workspaceActions';
 import {
+  subscribeOnCheckArduinoLibraries,
+  subscribeOnInstallArduinoLibraries,
+} from './arduinoDependencies';
+import {
   configureAutoUpdater,
   subscribeOnAutoUpdaterEvents,
 } from './autoupdate';
@@ -200,11 +204,6 @@ const onReady = () => {
   };
 
   WA.subscribeToWorkspaceEvents(ipcMain, store);
-  ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) =>
-    Promise.resolve()
-      .then(() => (debugPort ? stopDebugSession(event) : event))
-      .then(() => uploadToArduinoHandler(event, payload))
-  );
   ipcMain.on(
     EVENTS.START_DEBUG_SESSION,
     startDebugSessionHandler(
@@ -235,6 +234,17 @@ const onReady = () => {
       store.dispatch.updateProjectPath,
       (eventName, data) => win.webContents.send(eventName, data),
       path
+    );
+  });
+
+  WA.loadWorkspacePath().then(wsPath => {
+    subscribeOnCheckArduinoLibraries(wsPath);
+    subscribeOnInstallArduinoLibraries(wsPath);
+
+    ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) =>
+      Promise.resolve()
+        .then(() => (debugPort ? stopDebugSession(event) : event))
+        .then(() => uploadToArduinoHandler(event, payload, wsPath))
     );
   });
 

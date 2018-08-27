@@ -207,7 +207,7 @@ export const buildAndUpload = R.curry(
     sketchFilePath,
     fqbn,
     packagesDir,
-    librariesDir,
+    libraryDirs,
     buildDir,
     portName,
     builderToolDir,
@@ -217,7 +217,7 @@ export const buildAndUpload = R.curry(
       sketchFilePath,
       fqbn,
       packagesDir,
-      librariesDir,
+      libraryDirs,
       buildDir,
       builderToolDir
     ).then(buildResult => {

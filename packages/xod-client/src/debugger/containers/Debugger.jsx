@@ -23,12 +23,14 @@ const DEPLOYMENT_PANEL_FILTER_CONTEXT_MENU_ID =
 const checkmark = active => (active ? <span className="state">✔</span> : null);
 
 const TAB_NAMES = {
+  [LOG_TAB_TYPE.INSTALLER]: 'Installer',
   [LOG_TAB_TYPE.COMPILER]: 'Compiler',
   [LOG_TAB_TYPE.UPLOADER]: 'Uploader',
   [LOG_TAB_TYPE.DEBUGGER]: 'Debugger',
 };
 
 const TAB_ORDER = [
+  LOG_TAB_TYPE.INSTALLER,
   LOG_TAB_TYPE.COMPILER,
   LOG_TAB_TYPE.UPLOADER,
   LOG_TAB_TYPE.DEBUGGER,

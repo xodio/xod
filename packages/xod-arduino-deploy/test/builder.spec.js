@@ -9,7 +9,10 @@ describe('Builder', () => {
   it('composeCommand() returns correct command', () => {
     const sketch = path.normalize('/tmp/test.cpp');
     const packagesDir = path.normalize('/xod/packages/');
-    const librariesDir = path.normalize('/xod/libraries/');
+    const libraryDirs = [
+      path.normalize('/xod/libraries/'),
+      path.normalize('/xod/my-libs'),
+    ];
     const artifacts = path.normalize('/xod/artifacts/');
     const builderDir = path.normalize('/xod/arduino-builder/');
 
@@ -17,7 +20,7 @@ describe('Builder', () => {
       sketch,
       'arduino:avr:uno',
       packagesDir,
-      librariesDir,
+      libraryDirs,
       artifacts,
       builderDir
     );
@@ -30,7 +33,18 @@ describe('Builder', () => {
 
     assert.strictEqual(
       cmd,
-      `"${execCmd}" -hardware="${hardwareA}" -hardware="${packagesDir}" -libraries="${librariesDir}" -tools="${toolsA}" -tools="${packagesDir}" -fqbn="arduino:avr:uno" -build-path="${artifacts}" "${sketch}"`
+      [
+        `"${execCmd}"`,
+        `-hardware="${hardwareA}"`,
+        `-hardware="${packagesDir}"`,
+        `-libraries="${libraryDirs[0]}"`,
+        `-libraries="${libraryDirs[1]}"`,
+        `-tools="${toolsA}"`,
+        `-tools="${packagesDir}"`,
+        '-fqbn="arduino:avr:uno"',
+        `-build-path="${artifacts}"`,
+        `"${sketch}"`,
+      ].join(' ')
     );
   });
 });

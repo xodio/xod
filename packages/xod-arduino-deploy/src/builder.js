@@ -24,7 +24,7 @@ export const composeCommand = (
   sketchFilePath,
   fqbn,
   packagesDir,
-  librariesDir,
+  libraryDirs,
   buildDir,
   builderToolDir
 ) => {
@@ -40,7 +40,7 @@ export const composeCommand = (
     `"${builderExec}"`,
     `-hardware="${builderHardware}"`,
     `-hardware="${packagesDir}"`,
-    `-libraries="${librariesDir}"`,
+    ...composeLibArgs(libraryDirs),
     `-tools="${builderTools}"`,
     `-tools="${packagesDir}"`,
     `-fqbn="${fqbn}"`,
@@ -55,7 +55,7 @@ export const build = R.curry(
     sketchFilePath,
     fqbn,
     packagesDir,
-    librariesDir,
+    libraryDirs,
     buildDir,
     builderToolDir
   ) => {
@@ -63,7 +63,7 @@ export const build = R.curry(
       sketchFilePath,
       fqbn,
       packagesDir,
-      librariesDir,
+      libraryDirs,
       buildDir,
       builderToolDir
     );

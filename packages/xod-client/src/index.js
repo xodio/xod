@@ -4,6 +4,7 @@ import * as ProcessSelectors from './processes/selectors';
 import * as ProjectSelectors from './project/selectors';
 import * as PopupSelectors from './popups/selectors';
 import * as DebuggerSelectors from './debugger/selectors';
+import * as MessageSelectors from './messages/selectors';
 import { hasUnsavedChanges, getLastSavedProject } from './core/selectors';
 
 import * as CoreActions from './core/actions';
@@ -14,6 +15,11 @@ import * as ProcessActions from './processes/actions';
 import * as ProjectBrowserActions from './projectBrowser/actions';
 import * as PopupActions from './popups/actions';
 import * as DebuggerActions from './debugger/actions';
+
+import {
+  INSTALL_ARDUINO_DEPENDENCIES,
+  CHECK_ARDUINO_DEPENDENCIES,
+} from './debugger/actionTypes';
 
 import { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
@@ -56,6 +62,10 @@ export * from './processes/actions';
 export * from './projectBrowser/actions';
 export * from './popups/actions';
 export * from './debugger/actions';
+export {
+  INSTALL_ARDUINO_DEPENDENCIES,
+  CHECK_ARDUINO_DEPENDENCIES,
+} from './debugger/actionTypes';
 
 export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
@@ -93,6 +103,7 @@ export { container as Editor, CreateNodeWidget } from './editor';
 export { default as SnackBar } from './messages';
 export { default as composeMessage } from './messages/composeMessage';
 export * from './messages/constants';
+export * from './messages/selectors';
 
 export { default as initialState } from './core/state';
 
@@ -130,6 +141,8 @@ export default Object.assign(
     INSTALL_LIBRARIES_COMPLETE,
     MESSAGE_BUTTON_CLICKED,
     Messages: coreMessages,
+    INSTALL_ARDUINO_DEPENDENCIES,
+    CHECK_ARDUINO_DEPENDENCIES,
   },
   UserSelectors,
   EditorSelectors,
@@ -137,6 +150,7 @@ export default Object.assign(
   ProjectSelectors,
   PopupSelectors,
   DebuggerSelectors,
+  MessageSelectors,
 
   CoreActions,
   EditorActions,
