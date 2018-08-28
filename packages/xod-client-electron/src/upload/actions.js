@@ -7,19 +7,24 @@ import {
   SELECT_SERIAL_PORT,
 } from './actionTypes';
 
-const progressUpload = (dispatch, id) => (message, percentage) =>
-  dispatch(client.progressProcess(id, UPLOAD, { message, percentage }));
-const succeedUpload = (dispatch, id) => (message = '') =>
-  dispatch(client.successProcess(id, UPLOAD, { message }));
-const failUpload = (dispatch, id) => (message, percentage) =>
-  dispatch(client.failProcess(id, UPLOAD, { message, percentage }));
-
 export const uploadToArduino = () => dispatch => {
   const processId = dispatch(client.addProcess(UPLOAD));
+  const deleteProcess = () => dispatch(client.deleteProcess(processId, UPLOAD));
+
   return {
-    success: succeedUpload(dispatch, processId),
-    fail: failUpload(dispatch, processId),
-    progress: progressUpload(dispatch, processId),
+    success: (message = '') => {
+      dispatch(client.successProcess(processId, UPLOAD, { message }));
+      deleteProcess();
+    },
+    fail: (message, percentage) => {
+      dispatch(client.failProcess(processId, UPLOAD, { message, percentage }));
+      deleteProcess();
+    },
+    progress: (message, percentage) =>
+      dispatch(
+        client.progressProcess(processId, UPLOAD, { message, percentage })
+      ),
+    delete: deleteProcess,
   };
 };
 

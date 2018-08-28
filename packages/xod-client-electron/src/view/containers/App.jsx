@@ -33,7 +33,7 @@ import {
   getSelectedSerialPort,
 } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
-import { UPLOAD, UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
+import { UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
@@ -105,7 +105,6 @@ class App extends client.App {
     this.onOpenProjectClicked = this.onOpenProjectClicked.bind(this);
     this.onOpenTutorialProject = this.onOpenTutorialProject.bind(this);
 
-    this.onUploadPopupClose = this.onUploadPopupClose.bind(this);
     this.onUploadConfigClose = this.onUploadConfigClose.bind(this);
     this.onWorkspaceChange = this.onWorkspaceChange.bind(this);
     this.onWorkspaceCreate = this.onWorkspaceCreate.bind(this);
@@ -484,10 +483,6 @@ class App extends client.App {
       // Discard
       onConfirm();
     }
-  }
-
-  onUploadPopupClose(id) {
-    this.props.actions.deleteProcess(id, UPLOAD);
   }
 
   onUploadConfigClose() {
