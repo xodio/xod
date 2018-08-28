@@ -13,9 +13,10 @@ const makeProcess = (id, state, action) =>
     state
   );
 
+const isProcess = action => action.meta && action.meta.status;
+
 export default (processes = {}, action) => {
-  const isProcess = action.meta && action.meta.status;
-  if (!isProcess) {
+  if (!isProcess(action)) {
     return processes;
   }
   const newId = getNewId(processes);
