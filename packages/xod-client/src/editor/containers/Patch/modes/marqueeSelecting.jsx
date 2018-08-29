@@ -81,11 +81,7 @@ const marqueeSelectingMode = {
   },
   onMouseMove(api, event) {
     const { mouseStartPosition } = api.state;
-    const mousePosition = getMousePosition(
-      patchSvgRef,
-      api.props.offset,
-      event
-    );
+    const mousePosition = getMousePosition(patchSvgRef, api.getOffset(), event);
     api.setState({
       mousePosition,
       selection: getComputedSelection(
@@ -182,9 +178,9 @@ const marqueeSelectingMode = {
           <Layers.Background
             width={api.props.size.width}
             height={api.props.size.height}
-            offset={api.props.offset}
+            offset={api.getOffset()}
           />
-          <g transform={getOffsetMatrix(api.props.offset)}>
+          <g transform={getOffsetMatrix(api.getOffset())}>
             <Layers.Comments
               comments={api.props.comments}
               selection={api.state.selection}

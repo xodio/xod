@@ -1,12 +1,14 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
-import throttle from 'throttle-debounce/throttle';
+import { throttle, debounce } from 'throttle-debounce';
 import cn from 'classnames';
 import $ from 'sanctuary-def';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ReactResizeDetector from 'react-resize-detector';
+import { noop } from 'xod-func-tools';
+import normalizeWheel from 'normalize-wheel';
 
 import * as EditorActions from '../../actions';
 import * as ProjectActions from '../../../project/actions';
@@ -72,7 +74,11 @@ class Patch extends React.Component {
         [mode]: MODE_HANDLERS[mode].getInitialState(props),
       },
       hoveredNodeId: null,
+      offset: this.props.offset,
     };
+
+    // Store is shift key was pressed on the first triggered Wheel event
+    this.shiftKey = false;
 
     // Storage for mode data without forcing update of component
     // E.G. store here refs on the components
@@ -87,6 +93,14 @@ class Patch extends React.Component {
     this.setModeStateThrottled = throttle(100, true, this.setModeState);
     this.setModeStorage = this.setModeStorage.bind(this);
     this.getModeStorage = this.getModeStorage.bind(this);
+
+    this.dispatchOffsetUpdate = debounce(
+      200,
+      this.dispatchOffsetUpdate.bind(this)
+    );
+    this.handleScroll = this.handleScroll.bind(this);
+    this.setShiftKey = debounce(50, true, this.setShiftKey.bind(this));
+    this.getShiftKey = this.getShiftKey.bind(this);
   }
 
   getChildContext() {
@@ -102,6 +116,12 @@ class Patch extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (
+      !R.equals(nextProps.offset, this.state.offset) &&
+      !R.equals(nextProps.offset, this.props.offset)
+    ) {
+      this.setState({ offset: nextProps.offset });
+    }
     if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
       this.goToMode(DEFAULT_MODES[nextProps.tabType]);
     }
@@ -131,6 +151,8 @@ class Patch extends React.Component {
       setStorage: R.partial(this.setModeStorage, [mode]),
       goToMode: this.goToMode,
       goToDefaultMode: this.goToDefaultMode,
+      getOffset: () => this.state.offset,
+      setOffset: offset => this.setState({ offset }),
     };
   }
 
@@ -162,6 +184,13 @@ class Patch extends React.Component {
     this.storage[mode] = R.merge(this.storage[mode], newData);
   }
 
+  getShiftKey() {
+    return this.shiftKey;
+  }
+  setShiftKey(val) {
+    this.shiftKey = val;
+  }
+
   goToMode(newMode, payload) {
     const newModeState = MODE_HANDLERS[newMode].getInitialState(
       this.props,
@@ -174,6 +203,49 @@ class Patch extends React.Component {
   goToDefaultMode(payload) {
     const { tabType } = this.props;
     this.goToMode(DEFAULT_MODES[tabType], payload);
+  }
+
+  dispatchOffsetUpdate(newOffset) {
+    this.props.actions.setOffset(newOffset);
+  }
+
+  handleScroll(event) {
+    event.preventDefault();
+
+    const { currentMode } = this.state;
+    const modeHandler = MODE_HANDLERS[currentMode];
+    const normalizedWheel = normalizeWheel(event);
+
+    // Set shift key with debounce on first call
+    // It needed to avoid unexpected horizontal scroll on press Shift
+    // while Patch scrolls with acceleration
+    this.setShiftKey(event.shiftKey);
+
+    // Most OS does not provide deltaX for horizontal scrolling
+    // so we have to check is the shift key pressed and does
+    // deltaX equal to zero
+    const wheel =
+      this.getShiftKey() && event.deltaX === 0
+        ? {
+            x: normalizedWheel.pixelY,
+            y: normalizedWheel.pixelX,
+          }
+        : {
+            x: normalizedWheel.pixelX,
+            y: normalizedWheel.pixelY,
+          };
+
+    return R.compose(
+      this.dispatchOffsetUpdate,
+      R.tap(() =>
+        (modeHandler.onMouseMove || noop)(this.getApi(currentMode), event)
+      ),
+      R.tap(newOffset => this.setState({ offset: newOffset })),
+      R.evolve({
+        x: R.subtract(R.__, wheel.x),
+        y: R.subtract(R.__, wheel.y),
+      })
+    )(this.state.offset);
   }
 
   render() {
@@ -189,13 +261,13 @@ class Patch extends React.Component {
      * context and pass into render function of Modes.
      */
     const project = ProjectSelectors.getProject(this.context.store.getState());
-
     return this.props.connectDropTarget(
       <div
         className={cn('PatchWrapper-container', currentMode)}
         ref={r => {
           this.dropTargetRootRef = r;
         }}
+        onWheel={this.handleScroll}
       >
         <ReactResizeDetector
           handleWidth

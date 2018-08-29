@@ -39,9 +39,9 @@ const debuggingMode = R.merge(selectingMode, {
             onClick={bindApi(api, this.onBackgroundClick)}
             onDoubleClick={bindApi(api, this.onBackgroundDoubleClick)}
             onMouseDown={bindApi(api, this.onBackgroundMouseDown)}
-            offset={api.props.offset}
+            offset={api.getOffset()}
           />
-          <g transform={getOffsetMatrix(api.props.offset)}>
+          <g transform={getOffsetMatrix(api.getOffset())}>
             <Layers.Comments
               comments={api.props.comments}
               selection={api.props.selection}
