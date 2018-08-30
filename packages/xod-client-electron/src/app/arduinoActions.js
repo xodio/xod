@@ -20,6 +20,7 @@ import {
   createErrorMessage,
 } from '../shared/debuggerMessages';
 import { errorToPlainObject, IS_DEV } from './utils';
+import { getArdulibsPath } from './arduinoDependencies';
 
 // =============================================================================
 //
@@ -143,19 +144,36 @@ export const checkPort = port =>
  * @param {String} code
  * @returns {Promise<String, Error>} Promise with Stdout or Error
  */
-export const uploadToArduino = (pab, port, code, onBuildStdout = () => {}) => {
+export const uploadToArduino = (
+  pab,
+  port,
+  code,
+  ardulibsPath,
+  onBuildStdout = () => {}
+) => {
   // Create tmpDir in userData instead of os.tmpdir() to avoid error "readdirent: result too large
   const sketchFile = pjoin(artifactTmpDir, 'xod-arduino-sketch.cpp');
   const buildDir = pjoin(artifactTmpDir, 'build');
   const clearTmp = () => fse.remove(artifactTmpDir);
 
+  let libPaths = [arduinoLibrariesPath];
+
   return writeFile(sketchFile, code, 'utf8')
+    .then(
+      tapP(() =>
+        fse.pathExists(ardulibsPath).then(exists => {
+          if (exists) {
+            libPaths = R.append(ardulibsPath, libPaths);
+          }
+        })
+      )
+    )
     .then(({ path }) =>
       xad.buildAndUpload(
         path,
         pab,
         arduinoPackagesPath,
-        arduinoLibrariesPath,
+        libPaths,
         buildDir,
         port,
         arduinoBuilderPath,
@@ -179,7 +197,11 @@ const findBoardById = R.curry((id, boards) =>
 //
 // =============================================================================
 
-const deployToArduino = ({ payload, sendProgress, sendSuccess }) => {
+const deployToArduino = ardulibsPath => ({
+  payload,
+  sendProgress,
+  sendSuccess,
+}) => {
   const boardId = payload.board.boardsTxtId;
   const boardCpuId = payload.board.cpuId;
   const { package: pkg, architecture } = payload.board;
@@ -203,6 +225,7 @@ const deployToArduino = ({ payload, sendProgress, sendSuccess }) => {
         xad.strigifyFQBN(pab),
         port,
         payload.code,
+        ardulibsPath,
         buildStdout => {
           sendProgress(buildStdout, 60)();
         }
@@ -405,7 +428,7 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (
 
 export const stopDebugSessionHandler = (event, port) => xad.closePort(port);
 
-export const uploadToArduinoHandler = (event, payload) => {
+export const uploadToArduinoHandler = (event, payload, wsPath) => {
   let lastPercentage = 0;
   // Messages
   const send = status =>
@@ -438,9 +461,11 @@ export const uploadToArduinoHandler = (event, payload) => {
       formatError
     )(err);
 
+  const ardulibsPath = getArdulibsPath(wsPath);
+
   const deployFn = payload.cloud
     ? deployToArduinoThroughCloud
-    : deployToArduino;
+    : deployToArduino(ardulibsPath);
 
   return deployFn({
     payload,

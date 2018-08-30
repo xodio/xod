@@ -11,11 +11,20 @@ import * as Utils from './utils';
 //
 // =============================================================================
 
+/**
+ * Transforms paths to libraries into arduino-builder arguments.
+ * E.G.
+ * ['/tmp/libs', '/usr/a/libs'] -> ['-libraries="/tmp/libs"', '-libraries="/usr/a/libs"']
+ *
+ * :: [String] -> [String]
+ */
+const composeLibArgs = R.map(p => `-libraries="${p}"`);
+
 export const composeCommand = (
   sketchFilePath,
   fqbn,
   packagesDir,
-  librariesDir,
+  libraryDirs,
   buildDir,
   builderToolDir
 ) => {
@@ -31,7 +40,7 @@ export const composeCommand = (
     `"${builderExec}"`,
     `-hardware="${builderHardware}"`,
     `-hardware="${packagesDir}"`,
-    `-libraries="${librariesDir}"`,
+    ...composeLibArgs(libraryDirs),
     `-tools="${builderTools}"`,
     `-tools="${packagesDir}"`,
     `-fqbn="${fqbn}"`,
@@ -46,7 +55,7 @@ export const build = R.curry(
     sketchFilePath,
     fqbn,
     packagesDir,
-    librariesDir,
+    libraryDirs,
     buildDir,
     builderToolDir
   ) => {
@@ -54,7 +63,7 @@ export const build = R.curry(
       sketchFilePath,
       fqbn,
       packagesDir,
-      librariesDir,
+      libraryDirs,
       buildDir,
       builderToolDir
     );

@@ -3,6 +3,8 @@ import { renameKeys, invertMap } from 'xod-func-tools';
 
 import {
   UPLOAD,
+  INSTALL_ARDUINO_DEPENDENCIES,
+  CHECK_ARDUINO_DEPENDENCIES,
   TOGGLE_DEBUGGER_PANEL,
   DEBUGGER_LOG_ADD_MESSAGES,
   DEBUGGER_LOG_CLEAR,
@@ -17,6 +19,7 @@ import {
 
 import { UPLOAD_STATUS, UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
 import * as MSG from './messages';
+import { STATUS } from '../utils/constants';
 
 import {
   createSystemMessage,
@@ -55,6 +58,7 @@ const formatMessage = msg => {
   }
 };
 
+const overInstallerLog = R.over(R.lensPath([LOG_TAB_TYPE.INSTALLER, 'log']));
 const overCompilerLog = R.over(R.lensPath([LOG_TAB_TYPE.COMPILER, 'log']));
 const overUploaderLog = R.over(R.lensPath([LOG_TAB_TYPE.UPLOADER, 'log']));
 const overDebuggerLog = R.over(R.lensPath([LOG_TAB_TYPE.DEBUGGER, 'log']));
@@ -110,6 +114,70 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SELECT_DEBUGGER_TAB:
       return R.assoc('currentTab', action.payload, state);
+    case INSTALL_ARDUINO_DEPENDENCIES:
+    case CHECK_ARDUINO_DEPENDENCIES: {
+      const { type, payload, meta: { status } } = action;
+
+      const beginMsg =
+        type === INSTALL_ARDUINO_DEPENDENCIES
+          ? MSG.INSTALLING_DEPENDENCIES
+          : MSG.CHECKING_DEPENDENCIES;
+      const successMsg =
+        type === INSTALL_ARDUINO_DEPENDENCIES
+          ? MSG.INSTALLING_DEPENDENCIES_SUCCESS
+          : MSG.CHECKING_DEPENDENCIES_SUCCESS;
+
+      if (status === STATUS.STARTED) {
+        return R.compose(
+          R.assoc('currentTab', LOG_TAB_TYPE.INSTALLER),
+          R.assoc('currentStage', LOG_TAB_TYPE.INSTALLER),
+          R.assoc('uploadProgress', 0),
+          overInstallerLog(appendMessage(createFlasherMessage(beginMsg))),
+          overInstallerLog(R.always('')),
+          overCompilerLog(R.always('')),
+          overUploaderLog(R.always('')),
+          overDebuggerLog(R.always('')),
+          overStageError(LOG_TAB_TYPE.INSTALLER)(R.always('')),
+          overStageError(LOG_TAB_TYPE.COMPILER)(R.always('')),
+          overStageError(LOG_TAB_TYPE.UPLOADER)(R.always('')),
+          overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))
+        )(state);
+      }
+      if (status === STATUS.PROGRESSED) {
+        const { message, percentage } = payload;
+
+        return R.compose(
+          R.assoc('uploadProgress', percentage),
+          overInstallerLog(appendMessage(createFlasherMessage(message)))
+        )(state);
+      }
+      if (status === STATUS.SUCCEEDED) {
+        return R.compose(
+          R.ifElse(
+            () => type === CHECK_ARDUINO_DEPENDENCIES,
+            // If we just checked arduino dependencies and everything OK — continue upload
+            R.compose(
+              R.assoc('currentTab', LOG_TAB_TYPE.COMPILER),
+              R.assoc('currentStage', LOG_TAB_TYPE.COMPILER)
+            ),
+            // If we installed dependencies — hide progress bar
+            R.assoc('uploadProgress', null)
+          ),
+          overInstallerLog(appendMessage(createSystemMessage(successMsg)))
+        )(state);
+      }
+      if (status === UPLOAD_STATUS.FAILED) {
+        return R.compose(
+          R.assoc('uploadProgress', null),
+          overStageError(state.currentStage)(
+            appendMessage(createErrorMessage(payload.message))
+          ),
+          showDebuggerPane
+        )(state);
+      }
+
+      return state;
+    }
     case UPLOAD: {
       const { payload, meta: { status } } = action;
 
@@ -217,9 +285,11 @@ export default (state = initialState, action) => {
     case DEBUGGER_LOG_CLEAR:
       return R.compose(
         // TODO: should reset skip state?
+        overInstallerLog(R.always('')),
         overCompilerLog(R.always('')),
         overUploaderLog(R.always('')),
         overDebuggerLog(R.always('')),
+        overStageError(LOG_TAB_TYPE.INSTALLER)(R.always('')),
         overStageError(LOG_TAB_TYPE.COMPILER)(R.always('')),
         overStageError(LOG_TAB_TYPE.UPLOADER)(R.always('')),
         overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))

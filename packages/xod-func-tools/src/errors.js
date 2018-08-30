@@ -3,14 +3,19 @@ import { Either } from 'ramda-fantasy';
 import { def } from './types';
 import { foldMaybe, foldEither } from './monads';
 
-export const fail = def(
-  'fail :: String -> Object -> Either Error a',
+export const createError = def(
+  'createError :: String -> Object -> Error',
   (errorType, payload) => {
     const err = new Error(`${errorType} ${JSON.stringify(payload)}`);
     err.type = errorType;
     err.payload = payload;
-    return Either.Left(err);
+    return err;
   }
+);
+
+export const fail = def(
+  'fail :: String -> Object -> Either Error a',
+  R.compose(Either.Left, createError)
 );
 
 // :: String -> Object -> ((a, ..., z) -> Boolean) -> ((a, ..., z) -> Either Error a)

@@ -1,6 +1,7 @@
 export * from './errors';
 export * from './fetch';
 export * from './lists';
+export * from './math';
 export * from './monads';
 export * from './objects';
 export * from './promises';

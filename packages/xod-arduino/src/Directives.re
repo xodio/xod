@@ -64,18 +64,14 @@ module Re = {
 
 module Code = {
   /*
-     ((?!\/\/).)*? matches lines without // before / *
-     [\s\S]*? matches anything across lines
-     See: https://stackoverflow.com/questions/1068280/javascript-regex-multiline-flag-doesnt-work
-     Question is to reduce regex greedieness
+    Regexp from here: https://regex101.com/r/qY4xD3/15
+    Found a link here: https://stackoverflow.com/questions/36454069/how-to-remove-c-style-comments-from-code
+    Edited: removed one `\n` in the second non-capturing group to avoid removing new lines
    */
-  let blockCommentRegexp = {|^(((?!\/\/).)*?)\s*/\*[\s\S]*?\*/|};
-  let stripBlockComments = code =>
-    code |. Re.replace(blockCommentRegexp, "$1");
-  let lineCommentRegexp = {|\s*\/\/.*$|};
-  let stripLineComments = code => code |. Re.remove(lineCommentRegexp);
+  let allCommentsRegexp = {|(?:\/\/(?:\\\n|[^\n])*)|(?:\/\*[\s\S]*?\*\/)|((?:"([^(\\\s])\([^)]*\)\2")|(?:@"[^"]*?")|(?:"(?:\?\?'|\\\\|\\"|\\\n|[^"])*?")|(?:'(?:\\\\|\\'|\\\n|[^'])*?'))|};
+  let trimRegexp = {|\s*$|};
   let stripCppComments = code =>
-    code |. stripBlockComments |. stripLineComments;
+    code |. Re.replace(allCommentsRegexp, "$1") |. Re.remove(trimRegexp);
   let doesReferSymbol = (symbol, code) =>
     code |. stripCppComments |. Re.test("\\b" ++ symbol ++ "\\b");
   let doesReferTemplateSymbol = (symbol, templateArg, code) =>
@@ -143,5 +139,17 @@ let isDirtienessEnabled = (code, identifier) =>
      );
 
 let findXodPragmas = Code.findXodPragmas;
+
+let urlRegexp = {|^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$|};
+
+let findRequireUrls = code =>
+  code
+  |. Code.findXodPragmas
+  |. List.reduce([], (acc, v) =>
+       switch (v) {
+       | ["require", url] => Re.test(url, urlRegexp) ? [url, ...acc] : acc
+       | _ => acc
+       }
+     );
 
 let stripCppComments = Code.stripCppComments;

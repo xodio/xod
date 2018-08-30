@@ -10,6 +10,7 @@ import uploadReducer from './upload/reducer';
 import debuggerMiddleware from './debugger/middleware';
 import autoupdateMiddleware from './view/autoupdateMiddleware';
 import installLibMiddleware from './view/installLibMiddleware';
+import arduinoDependenciesMiddleware from './arduinoDependencies/middleware';
 
 const extraReducers = {
   popups: popupsReducer,
@@ -20,6 +21,7 @@ const extraMiddlewares = [
   debuggerMiddleware,
   installLibMiddleware,
   autoupdateMiddleware,
+  arduinoDependenciesMiddleware,
 ];
 
 ReactDOM.render(

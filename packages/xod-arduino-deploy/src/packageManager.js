@@ -1,12 +1,11 @@
 import * as R from 'ramda';
 import path from 'path';
 import fse from 'fs-extra';
-import fetch from 'node-fetch';
 import tar from 'tar';
 import bz2 from 'unbzip2-stream';
-import { tapP } from 'xod-func-tools';
 
 import * as Utils from './utils';
+import download from './download';
 
 // =============================================================================
 //
@@ -36,29 +35,9 @@ const isDirSync = dirPath => {
 
 // =============================================================================
 //
-// Downloading and extracting utils
+// Extracting utils
 //
 // =============================================================================
-
-// :: URL -> Path -> Promise Path Error
-export const downloadFileFromUrl = R.curry((url, destinationPath) =>
-  fetch(url)
-    .then(tapP(() => fse.ensureDir(path.dirname(destinationPath))))
-    .then(res => {
-      const partPath = `${destinationPath}.part`;
-      const file = fse.createWriteStream(partPath);
-      return new Promise((resolve, reject) => {
-        res.body
-          .pipe(file)
-          .on('error', reject)
-          .on('finish', () => {
-            file.close(() => resolve(partPath));
-          });
-      });
-    })
-    .then(partPath => fse.rename(partPath, destinationPath))
-    .then(R.always(destinationPath))
-);
 
 // :: Path -> Promise Path Error
 export const extractBzip2IfNecessary = archivePath =>
@@ -105,7 +84,7 @@ export const downloadAndExtract = R.curry((url, unpackDest, strip) => {
   const archiveName = path.basename(url);
   const archivePath = path.join(unpackDest, archiveName);
 
-  return downloadFileFromUrl(url, archivePath)
+  return download(url, archivePath)
     .then(() => extractArchive(archivePath, strip))
     .then(() => ({
       path: unpackDest,

@@ -5,3 +5,9 @@ export { installArchitecture, installTool } from './packageManager';
 export { listPorts, openPort, openAndReadPort, closePort } from './serialport';
 export { default as packageIndex } from './packageIndex.json';
 export { listBoardsFromIndex, parseFQBN, strigifyFQBN } from './utils';
+export { default as messages } from './messages';
+export {
+  getLibraryNameFromUrl,
+  checkLibrariesInstalledByUrls,
+  installLibrariesByUrls,
+} from './libraryManager';

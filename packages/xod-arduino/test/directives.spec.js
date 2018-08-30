@@ -6,6 +6,7 @@ import {
   areTimeoutsEnabled,
   stripCppComments,
   findXodPragmas,
+  findRequireUrls,
 } from '../src/directives';
 
 describe('Stripping C++ comments', () => {
@@ -17,13 +18,12 @@ describe('Stripping C++ comments', () => {
     );
   }
 
-  it('leaves code as is when no comments', () => {
+  it('leaves code as is when no comments, but trim white spaces', () => {
     const code = `
       #define FOO 42
       int main() {
         return 0;
-      }
-      `;
+      }`;
 
     assertStrippedEqual(code, code);
   });
@@ -35,8 +35,7 @@ describe('Stripping C++ comments', () => {
       `;
 
     const expected = `
-      const int a = 42;
-      `;
+      const int a = 42;`;
 
     assertStrippedEqual(code, expected);
   });
@@ -53,9 +52,7 @@ describe('Stripping C++ comments', () => {
       `;
 
     const expected = `
-
-      const int a = 42;
-      `;
+      const int a = 42;`;
 
     assertStrippedEqual(code, expected);
   });
@@ -72,8 +69,7 @@ describe('Stripping C++ comments', () => {
 
     const expected = `
       const int a = 42;
-      I’m an improperly nested comment */
-      `;
+      I’m an improperly nested comment */`;
 
     assertStrippedEqual(code, expected);
   });
@@ -89,16 +85,25 @@ describe('Stripping C++ comments', () => {
 
     const expected = `
       const int a = 42;
-      I’m an improperly nested comment */
-      `;
+      I’m an improperly nested comment */`;
 
     assertStrippedEqual(code, expected);
+  });
+
+  it('does not strip comments inside strings', () => {
+    const code = `
+      const char a = "Hello, //world!";
+      const char[] = 'Invalid char, // but it will be left too';`;
+    assertStrippedEqual(code, code);
   });
 });
 
 describe('Search for #pragma XOD', () => {
   function assertPragmasFound(code, expected) {
     assert.deepEqual(findXodPragmas(code), expected);
+  }
+  function assertRequirePragmasFound(code, expected) {
+    assert.sameMembers(findRequireUrls(code), expected);
   }
 
   it('returns empty list if not found', () => {
@@ -134,6 +139,34 @@ describe('Search for #pragma XOD', () => {
       `;
 
     assertPragmasFound(code, [['foo', 'bar', 'baz'], ['digun', 'liteta']]);
+  });
+
+  it('finds XOD require pragmas', () => {
+    const code = `
+      #pragma XOD require "https://github.com/z3t0/Arduino-IRremote"
+      #pragma XOD require "https://github.com/arduino-libraries/GSM/"
+      #  pragma     XOD   require     "https://github.com/arduino-libraries/ArduinoLowPower"
+    `;
+
+    assertRequirePragmasFound(code, [
+      'https://github.com/z3t0/Arduino-IRremote',
+      'https://github.com/arduino-libraries/GSM/',
+      'https://github.com/arduino-libraries/ArduinoLowPower',
+    ]);
+  });
+
+  it('ignores malformed XOD require pragmas', () => {
+    const code = `
+      #pragma XOD require https://this.is/not/ok
+      #pragma XOD require "https://github.com/ok/ok"
+      #pragma XOD require
+      #pragma XOD require foo
+      #pragma XOD require foo bar
+      #pragma XOD require "foo bar
+      #pragma XOD require "foo bar"
+    `;
+
+    assertRequirePragmasFound(code, ['https://github.com/ok/ok']);
   });
 
   it('considers enquoted arguments atomic', () => {

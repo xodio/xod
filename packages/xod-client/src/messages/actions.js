@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import * as ActionType from './actionTypes';
 import { MESSAGE_TYPE } from './constants';
-import { STATUS } from '../utils/constants';
 
 const getTimestamp = () => new Date().getTime();
 
@@ -19,7 +18,6 @@ export const addMessage = (type, messageData, id = null) => ({
       messageData
     ),
     timestamp: getTimestamp(),
-    status: STATUS.STARTED,
   },
 });
 
@@ -30,7 +28,6 @@ export const deleteMessage = id => ({
   },
   meta: {
     timestamp: getTimestamp(),
-    status: STATUS.DELETED,
   },
 });
 

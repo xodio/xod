@@ -48,5 +48,13 @@ let isDirtienessEnabled: (code, string) => bool;
 /** Returns a list of found XOD pragmas in the order of occurence */
 let findXodPragmas: code => list(Pragma.t);
 
+/**
+ * Returns a list of strings (URLs) that found in XOD require pragmas:
+ *
+ *    #pragma XOD require "https://github.com/arduino-libraries/Arduino-IRremote"
+ *    #pragma XOD require "https://github.com/arduino-libraries/Stepper"
+ */
+let findRequireUrls: code => list(string);
+
 /** Removes single- and multiline comments from C++ code */
 let stripCppComments: code => code;

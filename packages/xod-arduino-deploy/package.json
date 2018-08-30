@@ -23,9 +23,11 @@
   "homepage": "https://github.com/xodio/xod#readme",
   "dependencies": {
     "child-process-promise": "^2.2.1",
+    "extract-zip": "^1.6.7",
     "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.1",
     "ramda": "^0.24.1",
+    "ramda-fantasy": "^0.8.0",
     "serialport": "^4.0.7",
     "tar": "^3.1.8",
     "unbzip2-stream": "^1.2.5",
@@ -34,6 +36,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-fs": "^2.0.0",
     "commander": "^2.11.0",
     "cpx": "^1.5.0"
   }

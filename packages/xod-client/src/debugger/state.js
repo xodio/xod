@@ -5,6 +5,10 @@ export default {
   isVisible: false,
   isRunning: false,
   isOutdated: false,
+  [LOG_TAB_TYPE.INSTALLER]: {
+    log: '',
+    error: '',
+  },
   [LOG_TAB_TYPE.COMPILER]: {
     log: INTRODUCTION,
     error: '',
