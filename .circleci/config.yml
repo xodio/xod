@@ -24,6 +24,10 @@ defs:
         # load any most recent one
         - node_modules-{{ arch }}
 
+  machines:
+    docker-custom-nodejs: &docker-custom-nodejs
+      - image: xodio/cci-node:10-v1
+
   steps:
     step-install: &step-install
       name: Install Node modules
@@ -71,8 +75,7 @@ jobs:
   # Verify jobs
   #--------------------------------------------------------------------
   verify-linux:
-    docker:
-      - image: xodio/cci-node:9.2-v3
+    docker: *docker-custom-nodejs
     environment:
       DISPLAY: ":99.0"
     steps:
@@ -109,8 +112,7 @@ jobs:
       - run: *step-verify-git-clean
 
   test-cpp:
-    docker:
-      - image: xodio/cci-node:9.2-v3
+    docker: *docker-custom-nodejs
     environment:
       TAB_SUITE_DIR: /tmp/xod-tabtest
     steps:
@@ -138,8 +140,7 @@ jobs:
   # Distro jobs
   #--------------------------------------------------------------------
   dist-linux:
-    docker:
-      - image: xodio/cci-node:9.2-v3
+    docker: *docker-custom-nodejs
     environment:
       NODE_ENV: production
     steps:
@@ -213,8 +214,7 @@ jobs:
   # Docker image building jobs
   #--------------------------------------------------------------------
   dockerize-ide:
-    docker:
-      - image: xodio/cci-node:9.2-v3
+    docker: *docker-custom-nodejs
     environment:
       NODE_ENV: production
       IMAGE_NAME: "xodio/site-ide"

@@ -1,4 +1,4 @@
-FROM node:9.2
+FROM node:10
 
 # Let the apt-get know we’re not interactive while building the image
 ARG DEBIAN_FRONTEND=noninteractive
