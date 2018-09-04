@@ -6,14 +6,29 @@ export function findVertexesWithNoIncomingEdges(vertexes, edges) {
   return R.difference(vertexes, R.map(R.nth(1), edges));
 }
 
-export function hasIncomingEdges(vertex, edges) {
-  const edgeIncoming = R.compose(R.equals(vertex), R.nth(1));
-  return R.any(edgeIncoming, edges);
-}
+// Packs edges list in a data structure optimized for use in `sortGraph`
+//
+// :: [[Int, Int]] -> EdgesSet
+const makeEdgesSet = R.reduce(
+  // `toString` is needed because Ramda gets "confused" by numeric keys and produces arrays
+  //  (for example, https://github.com/ramda/ramda/blob/v0.24.1/src/dissocPath.js#L33)
+  // `n` and `m` are inverted to make `hasIncomingEdges` faster
+  (s, [n, m]) => R.assocPath([m.toString(), n.toString()], true, s),
+  {}
+);
 
-export function hasEdgeFrom(n, edges) {
-  return m => R.contains([n, m], edges);
-}
+// :: Int -> EdgesSet -> Int -> Boolean
+const hasEdgeFrom = (n, edgesSet) => m => R.pathOr(false, [m, n], edgesSet);
+
+// :: Int -> EdgesSet -> Boolean
+const hasIncomingEdges = (vertex, edgesSet) => !!R.prop(vertex, edgesSet);
+
+// :: Int -> Int -> EdgesSet -> EdgesSet
+const dissocEdge = (n, m, edgesSet) =>
+  R.compose(
+    R.when(R.pipe(R.propOr({}, m), R.isEmpty), R.dissoc(m.toString())),
+    R.dissocPath([m.toString(), n.toString()])
+  )(edgesSet);
 
 /**
  * Sorts graph vertexes topologically.
@@ -28,28 +43,29 @@ export function hasEdgeFrom(n, edges) {
  * @see https://en.wikipedia.org/wiki/Topological_sorting
  */
 export function sortGraph(vertexes, edges) {
-  let l = []; // Empty list that will contain the sorted elements
+  const l = []; // Empty list that will contain the sorted elements
   let s = findVertexesWithNoIncomingEdges(vertexes, edges);
-  let edgesLeft = edges;
+  let edgesLeft = makeEdgesSet(edges);
 
   const excludeEdgesFrom = n => m => {
-    edgesLeft = R.without([[n, m]], edgesLeft);
+    edgesLeft = dissocEdge(n, m, edgesLeft);
     if (!hasIncomingEdges(m, edgesLeft)) {
-      s = R.append(m, s);
+      s.push(m);
     }
   };
 
   while (s.length) {
-    const n = R.head(s);
-    s = R.drop(1, s);
-    l = R.append(n, l);
+    const [n, ...restS] = s;
+    s = restS;
+    l.push(n);
+
     R.forEach(
       excludeEdgesFrom(n),
       R.filter(hasEdgeFrom(n, edgesLeft), vertexes)
     );
   }
 
-  if (edgesLeft.length) {
+  if (!R.isEmpty(edgesLeft)) {
     return fail('LOOPS_DETECTED', {});
   }
 
