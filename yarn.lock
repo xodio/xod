@@ -105,42 +105,62 @@
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/@hypnosphi/fuse.js/-/fuse.js-3.0.9.tgz#ea99f6121b4a8f065b4c71f85595db2714498807"
 
-"@serialport/parser-byte-length@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-byte-length/-/parser-byte-length-1.0.5.tgz#3ea84d47cb259165f9e4911fbbcb98a46550dd0e"
+"@serialport/binding-abstract@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/binding-abstract/-/binding-abstract-2.0.1.tgz#2c92c10c37c4f27d374c714a05b111f3a69b1254"
   dependencies:
-    safe-buffer "^5.1.1"
+    debug "^3.1.0"
 
-"@serialport/parser-cctalk@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-cctalk/-/parser-cctalk-1.0.5.tgz#e489254d1a6b29fb35187366e540c68624f33ab0"
+"@serialport/binding-mock@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/binding-mock/-/binding-mock-2.0.1.tgz#724057db18d23d3c5c3b7ff17b98e045f370ac45"
   dependencies:
-    safe-buffer "^5.1.1"
+    "@serialport/binding-abstract" "^2.0.1"
+    debug "^3.1.0"
 
-"@serialport/parser-delimiter@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-delimiter/-/parser-delimiter-1.0.5.tgz#4cb42883def663fbfab5574455471ed0721f5b0a"
+"@serialport/bindings@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@serialport/bindings/-/bindings-2.0.2.tgz#64416a51043b1b0a4b7e4f25f8d5d8c93124e79b"
   dependencies:
-    safe-buffer "^5.1.1"
+    "@serialport/binding-abstract" "^2.0.1"
+    "@serialport/parser-readline" "^2.0.1"
+    bindings "^1.3.0"
+    debug "^3.1.0"
+    nan "^2.9.2"
+    prebuild-install "^5.1.0"
 
-"@serialport/parser-readline@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-readline/-/parser-readline-1.0.5.tgz#705356d1a16c6a86f2a39778585305cf153d0b8e"
-  dependencies:
-    "@serialport/parser-delimiter" "^1.0.5"
-    safe-buffer "^5.1.1"
+"@serialport/parser-byte-length@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-byte-length/-/parser-byte-length-2.0.1.tgz#d3b5d41e77208e3361bd048d78e6c53546c7ea2c"
 
-"@serialport/parser-ready@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-ready/-/parser-ready-1.0.5.tgz#8921455afab47ea7098abc7a4a70702c7ca647aa"
-  dependencies:
-    safe-buffer "^5.1.1"
+"@serialport/parser-cctalk@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-cctalk/-/parser-cctalk-2.0.1.tgz#d2395adc0472a3399cd6f26a5fdcf86560341aba"
 
-"@serialport/parser-regex@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@serialport/parser-regex/-/parser-regex-1.0.5.tgz#932f836343ab48d724905e5ff89f8f3dc28e6516"
+"@serialport/parser-delimiter@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-delimiter/-/parser-delimiter-2.0.1.tgz#5aeb60579a8f8fb47d095a66c7bea9f861ca1728"
+
+"@serialport/parser-readline@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-readline/-/parser-readline-2.0.1.tgz#e491bdf432b4f96f31fd8206b49feb03776a201b"
   dependencies:
-    safe-buffer "^5.1.1"
+    "@serialport/parser-delimiter" "^2.0.1"
+
+"@serialport/parser-ready@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-ready/-/parser-ready-2.0.1.tgz#e8be565959b00dcae61a2ba888f82382bd1a5754"
+
+"@serialport/parser-regex@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/parser-regex/-/parser-regex-2.0.1.tgz#29e87248601f482ba892596adad8f22a0658279c"
+
+"@serialport/stream@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@serialport/stream/-/stream-2.0.1.tgz#a48ac2e72d4963816550cd71c2852d3799d3a1e3"
+  dependencies:
+    "@serialport/binding-mock" "^2.0.1"
+    debug "^3.1.0"
 
 "@storybook/addon-actions@^3.2.17":
   version "3.2.17"
@@ -2219,7 +2239,7 @@ binary-extensions@^1.0.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.10.0.tgz#9aeb9a6c5e88638aad171e167f5900abe24835d0"
 
-bindings@1.3.0:
+bindings@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.0.tgz#b346f6ecf6a95f5a815c5839fc7cdb22502f1ed7"
 
@@ -3162,8 +3182,8 @@ commander@^2.12.1, commander@~2.12.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
 commander@^2.13.0:
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
 common-tags@^1.5.1:
   version "1.5.1"
@@ -3892,6 +3912,10 @@ deep-equal@^1.0.1:
 deep-extend@^0.4.1, deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
+
+deep-extend@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
 
 deep-is@~0.1.3:
   version "0.1.3"
@@ -8510,13 +8534,17 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@^2.10.0, nan@^2.9.2:
+nan@^2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
 nan@^2.3.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
+
+nan@^2.9.2:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.11.0.tgz#574e360e4d954ab16966ec102c0c049fd961a099"
 
 nanomatch@^1.2.1:
   version "1.2.3"
@@ -9678,9 +9706,9 @@ postcss@^6.0.16:
     source-map "^0.6.1"
     supports-color "^5.1.0"
 
-prebuild-install@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-4.0.0.tgz#206ce8106ce5efa4b6cf062fc8a0a7d93c17f3a8"
+prebuild-install@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-5.1.0.tgz#799cf2e443065eaff4880ecfa32b4d1a4a3ad000"
   dependencies:
     detect-libc "^1.0.3"
     expand-template "^1.0.2"
@@ -9692,7 +9720,7 @@ prebuild-install@^4.0.0:
     npmlog "^4.0.1"
     os-homedir "^1.0.1"
     pump "^2.0.1"
-    rc "^1.1.6"
+    rc "^1.2.7"
     simple-get "^2.7.0"
     tar-fs "^1.13.0"
     tunnel-agent "^0.6.0"
@@ -10162,6 +10190,15 @@ rc@^1.1.2, rc@^1.1.7:
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.1.tgz#2e03e8e42ee450b8cb3dce65be1bf8974e1dfd95"
   dependencies:
     deep-extend "~0.4.0"
+    ini "~1.3.0"
+    minimist "^1.2.0"
+    strip-json-comments "~2.0.1"
+
+rc@^1.2.7:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
+  dependencies:
+    deep-extend "^0.6.0"
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
@@ -11137,10 +11174,6 @@ safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, s
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-safe-buffer@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
-
 safe-buffer@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
@@ -11286,24 +11319,23 @@ serialize-javascript@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-1.4.0.tgz#7c958514db6ac2443a8abc062dc9f7886a7f6005"
 
-serialport@^6.2.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/serialport/-/serialport-6.2.2.tgz#75532312571578b060eb29cbdf8f2f3e8ba03063"
+serialport@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/serialport/-/serialport-7.0.2.tgz#234e505d8a57d91a3f1d772ca335e2e4c48ee38b"
   dependencies:
-    "@serialport/parser-byte-length" "^1.0.5"
-    "@serialport/parser-cctalk" "^1.0.5"
-    "@serialport/parser-delimiter" "^1.0.5"
-    "@serialport/parser-readline" "^1.0.5"
-    "@serialport/parser-ready" "^1.0.5"
-    "@serialport/parser-regex" "^1.0.5"
-    bindings "1.3.0"
+    "@serialport/binding-mock" "^2.0.1"
+    "@serialport/bindings" "^2.0.2"
+    "@serialport/parser-byte-length" "^2.0.1"
+    "@serialport/parser-cctalk" "^2.0.1"
+    "@serialport/parser-delimiter" "^2.0.1"
+    "@serialport/parser-readline" "^2.0.1"
+    "@serialport/parser-ready" "^2.0.1"
+    "@serialport/parser-regex" "^2.0.1"
+    "@serialport/stream" "^2.0.1"
     commander "^2.13.0"
     debug "^3.1.0"
-    nan "^2.9.2"
-    prebuild-install "^4.0.0"
     promirepl "^1.0.1"
     prompt-list "^3.2.0"
-    safe-buffer "^5.1.2"
 
 serve-favicon@^2.4.5:
   version "2.4.5"

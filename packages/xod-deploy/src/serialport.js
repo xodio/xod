@@ -124,13 +124,15 @@ export const openAndReadPort = (portName, onData, onClose) => {
   // eslint-disable-next-line global-require
   const SerialPort = require('serialport');
 
-  const readline = SerialPort.parsers.readline;
   return openPort(portName, {
     baudRate: 115200,
-    parser: readline('\n'),
   }).then(
     R.tap(port => {
-      port.on('data', onData);
+      const parser = port.pipe(
+        new SerialPort.parsers.Readline({ delimiter: '\n' })
+      );
+
+      parser.on('data', onData);
       port.on('close', onClose);
     })
   );
