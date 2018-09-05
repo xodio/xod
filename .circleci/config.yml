@@ -29,6 +29,11 @@ defs:
       - image: xodio/cci-node:10-v1
 
   steps:
+    step-install-node-v10-on-mac: &step-install-node-v10-on-mac
+      name: Install Node v10
+      # because macOS machine comes with node v8.6.0
+      command: curl "https://nodejs.org/dist/latest/node-v10.9.0.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+
     step-install: &step-install
       name: Install Node modules
       # to always instal some essential tools(electron-builder etc)
@@ -102,6 +107,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-v10-on-mac
       - run: *step-install
       - save_cache: *cache-node_modules
       - run: *step-build
@@ -173,6 +179,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-v10-on-mac
       - run: *step-install
       - run: *step-bump-version
       - run: *step-build-electron
