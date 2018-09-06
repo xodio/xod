@@ -1,0 +1,307 @@
+{
+  "comments": [
+    {
+      "content": "<- Create the device",
+      "id": "BJNQ-vLum",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- Read data from one page",
+      "id": "ByOhbv8dX",
+      "position": {
+        "x": 340,
+        "y": 510
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- Initialize it on boot",
+      "id": "ByzV-vLdQ",
+      "position": {
+        "x": 340,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- Detect an NFC tag and read its UID. This is a required step to read or write data to the tag",
+      "id": "H185bw8_X",
+      "position": {
+        "x": 340,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- After the initialization it will constantly try to detect an NFC tag",
+      "id": "rJav-v8O7",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "ByCHbDIuQ",
+      "input": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "Hk1F2vTPm"
+      },
+      "output": {
+        "nodeId": "SknLSuaPQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJZXZvUOX",
+      "input": {
+        "nodeId": "B198SupDQ",
+        "pinKey": "rytEHf3vm"
+      },
+      "output": {
+        "nodeId": "B1BzbD8dm",
+        "pinKey": "BklspuwpW"
+      }
+    },
+    {
+      "id": "SJxnIHOTvm",
+      "input": {
+        "nodeId": "B198SupDQ",
+        "pinKey": "r1QEHf3DX"
+      },
+      "output": {
+        "nodeId": "SknLSuaPQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1r9XuavX",
+      "input": {
+        "nodeId": "rJftQuTDm",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "Bk26aD6P7",
+        "pinKey": "HkCoxf2DX"
+      }
+    },
+    {
+      "id": "rJH3XuaPm",
+      "input": {
+        "nodeId": "ryznQOTvX",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "H1H52DaD7"
+      }
+    },
+    {
+      "id": "rkUur_aP7",
+      "input": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "BysY2PaDQ"
+      },
+      "output": {
+        "nodeId": "B198SupDQ",
+        "pinKey": "rkQUBzhvQ"
+      }
+    },
+    {
+      "id": "rkwhmOTwm",
+      "input": {
+        "nodeId": "rk4mh7dpwm",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "Byw9hw6wQ"
+      }
+    },
+    {
+      "id": "ryDf-DLO7",
+      "input": {
+        "nodeId": "B1BzbD8dm",
+        "pinKey": "SkJ46dw6-"
+      },
+      "output": {
+        "nodeId": "rJftQuTDm",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "ryI2X_6DQ",
+      "input": {
+        "nodeId": "HkZm2muTv7",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "B1U93P6DQ"
+      }
+    },
+    {
+      "id": "ryK3Qd6PX",
+      "input": {
+        "nodeId": "B143mOpv7",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BkWjXu6P7",
+        "pinKey": "BJlwc3w6PQ"
+      }
+    },
+    {
+      "id": "ryOL-wUdX",
+      "input": {
+        "nodeId": "Bk26aD6P7",
+        "pinKey": "rkTFef3P7"
+      },
+      "output": {
+        "nodeId": "HJc2aPTwm",
+        "pinKey": "rJ5Exf2P7"
+      }
+    },
+    {
+      "id": "ryeQ6TwpPX",
+      "input": {
+        "nodeId": "ByXTaw6PQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJc2aPTwm",
+        "pinKey": "rJ5Exf2P7"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B143mOpv7",
+      "position": {
+        "x": 238,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "B198SupDQ",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "@/pair-tag"
+    },
+    {
+      "id": "B1BzbD8dm",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/core/continuously-pausable"
+    },
+    {
+      "boundLiterals": {
+        "S105eMnP7": "On Boot"
+      },
+      "id": "Bk26aD6P7",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "@/init"
+    },
+    {
+      "boundLiterals": {
+        "HkrKnPpwX": "4"
+      },
+      "id": "BkWjXu6P7",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "@/read-page"
+    },
+    {
+      "id": "ByXTaw6PQ",
+      "label": "DEV",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "HkqxwGnDm": "D9"
+      },
+      "id": "HJc2aPTwm",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/pn532-device"
+    },
+    {
+      "id": "HkZm2muTv7",
+      "position": {
+        "x": 170,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "SknLSuaPQ",
+      "label": "DEV",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "rJftQuTDm",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "rk4mh7dpwm",
+      "position": {
+        "x": 204,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "ryznQOTvX",
+      "position": {
+        "x": 136,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    }
+  ]
+}

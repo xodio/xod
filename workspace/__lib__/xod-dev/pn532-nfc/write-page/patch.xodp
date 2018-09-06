@@ -1,0 +1,97 @@
+{
+  "description": "Writes data to the specified page of a Mifare Ultralight NFC tag.\nTo write data to a tag it should be paired first (use `pair-tag`)",
+  "nodes": [
+    {
+      "description": "Trigger writing to an NFC tag",
+      "id": "BklWqO6PQ",
+      "label": "UPD",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H1eY1c_pw7",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "H1rhKuaDQ",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-pn532-device"
+    },
+    {
+      "description": "Fires on failed writing",
+      "id": "SJ4l5dTPm",
+      "label": "ERR",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SkYkqO6D7",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "2"
+      },
+      "description": "A page number to write data to in range [0, 16]. Notice that first pages contains UID",
+      "id": "SyJkqdpPQ",
+      "label": "PAGE",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Fires on successful writing",
+      "id": "Syblcupvm",
+      "label": "OK",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1_k9dTDm",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "r1hkcOaDm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rywk9upvX",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

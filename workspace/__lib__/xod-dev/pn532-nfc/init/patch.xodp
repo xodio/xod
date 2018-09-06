@@ -1,0 +1,55 @@
+{
+  "description": "Initializes RFID/NFC module",
+  "nodes": [
+    {
+      "id": "H1BoxMhD7",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Fires if the initialization failed",
+      "id": "HJGngfnvX",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Fires on the successful initialization",
+      "id": "HkCoxf2DX",
+      "label": "OK",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Triggers initialization of the module",
+      "id": "S105eMnP7",
+      "label": "INIT",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rkTFef3P7",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-pn532-device"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "description": "Pairs module with an NFC tag and reads the UID",
+  "nodes": [
+    {
+      "description": "The UID of the paired NFC tag",
+      "id": "Sk3BHM2Pm",
+      "label": "UID",
+      "position": {
+        "x": -34,
+        "y": 204
+      },
+      "type": "@/output-nfc-uid"
+    },
+    {
+      "id": "Sy1HHz3vQ",
+      "position": {
+        "x": -34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "r1QEHf3DX",
+      "label": "DEV",
+      "position": {
+        "x": -34,
+        "y": 0
+      },
+      "type": "@/input-pn532-device"
+    },
+    {
+      "description": "Fires on successful pairing",
+      "id": "rkQUBzhvQ",
+      "label": "OK",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Triggers pairing with an NFC tag",
+      "id": "rytEHf3vm",
+      "label": "PAIR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires if there is no NFC tag",
+      "id": "rywIrfhP7",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
