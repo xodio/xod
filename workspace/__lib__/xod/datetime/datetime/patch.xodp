@@ -1,0 +1,90 @@
+{
+  "description": "Constructs a datetime value from a year, month, day, hour, minute, and second",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Days value in range [1, 28-31]",
+      "id": "HJgzhKxmvm",
+      "label": "DAY",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hy9KKgXwQ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Seconds value in range [0, 59]",
+      "id": "HygQhYlQw7",
+      "label": "SEC",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Hours value in range [0, 23]",
+      "id": "S1-M2YemPQ",
+      "label": "HOUR",
+      "position": {
+        "x": 101,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Minutes value in range [0, 59]",
+      "id": "SkQnYg7wQ",
+      "label": "MIN",
+      "position": {
+        "x": 135,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1ZqKlXPX",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Month value in range [1, 12] ",
+      "id": "r1f2FeXP7",
+      "label": "MON",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1970"
+      },
+      "description": "Year value in range [1970, 2105]",
+      "id": "ryjoteXwm",
+      "label": "YEAR",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
