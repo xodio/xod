@@ -24,9 +24,9 @@ if ($tags) {
   }
 }
 
-if ($env:APPVEYOR_REPO_BRANCH.StartsWith("prerelease-")) {
+if ($env:APPVEYOR_REPO_BRANCH -match '^prerelease-(patch|minor)-') {
   Write-Host 'Building prerelease distributive...' -ForegroundColor Yellow
-  yarn lerna -- publish --skip-git --skip-npm --canary --yes
+  yarn lerna publish --skip-git --skip-npm --canary --cd-version $Matches[1] --yes
   $tag=(node -e "console.log('v' + require('./packages/xod-client-electron/package.json').version)")
   Build-Dist
   Upload-Dist-To-GCS $tag
