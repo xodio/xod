@@ -1,0 +1,162 @@
+{
+  "description": "Represents a real-time clock module based on a DS1302/DS1307/DS3231 chip. Use the node to track the current wall-clock time which was previously set in the module",
+  "links": [
+    {
+      "id": "HyEQOJxuX",
+      "input": {
+        "nodeId": "H1Q7O1l_X",
+        "pinKey": "HJKONEBPX"
+      },
+      "output": {
+        "nodeId": "r1Z8ld6Dm",
+        "pinKey": "S1FPmmHD7"
+      }
+    },
+    {
+      "id": "S1KQOyxu7",
+      "input": {
+        "nodeId": "rkU6dErPQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1Q7O1l_X",
+        "pinKey": "Bk1-TcV4HDX"
+      }
+    },
+    {
+      "id": "SJ87_1eOX",
+      "input": {
+        "nodeId": "H1Q7O1l_X",
+        "pinKey": "rytlTcNErP7"
+      },
+      "output": {
+        "nodeId": "Bk1C_4rPQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJBIgu6wQ",
+      "input": {
+        "nodeId": "r1Z8ld6Dm",
+        "pinKey": "rJTvfQHD7"
+      },
+      "output": {
+        "nodeId": "r16j_4Hvm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkEUl_awX",
+      "input": {
+        "nodeId": "r1Z8ld6Dm",
+        "pinKey": "rJ_QMmSPQ"
+      },
+      "output": {
+        "nodeId": "Skn5_NrvX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkQVuyx_X",
+      "input": {
+        "nodeId": "BklE_1edQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1Q7O1l_X",
+        "pinKey": "B1ZM_yx_7"
+      }
+    },
+    {
+      "id": "ryqXuJxu7",
+      "input": {
+        "nodeId": "HkxCO4rPX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1Q7O1l_X",
+        "pinKey": "By4a5VEBDX"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Triggers a new read",
+      "id": "Bk1C_4rPQ",
+      "label": "UPD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "A datetime value",
+      "id": "BklE_1edQ",
+      "label": "DT",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "xod/datetime/output-datetime"
+    },
+    {
+      "id": "H1Q7O1l_X",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "@/read"
+    },
+    {
+      "description": "Fires if a read faied",
+      "id": "HkxCO4rPX",
+      "label": "ERR",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Skn5_NrvX",
+      "label": "I2C",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address of the device",
+      "id": "r16j_4Hvm",
+      "label": "ADDR",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "r1Z8ld6Dm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/rtc-device"
+    },
+    {
+      "description": "Fires on a successful read",
+      "id": "rkU6dErPQ",
+      "label": "DONE",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
