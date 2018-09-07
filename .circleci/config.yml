@@ -32,7 +32,7 @@ defs:
     step-install-node-v10-on-mac: &step-install-node-v10-on-mac
       name: Install Node v10
       # because macOS machine comes with node v8.6.0
-      command: curl "https://nodejs.org/dist/latest/node-v10.9.0.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+      command: curl "https://nodejs.org/dist/v10.10.0/node-v10.10.0.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 
     step-install: &step-install
       name: Install Node modules
