@@ -26,11 +26,8 @@ import {
 
 import * as settings from './settings';
 import * as ERROR_CODES from '../shared/errorCodes';
-import { errorToPlainObject } from './utils';
+import { errorToPlainObject, getPathToBundledWorkspace } from './utils';
 import * as EVENTS from '../shared/events';
-
-export const getPathToBundledWorkspace = () =>
-  path.resolve(__dirname, '../workspace');
 
 // =============================================================================
 //

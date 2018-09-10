@@ -20,7 +20,7 @@ import {
   createErrorMessage,
 } from '../shared/debuggerMessages';
 import { errorToPlainObject, IS_DEV } from './utils';
-import { getArdulibsPath } from './arduinoDependencies';
+import { getArdulibsPath, getBundledArdulibsPath } from './arduinoDependencies';
 
 // =============================================================================
 //
@@ -41,11 +41,6 @@ const arduinoBuilderPath = IS_DEV
       arduinoBuilderPlatformMap[os.platform()]
     )
   : resolve(process.resourcesPath, 'arduino-builder');
-
-const arduinoLibrariesPath = resolve(
-  IS_DEV ? app.getAppPath() : process.resourcesPath,
-  'arduino-libraries'
-);
 
 const artifactTmpDir = resolve(app.getPath('userData'), 'upload-temp');
 
@@ -156,7 +151,7 @@ export const uploadToArduino = (
   const buildDir = pjoin(artifactTmpDir, 'build');
   const clearTmp = () => fse.remove(artifactTmpDir);
 
-  let libPaths = [arduinoLibrariesPath];
+  let libPaths = [getBundledArdulibsPath()];
 
   return writeFile(sketchFile, code, 'utf8')
     .then(

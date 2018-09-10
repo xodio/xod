@@ -68,7 +68,6 @@
     "productName": "XOD IDE",
     "buildDependenciesFromSource": true,
     "extraResources": [
-      "arduino-libraries",
       {
         "from": "arduino-builders/${os}",
         "to": "arduino-builder"
