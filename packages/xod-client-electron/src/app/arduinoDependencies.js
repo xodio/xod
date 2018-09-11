@@ -17,10 +17,13 @@ import {
 
 import { CHECK_ARDULIBS_INSTALLED, INSTALL_ARDULIBS } from '../shared/events';
 import subscribeIpc from './subscribeIpc';
+import { getPathToBundledWorkspace } from './utils';
 
 const ARDULIBS_PATH = '__ardulib__';
 
 export const getArdulibsPath = p => path.resolve(p, ARDULIBS_PATH);
+export const getBundledArdulibsPath = () =>
+  getArdulibsPath(getPathToBundledWorkspace());
 
 export const subscribeOnCheckArduinoLibraries = workspacePath => {
   const libsPath = path.resolve(workspacePath, ARDULIBS_PATH);
