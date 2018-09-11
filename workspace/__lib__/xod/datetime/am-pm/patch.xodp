@@ -1,0 +1,338 @@
+{
+  "description": "Changes format of hours from 24-hours to 12-hours",
+  "links": [
+    {
+      "id": "B1teOFSD7",
+      "input": {
+        "nodeId": "rJ4E2PFHP7",
+        "pinKey": "HJbACN3gb"
+      },
+      "output": {
+        "nodeId": "Bk4xOtBvm",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "BJk6vKSDX",
+      "input": {
+        "nodeId": "SJfE2wFSPX",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "SyVj4KBvm",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "Bk-zHtHwX",
+      "input": {
+        "nodeId": "ryp1SYBwm",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkSTEFrPQ",
+      "input": {
+        "nodeId": "SyXa4YrDX",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "ryfcVKrwX",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "BkZ0NYrvX",
+      "input": {
+        "nodeId": "SyXa4YrDX",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByHE3vYBPX",
+      "input": {
+        "nodeId": "SkZV3PFHw7",
+        "pinKey": "SkKNUR_SwyW"
+      },
+      "output": {
+        "nodeId": "HJxVnPYBDX",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    },
+    {
+      "id": "ByLMrFBDm",
+      "input": {
+        "nodeId": "SyXa4YrDX",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "ryp1SYBwm",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "HkrCVYBv7",
+      "input": {
+        "nodeId": "S16OEYrPX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyXa4YrDX",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HyKV2PFBPX",
+      "input": {
+        "nodeId": "ByN3wtHPm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkQ4nDKBDX",
+        "pinKey": "B1gN80uHvk-"
+      }
+    },
+    {
+      "id": "Hyul_KHwX",
+      "input": {
+        "nodeId": "HJxVnPYBDX",
+        "pinKey": "HJG8C_SPkb"
+      },
+      "output": {
+        "nodeId": "Bk4xOtBvm",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "S1w4nDtHPm",
+      "input": {
+        "nodeId": "BkQ4nDKBDX",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "SJfE2wFSPX",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "SJ_VhvKrw7",
+      "input": {
+        "nodeId": "BkQ4nDKBDX",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "SkZV3PFHw7",
+        "pinKey": "Hkw48AdSPyb"
+      }
+    },
+    {
+      "id": "SJrJ_YHPm",
+      "input": {
+        "nodeId": "HJxVnPYBDX",
+        "pinKey": "rJXICuSwyW"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk7kutHD7",
+      "input": {
+        "nodeId": "rJ4E2PFHP7",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkIV2DFrPQ",
+      "input": {
+        "nodeId": "SkZV3PFHw7",
+        "pinKey": "HkOV8CdSvyW"
+      },
+      "output": {
+        "nodeId": "rJ4E2PFHP7",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "SyDJ_YBvm",
+      "input": {
+        "nodeId": "SJfE2wFSPX",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyFj4Frwm",
+      "input": {
+        "nodeId": "ryfcVKrwX",
+        "pinKey": "HJbACN3gb"
+      },
+      "output": {
+        "nodeId": "SyVj4KBvm",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "r1EzrYBPQ",
+      "input": {
+        "nodeId": "ryp1SYBwm",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "SyVj4KBvm",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "rJNqVtBPX",
+      "input": {
+        "nodeId": "ryfcVKrwX",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "ry3w4Frv7",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bk4xOtBvm",
+      "position": {
+        "x": 340,
+        "y": 0
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "id": "BkQ4nDKBDX",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "description": "Outputs true from midnight to noon and false from noon to the end of the day",
+      "id": "ByN3wtHPm",
+      "label": "AM",
+      "position": {
+        "x": 272,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "boundLiterals": {
+        "HJG8C_SPkb": "0"
+      },
+      "id": "HJxVnPYBDX",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "type": "xod/core/equal"
+    },
+    {
+      "description": "Hours value in range [1, 12]",
+      "id": "S16OEYrPX",
+      "label": "12H",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "SJqZ8COrDkW": "12"
+      },
+      "id": "SJfE2wFSPX",
+      "position": {
+        "x": 408,
+        "y": 102
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "SkZV3PFHw7",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "xod/core/xor"
+    },
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "12"
+      },
+      "id": "SyVj4KBvm",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "id": "SyXa4YrDX",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "rJ4E2PFHP7",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "description": "Hours value in range [0,23]",
+      "id": "ry3w4Frv7",
+      "label": "24H",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "12"
+      },
+      "id": "ryfcVKrwX",
+      "position": {
+        "x": -34,
+        "y": 102
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "ryp1SYBwm",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/core/subtract"
+    }
+  ]
+}

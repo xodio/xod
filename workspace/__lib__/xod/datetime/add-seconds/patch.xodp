@@ -1,0 +1,39 @@
+{
+  "description": "Adds seconds to a datetime",
+  "nodes": [
+    {
+      "description": "Seconds to add. A negative value rewinds datetime back.",
+      "id": "HJRLHWQw7",
+      "label": "T",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkELBWXw7",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sk18BWmwX",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-datetime"
+    },
+    {
+      "id": "Syb8BW7wm",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-datetime"
+    }
+  ]
+}

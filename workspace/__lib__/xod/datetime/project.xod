@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "Date and timestamp operations",
+  "license": "AGPL-3.0",
+  "name": "datetime",
+  "version": "0.23.0"
+}
