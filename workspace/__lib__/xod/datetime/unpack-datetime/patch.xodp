@@ -1,0 +1,91 @@
+{
+  "description": "Destructs a datetime value into a year, month, day, weekday, hour, minute, and second ",
+  "nodes": [
+    {
+      "id": "BJS9ReQv7",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Hours value in range [0, 23]",
+      "id": "BJZls0g7DQ",
+      "label": "HOUR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Seconds value in range [0, 59]",
+      "id": "BkbiCl7v7",
+      "label": "SEC",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Day of the week value in range [1, 7]. Count starts from Monday ",
+      "id": "HJLWQZQPm",
+      "label": "WDAY",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Year value in range [1970, 2105]",
+      "id": "HyA5RgXD7",
+      "label": "YEAR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Month value in range [1, 12]",
+      "id": "SJgsCeQvm",
+      "label": "MON",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Minutes value in range [0, 59]",
+      "id": "r1MljClXPm",
+      "label": "MIN",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Days value in range [1, 28-31]",
+      "id": "rJglsCgmvm",
+      "label": "DAY",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rkCYRgQDm",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "@/input-datetime"
+    }
+  ]
+}

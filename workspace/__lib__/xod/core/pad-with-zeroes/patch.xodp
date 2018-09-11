@@ -1,0 +1,38 @@
+{
+  "description": "Transforms a number into a string and adds zeroes to the beginning of the string until it is W-sized. Ignores a fractional part of the value and a sign. If the width of a string for a number is greater than the specified W value, node produces a string with the untransformed number",
+  "nodes": [
+    {
+      "id": "BkKz5GVwX",
+      "label": "W",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1DWqMVw7",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hk2bcGVDm",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "HyRmcfNwm",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
