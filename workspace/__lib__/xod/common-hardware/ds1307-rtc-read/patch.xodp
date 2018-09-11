@@ -624,6 +624,15 @@
       "type": "xod/bits/bcd-to-dec"
     },
     {
+      "description": "Use `xod-dev/ds-rtc/rtc` instead",
+      "id": "BJMekwSd7",
+      "position": {
+        "x": -102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Month value in [1, 12] range",
       "id": "BkcHSuxxM",
       "label": "MO",

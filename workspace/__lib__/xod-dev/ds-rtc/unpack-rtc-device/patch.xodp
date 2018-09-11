@@ -1,0 +1,41 @@
+{
+  "description": "Destructs an rtc-device value into its components",
+  "nodes": [
+    {
+      "id": "BybKKmSDQ",
+      "label": "I2C",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/i2c/output-i2c"
+    },
+    {
+      "id": "BytuKmSD7",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "I²C address of the device",
+      "id": "Sy6KYmHwQ",
+      "label": "ADDR",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "SylWKmrvm",
+      "label": "DEV",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "@/input-rtc-device"
+    }
+  ]
+}

@@ -626,6 +626,15 @@
       "type": "xod/bits/dec-to-bcd"
     },
     {
+      "description": "Use `xod-dev/ds-rtc/write` instead",
+      "id": "HJu41wSuX",
+      "position": {
+        "x": -510,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Seconds value in range [0, 59]",
       "id": "Hk678nbeG",
       "label": "SEC",

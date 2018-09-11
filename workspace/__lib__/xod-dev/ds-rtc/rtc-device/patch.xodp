@@ -1,0 +1,44 @@
+{
+  "description": "Constructs an rtc-device value for a DS1302/DS1307/DS3231 RTC board",
+  "nodes": [
+    {
+      "id": "S1FPmmHD7",
+      "label": "DEV",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "r1UYfXrwQ",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": " I²C address of the device ",
+      "id": "rJTvfQHD7",
+      "label": "ADDR",
+      "position": {
+        "x": 204,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rJ_QMmSPQ",
+      "label": "I2C",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    }
+  ]
+}
