@@ -1,3 +1,4 @@
+import path from 'path';
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { resolvePath } from 'xod-fs';
@@ -52,3 +53,9 @@ export const getFilePathToOpen = app => {
 
   return () => pathToOpen;
 };
+
+/**
+ * Returns Path to the bundled workspace
+ */
+export const getPathToBundledWorkspace = () =>
+  path.resolve(__dirname, '../workspace');
