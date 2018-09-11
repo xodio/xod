@@ -1,5 +1,6 @@
 #!/bin/sh
 
-export SHOT="$(dirname "$(readlink -f "$0")")/screenshot-xodball"
+SHOT="$(cd "$(dirname "$0")"; pwd)/screenshot-xodball"
+export SHOT
 find . -iname "update-screenshots.sh" \
   -execdir sh -c 'pwd && ./update-screenshots.sh' \;
