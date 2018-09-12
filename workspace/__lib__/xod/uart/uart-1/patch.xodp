@@ -2,6 +2,16 @@
   "description": "Constructor of HardwareUart, provides serial communication through Serial1.",
   "nodes": [
     {
+      "description": "Pulses when UART communication began",
+      "id": "BkmeFD8OQ",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "boundLiterals": {
         "__out__": "115200"
       },
@@ -13,6 +23,19 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "S1l7gFPUum",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "SJQ39d8bm",

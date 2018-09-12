@@ -15,12 +15,35 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "HklRJFDLOX",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "id": "SJQ39d8bm",
       "position": {
         "x": 34,
         "y": 102
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when UART communication began",
+      "id": "Sk0ktvLO7",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "An UART object",

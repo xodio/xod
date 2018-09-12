@@ -3,6 +3,19 @@
   "nodes": [
     {
       "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "BJengKwLuX",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
         "__out__": "115200"
       },
       "description": "Speed of data transmission in bits per second (baud rate).",
@@ -13,6 +26,16 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses when UART communication began",
+      "id": "H12gFvUOQ",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJQ39d8bm",

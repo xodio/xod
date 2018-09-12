@@ -31,6 +31,29 @@
         "y": 204
       },
       "type": "@/output-uart"
+    },
+    {
+      "description": "Pulses when UART communication began",
+      "id": "Sy7H0DUuQ",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "ryx7rCvIuQ",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
     }
   ]
 }

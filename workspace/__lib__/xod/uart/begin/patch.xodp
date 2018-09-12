@@ -12,6 +12,15 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Just use `uart` constructor nodes directly, they now have `INIT` and `DONE` pins to begin communication",
+      "id": "BkpwfDI_X",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "On Boot"
       },

@@ -31,6 +31,29 @@
         "y": 204
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "SJCqmwIO7",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when UART communication began",
+      "id": "rJAd7vLOQ",
+      "label": "DONE",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }
