@@ -1,0 +1,428 @@
+{
+  "comments": [
+    {
+      "content": "<- Toggle state of the LED when our tag is detected",
+      "id": "B12UJvL_X",
+      "position": {
+        "x": 340,
+        "y": 306
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    },
+    {
+      "content": "<- Pass pulse to update the led only if it is our tag",
+      "id": "ByLcRUL_Q",
+      "position": {
+        "x": 340,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    },
+    {
+      "content": "<- Check out the UID of your tag and then just bind\nthis values into `my-card` node",
+      "id": "HJPolPIuQ",
+      "position": {
+        "x": 306,
+        "y": 612
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    },
+    {
+      "content": "<- Compare an UID of detected tag with our UID",
+      "id": "ryqtkDU_Q",
+      "position": {
+        "x": 340,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1DwuM3vQ",
+      "input": {
+        "nodeId": "BkZwOM2wQ",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "rku8WGhDX"
+      }
+    },
+    {
+      "id": "BJrwOf2P7",
+      "input": {
+        "nodeId": "B1WlvOf2PQ",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "Hy8L-fhDX"
+      }
+    },
+    {
+      "id": "BkQvuf3vm",
+      "input": {
+        "nodeId": "Bkegw_MhD7",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "HJSIWMhPX"
+      }
+    },
+    {
+      "id": "BkUvdz3Dm",
+      "input": {
+        "nodeId": "Hkflw_M2v7",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "SkwLZGnPm"
+      }
+    },
+    {
+      "id": "ByR0Tgx_X",
+      "input": {
+        "nodeId": "BJrRGv6vm",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "HJF6axedm",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "H1MrN1v8_m",
+      "input": {
+        "nodeId": "BJrRGv6vm",
+        "pinKey": "SkW3wouIeQ"
+      },
+      "output": {
+        "nodeId": "B1-rVyD8_Q",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ4z0eeum",
+      "input": {
+        "nodeId": "HJF6axedm",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "HkTWCxldQ",
+        "pinKey": "B1gN80uHvk-"
+      }
+    },
+    {
+      "id": "HJFnA88_m",
+      "input": {
+        "nodeId": "HyDhAUUuX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "Bkcyhxxum"
+      }
+    },
+    {
+      "id": "SJJ0GDaDm",
+      "input": {
+        "nodeId": "Syoazv6P7",
+        "pinKey": "B1P1nFwaM"
+      },
+      "output": {
+        "nodeId": "Hy0NDr2D7",
+        "pinKey": "HkMpbM2wm"
+      }
+    },
+    {
+      "id": "SJiLuf2vQ",
+      "input": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "ByOB-GnDQ"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "S1ek_zhDQ"
+      }
+    },
+    {
+      "id": "SyWMAgeO7",
+      "input": {
+        "nodeId": "HkTWCxldQ",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "Bkcyhxxum"
+      }
+    },
+    {
+      "id": "Syfz0elOX",
+      "input": {
+        "nodeId": "HkTWCxldQ",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "Hy0NDr2D7",
+        "pinKey": "HkMpbM2wm"
+      }
+    },
+    {
+      "id": "r1lS4kvIO7",
+      "input": {
+        "nodeId": "BJBVkvLuX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Syoazv6P7",
+        "pinKey": "OkPg7GDaW"
+      }
+    },
+    {
+      "id": "rJfw_M2vQ",
+      "input": {
+        "nodeId": "HyxDufnDQ",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "H1VLZGhD7"
+      }
+    },
+    {
+      "id": "rk1vuM2vX",
+      "input": {
+        "nodeId": "rkpUOM3vm",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "rkWUWMnPm"
+      }
+    },
+    {
+      "id": "rk9nCI8_7",
+      "input": {
+        "nodeId": "Syoazv6P7",
+        "pinKey": "SJ-1mZPTz"
+      },
+      "output": {
+        "nodeId": "HyDhAUUuX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkdDdGnwQ",
+      "input": {
+        "nodeId": "H1gZPufhwQ",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "B1gOUWz2Pm"
+      }
+    },
+    {
+      "id": "rkxrPB2wm",
+      "input": {
+        "nodeId": "Hy0NDr2D7",
+        "pinKey": "HJ12-z2PQ"
+      },
+      "output": {
+        "nodeId": "BkdfDSnvX",
+        "pinKey": "B1tGWG2D7"
+      }
+    },
+    {
+      "id": "rkyHPS2PQ",
+      "input": {
+        "nodeId": "Hy0NDr2D7",
+        "pinKey": "rkpjZM3D7"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "S1ek_zhDQ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1-rVyD8_Q",
+      "label": "UPD",
+      "position": {
+        "x": 374,
+        "y": 408
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "B1WlvOf2PQ",
+      "position": {
+        "x": 136,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "BJBVkvLuX",
+      "label": "UPD",
+      "position": {
+        "x": 102,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "BJrRGv6vm",
+      "label": "built-in led",
+      "position": {
+        "x": 306,
+        "y": 510
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "BkZwOM2wQ",
+      "position": {
+        "x": 204,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "boundLiterals": {
+        "Byx0-bznPm": "ADh",
+        "H1-zZGhPX": "80h",
+        "H1s-ZM3wQ": "04h",
+        "HyJG-f2vm": "DAh",
+        "Skxf-f2w7": "A3h",
+        "SylxzZG3wX": "40h",
+        "r1RZ-z3Dm": "96h"
+      },
+      "id": "BkdfDSnvX",
+      "label": "my-card",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "@/nfc-uid"
+    },
+    {
+      "id": "Bkegw_MhD7",
+      "position": {
+        "x": 102,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "boundLiterals": {
+        "S1d1wfnDm": "D9"
+      },
+      "id": "BkiB_M3DQ",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/nfc-scanner"
+    },
+    {
+      "id": "H1gZPufhwQ",
+      "position": {
+        "x": 238,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "HJF6axedm",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "HkTWCxldQ",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "id": "Hkflw_M2v7",
+      "position": {
+        "x": 170,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "Hy0NDr2D7",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "@/equal(nfc-uid)"
+    },
+    {
+      "id": "HyDhAUUuX",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/core/pulse-on-true"
+    },
+    {
+      "id": "HyxDufnDQ",
+      "position": {
+        "x": 68,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    },
+    {
+      "id": "SJ98dzhD7",
+      "position": {
+        "x": 34,
+        "y": 510
+      },
+      "type": "@/unpack-nfc-uid"
+    },
+    {
+      "id": "Syoazv6P7",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/core/gate"
+    },
+    {
+      "id": "rkpUOM3vm",
+      "position": {
+        "x": 34,
+        "y": 612
+      },
+      "type": "xod/core/watch"
+    }
+  ]
+}

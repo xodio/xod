@@ -1,0 +1,97 @@
+{
+  "description": "Reads one page of a Mifare Ultralight NFC tag.\nTo read data from a tag it should be paired first (use `pair-tag`)",
+  "nodes": [
+    {
+      "id": "B1U93P6DQ",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "BJlwc3w6PQ",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Trigger reading from an NFC tag",
+      "id": "BysY2PaDQ",
+      "label": "READ",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "Byw9hw6wQ",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "H1H52DaD7",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "Hk1F2vTPm",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-pn532-device"
+    },
+    {
+      "description": "Fires on failed reading",
+      "id": "HkVohwTDX",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "2"
+      },
+      "description": "A page number to read data from in range [0, 16]. Notice that first pages contains UID",
+      "id": "HkrKnPpwX",
+      "label": "PAGE",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Fires on successful reading",
+      "id": "SkMohwTPm",
+      "label": "OK",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ryx52w6w7",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

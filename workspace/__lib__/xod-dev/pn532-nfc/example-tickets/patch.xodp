@@ -1,0 +1,708 @@
+{
+  "comments": [
+    {
+      "content": "<- Check whether the tickets remained on the NFC tag and returns tickets count or `0`",
+      "id": "H1bauwIOQ",
+      "position": {
+        "x": 544,
+        "y": 510
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    },
+    {
+      "content": "<- Blink!",
+      "id": "S1dAKPL_m",
+      "position": {
+        "x": 544,
+        "y": 816
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    },
+    {
+      "content": "<- Read number of tickets from an NFC tag. We store it in the highest byte",
+      "id": "S1hEuw8O7",
+      "position": {
+        "x": 544,
+        "y": 306
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- A detailed description of using these nodes is in the example `example-read-page`",
+      "id": "Sy_5Dv8d7",
+      "position": {
+        "x": 544,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- If there was an unused ticket the led will blink once, if not — it will blink several times",
+      "id": "r1FFKvU_m",
+      "position": {
+        "x": 544,
+        "y": 714
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    },
+    {
+      "content": "<- Convert byte into number, subtract one ticket and convert backward",
+      "id": "rJFtdDUO7",
+      "position": {
+        "x": 544,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- Write remained tickets on the NFC tag",
+      "id": "rkiwYv8uQ",
+      "position": {
+        "x": 544,
+        "y": 612
+      },
+      "size": {
+        "height": 51,
+        "width": 340
+      }
+    },
+    {
+      "content": "<- Constant to read/write a data to the same page",
+      "id": "rkyiLv8dm",
+      "position": {
+        "x": 544,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    },
+    {
+      "content": "<- Pulse once when NFC tag detected to avoid write-off of several tickets",
+      "id": "ryUQDD8_X",
+      "position": {
+        "x": 544,
+        "y": 204
+      },
+      "size": {
+        "height": 51,
+        "width": 306
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkZF2d6Dm",
+      "input": {
+        "nodeId": "rk1Y2u6D7",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "rkU_ndpPX",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "BkZLyt6vm",
+      "input": {
+        "nodeId": "rk9SkFaw7",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "Hyg_2_6DX",
+        "pinKey": "Sk43MO-Jm"
+      }
+    },
+    {
+      "id": "BkgDyY6D7",
+      "input": {
+        "nodeId": "rJwK3uaDm",
+        "pinKey": "rywk9upvX"
+      },
+      "output": {
+        "nodeId": "HkLLyYaDm",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "By1eAO5uTwm",
+      "input": {
+        "nodeId": "S1gR_cdaPX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyfCdcdpvm",
+        "pinKey": "rJ5Exf2P7"
+      }
+    },
+    {
+      "id": "By6Sxtpw7",
+      "input": {
+        "nodeId": "B1Isyt6PQ",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "S1N91F6vm",
+        "pinKey": "BkE-fCKJG"
+      }
+    },
+    {
+      "id": "ByMN4tTwX",
+      "input": {
+        "nodeId": "SJxV4Y6DX",
+        "pinKey": "SkJ46dw6-"
+      },
+      "output": {
+        "nodeId": "BkQRO5_pwm",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "ByYeaOpvQ",
+      "input": {
+        "nodeId": "rkwx6OpvQ",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "SknCO5uTDQ",
+        "pinKey": "rkQUBzhvQ"
+      }
+    },
+    {
+      "id": "Byv44FTDX",
+      "input": {
+        "nodeId": "SknCO5uTDQ",
+        "pinKey": "rytEHf3vm"
+      },
+      "output": {
+        "nodeId": "SJxV4Y6DX",
+        "pinKey": "BklspuwpW"
+      }
+    },
+    {
+      "id": "H1uUytavQ",
+      "input": {
+        "nodeId": "HkLLyYaDm",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk9SkFaw7",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "H1ug0OcuTw7",
+      "input": {
+        "nodeId": "SknCO5uTDQ",
+        "pinKey": "r1QEHf3DX"
+      },
+      "output": {
+        "nodeId": "SJpC_9uTPm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJRAO9dTvQ",
+      "input": {
+        "nodeId": "BkA_c_aPm",
+        "pinKey": "rkTFef3P7"
+      },
+      "output": {
+        "nodeId": "HyW0dcOTDX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJexCdqdaDX",
+      "input": {
+        "nodeId": "BkQRO5_pwm",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "BkA_c_aPm",
+        "pinKey": "HkCoxf2DX"
+      }
+    },
+    {
+      "id": "HkgamyFTvQ",
+      "input": {
+        "nodeId": "rJUAu5_pvQ",
+        "pinKey": "HkrKnPpwX"
+      },
+      "output": {
+        "nodeId": "H1pQ1YaDm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkibltawX",
+      "input": {
+        "nodeId": "S1N91F6vm",
+        "pinKey": "SJ1e-CKkf"
+      },
+      "output": {
+        "nodeId": "rkDWxKTvX",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HyG_2_6vX",
+      "input": {
+        "nodeId": "Hyg_2_6DX",
+        "pinKey": "S113G_ZJm"
+      },
+      "output": {
+        "nodeId": "rJUAu5_pvQ",
+        "pinKey": "H1H52DaD7"
+      }
+    },
+    {
+      "id": "HyMa1K6wQ",
+      "input": {
+        "nodeId": "S1eakYpv7",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk9SkFaw7",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "S1XlAO5OpP7",
+      "input": {
+        "nodeId": "rJUAu5_pvQ",
+        "pinKey": "Hk1F2vTPm"
+      },
+      "output": {
+        "nodeId": "HJwCuqd6vX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkSya_pwQ",
+      "input": {
+        "nodeId": "rJwK3uaDm",
+        "pinKey": "BklWqO6PQ"
+      },
+      "output": {
+        "nodeId": "rJUAu5_pvQ",
+        "pinKey": "SkMohwTPm"
+      }
+    },
+    {
+      "id": "SkYbgYTw7",
+      "input": {
+        "nodeId": "rkDWxKTvX",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk9SkFaw7",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "Skjl6O6P7",
+      "input": {
+        "nodeId": "rkwx6OpvQ",
+        "pinKey": "B1RU0OrDkb"
+      },
+      "output": {
+        "nodeId": "SknCO5uTDQ",
+        "pinKey": "rywIrfhP7"
+      }
+    },
+    {
+      "id": "SyI3sPIuQ",
+      "input": {
+        "nodeId": "rJUAu5_pvQ",
+        "pinKey": "BysY2PaDQ"
+      },
+      "output": {
+        "nodeId": "rkwx6OpvQ",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "SyKuhuawQ",
+      "input": {
+        "nodeId": "rkU_ndpPX",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "Hyg_2_6DX",
+        "pinKey": "Sk43MO-Jm"
+      }
+    },
+    {
+      "id": "Syh8JY6v7",
+      "input": {
+        "nodeId": "HkLLyYaDm",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "rk1Y2u6D7",
+        "pinKey": "By_EX_bk7"
+      }
+    },
+    {
+      "id": "r1L31YawQ",
+      "input": {
+        "nodeId": "S1N91F6vm",
+        "pinKey": "S1vneCK1z"
+      },
+      "output": {
+        "nodeId": "rJwK3uaDm",
+        "pinKey": "Syblcupvm"
+      }
+    },
+    {
+      "id": "r1d1lY6vm",
+      "input": {
+        "nodeId": "B18Jet6DX",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rk9SkFaw7",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "r1lYt3uTwX",
+      "input": {
+        "nodeId": "rJwK3uaDm",
+        "pinKey": "H1rhKuaDQ"
+      },
+      "output": {
+        "nodeId": "HyYF3_6wQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJaTkFaPQ",
+      "input": {
+        "nodeId": "S1N91F6vm",
+        "pinKey": "rknsx0tyf"
+      },
+      "output": {
+        "nodeId": "S1eakYpv7",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rke1EyKpDm",
+      "input": {
+        "nodeId": "rJwK3uaDm",
+        "pinKey": "SyJkqdpPQ"
+      },
+      "output": {
+        "nodeId": "SkJN1KavX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkjkxtawm",
+      "input": {
+        "nodeId": "S1N91F6vm",
+        "pinKey": "r1v0xCYJf"
+      },
+      "output": {
+        "nodeId": "B18Jet6DX",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rklVX1K6DQ",
+      "input": {
+        "nodeId": "ryVXJK6Dm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1Qc3dTPQ",
+        "pinKey": "B1x2RV3eZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "0.2",
+        "ryTeUROHD1b": "1"
+      },
+      "id": "B18Jet6DX",
+      "position": {
+        "x": 102,
+        "y": 714
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "B1Isyt6PQ",
+      "position": {
+        "x": 272,
+        "y": 816
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundLiterals": {
+        "S105eMnP7": "On Boot"
+      },
+      "id": "BkA_c_aPm",
+      "position": {
+        "x": 67,
+        "y": 101
+      },
+      "type": "@/init"
+    },
+    {
+      "id": "BkQRO5_pwm",
+      "position": {
+        "x": 135,
+        "y": 101
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "H1pQ1YaDm",
+      "label": "PAGE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "HJwCuqd6vX",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "00h"
+      },
+      "id": "HkLLyYaDm",
+      "position": {
+        "x": 68,
+        "y": 510
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "HyW0dcOTDX",
+      "label": "DEV",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "HyYF3_6wQ",
+      "label": "DEV",
+      "position": {
+        "x": 238,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "HkqxwGnDm": "D9"
+      },
+      "id": "HyfCdcdpvm",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "@/pn532-device"
+    },
+    {
+      "id": "Hyg_2_6DX",
+      "position": {
+        "x": 0,
+        "y": 408
+      },
+      "type": "xod/bits/u8-to-number"
+    },
+    {
+      "id": "S1N91F6vm",
+      "position": {
+        "x": 306,
+        "y": 714
+      },
+      "type": "xod/core/flip-n-times"
+    },
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "4"
+      },
+      "id": "S1Qc3dTPQ",
+      "label": "PAGE WITH TICKETS",
+      "position": {
+        "x": 408,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 136
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "5",
+        "ryTeUROHD1b": "1"
+      },
+      "id": "S1eakYpv7",
+      "position": {
+        "x": 0,
+        "y": 714
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "S1gR_cdaPX",
+      "label": "DEV",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "SJpC_9uTPm",
+      "label": "DEV",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SJxV4Y6DX",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/core/continuously-pausable"
+    },
+    {
+      "id": "SkJN1KavX",
+      "label": "PAGE",
+      "position": {
+        "x": 272,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SknCO5uTDQ",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "@/pair-tag"
+    },
+    {
+      "boundLiterals": {
+        "HkrKnPpwX": "4"
+      },
+      "id": "rJUAu5_pvQ",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "@/read-page"
+    },
+    {
+      "id": "rJwK3uaDm",
+      "position": {
+        "x": 238,
+        "y": 612
+      },
+      "type": "@/write-page"
+    },
+    {
+      "id": "rk1Y2u6D7",
+      "position": {
+        "x": 102,
+        "y": 408
+      },
+      "type": "xod/bits/number-to-u8"
+    },
+    {
+      "id": "rk9SkFaw7",
+      "position": {
+        "x": 0,
+        "y": 510
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "0.2",
+        "ryTeUROHD1b": "0"
+      },
+      "id": "rkDWxKTvX",
+      "position": {
+        "x": 204,
+        "y": 714
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
+      },
+      "id": "rkU_ndpPX",
+      "position": {
+        "x": 34,
+        "y": 408
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "id": "rkwx6OpvQ",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "ryVXJK6Dm",
+      "label": "PAGE",
+      "position": {
+        "x": 408,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/to-bus"
+    }
+  ]
+}
