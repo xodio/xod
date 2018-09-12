@@ -74,9 +74,17 @@ struct State {
 
 void evaluate(Context ctx) {
     auto state = getState(ctx);
-    uint8_t rx = getValue<input_RX>(ctx);
-    uint8_t tx = getValue<input_TX>(ctx);
-    long baud = (long)getValue<input_BAUD>(ctx);
-    state->uart = new (state->mem) SoftwareUart(rx, tx, baud);
-    emitValue<output_UART>(ctx, state->uart);
+
+    if (isSettingUp()) {
+        uint8_t rx = getValue<input_RX>(ctx);
+        uint8_t tx = getValue<input_TX>(ctx);
+        long baud = (long)getValue<input_BAUD>(ctx);
+        state->uart = new (state->mem) SoftwareUart(rx, tx, baud);
+        emitValue<output_UART>(ctx, state->uart);
+    }
+
+    if (isInputDirty<input_INIT>(ctx)) {
+        state->uart->begin();
+        emitValue<output_DONE>(ctx, 1);
+    }
 }

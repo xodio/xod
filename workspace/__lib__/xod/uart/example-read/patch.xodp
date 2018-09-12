@@ -1,17 +1,6 @@
 {
   "links": [
     {
-      "id": "B1HzG2apwWm",
-      "input": {
-        "nodeId": "HJsf2aTDZX",
-        "pinKey": "H16YPnI-Q"
-      },
-      "output": {
-        "nodeId": "S1XgMnT6DWm",
-        "pinKey": "Bk4gU0drwJ-"
-      }
-    },
-    {
       "id": "Bk6WJeO-m",
       "input": {
         "nodeId": "H1sZygu-m",
@@ -45,14 +34,14 @@
       }
     },
     {
-      "id": "HyaMz3a6DW7",
+      "id": "HJxh1_IdX",
       "input": {
-        "nodeId": "HJsf2aTDZX",
-        "pinKey": "rJV3I2I-Q"
+        "nodeId": "SylfhpTDZm",
+        "pinKey": "H1VpIKnLb7"
       },
       "output": {
         "nodeId": "rJGM36TvZ7",
-        "pinKey": "rycxytIZQ"
+        "pinKey": "HJoHCvU_Q"
       }
     },
     {
@@ -67,6 +56,17 @@
       }
     },
     {
+      "id": "SkMhydLd7",
+      "input": {
+        "nodeId": "rJGM36TvZ7",
+        "pinKey": "S1gjHAPL_7"
+      },
+      "output": {
+        "nodeId": "S1XgMnT6DWm",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
       "id": "Sybf1l_W7",
       "input": {
         "nodeId": "H1sZygu-m",
@@ -75,17 +75,6 @@
       "output": {
         "nodeId": "SylfhpTDZm",
         "pinKey": "rkl6IK3L-7"
-      }
-    },
-    {
-      "id": "Syh-GnTTDbQ",
-      "input": {
-        "nodeId": "SylfhpTDZm",
-        "pinKey": "H1VpIKnLb7"
-      },
-      "output": {
-        "nodeId": "HJsf2aTDZX",
-        "pinKey": "B1SyPhUWm"
       }
     },
     {
@@ -121,14 +110,6 @@
       "type": "@/read-bytes"
     },
     {
-      "id": "HJsf2aTDZX",
-      "position": {
-        "x": 34,
-        "y": 0
-      },
-      "type": "@/begin"
-    },
-    {
       "id": "HkdbAKXzQ",
       "position": {
         "x": 34,
@@ -144,7 +125,7 @@
       "description": "Hack to make watch nodes works on Leonardo",
       "id": "S1XgMnT6DWm",
       "position": {
-        "x": 170,
+        "x": 34,
         "y": -102
       },
       "type": "xod/core/delay"
@@ -168,7 +149,7 @@
       "id": "rJGM36TvZ7",
       "position": {
         "x": 34,
-        "y": -102
+        "y": 0
       },
       "type": "@/soft-uart"
     }

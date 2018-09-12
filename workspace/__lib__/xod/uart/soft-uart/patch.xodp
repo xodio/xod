@@ -2,6 +2,29 @@
   "description": "Constructor of SoftwareUart, provides serial communication on any digital pins.",
   "nodes": [
     {
+      "description": "Pulses when UART communication began",
+      "id": "HJoHCvU_Q",
+      "label": "DONE",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Begin UART communication",
+      "id": "S1gjHAPL_7",
+      "label": "INIT",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
       "boundLiterals": {
         "__out__": "9600"
       },
