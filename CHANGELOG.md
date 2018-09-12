@@ -4,6 +4,50 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Implemented the `#pragma XOD require` directive. Now a XOD library
+  author can declare a dependency on a regular Arduino C++ library hosted on
+  GitHub. It will be automatically downloaded and installed for library users.
+  (#1425, #1426)
+* [core] Optimize one of the transpilation stages: topological graph sorting.
+  For complex projects, it brings 10 to 100× faster transpilation. (#1430)
+* [ide] A patch can now be scrolled with mouse scroll or the scroll gesture on
+  a laptop touchpad. (#1412)
+* [nodes] `xod/uart/uart-*` constructor nodes now initialize the interface on
+  their own. No need to use the `begin` node separately. (#1442)
+* [chore] Upgrade to NodeJS v10 and the latest Electron Builder. It gives
+  slightly better performance and will bring much faster and traffic-saving IDE
+  updates starting from the release following the current. (#1429, #1435)
+
+### New nodes
+
+* [`xod/core/pad-with-zeroes`](https://xod.io/libs/xod/core/pad-with-zeroes) —
+  add leading zeroes to numbers. (#1436)
+* [`xod/datetime`](https://xod.io/libs/xod/datetime/) — a new standard library
+  to deal with timestamps, dates, and time. (#1436)
+* [`xod-dev/ds-rtc`](https://xod.io/libs/xod-dev/ds-rtc/) — a rewrite of now
+  obsolete `ds1307-*` nodes from `common-hardware`. More consistent and using
+  the new `datetime` structure. (#1438)
+* [`xod-dev/pn532-nfc`](https://xod.io/libs/xod-dev/pn532-nfc/) — a new library
+  to scan, read, and write RFID/NFC tags. (#1424)
+
+### Deprecations and removals
+
+* `xod/common-hardware/ds1307-rtc-*` are deprecated in favor of the new
+  `xod-dev/ds-rtc` library.
+* `xod/uart/begin` is deprecated now because the base `uart-*` nodes now
+  initialize the interface on their own.
+
+### Bug fixes
+
+* [ide] Deprecated and utility nodes started to appear in quick search results
+  due to a regression in 0.23.0. That’s fixed. (#1418)
+* [ide] Revert horizontal space amount for node labels which caused shortening
+  of terminal and bus labels longer than 2-3 characters in 0.23.0. (#1420)
+
 <a name="0.23.0"></a>
 ## 0.23.0 (2018-08-17)
 
