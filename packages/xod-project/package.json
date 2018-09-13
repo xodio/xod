@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "hm-def": "^0.3.2",
-    "holes": "^0.23.0",
+    "belt-holes": "^0.23.0",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",

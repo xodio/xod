@@ -7,7 +7,7 @@ open Expect;
 describe("groupByString", () =>
   test("splits a list into a sublists stored in a Map.String", () => {
     let outMap =
-      Holes.List.groupByString(
+      BeltHoles.List.groupByString(
         ["foo", "Foo", "Bar", "FOO", "bAr", "baz"],
         String.lowercase,
       );
@@ -17,7 +17,7 @@ describe("groupByString", () =>
         ("bar", ["Bar", "bAr"]),
         ("baz", ["baz"]),
       |]);
-    expect(outMap) |> Holes_Map_String_jest.toEqualMap(expectedMap);
+    expect(outMap) |> BeltHoles_Map_String_jest.toEqualMap(expectedMap);
   })
 );
 
@@ -53,7 +53,7 @@ describe("groupBy", () =>
         },
       );
     let outMap =
-      Holes.List.groupBy(
+      BeltHoles.List.groupBy(
         [(1, "aaa"), (1, "bbb"), (2, "aaa"), (1, "cccc")],
         (module Cmp),
         ((n, s)) =>

@@ -2,7 +2,7 @@ open Jest;
 
 open Expect;
 
-open Holes.String;
+open BeltHoles.String;
 
 describe("join", () => {
   test("returns empty for empty", () =>

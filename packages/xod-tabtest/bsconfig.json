@@ -19,7 +19,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "holes",
+    "belt-holes",
     "xod-func-tools",
     "xod-project",
     "xod-arduino"

@@ -12,19 +12,19 @@ module ResultsMap = {
   let fromJsDict: t_Js => t =
     drs =>
       drs
-      |. Holes.Map.String.fromDict
+      |. BeltHoles.Map.String.fromDict
       |. Map.String.map(nodeTypesDict =>
            nodeTypesDict
-           |. Holes.Map.String.fromDict
+           |. BeltHoles.Map.String.fromDict
            |. Map.String.map(XodFuncTools.Either.toResult)
          );
   let toJsDict: t => t_Js =
     drs =>
       drs
-      |> Holes.Map.String.toDict
+      |> BeltHoles.Map.String.toDict
       |> Js.Dict.map((. nodeTypesMap) =>
            nodeTypesMap
-           |> Holes.Map.String.toDict
+           |> BeltHoles.Map.String.toDict
            |> Js.Dict.map((. r) => XodFuncTools.Either.fromResult(r))
          );
   let get: (t, Node.id, Pin.key) => option(result) =

@@ -5,7 +5,7 @@
   "namespace": false,
   "sources": [
     {
-      "dir": "packages/holes/src",
+      "dir": "packages/belt-holes/src",
       "subdirs": true
     },
     {
@@ -31,7 +31,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "holes",
+    "belt-holes",
     "xod-func-tools",
     "xod-arduino",
     "xod-project",

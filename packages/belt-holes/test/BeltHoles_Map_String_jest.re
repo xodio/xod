@@ -33,7 +33,7 @@ describe("Key mapping", () => {
       |. Map.String.set("one", 1)
       |. Map.String.set("two", 2)
       |. Map.String.set("three", 3);
-    let outMap = inMap |. Holes.Map.String.mapKeys(Js.String.toUpperCase);
+    let outMap = inMap |. BeltHoles.Map.String.mapKeys(Js.String.toUpperCase);
     let expectedMap =
       Map.String.empty
       |. Map.String.set("ONE", 1)
@@ -46,7 +46,7 @@ describe("Key mapping", () => {
       Map.String.empty
       |. Map.String.set("foo", "was foo")
       |. Map.String.set("oof", "was oof");
-    let outMap = inMap |. Holes.Map.String.mapKeys(Holes.String.reverse);
+    let outMap = inMap |. BeltHoles.Map.String.mapKeys(BeltHoles.String.reverse);
     let expectedMap =
       Map.String.empty
       |. Map.String.set("oof", "was foo")
@@ -67,7 +67,7 @@ describe("Inner join", () =>
       |. Map.String.set("four", 4)
       |. Map.String.set("six", 6)
       |. Map.String.set("eight", 8);
-    let outMap = Holes.Map.String.innerJoin(left, right);
+    let outMap = BeltHoles.Map.String.innerJoin(left, right);
     let expectedMap =
       Map.String.empty
       |. Map.String.set("quad", 4)
@@ -87,7 +87,7 @@ describe("mergeOverride", () =>
       Map.String.empty
       |. Map.String.set("quad", "4")
       |. Map.String.set("octo", "8");
-    let outMap = Holes.Map.String.mergeOverride(left, right);
+    let outMap = BeltHoles.Map.String.mergeOverride(left, right);
     let expectedMap =
       Map.String.empty
       |. Map.String.set("quad", "4")
