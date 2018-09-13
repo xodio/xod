@@ -1,6 +1,6 @@
 {
   "name": "xod-tabtest",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world",
@@ -16,9 +16,9 @@
   "main": "src/Tabtest_Js.bs.js",
   "dependencies": {
     "holes": "^0.23.0",
-    "xod-arduino": "^0.23.0",
-    "xod-func-tools": "^0.23.0",
-    "xod-project": "^0.23.0"
+    "xod-arduino": "^0.24.0",
+    "xod-func-tools": "^0.24.0",
+    "xod-project": "^0.24.0"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",

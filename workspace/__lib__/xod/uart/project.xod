@@ -5,5 +5,5 @@
   "description": "Provides constructors and Nodes to interact with UARTs (Software, Hardware, USB) in XOD.",
   "license": "AGPL-3.0",
   "name": "uart",
-  "version": "0.23.0"
+  "version": "0.24.0"
 }
