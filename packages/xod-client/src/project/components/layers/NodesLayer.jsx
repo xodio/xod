@@ -33,6 +33,7 @@ const NodesLayer = ({
             key={node.id}
             id={node.id}
             label={node.label}
+            normalizedLabel={node.normalizedLabel}
             type={node.type}
             position={node.position}
             errors={node.errors}

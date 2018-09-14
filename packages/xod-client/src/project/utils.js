@@ -81,6 +81,15 @@ export const getInitialPatchOffset = R.compose(
   XP.getPatchByPath
 );
 
+// get normalized pin labels for patch
+// :: Patch -> Map NodeId PinLabel
+export const getNormalizedLabelsForPatch = R.compose(
+  R.pluck('label'),
+  R.indexBy(XP.getPinKey),
+  XP.normalizeEmptyPinLabels,
+  XP.listPins
+);
+
 // extract information from Patch that is required to render it with Node component
 export const patchToNodeProps = R.curry(
   (shouldnormalizeEmptyPinLabels, patch) => {
