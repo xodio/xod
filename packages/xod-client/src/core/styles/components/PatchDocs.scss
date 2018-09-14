@@ -27,8 +27,16 @@ $PinInfo-padding-bottom: 10px;
       color: $color-pinlabel;
       font-family: $font-family-condensed;
     }
+
+    & > div > * {
+      vertical-align: bottom;
+    }
+
     .label {
       width: $label-width;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .type {

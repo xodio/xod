@@ -150,6 +150,7 @@
     line-height: $font-size-l;
     display: block;
     color: $sidebar-color-subtitle;
+    white-space: nowrap;
   }
   &.HintWidget {
     display: block;
