@@ -25,5 +25,10 @@
   "devDependencies": {
     "bs-platform": "^3.1.5",
     "chai": "^4.1.2"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "bsconfig.json"
+  ]
 }

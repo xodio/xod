@@ -35,5 +35,11 @@
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^4.1.2",
     "xod-fs": "^0.24.0"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "platform",
+    "bsconfig.json"
+  ]
 }
