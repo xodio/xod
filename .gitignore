@@ -1,11 +1,8 @@
 .idea/
 .tmp/
-.merlin
-.bsb.lock
 
 node_modules/
 packages/*/dist/
-packages/*/lib/
 
 *.orig
 *.log
@@ -13,3 +10,9 @@ packages/*/lib/
 
 coverage/
 .nyc_output/
+
+# bucklescript stuff
+packages/*/lib/
+*.bs.js
+.merlin
+.bsb.lock
