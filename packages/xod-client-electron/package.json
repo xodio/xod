@@ -71,6 +71,10 @@
       {
         "from": "arduino-builders/${os}",
         "to": "arduino-builder"
+      },
+      {
+        "from": "src-babel/workspace",
+        "to": "workspace"
       }
     ],
     "linux": {
