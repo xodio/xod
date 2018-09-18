@@ -43,19 +43,20 @@ describe('Library Manager', () => {
         }),
         res.then(() => {
           assert.lengthOf(progress, 3);
-          assert.strictEqual(
-            progress[0].note,
-            'Library "src" already installed'
+
+          const progressNotes = R.map(R.prop('note'), progress);
+          assert.sameMembers(progressNotes, [
+            'Library "src" already installed',
+            'Library "test" already installed',
+            'Library "will_be_no_such_dir" is missing',
+          ]);
+
+          const missingLibEntry = R.find(
+            R.propEq('note', 'Library "will_be_no_such_dir" is missing'),
+            progress
           );
-          assert.strictEqual(
-            progress[1].note,
-            'Library "test" already installed'
-          );
-          assert.strictEqual(
-            progress[2].note,
-            'Library "will_be_no_such_dir" is missing'
-          );
-          assert.strictEqual(progress[2].percentage, 1);
+          assert.isObject(missingLibEntry);
+          assert.strictEqual(missingLibEntry.percentage, 1);
         }),
       ]);
     });
