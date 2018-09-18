@@ -58,4 +58,6 @@ export const getFilePathToOpen = app => {
  * Returns Path to the bundled workspace
  */
 export const getPathToBundledWorkspace = () =>
-  path.resolve(__dirname, '../workspace');
+  IS_DEV
+    ? path.resolve(__dirname, '../workspace')
+    : path.resolve(process.resourcesPath, './workspace');
