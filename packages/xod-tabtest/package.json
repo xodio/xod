@@ -15,7 +15,7 @@
   "license": "AGPL-3.0",
   "main": "src/Tabtest_Js.bs.js",
   "dependencies": {
-    "holes": "^0.23.0",
+    "belt-holes": "^0.23.0",
     "xod-arduino": "^0.24.0",
     "xod-func-tools": "^0.24.0",
     "xod-project": "^0.24.0"

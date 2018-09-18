@@ -13,17 +13,17 @@ let getMatchingBusNodes = patch => {
   let toBusNodesByLabel =
     nodes
     |. List.keep(n => Node.getType(n) == toBusPatchPath)
-    |. Holes.List.groupByString(Node.getLabel)
+    |. BeltHoles.List.groupByString(Node.getLabel)
     /* having multiple `to-bus` nodes with the same label is forbidden,
        so exclude them from type resolution */
     |. Map.String.keep((_, ns) => List.length(ns) == 1)
-    |. Holes.Map.String.keepMap(List.head);
+    |. BeltHoles.Map.String.keepMap(List.head);
   if (Map.String.isEmpty(toBusNodesByLabel)) {
     []; /* short-curcuit for optimization */
   } else {
     nodes
     |. List.keep(n => Node.getType(n) == fromBusPatchPath)
-    |. Holes.List.groupByString(Node.getLabel)
+    |. BeltHoles.List.groupByString(Node.getLabel)
     |. Map.String.keep((label, _) =>
          Map.String.has(toBusNodesByLabel, label)
        )
@@ -44,7 +44,7 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
     let linksByOutputNodeId =
       patch
       |. Patch.listLinks
-      |. Holes.List.groupByString(Link.getOutputNodeId);
+      |. BeltHoles.List.groupByString(Link.getOutputNodeId);
     List.reduce(
       matchingBusNodes,
       patch,
@@ -133,7 +133,7 @@ let splitLinksToBuses:
            });
       let (linksToUpsert, nodesToUpsert): (list(Link.t), list(Node.t)) =
         linksToSplit
-        |. Holes.List.groupBy((module LinkEndComparator), getLinkOutput)
+        |. BeltHoles.List.groupBy((module LinkEndComparator), getLinkOutput)
         |. Map.mapWithKey(((nodeId, pinKey), links) => {
              let (linkToBus, toBusNode) =
                patch
@@ -153,7 +153,7 @@ let splitLinksToBuses:
                   )
                |. List.head
                /* if there is no existing `to-bus` node, let's create one */
-               |. Holes.Option.getWithLazyDefault(() => {
+               |. BeltHoles.Option.getWithLazyDefault(() => {
                     let (busLabel, toBusPosition) =
                       Patch.getNodeById(patch, nodeId)
                       |. Option.flatMap(outputNode =>

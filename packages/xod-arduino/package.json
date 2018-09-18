@@ -24,7 +24,7 @@
     "bs-platform": "^3.1.5",
     "handlebars": "^4.0.6",
     "hm-def": "^0.3.2",
-    "holes": "^0.23.0",
+    "belt-holes": "^0.23.0",
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",
@@ -35,5 +35,11 @@
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^4.1.2",
     "xod-fs": "^0.24.0"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "platform",
+    "bsconfig.json"
+  ]
 }

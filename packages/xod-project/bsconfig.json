@@ -10,7 +10,7 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [
-    "holes",
+    "belt-holes",
     "xod-func-tools"
   ],
   "namespace": true,

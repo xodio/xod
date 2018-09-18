@@ -159,12 +159,12 @@ module Bench = {
    Knows nothing about tabular tests, i.e., purpose-neutral. */
 module Cpp = {
   type code = string;
-  let source = children => Holes.String.joinLines(children);
+  let source = children => BeltHoles.String.joinLines(children);
   let indented = children =>
-    children |. Holes.String.joinLines |. Holes.String.indent(4);
+    children |. BeltHoles.String.joinLines |. BeltHoles.String.indent(4);
   let enquote = x => {j|"$x"|j};
   let block = children =>
-    ["{", indented(children), "}"] |. Holes.String.joinLines;
+    ["{", indented(children), "}"] |. BeltHoles.String.joinLines;
   let catch2TestCase = (name, children) =>
     "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
@@ -285,9 +285,9 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
     Project.assocPatch(project, benchPatchPath, bench.patch)
     |. XodArduino.Transpiler.transpile(_, benchPatchPath)
-    |. Holes.Result.map(program => {
+    |. BeltHoles.Result.map(program => {
          let idMap =
-           Holes.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
+           BeltHoles.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
          let testCase =
            TestCase.generate(patchPathToTest, tabData, idMap, probes);
          Map.String.empty
@@ -303,8 +303,8 @@ let generateProjectSuite = project : XResult.t(t) =>
   |. List.keep(Patch.hasTabtest)
   |. List.map(Patch.getPath)
   |. List.reduce(Belt.Result.Ok(Map.String.empty), (accFiles, patchPath) =>
-       Holes.Result.lift2(
-         Holes.Map.String.mergeOverride,
+       BeltHoles.Result.lift2(
+         BeltHoles.Map.String.mergeOverride,
          accFiles,
          generatePatchSuite(project, patchPath),
        )

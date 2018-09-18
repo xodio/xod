@@ -1,5 +1,5 @@
 {
-  "name": "holes",
+  "name": "belt-holes",
   "version": "0.23.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
@@ -13,7 +13,7 @@
   ],
   "author": "XOD",
   "license": "AGPL-3.0",
-  "main": "src/Holes.bs.js",
+  "main": "src/BeltHoles.bs.js",
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
     "bs-platform": "^3.1.5"
@@ -22,5 +22,9 @@
     "testMatch": [
       "**/test/**/*_jest.bs.js"
     ]
-  }
+  },
+  "files": [
+    "src",
+    "bsconfig.json"
+  ]
 }

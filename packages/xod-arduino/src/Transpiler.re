@@ -26,7 +26,7 @@ external _getNodeIdsMap : TProject.t => Js.Dict.t(string) = "getNodeIdsMap";
 let transpile = (project, patchPath) : XResult.t(program) =>
   _transformProject(project, patchPath)
   |. Either.toResult
-  |. Holes.Result.map(tProject =>
+  |. BeltHoles.Result.map(tProject =>
        {
          code: _transpile(tProject),
          nodeIdMap:
