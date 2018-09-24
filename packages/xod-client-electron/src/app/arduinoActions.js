@@ -103,7 +103,7 @@ export const installPackage = fqbn =>
  * @see {@link https://www.npmjs.com/package/serialport#listing-ports}
  */
 export const listPorts = () =>
-  xad
+  xd
     .listPorts()
     .then(R.sort(R.descend(R.prop('comName'))))
     .catch(rejectWithCode(ERROR_CODES.NO_PORTS_FOUND));
@@ -320,7 +320,7 @@ const deployToArduinoThroughCloud = ({
 // =============================================================================
 
 const debug = async (port, onData, onClose) => {
-  const ports = await xad.listPorts();
+  const ports = await xd.listPorts();
   const newPort = R.find(
     R.allPass([
       R.propEq('manufacturer', port.manufacturer),
@@ -340,7 +340,7 @@ const debug = async (port, onData, onClose) => {
 
   const portName = R.prop('comName', port);
 
-  return delay(400).then(() => xad.openAndReadPort(portName, onData, onClose));
+  return delay(400).then(() => xd.openAndReadPort(portName, onData, onClose));
 };
 
 const isDeviceNotFound = R.propEq(
@@ -421,7 +421,7 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (
     });
 };
 
-export const stopDebugSessionHandler = (event, port) => xad.closePort(port);
+export const stopDebugSessionHandler = (event, port) => xd.closePort(port);
 
 export const uploadToArduinoHandler = (event, payload, wsPath) => {
   let lastPercentage = 0;
