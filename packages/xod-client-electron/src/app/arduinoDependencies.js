@@ -13,7 +13,7 @@ import path from 'path';
 import {
   checkLibrariesInstalledByUrls,
   installLibrariesByUrls,
-} from 'xod-arduino-deploy';
+} from 'xod-deploy';
 
 import { CHECK_ARDULIBS_INSTALLED, INSTALL_ARDULIBS } from '../shared/events';
 import subscribeIpc from './subscribeIpc';

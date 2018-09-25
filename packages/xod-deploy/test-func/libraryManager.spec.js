@@ -30,7 +30,6 @@ describe('Library Manager', () => {
         path.resolve(__dirname, '..'),
         [
           'https://github.com/pseudo-lib-names-as-directories/src',
-          'https://github.com/pseudo-lib-names-as-directories/test',
           'https://github.com/i-hope-there/will-be-no-such-dir',
         ]
       );
@@ -38,16 +37,14 @@ describe('Library Manager', () => {
       return Promise.all([
         assert.eventually.deepEqual(res, {
           'https://github.com/pseudo-lib-names-as-directories/src': true,
-          'https://github.com/pseudo-lib-names-as-directories/test': true,
           'https://github.com/i-hope-there/will-be-no-such-dir': false,
         }),
         res.then(() => {
-          assert.lengthOf(progress, 3);
+          assert.lengthOf(progress, 2);
 
           const progressNotes = R.map(R.prop('note'), progress);
           assert.sameMembers(progressNotes, [
             'Library "src" already installed',
-            'Library "test" already installed',
             'Library "will_be_no_such_dir" is missing',
           ]);
 
@@ -88,11 +85,13 @@ describe('Library Manager', () => {
       ]);
       return Promise.all([
         // Check Promise contents
-        assert.eventually.sameMembers(res, [
-          'GSM',
-          'UnoWiFi_Developer_Edition_Lib',
-          'Arduino_IRremote',
-        ]),
+        res.then(libs =>
+          assert.sameMembers(libs, [
+            'GSM',
+            'UnoWiFi_Developer_Edition_Lib',
+            'Arduino_IRremote',
+          ])
+        ),
         // Check that directories exists and not empty
         res.then(
           R.tap(

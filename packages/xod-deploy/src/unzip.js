@@ -17,7 +17,7 @@ import extractZip from 'extract-zip';
  *
  * :: Path -> Promise Path Error
  */
-export const unpackZip = filePath =>
+export default filePath =>
   new Promise((resolve, reject) => {
     let originalRootDirName = null;
     extractZip(
@@ -40,5 +40,3 @@ export const unpackZip = filePath =>
       }
     );
   });
-
-export default {};

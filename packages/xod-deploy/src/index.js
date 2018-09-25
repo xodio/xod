@@ -1,11 +1,9 @@
 export { compile, saveCompiledBinary } from './cloudCompiler';
 export * from './serialport';
-export {
-  getUploadConfig,
-  upload,
-  getToolName,
-  getToolVersion,
-  getToolUrl,
-  getToolVersionPath,
-} from './uploader';
 export { COMPILATION_ERRORS } from './constants';
+export { default as messages } from './messages';
+export {
+  getLibraryNameFromUrl,
+  checkLibrariesInstalledByUrls,
+  installLibrariesByUrls,
+} from './libraryManager';

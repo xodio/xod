@@ -10,7 +10,7 @@ import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
 import { Project, getProjectName, messages as xpMessages } from 'xod-project';
-import { messages as xadMessages } from 'xod-arduino-deploy';
+import { messages as xdMessages } from 'xod-deploy';
 import {
   foldEither,
   isAmong,
@@ -67,7 +67,7 @@ const DEFAULT_CANVAS_HEIGHT = 600;
 
 const formatErrorMessage = composeErrorFormatters([
   xpMessages,
-  xadMessages,
+  xdMessages,
   uploadMessages,
 ]);
 

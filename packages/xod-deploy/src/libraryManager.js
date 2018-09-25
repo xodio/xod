@@ -13,7 +13,7 @@ import {
 } from 'xod-func-tools';
 
 import download from './download';
-import { unpackZip } from './unpack';
+import unpackZip from './unzip';
 import createProgress from './progress';
 import MSG from './messages';
 

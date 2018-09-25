@@ -23,11 +23,9 @@
   "homepage": "https://github.com/xodio/xod#readme",
   "dependencies": {
     "child-process-promise": "^2.2.1",
-    "extract-zip": "^1.6.7",
     "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.1",
     "ramda": "^0.24.1",
-    "ramda-fantasy": "^0.8.0",
     "serialport": "^7.0.2",
     "tar": "^3.1.8",
     "unbzip2-stream": "^1.2.5",

@@ -7,7 +7,6 @@
     "build": "babel src -d dist",
     "dev": "yarn run build --watch",
     "clean:dist": "rimraf ./dist",
-    "test": "mocha test/**/*.spec.js",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "repository": {
@@ -23,9 +22,11 @@
   "dependencies": {
     "atob": "^2.0.3",
     "child-process-promise": "^2.2.1",
+    "extract-zip": "^1.6.7",
     "fs-extra": "^4.0.2",
     "node-fetch": "^1.7.2",
     "ramda": "^0.24.1",
+    "ramda-fantasy": "^0.8.0",
     "serialport": "^7.0.2",
     "tar": "^4.0.1",
     "unbzip2-stream": "^1.2.5",
@@ -34,6 +35,8 @@
     "xod-func-tools": "^0.24.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-fs": "^2.0.0"
   }
 }
