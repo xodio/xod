@@ -12,10 +12,12 @@ const removeListenersForAllEventStates = R.compose(
 export default eventName => {
   const EVENT_STATES = getAllStatesForEvent(eventName);
 
-  return (onProgress, deps) =>
+  return (onProgress, payload) =>
     new Promise((resolve, reject) => {
-      ipcRenderer.send(EVENT_STATES.BEGIN, deps);
-      ipcRenderer.on(EVENT_STATES.PROCESS, (_, payload) => onProgress(payload));
+      ipcRenderer.send(EVENT_STATES.BEGIN, payload);
+      ipcRenderer.on(EVENT_STATES.PROCESS, (_, progressPayload) =>
+        onProgress(progressPayload)
+      );
       ipcRenderer.once(EVENT_STATES.COMPLETE, (_, res) => {
         removeListenersForAllEventStates(EVENT_STATES);
         resolve(res);
