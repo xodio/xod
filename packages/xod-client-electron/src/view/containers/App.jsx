@@ -27,13 +27,13 @@ import packageJson from '../../../package.json';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
+import { listBoards, upload } from '../../upload/arduinoCli';
 import * as debuggerIPC from '../../debugger/ipcActions';
 import {
   getUploadProcess,
   getSelectedSerialPort,
 } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
-import { UPLOAD_TO_ARDUINO } from '../../upload/actionTypes';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
@@ -41,11 +41,11 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
-import UPLOAD_MESSAGES from '../../upload/messages';
-import { default as uploadMessages } from '../../arduinoDependencies/messages';
+import { default as arduinoDepMessages } from '../../arduinoDependencies/messages';
 import { INSTALL_ARDUINO_DEPENDENCIES_MSG } from '../../arduinoDependencies/constants';
 import { checkDeps } from '../../arduinoDependencies/actions';
 import { createSystemMessage } from '../../shared/debuggerMessages';
+import uploadMessages from '../../upload/messages';
 
 import getLibraryNames from '../../arduinoDependencies/getLibraryNames';
 
@@ -68,6 +68,7 @@ const DEFAULT_CANVAS_HEIGHT = 600;
 const formatErrorMessage = composeErrorFormatters([
   xpMessages,
   xdMessages,
+  arduinoDepMessages,
   uploadMessages,
 ]);
 
@@ -120,7 +121,7 @@ class App extends client.App {
     );
     this.showCreateWorkspacePopup = this.showCreateWorkspacePopup.bind(this);
 
-    this.requestInstallArduinoLibraries = this.requestInstallArduinoLibraries.bind(
+    this.requestInstallArduinoDependencies = this.requestInstallArduinoDependencies.bind(
       this
     );
 
@@ -160,6 +161,12 @@ class App extends client.App {
       EVENTS.PAN_TO_CENTER,
       this.props.actions.setCurrentPatchOffsetToCenter
     );
+
+    // Notify about errors in the Main Process
+    ipcRenderer.on(EVENTS.ERROR_IN_MAIN_PROCESS, (event, error) => {
+      console.error(error); // eslint-disable-line no-console
+      this.props.actions.addError(formatError(error));
+    });
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
@@ -269,6 +276,18 @@ class App extends client.App {
         tapP(tProj => {
           const libraries = getRequireUrls(tProj);
           const checkProcess = this.props.actions.checkDeps();
+          const deps = R.compose(
+            R.assoc('libraries', libraries),
+            R.ifElse(
+              R.has('package'),
+              R.compose(
+                R.objOf('packages'),
+                R.of,
+                R.pick(['package', 'packageName'])
+              ),
+              R.always({ packages: [] })
+            )
+          )(board);
           // TODO: Add other arduino dependencies here
           return checkArduinoDependencies(
             progressData =>
@@ -276,12 +295,9 @@ class App extends client.App {
                 progressData.note,
                 progressData.percentage * 10
               ),
-            // Multiply percentage by ten, because the first step of the upload
-            // takes 10% and `proc.progress` accepts a percentage from 0 to 100.
-            // TODO: Make it uniform with refactoring of upload system (#1201/#1218)
-            { libraries }
+            deps
           )
-            .then(this.requestInstallArduinoLibraries)
+            .then(this.requestInstallArduinoDependencies)
             .then(() => checkProcess.success())
             .catch(err => {
               checkProcess.delete();
@@ -290,65 +306,46 @@ class App extends client.App {
         })
       )
       .then(transpile)
-      .then(code => {
-        // Begin upload
-        ipcRenderer.send(UPLOAD_TO_ARDUINO, {
-          code,
-          cloud,
-          board,
-          port,
-        });
-
-        // And subscribe on Ipc events
-        ipcRenderer.on(UPLOAD_TO_ARDUINO, (event, payload) => {
-          if (payload.progress) {
-            proc.progress(payload.message, payload.percentage);
-            return;
+      .then(code =>
+        upload(
+          progressData => {
+            proc.progress(
+              progressData.message,
+              progressData.percentage,
+              progressData.tab
+            );
+          },
+          {
+            code,
+            cloud,
+            board,
+            port,
           }
-          if (payload.success) {
-            proc.success(payload.message);
-
-            this.props.actions.addConfirmation(UPLOAD_MESSAGES.SUCCESS);
-
-            if (debug) {
-              foldEither(
-                error =>
-                  this.props.actions.addError(
-                    client.composeMessage(error.message)
-                  ),
-                nodeIdsMap => {
-                  if (this.props.currentPatchPath.isNothing) return;
-                  const currentPatchPath = explodeMaybe(
-                    'Imposible error: currentPatchPath is Nothing',
-                    this.props.currentPatchPath
-                  );
-
-                  this.props.actions.startDebuggerSession(
-                    createSystemMessage('Debug session started'),
-                    nodeIdsMap,
-                    currentPatchPath
-                  );
-                  debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
-                },
-                R.map(getNodeIdsMap, eitherTProject)
+        )
+      )
+      .then(() => proc.success())
+      .then(() => {
+        if (debug) {
+          foldEither(
+            error =>
+              this.props.actions.addError(client.composeMessage(error.message)),
+            nodeIdsMap => {
+              if (this.props.currentPatchPath.isNothing) return;
+              const currentPatchPath = explodeMaybe(
+                'Imposible error: currentPatchPath is Nothing',
+                this.props.currentPatchPath
               );
-            }
-          }
-          if (payload.failure) {
-            console.error(payload); // eslint-disable-line no-console
-            const stanza = payload.message; // result of legacy `composeMessage`
-            const joinNonNil = sep => R.compose(R.join(sep), R.reject(R.isNil));
-            const messageForConsole = joinNonNil('\n\n')([
-              joinNonNil('. ')([stanza.title, stanza.note]),
-              payload.error.stdout,
-              payload.stderr,
-            ]);
-            proc.fail(messageForConsole, payload.percentage);
-          }
-          // Remove listener if process is finished.
-          ipcRenderer.removeAllListeners(UPLOAD_TO_ARDUINO);
-          this.props.actions.updateCompileLimit();
-        });
+
+              this.props.actions.startDebuggerSession(
+                createSystemMessage('Debug session started'),
+                nodeIdsMap,
+                currentPatchPath
+              );
+              debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
+            },
+            R.map(getNodeIdsMap, eitherTProject)
+          );
+        }
       })
       .catch(logError(proc.fail));
   }
@@ -735,17 +732,6 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
-  static listBoards() {
-    return new Promise((resolve, reject) => {
-      ipcRenderer.send(EVENTS.LIST_BOARDS);
-      ipcRenderer.once(EVENTS.LIST_BOARDS, (event, response) => {
-        if (response.err) {
-          reject(response.data);
-        }
-        resolve(response.data);
-      });
-    });
-  }
   static listPorts() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
@@ -758,30 +744,32 @@ class App extends client.App {
     });
   }
 
-  requestInstallArduinoLibraries(libsFound) {
-    const getError = missingLibs =>
-      createError('ARDUINO_LIBRARIES_MISSING', {
+  requestInstallArduinoDependencies({ libraries, packages }) {
+    const getError = (missingLibs, missingPackages) =>
+      createError('ARDUINO_DEPENDENCIES_MISSING', {
         libraries: missingLibs,
+        packages: missingPackages,
         libraryNames: getLibraryNames(missingLibs),
+        packageNames: R.pluck('packageName', missingPackages),
       });
 
-    return R.compose(
-      R.ifElse(
-        R.pipe(R.length, R.gt(R.__, 0)),
-        missingLibs => {
-          const err = getError(missingLibs);
-          this.props.actions.addError(
-            formatErrorMessage(err),
-            INSTALL_ARDUINO_DEPENDENCIES_MSG
-          );
+    const libsToInstall = R.pipe(R.filter(R.not), R.keys)(libraries);
+    const packagesToInstall = R.reject(R.prop('installed'))(packages);
 
-          return Promise.reject(err);
-        },
-        () => Promise.resolve(libsFound)
-      ),
-      R.keys,
-      R.filter(R.not)
-    )(libsFound);
+    const installationNeeded =
+      libsToInstall.length + packagesToInstall.length > 0;
+
+    if (installationNeeded) {
+      const err = getError(libsToInstall, packagesToInstall);
+      this.props.actions.addError(
+        formatErrorMessage(err),
+        INSTALL_ARDUINO_DEPENDENCIES_MSG
+      );
+
+      return Promise.reject(err);
+    }
+
+    return Promise.resolve({ libraries, packages });
   }
 
   renderPopupUploadConfig() {
@@ -790,7 +778,7 @@ class App extends client.App {
         isVisible
         getSelectedBoard={this.constructor.getSelectedBoard}
         selectedPort={this.props.selectedPort}
-        listBoards={this.constructor.listBoards}
+        listBoards={listBoards}
         listPorts={this.constructor.listPorts}
         compileLimitLeft={this.props.compileLimitLeft}
         updateCompileLimit={this.props.actions.updateCompileLimit}

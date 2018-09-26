@@ -16,4 +16,9 @@ export default {
   LIBRARY_INSTALLED: ({ libName }) => ({
     note: `Library "${libName}" installed successfully`,
   }),
+  CLOUD_COMPILE_UNSPUPPORTED: boardName => ({
+    title: 'Cloud compilation not supported',
+    note: `Can't compile in the cloud for the board "${boardName}"`,
+    solution: 'Try to compile it on your own computer',
+  }),
 };

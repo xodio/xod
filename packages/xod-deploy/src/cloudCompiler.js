@@ -5,6 +5,7 @@ import WebSocket from 'ws';
 import atob from 'atob';
 import { retryOrFail } from 'xod-func-tools';
 
+import toPioMap from './toPio.json';
 import {
   COMPILATION_RESPONSE_TYPES,
   COMPILATION_ERRORS,
@@ -48,7 +49,10 @@ const sendAndReceive = dataToSend =>
 
       const errCode = RESPONSE_TO_ERROR[data.type];
       if (errCode) {
-        reject(createCompileError(data.body, errCode));
+        const errMessage = R.is(Object, data.body)
+          ? JSON.stringify(data.body)
+          : data.body;
+        reject(createCompileError(errMessage, errCode));
       }
 
       if (data.type === COMPILATION_RESPONSE_TYPES.SUCCEEDED) {
@@ -71,6 +75,9 @@ const sendAndReceive = dataToSend =>
     );
   });
 
+export const canCompile = fqbn => R.has(fqbn, toPioMap);
+export const getPioBoardId = fqbn => R.prop(fqbn, toPioMap);
+
 /**
  * Returns Promise with compilation result or error.
  * It will automatically retry to compile data if connection/timeout error occured.
@@ -81,10 +88,13 @@ const sendAndReceive = dataToSend =>
 // :: String -> String -> Promise { data: String, name: String } CompileError
 export const compile = R.curry((board, code) => {
   const dataToSend = { board, body: code };
+
   return sendAndReceive(dataToSend).catch(
     retryOrFail(
       RETRY_DELAYS,
-      data => data.errorCode === COMPILATION_ERRORS.COMPILE_FAILED,
+      data =>
+        data.errorCode === COMPILATION_ERRORS.COMPILE_FAILED ||
+        data.errorCode === COMPILATION_ERRORS.COMPILE_REJECTED,
       R.identity,
       () => sendAndReceive(dataToSend)
     )

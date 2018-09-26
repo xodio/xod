@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel src -d dist",
+    "copy-piomap": " cpx \"src/*.json\" dist",
+    "build": "babel src -d dist && yarn copy-piomap",
     "dev": "yarn run build --watch",
     "clean:dist": "rimraf ./dist",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"

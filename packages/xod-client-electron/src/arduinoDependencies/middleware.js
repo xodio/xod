@@ -7,9 +7,8 @@ import { installDeps } from './actions';
 import MSG from './messages';
 import getLibraryNames from './getLibraryNames';
 
-// TODO: Unify old-fashioned process with new `progressData`.
 const progressToProcess = R.curry((processFn, progressData) => {
-  processFn(progressData.note, progressData.percentage * 100);
+  processFn(progressData.message, progressData.percentage);
 });
 
 export default store => next => action => {
@@ -25,17 +24,19 @@ export default store => next => action => {
 
     foldMaybe(
       null,
-      ({ libraries }) => {
+      ({ libraries, packages, packageNames }) => {
         const proc = store.dispatch(installDeps());
         installArduinoDependencies(progressToProcess(proc.progress), {
           libraries,
+          packages,
         })
           .then(() => {
             store.dispatch(
               client.addNotification(
                 // eslint-disable-next-line new-cap
-                MSG.ARDUINO_LIBRARIES_INSTALLED({
+                MSG.ARDUINO_DEPENDENCIES_INSTALLED({
                   libraryNames: getLibraryNames(libraries),
+                  packageNames,
                 })
               )
             );
