@@ -3,7 +3,7 @@ import BasePageObject from './BasePageObject';
 class Inspector extends BasePageObject {
   async setPinValue(pinName, value) {
     const inputElementHandle = await this.elementHandle.$(
-      `.PinWidget[title="${pinName}"] input`
+      `.PinWidget[data-pinLabel="${pinName}"] input`
     );
     await this.page.evaluate(input => {
       // eslint-disable-next-line no-param-reassign
