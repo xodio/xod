@@ -34,7 +34,7 @@ public:
         int data = _serial.read();
         if (data == -1)
             return false;
-        *out = data;
+        *out = (uint8_t)data;
         return true;
     }
 
