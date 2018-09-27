@@ -1,0 +1,29 @@
+{
+  "description": "Represents an internet connection",
+  "nodes": [
+    {
+      "id": "By7tuY8YX",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "SyJt_KUF7",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SyqdOtLYX",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "description": "Connect to a WiFi network with a given SSID and password",
+  "nodes": [
+    {
+      "id": "BJxASTtLYm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An internet connection",
+      "id": "H1Gd15UFQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-esp8266-mcu-inet"
+    },
+    {
+      "description": "Wi-Fi network password",
+      "id": "H1z0HpF8Km",
+      "label": "PWD",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses if the connection failed\n",
+      "id": "HJ7RrpFUY7",
+      "label": "ERR",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Name of the Wi-Fi network",
+      "id": "HJZCrpKLYX",
+      "label": "SSID",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses on a successful connection\n",
+      "id": "HyLAraK8Km",
+      "label": "DONE",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An ESP8266-based MCU",
+      "id": "HyOPzjUK7",
+      "label": "DEV",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Establish the connection",
+      "id": "ryRHTFItQ",
+      "label": "CONN",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

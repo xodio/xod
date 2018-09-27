@@ -1,0 +1,421 @@
+{
+  "comments": [
+    {
+      "content": "If request succeeds, request fresh value after 1 second\nIf request fails, retry after 5 seconds",
+      "id": "BJnIU4Kt7",
+      "position": {
+        "x": 476,
+        "y": 510
+      },
+      "size": {
+        "height": 51,
+        "width": 408
+      }
+    },
+    {
+      "content": "⚠️ Make sure to specify SSID and password of your WiFi network",
+      "id": "H1hkLF9Fm",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "size": {
+        "height": 51,
+        "width": 272
+      }
+    },
+    {
+      "content": "tip: use `https://dweet.io/dweet/for/xod-esp8266-iot?lum=100` to put desired values\n",
+      "id": "SkhZRSUVFY7",
+      "position": {
+        "x": 544,
+        "y": 408
+      },
+      "size": {
+        "height": 51,
+        "width": 442
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1NbRrIEFFm",
+      "input": {
+        "nodeId": "BJCSI4tYQ",
+        "pinKey": "B18iIoA-m"
+      },
+      "output": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "Hku0ArhDYX"
+      }
+    },
+    {
+      "id": "B1cW0HI4YtQ",
+      "input": {
+        "nodeId": "BJCSI4tYQ",
+        "pinKey": "rklUo8jA-Q"
+      },
+      "output": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "r1E0RH3vYQ"
+      }
+    },
+    {
+      "id": "BJwbCrI4FtQ",
+      "input": {
+        "nodeId": "Byj0rUNKKQ",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "ryJlRBU4FYQ",
+        "pinKey": "HyLAraK8Km"
+      }
+    },
+    {
+      "id": "BkSeRHLVKtX",
+      "input": {
+        "nodeId": "BJCSI4tYQ",
+        "pinKey": "BJhHwoRb7"
+      },
+      "output": {
+        "nodeId": "B19RHUNYt7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByLx0SIVYtQ",
+      "input": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "S1Tl8hwFQ"
+      },
+      "output": {
+        "nodeId": "ryJlRBU4FYQ",
+        "pinKey": "H1Gd15UFQ"
+      }
+    },
+    {
+      "id": "ByVxABIVtK7",
+      "input": {
+        "nodeId": "rkWAH8EYtQ",
+        "pinKey": "SkW3wouIeQ"
+      },
+      "output": {
+        "nodeId": "HydRr8NttQ",
+        "pinKey": "BksptX0b7"
+      }
+    },
+    {
+      "id": "ByXvONKY7",
+      "input": {
+        "nodeId": "r1F8u4ttm",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "HydRr8NttQ",
+        "pinKey": "Sk6oKXA-Q"
+      }
+    },
+    {
+      "id": "Bya29sy5Q",
+      "input": {
+        "nodeId": "H1BCFNKKm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkv29jyc7",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "H1Lw_NtYm",
+      "input": {
+        "nodeId": "rkWAH8EYtQ",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "r1F8u4ttm",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "Hk7lASLEKtm",
+      "input": {
+        "nodeId": "Byj0rUNKKQ",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rkMCr8EtYX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkYgCH8NFKX",
+      "input": {
+        "nodeId": "HydRr8NttQ",
+        "pinKey": "rJ55KmC-X"
+      },
+      "output": {
+        "nodeId": "BJCSI4tYQ",
+        "pinKey": "SkSGwoAZQ"
+      }
+    },
+    {
+      "id": "Hy5e0SIEKYX",
+      "input": {
+        "nodeId": "HydRr8NttQ",
+        "pinKey": "Sy1it7R-m"
+      },
+      "output": {
+        "nodeId": "BJCSI4tYQ",
+        "pinKey": "SkYZwiRbm"
+      }
+    },
+    {
+      "id": "Hyh3csycm",
+      "input": {
+        "nodeId": "rkv29jyc7",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "SyFdPQqtQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "SkMjwQqtQ",
+      "input": {
+        "nodeId": "SyFdPQqtQ",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SyETcEtKm",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "SksWAS8VtKQ",
+      "input": {
+        "nodeId": "B1-gRSUVYYX",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "H1A0CH3PYm"
+      }
+    },
+    {
+      "id": "SyC65NFKQ",
+      "input": {
+        "nodeId": "SyETcEtKm",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "BJpCRr2vt7"
+      }
+    },
+    {
+      "id": "r1u9Ys19X",
+      "input": {
+        "nodeId": "ByXASI4FKm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Byj0rUNKKQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rJQn9okcQ",
+      "input": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "rygl0RH3wtm"
+      },
+      "output": {
+        "nodeId": "Byj0rUNKKQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rkEsw7cYQ",
+      "input": {
+        "nodeId": "SyFdPQqtQ",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "B1-gRSUVYYX",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "rkzbRBIVKY7",
+      "input": {
+        "nodeId": "HydRr8NttQ",
+        "pinKey": "r1JWmAxzQ"
+      },
+      "output": {
+        "nodeId": "Sy2CBUNYt7",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "Skre8ROSv1-": "5"
+      },
+      "id": "B1-gRSUVYYX",
+      "position": {
+        "x": 612,
+        "y": 612
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "id": "B19RHUNYt7",
+      "label": "RST",
+      "position": {
+        "x": 374,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "rkZ8oIj0-m": "\"\"lum\":\""
+      },
+      "id": "BJCSI4tYQ",
+      "position": {
+        "x": 272,
+        "y": 612
+      },
+      "type": "xod/stream/pass-from-sequence"
+    },
+    {
+      "id": "ByXASI4FKm",
+      "label": "RST",
+      "position": {
+        "x": 408,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "Byj0rUNKKQ",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "H1BCFNKKm",
+      "label": "AGAIN",
+      "position": {
+        "x": 578,
+        "y": 816
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "HJjCAB2DF7": "\"dweet.io\"",
+        "ryYRCBhvFX": "\"/get/latest/dweet/for/xod-esp8266-iot\""
+      },
+      "id": "Hk6RBINtYX",
+      "position": {
+        "x": 271,
+        "y": 407
+      },
+      "type": "@/http-request(esp8266-mcu-inet)"
+    },
+    {
+      "id": "HydRr8NttQ",
+      "position": {
+        "x": 272,
+        "y": 816
+      },
+      "type": "xod/stream/parse-integer"
+    },
+    {
+      "id": "Sy2CBUNYt7",
+      "label": "RST",
+      "position": {
+        "x": 340,
+        "y": 714
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "Skre8ROSv1-": "2"
+      },
+      "id": "SyETcEtKm",
+      "position": {
+        "x": 476,
+        "y": 612
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "id": "SyFdPQqtQ",
+      "position": {
+        "x": 510,
+        "y": 714
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "100",
+        "HkFBgJehW": "1"
+      },
+      "id": "r1F8u4ttm",
+      "position": {
+        "x": 136,
+        "y": 918
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "id": "rkMCr8EtYX",
+      "label": "AGAIN",
+      "position": {
+        "x": 442,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "A2"
+      },
+      "id": "rkWAH8EYtQ",
+      "position": {
+        "x": 238,
+        "y": 1020
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "rkv29jyc7",
+      "position": {
+        "x": 578,
+        "y": 714
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "boundLiterals": {
+        "H1z0HpF8Km": "\"password\"",
+        "HJZCrpKLYX": "\"ssid\""
+      },
+      "id": "ryJlRBU4FYQ",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "@/connect"
+    }
+  ]
+}

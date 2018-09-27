@@ -1,0 +1,53 @@
+{
+  "description": "Checks if a TCP connection is open",
+  "nodes": [
+    {
+      "id": "BkXkhxTDt7",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A socket",
+      "id": "HkEhxaDYX",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    },
+    {
+      "description": "Pulses if the connection is open",
+      "id": "Hkkhe6vYX",
+      "label": "Y",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Perform the check",
+      "id": "r1f1heaDtQ",
+      "label": "CHK",
+      "position": {
+        "x": 101,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses if the connection is closed",
+      "id": "rJgkhxTvKX",
+      "label": "N",
+      "position": {
+        "x": 101,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

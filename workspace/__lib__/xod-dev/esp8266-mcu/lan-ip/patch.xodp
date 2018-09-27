@@ -1,0 +1,33 @@
+{
+  "description": "Gets a local IP address",
+  "nodes": [
+    {
+      "id": "BJW3uVtwYm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SkGtVFvY7",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
+    },
+    {
+      "description": "The IP address",
+      "id": "ryxn_NYPKX",
+      "label": "IP",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/net/output-ip-address"
+    }
+  ]
+}
