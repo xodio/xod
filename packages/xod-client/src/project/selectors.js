@@ -24,7 +24,10 @@ import {
   getPinErrors,
   getPatchSearchData,
 } from '../hinting/selectors';
-import { getRenderablePinType } from '../project/utils';
+import {
+  getRenderablePinType,
+  getNormalizedLabelsForPatch,
+} from '../project/utils';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 
@@ -300,14 +303,32 @@ export const getRenderableNodes = createMemoizedSelector(
     foldMaybe(
       {},
       currentPatch =>
-        R.map(
-          getRenderableNode(
-            R.__,
-            currentPatch,
-            connectedPins,
-            deducedPinTypes,
-            project,
-            errors
+        R.compose(
+          // If there is at least one terminal node on the patch
+          // normalize empty pin labels (which equals to empty label of
+          // terminal nodes) and add it into renderableNode.
+          R.when(
+            R.compose(
+              R.any(R.pipe(R.prop('type'), XP.isTerminalPatchPath)),
+              R.values
+            ),
+            renderableNodes =>
+              R.compose(
+                R.mergeWith(R.merge, renderableNodes),
+                R.map(R.objOf('normalizedLabel')),
+                getNormalizedLabelsForPatch
+              )(currentPatch)
+          ),
+          // Get renderable nodes
+          R.map(
+            getRenderableNode(
+              R.__,
+              currentPatch,
+              connectedPins,
+              deducedPinTypes,
+              project,
+              errors
+            )
           )
         )(currentPatchNodes),
       maybeCurrentPatch

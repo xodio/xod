@@ -16,11 +16,15 @@ const TerminalNodeBody = props => {
     r: radius,
   };
 
+  const terminalLabel = R.when(R.isEmpty, R.always(props.normalizedLabel))(
+    props.label
+  );
+
   return (
     <g>
       <circle className="body" {...circleProps} />
       <NodeLabel
-        text={props.label}
+        text={terminalLabel}
         width={props.size.width}
         height={props.size.width}
         y={yOffset + (isInput ? -1 : 1)}
@@ -42,6 +46,7 @@ const TerminalNodeBody = props => {
 TerminalNodeBody.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
+  normalizedLabel: PropTypes.string,
   size: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
