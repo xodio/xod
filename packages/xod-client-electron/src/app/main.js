@@ -13,7 +13,6 @@ import {
 
 import * as EVENTS from '../shared/events';
 import {
-  listBoardsHandler,
   listPortsHandler,
   loadTargetBoardHandler,
   saveTargetBoardHandler,
@@ -221,7 +220,6 @@ const onReady = () => {
   );
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
-  ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);
   ipcMain.on(EVENTS.SET_SELECTED_BOARD, saveTargetBoardHandler);
   ipcMain.on(EVENTS.CONFIRM_CLOSE_WINDOW, () => {

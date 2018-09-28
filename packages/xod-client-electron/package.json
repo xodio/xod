@@ -46,7 +46,6 @@
     "serialport": "^7.0.2",
     "which": "^1.3.1",
     "xod-arduino": "^0.24.0",
-    "xod-arduino-deploy": "^0.24.0",
     "xod-client": "^0.24.0",
     "xod-deploy": "^0.24.0",
     "xod-fs": "^0.24.0",
