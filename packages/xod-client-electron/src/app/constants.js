@@ -4,3 +4,4 @@ export const BUNDLED_ADDITIONAL_URLS = [
 ];
 export const ARDUINO_LIBRARIES_DIRNAME = '__ardulib__';
 export const ARDUINO_CLI_LIBRARIES_DIRNAME = 'libraries';
+export const ARDUINO_EXTRA_URLS_FILENAME = 'extra.txt';

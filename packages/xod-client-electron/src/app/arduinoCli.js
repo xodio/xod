@@ -5,13 +5,17 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import arduinoCli from 'arduino-cli';
 import * as xd from 'xod-deploy';
-import { createError } from 'xod-func-tools';
+import { createError, isAmong } from 'xod-func-tools';
 import * as cpx from 'cpx';
 
 import subscribeIpc from './subscribeIpc';
 import { loadWorkspacePath } from './workspaceActions';
 import { getPathToBundledWorkspace } from './utils';
-import { LIST_BOARDS, UPLOAD_TO_ARDUINO } from '../shared/events';
+import {
+  LIST_BOARDS,
+  UPLOAD_TO_ARDUINO,
+  UPDATE_INDEXES,
+} from '../shared/events';
 import {
   compilationBegun,
   CODE_COMPILED,
@@ -22,6 +26,7 @@ import {
   ARDUINO_CLI_LIBRARIES_DIRNAME,
   ARDUINO_PACKAGES_DIRNAME,
   BUNDLED_ADDITIONAL_URLS,
+  ARDUINO_EXTRA_URLS_FILENAME,
 } from './constants';
 
 // =============================================================================
@@ -75,6 +80,13 @@ const copyLibraries = async (bundledLibDir, userLibDir, sketchbookLibDir) => {
   await copy(recWildcard(userLibDir), sketchbookLibDir);
   return sketchbookLibDir;
 };
+
+// :: _ -> Promise Path Error
+const ensureExtraTxt = R.composeP(
+  extraFilePath => fse.ensureFile(extraFilePath).then(R.always(extraFilePath)),
+  ws => path.join(ws, ARDUINO_PACKAGES_DIRNAME, ARDUINO_EXTRA_URLS_FILENAME),
+  loadWorkspacePath
+);
 
 const copyPackageIndexes = async wsPackageDir => {
   const filesToCopy = await R.composeP(
@@ -150,6 +162,7 @@ export const create = sketchDir =>
     const packagesDirPath = getArduinoPackagesPath(wsPath);
 
     await copyPackageIndexes(packagesDirPath);
+    await ensureExtraTxt();
 
     return arduinoCli(arduinoCliPath, {
       arduino_data: packagesDirPath,
@@ -161,13 +174,34 @@ export const create = sketchDir =>
   });
 
 /**
+ * Updates package index json files.
+ * Returns log of updating.
+ *
+ * :: ArduinoCli -> Promise String Error
+ */
+const updateIndexes = async cli => {
+  const urls = await cli
+    .dumpConfig()
+    .then(R.pathOr([], ['board_manager', 'additional_urls']));
+
+  return R.composeP(
+    () => cli.core.updateIndex(),
+    cli.addPackageIndexUrls,
+    R.reject(isAmong(urls)),
+    R.split('\r\n'),
+    p => fse.readFile(p, { encoding: 'utf8' }),
+    ensureExtraTxt
+  )();
+};
+
+/**
  * Returns map of installed boards and boards that could be installed:
  * - Installed boards (boards, which are ready for deploy)
  *   { name :: String, fqbn :: String }
  * - Available boards (boards, which packages could be installed)
  *   { name :: String, package :: String, version :: String }
  *
- * :: ArduinoCli -> { installed :: [InstalledBoard], available :: [AvailableBoard] }
+ * :: ArduinoCli -> Promise { installed :: [InstalledBoard], available :: [AvailableBoard] } Error
  */
 export const listBoards = async cli =>
   Promise.all([cli.listInstalledBoards(), cli.listAvailableBoards()]).then(
@@ -353,4 +387,8 @@ export const subscribeUpload = cli => {
     (_, payload, onProgress) => upload(onProgress, cli, payload),
     UPLOAD_TO_ARDUINO
   );
+};
+
+export const subscribeUpdateIndexes = cli => {
+  subscribeIpc(() => updateIndexes(cli), UPDATE_INDEXES);
 };
