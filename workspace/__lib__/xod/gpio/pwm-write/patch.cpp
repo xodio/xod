@@ -3,6 +3,12 @@ struct State {
 
 {{ GENERATED_CODE }}
 
+#ifdef PWMRANGE
+constexpr Number pwmRange = PWMRANGE;
+#else
+constexpr Number pwmRange = 255.0;
+#endif
+
 void evaluate(Context ctx) {
     if (!isInputDirty<input_UPD>(ctx))
         return;
@@ -17,7 +23,7 @@ void evaluate(Context ctx) {
 
     auto duty = getValue<input_DUTY>(ctx);
     duty = duty > 1 ? 1 : (duty < 0 ? 0 : duty);
-    uint8_t val = (uint8_t)(duty * 255.0);
+    int val = (int)(duty * pwmRange);
 
     ::pinMode(port, OUTPUT);
     ::analogWrite(port, val);
