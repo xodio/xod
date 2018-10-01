@@ -17,7 +17,7 @@ export default (xodball, dir) => {
     .then(setProjectName(newProjectName))
     .then(saveProjectEntirely(dirPath))
     .then(() => {
-      msg.success('Done!');
+      msg.success('Done');
       process.exit(0);
     })
     .catch(err => {
