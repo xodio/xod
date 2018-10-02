@@ -70,8 +70,12 @@
     "buildDependenciesFromSource": true,
     "extraResources": [
       {
-        "from": "arduino-builders/${os}",
-        "to": "arduino-builder"
+        "from": "arduino-cli",
+        "to": "arduino-cli"
+      },
+      {
+        "from": "arduino-cli.exe",
+        "to": "arduino-cli.exe"
       },
       {
         "from": "src-babel/workspace",

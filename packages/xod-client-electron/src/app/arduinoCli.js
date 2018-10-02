@@ -10,7 +10,7 @@ import * as cpx from 'cpx';
 
 import subscribeIpc from './subscribeIpc';
 import { loadWorkspacePath } from './workspaceActions';
-import { getPathToBundledWorkspace } from './utils';
+import { getPathToBundledWorkspace, IS_DEV } from './utils';
 import {
   LIST_BOARDS,
   UPLOAD_TO_ARDUINO,
@@ -47,12 +47,20 @@ const bundledPackagesDir = R.compose(
 // :: _ -> Promise Path Error
 const getArduinoCliPath = () =>
   new Promise((resolve, reject) => {
+    const arduinoCliBin =
+      os.platform() === 'win32' ? 'arduino-cli.exe' : 'arduino-cli';
+
+    if (!IS_DEV) {
+      resolve(path.join(process.resourcesPath, arduinoCliBin));
+      return;
+    }
+
     if (process.env.ARDUINO_CLI) {
       resolve(process.env.ARDUINO_CLI);
       return;
     }
 
-    which('arduino-cli', (err, cliPath) => {
+    which(arduinoCliBin, (err, cliPath) => {
       if (err) {
         reject(err);
         return;

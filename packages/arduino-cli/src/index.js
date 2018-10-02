@@ -1,3 +1,4 @@
+import os from 'os';
 import * as R from 'ramda';
 import { resolve } from 'path';
 import { exec, spawn } from 'child-process-promise';
@@ -20,13 +21,14 @@ const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
 const ArduinoCli = (pathToBin, config = null) => {
   const { path: configPath, config: cfg } = configure(config);
 
+  const escapedConfigPath = escapeSpacesNonWin(configPath);
   const run = args =>
-    exec(`"${pathToBin}" --config-file="${configPath}" ${args}`).then(
+    exec(`"${pathToBin}" --config-file=${escapedConfigPath} ${args}`).then(
       R.prop('stdout')
     );
   const runWithProgress = async (onProgress, args) => {
     const spawnArgs = R.compose(
-      R.concat([`--config-file="${configPath}"`]),
+      R.concat([`--config-file=${escapedConfigPath}`]),
       R.reject(R.isEmpty),
       R.split(' ')
     )(args);
