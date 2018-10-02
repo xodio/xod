@@ -1,0 +1,89 @@
+{
+  "description": "Open a TCP connection to the specified server",
+  "nodes": [
+    {
+      "description": "Pulses when opening failed",
+      "id": "B1ENaAjwtm",
+      "label": "ERR",
+      "position": {
+        "x": 203,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Open the connection",
+      "id": "ByZE6AjDt7",
+      "label": "CONN",
+      "position": {
+        "x": 305,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H1BNpCiPK7",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A socket",
+      "id": "H1mYNnvY7",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-socket"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SkEJyhvFQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
+    },
+    {
+      "description": "Pulses when the connection is successfully open",
+      "id": "r1EpRjDYQ",
+      "label": "DONE",
+      "position": {
+        "x": 101,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A destination server port number",
+      "id": "ryL4pAjPKX",
+      "label": "PORT",
+      "position": {
+        "x": 203,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"www.google.com\""
+      },
+      "description": "Server name",
+      "id": "ryQ46CovFm",
+      "label": "SRV",
+      "position": {
+        "x": 101,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

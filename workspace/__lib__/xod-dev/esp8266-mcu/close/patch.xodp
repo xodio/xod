@@ -1,0 +1,43 @@
+{
+  "description": "Closes an open TCP connection",
+  "nodes": [
+    {
+      "id": "B1MPz-TvKX",
+      "position": {
+        "x": -1,
+        "y": 100
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when the connection is closed",
+      "id": "ByPfZaPKQ",
+      "label": "DONE",
+      "position": {
+        "x": 0,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "SJiGWTPKm",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    },
+    {
+      "description": "Close the connection",
+      "id": "r1eDMb6vKm",
+      "label": "CLS",
+      "position": {
+        "x": 68,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

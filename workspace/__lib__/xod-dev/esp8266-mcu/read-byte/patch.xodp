@@ -1,0 +1,63 @@
+{
+  "description": "Read a single byte of the response from an opened connection",
+  "nodes": [
+    {
+      "description": "Pulses when the byte is read",
+      "id": "BJX3fx6vtm",
+      "label": "DONE",
+      "position": {
+        "x": 67,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The last read byte",
+      "id": "Hyz3GeTPY7",
+      "label": "B",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "S1-3MlpwKm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when there is no byte to read",
+      "id": "rJQtld157",
+      "label": "ERR",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Read the byte",
+      "id": "rJhfg6wYm",
+      "label": "READ",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "ry4QlaDYQ",
+      "label": "SOCK",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    }
+  ]
+}

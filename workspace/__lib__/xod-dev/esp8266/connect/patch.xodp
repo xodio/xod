@@ -125,7 +125,7 @@
   ],
   "nodes": [
     {
-      "description": "Pulses on a successful connection\n",
+      "description": "Pulses on a successful connection",
       "id": "B1N47NimzX",
       "label": "DONE",
       "position": {
@@ -209,7 +209,7 @@
       "type": "@/output-esp8266-inet"
     },
     {
-      "description": "Pulses if the connection failed\n",
+      "description": "Pulses if the connection failed",
       "id": "rkzN74sXzQ",
       "label": "ERR",
       "position": {

@@ -1,0 +1,21 @@
+{
+  "description": "Represents an ESP8266-based MCU",
+  "nodes": [
+    {
+      "id": "B1xU-WjUFX",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HkUZ-iLYm",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

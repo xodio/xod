@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "content": "⚠️ Make sure to specify SSID and password of your WiFi network",
+      "id": "BklorYcYX",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "size": {
+        "height": 51,
+        "width": 272
+      }
+    },
+    {
+      "content": "Just print result to serial byte by byte",
+      "id": "HJDFvP9KX",
+      "position": {
+        "x": 238,
+        "y": 510
+      },
+      "size": {
+        "height": 51,
+        "width": 170
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "Bk8t7TwKX",
+      "input": {
+        "nodeId": "SkMy6faPFQ",
+        "pinKey": "rklUo8jA-Q"
+      },
+      "output": {
+        "nodeId": "Hy7K7awF7",
+        "pinKey": "r1E0RH3vYQ"
+      }
+    },
+    {
+      "id": "HJByazTvY7",
+      "input": {
+        "nodeId": "SJlyTMpPYX",
+        "pinKey": "BJYbP7CZm"
+      },
+      "output": {
+        "nodeId": "SkMy6faPFQ",
+        "pinKey": "SkSGwoAZQ"
+      }
+    },
+    {
+      "id": "HJXeNTwKm",
+      "input": {
+        "nodeId": "Hy7K7awF7",
+        "pinKey": "rygl0RH3wtm"
+      },
+      "output": {
+        "nodeId": "r1ArzjUFm",
+        "pinKey": "HyLAraK8Km"
+      }
+    },
+    {
+      "id": "S1HtmpPt7",
+      "input": {
+        "nodeId": "SkMy6faPFQ",
+        "pinKey": "B18iIoA-m"
+      },
+      "output": {
+        "nodeId": "Hy7K7awF7",
+        "pinKey": "Hku0ArhDYX"
+      }
+    },
+    {
+      "id": "SkEVhP5YX",
+      "input": {
+        "nodeId": "BkefrP9K7",
+        "pinKey": "BkHrP2I-m"
+      },
+      "output": {
+        "nodeId": "Hyg42D5KQ",
+        "pinKey": "Sk450OL-X"
+      }
+    },
+    {
+      "id": "SkGGrPqFm",
+      "input": {
+        "nodeId": "BkefrP9K7",
+        "pinKey": "rJaSP2UZm"
+      },
+      "output": {
+        "nodeId": "SJlyTMpPYX",
+        "pinKey": "By5Vv7C-7"
+      }
+    },
+    {
+      "id": "r1Kk6GpDYX",
+      "input": {
+        "nodeId": "SJlyTMpPYX",
+        "pinKey": "r1CWwm0b7"
+      },
+      "output": {
+        "nodeId": "SkMy6faPFQ",
+        "pinKey": "SkYZwiRbm"
+      }
+    },
+    {
+      "id": "r1wV3D9FX",
+      "input": {
+        "nodeId": "r1ArzjUFm",
+        "pinKey": "ryRHTFItQ"
+      },
+      "output": {
+        "nodeId": "Hyg42D5KQ",
+        "pinKey": "Sk0ktvLO7"
+      }
+    },
+    {
+      "id": "rkQzBP5t7",
+      "input": {
+        "nodeId": "BkefrP9K7",
+        "pinKey": "Hyz0PhIbm"
+      },
+      "output": {
+        "nodeId": "SJlyTMpPYX",
+        "pinKey": "r1XBwQCWQ"
+      }
+    },
+    {
+      "id": "ryfo7pwFm",
+      "input": {
+        "nodeId": "Hy7K7awF7",
+        "pinKey": "S1Tl8hwFQ"
+      },
+      "output": {
+        "nodeId": "r1ArzjUFm",
+        "pinKey": "H1Gd15UFQ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkefrP9K7",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "xod/uart/write-byte"
+    },
+    {
+      "boundLiterals": {
+        "HJjCAB2DF7": "\"api.xod.io\"",
+        "ryYRCBhvFX": "\"/httpbin/ip\""
+      },
+      "id": "Hy7K7awF7",
+      "position": {
+        "x": 170,
+        "y": 204
+      },
+      "type": "@/http-request(esp8266-mcu-inet)"
+    },
+    {
+      "id": "Hyg42D5KQ",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/uart/uart-0"
+    },
+    {
+      "boundLiterals": {
+        "S1a8PX0Wm": "On Boot",
+        "S1bGvmAWQ": "'\"'"
+      },
+      "id": "SJlyTMpPYX",
+      "position": {
+        "x": 170,
+        "y": 408
+      },
+      "type": "xod/stream/pass-until"
+    },
+    {
+      "boundLiterals": {
+        "rkZ8oIj0-m": "\"origin\": \"\""
+      },
+      "id": "SkMy6faPFQ",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/stream/pass-from-sequence"
+    },
+    {
+      "boundLiterals": {
+        "H1z0HpF8Km": "\"password\"",
+        "HJZCrpKLYX": "\"ssid\""
+      },
+      "id": "r1ArzjUFm",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "@/connect"
+    }
+  ]
+}

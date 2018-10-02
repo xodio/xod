@@ -2,8 +2,6 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
-#define XOD_NO_PLACEMENT_NEW
-
 #include <stddef.h> // for size_t
 #include <stdint.h> // for uint32_t, etc
 #include <string.h> // for strlen

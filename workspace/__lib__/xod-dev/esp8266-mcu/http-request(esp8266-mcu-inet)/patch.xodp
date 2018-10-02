@@ -1,0 +1,569 @@
+{
+  "description": "Performs an HTTP request and returns the response as a stream of characters",
+  "links": [
+    {
+      "id": "B1G_QOhwtX",
+      "input": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "ByZE6AjDt7"
+      },
+      "output": {
+        "nodeId": "B1bOmdhwF7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1MJahPFm",
+      "input": {
+        "nodeId": "Hku0ArhDYX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJSC3hDKQ",
+        "pinKey": "HyNOn3vt7"
+      }
+    },
+    {
+      "id": "BkLW0AS3wK7",
+      "input": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "SkQFtMKZm"
+      },
+      "output": {
+        "nodeId": "ByWlRArnDFQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk_eCCrnDKm",
+      "input": {
+        "nodeId": "B1U0CH2PFQ",
+        "pinKey": "BkeKcj6ZZ-$1"
+      },
+      "output": {
+        "nodeId": "Hyg00BnPK7",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
+      "id": "Bkh0n3vtm",
+      "input": {
+        "nodeId": "SJSC3hDKQ",
+        "pinKey": "B1WEdh3Ptm"
+      },
+      "output": {
+        "nodeId": "BJO382PtQ",
+        "pinKey": "HyQ6rIhDtX"
+      }
+    },
+    {
+      "id": "ByzgSDnPKQ",
+      "input": {
+        "nodeId": "B1U0CH2PFQ",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "BkZeBwhvYm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H13gv3Dt7",
+      "input": {
+        "nodeId": "BJO382PtQ",
+        "pinKey": "SJf6BU2PKQ"
+      },
+      "output": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "r1EpRjDYQ"
+      }
+    },
+    {
+      "id": "H1ExHP2wtX",
+      "input": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "ryQ46CovFm"
+      },
+      "output": {
+        "nodeId": "BkXgHvhwtX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1cC22vYX",
+      "input": {
+        "nodeId": "SJSC3hDKQ",
+        "pinKey": "SyKY2nPtQ"
+      },
+      "output": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "H1mYNnvY7"
+      }
+    },
+    {
+      "id": "H1egBvhDY7",
+      "input": {
+        "nodeId": "H1lBv2wF7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJjCAB2DF7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJCgARrnPKm",
+      "input": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "Hyd95MK-m"
+      },
+      "output": {
+        "nodeId": "BJcR0ShvYQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJXk6nvF7",
+      "input": {
+        "nodeId": "r1E0RH3vYQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJSC3hDKQ",
+        "pinKey": "BktNOnnDYQ"
+      }
+    },
+    {
+      "id": "HklnrDhvt7",
+      "input": {
+        "nodeId": "rknSDnPYQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyM00ShDY7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkwZRRB3wYX",
+      "input": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "Sy5v9zFZ7"
+      },
+      "output": {
+        "nodeId": "Hkv0CrnPYQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyNnrDhwt7",
+      "input": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "ryL4pAjPKX"
+      },
+      "output": {
+        "nodeId": "r1QnBD2vFm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1l_mO2DYX",
+      "input": {
+        "nodeId": "B1_QuhPtQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rygl0RH3wtm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJ0nI2DKX",
+      "input": {
+        "nodeId": "BJO382PtQ",
+        "pinKey": "rJX8L2vKQ"
+      },
+      "output": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "H1mYNnvY7"
+      }
+    },
+    {
+      "id": "SJ7682vFm",
+      "input": {
+        "nodeId": "BJO382PtQ",
+        "pinKey": "BkW6rLnwFQ"
+      },
+      "output": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "H1leYGFbm"
+      }
+    },
+    {
+      "id": "SJdCUhwFX",
+      "input": {
+        "nodeId": "rJ7C0HhPKX",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "BJO382PtQ",
+        "pinKey": "Bk6SU2wtQ"
+      }
+    },
+    {
+      "id": "SJzhrwnvtQ",
+      "input": {
+        "nodeId": "Hyg00BnPK7",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "HyW3SD3vF7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkTgA0B3vYQ",
+      "input": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "BJqntfKbm"
+      },
+      "output": {
+        "nodeId": "B1U0CH2PFQ",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SkgbvhDF7",
+      "input": {
+        "nodeId": "rJ7C0HhPKX",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "B1ENaAjwtm"
+      }
+    },
+    {
+      "id": "r1EWInDFQ",
+      "input": {
+        "nodeId": "ryE1I3vFm",
+        "pinKey": "SkEJyhvFQ"
+      },
+      "output": {
+        "nodeId": "S1Tl8hwFQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry5l0RS2vYX",
+      "input": {
+        "nodeId": "H1ACr2vFX",
+        "pinKey": "HkcCKGYZ7"
+      },
+      "output": {
+        "nodeId": "ryYRCBhvFX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry8yT2wt7",
+      "input": {
+        "nodeId": "BJpCRr2vt7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJSC3hDKQ",
+        "pinKey": "rkANu2hwtQ"
+      }
+    },
+    {
+      "id": "rytg0RBnDtX",
+      "input": {
+        "nodeId": "H1A0CH3PYm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJ7C0HhPKX",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "arityLevel": 2,
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\":\""
+      },
+      "id": "B1U0CH2PFQ",
+      "position": {
+        "x": 238,
+        "y": 306
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "id": "B1_QuhPtQ",
+      "label": "INIT",
+      "position": {
+        "x": 475,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "B1bOmdhwF7",
+      "label": "INIT",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "BJO382PtQ",
+      "position": {
+        "x": 34,
+        "y": 510
+      },
+      "type": "@/send"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "Additional headers",
+      "id": "BJcR0ShvYQ",
+      "label": "HDRS",
+      "position": {
+        "x": 339,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses when all response data is received and the connection is closed",
+      "id": "BJpCRr2vt7",
+      "label": "DONE",
+      "position": {
+        "x": 135,
+        "y": 713
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "BkXgHvhwtX",
+      "label": "HOST",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "BkZeBwhvYm",
+      "label": "HOST",
+      "position": {
+        "x": 238,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"GET\""
+      },
+      "description": "An HTTP method (e.g., GET, POST, PUT, or DELETE)",
+      "id": "ByWlRArnDFQ",
+      "label": "METH",
+      "position": {
+        "x": 203,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses if the request failed",
+      "id": "H1A0CH3PYm",
+      "label": "ERR",
+      "position": {
+        "x": 203,
+        "y": 713
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "HkcCKGYZ7": "\"/\""
+      },
+      "id": "H1ACr2vFX",
+      "position": {
+        "x": 204,
+        "y": 408
+      },
+      "type": "xod/net/format-http-request"
+    },
+    {
+      "id": "H1lBv2wF7",
+      "label": "HOST",
+      "position": {
+        "x": 67,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "The domain name of the server",
+      "id": "HJjCAB2DF7",
+      "label": "HOST",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "The last received character from the response",
+      "id": "Hku0ArhDYX",
+      "label": "CHAR",
+      "position": {
+        "x": -1,
+        "y": 713
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "The request body (optional)",
+      "id": "Hkv0CrnPYQ",
+      "label": "BODY",
+      "position": {
+        "x": 407,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "HyW3SD3vF7",
+      "label": "PORT",
+      "position": {
+        "x": 306,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "0"
+      },
+      "id": "Hyg00BnPK7",
+      "position": {
+        "x": 306,
+        "y": 204
+      },
+      "type": "xod/core/format-number"
+    },
+    {
+      "description": "An internet connection",
+      "id": "S1Tl8hwFQ",
+      "label": "INET",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
+    },
+    {
+      "id": "SJSC3hDKQ",
+      "position": {
+        "x": 0,
+        "y": 612
+      },
+      "type": "@/receive"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80.",
+      "id": "SyM00ShDY7",
+      "label": "PORT",
+      "position": {
+        "x": 135,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses when a new response character is received",
+      "id": "r1E0RH3vYQ",
+      "label": "RCV",
+      "position": {
+        "x": 67,
+        "y": 713
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1QnBD2vFm",
+      "label": "PORT",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "rJ7C0HhPKX",
+      "position": {
+        "x": 203,
+        "y": 611
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "rknSDnPYQ",
+      "label": "PORT",
+      "position": {
+        "x": 135,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "ryE1I3vFm",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "@/open-tcp"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "description": "A path to the requested resource",
+      "id": "ryYRCBhvFX",
+      "label": "PATH",
+      "position": {
+        "x": 271,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Begin the request",
+      "id": "rygl0RH3wtm",
+      "label": "INIT",
+      "position": {
+        "x": 475,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

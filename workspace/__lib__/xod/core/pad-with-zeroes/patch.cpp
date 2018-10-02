@@ -13,7 +13,7 @@ void evaluate(Context ctx) {
     auto state = getState(ctx);
 
     auto num = (getValue<input_IN>(ctx) == 0) ? 0 : abs(getValue<input_IN>(ctx));
-    int8_t lenFull = (getValue<input_W>(ctx) < 0) ? 0 : min(15, getValue<input_W>(ctx));
+    int8_t lenFull = (getValue<input_W>(ctx) < 0) ? 0 : min((Number)15, getValue<input_W>(ctx));
     char strNum[16];
     dtostrf(num, 0, 0, strNum);
 

@@ -2,7 +2,7 @@
   "description": "Establish an internet connection via Wi-Fi using ESP8266",
   "nodes": [
     {
-      "description": "Establish the connection\nconnect",
+      "description": "Establish the connection",
       "id": "Bkketeubm",
       "label": "CONN",
       "position": {
@@ -30,7 +30,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "Wi-Fi network passwo",
+      "description": "Wi-Fi network password",
       "id": "SkJze3IbX",
       "label": "PWD",
       "position": {
@@ -40,7 +40,7 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "Pulses if the connection failed\n",
+      "description": "Pulses if the connection failed",
       "id": "SyMXl3L-7",
       "label": "ERR",
       "position": {
@@ -68,7 +68,7 @@
       "type": "@/input-esp8266-device"
     },
     {
-      "description": "Pulses on a successful connection\n",
+      "description": "Pulses on a successful connection",
       "id": "ryRzln8Zm",
       "label": "DONE",
       "position": {
