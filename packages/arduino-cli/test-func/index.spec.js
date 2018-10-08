@@ -114,6 +114,7 @@ describe('Arduino Cli', () => {
         assert.lengthOf(res, 1);
         assert.propertyVal(res[0], 'ID', 'arduino:avr');
         assert.propertyVal(res[0], 'Installed', '1.6.21');
+        assert.property(res[0], 'Latest');
         assert.propertyVal(res[0], 'Name', 'Arduino AVR Boards');
       }));
     it('Lists all installed boards with cpu options', () =>

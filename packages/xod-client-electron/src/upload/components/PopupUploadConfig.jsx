@@ -11,20 +11,13 @@ import {
 } from '../../shared/messages';
 import { updateIndexFiles } from '../arduinoCli';
 
-// :: Board -> Boolean
-const hasBoardCpu = board =>
-  board.cpuName &&
-  board.cpuName.length > 0 &&
-  board.cpuId &&
-  board.cpuId.length > 0;
-
 class PopupUploadConfig extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isVisible: props.isVisible,
-      selectedBoard: null,
+      selectedBoard: null, // or { index: Number, options: Map OptionId OptionValue }
       boards: null,
       ports: null,
       doCompileInCloud: false,
@@ -40,6 +33,7 @@ class PopupUploadConfig extends React.Component {
     this.onDebugCheckboxChanged = this.onDebugCheckboxChanged.bind(this);
 
     this.changeBoard = this.changeBoard.bind(this);
+    this.changeBoardOption = this.changeBoardOption.bind(this);
     this.changePort = this.changePort.bind(this);
 
     this.updateIndexes = this.updateIndexes.bind(this);
@@ -74,8 +68,16 @@ class PopupUploadConfig extends React.Component {
   }
 
   onUploadClicked() {
+    const selectedBoard = this.state.selectedBoard;
+    const originalBoardData = this.state.boards[selectedBoard.index];
+    const boardToUpload = R.assoc(
+      'selectedOptions',
+      selectedBoard.options,
+      originalBoardData
+    );
+
     this.props.onUpload(
-      this.state.selectedBoard,
+      boardToUpload,
       this.props.selectedPort,
       this.state.doCompileInCloud,
       this.state.debugAfterUpload
@@ -112,7 +114,8 @@ class PopupUploadConfig extends React.Component {
       .then(R.tap(boards => this.setState({ boards })))
       .then(boards => {
         const doesSelectedBoardExist =
-          isBoardSelected && R.contains(selectedBoard, boards);
+          isBoardSelected && boards[selectedBoard.index];
+
         const defaultBoardIndex = R.compose(
           R.defaultTo(0),
           R.findIndex(R.propEq('fqbn', 'arduino:avr:uno'))
@@ -156,11 +159,7 @@ class PopupUploadConfig extends React.Component {
   }
 
   getSelectedBoardIndex() {
-    return R.compose(
-      R.when(R.equals(-1), R.always(0)),
-      R.findIndex(R.equals(this.state.selectedBoard)),
-      R.defaultTo([])
-    )(this.state.boards);
+    return R.pathOr(0, ['selectedBoard', 'index'], this.state);
   }
 
   getSelectedPortName() {
@@ -170,7 +169,7 @@ class PopupUploadConfig extends React.Component {
   getSelectedBoard() {
     return this.props
       .getSelectedBoard()
-      .then(R.tap(board => this.setState({ selectedBoard: board })));
+      .then(R.tap(selBoard => this.setState({ selectedBoard: selBoard })));
   }
 
   updateIndexes() {
@@ -182,11 +181,19 @@ class PopupUploadConfig extends React.Component {
   }
 
   changeBoard(boardIndex) {
-    if (this.state.boards) {
-      const board = this.state.boards[boardIndex] || this.state.boards[0];
-      this.props.onBoardChanged(board);
-      this.setState({ selectedBoard: board });
-    }
+    const newBoard = R.assoc('index', boardIndex, this.state.selectedBoard);
+    this.props.onBoardChanged(newBoard);
+    this.setState({ selectedBoard: newBoard });
+  }
+
+  changeBoardOption(optionId, optionValue) {
+    const newBoard = R.over(
+      R.lensProp('options'),
+      R.assoc(optionId, optionValue),
+      this.state.selectedBoard
+    );
+    this.props.onBoardChanged(newBoard);
+    this.setState({ selectedBoard: newBoard });
   }
 
   changePort(port) {
@@ -217,7 +224,6 @@ class PopupUploadConfig extends React.Component {
           {this.state.boards.map((board, ix) => (
             <option key={`${board.name}_${ix}`} value={ix}>
               {board.name}
-              {hasBoardCpu(board) ? ` (${board.cpuName})` : ''}
             </option>
           ))}
         </select>
@@ -243,6 +249,47 @@ class PopupUploadConfig extends React.Component {
             Update
           </button>
         </div>
+      </div>
+    );
+  }
+
+  renderBoardOptions() {
+    const selectedBoard = this.state.selectedBoard;
+    if (!selectedBoard || !this.state.boards) return null;
+
+    const board = this.state.boards[selectedBoard.index];
+    const options = R.propOr([], 'options', board);
+    if (R.isEmpty(options)) return null;
+
+    return (
+      <div className="boardOptions">
+        {R.map(
+          opt => (
+            <div key={opt.optionId}>
+              <label htmlFor={`option_${opt.optionId}`}>
+                {opt.optionName}:
+              </label>
+              <select
+                id={`option_${opt.optionId}`}
+                className="inspectorSelectInput inspectorInput--full-width"
+                onChange={e =>
+                  this.changeBoardOption(opt.optionId, e.target.value)
+                }
+                value={R.pathOr('', ['options', opt.optionId], selectedBoard)}
+              >
+                {R.map(
+                  val => (
+                    <option key={val.value} value={val.value}>
+                      {val.name}
+                    </option>
+                  ),
+                  opt.values
+                )}
+              </select>
+            </div>
+          ),
+          options
+        )}
       </div>
     );
   }
@@ -298,6 +345,7 @@ class PopupUploadConfig extends React.Component {
 
   render() {
     const boards = this.renderBoardSelect();
+    const boardOptions = this.renderBoardOptions();
     const ports = this.renderPortSelect();
     const compileLimitLeft = this.props.compileLimitLeft;
 
@@ -307,7 +355,10 @@ class PopupUploadConfig extends React.Component {
         title="Upload project to Arduino"
         onClose={this.onClose}
       >
-        <div className="ModalContent">{boards}</div>
+        <div className="ModalContent">
+          {boards}
+          {boardOptions}
+        </div>
         <div className="ModalContent">{ports}</div>
         <div className="ModalContent">
           <input

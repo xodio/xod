@@ -28,6 +28,8 @@ export const DEBUG_SESSION_STOPPED_ON_TAB_CLOSE = {
 };
 export const DEBUG_LOST_CONNECTION = 'Lost connection with the device.';
 
+export const UPLOAD_PROCESS_BEGINS = 'Uploading compiled code to the board...';
+
 export const updateAvailableMessage = version =>
   composeMessage(
     'Update available',
