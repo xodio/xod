@@ -14,7 +14,7 @@ void evaluate(Context ctx) {
         return;
 
     const uint8_t port = getValue<input_PORT>(ctx);
-    bool err = (port < 0 || port > NUM_DIGITAL_PINS - 1);
+    bool err = (port > NUM_DIGITAL_PINS - 1);
 
     if (err) {
         emitValue<output_ERR>(ctx, 1);
