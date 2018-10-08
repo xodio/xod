@@ -6,7 +6,7 @@ import YAML from 'yamljs';
 
 import { configure, addPackageIndexUrl, addPackageIndexUrls } from './config';
 import parseTable from './parseTable';
-import { patchBoardsWithCpu } from './cpuParser';
+import { patchBoardsWithOptions } from './optionParser';
 import listAvailableBoards from './listAvailableBoards';
 import parseProgressLog from './parseProgressLog';
 
@@ -55,7 +55,7 @@ const ArduinoCli = (pathToBin, config = null) => {
       runAndParseTable('core list'),
       runAndParseJson(`board ${listCmd} --format json`),
     ]).then(([cores, boards]) =>
-      patchBoardsWithCpu(cfg.arduino_data, cores, boardsGetter(boards))
+      patchBoardsWithOptions(cfg.arduino_data, cores, boardsGetter(boards))
     );
 
   return {

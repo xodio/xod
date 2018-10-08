@@ -177,10 +177,20 @@ Accepts:
 - `usbID` `String` — An ID of the board (VID, PID). For example, `2341:0042`
 
 ### InstalledBoard
-- `name` `<String>` — A board name with an added cpu option name, if it exists.
-  For example, "Arduino/Genuino Uno" or "Arduino/Genuino Mega2560 (ATmega2560 (Mega 2560))"
-- `fqbn` `<String>` — A fully-qualified board name.
-  For example, `arduino:avr:uno` or `arduino:avr:mega2560:cpu=atmega2560`
+- `name` `<String>` — A board name
+  E.G. "Arduino/Genuino Uno" or "Arduino/Genuino Mega2560"
+- `fqbn` `<String>` — A fully-qualified board name
+  E.G. "arduino:avr:uno" or "arduino:avr:mega2560"
+- `options` `<Array<Option>>` — a list of options for this board
+
+### Option
+Object, that represents one group of the board option. For example, CPU Frequency.
+- `optionName` `<String>` — A human-readable name of the option group ("CPU Frequency")
+- `optionId` `<String>` — An id of the option from `boards.txt`. E.G. `CpuFrequency`
+- `values` `<Array<OptionValue>>` — a list of option values, that represented as objects
+  with two fields
+  - `name` `<String>` — A human-readable option name ("80 MHz")
+  - `value` `<String>` — A value, that will be used by tools. ("80")
 
 ### AvailableBoard
 - `name` `<String>` — A board name (e.g., "Arduino/Genuino Mega2560")
