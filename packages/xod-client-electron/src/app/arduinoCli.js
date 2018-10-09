@@ -357,7 +357,7 @@ const uploadThroughCloud = async (onProgress, cli, payload) => {
   const uploadLog = await cli.upload(
     stdout =>
       onProgress({
-        percentage: 100,
+        percentage: 60,
         message: stdout,
         tab: 'uploader',
       }),
