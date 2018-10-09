@@ -271,6 +271,8 @@ class App extends client.App {
       logProcessFn(messageForConsole, 0);
     };
 
+    stopDebuggerSession();
+
     eitherToPromise(eitherTProject)
       .then(
         tapP(tProj => {
