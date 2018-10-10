@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { catMaybies } from 'xod-func-tools';
-import { getLibraryNameFromUrl } from 'xod-arduino-deploy';
+import { getLibraryNameFromUrl } from 'xod-deploy';
 
 /**
  * Returns a comma separated and wrapped with quotes library names.

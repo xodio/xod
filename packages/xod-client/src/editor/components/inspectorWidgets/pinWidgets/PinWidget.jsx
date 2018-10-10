@@ -50,7 +50,7 @@ function PinWidget(props) {
     props.children
   );
   return (
-    <div className="Widget PinWidget" data-pinLabel={props.normalizedLabel}>
+    <div className="Widget PinWidget" data-pinlabel={props.normalizedLabel}>
       {input}
       <PinIcon
         id={props.elementId}

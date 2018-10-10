@@ -20,9 +20,9 @@ export const uploadToArduino = () => dispatch => {
       dispatch(client.failProcess(processId, UPLOAD, { message, percentage }));
       deleteProcess();
     },
-    progress: (message, percentage) =>
+    progress: (message, percentage, tab) =>
       dispatch(
-        client.progressProcess(processId, UPLOAD, { message, percentage })
+        client.progressProcess(processId, UPLOAD, { message, percentage, tab })
       ),
     delete: deleteProcess,
   };

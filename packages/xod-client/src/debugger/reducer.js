@@ -58,10 +58,11 @@ const formatMessage = msg => {
   }
 };
 
-const overInstallerLog = R.over(R.lensPath([LOG_TAB_TYPE.INSTALLER, 'log']));
-const overCompilerLog = R.over(R.lensPath([LOG_TAB_TYPE.COMPILER, 'log']));
-const overUploaderLog = R.over(R.lensPath([LOG_TAB_TYPE.UPLOADER, 'log']));
-const overDebuggerLog = R.over(R.lensPath([LOG_TAB_TYPE.DEBUGGER, 'log']));
+const overTabLog = tabType => R.over(R.lensPath([tabType, 'log']));
+const overInstallerLog = overTabLog(LOG_TAB_TYPE.INSTALLER);
+const overCompilerLog = overTabLog(LOG_TAB_TYPE.COMPILER);
+const overUploaderLog = overTabLog(LOG_TAB_TYPE.UPLOADER);
+const overDebuggerLog = overTabLog(LOG_TAB_TYPE.DEBUGGER);
 
 const overStageError = stage => R.over(R.lensPath([stage, 'error']));
 
@@ -148,7 +149,10 @@ export default (state = initialState, action) => {
 
         return R.compose(
           R.assoc('uploadProgress', percentage),
-          overInstallerLog(appendMessage(createFlasherMessage(message)))
+          R.when(
+            () => message,
+            overInstallerLog(appendMessage(createFlasherMessage(message)))
+          )
         )(state);
       }
       if (status === STATUS.SUCCEEDED) {
@@ -196,11 +200,12 @@ export default (state = initialState, action) => {
         )(state);
       }
       if (status === UPLOAD_STATUS.PROGRESSED) {
-        const { message, percentage } = payload;
-
+        const { message, percentage, tab } = payload;
         return R.compose(
           R.assoc('uploadProgress', percentage),
-          overCompilerLog(appendMessage(createFlasherMessage(message)))
+          R.assoc('currentTab', tab),
+          R.assoc('currentStage', tab),
+          overTabLog(tab)(appendMessage(createFlasherMessage(message)))
         )(state);
       }
       if (status === UPLOAD_STATUS.SUCCEEDED) {

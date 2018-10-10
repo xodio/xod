@@ -34,6 +34,26 @@ defs:
       # because macOS machine comes with node v8.6.0
       command: curl "https://nodejs.org/dist/v10.10.0/node-v10.10.0.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 
+    step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
+      name: Install arduino-cli
+      command: |
+        curl -s --create-dirs -o "$HOME/arduino-cli.zip" "https://downloads.arduino.cc/arduino-cli/arduino-cli-0.2.2-alpha.preview-osx.zip" \
+        && unzip "$HOME/arduino-cli.zip" -d "$HOME" \
+        && mv "$HOME/arduino-cli-0.2.2-alpha.preview-osx" "$HOME/arduino-cli" \
+        && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
+        && mkdir "/tmp/arduino-cli" \
+        && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
+
+    step-install-arduino-cli-on-linux: &step-install-arduino-cli-on-linux
+      name: Install arduino-cli
+      command: |
+        curl -s --create-dirs -o "$HOME/arduino-cli.tar.bz2" "https://downloads.arduino.cc/arduino-cli/arduino-cli-0.2.2-alpha.preview-linux64.tar.bz2" \
+        && tar xvjf "$HOME/arduino-cli.tar.bz2" -C "$HOME" \
+        && mv "$HOME/arduino-cli-0.2.2-alpha.preview-linux64" "$HOME/arduino-cli" \
+        && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
+        && mkdir "/tmp/arduino-cli" \
+        && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
+
     step-install: &step-install
       name: Install Node modules
       # to always instal some essential tools(electron-builder etc)
@@ -83,6 +103,7 @@ jobs:
     docker: *docker-custom-nodejs
     environment:
       DISPLAY: ":99.0"
+      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - run:
           name: Running X virtual framebuffer
@@ -91,6 +112,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install
+      - run: *step-install-arduino-cli-on-linux
       - save_cache: *cache-node_modules
       - run: *step-build
       - run: *step-verify-git-clean
@@ -104,10 +126,12 @@ jobs:
       xcode: "9.0"
     environment:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
+      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-node-v10-on-mac
+      - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - save_cache: *cache-node_modules
       - run: *step-build
@@ -149,9 +173,11 @@ jobs:
     docker: *docker-custom-nodejs
     environment:
       NODE_ENV: production
+      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-arduino-cli-on-linux
       - run: *step-install
       - run: *step-bump-version
       - run: *step-build-electron
@@ -176,10 +202,12 @@ jobs:
       xcode: "9.0"
     environment:
       NODE_ENV: production
+      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-node-v10-on-mac
+      - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - run: *step-bump-version
       - run: *step-build-electron

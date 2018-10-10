@@ -17,6 +17,7 @@ install:
 - ps: Install-Product node 10 x64
 - npm install yarn@1.2.1 -g
 - yarn install
+- ps: . .\tools\install-arduinocli.ps1
 
 build_script:
 - yarn run build

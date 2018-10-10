@@ -1,5 +1,6 @@
 import composeMessage from './composeMessage';
 
+export const BEGIN_COMPILATION_IN_CLOUD = 'Compiling code in the cloud...';
 export const CODE_TRANSPILED =
   'Project was successfully transpiled. Searching for device...';
 export const PORT_FOUND =
@@ -33,3 +34,6 @@ export const updateAvailableMessage = version =>
     `New version ${version} of XOD\u00A0IDE is available`,
     'Download & Install'
   );
+
+export const compilationBegun = boardName =>
+  `Begin compiling code for the board ${boardName}`;

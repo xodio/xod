@@ -9,6 +9,7 @@ import {
   ENUMERATING_BOARDS,
   NO_PORTS_FOUND,
 } from '../../shared/messages';
+import { updateIndexFiles } from '../arduinoCli';
 
 // :: Board -> Boolean
 const hasBoardCpu = board =>
@@ -40,6 +41,8 @@ class PopupUploadConfig extends React.Component {
 
     this.changeBoard = this.changeBoard.bind(this);
     this.changePort = this.changePort.bind(this);
+
+    this.updateIndexes = this.updateIndexes.bind(this);
   }
 
   componentDidMount() {
@@ -94,13 +97,25 @@ class PopupUploadConfig extends React.Component {
 
     this.props
       .listBoards()
+      .then(
+        R.compose(
+          R.unnest,
+          R.values,
+          R.evolve({
+            available: R.map(
+              R.over(R.lensProp('name'), R.concat(R.__, ' (not installed)'))
+            ),
+          })
+        )
+      )
+      .then(R.sortBy(R.pipe(R.prop('name'), R.toLower)))
       .then(R.tap(boards => this.setState({ boards })))
       .then(boards => {
         const doesSelectedBoardExist =
           isBoardSelected && R.contains(selectedBoard, boards);
         const defaultBoardIndex = R.compose(
           R.defaultTo(0),
-          R.findIndex(R.propEq('boardsTxtId', 'uno'))
+          R.findIndex(R.propEq('fqbn', 'arduino:avr:uno'))
         )(boards);
 
         if (!isBoardSelected || !doesSelectedBoardExist) {
@@ -158,6 +173,14 @@ class PopupUploadConfig extends React.Component {
       .then(R.tap(board => this.setState({ selectedBoard: board })));
   }
 
+  updateIndexes() {
+    const oldBoards = this.state.boards;
+    this.setState({ boards: null });
+    updateIndexFiles()
+      .then(() => this.getBoards())
+      .catch(() => this.setState({ boards: oldBoards }));
+  }
+
   changeBoard(boardIndex) {
     if (this.state.boards) {
       const board = this.state.boards[boardIndex] || this.state.boards[0];
@@ -203,7 +226,23 @@ class PopupUploadConfig extends React.Component {
     return (
       <div>
         <label htmlFor="targetBoard">Board model:</label>
-        <div>{select}</div>
+        {/* <div>{select}</div> */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+          }}
+        >
+          {select}
+          <button
+            className="Button Button--small"
+            style={{ marginLeft: '1em' }}
+            onClick={this.updateIndexes}
+          >
+            Update
+          </button>
+        </div>
       </div>
     );
   }

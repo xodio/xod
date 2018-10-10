@@ -1,12 +1,36 @@
+const librariesMissing = libraryNames =>
+  libraryNames.length
+    ? `You have to install these libraries first: ${libraryNames}`
+    : null;
+const librariesInstalled = libraryNames =>
+  libraryNames.length ? `Libraries ${libraryNames} installed` : null;
+
+const packagesMissing = packageNames =>
+  packageNames.length
+    ? `You have to install these packages first: ${packageNames}`
+    : null;
+const packagesInstalled = packageNames =>
+  packageNames.length ? `Packages ${packageNames} installed` : null;
+
 export default {
-  ARDUINO_LIBRARIES_MISSING: ({ libraries, libraryNames }) => ({
-    title: 'Some arduino libraries are missing',
-    solution: `You have to install these libraries first: ${libraryNames}`,
+  ARDUINO_DEPENDENCIES_MISSING: ({
+    libraries,
+    libraryNames,
+    packages,
+    packageNames,
+  }) => ({
+    title: 'Arduino dependencies missing',
+    solution: [librariesMissing(libraryNames), packagesMissing(packageNames)]
+      .filter(a => !!a)
+      .join('\r\n'),
     button: 'Download & Install',
-    data: { libraries },
+    data: { libraries, packages, packageNames },
   }),
-  ARDUINO_LIBRARIES_INSTALLED: ({ libraryNames }) => ({
-    title: 'Arduino libraries installed',
-    note: `Libraries ${libraryNames} installed`,
+  ARDUINO_DEPENDENCIES_INSTALLED: ({ libraryNames, packageNames }) => ({
+    title: 'Arduino dependencies installed',
+    note: [librariesInstalled(libraryNames), packagesInstalled(packageNames)]
+      .filter(a => !!a)
+      .join('\r\n'),
+    persistent: true,
   }),
 };

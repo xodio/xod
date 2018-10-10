@@ -5,3 +5,4 @@ xod.iml
 dist/
 src-babel/
 .tmp/
+arduino-cli

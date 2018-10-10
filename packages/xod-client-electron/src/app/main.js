@@ -13,11 +13,9 @@ import {
 
 import * as EVENTS from '../shared/events';
 import {
-  listBoardsHandler,
   listPortsHandler,
   loadTargetBoardHandler,
   saveTargetBoardHandler,
-  uploadToArduinoHandler,
   startDebugSessionHandler,
   stopDebugSessionHandler,
 } from './arduinoActions';
@@ -25,9 +23,10 @@ import * as settings from './settings';
 import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
 import * as WA from './workspaceActions';
 import {
-  subscribeOnCheckArduinoLibraries,
-  subscribeOnInstallArduinoLibraries,
+  subscribeOnCheckArduinoDependencies,
+  subscribeOnInstallArduinoDependencies,
 } from './arduinoDependencies';
+import * as aCli from './arduinoCli';
 import {
   configureAutoUpdater,
   subscribeOnAutoUpdaterEvents,
@@ -221,7 +220,6 @@ const onReady = () => {
   );
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
-  ipcMain.on(EVENTS.LIST_BOARDS, listBoardsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);
   ipcMain.on(EVENTS.SET_SELECTED_BOARD, saveTargetBoardHandler);
   ipcMain.on(EVENTS.CONFIRM_CLOSE_WINDOW, () => {
@@ -237,19 +235,28 @@ const onReady = () => {
     );
   });
 
-  WA.loadWorkspacePath().then(wsPath => {
-    subscribeOnCheckArduinoLibraries(wsPath);
-    subscribeOnInstallArduinoLibraries(wsPath);
-
-    ipcMain.on('UPLOAD_TO_ARDUINO', (event, payload) =>
-      Promise.resolve()
-        .then(() => (debugPort ? stopDebugSession(event) : event))
-        .then(() => uploadToArduinoHandler(event, payload, wsPath))
-    );
-  });
-
   createWindow();
   win.webContents.on('did-finish-load', () => {
+    aCli
+      .prepareSketchDir()
+      .then(aCli.create)
+      .then(arduinoCli => {
+        // TODO: Refactor (WS)
+        aCli.subscribeListBoards(arduinoCli);
+        aCli.subscribeUpload(arduinoCli);
+        aCli.subscribeUpdateIndexes(arduinoCli);
+
+        subscribeOnCheckArduinoDependencies(arduinoCli);
+        subscribeOnInstallArduinoDependencies(arduinoCli);
+      })
+      .catch(err => {
+        console.error(err); // eslint-disable-line no-console
+        win.webContents.send(
+          EVENTS.ERROR_IN_MAIN_PROCESS,
+          errorToPlainObject(err)
+        );
+      });
+
     WA.prepareWorkspaceOnLaunch(
       (eventName, data) => win.webContents.send(eventName, data),
       store.dispatch.updateProjectPath,
