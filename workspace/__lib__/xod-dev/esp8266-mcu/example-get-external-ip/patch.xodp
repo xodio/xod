@@ -11,18 +11,6 @@
         "height": 51,
         "width": 272
       }
-    },
-    {
-      "content": "Just print result to serial byte by byte",
-      "id": "HJDFvP9KX",
-      "position": {
-        "x": 238,
-        "y": 510
-      },
-      "size": {
-        "height": 51,
-        "width": 170
-      }
     }
   ],
   "links": [
@@ -35,6 +23,17 @@
       "output": {
         "nodeId": "Hy7K7awF7",
         "pinKey": "r1E0RH3vYQ"
+      }
+    },
+    {
+      "id": "ByiJEAnqm",
+      "input": {
+        "nodeId": "SJtk4RhqX",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1uamCnqm",
+        "pinKey": "S1s7pCDbQ"
       }
     },
     {
@@ -60,6 +59,17 @@
       }
     },
     {
+      "id": "S11C7C39Q",
+      "input": {
+        "nodeId": "H1uamCnqm",
+        "pinKey": "r1NYhRDZ7"
+      },
+      "output": {
+        "nodeId": "SJlyTMpPYX",
+        "pinKey": "r1XBwQCWQ"
+      }
+    },
+    {
       "id": "S1HtmpPt7",
       "input": {
         "nodeId": "SkMy6faPFQ",
@@ -71,21 +81,10 @@
       }
     },
     {
-      "id": "SkEVhP5YX",
+      "id": "r16pm029Q",
       "input": {
-        "nodeId": "BkefrP9K7",
-        "pinKey": "BkHrP2I-m"
-      },
-      "output": {
-        "nodeId": "Hyg42D5KQ",
-        "pinKey": "Sk450OL-X"
-      }
-    },
-    {
-      "id": "SkGGrPqFm",
-      "input": {
-        "nodeId": "BkefrP9K7",
-        "pinKey": "rJaSP2UZm"
+        "nodeId": "H1uamCnqm",
+        "pinKey": "HJi_30PZX"
       },
       "output": {
         "nodeId": "SJlyTMpPYX",
@@ -104,28 +103,6 @@
       }
     },
     {
-      "id": "r1wV3D9FX",
-      "input": {
-        "nodeId": "r1ArzjUFm",
-        "pinKey": "ryRHTFItQ"
-      },
-      "output": {
-        "nodeId": "Hyg42D5KQ",
-        "pinKey": "Sk0ktvLO7"
-      }
-    },
-    {
-      "id": "rkQzBP5t7",
-      "input": {
-        "nodeId": "BkefrP9K7",
-        "pinKey": "Hyz0PhIbm"
-      },
-      "output": {
-        "nodeId": "SJlyTMpPYX",
-        "pinKey": "r1XBwQCWQ"
-      }
-    },
-    {
       "id": "ryfo7pwFm",
       "input": {
         "nodeId": "Hy7K7awF7",
@@ -139,12 +116,12 @@
   ],
   "nodes": [
     {
-      "id": "BkefrP9K7",
+      "id": "H1uamCnqm",
       "position": {
         "x": 136,
         "y": 510
       },
-      "type": "xod/uart/write-byte"
+      "type": "xod/stream/accumulate-string"
     },
     {
       "boundLiterals": {
@@ -159,14 +136,6 @@
       "type": "@/http-request(esp8266-mcu-inet)"
     },
     {
-      "id": "Hyg42D5KQ",
-      "position": {
-        "x": 136,
-        "y": 0
-      },
-      "type": "xod/uart/uart-0"
-    },
-    {
       "boundLiterals": {
         "S1a8PX0Wm": "On Boot",
         "S1bGvmAWQ": "'\"'"
@@ -179,8 +148,20 @@
       "type": "xod/stream/pass-until"
     },
     {
+      "id": "SJtk4RhqX",
+      "position": {
+        "x": 136,
+        "y": 612
+      },
+      "size": {
+        "height": 51,
+        "width": 238
+      },
+      "type": "xod/core/watch"
+    },
+    {
       "boundLiterals": {
-        "rkZ8oIj0-m": "\"origin\": \"\""
+        "rkZ8oIj0-m": "\"origin\":\"\""
       },
       "id": "SkMy6faPFQ",
       "position": {
