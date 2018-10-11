@@ -2,7 +2,7 @@
 
 A javascript wrapper over the [arduino-cli](https://github.com/arduino/arduino-cli) tool
 
-**Works on Arduino-cli 0.2.2-alpha.preview**
+**Works on Arduino-cli 0.3.1-alpha.preview**
 
 ## How to use
 
