@@ -11,6 +11,7 @@ import * as cpx from 'cpx';
 import subscribeIpc from './subscribeIpc';
 import { loadWorkspacePath } from './workspaceActions';
 import { getPathToBundledWorkspace, IS_DEV } from './utils';
+import migrateArduinoPackages from './migrateArduinoPackages';
 import {
   LIST_BOARDS,
   UPLOAD_TO_ARDUINO,
@@ -237,6 +238,7 @@ export const create = sketchDir =>
     const packagesDirPath = getArduinoPackagesPath(wsPath);
 
     await copyPackageIndexes(packagesDirPath);
+    await migrateArduinoPackages();
     await ensureExtraTxt();
 
     return arduinoCli(arduinoCliPath, {
