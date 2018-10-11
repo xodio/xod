@@ -14,37 +14,37 @@ enum DhtStatus
     DHT_CHECKSUM_FAILURE = 4,
 };
 
-bool readByte(uint8_t port, uint8_t* out) {
-    // Restrict waiting to prevent hanging
-    unsigned long numloops = 0;
-    unsigned long maxloops = microsecondsToClockCycles(100) / 16;
+unsigned long pulseInLength(uint8_t pin, bool state, unsigned long timeout) {
+    unsigned long startMicros = micros();
+    while (digitalRead(pin) == state) {
+        if (micros() - startMicros > timeout)
+            return 0;
+    }
+    return micros() - startMicros;
+}
 
+bool readByte(uint8_t port, uint8_t* out) {
     // Collect 8 bits from datastream, return them interpreted
     // as a byte. I.e. if 0000.0101 is sent, return decimal 5.
 
+    unsigned long pulseLength = 0;
     uint8_t result = 0;
     for (uint8_t i = 8; i--; ) {
         // We enter this during the first start bit (low for 50uS) of the byte
-        // Wait until pin goes high
-        numloops = 0;
-        while (digitalRead(port) == LOW)
-            if (++numloops == maxloops)
-                return false;
+
+        if (pulseInLength(port, LOW, 70) == 0)
+            return false;
 
         // Dataline will now stay high for 27 or 70 uS, depending on
-        // whether a 0 or a 1 is being sent, respectively. Take to
-        // a middle of that period to read the value
-        delayMicroseconds(45);
+        // whether a 0 or a 1 is being sent, respectively.
 
-        if (digitalRead(port) == HIGH)
+        pulseLength = pulseInLength(port, HIGH, 80);
+
+        if (pulseLength == 0)
+            return false;
+
+        if (pulseLength > 45)
             result |= 1 << i; // set subsequent bit
-
-        // Wait until pin goes low again, which signals the START
-        // of the NEXT bit's transmission.
-        numloops = 0;
-        while (digitalRead(port) == HIGH)
-            if (++numloops == maxloops)
-                return false;
     }
 
     *out = result;
@@ -52,37 +52,27 @@ bool readByte(uint8_t port, uint8_t* out) {
 }
 
 DhtStatus readValues(uint8_t port, uint8_t* outData) {
-    bool res;
-
     // Stop reading request
     digitalWrite(port, HIGH);
 
     // DHT datasheet says host should keep line high 20-40us, then watch for
     // sensor taking line low.  That low should last 80us. Acknowledges "start
     // read and report" command.
-    delayMicroseconds(40);
+    delayMicroseconds(30);
 
     // Change Arduino pin to an input, to watch for the 80us low explained a
     // moment ago.
-    pinMode(port, INPUT);
-    delayMicroseconds(40);
+    pinMode(port, INPUT_PULLUP);
 
-    res = digitalRead(port);
-
-    if (res)
+    if (pulseInLength(port, LOW, 90) == 0)
         return DHT_START_FAILED_1;
-
-    delayMicroseconds(80);
-    res = digitalRead(port);
-
-    if (!res)
-        return DHT_START_FAILED_2;
 
     // After 80us low, the line should be taken high for 80us by the sensor.
     // The low following that high is the start of the first bit of the forty
     // to come. The method readByte() expects to be called with the system
     // already into this low.
-    delayMicroseconds(80);
+    if (pulseInLength(port, HIGH, 90) == 0)
+        return DHT_START_FAILED_2;
 
     // now ready for data reception... pick up the 5 bytes coming from
     // the sensor
