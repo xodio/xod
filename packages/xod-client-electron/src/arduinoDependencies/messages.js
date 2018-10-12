@@ -3,14 +3,18 @@ const librariesMissing = libraryNames =>
     ? `You have to install these libraries first: ${libraryNames}`
     : null;
 const librariesInstalled = libraryNames =>
-  libraryNames.length ? `Libraries ${libraryNames} installed` : null;
+  libraryNames.length
+    ? `Libraries ${libraryNames} installed successfully`
+    : null;
 
 const packagesMissing = packageNames =>
   packageNames.length
     ? `You have to install these packages first: ${packageNames}`
     : null;
 const packagesInstalled = packageNames =>
-  packageNames.length ? `Packages ${packageNames} installed` : null;
+  packageNames.length
+    ? `Package "${packageNames}" installed successfully`
+    : null;
 
 export default {
   ARDUINO_DEPENDENCIES_MISSING: ({
@@ -31,6 +35,7 @@ export default {
     note: [librariesInstalled(libraryNames), packagesInstalled(packageNames)]
       .filter(a => !!a)
       .join('\r\n'),
+    solution: 'Now you are able to upload the program',
     persistent: true,
   }),
 };
