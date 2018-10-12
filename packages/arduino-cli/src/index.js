@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import { resolve } from 'path';
 import { exec, spawn } from 'child-process-promise';
 import YAML from 'yamljs';
+import { remove } from 'fs-extra';
 
 import { configure, addPackageIndexUrl, addPackageIndexUrls } from './config';
 import { patchBoardsWithOptions } from './optionParser';
@@ -63,8 +64,10 @@ const ArduinoCli = (pathToBin, config = null) => {
       patchBoardsWithOptions(cfg.arduino_data, cores, boardsGetter(boards))
     );
 
+  const getConfig = () => run('config dump').then(YAML.parse);
+
   return {
-    dumpConfig: () => run('config dump').then(YAML.parse),
+    dumpConfig: getConfig,
     listConnectedBoards: () => listBoardsWith('list', R.prop('serialBoards')),
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
     listAvailableBoards: () => listAvailableBoards(cfg.arduino_data),
@@ -84,14 +87,24 @@ const ArduinoCli = (pathToBin, config = null) => {
       ),
     core: {
       download: (onProgress, pkgName) =>
-        runWithProgress(
-          parseProgressLog(onProgress),
-          `core download ${pkgName}`
+        // TODO:
+        // Get rid of `remove` the staging directory when
+        // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
+        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+          runWithProgress(
+            parseProgressLog(onProgress),
+            `core download ${pkgName}`
+          )
         ),
       install: (onProgress, pkgName) =>
-        runWithProgress(
-          parseProgressLog(onProgress),
-          `core install ${pkgName}`
+        // TODO:
+        // Get rid of `remove` the staging directory when
+        // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
+        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+          runWithProgress(
+            parseProgressLog(onProgress),
+            `core install ${pkgName}`
+          )
         ),
       list: listCores,
       search: query =>
