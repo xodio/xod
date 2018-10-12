@@ -20,6 +20,12 @@ import {
   SWITCH_WORKSPACE,
 } from '../settings/actionTypes';
 
+import {
+  ARDUPACKAGES_UPDATE_REQUEST,
+  ARDUPACKAGES_UPDATE_POPUP_CLOSE,
+  ARDUPACKAGES_UPGRADE_PROCEED,
+} from '../arduinoDependencies/actionTypes';
+
 export default (state, action) => {
   switch (action.type) {
     case UPLOAD:
@@ -51,6 +57,12 @@ export default (state, action) => {
       return hideOnePopup(POPUP_ID.CREATING_WORKSPACE, state);
     case SWITCH_WORKSPACE:
       return hideOnePopup(POPUP_ID.SWITCHING_WORKSPACE, state);
+
+    case ARDUPACKAGES_UPDATE_REQUEST:
+      return showOnlyPopup(POPUP_ID.UPDATE_ARDUINO_PACKAGES_POPUP, {}, state);
+    case ARDUPACKAGES_UPGRADE_PROCEED:
+    case ARDUPACKAGES_UPDATE_POPUP_CLOSE:
+      return hideOnePopup(POPUP_ID.UPDATE_ARDUINO_PACKAGES_POPUP, state);
 
     default:
       return popupsReducer(state, action);

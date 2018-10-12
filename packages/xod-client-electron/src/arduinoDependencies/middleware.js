@@ -2,8 +2,9 @@ import * as R from 'ramda';
 import * as client from 'xod-client';
 import { foldMaybe } from 'xod-func-tools';
 import { INSTALL_ARDUINO_DEPENDENCIES_MSG } from './constants';
-import { installArduinoDependencies } from './runners';
-import { installDeps } from './actions';
+import { installArduinoDependencies, updateArduinoPackages } from './runners';
+import { installDeps, updatePackages } from './actions';
+import { ARDUPACKAGES_UPGRADE_PROCEED } from './actionTypes';
 import MSG from './messages';
 import getLibraryNames from './getLibraryNames';
 
@@ -46,6 +47,21 @@ export default store => next => action => {
       },
       maybeData
     );
+  }
+
+  if (action.type === ARDUPACKAGES_UPGRADE_PROCEED) {
+    const proc = store.dispatch(updatePackages());
+    updateArduinoPackages(progressToProcess(proc.progress))
+      .then(() => {
+        store.dispatch(
+          client.addNotification(
+            // eslint-disable-next-line new-cap
+            MSG.ARDUINO_PACKAGES_UPDATED()
+          )
+        );
+        proc.success();
+      })
+      .catch(err => proc.fail(err.message, 0));
   }
 
   return next(action);

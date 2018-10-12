@@ -106,6 +106,9 @@ const rawItems = {
   uploadToArduino: {
     label: 'Upload to Arduino...',
   },
+  updatePackages: {
+    label: 'Upgrade Arduino Packages & Toolchains...',
+  },
 
   view: {
     label: 'View',
