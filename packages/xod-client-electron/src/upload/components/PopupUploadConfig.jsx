@@ -201,7 +201,11 @@ class PopupUploadConfig extends React.Component {
   }
 
   canUnpload() {
-    return this.state.selectedBoard && this.props.selectedPort;
+    return (
+      this.state.selectedBoard &&
+      this.props.selectedPort &&
+      !this.props.isDeploymentInProgress
+    );
   }
 
   renderBoardSelect() {
@@ -394,6 +398,11 @@ class PopupUploadConfig extends React.Component {
           >
             Upload
           </button>
+          {this.props.isDeploymentInProgress ? (
+            <span className="busy-message">
+              Another deployment job is in progress
+            </span>
+          ) : null}
         </div>
       </PopupForm>
     );
@@ -402,6 +411,7 @@ class PopupUploadConfig extends React.Component {
 
 PopupUploadConfig.propTypes = {
   isVisible: PropTypes.bool,
+  isDeploymentInProgress: PropTypes.bool,
   initialDebugAfterUpload: PropTypes.bool,
   selectedPort: PropTypes.object,
   compileLimitLeft: PropTypes.number,
@@ -417,6 +427,7 @@ PopupUploadConfig.propTypes = {
 
 PopupUploadConfig.defaultProps = {
   isVisible: false,
+  isDeploymentInProgress: false,
   initialDebugAfterUpload: false,
 };
 

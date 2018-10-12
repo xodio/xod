@@ -29,6 +29,14 @@ export const getSelectedSerialPort = R.compose(
   getUploadState
 );
 
+export const isDeploymentInProgress = R.compose(
+  R.converge(R.or, [
+    R.prop('isUploading'),
+    R.prop('isInstallingArduinoDependencies'),
+  ]),
+  getUploadState
+);
+
 export default {
   getUploadProcess,
 };
