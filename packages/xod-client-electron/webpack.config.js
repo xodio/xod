@@ -37,5 +37,10 @@ module.exports = merge.smart(getBaseConfig(__dirname), {
     // "Critical dependency: the request of a dependency is an expression"
     // See: https://github.com/andris9/encoding/issues/16
     new webpack.NormalModuleReplacementPlugin(/iconv-loader$/, 'node-noop'),
+    // Disable warnings produced by `ws` that used in the `xod-deploy`
+    // It happens, cause `ws` is server-side only package
+    // But webpack bundles client-side code
+    // And `ws` should be never used on client-size (use native `WebSocket`)
+    new webpack.IgnorePlugin(/bufferutil|utf-8-validate/),
   ],
 });

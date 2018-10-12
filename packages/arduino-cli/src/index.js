@@ -3,10 +3,10 @@ import * as R from 'ramda';
 import { resolve } from 'path';
 import { exec, spawn } from 'child-process-promise';
 import YAML from 'yamljs';
+import { remove } from 'fs-extra';
 
 import { configure, addPackageIndexUrl, addPackageIndexUrls } from './config';
-import parseTable from './parseTable';
-import { patchBoardsWithCpu } from './cpuParser';
+import { patchBoardsWithOptions } from './optionParser';
 import listAvailableBoards from './listAvailableBoards';
 import parseProgressLog from './parseProgressLog';
 
@@ -47,19 +47,27 @@ const ArduinoCli = (pathToBin, config = null) => {
 
   const sketch = name => resolve(cfg.sketchbook_path, name);
 
-  const runAndParseTable = args => run(args).then(parseTable);
   const runAndParseJson = args => run(args).then(JSON.parse);
+
+  const listCores = () =>
+    run('core list --format json')
+      .then(R.when(R.isEmpty, R.always('{}')))
+      .then(JSON.parse)
+      .then(R.propOr([], 'Platforms'))
+      .then(R.map(R.over(R.lensProp('ID'), R.replace(/(@.+)$/, ''))));
 
   const listBoardsWith = (listCmd, boardsGetter) =>
     Promise.all([
-      runAndParseTable('core list'),
+      listCores(),
       runAndParseJson(`board ${listCmd} --format json`),
     ]).then(([cores, boards]) =>
-      patchBoardsWithCpu(cfg.arduino_data, cores, boardsGetter(boards))
+      patchBoardsWithOptions(cfg.arduino_data, cores, boardsGetter(boards))
     );
 
+  const getConfig = () => run('config dump').then(YAML.parse);
+
   return {
-    dumpConfig: () => run('config dump').then(YAML.parse),
+    dumpConfig: getConfig,
     listConnectedBoards: () => listBoardsWith('list', R.prop('serialBoards')),
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
     listAvailableBoards: () => listAvailableBoards(cfg.arduino_data),
@@ -79,20 +87,30 @@ const ArduinoCli = (pathToBin, config = null) => {
       ),
     core: {
       download: (onProgress, pkgName) =>
-        runWithProgress(
-          parseProgressLog(onProgress),
-          `core download ${pkgName}`
+        // TODO:
+        // Get rid of `remove` the staging directory when
+        // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
+        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+          runWithProgress(
+            parseProgressLog(onProgress),
+            `core download ${pkgName}`
+          )
         ),
       install: (onProgress, pkgName) =>
-        runWithProgress(
-          parseProgressLog(onProgress),
-          `core install ${pkgName}`
+        // TODO:
+        // Get rid of `remove` the staging directory when
+        // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
+        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+          runWithProgress(
+            parseProgressLog(onProgress),
+            `core install ${pkgName}`
+          )
         ),
-      // We have to call our custon `parseTable`
-      // until bug with `--format json` in arduino-cli will be fixed
-      // https://github.com/arduino/arduino-cli/issues/39
-      list: () => runAndParseTable('core list'),
-      search: query => runAndParseTable(`core search ${query}`),
+      list: listCores,
+      search: query =>
+        run(`core search ${query} --format json`)
+          .then(R.prop('Platforms'))
+          .then(R.defaultTo([])),
       uninstall: pkgName => run(`core uninstall ${pkgName}`),
       updateIndex: () => run('core update-index'),
       upgrade: () => run('core upgrade'),

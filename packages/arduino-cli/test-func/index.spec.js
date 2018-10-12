@@ -114,6 +114,7 @@ describe('Arduino Cli', () => {
         assert.lengthOf(res, 1);
         assert.propertyVal(res[0], 'ID', 'arduino:avr');
         assert.propertyVal(res[0], 'Installed', '1.6.21');
+        assert.property(res[0], 'Latest');
         assert.propertyVal(res[0], 'Name', 'Arduino AVR Boards');
       }));
     it('Lists all installed boards with cpu options', () =>
@@ -122,14 +123,27 @@ describe('Arduino Cli', () => {
           {
             name: 'Arduino/Genuino Uno',
             fqbn: 'arduino:avr:uno',
+            options: [],
           },
           {
-            name: 'Arduino/Genuino Mega or Mega 2560 (ATmega2560 (Mega 2560))',
-            fqbn: 'arduino:avr:mega:cpu=atmega2560',
-          },
-          {
-            name: 'Arduino/Genuino Mega or Mega 2560 (ATmega1280)',
-            fqbn: 'arduino:avr:mega:cpu=atmega1280',
+            name: 'Arduino/Genuino Mega or Mega 2560',
+            fqbn: 'arduino:avr:mega',
+            options: [
+              {
+                optionName: 'Processor',
+                optionId: 'cpu',
+                values: [
+                  {
+                    name: 'ATmega2560 (Mega 2560)',
+                    value: 'atmega2560',
+                  },
+                  {
+                    name: 'ATmega1280',
+                    value: 'atmega1280',
+                  },
+                ],
+              },
+            ],
           },
         ]);
       }));

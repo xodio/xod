@@ -20,6 +20,7 @@ import {
   compilationBegun,
   CODE_COMPILED,
   BEGIN_COMPILATION_IN_CLOUD,
+  UPLOAD_PROCESS_BEGINS,
 } from '../shared/messages';
 import {
   ARDUINO_LIBRARIES_DIRNAME,
@@ -133,6 +134,72 @@ const copyLibrariesToSketchbook = async cli => {
   const userLibPath = await loadWorkspacePath().then(getLibsDir);
 
   return copyLibraries(bundledLibPath, userLibPath, sketchbookLibDir);
+};
+
+// :: Board -> Board
+const patchFqbnWithOptions = board => {
+  const selectedOptions = board.selectedOptions || {};
+  const options = board.options || [];
+
+  const defaultBoardOptions = R.compose(
+    R.mergeAll,
+    R.reject(R.isNil),
+    R.map(opt => ({
+      [opt.optionId]: R.pathOr(null, ['values', 0, 'value'], opt),
+    }))
+  )(options);
+  const defaultBoardOptionKeys = R.keys(defaultBoardOptions);
+
+  // Find out selected board options that equal to default board options.
+  //
+  // TODO:
+  // It's better to use all options that was defined by User to be sure
+  // that will be compiled and uploaded as User desires,
+  // but arduino-cli@0.3.1 have a problem:
+  // https://github.com/arduino/arduino-cli/issues/64
+  const equalToDefaultBoardOpionKeys = R.compose(
+    R.reduce(
+      (acc, [key, val]) =>
+        defaultBoardOptions[key] && defaultBoardOptions[key] === val
+          ? R.append(key, acc)
+          : acc,
+      []
+    ),
+    R.toPairs
+  )(selectedOptions);
+
+  // Find out board option keys that does not fit the selected board
+  const staleBoardOptionKeys = R.compose(
+    R.reject(isAmong(defaultBoardOptionKeys)),
+    R.keys
+  )(selectedOptions);
+
+  const keysToOmit = R.concat(
+    equalToDefaultBoardOpionKeys,
+    staleBoardOptionKeys
+  );
+
+  // TODO
+  // This is a kludge cause arduino-cli 0.3.1
+  // can't find out all default board options.
+  // So we have to specify at least one option.
+  const oneOfDefaultOptions = R.compose(
+    R.pick(R.__, defaultBoardOptions),
+    R.of,
+    R.head
+  )(defaultBoardOptionKeys);
+
+  const selectedBoardOptions = R.omit(keysToOmit, selectedOptions);
+
+  return R.compose(
+    R.assoc('fqbn', R.__, board),
+    R.concat(board.fqbn),
+    R.unless(R.isEmpty, R.concat(':')),
+    R.join(','),
+    R.map(R.join('=')),
+    R.toPairs,
+    R.when(R.isEmpty, R.always(oneOfDefaultOptions))
+  )(selectedBoardOptions);
 };
 
 // =============================================================================
@@ -290,7 +357,7 @@ const uploadThroughCloud = async (onProgress, cli, payload) => {
   const uploadLog = await cli.upload(
     stdout =>
       onProgress({
-        percentage: 100,
+        percentage: 60,
         message: stdout,
         tab: 'uploader',
       }),
@@ -346,10 +413,16 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
     false
   );
 
+  onProgress({
+    percentage: 50,
+    message: UPLOAD_PROCESS_BEGINS,
+    tab: 'uploader',
+  });
+
   const uploadLog = await cli.upload(
     stdout =>
       onProgress({
-        percentage: 100,
+        percentage: 60,
         message: stdout,
         tab: 'uploader',
       }),
@@ -378,7 +451,12 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
  */
 export const upload = (onProgress, cli, payload) => {
   const uploadFn = payload.cloud ? uploadThroughCloud : uploadThroughUSB;
-  return uploadFn(onProgress, cli, payload);
+  const payloadWithUpdatedFqbn = R.over(
+    R.lensProp('board'),
+    patchFqbnWithOptions,
+    payload
+  );
+  return uploadFn(onProgress, cli, payloadWithUpdatedFqbn);
 };
 
 // =============================================================================

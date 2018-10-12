@@ -31,6 +31,7 @@ import { listBoards, upload } from '../../upload/arduinoCli';
 import * as debuggerIPC from '../../debugger/ipcActions';
 import {
   getUploadProcess,
+  isDeploymentInProgress,
   getSelectedSerialPort,
 } from '../../upload/selectors';
 import * as settingsActions from '../../settings/actions';
@@ -271,6 +272,8 @@ class App extends client.App {
       logProcessFn(messageForConsole, 0);
     };
 
+    stopDebuggerSession();
+
     eitherToPromise(eitherTProject)
       .then(
         tapP(tProj => {
@@ -288,7 +291,6 @@ class App extends client.App {
               R.always({ packages: [] })
             )
           )(board);
-          // TODO: Add other arduino dependencies here
           return checkArduinoDependencies(
             progressData =>
               checkProcess.progress(
@@ -321,7 +323,15 @@ class App extends client.App {
             board,
             port,
           }
-        )
+        ).catch(err => {
+          console.error(err); // eslint-disable-line no-console
+          return Promise.reject(
+            createError('UPLOAD_TOOL_ERROR', {
+              message: err.message,
+              code: err.code,
+            })
+          );
+        })
       )
       .then(() => proc.success())
       .then(() => {
@@ -776,6 +786,7 @@ class App extends client.App {
     return this.props.popups.uploadToArduinoConfig ? (
       <PopupUploadConfig
         isVisible
+        isDeploymentInProgress={this.props.isDeploymentInProgress}
         getSelectedBoard={this.constructor.getSelectedBoard}
         selectedPort={this.props.selectedPort}
         listBoards={listBoards}
@@ -897,6 +908,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
   compileLimitLeft: client.getCompileLimitLeft,
+  isDeploymentInProgress,
   popups: {
     // TODO: make keys match with POPUP_IDs
     // (for example, `creatingProject` insteand of `createProject`)

@@ -1,0 +1,88 @@
+#### JUST A PART OF BOARDS.TXT FILE FROM ESP8266 PACKAGE
+#### SOME OPTIONS WAS REMOVED TO MINIFY FIXTURE
+#### ONLY FOR TESTS!
+
+#
+# Do not create pull-requests for this file only, CI will not accept them.
+# You *must* edit/modify/run boards.txt.py to regenerate boards.txt.
+# All modified files after running with option "--allgen" must be included in the pull-request.
+#
+
+menu.UploadSpeed=Upload Speed
+menu.CpuFrequency=CPU Frequency
+
+##############################################################
+generic.name=Generic ESP8266 Module
+generic.build.board=ESP8266_GENERIC
+generic.upload.tool=esptool
+generic.upload.maximum_data_size=81920
+generic.upload.wait_for_upload_port=true
+generic.upload.erase_cmd=
+generic.serial.disableDTR=true
+generic.serial.disableRTS=true
+generic.build.mcu=esp8266
+generic.build.core=esp8266
+generic.build.variant=generic
+generic.build.spiffs_pagesize=256
+generic.build.debug_port=
+generic.build.debug_level=
+generic.menu.CpuFrequency.80=80 MHz
+generic.menu.CpuFrequency.80.build.f_cpu=80000000L
+generic.menu.CpuFrequency.160=160 MHz
+generic.menu.CpuFrequency.160.build.f_cpu=160000000L
+generic.menu.UploadSpeed.115200=115200
+generic.menu.UploadSpeed.115200.upload.speed=115200
+generic.menu.UploadSpeed.9600=9600
+generic.menu.UploadSpeed.9600.upload.speed=9600
+generic.menu.UploadSpeed.57600=57600
+generic.menu.UploadSpeed.57600.upload.speed=57600
+generic.menu.UploadSpeed.230400.linux=230400
+generic.menu.UploadSpeed.230400.macosx=230400
+generic.menu.UploadSpeed.230400.upload.speed=230400
+generic.menu.UploadSpeed.256000.windows=256000
+generic.menu.UploadSpeed.256000.upload.speed=256000
+generic.menu.UploadSpeed.460800.linux=460800
+generic.menu.UploadSpeed.460800.macosx=460800
+generic.menu.UploadSpeed.460800.upload.speed=460800
+generic.menu.UploadSpeed.512000.windows=512000
+generic.menu.UploadSpeed.512000.upload.speed=512000
+generic.menu.UploadSpeed.921600=921600
+generic.menu.UploadSpeed.921600.upload.speed=921600
+
+##############################################################
+wifi_slot.name=Amperka WiFi Slot
+wifi_slot.build.board=AMPERKA_WIFI_SLOT
+wifi_slot.build.variant=wifi_slot
+wifi_slot.upload.tool=esptool
+wifi_slot.upload.maximum_data_size=81920
+wifi_slot.upload.wait_for_upload_port=true
+wifi_slot.upload.erase_cmd=
+wifi_slot.serial.disableDTR=true
+wifi_slot.serial.disableRTS=true
+wifi_slot.build.mcu=esp8266
+wifi_slot.build.core=esp8266
+wifi_slot.build.spiffs_pagesize=256
+wifi_slot.build.debug_port=
+wifi_slot.build.debug_level=
+wifi_slot.menu.CpuFrequency.80=80 MHz
+wifi_slot.menu.CpuFrequency.80.build.f_cpu=80000000L
+wifi_slot.menu.CpuFrequency.160=160 MHz
+wifi_slot.menu.CpuFrequency.160.build.f_cpu=160000000L
+wifi_slot.menu.UploadSpeed.115200=115200
+wifi_slot.menu.UploadSpeed.115200.upload.speed=115200
+wifi_slot.menu.UploadSpeed.9600=9600
+wifi_slot.menu.UploadSpeed.9600.upload.speed=9600
+wifi_slot.menu.UploadSpeed.57600=57600
+wifi_slot.menu.UploadSpeed.57600.upload.speed=57600
+wifi_slot.menu.UploadSpeed.230400.linux=230400
+wifi_slot.menu.UploadSpeed.230400.macosx=230400
+wifi_slot.menu.UploadSpeed.230400.upload.speed=230400
+wifi_slot.menu.UploadSpeed.256000.windows=256000
+wifi_slot.menu.UploadSpeed.256000.upload.speed=256000
+wifi_slot.menu.UploadSpeed.460800.linux=460800
+wifi_slot.menu.UploadSpeed.460800.macosx=460800
+wifi_slot.menu.UploadSpeed.460800.upload.speed=460800
+wifi_slot.menu.UploadSpeed.512000.windows=512000
+wifi_slot.menu.UploadSpeed.512000.upload.speed=512000
+wifi_slot.menu.UploadSpeed.921600=921600
+wifi_slot.menu.UploadSpeed.921600.upload.speed=921600

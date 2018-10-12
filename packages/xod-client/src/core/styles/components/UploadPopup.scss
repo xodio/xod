@@ -1,0 +1,25 @@
+.boardOptions {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 6px 0 0;
+}
+
+.boardOptions div {
+  flex: 1 1 50%;
+  padding: 3px 0;
+  box-sizing: border-box;
+}
+
+.boardOptions div:nth-child(2n+1) {
+  padding-right: 10px;
+}
+.boardOptions div:nth-child(2n+1):last-child {
+  padding-right: 0;
+}
+.boardOptions div:nth-child(2n) {
+  padding-left: 10px;
+}
+
+.busy-message {
+  color: $apricot;
+}
