@@ -103,7 +103,7 @@ jobs:
     docker: *docker-custom-nodejs
     environment:
       DISPLAY: ":99.0"
-      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - run:
           name: Running X virtual framebuffer
@@ -126,7 +126,7 @@ jobs:
       xcode: "9.0"
     environment:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
-      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
@@ -173,7 +173,7 @@ jobs:
     docker: *docker-custom-nodejs
     environment:
       NODE_ENV: production
-      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
@@ -202,7 +202,7 @@ jobs:
       xcode: "9.0"
     environment:
       NODE_ENV: production
-      ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules

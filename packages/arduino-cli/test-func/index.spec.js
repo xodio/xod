@@ -7,13 +7,13 @@ import arduinoCli from '../src/index';
 
 describe('Arduino Cli', () => {
   const PATH_TO_CLI =
-    process.env.ARDUINO_CLI || which.sync('arduino-cli', { nothrow: true });
+    process.env.XOD_ARDUINO_CLI || which.sync('arduino-cli', { nothrow: true });
 
   if (!PATH_TO_CLI) {
     throw new Error(`
       To run functional tests over "arduino-cli" wrapper you have to:
       1. Download "arduino-cli"
-      2. Put "arduino-cli" on $PATH or set env variable "ARDUINO_CLI" to the binary
+      2. Put "arduino-cli" on $PATH or set env variable "XOD_ARDUINO_CLI" to the binary
       3. Run test again
     `);
   }
