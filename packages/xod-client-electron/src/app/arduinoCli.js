@@ -59,14 +59,18 @@ const getArduinoCliPath = () =>
       return;
     }
 
-    if (process.env.ARDUINO_CLI) {
-      resolve(process.env.ARDUINO_CLI);
+    if (process.env.XOD_ARDUINO_CLI) {
+      resolve(process.env.XOD_ARDUINO_CLI);
       return;
     }
 
     which(arduinoCliBin, (err, cliPath) => {
       if (err) {
-        reject(err);
+        reject(
+          createError('ARDUINO_CLI_NOT_FOUND', {
+            isDev: IS_DEV,
+          })
+        );
         return;
       }
       resolve(cliPath);
@@ -242,6 +246,13 @@ export const create = sketchDir =>
     await copyPackageIndexes(packagesDirPath);
     await migrateArduinoPackages();
     await ensureExtraTxt();
+
+    if (!await fse.pathExists(arduinoCliPath)) {
+      throw createError('ARDUINO_CLI_NOT_FOUND', {
+        path: arduinoCliPath,
+        isDev: IS_DEV,
+      });
+    }
 
     return arduinoCli(arduinoCliPath, {
       arduino_data: packagesDirPath,

@@ -155,7 +155,7 @@ class App extends client.App {
       this.showCreateWorkspacePopup(path, force)
     );
     ipcRenderer.on(EVENTS.WORKSPACE_ERROR, (event, error) => {
-      this.props.actions.addError(formatError(error));
+      this.props.actions.addError(formatErrorMessage(error));
     });
     ipcRenderer.on(EVENTS.REQUEST_CLOSE_WINDOW, () => {
       this.confirmUnsavedChanges(() => {
@@ -174,7 +174,7 @@ class App extends client.App {
     // Notify about errors in the Main Process
     ipcRenderer.on(EVENTS.ERROR_IN_MAIN_PROCESS, (event, error) => {
       console.error(error); // eslint-disable-line no-console
-      this.props.actions.addError(formatError(error));
+      this.props.actions.addError(formatErrorMessage(error));
     });
 
     this.urlActions = {

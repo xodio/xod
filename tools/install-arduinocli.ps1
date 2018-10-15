@@ -5,4 +5,4 @@ unzip "$env:HOME/arduino-cli.zip" -d "$env:HOME"
 mv "$env:HOME/arduino-cli-0.3.1-alpha.preview-windows.exe" "$env:HOME/arduino-cli.exe"
 copy "$env:HOME/arduino-cli.exe" "./packages/xod-client-electron/arduino-cli.exe"
 
-$env:ARDUINO_CLI="$env:HOME/arduino-cli.exe"
+$env:XOD_ARDUINO_CLI="$env:HOME/arduino-cli.exe"
