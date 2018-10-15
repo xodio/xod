@@ -149,5 +149,9 @@ describe('Pin', () => {
       assert.strictEqual(Pin.induceVariadicPinLabel(0, 'X3'), 'X4');
       assert.strictEqual(Pin.induceVariadicPinLabel(1, 'X3'), 'X5');
     });
+    it('2 -> 3, 2 -> 4', () => {
+      assert.strictEqual(Pin.induceVariadicPinLabel(0, '2'), '3');
+      assert.strictEqual(Pin.induceVariadicPinLabel(1, '2'), '4');
+    });
   });
 });
