@@ -66,7 +66,11 @@ const getArduinoCliPath = () =>
 
     which(arduinoCliBin, (err, cliPath) => {
       if (err) {
-        reject(err);
+        reject(
+          createError('ARDUINO_CLI_NOT_FOUND', {
+            isDev: IS_DEV,
+          })
+        );
         return;
       }
       resolve(cliPath);
@@ -242,6 +246,13 @@ export const create = sketchDir =>
     await copyPackageIndexes(packagesDirPath);
     await migrateArduinoPackages();
     await ensureExtraTxt();
+
+    if (!await fse.pathExists(arduinoCliPath)) {
+      throw createError('ARDUINO_CLI_NOT_FOUND', {
+        path: arduinoCliPath,
+        isDev: IS_DEV,
+      });
+    }
 
     return arduinoCli(arduinoCliPath, {
       arduino_data: packagesDirPath,

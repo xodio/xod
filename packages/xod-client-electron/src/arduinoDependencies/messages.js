@@ -38,6 +38,15 @@ export default {
     solution: 'Now you are able to upload the program',
     persistent: true,
   }),
+  ARDUINO_CLI_NOT_FOUND: ({ path, isDev }) => ({
+    title: 'arduino-cli not found',
+    note: path
+      ? `Tried to find arduino-cli on the path: ${path}`
+      : 'Tried to find arduino-cli on $PATH',
+    solution: isDev
+      ? 'When running in the development mode `arduino-cli` should be available on $PATH or explicitly set with $XOD_ARDUINO_CLI environment variable'
+      : 'This is a bug, report it to XOD developers',
+  }),
   ARDUINO_PACKAGES_UPDATED: () => ({
     title: 'All Arduino packages updated',
     persistent: true,
