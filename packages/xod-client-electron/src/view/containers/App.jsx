@@ -44,7 +44,12 @@ import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
 import { default as arduinoDepMessages } from '../../arduinoDependencies/messages';
 import { INSTALL_ARDUINO_DEPENDENCIES_MSG } from '../../arduinoDependencies/constants';
-import { checkDeps } from '../../arduinoDependencies/actions';
+import {
+  checkDeps,
+  updateArdupackages,
+  closePackageUpdatePopup,
+  proceedPackageUpgrade,
+} from '../../arduinoDependencies/actions';
 import { createSystemMessage } from '../../shared/debuggerMessages';
 import uploadMessages from '../../upload/messages';
 
@@ -60,6 +65,7 @@ import {
 } from '../nativeDialogs';
 import { STATES, getEventNameWithState } from '../../shared/eventStates';
 
+import UpdateArduinoPackagesPopup from '../../arduinoDependencies/components/UpdateArduinoPackagesPopup';
 import { checkArduinoDependencies } from '../../arduinoDependencies/runners';
 
 const { app, dialog, Menu } = remoteElectron;
@@ -125,6 +131,8 @@ class App extends client.App {
     this.requestInstallArduinoDependencies = this.requestInstallArduinoDependencies.bind(
       this
     );
+
+    this.onUpdatePackagesClicked = this.onUpdatePackagesClicked.bind(this);
 
     this.initNativeMenu();
 
@@ -506,6 +514,10 @@ class App extends client.App {
     return false;
   }
 
+  onUpdatePackagesClicked() {
+    this.props.actions.updateArdupackages();
+  }
+
   onArduinoPathChange(newPath) {
     ipcRenderer.send('SET_ARDUINO_IDE', { path: newPath });
     ipcRenderer.once('SET_ARDUINO_IDE', (event, payload) => {
@@ -580,6 +592,8 @@ class App extends client.App {
       submenu(items.deploy, [
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
         onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
+        items.separator,
+        onClick(items.updatePackages, this.onUpdatePackagesClicked),
       ]),
       submenu(items.help, [
         {
@@ -804,6 +818,16 @@ class App extends client.App {
     ) : null;
   }
 
+  renderPopupCheckArduinoPackageUpdates() {
+    return this.props.popups.updateArduinoPackages ? (
+      <UpdateArduinoPackagesPopup
+        isVisible={this.props.popups.updateArduinoPackages}
+        onClose={this.props.actions.closePackageUpdatePopup}
+        onUpdateConfirm={this.props.actions.proceedPackageUpgrade}
+      />
+    ) : null;
+  }
+
   render() {
     return (
       <HotKeys keyMap={this.constructor.getKeyMap()} id="App">
@@ -823,6 +847,7 @@ class App extends client.App {
         {this.renderPopupProjectPreferences()}
         {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
+        {this.renderPopupCheckArduinoPackageUpdates()}
         <PopupSetWorkspace
           workspace={this.state.workspace}
           isClosable={R.propOr(
@@ -932,6 +957,9 @@ const mapStateToProps = R.applySpec({
     publishingProject: client.getPopupVisibility(
       client.POPUP_ID.PUBLISHING_PROJECT
     ),
+    updateArduinoPackages: client.getPopupVisibility(
+      client.POPUP_ID.UPDATE_ARDUINO_PACKAGES_POPUP
+    ),
   },
   popupsData: {
     projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
@@ -960,6 +988,9 @@ const mapDispatchToProps = dispatch => ({
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
       selectSerialPort: uploadActions.selectSerialPort,
+      updateArdupackages,
+      closePackageUpdatePopup,
+      proceedPackageUpgrade,
       checkDeps,
     }),
     dispatch

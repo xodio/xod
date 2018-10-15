@@ -245,6 +245,8 @@ const onReady = () => {
         aCli.subscribeListBoards(arduinoCli);
         aCli.subscribeUpload(arduinoCli);
         aCli.subscribeUpdateIndexes(arduinoCli);
+        aCli.subscibeCheckUpdates(arduinoCli);
+        aCli.subscribeUpgradeArduinoPackages(arduinoCli);
 
         subscribeOnCheckArduinoDependencies(arduinoCli);
         subscribeOnInstallArduinoDependencies(arduinoCli);

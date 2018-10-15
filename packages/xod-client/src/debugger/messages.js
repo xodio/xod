@@ -9,3 +9,7 @@ export const CHECKING_DEPENDENCIES_SUCCESS =
 export const INSTALLING_DEPENDENCIES = 'Installing Arduino dependencies...';
 export const INSTALLING_DEPENDENCIES_SUCCESS =
   'All Arduino dependencies are installed successfully';
+
+export const UPDATING_ARDUINO_DEPENDECIES = 'Updating Arduino packages...';
+export const UPDATING_ARDUINO_DEPENDECIES_SUCCESS =
+  'All Arduino packages are updated successfully';

@@ -16,6 +16,8 @@ import {
   LIST_BOARDS,
   UPLOAD_TO_ARDUINO,
   UPDATE_INDEXES,
+  CHECK_ARDUINO_DEPENDENCY_UPDATES,
+  UPGRADE_ARDUINO_DEPENDECIES,
 } from '../shared/events';
 import {
   compilationBegun,
@@ -461,6 +463,22 @@ export const upload = (onProgress, cli, payload) => {
   return uploadFn(onProgress, cli, payloadWithUpdatedFqbn);
 };
 
+/**
+ * Checks arduino packages for updates.
+ *
+ * :: ArduinoCli -> Promise String Error
+ */
+const checkUpdates = cli =>
+  R.composeP(R.reject(arch => arch.Installed === arch.Latest), cli.core.list)();
+
+/**
+ * Updates arduino packages.
+ *
+ * :: (Object -> _) -> ArduinoCli -> Promise String Error
+ */
+const upgradeArduinoPackages = (onProgress, cli) =>
+  cli.core.upgrade(onProgress);
+
 // =============================================================================
 //
 // Subscribers
@@ -479,4 +497,15 @@ export const subscribeUpload = cli => {
 
 export const subscribeUpdateIndexes = cli => {
   subscribeIpc(() => updateIndexes(cli), UPDATE_INDEXES);
+};
+
+export const subscibeCheckUpdates = cli => {
+  subscribeIpc(() => checkUpdates(cli), CHECK_ARDUINO_DEPENDENCY_UPDATES);
+};
+
+export const subscribeUpgradeArduinoPackages = cli => {
+  subscribeIpc(
+    (_, _2, onProgress) => upgradeArduinoPackages(onProgress, cli),
+    UPGRADE_ARDUINO_DEPENDECIES
+  );
 };

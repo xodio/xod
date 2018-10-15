@@ -41,3 +41,37 @@ export const deleteProcess = (id, type) => ({
   payload: { id },
   meta: { status: STATUS.DELETED },
 });
+
+export const createProcess = type => dispatch => {
+  const processId = dispatch(addProcess(type));
+
+  const deleteThisProcess = () => dispatch(deleteProcess(processId, type));
+
+  return {
+    success: (message = '') => {
+      dispatch(
+        successProcess(processId, type, {
+          message,
+        })
+      );
+      deleteThisProcess();
+    },
+    fail: (message, percentage) => {
+      dispatch(
+        failProcess(processId, type, {
+          message,
+          percentage,
+        })
+      );
+      deleteThisProcess();
+    },
+    progress: (message, percentage) =>
+      dispatch(
+        progressProcess(processId, type, {
+          message,
+          percentage,
+        })
+      ),
+    delete: deleteThisProcess,
+  };
+};

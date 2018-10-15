@@ -1,77 +1,25 @@
 import * as client from 'xod-client';
+import { UPGRADE_ARDUINO_DEPENDECIES } from '../shared/events';
+import * as AT from './actionTypes';
 
-export const checkDeps = () => dispatch => {
-  const processId = dispatch(
-    client.addProcess(client.CHECK_ARDUINO_DEPENDENCIES)
-  );
-  const deleteProcess = () =>
-    dispatch(
-      client.deleteProcess(processId, client.CHECK_ARDUINO_DEPENDENCIES)
-    );
+export const checkDeps = client.createProcess(
+  client.CHECK_ARDUINO_DEPENDENCIES
+);
 
-  return {
-    success: (message = '') => {
-      dispatch(
-        client.successProcess(processId, client.CHECK_ARDUINO_DEPENDENCIES, {
-          message,
-        })
-      );
-      deleteProcess();
-    },
-    fail: (message, percentage) => {
-      dispatch(
-        client.failProcess(processId, client.CHECK_ARDUINO_DEPENDENCIES, {
-          message,
-          percentage,
-        })
-      );
-      deleteProcess();
-    },
-    progress: (message, percentage) =>
-      dispatch(
-        client.progressProcess(processId, client.CHECK_ARDUINO_DEPENDENCIES, {
-          message,
-          percentage,
-        })
-      ),
-    delete: deleteProcess,
-  };
-};
+export const installDeps = client.createProcess(
+  client.INSTALL_ARDUINO_DEPENDENCIES
+);
 
-export const installDeps = () => dispatch => {
-  const processId = dispatch(
-    client.addProcess(client.INSTALL_ARDUINO_DEPENDENCIES)
-  );
-  const deleteProcess = () =>
-    dispatch(
-      client.deleteProcess(processId, client.INSTALL_ARDUINO_DEPENDENCIES)
-    );
+export const updateArdupackages = () => ({
+  type: AT.ARDUPACKAGES_UPDATE_REQUEST,
+});
+export const closePackageUpdatePopup = () => ({
+  type: AT.ARDUPACKAGES_UPDATE_POPUP_CLOSE,
+});
 
-  return {
-    success: (message = '') => {
-      dispatch(
-        client.successProcess(processId, client.INSTALL_ARDUINO_DEPENDENCIES, {
-          message,
-        })
-      );
-      deleteProcess();
-    },
-    fail: (message, percentage) => {
-      dispatch(
-        client.failProcess(processId, client.INSTALL_ARDUINO_DEPENDENCIES, {
-          message,
-          percentage,
-        })
-      );
-      deleteProcess();
-    },
-    progress: (message, percentage) =>
-      dispatch(
-        client.progressProcess(processId, client.INSTALL_ARDUINO_DEPENDENCIES, {
-          message,
-          percentage,
-        })
-      ),
-    delete: deleteProcess,
-  };
-};
+export const proceedPackageUpgrade = () => ({
+  type: AT.ARDUPACKAGES_UPGRADE_PROCEED,
+});
+
+export const updatePackages = () =>
+  client.createProcess(UPGRADE_ARDUINO_DEPENDECIES);

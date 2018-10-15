@@ -113,7 +113,8 @@ const ArduinoCli = (pathToBin, config = null) => {
           .then(R.defaultTo([])),
       uninstall: pkgName => run(`core uninstall ${pkgName}`),
       updateIndex: () => run('core update-index'),
-      upgrade: () => run('core upgrade'),
+      upgrade: onProgress =>
+        runWithProgress(parseProgressLog(onProgress), 'core upgrade'),
     },
     version: () => runAndParseJson('version').then(R.prop('version')),
     createSketch: sketchName =>

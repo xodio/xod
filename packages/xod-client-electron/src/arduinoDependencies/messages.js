@@ -38,4 +38,8 @@ export default {
     solution: 'Now you are able to upload the program',
     persistent: true,
   }),
+  ARDUINO_PACKAGES_UPDATED: () => ({
+    title: 'All Arduino packages updated',
+    persistent: true,
+  }),
 };
