@@ -107,7 +107,7 @@ class App extends client.App {
     const { project } = this.props;
 
     const xodballJSON = XP.toXodball(project);
-    const xodballName = XP.getProjectName(project);
+    const xodballName = XP.getProjectName(project) || 'my-project';
     const link = document ? document.createElement('a') : null;
     const url = `data:application/xod;charset=utf8,${encodeURIComponent(
       xodballJSON
