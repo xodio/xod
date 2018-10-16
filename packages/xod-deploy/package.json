@@ -1,6 +1,6 @@
 {
   "name": "xod-deploy",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -32,8 +32,8 @@
     "tar": "^4.0.1",
     "unbzip2-stream": "^1.2.5",
     "ws": "^3.1.0",
-    "xod-fs": "^0.24.0",
-    "xod-func-tools": "^0.24.0"
+    "xod-fs": "^0.25.0",
+    "xod-func-tools": "^0.25.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
