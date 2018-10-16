@@ -21,5 +21,4 @@ export const proceedPackageUpgrade = () => ({
   type: AT.ARDUPACKAGES_UPGRADE_PROCEED,
 });
 
-export const updatePackages = () =>
-  client.createProcess(UPGRADE_ARDUINO_DEPENDECIES);
+export const updatePackages = client.createProcess(UPGRADE_ARDUINO_DEPENDECIES);
