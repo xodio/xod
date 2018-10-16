@@ -302,7 +302,7 @@ export const induceVariadicPinLabel = def(
       R.isEmpty,
       R.compose(
         R.converge(R.concat, [
-          R.nth(1),
+          R.compose(R.defaultTo(''), R.nth(1)),
           R.compose(
             R.toString,
             R.add(index + 1),
@@ -311,7 +311,7 @@ export const induceVariadicPinLabel = def(
             R.nth(2)
           ),
         ]),
-        R.match(/^(\D+)(\d*)$/)
+        R.match(/^(\D+)?(\d*)$/)
       )
     )(label)
 );
