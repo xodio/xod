@@ -1,11 +1,13 @@
 import * as R from 'ramda';
 import client from 'xod-client';
 import { SELECT_SERIAL_PORT, UPLOAD } from '../upload/actionTypes';
+import { UPGRADE_ARDUINO_DEPENDECIES } from '../shared/events';
 
 const initialState = {
   selectedSerialPort: null,
   isUploading: false,
   isInstallingArduinoDependencies: false,
+  isUpgradingArduinoPackages: false,
 };
 
 const switchProcess = (propName, action, state) => {
@@ -31,6 +33,9 @@ export default (state = initialState, action) => {
 
     case client.INSTALL_ARDUINO_DEPENDENCIES:
       return switchProcess('isInstallingArduinoDependencies', action, state);
+
+    case UPGRADE_ARDUINO_DEPENDECIES:
+      return switchProcess('isUpgradingArduinoPackages', action, state);
 
     default:
       return state;

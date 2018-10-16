@@ -42,7 +42,7 @@ export const deleteProcess = (id, type) => ({
   meta: { status: STATUS.DELETED },
 });
 
-export const createProcess = type => dispatch => {
+export const createProcess = type => () => dispatch => {
   const processId = dispatch(addProcess(type));
 
   const deleteThisProcess = () => dispatch(deleteProcess(processId, type));
