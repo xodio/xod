@@ -4,12 +4,52 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [c++] Make the runtime code compatible with ESP8266 MCUs. (#1456, #1460)
+* [ide] Employ `arduino-cli` for hardware packages installing, compiling, and
+  uploading. It makes possible to use the same variety of target boards which
+  Arduino IDE supports. In other words, you can install third-party hardware
+  packages to be used by XOD. In particular, ESP8266-based boards like WEMOS
+  and NodeMCU board index is included out of the box. (#1459, #1465, #1469)
+* [ide] Rather than silently starting to download a potentially big hardware
+  package on the first upload, an explicit offer to download and install is
+  shown. The download process is visualized with the progress bar. (#1459)
+* [ide] Add a new item to the Deploy menu to upgrade already installed
+  toolchains to their latest versions. As a consequence, after the upgrade, XOD
+  is capable of uploading to Arduino Nano with the new bootloader, manufactured
+  after Jan 2018. (#1467)
+* [ide] Show all compilation/upload options for a given board, not only MCU.
+  In particular, it allows compiling and uploading to ESP8266-based boards.
+  (#1462)
+
+### New nodes
+
+* [`xod-dev/esp8266-mcu`](https://xod.io/libs/xod-dev/esp8266-mcu/) — a new
+  library for accessing the internet using the onboard Wi-Fi of an
+  ESP8266-based board when it is used as a target. (#1456, #1463, #1466)
+
+### Bug fixes
+
+* [ide] The switch to `arduino-cli` allowed to abandon toolchain repackaging.
+  Now they are downloaded from the original vendor locations. It should remove
+  all errors related to SSL, TLS, and Kaspersky antivirus while uploading to a
+  new board for the first time.
+* [ide] Fix IDE crashing when trying to change the arity level of a node having
+  variadic pins labeled as plain numbers, like `1`, `2`, `3`. (#1470)
+* [nodes] Fixed DHT11 and DHT2x reading on some sensor/board combinations.
+  (#1464)
+
+
 <a name="0.24.1"></a>
 ## 0.24.1 (2018-09-17)
 
 ### Bug fixes
 
-* [ide] Fixed a bug that caused bundled Arduino libraries to be unreachable by build tools. (#1449)
+* [ide] Fixed a bug that caused bundled Arduino libraries to be unreachable by
+  build tools. (#1449)
 
 <a name="0.24.0"></a>
 ## 0.24.0 (2018-09-13)
