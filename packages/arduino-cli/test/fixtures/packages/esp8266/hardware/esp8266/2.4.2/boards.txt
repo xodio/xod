@@ -1,15 +1,13 @@
-#### JUST A PART OF BOARDS.TXT FILE FROM ESP8266 PACKAGE
-#### SOME OPTIONS WAS REMOVED TO MINIFY FIXTURE
+#### A PART OF BOARDS.TXT FILE FROM ESP8266 PACKAGE
+#### WITH SOME CHANGES: MENU AND OPTION NAMES
+#### NOW CONTAINS SPECIAL CHARACTERS AND CYRILLIC SYMBOLS
+#### TO MAKE SURE IN THE UNIT TESTS IT WILL WORK FINE
+#### WITH ANY PACKAGE.
+####
 #### ONLY FOR TESTS!
 
-#
-# Do not create pull-requests for this file only, CI will not accept them.
-# You *must* edit/modify/run boards.txt.py to regenerate boards.txt.
-# All modified files after running with option "--allgen" must be included in the pull-request.
-#
-
-menu.UploadSpeed=Upload Speed
-menu.CpuFrequency=CPU Frequency
+menu.UploadSpeed=Uplo@d Speed (Скорость загрузки)
+menu.CpuFrequency=CPU Frequency 123,-_[]():@we$ome
 
 ##############################################################
 generic.name=Generic ESP8266 Module
@@ -26,7 +24,7 @@ generic.build.variant=generic
 generic.build.spiffs_pagesize=256
 generic.build.debug_port=
 generic.build.debug_level=
-generic.menu.CpuFrequency.80=80 MHz
+generic.menu.CpuFrequency.80=80 MHz (!@#$$%^&*()[]_-+,./)
 generic.menu.CpuFrequency.80.build.f_cpu=80000000L
 generic.menu.CpuFrequency.160=160 MHz
 generic.menu.CpuFrequency.160.build.f_cpu=160000000L
@@ -64,7 +62,7 @@ wifi_slot.build.core=esp8266
 wifi_slot.build.spiffs_pagesize=256
 wifi_slot.build.debug_port=
 wifi_slot.build.debug_level=
-wifi_slot.menu.CpuFrequency.80=80 MHz
+wifi_slot.menu.CpuFrequency.80=80 MHz (!@#$$%^&*()[]_-+,./)
 wifi_slot.menu.CpuFrequency.80.build.f_cpu=80000000L
 wifi_slot.menu.CpuFrequency.160=160 MHz
 wifi_slot.menu.CpuFrequency.160.build.f_cpu=160000000L
