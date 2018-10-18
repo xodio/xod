@@ -206,6 +206,14 @@ bool isValidDigitalPort(uint8_t port) {
 #endif
 }
 
+bool isValidAnalogPort(uint8_t port) {
+#ifdef NUM_ANALOG_INPUTS
+    return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
+#else
+    return port >= A0;
+#endif
+}
+
 } // namespace xod
 
 //----------------------------------------------------------------------------
