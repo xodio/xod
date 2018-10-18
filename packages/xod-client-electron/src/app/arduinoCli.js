@@ -211,6 +211,30 @@ const patchFqbnWithOptions = board => {
 
 // =============================================================================
 //
+// Error wrappers
+//
+// =============================================================================
+
+// :: Error -> RejectedPromise Error
+const wrapCompileError = err =>
+  Promise.reject(
+    createError('COMPILE_TOOL_ERROR', {
+      message: err.message,
+      code: err.code,
+    })
+  );
+
+// :: Error -> RejectedPromise Error
+const wrapUploadError = err =>
+  Promise.reject(
+    createError('UPLOAD_TOOL_ERROR', {
+      message: err.message,
+      code: err.code,
+    })
+  );
+
+// =============================================================================
+//
 // Handlers
 //
 // =============================================================================
@@ -369,18 +393,20 @@ const uploadThroughCloud = async (onProgress, cli, payload) => {
     message: CODE_COMPILED,
     tab: 'compiler',
   });
-  const uploadLog = await cli.upload(
-    stdout =>
-      onProgress({
-        percentage: 60,
-        message: stdout,
-        tab: 'uploader',
-      }),
-    payload.port.comName,
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const uploadLog = await cli
+    .upload(
+      stdout =>
+        onProgress({
+          percentage: 60,
+          message: stdout,
+          tab: 'uploader',
+        }),
+      payload.port.comName,
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapUploadError);
   onProgress({
     percentage: 100,
     message: '',
@@ -416,17 +442,19 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
     tab: 'compiler',
   });
 
-  const compileLog = await cli.compile(
-    stdout =>
-      onProgress({
-        percentage: 40,
-        message: stdout,
-        tab: 'compiler',
-      }),
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const compileLog = await cli
+    .compile(
+      stdout =>
+        onProgress({
+          percentage: 40,
+          message: stdout,
+          tab: 'compiler',
+        }),
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapCompileError);
 
   onProgress({
     percentage: 50,
@@ -434,18 +462,20 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
     tab: 'uploader',
   });
 
-  const uploadLog = await cli.upload(
-    stdout =>
-      onProgress({
-        percentage: 60,
-        message: stdout,
-        tab: 'uploader',
-      }),
-    payload.port.comName,
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const uploadLog = await cli
+    .upload(
+      stdout =>
+        onProgress({
+          percentage: 60,
+          message: stdout,
+          tab: 'uploader',
+        }),
+      payload.port.comName,
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapUploadError);
   onProgress({
     percentage: 100,
     message: '',
