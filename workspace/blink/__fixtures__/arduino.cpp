@@ -777,6 +777,14 @@ bool isTimedOut(const ContextT* ctx) {
     return detail::isTimedOut(ctx->_node);
 }
 
+bool isValidDigitalPort(uint8_t port) {
+#ifdef NUM_DIGITAL_PINS
+    return port < NUM_DIGITAL_PINS;
+#else
+    return true;
+#endif
+}
+
 } // namespace xod
 
 //----------------------------------------------------------------------------
@@ -1235,8 +1243,7 @@ void evaluate(Context ctx) {
         return;
 
     const uint8_t port = getValue<input_PORT>(ctx);
-    bool err = (port > NUM_DIGITAL_PINS - 1);
-    if (err) {
+    if (!isValidDigitalPort(port)) {
         emitValue<output_ERR>(ctx, 1);
         return;
     }
