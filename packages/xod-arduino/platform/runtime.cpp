@@ -198,6 +198,22 @@ bool isTimedOut(const ContextT* ctx) {
     return detail::isTimedOut(ctx->_node);
 }
 
+bool isValidDigitalPort(uint8_t port) {
+#ifdef NUM_DIGITAL_PINS
+    return port < NUM_DIGITAL_PINS;
+#else
+    return true;
+#endif
+}
+
+bool isValidAnalogPort(uint8_t port) {
+#ifdef NUM_ANALOG_INPUTS
+    return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
+#else
+    return port >= A0;
+#endif
+}
+
 } // namespace xod
 
 //----------------------------------------------------------------------------
