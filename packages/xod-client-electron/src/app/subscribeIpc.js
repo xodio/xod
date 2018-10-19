@@ -6,7 +6,17 @@ import { errorToPlainObject } from './utils';
 export default (fn, eventName) => {
   const STATES = getAllStatesForEvent(eventName);
   ipcMain.on(STATES.BEGIN, (event, payload) => {
-    const onProgress = data => event.sender.send(STATES.PROCESS, data);
+    // Prevent sending data to the closed window
+    // because it produces an exception
+    if (event.sender.isDestroyed()) return;
+
+    const onProgress = data => {
+      // Prevent sending data to the closed window
+      // because it produces an exception
+      if (event.sender.isDestroyed()) return;
+
+      event.sender.send(STATES.PROCESS, data);
+    };
 
     fn(event, payload, onProgress)
       .then(res => event.sender.send(STATES.COMPLETE, res))
