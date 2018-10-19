@@ -241,12 +241,16 @@ const onReady = () => {
       .prepareSketchDir()
       .then(aCli.create)
       .then(arduinoCli => {
-        // TODO: Refactor (WS)
         aCli.subscribeListBoards(arduinoCli);
         aCli.subscribeUpload(arduinoCli);
         aCli.subscribeUpdateIndexes(arduinoCli);
         aCli.subscibeCheckUpdates(arduinoCli);
         aCli.subscribeUpgradeArduinoPackages(arduinoCli);
+
+        // On switching workspace -> update arduino-cli config
+        ipcMain.on(EVENTS.SWITCH_WORKSPACE, (event, newWsPath) =>
+          aCli.switchWorkspace(arduinoCli, newWsPath)
+        );
 
         subscribeOnCheckArduinoDependencies(arduinoCli);
         subscribeOnInstallArduinoDependencies(arduinoCli);

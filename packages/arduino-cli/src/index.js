@@ -5,7 +5,12 @@ import { exec, spawn } from 'child-process-promise';
 import YAML from 'yamljs';
 import { remove } from 'fs-extra';
 
-import { configure, addPackageIndexUrl, addPackageIndexUrls } from './config';
+import {
+  saveConfig,
+  configure,
+  addPackageIndexUrl,
+  addPackageIndexUrls,
+} from './config';
 import { patchBoardsWithOptions } from './optionParser';
 import listAvailableBoards from './listAvailableBoards';
 import parseProgressLog from './parseProgressLog';
@@ -19,7 +24,7 @@ const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
  * @param {Object} config Plain-object representation of `.cli-config.yml`
  */
 const ArduinoCli = (pathToBin, config = null) => {
-  const { path: configPath, config: cfg } = configure(config);
+  let { path: configPath, config: cfg } = configure(config);
 
   const escapedConfigPath = escapeSpacesNonWin(configPath);
   const run = args =>
@@ -68,6 +73,12 @@ const ArduinoCli = (pathToBin, config = null) => {
 
   return {
     dumpConfig: getConfig,
+    updateConfig: newConfig => {
+      const newCfg = saveConfig(configPath, newConfig);
+      configPath = newCfg.path;
+      cfg = newCfg.config;
+      return cfg;
+    },
     listConnectedBoards: () => listBoardsWith('list', R.prop('serialBoards')),
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
     listAvailableBoards: () => listAvailableBoards(cfg.arduino_data),

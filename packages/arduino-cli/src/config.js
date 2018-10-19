@@ -9,10 +9,8 @@ const getDefaultConfig = configDir => ({
   arduino_data: resolve(configDir, 'data'),
 });
 
-export const configure = inputConfig => {
-  const configDir = fse.mkdtempSync(resolve(tmpdir(), 'arduino-cli'));
-  const configPath = resolve(configDir, '.cli-config.yml');
-  const config = inputConfig || getDefaultConfig(configDir);
+// :: Path -> Object -> { config: Object, path: Path }
+export const saveConfig = (configPath, config) => {
   const yamlString = YAML.stringify(config, 2);
 
   // Write config
@@ -26,6 +24,14 @@ export const configure = inputConfig => {
     config,
     path: configPath,
   };
+};
+
+// :: Object -> { config: Object, path: Path }
+export const configure = inputConfig => {
+  const configDir = fse.mkdtempSync(resolve(tmpdir(), 'arduino-cli'));
+  const configPath = resolve(configDir, '.cli-config.yml');
+  const config = inputConfig || getDefaultConfig(configDir);
+  return saveConfig(configPath, config);
 };
 
 // :: Path -> [URL] -> Promise [URL] Error
