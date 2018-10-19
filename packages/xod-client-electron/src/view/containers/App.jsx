@@ -331,15 +331,7 @@ class App extends client.App {
             board,
             port,
           }
-        ).catch(err => {
-          console.error(err); // eslint-disable-line no-console
-          return Promise.reject(
-            createError('UPLOAD_TOOL_ERROR', {
-              message: err.message,
-              code: err.code,
-            })
-          );
-        })
+        )
       )
       .then(() => proc.success())
       .then(() => {

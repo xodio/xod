@@ -107,7 +107,7 @@ const rawItems = {
     label: 'Upload to Arduino...',
   },
   updatePackages: {
-    label: 'Upgrade Arduino Packages & Toolchains...',
+    label: 'Upgrade Arduino Packages && Toolchains...',
   },
 
   view: {

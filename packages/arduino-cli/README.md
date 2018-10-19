@@ -36,6 +36,14 @@ Wraps `arduino-cli config dump`.
 
 - Returns `Promise<Object>`
 
+### updateConfig(newConfig)
+Replaces old config with the new one.
+
+Accepts:
+- `newConfig` `<Object>` — Plain JS object representation of `.cli-config.yml`
+
+- Returns `<Object>` with the new config
+
 ### listConnectedBoards()
 A wrapper with a custom extension over `arduino-cli board list`.
 

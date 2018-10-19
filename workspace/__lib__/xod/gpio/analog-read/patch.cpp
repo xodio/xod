@@ -8,8 +8,8 @@ void evaluate(Context ctx) {
         return;
 
     const uint8_t port = getValue<input_PORT>(ctx);
-    bool err = (port < A0 || port > A0 + NUM_ANALOG_INPUTS - 1);
-    if (err) {
+
+    if (!isValidAnalogPort(port)) {
         emitValue<output_ERR>(ctx, 1);
         return;
     }

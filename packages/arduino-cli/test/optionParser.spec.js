@@ -22,8 +22,8 @@ const fixtureDir = path.resolve(__dirname, 'fixtures');
 // =============================================================================
 
 const espOptionNames = {
-  UploadSpeed: 'Upload Speed',
-  CpuFrequency: 'CPU Frequency',
+  UploadSpeed: 'Uplo@d Speed (Скорость загрузки)',
+  CpuFrequency: 'CPU Frequency 123,-_[]():@we$ome',
 };
 
 const espOptions = {
@@ -47,7 +47,7 @@ const espOptions = {
   ],
   CpuFrequency: [
     {
-      name: '80 MHz',
+      name: '80 MHz (!@#$$%^&*()[]_-+,./)',
       value: '80',
     },
     {
@@ -58,7 +58,7 @@ const espOptions = {
 };
 
 const uploadSpeedOptions = {
-  optionName: 'Upload Speed',
+  optionName: 'Uplo@d Speed (Скорость загрузки)',
   optionId: 'UploadSpeed',
   values: [
     {
@@ -80,11 +80,11 @@ const uploadSpeedOptions = {
   ],
 };
 const cpuFrequencyOptions = {
-  optionName: 'CPU Frequency',
+  optionName: 'CPU Frequency 123,-_[]():@we$ome',
   optionId: 'CpuFrequency',
   values: [
     {
-      name: '80 MHz',
+      name: '80 MHz (!@#$$%^&*()[]_-+,./)',
       value: '80',
     },
     {
