@@ -45,9 +45,9 @@ export const getLines = R.compose(
 
 const menuRegExp = /^menu\./;
 
-const optionNameRegExp = /^menu\.([a-zA-Z0-9_]+)=([a-zA-Z0-9-_ ]+)$/;
+const optionNameRegExp = /^menu\.([a-zA-Z0-9_]+)=(.+)$/;
 
-const boardOptionRegExp = /^([a-zA-Z0-9_]+)\.menu\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)=([a-zA-Z0-9-_ ()]+)$/;
+const boardOptionRegExp = /^([a-zA-Z0-9_]+)\.menu\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)=(.+)$/;
 
 const osRegExp = /(linux|macosx|windows)/;
 

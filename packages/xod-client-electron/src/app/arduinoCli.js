@@ -97,12 +97,16 @@ const copyLibraries = async (bundledLibDir, userLibDir, sketchbookLibDir) => {
   return sketchbookLibDir;
 };
 
-// :: _ -> Promise Path Error
-const ensureExtraTxt = R.composeP(
-  extraFilePath => fse.ensureFile(extraFilePath).then(R.always(extraFilePath)),
-  ws => path.join(ws, ARDUINO_PACKAGES_DIRNAME, ARDUINO_EXTRA_URLS_FILENAME),
-  loadWorkspacePath
-);
+// :: Path -> Promise Path Error
+const ensureExtraTxt = async wsPath => {
+  const extraTxtFilePath = path.join(
+    wsPath,
+    ARDUINO_PACKAGES_DIRNAME,
+    ARDUINO_EXTRA_URLS_FILENAME
+  );
+  await fse.ensureFile(extraTxtFilePath);
+  return extraTxtFilePath;
+};
 
 const copyPackageIndexes = async wsPackageDir => {
   const filesToCopy = await R.composeP(
@@ -211,6 +215,30 @@ const patchFqbnWithOptions = board => {
 
 // =============================================================================
 //
+// Error wrappers
+//
+// =============================================================================
+
+// :: Error -> RejectedPromise Error
+const wrapCompileError = err =>
+  Promise.reject(
+    createError('COMPILE_TOOL_ERROR', {
+      message: err.message,
+      code: err.code,
+    })
+  );
+
+// :: Error -> RejectedPromise Error
+const wrapUploadError = err =>
+  Promise.reject(
+    createError('UPLOAD_TOOL_ERROR', {
+      message: err.message,
+      code: err.code,
+    })
+  );
+
+// =============================================================================
+//
 // Handlers
 //
 // =============================================================================
@@ -226,6 +254,26 @@ export const prepareSketchDir = () =>
   fse.mkdtemp(path.resolve(os.tmpdir(), 'xod_temp_sketchbook'));
 
 /**
+ * Prepare `__packages__` directory inside user's workspace if
+ * it does not prepared earlier:
+ * - copy bundled package index json files
+ * - migrate old arduino packages if they are exist
+ * - create `extra.txt` file
+ *
+ * Returns Path to the `__packages__` directory inside user's workspace
+ *
+ * :: Path -> Promise Path Error
+ */
+const prepareWorkspacePackagesDir = async wsPath => {
+  const packagesDirPath = getArduinoPackagesPath(wsPath);
+
+  await copyPackageIndexes(packagesDirPath);
+  await migrateArduinoPackages(wsPath);
+  await ensureExtraTxt(wsPath);
+
+  return packagesDirPath;
+};
+/**
  * Creates an instance of ArduinoCli.
  *
  * It will try to find out specified in env variable ArduinoCli or
@@ -237,31 +285,42 @@ export const prepareSketchDir = () =>
  *
  * :: Path -> Promise ArduinoCli Error
  */
-export const create = sketchDir =>
-  loadWorkspacePath().then(async wsPath => {
-    const arduinoCliPath = await getArduinoCliPath();
+export const create = async sketchDir => {
+  const wsPath = await loadWorkspacePath();
+  const arduinoCliPath = await getArduinoCliPath();
+  const packagesDirPath = await prepareWorkspacePackagesDir(wsPath);
 
-    const packagesDirPath = getArduinoPackagesPath(wsPath);
-
-    await copyPackageIndexes(packagesDirPath);
-    await migrateArduinoPackages();
-    await ensureExtraTxt();
-
-    if (!await fse.pathExists(arduinoCliPath)) {
-      throw createError('ARDUINO_CLI_NOT_FOUND', {
-        path: arduinoCliPath,
-        isDev: IS_DEV,
-      });
-    }
-
-    return arduinoCli(arduinoCliPath, {
-      arduino_data: packagesDirPath,
-      sketchbook_path: sketchDir,
-      board_manager: {
-        additional_urls: BUNDLED_ADDITIONAL_URLS,
-      },
+  if (!await fse.pathExists(arduinoCliPath)) {
+    throw createError('ARDUINO_CLI_NOT_FOUND', {
+      path: arduinoCliPath,
+      isDev: IS_DEV,
     });
+  }
+
+  return arduinoCli(arduinoCliPath, {
+    arduino_data: packagesDirPath,
+    sketchbook_path: sketchDir,
+    board_manager: {
+      additional_urls: BUNDLED_ADDITIONAL_URLS,
+    },
   });
+};
+
+/**
+ * Updates path to the `arduino_data` in the arduino-cli `.cli-config.yml`
+ * and prepares `__packages__` directory in the user's workspace if needed.
+ *
+ * We have to call this function when user changes workspace to make all
+ * functions provided by this module works properly without restarting the IDE.
+ *
+ * :: ArduinoCli -> Path -> Promise Object Error
+ */
+export const switchWorkspace = async (cli, newWsPath) => {
+  const oldConfig = await cli.dumpConfig();
+  const packagesDirPath = await prepareWorkspacePackagesDir(newWsPath);
+  const newConfig = R.assoc('arduino_data', packagesDirPath, oldConfig);
+  return cli.updateConfig(newConfig);
+};
 
 /**
  * Updates package index json files.
@@ -280,7 +339,8 @@ const updateIndexes = async cli => {
     R.reject(isAmong(urls)),
     R.split('\r\n'),
     p => fse.readFile(p, { encoding: 'utf8' }),
-    ensureExtraTxt
+    ensureExtraTxt,
+    loadWorkspacePath
   )();
 };
 
@@ -369,18 +429,20 @@ const uploadThroughCloud = async (onProgress, cli, payload) => {
     message: CODE_COMPILED,
     tab: 'compiler',
   });
-  const uploadLog = await cli.upload(
-    stdout =>
-      onProgress({
-        percentage: 60,
-        message: stdout,
-        tab: 'uploader',
-      }),
-    payload.port.comName,
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const uploadLog = await cli
+    .upload(
+      stdout =>
+        onProgress({
+          percentage: 60,
+          message: stdout,
+          tab: 'uploader',
+        }),
+      payload.port.comName,
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapUploadError);
   onProgress({
     percentage: 100,
     message: '',
@@ -416,17 +478,19 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
     tab: 'compiler',
   });
 
-  const compileLog = await cli.compile(
-    stdout =>
-      onProgress({
-        percentage: 40,
-        message: stdout,
-        tab: 'compiler',
-      }),
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const compileLog = await cli
+    .compile(
+      stdout =>
+        onProgress({
+          percentage: 40,
+          message: stdout,
+          tab: 'compiler',
+        }),
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapCompileError);
 
   onProgress({
     percentage: 50,
@@ -434,18 +498,20 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
     tab: 'uploader',
   });
 
-  const uploadLog = await cli.upload(
-    stdout =>
-      onProgress({
-        percentage: 60,
-        message: stdout,
-        tab: 'uploader',
-      }),
-    payload.port.comName,
-    payload.board.fqbn,
-    sketchName,
-    false
-  );
+  const uploadLog = await cli
+    .upload(
+      stdout =>
+        onProgress({
+          percentage: 60,
+          message: stdout,
+          tab: 'uploader',
+        }),
+      payload.port.comName,
+      payload.board.fqbn,
+      sketchName,
+      false
+    )
+    .catch(wrapUploadError);
   onProgress({
     percentage: 100,
     message: '',

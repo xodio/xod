@@ -11,6 +11,8 @@
 void setup();
 void loop();
 
+#define A0 14
+
 uint32_t millis();
 void delay(uint32_t);
 

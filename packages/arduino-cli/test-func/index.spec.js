@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { resolve } from 'path';
 import * as fse from 'fs-extra';
 import { assert } from 'chai';
@@ -40,6 +41,27 @@ describe('Arduino Cli', () => {
           assert.strictEqual(res.sketchbook_path, cfg.sketchbook_path);
           assert.strictEqual(res.arduino_data, cfg.arduino_data);
         }));
+  });
+
+  describe('Update arduino-cli config', () => {
+    afterEach(() => fse.remove(tmpDir));
+    it('updates config', async () => {
+      const cli = arduinoCli(PATH_TO_CLI, cfg);
+      const curConf = await cli.dumpConfig();
+
+      assert.strictEqual(curConf.sketchbook_path, cfg.sketchbook_path);
+      assert.strictEqual(curConf.arduino_data, cfg.arduino_data);
+
+      const newDataDir = resolve(tmpDir, 'newData');
+      const newConf = R.assoc('arduino_data', newDataDir, curConf);
+      cli.updateConfig(newConf);
+      const updatedConf = await cli.dumpConfig();
+
+      assert.strictEqual(updatedConf.sketchbook_path, cfg.sketchbook_path);
+      assert.strictEqual(updatedConf.arduino_data, newDataDir);
+
+      return cli;
+    });
   });
 
   describe('Installs additional package index', () => {

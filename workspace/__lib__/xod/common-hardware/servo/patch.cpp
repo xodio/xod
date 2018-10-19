@@ -16,7 +16,7 @@ void evaluate(Context ctx) {
 
     State* state = getState(ctx);
     auto port = (int)getValue<input_PORT>(ctx);
-    if (port > NUM_DIGITAL_PINS - 1) {
+    if (!isValidDigitalPort(port)) {
         emitValue<output_ERR>(ctx, 1);
         return;
     }

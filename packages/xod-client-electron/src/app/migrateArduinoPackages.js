@@ -12,7 +12,6 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import { app } from 'electron';
 
-import { loadWorkspacePath } from './workspaceActions';
 import { ARDUINO_PACKAGES_DIRNAME } from './constants';
 
 const OLD_PACKAGE_VERSIONS = {
@@ -32,9 +31,9 @@ const moveWithoutEexistError = (from, to) =>
 /**
  * Moves old packages into Users' workspace.
  *
- * :: _ -> Promise 0 Error
+ * :: Path -> Promise 0 Error
  */
-export default async () => {
+export default async wsPath => {
   const appData = app.getPath('userData');
   const oldPackagesDir = path.join(appData, 'packages');
   if (!await fse.pathExists(oldPackagesDir)) return 0;
@@ -42,7 +41,6 @@ export default async () => {
   const oldHardwareDir = path.join(oldPackagesDir, 'arduino', 'hardware');
   const archs = await fse.readdir(oldHardwareDir);
 
-  const wsPath = await loadWorkspacePath();
   const wsPackagesDir = path.join(wsPath, ARDUINO_PACKAGES_DIRNAME, 'packages');
   const wsHardwareDir = path.join(wsPackagesDir, 'arduino', 'hardware');
 
