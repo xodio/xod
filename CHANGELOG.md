@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Fix bug in upload options parser, which prevented uploading on Arduino Pro and Pro Mini (#1481)
+* [c++] Do not rely on NUM_DIGITAL_PINS constant, which is not defined for some boards (#1482)
+* [ide] Make proper errors for different steps of upload process (#1484)
+* [ide] Fixed a bug with workspace switching when installed packages were used from the initial workspace (#1475)
+* [ide] Put the missing ampersand in the "Upgrade Arduino Packages & Toolchains" menu item (#1483)
+
+
 <a name="0.25.0"></a>
 ## 0.25.0 (2018-10-16)
 
