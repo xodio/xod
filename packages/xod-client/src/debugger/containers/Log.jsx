@@ -9,23 +9,36 @@ import * as selectors from '../selectors';
 import * as actions from '../actions';
 import { LOG_TAB_TYPE } from '../constants';
 
-import Autoscrolled from '../components/Autoscrolled';
+import Autoscroll from '../../utils/components/Autoscroll';
 
 class Log extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.logEnd = null;
+    this.autoscrollRef = null;
 
     this.onFollowLog = this.onFollowLog.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  componentDidMount() {
+    // Postpone scrolling to the next tick
+    // so content could be rendered and then
+    // it will scroll to the right position
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 0);
   }
 
   onFollowLog() {
-    if (this.logEnd) {
-      this.logEnd.scrollIntoView({ behavior: 'smooth' });
-    }
-
+    this.scrollToBottom();
     this.props.stopSkippingNewLogLines();
+  }
+
+  scrollToBottom() {
+    if (this.autoscrollRef) {
+      this.autoscrollRef.scrollDown();
+    }
   }
 
   render() {
@@ -39,14 +52,15 @@ class Log extends React.PureComponent {
     } = this.props;
 
     return (
-      <Autoscrolled
+      <Autoscroll
+        className="log"
+        ref={el => (this.autoscrollRef = el)}
         onScrolledFromBottom={
           isSkipOnScrollEnabled ? startSkippingNewLogLines : noop
         }
       >
         {log}
         {R.isEmpty(error) ? null : <div className="error">{error}</div>}
-        <div ref={el => (this.logEnd = el)} />
         {isSkipOnScrollEnabled && isSkippingNewSerialLogLines ? (
           <div className="skipped">
             <button className="Button Button--small" onClick={this.onFollowLog}>
@@ -54,7 +68,7 @@ class Log extends React.PureComponent {
             </button>
           </div>
         ) : null}
-      </Autoscrolled>
+      </Autoscroll>
     );
   }
 }
