@@ -16,4 +16,7 @@ export default {
     solution:
       'Make sure the board is connected, the cable is working, the board model set correctly, the upload port belongs to the board, the board drivers are installed, the upload options (if any) match your board specs.',
   }),
+  UPLOADED_SUCCESSFULLY: () => ({
+    title: 'Uploaded successfully',
+  }),
 };
