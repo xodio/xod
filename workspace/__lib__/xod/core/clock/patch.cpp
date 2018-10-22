@@ -10,9 +10,18 @@ void evaluate(Context ctx) {
     TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<input_RST>(ctx) || isInputDirty<input_EN>(ctx)) {
+    auto isEnabled = getValue<input_EN>(ctx);
+    auto isRstDirty = isInputDirty<input_RST>(ctx);
+
+    if (isTimedOut(ctx) && isEnabled && !isRstDirty) {
+        emitValue<output_TICK>(ctx, 1);
+        state->nextTrig = tNext;
+        setTimeout(ctx, dt);
+    }
+
+    if (isRstDirty || isInputDirty<input_EN>(ctx)) {
         // Handle enable/disable/reset
-        if (dt <= 0 || !getValue<input_EN>(ctx)) {
+        if (dt <= 0 || !isEnabled) {
             // Disable timeout loop on zero IVAL or explicit false on EN
             state->nextTrig = 0;
             clearTimeout(ctx);
@@ -21,11 +30,5 @@ void evaluate(Context ctx) {
             state->nextTrig = tNext;
             setTimeout(ctx, dt);
         }
-    }
-
-    if (isTimedOut(ctx)) {
-        emitValue<output_TICK>(ctx, 1);
-        state->nextTrig = tNext;
-        setTimeout(ctx, dt);
     }
 }
