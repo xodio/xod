@@ -440,7 +440,7 @@ const uploadThroughCloud = async (onProgress, cli, payload) => {
       payload.port.comName,
       payload.board.fqbn,
       sketchName,
-      false
+      true
     )
     .catch(wrapUploadError);
   onProgress({
@@ -488,7 +488,7 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
         }),
       payload.board.fqbn,
       sketchName,
-      false
+      true
     )
     .catch(wrapCompileError);
 
@@ -509,7 +509,7 @@ const uploadThroughUSB = async (onProgress, cli, payload) => {
       payload.port.comName,
       payload.board.fqbn,
       sketchName,
-      false
+      true
     )
     .catch(wrapUploadError);
   onProgress({
