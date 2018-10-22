@@ -1,0 +1,194 @@
+{
+  "description": "Reads Sharp infrared range meter GP2Y0A21YK0F (the one with 10…80 cm range)",
+  "links": [
+    {
+      "id": "B1R_T4TpiQ",
+      "input": {
+        "nodeId": "S1Wu646TjQ",
+        "pinKey": "Hkt0SGUsiX"
+      },
+      "output": {
+        "nodeId": "H1Vu6NT6jQ",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "By9u6NppoQ",
+      "input": {
+        "nodeId": "ByzOTNT6jX",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "ByPu6NaasX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1iOp466o7",
+      "input": {
+        "nodeId": "ByzOTNT6jX",
+        "pinKey": "SkuhqCqym"
+      },
+      "output": {
+        "nodeId": "SkBdpVTaim",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkadpEaasm",
+      "input": {
+        "nodeId": "HyLO6VT6iX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1Wu646TjQ",
+        "pinKey": "HJdRrGLio7"
+      }
+    },
+    {
+      "id": "Hkh_64p6j7",
+      "input": {
+        "nodeId": "Bk7dTEaTo7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByzOTNT6jX",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
+      "id": "S1yeu6Vp6sX",
+      "input": {
+        "nodeId": "Byl_64pToQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByzOTNT6jX",
+        "pinKey": "HJgzpqacyX"
+      }
+    },
+    {
+      "id": "SyFO64T6o7",
+      "input": {
+        "nodeId": "H1Vu6NT6jQ",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "ByzOTNT6jX",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SyddTV6asX",
+      "input": {
+        "nodeId": "H1Vu6NT6jQ",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "rJ_pETpsm",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Fires when the reading completes successfully",
+      "id": "Bk7dTEaTo7",
+      "label": "DONE",
+      "position": {
+        "x": 170,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers an update, that is, rereads values",
+      "id": "ByPu6NaasX",
+      "label": "UPD",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires if reading failed. For example, in the case of the wrong port number",
+      "id": "Byl_64pToQ",
+      "label": "ERR",
+      "position": {
+        "x": 204,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ByzOTNT6jX",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/gpio/analog-read"
+    },
+    {
+      "id": "H1Vu6NT6jQ",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "description": "Measured distance in meters. Trustworthy only for distances in [0.1, 0.8] meters range. Returns wrong values if an object is too close to the sensor",
+      "id": "HyLO6VT6iX",
+      "label": "Dm",
+      "position": {
+        "x": 68,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "BJeRBfLji7": "0.75",
+        "BkUArfLsi7": "2.325",
+        "SkCrMIjjm": "0.1",
+        "r1Z0rMUjiX": "0.025"
+      },
+      "id": "S1Wu646TjQ",
+      "position": {
+        "x": 68,
+        "y": 408
+      },
+      "type": "@/gp2y0a-linearize"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
+      "description": "Board port number the sensor is connected to",
+      "id": "SkBdpVTaim",
+      "label": "PORT",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "5"
+      },
+      "description": "Analog voltage reference, i.e., the voltage level corresponding to the 1.0 value of an analog read. Usually 5 or 3.3 volts matching the board power voltage",
+      "id": "rJ_pETpsm",
+      "label": "AVcc",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

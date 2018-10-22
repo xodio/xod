@@ -1,0 +1,232 @@
+{
+  "links": [
+    {
+      "id": "BJ00BG8oim",
+      "input": {
+        "nodeId": "rJvASzLsjm",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "ry7ASfUosm",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "ByLeCrMLijm",
+      "input": {
+        "nodeId": "Sy9CHMUjjm",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "rJvASzLsjm",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "HkdMm6Tj7",
+      "input": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "Hkt0SGUsiX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyfgArfLooQ",
+      "input": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "rJbGU0_Hv1Z"
+      },
+      "output": {
+        "nodeId": "r1Z0rMUjiX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HynCSfIjj7",
+      "input": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "ry1z8CuBDy-"
+      },
+      "output": {
+        "nodeId": "BJeRBfLji7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkpCSM8ssm",
+      "input": {
+        "nodeId": "ry7ASfUosm",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "rJrxCSzLsiX",
+      "input": {
+        "nodeId": "HJdRrGLio7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sy9CHMUjjm",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "rk1xASfLijX",
+      "input": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "HJCWLAdSwyW"
+      },
+      "output": {
+        "nodeId": "BkUArfLsi7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkQlCBz8jo7",
+      "input": {
+        "nodeId": "ryNCSzLji7",
+        "pinKey": "rkpbU0OrwyZ"
+      },
+      "output": {
+        "nodeId": "SkCrMIjjm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkll0rfLism",
+      "input": {
+        "nodeId": "rJvASzLsjm",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "BkH0BzIsjX",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJeRBfLji7",
+      "label": "Ymin",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkH0BzIsjX",
+      "label": "SHFT",
+      "position": {
+        "x": 374,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkUArfLsi7",
+      "label": "Ymax",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Bks0rGUsjX",
+      "position": {
+        "x": 374,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "HJdRrGLio7",
+      "label": "Dm",
+      "position": {
+        "x": 136,
+        "y": 510
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Hkt0SGUsiX",
+      "label": "V",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkCrMIjjm",
+      "label": "Xmax",
+      "position": {
+        "x": 306,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "100"
+      },
+      "description": "Convert centimeters to meters",
+      "id": "Sy9CHMUjjm",
+      "label": "/100",
+      "position": {
+        "x": 136,
+        "y": 408
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "r1Z0rMUjiX",
+      "label": "Xmin",
+      "position": {
+        "x": 238,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "0"
+      },
+      "id": "rJvASzLsjm",
+      "position": {
+        "x": 136,
+        "y": 306
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "boundLiterals": {
+        "SkdIRuBD1b": "1"
+      },
+      "description": "Convert 1/(L+SHFT) → L+SHFT",
+      "id": "ry7ASfUosm",
+      "label": "1/Y",
+      "position": {
+        "x": 102,
+        "y": 204
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "ryNCSzLji7",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/math/map"
+    }
+  ]
+}

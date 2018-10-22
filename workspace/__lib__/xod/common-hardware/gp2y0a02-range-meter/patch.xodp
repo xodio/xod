@@ -2,58 +2,58 @@
   "description": "Reads Sharp infrared range meter GP2Y0A02YK0F (the one with 20…150 cm range).",
   "links": [
     {
-      "id": "B1gmUoSxX",
+      "id": "BkFA_HIooX",
       "input": {
-        "nodeId": "ByTMIiSl7",
-        "pinKey": "SyKd0E2x-"
+        "nodeId": "rJNCdrLsom",
+        "pinKey": "SkuhqCqym"
       },
       "output": {
-        "nodeId": "B1rqmq_8Z",
+        "nodeId": "H1mAuB8sjm",
         "pinKey": "__out__"
       }
     },
     {
-      "id": "S1vXLsrxm",
+      "id": "S1LROSIjjQ",
+      "input": {
+        "nodeId": "rJNCdrLsom",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "BJlCuH8ojQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJq0ur8jjQ",
+      "input": {
+        "nodeId": "S1rAuSLji7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJNCdrLsom",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
+      "id": "r1jCOS8ojm",
+      "input": {
+        "nodeId": "rk-C_BUijQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJNCdrLsom",
+        "pinKey": "HJgzpqacyX"
+      }
+    },
+    {
+      "id": "rJbqB8ji7",
       "input": {
         "nodeId": "SycjXcO8Z",
         "pinKey": "SyTBDSwIZ"
       },
       "output": {
-        "nodeId": "ByTMIiSl7",
+        "nodeId": "rJNCdrLsom",
         "pinKey": "SyBtREhlW"
-      }
-    },
-    {
-      "id": "r1VDLjreX",
-      "input": {
-        "nodeId": "B1VU8irgX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ByTMIiSl7",
-        "pinKey": "BkGpcpcJQ"
-      }
-    },
-    {
-      "id": "r1fXUiBgQ",
-      "input": {
-        "nodeId": "ByTMIiSl7",
-        "pinKey": "SkuhqCqym"
-      },
-      "output": {
-        "nodeId": "ByaY75_Ib",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJGDUsrgX",
-      "input": {
-        "nodeId": "S1vULore7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ByTMIiSl7",
-        "pinKey": "HJgzpqacyX"
       }
     },
     {
@@ -70,66 +70,57 @@
   ],
   "nodes": [
     {
-      "description": "Fires when reading is done",
-      "id": "B1VU8irgX",
-      "label": "DONE",
+      "description": "Use `xod-dev/sharp-irm/gp2y0a02-range-meter` instead",
+      "id": "BJl6rLiiX",
       "position": {
-        "x": 204,
-        "y": 306
+        "x": 238,
+        "y": -102
       },
-      "type": "xod/patch-nodes/output-pulse"
+      "type": "xod/patch-nodes/deprecated"
     },
     {
       "boundLiterals": {
         "__out__": "Continuously"
       },
       "description": "Triggers an update, i.e. reading values again.",
-      "id": "B1rqmq_8Z",
+      "id": "BJlCuH8ojQ",
       "label": "UPD",
       "position": {
-        "x": 204,
-        "y": 0
+        "x": 102,
+        "y": -204
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "ByTMIiSl7",
+      "description": "Measured distance in meters. Trustworthy only for distances in [0.3, 1.5] meters range. Returns wrong values if an object is too close to the sensor.",
+      "id": "H1JpXq_I-",
+      "label": "Dm",
       "position": {
-        "x": 170,
+        "x": -102,
         "y": 102
       },
-      "type": "xod/gpio/analog-read"
+      "type": "xod/patch-nodes/output-number"
     },
     {
       "boundLiterals": {
         "__out__": "A0"
       },
       "description": "Board port number the sensor is connected to.",
-      "id": "ByaY75_Ib",
+      "id": "H1mAuB8sjm",
       "label": "PORT",
       "position": {
-        "x": 170,
-        "y": 0
+        "x": 68,
+        "y": -204
       },
       "type": "xod/patch-nodes/input-port"
     },
     {
-      "description": "Measured distance in meters. Trustworhy only for distances in [0.3, 1.5] meters range.",
-      "id": "H1JpXq_I-",
-      "label": "Dm",
+      "description": "Fires when reading is done",
+      "id": "S1rAuSLji7",
+      "label": "DONE",
       "position": {
-        "x": 0,
-        "y": 306
-      },
-      "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "S1vULore7",
-      "label": "ERR",
-      "position": {
-        "x": 238,
-        "y": 306
+        "x": 102,
+        "y": 102
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -142,10 +133,28 @@
       },
       "id": "SycjXcO8Z",
       "position": {
-        "x": 0,
-        "y": 204
+        "x": -102,
+        "y": 0
       },
       "type": "@/gp2y0a-linearize"
+    },
+    {
+      "id": "rJNCdrLsom",
+      "position": {
+        "x": 68,
+        "y": -102
+      },
+      "type": "xod/gpio/analog-read"
+    },
+    {
+      "description": "Fires if reading failed",
+      "id": "rk-C_BUijQ",
+      "label": "ERR",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

@@ -143,6 +143,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod-dev/sharp-irm/gp2y0a-linearize` instead",
+      "id": "BkfmHIii7",
+      "position": {
+        "x": 442,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "BkqJFHDLW",
       "label": "Xmin",
       "position": {

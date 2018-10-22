@@ -1,0 +1,195 @@
+{
+  "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range)",
+  "links": [
+    {
+      "id": "B1Ct6p6jX",
+      "input": {
+        "nodeId": "SJ-81rTTs7",
+        "pinKey": "Hkt0SGUsiX"
+      },
+      "output": {
+        "nodeId": "HJteppps7",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "BJoL1Saao7",
+      "input": {
+        "nodeId": "HJfIyrp6j7",
+        "pinKey": "SkuhqCqym"
+      },
+      "output": {
+        "nodeId": "B1SUkH6po7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk3U1Bp6sm",
+      "input": {
+        "nodeId": "HJmIyHa6o7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJfIyrp6j7",
+        "pinKey": "BkGpcpcJQ"
+      }
+    },
+    {
+      "id": "ByqLkHT6jm",
+      "input": {
+        "nodeId": "HJfIyrp6j7",
+        "pinKey": "SyKd0E2x-"
+      },
+      "output": {
+        "nodeId": "ryvIyH66oX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H11gL1BaTiQ",
+      "input": {
+        "nodeId": "rJxI1SpTs7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJfIyrp6j7",
+        "pinKey": "HJgzpqacyX"
+      }
+    },
+    {
+      "id": "HJpUkS6ps7",
+      "input": {
+        "nodeId": "ryI8yHT6iX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJ-81rTTs7",
+        "pinKey": "HJdRrGLio7"
+      }
+    },
+    {
+      "id": "SkyyCpaom",
+      "input": {
+        "nodeId": "HJteppps7",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HJfIyrp6j7",
+        "pinKey": "SyBtREhlW"
+      }
+    },
+    {
+      "id": "SyVx0a6im",
+      "input": {
+        "nodeId": "HJteppps7",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "HJIJSaps7",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "A0"
+      },
+      "description": "Board port number the sensor is connected to",
+      "id": "B1SUkH6po7",
+      "label": "PORT",
+      "position": {
+        "x": -238,
+        "y": -102
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "5"
+      },
+      "description": "Analog voltage reference, i.e., the voltage level corresponding to the 1.0 value of an analog read. Usually 5 or 3.3 volts matching the board power voltage",
+      "id": "HJIJSaps7",
+      "label": "AVcc",
+      "position": {
+        "x": -170,
+        "y": -102
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJfIyrp6j7",
+      "position": {
+        "x": -170,
+        "y": 0
+      },
+      "type": "xod/gpio/analog-read"
+    },
+    {
+      "description": "Fires when the reading completes successfully",
+      "id": "HJmIyHa6o7",
+      "label": "DONE",
+      "position": {
+        "x": -136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJteppps7",
+      "position": {
+        "x": -238,
+        "y": 102
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundLiterals": {
+        "BJeRBfLji7": "0.3",
+        "BkH0BzIsjX": "0.42",
+        "BkUArfLsi7": "1.4",
+        "SkCrMIjjm": "0.107",
+        "r1Z0rMUjiX": "0.025"
+      },
+      "id": "SJ-81rTTs7",
+      "position": {
+        "x": -238,
+        "y": 204
+      },
+      "type": "@/gp2y0a-linearize"
+    },
+    {
+      "description": "Fires if reading failed. For example, in the case of the wrong port number",
+      "id": "rJxI1SpTs7",
+      "label": "ERR",
+      "position": {
+        "x": -102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Measured distance in meters. Trustworthy only for distances in [0.04, 0.3] meters range. Returns wrong values if an object is too close to the sensor",
+      "id": "ryI8yHT6iX",
+      "label": "Dm",
+      "position": {
+        "x": -238,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers an update, that is, rereads values",
+      "id": "ryvIyH66oX",
+      "label": "UPD",
+      "position": {
+        "x": -102,
+        "y": -102
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

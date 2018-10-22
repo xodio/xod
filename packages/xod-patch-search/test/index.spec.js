@@ -60,7 +60,7 @@ describe('xod-patch-search/index', () => {
       const foundPatchPaths = R.map(R.path(['item', 'path']), results);
       assert.equal(
         results[0].item.path,
-        'xod/common-hardware/gp2y0a02-range-meter' // Cause this node has a full match `meter` in the `path`
+        'xod-dev/sharp-irm/gp2y0a02-range-meter' // Cause this node has a full match `meter` in the `path`
       );
       assert.includeMembers(foundPatchPaths, ['xod/units/m-to-ft']); // Don't care about position, but be sure that it's found
     });
