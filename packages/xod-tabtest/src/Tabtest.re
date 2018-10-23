@@ -179,6 +179,7 @@ module TestCase = {
     | Boolean(false) => "false"
     | NaN => "NAN"
     | String(x) => Cpp.enquote(x)
+    | Number(x) => {j|(xod::Number)$x|j}
     | x => {j|$x|j}
     };
   /* Generates a block of code corresponding to a single TSV line check.
