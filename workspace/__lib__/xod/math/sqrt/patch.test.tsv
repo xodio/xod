@@ -1,0 +1,12 @@
+IN	OUT
+0	0
+1	1
+2	1.4142~
+2.25	1.5
+4	2
+16	4
+-1	NaN
+-4	NaN
+NaN	NaN
+Inf	Inf
+-Inf	NaN

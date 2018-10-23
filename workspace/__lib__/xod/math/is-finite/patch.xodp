@@ -1,0 +1,29 @@
+{
+  "description": "Determines if the given number has a finite value, i.e., it is normal, subnormal, or zero, but not infinite or NaN",
+  "nodes": [
+    {
+      "id": "HypN9qgpQ",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkW64q9ga7",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "SyxaN59l6m",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

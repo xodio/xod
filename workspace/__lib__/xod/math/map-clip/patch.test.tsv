@@ -1,0 +1,10 @@
+X	Smin	Smax	Tmin	Tmax	OUT
+0	0	1	-10	10	-10
+0.5	0	1	-10	10	0
+25	0	1	0	10	10
+-10	0	1	0	10	0
+0.5	0	1	0	Inf	Inf
+0.5	0	1	-Inf	Inf	NaN
+Inf	0	1	0	10	10
+-Inf	0	1	0	10	0
+NaN	0	1	0	10	NaN

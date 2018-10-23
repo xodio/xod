@@ -1,0 +1,8 @@
+IN	RAD
+0	1.57~
+-1	-3.14~
+1	0
+23	NaN
+NaN	NaN
+Inf	NaN
+-Inf	NaN

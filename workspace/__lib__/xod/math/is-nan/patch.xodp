@@ -1,0 +1,29 @@
+{
+  "description": "Determines if the given number is a NaN value.",
+  "nodes": [
+    {
+      "id": "SJkm55e6m",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "r1HN9cepQ",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "rkDGq9laQ",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
