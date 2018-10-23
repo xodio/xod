@@ -36,6 +36,9 @@ module Value = {
     | "true" => Boolean(true)
     | "false" => Boolean(false)
     | "NaN" => NaN
+    | "Inf" => Number(infinity)
+    | "+Inf" => Number(infinity)
+    | "-Inf" => Number(neg_infinity)
     | numString when Re.test(numString, numberRegex) =>
       Number(Js.Float.fromString(numString))
     | quotedString when Re.test(quotedString, stringRegex) =>
