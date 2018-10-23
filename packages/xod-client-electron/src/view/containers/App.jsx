@@ -333,7 +333,13 @@ class App extends client.App {
           }
         )
       )
-      .then(() => proc.success())
+      .then(() => {
+        proc.success();
+        this.props.actions.addConfirmation(
+          // eslint-disable-next-line new-cap
+          uploadMessages.UPLOADED_SUCCESSFULLY()
+        );
+      })
       .then(() => {
         if (debug) {
           foldEither(
