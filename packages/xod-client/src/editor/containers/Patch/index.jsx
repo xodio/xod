@@ -334,6 +334,7 @@ const mapDispatchToProps = dispatch => ({
       resizeNode: ProjectActions.resizeNode,
       deselectAll: EditorActions.deselectAll,
       deleteSelection: EditorActions.deleteSelection,
+      selectAll: EditorActions.selectAll,
       selectLink: EditorActions.selectLink,
       selectNode: EditorActions.selectNode,
       selectComment: EditorActions.selectComment,

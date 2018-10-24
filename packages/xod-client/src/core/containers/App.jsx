@@ -20,6 +20,7 @@ import PopupProjectPreferences from '../../project/components/PopupProjectPrefer
 import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
+import { selectAll } from '../../editor/actions';
 import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
@@ -177,6 +178,7 @@ App.propTypes = {
 };
 
 App.actions = {
+  selectAll,
   updateCompileLimit: actions.updateCompileLimit,
   createProject: actions.createProject,
   requestPublishProject: actions.requestPublishProject,
