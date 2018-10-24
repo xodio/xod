@@ -67,7 +67,12 @@ const overDebuggerLog = overTabLog(LOG_TAB_TYPE.DEBUGGER);
 
 const overStageError = stage => R.over(R.lensPath([stage, 'error']));
 
-const appendMessage = R.curry((msg, prevLog) =>
+const appendMessage = R.curry((msg, log) => {
+  const formattedMessage = formatMessage(msg);
+  return log === '' ? formattedMessage : `${log}\n${formatMessage(msg)}`;
+});
+
+const appendMessageAndTruncate = R.curry((msg, prevLog) =>
   R.compose(
     R.when(
       log => log.length > MAX_LOG_CHARACTERS,
@@ -77,19 +82,19 @@ const appendMessage = R.curry((msg, prevLog) =>
         log => log.slice(-MAX_LOG_CHARACTERS)
       )
     ),
-    log => {
-      const formattedMessage = formatMessage(msg);
-      return log === '' ? formattedMessage : `${log}\n${formatMessage(msg)}`;
-    }
+    appendMessage(msg)
   )(prevLog)
 );
 
 const addMessageToDebuggerLog = R.curry((message, state) =>
-  overDebuggerLog(appendMessage(message), state)
+  overDebuggerLog(appendMessageAndTruncate(message), state)
 );
 
 const addMessageListToDebuggerLog = R.curry((messages, state) =>
-  overDebuggerLog(R.reduce(R.flip(appendMessage), R.__, messages), state)
+  overDebuggerLog(
+    R.reduce(R.flip(appendMessageAndTruncate), R.__, messages),
+    state
+  )
 );
 
 const updateWatchNodeValues = R.curry((messageList, state) => {
@@ -246,11 +251,9 @@ export default (state = initialState, action) => {
       return R.compose(
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
-        overDebuggerLog(
-          appendMessage(
-            createSystemMessage(
-              `Skipped ${state.numberOfSkippedSerialLogLines} lines`
-            )
+        addMessageToDebuggerLog(
+          createSystemMessage(
+            `Skipped ${state.numberOfSkippedSerialLogLines} lines`
           )
         )
       )(state);
@@ -276,7 +279,9 @@ export default (state = initialState, action) => {
 
       const addErrorMessage = R.isEmpty(errorMessages)
         ? R.identity
-        : overStageError(state.currentStage)(appendMessage(errorMessages[0]));
+        : overStageError(state.currentStage)(
+            appendMessageAndTruncate(errorMessages[0])
+          );
 
       const addMessagesOrIncrementSkippedLines = state.isSkippingNewSerialLogLines
         ? R.over(
