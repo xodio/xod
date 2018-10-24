@@ -126,6 +126,11 @@ export const openAndReadPort = (portName, onData, onClose) => {
 
   return openPort(portName, {
     baudRate: 115200,
+    // This is an undocumented option that is true by default
+    // and in Windows binding raises the DTR line when the device is opened
+    // (see https://github.com/node-serialport/node-serialport/issues/1678),
+    // which causes issues with some boards using CP2102 USB to Serial chip
+    hupcl: false,
   }).then(
     R.tap(port => {
       const parser = port.pipe(
