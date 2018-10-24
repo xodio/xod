@@ -19,7 +19,6 @@
     "lib": "./dist"
   },
   "dependencies": {
-    "autoscroll-react": "git+https://github.com/xodio/autoscroll-react.git#cbb3422461a28b40ca082d6a5f33f667508c3288",
     "classnames": "^2.2.5",
     "codemirror": "^5.31.0",
     "escape-string-regexp": "^1.0.5",
