@@ -576,19 +576,7 @@ class App extends client.App {
         items.cut,
         items.copy,
         items.paste,
-        onClick(items.selectall, () => {
-          // We can't use `role: 'selectall'` here, cause it ignores `onClick`.
-          // So we have to handle all cases manually:
-
-          // - select all in inputs
-          if (client.isInput(document.activeElement)) {
-            document.activeElement.select();
-            return;
-          }
-
-          // - select entities on Patch
-          this.props.actions.selectAll();
-        }),
+        onClick(items.selectall, this.selectAll),
         items.separator,
         onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
         onClick(items.insertComment, this.props.actions.addComment),
@@ -765,6 +753,21 @@ class App extends client.App {
 
   hideAllPopups() {
     this.props.actions.hideAllPopups();
+  }
+
+  selectAll() {
+    // Handler for menu item "Select All"
+    // We can't use `role: 'selectall'` here, because it ignores `onClick`.
+    // So we have to handle all cases manually:
+
+    // - select all in inputs
+    if (client.isInput(document.activeElement)) {
+      document.activeElement.select();
+      return;
+    }
+
+    // - select entities on Patch
+    this.props.actions.selectAll();
   }
 
   static listPorts() {

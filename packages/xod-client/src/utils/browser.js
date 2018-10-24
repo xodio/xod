@@ -46,3 +46,5 @@ export const isInputTarget = event => isInput(event.target || event.srcElement);
 
 export const isEdge = () =>
   R.compose(R.test(/Edge/), R.pathOr('', ['navigator', 'userAgent']))(window);
+
+export const isMacOS = () => window.navigator.appVersion.indexOf('Mac') !== -1;
