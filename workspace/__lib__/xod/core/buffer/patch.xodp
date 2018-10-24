@@ -9,7 +9,7 @@
         "x": 10,
         "y": 16
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
       "description": "Saves `NEW` value in memory",
@@ -30,9 +30,6 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "boundLiterals": {
-        "__in__": "0"
-      },
       "description": "The latest saved value ",
       "id": "r1lQLAOBwJb",
       "label": "MEM",
@@ -40,7 +37,7 @@
         "x": 10,
         "y": 224
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/output-t1"
     }
   ]
 }
