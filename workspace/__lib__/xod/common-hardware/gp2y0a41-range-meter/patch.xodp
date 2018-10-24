@@ -108,6 +108,15 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "Use `xod-dev/sharp-irm/gp2y0a41-range-meter` instead",
+      "id": "Hy71UIosm",
+      "position": {
+        "x": 340,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Measured distance in meters. Trustworhy only for distances in [0.04, 0.30] meters range.",
       "id": "S10ecHDUW",
       "label": "Dm",
