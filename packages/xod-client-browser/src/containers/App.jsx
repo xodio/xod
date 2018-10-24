@@ -54,6 +54,17 @@ class App extends client.App {
 
     props.actions.openProject(props.tutorialProject);
     props.actions.fetchGrant();
+
+    document.addEventListener('keydown', event => {
+      // Prevent selecting all contents with "Ctrl+a" or "Command+a"
+      // Ctrl+a or Command+a
+      const key = event.keyCode || event.which;
+      const mod = event.metaKey || event.ctrlKey;
+      if (mod && key === 65 && !client.isInputTarget(event)) {
+        event.preventDefault();
+        this.props.actions.selectAll();
+      }
+    });
   }
 
   onDocumentClick(e) {
@@ -249,6 +260,8 @@ class App extends client.App {
         onClick(items.undo, this.props.actions.undoCurrentPatch),
         onClick(items.redo, this.props.actions.redoCurrentPatch),
         items.separator,
+        onClick(items.selectall, this.props.actions.selectAll),
+        items.separator,
         onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
         onClick(items.insertComment, this.props.actions.addComment),
         items.separator,
@@ -325,7 +338,11 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys id="App" keyMap={client.HOTKEY} handlers={this.hotkeyHandlers}>
+      <HotKeys
+        id="App"
+        keyMap={client.menu.getOsSpecificHotkeys()}
+        handlers={this.hotkeyHandlers}
+      >
         <EventListener
           target={window}
           onResize={this.onResize}
