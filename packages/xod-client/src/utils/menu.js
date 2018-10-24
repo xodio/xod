@@ -80,7 +80,6 @@ const rawItems = {
   selectall: {
     label: 'Select All',
     command: COMMAND.SELECT_ALL,
-    role: 'selectall',
   },
   projectPreferences: {
     label: 'Project Preferences',

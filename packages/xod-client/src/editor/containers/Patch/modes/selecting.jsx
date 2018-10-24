@@ -198,12 +198,8 @@ const selectingMode = {
   },
   onSelectAll({ props }, event) {
     if (isInputTarget(event)) return;
-
     event.preventDefault();
-
-    props.actions.setSelection(
-      R.compose(R.map(R.values), R.pick(['nodes', 'links', 'comments']))(props)
-    );
+    props.actions.selectAll();
   },
   onBackgroundClick(api, event) {
     // to prevent misclicks when selecting multiple entities

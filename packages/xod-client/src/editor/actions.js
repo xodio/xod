@@ -113,6 +113,16 @@ export const setEditorSelection = entities => ({
   payload: { entities },
 });
 
+export const selectAll = () => (dispatch, getState) => {
+  const state = getState();
+  const selection = {
+    nodes: R.values(ProjectSelectors.getCurrentPatchNodes(state)),
+    links: R.values(ProjectSelectors.getCurrentPatchLinks(state)),
+    comments: R.values(ProjectSelectors.getCurrentPatchComments(state)),
+  };
+  return dispatch(setEditorSelection(selection));
+};
+
 export const addAndSelectNode = (
   typeId,
   position,
