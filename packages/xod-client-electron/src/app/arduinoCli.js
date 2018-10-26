@@ -343,28 +343,6 @@ export const switchWorkspace = async (cli, newWsPath) => {
 };
 
 /**
- * Updates package index json files.
- * Returns log of updating.
- *
- * :: ArduinoCli -> Promise String Error
- */
-const updateIndexes = async cli => {
-  const urls = await cli
-    .dumpConfig()
-    .then(R.pathOr([], ['board_manager', 'additional_urls']));
-
-  return R.composeP(
-    () => cli.core.updateIndex(),
-    cli.addPackageIndexUrls,
-    R.reject(isAmong(urls)),
-    R.split('\r\n'),
-    p => fse.readFile(p, { encoding: 'utf8' }),
-    ensureExtraTxt,
-    loadWorkspacePath
-  )();
-};
-
-/**
  * Returns map of installed boards and boards that could be installed:
  * - Installed boards (boards, which are ready for deploy)
  *   { name :: String, fqbn :: String }
@@ -374,12 +352,82 @@ const updateIndexes = async cli => {
  * :: ArduinoCli -> Promise { installed :: [InstalledBoard], available :: [AvailableBoard] } Error
  */
 export const listBoards = async cli =>
-  Promise.all([cli.listInstalledBoards(), cli.listAvailableBoards()]).then(
-    res => ({
+  Promise.all([
+    cli.listInstalledBoards().catch(err => {
+      const errContents = JSON.parse(err.stdout);
+      throw new Error(errContents.Cause);
+    }),
+    cli.listAvailableBoards(),
+  ])
+    .then(res => ({
       installed: res[0],
       available: res[1],
-    })
+    }))
+    .catch(async err => {
+      throw createError('UPDATE_INDEXES_ERROR_BROKEN_FILE', {
+        pkgPath: getArduinoPackagesPath(await loadWorkspacePath()),
+        error: err.message,
+      });
+    });
+
+/**
+ * Updates package index json files.
+ * Returns a list of just added URLs
+ *
+ * :: ArduinoCli -> Promise [URL] Error
+ */
+const updateIndexes = async cli => {
+  const wsPath = await loadWorkspacePath();
+  const urls = await cli
+    .dumpConfig()
+    .then(R.pathOr([], ['board_manager', 'additional_urls']));
+
+  const extraTxtPath = await ensureExtraTxt(wsPath);
+  const extraTxtContent = await fse.readFile(extraTxtPath, {
+    encoding: 'utf8',
+  });
+
+  // URLs that was added in the extraTxt and did not already exist
+  // in the `.cli-config.yml`
+  const newUrls = R.compose(R.reject(isAmong(urls)), R.split(/\r\n|\n/))(
+    extraTxtContent
   );
+
+  const addedUrls = await cli.addPackageIndexUrls(newUrls);
+
+  try {
+    // It could fail when:
+    // - no internet connection
+    // - host not found
+    await cli.core.updateIndex();
+  } catch (err) {
+    // Return arduino-cli config in previous state
+    // It makes possible to fix wrong URL in `extra.txt`
+    // and click "Update" button in the upload popup
+    // again without reopening XOD IDE
+    await cli.removePackageIndexUrls(newUrls);
+    throw createError('UPDATE_INDEXES_ERROR_NO_CONNECTION', {
+      pkgPath: getArduinoPackagesPath(wsPath),
+      // `arduino-cli` outputs everything in stdout
+      // so we have to extract only errors from stdout:
+      error: R.replace(/^(.|\s)+(?=Error:)/gm, '', err.stdout),
+    });
+  }
+
+  try {
+    // We have to call `listBoards` to be sure
+    // all new index files are valid, because `updateIndex`
+    // only downloads index files without validating
+    // Bug reported: https://github.com/arduino/arduino-cli/issues/81
+    await listBoards(cli);
+  } catch (err) {
+    // The same as above in the `catch` block
+    await cli.removePackageIndexUrls(newUrls);
+    throw err;
+  }
+
+  return addedUrls;
+};
 
 /**
  * Saves code into arduino-cli sketchbook directory.
