@@ -199,7 +199,7 @@ bool isTimedOut(const ContextT* ctx) {
 }
 
 bool isValidDigitalPort(uint8_t port) {
-#ifdef NUM_DIGITAL_PINS
+#if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
     return true;
@@ -207,10 +207,10 @@ bool isValidDigitalPort(uint8_t port) {
 }
 
 bool isValidAnalogPort(uint8_t port) {
-#ifdef NUM_ANALOG_INPUTS
+#if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
-    return port >= A0;
+    return true;
 #endif
 }
 
