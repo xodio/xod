@@ -14,6 +14,7 @@ import {
   checkLibrariesInstalledByUrls,
   installLibrariesByUrls,
 } from 'xod-deploy';
+import { createError } from 'xod-func-tools';
 
 import {
   CHECK_ARDUINO_DEPENDENCIES_INSTALLED,
@@ -42,9 +43,14 @@ const checkArduinoPackageInstalled = async (cli, packages) => {
 
 // :: (ProgressData -> _) -> ArduinoCli -> [{ package, packageName }] -> Promise [{ package, packageName, installed }] Error
 const installArduinoPackages = async (onProgress, cli, packages) =>
-  Promise.all(
-    R.map(pkg => cli.core.install(onProgress, pkg.package))(packages)
-  ).then(() => R.map(R.assoc('installed', true))(packages));
+  Promise.all(R.map(pkg => cli.core.install(onProgress, pkg.package))(packages))
+    .then(() => R.map(R.assoc('installed', true))(packages))
+    .catch(async () => {
+      throw createError('CANT_INSTALL_ARDUINO_PACKAGE', {
+        workspacePath: await loadWorkspacePath(),
+        packageNames: R.pluck('packageName', packages),
+      });
+    });
 
 export const subscribeOnCheckArduinoDependencies = arduinoCli =>
   subscribeIpc(

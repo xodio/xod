@@ -124,7 +124,8 @@ class PopupUploadConfig extends React.Component {
         if (!isBoardSelected || !doesSelectedBoardExist) {
           this.changeBoard(defaultBoardIndex);
         }
-      });
+      })
+      .catch(this.props.onError);
   }
 
   getPorts() {
@@ -177,7 +178,10 @@ class PopupUploadConfig extends React.Component {
     this.setState({ boards: null });
     updateIndexFiles()
       .then(() => this.getBoards())
-      .catch(() => this.setState({ boards: oldBoards }));
+      .catch(err => {
+        this.props.onError(err);
+        this.setState({ boards: oldBoards });
+      });
   }
 
   changeBoard(boardIndex) {
@@ -423,6 +427,7 @@ PopupUploadConfig.propTypes = {
   onPortChanged: PropTypes.func,
   onUpload: PropTypes.func,
   onClose: PropTypes.func,
+  onError: PropTypes.func,
 };
 
 PopupUploadConfig.defaultProps = {
