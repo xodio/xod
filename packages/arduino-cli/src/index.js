@@ -5,12 +5,7 @@ import { exec, spawn } from 'child-process-promise';
 import YAML from 'yamljs';
 import { remove } from 'fs-extra';
 
-import {
-  saveConfig,
-  configure,
-  addPackageIndexUrl,
-  addPackageIndexUrls,
-} from './config';
+import { saveConfig, configure, setPackageIndexUrls } from './config';
 import { patchBoardsWithOptions } from './optionParser';
 import listAvailableBoards from './listAvailableBoards';
 import parseProgressLog from './parseProgressLog';
@@ -113,7 +108,7 @@ const ArduinoCli = (pathToBin, config = null) => {
     },
     listConnectedBoards: () => listBoardsWith('list', R.prop('serialBoards')),
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
-    listAvailableBoards: () => listAvailableBoards(cfg.arduino_data),
+    listAvailableBoards: () => listAvailableBoards(getConfig, cfg.arduino_data),
     compile: (onProgress, fqbn, sketchName, verbose = false) =>
       runWithProgress(
         onProgress,
@@ -164,8 +159,7 @@ const ArduinoCli = (pathToBin, config = null) => {
       run(`sketch new ${sketchName}`).then(
         R.always(resolve(cfg.sketchbook_path, sketchName, `${sketchName}.ino`))
       ),
-    addPackageIndexUrl: url => addPackageIndexUrl(configPath, url),
-    addPackageIndexUrls: urls => addPackageIndexUrls(configPath, urls),
+    setPackageIndexUrls: urls => setPackageIndexUrls(configPath, urls),
   };
 };
 
