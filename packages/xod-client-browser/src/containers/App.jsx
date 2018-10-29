@@ -54,17 +54,6 @@ class App extends client.App {
 
     props.actions.openProject(props.tutorialProject);
     props.actions.fetchGrant();
-
-    document.addEventListener('keydown', event => {
-      // Prevent selecting all contents with "Ctrl+a" or "Command+a"
-      // Ctrl+a or Command+a
-      const key = event.keyCode || event.which;
-      const mod = event.metaKey || event.ctrlKey;
-      if (mod && key === 65 && !client.isInputTarget(event)) {
-        event.preventDefault();
-        this.props.actions.selectAll();
-      }
-    });
   }
 
   onDocumentClick(e) {

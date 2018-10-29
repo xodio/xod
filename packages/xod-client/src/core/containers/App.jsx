@@ -11,6 +11,7 @@ import {
   transpile,
 } from 'xod-arduino';
 
+import { isInputTarget } from '../../utils/browser';
 import { lowercaseKebabMask } from '../../utils/inputFormatting';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
@@ -32,6 +33,25 @@ export default class App extends React.Component {
     this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(
       this
     );
+
+    /**
+     * We have to handle some hotkeys, because:
+     * - Browser IDE should prevent default event handling
+     * - Electron IDE cannot handle some hotkeys correctly
+     *   "...some keybindings cannot be overridden on Windows/Linux because they are hard-coded in Chrome."
+     *   See details: https://github.com/electron/electron/issues/7165 and related issues
+     */
+    document.addEventListener('keydown', event => {
+      // Prevent selecting all contents with "Ctrl+a" or "Command+a"
+      const key = event.keyCode || event.which;
+      const mod = event.metaKey || event.ctrlKey;
+
+      // CmdOrCtrl+A
+      if (mod && key === 65 && !isInputTarget(event)) {
+        event.preventDefault();
+        this.props.actions.selectAll();
+      }
+    });
   }
   componentDidMount() {
     document.addEventListener('cut', this.props.actions.cutEntities);
@@ -138,6 +158,7 @@ App.propTypes = {
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
   actions: PropTypes.shape({
+    selectAll: PropTypes.func.isRequired,
     updateCompileLimit: PropTypes.func.isRequired,
     createProject: PropTypes.func.isRequired,
     updateProjectMeta: PropTypes.func.isRequired,
