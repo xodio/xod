@@ -1,0 +1,45 @@
+{
+  "description": "Checks if the device is connected to a WiFi network",
+  "nodes": [
+    {
+      "description": "An ESP8266-based MCU",
+      "id": "B1_v46V2Q",
+      "label": "DEV",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Initiate the check",
+      "id": "HyKm4aEhm",
+      "label": "CHK",
+      "position": {
+        "x": 170,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SJp3VpE2Q",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "True if device is connected to a WiFi network",
+      "id": "rkZQE6Eh7",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}
