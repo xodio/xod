@@ -625,7 +625,7 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
 // Compatibilities
 //----------------------------------------------------------------------------
 
-#if !defined(ARDUINO_ARCH_AVR)
+#if !defined(ARDUINO_ARCH_AVR) && !defined(__DTOSTRF_H_)
 /*
  * Provide dtostrf function for non-AVR platforms. Although many platforms
  * provide a stub many others do not. And the stub is based on `sprintf`
