@@ -181,6 +181,8 @@ export const isValidNumberDataValue = R.test(numberDataTypeRegExp);
 // getting type from literal value
 //
 
+export const isValidPortLiteral = R.test(/^(P[A-F]|A|D)\d{0,3}$/g);
+
 export const isLikeCharLiteral = def(
   'isLikeCharLiteral :: String -> Boolean',
   R.test(/^'\\?.'$/)
@@ -217,7 +219,7 @@ export const getTypeFromLiteral = def(
     if (isValidNumberDataValue(literal))
       return Either.of(CONST.PIN_TYPE.NUMBER);
 
-    if (R.test(/^(A|D)\d{0,3}$/gi, literal)) {
+    if (isValidPortLiteral(literal)) {
       return Either.of(CONST.PIN_TYPE.PORT);
     }
 

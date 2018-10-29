@@ -169,6 +169,12 @@ describe('Utils', () => {
       expectType('A13', PIN_TYPE.PORT);
       expectType('D0', PIN_TYPE.PORT);
       expectType('D13', PIN_TYPE.PORT);
+      expectType('PA13', PIN_TYPE.PORT);
+      expectType('PB8', PIN_TYPE.PORT);
+      expectType('PC0', PIN_TYPE.PORT);
+      expectType('PD20', PIN_TYPE.PORT);
+      expectType('PE8', PIN_TYPE.PORT);
+      expectType('PF0', PIN_TYPE.PORT);
     });
   });
 });
