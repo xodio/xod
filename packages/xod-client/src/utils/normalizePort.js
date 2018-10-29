@@ -1,12 +1,16 @@
 import * as R from 'ramda';
-import { DEFAULT_VALUE_OF_TYPE, PIN_TYPE } from 'xod-project';
+import {
+  DEFAULT_VALUE_OF_TYPE,
+  PIN_TYPE,
+  isValidPortLiteral,
+} from 'xod-project';
 
 const LEADING_CHAR = 'D';
 
 // :: DataValue -> DataValue
 export default input =>
   R.unless(
-    R.test(/^(A|D)\d+/i),
+    isValidPortLiteral,
     R.pipe(
       x => parseInt(x, 10),
       R.ifElse(
