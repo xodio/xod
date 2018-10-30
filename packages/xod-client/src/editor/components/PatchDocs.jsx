@@ -123,6 +123,7 @@ const PatchDocs = ({ patch, minimal }) => {
   )(patch);
 
   const [inputPins, outputPins] = R.compose(
+    R.map(R.sortBy(XP.getPinOrder)),
     R.partition(XP.isInputPin),
     XP.normalizeEmptyPinLabels,
     R.map(pin =>
