@@ -137,8 +137,8 @@ class Menubar extends React.Component {
         {/* because rc-menu does not support attaching callbacks directly to menu items */}
         {/* eslint-disable jsx-a11y/no-static-element-interactions */}
         <div onClick={click} className="Menubar-clickable-item">
-          {children || label}
           {hotkey && <div className="hotkey">{formatHotkey(hotkey)}</div>}
+          {children || label}
         </div>
         {/* eslint-enable jsx-a11y/no-static-element-interactions */}
       </MenuItem>
