@@ -63,6 +63,12 @@ external _getPinByKey : (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
 let getPinByKey = (patch, pinKey) =>
   _getPinByKey(pinKey, patch) |> Maybe.toOption;
 
+[@bs.module ".."]
+external _getVariadicPinByKey : (Node.t, Pin.key, t) => Maybe.t(Pin.t) = "getVariadicPinByKey";
+
+let getVariadicPinByKey = (patch, node, pinKey) =>
+  _getVariadicPinByKey(node, pinKey, patch) |> Maybe.toOption;
+
 let listInputPins = patch =>
   patch |. listPins |. List.keep(pin => Pin.getDirection(pin) == Pin.Input);
 
