@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { HOTKEY, ELECTRON_ACCELERATOR, COMMAND } from './constants';
+import { isMacOS } from './browser';
 
 const rawItems = {
   file: {
@@ -80,7 +81,6 @@ const rawItems = {
   selectall: {
     label: 'Select All',
     command: COMMAND.SELECT_ALL,
-    role: 'selectall',
   },
   projectPreferences: {
     label: 'Project Preferences',
@@ -153,11 +153,45 @@ const rawItems = {
   },
 };
 
+const containsCmd = R.contains('command');
+
+// :: String -> String
+const unfoldCmdOrCtrl = R.ifElse(
+  () => isMacOS(),
+  R.replace(/CmdOrCtrl/gi, 'command'),
+  R.replace(/CmdOrCtrl/gi, 'ctrl')
+);
+
+/**
+ * Filters OS-specific hotkeys.
+ *
+ * E.G.,
+ * `['ctrl+a', 'command+a']`
+ * will become ['ctrl+a'] on Windows / Linux
+ * and ['command+a'] on MacOS
+ *
+ * But in case there are only 'ctrl+a' hotkey defined
+ * it will be left untouched on MacOS.
+ *
+ * :: String|[String] -> [String]
+ */
+export const filterOsHotkeys = R.compose(
+  R.map(unfoldCmdOrCtrl),
+  R.ifElse(
+    () => isMacOS(),
+    R.when(R.any(containsCmd), R.filter(containsCmd)),
+    R.reject(containsCmd)
+  ),
+  R.unless(R.is(Array), R.of)
+);
+
 const assignHotkeys = menuItem =>
   R.when(
     R.prop('command'),
     R.merge({
-      hotkey: HOTKEY[menuItem.command],
+      hotkey: R.compose(filterOsHotkeys, R.propOr([], menuItem.command))(
+        HOTKEY
+      ),
       accelerator: ELECTRON_ACCELERATOR[menuItem.command],
     }),
     menuItem
@@ -175,3 +209,6 @@ export const onClick = R.flip(R.assoc('click'));
 
 /** add children items to menu item */
 export const submenu = R.flip(R.assoc('submenu'));
+
+/** returns hotkeys key map with filtered OS specific key mapping */
+export const getOsSpecificHotkeys = () => R.map(filterOsHotkeys, HOTKEY);

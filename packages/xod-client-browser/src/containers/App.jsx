@@ -249,6 +249,8 @@ class App extends client.App {
         onClick(items.undo, this.props.actions.undoCurrentPatch),
         onClick(items.redo, this.props.actions.redoCurrentPatch),
         items.separator,
+        onClick(items.selectall, this.props.actions.selectAll),
+        items.separator,
         onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
         onClick(items.insertComment, this.props.actions.addComment),
         items.separator,
@@ -325,7 +327,11 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys id="App" keyMap={client.HOTKEY} handlers={this.hotkeyHandlers}>
+      <HotKeys
+        id="App"
+        keyMap={client.menu.getOsSpecificHotkeys()}
+        handlers={this.hotkeyHandlers}
+      >
         <EventListener
           target={window}
           onResize={this.onResize}
