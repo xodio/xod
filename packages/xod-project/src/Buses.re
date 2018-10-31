@@ -202,7 +202,7 @@ let splitLinksToBuses:
                     destinationNode
                     |> Project.getPatchByNode(project)
                     |. Option.flatMap(
-                         Patch.getPinByKey(_, destinationPinKey),
+                         Patch.getVariadicPinByKey(_, destinationNode, destinationPinKey),
                        )
                     |. Option.map(destinationPin => {
                          let fromBusPosition =
