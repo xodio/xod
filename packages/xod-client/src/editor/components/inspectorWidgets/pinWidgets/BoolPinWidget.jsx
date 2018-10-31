@@ -10,7 +10,6 @@ function BoolWidget(props) {
     <PinWidget
       elementId={props.elementId}
       label={props.label}
-      normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
       isInvalid={props.isInvalid}
@@ -37,7 +36,6 @@ function BoolWidget(props) {
 BoolWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
   label: PropTypes.string,
-  normalizedLabel: PropTypes.string.isRequired,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
   isInvalid: PropTypes.bool,
