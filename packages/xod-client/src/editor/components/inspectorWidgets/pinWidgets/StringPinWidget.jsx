@@ -23,7 +23,6 @@ const StringWidget = withState('focused', 'setFocus', false)(props => {
     <PinWidget
       elementId={props.elementId}
       label={props.label}
-      normalizedLabel={props.normalizedLabel}
       dataType={props.dataType}
       isConnected={props.isConnected}
       isInvalid={props.isInvalid}
@@ -51,7 +50,6 @@ const StringWidget = withState('focused', 'setFocus', false)(props => {
 
 StringWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
-  normalizedLabel: PropTypes.string.isRequired,
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
