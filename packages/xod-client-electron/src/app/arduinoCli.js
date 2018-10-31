@@ -153,13 +153,18 @@ const patchFqbnWithOptions = board => {
   const options = board.options || [];
 
   const defaultBoardOptions = R.compose(
-    R.mergeAll,
     R.reject(R.isNil),
+    R.mergeAll,
     R.map(opt => ({
       [opt.optionId]: R.pathOr(null, ['values', 0, 'value'], opt),
     }))
   )(options);
-  const defaultBoardOptionKeys = R.keys(defaultBoardOptions);
+
+  // :: StrMap OptionId [OptionValue]
+  const boardPossibleOptionValuesById = R.compose(
+    R.map(R.compose(R.pluck('value'), R.prop('values'))),
+    R.indexBy(R.prop('optionId'))
+  )(options);
 
   // Find out selected board options that equal to default board options.
   //
@@ -179,10 +184,24 @@ const patchFqbnWithOptions = board => {
     R.toPairs
   )(selectedOptions);
 
-  // Find out board option keys that does not fit the selected board
+  // Find out board option keys that does not fit the selected board:
+  // a. no optionId for this board
+  //    E.G. arduino:avr:mega has no options `debugLevel` and it will be ommited
+  // b. no optionValue for this board
+  //    E.G. previously user uploaded on Arduino Nano with `cpu=atmega328old`,
+  //         but now he tries to upload onto Arduino Mega, which has optionId
+  //         `cpu`, but does not have `atmega328old` option
+  // :: [OptionId]
   const staleBoardOptionKeys = R.compose(
-    R.reject(isAmong(defaultBoardOptionKeys)),
-    R.keys
+    R.reduce(
+      (acc, [optionId, optionValue]) =>
+        boardPossibleOptionValuesById[optionId] &&
+        R.contains(optionValue, boardPossibleOptionValuesById[optionId])
+          ? acc
+          : R.append(optionId, acc),
+      []
+    ),
+    R.toPairs
   )(selectedOptions);
 
   const keysToOmit = R.concat(
@@ -197,8 +216,9 @@ const patchFqbnWithOptions = board => {
   const oneOfDefaultOptions = R.compose(
     R.pick(R.__, defaultBoardOptions),
     R.of,
-    R.head
-  )(defaultBoardOptionKeys);
+    R.head,
+    R.keys
+  )(defaultBoardOptions);
 
   const selectedBoardOptions = R.omit(keysToOmit, selectedOptions);
 
