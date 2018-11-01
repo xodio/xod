@@ -25,12 +25,31 @@ const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
  */
 const ArduinoCli = (pathToBin, config = null) => {
   let { path: configPath, config: cfg } = configure(config);
+  let runningProcesses = [];
+
+  const appendProcess = proc => {
+    runningProcesses = R.append(proc, runningProcesses);
+  };
+  const deleteProcess = proc => {
+    runningProcesses = R.reject(R.equals(proc), runningProcesses);
+  };
 
   const escapedConfigPath = escapeSpacesNonWin(configPath);
-  const run = args =>
-    exec(`"${pathToBin}" --config-file=${escapedConfigPath} ${args}`).then(
-      R.prop('stdout')
-    );
+  const run = args => {
+    const promise = exec(
+      `"${pathToBin}" --config-file=${escapedConfigPath} ${args}`
+    )
+      .then(
+        R.tap(() => {
+          deleteProcess(promise.childProcess);
+        })
+      )
+      .then(R.prop('stdout'));
+
+    appendProcess(promise.childProcess);
+
+    return promise;
+  };
   const runWithProgress = async (onProgress, args) => {
     const spawnArgs = R.compose(
       R.concat([`--config-file=${escapedConfigPath}`]),
@@ -46,6 +65,11 @@ const ArduinoCli = (pathToBin, config = null) => {
 
     proc.stdout.on('data', data => onProgress(data.toString()));
     proc.stderr.on('data', data => onProgress(data.toString()));
+    proc.on('exit', () => {
+      deleteProcess(proc);
+    });
+
+    appendProcess(proc);
 
     return promise.then(R.prop('stdout'));
   };
@@ -72,6 +96,14 @@ const ArduinoCli = (pathToBin, config = null) => {
   const getConfig = () => run('config dump').then(YAML.parse);
 
   return {
+    killProcesses: () => {
+      R.forEach(proc => {
+        proc.kill('SIGTERM');
+        deleteProcess(proc);
+      }, runningProcesses);
+      return true;
+    },
+    getRunningProcesses: () => runningProcesses,
     dumpConfig: getConfig,
     updateConfig: newConfig => {
       const newCfg = saveConfig(configPath, newConfig);

@@ -174,6 +174,16 @@ Accepts:
 
 - Returns `Promise<String>` with a log of the upload process
 
+### getRunningProcesses()
+Returns a list of running `arduino-cli` processes.
+
+- Returns `Array<ChildProcess>`
+
+### killProcesses()
+Kills all running `arduino-cli` processes.
+
+- Returns `Boolean` `true`
+
 ## Types
 
 ### ConnectedBoard
