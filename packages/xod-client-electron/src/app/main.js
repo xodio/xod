@@ -59,6 +59,8 @@ if (IS_DEV) {
 
 const store = createAppStore();
 
+let arduinoCliInstance;
+
 // =============================================================================
 //
 // Application main process
@@ -241,6 +243,7 @@ const onReady = () => {
       .prepareSketchDir()
       .then(aCli.create)
       .then(arduinoCli => {
+        arduinoCliInstance = arduinoCli;
         aCli.subscribeListBoards(arduinoCli);
         aCli.subscribeUpload(arduinoCli);
         aCli.subscribeUpdateIndexes(arduinoCli);
@@ -297,8 +300,18 @@ const onReady = () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', onReady);
 
+app.on('before-quit', () => {
+  // Kill all running `arduino-cli` processes
+  // when IDE is closing
+  if (arduinoCliInstance) {
+    arduinoCliInstance.killProcesses();
+  }
+});
+
 // Quit when all windows are closed.
-app.on('window-all-closed', app.quit);
+app.on('window-all-closed', () => {
+  app.quit();
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
