@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import arduinoCli from 'arduino-cli';
 import * as xd from 'xod-deploy';
-import { createError, isAmong } from 'xod-func-tools';
+import { createError } from 'xod-func-tools';
 import * as cpx from 'cpx';
 
 import subscribeIpc from './subscribeIpc';
@@ -79,6 +79,9 @@ const getArduinoCliPath = () =>
 
 const getLibsDir = p => path.join(p, ARDUINO_LIBRARIES_DIRNAME);
 
+// :: String -> [String]
+const parseExtraTxtContent = R.compose(R.reject(R.isEmpty), R.split(/\r\n|\n/));
+
 // :: Path -> Path -> Promise Path -> Error
 const copy = async (from, to) =>
   new Promise((resolve, reject) => {
@@ -97,14 +100,31 @@ const copyLibraries = async (bundledLibDir, userLibDir, sketchbookLibDir) => {
   return sketchbookLibDir;
 };
 
+// :: Path -> Path
+const getExtraTxtPath = wsPath =>
+  path.join(wsPath, ARDUINO_PACKAGES_DIRNAME, ARDUINO_EXTRA_URLS_FILENAME);
+
 // :: Path -> Promise Path Error
 const ensureExtraTxt = async wsPath => {
-  const extraTxtFilePath = path.join(
-    wsPath,
-    ARDUINO_PACKAGES_DIRNAME,
-    ARDUINO_EXTRA_URLS_FILENAME
-  );
-  await fse.ensureFile(extraTxtFilePath);
+  const extraTxtFilePath = getExtraTxtPath(wsPath);
+  const doesExist = await fse.pathExists(extraTxtFilePath);
+  if (!doesExist) {
+    const bundledUrls = R.join('\n', BUNDLED_ADDITIONAL_URLS);
+    await fse.writeFile(extraTxtFilePath, bundledUrls, { flag: 'wx' });
+  } else {
+    // TODO: For Users on 0.25.0 or 0.25.1 we have to add bundled esp8266
+    // into existing `extra.txt`. One day we'll remove this kludge.
+    const extraTxtContents = await fse.readFile(extraTxtFilePath, {
+      encoding: 'utf8',
+    });
+    const extraUrls = parseExtraTxtContent(extraTxtContents);
+    const newContents = R.compose(
+      R.join('\n'),
+      R.concat(R.__, extraUrls),
+      R.difference(BUNDLED_ADDITIONAL_URLS)
+    )(extraUrls);
+    await fse.writeFile(extraTxtFilePath, newContents);
+  }
   return extraTxtFilePath;
 };
 
@@ -293,6 +313,22 @@ const prepareWorkspacePackagesDir = async wsPath => {
 
   return packagesDirPath;
 };
+
+/**
+ * Copies URLs to additional package index files from `extra.txt` into
+ * `arduino-cli` config file.
+ *
+ * :: Path -> ArduinoCli -> Promise [URL] Error
+ */
+const syncAdditionalPackages = async (wsPath, cli) => {
+  const extraTxtPath = getExtraTxtPath(wsPath);
+  const extraTxtContent = await fse.readFile(extraTxtPath, {
+    encoding: 'utf8',
+  });
+  const urls = parseExtraTxtContent(extraTxtContent);
+  return cli.setPackageIndexUrls(urls);
+};
+
 /**
  * Creates an instance of ArduinoCli.
  *
@@ -317,13 +353,14 @@ export const create = async sketchDir => {
     });
   }
 
-  return arduinoCli(arduinoCliPath, {
+  const cli = arduinoCli(arduinoCliPath, {
     arduino_data: packagesDirPath,
     sketchbook_path: sketchDir,
-    board_manager: {
-      additional_urls: BUNDLED_ADDITIONAL_URLS,
-    },
   });
+
+  await syncAdditionalPackages(wsPath, cli);
+
+  return cli;
 };
 
 /**
@@ -339,8 +376,33 @@ export const switchWorkspace = async (cli, newWsPath) => {
   const oldConfig = await cli.dumpConfig();
   const packagesDirPath = await prepareWorkspacePackagesDir(newWsPath);
   const newConfig = R.assoc('arduino_data', packagesDirPath, oldConfig);
-  return cli.updateConfig(newConfig);
+  const result = cli.updateConfig(newConfig);
+  await syncAdditionalPackages(newWsPath, cli);
+  return result;
 };
+
+/**
+ * It updates pacakge index files or throw an error.
+ * Function for internal use only.
+ *
+ * Needed as a separate function to avoid circular function dependencies:
+ * `listBoards` and `updateIndexes`
+ *
+ * It could fail when:
+ * - no internet connection
+ * - host not found
+ *
+ * :: Path -> ArduinoCli -> Promise _ Error
+ */
+const updateIndexesInternal = (wsPath, cli) =>
+  cli.core.updateIndex().catch(err => {
+    throw createError('UPDATE_INDEXES_ERROR_NO_CONNECTION', {
+      pkgPath: getArduinoPackagesPath(wsPath),
+      // `arduino-cli` outputs everything in stdout
+      // so we have to extract only errors from stdout:
+      error: R.replace(/^(.|\s)+(?=Error:)/gm, '', err.stdout),
+    });
+  });
 
 /**
  * Returns map of installed boards and boards that could be installed:
@@ -351,11 +413,17 @@ export const switchWorkspace = async (cli, newWsPath) => {
  *
  * :: ArduinoCli -> Promise { installed :: [InstalledBoard], available :: [AvailableBoard] } Error
  */
-export const listBoards = async cli =>
-  Promise.all([
+export const listBoards = async cli => {
+  const wsPath = await loadWorkspacePath();
+
+  await syncAdditionalPackages(wsPath, cli);
+
+  return Promise.all([
     cli.listInstalledBoards().catch(err => {
       const errContents = JSON.parse(err.stdout);
-      throw new Error(errContents.Cause);
+      const normalizedError = new Error(errContents.Cause);
+      normalizedError.code = err.code;
+      throw normalizedError;
     }),
     cli.listAvailableBoards(),
   ])
@@ -364,11 +432,21 @@ export const listBoards = async cli =>
       available: res[1],
     }))
     .catch(async err => {
+      if (R.propEq('code', 6, err)) {
+        // Catch error produced by arduino-cli, but actually it's not an error:
+        // When User added a new URL into `extra.txt` file it causes that
+        // arduino-cli tries to read new JSON but it's not existing yet
+        // so it fails with error "no such file or directory"
+        // To avoid this and make a good UX, we'll force call `updateIndexes`
+        return updateIndexesInternal(wsPath, cli).then(() => listBoards(cli));
+      }
+
       throw createError('UPDATE_INDEXES_ERROR_BROKEN_FILE', {
         pkgPath: getArduinoPackagesPath(await loadWorkspacePath()),
         error: err.message,
       });
     });
+};
 
 /**
  * Updates package index json files.
@@ -378,53 +456,16 @@ export const listBoards = async cli =>
  */
 const updateIndexes = async cli => {
   const wsPath = await loadWorkspacePath();
-  const urls = await cli
-    .dumpConfig()
-    .then(R.pathOr([], ['board_manager', 'additional_urls']));
 
-  const extraTxtPath = await ensureExtraTxt(wsPath);
-  const extraTxtContent = await fse.readFile(extraTxtPath, {
-    encoding: 'utf8',
-  });
+  const addedUrls = await syncAdditionalPackages(wsPath, cli);
 
-  // URLs that was added in the extraTxt and did not already exist
-  // in the `.cli-config.yml`
-  const newUrls = R.compose(R.reject(isAmong(urls)), R.split(/\r\n|\n/))(
-    extraTxtContent
-  );
+  await updateIndexesInternal(wsPath, cli);
 
-  const addedUrls = await cli.addPackageIndexUrls(newUrls);
-
-  try {
-    // It could fail when:
-    // - no internet connection
-    // - host not found
-    await cli.core.updateIndex();
-  } catch (err) {
-    // Return arduino-cli config in previous state
-    // It makes possible to fix wrong URL in `extra.txt`
-    // and click "Update" button in the upload popup
-    // again without reopening XOD IDE
-    await cli.removePackageIndexUrls(newUrls);
-    throw createError('UPDATE_INDEXES_ERROR_NO_CONNECTION', {
-      pkgPath: getArduinoPackagesPath(wsPath),
-      // `arduino-cli` outputs everything in stdout
-      // so we have to extract only errors from stdout:
-      error: R.replace(/^(.|\s)+(?=Error:)/gm, '', err.stdout),
-    });
-  }
-
-  try {
-    // We have to call `listBoards` to be sure
-    // all new index files are valid, because `updateIndex`
-    // only downloads index files without validating
-    // Bug reported: https://github.com/arduino/arduino-cli/issues/81
-    await listBoards(cli);
-  } catch (err) {
-    // The same as above in the `catch` block
-    await cli.removePackageIndexUrls(newUrls);
-    throw err;
-  }
+  // We have to call `listBoards` to be sure
+  // all new index files are valid, because `updateIndex`
+  // only downloads index files without validating
+  // Bug reported: https://github.com/arduino/arduino-cli/issues/81
+  await listBoards(cli);
 
   return addedUrls;
 };
