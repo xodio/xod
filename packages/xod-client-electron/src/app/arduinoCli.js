@@ -109,7 +109,7 @@ const ensureExtraTxt = async wsPath => {
   const extraTxtFilePath = getExtraTxtPath(wsPath);
   const doesExist = await fse.pathExists(extraTxtFilePath);
   if (!doesExist) {
-    const bundledUrls = R.join('\n', BUNDLED_ADDITIONAL_URLS);
+    const bundledUrls = R.join(os.EOL, BUNDLED_ADDITIONAL_URLS);
     await fse.writeFile(extraTxtFilePath, bundledUrls, { flag: 'wx' });
   } else {
     // TODO: For Users on 0.25.0 or 0.25.1 we have to add bundled esp8266
@@ -119,7 +119,7 @@ const ensureExtraTxt = async wsPath => {
     });
     const extraUrls = parseExtraTxtContent(extraTxtContents);
     const newContents = R.compose(
-      R.join('\n'),
+      R.join(os.EOL),
       R.concat(R.__, extraUrls),
       R.difference(BUNDLED_ADDITIONAL_URLS)
     )(extraUrls);
