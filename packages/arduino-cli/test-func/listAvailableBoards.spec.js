@@ -195,7 +195,12 @@ describe('listAvailableBoards()', () => {
   ];
 
   it('Lists boards parsed from two package index files', () =>
-    listAvailableBoards(fixturesDir).then(res =>
-      assert.sameDeepMembers(res, boards)
-    ));
+    listAvailableBoards(
+      () => ({
+        board_manager: {
+          additional_urls: ['http://test.com/package_esp8266com_index.json'],
+        },
+      }),
+      fixturesDir
+    ).then(res => assert.sameDeepMembers(res, boards)));
 });

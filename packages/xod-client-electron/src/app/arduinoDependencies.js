@@ -41,7 +41,7 @@ const checkArduinoPackageInstalled = async (cli, packages) => {
 };
 
 // :: (ProgressData -> _) -> ArduinoCli -> [{ package, packageName }] -> Promise [{ package, packageName, installed }] Error
-const installArduinoPackages = async (onProgress, cli, packages) =>
+const installArduinoPackages = (onProgress, cli, packages) =>
   Promise.all(
     R.map(pkg => cli.core.install(onProgress, pkg.package))(packages)
   ).then(() => R.map(R.assoc('installed', true))(packages));
