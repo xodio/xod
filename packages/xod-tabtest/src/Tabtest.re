@@ -273,7 +273,10 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
   | (Some(patchUnderTest), Some(tsv)) =>
     let bench = Bench.create(project, patchUnderTest);
     let probes = bench.probes;
-    let benchPatchPath = "tabtest-" ++ patchPathToTest;
+    let benchPatchPath =
+      "tabtest-" ++ patchPathToTest
+      /* to convert "tabtest-@/foo" to "tabtest/local/foo" */
+      |> Js.String.replace("-@", "/local");
     let safeBasename =
       PatchPath.getBaseName(patchPathToTest)
       |> Js.String.replace("(", "__")
