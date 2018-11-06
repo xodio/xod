@@ -1,44 +1,86 @@
 {
   "name": "xod-cli",
-  "version": "0.25.2",
   "description": "XOD project: Command Line Interface",
-  "scripts": {
-    "build:workspace": "cpx \"../../workspace/__lib__/**\" \"./__lib__\"",
-    "build:src": "babel src/ -d bin/ --source-maps",
-    "build": "yarn run build:src && yarn run build:workspace",
-    "clean:dist": "rimraf ./bin ./__lib__",
-    "dev": "yarn run build --watch",
-    "test": "mocha test/**/*.spec.js"
-  },
-  "bin": {
-    "xodc": "./bin/xodc.js"
-  },
-  "repository": {},
-  "keywords": [],
+  "version": "0.25.0",
   "author": "XOD Team <dev@xod.io>",
-  "license": "AGPL-3.0",
-  "main": "dist/index.js",
+  "bin": {
+    "xodc": "./bin/run"
+  },
+  "bugs": "https://github.com/xodio/xod/issues",
   "dependencies": {
-    "cli-color": "^1.1.0",
-    "docopt": "^0.6.2",
-    "fs-extra": "^4.0.2",
-    "hm-def": "^0.3.2",
-    "inquirer": "^3.2.0",
+    "@oclif/command": "^1.5.4",
+    "@oclif/config": "^1.8.8",
+    "@oclif/errors": "^1.2.2",
+    "@oclif/plugin-autocomplete": "^0.1.0",
+    "@oclif/plugin-help": "^2.1.3",
+    "@oclif/plugin-not-found": "^1.2.2",
+    "arduino-cli": "^0.25.0",
+    "chalk": "^2.4.1",
+    "cli-ux": "^4.9.0",
+    "fs-extra": "^7.0.0",
+    "listr": "^0.14.2",
+    "listr-update-renderer": "^0.4.0",
+    "listr-verbose-renderer": "^0.4.1",
+    "node-fetch": "^1.7.3",
     "ramda": "^0.24.1",
-    "ramda-fantasy": "^0.8.0",
-    "sanctuary-def": "^0.14.0",
-    "source-map-support": "^0.4.15",
-    "swagger-client": "^3.4.3",
+    "source-map-support": "^0.5.9",
     "xod-arduino": "^0.25.2",
     "xod-fs": "^0.25.2",
     "xod-func-tools": "^0.25.0",
-    "xod-pm": "^0.25.2",
     "xod-project": "^0.25.2",
     "xod-tabtest": "^0.25.2"
   },
   "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/test": "^1.2.2",
     "chai": "^4.1.2",
-    "child-process-promise": "^2.2.1",
-    "cpx": "^1.5.0"
+    "cpx": "^1.5.0",
+    "nock": "^10.0.1",
+    "rimraf": "^2.5.4"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
+    "/bundle"
+  ],
+  "homepage": "https://github.com/xodio/xod",
+  "keywords": [
+    "oclif",
+    "xod",
+    "xodlang"
+  ],
+  "license": "AGPL-3.0",
+  "main": "bin/run",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "xodc",
+    "plugins": [
+      "@oclif/plugin-autocomplete",
+      "@oclif/plugin-help",
+      "@oclif/plugin-not-found"
+    ],
+    "repositoryPrefix": "<%- repo %>/blob/master/packages/xod-cli/<%- commandPath %>"
+  },
+  "repository": "xodio/xod",
+  "scripts": {
+    "clean:dist": "rimraf ./lib ./bundle",
+    "build:workspace": "cpx \"../../workspace/**\" \"./bundle/workspace\"",
+    "build:tabtestWorkspace": "cpx \"../xod-tabtest/workspace/**\" \"./bundle/tabtest-workspace\"",
+    "build:tabtestSrc": "cpx \"../xod-tabtest/cpp/**\" \"./bundle/tabtest-cpp\"",
+    "build:catch2": "cpx \"../../vendor/catch2/**\" \"./bundle/catch2\"",
+    "build:bundle": "yarn run build:workspace && yarn run build:tabtestWorkspace && yarn run build:tabtestSrc && yarn run build:catch2",
+    "build:readme": "oclif-dev readme && sed -i -e 's/lib\\/commands\\//src\\/commands\\//g' README.md",
+    "build:src": "babel src/ -d lib/ --source-maps",
+    "build": "yarn run build:bundle && yarn run build:src",
+    "dev": "yarn run build --watch",
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "yarn run build && oclif-dev manifest && oclif-dev readme",
+    "test": "mocha test/**/*.spec.js",
+    "version": "oclif-dev readme && git add README.md"
   }
 }

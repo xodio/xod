@@ -33,7 +33,7 @@
     "test-func": "lerna run test-func",
     "test-cpp": "lerna run test-cpp",
     "verify": "yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func",
-    "xodc": "node packages/xod-cli/bin/xodc.js"
+    "xodc": "node packages/xod-cli/bin/run"
   },
   "devDependencies": {
     "@google-cloud/storage": "^1.1.0",

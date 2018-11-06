@@ -11,16 +11,15 @@ const exit = process.exit;
 // save tty status
 const isTTY = process.stdout.isTTY;
 
-const its = (wd, outCppPath) => {
+const its = (wd, tabtestOutDir) => {
   const myWSPath = path.resolve(wd, 'workspace');
-  const projectSrcPath = path.resolve(bundledWorkspacePath, 'blink');
 
   const stdMock = test.stdout().stderr();
 
   stdMock
-    .command(['transpile', `--workspace=${myWSPath}`])
+    .command(['tabtest', `--workspace=${myWSPath}`])
     .it(
-      `cannot find project without argument, but creates workspace, stderr , non-zero exit code`,
+      `cannot find project without argument, but creates workspace, prints error to stderr, non-zero exit code`,
       async ctx => {
         assert.isOk(
           await fs.pathExists(path.resolve(myWSPath, '.xodworkspace')),
@@ -39,7 +38,7 @@ const its = (wd, outCppPath) => {
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
     .command([
-      'transpile',
+      'tabtest',
       path.resolve(myWSPath, 'kajsdhflkjsdhflkjashldkfjlkjasdfkjl'),
     ])
     .it(
@@ -57,12 +56,16 @@ const its = (wd, outCppPath) => {
 
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
-    .command(['transpile', projectSrcPath, 'asdfasdfasdfasdfasdfasdfasdf'])
+    .command([
+      'tabtest',
+      path.resolve(bundledWorkspacePath, '__lib__', 'xod', 'bits'),
+      'asdfasdfasdfasdfasdfasdfasdf',
+    ])
     .it('fails when wrong patch name, exits with non-zero code', ctx => {
       assert.equal(ctx.stdout, '', 'stdout must be empty');
       assert.match(
         ctx.stderr,
-        /ENTRY_POINT_PATCH_NOT_FOUND_BY_PATH/,
+        /does not exist in the project/,
         'stderr must be with error'
       );
       assert.notEqual(process.exitCode, 0, 'exit code must be non-zero');
@@ -70,90 +73,129 @@ const its = (wd, outCppPath) => {
 
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
-    .command(['transpile', `--output=${outCppPath}`, projectSrcPath])
+    .command([
+      'tabtest',
+      `--output-dir=${tabtestOutDir}`,
+      '--no-build',
+      path.resolve(bundledWorkspacePath, '__lib__', 'xod', 'bits'),
+    ])
     .it(
-      'transpiles project (default patchname - main) to output path, stderr with messages, stdout is empty, exit with zero code',
+      'create output dir, run tests for whole project, but do not build (--no-build), stderr with messages, stdout is empty, exit with zero code',
       async ctx => {
-        assert.isOk(
-          await fs.pathExists(outCppPath),
-          'output file should be created'
-        );
         assert.equal(ctx.stdout, '', 'stdout must be empty');
-        assert.notEqual(ctx.stderr, '', 'stderr must be full of messages');
+        assert.notEqual(ctx.stderr, '', 'stderr must be with messages');
         assert.equal(process.exitCode, 0, 'exit code must be zero');
+        assert.isOk(
+          await fs.pathExists(tabtestOutDir),
+          'output dir should be created'
+        );
+        assert.isOk(
+          await fs.pathExists(
+            path.resolve(tabtestOutDir, 'bcd-to-dec.sketch.cpp')
+          ),
+          'tabtest sketch must be copied'
+        );
       }
     );
 
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
-    .env({ XOD_OUTPUT: outCppPath })
-    .command(['transpile', '--quiet', projectSrcPath, '@/main'])
+    .env({ XOD_OUTPUT: tabtestOutDir })
+    .command([
+      'tabtest',
+      '--no-build',
+      '--quiet',
+      path.resolve(
+        bundledWorkspacePath,
+        '__lib__',
+        'xod',
+        'bits',
+        'bcd-to-dec',
+        'patch.xodp'
+      ),
+    ])
     .it(
-      'transpiles project to output path (from ENV), stderr is empty, stdout is empty, exit with zero code',
+      'create output dir, run tests for patch by full path, but do not build (--no-build), stderr with messages, stdout is empty, exit with zero code',
+      async ctx => {
+        assert.equal(ctx.stdout, '', 'stdout must be empty');
+        assert.equal(ctx.stderr, '', 'stderr must be empty');
+        assert.equal(process.exitCode, 0, 'exit code must be zero');
+        assert.isOk(
+          await fs.pathExists(tabtestOutDir),
+          'output dir should be created'
+        );
+        assert.isOk(
+          await fs.pathExists(
+            path.resolve(tabtestOutDir, 'bcd-to-dec.sketch.cpp')
+          ),
+          'tabtest sketch must be copied'
+        );
+      }
+    );
+
+  stdMock
+    .env({ XOD_WORKSPACE: myWSPath })
+    .env({ XOD_OUTPUT: tabtestOutDir })
+    .command([
+      'tabtest',
+      '--no-build',
+      '--quiet',
+      path.resolve(bundledWorkspacePath, '__lib__', 'xod', 'bits'),
+      'bcd-to-dec',
+    ])
+    .it(
+      'create output dir, run tests for patch by project path + short patch name, but do not build (--no-build), stderr with messages, stdout is empty, exit with zero code',
       async ctx => {
         assert.isOk(
-          await fs.pathExists(outCppPath),
-          'output file should be created'
+          await fs.pathExists(tabtestOutDir),
+          'output dir should be created'
         );
         assert.equal(ctx.stdout, '', 'stdout must be empty');
         assert.equal(ctx.stderr, '', 'stderr must be empty');
         assert.equal(process.exitCode, 0, 'exit code must be zero');
+        assert.isOk(
+          await fs.pathExists(
+            path.resolve(tabtestOutDir, 'bcd-to-dec.sketch.cpp')
+          ),
+          'tabtest sketch must be copied'
+        );
       }
     );
 
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
-    .command(['transpile', projectSrcPath])
+    .env({ XOD_OUTPUT: tabtestOutDir })
+    .command([
+      'tabtest',
+      '--quiet',
+      path.resolve(bundledWorkspacePath, '__lib__', 'xod', 'bits'),
+      '@/bcd-to-dec',
+    ])
     .it(
-      'transpiles project (default patchname - main) to stdout, stderr with messages, exit with zero code',
-      ctx => {
-        assert.include(
-          ctx.stdout,
-          'namespace xod {',
-          'stdout must containt C++ source'
+      'create output dir, run tests for patch by project path + long patch name, build, stderr with messages, stdout is empty, exit with zero code',
+      async ctx => {
+        assert.isOk(
+          await fs.pathExists(tabtestOutDir),
+          'output dir should be created'
         );
-        assert.match(
-          ctx.stdout,
-          /^\/\/#define XOD_DEBUG$/gm,
-          'debug must be disabled'
-        );
-        assert.notEqual(ctx.stderr, '', 'stderr must be with messages');
+        assert.equal(ctx.stdout, '', 'stdout must be empty');
+        assert.equal(ctx.stderr, '', 'stderr must be empty');
         assert.equal(process.exitCode, 0, 'exit code must be zero');
-      }
-    );
-
-  stdMock
-    .env({ XOD_WORKSPACE: myWSPath })
-    .command(['transpile', '--debug', projectSrcPath])
-    .it(
-      'transpile project (default patchname - main) to stdout with debug on, stderr with messages, exit with zero code',
-      ctx => {
-        assert.include(
-          ctx.stdout,
-          'namespace xod {',
-          'stdout must containt C++ source'
+        assert.isOk(
+          await fs.pathExists(path.resolve(tabtestOutDir, 'bcd-to-dec.run')),
+          'tabtest must be compiled'
         );
-        assert.match(
-          ctx.stdout,
-          /^#define XOD_DEBUG$/gm,
-          'debug must be enabled'
-        );
-        assert.notEqual(ctx.stderr, '', 'stderr must be with messages');
-        assert.equal(process.exitCode, 0, 'exit code must be zero');
       }
     );
 };
 
-describe('xodc transpile', () => {
-  // working directory and output file
-  const wd = createWorkingDirectory('transpile');
-  const outCppPath = path.resolve(wd, 'out.cpp');
+describe('xodc tabtest', () => {
+  // working directory
+  const wd = createWorkingDirectory('tabtest');
+  const tabtestOutDir = path.resolve(wd, 'tabtests');
 
   // create working directory
-  before(() => fs.ensureDir(wd));
-
-  // remove working directory
-  after(() => fs.remove(wd));
+  before(() => fs.ensureDirSync(wd));
 
   // remove working directory
   // unmock TTY status
@@ -179,7 +221,7 @@ describe('xodc transpile', () => {
     test
       .stdout()
       .stderr()
-      .command(['transpile', '--help'])
+      .command(['tabtest', '--help'])
       .catch(/EEXIT: 0/)
       .it(
         `shows help in stdout, doesn't print to stderr, exits with 0`,
@@ -190,7 +232,12 @@ describe('xodc transpile', () => {
             'ENTRYPOINT argument not found'
           );
           assert.include(ctx.stdout, '--help', '--help flag not found');
-          assert.include(ctx.stdout, '--output', '--output flag not found');
+          assert.include(ctx.stdout, '--no-build', '--no-build flag not found');
+          assert.include(
+            ctx.stdout,
+            '--output-dir',
+            '--output-dir flag not found'
+          );
           assert.include(ctx.stdout, '--quiet', '--quiet flag not found');
           assert.include(ctx.stdout, '--version', '--version flag not found');
           assert.include(
@@ -198,7 +245,6 @@ describe('xodc transpile', () => {
             '--workspace',
             '--workspace flag not found'
           );
-          assert.include(ctx.stdout, '--debug', '--debug flag not found');
           assert.equal(ctx.stderr, '', 'stderr should be emply');
         }
       );
@@ -206,7 +252,7 @@ describe('xodc transpile', () => {
     test
       .stdout()
       .stderr()
-      .command(['transpile', '--version'])
+      .command(['tabtest', '--version'])
       .catch(/EEXIT: 0/)
       .it(
         `shows version in stdout, doesn't print to stderr and exits with 0`,
@@ -233,11 +279,11 @@ describe('xodc transpile', () => {
     // unmock process.exit
     afterEach(() => {
       process.exit = exit;
-      // remove output file
-      return fs.remove(outCppPath);
+      // clean out tabtest working directory
+      fs.removeSync(tabtestOutDir);
     });
 
-    its(wd, outCppPath);
+    its(wd, tabtestOutDir);
   });
 
   describe('no TTY', () => {
@@ -256,10 +302,10 @@ describe('xodc transpile', () => {
     // unmock process.exit
     afterEach(() => {
       process.exit = exit;
-      // remove output file
-      return fs.remove(outCppPath);
+      // clean out tabtest working directory
+      fs.removeSync(tabtestOutDir);
     });
 
-    its(wd, outCppPath);
+    its(wd, tabtestOutDir);
   });
 });

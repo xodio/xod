@@ -8,5 +8,7 @@
         }
       }
     ]
-  ]
+  ],
+  "plugins": ["babel-plugin-transform-object-rest-spread"],
+  "retainLines": true
 }
