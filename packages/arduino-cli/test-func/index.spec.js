@@ -72,14 +72,14 @@ describe('Arduino Cli', () => {
     it('adds URL into .cli-config.yml', () => {
       const cli = arduinoCli(PATH_TO_CLI, cfg);
       return cli
-        .addPackageIndexUrl(url)
+        .setPackageIndexUrls([url])
         .then(() => cli.dumpConfig())
         .then(res => assert.include(res.board_manager.additional_urls, url));
     });
     it('downloads additional package index', () => {
       const cli = arduinoCli(PATH_TO_CLI, cfg);
       return cli
-        .addPackageIndexUrl(url)
+        .setPackageIndexUrls([url])
         .then(() => cli.core.updateIndex())
         .then(() =>
           fse.pathExists(

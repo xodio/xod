@@ -1,14 +1,14 @@
 {
-  "description": "Performs logical left-shift of `BYTE` by `N` bits.",
+  "description": "Performs logical left-shift of `IN` by `N` bits.",
   "nodes": [
     {
       "id": "HkjNO_xxz",
-      "label": "BYTE",
       "position": {
         "x": 34,
         "y": 102
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-number",
+      "description": "Input number. Interpreted as a signed 32-bit interger"
     },
     {
       "id": "HylHuulxf",
@@ -17,7 +17,8 @@
         "x": 68,
         "y": 102
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-number",
+      "description": "Shift bits count. Truncated to an integer. Negative values round to zero"
     },
     {
       "id": "SkEHO_lef",

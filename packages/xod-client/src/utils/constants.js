@@ -38,7 +38,7 @@ export const HOTKEY = {
   [COMMAND.DELETE_SELECTION]: ['del', 'backspace'],
 
   [COMMAND.DESELECT]: 'escape',
-  [COMMAND.SELECT_ALL]: ['ctrl+a', 'command+a'],
+  [COMMAND.SELECT_ALL]: 'CmdOrCtrl+a',
 
   [COMMAND.UNDO]: 'ctrl+z',
   [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],
@@ -61,7 +61,7 @@ export const HOTKEY = {
   [COMMAND.MAKE_BUS]: ['b'],
 
   [COMMAND.PAN_TO_ORIGIN]: ['home'],
-  [COMMAND.PAN_TO_CENTER]: ['ctrl+home', 'command+home'],
+  [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+home',
 };
 
 export const ELECTRON_ACCELERATOR = {

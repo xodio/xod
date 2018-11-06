@@ -8,6 +8,8 @@ import { ARDUPACKAGES_UPGRADE_PROCEED } from './actionTypes';
 import MSG from './messages';
 import getLibraryNames from './getLibraryNames';
 
+import { formatErrorMessage, formatLogError } from '../view/formatError';
+
 const progressToProcess = R.curry((processFn, progressData) => {
   processFn(progressData.message, progressData.percentage);
 });
@@ -43,7 +45,12 @@ export default store => next => action => {
             );
             proc.success();
           })
-          .catch(err => proc.fail(err.message, 0));
+          .catch(err => {
+            const snackbarError = formatErrorMessage(err);
+            const logErr = formatLogError(err);
+            store.dispatch(client.addError(snackbarError));
+            proc.fail(logErr, 0);
+          });
       },
       maybeData
     );
@@ -61,7 +68,12 @@ export default store => next => action => {
         );
         proc.success();
       })
-      .catch(err => proc.fail(err.message, 0));
+      .catch(err => {
+        const snackbarError = formatErrorMessage(err);
+        const logErr = formatLogError(err);
+        store.dispatch(client.addError(snackbarError));
+        proc.fail(logErr, 0);
+      });
   }
 
   return next(action);

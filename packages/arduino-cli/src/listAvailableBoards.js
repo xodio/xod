@@ -14,24 +14,35 @@
  */
 
 import path from 'path';
+import { parse } from 'url';
 import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import versionCompare from 'tiny-version-compare';
 
+import { ADDITIONAL_URLS_PATH } from './config';
+
+const ORIGINAL_PACKAGE_INDEX_FILE = 'package_index.json';
+
 // AvailableBoard :: { name :: String, package :: String }
 
 /**
- * Finds all package index json files in the specified directory.
- * Returns a promise with a list of full paths to the json files.
+ * Returns a list of paths to the additional package index files.
  *
- * :: Path -> Promise [Path] Error
+ * Gets filenames of additional package index files from arduino cli config
+ * by parsing URLs and joins filenames with path to packages directory.
+ *
+ * :: (() -> Promise Object Error) -> Path -> Promise [Path] Error
  */
-const findPackageIndexFiles = dir =>
-  R.composeP(
-    R.map(fname => path.join(dir, fname)),
-    R.filter(R.test(/^package_(.*_)?index.json$/)),
-    fse.readdir
-  )(dir);
+const getPackageIndexFiles = async (getConfig, packagesDir) => {
+  const config = await getConfig();
+  const urls = R.pathOr([], ADDITIONAL_URLS_PATH, config);
+  const filepaths = R.compose(
+    R.map(fname => path.join(packagesDir, fname)),
+    R.append(ORIGINAL_PACKAGE_INDEX_FILE),
+    R.map(R.compose(R.last, R.split('/'), R.prop('pathname'), parse))
+  )(urls);
+  return filepaths;
+};
 
 /**
  * Reads package index json files, take all package object from them and
@@ -77,10 +88,10 @@ const getAvailableBoards = R.compose(
  * Reads all package index json files in the specified directory
  * and returns a promise with a list of Available Boards.
  *
- * :: Path -> Promise [AvailableBoard] Error
+ * :: (() -> Promise Object Error) -> Path -> Promise [AvailableBoard] Error
  */
 export default R.composeP(
   getAvailableBoards,
   readPackages,
-  findPackageIndexFiles
+  getPackageIndexFiles
 );

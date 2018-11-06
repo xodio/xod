@@ -28,7 +28,6 @@ const getPinWidgetProps = R.applySpec({
   keyName: XP.getPinKey,
   type: XP.getPinType,
   label: XP.getPinLabel,
-  normalizedLabel: R.prop('normalizedLabel'),
   value: R.prop('value'),
   direction: XP.getPinDirection,
   isConnected: R.prop('isConnected'),
@@ -59,6 +58,7 @@ const createPinWidgetsConfig = R.compose(
   R.apply(R.concat),
   R.map(R.sort(R.ascend(XP.getPinOrder))),
   R.juxt([R.filter(XP.isInputPin), R.filter(XP.isOutputPin)]),
+  XP.normalizeEmptyPinLabels,
   R.values,
   R.prop('pins')
 );

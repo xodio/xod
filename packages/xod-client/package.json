@@ -1,6 +1,6 @@
 {
   "name": "xod-client",
-  "version": "0.25.0",
+  "version": "0.25.2",
   "description": "XOD project: Client application",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
@@ -19,7 +19,6 @@
     "lib": "./dist"
   },
   "dependencies": {
-    "autoscroll-react": "git+https://github.com/xodio/autoscroll-react.git#cbb3422461a28b40ca082d6a5f33f667508c3288",
     "classnames": "^2.2.5",
     "codemirror": "^5.31.0",
     "escape-string-regexp": "^1.0.5",
@@ -60,11 +59,11 @@
     "url-parse": "^1.1.9",
     "url-search-params-polyfill": "^2.0.1",
     "vec-la-fp": "^1.5.2",
-    "xod-arduino": "^0.25.0",
+    "xod-arduino": "^0.25.2",
     "xod-func-tools": "^0.25.0",
-    "xod-patch-search": "^0.25.0",
-    "xod-pm": "^0.25.0",
-    "xod-project": "^0.25.0"
+    "xod-patch-search": "^0.25.2",
+    "xod-pm": "^0.25.2",
+    "xod-project": "^0.25.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.17",

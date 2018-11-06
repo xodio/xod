@@ -50,7 +50,7 @@ function PinWidget(props) {
     props.children
   );
   return (
-    <div className="Widget PinWidget" data-pinlabel={props.normalizedLabel}>
+    <div className="Widget PinWidget" data-pinlabel={props.label}>
       {input}
       <PinIcon
         id={props.elementId}
@@ -60,14 +60,14 @@ function PinWidget(props) {
         deducedType={props.deducedType}
         isLastVariadicGroup={props.isLastVariadicGroup}
       />
-      <label htmlFor={props.elementId}>{props.normalizedLabel}</label>
+      <label htmlFor={props.elementId}>{props.label}</label>
     </div>
   );
 }
 
 PinWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
-  normalizedLabel: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
   isInvalid: PropTypes.bool,

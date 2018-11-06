@@ -625,7 +625,7 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
 // Compatibilities
 //----------------------------------------------------------------------------
 
-#if !defined(ARDUINO_ARCH_AVR)
+#if !defined(ARDUINO_ARCH_AVR) && !defined(__DTOSTRF_H_)
 /*
  * Provide dtostrf function for non-AVR platforms. Although many platforms
  * provide a stub many others do not. And the stub is based on `sprintf`
@@ -778,7 +778,7 @@ bool isTimedOut(const ContextT* ctx) {
 }
 
 bool isValidDigitalPort(uint8_t port) {
-#ifdef NUM_DIGITAL_PINS
+#if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
     return true;
@@ -786,10 +786,10 @@ bool isValidDigitalPort(uint8_t port) {
 }
 
 bool isValidAnalogPort(uint8_t port) {
-#ifdef NUM_ANALOG_INPUTS
+#if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
-    return port >= A0;
+    return true;
 #endif
 }
 
@@ -1261,9 +1261,18 @@ void evaluate(Context ctx) {
     TimeMs dt = getValue<input_IVAL>(ctx) * 1000;
     TimeMs tNext = tNow + dt;
 
-    if (isInputDirty<input_RST>(ctx) || isInputDirty<input_EN>(ctx)) {
+    auto isEnabled = getValue<input_EN>(ctx);
+    auto isRstDirty = isInputDirty<input_RST>(ctx);
+
+    if (isTimedOut(ctx) && isEnabled && !isRstDirty) {
+        emitValue<output_TICK>(ctx, 1);
+        state->nextTrig = tNext;
+        setTimeout(ctx, dt);
+    }
+
+    if (isRstDirty || isInputDirty<input_EN>(ctx)) {
         // Handle enable/disable/reset
-        if (dt <= 0 || !getValue<input_EN>(ctx)) {
+        if (dt <= 0 || !isEnabled) {
             // Disable timeout loop on zero IVAL or explicit false on EN
             state->nextTrig = 0;
             clearTimeout(ctx);
@@ -1272,12 +1281,6 @@ void evaluate(Context ctx) {
             state->nextTrig = tNext;
             setTimeout(ctx, dt);
         }
-    }
-
-    if (isTimedOut(ctx)) {
-        emitValue<output_TICK>(ctx, 1);
-        state->nextTrig = tNext;
-        setTimeout(ctx, dt);
     }
 }
 

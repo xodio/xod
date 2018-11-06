@@ -73,17 +73,8 @@ Returns a list of all boards that found in all `package_*_index.json` files.
 
 - Returns `Promise<Array<AvailableBoard>>`
 
-### addPackageIndexUrl(url)
-Adds an additional package index URL to the config file.
-Later you can download and install the package with `arduino-cli` (call `core.updateIndex()`).
-
-Accepts:
-- `url` `<String>` — a URL of the third-party `package_*_index.json` file
-
-- Returns `Promise<String>` with the just added URL
-
-### addPackageIndexUrls(urls)
-Adds a list of additional package index urls into the config file.
+### setPackageIndexUrls(urls)
+Sets a list of additional package index urls into the config file.
 Later you can download and install packages with `arduino-cli` (call `core.updateIndex()`).
 
 Accepts:
@@ -173,6 +164,16 @@ Accepts:
 - `verbose` `<Boolean>` — Verbose output. By default is `false`
 
 - Returns `Promise<String>` with a log of the upload process
+
+### getRunningProcesses()
+Returns a list of running `arduino-cli` processes.
+
+- Returns `Array<ChildProcess>`
+
+### killProcesses()
+Kills all running `arduino-cli` processes.
+
+- Returns `Boolean` `true`
 
 ## Types
 

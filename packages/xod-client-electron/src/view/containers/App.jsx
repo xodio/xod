@@ -9,14 +9,12 @@ import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
-import { Project, getProjectName, messages as xpMessages } from 'xod-project';
-import { messages as xdMessages } from 'xod-deploy';
+import { Project, getProjectName } from 'xod-project';
 import {
   foldEither,
   isAmong,
   explodeMaybe,
   noop,
-  composeErrorFormatters,
   tapP,
   eitherToPromise,
   createError,
@@ -28,6 +26,7 @@ import packageJson from '../../../package.json';
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { listBoards, upload } from '../../upload/arduinoCli';
+import uploadMessages from '../../upload/messages';
 import * as debuggerIPC from '../../debugger/ipcActions';
 import {
   getUploadProcess,
@@ -42,7 +41,6 @@ import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import formatError from '../../shared/errorFormatter';
 import * as EVENTS from '../../shared/events';
-import { default as arduinoDepMessages } from '../../arduinoDependencies/messages';
 import { INSTALL_ARDUINO_DEPENDENCIES_MSG } from '../../arduinoDependencies/constants';
 import {
   checkDeps,
@@ -51,7 +49,6 @@ import {
   proceedPackageUpgrade,
 } from '../../arduinoDependencies/actions';
 import { createSystemMessage } from '../../shared/debuggerMessages';
-import uploadMessages from '../../upload/messages';
 
 import getLibraryNames from '../../arduinoDependencies/getLibraryNames';
 
@@ -68,16 +65,11 @@ import { STATES, getEventNameWithState } from '../../shared/eventStates';
 import UpdateArduinoPackagesPopup from '../../arduinoDependencies/components/UpdateArduinoPackagesPopup';
 import { checkArduinoDependencies } from '../../arduinoDependencies/runners';
 
+import { formatErrorMessage, formatLogError } from '../formatError';
+
 const { app, dialog, Menu } = remoteElectron;
 const DEFAULT_CANVAS_WIDTH = 800;
 const DEFAULT_CANVAS_HEIGHT = 600;
-
-const formatErrorMessage = composeErrorFormatters([
-  xpMessages,
-  xdMessages,
-  arduinoDepMessages,
-  uploadMessages,
-]);
 
 const defaultState = {
   size: client.getViewableSize(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT),
@@ -99,6 +91,7 @@ class App extends client.App {
     this.onResize = this.onResize.bind(this);
 
     this.suggestProjectFilePath = this.suggestProjectFilePath.bind(this);
+    this.selectAll = this.selectAll.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(
@@ -120,6 +113,8 @@ class App extends client.App {
 
     this.onLoadProject = this.onLoadProject.bind(this);
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
+
+    this.showError = this.showError.bind(this);
 
     this.hideAllPopups = this.hideAllPopups.bind(this);
     this.showPopupSetWorkspace = this.showPopupSetWorkspace.bind(this);
@@ -155,7 +150,7 @@ class App extends client.App {
       this.showCreateWorkspacePopup(path, force)
     );
     ipcRenderer.on(EVENTS.WORKSPACE_ERROR, (event, error) => {
-      this.props.actions.addError(formatErrorMessage(error));
+      this.showError(error);
     });
     ipcRenderer.on(EVENTS.REQUEST_CLOSE_WINDOW, () => {
       this.confirmUnsavedChanges(() => {
@@ -174,7 +169,7 @@ class App extends client.App {
     // Notify about errors in the Main Process
     ipcRenderer.on(EVENTS.ERROR_IN_MAIN_PROCESS, (event, error) => {
       console.error(error); // eslint-disable-line no-console
-      this.props.actions.addError(formatErrorMessage(error));
+      this.showError(error);
     });
 
     this.urlActions = {
@@ -269,16 +264,8 @@ class App extends client.App {
 
     const eitherTProject = this.transformProjectForTranspiler(debug);
 
-    const logError = logProcessFn => error => {
-      const stanza = formatErrorMessage(error);
-      const messageForConsole = [
-        ...(stanza.title ? [stanza.title] : []),
-        ...(stanza.path ? [stanza.path.join(' -> ')] : []),
-        ...(stanza.note ? [stanza.note] : []),
-        ...(stanza.solution ? [stanza.solution] : []),
-      ].join('\n');
-      logProcessFn(messageForConsole, 0);
-    };
+    const logError = logProcessFn => error =>
+      logProcessFn(formatLogError(error), 0);
 
     stopDebuggerSession();
 
@@ -333,7 +320,13 @@ class App extends client.App {
           }
         )
       )
-      .then(() => proc.success())
+      .then(() => {
+        proc.success();
+        this.props.actions.addConfirmation(
+          // eslint-disable-next-line new-cap
+          uploadMessages.UPLOADED_SUCCESSFULLY()
+        );
+      })
       .then(() => {
         if (debug) {
           foldEither(
@@ -469,6 +462,10 @@ class App extends client.App {
     );
   }
 
+  showError(error) {
+    this.props.actions.addError(formatErrorMessage(error));
+  }
+
   confirmUnsavedChanges(onConfirm) {
     if (!this.props.hasUnsavedChanges) {
       onConfirm();
@@ -569,7 +566,7 @@ class App extends client.App {
         items.cut,
         items.copy,
         items.paste,
-        items.selectall,
+        onClick(items.selectall, this.selectAll),
         items.separator,
         onClick(items.insertNode, () => this.props.actions.showSuggester(null)),
         onClick(items.insertComment, this.props.actions.addComment),
@@ -748,6 +745,21 @@ class App extends client.App {
     this.props.actions.hideAllPopups();
   }
 
+  selectAll() {
+    // Handler for menu item "Select All"
+    // We can't use `role: 'selectall'` here, because it ignores `onClick`.
+    // So we have to handle all cases manually:
+
+    // - select all in inputs
+    if (client.isInput(document.activeElement)) {
+      document.activeElement.select();
+      return;
+    }
+
+    // - select entities on Patch
+    this.props.actions.selectAll();
+  }
+
   static listPorts() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
@@ -777,7 +789,7 @@ class App extends client.App {
 
     if (installationNeeded) {
       const err = getError(libsToInstall, packagesToInstall);
-      this.props.actions.addError(
+      this.props.actions.addNotification(
         formatErrorMessage(err),
         INSTALL_ARDUINO_DEPENDENCIES_MSG
       );
@@ -806,6 +818,7 @@ class App extends client.App {
         onPortChanged={this.onSerialPortChange}
         onUpload={this.onUploadToArduino}
         onClose={this.onUploadConfigClose}
+        onError={this.showError}
       />
     ) : null;
   }

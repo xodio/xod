@@ -625,7 +625,7 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
 // Compatibilities
 //----------------------------------------------------------------------------
 
-#if !defined(ARDUINO_ARCH_AVR)
+#if !defined(ARDUINO_ARCH_AVR) && !defined(__DTOSTRF_H_)
 /*
  * Provide dtostrf function for non-AVR platforms. Although many platforms
  * provide a stub many others do not. And the stub is based on `sprintf`
@@ -778,7 +778,7 @@ bool isTimedOut(const ContextT* ctx) {
 }
 
 bool isValidDigitalPort(uint8_t port) {
-#ifdef NUM_DIGITAL_PINS
+#if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
     return true;
@@ -786,10 +786,10 @@ bool isValidDigitalPort(uint8_t port) {
 }
 
 bool isValidAnalogPort(uint8_t port) {
-#ifdef NUM_ANALOG_INPUTS
+#if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
-    return port >= A0;
+    return true;
 #endif
 }
 

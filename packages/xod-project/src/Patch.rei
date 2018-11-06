@@ -28,6 +28,8 @@ let listPins: t => list(Pin.t);
 
 let getPinByKey: (t, Pin.key) => option(Pin.t);
 
+let getVariadicPinByKey: (t, Node.t, Pin.key) => option(Pin.t);
+
 let listInputPins: t => list(Pin.t);
 
 let listOutputPins: t => list(Pin.t);

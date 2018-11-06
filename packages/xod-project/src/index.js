@@ -23,6 +23,7 @@ export {
   getNodeByIdUnsafe,
   getPinByKey,
   getPinByKeyUnsafe,
+  getVariadicPinByKey,
   listPins,
   listInputPins,
   listOutputPins,

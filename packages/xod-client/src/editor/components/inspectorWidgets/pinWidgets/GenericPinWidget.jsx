@@ -7,7 +7,6 @@ const GenericPinWidget = props => (
   <PinWidget
     elementId={props.elementId}
     label={props.label}
-    normalizedLabel={props.normalizedLabel}
     dataType={props.dataType}
     isConnected={props.isConnected}
     isInvalid={props.isInvalid}
@@ -31,7 +30,6 @@ const GenericPinWidget = props => (
 
 GenericPinWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
-  normalizedLabel: PropTypes.string.isRequired,
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,

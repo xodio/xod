@@ -7,7 +7,6 @@ const DisabledInputWidget = props => (
   <PinWidget
     elementId={props.elementId}
     label={props.label}
-    normalizedLabel={props.normalizedLabel}
     dataType={props.dataType}
     isConnected={props.isConnected}
     isLastVariadicGroup={props.isLastVariadicGroup}
@@ -18,7 +17,6 @@ const DisabledInputWidget = props => (
 
 DisabledInputWidget.propTypes = {
   elementId: PropTypes.string.isRequired,
-  normalizedLabel: PropTypes.string.isRequired,
   label: PropTypes.string,
   dataType: PropTypes.string,
   isConnected: PropTypes.bool,
