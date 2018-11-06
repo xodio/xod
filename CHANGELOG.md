@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Do not hide any output from the compiler and uploader in the deployment pane. (#1490, #1502)
+* [ide] Fix regression: bring back the message on a successful upload. (#1491)
+* [ide] Fix ugly hover color of message and header buttons. (#1492)
+* [ide] Fix the scroll position when Deployment pane is opened for the first time. (#1494)
+* [nodes] Fix `clock` hang if the `EN` pin is constantly updated. (#1496)
+* [ide] Gracefully shutdown long background processes like package installing when quitting XOD IDE. (#1500, #1523)
+* [ide] Ensure Edit → Select All and its keyboard shortcut work properly on all OS’es and browsers. (#1505)
+* [ide] Do not raise DTR when opening a serial port on Windows. It caused issues with some boards using the CP2102 USB-to-Serial chip. (#1507)
+* [c++] Make port values validation softer on platforms which violate assumptions about underlying values of `A0`, `A1`, number of digital pins, etc. (#1508)
+* [core] Allow literals like `PA13`, `PC8` to be used for port values. It makes XOD usable on STM32-based boards. (#1512)
+* [ide] Show sensible messages and recover after trying to update package indexes pointed by malformed URLs in `extra.txt` or when the network is down. (#1509, #1525)
+* [ide] Fix helpbox outputs listed in the reverse order for some nodes. (#1432)
+* [ide] Always upload to a board with the option set shown in the upload dialog: do not mess option values between different board models. (#1519)
+* [ide] Fix converting links to buses when they are going toward variadic pins. (#1520)
+* [ide] Fix offset hotkey label position in the main menu of browser XOD IDE. (#1521)
+* [ide] Add missing labels for variadic pins in Inspector. (#1522)
+* [nodes] Make `shift-left` and `shift-right` interpret its inputs as 32-bit integers, fix pin labels and descriptions. (#1524)
+
 <a name="0.25.1"></a>
 ## 0.25.1 (2018-10-19)
 
