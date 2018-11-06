@@ -5,5 +5,5 @@
   "description": "Support for ESP8266 as a slave module",
   "license": "AGPL-3.0",
   "name": "esp8266",
-  "version": "0.25.1"
+  "version": "0.25.2"
 }

@@ -5,5 +5,5 @@
   "description": "Nodes of XOD for basic mathematical operations",
   "license": "AGPL-3.0",
   "name": "math",
-  "version": "0.25.1"
+  "version": "0.25.2"
 }
