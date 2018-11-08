@@ -183,6 +183,9 @@ module TestCase = {
     | Number(x) when x === infinity => {j|(xod::Number) INFINITY|j}
     | Number(x) when x === neg_infinity => {j|(xod::Number) -INFINITY|j}
     | Number(x) => {j|(xod::Number) $x|j}
+    | ApproxNumber(x, exp) =>
+      let margin = 10.0 ** float_of_int(exp) /. 2.0;
+      {j|Approx((xod::Number) $x).margin($margin)|j};
     | x => {j|$x|j}
     };
   /* Generates a block of code corresponding to a single TSV line check.
@@ -281,7 +284,8 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let bench = Bench.create(project, patchUnderTest);
     let probes = bench.probes;
     let benchPatchPath =
-      "tabtest-" ++ patchPathToTest
+      "tabtest-"
+      ++ patchPathToTest
       /* to convert "tabtest-@/foo" to "tabtest/local/foo" */
       |> Js.String.replace("-@", "/local");
     let safeBasename =

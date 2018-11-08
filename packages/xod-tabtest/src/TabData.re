@@ -7,11 +7,13 @@ module Value = {
     | Empty
     | NaN
     | Number(float)
+    | ApproxNumber(float, int)
     | Boolean(bool)
     | String(string)
     | Byte(int)
     | Invalid(string);
   let numberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?$/|}];
+  let approxNumberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?~$/|}];
   let stringRegex = [%re {|/^".*"$/|}];
   let byteRegex = [%re {|/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/i|}];
   let unquote = str =>
@@ -30,6 +32,11 @@ module Value = {
       init(dec) |. int_of_string |. (x => Byte(x))
     | x => Invalid(x)
     };
+  let getPrecision = x => {
+    let s = x |> Js.String.replaceByRe([%re {|/e\+\d+$/|}], "");
+    let d = Js.String.indexOf(".", s) + 1;
+    d === 0 ? 0 : Js.String.length(s) - d;
+  };
   let parse = str =>
     switch (str) {
     | "" => Empty
@@ -41,6 +48,11 @@ module Value = {
     | "-Inf" => Number(neg_infinity)
     | numString when Re.test(numString, numberRegex) =>
       Number(Js.Float.fromString(numString))
+    | approxNumString when Re.test(approxNumString, approxNumberRegex) =>
+      let strWithoutTilde =
+        approxNumString |> Js.String.replaceByRe([%re {|/~$/|}], "");
+      let num = Js.Float.fromString(strWithoutTilde);
+      ApproxNumber(num, getPrecision(strWithoutTilde));
     | quotedString when Re.test(quotedString, stringRegex) =>
       String(unquote(quotedString))
     | byteString when Re.test(byteString, byteRegex) =>

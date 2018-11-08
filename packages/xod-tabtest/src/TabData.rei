@@ -14,6 +14,7 @@ module Value: {
     | Empty
     | NaN
     | Number(float)
+    | ApproxNumber(float, int)
     | Boolean(bool)
     | String(string)
     | Byte(int)

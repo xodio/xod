@@ -51,6 +51,7 @@ describe("TSV parser", () => {
       "Number\tBoolean\tByte\tString\n"
       ++ "+.5\ttrue\t00h\t\"Hello\"\n"
       ++ "-42\ttrue\t00001101b\t\"World\"\n"
+      ++ "-1.243~\tfalse\t11111111b\t\"!\"\n"
       ++ "1.3\tfalse\t255d\t\"Some \"quoted\" string\"";
     let expected: TabData.t = [
       Map.String.empty
@@ -63,6 +64,11 @@ describe("TSV parser", () => {
       |. Map.String.set("Boolean", Boolean(true))
       |. Map.String.set("Byte", Byte(13))
       |. Map.String.set("String", String("World")),
+      Map.String.empty
+      |. Map.String.set("Number", ApproxNumber(-1.243, 3))
+      |. Map.String.set("Boolean", Boolean(false))
+      |. Map.String.set("Byte", Byte(255))
+      |. Map.String.set("String", String("!")),
       Map.String.empty
       |. Map.String.set("Number", Number(1.3))
       |. Map.String.set("Boolean", Boolean(false))
