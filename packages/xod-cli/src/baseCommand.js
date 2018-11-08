@@ -29,7 +29,9 @@ import {
   spawnWorkspaceFile,
 } from 'xod-fs';
 import * as xP from 'xod-project';
+import * as xdb from 'xod-deploy-bin';
 import { createError } from 'xod-func-tools';
+import { resolveBundledWorkspacePath } from './paths';
 import * as myFlags from './flags';
 import localMsgs from './messages';
 
@@ -99,13 +101,14 @@ class BaseCommand extends Command {
   printError(err) {
     if (!this.flags.quiet) {
       // get formatter
+      const defaultCode = 'UNKNOWN_ERROR';
       const f = compose(
         formatters => error =>
-          formatters[error.type || 'UNKNOWN_ERROR'](
-            isNil(error.payload) ? error : error.payload
-          ),
+          formatters[error.type]
+            ? formatters[error.type](error.payload)
+            : formatters[defaultCode](error),
         mergeAll
-      )([xP.messages, localMsgs])(err);
+      )([xP.messages, xdb.messages, localMsgs])(err);
       // template
       const msg = compose(
         join('\n'),
@@ -142,19 +145,21 @@ class BaseCommand extends Command {
   // ensure workspace
   async ensureWorkspace(wPath) {
     const targetPath = resolvePath(wPath || this.flags.workspace);
-    const createWorkspace = where => spawnWorkspaceFile(where);
 
-    return (this.flags.workspace = await isWorkspaceValid(targetPath).catch(
-      async e => {
-        switch (e.errorCode) {
-          case 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY':
-            return createWorkspace(e.path);
-          default:
-            this.printError(e);
-            return exit(254);
-        }
+    this.flags.workspace = await isWorkspaceValid(targetPath).catch(async e => {
+      switch (e.errorCode) {
+        case 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY':
+          return spawnWorkspaceFile(e.path);
+        default:
+          this.printError(e);
+          return exit(254);
       }
-    ));
+    });
+    await xdb.prepareWorkspacePackagesDir(
+      resolveBundledWorkspacePath(),
+      this.flags.workspace
+    );
+    return this.flags.workspace;
   }
 
   // prompt for username and password if needed and patch flags
@@ -167,6 +172,6 @@ class BaseCommand extends Command {
   }
 }
 
-BaseCommand.flags = pick(['help', 'version', 'quiet'], myFlags);
+BaseCommand.flags = pick(['help', 'version', 'quiet', 'workspace'], myFlags);
 
 export default BaseCommand;
