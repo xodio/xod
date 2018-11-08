@@ -6,6 +6,13 @@ export default {
       'The error has no formatter, which is a bug. Report the issue to XOD developers.',
   }),
 
+  ARDUINO_CLI_ERROR: ({ code, message, stacktrace }) => ({
+    title: `'arduino-cli' error, code ${code}`,
+    note: stacktrace
+      ? `${message}\nLast messages:\n${stacktrace.join('\n')}`
+      : message,
+  }),
+
   TRIED_TO_OPEN_NOT_XOD_FILE: ({ path }) => ({
     title: 'Invalid file path',
     note: `File ${path} does not exist`,

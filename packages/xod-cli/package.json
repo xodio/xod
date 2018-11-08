@@ -14,6 +14,7 @@
     "@oclif/plugin-autocomplete": "^0.1.0",
     "@oclif/plugin-help": "^2.1.4",
     "@oclif/plugin-not-found": "^1.2.2",
+    "as-table": "^1.0.36",
     "chalk": "^2.4.1",
     "cli-ux": "^4.9.3",
     "fs-extra": "^7.0.1",

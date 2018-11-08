@@ -1,3 +1,4 @@
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["patchArduinoCliError"] }] */
 import path from 'path';
 import fs from 'fs-extra';
 import { cwd, exit, stderr } from 'process';
@@ -95,6 +96,16 @@ class BaseCommand extends Command {
   // print normal log message to stderr
   info(note) {
     if (!this.flags.quiet) stderr.write(`${note}\n`);
+  }
+
+  // patch errors from xod-deploy-bin and arduino-cli
+  patchArduinoCliError(err, stacktrace = []) {
+    return err.name === 'ChildProcessError'
+      ? createError('ARDUINO_CLI_ERROR', {
+          message: err.message,
+          stacktrace,
+        })
+      : err;
   }
 
   // print formatted error

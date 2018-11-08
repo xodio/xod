@@ -1277,6 +1277,13 @@ arrify@^1.0.0, arrify@^1.0.1:
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
+as-table@^1.0.36:
+  version "1.0.36"
+  resolved "https://registry.yarnpkg.com/as-table/-/as-table-1.0.36.tgz#e38f5c85e184cd7f6efe2885d8dbc80c2b731ec4"
+  integrity sha1-449cheGEzX9u/iiF2NvIDCtzHsQ=
+  dependencies:
+    printable-characters "^1.0.37"
+
 asap@^2.0.6, asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
@@ -11611,6 +11618,11 @@ pretty-format@^22.4.3:
   dependencies:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
+
+printable-characters@^1.0.37:
+  version "1.0.42"
+  resolved "https://registry.yarnpkg.com/printable-characters/-/printable-characters-1.0.42.tgz#3f18e977a9bd8eb37fcc4ff5659d7be90868b3d8"
+  integrity sha1-Pxjpd6m9jrN/zE/1ZZ176Qhos9g=
 
 private@^0.1.6, private@^0.1.7:
   version "0.1.7"
