@@ -21,6 +21,9 @@ RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
 RUN curl https://download.docker.com/linux/debian/gpg | apt-key add - \
     && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
 
+RUN curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://dl.yarnpkg.com/debian/ stable main"
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         docker-ce \
@@ -39,4 +42,6 @@ RUN apt-get update \
         libxss1 \
         libxtst6 \
         rpm \
-        xvfb
+        xvfb \
+        # to exaclty match version installed in macOS image
+        yarn=1.10.1-1
