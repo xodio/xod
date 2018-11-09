@@ -63,6 +63,10 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
     return !lhsIt && !rhsIt;
 }
 
+template<typename T> bool operator == (List<T> lhs, List<T> rhs) {
+  return equal(lhs, rhs);
+}
+
 } // namespace xod
 
 #endif
