@@ -138,7 +138,7 @@ jobs:
   test-cpp:
     docker: *docker-custom-nodejs
     environment:
-      TAB_SUITE_DIR: /tmp/xod-tabtest
+      XOD_OUTPUT: /tmp/tabtests-cpp
     steps:
       - checkout
       - restore_cache: *restore-node_modules
@@ -150,15 +150,13 @@ jobs:
           name: Generate tabtests
           command: |
             ls -d workspace/__lib__/xod/* | xargs -n 1 \
-              yarn xodc tabtest \
-                --no-build \
-                --output-dir=$TAB_SUITE_DIR
+              yarn xodc tabtest --no-build | cat
       - run:
           name: Build tabtests
-          command: make -C $TAB_SUITE_DIR
+          command: make -C $XOD_OUTPUT
       - run:
           name: Run tabtests
-          command: make -C $TAB_SUITE_DIR test
+          command: make -C $XOD_OUTPUT test
 
   #--------------------------------------------------------------------
   # Distro jobs
