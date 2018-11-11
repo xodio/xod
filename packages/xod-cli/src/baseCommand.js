@@ -1,5 +1,6 @@
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["patchArduinoCliError"] }] */
 import path from 'path';
+import rd from 'readline';
 import fs from 'fs-extra';
 import { cwd, exit, stderr } from 'process';
 import { cli } from 'cli-ux';
@@ -91,6 +92,8 @@ class BaseCommand extends Command {
       quiet: false,
     };
     this.args = {};
+
+    this._arduinoCliLastMessage = null;
   }
 
   // print normal log message to stderr
@@ -128,6 +131,32 @@ class BaseCommand extends Command {
         when(() => f.solution, insert(0, `${chalk.magenta(f.solution)}`))
       )([]);
       process.stderr.write(`\n${msg}\n`);
+    }
+  }
+
+  // print progress from arduino-cli
+  printArduinoCliProgress({ message, percentage, estimated }) {
+    // reprint message with progress if tty and not quiet
+    if (process.stdout.isTTY && !this.flags.quiet) {
+      // start newline if a new message arrived except the first one
+      if (message !== null && this._arduinoCliLastMessage !== null)
+        process.stderr.write('\n');
+
+      if (message !== null) {
+        this._arduinoCliLastMessage = message;
+        process.stderr.write(message);
+      } else {
+        rd.clearLine(process.stderr, 0);
+        rd.cursorTo(process.stderr, 0, null);
+        const estimatedFormatted =
+          estimated !== 0 && estimated !== 'unknown' ? ` ETA ${estimated}` : '';
+        process.stderr.write(
+          `${this._arduinoCliLastMessage} ${percentage}%${estimatedFormatted}`
+        );
+      }
+    } else if (message) {
+      // just print message if notty
+      this.info(message);
     }
   }
 

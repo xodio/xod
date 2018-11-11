@@ -65,7 +65,12 @@
       "@oclif/plugin-help",
       "@oclif/plugin-not-found"
     ],
-    "repositoryPrefix": "<%- repo %>/blob/master/packages/xod-cli/<%- commandPath %>"
+    "repositoryPrefix": "<%- repo %>/blob/master/packages/xod-cli/<%- commandPath %>",
+    "topics": {
+      "install": {
+        "description": "install toolchains and libraries"
+      }
+    }
   },
   "repository": "xodio/xod",
   "scripts": {
