@@ -40,8 +40,15 @@ void evaluate(Context ctx) {
     }
 
     XString line = getValue<input_LINE>(ctx);
-    for (auto it = line.iterate(); it; ++it)
-        file.print(*it);
+    size_t lastWriteSize;
+    for (auto it = line.iterate(); it; ++it) {
+        lastWriteSize = file.print(*it);
+        if (lastWriteSize == 0) {
+            state->begun = false;
+            emitValue<output_ERR>(ctx, true);
+            return;
+        }
+    }
 
     file.print('\n');
     file.flush();
