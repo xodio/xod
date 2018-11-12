@@ -12285,10 +12285,9 @@ react-contextmenu@^2.9.1:
     classnames "^2.2.5"
     object-assign "^4.1.0"
 
-react-custom-scroll@^3.2.2:
+"react-custom-scroll@git+https://github.com/xodio/react-custom-scroll.git#aefa21e3fa3bcc173b969176b91044db05399a67":
   version "3.2.2"
-  resolved "https://registry.yarnpkg.com/react-custom-scroll/-/react-custom-scroll-3.2.2.tgz#c22dab0c3eab0138cb8d8afd1565c835feb01b6a"
-  integrity sha512-JQf2iz6GDcHTosDvQcKAttSJeBOI3uh+fVobcO1W4RVmlSqoPfVplhdwIMC+HSN6YZt6iuLAiCl1OLiu4wd/pg==
+  resolved "git+https://github.com/xodio/react-custom-scroll.git#aefa21e3fa3bcc173b969176b91044db05399a67"
 
 react-dnd-html5-backend@^2.5.1:
   version "2.5.4"
