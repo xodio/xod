@@ -16,7 +16,7 @@
         "x": 34,
         "y": 0
       },
-      "type": "xod/patch-nodes/input-number"
+      "type": "xod/patch-nodes/input-string"
     }
   ]
 }
