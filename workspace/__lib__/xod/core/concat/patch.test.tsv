@@ -1,0 +1,6 @@
+IN1	IN2	OUT
+""	"Yay"	"Yay"
+"Woo"	""	"Woo"
+"123"	"456"	"123456"
+"Hello, "	"World"	"Hello, World"
+"I said \"Hello\" "	"to him"	"I said \"Hello\" to him"
