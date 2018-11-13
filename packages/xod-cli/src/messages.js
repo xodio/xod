@@ -6,11 +6,11 @@ export default {
       'The error has no formatter, which is a bug. Report the issue to XOD developers.',
   }),
 
-  ARDUINO_CLI_ERROR: ({ code, message, stacktrace }) => ({
-    title: `'arduino-cli' error, code ${code}`,
-    note: stacktrace
-      ? `${message}\nLast messages:\n${stacktrace.join('\n')}`
-      : message,
+  ARDUINO_CLI_ERROR: ({ message }) => ({
+    title: 'Launch arduino-cli failed',
+    note: message,
+    solution:
+      'The error was not properly handled or formatted. This is a bug. Report it to XOD developers.',
   }),
 
   TRIED_TO_OPEN_NOT_XOD_FILE: ({ path }) => ({
@@ -60,7 +60,7 @@ export default {
   PUBLISH_LIBVERSION_EXISTS: ({ lib }) => ({
     title: `Library version already exists`,
     note: `Library version ${lib} already exists`,
-    solution: `ump the version of the library and try again`,
+    solution: `Bump the version of the library and try again`,
   }),
 
   PUBLISH_POST_LIBVERSION_OTHER_ERROR: ({ lib, status }) => ({
