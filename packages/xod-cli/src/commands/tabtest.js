@@ -134,7 +134,7 @@ class TabtestCommand extends BaseCommand {
       .then(() => exit(0))
       .catch(err => {
         this.printError(err);
-        return exit(100);
+        return exit((err.payload || err).code || 100);
       });
   }
 }
