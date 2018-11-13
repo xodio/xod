@@ -11,3 +11,8 @@ export const bundledWorkspacePath = path.resolve(
   'bundle',
   'workspace'
 );
+
+export const getFilesFromPath = (p, extension) => {
+  const dir = fs.readdirSync(p);
+  return dir.filter(el => el.match(new RegExp(`.*.(${extension})$`, 'ig')));
+};
