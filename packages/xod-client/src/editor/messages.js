@@ -14,7 +14,9 @@ export const CLIPBOARD_RECURSION_PASTE_ERROR = {
 export const clipboardMissingPatchPasteError = missingPatches => ({
   title: 'Invalid paste',
   note: `The clipboard contains references to missing patches: ${missingPatches}.`,
-  solution: 'Try to install libraries which provide the required patches.',
+  solution:
+    'First, bring the referred local patches, custom type patches, ' +
+    'and third-party libraries to the project.',
 });
 
 export const LIB_SUGGESTER_TYPE_TO_BEGIN =
