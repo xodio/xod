@@ -13,6 +13,13 @@ void loop();
 
 #define A0 14
 
+// undefine stdlib's abs if encountered
+// because all platforms' Arduino.h do it
+#ifdef abs
+#undef abs
+#endif
+#define abs(x) ((x)>0?(x):-(x))
+
 uint32_t millis();
 void delay(uint32_t);
 
