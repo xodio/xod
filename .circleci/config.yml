@@ -26,14 +26,9 @@ defs:
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:10-v1
+      - image: xodio/cci-node:10-v2
 
   steps:
-    step-install-node-v10-on-mac: &step-install-node-v10-on-mac
-      name: Install Node v10
-      # because macOS machine comes with node v8.6.0
-      command: curl "https://nodejs.org/dist/v10.10.0/node-v10.10.0.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
-
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
       name: Install arduino-cli
       command: |
@@ -123,14 +118,13 @@ jobs:
 
   verify-macos:
     macos:
-      xcode: "9.0"
+      xcode: "10.0.0"
     environment:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
-      - run: *step-install-node-v10-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - save_cache: *cache-node_modules
@@ -199,14 +193,13 @@ jobs:
 
   dist-macos:
     macos:
-      xcode: "9.0"
+      xcode: "10.0.0"
     environment:
       NODE_ENV: production
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
-      - run: *step-install-node-v10-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - run: *step-bump-version
