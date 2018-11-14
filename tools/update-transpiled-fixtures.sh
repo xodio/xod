@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function update_cpp_fixture {
-  node ./packages/xod-cli/bin/xodc.js transpile --output=${1}/__fixtures__/arduino.cpp ${1} @/main
+  node ./packages/xod-cli/bin/run transpile --output=${1}/__fixtures__/arduino.cpp ${1} @/main
 }
 
 update_cpp_fixture ./workspace/blink
