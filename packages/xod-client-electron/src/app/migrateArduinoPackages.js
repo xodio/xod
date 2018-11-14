@@ -12,7 +12,7 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import { app } from 'electron';
 
-import { ARDUINO_PACKAGES_DIRNAME } from './constants';
+import { ARDUINO_PACKAGES_DIRNAME } from 'xod-deploy-bin';
 
 const OLD_PACKAGE_VERSIONS = {
   avr: '1.6.19',

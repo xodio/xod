@@ -1,11 +1,11 @@
 import * as R from 'ramda';
 import * as client from 'xod-client';
 import { foldMaybe } from 'xod-func-tools';
+import { messages as xdbMessages } from 'xod-deploy-bin';
 import { INSTALL_ARDUINO_DEPENDENCIES_MSG } from './constants';
 import { installArduinoDependencies, updateArduinoPackages } from './runners';
 import { installDeps, updatePackages } from './actions';
 import { ARDUPACKAGES_UPGRADE_PROCEED } from './actionTypes';
-import MSG from './messages';
 import getLibraryNames from './getLibraryNames';
 
 import { formatErrorMessage, formatLogError } from '../view/formatError';
@@ -37,7 +37,7 @@ export default store => next => action => {
             store.dispatch(
               client.addNotification(
                 // eslint-disable-next-line new-cap
-                MSG.ARDUINO_DEPENDENCIES_INSTALLED({
+                xdbMessages.ARDUINO_DEPENDENCIES_INSTALLED({
                   libraryNames: getLibraryNames(libraries),
                   packageNames,
                 })
@@ -63,7 +63,7 @@ export default store => next => action => {
         store.dispatch(
           client.addNotification(
             // eslint-disable-next-line new-cap
-            MSG.ARDUINO_PACKAGES_UPDATED()
+            xdbMessages.ARDUINO_PACKAGES_UPDATED()
           )
         );
         proc.success();

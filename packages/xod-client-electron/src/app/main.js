@@ -5,6 +5,8 @@ import contextMenu from 'electron-context-menu';
 import windowStateKeeper from 'electron-window-state';
 import { URL } from 'url';
 import * as R from 'ramda';
+import * as xdb from 'xod-deploy-bin';
+import { tapP } from 'xod-func-tools';
 
 import {
   URL_ACTION_PROTOCOL,
@@ -19,14 +21,26 @@ import {
   startDebugSessionHandler,
   stopDebugSessionHandler,
 } from './arduinoActions';
+import {
+  subscribeListBoards,
+  subscribeUpload,
+  subscribeUpdateIndexes,
+  subscribeCheckUpdates,
+  subscribeUpgradeArduinoPackages,
+} from './arduinoCli';
+import migrateArduinoPackages from './migrateArduinoPackages';
 import * as settings from './settings';
-import { errorToPlainObject, IS_DEV, getFilePathToOpen } from './utils';
+import {
+  errorToPlainObject,
+  IS_DEV,
+  getFilePathToOpen,
+  getPathToBundledWorkspace,
+} from './utils';
 import * as WA from './workspaceActions';
 import {
   subscribeOnCheckArduinoDependencies,
   subscribeOnInstallArduinoDependencies,
 } from './arduinoDependencies';
-import * as aCli from './arduinoCli';
 import {
   configureAutoUpdater,
   subscribeOnAutoUpdaterEvents,
@@ -239,20 +253,28 @@ const onReady = () => {
 
   createWindow();
   win.webContents.on('did-finish-load', () => {
-    aCli
-      .prepareSketchDir()
-      .then(aCli.create)
+    WA.prepareWorkspaceOnLaunch(
+      (eventName, data) => win.webContents.send(eventName, data),
+      store.dispatch.updateProjectPath,
+      getFileToOpen
+    )
+      .then(() => WA.loadWorkspacePath())
+      .then(tapP(wsPath => migrateArduinoPackages(wsPath)))
+      .then(wsPath => Promise.all([wsPath, xdb.prepareSketchDir()]))
+      .then(([wsPath, sketchDir]) =>
+        xdb.createCli(getPathToBundledWorkspace(), wsPath, sketchDir, IS_DEV)
+      )
       .then(arduinoCli => {
         arduinoCliInstance = arduinoCli;
-        aCli.subscribeListBoards(arduinoCli);
-        aCli.subscribeUpload(arduinoCli);
-        aCli.subscribeUpdateIndexes(arduinoCli);
-        aCli.subscibeCheckUpdates(arduinoCli);
-        aCli.subscribeUpgradeArduinoPackages(arduinoCli);
+        subscribeListBoards(arduinoCli);
+        subscribeUpload(arduinoCli);
+        subscribeUpdateIndexes(arduinoCli);
+        subscribeCheckUpdates(arduinoCli);
+        subscribeUpgradeArduinoPackages(arduinoCli);
 
-        // On switching workspace -> update arduino-cli config
+        // On switching workspace -> update arduino-cli config and run migration
         ipcMain.on(EVENTS.SWITCH_WORKSPACE, (event, newWsPath) =>
-          aCli.switchWorkspace(arduinoCli, newWsPath)
+          xdb.switchWorkspace(arduinoCli, newWsPath)
         );
 
         subscribeOnCheckArduinoDependencies(arduinoCli);
@@ -265,12 +287,6 @@ const onReady = () => {
           errorToPlainObject(err)
         );
       });
-
-    WA.prepareWorkspaceOnLaunch(
-      (eventName, data) => win.webContents.send(eventName, data),
-      store.dispatch.updateProjectPath,
-      getFileToOpen
-    );
 
     subscribeOnAutoUpdaterEvents(
       (eventName, data) => win.webContents.send(eventName, data),
