@@ -1,3 +1,14 @@
+/**
+ * This file makes Catch2 show failed tests properly for the XString type.
+ * E.G.
+ * "some" == "something"
+ * instead of
+ * {?} == {?}
+ *
+ * Catch2 string conversion docs:
+ * https://github.com/catchorg/Catch2/blob/master/docs/tostring.md
+ */
+
 template <typename T>
 struct XodStringMaker {
     static std::string convert(T value) {

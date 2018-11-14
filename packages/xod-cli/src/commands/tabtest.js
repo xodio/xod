@@ -17,6 +17,7 @@ import * as myFlags from '../flags';
 import { getListr } from '../listr';
 import {
   resolveBundledCatch2Path,
+  resolveBundledCatch2UtilsPath,
   resolveBundledTabtestSrcPath,
   resolveBundledTabtestWorkspacePath,
   resolveBundledWorkspacePath,
@@ -102,6 +103,7 @@ class TabtestCommand extends BaseCommand {
           allPromises,
           append(fs.copy(resolveBundledTabtestSrcPath(), ctx.outDir)),
           append(fs.copy(resolveBundledCatch2Path(), ctx.outDir)),
+          append(fs.copy(resolveBundledCatch2UtilsPath(), ctx.outDir)),
           map(([filename, content]) =>
             fs.outputFile(path.join(ctx.outDir, filename), content)
           )

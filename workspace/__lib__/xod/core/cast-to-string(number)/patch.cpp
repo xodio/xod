@@ -12,6 +12,6 @@ struct State {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
     auto num = getValue<input_IN>(ctx);
-    dtostrf(num, 0, 2, state->str);
+    formatNumber(num, 2, state->str);
     emitValue<output_OUT>(ctx, XString(&state->view));
 }

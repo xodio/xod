@@ -254,7 +254,7 @@ module TestCase = {
     Cpp.(
       source([
         "#include \"catch.hpp\"",
-        "#include \"formatters.cpp\"",
+        "#include <XStringFormat.inl>",
         "",
         source(nodeAliases),
         "",

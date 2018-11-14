@@ -59,6 +59,24 @@ typename remove_reference<T>::type&& move(T&& a) {
 /*=============================================================================
  *
  *
+ * Basic XOD types
+ *
+ *
+ =============================================================================*/
+namespace xod {
+#if __SIZEOF_FLOAT__ == 4
+typedef float Number;
+#else
+typedef double Number;
+#endif
+typedef bool Logic;
+typedef unsigned long TimeMs;
+typedef uint8_t DirtyFlags;
+} // namespace xod
+
+/*=============================================================================
+ *
+ *
  * XOD-specific list/array implementations
  *
  *
@@ -573,8 +591,174 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
     return !lhsIt && !rhsIt;
 }
 
+template<typename T> bool operator == (List<T> lhs, List<T> rhs) {
+  return equal(lhs, rhs);
+}
+
 } // namespace xod
 
+#endif
+
+/*=============================================================================
+ *
+ *
+ * Format Numbers
+ *
+ *
+ =============================================================================*/
+
+/**
+ * Provide `formatNumber` cross-platform number to string converter function.
+ *
+ * Taken from here:
+ * https://github.com/client9/stringencoders/blob/master/src/modp_numtoa.c
+ * Original function name: `modp_dtoa2`.
+ *
+ * Modified:
+ * - `isnan` instead of tricky comparing and return "NaN"
+ * - handle Infinity values and return "Inf" or "-Inf"
+ * - return `OVF` and `-OVF` for numbers bigger than max possible, instead of using `sprintf`
+ * - use `Number` instead of double
+ * - if negative number rounds to zero, return just "0" instead of "-0"
+ *
+ * This is a replacement of `dtostrf`.
+ */
+
+#ifndef XOD_FORMAT_NUMBER_H
+#define XOD_FORMAT_NUMBER_H
+
+namespace xod {
+
+/**
+ * Powers of 10
+ * 10^0 to 10^9
+ */
+static const Number powers_of_10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000,
+    10000000, 100000000, 1000000000 };
+
+static void strreverse(char* begin, char* end) {
+    char aux;
+    while (end > begin)
+        aux = *end, *end-- = *begin, *begin++ = aux;
+};
+
+size_t formatNumber(Number value, int prec, char* str) {
+    if (isnan(value)) {
+        strcpy(str, "NaN");
+        return (size_t)3;
+    }
+
+    if (isinf(value)) {
+        bool isNegative = value < 0;
+        strcpy(str, isNegative ? "-Inf" : "Inf");
+        return (size_t)isNegative ? 4 : 3;
+    }
+
+    /* if input is larger than thres_max return "OVF" */
+    const Number thres_max = (Number)(0x7FFFFFFF);
+
+    Number diff = 0.0;
+    char* wstr = str;
+
+    if (prec < 0) {
+        prec = 0;
+    } else if (prec > 9) {
+        /* precision of >= 10 can lead to overflow errors */
+        prec = 9;
+    }
+
+    /* we'll work in positive values and deal with the
+	   negative sign issue later */
+    int neg = 0;
+    if (value < 0) {
+        neg = 1;
+        value = -value;
+    }
+
+    int whole = (int)value;
+    Number tmp = (value - whole) * powers_of_10[prec];
+    uint32_t frac = (uint32_t)(tmp);
+    diff = tmp - frac;
+
+    if (diff > 0.5) {
+        ++frac;
+        /* handle rollover, e.g.  case 0.99 with prec 1 is 1.0  */
+        if (frac >= powers_of_10[prec]) {
+            frac = 0;
+            ++whole;
+        }
+    } else if (diff == 0.5 && prec > 0 && (frac & 1)) {
+        /* if halfway, round up if odd, OR
+		   if last digit is 0.  That last part is strange */
+        ++frac;
+        if (frac >= powers_of_10[prec]) {
+            frac = 0;
+            ++whole;
+        }
+    } else if (diff == 0.5 && prec == 0 && (whole & 1)) {
+        ++frac;
+        if (frac >= powers_of_10[prec]) {
+            frac = 0;
+            ++whole;
+        }
+    }
+
+    if (value > thres_max) {
+        if (neg) {
+            strcpy(str, "-OVF");
+            return (size_t)4;
+        }
+        strcpy(str, "OVF");
+        return (size_t)3;
+    }
+
+    int has_decimal = 0;
+    int count = prec;
+    bool notzero = frac > 0;
+
+    /* Remove ending zeros */
+    if (prec > 0) {
+        while (count > 0 && ((frac % 10) == 0)) {
+            count--;
+            frac /= 10;
+        }
+    }
+
+    while (count > 0) {
+        --count;
+        *wstr++ = (char)(48 + (frac % 10));
+        frac /= 10;
+        has_decimal = 1;
+    }
+
+    if (frac > 0) {
+        ++whole;
+    }
+
+    /* add decimal */
+    if (has_decimal) {
+        *wstr++ = '.';
+    }
+
+    notzero = notzero || whole > 0;
+
+    /* do whole part
+	 * Take care of sign conversion
+	 * Number is reversed.
+	 */
+    do
+        *wstr++ = (char)(48 + (whole % 10));
+    while (whole /= 10);
+
+    if (neg && notzero) {
+        *wstr++ = '-';
+    }
+    *wstr = '\0';
+    strreverse(str, wstr - 1);
+    return (size_t)(wstr - str);
+}
+
+} // namespace xod
 #endif
 
 
@@ -621,79 +805,7 @@ template<typename T> bool equal(List<T> lhs, List<T> rhs) {
 #  define pgm_read_ptr(addr) (*(const void **)(addr))
 #endif
 
-//----------------------------------------------------------------------------
-// Compatibilities
-//----------------------------------------------------------------------------
-
-#if !defined(ARDUINO_ARCH_AVR) && !defined(__DTOSTRF_H_)
-/*
- * Provide dtostrf function for non-AVR platforms. Although many platforms
- * provide a stub many others do not. And the stub is based on `sprintf`
- * which doesn’t work with floating point formatters on some platforms
- * (e.g. Arduino M0).
- *
- * This is an implementation based on `fcvt` standard function. Taken here:
- * https://forum.arduino.cc/index.php?topic=368720.msg2542614#msg2542614
- */
-char *dtostrf(double val, int width, unsigned int prec, char *sout) {
-    int decpt, sign, reqd, pad;
-    const char *s, *e;
-    char *p;
-    s = fcvt(val, prec, &decpt, &sign);
-    if (prec == 0 && decpt == 0) {
-        s = (*s < '5') ? "0" : "1";
-        reqd = 1;
-    } else {
-        reqd = strlen(s);
-        if (reqd > decpt) reqd++;
-        if (decpt == 0) reqd++;
-    }
-    if (sign) reqd++;
-    p = sout;
-    e = p + reqd;
-    pad = width - reqd;
-    if (pad > 0) {
-        e += pad;
-        while (pad-- > 0) *p++ = ' ';
-    }
-    if (sign) *p++ = '-';
-    if (decpt <= 0 && prec > 0) {
-        *p++ = '0';
-        *p++ = '.';
-        e++;
-        while ( decpt < 0 ) {
-            decpt++;
-            *p++ = '0';
-        }
-    }
-    while (p < e) {
-        *p++ = *s++;
-        if (p == e) break;
-        if (--decpt == 0) *p++ = '.';
-    }
-    if (width < 0) {
-        pad = (reqd + width) * -1;
-        while (pad-- > 0) *p++ = ' ';
-    }
-    *p = 0;
-    return sout;
-}
-#endif
-
-
 namespace xod {
-//----------------------------------------------------------------------------
-// Type definitions
-//----------------------------------------------------------------------------
-#if __SIZEOF_FLOAT__ == 4
-typedef float Number;
-#else
-typedef double Number;
-#endif
-typedef bool Logic;
-typedef unsigned long TimeMs;
-typedef uint8_t DirtyFlags;
-
 //----------------------------------------------------------------------------
 // Global variables
 //----------------------------------------------------------------------------
@@ -1685,7 +1797,7 @@ State* getState(Context ctx) {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
     auto num = getValue<input_IN>(ctx);
-    dtostrf(num, 0, 2, state->str);
+    formatNumber(num, 2, state->str);
     emitValue<output_OUT>(ctx, XString(&state->view));
 }
 

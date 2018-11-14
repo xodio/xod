@@ -13,6 +13,6 @@ void evaluate(Context ctx) {
     auto state = getState(ctx);
     auto num = getValue<input_NUM>(ctx);
     auto dig = getValue<input_DIG>(ctx);
-    dtostrf(num, 0, dig, state->str);
+    formatNumber(num, dig, state->str);
     emitValue<output_STR>(ctx, XString(&state->view));
 }
