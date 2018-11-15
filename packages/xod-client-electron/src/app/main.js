@@ -291,7 +291,11 @@ const onReady = () => {
       win.setTitle(newTitle);
     });
 
-    autoUpdater.checkForUpdates();
+    // On Linux XOD auto updates are not supported.
+    // Use of OS package manager is encouraged there.
+    if (process.platform === 'win32' || process.platform === 'darwin') {
+      autoUpdater.checkForUpdates();
+    }
   });
 };
 
