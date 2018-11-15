@@ -22,6 +22,8 @@ import {
   resolveBundledWorkspacePath,
 } from '../paths';
 
+const defaultOutputDir = path.resolve(tmpdir(), 'xod-tabtest');
+
 const spawn = (cmd, args, opts) =>
   new Promise((resolve, reject) => {
     childProcess.spawn(cmd, args, opts).on('exit', code => {
@@ -52,25 +54,29 @@ class TabtestCommand extends BaseCommand {
       resolveBundledWorkspacePath(),
     ];
 
-    const childProcessOpts = {
-      stdio: quiet
-        ? ['inherit', 'ignore', 'ignore']
-        : ['inherit', 'inherit', 'inherit'],
-      shell: true,
-      cwd: outDir,
-    };
-
-    const prepareDirectoryTask = {
-      title: 'Preparing directory',
-      task: () => fs.ensureDir(outDir),
-    };
-
     const loadProjectTask = {
       title: 'Loading project',
       task: ctx =>
         loadProject(workspaces, projectPath).then(project => {
           ctx.project = project;
+          ctx.outDir =
+            outDir === defaultOutputDir
+              ? path.resolve(outDir, project.name)
+              : outDir;
         }),
+    };
+
+    const prepareDirectoryTask = {
+      title: 'Preparing directory',
+      task: ctx =>
+        fs
+          .ensureDir(ctx.outDir)
+          .then(
+            () =>
+              outDir === defaultOutputDir
+                ? fs.emptyDir(ctx.outDir)
+                : Promise.resolve()
+          ),
     };
 
     const generateCppTask = {
@@ -94,22 +100,29 @@ class TabtestCommand extends BaseCommand {
       task: async ctx =>
         await compose(
           allPromises,
-          append(fs.copy(resolveBundledTabtestSrcPath(), outDir)),
-          append(fs.copy(resolveBundledCatch2Path(), outDir)),
+          append(fs.copy(resolveBundledTabtestSrcPath(), ctx.outDir)),
+          append(fs.copy(resolveBundledCatch2Path(), ctx.outDir)),
           map(([filename, content]) =>
-            fs.outputFile(path.join(outDir, filename), content)
+            fs.outputFile(path.join(ctx.outDir, filename), content)
           )
         )(ctx.pairs),
     };
 
     await getListr(
       !quiet,
-      [prepareDirectoryTask, loadProjectTask, generateCppTask, saveFilesTask],
+      [loadProjectTask, prepareDirectoryTask, generateCppTask, saveFilesTask],
       { collapse: false }
     )
       .run()
-      .then(async () => {
+      .then(async ctx => {
         if (!noBuild) {
+          const childProcessOpts = {
+            stdio: quiet
+              ? ['inherit', 'ignore', 'ignore']
+              : ['inherit', 'inherit', 'inherit'],
+            shell: true,
+            cwd: ctx.outDir,
+          };
           this.info('Compiling...');
           await spawn('make', [], childProcessOpts);
           this.info('Testing...');
@@ -136,7 +149,7 @@ TabtestCommand.flags = {
     description: 'path to directory where to save tabtest data',
     env: 'XOD_OUTPUT',
     helpValue: 'path',
-    default: path.join(tmpdir(), 'xod-tabtest'),
+    default: defaultOutputDir,
     parse: p => resolvePath(p),
   }),
   'no-build': flags.boolean({

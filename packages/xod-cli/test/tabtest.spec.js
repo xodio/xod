@@ -1,9 +1,12 @@
 import { test } from '@oclif/test';
 import { assert } from 'chai';
 import path from 'path';
+import os from 'os';
 import process from 'process';
 import fs from 'fs-extra';
 import { bundledWorkspacePath, createWorkingDirectory } from './helpers';
+
+const defaultOutputDir = path.resolve(os.tmpdir(), 'xod-tabtest');
 
 // save process.exit for unmocking
 const exit = process.exit;
@@ -75,7 +78,6 @@ const its = (wd, tabtestOutDir) => {
     .env({ XOD_WORKSPACE: myWSPath })
     .command([
       'tabtest',
-      `--output-dir=${tabtestOutDir}`,
       '--no-build',
       path.resolve(bundledWorkspacePath, '__lib__', 'xod', 'bits'),
     ])
@@ -86,12 +88,12 @@ const its = (wd, tabtestOutDir) => {
         assert.notEqual(ctx.stderr, '', 'stderr must be with messages');
         assert.equal(process.exitCode, 0, 'exit code must be zero');
         assert.isOk(
-          await fs.pathExists(tabtestOutDir),
+          await fs.pathExists(defaultOutputDir),
           'output dir should be created'
         );
         assert.isOk(
           await fs.pathExists(
-            path.resolve(tabtestOutDir, 'bcd-to-dec.sketch.cpp')
+            path.resolve(defaultOutputDir, 'bits', 'bcd-to-dec.sketch.cpp')
           ),
           'tabtest sketch must be copied'
         );
@@ -100,11 +102,11 @@ const its = (wd, tabtestOutDir) => {
 
   stdMock
     .env({ XOD_WORKSPACE: myWSPath })
-    .env({ XOD_OUTPUT: tabtestOutDir })
     .command([
       'tabtest',
       '--no-build',
       '--quiet',
+      `--output-dir=${tabtestOutDir}`,
       path.resolve(
         bundledWorkspacePath,
         '__lib__',
@@ -277,10 +279,11 @@ describe('xodc tabtest', () => {
     });
 
     // unmock process.exit
-    afterEach(() => {
+    afterEach(async () => {
       process.exit = exit;
       // clean out tabtest working directory
-      fs.removeSync(tabtestOutDir);
+      await fs.remove(tabtestOutDir);
+      await fs.remove(defaultOutputDir);
     });
 
     its(wd, tabtestOutDir);
@@ -300,10 +303,11 @@ describe('xodc tabtest', () => {
     });
 
     // unmock process.exit
-    afterEach(() => {
+    afterEach(async () => {
       process.exit = exit;
       // clean out tabtest working directory
-      fs.removeSync(tabtestOutDir);
+      await fs.remove(tabtestOutDir);
+      await fs.remove(defaultOutputDir);
     });
 
     its(wd, tabtestOutDir);
