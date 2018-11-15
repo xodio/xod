@@ -406,14 +406,14 @@ describe('xodc publish', () => {
   const wd = createWorkingDirectory('publish');
 
   // create working directory
-  before(() => fs.ensureDir(wd));
+  before(() => fs.ensureDirSync(wd));
 
   // remove working directory
   // unmock TTY status
   after(() => {
     process.stdout.isTTY = isTTY;
     process.stderr.isTTY = isTTY;
-    return fs.remove(wd);
+    fs.removeSync(wd);
   });
 
   describe('common', () => {

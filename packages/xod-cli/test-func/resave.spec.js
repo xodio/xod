@@ -117,14 +117,14 @@ describe('xodc resave', () => {
   const wd = createWorkingDirectory('resave');
 
   // create working directory
-  before(() => fs.ensureDir(wd));
+  before(() => fs.ensureDirSync(wd));
 
   // remove working directory
   // unmock TTY status
   after(() => {
     process.stdout.isTTY = isTTY;
     process.stderr.isTTY = isTTY;
-    return fs.remove(wd);
+    return fs.removeSync(wd);
   });
 
   describe('common', () => {

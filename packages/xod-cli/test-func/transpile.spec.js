@@ -150,10 +150,10 @@ describe('xodc transpile', () => {
   const outCppPath = path.resolve(wd, 'out.cpp');
 
   // create working directory
-  before(() => fs.ensureDir(wd));
+  before(() => fs.ensureDirSync(wd));
 
   // remove working directory
-  after(() => fs.remove(wd));
+  after(() => fs.removeSync(wd));
 
   // remove working directory
   // unmock TTY status
@@ -234,7 +234,7 @@ describe('xodc transpile', () => {
     afterEach(() => {
       process.exit = exit;
       // remove output file
-      return fs.remove(outCppPath);
+      fs.removeSync(outCppPath);
     });
 
     its(wd, outCppPath);
@@ -257,7 +257,7 @@ describe('xodc transpile', () => {
     afterEach(() => {
       process.exit = exit;
       // remove output file
-      return fs.remove(outCppPath);
+      fs.removeSync(outCppPath);
     });
 
     its(wd, outCppPath);
