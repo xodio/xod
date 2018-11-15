@@ -3,6 +3,7 @@
 #define ARDUINO_H
 
 #include <algorithm>  // for min/max
+#include <cmath>      // for isfinite
 #include <stddef.h>   // for size_t
 #include <stdint.h>   // for uint32_t, etc
 #include <string.h>   // for strlen
@@ -16,6 +17,12 @@ void loop();
 
 using ::std::min;
 using ::std::max;
+
+// undefine C isfinite if encountered
+#ifdef isfinite
+#undef isfinite
+#endif
+using ::std::isfinite;
 
 // undefine stdlib's abs if encountered
 // because all platforms' Arduino.h do it
