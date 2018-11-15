@@ -1,0 +1,8 @@
+IN	OUT
+0	true
+10	true
+732.123	true
+-732.123	true
+NaN	false
+Inf	false
+-Inf	false

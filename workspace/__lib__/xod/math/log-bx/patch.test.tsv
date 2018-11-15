@@ -1,0 +1,9 @@
+B	X	OUT
+0	0	NaN
+1	1	NaN
+2	2	1
+10	10	1
+2	7	0.3562~
+-10	10	NaN
+Inf	Inf	NaN
+-Inf	Inf	NaN

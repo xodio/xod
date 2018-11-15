@@ -1,0 +1,10 @@
+IN	OUT
+0	-Inf
+1	0
+10	1
+1000	3
+-1	NaN
+-100	NaN
+NaN	NaN
+Inf	Inf
+-Inf	NaN

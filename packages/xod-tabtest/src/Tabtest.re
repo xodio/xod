@@ -168,6 +168,7 @@ module Cpp = {
   let catch2TestCase = (name, children) =>
     "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
+  let requireIsNan = value => {j|REQUIRE(isnan($value));|j};
 };
 
 /* A test case corresponds to TEST_CASE in Catch2 and a single TSV tabtest in XOD. */
@@ -179,6 +180,12 @@ module TestCase = {
     | Boolean(false) => "false"
     | NaN => "NAN"
     | String(x) => Cpp.enquote(x)
+    | Number(x) when x === infinity => {j|(xod::Number) INFINITY|j}
+    | Number(x) when x === neg_infinity => {j|(xod::Number) -INFINITY|j}
+    | Number(x) => {j|(xod::Number) $x|j}
+    | ApproxNumber(x, exp) =>
+      let margin = 10.0 ** float_of_int(exp) /. 2.0;
+      {j|Approx((xod::Number) $x).margin($margin)|j};
     | x => {j|$x|j}
     };
   /* Generates a block of code corresponding to a single TSV line check.
@@ -191,7 +198,9 @@ module TestCase = {
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. TabData.Record.get(name)) {
-           | Some(value) => {j|INJECT(probe_$name, $value);|j}
+           | Some(value) =>
+             let literal = valueToLiteral(value);
+             {j|INJECT(probe_$name, $literal);|j};
            | None => {j|// No changes for $name|j}
            };
          });
@@ -201,6 +210,7 @@ module TestCase = {
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
+           | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
            | Some(value) =>
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
@@ -274,7 +284,8 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let bench = Bench.create(project, patchUnderTest);
     let probes = bench.probes;
     let benchPatchPath =
-      "tabtest-" ++ patchPathToTest
+      "tabtest-"
+      ++ patchPathToTest
       /* to convert "tabtest-@/foo" to "tabtest/local/foo" */
       |> Js.String.replace("-@", "/local");
     let safeBasename =

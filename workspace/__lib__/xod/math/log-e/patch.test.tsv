@@ -1,0 +1,9 @@
+IN	OUT
+0	-Inf
+-1	NaN
+1	0
+2	0.69315~
+0.2	-1.6094~
+NaN	NaN
+Inf	Inf
+-Inf	NaN
