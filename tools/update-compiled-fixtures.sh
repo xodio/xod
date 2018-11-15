@@ -18,4 +18,3 @@ function update_fixture {
 }
 
 update_fixture uno ./workspace/blink firmware.hex
-update_fixture due ./workspace/blink firmware.bin
