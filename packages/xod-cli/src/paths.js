@@ -11,3 +11,6 @@ export const resolveBundledTabtestSrcPath = () =>
 
 export const resolveBundledCatch2Path = () =>
   path.resolve(__dirname, '..', 'bundle', 'catch2');
+
+export const resolveBundledCatch2UtilsPath = () =>
+  path.resolve(__dirname, '..', 'bundle', 'catch2utils');

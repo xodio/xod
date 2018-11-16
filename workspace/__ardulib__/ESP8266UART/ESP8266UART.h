@@ -262,7 +262,7 @@ bool ESP8266::createTCP(const char* addr, uint32_t port) {
     writeCmd(COMMA_2);
     print(addr);
     writeCmd(COMMA_1);
-    dtostrf(port, 0, 0, _port);
+    formatNumber(port, 0, _port);
     println(_port);
 
     bool ok = cmdOK(OK, ERROR, 5000);
@@ -286,7 +286,7 @@ bool ESP8266::send(char* message) {
 
     size_t len = sprintf(message, "%s", message);
     char reqLen[len];
-    dtostrf(len, 0, 0, reqLen);
+    formatNumber(len, 0, reqLen);
     println(reqLen);
 
     bool prompt = cmdOK(PROMPT, LINK_IS_NOT);

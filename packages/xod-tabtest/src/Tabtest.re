@@ -179,7 +179,9 @@ module TestCase = {
     | Boolean(true) => "true"
     | Boolean(false) => "false"
     | NaN => "NAN"
-    | String(x) => Cpp.enquote(x)
+    | String(x) =>
+      let str = Cpp.enquote(x);
+      {j|xod::XStringCString($str)|j};
     | Number(x) when x === infinity => {j|(xod::Number) INFINITY|j}
     | Number(x) when x === neg_infinity => {j|(xod::Number) -INFINITY|j}
     | Number(x) => {j|(xod::Number) $x|j}
@@ -252,6 +254,7 @@ module TestCase = {
     Cpp.(
       source([
         "#include \"catch.hpp\"",
+        "#include <XStringFormat.inl>",
         "",
         source(nodeAliases),
         "",

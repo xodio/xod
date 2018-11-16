@@ -2,16 +2,27 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
-#include <stddef.h> // for size_t
-#include <stdint.h> // for uint32_t, etc
-#include <string.h> // for strlen
-#include <stdlib.h> // for fcvt
+#include <algorithm>  // for min/max
+#include <cmath>      // for isfinite
+#include <stddef.h>   // for size_t
+#include <stdint.h>   // for uint32_t, etc
+#include <string.h>   // for strlen
+#include <stdlib.h>   // to bring `abs` before its redefinition below
 #include <math.h>
 
 void setup();
 void loop();
 
 #define A0 14
+
+using ::std::min;
+using ::std::max;
+
+// undefine C isfinite if encountered
+#ifdef isfinite
+#undef isfinite
+#endif
+using ::std::isfinite;
 
 // undefine stdlib's abs if encountered
 // because all platforms' Arduino.h do it
