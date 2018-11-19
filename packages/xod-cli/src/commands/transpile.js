@@ -1,19 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { exit, stdout } from 'process';
-import { compose, identity, map, pick } from 'ramda';
+import { pick } from 'ramda';
 import { flags } from '@oclif/command';
-import { loadProject, writeFile, resolvePath } from 'xod-fs';
-import {
-  transformProject,
-  transformProjectWithDebug,
-  transpile,
-} from 'xod-arduino';
-import { foldEither } from 'xod-func-tools';
+import { writeFile, resolvePath } from 'xod-fs';
 
 import BaseCommand from '../baseCommand';
 import * as commonArgs from '../args';
 import * as myFlags from '../flags';
 import { getListr } from '../listr';
+import { loadProjectTask, transformTask, transpileTask } from '../listrTasks';
 import { resolveBundledWorkspacePath } from '../paths';
 
 class TranspileCommand extends BaseCommand {
@@ -21,59 +16,28 @@ class TranspileCommand extends BaseCommand {
     this.parseArgv(TranspileCommand);
     await this.ensureWorkspace();
     await this.parseEntrypoint();
-    const { debug, workspace, output, quiet } = this.flags;
+    const { debug, output, quiet } = this.flags;
     const { projectPath } = this.args;
+    const workspaces = [this.flags.workspace, resolveBundledWorkspacePath()];
     const patchName = this.args.patchName || '@/main';
 
-    const loadProjectTask = {
-      title: 'Project loading',
-      task: ctx =>
-        loadProject(
-          [workspace, resolveBundledWorkspacePath()],
-          projectPath
-        ).then(project => {
-          ctx.project = project;
-        }),
-    };
-
-    const transformTask = {
-      title: 'Transforming',
-      task: ctx => {
-        ctx.transform = debug
-          ? transformProjectWithDebug(ctx.project, patchName)
-          : transformProject(ctx.project, patchName);
-      },
-    };
-
-    const transpileTask = {
-      title: 'Transpiling',
-      task: ctx => {
-        ctx.transpile = compose(
-          eitherCode =>
-            foldEither(
-              err => {
-                throw err;
-              },
-              identity,
-              eitherCode
-            ),
-          map(transpile)
-        )(ctx.transform);
-      },
-    };
-
-    const saveToFileTask = {
+    const saveToFileTask = out => ({
       title: 'Saving',
-      skip: ctx => !(ctx.transpile && output),
+      skip: ctx => !(ctx.transpile && out),
       task: ctx =>
-        writeFile(output, ctx.transpile, 'utf-8').then(r => {
+        writeFile(out, ctx.transpile, 'utf-8').then(r => {
           ctx.status = `Saved to ${r.path}`;
         }),
-    };
+    });
 
     await getListr(
       !quiet,
-      [loadProjectTask, transformTask, transpileTask, saveToFileTask],
+      [
+        loadProjectTask(workspaces, projectPath),
+        transformTask(patchName, debug),
+        transpileTask(),
+        saveToFileTask(output),
+      ],
       { collapse: false }
     )
       .run()
@@ -105,6 +69,7 @@ TranspileCommand.flags = {
     char: 'o',
     description: 'C++ output file path, default to stdout',
     env: 'XOD_OUTPUT',
+    helpValue: 'path',
     parse: p => resolvePath(p),
   }),
 };

@@ -204,7 +204,7 @@ describe('xodc tabtest', () => {
   after(() => {
     process.stdout.isTTY = isTTY;
     process.stderr.isTTY = isTTY;
-    return fs.remove(wd);
+    fs.removeSync(wd);
   });
 
   describe('common', () => {

@@ -20,13 +20,13 @@ import {
   createError,
 } from 'xod-func-tools';
 import { transpile, getNodeIdsMap, getRequireUrls } from 'xod-arduino';
+import { messages as xdbMessages } from 'xod-deploy-bin';
 
 import packageJson from '../../../package.json';
 
 import * as actions from '../actions';
 import * as uploadActions from '../../upload/actions';
 import { listBoards, upload } from '../../upload/arduinoCli';
-import uploadMessages from '../../upload/messages';
 import * as debuggerIPC from '../../debugger/ipcActions';
 import {
   getUploadProcess,
@@ -48,6 +48,9 @@ import {
   closePackageUpdatePopup,
   proceedPackageUpgrade,
 } from '../../arduinoDependencies/actions';
+import { loadWorkspacePath } from '../../app/workspaceActions';
+import { getPathToBundledWorkspace } from '../../app/utils';
+
 import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import getLibraryNames from '../../arduinoDependencies/getLibraryNames';
@@ -302,8 +305,10 @@ class App extends client.App {
             });
         })
       )
-      .then(transpile)
-      .then(code =>
+      .then(transform =>
+        Promise.all([transpile(transform), loadWorkspacePath()])
+      )
+      .then(([code, ws]) =>
         upload(
           progressData => {
             proc.progress(
@@ -317,6 +322,8 @@ class App extends client.App {
             cloud,
             board,
             port,
+            ws,
+            wsBundledPath: getPathToBundledWorkspace(),
           }
         )
       )
@@ -324,7 +331,7 @@ class App extends client.App {
         proc.success();
         this.props.actions.addConfirmation(
           // eslint-disable-next-line new-cap
-          uploadMessages.UPLOADED_SUCCESSFULLY()
+          xdbMessages.UPLOADED_SUCCESSFULLY()
         );
       })
       .then(() => {

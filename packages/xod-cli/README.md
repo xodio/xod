@@ -24,7 +24,7 @@ $ npm install -g xod-cli
 $ xodc COMMAND
 running command...
 $ xodc (-v|--version|version)
-xod-cli/0.25.0 linux-x64 node-v10.11.0
+xod-cli/0.25.0 linux-x64 node-v10.13.0
 $ xodc --help [COMMAND]
 USAGE
   $ xodc COMMAND
@@ -40,27 +40,29 @@ For example, instead of `--username` you can declare variable `XOD_USERNAME`.
 | Flag         | Alias | Environment variable |
 |--------------|-------|----------------------|
 | --api        |       | XOD_API              |
+| --board      | -b    | XOD_BOARD            |
 | --debug      |       | XOD_DEBUG            |
-| --help       | -h    |                      |
-| --no-build   |       |                      |
 | --on-behalf  |       | XOD_ONBEHALF         |
 | --output     | -o    | XOD_OUTPUT           |
 | --output-dir | -o    | XOD_OUTPUT           |
 | --password   |       | XOD_PASSWORD         |
-| --quiet      | -q    |                      |
+| --port       | -p    | XOD_PORT             |
 | --username   |       | XOD_USERNAME         |
-| --version    | -V    |                      |
 | --workspace  | -w    | XOD_WORKSPACE        |
 
 
 # Commands
 <!-- commands -->
 * [`xodc autocomplete [SHELL]`](#xodc-autocomplete-shell)
+* [`xodc boards [options]`](#xodc-boards-options)
+* [`xodc compile [options] [entrypoint]`](#xodc-compile-options-entrypoint)
 * [`xodc help [COMMAND]`](#xodc-help-command)
+* [`xodc install:arch [fqbn]`](#xodc-installarch-fqbn)
 * [`xodc publish [options] [project]`](#xodc-publish-options-project)
 * [`xodc resave [options] [project]`](#xodc-resave-options-project)
 * [`xodc tabtest [options] [entrypoint]`](#xodc-tabtest-options-entrypoint)
 * [`xodc transpile [options] [entrypoint]`](#xodc-transpile-options-entrypoint)
+* [`xodc upload [options] [entrypoint]`](#xodc-upload-options-entrypoint)
 
 ## `xodc autocomplete [SHELL]`
 
@@ -85,6 +87,66 @@ EXAMPLES
 
 _See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v0.1.0/src/commands/autocomplete/index.ts)_
 
+## `xodc boards [options]`
+
+show available boards
+
+```
+USAGE
+  $ xodc boards [options]
+
+OPTIONS
+  -V, --version         show CLI version
+  -h, --help            show CLI help
+  -q, --quiet           do not log messages other than errors
+  -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
+```
+
+_See code: [src/commands/boards.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/boards.js)_
+
+## `xodc compile [options] [entrypoint]`
+
+compiles (verifies) a XOD program
+
+```
+USAGE
+  $ xodc compile [options] [entrypoint]
+
+ARGUMENTS
+  ENTRYPOINT
+      Project and/or patch to operate on. The project should point to a file or
+      directory on the file system. The patch may either point to file system or
+      be a XOD patch path. If either is omitted, it is inferred from the current
+      working directory or another argument. Examples:
+
+         * ./path/to/proj.xodball main      # xodball + patch name
+         * ./path/to/proj/main/patch.xodp   # just full path to a patch
+         * main                             # a patch in the current project
+
+OPTIONS
+  -V, --version         show CLI version
+  -b, --board=fqbn      (required) target board identifier (see `xodc boards` output)
+  -h, --help            show CLI help
+
+  -o, --output=path     save the result binary to the directory; the same directory is used for intermediate build
+                        artifacts; defaults to `cwd`
+
+  -q, --quiet           do not log messages other than errors
+
+  -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
+
+  --debug               enable debug traces
+
+EXAMPLES
+  Compile a program using the current patch as entry point
+  $ xodc compile -b arduino:avr:uno
+
+  Compile the patch `main` from the xodball project and save binaries in `bin/uno.hex`
+  $ xodc compile -b arduino:arv:uno foo.xodball main -o bin/uno.hex
+```
+
+_See code: [src/commands/compile.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/compile.js)_
+
 ## `xodc help [COMMAND]`
 
 display help for xodc
@@ -100,7 +162,27 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.3/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.4/src/commands/help.ts)_
+
+## `xodc install:arch [fqbn]`
+
+install toolchains
+
+```
+USAGE
+  $ xodc install:arch [fqbn]
+
+ARGUMENTS
+  FQBN  Board FQBN. `arduino:sam` for example.
+
+OPTIONS
+  -V, --version         show CLI version
+  -h, --help            show CLI help
+  -q, --quiet           do not log messages other than errors
+  -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
+```
+
+_See code: [src/commands/install/arch.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/install/arch.js)_
 
 ## `xodc publish [options] [project]`
 
@@ -123,6 +205,7 @@ OPTIONS
   -V, --version         show CLI version
   -h, --help            show CLI help
   -q, --quiet           do not log messages other than errors
+  -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
   --api=hostname        [default: xod.io] XOD API hostname
   --on-behalf=username  publish on behalf of the username
   --password=password   XOD API password
@@ -237,7 +320,7 @@ ARGUMENTS
 OPTIONS
   -V, --version         show CLI version
   -h, --help            show CLI help
-  -o, --output=output   C++ output file path, default to stdout
+  -o, --output=path     C++ output file path, default to stdout
   -q, --quiet           do not log messages other than errors
   -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
   --debug               enable debug traces
@@ -254,4 +337,39 @@ EXAMPLES
 ```
 
 _See code: [src/commands/transpile.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/transpile.js)_
+
+## `xodc upload [options] [entrypoint]`
+
+uploads a XOD program to the board
+
+```
+USAGE
+  $ xodc upload [options] [entrypoint]
+
+ARGUMENTS
+  ENTRYPOINT
+      Project and/or patch to operate on. The project should point to a file or
+      directory on the file system. The patch may either point to file system or
+      be a XOD patch path. If either is omitted, it is inferred from the current
+      working directory or another argument. Examples:
+
+         * ./path/to/proj.xodball main      # xodball + patch name
+         * ./path/to/proj/main/patch.xodp   # just full path to a patch
+         * main                             # a patch in the current project
+
+OPTIONS
+  -V, --version         show CLI version
+  -b, --board=fqbn      (required) target board identifier (see `xodc boards` output)
+  -h, --help            show CLI help
+  -p, --port=port       (required) port to use for upload
+  -q, --quiet           do not log messages other than errors
+  -w, --workspace=path  [default: ~/xod] use the workspace specified, defaults to $HOME/xod
+  --debug               enable debug traces
+
+EXAMPLE
+  Compile a program using the current patch as entry point, upload to ttyACM1
+  $ xodc upload -b arduino:avr:uno -p /dev/ttyACM1
+```
+
+_See code: [src/commands/upload.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/upload.js)_
 <!-- commandsstop -->

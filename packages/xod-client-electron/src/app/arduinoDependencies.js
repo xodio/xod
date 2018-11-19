@@ -14,6 +14,7 @@ import {
   checkLibrariesInstalledByUrls,
   installLibrariesByUrls,
 } from 'xod-deploy';
+import { ARDUINO_LIBRARIES_DIRNAME } from 'xod-deploy-bin';
 
 import {
   CHECK_ARDUINO_DEPENDENCIES_INSTALLED,
@@ -21,7 +22,6 @@ import {
 } from '../shared/events';
 import subscribeIpc from './subscribeIpc';
 import { getPathToBundledWorkspace } from './utils';
-import { ARDUINO_LIBRARIES_DIRNAME } from './constants';
 import { loadWorkspacePath } from './workspaceActions';
 
 export const getArdulibsPath = p => path.resolve(p, ARDUINO_LIBRARIES_DIRNAME);

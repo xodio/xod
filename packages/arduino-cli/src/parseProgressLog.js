@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-const progressBarRegExp = /^\s?(?:[a-zA-Z0-9:@.\-_]+\s)?[0-9.]+(?:\s(?:Ki|Mi)?B)? \/ [0-9.]+(?:\s(?:Ki|Mi)?B)? (?:\[[=>-]+\])?\s+([0-9.]+)%\s?([0-9smh]+)?/;
+const progressBarRegExp = /^\s?(?:[a-zA-Z0-9:@.\-_+]+\s)?[0-9.]+(?:\s(?:Ki|Mi)?B)? \/ [0-9.]+(?:\s(?:Ki|Mi)?B)? (?:\[[=>-]+\])?\s+([0-9.]+)%\s?([0-9smh]+)?/;
 
 export const parseProgressMessage = str =>
   R.compose(

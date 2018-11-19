@@ -7,7 +7,7 @@
     "build": "babel src/ -d dist/ --source-maps",
     "clean:dist": "rimraf ./bin ./__lib__",
     "test": "BABEL_DISABLE_CACHE=1 mocha test/**/*.spec.js",
-    "test-func": "BABEL_DISABLE_CACHE=1 mocha test-func/**/*.spec.js"
+    "test-func": "BABEL_DISABLE_CACHE=1 mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "keywords": [
     "arduino-cli"

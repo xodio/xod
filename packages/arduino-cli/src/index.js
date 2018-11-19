@@ -53,7 +53,7 @@ const ArduinoCli = (pathToBin, config = null) => {
     )(args);
 
     const promise = spawn(escapeSpacesNonWin(pathToBin), spawnArgs, {
-      stdin: 'inherit',
+      stdio: ['inherit', 'pipe', 'pipe'],
       shell: true,
     });
     const proc = promise.childProcess;

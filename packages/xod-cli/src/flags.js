@@ -15,6 +15,14 @@ export const api = flags.string({
   helpValue: 'hostname',
 });
 
+export const board = flags.string({
+  char: 'b',
+  description: 'target board identifier (see `xodc boards` output)',
+  env: 'XOD_BOARD',
+  required: true,
+  helpValue: 'fqbn',
+});
+
 export const debug = flags.boolean({
   description: 'enable debug traces',
   env: 'XOD_DEBUG',

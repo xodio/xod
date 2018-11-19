@@ -1,4 +1,6 @@
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["patchArduinoCliError"] }] */
 import path from 'path';
+import rd from 'readline';
 import fs from 'fs-extra';
 import { cwd, exit, stderr } from 'process';
 import { cli } from 'cli-ux';
@@ -29,7 +31,9 @@ import {
   spawnWorkspaceFile,
 } from 'xod-fs';
 import * as xP from 'xod-project';
+import * as xdb from 'xod-deploy-bin';
 import { createError } from 'xod-func-tools';
+import { resolveBundledWorkspacePath } from './paths';
 import * as myFlags from './flags';
 import localMsgs from './messages';
 
@@ -88,6 +92,8 @@ class BaseCommand extends Command {
       quiet: false,
     };
     this.args = {};
+
+    this._arduinoCliLastMessage = null;
   }
 
   // print normal log message to stderr
@@ -95,17 +101,28 @@ class BaseCommand extends Command {
     if (!this.flags.quiet) stderr.write(`${note}\n`);
   }
 
+  // patch errors from xod-deploy-bin and arduino-cli
+  patchArduinoCliError(err, stacktrace = []) {
+    return err.name === 'ChildProcessError'
+      ? createError('ARDUINO_CLI_ERROR', {
+          message: err.message,
+          stacktrace,
+        })
+      : err;
+  }
+
   // print formatted error
   printError(err) {
     if (!this.flags.quiet) {
       // get formatter
+      const defaultCode = 'UNKNOWN_ERROR';
       const f = compose(
         formatters => error =>
-          formatters[error.type || 'UNKNOWN_ERROR'](
-            isNil(error.payload) ? error : error.payload
-          ),
+          formatters[error.type]
+            ? formatters[error.type](error.payload)
+            : formatters[defaultCode](error),
         mergeAll
-      )([xP.messages, localMsgs])(err);
+      )([xP.messages, xdb.messages, localMsgs])(err);
       // template
       const msg = compose(
         join('\n'),
@@ -114,6 +131,32 @@ class BaseCommand extends Command {
         when(() => f.solution, insert(0, `${chalk.magenta(f.solution)}`))
       )([]);
       process.stderr.write(`\n${msg}\n`);
+    }
+  }
+
+  // print progress from arduino-cli
+  printArduinoCliProgress({ message, percentage, estimated }) {
+    // reprint message with progress if tty and not quiet
+    if (process.stdout.isTTY && !this.flags.quiet) {
+      // start newline if a new message arrived except the first one
+      if (message !== null && this._arduinoCliLastMessage !== null)
+        process.stderr.write('\n');
+
+      if (message !== null) {
+        this._arduinoCliLastMessage = message;
+        process.stderr.write(message);
+      } else {
+        rd.clearLine(process.stderr, 0);
+        rd.cursorTo(process.stderr, 0, null);
+        const estimatedFormatted =
+          estimated !== 0 && estimated !== 'unknown' ? ` ETA ${estimated}` : '';
+        process.stderr.write(
+          `${this._arduinoCliLastMessage} ${percentage}%${estimatedFormatted}`
+        );
+      }
+    } else if (message) {
+      // just print message if notty
+      this.info(message);
     }
   }
 
@@ -142,19 +185,21 @@ class BaseCommand extends Command {
   // ensure workspace
   async ensureWorkspace(wPath) {
     const targetPath = resolvePath(wPath || this.flags.workspace);
-    const createWorkspace = where => spawnWorkspaceFile(where);
 
-    return (this.flags.workspace = await isWorkspaceValid(targetPath).catch(
-      async e => {
-        switch (e.errorCode) {
-          case 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY':
-            return createWorkspace(e.path);
-          default:
-            this.printError(e);
-            return exit(254);
-        }
+    this.flags.workspace = await isWorkspaceValid(targetPath).catch(async e => {
+      switch (e.errorCode) {
+        case 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY':
+          return spawnWorkspaceFile(e.path);
+        default:
+          this.printError(e);
+          return exit(254);
       }
-    ));
+    });
+    await xdb.prepareWorkspacePackagesDir(
+      resolveBundledWorkspacePath(),
+      this.flags.workspace
+    );
+    return this.flags.workspace;
   }
 
   // prompt for username and password if needed and patch flags
@@ -167,6 +212,6 @@ class BaseCommand extends Command {
   }
 }
 
-BaseCommand.flags = pick(['help', 'version', 'quiet'], myFlags);
+BaseCommand.flags = pick(['help', 'version', 'quiet', 'workspace'], myFlags);
 
 export default BaseCommand;
