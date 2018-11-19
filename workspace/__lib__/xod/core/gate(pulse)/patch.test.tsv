@@ -1,0 +1,8 @@
+EN	IN	OUT
+false	no-pulse	no-pulse
+false	pulse	no-pulse
+true	no-pulse	no-pulse
+true	pulse	pulse
+true	pulse	pulse
+true	no-pulse	no-pulse
+false	no-pulse	no-pulse

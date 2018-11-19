@@ -1,0 +1,7 @@
+IN	OUT
+false	pulse
+true	no-pulse
+false	pulse
+false	no-pulse
+true	no-pulse
+false	pulse
