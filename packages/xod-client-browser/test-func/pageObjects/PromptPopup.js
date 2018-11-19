@@ -15,7 +15,7 @@ PromptPopup.findOnPage = async page => {
 };
 
 PromptPopup.waitOnPage = async page => {
-  await page.waitFor('.PopupPrompt', { timeout: 1000 });
+  await page.waitFor('.PopupPrompt', { timeout: 2000 });
   return PromptPopup.findOnPage(page);
 };
 
