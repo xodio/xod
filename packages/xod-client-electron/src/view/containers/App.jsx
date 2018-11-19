@@ -623,7 +623,10 @@ class App extends client.App {
       R.values
     )(client.menu.items);
 
-    return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
+    return R.omit(
+      commandsBoundToNativeMenu,
+      client.menu.getOsSpecificHotkeys()
+    );
   }
 
   static getSelectedBoard() {
