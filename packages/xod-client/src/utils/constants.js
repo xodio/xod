@@ -69,9 +69,6 @@ export const ELECTRON_ACCELERATOR = {
 
   [COMMAND.DESELECT]: 'Escape',
 
-  [COMMAND.UNDO]: 'CmdOrCtrl+Z',
-  [COMMAND.REDO]: 'CmdOrCtrl+Shift+Z',
-
   [COMMAND.NEW_PROJECT]: 'CmdOrCtrl+Shift+N',
   [COMMAND.OPEN_PROJECT]: 'CmdOrCtrl+O',
 
