@@ -44,6 +44,8 @@ class App extends client.App {
 
     this.hotkeyHandlers = {
       [client.COMMAND.NEW_PROJECT]: this.onCreateProject,
+      [client.COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
+      [client.COMMAND.REDO]: this.props.actions.redoCurrentPatch,
     };
 
     this.urlActions = {
