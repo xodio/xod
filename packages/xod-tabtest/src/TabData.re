@@ -11,6 +11,7 @@ module Value = {
     | Boolean(bool)
     | String(string)
     | Byte(int)
+    | Pulse(bool)
     | Invalid(string);
   let numberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?$/|}];
   let approxNumberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?~$/|}];
@@ -42,6 +43,8 @@ module Value = {
     | "" => Empty
     | "true" => Boolean(true)
     | "false" => Boolean(false)
+    | "pulse" => Pulse(true)
+    | "no-pulse" => Pulse(false)
     | "NaN" => NaN
     | "Inf" => Number(infinity)
     | "+Inf" => Number(infinity)
@@ -78,6 +81,8 @@ module Record = {
 type t = list(Record.t);
 
 let map = List.map;
+
+let mapWithIndex = List.mapWithIndex;
 
 let tabSplit = x =>
   Js.String.split("\t", x) |. List.fromArray |. List.map(Js.String.trim);

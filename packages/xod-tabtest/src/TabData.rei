@@ -18,6 +18,7 @@ module Value: {
     | Boolean(bool)
     | String(string)
     | Byte(int)
+    | Pulse(bool)
     | Invalid(string);
 };
 
@@ -32,6 +33,9 @@ type t = list(Record.t);
 
 /** Maps all records in data like regular lists do */
 let map: (t, Record.t => 'v) => List.t('v);
+
+/** Maps all records in data with indexes like regular lists do */
+let mapWithIndex: (t, (int, Record.t) => 'v) => List.t('v);
 
 /** Parses a plain source (as read from file) into tabular data.
 
