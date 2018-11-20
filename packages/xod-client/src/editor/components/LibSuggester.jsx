@@ -13,6 +13,7 @@ import { isAmong } from 'xod-func-tools';
 
 import { getPmSwaggerUrl } from '../../utils/urls';
 import { KEYCODE } from '../../utils/constants';
+import { restoreFocusOnApp } from '../../utils/browser';
 import SuggesterContainer from './SuggesterContainer';
 import * as MSG from '../messages';
 
@@ -63,6 +64,11 @@ class LibSuggester extends React.Component {
         this.props.onInitialFocus();
       }, 1);
     }
+  }
+
+  componentWillUnmount() {
+    // A hack to make hotkeys work after focused input is destroyed
+    setTimeout(restoreFocusOnApp, 1);
   }
 
   onChange(e, { newValue, method }) {
