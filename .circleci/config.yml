@@ -32,9 +32,9 @@ defs:
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
       name: Install arduino-cli
       command: |
-        curl -s --create-dirs -o "$HOME/arduino-cli.zip" "https://downloads.arduino.cc/arduino-cli/arduino-cli-0.3.2-alpha.preview-osx.zip" \
+        curl -s --create-dirs -o "$HOME/arduino-cli.zip" "http://downloads.arduino.cc/PR/arduino-cli/arduino-cli-25-PR91-osx.zip" \
         && unzip "$HOME/arduino-cli.zip" -d "$HOME" \
-        && mv "$HOME/arduino-cli-0.3.2-alpha.preview-osx" "$HOME/arduino-cli" \
+        && mv "$HOME/arduino-cli-25-PR91-osx" "$HOME/arduino-cli" \
         && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
         && mkdir "/tmp/arduino-cli" \
         && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
@@ -42,9 +42,9 @@ defs:
     step-install-arduino-cli-on-linux: &step-install-arduino-cli-on-linux
       name: Install arduino-cli
       command: |
-        curl -s --create-dirs -o "$HOME/arduino-cli.tar.bz2" "https://downloads.arduino.cc/arduino-cli/arduino-cli-0.3.2-alpha.preview-linux64.tar.bz2" \
+        curl -s --create-dirs -o "$HOME/arduino-cli.tar.bz2" "http://downloads.arduino.cc/PR/arduino-cli/arduino-cli-25-PR91-linux64.tar.bz2" \
         && tar xvjf "$HOME/arduino-cli.tar.bz2" -C "$HOME" \
-        && mv "$HOME/arduino-cli-0.3.2-alpha.preview-linux64" "$HOME/arduino-cli" \
+        && mv "$HOME/arduino-cli-25-PR91-linux64" "$HOME/arduino-cli" \
         && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
         && mkdir "/tmp/arduino-cli" \
         && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
