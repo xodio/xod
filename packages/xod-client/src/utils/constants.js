@@ -40,8 +40,8 @@ export const HOTKEY = {
   [COMMAND.DESELECT]: 'escape',
   [COMMAND.SELECT_ALL]: 'CmdOrCtrl+a',
 
-  [COMMAND.UNDO]: 'ctrl+z',
-  [COMMAND.REDO]: ['ctrl+y', 'ctrl+shift+z'],
+  [COMMAND.UNDO]: 'CmdOrCtrl+z',
+  [COMMAND.REDO]: ['CmdOrCtrl+y', 'CmdOrCtrl+shift+z'],
 
   [COMMAND.NEW_PROJECT]: 'ctrl+shift+n',
 
@@ -68,9 +68,6 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.DELETE_SELECTION]: 'Backspace',
 
   [COMMAND.DESELECT]: 'Escape',
-
-  [COMMAND.UNDO]: 'CmdOrCtrl+Z',
-  [COMMAND.REDO]: 'CmdOrCtrl+Shift+Z',
 
   [COMMAND.NEW_PROJECT]: 'CmdOrCtrl+Shift+N',
   [COMMAND.OPEN_PROJECT]: 'CmdOrCtrl+O',
