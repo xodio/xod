@@ -97,7 +97,7 @@
       "category": "public.app-category.developer-tools"
     },
     "win": {
-      "publisherName": "AMPERKA, OOO",
+      "publisherName": "Amperka, OOO",
       "target": [
         "nsis"
       ]
