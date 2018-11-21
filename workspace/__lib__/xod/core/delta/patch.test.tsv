@@ -1,4 +1,4 @@
-IN	TARE	RST	OUT
+IN	BIAS	RST	OUT
 0	no-pulse	no-pulse	0
 10	pulse	no-pulse	0
 30	no-pulse	no-pulse	20
