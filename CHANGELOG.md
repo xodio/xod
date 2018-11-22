@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.  See
 [standard-version](https://github.com/conventional-changelog/standard-version)
 for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Fix certificate validation issue that messed up autoupdate on Windows (#1555)
+* [ide] Update `arduino-cli` to 0.3.2 which fixes "Cannot update indexes" error that started occuring recently (#1560)
+* [ide] Make undo/redo hotkeys more reliable (#1556)
+* [ide] Fix "Select All" hotkey in Desktop IDE (#1554)
+* [ide] Prevent scroll position jumps in sidebar (#1533)
+* [nodes] Improve error handling in xod/common-hardware/sd-log (#1534)
+* [ide] Clarify error message about bad references when pasting nodes (#1541)
+
 <a name="0.25.2"></a>
 ## 0.25.2 (2018-11-06)
 
