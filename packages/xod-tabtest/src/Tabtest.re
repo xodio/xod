@@ -178,6 +178,8 @@ module TestCase = {
     switch (value) {
     | Boolean(true) => "true"
     | Boolean(false) => "false"
+    | Pulse(true) => "true /* pulse */"
+    | Pulse(false) => "false /* no-pulse */"
     | NaN => "NAN"
     | String(x) =>
       let str = Cpp.enquote(x);
@@ -193,13 +195,14 @@ module TestCase = {
   /* Generates a block of code corresponding to a single TSV line check.
      Contains setup, evaluation, and assertion validation. It might
      be wrapped into Catch2 SECTION, the purpose is the same. */
-  let generateSection = (record, probes) : Cpp.code => {
+  let generateSection = (record, probes, sectionIndex) : Cpp.code => {
     let injectionStatements =
       probes
       |. Probes.keepInjecting
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. TabData.Record.get(name)) {
+           | Some(noPulse) when noPulse == Pulse(false) => {j|// No pulse for $name|j}
            | Some(value) =>
              let literal = valueToLiteral(value);
              {j|INJECT(probe_$name, $literal);|j};
@@ -225,7 +228,7 @@ module TestCase = {
       source([
         "",
         source(injectionStatements),
-        "loop();",
+        sectionIndex == 0 ? "setup();" : "loop();",
         source(assertionsStatements),
       ])
     );
@@ -250,7 +253,10 @@ module TestCase = {
       |. Map.String.toList
       |. List.map(((name, id)) => {j|auto& probe_$name = xod::node_$id;|j});
     let sections =
-      tabData |. TabData.map(record => generateSection(record, probes));
+      tabData
+      |. TabData.mapWithIndex((idx, record) =>
+           generateSection(record, probes, idx)
+         );
     Cpp.(
       source([
         "#include \"catch.hpp\"",
@@ -263,7 +269,7 @@ module TestCase = {
         "        (probe).isNodeDirty = true; \\",
         "    }",
         "",
-        catch2TestCase(name, ["setup();", source(sections)]),
+        catch2TestCase(name, [source(sections)]),
       ])
     );
   };

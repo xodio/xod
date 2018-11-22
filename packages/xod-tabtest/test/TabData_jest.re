@@ -52,35 +52,39 @@ describe("TSV parser", () => {
   });
   test("recognizes types", () => {
     let tsv =
-      "Number\tBoolean\tByte\tString\n"
-      ++ "+.5\ttrue\t00h\t\"Hello\"\n"
-      ++ "-42\ttrue\t00001101b\t\"World\"\n"
-      ++ "-1.243~\tfalse\t11111111b\t\"!\"\n"
-      ++ "1.3\tfalse\t255d\t\"Some \"quoted\" string\"";
+      "Number\tBoolean\tByte\tString\tPulse\n"
+      ++ "+.5\ttrue\t00h\t\"Hello\"\tpulse\n"
+      ++ "-42\ttrue\t00001101b\t\"World\"\tpulse\n"
+      ++ "-1.243~\tfalse\t11111111b\t\"!\"\tno-pulse\n"
+      ++ "1.3\tfalse\t255d\t\"Some \"quoted\" string\"\tno-pulse";
     let expected: TabData.t = [
       Map.String.fromArray([|
         ("Number", Number(0.5)),
         ("Boolean", Boolean(true)),
         ("Byte", Byte(0)),
         ("String", String("Hello")),
+        ("Pulse", Pulse(true)),
       |]),
       Map.String.fromArray([|
         ("Number", Number(-42.0)),
         ("Boolean", Boolean(true)),
         ("Byte", Byte(13)),
         ("String", String("World")),
+        ("Pulse", Pulse(true)),
       |]),
       Map.String.fromArray([|
         ("Number", ApproxNumber(-1.243, 3)),
         ("Boolean", Boolean(false)),
         ("Byte", Byte(255)),
         ("String", String("!")),
+        ("Pulse", Pulse(false)),
       |]),
       Map.String.fromArray([|
         ("Number", Number(1.3)),
         ("Boolean", Boolean(false)),
         ("Byte", Byte(255)),
         ("String", String({|Some "quoted" string|})),
+        ("Pulse", Pulse(false)),
       |]),
     ];
     expect(TabData.parse(tsv)) |> toEqual(expected);

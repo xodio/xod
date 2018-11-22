@@ -1,5 +1,5 @@
 {
-  "description": "Outputs a difference between the current `IN` value and its value at the moment of the last node update.",
+  "description": "Outputs a difference between the current `IN` value and its reference value.",
   "nodes": [
     {
       "id": "HyJCAXqNG",
@@ -10,9 +10,9 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Triggers a new update",
+      "description": "Triggers memoization of the input value as the reference value.",
       "id": "S1bhCQqVM",
-      "label": "UPD",
+      "label": "REF",
       "position": {
         "x": 102,
         "y": 0
@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Difference between the current `IN` value and the value it has when the previous `UPD` was send. Can be positive or negative. Always equals to 0 on the first update.",
+      "description": "The difference between `IN` and the reference value which was stored when `REF` received a pulse. Can be positive or negative. Always equals to 0 on the first update.",
       "id": "SkFpRm9Nz",
       "position": {
         "x": 34,
@@ -29,7 +29,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "description": "Resets the output difference to 0",
+      "description": "Resets the reference value to 0.",
       "id": "SyYn0X5NM",
       "label": "RST",
       "position": {
