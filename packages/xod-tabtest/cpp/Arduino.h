@@ -31,7 +31,10 @@ using ::std::isfinite;
 #endif
 #define abs(x) ((x)>0?(x):-(x))
 
+void mockTime(uint32_t);
+
 uint32_t millis();
+uint32_t micros();
 void delay(uint32_t);
 
 class Stream {

@@ -19,6 +19,7 @@ module Value: {
     | String(string)
     | Byte(int)
     | Pulse(bool)
+    | Millis(int)
     | Invalid(string);
 };
 
