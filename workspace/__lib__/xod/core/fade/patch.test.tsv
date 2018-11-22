@@ -1,0 +1,17 @@
+__time(ms)	TARG	RATE	UPD	OUT
+0	1	1	pulse	0
+100	1	1	pulse	0.1
+350	1	1	pulse	0.35~
+900	1	1	pulse	0.9
+1000	1	1	pulse	1
+1500	1	1	pulse	1
+1600	1	1	no-pulse	1
+1999	0	0.1	no-pulse	1
+2000	0	0.1	pulse	1~
+2500	0	0.1	pulse	0.95~
+3000	NaN	1	pulse	NaN
+4000	1	NaN	pulse	1
+5000	1	Inf	pulse	1
+6000	-1	Inf	pulse	-1
+7000	-100	-Inf	pulse	Inf
+8000	Inf	-Inf	pulse	Inf

@@ -1,0 +1,8 @@
+__time(ms)	UPD	TIME
+0	pulse	0
+100	pulse	0.1
+1000	pulse	1
+3000	pulse	3
+600	pulse	0.6
+1000	no-pulse	0.6
+1000	pulse	1

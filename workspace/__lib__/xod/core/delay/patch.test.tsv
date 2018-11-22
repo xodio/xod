@@ -1,0 +1,10 @@
+__time(ms)	T	SET	RST	DONE	ACT
+0	0.5	no-pulse	no-pulse	no-pulse	false
+1000	0.5	pulse	no-pulse	no-pulse	true
+1500	0.5	no-pulse	no-pulse	no-pulse	true
+1501	0.5	no-pulse	no-pulse	pulse	false
+2000	0.5	pulse	pulse	no-pulse	false
+2500	0.5	pulse	no-pulse	no-pulse	true
+2600	2	no-pulse	no-pulse	no-pulse	true
+2700	2	no-pulse	pulse	no-pulse	false
+3001	2	no-pulse	no-pulse	no-pulse	false

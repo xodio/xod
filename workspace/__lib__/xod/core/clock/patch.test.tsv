@@ -1,0 +1,13 @@
+__time(ms)	IVAL	EN	RST	TICK
+0	0.1	true	no-pulse	no-pulse
+100	0.1	true	pulse	no-pulse
+120	0.1	true	no-pulse	no-pulse
+201	0.1	true	no-pulse	pulse
+250	0.1	true	no-pulse	no-pulse
+302	0.1	true	no-pulse	pulse
+350	0.1	false	no-pulse	no-pulse
+403	0.1	false	no-pulse	no-pulse
+0	1	true	pulse	no-pulse
+500	1	true	pulse	no-pulse
+1001	1	true	no-pulse	no-pulse
+1501	1	true	no-pulse	pulse
