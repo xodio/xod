@@ -57,8 +57,10 @@ describe('xod-arduino transpiler', () => {
       .then(
         foldEither(
           err => {
-            assert.include(err.message, '@/too-many-outputs');
-            assert.include(err.message, 'has more than 7 outputs');
+            assert.strictEqual(
+              err.message,
+              'TOO_MANY_OUTPUTS_FOR_NATIVE_NODE {"patchPath":"@/too-many-outputs"}'
+            );
           },
           () => assert(false, 'expecting Either.Left')
         )

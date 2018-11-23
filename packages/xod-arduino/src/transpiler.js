@@ -7,6 +7,7 @@ import {
   maybeProp,
   foldEither,
   isAmong,
+  fail,
 } from 'xod-func-tools';
 import * as XP from 'xod-project';
 import { def } from './types';
@@ -425,13 +426,9 @@ const checkForNativePatchesWithTooManyOutputs = def(
     );
 
     if (nodeWithTooManyOutputs) {
-      return Either.Left(
-        new Error(
-          `Native node ${
-            nodeWithTooManyOutputs.patchPath
-          } has more than 7 outputs`
-        )
-      );
+      return fail('TOO_MANY_OUTPUTS_FOR_NATIVE_NODE', {
+        patchPath: nodeWithTooManyOutputs.patchPath,
+      });
     }
 
     return Either.of(tProject);
