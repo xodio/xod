@@ -198,6 +198,10 @@ describe('xodc install:arch', () => {
       process.exit = exit;
     });
 
+    after(() => {
+      fs.removeSync(wd);
+    });
+
     its(wd);
   });
 
@@ -217,6 +221,10 @@ describe('xodc install:arch', () => {
     // unmock process.exit
     afterEach(() => {
       process.exit = exit;
+    });
+
+    after(() => {
+      fs.removeSync(wd);
     });
 
     its(wd);
