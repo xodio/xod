@@ -50,6 +50,42 @@ describe("TSV parser", () => {
     ];
     expect(TabData.parse(tsv)) |> toEqual(expected);
   });
+  test("skips empty lines and comments", () => {
+    let tsv =
+      "A\tB\tC\n"
+      ++ "// This comment should be ommited\n"
+      ++ "1\ttrue\t\"Hey\"\n"
+      ++ "\t\t\n"
+      ++ " \t \t \n"
+      ++ "\n"
+      ++ " \t \t //--This line and three above should be ommited too\n"
+      ++ "2\tfalse\t\"Hello\"    // Comment should be ommited\n"
+      ++ "3\tfalse\t\"Slashes inside //String should not be ommited\" // This comment should be ommited\n"
+      ++ "4\ttrue\t\"\"";
+    let expected: TabData.t = [
+      Map.String.fromArray([|
+        ("A", Number(1.0)),
+        ("B", Boolean(true)),
+        ("C", String("Hey")),
+      |]),
+      Map.String.fromArray([|
+        ("A", Number(2.0)),
+        ("B", Boolean(false)),
+        ("C", String("Hello")),
+      |]),
+      Map.String.fromArray([|
+        ("A", Number(3.0)),
+        ("B", Boolean(false)),
+        ("C", String("Slashes inside //String should not be ommited")),
+      |]),
+      Map.String.fromArray([|
+        ("A", Number(4.0)),
+        ("B", Boolean(true)),
+        ("C", String("")),
+      |]),
+    ];
+    expect(TabData.parse(tsv)) |> toEqual(expected);
+  });
   test("recognizes types", () => {
     let tsv =
       "Number\tBoolean\tByte\tString\tPulse\n"
