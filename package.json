@@ -25,6 +25,8 @@
     "dockerize:browser": "docker build packages/xod-client-browser",
     "lerna": "lerna",
     "lint": "eslint packages/*/src packages/*/test packages/*/test-func tools packages/*/tools packages/*/stories packages/*/benchmark --ext js,jsx --max-warnings 0",
+    "prettier-md-check": "prettier --list-different '**/*.md'",
+    "prettier-md-format": "prettier --write '**/*.md'",
     "start:electron": "lerna run start --scope xod-client-electron --stream",
     "start:spectron-repl": "./tools/spectron-repl",
     "storybook": "lerna run storybook --stream --scope xod-client",
@@ -32,7 +34,7 @@
     "test-strict": "XOD_HM_DEF=strict lerna run test",
     "test-func": "lerna run test-func",
     "test-cpp": "lerna run test-cpp",
-    "verify": "yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func",
+    "verify": "yarn prettier-md-check && yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func",
     "xodc": "node packages/xod-cli/bin/run"
   },
   "devDependencies": {
