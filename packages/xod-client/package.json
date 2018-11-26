@@ -1,6 +1,6 @@
 {
   "name": "xod-client",
-  "version": "0.25.2",
+  "version": "0.25.3",
   "description": "XOD project: Client application",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
@@ -42,7 +42,7 @@
     "react-event-listener": "^0.5.3",
     "react-fa": "^5.0.0",
     "react-highlight-words": "^0.8.1",
-    "react-hotkeys": "^0.10.0",
+    "react-hotkeys": "^1.1.4",
     "react-redux": "^4.0.6",
     "react-reflex": "^2.2.7",
     "react-remarkable": "^1.1.3",
