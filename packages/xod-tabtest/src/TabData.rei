@@ -38,6 +38,12 @@ let map: (t, Record.t => 'v) => List.t('v);
 /** Maps all records in data with indexes like regular lists do */
 let mapWithIndex: (t, (int, Record.t) => 'v) => List.t('v);
 
+/** Returns a list of strings separated by `\n` without comments and empty lines */
+let listDataLines: string => list(string);
+
+/** Returns a list of strings separated by tabs and with leading/trailing whitespace trimmed */
+let tabSplit: string => list(string);
+
 /** Parses a plain source (as read from file) into tabular data.
 
     Note, the parsing always succeeds leaving `Value.Invalid` for

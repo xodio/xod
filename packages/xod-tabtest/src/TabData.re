@@ -102,14 +102,18 @@ let emptyLinesRegEx = [%re {|/^\s+$/gm|}];
 let tabSplit = x =>
   Js.String.split("\t", x) |. List.fromArray |. List.map(Js.String.trim);
 
-let parse = (tsvSource: string) : t =>
+let listDataLines = (tsvSource: string) : list(string) =>
   tsvSource
   |> Js.String.replaceByRe([%re {|/\r/gm|}], "")
   |> Js.String.replaceByRe(commentsRegEx, "")
   |> Js.String.replaceByRe(emptyLinesRegEx, "")
   |> Js.String.split("\n")
   |> List.fromArray
-  |. List.keep(x => x != "")
+  |. List.keep(x => x != "");
+
+let parse = (tsvSource: string) : t =>
+  tsvSource
+  |> listDataLines
   |> (
     lines =>
       switch (List.head(lines)) {
