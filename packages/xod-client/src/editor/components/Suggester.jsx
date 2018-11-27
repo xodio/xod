@@ -10,6 +10,7 @@ import regExpEscape from 'escape-string-regexp';
 import { isAmong, noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../utils/constants';
+import { restoreFocusOnApp } from '../../utils/browser';
 import { triggerUpdateHelpboxPositionViaSuggester } from '../../editor/utils';
 import SuggesterContainer from './SuggesterContainer';
 
@@ -66,6 +67,11 @@ class Suggester extends React.Component {
     if (R.isEmpty(this.state.suggestions)) {
       this.props.hideHelpbox();
     }
+  }
+
+  componentWillUnmount() {
+    // A hack to make hotkeys work after focused input is destroyed
+    setTimeout(restoreFocusOnApp, 1);
   }
 
   onChange(e, { newValue, method }) {

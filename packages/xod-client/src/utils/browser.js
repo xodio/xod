@@ -48,3 +48,7 @@ export const isEdge = () =>
   R.compose(R.test(/Edge/), R.pathOr('', ['navigator', 'userAgent']))(window);
 
 export const isMacOS = () => window.navigator.appVersion.indexOf('Mac') !== -1;
+
+export const restoreFocusOnApp = () => {
+  document.getElementById('App').focus();
+};

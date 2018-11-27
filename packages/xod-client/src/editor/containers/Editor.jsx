@@ -90,10 +90,6 @@ class Editor extends React.Component {
 
   getHotkeyHandlers() {
     return {
-      [COMMAND.UNDO]: () =>
-        this.props.currentPatchPath.map(this.props.actions.undo),
-      [COMMAND.REDO]: () =>
-        this.props.currentPatchPath.map(this.props.actions.redo),
       [COMMAND.HIDE_HELPBOX]: () => this.props.actions.hideHelpbox(),
       [COMMAND.TOGGLE_HELP]: this.toggleHelp,
       [COMMAND.INSERT_NODE]: event => {
@@ -284,8 +280,6 @@ Editor.propTypes = {
   actions: PropTypes.shape({
     updatePatchImplementation: PropTypes.func.isRequired,
     closeImplementationEditor: PropTypes.func.isRequired,
-    undo: PropTypes.func.isRequired,
-    redo: PropTypes.func.isRequired,
     toggleHelp: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
     addNode: PropTypes.func.isRequired,

@@ -1,6 +1,6 @@
 {
   "name": "xod-client-browser",
-  "version": "0.25.2",
+  "version": "0.25.3",
   "description": "XOD project: Client browser application",
   "scripts": {
     "build:tutorial-project": "node ./tools/loadTutorialProject.js",
@@ -18,14 +18,14 @@
     "react-dom": "^16.2",
     "react-event-listener": "^0.5.3",
     "react-fa": "^5.0.0",
-    "react-hotkeys": "^0.10.0",
+    "react-hotkeys": "^1.1.4",
     "react-redux": "^4.4.5",
     "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "url-parse": "^1.2.0",
     "xod-arduino": "^0.25.2",
-    "xod-client": "^0.25.2",
+    "xod-client": "^0.25.3",
     "xod-func-tools": "^0.25.0",
     "xod-project": "^0.25.2"
   },

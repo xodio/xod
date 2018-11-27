@@ -175,6 +175,11 @@ class App extends client.App {
       this.showError(error);
     });
 
+    this.hotkeyHandlers = {
+      [client.COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
+      [client.COMMAND.REDO]: this.props.actions.redoCurrentPatch,
+    };
+
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
       [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
@@ -630,7 +635,10 @@ class App extends client.App {
       R.values
     )(client.menu.items);
 
-    return R.omit(commandsBoundToNativeMenu, client.HOTKEY);
+    return R.omit(
+      commandsBoundToNativeMenu,
+      client.menu.getOsSpecificHotkeys()
+    );
   }
 
   static getSelectedBoard() {
@@ -842,7 +850,11 @@ class App extends client.App {
 
   render() {
     return (
-      <HotKeys keyMap={this.constructor.getKeyMap()} id="App">
+      <HotKeys
+        keyMap={this.constructor.getKeyMap()}
+        handlers={this.hotkeyHandlers}
+        id="App"
+      >
         <EventListener
           target={window}
           onResize={this.onResize}

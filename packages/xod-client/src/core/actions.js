@@ -1,16 +1,23 @@
 import { undoPatch, redoPatch } from '../project/actions';
 import { SHOW_CODE_REQUESTED } from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
+import { isInput } from '../utils/browser';
 
-export const undoCurrentPatch = () => (dispatch, getState) =>
+export const undoCurrentPatch = () => (dispatch, getState) => {
+  if (isInput(document.activeElement)) return;
+
   getCurrentPatchPath(getState()).map(currentPatchPath =>
     dispatch(undoPatch(currentPatchPath))
   );
+};
 
-export const redoCurrentPatch = () => (dispatch, getState) =>
+export const redoCurrentPatch = () => (dispatch, getState) => {
+  if (isInput(document.activeElement)) return;
+
   getCurrentPatchPath(getState()).map(currentPatchPath =>
     dispatch(redoPatch(currentPatchPath))
   );
+};
 
 export const showCode = code => ({
   type: SHOW_CODE_REQUESTED,
