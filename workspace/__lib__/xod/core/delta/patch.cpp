@@ -12,15 +12,16 @@ void evaluate(Context ctx) {
     auto inValue = getValue<input_IN>(ctx);
 
     if (isInputDirty<input_RST>(ctx)) {
-        state->refValue = 0;
-        emitValue<output_OUT>(ctx, inValue);
+        state->refValue = inValue;
+        emitValue<output_OUT>(ctx, 0);
         return;
     }
 
-    if (isInputDirty<input_REF>(ctx)) {
-        state->refValue = inValue;
+    if (!isInputDirty<input_UPD>(ctx)) {
+      return;
     }
 
     auto outValue = inValue - state->refValue;
     emitValue<output_OUT>(ctx, outValue);
+    state->refValue = inValue;
 }

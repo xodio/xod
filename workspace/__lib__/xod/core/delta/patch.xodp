@@ -1,5 +1,5 @@
 {
-  "description": "Outputs a difference between the current `IN` value and its reference value.",
+  "description": "Calculates difference between current and past input values.",
   "nodes": [
     {
       "id": "HyJCAXqNG",
@@ -10,9 +10,9 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "description": "Triggers memoization of the input value as the reference value.",
+      "description": "Update: trigger a calculation and store the current `IN` value as the new “past” value.",
       "id": "S1bhCQqVM",
-      "label": "REF",
+      "label": "UPD",
       "position": {
         "x": 102,
         "y": 0
@@ -20,7 +20,7 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "The difference between `IN` and the reference value which was stored when `REF` received a pulse. Can be positive or negative. Always equals to 0 on the first update.",
+      "description": "The last difference value.",
       "id": "SkFpRm9Nz",
       "position": {
         "x": 34,
@@ -29,7 +29,7 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "description": "Resets the reference value to 0.",
+      "description": "Resets the stored past value to the current input value. Efficiently sets `OUT` to 0.",
       "id": "SyYn0X5NM",
       "label": "RST",
       "position": {

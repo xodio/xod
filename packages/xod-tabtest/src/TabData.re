@@ -12,7 +12,9 @@ module Value = {
     | String(string)
     | Byte(int)
     | Pulse(bool)
+    | Millis(int)
     | Invalid(string);
+  let uintRegex = [%re {|/^\d+$/|}];
   let numberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?$/|}];
   let approxNumberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?~$/|}];
   let stringRegex = [%re {|/^".*"$/|}];
@@ -62,6 +64,12 @@ module Value = {
       byteStringToInt(byteString)
     | x => Invalid(x)
     };
+  let parseTime = str =>
+    switch (str) {
+    | timeString when Re.test(timeString, uintRegex) =>
+      Millis(int_of_string(timeString))
+    | x => Invalid(x)
+    };
 };
 
 module Record = {
@@ -97,9 +105,13 @@ let parse = (tsvSource: string) : t =>
       | None => []
       | Some(firstLine) =>
         let header = tabSplit(firstLine);
+        let timeColumnIndex =
+          header |. List.toArray |> Js.Array.indexOf("__time(ms)");
         let lineToRecord = (line: string) : Record.t =>
           tabSplit(line)
-          |. List.map(Value.parse)
+          |. List.mapWithIndex((i, el) =>
+               i === timeColumnIndex ? Value.parseTime(el) : Value.parse(el)
+             )
           |. List.zip(header, _)
           |. Record.fromPairs;
         List.tailExn(lines)

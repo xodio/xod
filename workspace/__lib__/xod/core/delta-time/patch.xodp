@@ -2,6 +2,17 @@
   "description": "Outputs time difference between the current and previous updates.",
   "links": [
     {
+      "id": "B1TDthrCX",
+      "input": {
+        "nodeId": "r1rPK3HAQ",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "ByCuRXcEG",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "B1gJyE5Vf",
       "input": {
         "nodeId": "SJ6ACXqNz",
@@ -13,10 +24,21 @@
       }
     },
     {
-      "id": "BkvcRX5Ef",
+      "id": "Bkydt3rRm",
       "input": {
         "nodeId": "H1z5AmcNz",
         "pinKey": "Bk74I0_SPyb"
+      },
+      "output": {
+        "nodeId": "r1rPK3HAQ",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "H10PFnHR7",
+      "input": {
+        "nodeId": "r1rPK3HAQ",
+        "pinKey": "ryv7IRdSP1b"
       },
       "output": {
         "nodeId": "H1NuAXqEM",
@@ -24,7 +46,7 @@
       }
     },
     {
-      "id": "SJVJkVcNM",
+      "id": "S1f-7cBCX",
       "input": {
         "nodeId": "SJ6ACXqNz",
         "pinKey": "S1bhCQqVM"
@@ -73,7 +95,7 @@
       "label": "RST",
       "position": {
         "x": 136,
-        "y": 102
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -86,7 +108,7 @@
       "label": "UPD",
       "position": {
         "x": 102,
-        "y": 102
+        "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -105,6 +127,14 @@
         "y": 306
       },
       "type": "@/delta"
+    },
+    {
+      "id": "r1rPK3HAQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "@/any"
     }
   ]
 }

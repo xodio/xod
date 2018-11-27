@@ -202,13 +202,19 @@ module TestCase = {
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. TabData.Record.get(name)) {
-           | Some(noPulse) when noPulse == Pulse(false) => {j|// No pulse for $name|j}
+           | Some(Pulse(false)) => {j|// No pulse for $name|j}
            | Some(value) =>
              let literal = valueToLiteral(value);
              {j|INJECT(probe_$name, $literal);|j};
            | None => {j|// No changes for $name|j}
            };
          });
+    let setTimeStatement =
+      switch (record |. TabData.Record.get("__time(ms)")) {
+      | Some(Millis(t)) => {j|mockTime($t);|j}
+      | Some(_)
+      | None => "mockTime(millis() + 1);"
+      };
     let assertionsStatements =
       probes
       |. Probes.keepCapturing
@@ -228,6 +234,7 @@ module TestCase = {
       source([
         "",
         source(injectionStatements),
+        setTimeStatement,
         sectionIndex == 0 ? "setup();" : "loop();",
         source(assertionsStatements),
       ])
