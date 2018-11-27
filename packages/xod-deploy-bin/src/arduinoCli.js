@@ -356,9 +356,12 @@ export const createCli = async (
  *
  * :: ArduinoCli -> Path -> Promise Object Error
  */
-export const switchWorkspace = async (cli, newWsPath) => {
+export const switchWorkspace = async (cli, wsBundledPath, newWsPath) => {
   const oldConfig = await cli.dumpConfig();
-  const packagesDirPath = await prepareWorkspacePackagesDir(newWsPath);
+  const packagesDirPath = await prepareWorkspacePackagesDir(
+    wsBundledPath,
+    newWsPath
+  );
   const newConfig = R.assoc('arduino_data', packagesDirPath, oldConfig);
   const result = cli.updateConfig(newConfig);
   await syncAdditionalPackages(newWsPath, cli);
