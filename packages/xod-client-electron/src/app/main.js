@@ -274,7 +274,11 @@ const onReady = () => {
 
         // On switching workspace -> update arduino-cli config and run migration
         ipcMain.on(EVENTS.SWITCH_WORKSPACE, (event, newWsPath) =>
-          xdb.switchWorkspace(arduinoCli, newWsPath)
+          xdb.switchWorkspace(
+            arduinoCli,
+            getPathToBundledWorkspace(),
+            newWsPath
+          )
         );
 
         subscribeOnCheckArduinoDependencies(arduinoCli);
