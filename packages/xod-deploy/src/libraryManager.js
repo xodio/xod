@@ -9,7 +9,6 @@ import {
   allPromises,
   then,
   explodeMaybe,
-  tapP,
 } from 'xod-func-tools';
 
 import download from './download';
@@ -157,12 +156,10 @@ export const installLibrariesByUrls = R.curry(
           .then(unpackedDir =>
             fse.rename(path.resolve(libsPath, unpackedDir), libraryDir)
           )
-          .then(tapP(() => fse.remove(archivePath)))
-          .then(
-            R.tap(() =>
-              // eslint-disable-next-line new-cap
-              onProgress(progress(MSG.LIBRARY_INSTALLED({ libName }).note))
-            )
+          .then(() => fse.remove(archivePath))
+          .then(() =>
+            // eslint-disable-next-line new-cap
+            onProgress(progress(MSG.LIBRARY_INSTALLED({ libName }).note))
           )
           .then(() => libName);
       }),
