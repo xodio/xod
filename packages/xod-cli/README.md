@@ -4,21 +4,22 @@ This package is a part of the [XOD](https://github.com/xodio/xod) project.
 
 The package contains implemetation of `xodc` command line utility.
 
-Basically it’s a collection of thin wrappers around NodeJS API’s available via
-other packages. The responsibility of `xod-cli` is to parse command line
-arguments, call API, and format the result on stdout/stderr properly.
+Basically it’s a collection of thin wrappers around NodeJS API’s available via other packages. The responsibility of `xod-cli` is to parse command line arguments, call API, and format the result on stdout/stderr properly.
 
-`xodc` uses subcommands like `git` does to perform various functions.
-The subcommands handling could be found in `src/commands/*.js`.
+`xodc` uses subcommands like `git` does to perform various functions. The subcommands handling could be found in `src/commands/*.js`.
 
 <!-- toc -->
+
 * [xod-cli](#xod-cli)
 * [Usage](#usage)
 * [Flags, aliases, environment variables](#flags-aliases-environment-variables)
 * [Commands](#commands)
-<!-- tocstop -->
+  <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g xod-cli
 $ xodc COMMAND
@@ -30,15 +31,15 @@ USAGE
   $ xodc COMMAND
 ...
 ```
+
 <!-- usagestop -->
 
 # Flags, aliases, environment variables
 
-Almost any flag can be replaced with the appropriate environment variable.
-For example, instead of `--username` you can declare variable `XOD_USERNAME`.
+Almost any flag can be replaced with the appropriate environment variable. For example, instead of `--username` you can declare variable `XOD_USERNAME`.
 
 | Flag         | Alias | Environment variable |
-|--------------|-------|----------------------|
+| ------------ | ----- | -------------------- |
 | --api        |       | XOD_API              |
 | --board      | -b    | XOD_BOARD            |
 | --debug      |       | XOD_DEBUG            |
@@ -50,9 +51,10 @@ For example, instead of `--username` you can declare variable `XOD_USERNAME`.
 | --username   |       | XOD_USERNAME         |
 | --workspace  | -w    | XOD_WORKSPACE        |
 
-
 # Commands
+
 <!-- commands -->
+
 * [`xodc autocomplete [SHELL]`](#xodc-autocomplete-shell)
 * [`xodc boards [options]`](#xodc-boards-options)
 * [`xodc compile [options] [entrypoint]`](#xodc-compile-options-entrypoint)
@@ -372,4 +374,5 @@ EXAMPLE
 ```
 
 _See code: [src/commands/upload.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/upload.js)_
+
 <!-- commandsstop -->

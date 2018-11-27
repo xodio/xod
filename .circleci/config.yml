@@ -75,7 +75,8 @@ defs:
 
     step-lint: &step-lint
       name: Lint
-      command: yarn lint
+      # run prettier on md files separately because of https://github.com/prettier/eslint-plugin-prettier/issues/67
+      command: yarn lint && yarn prettier-md-check
 
     step-test: &step-test
       name: Unit tests
