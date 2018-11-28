@@ -1,4 +1,5 @@
 {
+  "description": "A predefined single byte datum that never changes in runtime",
   "nodes": [
     {
       "id": "B23RV3eJq",

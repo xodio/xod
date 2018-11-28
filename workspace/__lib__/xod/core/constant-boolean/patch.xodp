@@ -1,5 +1,5 @@
 {
-  "description": "Constant value",
+  "description": "A predefined `true` or `false` value that never changes in runtime",
   "nodes": [
     {
       "description": "Constant value",

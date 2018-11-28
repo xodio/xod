@@ -1,4 +1,5 @@
 {
+  "description": "A predefined text string that never changes in runtime. Non-ASCII characters are encoded in UTF-8.",
   "nodes": [
     {
       "id": "B1x2RV3eZ",

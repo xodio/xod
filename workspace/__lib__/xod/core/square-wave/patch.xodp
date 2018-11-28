@@ -1,4 +1,5 @@
 {
+  "description": "Generates square wave signal",
   "nodes": [
     {
       "boundLiterals": {

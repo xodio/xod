@@ -1,4 +1,5 @@
 {
+  "description": "A predefined numeric value that never changes in runtime",
   "nodes": [
     {
       "id": "B1x2RV3eZ",
