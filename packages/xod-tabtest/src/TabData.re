@@ -92,13 +92,24 @@ let map = List.map;
 
 let mapWithIndex = List.mapWithIndex;
 
+let commentsRegEx = [%re
+  /* Finds comments started with "//" and ignores it inside quotes */
+  {|/\/\/(.(?=([^"]*"[^"]*")*[^"]*$))+/gm|}
+];
+
+let emptyLinesRegEx = [%re {|/^\s+$/gm|}];
+
 let tabSplit = x =>
   Js.String.split("\t", x) |. List.fromArray |. List.map(Js.String.trim);
 
 let parse = (tsvSource: string) : t =>
   tsvSource
+  |> Js.String.replaceByRe([%re {|/\r/gm|}], "")
+  |> Js.String.replaceByRe(commentsRegEx, "")
+  |> Js.String.replaceByRe(emptyLinesRegEx, "")
   |> Js.String.split("\n")
   |> List.fromArray
+  |. List.keep(x => x != "")
   |> (
     lines =>
       switch (List.head(lines)) {
