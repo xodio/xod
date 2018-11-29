@@ -1,4 +1,5 @@
 {
+  "description": "Calculates string size in bytes. Will be inequal to the number of glyphs if the input string is UTF-8 encoded and contains non-ASCII characters.",
   "nodes": [
     {
       "id": "H1kQ1XtbQ",
