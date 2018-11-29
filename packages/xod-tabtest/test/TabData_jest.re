@@ -125,23 +125,4 @@ describe("TSV parser", () => {
     ];
     expect(TabData.parse(tsv)) |> toEqual(expected);
   });
-  test("recognizes time column", () => {
-    let tsv =
-      "__time(ms)\tNumber\n" ++ "0\t0\n" ++ "500\t0.5\n" ++ "1200\t1.2";
-    let expected: TabData.t = [
-      Map.String.fromArray([|
-        ("__time(ms)", Millis(0)),
-        ("Number", Number(0.0)),
-      |]),
-      Map.String.fromArray([|
-        ("__time(ms)", Millis(500)),
-        ("Number", Number(0.5)),
-      |]),
-      Map.String.fromArray([|
-        ("__time(ms)", Millis(1200)),
-        ("Number", Number(1.2)),
-      |]),
-    ];
-    expect(TabData.parse(tsv)) |> toEqual(expected);
-  });
 });

@@ -211,7 +211,9 @@ module TestCase = {
          });
     let setTimeStatement =
       switch (record |. TabData.Record.get(SpecialColumns.time)) {
-      | Some(Millis(t)) => {j|mockTime($t);|j}
+      | Some(Number(t)) =>
+        let time = int_of_float(t);
+        {j|mockTime($time);|j};
       | Some(_)
       | None => "mockTime(millis() + 1);"
       };
