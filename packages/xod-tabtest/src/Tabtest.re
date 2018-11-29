@@ -210,8 +210,10 @@ module TestCase = {
            };
          });
     let setTimeStatement =
-      switch (record |. TabData.Record.get("__time(ms)")) {
-      | Some(Millis(t)) => {j|mockTime($t);|j}
+      switch (record |. TabData.Record.get(SpecialColumns.time)) {
+      | Some(Number(t)) =>
+        let time = int_of_float(t);
+        {j|mockTime($time);|j};
       | Some(_)
       | None => "mockTime(millis() + 1);"
       };
@@ -299,31 +301,44 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
   | (Some(patchUnderTest), Some(tsv)) =>
     let bench = Bench.create(project, patchUnderTest);
     let probes = bench.probes;
-    let benchPatchPath =
-      "tabtest-"
-      ++ patchPathToTest
-      /* to convert "tabtest-@/foo" to "tabtest/local/foo" */
-      |> Js.String.replace("-@", "/local");
-    let safeBasename =
-      PatchPath.getBaseName(patchPathToTest)
-      |> Js.String.replace("(", "__")
-      |> Js.String.replace(",", "__")
-      |> Js.String.replace(")", "");
-    let sketchFilename = safeBasename ++ ".sketch.cpp";
-    let testFilename = safeBasename ++ ".catch.inl";
     let tabData = TabData.parse(tsv);
-    let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
-    Project.assocPatch(project, benchPatchPath, bench.patch)
-    |. XodArduino.Transpiler.transpile(_, benchPatchPath)
-    |. BeltHoles.Result.map(program => {
-         let idMap =
-           BeltHoles.Map.String.innerJoin(bench.probeMap, program.nodeIdMap);
-         let testCase =
-           TestCase.generate(patchPathToTest, tabData, idMap, probes);
-         Map.String.empty
-         |. Map.String.set(sketchFilename, program.code ++ sketchFooter)
-         |. Map.String.set(testFilename, testCase);
-       });
+    let realPinLabels =
+      bench.probeMap |> Map.String.keysToArray |> List.fromArray;
+    let testingPinLabels =
+      tsv |. TabData.listDataLines |. List.getExn(0) |. TabData.tabSplit;
+    let result =
+      switch (Validator.validatePinLabels(realPinLabels, testingPinLabels)) {
+      | Some(e) => Result.Error(e)
+      | None =>
+        let benchPatchPath =
+          "tabtest-"
+          ++ patchPathToTest
+          /* to convert "tabtest-@/foo" to "tabtest/local/foo" */
+          |> Js.String.replace("-@", "/local");
+        let safeBasename =
+          PatchPath.getBaseName(patchPathToTest)
+          |> Js.String.replace("(", "__")
+          |> Js.String.replace(",", "__")
+          |> Js.String.replace(")", "");
+        let sketchFilename = safeBasename ++ ".sketch.cpp";
+        let testFilename = safeBasename ++ ".catch.inl";
+        let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
+        Project.assocPatch(project, benchPatchPath, bench.patch)
+        |. XodArduino.Transpiler.transpile(_, benchPatchPath)
+        |. BeltHoles.Result.map(program => {
+             let idMap =
+               BeltHoles.Map.String.innerJoin(
+                 bench.probeMap,
+                 program.nodeIdMap,
+               );
+             let testCase =
+               TestCase.generate(patchPathToTest, tabData, idMap, probes);
+             Map.String.empty
+             |. Map.String.set(sketchFilename, program.code ++ sketchFooter)
+             |. Map.String.set(testFilename, testCase);
+           });
+      };
+    result;
   };
 };
 
