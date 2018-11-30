@@ -16,7 +16,11 @@ const switchProcess = (propName, action, state) => {
   if (status === client.STATUS.STARTED) {
     return R.assoc(propName, true, state);
   }
-  if (status === client.STATUS.SUCCEEDED || status === client.STATUS.FAILED) {
+  if (
+    status === client.STATUS.SUCCEEDED ||
+    status === client.STATUS.FAILED ||
+    status === client.STATUS.DELETED
+  ) {
     return R.assoc(propName, false, state);
   }
 
