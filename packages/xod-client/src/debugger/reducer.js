@@ -18,7 +18,7 @@ import {
   SELECT_DEBUGGER_TAB,
 } from './actionTypes';
 
-import { UPLOAD_STATUS, UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
+import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
 import * as MSG from './messages';
 import { STATUS } from '../utils/constants';
 
@@ -111,6 +111,8 @@ const updateWatchNodeValues = R.curry((messageList, state) => {
 
 const showDebuggerPane = R.assoc('isVisible', true);
 
+const hideProgressBar = R.assoc('uploadProgress', null);
+
 // =============================================================================
 //
 // Reducer
@@ -140,6 +142,7 @@ export default (state = initialState, action) => {
 
       if (status === STATUS.STARTED) {
         return R.compose(
+          type === CHECK_ARDUINO_DEPENDENCIES ? R.identity : showDebuggerPane,
           R.assoc('currentTab', LOG_TAB_TYPE.INSTALLER),
           R.assoc('currentStage', LOG_TAB_TYPE.INSTALLER),
           R.assoc('uploadProgress', 0),
@@ -175,14 +178,17 @@ export default (state = initialState, action) => {
               R.assoc('currentStage', LOG_TAB_TYPE.COMPILER)
             ),
             // If we installed dependencies — hide progress bar
-            R.assoc('uploadProgress', null)
+            hideProgressBar
           ),
           overInstallerLog(appendMessage(createSystemMessage(successMsg)))
         )(state);
       }
-      if (status === UPLOAD_STATUS.FAILED) {
+      if (status === STATUS.DELETED) {
+        return hideProgressBar(state);
+      }
+      if (status === STATUS.FAILED) {
         return R.compose(
-          R.assoc('uploadProgress', null),
+          hideProgressBar,
           overStageError(state.currentStage)(
             appendMessage(createErrorMessage(payload.message))
           ),
@@ -195,7 +201,7 @@ export default (state = initialState, action) => {
     case UPLOAD: {
       const { payload, meta: { status } } = action;
 
-      if (status === UPLOAD_STATUS.STARTED) {
+      if (status === STATUS.STARTED) {
         return R.compose(
           R.assoc('currentTab', LOG_TAB_TYPE.COMPILER),
           R.assoc('currentStage', LOG_TAB_TYPE.COMPILER),
@@ -209,7 +215,7 @@ export default (state = initialState, action) => {
           overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))
         )(state);
       }
-      if (status === UPLOAD_STATUS.PROGRESSED) {
+      if (status === STATUS.PROGRESSED) {
         const { message, percentage, tab } = payload;
         return R.compose(
           R.assoc('uploadProgress', percentage),
@@ -218,9 +224,9 @@ export default (state = initialState, action) => {
           overTabLog(tab)(appendMessage(createFlasherMessage(message)))
         )(state);
       }
-      if (status === UPLOAD_STATUS.SUCCEEDED) {
+      if (status === STATUS.SUCCEEDED) {
         return R.compose(
-          R.assoc('uploadProgress', null),
+          hideProgressBar,
           R.assoc('currentTab', LOG_TAB_TYPE.UPLOADER),
           R.assoc('currentStage', LOG_TAB_TYPE.UPLOADER),
           overUploaderLog(
@@ -231,9 +237,12 @@ export default (state = initialState, action) => {
           )
         )(state);
       }
-      if (status === UPLOAD_STATUS.FAILED) {
+      if (status === STATUS.DELETED) {
+        return hideProgressBar(state);
+      }
+      if (status === STATUS.FAILED) {
         return R.compose(
-          R.assoc('uploadProgress', null),
+          hideProgressBar,
           overStageError(state.currentStage)(
             appendMessage(createErrorMessage(payload.message))
           ),

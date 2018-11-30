@@ -21,6 +21,8 @@ import {
   CHECK_ARDUINO_DEPENDENCIES,
 } from './debugger/actionTypes';
 
+import { LOG_TAB_TYPE } from './debugger/constants';
+
 import { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 import { SAVE_ALL } from './project/actionTypes';
@@ -66,6 +68,8 @@ export {
   INSTALL_ARDUINO_DEPENDENCIES,
   CHECK_ARDUINO_DEPENDENCIES,
 } from './debugger/actionTypes';
+
+export { LOG_TAB_TYPE } from './debugger/constants';
 
 export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
@@ -143,6 +147,7 @@ export default Object.assign(
     Messages: coreMessages,
     INSTALL_ARDUINO_DEPENDENCIES,
     CHECK_ARDUINO_DEPENDENCIES,
+    LOG_TAB_TYPE,
   },
   UserSelectors,
   EditorSelectors,

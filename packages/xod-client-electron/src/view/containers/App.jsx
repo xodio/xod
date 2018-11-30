@@ -362,7 +362,14 @@ class App extends client.App {
           );
         }
       })
-      .catch(logError(proc.fail));
+      .catch(err => {
+        if (err.type === 'ARDUINO_DEPENDENCIES_MISSING') {
+          proc.progress(formatLogError(err), 0, client.LOG_TAB_TYPE.INSTALLER);
+          proc.delete();
+          return;
+        }
+        logError(proc.fail, err);
+      });
   }
 
   onCreateProject() {

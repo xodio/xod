@@ -104,9 +104,7 @@ class PopupUploadConfig extends React.Component {
           R.unnest,
           R.values,
           R.evolve({
-            available: R.map(
-              R.over(R.lensProp('name'), R.concat(R.__, ' (not installed)'))
-            ),
+            installed: R.map(R.over(R.lensProp('name'), R.concat(R.__, ' 📦'))),
           })
         )
       )
