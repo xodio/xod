@@ -273,10 +273,9 @@ module TestCase = {
         "",
         source(nodeAliases),
         "",
-        "#define INJECT(probe, value) { \\",
+        "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
-        "        (probe).isNodeDirty = true; \\",
-        "    }",
+        "        (probe).isNodeDirty = true;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])
