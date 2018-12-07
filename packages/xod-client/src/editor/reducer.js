@@ -143,7 +143,7 @@ const addTabWithProps = R.curry((id, type, patchPath, state) => {
       index: newIndex,
       type,
       offset: DEFAULT_PANNING_OFFSET,
-      isEditingCppImplementation: false,
+      editedAttachment: null,
     },
     state
   );
@@ -459,18 +459,14 @@ const editorReducer = (state = {}, action) => {
       return openPatchByPath(action.payload.patchPath, state);
     case EAT.EDITOR_SWITCH_TAB:
       return R.assoc('currentTabId', action.payload.tabId, state);
-    case EAT.EDITOR_OPEN_IMPLEMENTATION_CODE:
+    case EAT.EDITOR_OPEN_ATTACHMENT:
       return R.over(
         currentTabLens,
-        R.assoc('isEditingCppImplementation', true),
+        R.assoc('editedAttachment', action.payload),
         state
       );
-    case EAT.EDITOR_CLOSE_IMPLEMENTATION_CODE:
-      return R.over(
-        currentTabLens,
-        R.assoc('isEditingCppImplementation', false),
-        state
-      );
+    case EAT.EDITOR_CLOSE_ATTACHMENT:
+      return R.over(currentTabLens, R.assoc('editedAttachment', null), state);
     case PAT.PATCH_RENAME:
       return renamePatchInTabs(
         action.payload.newPatchPath,

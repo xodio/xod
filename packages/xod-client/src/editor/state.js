@@ -19,6 +19,7 @@ export default {
       patchPath: '@/main',
       selection: [],
       linkingPin: null,
+      editedAttachment: null,
       offset: DEFAULT_PANNING_OFFSET,
     },
   },

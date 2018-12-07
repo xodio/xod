@@ -21,15 +21,11 @@ import * as EditorSelectors from '../selectors';
 import { isInputTarget } from '../../utils/browser';
 import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
-import {
-  FOCUS_AREAS,
-  TAB_TYPES,
-  IMPL_TEMPLATE,
-  SIDEBAR_IDS,
-} from '../constants';
+import { FOCUS_AREAS, TAB_TYPES, SIDEBAR_IDS } from '../constants';
 
 import Patch from './Patch';
 import CppImplementationEditor from '../components/CppImplementationEditor';
+import TabtestEditor from '../components/TabtestEditor';
 import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
 import PanelContextMenu from '../components/PanelContextMenu';
@@ -61,9 +57,9 @@ class Editor extends React.Component {
 
     this.patchSize = this.props.size;
 
-    this.updatePatchImplementationDebounced = debounce(
+    this.updatePatchAttachmentDebounced = debounce(
       300,
-      this.props.actions.updatePatchImplementation
+      this.props.actions.updatePatchAttachment
     );
   }
 
@@ -123,7 +119,7 @@ class Editor extends React.Component {
       tab => {
         // Do not render <Patch /> component if opened tab
         // is in EditingCppImplementation mode.
-        if (tab.isEditingCppImplementation) return null;
+        if (tab.editedAttachment) return null;
 
         // If we reached here, we're sure that tab contains
         // all the necessary data and just explode them up
@@ -149,43 +145,78 @@ class Editor extends React.Component {
     );
   }
 
-  renderOpenedImplementationEditorTabs() {
+  renderOpenedAttachmentEditorTabs() {
     return foldMaybe(
       null,
       currentTab => {
-        const tabs = this.props.implEditorTabs.map(
-          ({ id, type, patchPath }) => {
+        const tabs = this.props.attachmentEditorTabs.map(
+          ({ id, type, patchPath, editedAttachment }) => {
             const patch = XP.getPatchByPathUnsafe(
               patchPath,
               this.props.project
             );
-            const source = XP.getImpl(patch).getOrElse(IMPL_TEMPLATE);
+            const attachmentContents = XP.getAttachmentManagedByMarker(
+              editedAttachment,
+              patch
+            ).getOrElse(
+              R.propOr('', editedAttachment, XP.MANAGED_ATTACHMENT_TEMPLATES)
+            );
 
-            const onChange = src =>
-              this.updatePatchImplementationDebounced(patchPath, src);
             const currentPatchPath = explodeMaybe(
               'No currentPatchPath, but currentTab exists',
               this.props.currentPatchPath
             );
 
-            return (
-              <CppImplementationEditor
-                key={id}
-                isActive={id === currentTab.id}
-                source={source}
-                onChange={onChange}
-                isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
-                onClose={this.props.actions.closeImplementationEditor}
-                patchPath={currentPatchPath}
-              />
-            );
+            switch (editedAttachment) {
+              case XP.TABTEST_MARKER_PATH:
+                return (
+                  <TabtestEditor
+                    key={id}
+                    isActive={id === currentTab.id}
+                    source={attachmentContents}
+                    onChange={newContents =>
+                      this.props.actions.updatePatchAttachment(
+                        patchPath,
+                        editedAttachment,
+                        newContents
+                      )
+                    }
+                    isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+                    onClose={this.props.actions.closeAttachmentEditor}
+                    patchPath={currentPatchPath}
+                  />
+                );
+
+              case XP.NOT_IMPLEMENTED_IN_XOD_PATH:
+                return (
+                  <CppImplementationEditor
+                    key={id}
+                    isActive={id === currentTab.id}
+                    source={attachmentContents}
+                    onChange={newContents =>
+                      this.updatePatchAttachmentDebounced(
+                        patchPath,
+                        editedAttachment,
+                        newContents
+                      )
+                    }
+                    isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+                    onClose={this.props.actions.closeAttachmentEditor}
+                    patchPath={currentPatchPath}
+                  />
+                );
+
+              default:
+                // Should happen only if there’s a bug in XOD IDE
+                throw new Error(`Unknown attachment type ${editedAttachment}`);
+            }
           }
         );
 
         return (
           <div
-            className={cn('CppImplementationEditors', {
-              hidden: currentTab && !currentTab.isEditingCppImplementation,
+            className={cn('AttachmentEditors', {
+              hidden: currentTab && !currentTab.editedAttachment,
             })}
           >
             {tabs}
@@ -238,7 +269,7 @@ class Editor extends React.Component {
           />
           <div className="Workarea-inner">
             {this.renderOpenedPatchTab()}
-            {this.renderOpenedImplementationEditorTabs()}
+            {this.renderOpenedAttachmentEditorTabs()}
             <SnackBar />
           </div>
           <Debugger
@@ -265,7 +296,7 @@ Editor.propTypes = {
   currentPatchPath: sanctuaryPropType($Maybe(XP.PatchPath)),
   project: PropTypes.object,
   currentTab: sanctuaryPropType($Maybe($.Object)),
-  implEditorTabs: PropTypes.array,
+  attachmentEditorTabs: PropTypes.array,
   searchPatches: PropTypes.func.isRequired,
   isHelpboxVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
@@ -278,8 +309,8 @@ Editor.propTypes = {
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
   actions: PropTypes.shape({
-    updatePatchImplementation: PropTypes.func.isRequired,
-    closeImplementationEditor: PropTypes.func.isRequired,
+    updatePatchAttachment: PropTypes.func.isRequired,
+    closeAttachmentEditor: PropTypes.func.isRequired,
     toggleHelp: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
     addNode: PropTypes.func.isRequired,
@@ -304,7 +335,7 @@ const mapStateToProps = R.applySpec({
   project: ProjectSelectors.getProject, // TODO: probably should not bring the whole project
   currentPatchPath: EditorSelectors.getCurrentPatchPath,
   currentTab: EditorSelectors.getCurrentTab,
-  implEditorTabs: EditorSelectors.getImplEditorTabs,
+  attachmentEditorTabs: EditorSelectors.getAttachmentEditorTabs,
   searchPatches: ProjectSelectors.getSearchPatchesFn,
   suggesterIsVisible: EditorSelectors.isSuggesterVisible,
   suggesterPlacePosition: EditorSelectors.getSuggesterPlacePosition,
@@ -320,8 +351,8 @@ const mapDispatchToProps = dispatch => ({
     {
       updateNodeProperty: ProjectActions.updateNodeProperty,
       updatePatchDescription: ProjectActions.updatePatchDescription,
-      updatePatchImplementation: ProjectActions.updatePatchImplementation,
-      closeImplementationEditor: Actions.closeImplementationEditor,
+      updatePatchAttachment: ProjectActions.updatePatchAttachment,
+      closeAttachmentEditor: Actions.closeAttachmentEditor,
       undo: ProjectActions.undoPatch,
       redo: ProjectActions.redoPatch,
       toggleHelp: Actions.toggleHelp,

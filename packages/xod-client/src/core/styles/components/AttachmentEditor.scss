@@ -1,4 +1,4 @@
-.CppImplementationEditors {
+.AttachmentEditors {
   display: flex;
   width: 100%;
   flex-grow: 1;
@@ -8,7 +8,7 @@
   }
 }
 
-.CppImplementationEditor {
+.AttachmentEditor {
   width: 100%;
   height: 100%;
   display: none;
@@ -18,7 +18,7 @@
     flex-flow: column;
   }
 
-  .editor {
+  .cpp-editor {
     display: flex;
     flex-grow: 1;
 
@@ -32,6 +32,17 @@
     .CodeMirror-linenumber {
       cursor: default;
     }
+  }
+
+  .tabtest-editor {
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: scroll;
+
+    @include styled-scrollbar();
   }
 
   &.isInDebuggerTab {

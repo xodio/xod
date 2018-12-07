@@ -138,51 +138,58 @@ export const getPatchAttachments = def(
   R.view(attachmentsLens)
 );
 
-/**
- * Returns an implementation, if it exists. Otherwise Nothing.
- *
- * @function getImpl
- * @param {Patch} patch
- * @type {Maybe<string>}
- */
-export const getImpl = def(
-  'getImpl :: Patch -> Maybe Source',
-  R.compose(
-    R.map(Attachment.getContent),
-    Maybe,
-    R.find(Attachment.isImplAttachment),
-    getPatchAttachments
-  )
+export const getAttachmentManagedByMarker = def(
+  'getAttachmentByMarker :: PatchPath -> Patch -> Maybe String',
+  (markerName, patch) =>
+    R.compose(
+      R.map(Attachment.getContent),
+      Maybe,
+      R.find(Attachment.isAttachmentManagedByMarker(markerName)),
+      getPatchAttachments
+    )(patch)
 );
 
-/**
- * Returns true if patch has a native implementation attached.
- *
- * @function hasImpl
- * @param {Patch} patch
- * @type {Boolean}
- */
-export const hasImpl = def(
-  'hasImpl :: Patch -> Boolean',
-  R.compose(Maybe.isJust, getImpl)
+export const hasAttachmentManagedByMarker = def(
+  'hasAttachmentManagedByMarker :: PatchPath -> Patch -> Boolean',
+  (markerName, patch) =>
+    R.compose(Maybe.isJust, getAttachmentManagedByMarker)(markerName, patch)
 );
 
-export const setImpl = def(
-  'setImpl :: Source -> Patch -> Patch',
-  (source, patch) =>
+export const setAttachmentManagedByMarker = def(
+  'setAttachmentManagedByMarker :: PatchPath -> String -> Patch -> Patch',
+  (markerName, attachmentContents, patch) =>
     R.over(
       attachmentsLens,
       R.compose(
-        R.append(Attachment.createImplAttachment(source)),
-        R.reject(Attachment.isImplAttachment)
+        R.append(
+          Attachment.createAttachmentManagedByMarker(
+            markerName,
+            attachmentContents
+          )
+        ),
+        R.reject(Attachment.isAttachmentManagedByMarker(markerName))
       ),
       patch
     )
 );
 
-export const removeImpl = def(
-  'removeImpl :: Patch -> Patch',
-  R.over(attachmentsLens, R.reject(Attachment.isImplAttachment))
+export const removeAttachmentManagedByMarker = def(
+  'removeAttachmentManagedByMarker :: PatchPath -> Patch -> Patch',
+  (markerName, patch) =>
+    R.over(
+      attachmentsLens,
+      R.reject(Attachment.isAttachmentManagedByMarker(markerName)),
+      patch
+    )
+);
+
+// commonly used during flattening and transpilation process
+export const getImpl = getAttachmentManagedByMarker(
+  CONST.NOT_IMPLEMENTED_IN_XOD_PATH
+);
+
+export const hasImpl = hasAttachmentManagedByMarker(
+  CONST.NOT_IMPLEMENTED_IN_XOD_PATH
 );
 
 // =============================================================================
@@ -739,7 +746,23 @@ export const omitLinks = def(
  */
 export const assocNode = def(
   'assocNode :: Node -> Patch -> Patch',
-  (node, patch) => R.assocPath(['nodes', Node.getNodeId(node)], node, patch)
+  (node, patch) => {
+    const nodeType = Node.getNodeType(node);
+
+    return R.compose(
+      R.when(
+        R.both(
+          () => R.has(nodeType, CONST.MANAGED_ATTACHMENT_FILENAMES),
+          R.complement(hasAttachmentManagedByMarker(nodeType))
+        ),
+        setAttachmentManagedByMarker(
+          nodeType,
+          R.propOr('', nodeType, CONST.MANAGED_ATTACHMENT_TEMPLATES)
+        )
+      ),
+      R.assocPath(['nodes', Node.getNodeId(node)], node)
+    )(patch);
+  }
 );
 
 /**
@@ -764,11 +787,11 @@ export const dissocNode = def(
 
     const removeLinks = R.reduce(R.flip(dissocLink));
     const removeNode = R.dissocPath(['nodes', id]);
-    const removeImplementation = R.compose(
-      foldMaybe(R.identity, () => removeImpl),
+    const removeManagedAttachment = R.compose(
+      foldMaybe(R.identity, removeAttachmentManagedByMarker),
       R.chain(
         R.ifElse(
-          R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH),
+          R.has(R.__, CONST.MANAGED_ATTACHMENT_FILENAMES),
           Maybe.of,
           Maybe.Nothing
         )
@@ -777,7 +800,7 @@ export const dissocNode = def(
       getNodeById
     )(id, patch);
 
-    return R.compose(removeImplementation, removeNode, removeLinks)(
+    return R.compose(removeManagedAttachment, removeNode, removeLinks)(
       patch,
       links
     );

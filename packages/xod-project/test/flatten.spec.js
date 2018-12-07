@@ -12,6 +12,10 @@ import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { getCastPatchPath, getTerminalPath } from '../src/patchPathUtils';
 
+const createImplAttachment = Attachment.createAttachmentManagedByMarker(
+  CONST.NOT_IMPLEMENTED_IN_XOD_PATH
+);
+
 describe('Flatten', () => {
   describe('extractPatches', () => {
     it('correct flattening structure for trivial project', () => {
@@ -68,7 +72,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -216,7 +220,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -490,7 +494,7 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          attachments: [Attachment.createImplAttachment('// ok')],
+          attachments: [createImplAttachment('// ok')],
         },
         'xod/core/or': {
           nodes: {
@@ -516,11 +520,11 @@ describe('Flatten', () => {
             },
           },
           links: {},
-          attachments: [Attachment.createImplAttachment('// ok')],
+          attachments: [createImplAttachment('// ok')],
         },
       },
     });
-    it('should return error if implementation not found', () => {
+    it('should return error if implementation is not found', () => {
       const projectWithMissingAttachments = R.compose(
         explodeEither,
         Project.updatePatch('xod/core/or', Patch.setPatchAttachments([]))
@@ -679,7 +683,7 @@ describe('Flatten', () => {
             },
           },
           links: {},
-          attachments: [Attachment.createImplAttachment('// ok')],
+          attachments: [createImplAttachment('// ok')],
         },
       },
     });
@@ -804,7 +808,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
           'xod/core/cast-to-number(boolean)': {
             nodes: {
@@ -918,7 +922,7 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                attachments: [Attachment.createImplAttachment('// ok')],
+                attachments: [createImplAttachment('// ok')],
               },
               [`xod/core/${typeOut}`]: {
                 nodes: {
@@ -934,7 +938,7 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                attachments: [Attachment.createImplAttachment('// ok')],
+                attachments: [createImplAttachment('// ok')],
               },
               [`xod/core/cast-to-${typeOut}(${typeIn})`]: {
                 nodes: {
@@ -1066,7 +1070,7 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                attachments: [Attachment.createImplAttachment('// ok')],
+                attachments: [createImplAttachment('// ok')],
               },
               [`xod/core/${typeIn}`]: {
                 nodes: {
@@ -1082,7 +1086,7 @@ describe('Flatten', () => {
                   },
                 },
                 links: {},
-                attachments: [Attachment.createImplAttachment('// ok')],
+                attachments: [createImplAttachment('// ok')],
               },
               [`xod/core/cast-to-${typeOut}(${typeIn})`]: {
                 nodes: {
@@ -1224,7 +1228,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -1321,7 +1325,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -1423,7 +1427,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -1591,7 +1595,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
           'xod/core/cast-to-number(boolean)': {
             nodes: {
@@ -1612,7 +1616,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
           'xod/core/cast-to-boolean(number)': {
             nodes: {
@@ -1633,7 +1637,7 @@ describe('Flatten', () => {
               },
             },
             links: {},
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -1719,7 +1723,7 @@ describe('Flatten', () => {
                 type: 'xod/patch-nodes/output-number',
               },
             },
-            attachments: [Attachment.createImplAttachment('// ok')],
+            attachments: [createImplAttachment('// ok')],
           },
         },
       });
@@ -1840,7 +1844,7 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          attachments: [Attachment.createImplAttachment('// ok')],
+          attachments: [createImplAttachment('// ok')],
         },
         'xod/core/and': {
           nodes: {
@@ -1850,7 +1854,7 @@ describe('Flatten', () => {
               type: 'xod/patch-nodes/not-implemented-in-xod',
             },
           },
-          attachments: [Attachment.createImplAttachment('// ok')],
+          attachments: [createImplAttachment('// ok')],
         },
       },
     });

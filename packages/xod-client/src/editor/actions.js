@@ -327,12 +327,13 @@ export const switchPatch = patchPath => (dispatch, getState) => {
   }
 };
 
-export const openImplementationEditor = () => ({
-  type: ActionType.EDITOR_OPEN_IMPLEMENTATION_CODE,
+export const openAttachmentEditor = markerName => ({
+  type: ActionType.EDITOR_OPEN_ATTACHMENT,
+  payload: markerName,
 });
 
-export const closeImplementationEditor = () => ({
-  type: ActionType.EDITOR_CLOSE_IMPLEMENTATION_CODE,
+export const closeAttachmentEditor = () => ({
+  type: ActionType.EDITOR_CLOSE_ATTACHMENT,
 });
 
 export const switchTab = tabId => ({
@@ -496,7 +497,7 @@ export const pasteEntities = event => (dispatch, getState) => {
         R.compose(
           // check if selection is structurally the same as copied entities
           R.map(R.map(R.omit('id'))),
-          R.omit(['links', 'impl']),
+          R.omit(['links', 'attachments']),
           resetClipboardEntitiesPosition
         ),
         copiedEntities
@@ -539,8 +540,15 @@ export const pasteEntities = event => (dispatch, getState) => {
   });
 };
 
-export const cutEntities = event => dispatch => {
+export const cutEntities = event => (dispatch, getState) => {
   if (isInput(document.activeElement)) return;
+
+  const state = getState();
+  const isInTabtestEditorTab = Selectors.getCurrentTab(state)
+    .map(R.propEq('editedAttachment', XP.TABTEST_MARKER_PATH))
+    .getOrElse(false);
+
+  if (isInTabtestEditorTab) return;
 
   dispatch(copyEntities(event));
   dispatch(deleteSelection());

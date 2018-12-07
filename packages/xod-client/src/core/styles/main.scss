@@ -18,6 +18,7 @@
 @import
   'components/AccountPane',
   'components/App',
+  'components/AttachmentEditor',
   'components/BackgroundLayer',
   'components/Breadcrumbs',
   'components/Button',
@@ -25,7 +26,6 @@
   'components/Comment',
   'components/ContextMenu',
   'components/CodeMirror',
-  'components/CppImplementationEditor',
   'components/Debugger',
   'components/Editor',
   'components/Helpbox',
@@ -66,4 +66,5 @@
   'components/CodeMirror',
   'components/CustomScroll',
   'components/Menubar',
+  'components/ReactDatasheet',
   'components/SkyLight';

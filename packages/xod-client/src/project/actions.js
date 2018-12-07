@@ -173,11 +173,12 @@ export const updatePatchDescription = (patchDescription, patchPath) => ({
   },
 });
 
-export const updatePatchImplementation = (patchPath, newSource) => ({
-  type: ActionType.PATCH_NATIVE_IMPLEMENTATION_UPDATE,
+export const updatePatchAttachment = (patchPath, markerName, newContents) => ({
+  type: ActionType.PATCH_MANAGED_ATTACHMENT_UPDATE,
   payload: {
     patchPath,
-    newSource,
+    newContents,
+    markerName,
   },
 });
 

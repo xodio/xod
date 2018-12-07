@@ -37,3 +37,23 @@
     background-color: #444444;
   }
 }
+
+@mixin styled-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    opacity: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(white, 0.35);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    opacity: 0;
+  }
+}

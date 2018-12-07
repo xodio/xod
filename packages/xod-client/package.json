@@ -36,6 +36,7 @@
     "react-collapsible": "^2.0.3",
     "react-contextmenu": "^2.9.1",
     "react-custom-scroll": "git+https://github.com/xodio/react-custom-scroll.git#aefa21e3fa3bcc173b969176b91044db05399a67",
+    "react-datasheet": "^1.3.10",
     "react-dnd": "^2.5.1",
     "react-dnd-html5-backend": "^2.5.1",
     "react-dom": "^16.2",
@@ -63,7 +64,8 @@
     "xod-func-tools": "^0.25.0",
     "xod-patch-search": "^0.25.2",
     "xod-pm": "^0.25.2",
-    "xod-project": "^0.25.2"
+    "xod-project": "^0.25.2",
+    "xod-tabtest": "^0.25.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.17",

@@ -141,7 +141,7 @@ const shallValidateFunctions = {
     )(patchPath, project);
   },
   [PAT.PATCH_DESCRIPTION_UPDATE]: R.F,
-  [PAT.PATCH_NATIVE_IMPLEMENTATION_UPDATE]: R.F,
+  [PAT.PATCH_MANAGED_ATTACHMENT_UPDATE]: R.F,
   [PAT.PROJECT_UPDATE_META]: R.F,
 };
 

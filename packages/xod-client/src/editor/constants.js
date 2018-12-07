@@ -1,4 +1,4 @@
-import { PIN_TYPE } from 'xod-project';
+import * as XP from 'xod-project';
 
 export const EDITOR_MODE = {
   SELECTING: 'selecting',
@@ -18,13 +18,13 @@ export const EDITOR_MODE = {
 };
 
 export const WIDGET_TYPE = {
-  BOOLEAN: PIN_TYPE.BOOLEAN,
-  NUMBER: PIN_TYPE.NUMBER,
-  STRING: PIN_TYPE.STRING,
-  PULSE: PIN_TYPE.PULSE,
-  BYTE: PIN_TYPE.BYTE,
-  PORT: PIN_TYPE.PORT,
-  DEAD: PIN_TYPE.DEAD,
+  BOOLEAN: XP.PIN_TYPE.BOOLEAN,
+  NUMBER: XP.PIN_TYPE.NUMBER,
+  STRING: XP.PIN_TYPE.STRING,
+  PULSE: XP.PIN_TYPE.PULSE,
+  BYTE: XP.PIN_TYPE.BYTE,
+  PORT: XP.PIN_TYPE.PORT,
+  DEAD: XP.PIN_TYPE.DEAD,
   LABEL: 'Label',
   IO_LABEL: 'IOLabel',
   TEXTAREA: 'textarea',
@@ -71,18 +71,6 @@ export const TAB_TYPES = {
 };
 
 export const DEBUGGER_TAB_ID = 'debugger';
-
-export const IMPL_TEMPLATE = `
-struct State {
-};
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    //auto inValue = getValue<input_IN>(ctx);
-    //emitValue<output_OUT>(ctx, inValue);
-}
-`;
 
 export const PANEL_IDS = {
   PROJECT_BROWSER: 'PROJECT_BROWSER',
