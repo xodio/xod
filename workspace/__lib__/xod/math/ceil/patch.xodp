@@ -21,6 +21,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "HJ5Dawz14",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "noNativeImpl",
       "position": {
         "x": 100,

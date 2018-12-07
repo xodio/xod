@@ -26,6 +26,14 @@
       "type": "xod/core/constant-number"
     },
     {
+      "id": "HJiqavz1V",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "rJpy6in8-",
       "position": {
         "x": 10,

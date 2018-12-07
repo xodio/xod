@@ -2,6 +2,14 @@
   "description": "Continuously outputs pulses, can be paused",
   "nodes": [
     {
+      "id": "B1EkFCD1E",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "BJGvpuPab",
       "position": {
         "x": 34,

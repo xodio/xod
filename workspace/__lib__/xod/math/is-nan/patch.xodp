@@ -2,6 +2,14 @@
   "description": "Determines if the given number is a NaN value.",
   "nodes": [
     {
+      "id": "HkxVYavMkE",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "SJkm55e6m",
       "position": {
         "x": 0,

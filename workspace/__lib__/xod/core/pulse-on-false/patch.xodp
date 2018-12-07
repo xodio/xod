@@ -42,6 +42,14 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "id": "HkxAOYRD1E",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "r1R2gRu8Z",
       "position": {
         "x": 10,

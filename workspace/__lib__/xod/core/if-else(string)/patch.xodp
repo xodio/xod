@@ -40,6 +40,14 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "id": "SJuBFRPk4",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Outputs string from `T` if `COND` is true, and `F` otherwise",
       "id": "rkPlxjg0W",
       "label": "R",

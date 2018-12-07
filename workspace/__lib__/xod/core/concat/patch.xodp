@@ -26,6 +26,14 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
+      "id": "Sy2Cd0D1E",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "rksccsp-W",
       "position": {
         "x": 0,

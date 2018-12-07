@@ -24,6 +24,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "Byx7KRPyN",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "boundLiterals": {
         "__out__": "Continuously"
       },

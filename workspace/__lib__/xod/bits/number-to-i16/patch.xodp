@@ -18,6 +18,14 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "id": "HyrAPRPk4",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Least significant byte",
       "id": "S1-yMqZyX",
       "label": "B0",

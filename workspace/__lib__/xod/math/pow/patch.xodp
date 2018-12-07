@@ -2,6 +2,14 @@
   "description": "Computes the power of `BASE` raised to the power exponent `EXP`",
   "nodes": [
     {
+      "id": "BJ2iaDzJV",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "BkC5cn2LW",
       "label": "EXP",
       "position": {

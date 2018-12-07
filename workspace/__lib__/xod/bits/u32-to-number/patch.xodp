@@ -54,6 +54,14 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rktjORwkV",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

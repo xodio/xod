@@ -28,6 +28,14 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "id": "H1HcY0DyE",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "noNativeImpl",
       "position": {
         "x": 100,

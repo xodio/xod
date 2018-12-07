@@ -27,6 +27,14 @@
         "y": 100
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rkfUavfJV",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

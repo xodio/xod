@@ -101,6 +101,14 @@
       "type": "@/log-e"
     },
     {
+      "id": "r12taPMJE",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "rJcFmQQ1G",
       "position": {
         "x": 34,

@@ -10,6 +10,14 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "id": "HJe8KCvy4",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "r1VV1mKZm",
       "position": {
         "x": 34,

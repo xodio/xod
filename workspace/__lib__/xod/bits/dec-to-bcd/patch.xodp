@@ -165,6 +165,14 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "id": "SJ_svAP1E",
+      "position": {
+        "x": 238,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "r1COLrakX",
       "position": {
         "x": 102,

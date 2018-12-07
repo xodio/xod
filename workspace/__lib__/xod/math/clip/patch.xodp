@@ -21,6 +21,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "H1g6D6PMJV",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "The input value",
       "id": "Hk2H0A13-",
       "label": "X",

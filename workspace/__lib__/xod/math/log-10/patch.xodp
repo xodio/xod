@@ -2,6 +2,14 @@
   "description": "Computes logarithm of a number to base 10.",
   "nodes": [
     {
+      "id": "B1uF6vf1V",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "H1g7mXQ7yf",
       "position": {
         "x": -1,

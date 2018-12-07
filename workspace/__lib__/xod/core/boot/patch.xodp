@@ -2,6 +2,14 @@
   "description": "Outputs a single pulse when the program starts",
   "nodes": [
     {
+      "id": "S153u0w1E",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "noNativeImpl",
       "position": {
         "x": 100,
