@@ -252,6 +252,8 @@ const onReady = () => {
   });
 
   createWindow();
+  let unsubscribers = [];
+
   win.webContents.on('did-finish-load', () => {
     WA.prepareWorkspaceOnLaunch(
       (eventName, data) => win.webContents.send(eventName, data),
@@ -266,23 +268,47 @@ const onReady = () => {
       )
       .then(arduinoCli => {
         arduinoCliInstance = arduinoCli;
-        subscribeListBoards(arduinoCli);
-        subscribeUpload(arduinoCli);
-        subscribeUpdateIndexes(arduinoCli);
-        subscribeCheckUpdates(arduinoCli);
-        subscribeUpgradeArduinoPackages(arduinoCli);
 
-        // On switching workspace -> update arduino-cli config and run migration
-        ipcMain.on(EVENTS.SWITCH_WORKSPACE, (event, newWsPath) =>
-          xdb.switchWorkspace(
-            arduinoCli,
-            getPathToBundledWorkspace(),
-            newWsPath
-          )
-        );
+        const subscribeSwitchWorkspace = () => {
+          // On switching workspace -> update arduino-cli config and run migration
+          const onSwitchWorkspace = (event, newWsPath) =>
+            xdb.switchWorkspace(
+              arduinoCli,
+              getPathToBundledWorkspace(),
+              newWsPath
+            );
+          ipcMain.on(EVENTS.SWITCH_WORKSPACE, onSwitchWorkspace);
 
-        subscribeOnCheckArduinoDependencies(arduinoCli);
-        subscribeOnInstallArduinoDependencies(arduinoCli);
+          return () =>
+            ipcMain.removeListener(EVENTS.SWITCH_WORKSPACE, onSwitchWorkspace);
+        };
+
+        const onProjectPathChange = () => {
+          const projectPath = store.select.projectPath();
+          win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
+          if (projectPath != null) {
+            app.addRecentDocument(projectPath);
+          }
+
+          const newTitle = projectPath
+            ? `${projectPath} — ${DEFAULT_APP_TITLE}`
+            : DEFAULT_APP_TITLE;
+          win.setTitle(newTitle);
+        };
+
+        // unsubscribe old listeners
+        unsubscribers.forEach(R.call);
+        unsubscribers = [
+          subscribeSwitchWorkspace(),
+          subscribeListBoards(arduinoCli),
+          subscribeUpload(arduinoCli),
+          subscribeUpdateIndexes(arduinoCli),
+          subscribeCheckUpdates(arduinoCli),
+          subscribeUpgradeArduinoPackages(arduinoCli),
+          subscribeOnCheckArduinoDependencies(arduinoCli),
+          subscribeOnInstallArduinoDependencies(arduinoCli),
+          store.subscribe(onProjectPathChange),
+        ];
       })
       .catch(err => {
         console.error(err); // eslint-disable-line no-console
@@ -297,19 +323,6 @@ const onReady = () => {
       ipcMain,
       autoUpdater
     );
-
-    store.subscribe(() => {
-      const projectPath = store.select.projectPath();
-      win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
-      if (projectPath != null) {
-        app.addRecentDocument(projectPath);
-      }
-
-      const newTitle = projectPath
-        ? `${projectPath} — ${DEFAULT_APP_TITLE}`
-        : DEFAULT_APP_TITLE;
-      win.setTitle(newTitle);
-    });
 
     // On Linux XOD auto updates are not supported.
     // Use of OS package manager is encouraged there.
