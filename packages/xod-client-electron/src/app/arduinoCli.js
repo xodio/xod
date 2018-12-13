@@ -124,34 +124,29 @@ export const upload = (onProgress, cli, payload) => {
 // Subscribers
 //
 // =============================================================================
-export const subscribeListBoards = cli => {
+export const subscribeListBoards = cli =>
   subscribeIpc(
     () => loadWorkspacePath().then(ws => xdb.listBoards(ws, cli)),
     LIST_BOARDS
   );
-};
 
-export const subscribeUpload = cli => {
+export const subscribeUpload = cli =>
   subscribeIpc(
     (_, payload, onProgress) => upload(onProgress, cli, payload),
     UPLOAD_TO_ARDUINO
   );
-};
 
-export const subscribeUpdateIndexes = cli => {
+export const subscribeUpdateIndexes = cli =>
   subscribeIpc(
     () => loadWorkspacePath().then(ws => xdb.updateIndexes(ws, cli)),
     UPDATE_INDEXES
   );
-};
 
-export const subscribeCheckUpdates = cli => {
+export const subscribeCheckUpdates = cli =>
   subscribeIpc(() => xdb.checkUpdates(cli), CHECK_ARDUINO_DEPENDENCY_UPDATES);
-};
 
-export const subscribeUpgradeArduinoPackages = cli => {
+export const subscribeUpgradeArduinoPackages = cli =>
   subscribeIpc(
     (_, _2, onProgress) => xdb.upgradeArduinoPackages(onProgress, cli),
     UPGRADE_ARDUINO_DEPENDECIES
   );
-};
