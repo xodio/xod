@@ -1,0 +1,165 @@
+{
+  "description": "Integrates input value over time",
+  "links": [
+    {
+      "id": "BJJCDDl37",
+      "input": {
+        "nodeId": "B1hUDDlhX",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "HJ_iDDln7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkWLDPghQ",
+      "input": {
+        "nodeId": "SklIHPeh7",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SJsHvDehQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByhDDPen7",
+      "input": {
+        "nodeId": "HJOwwwlhX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hUDDlhX",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "HJ8TDwxnX",
+      "input": {
+        "nodeId": "B1hUDDlhX",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "S1LhPPl37",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyoiPwx2Q",
+      "input": {
+        "nodeId": "HJSSHvl3X",
+        "pinKey": "H1NuAXqEM"
+      },
+      "output": {
+        "nodeId": "HJ_iDDln7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkeUwDl3m",
+      "input": {
+        "nodeId": "SklIHPeh7",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "HJSSHvl3X",
+        "pinKey": "B1OK07cVz"
+      }
+    },
+    {
+      "id": "SyJvwDx2m",
+      "input": {
+        "nodeId": "B1hUDDlhX",
+        "pinKey": "HJvqZ0dLZ"
+      },
+      "output": {
+        "nodeId": "SklIHPeh7",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "ryfFPJN8E",
+      "input": {
+        "nodeId": "HJSSHvl3X",
+        "pinKey": "ByCuRXcEG"
+      },
+      "output": {
+        "nodeId": "S1LhPPl37",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1hUDDlhX",
+      "position": {
+        "x": 176,
+        "y": 315
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "Bk8By1N8N",
+      "position": {
+        "x": 352,
+        "y": 105
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "description": "The accumulated value",
+      "id": "HJOwwwlhX",
+      "position": {
+        "x": 176,
+        "y": 420
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJSSHvl3X",
+      "position": {
+        "x": 176,
+        "y": 105
+      },
+      "type": "xod/core/delta-time"
+    },
+    {
+      "description": "Updates the accumulated value with changes since the last push",
+      "id": "HJ_iDDln7",
+      "label": "PUSH",
+      "position": {
+        "x": 220,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Resets the output to 0 and starts integration over",
+      "id": "S1LhPPl37",
+      "label": "RST",
+      "position": {
+        "x": 264,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The value to integrate",
+      "id": "SJsHvDehQ",
+      "position": {
+        "x": 132,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SklIHPeh7",
+      "position": {
+        "x": 132,
+        "y": 210
+      },
+      "type": "xod/core/multiply"
+    }
+  ]
+}

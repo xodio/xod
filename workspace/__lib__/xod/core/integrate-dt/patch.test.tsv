@@ -1,0 +1,12 @@
+__time(ms)	IN	PUSH	RST	OUT
+0	1	pulse	no-pulse	0
+100	1	pulse	no-pulse	0.1
+500	1	pulse	no-pulse	0.5
+1000	1	pulse	no-pulse	1
+// integrate after reset discards values before reset
+1500	1	no-pulse	pulse	0
+1600	1	pulse	no-pulse	0.1~
+// edge case whrere IN is Inf
+0	Inf	no-pulse	pulse	0
+1000	Inf	pulse	no-pulse	Inf
+2000	-Inf	pulse	no-pulse	NaN
