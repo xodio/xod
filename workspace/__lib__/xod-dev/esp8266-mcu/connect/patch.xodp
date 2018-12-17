@@ -71,13 +71,26 @@
     },
     {
       "boundLiterals": {
+        "__out__": "10"
+      },
+      "description": "Connection timeout (in seconds)",
+      "id": "S1qvRYMe4",
+      "label": "TO",
+      "position": {
+        "x": 102,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
         "__out__": "On Boot"
       },
       "description": "Establish the connection",
       "id": "ryRHTFItQ",
       "label": "CONN",
       "position": {
-        "x": 102,
+        "x": 136,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
