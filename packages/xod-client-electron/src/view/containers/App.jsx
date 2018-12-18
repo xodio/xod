@@ -272,9 +272,6 @@ class App extends client.App {
 
     const eitherTProject = this.transformProjectForTranspiler(debug);
 
-    const logError = logProcessFn => error =>
-      logProcessFn(formatLogError(error), 0);
-
     stopDebuggerSession();
 
     eitherToPromise(eitherTProject)
@@ -368,7 +365,7 @@ class App extends client.App {
           proc.delete();
           return;
         }
-        logError(proc.fail, err);
+        proc.fail(formatLogError(err), 0);
       });
   }
 
