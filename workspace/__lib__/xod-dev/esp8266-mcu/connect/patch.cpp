@@ -5,11 +5,10 @@
 {{/global}}
 // clang-format on
 
-const uint8_t TOTAL_RECHECKS = 200;
 const uint8_t RECEHCK_DURATION_MS = 30;
 
 struct State {
-    uint8_t rechecksLeft = TOTAL_RECHECKS;
+    uint16_t rechecksLeft;
 };
 
 // clang-format off
@@ -39,7 +38,8 @@ void evaluate(Context ctx) {
         device->mode(WIFI_STA);
         device->begin(_ssid, _password);
 
-        state->rechecksLeft = TOTAL_RECHECKS;
+        auto timeout = getValue<input_TO>(ctx);
+        state->rechecksLeft = ceil(timeout * 1000.0 / RECEHCK_DURATION_MS);
         setTimeout(ctx, RECEHCK_DURATION_MS);
     }
 
