@@ -1,0 +1,29 @@
+{
+  "description": "Formats a color as a 6-digit hexadecimal value (ex.: \"FF3300\")",
+  "nodes": [
+    {
+      "id": "S1YduQsj7",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "SyIDdXijQ",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-color"
+    },
+    {
+      "id": "rJU8x4soX",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

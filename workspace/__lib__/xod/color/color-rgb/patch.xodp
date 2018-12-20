@@ -1,0 +1,223 @@
+{
+  "description": "Constructs a color value from red, green, and blue components. Each component should be in the range [0, 1]. Values out of this range are truncated to 0 or 1",
+  "links": [
+    {
+      "id": "BJK95Wos7",
+      "input": {
+        "nodeId": "SkqnPZjsX",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "BkE95WojQ",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "BkwY9-is7",
+      "input": {
+        "nodeId": "HyS2vZsoX",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "HJdd5Zio7",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "Byu9qWio7",
+      "input": {
+        "nodeId": "BkE95WojQ",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "S1yKPZjjQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1lpwWjom",
+      "input": {
+        "nodeId": "SyB5PWio7",
+        "pinKey": "rkhfmWojX"
+      },
+      "output": {
+        "nodeId": "SkqnPZjsX",
+        "pinKey": "By_EX_bk7"
+      }
+    },
+    {
+      "id": "Hko59bjo7",
+      "input": {
+        "nodeId": "SJjhvWjiQ",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "ryx4c9Wjj7",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "S1_tqboi7",
+      "input": {
+        "nodeId": "HJdd5Zio7",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "HyquDboo7",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJ1pw-oi7",
+      "input": {
+        "nodeId": "SyB5PWio7",
+        "pinKey": "S1Df7Wso7"
+      },
+      "output": {
+        "nodeId": "HyS2vZsoX",
+        "pinKey": "By_EX_bk7"
+      }
+    },
+    {
+      "id": "Skq95-oom",
+      "input": {
+        "nodeId": "ryx4c9Wjj7",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "ryxkYD-joQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyL5vbii7",
+      "input": {
+        "nodeId": "Skk5DZsiQ",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyB5PWio7",
+        "pinKey": "S1f7XZij7"
+      }
+    },
+    {
+      "id": "rJSTPWis7",
+      "input": {
+        "nodeId": "SyB5PWio7",
+        "pinKey": "Hklnz7WjoQ"
+      },
+      "output": {
+        "nodeId": "SJjhvWjiQ",
+        "pinKey": "By_EX_bk7"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "1",
+        "HkFBgJehW": "255"
+      },
+      "id": "BkE95WojQ",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "1",
+        "HkFBgJehW": "255"
+      },
+      "id": "HJdd5Zio7",
+      "position": {
+        "x": -136,
+        "y": 102
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "id": "HyS2vZsoX",
+      "position": {
+        "x": -136,
+        "y": 204
+      },
+      "type": "xod/bits/number-to-u8"
+    },
+    {
+      "description": "Red",
+      "id": "HyquDboo7",
+      "label": "R",
+      "position": {
+        "x": -136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Green",
+      "id": "S1yKPZjjQ",
+      "label": "G",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJjhvWjiQ",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/bits/number-to-u8"
+    },
+    {
+      "id": "Skk5DZsiQ",
+      "position": {
+        "x": 34,
+        "y": 408
+      },
+      "type": "@/output-color"
+    },
+    {
+      "id": "SkqnPZjsX",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/bits/number-to-u8"
+    },
+    {
+      "id": "SyB5PWio7",
+      "position": {
+        "x": 34,
+        "y": 306
+      },
+      "type": "@/color-rgb-bytes"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "1",
+        "HkFBgJehW": "255"
+      },
+      "id": "ryx4c9Wjj7",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "description": "Blue",
+      "id": "ryxkYD-joQ",
+      "label": "B",
+      "position": {
+        "x": 272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

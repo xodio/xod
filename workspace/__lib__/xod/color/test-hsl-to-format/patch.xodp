@@ -1,0 +1,125 @@
+{
+  "links": [
+    {
+      "id": "S1ZI41_gV",
+      "input": {
+        "nodeId": "H1ePr4yul4",
+        "pinKey": "SyIDdXijQ"
+      },
+      "output": {
+        "nodeId": "BJk8EJOeN",
+        "pinKey": "BJyghZosm"
+      }
+    },
+    {
+      "id": "SkZvSNyOxN",
+      "input": {
+        "nodeId": "S1PSVJdxV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1ePr4yul4",
+        "pinKey": "S1YduQsj7"
+      }
+    },
+    {
+      "id": "r1U1UEkOlN",
+      "input": {
+        "nodeId": "BJk8EJOeN",
+        "pinKey": "Symyhboj7"
+      },
+      "output": {
+        "nodeId": "rkxyLEkulV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1V18NJdeV",
+      "input": {
+        "nodeId": "BJk8EJOeN",
+        "pinKey": "r1g7J3-ii7"
+      },
+      "output": {
+        "nodeId": "rJmkU4yOgE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rySJLV1_eN",
+      "input": {
+        "nodeId": "BJk8EJOeN",
+        "pinKey": "HJgyhboim"
+      },
+      "output": {
+        "nodeId": "B1Zy84yOe4",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Zy84yOe4",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BJk8EJOeN",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "@/color-hsl"
+    },
+    {
+      "id": "BkGJL4J_gE",
+      "position": {
+        "x": 135,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "H1ePr4yul4",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/format-color"
+    },
+    {
+      "id": "HytGuBMWV",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "S1PSVJdxV",
+      "position": {
+        "x": 0,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "rJmkU4yOgE",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkxyLEkulV",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

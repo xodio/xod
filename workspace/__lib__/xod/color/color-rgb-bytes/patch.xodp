@@ -1,0 +1,51 @@
+{
+  "description": "Constructs a color value from red, green, and blue components expressed as byte values. Use decimal (0d to 255d) or hexadecimal (00h to FFh) byte literals. For example, if a graphical editor shows a blue as “#287ec9” or “rgb(40, 126, 201)” use the following literals for R/G/B: 28h/7Eh/C9h or 40d/126d/201d",
+  "nodes": [
+    {
+      "id": "BkNQ7-oom",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Blue",
+      "id": "Hklnz7WjoQ",
+      "label": "B",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Red",
+      "id": "S1Df7Wso7",
+      "label": "R",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "S1f7XZij7",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-color"
+    },
+    {
+      "description": "Green",
+      "id": "rkhfmWojX",
+      "label": "G",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}
