@@ -150,7 +150,7 @@ jobs:
       - run:
           name: Generate tabtests
           command: |
-            ls -d workspace/__lib__/xod/* | xargs -n 1 \
+            ls -d workspace/__lib__/xod/* workspace/test/* | xargs -n 1 \
               yarn xodc tabtest --no-build | cat
       - run:
           name: Build tabtests

@@ -1,5 +1,5 @@
 {
-  "description": "Outputs `X𝑛` value based on which `S𝑛` pulse came last. By default outputs `X1`.",
+  "description": "Outputs `X𝑛` value based on which `S𝑛` pulse came last. By default outputs the value of the latest `X𝑛` input.",
   "links": [
     {
       "id": "B1Rxl8o2M",

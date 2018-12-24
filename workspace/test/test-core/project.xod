@@ -1,0 +1,6 @@
+{
+  "description": "The collection of test patches over some complicated Nodes of `xod/core` library, which cannot be tested at the same patch.",
+  "license": "AGPL-3.0",
+  "name": "test-core",
+  "version": "1.0.0"
+}

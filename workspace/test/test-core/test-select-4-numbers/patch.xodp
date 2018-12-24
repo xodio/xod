@@ -1,0 +1,232 @@
+{
+  "description": "Test suite for `xod/core/select` with 4 input groups of type Number.",
+  "links": [
+    {
+      "id": "BJ2cWIdAgV",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rygjH06LW-$1"
+      },
+      "output": {
+        "nodeId": "BJeq-LdAgN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJXeqWLdRlE",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rJUjrCTUb-$1"
+      },
+      "output": {
+        "nodeId": "Bk_cW8OClN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1Veq-LuCl4",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rJUjrCTUb"
+      },
+      "output": {
+        "nodeId": "HkScWIORlV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJllc-IOCgE",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "S10qrR6UZ"
+      },
+      "output": {
+        "nodeId": "SJW5W8u0eV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SypcWLOCgV",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rygjH06LW-$2"
+      },
+      "output": {
+        "nodeId": "B1I9bLdCeN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sysq-LO0gN",
+      "input": {
+        "nodeId": "HJ9c-8dRxV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rkWHDAW_f"
+      }
+    },
+    {
+      "id": "rJGecWLdCeV",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rygjH06LW"
+      },
+      "output": {
+        "nodeId": "SJNq-L_0lE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJWx5WLO0xE",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rkmiHCaIZ"
+      },
+      "output": {
+        "nodeId": "BkcW8O0gN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkJg5ZUd0gN",
+      "input": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "rJUjrCTUb-$2"
+      },
+      "output": {
+        "nodeId": "BkY5-UuReV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryRcZLuRxV",
+      "input": {
+        "nodeId": "HkD5WLu0gE",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJQ5bU_AlV",
+        "pinKey": "S1yaHC6UW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1I9bLdCeN",
+      "label": "N4",
+      "position": {
+        "x": 203,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "arityLevel": 3,
+      "id": "BJQ5bU_AlV",
+      "position": {
+        "x": -1,
+        "y": 101
+      },
+      "type": "xod/core/select"
+    },
+    {
+      "id": "BJeq-LdAgN",
+      "label": "N3",
+      "position": {
+        "x": 135,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkGq-8_AxV",
+      "position": {
+        "x": 305,
+        "y": 101
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "description": "Test suite for `xod/core/select` with 4 input groups of type Number.",
+      "id": "BkSH8d0eN",
+      "position": {
+        "x": 374,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "BkY5-UuReV",
+      "label": "S4",
+      "position": {
+        "x": 237,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "Bk_cW8OClN",
+      "label": "S3",
+      "position": {
+        "x": 169,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BkcW8O0gN",
+      "label": "S1",
+      "position": {
+        "x": 33,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJ9c-8dRxV",
+      "label": "DONE",
+      "position": {
+        "x": 33,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HkD5WLu0gE",
+      "position": {
+        "x": -1,
+        "y": 203
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HkScWIORlV",
+      "label": "S2",
+      "position": {
+        "x": 101,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SJNq-L_0lE",
+      "label": "N2",
+      "position": {
+        "x": 67,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJW5W8u0eV",
+      "label": "N1",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
