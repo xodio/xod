@@ -691,3 +691,11 @@ export const splitLinksToBuses = () => (dispatch, getState) => {
     });
   });
 };
+
+export const selectConstantNodeValue = (nodeId, patchPath) => ({
+  type: ActionType.SELECT_CONSTANT_NODE_VALUE,
+  payload: {
+    nodeId,
+    patchPath,
+  },
+});
