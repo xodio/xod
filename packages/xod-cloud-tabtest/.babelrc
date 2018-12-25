@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015"],
+  "plugins": [
+    ["babel-plugin-inline-import", {
+      "extensions": [
+        ".cpp",
+        ".h",
+        ".inl",
+        ".xodball"
+      ]
+    }]
+  ]
+}
