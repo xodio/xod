@@ -3,12 +3,13 @@ import path from 'path';
 import recReadDir from 'recursive-readdir';
 
 import { expandHomeDir } from './utils';
+import { IGNORE_FILENAMES } from './constants';
 
 // :: rootPath -> Promise
 export const readDir = rootPath =>
   new Promise((resolve, reject) => {
     const resolvedPath = path.resolve(expandHomeDir(rootPath));
-    recReadDir(resolvedPath, (err, files) => {
+    recReadDir(resolvedPath, IGNORE_FILENAMES, (err, files) => {
       if (err) {
         reject(err);
         return;
