@@ -60,6 +60,10 @@
     "@/output-self": {
       "path": "@/output-self"
     },
+    "@/tabtest": {
+      "path": "@/tabtest",
+      "description": "A marker node which defines a tabular test (tabtest) for the patch node. A tabtest is a kind of unit test expressed as a send-in/check-out table."
+    },
     "@/to-bus": {
       "nodes": {
         "__in__": {

@@ -35,6 +35,14 @@
       "type": "xod/patch-nodes/output-boolean"
     },
     {
+      "id": "SJfgF0D1E",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Resets current countdown, starts new countdown",
       "id": "SkSuD6LMb",
       "label": "SET",

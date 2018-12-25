@@ -37,6 +37,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "r1-Aw0vkV",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Least significant byte",
       "id": "rJyurJzAG",
       "label": "B3",

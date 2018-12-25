@@ -48,6 +48,14 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
+      "id": "r1uRwAvJV",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "rkgLVmsWJm",
       "position": {
         "x": -1,

@@ -15,6 +15,14 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
+      "id": "H1GEFAv14",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "HJ1uXKDpb",
       "position": {
         "x": 0,

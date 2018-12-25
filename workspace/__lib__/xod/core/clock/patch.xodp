@@ -33,6 +33,14 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "id": "BJgAdRPJE",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Pulses on each time interval end",
       "id": "HJU8CE2lW",
       "label": "TICK",

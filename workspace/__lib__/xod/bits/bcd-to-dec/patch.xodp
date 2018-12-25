@@ -119,6 +119,14 @@
       "type": "xod/core/multiply"
     },
     {
+      "id": "BJO5vRvkE",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "HyTqUBpJ7",
       "position": {
         "x": 136,

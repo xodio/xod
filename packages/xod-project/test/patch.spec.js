@@ -76,7 +76,12 @@ describe('Patch', () => {
       it('should return Just Source with implementation for patch with impl attachment', () => {
         const expectedSource = '// ok!';
         const patch = Helper.defaultizePatch({
-          attachments: [Attachment.createImplAttachment(expectedSource)],
+          attachments: [
+            Attachment.createAttachmentManagedByMarker(
+              CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
+              expectedSource
+            ),
+          ],
         });
         const maybeImpl = Patch.getImpl(patch);
         assert.isTrue(maybeImpl.isJust);
@@ -102,63 +107,14 @@ describe('Patch', () => {
       it('should return true for patch with impl attachment', () => {
         const expectedSource = '// ok!';
         const patch = Helper.defaultizePatch({
-          attachments: [Attachment.createImplAttachment(expectedSource)],
+          attachments: [
+            Attachment.createAttachmentManagedByMarker(
+              CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
+              expectedSource
+            ),
+          ],
         });
         assert.isTrue(Patch.hasImpl(patch));
-      });
-    });
-    describe('setImpl', () => {
-      it('should add impl attachment if none existed', () => {
-        const patch = Helper.defaultizePatch({
-          attachments: [
-            Attachment.createAttachment(
-              'not-an-implementation.cpp',
-              'utf-8',
-              '// whatever'
-            ),
-          ],
-        });
-        const expectedSource = '// ok!';
-
-        const updatedPatch = Patch.setImpl(expectedSource, patch);
-
-        assert.equal(
-          Patch.getImpl(updatedPatch).getOrElse(null),
-          expectedSource
-        );
-        assert.lengthOf(Patch.getPatchAttachments(updatedPatch), 2);
-      });
-      it('should update existing impl attachment', () => {
-        const patch = Helper.defaultizePatch({
-          attachments: [
-            Attachment.createAttachment(
-              'some-random-file.cpp',
-              'utf-8',
-              '// whatever'
-            ),
-            Attachment.createImplAttachment('// initial implementation'),
-          ],
-        });
-        const expectedSource = '// updated!';
-
-        const updatedPatch = Patch.setImpl(expectedSource, patch);
-
-        assert.equal(
-          Patch.getImpl(updatedPatch).getOrElse(null),
-          expectedSource,
-          'implementation source is updated'
-        );
-
-        const getAttachmentFilenames = R.compose(
-          R.map(Attachment.getFilename),
-          Patch.getPatchAttachments
-        );
-
-        assert.sameMembers(
-          getAttachmentFilenames(patch),
-          getAttachmentFilenames(updatedPatch),
-          'no new attachments is added'
-        );
       });
     });
   });

@@ -26,6 +26,14 @@
         "y": 16
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkH2Twf1E",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

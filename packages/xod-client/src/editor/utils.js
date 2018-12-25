@@ -1,7 +1,6 @@
 import * as R from 'ramda';
-import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
-import { foldMaybe } from 'xod-func-tools';
+import { catMaybies, foldMaybe } from 'xod-func-tools';
 
 import {
   addPoints,
@@ -11,7 +10,6 @@ import {
   sizeToPoint,
   subtractPoints,
 } from '../project/nodeLayout';
-import { isNotImplementedInXodNode } from '../project/utils';
 import {
   SELECTION_ENTITY_TYPE,
   PANEL_IDS,
@@ -61,7 +59,7 @@ export const createSelectionEntity = R.curry((entityType, id) => ({
     nodes :: [Node],
     links :: [Link],
     comments :: [Comment],
-    impl :: String?
+    attachments :: [ (PatchPath, String) ]
   } -> [SelectionEntity]
  */
 export const getNewSelection = R.compose(
@@ -87,7 +85,7 @@ export const getNewSelection = R.compose(
       )
     ),
   }),
-  R.dissoc('impl')
+  R.dissoc('attachments')
 );
 
 // :: ClipboardEntities -> Position
@@ -205,11 +203,16 @@ export const getEntitiesToCopy = R.curry((patch, selection) => {
   );
   const nodes = R.map(R.flip(XP.getNodeByIdUnsafe)(patch), nodeIds);
 
-  const impl = R.compose(
-    foldMaybe(null, R.identity), // besause the end result must be serializable
-    R.chain(() => XP.getImpl(patch)),
-    Maybe,
-    R.find(isNotImplementedInXodNode)
+  // [ (markerPath, attachmentContents) ]
+  const attachments = R.compose(
+    catMaybies,
+    R.map(markerPatchPath =>
+      XP.getAttachmentManagedByMarker(markerPatchPath, patch).map(
+        attachmentContents => [markerPatchPath, attachmentContents]
+      )
+    ),
+    R.filter(R.has(R.__, XP.MANAGED_ATTACHMENT_FILENAMES)),
+    R.map(XP.getNodeType)
   )(nodes);
 
   const selectedNodeIdPairs = R.xprod(nodeIds, nodeIds);
@@ -232,7 +235,7 @@ export const getEntitiesToCopy = R.curry((patch, selection) => {
     nodes,
     links,
     comments,
-    impl,
+    attachments,
   };
 });
 

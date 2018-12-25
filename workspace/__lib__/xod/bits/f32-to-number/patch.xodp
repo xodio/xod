@@ -2,6 +2,14 @@
   "description": "Converts 32-bit IEEE-754 encoded floating point number presented as four bytes to a number. A result of the conversion will be in range between -3.4E+38 to 3.4E+38 with an accuracy of 7 digits. It means, a float number greater than seven digits in length will be inaccurate and lose a fractional part.",
   "nodes": [
     {
+      "id": "H1G2wCPyE",
+      "position": {
+        "x": 136,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Most significant byte",
       "id": "HJ1USkGRM",
       "label": "B3",

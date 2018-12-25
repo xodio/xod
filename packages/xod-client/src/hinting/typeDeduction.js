@@ -44,7 +44,7 @@ export const shallDeduceTypes = R.curry((project, action) =>
           PAT.BULK_MOVE_NODES_AND_COMMENTS,
           PAT.PATCH_ADD,
           PAT.PATCH_DESCRIPTION_UPDATE,
-          PAT.PATCH_NATIVE_IMPLEMENTATION_UPDATE,
+          PAT.PATCH_MANAGED_ATTACHMENT_UPDATE,
           // But deduce for:
           // PAT.PROJECT_CREATE,
           // PAT.PROJECT_OPEN,

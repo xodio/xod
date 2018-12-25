@@ -21,10 +21,10 @@ export const editorLens = R.lensProp('editor');
 //
 export const getTabs = R.pipe(getEditor, R.prop('tabs'));
 
-export const getImplEditorTabs = R.pipe(
+export const getAttachmentEditorTabs = R.pipe(
   getTabs,
   R.values,
-  R.filter(R.prop('isEditingCppImplementation'))
+  R.filter(R.prop('editedAttachment'))
 );
 
 export const getCurrentTabId = R.pipe(getEditor, R.prop('currentTabId'), Maybe);

@@ -11,6 +11,14 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "BklUw6vzJ4",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "HyalpxAIW",
       "position": {
         "x": 10,

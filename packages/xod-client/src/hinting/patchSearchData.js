@@ -49,7 +49,7 @@ export const shallUpdatePatchSearchData = R.curry((project, action) =>
         PAT.COMMENT_ADD,
         PAT.COMMENT_RESIZE,
         PAT.COMMENT_SET_CONTENT,
-        PAT.PATCH_NATIVE_IMPLEMENTATION_UPDATE,
+        PAT.PATCH_MANAGED_ATTACHMENT_UPDATE,
         PAT.NODE_UPDATE_PROPERTY,
         PAT.BULK_MOVE_NODES_AND_COMMENTS,
         PAT.NODE_ADD,

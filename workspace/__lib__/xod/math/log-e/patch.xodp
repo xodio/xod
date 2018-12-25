@@ -10,6 +10,14 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "id": "Hy-9pvz1N",
+      "position": {
+        "x": 170,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "rJ_-QmmJz",
       "position": {
         "x": 68,

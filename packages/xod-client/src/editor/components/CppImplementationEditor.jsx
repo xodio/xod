@@ -62,7 +62,7 @@ const CppImplementationEditor = ({
 
   return (
     <div
-      className={cn('CppImplementationEditor', {
+      className={cn('AttachmentEditor', {
         isActive,
         isInDebuggerTab,
       })}
@@ -85,7 +85,7 @@ const CppImplementationEditor = ({
           </li>
         </ul>
       </div>
-      <div className="editor">
+      <div className="cpp-editor">
         <ReactCodeMirror
           value={source}
           onChange={onChange}

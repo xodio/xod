@@ -10,6 +10,14 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "id": "SJUtOCDJE",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Most significant byte",
       "id": "SyeZeEuWkX",
       "label": "B1",

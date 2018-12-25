@@ -10,6 +10,14 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "id": "S1QztADJN",
+      "position": {
+        "x": 102,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Update: trigger a calculation and store the current `IN` value as the new “past” value.",
       "id": "S1bhCQqVM",
       "label": "UPD",

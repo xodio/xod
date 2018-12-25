@@ -24,6 +24,14 @@
         "y": 224
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkxo_tCPJ4",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

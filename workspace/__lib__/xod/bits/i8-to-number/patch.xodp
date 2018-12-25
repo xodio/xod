@@ -10,6 +10,14 @@
       "type": "xod/patch-nodes/input-byte"
     },
     {
+      "id": "HJ76vRPkE",
+      "position": {
+        "x": 204,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "id": "HkdQfO-JX",
       "position": {
         "x": 136,

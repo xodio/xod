@@ -18,6 +18,14 @@
         "y": 224
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1wkFAwyV",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

@@ -43,6 +43,14 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "id": "rJBmtRPyE",
+      "position": {
+        "x": 204,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Toggles (inverts) stored value",
       "id": "ryTIROHwkW",
       "label": "TGL",

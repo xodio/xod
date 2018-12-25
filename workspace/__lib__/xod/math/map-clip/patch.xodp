@@ -103,6 +103,14 @@
   ],
   "nodes": [
     {
+      "id": "B1ew5aDMkE",
+      "position": {
+        "x": 408,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
       "description": "Source range upper bound",
       "id": "B1rSeJlnZ",
       "label": "Smax",

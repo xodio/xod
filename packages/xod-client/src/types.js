@@ -76,4 +76,5 @@ export const ClipboardEntities = Model('ClipboardEntities', {
   nodes: $.Array(XP.Node),
   links: $.Array(XP.Link),
   comments: $.Array(XP.Comment),
+  attachments: $.Array(XF.Pair(XP.PatchPath, XP.Source)),
 });
