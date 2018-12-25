@@ -18,7 +18,7 @@ class PopupSetWorkspace extends React.Component {
     }
   }
   onClose() {
-    if (!this.props.isClosable) {
+    if (this.props.isClosable) {
       this.props.onClose();
     }
   }
@@ -66,7 +66,7 @@ class PopupSetWorkspace extends React.Component {
         title="Choose your workspace directory"
         isVisible={this.props.isVisible}
         isClosable={this.props.isClosable}
-        onCloseClicked={this.onClose}
+        onClose={this.onClose}
       >
         <div className="ModalContent">{currentWorkspace}</div>
         <div className="ModalFooter">
