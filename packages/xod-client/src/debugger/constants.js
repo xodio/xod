@@ -6,6 +6,7 @@ export const UPLOAD_MSG_TYPE = {
   COMPILER: 'compiler',
   UPLOADER: 'uploader',
   INSTALLER: 'installer',
+  TESTER: 'tester',
 };
 
 export const LOG_TAB_TYPE = {
@@ -13,4 +14,5 @@ export const LOG_TAB_TYPE = {
   COMPILER: UPLOAD_MSG_TYPE.COMPILER,
   UPLOADER: UPLOAD_MSG_TYPE.UPLOADER,
   DEBUGGER: UPLOAD_MSG_TYPE.LOG,
+  TESTER: UPLOAD_MSG_TYPE.TESTER,
 };

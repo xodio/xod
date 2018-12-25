@@ -182,6 +182,10 @@ class Editor extends React.Component {
                       )
                     }
                     isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
+                    isRunning={this.props.isTabtestRunning}
+                    onRunClick={() =>
+                      this.props.actions.runTabtest(currentPatchPath)
+                    }
                     onClose={this.props.actions.closeAttachmentEditor}
                     patchPath={currentPatchPath}
                   />
@@ -308,6 +312,7 @@ Editor.propTypes = {
   stopDebuggerSession: PropTypes.func,
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
+  isTabtestRunning: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     updatePatchAttachment: PropTypes.func.isRequired,
     closeAttachmentEditor: PropTypes.func.isRequired,
@@ -326,6 +331,7 @@ Editor.propTypes = {
     showHelpbox: PropTypes.func.isRequired,
     panToOrigin: PropTypes.func.isRequired,
     panToCenter: PropTypes.func.isRequired,
+    runTabtest: PropTypes.func.isRequired,
   }),
 };
 
@@ -344,6 +350,7 @@ const mapStateToProps = R.applySpec({
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
   isDebugSessionOutdated: DebuggerSelectors.isDebugSessionOutdated,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
+  isTabtestRunning: EditorSelectors.isTabtestRunning,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -370,6 +377,7 @@ const mapDispatchToProps = dispatch => ({
       showHelpbox: Actions.showHelpbox,
       panToOrigin: Actions.setCurrentPatchOffsetToOrigin,
       panToCenter: Actions.setCurrentPatchOffsetToCenter,
+      runTabtest: Actions.runTabtest,
     },
     dispatch
   ),

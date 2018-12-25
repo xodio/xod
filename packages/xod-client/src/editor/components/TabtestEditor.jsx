@@ -2,6 +2,7 @@ import React from 'react';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
+import { Icon } from 'react-fa';
 import ReactDataSheet from 'react-datasheet';
 
 const trimGrid = R.compose(
@@ -40,6 +41,8 @@ const TabtestEditor = ({
   isInDebuggerTab,
   onChange,
   onClose,
+  isRunning,
+  onRunClick,
 }) => {
   const cells = R.compose(
     R.map(R.map(R.objOf('value'))),
@@ -84,6 +87,15 @@ const TabtestEditor = ({
             </button>
           </li>
         </ul>
+
+        <button
+          className="breadcrumbs-button Button Button--light"
+          onClick={onRunClick}
+          disabled={isRunning}
+        >
+          <Icon name={isRunning ? 'circle-o-notch' : 'play'} spin={isRunning} />
+          Run
+        </button>
       </div>
       <div className="tabtest-editor">
         <ReactDataSheet
@@ -100,8 +112,10 @@ const TabtestEditor = ({
 TabtestEditor.propTypes = {
   patchPath: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
+  isRunning: PropTypes.bool.isRequired,
   source: PropTypes.string.isRequired,
   isInDebuggerTab: PropTypes.bool.isRequired,
+  onRunClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

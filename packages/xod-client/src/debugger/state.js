@@ -21,6 +21,10 @@ export default {
     log: '',
     error: '',
   },
+  [LOG_TAB_TYPE.TESTER]: {
+    log: '',
+    error: '',
+  },
   isSkippingNewSerialLogLines: false,
   numberOfSkippedSerialLogLines: 0,
   isCapturingDebuggerProtocolMessages: false,

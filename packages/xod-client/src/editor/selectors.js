@@ -218,3 +218,8 @@ export const isPanelAutohiding = R.uncurryN(2, panelId =>
 export const getPanelSidebar = R.uncurryN(2, panelId =>
   R.compose(R.prop('sidebar'), getPanelSettings(panelId))
 );
+
+export const isTabtestRunning = R.compose(
+  R.prop('isTabtestRunning'),
+  getEditor
+);
