@@ -3,7 +3,9 @@
   "version": "0.25.2",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
-    "build": "bsb -make-world",
+    "build:lib": "node ./tools/loadTabtestLibPatches.js",
+    "build:re": "bsb -make-world",
+    "build": "yarn build:re && yarn build:lib",
     "clean:dist": "rimraf ./lib ./src/**/*.bs.js ./test/**/*.bs.js",
     "dev": "bsb -w",
     "test": "jest"
@@ -22,7 +24,9 @@
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.2",
-    "bs-platform": "^3.1.5"
+    "bs-platform": "^3.1.5",
+    "ramda": "^0.24.1",
+    "xod-fs": "^0.25.2"
   },
   "jest": {
     "testMatch": [

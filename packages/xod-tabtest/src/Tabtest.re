@@ -283,8 +283,19 @@ module TestCase = {
   };
 };
 
+[@bs.module]
+external tabtestLibPatches : array(XodProject.Patch.t) =
+  "../lib/tabtestLibPatches.json";
+
 let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
-  let patchUnderTestOpt = Project.getPatchByPath(project, patchPathToTest);
+  let projectWithTabtestLib =
+    XodProject.Project.upsertPatches(
+      project,
+      Belt.List.fromArray(tabtestLibPatches),
+    );
+
+  let patchUnderTestOpt =
+    Project.getPatchByPath(projectWithTabtestLib, patchPathToTest);
   let tsvOpt = patchUnderTestOpt |. Option.flatMap(Patch.getTabtestContent);
   switch (patchUnderTestOpt, tsvOpt) {
   | (None, _) =>
@@ -298,7 +309,7 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
       ),
     )
   | (Some(patchUnderTest), Some(tsv)) =>
-    let bench = Bench.create(project, patchUnderTest);
+    let bench = Bench.create(projectWithTabtestLib, patchUnderTest);
     let probes = bench.probes;
     let tabData = TabData.parse(tsv);
     let realPinLabels =
@@ -322,7 +333,7 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
         let sketchFilename = safeBasename ++ ".sketch.cpp";
         let testFilename = safeBasename ++ ".catch.inl";
         let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
-        Project.assocPatch(project, benchPatchPath, bench.patch)
+        Project.assocPatch(projectWithTabtestLib, benchPatchPath, bench.patch)
         |. XodArduino.Transpiler.transpile(_, benchPatchPath)
         |. BeltHoles.Result.map(program => {
              let idMap =
