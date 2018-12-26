@@ -3,3 +3,11 @@ IN1	IN2	OUT
 4	10	4
 -6	10	-6
 -26	10	-6
+-26	-10	-6
+26	-10	6
+735.25	2.33	1.29~
+NaN	10	NaN
+26	NaN	NaN
+Inf	Inf	NaN
+-Inf	Inf	NaN
+Inf	-Inf	NaN
