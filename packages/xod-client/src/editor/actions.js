@@ -7,7 +7,9 @@ import {
   stringifyLibQuery,
   getLibName,
 } from 'xod-pm';
-import { foldMaybe, explodeMaybe } from 'xod-func-tools';
+import { generatePatchSuite } from 'xod-tabtest';
+import { compileSuite, runSuite } from 'xod-cloud-tabtest';
+import { foldMaybe, eitherToPromise, explodeMaybe } from 'xod-func-tools';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -55,7 +57,7 @@ import {
   resetClipboardEntitiesPosition,
 } from './utils';
 import { isInput, isEdge } from '../utils/browser';
-import { getPmSwaggerUrl } from '../utils/urls';
+import { getPmSwaggerUrl, HOSTNAME } from '../utils/urls';
 import {
   addPoints,
   subtractPoints,
@@ -699,3 +701,48 @@ export const selectConstantNodeValue = (nodeId, patchPath) => ({
     patchPath,
   },
 });
+
+export const runTabtest = patchPath => (dispatch, getState) => {
+  dispatch({ type: ActionType.TABTEST_RUN_REQUESTED });
+  const suiteP = R.compose(
+    eitherToPromise,
+    p => generatePatchSuite(p, patchPath),
+    ProjectSelectors.getProject
+  )(getState());
+
+  suiteP
+    .then(
+      R.tap(() => {
+        dispatch({ type: ActionType.TABTEST_GENERATED_CPP });
+      })
+    )
+    .then(compileSuite(HOSTNAME))
+    .then(
+      R.tap(() => {
+        dispatch({ type: ActionType.TABTEST_COMPILED });
+      })
+    )
+    .then(runSuite)
+    .then(({ stdout }) => {
+      dispatch(
+        addConfirmation({
+          title: 'Tests passed',
+          note: R.compose(R.join('\n'), R.reject(R.startsWith('======')))(
+            stdout
+          ),
+          persistent: true,
+        })
+      );
+
+      dispatch({
+        type: ActionType.TABTEST_RUN_FINISHED,
+        payload: { stdout },
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: ActionType.TABTEST_ERROR,
+        payload: err,
+      });
+    });
+};

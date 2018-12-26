@@ -42,7 +42,7 @@ const DebuggerTopPane = props =>
             />
           ) : null}
           <button
-            className="debug-session-stop-button Button Button--light"
+            className="breadcrumbs-button Button Button--light"
             onClick={props.stopDebuggerSession}
           >
             <Icon name="stop" /> Stop debug

@@ -11,6 +11,12 @@
   &--codeEditor {}
   &--debugger {
     background: $color-tabs-debugger-background;
+
+    .breadcrumbs-button {
+      .fa {
+        color: $error;
+      }
+    }
   }
 
   ul {
@@ -89,5 +95,14 @@
         color: $button-border-color;
       }
     }
+  }
+}
+
+.breadcrumbs-button {
+  padding: 8px 15px 10px 15px;
+
+  .fa {
+    margin-right: 0.25em;
+    line-height: 0;
   }
 }

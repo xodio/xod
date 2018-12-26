@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 import { renameKeys, invertMap } from 'xod-func-tools';
 
+import { ERROR_CODES } from 'xod-cloud-tabtest';
+
 import {
   UPLOAD,
   INSTALL_ARDUINO_DEPENDENCIES,
@@ -17,6 +19,8 @@ import {
   MARK_DEBUG_SESSION_OUTDATED,
   SELECT_DEBUGGER_TAB,
 } from './actionTypes';
+
+import * as EAT from '../editor/actionTypes';
 
 import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
 import * as MSG from './messages';
@@ -64,6 +68,7 @@ const overInstallerLog = overTabLog(LOG_TAB_TYPE.INSTALLER);
 const overCompilerLog = overTabLog(LOG_TAB_TYPE.COMPILER);
 const overUploaderLog = overTabLog(LOG_TAB_TYPE.UPLOADER);
 const overDebuggerLog = overTabLog(LOG_TAB_TYPE.DEBUGGER);
+const overTesterLog = overTabLog(LOG_TAB_TYPE.TESTER);
 
 const overStageError = stage => R.over(R.lensPath([stage, 'error']));
 
@@ -90,6 +95,10 @@ const addMessageToDebuggerLog = R.curry((message, state) =>
   overDebuggerLog(appendMessageAndTruncate(message), state)
 );
 
+const addPlainTextToTesterLog = R.curry((plainMessage, state) =>
+  overTesterLog(log => `${log}\n${plainMessage}`, state)
+);
+
 const addMessageListToDebuggerLog = R.curry((messages, state) =>
   overDebuggerLog(
     R.reduce(R.flip(appendMessageAndTruncate), R.__, messages),
@@ -112,6 +121,31 @@ const updateWatchNodeValues = R.curry((messageList, state) => {
 const showDebuggerPane = R.assoc('isVisible', true);
 
 const hideProgressBar = R.assoc('uploadProgress', null);
+
+const formatTabtestError = err => {
+  switch (err.type) {
+    case ERROR_CODES.TABTEST_COMPILATION_RESULTS_FETCH_ERROR:
+      return err.payload.message;
+
+    case ERROR_CODES.TABTEST_COMPILATION_ERROR: {
+      const logs = R.compose(
+        R.join('\n'),
+        R.reject(R.either(R.isNil, R.isEmpty)),
+        R.map(R.prop('stderr')),
+        R.propOr([], 'logs')
+      )(err.payload);
+
+      return `${err.payload.message}\n${logs}\n\n${MSG.TABTEST_BUILDING_ERROR}`;
+    }
+
+    case ERROR_CODES.TABTEST_EXECUTION_ABORT:
+    case ERROR_CODES.TABTEST_NONZERO_EXIT_CODE:
+      return err.payload.stdout.join('\n');
+
+    default:
+      return err.message || err;
+  }
+};
 
 // =============================================================================
 //
@@ -313,10 +347,12 @@ export default (state = initialState, action) => {
         overCompilerLog(R.always('')),
         overUploaderLog(R.always('')),
         overDebuggerLog(R.always('')),
+        overTesterLog(R.always('')),
         overStageError(LOG_TAB_TYPE.INSTALLER)(R.always('')),
         overStageError(LOG_TAB_TYPE.COMPILER)(R.always('')),
         overStageError(LOG_TAB_TYPE.UPLOADER)(R.always('')),
-        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always(''))
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
+        overStageError(LOG_TAB_TYPE.TESTER)(R.always(''))
       )(state);
     case DEBUG_SESSION_STARTED:
       return R.compose(
@@ -341,6 +377,39 @@ export default (state = initialState, action) => {
       )(state);
     case MARK_DEBUG_SESSION_OUTDATED:
       return R.assoc('isOutdated', true, state);
+
+    case EAT.TABTEST_RUN_REQUESTED:
+      return R.compose(
+        overTesterLog(R.always(MSG.TABTEST_GENERATING_CODE)),
+        overStageError(LOG_TAB_TYPE.TESTER)(R.always('')),
+        R.assoc('uploadProgress', 25),
+        R.assoc('currentTab', LOG_TAB_TYPE.TESTER)
+      )(state);
+    case EAT.TABTEST_GENERATED_CPP:
+      return R.compose(
+        addPlainTextToTesterLog(MSG.TABTEST_BUILDING),
+        R.assoc('uploadProgress', 50)
+      )(state);
+    case EAT.TABTEST_COMPILED:
+      return R.compose(
+        addPlainTextToTesterLog(MSG.TABTEST_RUNNING),
+        R.assoc('uploadProgress', 75)
+      )(state);
+    case EAT.TABTEST_RUN_FINISHED:
+      return R.compose(
+        addPlainTextToTesterLog(action.payload.stdout.join('\n')),
+        hideProgressBar
+      )(state);
+
+    case EAT.TABTEST_ERROR:
+      return R.compose(
+        overStageError(LOG_TAB_TYPE.TESTER)(
+          R.always(formatTabtestError(action.payload))
+        ),
+        hideProgressBar,
+        showDebuggerPane
+      )(state);
+
     default:
       return state;
   }

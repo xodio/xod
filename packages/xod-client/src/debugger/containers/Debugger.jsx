@@ -27,6 +27,7 @@ const TAB_NAMES = {
   [LOG_TAB_TYPE.COMPILER]: 'Compiler',
   [LOG_TAB_TYPE.UPLOADER]: 'Uploader',
   [LOG_TAB_TYPE.DEBUGGER]: 'Debugger',
+  [LOG_TAB_TYPE.TESTER]: 'Tester',
 };
 
 const TAB_ORDER = [
@@ -34,6 +35,7 @@ const TAB_ORDER = [
   LOG_TAB_TYPE.COMPILER,
   LOG_TAB_TYPE.UPLOADER,
   LOG_TAB_TYPE.DEBUGGER,
+  LOG_TAB_TYPE.TESTER,
 ];
 
 class Debugger extends React.Component {
