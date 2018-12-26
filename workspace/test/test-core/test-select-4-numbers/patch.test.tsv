@@ -1,0 +1,7 @@
+N1	S1	N2	S2	N3	S3	N4	S4	OUT	DONE
+1	no-pulse	2.25	no-pulse	3	no-pulse	4	no-pulse	4	no-pulse
+1	pulse	2.25	no-pulse	3	no-pulse	4	no-pulse	1	pulse
+1	no-pulse	2.25	pulse	3	no-pulse	4	no-pulse	2.25	pulse
+1	no-pulse	2.25	no-pulse	3	pulse	4	no-pulse	3	pulse
+1	no-pulse	2.25	no-pulse	3	no-pulse	4	pulse	4	pulse
+1	no-pulse	2.25	no-pulse	3	no-pulse	4	no-pulse	4	no-pulse
