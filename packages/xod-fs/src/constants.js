@@ -22,3 +22,10 @@ export const CHANGE_TYPES = {
   ADDED: 'ADDED',
   DELETED: 'DELETED',
 };
+
+export const IGNORE_FILENAMES = [
+  '.*', // hidden files on Posix
+  '*~', // backups
+  'Thumbs.db', // Windows image file
+  'desktop.ini', // Windows folder meta information
+];
