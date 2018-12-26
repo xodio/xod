@@ -15732,6 +15732,11 @@ w3c-hr-time@^1.0.1:
   dependencies:
     browser-process-hrtime "^0.1.2"
 
+wait-for-element@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/wait-for-element/-/wait-for-element-1.0.2.tgz#cbe7e31f157981f56f3bc1080768ef1823792f3d"
+  integrity sha1-y+fjHxV5gfVvO8EIB2jvGCN5Lz0=
+
 walkdir@^0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/walkdir/-/walkdir-0.0.11.tgz#a16d025eb931bd03b52f308caed0f40fcebe9532"

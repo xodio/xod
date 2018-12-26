@@ -6,6 +6,7 @@ import devtoolsMiddleware from '../utils/devtoolsMiddleware';
 import sidebarsMiddleware from '../editor/sidebarsMiddleware';
 import crashReporter from './crashReporterMiddleware';
 import hintingMiddleware from '../hinting/middleware';
+import domSideeffectsMiddleware from './domSideeffectsMiddleware';
 
 export default (extraMiddlewares = []) =>
   compose(
@@ -15,6 +16,7 @@ export default (extraMiddlewares = []) =>
       resolveLibsMiddleware,
       sidebarsMiddleware,
       hintingMiddleware,
+      domSideeffectsMiddleware,
       ...extraMiddlewares
     ),
     devtoolsMiddleware

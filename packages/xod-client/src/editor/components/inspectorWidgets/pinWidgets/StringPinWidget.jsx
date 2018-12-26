@@ -1,19 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { enquote, unquote } from 'xod-func-tools';
-import { withState } from 'recompose';
+import { compose, withState, withHandlers, lifecycle } from 'recompose';
 import cls from 'classnames';
 
 import PinWidget from './PinWidget';
 
-const StringWidget = withState('focused', 'setFocus', false)(props => {
-  const onChange = event => props.onChange(enquote(event.target.value));
-  const onFocus = () => props.setFocus(true);
-  const onBlur = () => {
-    props.setFocus(false);
-    props.onBlur();
-  };
-
+const StringWidget = compose(
+  withState('focused', 'setFocus', false),
+  // We have to handle input's selection in a tricky way,
+  // because we're changing it's value on focus
+  withState('selection', 'setSelection', [0, 0]),
+  withState('inputRef', 'setInputRef', null),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (prevProps.selection !== this.props.selection && this.props.inputRef) {
+        this.props.inputRef.setSelectionRange(
+          this.props.selection[0],
+          this.props.selection[1]
+        );
+      }
+    },
+  }),
+  withHandlers({
+    onChange: props => event => props.onChange(enquote(event.target.value)),
+    onFocus: props => event => {
+      props.setSelection([
+        event.target.selectionStart,
+        event.target.selectionEnd,
+      ]);
+      props.setFocus(true);
+    },
+    onBlur: props => _ => {
+      props.setFocus(false);
+      props.setSelection([0, 0]);
+      props.onBlur();
+    },
+  })
+)(props => {
   const wrapperClassNames = cls('inspector-input-wrapper', {
     'string-focused': props.focused,
   });
@@ -37,11 +61,12 @@ const StringWidget = withState('focused', 'setFocus', false)(props => {
           type="text"
           id={props.elementId}
           value={value}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onChange={props.onChange}
+          onFocus={props.onFocus}
+          onBlur={props.onBlur}
           onKeyDown={props.onKeyDown}
           spellCheck={false}
+          ref={props.setInputRef}
         />
       </span>
     </PinWidget>
@@ -60,11 +85,8 @@ StringWidget.propTypes = {
   direction: PropTypes.string,
 
   value: PropTypes.string,
-  /* eslint-disable react/no-unused-prop-types */
-  // Linter can't find out usage of this functions somehow :-(
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  /* eslint-enable react/no-unused-prop-types */
   onKeyDown: PropTypes.func.isRequired,
 };
 
