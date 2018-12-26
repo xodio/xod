@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Introduce tabtests — an instrument to test patches. See https://xod.io/docs/guide/testing-patches/ for details (#1585, #1602)
+* [ide] Improve UX of installing Arduino packages (#1581)
+* [nodes] `xod-dev/sharp-irm` library for Sharp Infrared Range Meters. Deprecates previous Sharp nodes from `xod/common-hardware` (#1493)
+* [ide] Make double-click on a constant node focus the field for editing its value in the Inspector (#1599)
+* [nodes] Add a pin to explicitly set connection timeout to `xod-dev/esp8266-mcu/connect` (#1595)
+* [nodes] Make `xod/core/buffer` generic (#1495)
+* [ide] Provide default name for xodball saved from browser IDE (#1474)
+* [cli] A major overhaul of `xodc` tool. See `xod-cli`'s README for details (#1518)
+
+### Bug fixes
+
+* [ide] Fix Switch Workspace Popup that was unclosable until a workspace directory was selected (#1601)
+* [ide] Ignore some system files and folders while reading directories, which caused bugs when XOD workspaces were synced through cloud storages like Google Drive (#1600)
+* [ide] Fix unstable IDE behaviour after pressing View->Reload (#1587)
+* [ide] Fix a misleading error that appeared after successful arduino libs installation (#1575)
+* [nodes] Correct mistake in `xod/core/select` description about which value is the default one (#1598)
+* [nodes] Add missing descriptions for some `xod/core` nodes (#1578)
+* [ide] Correct error message about too many outputs for nodes implemented in C++ (#1568)
+
 <a name="0.25.3"></a>
 
 ## 0.25.3 (2018-11-22)
