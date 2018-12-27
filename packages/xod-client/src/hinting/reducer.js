@@ -10,6 +10,7 @@ const errorsLens = R.lensProp('errors');
 const getDeducedTypesFromAction = R.path(['payload', 'deducedTypes']);
 const getErrorsFromAction = R.path(['payload', 'errors']);
 const getPatchSearchDataFromAction = R.path(['payload', 'patchSearchData']);
+const getPatchMarkersFromAction = R.path(['payload', 'patchMarkers']);
 // =============================================================================
 const updateDeducedTypes = R.curry((action, state) =>
   R.ifElse(
@@ -19,22 +20,25 @@ const updateDeducedTypes = R.curry((action, state) =>
   )(action)
 );
 const updateErrors = R.curry((action, state) =>
-  R.ifElse(
-    R.pipe(getErrorsFromAction, notNil),
-    R.pipe(getErrorsFromAction, errs =>
-      R.over(errorsLens, mergeErrors(R.__, errs), state)
+  R.compose(
+    R.ifElse(
+      notNil,
+      errs => R.over(errorsLens, mergeErrors(R.__, errs), state),
+      R.always(state)
     ),
-    R.always(state)
+    getErrorsFromAction
   )(action)
 );
 const updatePatchSearchData = R.curry((action, state) =>
-  R.ifElse(
-    R.pipe(getPatchSearchDataFromAction, notNil),
-    R.pipe(
-      getPatchSearchDataFromAction,
-      R.assoc('patchSearchData', R.__, state)
-    ),
-    R.always(state)
+  R.compose(
+    R.ifElse(notNil, R.assoc('patchSearchData', R.__, state), R.always(state)),
+    getPatchSearchDataFromAction
+  )(action)
+);
+const updatePatchMarkers = R.curry((action, state) =>
+  R.compose(
+    R.ifElse(notNil, R.assoc('patchMarkers', R.__, state), R.always(state)),
+    getPatchMarkersFromAction
   )(action)
 );
 // =============================================================================
@@ -45,7 +49,8 @@ export default (state = initialState, action) => {
       return R.compose(
         updateDeducedTypes(action),
         updateErrors(action),
-        updatePatchSearchData(action)
+        updatePatchSearchData(action),
+        updatePatchMarkers(action)
       )(state);
     default:
       return state;
