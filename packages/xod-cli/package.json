@@ -86,8 +86,6 @@
     "build": "yarn run build:bundle && yarn run build:src",
     "dev": "yarn run build --watch",
     "postpack": "rm -f oclif.manifest.json",
-    "prepack": "yarn run build && oclif-dev manifest && oclif-dev readme",
-    "test-func": "BABEL_DISABLE_CACHE=1 mocha --opts test-func/mocha.opts test-func/**/*.spec.js",
-    "version": "oclif-dev readme && git add README.md"
+    "test-func": "BABEL_DISABLE_CACHE=1 mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   }
 }
