@@ -137,7 +137,7 @@ class PublishCommand extends BaseCommand {
       title: 'Create library',
       skip: ctx => (ctx.library ? 'Already exists' : false),
       task: ctx =>
-        putUserLib(api, ctx.token, username, ctx.libname).catch(error => {
+        putUserLib(api, ctx.token, targetUsername, ctx.libname).catch(error => {
           if (error.status === 403) {
             throw createError('PUBLISH_ACCESS_DENIED', {
               username,
