@@ -9,30 +9,10 @@ Basically it’s a collection of thin wrappers around NodeJS API’s available v
 `xodc` uses subcommands like `git` does to perform various functions. The subcommands handling could be found in `src/commands/*.js`.
 
 <!-- toc -->
-
 * [xod-cli](#xod-cli)
-* [Usage](#usage)
 * [Flags, aliases, environment variables](#flags-aliases-environment-variables)
 * [Commands](#commands)
-  <!-- tocstop -->
-
-# Usage
-
-<!-- usage -->
-
-```sh-session
-$ npm install -g xod-cli
-$ xodc COMMAND
-running command...
-$ xodc (-v|--version|version)
-xod-cli/0.25.0 linux-x64 node-v10.13.0
-$ xodc --help [COMMAND]
-USAGE
-  $ xodc COMMAND
-...
-```
-
-<!-- usagestop -->
+<!-- tocstop -->
 
 # Flags, aliases, environment variables
 
@@ -54,7 +34,6 @@ Almost any flag can be replaced with the appropriate environment variable. For e
 # Commands
 
 <!-- commands -->
-
 * [`xodc autocomplete [SHELL]`](#xodc-autocomplete-shell)
 * [`xodc boards [options]`](#xodc-boards-options)
 * [`xodc compile [options] [entrypoint]`](#xodc-compile-options-entrypoint)
@@ -175,7 +154,7 @@ USAGE
   $ xodc install:arch [fqbn]
 
 ARGUMENTS
-  FQBN  Board FQBN. `arduino:sam` for example.
+  FQBN  Board FQBN. `arduino:sam` for example. See `xodc boards` list for the full list.
 
 OPTIONS
   -V, --version         show CLI version
@@ -374,5 +353,4 @@ EXAMPLE
 ```
 
 _See code: [src/commands/upload.js](https://github.com/xodio/xod/blob/master/packages/xod-cli/src/commands/upload.js)_
-
 <!-- commandsstop -->
