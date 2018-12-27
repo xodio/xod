@@ -5,5 +5,5 @@
   "description": "Hardware drivers for popular and simple peripherals",
   "license": "AGPL-3.0",
   "name": "common-hardware",
-  "version": "0.25.3"
+  "version": "0.26.0"
 }

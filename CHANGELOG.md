@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## Not yet released
+<a name="0.26.0"></a>
+
+## 0.26.0 (2018-12-27)
 
 ### Features and enhancements
 

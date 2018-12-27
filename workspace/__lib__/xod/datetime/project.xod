@@ -5,5 +5,5 @@
   "description": "Date and timestamp operations",
   "license": "AGPL-3.0",
   "name": "datetime",
-  "version": "0.25.3"
+  "version": "0.26.0"
 }
