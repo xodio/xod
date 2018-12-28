@@ -32,7 +32,8 @@ export const updateAvailableMessage = version =>
   composeMessage(
     'Update available',
     `New version ${version} of XOD\u00A0IDE is available`,
-    'Download & Install'
+    'Download & Install',
+    true
   );
 
 export const compilationBegun = boardName =>
