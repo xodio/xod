@@ -254,6 +254,22 @@ const onReady = () => {
   createWindow();
   let unsubscribers = [];
 
+  // Subscribe on changing of Project path once
+  // It did not depends on Workspace path, so we don't need
+  // to resubscribe on changing
+  store.subscribe(() => {
+    const projectPath = store.select.projectPath();
+    win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
+    if (projectPath != null) {
+      app.addRecentDocument(projectPath);
+    }
+
+    const newTitle = projectPath
+      ? `${projectPath} — ${DEFAULT_APP_TITLE}`
+      : DEFAULT_APP_TITLE;
+    win.setTitle(newTitle);
+  });
+
   win.webContents.on('did-finish-load', () => {
     WA.prepareWorkspaceOnLaunch(
       (eventName, data) => win.webContents.send(eventName, data),
@@ -283,19 +299,6 @@ const onReady = () => {
             ipcMain.removeListener(EVENTS.SWITCH_WORKSPACE, onSwitchWorkspace);
         };
 
-        const onProjectPathChange = () => {
-          const projectPath = store.select.projectPath();
-          win.webContents.send(EVENTS.PROJECT_PATH_CHANGED, projectPath);
-          if (projectPath != null) {
-            app.addRecentDocument(projectPath);
-          }
-
-          const newTitle = projectPath
-            ? `${projectPath} — ${DEFAULT_APP_TITLE}`
-            : DEFAULT_APP_TITLE;
-          win.setTitle(newTitle);
-        };
-
         // unsubscribe old listeners
         unsubscribers.forEach(R.call);
         unsubscribers = [
@@ -307,7 +310,6 @@ const onReady = () => {
           subscribeUpgradeArduinoPackages(arduinoCli),
           subscribeOnCheckArduinoDependencies(arduinoCli),
           subscribeOnInstallArduinoDependencies(arduinoCli),
-          store.subscribe(onProjectPathChange),
         ];
       })
       .catch(err => {
