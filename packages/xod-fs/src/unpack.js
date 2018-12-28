@@ -55,6 +55,7 @@ export const arrangeByFiles = def(
     ];
     const patchFiles = R.compose(
       R.chain(arrangePatchByFiles),
+      R.filter(XP.isGenuinePatch),
       XP.listLocalPatches
     )(project);
 
