@@ -85,7 +85,7 @@ const terminalOriginalDirectionLens = R.lensProp('originalDirection');
 const isLeafPatchWithImplsOrTerminal = def(
   'isLeafPatchWithImplsOrTerminal :: Patch -> Boolean',
   R.anyPass([
-    Patch.hasImpl,
+    Patch.isPatchNotImplementedInXod,
     Patch.isTerminalPatch,
     R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
   ])
@@ -137,14 +137,14 @@ export const extractLeafPatches = def(
   (project, path, patch) =>
     R.cond([
       [
-        R.either(isLeafPatchWithImplsOrTerminal, Patch.isAbstractPatch),
-        R.compose(R.of, Either.of, leafPatch => [path, leafPatch]),
-      ],
-      [
         isLeafPatchWithoutImpls,
         R.compose(R.of, () =>
           fail('IMPLEMENTATION_NOT_FOUND', { patchPath: path, trace: [path] })
         ),
+      ],
+      [
+        R.either(isLeafPatchWithImplsOrTerminal, Patch.isAbstractPatch),
+        R.compose(R.of, Either.of, leafPatch => [path, leafPatch]),
       ],
       [
         R.T,
@@ -795,7 +795,7 @@ export const extractPatches = R.curry(
 const convertPatch = def(
   'convertPatch :: Project -> [Pair PatchPath Patch] -> Patch -> Patch',
   (project, leafPatches, patch) =>
-    R.unless(Patch.hasImpl, originalPatch => {
+    R.unless(Patch.isPatchNotImplementedInXod, originalPatch => {
       const leafPatchPaths = R.pluck(0, leafPatches);
       const flattenEntities = extractPatches(
         project,
