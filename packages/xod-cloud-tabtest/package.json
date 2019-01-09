@@ -1,6 +1,6 @@
 {
   "name": "xod-cloud-tabtest",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -22,11 +22,11 @@
     "ramda": "^0.24.1",
     "string-to-arraybuffer": "^1.0.2",
     "xod-func-tools": "^0.26.0",
-    "xod-tabtest": "^0.26.0"
+    "xod-tabtest": "^0.26.1"
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
     "chai": "^4.1.2",
-    "xod-fs": "^0.26.0"
+    "xod-fs": "^0.26.1"
   }
 }
