@@ -210,7 +210,8 @@ class Patch extends React.Component {
   }
 
   handleScroll(event) {
-    event.preventDefault();
+    // see https://www.chromestatus.com/features/6662647093133312
+    if (event.cancelable) event.preventDefault();
 
     const { currentMode } = this.state;
     const modeHandler = MODE_HANDLERS[currentMode];
