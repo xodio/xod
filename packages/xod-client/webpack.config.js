@@ -76,6 +76,10 @@ module.exports = pkgDir => ({
         },
       },
       {
+        test: /\.worker\.js$/,
+        loader: 'worker-loader',
+      },
+      {
         test: /\.scss$/,
         use: [
           { loader: 'style-loader' },

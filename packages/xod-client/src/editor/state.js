@@ -5,6 +5,7 @@ export default {
   currentTabId: '@/main',
   isHelpboxVisible: false,
   isTabtestRunning: false,
+  tabtestWorker: null,
   focusedArea: FOCUS_AREAS.WORKAREA,
   draggedPreviewSize: { width: 0, height: 0 },
   suggester: {
