@@ -43,4 +43,12 @@ export default {
      * },
      */
   ],
+  patchMarkers: {
+    /**
+     * [PatchPath]: PatchMarkers :: {
+     *   utility: Boolean,
+     *   deprecated: Boolean,
+     * }
+     */
+  },
 };

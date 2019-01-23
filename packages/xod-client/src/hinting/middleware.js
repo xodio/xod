@@ -2,7 +2,12 @@ import { notEquals } from 'xod-func-tools';
 
 import { getProject } from '../project/selectors';
 
-import { getDeducedTypes, getErrors, getPatchSearchData } from './selectors';
+import {
+  getDeducedTypes,
+  getErrors,
+  getPatchSearchData,
+  getPatchMarkers,
+} from './selectors';
 import updateHinting from './actions';
 import { shallDeduceTypes, deduceTypes } from './typeDeduction';
 import { shallValidate, validateProject } from './validation';
@@ -10,6 +15,7 @@ import {
   shallUpdatePatchSearchData,
   getNewPatchSearchData,
 } from './patchSearchData';
+import { shallUpdatePatchMarkers, getNewPatchMarkers } from './patchMarkers';
 
 // =============================================================================
 //
@@ -46,13 +52,21 @@ export default store => next => action => {
     : prevSearchIndex;
   const willUpdateSearchIndex = notEquals(prevSearchIndex, nextSearchIndex);
 
+  // Patch Flags
+  const prevPatchMarkers = getPatchMarkers(newState);
+  const nextPatchMarkers = shallUpdatePatchMarkers(action)
+    ? getNewPatchMarkers(prevPatchMarkers, newProject, action)
+    : prevPatchMarkers;
+  const willUpdatePatchMarkers = notEquals(prevPatchMarkers, nextPatchMarkers);
+
   // Dispatch changes, if needed
   if (willUpdateDeducedTypes || willUpdateErrors || willUpdateSearchIndex) {
     store.dispatch(
       updateHinting(
         willUpdateDeducedTypes ? nextDeducedTypes : null,
         willUpdateErrors ? nextErrors : null,
-        willUpdateSearchIndex ? nextSearchIndex : null
+        willUpdateSearchIndex ? nextSearchIndex : null,
+        willUpdatePatchMarkers ? nextPatchMarkers : null
       )
     );
   }
