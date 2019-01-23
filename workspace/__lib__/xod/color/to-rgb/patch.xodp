@@ -1,0 +1,223 @@
+{
+  "description": "Destructs a color value into red, green, and blue components. Each component is in range [0, 1]",
+  "links": [
+    {
+      "id": "BJz_i-jiQ",
+      "input": {
+        "nodeId": "SJWqGi-jo7",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "BJeOvsbism",
+        "pinKey": "Sk43MO-Jm"
+      }
+    },
+    {
+      "id": "H1ldobsiX",
+      "input": {
+        "nodeId": "BJeOvsbism",
+        "pinKey": "S113G_ZJm"
+      },
+      "output": {
+        "nodeId": "r13HiWoj7",
+        "pinKey": "S1ER4-isX"
+      }
+    },
+    {
+      "id": "H1pvjWojQ",
+      "input": {
+        "nodeId": "By5GsWjs7",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "B14Poboo7",
+        "pinKey": "Sk43MO-Jm"
+      }
+    },
+    {
+      "id": "HJJOs-sjm",
+      "input": {
+        "nodeId": "S1uwoWoim",
+        "pinKey": "S113G_ZJm"
+      },
+      "output": {
+        "nodeId": "r13HiWoj7",
+        "pinKey": "Sk7AV-ijX"
+      }
+    },
+    {
+      "id": "HJaXi-ioX",
+      "input": {
+        "nodeId": "ByzXjZjjX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJx5fjWjo7",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "HkiDjbism",
+      "input": {
+        "nodeId": "HJx5fjWjo7",
+        "pinKey": "HJjEe1lnb"
+      },
+      "output": {
+        "nodeId": "S1uwoWoim",
+        "pinKey": "Sk43MO-Jm"
+      }
+    },
+    {
+      "id": "HyRDsWisQ",
+      "input": {
+        "nodeId": "B14Poboo7",
+        "pinKey": "S113G_ZJm"
+      },
+      "output": {
+        "nodeId": "r13HiWoj7",
+        "pinKey": "S1Z04Zjsm"
+      }
+    },
+    {
+      "id": "SkoXoZooQ",
+      "input": {
+        "nodeId": "SJKyjZjim",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "By5GsWjs7",
+        "pinKey": "rJFmgJehW"
+      }
+    },
+    {
+      "id": "SkxLsZisX",
+      "input": {
+        "nodeId": "r13HiWoj7",
+        "pinKey": "BkepNZjsQ"
+      },
+      "output": {
+        "nodeId": "HkbyibsjQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkyVi-som",
+      "input": {
+        "nodeId": "B1efXsbiom",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJWqGi-jo7",
+        "pinKey": "rJFmgJehW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B14Poboo7",
+      "position": {
+        "x": -136,
+        "y": 102
+      },
+      "type": "xod/bits/u8-to-number"
+    },
+    {
+      "description": "Blue",
+      "id": "B1efXsbiom",
+      "label": "B",
+      "position": {
+        "x": 272,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BJeOvsbism",
+      "position": {
+        "x": 272,
+        "y": 102
+      },
+      "type": "xod/bits/u8-to-number"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "255",
+        "HkFBgJehW": "1"
+      },
+      "id": "By5GsWjs7",
+      "position": {
+        "x": -136,
+        "y": 204
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "description": "Green",
+      "id": "ByzXjZjjX",
+      "label": "G",
+      "position": {
+        "x": 68,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "255",
+        "HkFBgJehW": "1"
+      },
+      "id": "HJx5fjWjo7",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "id": "HkbyibsjQ",
+      "position": {
+        "x": 34,
+        "y": -102
+      },
+      "type": "@/input-color"
+    },
+    {
+      "id": "S1uwoWoim",
+      "position": {
+        "x": 68,
+        "y": 102
+      },
+      "type": "xod/bits/u8-to-number"
+    },
+    {
+      "description": "Red",
+      "id": "SJKyjZjim",
+      "label": "R",
+      "position": {
+        "x": -136,
+        "y": 306
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "B1rSeJlnZ": "255",
+        "HkFBgJehW": "1"
+      },
+      "id": "SJWqGi-jo7",
+      "position": {
+        "x": 272,
+        "y": 204
+      },
+      "type": "xod/math/map-clip"
+    },
+    {
+      "id": "r13HiWoj7",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "@/to-rgb-bytes"
+    }
+  ]
+}

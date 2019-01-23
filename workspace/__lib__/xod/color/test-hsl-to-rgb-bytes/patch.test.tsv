@@ -1,0 +1,20 @@
+IN1	IN2	IN3	OUT1	OUT2	OUT3
+								
+//main colors								
+								
+0	0	0	0d	0d	0d	//Black	000000
+0	0	0.5	128d	128d	128d	//Gray	808080
+0	0	0.75	192d	192d	192d	//Silver	C0C0C0
+0	0	1	255d	255d	255d	//White	FFFFFF
+0.83333	1	0.5	255d	0d	255d	//Fuchsia	FF00FF
+0.83333	1	0.25	127d	0d	128d	//Purple	800080	OUT1 128 to 127
+0	1	0.5	255d	0d	0d	//Red	FF0000
+0	1	0.25	128d	0d	0d	//Maroon	800000
+0.16666	1	0.5	255d	255d	0d	//Yellow	FFFF00	OUT2 128 to 127
+0.16666	1	0.25	128d	127d	0d	//Olive	808000
+0.33333	1	0.5	0d	255d	0d	//Lime	00FF00
+0.33333	1	0.25	0d	128d	0d	//Green	800000
+0.5	1	0.5	0d	255d	255d	//Aqua	00FFFF
+0.5	1	0.25	0d	128d	127d	//Teal	808000	OUT3 128 to 127
+0.66666	1	0.5	0d	0d	255d	//Blue	0000FF
+0.66666	1	0.25	0d	0d	128d	//Navy	800000

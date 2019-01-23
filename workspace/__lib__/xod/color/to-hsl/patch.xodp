@@ -1,0 +1,51 @@
+{
+  "description": "Destructs a color value to hue, saturation, and lightness values. See color-hsl docs for more details",
+  "nodes": [
+    {
+      "description": "Saturation",
+      "id": "Hkq4azoom",
+      "label": "S",
+      "position": {
+        "x": 68,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Hue",
+      "id": "S1PNaMjsX",
+      "label": "H",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SJyVaGjsQ",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-color"
+    },
+    {
+      "description": "Lightness",
+      "id": "SkeqVaziom",
+      "label": "L",
+      "position": {
+        "x": 136,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rkeH6fsiX",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

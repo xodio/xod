@@ -1,0 +1,29 @@
+{
+  "description": "Color type constructor",
+  "nodes": [
+    {
+      "id": "HJ53--ss7",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "Hyec-WssX",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SymqbZjiQ",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

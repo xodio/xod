@@ -1,0 +1,28 @@
+IN1	IN2	IN3	OUT1	OUT2	OUT3
+0d	0d	0d	0d	0d	0d
+0d	0d	128d	0d	0d	128d
+0d	128d	128d	0d	128d	128d
+128d	128d	128d	128d	128d	128d
+128d	128d	0d	128d	128d	0d
+128d	0d	0d	128d	0d	0d
+
+0d	0d	0d	0d	0d	0d
+0d	0d	255d	0d	0d	255d
+0d	255d	255d	0d	255d	255d
+255d	255d	255d	255d	255d	255d
+255d	255d	0d	255d	255d	0d
+255d	0d	0d	255d	0d	0d
+
+00h	00h	00h	00h	00h	00h
+00h	00h	80h	00h	00h	80h
+00h	80h	80h	00h	80h	80h
+80h	80h	80h	80h	80h	80h
+80h	80h	00h	80h	80h	00h
+80h	00h	00h	80h	00h	00h
+
+00h	00h	00h	00h	00h	00h
+00h	00h	FFh	00h	00h	FFh
+00h	FFh	FFh	00h	FFh	FFh
+FFh	FFh	FFh	FFh	FFh	FFh
+FFh	FFh	00h	FFh	FFh	00h
+FFh	00h	00h	FFh	00h	00h

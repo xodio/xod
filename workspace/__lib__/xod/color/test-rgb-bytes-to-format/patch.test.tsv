@@ -1,0 +1,84 @@
+IN1	IN2	IN3	OUT
+			
+//main colors
+
+0d	0d	0d	"000000"	//Black
+128d	128d	128d	"808080"	//Gray
+192d	192d	192d	"C0C0C0"	//Silver
+255d	255d	255d	"FFFFFF"	//White
+255d	0d	255d	"FF00FF"	//Fuchsia
+128d	0d	128d	"800080"	//Purple
+255d	0d	0d	"FF0000"	//Red
+128d	0d	0d	"800000"	//Maroon
+255d	255d	0d	"FFFF00"	//Yellow
+128d	128d	0d	"808000"	//Olive
+0d	255d	0d	"00FF00"	//Lime
+0d	128d	0d	"008000"	//Green
+0d	255d	255d	"00FFFF"	//Aqua
+0d	128d	128d	"008080"	//Teal
+0d	0d	255d	"0000FF"	//Blue
+0d	0d	128d	"000080"	//Navy
+
+//red tones
+
+205d	92d	92d	"CD5C5C"	//IndianRed
+240d	128d	128d	"F08080"	//LightCoral
+250d	128d	114d	"FA8072"	//Salmon
+233d	150d	122d	"E9967A"	//DarkSalmon
+255d	160d	122d	"FFA07A"	//LightSalmon
+220d	20d	60d	"DC143C"	//Crimson
+255d	0d	0d	"FF0000"	//Red
+178d	34d	34d	"B22222"	//FireBrick
+139d	0d	0d	"8B0000"	//DarkRed
+
+//pink tones
+
+255d	192d	203d	"FFC0CB"	//Pink
+255d	182d	193d	"FFB6C1"	//LightPink
+255d	105d	180d	"FF69B4"	//HotPink
+255d	20d	147d	"FF1493"	//DeepPink
+199d	21d	133d	"C71585"	//MediumVioletRed
+219d	112d	147d	"DB7093"	//PaleVioletRed
+
+//orange tones
+
+255d	160d	122d	"FFA07A"	//LightSalmon
+255d	127d	80d	"FF7F50"	//Coral
+255d	99d	71d	"FF6347"	//Tomato
+255d	69d	0d	"FF4500"	//OrangeRed
+255d	140d	0d	"FF8C00"	//DarkOrange
+255d	165d	0d	"FFA500"	//Orange
+
+//yellow tones
+
+255d	215d	0d	"FFD700"	//Gold
+255d	255d	0d	"FFFF00"	//Yellow
+255d	255d	224d	"FFFFE0"	//LightYellow
+255d	250d	205d	"FFFACD"	//LemonChiffon
+250d	250d	210d	"FAFAD2"	//LightGoldenrodYellow
+255d	239d	213d	"FFEFD5"	//PapayaWhip
+255d	228d	181d	"FFE4B5"	//Moccasin
+255d	218d	185d	"FFDAB9"	//PeachPuff
+238d	232d	170d	"EEE8AA"	//PaleGoldenrod
+240d	230d	140d	"F0E68C"	//Khaki
+189d	183d	107d	"BDB76B"	//DarkKhaki
+
+//purple tones
+
+230d	230d	250d	"E6E6FA"	//Lavender
+216d	191d	216d	"D8BFD8"	//Thistle
+221d	160d	221d	"DDA0DD"	//Plum
+238d	130d	238d	"EE82EE"	//Violet
+218d	112d	214d	"DA70D6"	//Orchid
+255d	0d	255d	"FF00FF"	//Fuchsia
+255d	0d	255d	"FF00FF"	//Magenta
+186d	85d	211d	"BA55D3"	//MediumOrchid
+147d	112d	219d	"9370DB"	//MediumPurple
+138d	43d	226d	"8A2BE2"	//BlueViolet
+148d	0d	211d	"9400D3"	//DarkViolet
+153d	50d	204d	"9932CC"	//DarkOrchid
+139d	0d	139d	"8B008B"	//DarkMagenta
+128d	0d	128d	"800080"	//Purple
+75d	0d	130d	"4B0082"	//Indigo
+106d	90d	205d	"6A5ACD"	//SlateBlue
+72d	61d	139d	"483D8B"	//DarkSlateBlue

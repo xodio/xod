@@ -1,0 +1,57 @@
+{
+  "description": "Constructs a color value from hue, saturation, and lightness values (HSL model)",
+  "nodes": [
+    {
+      "id": "BJyghZosm",
+      "position": {
+        "x": 0,
+        "y": 204
+      },
+      "type": "@/output-color"
+    },
+    {
+      "description": "0 is for red, 0.33 for green, 0.66 for blue, and 0.99 is for red again. Some systems use degrees for the hue component. The value of 1.0 corresponds to 360° of such systems. When out out of [0; 1) range only the fractional part is taken into account",
+      "id": "HJgyhboim",
+      "label": "H",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hks1nZioQ",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Saturation. Should be in the range [0, 1]. 0.0 corresponds to fully-gray shade and 1.0 to saturated color shade. Values out of the range are truncated to 0 or 1",
+      "id": "Symyhboj7",
+      "label": "S",
+      "position": {
+        "x": 68,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.5"
+      },
+      "description": "Lightness. Should be in the range [0, 1]. 0.0 corresponds to black; 0.5 to pure color; 1.0 to white. Values out of the range are truncated to 0 or 1",
+      "id": "r1g7J3-ii7",
+      "label": "L",
+      "position": {
+        "x": 136,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
