@@ -1,33 +1,57 @@
 # XOD
 
-[![CircleCI](https://circleci.com/gh/xodio/xod/tree/master.svg?style=shield)](https://circleci.com/gh/xodio/xod/tree/master) [![AppVeyor](https://ci.appveyor.com/api/projects/status/vk5ngjb4xw4m60ks?svg=true)](https://ci.appveyor.com/project/xod/xod)
+[![CircleCI](https://circleci.com/gh/xodio/xod/tree/master.svg?style=shield)](https://circleci.com/gh/xodio/xod/tree/master) [![AppVeyor](https://ci.appveyor.com/api/projects/status/vk5ngjb4xw4m60ks?svg=true)](https://ci.appveyor.com/project/xod/xod) [![Latest Release](https://img.shields.io/github/release/xodio/xod.svg)](https://github.com/xodio/xod/releases)
+
+![XOD Screenshot](.github/screenshot.png)
 
 XOD is a visual programming language for microcontrollers. For documentation and downloads visit https://xod.io.
 
 This repository contains sources for XOD language core, XOD IDE and XOD standard library. XOD documentation is in the [xod-docs](https://github.com/xodio/xod-docs) repository.
 
-## Development copy setup
+## Installation
 
-We use [Yarn](https://yarnpkg.com/lang/en/) to run routine tasks on source files. Make sure it is available on your system. Clone the repository and set working directory to its root. Then run
+- Try XOD IDE in a web-browser: <http://xod.io/ide/>
+- Download the desktop XOD IDE for your OS: <https://xod.io/downloads/>
 
-    $ yarn
+## Build from source
 
-to install all JS dependencies.
+XOD requires the following packages to be available system-wide:
 
-### Browser IDE
+- NodeJS
+- [Yarn](https://yarnpkg.com/lang/en/)
+- [arduino-cli](https://github.com/arduino/arduino-cli) (optional)
+- GCC C++ compiler (optional)
 
-    $ yarn dev:browser
+Once you have everything necessary, run:
 
-Open <http://localhost:8080> in your browser.
+```shell
+# Clone the repo and switch to it
+git clone git@github.com:xodio/xod.git
+cd xod
 
-### Desktop IDE
+# Install all dependencies
+yarn
 
-    $ yarn build:electron
-    $ yarn start:electron
+# Build everything
+yarn build
+```
+
+Next, you can start XOD:
+
+```shell
+# Start browser IDE at <http://localhost:8080>
+yarn dev:browser
+
+# Start desktop IDE
+yarn start:electron
+
+# Access command line interface
+yarn xodc --help
+```
 
 ## Directory structure
 
-The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and split up in few directories:
+The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and split up in a few directories:
 
 * `packages/` — most of source code is here; navigate to a particular package to see it’s own `README` and get an idea what it is for
 * `tools/` — utility scripts to assist build process and routine maintenance tasks
@@ -35,7 +59,7 @@ The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and
 
 ## Repository commands
 
-You can run several commands on source files. They are available as yarn subcommands:
+You can run several commands on source files. They are available as Yarn subcommands:
 
 * `yarn build` — build, transpile, pack all
 * `yarn build:electron` — build desktop IDE only
@@ -59,11 +83,15 @@ Note that dependencies between tasks are not resolved. `test` and `start:*` expe
 
 Many commands (notably `build`, `dev`, `test`) support package scoping to save development time. To rebuild only `xod-project`:
 
-    $ yarn build --scope xod-project
+```shell
+yarn build --scope xod-project
+```
 
 To rebuild `xod-project` and its dependencies:
 
-    $ yarn build --scope xod-project --include-filtered-dependencies
+```shell
+yarn build --scope xod-project --include-filtered-dependencies
+```
 
 Those are standard [Lerna flags](https://github.com/lerna/lerna#flags).
 
@@ -81,7 +109,7 @@ You need `avr-gcc` and [PlatformIO Core](http://platformio.org/get-started/cli) 
 
 ## License
 
-Copyright 2017 XOD LLC.
+Copyright 2017-2019 XOD LLC.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License, version 3, as published by the Free Software Foundation.
 
@@ -94,5 +122,3 @@ As a special exception, the copyright holders give permission to link the code o
 ## Contributing
 
 Feel free to contribute to the project! See the general [Contibutor’s guide](https://xod.io/docs/contributing/) and [GitHub contribution guidelines](./CONTRIBUTING.md).
-
-Jetbrains users can benefit from [XOD Jetbrains Live Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
