@@ -4,6 +4,8 @@ import HMDef from 'hm-def';
 import { env as xEnv, PinKey, PinLabel, NodeId } from 'xod-project';
 import * as XF from 'xod-func-tools';
 
+import { LIVENESS } from './constants';
+
 /* Types are by convention starts with a capital leter, so: */
 /* eslint-disable new-cap */
 
@@ -20,6 +22,7 @@ const NullaryType = XF.NullaryType(packageName, docUrl);
 const Model = XF.Model(packageName, docUrl);
 const AliasType = XF.AliasType(packageName, docUrl);
 const OneOfType = XF.OneOfType(packageName, docUrl);
+const EnumType = XF.EnumType(packageName, docUrl);
 
 //-----------------------------------------------------------------------------
 //
@@ -30,12 +33,15 @@ const TNodeId = AliasType('TNodeId', $.Number);
 const TPinKey = OneOfType('TPinKey', [PinKey, PinLabel]);
 const DataValue = NullaryType('DataValue', R.complement(R.isNil));
 
-export const TranspilationOptions = Model('TranspilationOptions', {
-  debug: $.Boolean,
-});
+export const Liveness = EnumType('Liveness', [
+  LIVENESS.NONE,
+  LIVENESS.DEBUG,
+  LIVENESS.SIMULATION,
+]);
 
 export const TConfig = Model('TConfig', {
   XOD_DEBUG: $.Boolean,
+  XOD_SIMULATION: $.Boolean,
 });
 
 const TPatchOutput = Model('TPatchOutput', {
@@ -98,7 +104,7 @@ export const TProject = Model('TProject', {
 //
 //-----------------------------------------------------------------------------
 const env = xEnv.concat([
-  TranspilationOptions,
+  Liveness,
   TNodeId,
   TPinKey,
   TConfig,

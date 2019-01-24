@@ -2,16 +2,16 @@ import * as R from 'ramda';
 
 import { rejectWithCode, delay } from 'xod-func-tools';
 import * as xd from 'xod-deploy';
+import {
+  createSystemMessage,
+  parseDebuggerMessage,
+  createErrorMessage,
+} from 'xod-client/dist/debugger/debugProtocol';
 
 import * as settings from './settings';
 import * as MESSAGES from '../shared/messages';
 import * as ERROR_CODES from '../shared/errorCodes';
 import * as EVENTS from '../shared/events';
-import {
-  createSystemMessage,
-  parseDebuggerMessage,
-  createErrorMessage,
-} from '../shared/debuggerMessages';
 
 // =============================================================================
 //

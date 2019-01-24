@@ -6,6 +6,8 @@ export default {
   isHelpboxVisible: false,
   isTabtestRunning: false,
   tabtestWorker: null,
+  isSimulationRunning: false,
+  simulationWorker: null,
   focusedArea: FOCUS_AREAS.WORKAREA,
   draggedPreviewSize: { width: 0, height: 0 },
   suggester: {

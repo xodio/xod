@@ -3,12 +3,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
 import { Either } from 'ramda-fantasy';
-import { foldMaybe, foldEither, $Maybe, fail } from 'xod-func-tools';
+import {
+  foldMaybe,
+  foldEither,
+  $Maybe,
+  fail,
+  explodeMaybe,
+} from 'xod-func-tools';
 import { Project, isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
 import {
   transformProject,
-  transformProjectWithDebug,
   transpile,
+  getNodeIdsMap,
+  LIVENESS,
 } from 'xod-arduino';
 
 import { isInputTarget } from '../../utils/browser';
@@ -22,7 +29,10 @@ import PopupPublishProject from '../../project/components/PopupPublishProject';
 
 import * as actions from '../actions';
 import { selectAll } from '../../editor/actions';
-import { NO_PATCH_TO_TRANSPILE } from '../../editor/messages';
+import {
+  NO_PATCH_TO_TRANSPILE,
+  SIMULATION_ALREADY_RUNNING,
+} from '../../editor/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -71,15 +81,50 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )();
+    )(LIVENESS.NONE);
   }
 
-  transformProjectForTranspiler(debug = false) {
+  onRunSimulation() {
+    if (this.props.isSimulationRunning) {
+      this.props.actions.addError(SIMULATION_ALREADY_RUNNING);
+      return;
+    }
+    this.props.actions.runSimulationRequested();
+    const eitherTProject = this.transformProjectForTranspiler(
+      LIVENESS.SIMULATION
+    );
+
+    R.compose(
+      foldEither(
+        R.compose(
+          this.props.actions.addError,
+          R.when(R.is(Error), formatErrorMessage)
+        ),
+        ({ code, nodeIdsMap }) =>
+          this.props.actions.runSimulation(
+            explodeMaybe(
+              'currentPatchPath already folded in `transformProjectForTranspiler`',
+              this.props.currentPatchPath
+            ),
+            nodeIdsMap,
+            code
+          )
+      ),
+      R.map(
+        R.applySpec({
+          code: transpile,
+          nodeIdsMap: getNodeIdsMap,
+        })
+      )
+    )(eitherTProject);
+  }
+
+  transformProjectForTranspiler(liveness) {
     try {
-      const transformFn = debug ? transformProjectWithDebug : transformProject;
       return foldMaybe(
         Either.Left(NO_PATCH_TO_TRANSPILE),
-        curPatchPath => transformFn(this.props.project, curPatchPath),
+        curPatchPath =>
+          transformProject(this.props.project, curPatchPath, liveness),
         this.props.currentPatchPath
       );
     } catch (unexpectedError) {
@@ -157,6 +202,7 @@ App.propTypes = {
   currentPatchPath: sanctuaryPropType($Maybe($.String)),
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
+  isSimulationRunning: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     selectAll: PropTypes.func.isRequired,
     updateCompileLimit: PropTypes.func.isRequired,
@@ -194,6 +240,9 @@ App.propTypes = {
     toggleAccountPane: PropTypes.func.isRequired,
     fetchGrant: PropTypes.func.isRequired,
     togglePanel: PropTypes.func.isRequired,
+    runSimulation: PropTypes.func.isRequired,
+    runSimulationRequested: PropTypes.func.isRequired,
+    abortSimulation: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -238,4 +287,7 @@ App.actions = {
   fetchGrant: actions.fetchGrant,
   togglePanel: actions.togglePanel,
   splitLinksToBuses: actions.splitLinksToBuses,
+  runSimulation: actions.runSimulation,
+  runSimulationRequested: actions.runSimulationRequested,
+  abortSimulation: actions.abortSimulation,
 };

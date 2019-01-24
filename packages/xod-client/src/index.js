@@ -55,6 +55,15 @@ import PopupForm from './utils/components/PopupForm';
 
 import PopupProjectPreferences from './project/components/PopupProjectPreferences';
 
+import {
+  createLogMessage,
+  createSystemMessage,
+  isXodMessage,
+  createXodMessage,
+  createErrorMessage,
+  parseDebuggerMessage,
+} from './debugger/debugProtocol';
+
 import initialState from './core/state';
 
 export * from './editor/actions';
@@ -112,6 +121,14 @@ export * from './messages/selectors';
 export { default as initialState } from './core/state';
 
 export {
+  createLogMessage,
+  isXodMessage,
+  createXodMessage,
+  createErrorMessage,
+  parseDebuggerMessage,
+} from './debugger/debugProtocol';
+
+export {
   default as popupsReducer,
   showOnlyPopup,
   hideOnePopup,
@@ -140,6 +157,12 @@ export default Object.assign(
     hasUnsavedChanges,
     getLastSavedProject,
     composeMessage,
+    createLogMessage,
+    createSystemMessage,
+    isXodMessage,
+    createXodMessage,
+    createErrorMessage,
+    parseDebuggerMessage,
     TAB_CLOSE,
     SAVE_ALL,
     INSTALL_LIBRARIES_COMPLETE,

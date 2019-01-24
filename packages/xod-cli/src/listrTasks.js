@@ -1,10 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { compose, filter, identity, last, map, startsWith } from 'ramda';
-import {
-  transformProject,
-  transformProjectWithDebug,
-  transpile,
-} from 'xod-arduino';
+import { transformProject, transpile, LIVENESS } from 'xod-arduino';
 import { loadProject } from 'xod-fs';
 import { createError, foldEither } from 'xod-func-tools';
 import * as xdb from 'xod-deploy-bin';
@@ -20,9 +16,11 @@ export const loadProjectTask = (workspaces, projectPath) => ({
 export const transformTask = (patchName, debug) => ({
   title: 'Transforming',
   task: ctx => {
-    ctx.transform = debug
-      ? transformProjectWithDebug(ctx.project, patchName)
-      : transformProject(ctx.project, patchName);
+    ctx.transform = transformProject(
+      ctx.project,
+      patchName,
+      debug ? LIVENESS.DEBUG : LIVENESS.NONE
+    );
   },
 });
 

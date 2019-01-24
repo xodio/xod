@@ -76,15 +76,15 @@
       border: none;
       outline: none;
       cursor: pointer;
-      color: #ccc;
+      color: #aaa;
 
       &:hover {
-        color: #ccc;
+        color: #aaa;
         background: #444;
       }
     }
 
-    .abort-tabtest-button {
+    .abort-process-button {
       display: inline-block;
       @include deploymentPanelButton();
       color: $red-bright;
@@ -107,6 +107,15 @@
     .clear-log-button {
       @include deploymentPanelButton();
       @extend .icon-clear-log;
+    }
+    .simulation-button {
+      @include deploymentPanelButton();
+      font-size: 16px; //To look the same size as neighbor icons
+      &:before {
+        // Compensate optical center of the icon inside the button
+        display: block;
+        margin-top: -4px;
+      }
     }
     .close-button {
       @include deploymentPanelButton();

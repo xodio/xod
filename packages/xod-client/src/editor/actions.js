@@ -44,6 +44,8 @@ import composeMessage from '../messages/composeMessage';
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
 
+import { parseDebuggerMessage } from '../debugger/debugProtocol';
+import { addMessagesToDebuggerLog } from '../debugger/actions';
 import runWasmWorker from '../workers/run';
 
 import {
@@ -743,7 +745,7 @@ export const runTabtest = patchPath => (dispatch, getState) => {
         })
       )
     )
-    .then(abortOrPass(XCT.compileSuite(HOSTNAME)))
+    .then(abortOrPass(XCT.compileTabtest(HOSTNAME)))
     .then(
       abortOrPass(
         R.tap(() => {
@@ -786,6 +788,84 @@ export const runTabtest = patchPath => (dispatch, getState) => {
       if (err.worker) err.worker.terminate();
       dispatch({
         type: ActionType.TABTEST_ERROR,
+        payload: err,
+        meta: { worker: err.worker },
+      });
+    });
+};
+
+export const runSimulationRequested = () => ({
+  type: ActionType.SIMULATION_RUN_REQUESTED,
+});
+
+export const abortSimulation = () => (dispatch, getState) => {
+  const worker = Selectors.simulationWorker(getState());
+  if (worker) worker.terminate();
+  dispatch({
+    type: ActionType.SIMULATION_ABORT,
+    payload: { worker },
+  });
+};
+
+export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
+
+  const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
+  const shouldContinue = () => Selectors.isSimulationRunning(getState());
+  const abortOrPass = fn => x => {
+    if (!shouldContinue()) {
+      return Promise.reject(createError(ABORT_ERROR_TYPE, {}));
+    }
+    return fn(x);
+  };
+
+  XCT.compileSimulation(HOSTNAME, code)
+    .then(
+      abortOrPass(
+        R.tap(() => dispatch({ type: ActionType.SIMULATION_COMPILED }))
+      )
+    )
+    .then(
+      abortOrPass(suite =>
+        runWasmWorker(suite, worker => {
+          dispatch({
+            type: ActionType.SIMULATION_LAUNCHED,
+            payload: {
+              worker,
+              nodeIdsMap,
+              patchPath: simulationPatchPath,
+            },
+          });
+
+          let incomingData = '';
+          let throttledLog = [];
+          const flushLog = () => {
+            if (throttledLog.length === 0) return;
+            dispatch(addMessagesToDebuggerLog(throttledLog));
+            throttledLog = [];
+          };
+          setInterval(flushLog, 100);
+          // eslint-disable-next-line no-param-reassign
+          worker.onReceive = data => {
+            incomingData = incomingData.concat(data);
+            while (incomingData.indexOf('\n') !== -1) {
+              const nlIndex = incomingData.indexOf('\n');
+              const line = incomingData.slice(0, nlIndex);
+              incomingData = incomingData.slice(nlIndex + 1);
+              throttledLog.push(parseDebuggerMessage(line));
+            }
+          };
+        })
+      )
+    )
+    .catch(err => {
+      if (err.type === ABORT_ERROR_TYPE) return;
+      if (err.worker) err.worker.terminate();
+      dispatch({
+        type: ActionType.SIMULATION_ERROR,
         payload: err,
         meta: { worker: err.worker },
       });

@@ -279,6 +279,7 @@ class Editor extends React.Component {
           <Debugger
             onUploadClick={this.props.onUploadClick}
             onUploadAndDebugClick={this.props.onUploadAndDebugClick}
+            onRunSimulationClick={this.props.onRunSimulationClick}
           />
         </FocusTrap>
         <Sidebar id={SIDEBAR_IDS.RIGHT} windowSize={this.props.size} />
@@ -313,6 +314,7 @@ Editor.propTypes = {
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
   isTabtestRunning: PropTypes.bool.isRequired,
+  onRunSimulationClick: PropTypes.func.isRequired,
   actions: PropTypes.shape({
     updatePatchAttachment: PropTypes.func.isRequired,
     closeAttachmentEditor: PropTypes.func.isRequired,

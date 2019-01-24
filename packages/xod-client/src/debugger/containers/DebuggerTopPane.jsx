@@ -22,10 +22,9 @@ const DebuggerTopPane = props =>
             <TooltipHOC
               content={
                 <div>
-                  The program on screen is newer than the program running on the
-                  board.<br />
+                  The program on screen is newer than the program running.<br />
                   Watches and overall behavior can be incorrect. Stop debugging
-                  and upload again to synchronize.
+                  and upload/simulate again to synchronize.
                 </div>
               }
               render={(onMouseOver, onMouseMove, onMouseLeave) => (
@@ -45,7 +44,7 @@ const DebuggerTopPane = props =>
             className="breadcrumbs-button Button Button--light"
             onClick={props.stopDebuggerSession}
           >
-            <Icon name="stop" /> Stop debug
+            <Icon name="stop" /> Stop
           </button>
         </Breadcrumbs>
       ) : null,

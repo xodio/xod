@@ -13,7 +13,7 @@ import * as XP from 'xod-project';
 import { def } from './types';
 
 import { renderProject } from './templates';
-import { DEFAULT_TRANSPILATION_OPTIONS } from './constants';
+import { LIVENESS } from './constants';
 
 import {
   areTimeoutsEnabled,
@@ -441,8 +441,8 @@ const checkForNativePatchesWithTooManyOutputs = def(
  * and it has a ready-to-use values, nothing needed to compute anymore.
  */
 const transformProjectWithImpls = def(
-  'transformProjectWithImpls :: Project -> PatchPath -> TranspilationOptions -> Either Error TProject',
-  (project, path, opts) =>
+  'transformProjectWithImpls :: Project -> PatchPath -> Liveness -> Either Error TProject',
+  (project, path, liveness) =>
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
       // :: Either Error TProject
@@ -451,7 +451,10 @@ const transformProjectWithImpls = def(
 
         return R.merge(
           {
-            config: { XOD_DEBUG: opts.debug },
+            config: {
+              XOD_DEBUG: liveness === LIVENESS.DEBUG,
+              XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+            },
           },
           R.applySpec({
             patches: R.always(patches),
@@ -467,7 +470,7 @@ const transformProjectWithImpls = def(
       R.map(XP.expandVariadicNodes(path)),
       R.chain(XP.autoresolveTypes(path)),
       R.unless(
-        () => opts.debug,
+        () => liveness !== LIVENESS.NONE,
         R.chain(XP.updatePatch(path, XP.removeDebugNodes))
       ),
       R.map(XP.jumperizePatchRecursively(path)),
@@ -486,19 +489,8 @@ export const getNodeIdsMap = def(
 );
 
 export const transformProject = def(
-  'transformProject :: Project -> PatchPath -> Either Error TProject',
-  (project, patchPath) =>
-    transformProjectWithImpls(project, patchPath, DEFAULT_TRANSPILATION_OPTIONS)
-);
-
-export const transformProjectWithDebug = def(
-  'transformProjectWithDebug :: Project -> PatchPath -> Either Error TProject',
-  (project, patchPath) => {
-    const options = R.merge(DEFAULT_TRANSPILATION_OPTIONS, {
-      debug: true,
-    });
-    return transformProjectWithImpls(project, patchPath, options);
-  }
+  'transformProject :: Project -> PatchPath -> Liveness -> Either Error TProject',
+  transformProjectWithImpls
 );
 
 export const getRequireUrls = def(
