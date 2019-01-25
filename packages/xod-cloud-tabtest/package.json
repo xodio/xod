@@ -4,8 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "babel src/ -d dist/ --source-maps",
-    "test": "mocha test/**/*.spec.js"
+    "build": "babel src/ -d dist/ --source-maps"
   },
   "repository": {
     "type": "git",
