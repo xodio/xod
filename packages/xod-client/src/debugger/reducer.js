@@ -141,6 +141,8 @@ const formatTabtestError = err => {
     case ERROR_CODES.TABTEST_EXECUTION_ABORT:
     case ERROR_CODES.TABTEST_NONZERO_EXIT_CODE:
       return err.payload.stdout.join('\n');
+    case ERROR_CODES.WASM_NO_RUNTIME_FOUND:
+      return MSG.WASM_NO_RUNTIME_FOUND;
 
     default:
       return err.message || err;
@@ -393,14 +395,20 @@ export default (state = initialState, action) => {
     case EAT.TABTEST_COMPILED:
       return R.compose(
         addPlainTextToTesterLog(MSG.TABTEST_RUNNING),
-        R.assoc('uploadProgress', 75)
+        R.assoc('uploadProgress', 70)
       )(state);
+    case EAT.TABTEST_LAUNCHED:
+      return R.assoc('uploadProgress', 90, state);
     case EAT.TABTEST_RUN_FINISHED:
       return R.compose(
         addPlainTextToTesterLog(action.payload.stdout.join('\n')),
         hideProgressBar
       )(state);
-
+    case EAT.TABTEST_ABORT:
+      return R.compose(
+        addPlainTextToTesterLog(MSG.TABTEST_ABORTED),
+        hideProgressBar
+      )(state);
     case EAT.TABTEST_ERROR:
       return R.compose(
         overStageError(LOG_TAB_TYPE.TESTER)(

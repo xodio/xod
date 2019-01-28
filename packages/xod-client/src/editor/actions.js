@@ -8,8 +8,13 @@ import {
   getLibName,
 } from 'xod-pm';
 import { generatePatchSuite } from 'xod-tabtest';
-import { compileSuite, runSuite } from 'xod-cloud-tabtest';
-import { foldMaybe, eitherToPromise, explodeMaybe } from 'xod-func-tools';
+import * as XCT from 'xod-cloud-tabtest';
+import {
+  foldMaybe,
+  eitherToPromise,
+  explodeMaybe,
+  createError,
+} from 'xod-func-tools';
 
 import {
   SELECTION_ENTITY_TYPE,
@@ -38,6 +43,8 @@ import composeMessage from '../messages/composeMessage';
 
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
+
+import runWasmWorker from '../workers/run';
 
 import {
   getRenderablePin,
@@ -702,6 +709,15 @@ export const selectConstantNodeValue = (nodeId, patchPath) => ({
   },
 });
 
+export const abortTabtest = () => (dispatch, getState) => {
+  const worker = Selectors.tabtestWorker(getState());
+  if (worker) worker.terminate();
+  dispatch({
+    type: ActionType.TABTEST_ABORT,
+    payload: { worker },
+  });
+};
+
 export const runTabtest = patchPath => (dispatch, getState) => {
   dispatch({ type: ActionType.TABTEST_RUN_REQUESTED });
   const suiteP = R.compose(
@@ -710,39 +726,68 @@ export const runTabtest = patchPath => (dispatch, getState) => {
     ProjectSelectors.getProject
   )(getState());
 
+  const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
+  const shouldContinue = () => Selectors.isTabtestRunning(getState());
+  const abortOrPass = fn => x => {
+    if (!shouldContinue()) {
+      return Promise.reject(createError(ABORT_ERROR_TYPE, {}));
+    }
+    return fn(x);
+  };
+
   suiteP
     .then(
-      R.tap(() => {
-        dispatch({ type: ActionType.TABTEST_GENERATED_CPP });
-      })
-    )
-    .then(compileSuite(HOSTNAME))
-    .then(
-      R.tap(() => {
-        dispatch({ type: ActionType.TABTEST_COMPILED });
-      })
-    )
-    .then(runSuite)
-    .then(({ stdout }) => {
-      dispatch(
-        addConfirmation({
-          title: 'Tests passed',
-          note: R.compose(R.join('\n'), R.reject(R.startsWith('======')))(
-            stdout
-          ),
-          persistent: true,
+      abortOrPass(
+        R.tap(() => {
+          dispatch({ type: ActionType.TABTEST_GENERATED_CPP });
         })
-      );
+      )
+    )
+    .then(abortOrPass(XCT.compileSuite(HOSTNAME)))
+    .then(
+      abortOrPass(
+        R.tap(() => {
+          dispatch({ type: ActionType.TABTEST_COMPILED });
+        })
+      )
+    )
+    .then(
+      abortOrPass(suite =>
+        runWasmWorker(suite, worker =>
+          dispatch({
+            type: ActionType.TABTEST_LAUNCHED,
+            payload: { worker },
+          })
+        )
+      )
+    )
+    .then(
+      abortOrPass(({ stdout, worker }) => {
+        dispatch(
+          addConfirmation({
+            title: 'Tests passed',
+            note: R.compose(R.join('\n'), R.reject(R.startsWith('======')))(
+              stdout
+            ),
+            persistent: true,
+          })
+        );
 
-      dispatch({
-        type: ActionType.TABTEST_RUN_FINISHED,
-        payload: { stdout },
-      });
-    })
+        worker.terminate();
+        dispatch({
+          type: ActionType.TABTEST_RUN_FINISHED,
+          payload: { stdout },
+          meta: { worker },
+        });
+      })
+    )
     .catch(err => {
+      if (err.type === ABORT_ERROR_TYPE) return;
+      if (err.worker) err.worker.terminate();
       dispatch({
         type: ActionType.TABTEST_ERROR,
         payload: err,
+        meta: { worker: err.worker },
       });
     });
 };

@@ -20,4 +20,6 @@ export const TABTEST_BUILDING_ERROR = `The generated C++ code contains errors. I
 or if your board is not compatible with XOD runtime code. The original compiler error
 message is above. Fix C++ errors to continue. If you believe it is a bug, report the
 problem to XOD developers.`;
-export const TABTEST_RUNNING = 'Running tests...';
+export const TABTEST_RUNNING = 'Running tabular test...';
+export const TABTEST_ABORTED = 'The test was interrupted by the user';
+export const WASM_NO_RUNTIME_FOUND = 'Unable to get URL of WASM runtime script';

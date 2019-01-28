@@ -638,11 +638,17 @@ const editorReducer = (state = {}, action) => {
         state
       );
 
+    case EAT.TABTEST_LAUNCHED:
+      return R.assoc('tabtestWorker', action.payload.worker, state);
     case EAT.TABTEST_RUN_REQUESTED:
       return R.assoc('isTabtestRunning', true, state);
     case EAT.TABTEST_RUN_FINISHED:
+    case EAT.TABTEST_ABORT:
     case EAT.TABTEST_ERROR:
-      return R.assoc('isTabtestRunning', false, state);
+      return R.compose(
+        R.assoc('tabtestWorker', null),
+        R.assoc('isTabtestRunning', false)
+      )(state);
 
     default:
       return state;

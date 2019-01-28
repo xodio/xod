@@ -13,6 +13,9 @@ import * as selectors from '../selectors';
 import * as DA from '../actions';
 import Log from './Log';
 
+import * as EditorSelectors from '../../editor/selectors';
+import * as EditorActions from '../../editor/actions';
+
 const contextMenuAttrs = {
   className: 'contextmenu filter-button',
 };
@@ -100,6 +103,7 @@ class Debugger extends React.Component {
       onUploadClick,
       onUploadAndDebugClick,
       isExpanded,
+      isTabtestRunning,
     } = this.props;
 
     const uploadProgress = foldMaybe(
@@ -129,7 +133,21 @@ class Debugger extends React.Component {
           >
             <span className="title">Deployment</span>
 
-            <div className="progress">{uploadProgress}</div>
+            <div className="progress">
+              {uploadProgress}
+              {isTabtestRunning ? (
+                <Icon
+                  Component="button"
+                  className="abort-tabtest-button"
+                  name="ban"
+                  title="Abort Test"
+                  onClickCapture={e => {
+                    e.stopPropagation();
+                    actions.abortTabtest();
+                  }}
+                />
+              ) : null}
+            </div>
           </div>
 
           {this.renderControlsForExpandedState()}
@@ -169,6 +187,7 @@ Debugger.propTypes = {
   maybeUploadProgress: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   isCapturingDebuggerProtocolMessages: PropTypes.bool.isRequired,
+  isTabtestRunning: PropTypes.bool.isRequired,
   currentTab: PropTypes.string.isRequired,
   actions: PropTypes.objectOf(PropTypes.func),
   onUploadClick: PropTypes.func.isRequired,
@@ -181,6 +200,7 @@ const mapStateToProps = R.applySpec({
   isExpanded: selectors.isDebuggerVisible,
   isCapturingDebuggerProtocolMessages:
     selectors.isCapturingDebuggerProtocolMessages,
+  isTabtestRunning: EditorSelectors.isTabtestRunning,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
@@ -190,6 +210,7 @@ const mapDispatchToProps = dispatch => ({
         DA.toggleCapturingDebuggerProtocolMessages,
       clearLog: DA.clearDebuggerLog,
       selectTab: DA.selectDebuggerTab,
+      abortTabtest: EditorActions.abortTabtest,
     },
     dispatch
   ),

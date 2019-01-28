@@ -223,3 +223,5 @@ export const isTabtestRunning = R.compose(
   R.prop('isTabtestRunning'),
   getEditor
 );
+
+export const tabtestWorker = R.compose(R.prop('tabtestWorker'), getEditor);
