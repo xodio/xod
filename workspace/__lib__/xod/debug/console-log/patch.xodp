@@ -2,15 +2,6 @@
   "description": "Outputs a line of text to the board standard debug interface",
   "nodes": [
     {
-      "description": "Use `xod/debug/console-log` instead",
-      "id": "HJH0G0b44",
-      "position": {
-        "x": 170,
-        "y": 102
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "id": "HJdO9HwJ-",
       "label": "LINE",
       "position": {
