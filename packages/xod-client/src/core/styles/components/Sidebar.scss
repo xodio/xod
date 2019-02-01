@@ -21,6 +21,11 @@
   }
 }
 
+.Sidebar-content {
+  // Make correct height of Sidebar contents in FireFox
+  overflow: hidden;
+}
+
 .Sidebar-title {
   display: block;
   height: 28px;
