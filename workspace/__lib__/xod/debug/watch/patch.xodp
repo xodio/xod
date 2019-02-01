@@ -16,15 +16,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "description": "Use `xod/debug/watch` instead",
-      "id": "Sy5lXAWNN",
-      "position": {
-        "x": 102,
-        "y": 102
-      },
-      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }
