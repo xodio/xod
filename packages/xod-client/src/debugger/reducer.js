@@ -150,6 +150,8 @@ const formatWasmError = err => {
       );
     case ERROR_CODES.WASM_NO_RUNTIME_FOUND:
       return MSG.WASM_NO_RUNTIME_FOUND;
+    case ERROR_CODES.WASM_BINARY_NOT_FOUND:
+      return MSG.WASM_BINARY_NOT_FOUND;
 
     default:
       return err.message || err;

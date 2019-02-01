@@ -19,7 +19,7 @@ const compile = R.curry((hostname, suite, opts) => {
     }),
     R.map(btoa),
     R.when(
-      () => opts.fqbn === 'wasm:tabtest',
+      () => opts.fqbn === 'wasm:tabtest:2',
       R.merge({
         'Arduino.cpp': arduinoCpp,
         'Arduino.h': arduinoH,
@@ -52,7 +52,7 @@ const compile = R.curry((hostname, suite, opts) => {
 // :: String -> StrMap Source -> Promise
 export const compileTabtest = R.curry((hostname, suite) =>
   compile(hostname, suite, {
-    fqbn: 'wasm:tabtest',
+    fqbn: 'wasm:tabtest:2',
     options: {},
   })
 );
