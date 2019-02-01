@@ -16,11 +16,13 @@ TEST_CASE("Number to XString conversion", "[list]") {
 
     SECTION("Integer numbers") {
       REQUIRE(convertAndTest((xod::Number) 0, 0, str) == xod::XStringCString("0"));
-      REQUIRE(convertAndTest((xod::Number) -1, 1, str) == xod::XStringCString("-1"));
-      REQUIRE(convertAndTest((xod::Number) 42, 5, str) == xod::XStringCString("42"));
-      REQUIRE(convertAndTest((xod::Number) -579, 1, str) == xod::XStringCString("-579"));
+      REQUIRE(convertAndTest((xod::Number) 0, 4, str) == xod::XStringCString("0.0000"));
+      REQUIRE(convertAndTest((xod::Number) 1, 2, str) == xod::XStringCString("1.00"));
+      REQUIRE(convertAndTest((xod::Number) -1, 1, str) == xod::XStringCString("-1.0"));
+      REQUIRE(convertAndTest((xod::Number) 42, 5, str) == xod::XStringCString("42.00000"));
+      REQUIRE(convertAndTest((xod::Number) -579, 0, str) == xod::XStringCString("-579"));
       REQUIRE(convertAndTest((xod::Number) 21474836, 0, str) == xod::XStringCString("21474836"));
-      REQUIRE(convertAndTest((xod::Number) 21474836, 6, str) == xod::XStringCString("21474836"));
+      REQUIRE(convertAndTest((xod::Number) 21474836, 6, str) == xod::XStringCString("21474836.000000"));
     }
     SECTION("Numbers with floating point") {
       REQUIRE(convertAndTest((xod::Number) 0.25, 0, str) == xod::XStringCString("0"));
