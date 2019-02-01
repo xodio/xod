@@ -1,5 +1,5 @@
 {
-  "name": "xod-cloud-tabtest",
+  "name": "xod-cloud-compile",
   "version": "0.26.1",
   "description": "",
   "main": "dist/index.js",

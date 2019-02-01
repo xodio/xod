@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { renameKeys, invertMap } from 'xod-func-tools';
 
-import { ERROR_CODES } from 'xod-cloud-tabtest';
+import { ERROR_CODES } from 'xod-cloud-compile';
 
 import {
   UPLOAD,

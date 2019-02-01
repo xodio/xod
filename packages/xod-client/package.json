@@ -62,7 +62,7 @@
     "vec-la-fp": "^1.5.2",
     "wait-for-element": "^1.0.2",
     "xod-arduino": "^0.26.1",
-    "xod-cloud-tabtest": "^0.26.1",
+    "xod-cloud-compile": "^0.26.1",
     "xod-func-tools": "^0.26.0",
     "xod-patch-search": "^0.26.1",
     "xod-pm": "^0.26.1",
