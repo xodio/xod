@@ -2,7 +2,7 @@
 import * as R from 'ramda';
 import btoa from 'btoa';
 import fetch from 'node-fetch';
-import { createError } from 'xod-func-tools';
+import { createError, notNil } from 'xod-func-tools';
 
 import arduinoH from 'xod-tabtest/cpp/Arduino.h';
 import arduinoCpp from 'xod-tabtest/cpp/Arduino.cpp';
@@ -10,7 +10,8 @@ import xStringFormatInl from '../../../cpplib/catch2utils/XStringFormat.inl';
 
 import * as EC from './errorCodes';
 
-const compile = R.curry((hostname, suite, opts) => {
+// :: String -> Nullable String -> StrMap Source -> Object -> Promise Object Error
+const compile = R.curry((hostname, accessToken, suite, opts) => {
   const reqUrl = `https://api.${hostname}/compile/enqueue`;
   const reqBody = R.compose(
     R.merge(opts),
@@ -28,11 +29,16 @@ const compile = R.curry((hostname, suite, opts) => {
     )
   )(suite);
 
+  const headers = R.when(
+    () => notNil(accessToken),
+    R.assoc('Authorization', `Bearer ${accessToken}`)
+  )({
+    'Content-Type': 'application/json',
+  });
+
   return fetch(reqUrl, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers,
     body: JSON.stringify(reqBody),
   })
     .catch(err =>
@@ -49,20 +55,20 @@ const compile = R.curry((hostname, suite, opts) => {
     .then(res => res.json());
 });
 
-// :: String -> StrMap Source -> Promise
-export const compileTabtest = R.curry((hostname, suite) =>
-  compile(hostname, suite, {
+// :: String -> Nullable String -> StrMap Source -> Promise
+export const compileTabtest = R.curry((hostname, accessToken, suite) =>
+  compile(hostname, accessToken, suite, {
     fqbn: 'wasm:tabtest:2',
     options: {},
   })
 );
 
-// :: String -> Source -> Promise
-export const compileSimulation = R.curry((hostname, programCode) => {
+// :: String -> Nullable String -> Source -> Promise
+export const compileSimulation = R.curry((hostname, accessToken, programCode) => {
   const suite = {
     'sketch.ino': programCode,
   };
-  return compile(hostname, suite, {
+  return compile(hostname, accessToken, suite, {
     fqbn: 'wasm:simulation',
     options: {},
   })
