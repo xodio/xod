@@ -1,6 +1,8 @@
 // :: TranspilationOptions
-export const DEFAULT_TRANSPILATION_OPTIONS = {
-  debug: false,
+export const LIVENESS = {
+  NONE: 'NONE',
+  DEBUG: 'DEBUG',
+  SIMULATION: 'SIMULATION',
 };
 
 export default {};

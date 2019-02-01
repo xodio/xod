@@ -10,14 +10,14 @@ void evaluate(Context ctx) {
   auto line = getValue<input_IN>(ctx);
 
   TimeMs tNow = transactionTime();
-  DEBUG_SERIAL.print(F("+XOD:"));
-  DEBUG_SERIAL.print(tNow);
-  DEBUG_SERIAL.print(':');
-  DEBUG_SERIAL.print(getNodeId(ctx));
-  DEBUG_SERIAL.print(':');
+  XOD_DEBUG_SERIAL.print(F("+XOD:"));
+  XOD_DEBUG_SERIAL.print(tNow);
+  XOD_DEBUG_SERIAL.print(':');
+  XOD_DEBUG_SERIAL.print(getNodeId(ctx));
+  XOD_DEBUG_SERIAL.print(':');
   for (auto it = line.iterate(); it; ++it)
-      DEBUG_SERIAL.print((char)*it);
-  DEBUG_SERIAL.print('\r');
-  DEBUG_SERIAL.print('\n');
-  DEBUG_SERIAL.flush();
+      XOD_DEBUG_SERIAL.print((char)*it);
+  XOD_DEBUG_SERIAL.print('\r');
+  XOD_DEBUG_SERIAL.print('\n');
+  XOD_DEBUG_SERIAL.flush();
 }

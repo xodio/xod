@@ -333,8 +333,9 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
         let sketchFilename = safeBasename ++ ".sketch.cpp";
         let testFilename = safeBasename ++ ".catch.inl";
         let sketchFooter = {j|\n\n#include "$testFilename"\n|j};
+        let liveness : XodArduino.Transpiler.liveness = XodArduino.Transpiler.None;
         Project.assocPatch(projectWithTabtestLib, benchPatchPath, bench.patch)
-        |. XodArduino.Transpiler.transpile(_, benchPatchPath)
+        |. XodArduino.Transpiler.transpile(_, benchPatchPath, liveness)
         |. BeltHoles.Result.map(program => {
              let idMap =
                BeltHoles.Map.String.innerJoin(

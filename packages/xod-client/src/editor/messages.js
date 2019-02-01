@@ -29,3 +29,9 @@ export const NO_PATCH_TO_TRANSPILE = {
   solution: 'Open a patch to upload and try again',
   persistent: false,
 };
+
+export const SIMULATION_ALREADY_RUNNING = {
+  title: 'Simulation already running',
+  solution: 'Stop the current simulation and try again',
+  persistent: true,
+};

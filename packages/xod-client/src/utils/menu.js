@@ -109,6 +109,9 @@ const rawItems = {
   updatePackages: {
     label: 'Upgrade Arduino Packages && Toolchains...',
   },
+  runSimulation: {
+    label: 'Simulate',
+  },
 
   view: {
     label: 'View',

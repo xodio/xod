@@ -353,6 +353,18 @@ const drillDown = R.curry((patchPath, nodeId, state) => {
   )(state);
 });
 
+const openDebuggerTab = R.curry((patchPath, state) => {
+  const currentTab = getTabById(state.currentTabId, state);
+  const currentPatchPath = currentTab.patchPath;
+  const currentOffset = currentTab.offset;
+  return R.compose(
+    setTabOffset(currentOffset, DEBUGGER_TAB_ID),
+    drillDown(patchPath, null),
+    R.assoc('currentTabId', DEBUGGER_TAB_ID),
+    addTabWithProps(DEBUGGER_TAB_ID, TAB_TYPES.DEBUGGER, currentPatchPath)
+  )(state);
+});
+
 // =============================================================================
 //
 // Reducer
@@ -558,22 +570,10 @@ const editorReducer = (state = {}, action) => {
     //
     // debugger
     //
-    case DAT.DEBUG_SESSION_STARTED: {
-      const currentTab = getTabById(state.currentTabId, state);
-      const currentPatchPath = currentTab.patchPath;
-      const currentOffset = currentTab.offset;
-      return R.compose(
-        setTabOffset(currentOffset, DEBUGGER_TAB_ID),
-        drillDown(action.payload.patchPath, null),
-        R.assoc('currentTabId', DEBUGGER_TAB_ID),
-        addTabWithProps(DEBUGGER_TAB_ID, TAB_TYPES.DEBUGGER, currentPatchPath)
-      )(state);
-    }
+    case DAT.DEBUG_SESSION_STARTED:
+      return openDebuggerTab(action.payload.patchPath, state);
     case DAT.DEBUG_SESSION_STOPPED:
-      return R.when(
-        isTabOpened(DEBUGGER_TAB_ID),
-        closeTabById(DEBUGGER_TAB_ID)
-      )(state);
+      return closeTabById(DEBUGGER_TAB_ID, state);
     case DAT.DEBUG_DRILL_DOWN:
       return R.compose(
         drillDown(action.payload.patchPath, action.payload.nodeId),
@@ -648,6 +648,21 @@ const editorReducer = (state = {}, action) => {
       return R.compose(
         R.assoc('tabtestWorker', null),
         R.assoc('isTabtestRunning', false)
+      )(state);
+
+    case EAT.SIMULATION_LAUNCHED:
+      return R.compose(
+        R.assoc('simulationWorker', action.payload.worker),
+        openDebuggerTab(action.payload.patchPath)
+      )(state);
+    case EAT.SIMULATION_RUN_REQUESTED:
+      return R.assoc('isSimulationRunning', true, state);
+    case EAT.SIMULATION_ABORT:
+    case EAT.SIMULATION_ERROR:
+      return R.compose(
+        R.assoc('simulationWorker', null),
+        R.assoc('isSimulationRunning', false),
+        closeTabById(DEBUGGER_TAB_ID)
       )(state);
 
     default:

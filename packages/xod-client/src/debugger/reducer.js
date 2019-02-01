@@ -95,6 +95,10 @@ const addMessageToDebuggerLog = R.curry((message, state) =>
   overDebuggerLog(appendMessageAndTruncate(message), state)
 );
 
+const addPlainTextToDebuggerLog = R.curry((plainMessage, state) =>
+  overDebuggerLog(log => `${log}\n${plainMessage}`, state)
+);
+
 const addPlainTextToTesterLog = R.curry((plainMessage, state) =>
   overTesterLog(log => `${log}\n${plainMessage}`, state)
 );
@@ -122,12 +126,12 @@ const showDebuggerPane = R.assoc('isVisible', true);
 
 const hideProgressBar = R.assoc('uploadProgress', null);
 
-const formatTabtestError = err => {
+const formatWasmError = err => {
   switch (err.type) {
-    case ERROR_CODES.TABTEST_COMPILATION_RESULTS_FETCH_ERROR:
+    case ERROR_CODES.WASM_COMPILATION_RESULTS_FETCH_ERROR:
       return err.payload.message;
 
-    case ERROR_CODES.TABTEST_COMPILATION_ERROR: {
+    case ERROR_CODES.WASM_COMPILATION_ERROR: {
       const logs = R.compose(
         R.join('\n'),
         R.reject(R.either(R.isNil, R.isEmpty)),
@@ -135,12 +139,15 @@ const formatTabtestError = err => {
         R.propOr([], 'logs')
       )(err.payload);
 
-      return `${err.payload.message}\n${logs}\n\n${MSG.TABTEST_BUILDING_ERROR}`;
+      return `${err.payload.message}\n${logs}\n\n${MSG.WASM_BUILDING_ERROR}`;
     }
 
-    case ERROR_CODES.TABTEST_EXECUTION_ABORT:
-    case ERROR_CODES.TABTEST_NONZERO_EXIT_CODE:
-      return err.payload.stdout.join('\n');
+    case ERROR_CODES.WASM_EXECUTION_ABORT:
+    case ERROR_CODES.WASM_NONZERO_EXIT_CODE:
+      return R.concat(
+        err.payload.stdout.join('\n'),
+        err.payload.stderr.join('\n')
+      );
     case ERROR_CODES.WASM_NO_RUNTIME_FOUND:
       return MSG.WASM_NO_RUNTIME_FOUND;
 
@@ -412,8 +419,49 @@ export default (state = initialState, action) => {
     case EAT.TABTEST_ERROR:
       return R.compose(
         overStageError(LOG_TAB_TYPE.TESTER)(
-          R.always(formatTabtestError(action.payload))
+          R.always(formatWasmError(action.payload))
         ),
+        hideProgressBar,
+        showDebuggerPane
+      )(state);
+
+    case EAT.SIMULATION_RUN_REQUESTED:
+      return R.compose(
+        overDebuggerLog(R.always(MSG.SIMULATION_GENERATING_CODE)),
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
+        R.assoc('uploadProgress', 25),
+        R.assoc('currentTab', LOG_TAB_TYPE.DEBUGGER)
+      )(state);
+    case EAT.SIMULATION_GENERATED_CPP:
+      return R.compose(
+        addPlainTextToDebuggerLog(MSG.SIMULATION_BUILDING),
+        R.assoc('uploadProgress', 50)
+      )(state);
+    case EAT.SIMULATION_COMPILED:
+      return R.compose(
+        addPlainTextToDebuggerLog(MSG.SIMULATION_RUNNING),
+        R.assoc('uploadProgress', 75)
+      )(state);
+    case EAT.SIMULATION_LAUNCHED:
+      return R.compose(
+        addPlainTextToDebuggerLog(MSG.SIMULATION_LAUNCHED),
+        R.assoc('isRunning', true),
+        R.assoc('isOutdated', false),
+        R.assoc('uploadProgress', null),
+        R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap))
+      )(state);
+    case EAT.SIMULATION_ABORT:
+      return R.compose(
+        addPlainTextToDebuggerLog(MSG.SIMULATION_ABORTED),
+        R.assoc('isRunning', false),
+        hideProgressBar
+      )(state);
+    case EAT.SIMULATION_ERROR:
+      return R.compose(
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(
+          R.always(formatWasmError(action.payload))
+        ),
+        R.assoc('isRunning', false),
         hideProgressBar,
         showDebuggerPane
       )(state);

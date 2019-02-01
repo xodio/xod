@@ -10,7 +10,8 @@
 //----------------------------------------------------------------------------
 // Debug routines
 //----------------------------------------------------------------------------
-#ifndef DEBUG_SERIAL
+// #ifndef DEBUG_SERIAL
+#if defined(XOD_DEBUG) && !defined(DEBUG_SERIAL)
 #  define DEBUG_SERIAL Serial
 #endif
 

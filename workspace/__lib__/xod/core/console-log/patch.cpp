@@ -3,19 +3,16 @@ struct State { };
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (isSettingUp())
-        Serial.begin(115200);
-
     if (!isInputDirty<input_DUMP>(ctx))
         return;
 
     auto line = getValue<input_LINE>(ctx);
 
     for (auto it = line->iterate(); it; ++it)
-        Serial.write((char)*it);
+        XOD_DEBUG_SERIAL.write((char)*it);
 
-    Serial.write('\r');
-    Serial.write('\n');
+    XOD_DEBUG_SERIAL.write('\r');
+    XOD_DEBUG_SERIAL.write('\n');
 
-    Serial.flush();
+    XOD_DEBUG_SERIAL.flush();
 }

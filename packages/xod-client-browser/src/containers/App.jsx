@@ -33,12 +33,16 @@ class App extends client.App {
     this.onResize = this.onResize.bind(this);
     this.onUpload = this.onUpload.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
+    this.onRunSimulation = this.onRunSimulation.bind(this);
     this.onOpenTutorial = this.onOpenTutorial.bind(this);
     this.onLoadChange = this.onLoadChange.bind(this);
     this.onLoad = this.onLoad.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onCloseApp = this.onCloseApp.bind(this);
     this.onCreateProject = this.onCreateProject.bind(this);
+    this.onStopDebuggerSessionClicked = this.onStopDebuggerSessionClicked.bind(
+      this
+    );
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
@@ -183,6 +187,12 @@ class App extends client.App {
     return message;
   }
 
+  onStopDebuggerSessionClicked() {
+    if (this.props.isSimulationRunning) {
+      this.props.actions.abortSimulation();
+    }
+  }
+
   getMenuBarItems() {
     const { items, onClick, submenu } = client.menu;
 
@@ -266,6 +276,7 @@ class App extends client.App {
       submenu(items.deploy, [
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
         onClick(items.uploadToArduino, this.onUpload),
+        onClick(items.runSimulation, this.onRunSimulation),
       ]),
       submenu(items.view, [
         onClick(items.toggleProjectBrowser, () =>
@@ -343,8 +354,10 @@ class App extends client.App {
         <client.Toolbar menuBarItems={this.getMenuBarItems()} />
         <client.Editor
           size={this.state.size}
+          stopDebuggerSession={this.onStopDebuggerSessionClicked}
           onUploadClick={this.onUpload}
           onUploadAndDebugClick={this.onUpload}
+          onRunSimulationClick={this.onRunSimulation}
         />
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
@@ -365,6 +378,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   tutorialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
+  isSimulationRunning: PropTypes.bool.isRequired,
 });
 
 const mapStateToProps = R.applySpec({
@@ -372,6 +386,7 @@ const mapStateToProps = R.applySpec({
   project: client.getProject,
   user: client.getUser,
   currentPatchPath: client.getCurrentPatchPath,
+  isSimulationRunning: client.isSimulationRunning,
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),

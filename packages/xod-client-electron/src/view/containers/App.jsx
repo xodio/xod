@@ -19,7 +19,12 @@ import {
   eitherToPromise,
   createError,
 } from 'xod-func-tools';
-import { transpile, getNodeIdsMap, getRequireUrls } from 'xod-arduino';
+import {
+  transpile,
+  getNodeIdsMap,
+  getRequireUrls,
+  LIVENESS,
+} from 'xod-arduino';
 import { messages as xdbMessages } from 'xod-deploy-bin';
 
 import packageJson from '../../../package.json';
@@ -50,8 +55,6 @@ import {
 } from '../../arduinoDependencies/actions';
 import { loadWorkspacePath } from '../../app/workspaceActions';
 import { getPathToBundledWorkspace } from '../../app/utils';
-
-import { createSystemMessage } from '../../shared/debuggerMessages';
 
 import getLibraryNames from '../../arduinoDependencies/getLibraryNames';
 
@@ -103,6 +106,7 @@ class App extends client.App {
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
+    this.onRunSimulation = this.onRunSimulation.bind(this);
     this.onSave = this.onSave.bind(this);
     this.onSaveAs = this.onSaveAs.bind(this);
     this.onSaveCopyAs = this.onSaveCopyAs.bind(this);
@@ -116,6 +120,10 @@ class App extends client.App {
 
     this.onLoadProject = this.onLoadProject.bind(this);
     this.onArduinoPathChange = this.onArduinoPathChange.bind(this);
+
+    this.onStopDebuggerSessionClicked = this.onStopDebuggerSessionClicked.bind(
+      this
+    );
 
     this.showError = this.showError.bind(this);
 
@@ -270,7 +278,9 @@ class App extends client.App {
         ? processActions
         : this.props.actions.uploadToArduino();
 
-    const eitherTProject = this.transformProjectForTranspiler(debug);
+    const eitherTProject = this.transformProjectForTranspiler(
+      debug ? LIVENESS.DEBUG : LIVENESS.NONE
+    );
 
     stopDebuggerSession();
 
@@ -349,7 +359,7 @@ class App extends client.App {
               );
 
               this.props.actions.startDebuggerSession(
-                createSystemMessage('Debug session started'),
+                client.createSystemMessage('Debug session started'),
                 nodeIdsMap,
                 currentPatchPath
               );
@@ -538,6 +548,14 @@ class App extends client.App {
     this.props.actions.selectSerialPort(port);
   }
 
+  onStopDebuggerSessionClicked() {
+    if (this.props.isSimulationRunning) {
+      this.props.actions.abortSimulation();
+    } else {
+      stopDebuggerSession();
+    }
+  }
+
   getSaveProgress() {
     if (this.props.saveProcess && this.props.saveProcess.progress) {
       return this.props.saveProcess.progress;
@@ -597,6 +615,7 @@ class App extends client.App {
       submenu(items.deploy, [
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
         onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
+        onClick(items.runSimulation, this.onRunSimulation),
         items.separator,
         onClick(items.updatePackages, this.onUpdatePackagesClicked),
       ]),
@@ -866,9 +885,10 @@ class App extends client.App {
         />
         <client.Editor
           size={this.state.size}
-          stopDebuggerSession={stopDebuggerSession}
+          stopDebuggerSession={this.onStopDebuggerSessionClicked}
           onUploadClick={this.onUploadToArduinoClicked}
           onUploadAndDebugClick={this.onUploadToArduinoAndDebugClicked}
+          onRunSimulationClick={this.onRunSimulation}
         />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
@@ -944,6 +964,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   compileLimitLeft: PropTypes.number,
   workspace: PropTypes.string,
   selectedPort: PropTypes.object,
+  isSimulationRunning: PropTypes.bool.isRequired,
 });
 
 const getSaveProcess = R.compose(
@@ -961,6 +982,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
   compileLimitLeft: client.getCompileLimitLeft,
+  isSimulationRunning: client.isSimulationRunning,
   isDeploymentInProgress,
   popups: {
     // TODO: make keys match with POPUP_IDs

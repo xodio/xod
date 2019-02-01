@@ -11,6 +11,7 @@ import {
   getNodeIdsMap,
   commentXodPragmas,
 } from '../src/transpiler';
+import { LIVENESS } from '../src/constants';
 
 // Returns patch relative to repo’s `workspace` subdir
 const wsPath = (...subpath) =>
@@ -25,7 +26,7 @@ describe('xod-arduino transpiler', () => {
       );
 
       return loadProject([wsPath()], wsPath(projName))
-        .then(transformProject(R.__, '@/main'))
+        .then(transformProject(R.__, '@/main', LIVENESS.NONE))
         .then(R.map(transpile))
         .then(explode)
         .then(result =>
@@ -47,12 +48,12 @@ describe('xod-arduino transpiler', () => {
 
   it('returns error for non-existing-patch entry point', () =>
     loadProject([wsPath()], wsPath('blink'))
-      .then(transformProject(R.__, '@/non-existing-patch'))
+      .then(transformProject(R.__, '@/non-existing-patch', LIVENESS.NONE))
       .then(result => assert.equal(result.isLeft, true)));
 
   it('returns error if some native node has more than 7 outputs', () =>
     loadProject([wsPath()], wsPath('faulty'))
-      .then(transformProject(R.__, '@/too-many-outputs-main'))
+      .then(transformProject(R.__, '@/too-many-outputs-main', LIVENESS.NONE))
       .then(R.map(transpile))
       .then(
         foldEither(
@@ -69,7 +70,11 @@ describe('xod-arduino transpiler', () => {
   it('sorts nodes topologically', () =>
     loadProject([wsPath()], wsPath('blink'))
       .then(
-        R.pipe(transformProject(R.__, '@/main'), explodeEither, R.prop('nodes'))
+        R.pipe(
+          transformProject(R.__, '@/main', LIVENESS.NONE),
+          explodeEither,
+          R.prop('nodes')
+        )
       )
       .then(nodes => {
         const patchPaths = R.compose(R.pluck('patchPath'), R.pluck('patch'))(
@@ -101,7 +106,7 @@ describe('xod-arduino transpiler', () => {
         './fixtures/ensure-custom-types-are-defined.xodball'
       )
     )
-      .then(transformProject(R.__, '@/main'))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(explodeEither)
       .then(tProject => {
         const actualPatchPaths = R.compose(
@@ -124,7 +129,7 @@ describe('xod-arduino transpiler', () => {
     );
 
     return loadProject([wsPath()], xodball)
-      .then(transformProject(R.__, '@/main'))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(explodeEither)
       .then(tProject => {
         const actualPatchPaths = R.compose(
@@ -180,7 +185,7 @@ describe('getNodeIdsMap', () => {
     };
 
     return loadProject([wsPath()], wsPath('blink'))
-      .then(transformProject(R.__, '@/main'))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(R.map(getNodeIdsMap))
       .then(explode)
       .then(result =>

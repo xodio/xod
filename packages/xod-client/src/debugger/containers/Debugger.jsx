@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { ContextMenuTrigger, ContextMenu, MenuItem } from 'react-contextmenu';
 import { Icon } from 'react-fa';
 import { foldMaybe } from 'xod-func-tools';
+import { Maybe } from 'ramda-fantasy';
 
 import { LOG_TAB_TYPE } from '../constants';
 import * as selectors from '../selectors';
@@ -104,6 +105,8 @@ class Debugger extends React.Component {
       onUploadAndDebugClick,
       isExpanded,
       isTabtestRunning,
+      isSimulationRunning,
+      onRunSimulationClick,
     } = this.props;
 
     const uploadProgress = foldMaybe(
@@ -138,12 +141,24 @@ class Debugger extends React.Component {
               {isTabtestRunning ? (
                 <Icon
                   Component="button"
-                  className="abort-tabtest-button"
+                  className="abort-process-button"
                   name="ban"
                   title="Abort Test"
                   onClickCapture={e => {
                     e.stopPropagation();
                     actions.abortTabtest();
+                  }}
+                />
+              ) : null}
+              {isSimulationRunning && Maybe.isJust(maybeUploadProgress) ? (
+                <Icon
+                  Component="button"
+                  className="abort-process-button"
+                  name="ban"
+                  title="Stop Simulation"
+                  onClickCapture={e => {
+                    e.stopPropagation();
+                    actions.abortSimulation();
                   }}
                 />
               ) : null}
@@ -161,6 +176,13 @@ class Debugger extends React.Component {
             className="debug-button"
             onClick={onUploadAndDebugClick}
             title="Upload and Debug"
+          />
+          <Icon
+            Component="button"
+            name="gamepad"
+            className="simulation-button"
+            title="Simulate"
+            onClick={onRunSimulationClick}
           />
           <Icon
             Component="button"
@@ -188,10 +210,12 @@ Debugger.propTypes = {
   isExpanded: PropTypes.bool.isRequired,
   isCapturingDebuggerProtocolMessages: PropTypes.bool.isRequired,
   isTabtestRunning: PropTypes.bool.isRequired,
+  isSimulationRunning: PropTypes.bool.isRequired,
   currentTab: PropTypes.string.isRequired,
   actions: PropTypes.objectOf(PropTypes.func),
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
+  onRunSimulationClick: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
@@ -201,6 +225,7 @@ const mapStateToProps = R.applySpec({
   isCapturingDebuggerProtocolMessages:
     selectors.isCapturingDebuggerProtocolMessages,
   isTabtestRunning: EditorSelectors.isTabtestRunning,
+  isSimulationRunning: EditorSelectors.isSimulationRunning,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
@@ -211,6 +236,7 @@ const mapDispatchToProps = dispatch => ({
       clearLog: DA.clearDebuggerLog,
       selectTab: DA.selectDebuggerTab,
       abortTabtest: EditorActions.abortTabtest,
+      abortSimulation: EditorActions.abortSimulation,
     },
     dispatch
   ),

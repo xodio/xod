@@ -225,3 +225,13 @@ export const isTabtestRunning = R.compose(
 );
 
 export const tabtestWorker = R.compose(R.prop('tabtestWorker'), getEditor);
+
+export const isSimulationRunning = R.compose(
+  R.prop('isSimulationRunning'),
+  getEditor
+);
+
+export const simulationWorker = R.compose(
+  R.prop('simulationWorker'),
+  getEditor
+);
