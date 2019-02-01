@@ -118,7 +118,7 @@ export const terminalPatchPathRegExp = new RegExp(
 export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 
 // :: String -> Boolean
-export const isWatchPatchPath = R.test(/^xod\/core\/watch$/);
+export const isWatchPatchPath = R.test(/^xod\/(core|debug)\/watch$/);
 
 // :: String -> Boolean
 export const isBusPatchPath = R.either(
