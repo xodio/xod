@@ -727,14 +727,6 @@ size_t formatNumber(Number value, int prec, char* str) {
     int count = prec;
     bool notzero = frac > 0;
 
-    /* Remove ending zeros */
-    if (prec > 0) {
-        while (count > 0 && ((frac % 10) == 0)) {
-            count--;
-            frac /= 10;
-        }
-    }
-
     while (count > 0) {
         --count;
         *wstr++ = (char)(48 + (frac % 10));
