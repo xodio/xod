@@ -28,6 +28,10 @@
     &.self, &.custom { stroke: $color-datatype-custom; }
   }
 
+  .clickable-area {
+    fill: transparent;
+  }
+
   &.is-errored {
     .nodeLabel {
       color: $error-text;
@@ -72,6 +76,36 @@
     }
   }
 
+  .jumper-line {
+    stroke: $color-node-outline;
+    stroke-width: 2px;
+
+    &.is-connected {
+      stroke: $color-datatype-custom;
+    }
+    &.string {
+      stroke: $color-datatype-string;
+    }
+    &.number {
+      stroke: $color-datatype-number;
+    }
+    &.boolean {
+      stroke: $color-datatype-boolean;
+    }
+    &.pulse {
+      stroke: $color-datatype-pulse;
+    }
+    &.port {
+      stroke: $color-datatype-port;
+    }
+    &.byte {
+      stroke: $color-datatype-byte;
+    }
+    &.error {
+      stroke: $color-datatype-dead;
+    }
+  }
+
   .nodeLabelContainer {
     display: flex;
     overflow: hidden;
@@ -99,7 +133,7 @@
   }
 
   &.is-hovered {
-    .outline {
+    .jumper-line, .outline {
       stroke: $color-highlight;
     }
     .watch-node .outline {
@@ -127,7 +161,7 @@
   }
 
   &.is-selected {
-    .outline {
+    .jumper-line, .outline {
       stroke: $color-canvas-selected !important;
     }
 

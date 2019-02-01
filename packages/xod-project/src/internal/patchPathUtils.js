@@ -121,6 +121,9 @@ export const isTerminalPatchPath = R.test(terminalPatchPathRegExp);
 export const isWatchPatchPath = R.test(/^xod\/(core|debug)\/watch$/);
 
 // :: String -> Boolean
+export const isJumperPatchPath = R.equals(CONST.JUMPER_PATCH_PATH);
+
+// :: String -> Boolean
 export const isBusPatchPath = R.either(
   R.equals(CONST.FROM_BUS_PATH),
   R.equals(CONST.TO_BUS_PATH)

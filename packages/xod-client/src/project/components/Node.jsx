@@ -14,6 +14,7 @@ import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
 import ConstantNodeBody from './nodeParts/ConstantNodeBody';
 import BusNodeBody from './nodeParts/BusNodeBody';
+import JumperNodeBody from './nodeParts/JumperNodeBody';
 
 import TooltipHOC from '../../tooltip/components/TooltipHOC';
 
@@ -114,6 +115,7 @@ class Node extends React.Component {
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
       [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
       [isBusNodeType, () => <BusNodeBody {...this.props} />],
+      [XP.isJumperPatchPath, () => <JumperNodeBody {...this.props} />],
       [R.T, () => <RegularNodeBody {...this.props} />],
     ])(type);
   }

@@ -25,6 +25,7 @@ export {
   isTerminalPatchPath,
   isWatchPatchPath,
   isBusPatchPath,
+  isJumperPatchPath,
   isBuiltInLibName,
   getExpandedVariadicPatchPath,
 } from './internal/patchPathUtils';
