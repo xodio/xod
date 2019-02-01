@@ -47,6 +47,7 @@ import * as ProjectSelectors from '../project/selectors';
 import { parseDebuggerMessage } from '../debugger/debugProtocol';
 import { addMessagesToDebuggerLog } from '../debugger/actions';
 import runWasmWorker from '../workers/run';
+import { getAccessToken } from '../user/selectors';
 
 import {
   getRenderablePin,
@@ -722,11 +723,12 @@ export const abortTabtest = () => (dispatch, getState) => {
 
 export const runTabtest = patchPath => (dispatch, getState) => {
   dispatch({ type: ActionType.TABTEST_RUN_REQUESTED });
+  const state = getState();
   const suiteP = R.compose(
     eitherToPromise,
     p => generatePatchSuite(p, patchPath),
     ProjectSelectors.getProject
-  )(getState());
+  )(state);
 
   const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
   const shouldContinue = () => Selectors.isTabtestRunning(getState());
@@ -737,6 +739,8 @@ export const runTabtest = patchPath => (dispatch, getState) => {
     return fn(x);
   };
 
+  const accessToken = foldMaybe(null, R.identity, getAccessToken(state));
+
   suiteP
     .then(
       abortOrPass(
@@ -745,7 +749,7 @@ export const runTabtest = patchPath => (dispatch, getState) => {
         })
       )
     )
-    .then(abortOrPass(XCC.compileTabtest(HOSTNAME)))
+    .then(abortOrPass(XCC.compileTabtest(HOSTNAME, accessToken)))
     .then(
       abortOrPass(
         R.tap(() => {
@@ -822,7 +826,9 @@ export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
     return fn(x);
   };
 
-  XCC.compileSimulation(HOSTNAME, code)
+  const accessToken = foldMaybe(null, R.identity, getAccessToken(getState()));
+
+  XCC.compileSimulation(HOSTNAME, accessToken, code)
     .then(
       abortOrPass(
         R.tap(() => dispatch({ type: ActionType.SIMULATION_COMPILED }))
