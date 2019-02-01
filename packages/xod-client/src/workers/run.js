@@ -1,14 +1,9 @@
 import * as R from 'ramda';
 import { noop, createError } from 'xod-func-tools';
-import { prepareModuleOptions, ERROR_CODES } from 'xod-cloud-tabtest';
+import { prepareModuleOptions, ERROR_CODES } from 'xod-cloud-compile';
 
-const getRuntimeUrl = suite =>
-  // Simulation
-  R.path(['artifactUrls', 'main.min.js'], suite) ||
-  R.path(['artifactUrls', 'main.js'], suite) ||
-  // Tabtests
-  R.path(['artifactUrls', 'wasmRuntimeMin'], suite) ||
-  R.path(['artifactUrls', 'wasmRuntime'], suite);
+const getRuntimeUrl = suite => R.path(['artifactUrls', 'main.js'], suite);
+const getWasmUrl = suite => R.path(['artifactUrls', 'main.wasm'], suite);
 
 const runWasmWorker = (suite, onLaunch) =>
   new Promise((resolve, reject) => {
@@ -24,6 +19,11 @@ const runWasmWorker = (suite, onLaunch) =>
       reject(createError(ERROR_CODES.WASM_NO_RUNTIME_FOUND, { suite }));
       return;
     }
+    const wasmUrl = getWasmUrl(suite);
+    if (!wasmUrl) {
+      reject(createError(ERROR_CODES.WASM_BINARY_NOT_FOUND, { suite }));
+      return;
+    }
 
     const worker = new WasmWorker();
     worker.postMessage({
@@ -31,8 +31,7 @@ const runWasmWorker = (suite, onLaunch) =>
       payload: {
         suite: prepareModuleOptions(suite),
         runtimeUrl,
-        // TODO: Make uniform `wasmUrl` gerring for tabtests and simulation
-        wasmUrl: R.path(['artifactUrls', 'main.wasm'], suite),
+        wasmUrl,
       },
     });
 

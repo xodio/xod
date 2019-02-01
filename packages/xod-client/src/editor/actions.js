@@ -8,7 +8,7 @@ import {
   getLibName,
 } from 'xod-pm';
 import { generatePatchSuite } from 'xod-tabtest';
-import * as XCT from 'xod-cloud-tabtest';
+import * as XCC from 'xod-cloud-compile';
 import {
   foldMaybe,
   eitherToPromise,
@@ -745,7 +745,7 @@ export const runTabtest = patchPath => (dispatch, getState) => {
         })
       )
     )
-    .then(abortOrPass(XCT.compileTabtest(HOSTNAME)))
+    .then(abortOrPass(XCC.compileTabtest(HOSTNAME)))
     .then(
       abortOrPass(
         R.tap(() => {
@@ -822,7 +822,7 @@ export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
     return fn(x);
   };
 
-  XCT.compileSimulation(HOSTNAME, code)
+  XCC.compileSimulation(HOSTNAME, code)
     .then(
       abortOrPass(
         R.tap(() => dispatch({ type: ActionType.SIMULATION_COMPILED }))
