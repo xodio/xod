@@ -10,6 +10,9 @@ import {
   filterMaximized,
 } from '../utils';
 
+const getShowHideTooltipMessage = (panelName, maximized) =>
+  maximized ? `Hide ${panelName}` : `Show ${panelName}`;
+
 const SidebarSwitches = ({
   id,
   isMinimized,
@@ -41,6 +44,7 @@ const SidebarSwitches = ({
             <button
               key="projectBrowser"
               className={`projectBrowser ${maximized && 'selected'}`}
+              title={getShowHideTooltipMessage('Project Browser', maximized)}
               onClick={onToggleProjectBrowserPanel}
             />
           )),
@@ -48,6 +52,7 @@ const SidebarSwitches = ({
             <button
               key="inspector"
               className={`inspector ${maximized && 'selected'}`}
+              title={getShowHideTooltipMessage('Inspector', maximized)}
               onClick={onToggleInspectorPanel}
             />
           )),
@@ -56,6 +61,7 @@ const SidebarSwitches = ({
               key="account"
               className={`account ${maximized && 'selected'} ${!isLoggedIn &&
                 'not-logged-in'}`}
+              title={getShowHideTooltipMessage('Account Pane', maximized)}
               onClick={onToggleAccountPanel}
             />
           )),
@@ -63,6 +69,7 @@ const SidebarSwitches = ({
             <button
               key="helppanel"
               className={`helppanel ${maximized && 'selected'}`}
+              title={getShowHideTooltipMessage('Quick Help', maximized)}
               onClick={ontoggleHelpPanel}
             />
           )),
