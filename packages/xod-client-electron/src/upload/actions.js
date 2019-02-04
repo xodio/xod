@@ -5,6 +5,8 @@ import {
   OPEN_UPLOAD_CONFIG,
   CLOSE_UPLOAD_CONFIG,
   SELECT_SERIAL_PORT,
+  OPEN_CONNECT_SERIAL_DIALOG,
+  CLOSE_CONNECT_SERIAL_DIALOG,
 } from './actionTypes';
 
 export const uploadToArduino = () => dispatch => {
@@ -38,6 +40,14 @@ export const uploadToArduinoConfig = (debugAfterUpload = false) => ({
 export const hideUploadConfigPopup = () => ({
   type: CLOSE_UPLOAD_CONFIG,
   payload: {},
+});
+
+export const openConnectSerialDialog = () => ({
+  type: OPEN_CONNECT_SERIAL_DIALOG,
+});
+
+export const closeConnectSerialDialog = () => ({
+  type: CLOSE_CONNECT_SERIAL_DIALOG,
 });
 
 export const selectSerialPort = port => ({

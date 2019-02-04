@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { foldMaybe } from 'xod-func-tools';
+import { foldMaybe, isAmong } from 'xod-func-tools';
 import { createSelector } from 'reselect';
 import {
   getCurrentTabId,
@@ -8,18 +8,45 @@ import {
   getBreadcrumbActiveIndex,
 } from '../editor/selectors';
 import { DEBUGGER_TAB_ID } from '../editor/constants';
+import { SESSION_TYPE } from './constants';
 
 export const getDebuggerState = R.prop('debugger');
 
-export const isDebugSession = R.compose(R.prop('isRunning'), getDebuggerState);
+export const isDebugSession = R.compose(
+  R.propSatisfies(
+    isAmong([SESSION_TYPE.DEBUG, SESSION_TYPE.SIMULATON]),
+    'activeSession'
+  ),
+  getDebuggerState
+);
 
-export const isDebuggerVisible = R.compose(
-  R.prop('isVisible'),
+export const isSessionActive = R.compose(
+  ds => ds.activeSession !== SESSION_TYPE.NONE,
   getDebuggerState
 );
 
 export const isSerialDebugRunning = R.compose(
-  R.prop('isSerialConnected'),
+  R.propEq('activeSession', SESSION_TYPE.DEBUG),
+  getDebuggerState
+);
+
+export const isSimulationRunning = R.compose(
+  R.propEq('activeSession', SESSION_TYPE.SIMULATON),
+  getDebuggerState
+);
+
+export const isPreparingSimulation = R.compose(
+  R.prop('isPreparingSimulation'),
+  getDebuggerState
+);
+
+export const isSimulationAbortable = R.either(
+  isPreparingSimulation,
+  isSimulationRunning
+);
+
+export const isDebuggerVisible = R.compose(
+  R.prop('isVisible'),
   getDebuggerState
 );
 

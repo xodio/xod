@@ -214,7 +214,11 @@ const onReady = () => {
   const stopDebugSession = event => {
     if (debugPort) {
       userAttemptedCloseSerialPort = true;
-      stopDebugSessionHandler(event, debugPort);
+      stopDebugSessionHandler(event, debugPort).then(() =>
+        event.sender.send(EVENTS.DEBUG_SESSION_STOPPED)
+      );
+    } else {
+      event.sender.send(EVENTS.DEBUG_SESSION_STOPPED);
     }
   };
 
@@ -230,10 +234,15 @@ const onReady = () => {
         if (!userAttemptedCloseSerialPort) {
           sendErr();
         }
+
         debugPort = null;
       }
     )
   );
+  ipcMain.on(EVENTS.DEBUG_SERIAL_SEND, (event, str) => {
+    if (!debugPort) return;
+    debugPort.write(str);
+  });
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
   ipcMain.on(EVENTS.LIST_PORTS, listPortsHandler);
   ipcMain.on(EVENTS.GET_SELECTED_BOARD, loadTargetBoardHandler);

@@ -9,7 +9,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 import client from 'xod-client';
-import { foldEither, notNil } from 'xod-func-tools';
+import { foldEither, notNil, noop } from 'xod-func-tools';
 
 import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -188,7 +188,7 @@ class App extends client.App {
   }
 
   onStopDebuggerSessionClicked() {
-    if (this.props.isSimulationRunning) {
+    if (this.props.isSimulationAbortable) {
       this.props.actions.abortSimulation();
     }
   }
@@ -358,6 +358,7 @@ class App extends client.App {
           onUploadClick={this.onUpload}
           onUploadAndDebugClick={this.onUpload}
           onRunSimulationClick={this.onRunSimulation}
+          onSendToSerial={noop}
         />
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
@@ -378,7 +379,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   tutorialProject: PropTypes.object.isRequired,
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
-  isSimulationRunning: PropTypes.bool.isRequired,
+  isSimulationAbortable: PropTypes.bool.isRequired,
 });
 
 const mapStateToProps = R.applySpec({
@@ -386,7 +387,7 @@ const mapStateToProps = R.applySpec({
   project: client.getProject,
   user: client.getUser,
   currentPatchPath: client.getCurrentPatchPath,
-  isSimulationRunning: client.isSimulationRunning,
+  isSimulationAbortable: client.isSimulationAbortable,
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),

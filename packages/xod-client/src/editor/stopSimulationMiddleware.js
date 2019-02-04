@@ -2,7 +2,7 @@
  * Middleware stops simulation on close debugger tab
  */
 
-import { isSimulationRunning } from './selectors';
+import { isSimulationAbortable } from '../debugger/selectors';
 import { abortSimulation } from './actions';
 import { TAB_CLOSE } from './actionTypes';
 import { DEBUGGER_TAB_ID } from './constants';
@@ -13,7 +13,7 @@ export default store => next => action => {
   const result = next(action);
 
   if (
-    isSimulationRunning(store.getState()) &&
+    isSimulationAbortable(store.getState()) &&
     action.type === TAB_CLOSE &&
     action.payload.id === DEBUGGER_TAB_ID
   ) {

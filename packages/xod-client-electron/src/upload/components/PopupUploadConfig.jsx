@@ -3,38 +3,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
-import { NO_PORTS_FOUND as NO_PORTS_FOUND_ERRCODE } from '../../shared/errorCodes';
-import {
-  ENUMERATING_PORTS,
-  ENUMERATING_BOARDS,
-  NO_PORTS_FOUND,
-} from '../../shared/messages';
+import { ENUMERATING_BOARDS } from '../../shared/messages';
 import { updateIndexFiles } from '../arduinoCli';
+
+import PortSelect from './PortSelect';
 
 class PopupUploadConfig extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isVisible: props.isVisible,
       selectedBoard: null, // or { index: Number, options: Map OptionId OptionValue }
       boards: null,
-      ports: null,
       doCompileInCloud: false,
       debugAfterUpload: props.initialDebugAfterUpload,
     };
 
     this.onClose = this.onClose.bind(this);
     this.onBoardChanged = this.onBoardChanged.bind(this);
-    this.onPortChanged = this.onPortChanged.bind(this);
-    this.onRefreshPortsClicked = this.onRefreshPortsClicked.bind(this);
     this.onUploadClicked = this.onUploadClicked.bind(this);
     this.onCloudCompilationChanged = this.onCloudCompilationChanged.bind(this);
     this.onDebugCheckboxChanged = this.onDebugCheckboxChanged.bind(this);
 
     this.changeBoard = this.changeBoard.bind(this);
     this.changeBoardOption = this.changeBoardOption.bind(this);
-    this.changePort = this.changePort.bind(this);
 
     this.updateIndexes = this.updateIndexes.bind(this);
   }
@@ -43,7 +35,6 @@ class PopupUploadConfig extends React.Component {
     this.getSelectedBoard().then(selectedBoard =>
       this.getBoards(selectedBoard)
     );
-    this.getPorts();
     this.props.updateCompileLimit();
   }
 
@@ -53,18 +44,6 @@ class PopupUploadConfig extends React.Component {
 
   onBoardChanged(event) {
     this.changeBoard(event.target.value);
-  }
-
-  onPortChanged(event) {
-    const selectedPort = R.find(
-      R.propEq('comName', event.target.value),
-      this.state.ports
-    );
-    this.changePort(selectedPort);
-  }
-
-  onRefreshPortsClicked() {
-    this.getPorts();
   }
 
   onUploadClicked() {
@@ -126,43 +105,8 @@ class PopupUploadConfig extends React.Component {
       .catch(this.props.onError);
   }
 
-  getPorts() {
-    this.setState({ ports: null });
-
-    this.props
-      .listPorts()
-      .catch(
-        err =>
-          err.errorCode === NO_PORTS_FOUND_ERRCODE ? [] : Promise.reject(err)
-      )
-      .then(R.tap(ports => this.setState({ ports })))
-      .then(ports => {
-        const hasSelectedPort = R.contains(this.props.selectedPort, ports);
-        const defaultPort = ports && ports.length > 0 ? ports[0] : null;
-        const defaultPreferredPort = R.compose(
-          R.defaultTo(defaultPort),
-          R.find(
-            R.compose(
-              R.test(
-                /^(\/dev\/ttyUSB|\/dev\/tty.usb|\/dev\/cu.usb|\/dev\/ttyACM)/i
-              ),
-              R.prop('comName')
-            )
-          )
-        )(ports);
-
-        if (!hasSelectedPort) {
-          this.changePort(defaultPreferredPort);
-        }
-      });
-  }
-
   getSelectedBoardIndex() {
     return R.pathOr(0, ['selectedBoard', 'index'], this.state);
-  }
-
-  getSelectedPortName() {
-    return R.compose(R.propOr('', 'comName'))(this.props.selectedPort);
   }
 
   getSelectedBoard() {
@@ -196,10 +140,6 @@ class PopupUploadConfig extends React.Component {
     );
     this.props.onBoardChanged(newBoard);
     this.setState({ selectedBoard: newBoard });
-  }
-
-  changePort(port) {
-    this.props.onPortChanged(port);
   }
 
   canUnpload() {
@@ -300,64 +240,14 @@ class PopupUploadConfig extends React.Component {
     );
   }
 
-  renderPortSelect() {
-    const isSelecting = this.state.ports === null;
-    const hasPorts = this.state.ports !== null && this.state.ports.length > 0;
-
-    const select = hasPorts ? (
-      <select
-        id="targetPort"
-        className="inspectorSelectInput inspectorInput--full-width"
-        onChange={this.onPortChanged}
-        value={this.getSelectedPortName()}
-      >
-        {this.state.ports.map(port => (
-          <option key={port.comName} value={port.comName}>
-            {port.comName} {port.manufacturer ? `(${port.manufacturer})` : ''}
-          </option>
-        ))}
-      </select>
-    ) : (
-      <select id="targetPort" className="inspectorSelectInput" disabled>
-        <option>
-          {this.state.ports === null ? ENUMERATING_PORTS : NO_PORTS_FOUND}
-        </option>
-      </select>
-    );
-
-    return (
-      <div>
-        <label htmlFor="targetPort">Serial port:</label>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}
-        >
-          {select}
-          <button
-            className="Button Button--small"
-            style={{ marginLeft: '1em' }}
-            onClick={this.onRefreshPortsClicked}
-            disabled={isSelecting}
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const boards = this.renderBoardSelect();
     const boardOptions = this.renderBoardOptions();
-    const ports = this.renderPortSelect();
     const compileLimitLeft = this.props.compileLimitLeft;
 
     return (
       <PopupForm
-        isVisible={this.props.isVisible}
+        isVisible
         title="Upload project to Arduino"
         onClose={this.onClose}
       >
@@ -365,7 +255,13 @@ class PopupUploadConfig extends React.Component {
           {boards}
           {boardOptions}
         </div>
-        <div className="ModalContent">{ports}</div>
+        <div className="ModalContent">
+          <PortSelect
+            selectedPort={this.props.selectedPort}
+            listPorts={this.props.listPorts}
+            onPortChanged={this.props.onPortChanged}
+          />
+        </div>
         <div className="ModalContent">
           <input
             id="compileInCloud"
@@ -412,7 +308,6 @@ class PopupUploadConfig extends React.Component {
 }
 
 PopupUploadConfig.propTypes = {
-  isVisible: PropTypes.bool,
   isDeploymentInProgress: PropTypes.bool,
   initialDebugAfterUpload: PropTypes.bool,
   selectedPort: PropTypes.object,

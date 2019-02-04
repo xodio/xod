@@ -106,6 +106,9 @@ const rawItems = {
   uploadToArduino: {
     label: 'Upload to Arduino...',
   },
+  connectSerial: {
+    label: 'Connect Serial...',
+  },
   updatePackages: {
     label: 'Upgrade Arduino Packages && Toolchains...',
   },

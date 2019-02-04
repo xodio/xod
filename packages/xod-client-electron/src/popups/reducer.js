@@ -3,6 +3,7 @@ import {
   showOnlyPopup,
   hideOnePopup,
   POPUP_ID,
+  SERIAL_SESSION_STARTED,
 } from 'xod-client';
 
 import {
@@ -10,6 +11,8 @@ import {
   UPLOAD_TO_ARDUINO,
   OPEN_UPLOAD_CONFIG,
   CLOSE_UPLOAD_CONFIG,
+  OPEN_CONNECT_SERIAL_DIALOG,
+  CLOSE_CONNECT_SERIAL_DIALOG,
   REQUEST_INSTALL_ARDUINO_IDE,
 } from '../upload/actionTypes';
 
@@ -45,6 +48,12 @@ export default (state, action) => {
       );
     case CLOSE_UPLOAD_CONFIG:
       return hideOnePopup(POPUP_ID.UPLOADING_CONFIG, state);
+
+    case OPEN_CONNECT_SERIAL_DIALOG:
+      return showOnlyPopup(POPUP_ID.CONNECT_SERIAL, {}, state);
+    case CLOSE_CONNECT_SERIAL_DIALOG:
+    case SERIAL_SESSION_STARTED:
+      return hideOnePopup(POPUP_ID.CONNECT_SERIAL, state);
 
     case CREATE_WORKSPACE_REQUESTED:
       return showOnlyPopup(POPUP_ID.CREATING_WORKSPACE, action.payload, state);

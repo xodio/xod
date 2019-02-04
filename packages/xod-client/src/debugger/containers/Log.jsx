@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { noop } from 'xod-func-tools';
@@ -49,11 +50,12 @@ class Log extends React.PureComponent {
       numberOfSkippedSerialLogLines,
       isSkipOnScrollEnabled,
       startSkippingNewLogLines,
+      compact,
     } = this.props;
 
     return (
       <Autoscroll
-        className="log"
+        className={cn('log', { compact })}
         ref={el => (this.autoscrollRef = el)}
         onScrolledFromBottom={
           isSkipOnScrollEnabled ? startSkippingNewLogLines : noop
@@ -77,6 +79,7 @@ Log.propTypes = {
   log: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
   isSkippingNewSerialLogLines: PropTypes.bool.isRequired,
+  compact: PropTypes.bool.isRequired,
   numberOfSkippedSerialLogLines: PropTypes.number.isRequired,
   isSkipOnScrollEnabled: PropTypes.bool.isRequired,
   startSkippingNewLogLines: PropTypes.func.isRequired,

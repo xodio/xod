@@ -90,7 +90,7 @@ export const checkPort = port =>
 //
 // =============================================================================
 
-const debug = async (port, onData, onClose) => {
+const openPortForReading = async (port, onData, onClose) => {
   const ports = await xd.listPorts();
   const newPort = R.find(
     R.allPass([
@@ -127,54 +127,58 @@ const isDeviceNotFound = R.propEq(
 
 /**
  * Handler for starting debug session.
- * - `storeFn`   - is a function, that used to store reference to port,
+ * - `onOpenCb`   - is a function, that used to store reference to port,
  *                 to close connection with it on next upload or on stop
  *                 debug session
  * - `onCloseCb` - is a function, that called on any "close" event occured
- *                 on SerialPort object. It called one argument:
+ *                 on SerialPort object.
  *                 - `sendErr` function, that send error "Lost connection",
  *                   only main process knows is connection closed by user or
  *                   really error occured, so it's passed as argument and
  *                   called in the main process.
  */
-export const startDebugSessionHandler = (storeFn, onCloseCb) => (
+export const startDebugSessionHandler = (onOpenCb, onCloseCb) => (
   event,
-  { port }
+  { port, sessionKind }
 ) => {
-  let triesToSearchDevice = 0;
-  const maxTriesToSearch = 7;
-  const searchDelay = 300;
-
-  let messageCollector = [];
+  let сollectedMessages = [];
   const throttleDelay = 100; // ms
 
-  const intervalId = setInterval(() => {
-    if (messageCollector.length > 0) {
-      event.sender.send(EVENTS.DEBUG_SESSION, messageCollector);
-      messageCollector = [];
+  const messageCollectorIntervalId = setInterval(() => {
+    if (сollectedMessages.length > 0) {
+      event.sender.send(
+        EVENTS.SERIAL_SESSION_MESSAGE_RECEIVE,
+        сollectedMessages
+      );
+      сollectedMessages = [];
     }
   }, throttleDelay);
 
   const onData = data => {
-    messageCollector = R.append(parseDebuggerMessage(data), messageCollector);
+    сollectedMessages = R.append(parseDebuggerMessage(data), сollectedMessages);
   };
+
   const onClose = () => {
-    clearInterval(intervalId);
+    clearInterval(messageCollectorIntervalId);
     onCloseCb(() => {
       const errorMessage = R.compose(
         R.omit('stack'), // Lost connection is not a big deal, we don't want a stacktrace here
         createErrorMessage
       )(new Error(MESSAGES.DEBUG_LOST_CONNECTION));
-      event.sender.send(EVENTS.DEBUG_SESSION, [errorMessage]);
+      event.sender.send(EVENTS.SERIAL_SESSION_MESSAGE_RECEIVE, [errorMessage]);
     });
     event.sender.send(
-      EVENTS.STOP_DEBUG_SESSION,
-      createSystemMessage('Debug session stopped')
+      EVENTS.SERIAL_PORT_CLOSED,
+      createSystemMessage(`${sessionKind} session stopped`)
     );
   };
 
+  let triesToSearchDevice = 0;
+  const maxTriesToSearch = 7;
+  const searchDelay = 300;
+
   const runDebug = () =>
-    debug(port, onData, onClose).catch(async err => {
+    openPortForReading(port, onData, onClose).catch(async err => {
       if (triesToSearchDevice >= maxTriesToSearch || !isDeviceNotFound(err)) {
         return err;
       }
@@ -185,10 +189,12 @@ export const startDebugSessionHandler = (storeFn, onCloseCb) => (
     });
 
   return runDebug()
-    .then(R.tap(debugPort => storeFn(debugPort, intervalId)))
+    .then(R.tap(debugPort => onOpenCb(debugPort, messageCollectorIntervalId)))
     .catch(err => {
-      clearInterval(intervalId);
-      event.sender.send(EVENTS.DEBUG_SESSION, [createErrorMessage(err)]);
+      clearInterval(messageCollectorIntervalId);
+      event.sender.send(EVENTS.SERIAL_SESSION_MESSAGE_RECEIVE, [
+        createErrorMessage(err),
+      ]);
     });
 };
 

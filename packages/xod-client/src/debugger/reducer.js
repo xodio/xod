@@ -15,6 +15,7 @@ import {
   DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES,
   DEBUGGER_LOG_TOGGLE_XOD_PROTOCOL_MESSAGES,
   DEBUG_SESSION_STARTED,
+  SERIAL_SESSION_STARTED,
   DEBUG_SESSION_STOPPED,
   MARK_DEBUG_SESSION_OUTDATED,
   SELECT_DEBUGGER_TAB,
@@ -22,7 +23,7 @@ import {
 
 import * as EAT from '../editor/actionTypes';
 
-import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE } from './constants';
+import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE, SESSION_TYPE } from './constants';
 import * as MSG from './messages';
 import { STATUS } from '../utils/constants';
 
@@ -57,6 +58,9 @@ const formatMessage = msg => {
 
     case UPLOAD_MSG_TYPE.XOD:
       return `↘ ${msg.prefix} ${msg.timecode} ${msg.nodeId} ${msg.content}`;
+
+    case UPLOAD_MSG_TYPE.LOG_OUTGOING:
+      return `↖ ${msg.message}`;
 
     default:
       return msg.message;
@@ -368,13 +372,26 @@ export default (state = initialState, action) => {
     case DEBUG_SESSION_STARTED:
       return R.compose(
         addMessageToDebuggerLog(action.payload.message),
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
         R.assoc('currentTab', LOG_TAB_TYPE.DEBUGGER),
         R.assoc('currentStage', LOG_TAB_TYPE.DEBUGGER),
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap)),
-        R.assoc('isRunning', true),
-        R.assoc('isSerialConnected', true),
+        R.assoc('activeSession', SESSION_TYPE.DEBUG),
+        R.assoc('isOutdated', false),
+        showDebuggerPane
+      )(state);
+    case SERIAL_SESSION_STARTED:
+      return R.compose(
+        addMessageToDebuggerLog(action.payload.message),
+        overDebuggerLog(R.always('')),
+        overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
+        R.assoc('currentTab', LOG_TAB_TYPE.DEBUGGER),
+        R.assoc('currentStage', LOG_TAB_TYPE.DEBUGGER),
+        R.assoc('isSkippingNewSerialLogLines', false),
+        R.assoc('numberOfSkippedSerialLogLines', 0),
+        R.assoc('activeSession', SESSION_TYPE.SERIAL),
         R.assoc('isOutdated', false),
         showDebuggerPane
       )(state);
@@ -385,8 +402,7 @@ export default (state = initialState, action) => {
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
-        R.assoc('isSerialConnected', false),
-        R.assoc('isRunning', false)
+        R.assoc('activeSession', SESSION_TYPE.NONE)
       )(state);
     case MARK_DEBUG_SESSION_OUTDATED:
       return R.assoc('isOutdated', true, state);
@@ -434,6 +450,7 @@ export default (state = initialState, action) => {
         overDebuggerLog(R.always(MSG.SIMULATION_GENERATING_CODE)),
         overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
         R.assoc('uploadProgress', 25),
+        R.assoc('isPreparingSimulation', true),
         R.assoc('currentTab', LOG_TAB_TYPE.DEBUGGER)
       )(state);
     case EAT.SIMULATION_GENERATED_CPP:
@@ -449,7 +466,8 @@ export default (state = initialState, action) => {
     case EAT.SIMULATION_LAUNCHED:
       return R.compose(
         addPlainTextToDebuggerLog(MSG.SIMULATION_LAUNCHED),
-        R.assoc('isRunning', true),
+        R.assoc('activeSession', SESSION_TYPE.SIMULATON),
+        R.assoc('isPreparingSimulation', false),
         R.assoc('isOutdated', false),
         R.assoc('uploadProgress', null),
         R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap))
@@ -457,7 +475,8 @@ export default (state = initialState, action) => {
     case EAT.SIMULATION_ABORT:
       return R.compose(
         addPlainTextToDebuggerLog(MSG.SIMULATION_ABORTED),
-        R.assoc('isRunning', false),
+        R.assoc('activeSession', SESSION_TYPE.NONE),
+        R.assoc('isPreparingSimulation', false),
         hideProgressBar
       )(state);
     case EAT.SIMULATION_ERROR:
@@ -465,7 +484,8 @@ export default (state = initialState, action) => {
         overStageError(LOG_TAB_TYPE.DEBUGGER)(
           R.always(formatWasmError(action.payload))
         ),
-        R.assoc('isRunning', false),
+        R.assoc('activeSession', SESSION_TYPE.NONE),
+        R.assoc('isPreparingSimulation', false),
         hideProgressBar,
         showDebuggerPane
       )(state);

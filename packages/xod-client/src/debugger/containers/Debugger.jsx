@@ -13,6 +13,7 @@ import { LOG_TAB_TYPE } from '../constants';
 import * as selectors from '../selectors';
 import * as DA from '../actions';
 import Log from './Log';
+import SerialInput from '../components/SerialInput';
 
 import * as EditorSelectors from '../../editor/selectors';
 import * as EditorActions from '../../editor/actions';
@@ -30,7 +31,7 @@ const TAB_NAMES = {
   [LOG_TAB_TYPE.INSTALLER]: 'Installer',
   [LOG_TAB_TYPE.COMPILER]: 'Compiler',
   [LOG_TAB_TYPE.UPLOADER]: 'Uploader',
-  [LOG_TAB_TYPE.DEBUGGER]: 'Debugger',
+  [LOG_TAB_TYPE.DEBUGGER]: 'Serial',
   [LOG_TAB_TYPE.TESTER]: 'Tester',
 };
 
@@ -105,8 +106,12 @@ class Debugger extends React.Component {
       onUploadAndDebugClick,
       isExpanded,
       isTabtestRunning,
-      isSimulationRunning,
+      isSimulationAbortable,
       onRunSimulationClick,
+      isConnectedToSerial,
+      stopDebuggerSession,
+      currentTab,
+      onSendToSerial,
     } = this.props;
 
     const uploadProgress = foldMaybe(
@@ -125,6 +130,8 @@ class Debugger extends React.Component {
       ),
       maybeUploadProgress
     );
+
+    const isDebuggerTab = currentTab === LOG_TAB_TYPE.DEBUGGER;
 
     return (
       <div className={cn('Debugger', { isCollapsed: !isExpanded })}>
@@ -150,7 +157,8 @@ class Debugger extends React.Component {
                   }}
                 />
               ) : null}
-              {isSimulationRunning && Maybe.isJust(maybeUploadProgress) ? (
+
+              {isSimulationAbortable && Maybe.isJust(maybeUploadProgress) ? (
                 <Icon
                   Component="button"
                   className="abort-process-button"
@@ -159,6 +167,19 @@ class Debugger extends React.Component {
                   onClickCapture={e => {
                     e.stopPropagation();
                     actions.abortSimulation();
+                  }}
+                />
+              ) : null}
+
+              {isConnectedToSerial ? (
+                <Icon
+                  Component="button"
+                  className="abort-process-button"
+                  name="ban"
+                  title="Stop Session"
+                  onClickCapture={e => {
+                    e.stopPropagation();
+                    stopDebuggerSession();
                   }}
                 />
               ) : null}
@@ -196,7 +217,13 @@ class Debugger extends React.Component {
           <React.Fragment>
             {this.renderTabSelector()}
             <div className="container">
-              <Log />
+              <Log compact={isDebuggerTab} />
+              {isDebuggerTab ? (
+                <SerialInput
+                  disabled={!isConnectedToSerial}
+                  onSend={onSendToSerial}
+                />
+              ) : null}
             </div>
           </React.Fragment>
         ) : null}
@@ -208,24 +235,28 @@ class Debugger extends React.Component {
 Debugger.propTypes = {
   maybeUploadProgress: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
+  isConnectedToSerial: PropTypes.bool.isRequired,
   isCapturingDebuggerProtocolMessages: PropTypes.bool.isRequired,
   isTabtestRunning: PropTypes.bool.isRequired,
-  isSimulationRunning: PropTypes.bool.isRequired,
+  isSimulationAbortable: PropTypes.bool.isRequired,
   currentTab: PropTypes.string.isRequired,
   actions: PropTypes.objectOf(PropTypes.func),
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
   onRunSimulationClick: PropTypes.func.isRequired,
+  onSendToSerial: PropTypes.func.isRequired,
+  stopDebuggerSession: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = R.applySpec({
   maybeUploadProgress: selectors.getUploadProgress,
   currentTab: selectors.getCurrentDebuggerTab,
   isExpanded: selectors.isDebuggerVisible,
+  isConnectedToSerial: selectors.isSessionActive,
   isCapturingDebuggerProtocolMessages:
     selectors.isCapturingDebuggerProtocolMessages,
   isTabtestRunning: EditorSelectors.isTabtestRunning,
-  isSimulationRunning: EditorSelectors.isSimulationRunning,
+  isSimulationAbortable: selectors.isSimulationAbortable,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(

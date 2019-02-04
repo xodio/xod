@@ -15,6 +15,7 @@ export const POPUP_ID = {
 
   UPLOADING: 'uploading',
   UPLOADING_CONFIG: 'uploadingConfig',
+  CONNECT_SERIAL: 'connectSerial',
   SHOWING_CODE: 'showingCode',
 
   ARDUINO_IDE_NOT_FOUND: 'arduinoIDENotFound',
