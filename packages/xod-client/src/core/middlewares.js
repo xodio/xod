@@ -7,6 +7,8 @@ import sidebarsMiddleware from '../editor/sidebarsMiddleware';
 import crashReporter from './crashReporterMiddleware';
 import hintingMiddleware from '../hinting/middleware';
 import domSideeffectsMiddleware from './domSideeffectsMiddleware';
+import outdaterMiddleware from '../debugger/outdaterMiddleware';
+import stopSimulationMiddleware from '../editor/stopSimulationMiddleware';
 
 export default (extraMiddlewares = []) =>
   compose(
@@ -17,6 +19,8 @@ export default (extraMiddlewares = []) =>
       sidebarsMiddleware,
       hintingMiddleware,
       domSideeffectsMiddleware,
+      outdaterMiddleware,
+      stopSimulationMiddleware,
       ...extraMiddlewares
     ),
     devtoolsMiddleware

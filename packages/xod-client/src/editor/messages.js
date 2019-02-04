@@ -35,3 +35,9 @@ export const SIMULATION_ALREADY_RUNNING = {
   solution: 'Stop the current simulation and try again',
   persistent: true,
 };
+
+export const SIMULATION_STOPPED_BY_CLOSING_TAB = {
+  title: 'Simulation stopped',
+  note: 'You closed the debugger tab.',
+  persistent: false,
+};

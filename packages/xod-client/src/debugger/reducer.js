@@ -374,6 +374,7 @@ export default (state = initialState, action) => {
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap)),
         R.assoc('isRunning', true),
+        R.assoc('isSerialConnected', true),
         R.assoc('isOutdated', false),
         showDebuggerPane
       )(state);
@@ -384,6 +385,7 @@ export default (state = initialState, action) => {
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
+        R.assoc('isSerialConnected', false),
         R.assoc('isRunning', false)
       )(state);
     case MARK_DEBUG_SESSION_OUTDATED:
