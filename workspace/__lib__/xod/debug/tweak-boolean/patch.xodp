@@ -1,0 +1,21 @@
+{
+  "description": "Outputs a fixed boolean value which you may change in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "B1eYyON8EE",
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sk1e_NIVE",
+      "position": {
+        "x": 0,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}

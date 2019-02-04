@@ -39,11 +39,57 @@ namespace xod {
 {{/unless}}
 {{/each}}
 
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+namespace detail {
+void handleTweaks() {
+    if (XOD_DEBUG_SERIAL.available() > 0 && XOD_DEBUG_SERIAL.find("+XOD:", 5)) {
+        int tweakedNodeId = XOD_DEBUG_SERIAL.parseInt();
+
+        switch (tweakedNodeId) {
+          {{#eachTweakNode nodes}}
+            case {{ id }}:
+            {{#switch patch.patchPath}}
+              {{#case "xod/debug/tweak-number"}}
+                node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseFloat();
+              {{/case}}
+              {{#case "xod/debug/tweak-byte"}}
+                node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseInt();
+              {{/case}}
+              {{#case "xod/debug/tweak-pulse"}}
+                node_{{ id }}.output_OUT = 1;
+              {{/case}}
+              {{#case "xod/debug/tweak-boolean"}}
+                node_{{ id }}.output_OUT = (bool)XOD_DEBUG_SERIAL.parseInt();
+              {{/case}}
+              {{#case "xod/debug/tweak-string-16"}}
+                XOD_DEBUG_SERIAL.read(); // consume the ':' separator that was left after parsing node id
+                size_t readChars = XOD_DEBUG_SERIAL.readBytesUntil('\r', node_{{ id }}.state.buff, 16);
+                node_{{ id }}.state.buff[readChars] = '\0';
+              {{/case}}
+            {{/switch}}
+                // to run evaluate and mark all downstream nodes as dirty
+                node_{{ id }}.isNodeDirty = true;
+                node_{{ id }}.isOutputDirty_OUT = true;
+                break;
+
+          {{/eachTweakNode}}
+        }
+
+        XOD_DEBUG_SERIAL.find("\r\n", 2);
+    }
+}
+} // namespace detail
+#endif
+
 void runTransaction() {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
+
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+    detail::handleTweaks();
+#endif
 
     // Check for timeouts
   {{#eachNodeUsingTimeouts nodes}}

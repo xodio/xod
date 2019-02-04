@@ -917,8 +917,10 @@ bool isValidAnalogPort(uint8_t port) {
 void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
     delay(100);
-#ifdef XOD_DEBUG
-    DEBUG_SERIAL.begin(115200);
+
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+    XOD_DEBUG_SERIAL.begin(115200);
+    XOD_DEBUG_SERIAL.setTimeout(10);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
 
@@ -2325,11 +2327,30 @@ xod__core__defer__boolean::Node node_25 = {
     true // node itself dirty
 };
 
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+namespace detail {
+void handleTweaks() {
+    if (XOD_DEBUG_SERIAL.available() > 0 && XOD_DEBUG_SERIAL.find("+XOD:", 5)) {
+        int tweakedNodeId = XOD_DEBUG_SERIAL.parseInt();
+
+        switch (tweakedNodeId) {
+        }
+
+        XOD_DEBUG_SERIAL.find("\r\n", 2);
+    }
+}
+} // namespace detail
+#endif
+
 void runTransaction() {
     g_transactionTime = millis();
 
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
+
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+    detail::handleTweaks();
+#endif
 
     // Check for timeouts
     detail::checkTriggerTimeout(&node_7);

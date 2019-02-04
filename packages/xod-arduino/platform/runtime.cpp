@@ -151,8 +151,10 @@ bool isValidAnalogPort(uint8_t port) {
 void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
     delay(100);
-#ifdef XOD_DEBUG
-    DEBUG_SERIAL.begin(115200);
+
+#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+    XOD_DEBUG_SERIAL.begin(115200);
+    XOD_DEBUG_SERIAL.setTimeout(10);
 #endif
     XOD_TRACE_FLN("\n\nProgram started");
 

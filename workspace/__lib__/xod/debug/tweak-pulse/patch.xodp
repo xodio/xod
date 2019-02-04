@@ -1,0 +1,21 @@
+{
+  "description": "Outputs a pulse which you may emit in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "Bkf4BDsmV",
+      "position": {
+        "x": 34,
+        "y": 204
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "H157HwsX4",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

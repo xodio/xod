@@ -290,3 +290,12 @@ export const getSpecializationPatchPath = R.curry(
   (abstractPatchBaseName, types) =>
     `${abstractPatchBaseName}(${types.join(',')})`
 );
+
+//
+// utils for tweak nodes
+//
+
+const tweakPathRegExp = new RegExp('^xod/debug/tweak-');
+
+// :: PatchPath -> Boolean
+export const isTweakPath = R.test(tweakPathRegExp);
