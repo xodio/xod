@@ -5,19 +5,12 @@ import { DEBUG_SESSION_STOPPED_ON_TAB_CLOSE } from '../shared/messages';
 
 export default store => next => action => {
   const state = store.getState();
-  const isDebugSession = client.isDebugSession(state);
-  const prevProject = client.getProject(state);
+  const isSerialDebugRunning = client.isSerialDebugRunning(state);
   const result = next(action);
-
-  const newProject = client.getProject(store.getState());
-
-  if (isDebugSession && prevProject !== newProject) {
-    store.dispatch(client.markDebugSessionOutdated());
-  }
 
   // Stop debug session if Debugger tab is closed
   if (
-    isDebugSession &&
+    isSerialDebugRunning &&
     action.type === client.TAB_CLOSE &&
     action.payload.id === 'debugger'
   ) {

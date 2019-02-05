@@ -18,6 +18,11 @@ export const isDebuggerVisible = R.compose(
   getDebuggerState
 );
 
+export const isSerialDebugRunning = R.compose(
+  R.prop('isSerialConnected'),
+  getDebuggerState
+);
+
 export const isDebugSessionOutdated = R.compose(
   R.prop('isOutdated'),
   getDebuggerState

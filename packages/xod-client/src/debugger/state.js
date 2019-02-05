@@ -4,6 +4,7 @@ import { LOG_TAB_TYPE } from './constants';
 export default {
   isVisible: false,
   isRunning: false,
+  isSerialConnected: false,
   isOutdated: false,
   [LOG_TAB_TYPE.INSTALLER]: {
     log: '',
