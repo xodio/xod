@@ -152,7 +152,7 @@ void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
     delay(100);
 
-#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     XOD_DEBUG_SERIAL.begin(115200);
     XOD_DEBUG_SERIAL.setTimeout(10);
 #endif
