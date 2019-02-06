@@ -918,7 +918,7 @@ void setup() {
     // FIXME: looks like there is a rounding bug. Waiting for 100ms fights it
     delay(100);
 
-#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     XOD_DEBUG_SERIAL.begin(115200);
     XOD_DEBUG_SERIAL.setTimeout(10);
 #endif
@@ -2327,7 +2327,7 @@ xod__core__defer__boolean::Node node_25 = {
     true // node itself dirty
 };
 
-#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
 void handleTweaks() {
     if (XOD_DEBUG_SERIAL.available() > 0 && XOD_DEBUG_SERIAL.find("+XOD:", 5)) {
@@ -2336,7 +2336,7 @@ void handleTweaks() {
         switch (tweakedNodeId) {
         }
 
-        XOD_DEBUG_SERIAL.find("\r\n", 2);
+        XOD_DEBUG_SERIAL.find('\n');
     }
 }
 } // namespace detail
@@ -2348,7 +2348,7 @@ void runTransaction() {
     XOD_TRACE_F("Transaction started, t=");
     XOD_TRACE_LN(g_transactionTime);
 
-#if defined(XOD_DEBUG) // can't do that in XOD_SIMULATION yet
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     detail::handleTweaks();
 #endif
 
