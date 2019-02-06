@@ -7,7 +7,7 @@ import App from './view/containers/App';
 import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
-import debuggerMiddleware from './debugger/middleware';
+import stopDebuggerOnTabCloseMiddleware from './debugger/stopDebuggerOnTabCloseMiddleware';
 import autoupdateMiddleware from './view/autoupdateMiddleware';
 import installLibMiddleware from './view/installLibMiddleware';
 import arduinoDependenciesMiddleware from './arduinoDependencies/middleware';
@@ -18,7 +18,7 @@ const extraReducers = {
 };
 
 const extraMiddlewares = [
-  debuggerMiddleware,
+  stopDebuggerOnTabCloseMiddleware,
   installLibMiddleware,
   autoupdateMiddleware,
   arduinoDependenciesMiddleware,
