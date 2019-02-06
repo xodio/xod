@@ -6,7 +6,7 @@ import { noop } from 'xod-func-tools';
 
 import RegularNodeBody from './RegularNodeBody';
 
-const getConstantValue = ({ pins }) =>
+export const getConstantValue = ({ pins }) =>
   R.compose(R.prop('value'), R.head, R.values)(pins);
 
 const ConstantNodeBody = props => (
