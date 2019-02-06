@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
-import { foldMaybe, isAmong } from 'xod-func-tools';
+import { foldMaybe, isAmong, memoizeOnlyLast } from 'xod-func-tools';
 import { createSelector } from 'reselect';
 import {
   getCurrentTabId,
@@ -88,6 +88,11 @@ export const getErrorForCurrentTab = createSelector(
 export const getDebuggerNodeIdsMap = R.compose(
   R.prop('nodeIdsMap'),
   getDebuggerState
+);
+
+export const getInvertedDebuggerNodeIdsMap = R.compose(
+  memoizeOnlyLast(R.invertObj),
+  getDebuggerNodeIdsMap
 );
 
 export const getWatchNodeValues = R.compose(

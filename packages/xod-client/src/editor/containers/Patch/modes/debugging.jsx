@@ -16,6 +16,9 @@ const debuggingMode = R.merge(selectingMode, {
   onNodeDoubleClick(api, nodeId, patchPath) {
     if (patchPath === XP.NOT_IMPLEMENTED_IN_XOD_PATH) {
       api.props.actions.openImplementationEditor();
+    } else if (XP.isConstantNodeType(patchPath) || XP.isTweakPath(patchPath)) {
+      // TODO: rename this action to something more suitable?
+      api.props.actions.selectConstantNodeValue(nodeId, api.props.patchPath);
     } else {
       api.props.actions.drillDown(patchPath, nodeId);
     }

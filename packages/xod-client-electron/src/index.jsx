@@ -8,6 +8,7 @@ import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
 import stopDebuggerOnTabCloseMiddleware from './debugger/stopDebuggerOnTabCloseMiddleware';
+import sendTweakValuesMiddleware from './debugger/sendTweakValuesMiddleware';
 import autoupdateMiddleware from './view/autoupdateMiddleware';
 import installLibMiddleware from './view/installLibMiddleware';
 import arduinoDependenciesMiddleware from './arduinoDependencies/middleware';
@@ -18,6 +19,7 @@ const extraReducers = {
 };
 
 const extraMiddlewares = [
+  sendTweakValuesMiddleware,
   stopDebuggerOnTabCloseMiddleware,
   installLibMiddleware,
   autoupdateMiddleware,

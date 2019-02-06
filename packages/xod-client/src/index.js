@@ -25,7 +25,7 @@ import { LOG_TAB_TYPE } from './debugger/constants';
 
 import { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
-import { SAVE_ALL } from './project/actionTypes';
+import { SAVE_ALL, NODE_UPDATE_PROPERTY } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -82,7 +82,7 @@ export { LOG_TAB_TYPE } from './debugger/constants';
 
 export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
-export { SAVE_ALL } from './project/actionTypes';
+export { SAVE_ALL, NODE_UPDATE_PROPERTY } from './project/actionTypes';
 export { SERIAL_SESSION_STARTED } from './debugger/actionTypes';
 
 export * from './editor/selectors';
@@ -166,6 +166,7 @@ export default Object.assign(
     parseDebuggerMessage,
     TAB_CLOSE,
     SAVE_ALL,
+    NODE_UPDATE_PROPERTY,
     INSTALL_LIBRARIES_COMPLETE,
     MESSAGE_BUTTON_CLICKED,
     Messages: coreMessages,
