@@ -1,0 +1,21 @@
+{
+  "description": "Outputs a fixed byte value which you may change in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "SykJ8wjXN",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rkF0HwimE",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

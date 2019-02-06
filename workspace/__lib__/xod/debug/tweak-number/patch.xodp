@@ -1,0 +1,21 @@
+{
+  "description": "Outputs a fixed numerical value which you may change in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "ByfGSDjQE",
+      "position": {
+        "x": -272,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "ByvGHviQ4",
+      "position": {
+        "x": -272,
+        "y": -102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
