@@ -48,6 +48,7 @@ import {
   getArityStepFromPatchPath,
   getSpecializationPatchPath,
   normalizeTypeNameForAbstractsResolution,
+  isTweakPath,
 } from './patchPathUtils';
 
 import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
@@ -325,6 +326,7 @@ export const canBindToOutputs = def(
       // it's one of 'allowed' types
       R.anyPass([
         isTerminalPatchPath,
+        isTweakPath,
         isAmong(R.values(CONST.CONST_NODETYPES)),
       ]),
       getPatchPath
