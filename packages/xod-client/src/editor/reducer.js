@@ -655,13 +655,10 @@ const editorReducer = (state = {}, action) => {
         R.assoc('simulationWorker', action.payload.worker),
         openDebuggerTab(action.payload.patchPath)
       )(state);
-    case EAT.SIMULATION_RUN_REQUESTED:
-      return R.assoc('isSimulationRunning', true, state);
     case EAT.SIMULATION_ABORT:
     case EAT.SIMULATION_ERROR:
       return R.compose(
         R.assoc('simulationWorker', null),
-        R.assoc('isSimulationRunning', false),
         closeTabById(DEBUGGER_TAB_ID)
       )(state);
 

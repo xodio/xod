@@ -14,3 +14,8 @@ export const createErrorMessage = message => ({
   type: UPLOAD_MSG_TYPE.ERROR,
   message,
 });
+
+export const createOutgoingLogMessage = message => ({
+  type: UPLOAD_MSG_TYPE.LOG_OUTGOING,
+  message,
+});

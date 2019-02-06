@@ -42,6 +42,7 @@ import * as settingsActions from '../../settings/actions';
 import PopupSetWorkspace from '../../settings/components/PopupSetWorkspace';
 import PopupCreateWorkspace from '../../settings/components/PopupCreateWorkspace';
 import PopupUploadConfig from '../../upload/components/PopupUploadConfig';
+import PopupConnectSerial from '../../upload/components/PopupConnectSerial';
 import { SaveProgressBar } from '../components/SaveProgressBar';
 
 import formatError from '../../shared/errorFormatter';
@@ -98,12 +99,14 @@ class App extends client.App {
 
     this.suggestProjectFilePath = this.suggestProjectFilePath.bind(this);
     this.selectAll = this.selectAll.bind(this);
+    this.sendToSerial = this.sendToSerial.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(
       this
     );
     this.onUploadToArduino = this.onUploadToArduino.bind(this);
+    this.onConnectSerial = this.onConnectSerial.bind(this);
     this.onSerialPortChange = this.onSerialPortChange.bind(this);
     this.onShowCodeArduino = this.onShowCodeArduino.bind(this);
     this.onRunSimulation = this.onRunSimulation.bind(this);
@@ -363,7 +366,7 @@ class App extends client.App {
                 nodeIdsMap,
                 currentPatchPath
               );
-              debuggerIPC.sendStartDebuggerSession(ipcRenderer, port);
+              debuggerIPC.sendStartDebuggerSession(ipcRenderer, port, 'Debug');
             },
             R.map(getNodeIdsMap, eitherTProject)
           );
@@ -549,11 +552,26 @@ class App extends client.App {
   }
 
   onStopDebuggerSessionClicked() {
-    if (this.props.isSimulationRunning) {
+    if (this.props.isSimulationAbortable) {
       this.props.actions.abortSimulation();
     } else {
       stopDebuggerSession();
     }
+  }
+
+  onConnectSerial() {
+    stopDebuggerSession();
+
+    ipcRenderer.once(EVENTS.DEBUG_SESSION_STOPPED, () => {
+      debuggerIPC.sendStartDebuggerSession(
+        ipcRenderer,
+        this.props.selectedPort,
+        'Serial'
+      );
+      this.props.actions.startSerialSession(
+        client.createSystemMessage('Serial session started')
+      );
+    });
   }
 
   getSaveProgress() {
@@ -616,6 +634,10 @@ class App extends client.App {
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
         onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
         onClick(items.runSimulation, this.onRunSimulation),
+        onClick(
+          items.connectSerial,
+          this.props.actions.openConnectSerialDialog
+        ),
         items.separator,
         onClick(items.updatePackages, this.onUpdatePackagesClicked),
       ]),
@@ -798,6 +820,11 @@ class App extends client.App {
     this.props.actions.selectAll();
   }
 
+  sendToSerial(line) {
+    this.props.actions.echoSentLineToDebuggerLog(line);
+    ipcRenderer.send(EVENTS.DEBUG_SERIAL_SEND, line);
+  }
+
   static listPorts() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
@@ -861,6 +888,21 @@ class App extends client.App {
     ) : null;
   }
 
+  renderPopupConnectSerial() {
+    return this.props.popups.connectSerial ? (
+      <PopupConnectSerial
+        isVisible
+        isDeploymentInProgress={this.props.isDeploymentInProgress}
+        selectedPort={this.props.selectedPort}
+        listPorts={this.constructor.listPorts}
+        onPortChanged={this.onSerialPortChange}
+        onConnect={this.onConnectSerial}
+        onClose={this.props.actions.closeConnectSerialDialog}
+        onError={this.showError}
+      />
+    ) : null;
+  }
+
   renderPopupCheckArduinoPackageUpdates() {
     return this.props.popups.updateArduinoPackages ? (
       <UpdateArduinoPackagesPopup
@@ -889,9 +931,11 @@ class App extends client.App {
           onUploadClick={this.onUploadToArduinoClicked}
           onUploadAndDebugClick={this.onUploadToArduinoAndDebugClicked}
           onRunSimulationClick={this.onRunSimulation}
+          onSendToSerial={this.sendToSerial}
         />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}
+        {this.renderPopupConnectSerial()}
         {this.renderPopupProjectPreferences()}
         {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
@@ -964,7 +1008,7 @@ App.propTypes = R.merge(client.App.propTypes, {
   compileLimitLeft: PropTypes.number,
   workspace: PropTypes.string,
   selectedPort: PropTypes.object,
-  isSimulationRunning: PropTypes.bool.isRequired,
+  isSimulationAbortable: PropTypes.bool.isRequired,
 });
 
 const getSaveProcess = R.compose(
@@ -982,7 +1026,7 @@ const mapStateToProps = R.applySpec({
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
   compileLimitLeft: client.getCompileLimitLeft,
-  isSimulationRunning: client.isSimulationRunning,
+  isSimulationAbortable: client.isSimulationAbortable,
   isDeploymentInProgress,
   popups: {
     // TODO: make keys match with POPUP_IDs
@@ -1000,6 +1044,7 @@ const mapStateToProps = R.applySpec({
     uploadToArduinoConfig: client.getPopupVisibility(
       client.POPUP_ID.UPLOADING_CONFIG
     ),
+    connectSerial: client.getPopupVisibility(client.POPUP_ID.CONNECT_SERIAL),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
     projectPreferences: client.getPopupVisibility(
       client.POPUP_ID.EDITING_PROJECT_PREFERENCES
@@ -1038,6 +1083,8 @@ const mapDispatchToProps = dispatch => ({
       uploadToArduinoConfig: uploadActions.uploadToArduinoConfig,
       hideUploadConfigPopup: uploadActions.hideUploadConfigPopup,
       selectSerialPort: uploadActions.selectSerialPort,
+      openConnectSerialDialog: uploadActions.openConnectSerialDialog,
+      closeConnectSerialDialog: uploadActions.closeConnectSerialDialog,
       updateArdupackages,
       closePackageUpdatePopup,
       proceedPackageUpgrade,

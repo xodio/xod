@@ -157,8 +157,8 @@
 
   .log {
     height: 161px;
-    overflow-y: scroll;
 
+    overflow-y: scroll;
     white-space: pre-wrap;
 
     * {
@@ -193,6 +193,57 @@
       width: 100%;
       text-align: right;
       padding: 0 28px 7px;
+    }
+
+    &.compact {
+      height: 143px;
+
+      .skipped {
+        bottom: 24px;
+        padding: 0 28px 7px;
+      }
+    }
+  }
+
+  .SerialInput {
+    position: relative;
+
+    input {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      line-height: 18px;
+      padding: 1px 3px;
+      color: $chalk-bright; // like in the implementation editor
+      background: $blackberry-shadow;
+      border: 1px solid $grey-light;
+      font-family: $font-family-mono;
+    }
+
+    button {
+      position: absolute;
+      right: 1px;
+      bottom: 1px;
+      top: 1px;
+      width: 26px;
+      background: linear-gradient(
+        to right, 
+        rgba(255,255,255,0) 0%,
+        $blackberry-shadow 35%,
+        $blackberry-shadow 100%
+      );
+      color: $chalk-bright;
+      border: 0;
+      font-weight: bold;
+
+      &:hover {
+        color: $cyan;
+        cursor: pointer;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+      }
     }
   }
 }

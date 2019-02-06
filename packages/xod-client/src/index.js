@@ -83,6 +83,7 @@ export { LOG_TAB_TYPE } from './debugger/constants';
 export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
 export { SAVE_ALL } from './project/actionTypes';
+export { SERIAL_SESSION_STARTED } from './debugger/actionTypes';
 
 export * from './editor/selectors';
 export { getUpload } from './processes/selectors';

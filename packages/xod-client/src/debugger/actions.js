@@ -1,4 +1,5 @@
 import * as AT from './actionTypes';
+import { createOutgoingLogMessage } from './utils';
 
 export const toggleDebugger = () => ({
   type: AT.TOGGLE_DEBUGGER_PANEL,
@@ -43,6 +44,13 @@ export const startDebuggerSession = (
   },
 });
 
+export const startSerialSession = message => ({
+  type: AT.SERIAL_SESSION_STARTED,
+  payload: {
+    message,
+  },
+});
+
 export const stopDebuggerSession = message => ({
   type: AT.DEBUG_SESSION_STOPPED,
   payload: {
@@ -61,3 +69,8 @@ export const drillDown = (patchPath, nodeId) => ({
 export const markDebugSessionOutdated = () => ({
   type: AT.MARK_DEBUG_SESSION_OUTDATED,
 });
+
+export const echoSentLineToDebuggerLog = str =>
+  addMessagesToDebuggerLog([
+    createOutgoingLogMessage(str.replace(/\r\n$/g, '')),
+  ]);

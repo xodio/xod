@@ -43,6 +43,7 @@ import composeMessage from '../messages/composeMessage';
 
 import * as Selectors from './selectors';
 import * as ProjectSelectors from '../project/selectors';
+import * as DebuggerSelectors from '../debugger/selectors';
 
 import { parseDebuggerMessage } from '../debugger/debugProtocol';
 import { addMessagesToDebuggerLog } from '../debugger/actions';
@@ -818,7 +819,8 @@ export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
   dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
 
   const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
-  const shouldContinue = () => Selectors.isSimulationRunning(getState());
+  const shouldContinue = () =>
+    DebuggerSelectors.isPreparingSimulation(getState());
   const abortOrPass = fn => x => {
     if (!shouldContinue()) {
       return Promise.reject(createError(ABORT_ERROR_TYPE, {}));

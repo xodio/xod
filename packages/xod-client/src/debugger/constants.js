@@ -1,6 +1,7 @@
 export const UPLOAD_MSG_TYPE = {
   XOD: 'xod',
   LOG: 'log',
+  LOG_OUTGOING: 'log_outgoing',
   ERROR: 'error',
   SYSTEM: 'system',
   COMPILER: 'compiler',
@@ -15,4 +16,11 @@ export const LOG_TAB_TYPE = {
   UPLOADER: UPLOAD_MSG_TYPE.UPLOADER,
   DEBUGGER: UPLOAD_MSG_TYPE.LOG,
   TESTER: UPLOAD_MSG_TYPE.TESTER,
+};
+
+export const SESSION_TYPE = {
+  NONE: 'none',
+  DEBUG: 'debug',
+  SERIAL: 'serial',
+  SIMULATON: 'simulation',
 };

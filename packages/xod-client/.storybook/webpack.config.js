@@ -6,6 +6,13 @@ const assetsPath = pkgpath('src/core/assets');
 const fontAwesomePath = pkgpath('../../node_modules/font-awesome');
 
 module.exports = {
+  resolve: {
+    extensions: ['.js', '.json', '.jsx'],
+    alias: {
+      // until https://github.com/wycats/handlebars.js/issues/1102 is resolved
+      handlebars: 'handlebars/dist/handlebars.js',
+    },
+  },
   module: {
     rules: [
       {

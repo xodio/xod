@@ -1,10 +1,10 @@
 import { INTRODUCTION } from './messages';
-import { LOG_TAB_TYPE } from './constants';
+import { LOG_TAB_TYPE, SESSION_TYPE } from './constants';
 
 export default {
   isVisible: false,
-  isRunning: false,
-  isSerialConnected: false,
+  activeSession: SESSION_TYPE.NONE,
+  isPreparingSimulation: false,
   isOutdated: false,
   [LOG_TAB_TYPE.INSTALLER]: {
     log: '',

@@ -85,7 +85,7 @@ export default class App extends React.Component {
   }
 
   onRunSimulation() {
-    if (this.props.isSimulationRunning) {
+    if (this.props.isSimulationAbortable) {
       this.props.actions.addError(SIMULATION_ALREADY_RUNNING);
       return;
     }
@@ -202,7 +202,7 @@ App.propTypes = {
   currentPatchPath: sanctuaryPropType($Maybe($.String)),
   popups: PropTypes.objectOf(PropTypes.bool),
   popupsData: PropTypes.objectOf(PropTypes.object),
-  isSimulationRunning: PropTypes.bool.isRequired,
+  isSimulationAbortable: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     selectAll: PropTypes.func.isRequired,
     updateCompileLimit: PropTypes.func.isRequired,
@@ -235,6 +235,7 @@ App.propTypes = {
     stopDebuggerSession: PropTypes.func.isRequired,
     toggleDebugger: PropTypes.func.isRequired,
     logDebugger: PropTypes.func.isRequired,
+    echoSentLineToDebuggerLog: PropTypes.func.isRequired,
     clearDebugger: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
     toggleAccountPane: PropTypes.func.isRequired,
@@ -272,10 +273,12 @@ App.actions = {
   hideAllPopups: actions.hideAllPopups,
   toggleHelp: actions.toggleHelp,
   startDebuggerSession: actions.startDebuggerSession,
+  startSerialSession: actions.startSerialSession,
   stopDebuggerSession: actions.stopDebuggerSession,
   toggleDebugger: actions.toggleDebugger,
   showSuggester: actions.showSuggester,
   logDebugger: actions.addMessagesToDebuggerLog,
+  echoSentLineToDebuggerLog: actions.echoSentLineToDebuggerLog,
   clearDebugger: actions.clearDebuggerLog,
   cutEntities: actions.cutEntities,
   copyEntities: actions.copyEntities,
