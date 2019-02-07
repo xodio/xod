@@ -1,5 +1,4 @@
 import * as AT from './actionTypes';
-import { createOutgoingLogMessage } from './utils';
 
 export const toggleDebugger = () => ({
   type: AT.TOGGLE_DEBUGGER_PANEL,
@@ -70,7 +69,7 @@ export const markDebugSessionOutdated = () => ({
   type: AT.MARK_DEBUG_SESSION_OUTDATED,
 });
 
-export const echoSentLineToDebuggerLog = str =>
-  addMessagesToDebuggerLog([
-    createOutgoingLogMessage(str.replace(/\r\n$/g, '')),
-  ]);
+export const sendToSerial = line => ({
+  type: AT.LINE_SENT_TO_SERIAL,
+  payload: line,
+});

@@ -10,7 +10,6 @@ import { getLogForCurrentTab } from '../src/debugger/selectors';
 import {
   addMessagesToDebuggerLog,
   startDebuggerSession,
-  echoSentLineToDebuggerLog,
 } from '../src/debugger/actions';
 
 import '../src/core/styles/main.scss';
@@ -148,7 +147,6 @@ const idle = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
-        onSendToSerial={action('onSendToSerial')}
       />
     ));
 };
@@ -163,7 +161,6 @@ const uploading = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
-        onSendToSerial={action('onSendToSerial')}
       />
     ));
 };
@@ -190,7 +187,6 @@ const uploadingSuccess = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
-        onSendToSerial={action('onSendToSerial')}
       />
     ));
 };
@@ -217,7 +213,6 @@ const uploadingFail = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
-        onSendToSerial={action('onSendToSerial')}
       />
     ));
 };
@@ -236,7 +231,6 @@ const running = () => {
         <Debugger
           onUploadClick={action('onUploadClick')}
           onUploadAndDebugClick={action('onUploadAndDebugClick')}
-          onSendToSerial={action('onSendToSerial')}
         />
       </div>
     ));
@@ -279,9 +273,6 @@ const longMessages = () => {
     }
   }
 
-  const onSendToSerial = line =>
-    store.dispatch(echoSentLineToDebuggerLog(line));
-
   storiesOf('Debugger', module)
     .addDecorator(story => <Provider store={store}>{story()}</Provider>)
     .add('long messages', () => (
@@ -290,7 +281,6 @@ const longMessages = () => {
         <Debugger
           onUploadClick={action('onUploadClick')}
           onUploadAndDebugClick={action('onUploadAndDebugClick')}
-          onSendToSerial={onSendToSerial}
         />
       </div>
     ));

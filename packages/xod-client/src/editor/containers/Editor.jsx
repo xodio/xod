@@ -277,7 +277,6 @@ class Editor extends React.Component {
             <SnackBar />
           </div>
           <Debugger
-            onSendToSerial={this.props.onSendToSerial}
             stopDebuggerSession={this.props.stopDebuggerSession}
             onUploadClick={this.props.onUploadClick}
             onUploadAndDebugClick={this.props.onUploadAndDebugClick}
@@ -315,7 +314,6 @@ Editor.propTypes = {
   stopDebuggerSession: PropTypes.func,
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
-  onSendToSerial: PropTypes.func.isRequired,
   isTabtestRunning: PropTypes.bool.isRequired,
   onRunSimulationClick: PropTypes.func.isRequired,
   actions: PropTypes.shape({

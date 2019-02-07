@@ -111,7 +111,6 @@ class Debugger extends React.Component {
       isConnectedToSerial,
       stopDebuggerSession,
       currentTab,
-      onSendToSerial,
     } = this.props;
 
     const uploadProgress = foldMaybe(
@@ -221,7 +220,7 @@ class Debugger extends React.Component {
               {isDebuggerTab ? (
                 <SerialInput
                   disabled={!isConnectedToSerial}
-                  onSend={onSendToSerial}
+                  onSend={actions.sendToSerial}
                 />
               ) : null}
             </div>
@@ -244,7 +243,6 @@ Debugger.propTypes = {
   onUploadClick: PropTypes.func.isRequired,
   onUploadAndDebugClick: PropTypes.func.isRequired,
   onRunSimulationClick: PropTypes.func.isRequired,
-  onSendToSerial: PropTypes.func.isRequired,
   stopDebuggerSession: PropTypes.func.isRequired,
 };
 
@@ -262,6 +260,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       toggleDebugger: DA.toggleDebugger,
+      sendToSerial: DA.sendToSerial,
       toggleCapturingDebuggerProtocolMessages:
         DA.toggleCapturingDebuggerProtocolMessages,
       clearLog: DA.clearDebuggerLog,

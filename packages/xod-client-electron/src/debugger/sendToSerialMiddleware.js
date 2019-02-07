@@ -11,6 +11,13 @@ export default ({ getState }) => next => action => {
   const result = next(action);
 
   if (
+    action.type === client.LINE_SENT_TO_SERIAL &&
+    (client.isSerialDebugRunning(state) || client.isSerialSessionRunning(state))
+  ) {
+    ipcRenderer.send(DEBUG_SERIAL_SEND, action.payload);
+  }
+
+  if (
     action.type === client.NODE_UPDATE_PROPERTY &&
     client.isSerialDebugRunning(state)
   ) {

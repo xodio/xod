@@ -99,7 +99,6 @@ class App extends client.App {
 
     this.suggestProjectFilePath = this.suggestProjectFilePath.bind(this);
     this.selectAll = this.selectAll.bind(this);
-    this.sendToSerial = this.sendToSerial.bind(this);
 
     this.onUploadToArduinoClicked = this.onUploadToArduinoClicked.bind(this);
     this.onUploadToArduinoAndDebugClicked = this.onUploadToArduinoAndDebugClicked.bind(
@@ -820,11 +819,6 @@ class App extends client.App {
     this.props.actions.selectAll();
   }
 
-  sendToSerial(line) {
-    this.props.actions.echoSentLineToDebuggerLog(line);
-    ipcRenderer.send(EVENTS.DEBUG_SERIAL_SEND, line);
-  }
-
   static listPorts() {
     return new Promise((resolve, reject) => {
       ipcRenderer.send(EVENTS.LIST_PORTS);
@@ -931,7 +925,6 @@ class App extends client.App {
           onUploadClick={this.onUploadToArduinoClicked}
           onUploadAndDebugClick={this.onUploadToArduinoAndDebugClicked}
           onRunSimulationClick={this.onRunSimulation}
-          onSendToSerial={this.sendToSerial}
         />
         {this.renderPopupShowCode()}
         {this.renderPopupUploadConfig()}

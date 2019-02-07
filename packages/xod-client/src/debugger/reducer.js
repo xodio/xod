@@ -19,6 +19,7 @@ import {
   DEBUG_SESSION_STOPPED,
   MARK_DEBUG_SESSION_OUTDATED,
   SELECT_DEBUGGER_TAB,
+  LINE_SENT_TO_SERIAL,
 } from './actionTypes';
 
 import * as EAT from '../editor/actionTypes';
@@ -31,6 +32,7 @@ import {
   createSystemMessage,
   createFlasherMessage,
   createErrorMessage,
+  createOutgoingLogMessage,
 } from './utils';
 
 import initialState from './state';
@@ -112,6 +114,17 @@ const addMessageListToDebuggerLog = R.curry((messages, state) =>
     R.reduce(R.flip(appendMessageAndTruncate), R.__, messages),
     state
   )
+);
+
+const addMessagesOrIncrementSkippedLines = R.curry(
+  (logMessages, state) =>
+    state.isSkippingNewSerialLogLines
+      ? R.over(
+          R.lensProp('numberOfSkippedSerialLogLines'),
+          R.add(R.length(logMessages)),
+          state
+        )
+      : addMessageListToDebuggerLog(logMessages, state)
 );
 
 const updateWatchNodeValues = R.curry((messageList, state) => {
@@ -341,20 +354,18 @@ export default (state = initialState, action) => {
             appendMessageAndTruncate(errorMessages[0])
           );
 
-      const addMessagesOrIncrementSkippedLines = state.isSkippingNewSerialLogLines
-        ? R.over(
-            R.lensProp('numberOfSkippedSerialLogLines'),
-            R.add(R.length(logMessages))
-          )
-        : addMessageListToDebuggerLog(logMessages);
-
       return R.compose(
         showPanelOnErrorMessages,
         addErrorMessage,
-        addMessagesOrIncrementSkippedLines,
+        addMessagesOrIncrementSkippedLines(logMessages),
         updateWatchNodeValues(allMessages)
       )(state);
     }
+    case LINE_SENT_TO_SERIAL:
+      return addMessagesOrIncrementSkippedLines(
+        [createOutgoingLogMessage(action.payload.replace(/\r\n$/g, ''))],
+        state
+      );
     case DEBUGGER_LOG_CLEAR:
       return R.compose(
         // TODO: should reset skip state?
