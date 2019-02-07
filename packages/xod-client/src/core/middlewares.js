@@ -8,6 +8,7 @@ import crashReporter from './crashReporterMiddleware';
 import hintingMiddleware from '../hinting/middleware';
 import domSideeffectsMiddleware from './domSideeffectsMiddleware';
 import outdaterMiddleware from '../debugger/outdaterMiddleware';
+import sendToSimulationSerialMiddleware from '../debugger/sendToSimulationSerialMiddleware';
 import stopSimulationMiddleware from '../editor/stopSimulationMiddleware';
 
 export default (extraMiddlewares = []) =>
@@ -21,6 +22,7 @@ export default (extraMiddlewares = []) =>
       domSideeffectsMiddleware,
       outdaterMiddleware,
       stopSimulationMiddleware,
+      sendToSimulationSerialMiddleware,
       ...extraMiddlewares
     ),
     devtoolsMiddleware

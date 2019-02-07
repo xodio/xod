@@ -30,6 +30,11 @@ export const isSerialDebugRunning = R.compose(
   getDebuggerState
 );
 
+export const isSerialSessionRunning = R.compose(
+  R.propEq('activeSession', SESSION_TYPE.SERIAL),
+  getDebuggerState
+);
+
 export const isSimulationRunning = R.compose(
   R.propEq('activeSession', SESSION_TYPE.SIMULATON),
   getDebuggerState

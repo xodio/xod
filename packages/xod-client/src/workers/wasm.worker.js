@@ -98,7 +98,7 @@ _self.onmessage = e => {
       return;
     }
     case 'serial:send': {
-      const newLen = Serial.writeString(e.data.payload);
+      const newLen = Serial.js.writeString(e.data.payload);
       _self.postMessage({
         type: 'serial:sendOk',
         payload: newLen,
