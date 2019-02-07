@@ -1,8 +1,8 @@
 import waitForElement from 'wait-for-element';
-import { SELECT_CONSTANT_NODE_VALUE } from '../editor/actionTypes';
+import { FOCUS_BOUND_VALUE } from '../editor/actionTypes';
 
 export default _ => next => action => {
-  if (action.type === SELECT_CONSTANT_NODE_VALUE) {
+  if (action.type === FOCUS_BOUND_VALUE) {
     // First of all, do the stuff in reducers to show inspector pane.
     const n = next(action);
     // Wait for updated Inspector, because it could appeared

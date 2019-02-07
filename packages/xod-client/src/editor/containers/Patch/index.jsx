@@ -354,7 +354,7 @@ const mapDispatchToProps = dispatch => ({
       changeArityLevel: ProjectActions.changeArityLevel,
       splitLinksToBuses: EditorActions.splitLinksToBuses,
       addBusNode: ProjectActions.addBusNode,
-      selectConstantNodeValue: EditorActions.selectConstantNodeValue,
+      focusBoundValue: EditorActions.focusBoundValue,
     },
     dispatch
   ),

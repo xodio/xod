@@ -228,8 +228,7 @@ const selectingMode = {
     if (R.contains(patchPath, R.keys(XP.MANAGED_ATTACHMENT_FILENAMES))) {
       api.props.actions.openAttachmentEditor(patchPath);
     } else if (XP.isConstantNodeType(patchPath) || XP.isTweakPath(patchPath)) {
-      // TODO: rename this action to something more suitable?
-      api.props.actions.selectConstantNodeValue(nodeId, api.props.patchPath);
+      api.props.actions.focusBoundValue(nodeId, api.props.patchPath);
     } else {
       api.props.actions.switchPatch(patchPath);
     }

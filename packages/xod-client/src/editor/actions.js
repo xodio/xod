@@ -705,8 +705,8 @@ export const splitLinksToBuses = () => (dispatch, getState) => {
   });
 };
 
-export const selectConstantNodeValue = (nodeId, patchPath) => ({
-  type: ActionType.SELECT_CONSTANT_NODE_VALUE,
+export const focusBoundValue = (nodeId, patchPath) => ({
+  type: ActionType.FOCUS_BOUND_VALUE,
   payload: {
     nodeId,
     patchPath,
