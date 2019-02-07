@@ -100,6 +100,22 @@ const cppStringLiteral = def(
   )
 );
 
+export const byteLiteralToDecimal = R.ifElse(
+  R.test(/(b|h|d)$/),
+  R.converge(parseInt, [
+    R.init,
+    R.compose(
+      R.prop(R.__, {
+        b: 2,
+        h: 16,
+        d: 10,
+      }),
+      R.last
+    ),
+  ]),
+  plainDecimal => parseInt(plainDecimal, 10)
+);
+
 // Formats XOD byte literal into C++ byte literal
 // E.G.
 // 00011101b -> 0x1D
@@ -117,21 +133,7 @@ const cppByteLiteral = def(
       R.concat('0x'),
       R.toUpper,
       x => x.toString(16),
-      R.ifElse(
-        R.test(/(b|h|d)$/),
-        R.converge(parseInt, [
-          R.init,
-          R.compose(
-            R.prop(R.__, {
-              b: 2,
-              h: 16,
-              d: 10,
-            }),
-            R.last
-          ),
-        ]),
-        plainDecimal => parseInt(plainDecimal, 10)
-      )
+      byteLiteralToDecimal
     )
   )
 );

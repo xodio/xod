@@ -19,13 +19,15 @@ import * as DebuggerActions from './debugger/actions';
 import {
   INSTALL_ARDUINO_DEPENDENCIES,
   CHECK_ARDUINO_DEPENDENCIES,
+  SERIAL_SESSION_STARTED,
+  LINE_SENT_TO_SERIAL,
 } from './debugger/actionTypes';
 
 import { LOG_TAB_TYPE } from './debugger/constants';
 
 import { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 import { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
-import { SAVE_ALL } from './project/actionTypes';
+import { SAVE_ALL, NODE_UPDATE_PROPERTY } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -82,8 +84,11 @@ export { LOG_TAB_TYPE } from './debugger/constants';
 
 export { MESSAGE_BUTTON_CLICKED } from './messages/actionTypes';
 export { TAB_CLOSE, INSTALL_LIBRARIES_COMPLETE } from './editor/actionTypes';
-export { SAVE_ALL } from './project/actionTypes';
-export { SERIAL_SESSION_STARTED } from './debugger/actionTypes';
+export { SAVE_ALL, NODE_UPDATE_PROPERTY } from './project/actionTypes';
+export {
+  SERIAL_SESSION_STARTED,
+  LINE_SENT_TO_SERIAL,
+} from './debugger/actionTypes';
 
 export * from './editor/selectors';
 export { getUpload } from './processes/selectors';
@@ -166,11 +171,14 @@ export default Object.assign(
     parseDebuggerMessage,
     TAB_CLOSE,
     SAVE_ALL,
+    NODE_UPDATE_PROPERTY,
     INSTALL_LIBRARIES_COMPLETE,
     MESSAGE_BUTTON_CLICKED,
     Messages: coreMessages,
     INSTALL_ARDUINO_DEPENDENCIES,
     CHECK_ARDUINO_DEPENDENCIES,
+    SERIAL_SESSION_STARTED,
+    LINE_SENT_TO_SERIAL,
     LOG_TAB_TYPE,
   },
   UserSelectors,

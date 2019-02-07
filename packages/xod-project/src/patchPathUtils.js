@@ -295,7 +295,15 @@ export const getSpecializationPatchPath = R.curry(
 // utils for tweak nodes
 //
 
-const tweakPathRegExp = new RegExp('^xod/debug/tweak-');
+const tweakPathRegExp = new RegExp(`^xod/debug/tweak-(${dataTypes.join('|')})`);
 
 // :: PatchPath -> Boolean
 export const isTweakPath = R.test(tweakPathRegExp);
+
+export const getTweakType = R.pipe(R.match(tweakPathRegExp), R.nth(1));
+
+export const getStringTweakLength = R.pipe(
+  R.match(/^xod\/debug\/tweak-string-(\d+)/),
+  R.nth(1),
+  n => parseInt(n, 10)
+);

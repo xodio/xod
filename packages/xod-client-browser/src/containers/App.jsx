@@ -9,7 +9,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import * as XP from 'xod-project';
 import client from 'xod-client';
-import { foldEither, notNil, noop } from 'xod-func-tools';
+import { foldEither, notNil } from 'xod-func-tools';
 
 import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -358,7 +358,6 @@ class App extends client.App {
           onUploadClick={this.onUpload}
           onUploadAndDebugClick={this.onUpload}
           onRunSimulationClick={this.onRunSimulation}
-          onSendToSerial={noop}
         />
         <PopupInstallApp
           isVisible={this.state.popupInstallApp}
