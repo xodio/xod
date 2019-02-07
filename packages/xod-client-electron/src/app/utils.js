@@ -55,9 +55,27 @@ export const getFilePathToOpen = app => {
 };
 
 /**
+ * Returns Path to the resources directory root.
+ *
+ * When IDE runs in development mode it resolves to directory
+ * with transpiled code, and it handles call either from Main Process
+ * and Renderer Process. They're have a different `__dirname` values:
+ * - Main Process: /some/path/to/src-babel/app
+ * - Renderer Process: /some/path/to/src-babel
+ *
+ * When IDE runs in production mode it resolves to resources path.
+ */
+export const getResourcesRoot = () => {
+  if (IS_DEV) {
+    return process.type === 'renderer'
+      ? __dirname
+      : path.resolve(__dirname, '..');
+  }
+  return process.resourcesPath;
+};
+
+/**
  * Returns Path to the bundled workspace
  */
 export const getPathToBundledWorkspace = () =>
-  IS_DEV
-    ? path.resolve(__dirname, '../workspace')
-    : path.resolve(process.resourcesPath, './workspace');
+  path.join(getResourcesRoot(), 'workspace');

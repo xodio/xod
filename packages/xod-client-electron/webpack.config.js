@@ -9,6 +9,10 @@ const pkgpath = subpath => path.resolve(__dirname, subpath);
 
 module.exports = merge.smart(getBaseConfig(__dirname), {
   target: 'electron-renderer',
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
   entry: [
     pkgpath('src/view/styles/main.scss'),
   ],
