@@ -3,7 +3,7 @@ struct State {
     char buff[17] = ""; // one extra for the '\0'
     CStringView view;
 
-    State() : view(&buff) {}
+    State() : view(buff) {}
 };
 
 {{ GENERATED_CODE }}
