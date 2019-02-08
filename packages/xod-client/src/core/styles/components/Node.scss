@@ -104,6 +104,9 @@
     &.error {
       stroke: $color-datatype-dead;
     }
+    &.generic {
+      stroke: $color-node-outline;
+    }
   }
 
   .nodeLabelContainer {
