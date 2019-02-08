@@ -686,7 +686,7 @@ size_t formatNumber(Number value, int prec, char* str) {
         value = -value;
     }
 
-    int whole = (int)value;
+    uint32_t whole = (uint32_t)value;
     Number tmp = (value - whole) * powers_of_10[prec];
     uint32_t frac = (uint32_t)(tmp);
     diff = tmp - frac;
