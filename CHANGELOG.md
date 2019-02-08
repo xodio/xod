@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Add ability to simulate a program without uploading it to a board (#1661)
+* [nodes] Add tweak nodes whose values can be adjusted right from the IDE during debug and simulation sessions (#1662, #1665, #1666)
+* [ide] Add ability to connect to a board by serial, send text lines, and see its response at any time (#1660)
+* [nodes] Move exising debug-related nodes (`watch` and `console-log`) from `xod/core` to `xod/debug` library (#1657)
+* [ide] Add tooltips for show/hide sidebar pane buttons (#1658)
+* [ide] Make a fancy look for `xod/patch-nodes/jumper` (#1659)
+* [ide] Make UI more responsive while running tabtests (#1648)
+
+### New nodes
+
+* [`xod/color`](https://xod.io/libs/xod/color/) — a library to work with colors (#1589)
+* [`xod/debug`](https://xod.io/libs/xod/debug/) — a library for interactive debugging (#1662, #1665, #1666)
+
+### Bug fixes
+
+* [nodes] Fix prescision and overflow issues with `format-number` and `cast-to-string(number)` nodes (#1650, #1652, #1669)
+* [ide] Fix sidebar height in Firefox (#1655)
+
 <a name="0.26.1"></a>
 
 ## 0.26.1 (2019-01-09)
