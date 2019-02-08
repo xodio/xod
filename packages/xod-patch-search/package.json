@@ -1,6 +1,6 @@
 {
   "name": "xod-patch-search",
-  "version": "0.26.1",
+  "version": "0.27.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -24,10 +24,10 @@
     "ramda": "^0.24.1",
     "ramda-fantasy": "^0.8.0",
     "xod-func-tools": "^0.26.0",
-    "xod-project": "^0.26.1"
+    "xod-project": "^0.27.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "xod-fs": "^0.26.1"
+    "xod-fs": "^0.27.0"
   }
 }
