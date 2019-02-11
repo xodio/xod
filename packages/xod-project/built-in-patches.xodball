@@ -2,12 +2,15 @@
   "name": "built-in-patches",
   "patches": {
     "@/abstract": {
+      "description": "Makes a patch containing this node abstract. That is, a patch node which only defines a generic interface in terms of generic-type inputs and outputs without an actual implementation. To be useful there should be one or more sibling specialization patches which implement the abstraction for particular input types.",
       "path": "@/abstract"
     },
     "@/deprecated": {
+      "description": "Deprecates a patch which contains this node. Use it to archive outdated patch nodes. The projects which already uses the deprecated node will not break. Only a warning message will be shown. Use the marker node description to provide a deprecation reason and migration hint, it will be shown along the warning to end-users. For new projects, deprecated nodes are unlisted by default, so usage of such nodes by library users is discouraged.",
       "path": "@/deprecated"
     },
     "@/from-bus": {
+      "description": "Defines an attachment point to a patch-level data bus with the name defined by this node label.",
       "nodes": {
         "__out__": {
           "id": "__out__",
@@ -21,6 +24,7 @@
       "path": "@/from-bus"
     },
     "@/jumper": {
+      "description": "A simple no-operation node. Use jumpers to reflow links making them easier to read",
       "links": {
         "HkrhyNMEQ": {
           "id": "HkrhyNMEQ",
@@ -55,16 +59,18 @@
       "path": "@/jumper"
     },
     "@/not-implemented-in-xod": {
+      "description": "Tells XOD that the patch containing this node is implemented in C++ rather than as a composition of other nodes. All nodes other than terminals and other special markers are ignored",
       "path": "@/not-implemented-in-xod"
     },
     "@/output-self": {
       "path": "@/output-self"
     },
     "@/tabtest": {
-      "path": "@/tabtest",
-      "description": "A marker node which defines a tabular test (tabtest) for the patch node. A tabtest is a kind of unit test expressed as a send-in/check-out table."
+      "description": "A marker node which defines a tabular test (tabtest) for the patch node. A tabtest is a kind of unit test expressed as a send-in/check-out table.",
+      "path": "@/tabtest"
     },
     "@/to-bus": {
+      "description": "Defines a sink to patch-level data bus with the name defined by this node label. Effectively, this node creates a new bus.",
       "nodes": {
         "__in__": {
           "id": "__in__",
@@ -78,15 +84,19 @@
       "path": "@/to-bus"
     },
     "@/utility": {
+      "description": "Marks a patch which contains this node as an internal utility. Utiliy nodes should only be used as helpers to compose other patch nodes of the library. Utilities are unlisted by default for library users, so the direct usage of such nodes is discouraged for them.",
       "path": "@/utility"
     },
     "@/variadic-1": {
+      "description": "Makes the rightmost input of the patch node containing this node variadic",
       "path": "@/variadic-1"
     },
     "@/variadic-2": {
+      "description": "Makes two rightmost inputs of the patch node containing this node variadic",
       "path": "@/variadic-2"
     },
     "@/variadic-3": {
+      "description": "Makes three rightmost inputs of the patch node containing this node variadic",
       "path": "@/variadic-3"
     }
   }
