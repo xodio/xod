@@ -1,0 +1,1 @@
+let cppEscape: (string) => string;

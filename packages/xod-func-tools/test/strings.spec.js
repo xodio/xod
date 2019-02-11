@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import { enquote, unquote } from '../src/strings';
+import { enquote, unquote, cppEscape } from '../src/strings';
 
 describe('String', () => {
   describe('quote', () => {
@@ -15,6 +15,20 @@ describe('String', () => {
       assert.strictEqual(unquote('"Hello"'), 'Hello');
       assert.strictEqual(unquote('""Hello""'), '"Hello"');
       assert.strictEqual(unquote('Hello'), 'Hello');
+    });
+  });
+
+  describe('cppEscape', () => {
+    it('should leave valid strings untouched', () => {
+      assert.strictEqual(cppEscape('Hello'), 'Hello');
+      assert.strictEqual(cppEscape('one_two_three'), 'one_two_three');
+    });
+    it('should escape non-C++ friendly characters', () => {
+      assert.strictEqual(cppEscape('hello world'), 'hello_world');
+      assert.strictEqual(cppEscape('a-b'), 'a_b');
+      assert.strictEqual(cppEscape('wow-⏅'), 'wow_U23C5');
+      assert.strictEqual(cppEscape('o_🙈'), 'o_UD83DUDE48');
+      assert.strictEqual(cppEscape('awe<some!'), 'aweU003CsomeU0021');
     });
   });
 });
