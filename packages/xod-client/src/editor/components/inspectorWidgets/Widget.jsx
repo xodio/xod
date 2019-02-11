@@ -20,7 +20,7 @@ const commonKeyDownHandlers = {
 class Widget extends React.Component {
   constructor(props) {
     super(props);
-    this.type = props.widgetConfig.type;
+    this.dataType = props.widgetConfig.dataType;
     this.commitOnChange = props.widgetConfig.commitOnChange;
     this.normalizeValue = props.widgetConfig.normalizeValue || R.identity;
 
@@ -134,7 +134,7 @@ class Widget extends React.Component {
           isLastVariadicGroup={this.props.isLastVariadicGroup}
           isBindable={this.props.isBindable}
           direction={this.props.direction}
-          dataType={this.type}
+          dataType={this.dataType}
           value={this.state.value}
           disabled={this.isDisabled()}
           focused={this.props.focused && !this.isDisabled()}

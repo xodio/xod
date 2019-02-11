@@ -53,14 +53,14 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.BOOLEAN]: {
     component: BoolWidget,
     props: {
-      type: PIN_TYPE.BOOLEAN,
+      dataType: PIN_TYPE.BOOLEAN,
       commitOnChange: true,
     },
   },
   [WIDGET_TYPE.NUMBER]: {
     component: NumberWidget,
     props: {
-      type: PIN_TYPE.NUMBER,
+      dataType: PIN_TYPE.NUMBER,
       keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
       normalizeValue: normalizeNumber,
     },
@@ -68,7 +68,7 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.BYTE]: {
     component: NumberWidget,
     props: {
-      type: PIN_TYPE.BYTE,
+      dataType: PIN_TYPE.BYTE,
       keyDownHandlers: submitOnEnter,
       normalizeValue: normalizeByte,
     },
@@ -76,7 +76,7 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.STRING]: {
     component: StringWidget,
     props: {
-      type: PIN_TYPE.STRING,
+      dataType: PIN_TYPE.STRING,
       keyDownHandlers: submitOnEnter,
       normalizeValue: R.pipe(unquote, enquote),
     },
@@ -84,50 +84,50 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.LABEL]: {
     component: LabelWidget,
     props: {
-      type: PIN_TYPE.STRING,
+      dataType: PIN_TYPE.STRING,
       keyDownHandlers: submitOnEnter,
     },
   },
   [WIDGET_TYPE.PULSE]: {
     component: PulseWidget,
     props: {
-      type: PIN_TYPE.PULSE,
+      dataType: PIN_TYPE.PULSE,
       commitOnChange: true,
     },
   },
   [WIDGET_TYPE.TEXTAREA]: {
     component: DescriptionWidget,
-    props: { type: 'string' },
+    props: { dataType: 'string' },
   },
   [WIDGET_TYPE.DEAD]: {
     component: DisabledInputWidget,
     props: {
-      type: PIN_TYPE.DEAD,
+      dataType: PIN_TYPE.DEAD,
     },
   },
   [WIDGET_TYPE.PORT]: {
     component: NumberWidget,
     props: {
-      type: PIN_TYPE.PORT,
+      dataType: PIN_TYPE.PORT,
       keyDownHandlers: submitOnEnter,
       normalizeValue: normalizePort,
     },
   },
 };
 
-const getGenericTypeWidget = type => ({
+const getGenericTypeWidget = dataType => ({
   component: GenericPinWidget,
   props: {
-    type,
+    dataType,
     keyDownHandlers: submitOnEnter,
     // normalize only almost valid byte values
     normalizeValue: normalizeGenericValue,
   },
 });
 
-const getDisabledWidget = type => ({
+const getDisabledWidget = dataType => ({
   component: DisabledInputWidget,
-  props: { type },
+  props: { dataType },
 });
 
 // :: PinType -> WidgetConfig
