@@ -28,14 +28,11 @@ const PinWidgetsGroup = ({ node, onPropUpdate }) =>
         specializations: R.prop('specializations'),
       })(renderablePin);
 
-      const { component, props } = getNodeWidgetConfig(widgetProps.type);
-
       return (
         <li key={widgetProps.key}>
           <Widget
-            {...props}
-            component={component}
             {...widgetProps}
+            {...getNodeWidgetConfig(widgetProps.dataType)}
             onPropUpdate={onPropUpdate}
           />
         </li>

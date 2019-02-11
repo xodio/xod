@@ -57,8 +57,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
       <PinWidgetsGroup node={node} onPropUpdate={onPropUpdate} />
 
       <Widget
-        component={getNodeWidgetConfig(WIDGET_TYPE.LABEL).component}
-        {...getNodeWidgetConfig(WIDGET_TYPE.LABEL).props}
+        {...getNodeWidgetConfig(WIDGET_TYPE.LABEL)}
         entityId={nodeId}
         key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
@@ -70,8 +69,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
       />
 
       <Widget
-        component={Widgets.DescriptionWidget}
-        {...getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
+        {...getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA)}
         entityId={nodeId}
         key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
