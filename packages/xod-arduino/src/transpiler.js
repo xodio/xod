@@ -8,6 +8,7 @@ import {
   foldEither,
   isAmong,
   fail,
+  cppEscape,
 } from 'xod-func-tools';
 import * as XP from 'xod-project';
 import { def } from './types';
@@ -77,6 +78,8 @@ const toposortProject = def(
 //
 //-----------------------------------------------------------------------------
 
+const pinLabelLens = R.lens(XP.getPinLabel, XP.setPinLabel);
+
 const arrangeTPatchesInTopologicalOrder = def(
   'arrangeTPatchesInTopologicalOrder :: PatchPath -> Project -> Map PatchPath TPatch -> [TPatch]',
   (entryPath, project, tpatchesMap) =>
@@ -128,6 +131,7 @@ const convertPatchToTPatch = def(
           ),
         })
       ),
+      R.map(R.over(pinLabelLens, cppEscape)),
       XP.normalizeEmptyPinLabels,
       XP.listOutputPins
     )(patch);
@@ -140,6 +144,7 @@ const convertPatchToTPatch = def(
           isDirtyable,
         })
       ),
+      R.map(R.over(pinLabelLens, cppEscape)),
       XP.normalizeEmptyPinLabels,
       XP.listInputPins
     )(patch);
@@ -274,7 +279,12 @@ const getNodePinsUnsafe = def(
 
 const getNodePinLabels = def(
   'getNodePinLabels :: Node -> Project -> Map PinKey PinLabel',
-  R.compose(getPinLabelsMap, XP.normalizeEmptyPinLabels, getNodePinsUnsafe)
+  R.compose(
+    getPinLabelsMap,
+    R.map(R.over(pinLabelLens, cppEscape)),
+    XP.normalizeEmptyPinLabels,
+    getNodePinsUnsafe
+  )
 );
 
 // TODO: Remove it when `Project.getBoundValue` will return default values

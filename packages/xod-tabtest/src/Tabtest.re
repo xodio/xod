@@ -201,11 +201,12 @@ module TestCase = {
       |. Probes.keepInjecting
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
+           let probeName = Strings.cppEscape(name);
            switch (record |. TabData.Record.get(name)) {
            | Some(Pulse(false)) => {j|// No pulse for $name|j}
            | Some(value) =>
              let literal = valueToLiteral(value);
-             {j|INJECT(probe_$name, $literal);|j};
+             {j|INJECT(probe_$probeName, $literal);|j};
            | None => {j|// No changes for $name|j}
            };
          });
@@ -260,11 +261,17 @@ module TestCase = {
     let nodeAliases =
       idMap
       |. Map.String.toList
-      |. List.map(((name, id)) => {j|auto& probe_$name = xod::node_$id;|j});
+      |. List.map(
+           ((name, id)) => {
+             let probeName = Strings.cppEscape(name);
+             {j|auto& probe_$probeName = xod::node_$id;|j}
+           }
+         );
     let sections =
       tabData
       |. TabData.mapWithIndex((idx, record) =>
-           generateSection(record, probes, idx)
+           record
+           |. generateSection(probes, idx)
          );
     Cpp.(
       source([
@@ -315,7 +322,10 @@ let generatePatchSuite = (project, patchPathToTest) : XResult.t(t) => {
     let realPinLabels =
       bench.probeMap |> Map.String.keysToArray |> List.fromArray;
     let testingPinLabels =
-      tsv |. TabData.listDataLines |. List.getExn(0) |. TabData.tabSplit;
+      tsv
+      |. TabData.listDataLines
+      |. List.getExn(0)
+      |. TabData.tabSplit;
     let result =
       switch (Validator.validatePinLabels(realPinLabels, testingPinLabels)) {
       | Some(e) => Result.Error(e)

@@ -68,6 +68,8 @@ module Record = {
   type t = Map.String.t(Value.t);
   let fromPairs = (pairs: list((string, Value.t))) : t =>
     pairs |. List.toArray |. Map.String.fromArray;
+  let toPairs = (record: t) : list((string, Value.t)) =>
+    record |. Map.String.toList;
   let get = (t, column) =>
     Map.String.get(t, column)
     |. Option.flatMap(value =>
