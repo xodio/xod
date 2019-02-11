@@ -13,7 +13,7 @@ import IOLabelWidget from './IOLabelWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
 import NodeSpecializationWidget from './NodeSpecializationWidget';
-import composeWidget from './Widget';
+import Widget from './Widget';
 
 import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
@@ -148,7 +148,7 @@ export default {
   DescriptionWidget,
   LabelWidget,
   NodeSpecializationWidget,
-  composeWidget,
+  Widget,
 
   WIDGET_MAPPING,
 };

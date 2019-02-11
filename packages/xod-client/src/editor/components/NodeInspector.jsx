@@ -7,22 +7,13 @@ import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
 import PinWidgetsGroup from './PinWidgetsGroup';
 import Widgets, { getNodeWidgetConfig } from './inspectorWidgets';
+import Widget from './inspectorWidgets/Widget';
 
 import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { getUtmSiteUrl } from '../../utils/urls';
 
 import * as MESSAGES from '../messages';
-
-const NodeLabelWidget = Widgets.composeWidget(
-  getNodeWidgetConfig(WIDGET_TYPE.LABEL).component,
-  getNodeWidgetConfig(WIDGET_TYPE.LABEL).props
-);
-
-const NodeDescriptionWidget = Widgets.composeWidget(
-  Widgets.DescriptionWidget,
-  getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props
-);
 
 const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
   const type = XP.getNodeType(node);
@@ -65,7 +56,9 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
 
       <PinWidgetsGroup node={node} onPropUpdate={onPropUpdate} />
 
-      <NodeLabelWidget
+      <Widget
+        component={getNodeWidgetConfig(WIDGET_TYPE.LABEL).component}
+        widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.LABEL).props}
         entityId={nodeId}
         key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
@@ -76,7 +69,9 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
         onPropUpdate={onPropUpdate}
       />
 
-      <NodeDescriptionWidget
+      <Widget
+        component={Widgets.DescriptionWidget}
+        widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
         entityId={nodeId}
         key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}

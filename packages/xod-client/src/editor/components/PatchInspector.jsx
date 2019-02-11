@@ -5,12 +5,9 @@ import * as XP from 'xod-project';
 import { WIDGET_TYPE } from '../constants';
 import Widgets, { getNodeWidgetConfig } from './inspectorWidgets';
 
-import sanctuaryPropType from '../../utils/sanctuaryPropType';
+import Widget from './inspectorWidgets/Widget';
 
-const PatchDescriptionWidget = Widgets.composeWidget(
-  Widgets.DescriptionWidget,
-  getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props
-);
+import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 class PatchInspector extends React.PureComponent {
   constructor(props) {
@@ -34,7 +31,9 @@ class PatchInspector extends React.PureComponent {
           <span className="patchName">{baseName}</span>
         </div>
 
-        <PatchDescriptionWidget
+        <Widget
+          component={Widgets.DescriptionWidget}
+          widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
           key={patchPath}
           entityId={patchPath}
           keyName=""
