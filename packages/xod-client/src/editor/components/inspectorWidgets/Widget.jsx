@@ -116,20 +116,23 @@ class Widget extends React.Component {
   render() {
     const Component = this.props.component;
 
+    const restProps = R.omit(
+      [
+        'children',
+        'component',
+        'onPropUpdate',
+        'normalizeValue',
+        'commitOnChange',
+        'keyDownHandlers',
+      ],
+      this.props
+    );
+
     return (
       <div className="InspectorWidget">
         <Component
+          {...restProps}
           elementId={`widget_${this.props.keyName}`}
-          label={this.props.label}
-          title={this.props.title}
-          normalizedLabel={this.props.normalizedLabel}
-          isConnected={this.props.isConnected}
-          isInvalid={this.props.isInvalid}
-          deducedType={this.props.deducedType}
-          isLastVariadicGroup={this.props.isLastVariadicGroup}
-          isBindable={this.props.isBindable}
-          direction={this.props.direction}
-          dataType={this.props.dataType}
           value={this.state.value}
           disabled={this.isDisabled()}
           focused={this.props.focused && !this.isDisabled()}
@@ -146,10 +149,6 @@ Widget.propTypes = {
   entityId: PropTypes.string.isRequired,
   keyName: PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
   kind: PropTypes.string,
-  label: PropTypes.string,
-  title: PropTypes.string,
-  normalizedLabel: PropTypes.string,
-  direction: PropTypes.string,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -157,28 +156,20 @@ Widget.propTypes = {
     PropTypes.array,
   ]),
   isConnected: PropTypes.bool,
-  isLastVariadicGroup: PropTypes.bool,
-  isBindable: PropTypes.bool,
-  isInvalid: PropTypes.bool,
-  deducedType: PropTypes.object,
   focused: PropTypes.bool,
+  component: PropTypes.func.isRequired, // a `class` which we're making to extend React.Component is also a function
+  keyDownHandlers: PropTypes.objectOf(PropTypes.func),
+  commitOnChange: PropTypes.bool,
+  normalizeValue: PropTypes.func,
   // dispatchers
   onPropUpdate: PropTypes.func.isRequired,
 };
 
 Widget.defaultProps = {
   className: '',
-  label: 'Unknown property',
-  normalizedLabel: '',
   value: '',
-  title: '',
   focused: false,
   isConnected: false,
-  isLastVariadicGroup: false,
-  isBindable: true,
-  isInvalid: false,
-  deducedType: null,
-  direction: '',
   keyDownHandlers: {},
   normalizeValue: R.identity,
   onPropUpdate: noop,
