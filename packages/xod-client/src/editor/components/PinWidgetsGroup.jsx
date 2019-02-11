@@ -16,7 +16,7 @@ const PinWidgetsGroup = ({ node, onPropUpdate }) =>
         kind: R.always(NODE_PROPERTY_KIND.PIN),
         key: ({ nodeId, key }) => `${nodeId}_${key}`,
         keyName: XP.getPinKey,
-        type: XP.getPinType,
+        dataType: XP.getPinType,
         label: XP.getPinLabel,
         value: R.prop('value'),
         direction: XP.getPinDirection,
@@ -33,7 +33,7 @@ const PinWidgetsGroup = ({ node, onPropUpdate }) =>
       return (
         <li key={widgetProps.key}>
           <Widget
-            widgetConfig={props}
+            {...props}
             component={component}
             {...widgetProps}
             onPropUpdate={onPropUpdate}

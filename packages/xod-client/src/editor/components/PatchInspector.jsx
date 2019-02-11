@@ -33,7 +33,7 @@ class PatchInspector extends React.PureComponent {
 
         <Widget
           component={Widgets.DescriptionWidget}
-          widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
+          {...getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
           key={patchPath}
           entityId={patchPath}
           keyName=""

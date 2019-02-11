@@ -20,24 +20,21 @@ const commonKeyDownHandlers = {
 class Widget extends React.Component {
   constructor(props) {
     super(props);
-    this.dataType = props.widgetConfig.dataType;
-    this.commitOnChange = props.widgetConfig.commitOnChange;
-    this.normalizeValue = props.widgetConfig.normalizeValue || R.identity;
 
-    const val = String(props.value);
+    const { value, keyDownHandlers } = props;
+
     this.state = {
-      value: val,
+      value,
     };
 
     // Store latest commited value (or parsed value)
     // to avoid double dispatching of updating property
-    this.lastCommitedValue = val;
+    this.lastCommitedValue = value;
 
     this.keyDownHandlers = R.compose(
       R.map(fn => fn.bind(this)),
-      R.merge(commonKeyDownHandlers),
-      R.propOr({}, 'keyDownHandlers')
-    )(props.widgetConfig);
+      R.merge(commonKeyDownHandlers)
+    )(keyDownHandlers);
 
     this.onChange = this.onChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
@@ -72,7 +69,9 @@ class Widget extends React.Component {
   }
 
   updateValue(value) {
-    const commitCallback = this.commitOnChange ? this.commit.bind(this) : noop;
+    const commitCallback = this.props.commitOnChange
+      ? this.commit.bind(this)
+      : noop;
 
     this.setState({ value }, commitCallback);
   }
@@ -86,7 +85,7 @@ class Widget extends React.Component {
     // This check will avoid unwanted commits.
     if (this.state.value === this.lastCommitedValue) return;
 
-    const parsedValue = this.normalizeValue(this.state.value);
+    const parsedValue = this.props.normalizeValue(this.state.value);
 
     // Prevent of commiting value twice on blur and on unmnount in widgets
     // that have a differences in `state.value` and `parsedValue`.
@@ -134,7 +133,7 @@ class Widget extends React.Component {
           isLastVariadicGroup={this.props.isLastVariadicGroup}
           isBindable={this.props.isBindable}
           direction={this.props.direction}
-          dataType={this.dataType}
+          dataType={this.props.dataType}
           value={this.state.value}
           disabled={this.isDisabled()}
           focused={this.props.focused && !this.isDisabled()}
@@ -186,6 +185,8 @@ Widget.defaultProps = {
   isInvalid: false,
   deducedType: null,
   direction: '',
+  keyDownHandlers: {},
+  normalizeValue: R.identity,
   onPropUpdate: noop,
   onPinModeSwitch: noop,
   onFocusChanged: noop,

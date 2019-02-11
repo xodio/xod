@@ -58,7 +58,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
 
       <Widget
         component={getNodeWidgetConfig(WIDGET_TYPE.LABEL).component}
-        widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.LABEL).props}
+        {...getNodeWidgetConfig(WIDGET_TYPE.LABEL).props}
         entityId={nodeId}
         key={`node_label_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
@@ -71,7 +71,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
 
       <Widget
         component={Widgets.DescriptionWidget}
-        widgetConfig={getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
+        {...getNodeWidgetConfig(WIDGET_TYPE.TEXTAREA).props}
         entityId={nodeId}
         key={`node_description_${nodeId}`}
         kind={NODE_PROPERTY_KIND.PROP}
