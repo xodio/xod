@@ -8,5 +8,5 @@ struct State {
 
 void evaluate(Context ctx) {
     auto x = getValue<input_IN>(ctx);
-    emitValue<output_OUT>(ctx, abs(x));
+    emitValue<output_OUT>(ctx, x > 0 ? x : -x);
 }
