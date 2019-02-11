@@ -37,7 +37,6 @@ class Widget extends React.Component {
     )(keyDownHandlers);
 
     this.onChange = this.onChange.bind(this);
-    this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
 
@@ -48,9 +47,6 @@ class Widget extends React.Component {
     this.commit();
   }
 
-  onFocus() {
-    this.props.onFocusChanged();
-  }
   onBlur() {
     this.commit();
   }
@@ -138,7 +134,6 @@ class Widget extends React.Component {
           disabled={this.isDisabled()}
           focused={this.props.focused && !this.isDisabled()}
           onBlur={this.onBlur}
-          onFocus={this.onFocus}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
         />
@@ -169,7 +164,6 @@ Widget.propTypes = {
   focused: PropTypes.bool,
   // dispatchers
   onPropUpdate: PropTypes.func.isRequired,
-  onFocusChanged: PropTypes.func,
 };
 
 Widget.defaultProps = {
@@ -189,7 +183,6 @@ Widget.defaultProps = {
   normalizeValue: R.identity,
   onPropUpdate: noop,
   onPinModeSwitch: noop,
-  onFocusChanged: noop,
 };
 
 export default Widget;
