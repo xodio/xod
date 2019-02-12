@@ -24,11 +24,20 @@ import normalizeGenericValue from '../../../utils/normalizeGenericValue';
 const widgetKeyDownHandlers = {
   up: function up(event) {
     event.preventDefault();
-    this.updateValue(this.parseValue(event.target.value) + 1);
+
+    // TODO: deal with float prescision shenanigans
+    const step = event.shiftKey ? 1 : 0.1;
+    const newValue = parseFloat(event.target.value) + step;
+
+    this.updateValue(newValue.toString(10));
   },
   down: function down(event) {
     event.preventDefault();
-    this.updateValue(this.parseValue(event.target.value) - 1);
+
+    const step = event.shiftKey ? 1 : 0.1;
+    const newValue = parseFloat(event.target.value) - step;
+
+    this.updateValue(newValue.toString(10));
   },
   dot: function dot(event) {
     this.updateValue(this.parseValue(`${event.target.value}.`));
