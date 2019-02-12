@@ -27,7 +27,6 @@ const PulseWidget = props => {
         id={props.elementId}
         value={props.value}
         onChange={onChange}
-        onFocus={props.onFocus}
         onBlur={props.onBlur}
       >
         <option value={INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER}>Never</option>
@@ -53,7 +52,6 @@ PulseWidget.propTypes = {
 
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  onFocus: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
 };
 
