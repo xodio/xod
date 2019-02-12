@@ -59,10 +59,9 @@ class Widget extends React.Component {
     }
   }
 
-  updateValue(value) {
-    const commitCallback = this.props.commitOnChange
-      ? this.commit.bind(this)
-      : noop;
+  updateValue(value, forceCommit = false) {
+    const commitCallback =
+      this.props.commitOnChange || forceCommit ? this.commit.bind(this) : noop;
 
     this.setState({ value }, commitCallback);
   }
