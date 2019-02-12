@@ -77,22 +77,18 @@ class Widget extends React.Component {
 
     const parsedValue = this.props.normalizeValue(this.state.value);
 
+    // To show a "canonical" form of a value after commiting
+    // (`13` -> `D13` in Port input)
+    // Or to reset invalid data to a default
+    // (`blabla` -> `0` in Number input)
+    this.setState({ value: parsedValue });
+
     // Prevent of commiting value twice on blur and on unmnount in widgets
     // that have a differences in `state.value` and `parsedValue`.
     // E.G.
     // Strings are represented in the inputs just as string 'hello'
     // But parsed value will be '"hello"'.
     if (parsedValue === this.lastCommitedValue) {
-      // New parsed value could be dropped to default value if User
-      // typed some wrong data. To avoid keep wrong data in the input
-      // we have to update state of the component.
-      // E.G.
-      // Number widget has value: `0`
-      // User typed: `bla-bla-bla` and it's not valid for Number type
-      // We have to drop it back to the `0` value.
-      this.setState({
-        value: this.lastCommitedValue,
-      });
       return;
     }
 
