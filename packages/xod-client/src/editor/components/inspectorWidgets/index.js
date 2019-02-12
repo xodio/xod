@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import Big from 'big.js';
 import { unquote, enquote } from 'xod-func-tools';
 import { PIN_TYPE, isGenericType } from 'xod-project';
 
@@ -18,24 +19,23 @@ import normalizeNumber from '../../../utils/normalizeNumber';
 import normalizePort from '../../../utils/normalizePort';
 import normalizeGenericValue from '../../../utils/normalizeGenericValue';
 
+function createArrowKeyHandler(bigStep, smallStep) {
+  return function arrowKeyHandler(event) {
+    event.preventDefault();
+
+    const step = event.shiftKey ? bigStep : smallStep;
+    try {
+      const bigValue = new Big(event.target.value);
+      this.updateValue(bigValue.plus(step).toString(), true);
+    } catch (e) {
+      // event.target.value is not a number — do nothing
+    }
+  };
+}
+
 const widgetKeyDownHandlers = {
-  up: function up(event) {
-    event.preventDefault();
-
-    // TODO: deal with float prescision shenanigans
-    const step = event.shiftKey ? 1 : 0.1;
-    const newValue = parseFloat(event.target.value) + step;
-
-    this.updateValue(newValue.toString(10), true);
-  },
-  down: function down(event) {
-    event.preventDefault();
-
-    const step = event.shiftKey ? 1 : 0.1;
-    const newValue = parseFloat(event.target.value) - step;
-
-    this.updateValue(newValue.toString(10), true);
-  },
+  up: createArrowKeyHandler(1, 0.1),
+  down: createArrowKeyHandler(-1, -0.1),
 };
 
 const widgetNumberKeysDownHandlers = {
