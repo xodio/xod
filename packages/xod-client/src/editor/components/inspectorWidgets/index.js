@@ -53,6 +53,17 @@ const submitOnEnter = {
   },
 };
 
+const submitAndSelectOnEnter = {
+  [KEYCODE.ENTER]: function enter(event) {
+    event.preventDefault();
+    const input = event.target;
+    this.commit(() => {
+      input.focus();
+      input.select();
+    });
+  },
+};
+
 const WIDGET_MAPPING = {
   [WIDGET_TYPE.BOOLEAN]: {
     component: BoolWidget,
@@ -62,19 +73,22 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.NUMBER]: {
     component: NumberWidget,
     dataType: PIN_TYPE.NUMBER,
-    keyDownHandlers: R.merge(widgetNumberKeysDownHandlers, submitOnEnter),
+    keyDownHandlers: R.merge(
+      widgetNumberKeysDownHandlers,
+      submitAndSelectOnEnter
+    ),
     normalizeValue: normalizeNumber,
   },
   [WIDGET_TYPE.BYTE]: {
     component: NumberWidget,
     dataType: PIN_TYPE.BYTE,
-    keyDownHandlers: submitOnEnter,
+    keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizeByte,
   },
   [WIDGET_TYPE.STRING]: {
     component: StringWidget,
     dataType: PIN_TYPE.STRING,
-    keyDownHandlers: submitOnEnter,
+    keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: R.pipe(unquote, enquote),
   },
   [WIDGET_TYPE.LABEL]: {
@@ -98,7 +112,7 @@ const WIDGET_MAPPING = {
   [WIDGET_TYPE.PORT]: {
     component: NumberWidget,
     dataType: PIN_TYPE.PORT,
-    keyDownHandlers: submitOnEnter,
+    keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizePort,
   },
 };

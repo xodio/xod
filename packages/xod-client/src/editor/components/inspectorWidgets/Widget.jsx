@@ -66,7 +66,7 @@ class Widget extends React.Component {
     this.setState({ value }, commitCallback);
   }
 
-  commit() {
+  commit(valueUpdateCallback = noop) {
     // Prevent of commiting widgets without changes provided by User
     // E.G.
     // User changed one of few widgets, but all of them will be
@@ -81,16 +81,14 @@ class Widget extends React.Component {
     // (`13` -> `D13` in Port input)
     // Or to reset invalid data to a default
     // (`blabla` -> `0` in Number input)
-    this.setState({ value: parsedValue });
+    this.setState({ value: parsedValue }, valueUpdateCallback);
 
     // Prevent of commiting value twice on blur and on unmnount in widgets
     // that have a differences in `state.value` and `parsedValue`.
     // E.G.
     // Strings are represented in the inputs just as string 'hello'
     // But parsed value will be '"hello"'.
-    if (parsedValue === this.lastCommitedValue) {
-      return;
-    }
+    if (parsedValue === this.lastCommitedValue) return;
 
     // Store last commited value to avoid commiting the same value twice.
     this.lastCommitedValue = parsedValue;
