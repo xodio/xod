@@ -2,7 +2,6 @@ import * as R from 'ramda';
 import { unquote, enquote } from 'xod-func-tools';
 import { PIN_TYPE, isGenericType } from 'xod-project';
 
-import HintWidget from './HintWidget';
 import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
 import PulseWidget from './pinWidgets/PulsePinWidget';
@@ -11,8 +10,6 @@ import GenericPinWidget from './pinWidgets/GenericPinWidget';
 import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
-import NodeSpecializationWidget from './NodeSpecializationWidget';
-import Widget from './Widget';
 
 import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
@@ -138,16 +135,19 @@ export const getNodeWidgetConfig = R.cond([
   [R.T, getDisabledWidget],
 ]);
 
-export default {
-  HintWidget,
-  BoolWidget,
-  NumberWidget,
-  PulseWidget,
-  StringWidget,
-  DescriptionWidget,
-  LabelWidget,
-  NodeSpecializationWidget,
-  Widget,
+export { default as Widget } from './Widget';
 
-  WIDGET_MAPPING,
-};
+export { default as HintWidget } from './HintWidget';
+export { default as BoolWidget } from './pinWidgets/BoolPinWidget';
+export { default as NumberWidget } from './pinWidgets/NumberPinWidget';
+export { default as PulseWidget } from './pinWidgets/PulsePinWidget';
+export { default as StringWidget } from './pinWidgets/StringPinWidget';
+export { default as GenericPinWidget } from './pinWidgets/GenericPinWidget';
+export {
+  default as DisabledInputWidget,
+} from './pinWidgets/DisabledInputWidget';
+export { default as DescriptionWidget } from './DescriptionWidget';
+export { default as LabelWidget } from './LabelWidget';
+export {
+  default as NodeSpecializationWidget,
+} from './NodeSpecializationWidget';

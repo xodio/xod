@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
 import { WIDGET_TYPE } from '../constants';
-import { getNodeWidgetConfig } from './inspectorWidgets';
-import Widget from './inspectorWidgets/Widget';
+import { Widget, getNodeWidgetConfig } from './inspectorWidgets';
 
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 

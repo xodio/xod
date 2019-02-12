@@ -6,8 +6,12 @@ import { WIDGET_TYPE } from '../constants';
 import { NODE_PROPERTY_KIND, NODE_PROPERTY_KEY } from '../../project/constants';
 
 import PinWidgetsGroup from './PinWidgetsGroup';
-import Widgets, { getNodeWidgetConfig } from './inspectorWidgets';
-import Widget from './inspectorWidgets/Widget';
+import {
+  Widget,
+  HintWidget,
+  NodeSpecializationWidget,
+  getNodeWidgetConfig,
+} from './inspectorWidgets';
 
 import { RenderableNode } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
@@ -34,7 +38,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
     );
 
   const DeadNodeMessage = node.dead ? (
-    <Widgets.HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
+    <HintWidget text={MESSAGES.PATCH_FOR_NODE_IS_MISSING} />
   ) : null;
 
   return (
@@ -45,7 +49,7 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
         <span className="nodeName">{baseName}</span>
       </div>
 
-      <Widgets.NodeSpecializationWidget
+      <NodeSpecializationWidget
         nodeId={nodeId}
         specializations={node.specializations}
         onChange={onNodeSpecializationChanged}

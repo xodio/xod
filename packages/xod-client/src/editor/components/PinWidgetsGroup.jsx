@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import * as XP from 'xod-project';
 
 import { NODE_PROPERTY_KIND } from '../../project/constants';
-import { getNodeWidgetConfig } from './inspectorWidgets';
-import Widget from './inspectorWidgets/Widget';
+import { Widget, getNodeWidgetConfig } from './inspectorWidgets';
 
 const PinWidgetsGroup = ({ node, onPropUpdate }) =>
   R.compose(
