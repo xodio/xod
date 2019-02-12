@@ -29,7 +29,7 @@ const widgetKeyDownHandlers = {
     const step = event.shiftKey ? 1 : 0.1;
     const newValue = parseFloat(event.target.value) + step;
 
-    this.updateValue(newValue.toString(10));
+    this.updateValue(newValue.toString(10), true);
   },
   down: function down(event) {
     event.preventDefault();
@@ -37,7 +37,7 @@ const widgetKeyDownHandlers = {
     const step = event.shiftKey ? 1 : 0.1;
     const newValue = parseFloat(event.target.value) - step;
 
-    this.updateValue(newValue.toString(10));
+    this.updateValue(newValue.toString(10), true);
   },
 };
 
