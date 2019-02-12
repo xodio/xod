@@ -39,15 +39,11 @@ const widgetKeyDownHandlers = {
 
     this.updateValue(newValue.toString(10));
   },
-  dot: function dot(event) {
-    this.updateValue(this.parseValue(`${event.target.value}.`));
-  },
 };
 
 const widgetNumberKeysDownHandlers = {
   [KEYCODE.UP]: widgetKeyDownHandlers.up,
   [KEYCODE.DOWN]: widgetKeyDownHandlers.down,
-  [KEYCODE.COMMA]: widgetKeyDownHandlers.dot,
 };
 
 const submitOnEnter = {
