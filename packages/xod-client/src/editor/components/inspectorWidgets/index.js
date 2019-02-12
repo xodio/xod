@@ -9,7 +9,6 @@ import PulseWidget from './pinWidgets/PulsePinWidget';
 import StringWidget from './pinWidgets/StringPinWidget';
 import GenericPinWidget from './pinWidgets/GenericPinWidget';
 import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
-import IOLabelWidget from './IOLabelWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
 import NodeSpecializationWidget from './NodeSpecializationWidget';
@@ -126,7 +125,6 @@ export default {
   NumberWidget,
   PulseWidget,
   StringWidget,
-  IOLabelWidget,
   DescriptionWidget,
   LabelWidget,
   NodeSpecializationWidget,
