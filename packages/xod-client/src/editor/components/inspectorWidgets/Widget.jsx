@@ -117,16 +117,14 @@ class Widget extends React.Component {
     );
 
     return (
-      <div className="InspectorWidget">
-        <Component
-          {...restProps}
-          elementId={`widget_${this.props.keyName}`}
-          value={this.state.value}
-          onBlur={this.onBlur}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-        />
-      </div>
+      <Component
+        {...restProps}
+        elementId={`widget_${this.props.keyName}`}
+        value={this.state.value}
+        onBlur={this.onBlur}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+      />
     );
   }
 }
