@@ -46,7 +46,7 @@ export const getPatchForHelpbox = createSelector(
     );
   }
 );
-export const getPatchForQuickHelp = createSelector(
+export const getPatchOfSelectedNodeForQuickHelp = createSelector(
   [Project.getProject, Editor.getSelection, Project.getCurrentPatchNodes],
   (project, editorSelection, currentPatchNodes) =>
     R.compose(

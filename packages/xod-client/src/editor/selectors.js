@@ -65,6 +65,12 @@ export const getPreparedTabs = createSelector(
   }
 );
 
+// :: State -> Nullable PatchPath
+export const getEditingAttachmentPatchPath = createSelector(
+  [getCurrentTab],
+  foldMaybe(null, R.propOr(null, 'editedAttachment'))
+);
+
 // selection
 
 export const getSelection = R.pipe(
