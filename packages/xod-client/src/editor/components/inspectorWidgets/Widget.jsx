@@ -135,7 +135,6 @@ class Widget extends React.Component {
           elementId={`widget_${this.props.keyName}`}
           value={this.state.value}
           disabled={this.isDisabled()}
-          focused={this.props.focused && !this.isDisabled()}
           onBlur={this.onBlur}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
@@ -156,7 +155,6 @@ Widget.propTypes = {
     PropTypes.array,
   ]),
   isConnected: PropTypes.bool,
-  focused: PropTypes.bool,
   component: PropTypes.func.isRequired, // a `class` which we're making to extend React.Component is also a function
   keyDownHandlers: PropTypes.objectOf(PropTypes.func),
   commitOnChange: PropTypes.bool,
@@ -168,7 +166,6 @@ Widget.propTypes = {
 Widget.defaultProps = {
   className: '',
   value: '',
-  focused: false,
   isConnected: false,
   keyDownHandlers: {},
   normalizeValue: R.identity,
