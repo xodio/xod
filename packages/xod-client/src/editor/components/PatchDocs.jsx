@@ -12,11 +12,11 @@ import { SLOT_SIZE } from '../../project/nodeLayout';
 
 const NODE_POSITION_IN_PREVIEW = {
   x: 3,
-  y: 20, // compensate for labels outside the node
+  y: 10, // compensate for bound values outside the node
 };
 
 const MAX_NODE_WIDTH = 245 - NODE_POSITION_IN_PREVIEW.x * 2;
-const NODE_PREVIEW_HEIGHT = 93;
+const NODE_PREVIEW_HEIGHT = 85;
 
 const formatPinType = R.when(XP.isGenericType, type => `generic ${type}`);
 const getPinTypeClassName = R.when(XP.isGenericType, R.always('generic'));
@@ -152,13 +152,6 @@ const PatchDocs = ({ patch, minimal }) => {
 
   const distanceBetweenPins = minimal ? 0 : scaleFactor * SLOT_SIZE.WIDTH - 1;
 
-  // because we never draw labels for terminal nodes
-  const position = R.when(
-    () => XP.isTerminalPatchPath(nodeType),
-    R.assoc('y', XP.isInputTerminalPath(nodeType) ? 32 : 8),
-    NODE_POSITION_IN_PREVIEW
-  );
-
   const deprecatedReason = XP.getDeprecationReason(patch);
 
   const cls = cn('PatchDocs', {
@@ -200,10 +193,16 @@ const PatchDocs = ({ patch, minimal }) => {
             width={scaledNodeWidth}
             height={scaledNodePreviewHeight}
           >
-            <rect className="bg" width="100%" height="100%" />
-            <g transform={`scale(${scaleFactor})`}>
-              <Node {...nodeProps} position={position} noEvents />
-            </g>
+            <svg x="0.5" y="0.5">
+              <rect className="bg" width="100%" height="100%" />
+              <g transform={`scale(${scaleFactor})`}>
+                <Node
+                  {...nodeProps}
+                  position={NODE_POSITION_IN_PREVIEW}
+                  noEvents
+                />
+              </g>
+            </svg>
           </svg>
         )}
       </div>

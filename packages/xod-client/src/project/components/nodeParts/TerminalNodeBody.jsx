@@ -21,7 +21,7 @@ const TerminalNodeBody = props => {
   );
 
   return (
-    <g>
+    <g className="terminal-node">
       <circle className="body" {...circleProps} />
       <NodeLabel
         text={terminalLabel}

@@ -22,7 +22,7 @@
   .symbol {
     fill: $color-pin-fill;
     stroke: $color-datatype-custom;
-    stroke-width: 2px;
+    stroke-width: 1.5px;
 
     &.t1, &.t2, &.t3 {
       @include symbol-coloring($color-datatype-generic);
@@ -71,9 +71,12 @@
   }
 
   .generic-pin-marker {
-    fill: none;
-    stroke: $color-datatype-generic;
-    stroke-width: 2px;
+    fill: $color-datatype-generic;
+    stroke-width: 0;
+  }
+
+  .hotspotHelper {
+    fill: transparent;
   }
 
   .linkingHighlight {
@@ -100,7 +103,7 @@
 }
 
 .PinOverlay {
-  .symbol {
+  .linkingHighlight {
     fill: white;
     stroke: white;
     stroke-width: 2px;
@@ -108,14 +111,13 @@
   }
 
   &:hover {
-    .symbol {
+    .linkingHighlight {
       opacity: 0.5;
     }
   }
 
-  .linkingHighlight {
-    display: none;
-    opacity: 0; // just acts as a hotspot
+  .hotspot {
+    fill: transparent;
   }
 
   &.is-accepting-links, &.is-selected {

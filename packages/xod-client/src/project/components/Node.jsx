@@ -6,6 +6,7 @@ import * as XP from 'xod-project';
 
 import Pin from './Pin';
 import PinLabel from './PinLabel';
+import PinValue from './PinValue';
 import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
@@ -207,12 +208,11 @@ class Node extends React.Component {
             <g className={pinsCls} id={`nodePins_${id}`}>
               {pinsArr.map(pin => (
                 <g key={pin.key}>
+                  {pin.isConnected || XP.isOutputPin(pin) ? null : (
+                    <PinValue {...pin} key={`pinValue_${pin.key}`} />
+                  )}
                   {isTerminalNode ? null : (
-                    <PinLabel
-                      {...pin}
-                      keyName={pin.key}
-                      key={`pinlabel_${pin.key}`}
-                    />
+                    <PinLabel {...pin} key={`pinlabel_${pin.key}`} />
                   )}
                   <Pin
                     {...pin}

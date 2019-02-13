@@ -38,7 +38,7 @@ const BusNodeBody = ({ type, size, pins, label }) => {
   )(pins);
 
   return (
-    <g>
+    <g className="bus-node">
       <polygon className="body" {...polygonProps} />
       <NodeLabel
         text={label}
