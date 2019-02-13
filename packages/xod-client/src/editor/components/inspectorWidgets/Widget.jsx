@@ -1,199 +1,160 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../../utils/constants';
-import { noop } from '../../../utils/ramda';
 import deepSCU from '../../../utils/deepSCU';
-import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
-export default function composeWidget(Component, widgetProps) {
-  const commonKeyDownHandlers = {
-    [KEYCODE.ESCAPE]: function escape(event) {
-      if (this.state.value === this.props.value) {
-        event.target.blur();
-      } else {
-        this.updateValue(this.props.value);
-      }
-    },
-  };
-
-  class Widget extends React.Component {
-    constructor(props) {
-      super(props);
-      this.type = widgetProps.type;
-      this.commitOnChange = widgetProps.commitOnChange;
-      this.normalizeValue = widgetProps.normalizeValue || R.identity;
-
-      const val = String(props.value);
-      this.state = {
-        value: val,
-      };
-
-      // Store latest commited value (or parsed value)
-      // to avoid double dispatching of updating property
-      this.lastCommitedValue = val;
-
-      this.keyDownHandlers = R.compose(
-        R.map(fn => fn.bind(this)),
-        R.merge(commonKeyDownHandlers),
-        R.propOr({}, 'keyDownHandlers')
-      )(widgetProps);
-
-      this.onChange = this.onChange.bind(this);
-      this.onFocus = this.onFocus.bind(this);
-      this.onBlur = this.onBlur.bind(this);
-      this.onKeyDown = this.onKeyDown.bind(this);
-
-      this.shouldComponentUpdate = deepSCU.bind(this);
+const commonKeyDownHandlers = {
+  [KEYCODE.ESCAPE]: function escape(event) {
+    if (this.state.value === this.props.value) {
+      event.target.blur();
+    } else {
+      this.updateValue(this.props.value);
     }
+  },
+};
 
-    componentWillUnmount() {
-      this.commit();
-    }
+class Widget extends React.Component {
+  constructor(props) {
+    super(props);
 
-    onFocus() {
-      this.props.onFocusChanged();
-    }
-    onBlur() {
-      this.commit();
-    }
-    onChange(value) {
-      this.updateValue(value);
-    }
-    onKeyDown(event) {
-      const keycode = event.keycode || event.which;
-      if (this.keyDownHandlers[keycode]) {
-        this.keyDownHandlers[keycode].call(this, event);
-      }
-    }
+    const { value, keyDownHandlers } = props;
 
-    isDisabled() {
-      return (
-        this.props.kind === NODE_PROPERTY_KIND.PIN && this.props.isConnected
-      );
-    }
+    this.state = {
+      value,
+    };
 
-    updateValue(value) {
-      const commitCallback = this.commitOnChange
-        ? this.commit.bind(this)
-        : noop;
+    // Store latest commited value (or parsed value)
+    // to avoid double dispatching of updating property
+    this.lastCommitedValue = value;
 
-      this.setState({ value }, commitCallback);
-    }
+    this.keyDownHandlers = R.compose(
+      R.map(fn => fn.bind(this)),
+      R.merge(commonKeyDownHandlers)
+    )(keyDownHandlers);
 
-    commit() {
-      // Prevent of commiting widgets without changes provided by User
-      // E.G.
-      // User changed one of few widgets, but all of them will be
-      // unmnounted, so they try to commit values. Commit function parses
-      // and converts value into literal, so it could differ from initial value.
-      // This check will avoid unwanted commits.
-      if (this.state.value === this.lastCommitedValue) return;
+    this.onChange = this.onChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
 
-      const parsedValue = this.normalizeValue(this.state.value);
+    this.shouldComponentUpdate = deepSCU.bind(this);
+  }
 
-      // Prevent of commiting value twice on blur and on unmnount in widgets
-      // that have a differences in `state.value` and `parsedValue`.
-      // E.G.
-      // Strings are represented in the inputs just as string 'hello'
-      // But parsed value will be '"hello"'.
-      if (parsedValue === this.lastCommitedValue) {
-        // New parsed value could be dropped to default value if User
-        // typed some wrong data. To avoid keep wrong data in the input
-        // we have to update state of the component.
-        // E.G.
-        // Number widget has value: `0`
-        // User typed: `bla-bla-bla` and it's not valid for Number type
-        // We have to drop it back to the `0` value.
-        this.setState({
-          value: this.lastCommitedValue,
-        });
-        return;
-      }
+  componentWillUnmount() {
+    this.commit();
+  }
 
-      // Store last commited value to avoid commiting the same value twice.
-      this.lastCommitedValue = parsedValue;
-
-      this.props.onPropUpdate(
-        this.props.entityId,
-        this.props.kind,
-        this.props.keyName,
-        parsedValue
-      );
-    }
-
-    render() {
-      const elementId = `widget_${this.props.keyName}`;
-      return (
-        <div className="InspectorWidget">
-          <Component
-            elementId={elementId}
-            label={this.props.label}
-            title={this.props.title}
-            normalizedLabel={this.props.normalizedLabel}
-            isConnected={this.props.isConnected}
-            isInvalid={this.props.isInvalid}
-            deducedType={this.props.deducedType}
-            isLastVariadicGroup={this.props.isLastVariadicGroup}
-            isBindable={this.props.isBindable}
-            direction={this.props.direction}
-            dataType={this.type}
-            value={this.state.value}
-            disabled={this.isDisabled()}
-            focused={this.props.focused && !this.isDisabled()}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onChange={this.onChange}
-            onKeyDown={this.onKeyDown}
-          />
-        </div>
-      );
+  onBlur() {
+    this.commit();
+  }
+  onChange(value) {
+    this.updateValue(value);
+  }
+  onKeyDown(event) {
+    const keycode = event.keycode || event.which;
+    if (this.keyDownHandlers[keycode]) {
+      this.keyDownHandlers[keycode].call(this, event);
     }
   }
 
-  Widget.propTypes = {
-    entityId: PropTypes.string.isRequired,
-    keyName: PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
-    kind: PropTypes.string,
-    label: PropTypes.string,
-    title: PropTypes.string,
-    normalizedLabel: PropTypes.string,
-    direction: PropTypes.string,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool,
-      PropTypes.array,
-    ]),
-    isConnected: PropTypes.bool,
-    isLastVariadicGroup: PropTypes.bool,
-    isBindable: PropTypes.bool,
-    isInvalid: PropTypes.bool,
-    deducedType: PropTypes.object,
-    focused: PropTypes.bool,
-    // dispatchers
-    onPropUpdate: PropTypes.func.isRequired,
-    onFocusChanged: PropTypes.func,
-  };
+  updateValue(value, forceCommit = false) {
+    const commitCallback =
+      this.props.commitOnChange || forceCommit ? this.commit.bind(this) : noop;
 
-  Widget.defaultProps = {
-    className: '',
-    label: 'Unknown property',
-    normalizedLabel: '',
-    value: '',
-    title: '',
-    focused: false,
-    isConnected: false,
-    isLastVariadicGroup: false,
-    isBindable: true,
-    isInvalid: false,
-    deducedType: null,
-    direction: '',
-    onPropUpdate: noop,
-    onPinModeSwitch: noop,
-    onFocusChanged: noop,
-  };
+    this.setState({ value }, commitCallback);
+  }
 
-  return Widget;
+  commit(valueUpdateCallback = noop) {
+    // Prevent of commiting widgets without changes provided by User
+    // E.G.
+    // User changed one of few widgets, but all of them will be
+    // unmnounted, so they try to commit values. Commit function parses
+    // and converts value into literal, so it could differ from initial value.
+    // This check will avoid unwanted commits.
+    if (this.state.value === this.lastCommitedValue) return;
+
+    const parsedValue = this.props.normalizeValue(this.state.value);
+
+    // To show a "canonical" form of a value after commiting
+    // (`13` -> `D13` in Port input)
+    // Or to reset invalid data to a default
+    // (`blabla` -> `0` in Number input)
+    this.setState({ value: parsedValue }, valueUpdateCallback);
+
+    // Prevent of commiting value twice on blur and on unmnount in widgets
+    // that have a differences in `state.value` and `parsedValue`.
+    // E.G.
+    // Strings are represented in the inputs just as string 'hello'
+    // But parsed value will be '"hello"'.
+    if (parsedValue === this.lastCommitedValue) return;
+
+    // Store last commited value to avoid commiting the same value twice.
+    this.lastCommitedValue = parsedValue;
+
+    this.props.onPropUpdate(
+      this.props.entityId,
+      this.props.kind,
+      this.props.keyName,
+      parsedValue
+    );
+  }
+
+  render() {
+    const Component = this.props.component;
+
+    const restProps = R.omit(
+      [
+        'children',
+        'component',
+        'onPropUpdate',
+        'normalizeValue',
+        'commitOnChange',
+        'keyDownHandlers',
+      ],
+      this.props
+    );
+
+    return (
+      <Component
+        {...restProps}
+        elementId={`widget_${this.props.keyName}`}
+        value={this.state.value}
+        onBlur={this.onBlur}
+        onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+      />
+    );
+  }
 }
+
+Widget.propTypes = {
+  entityId: PropTypes.string.isRequired,
+  keyName: PropTypes.string.isRequired, // one of NODE_PROPERTY_KEY or pin key
+  kind: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool,
+    PropTypes.array,
+  ]),
+  component: PropTypes.func.isRequired, // a `class` which we're making to extend React.Component is also a function
+  keyDownHandlers: PropTypes.objectOf(PropTypes.func),
+  commitOnChange: PropTypes.bool,
+  normalizeValue: PropTypes.func,
+  // dispatchers
+  onPropUpdate: PropTypes.func.isRequired,
+};
+
+Widget.defaultProps = {
+  className: '',
+  value: '',
+  isConnected: false,
+  keyDownHandlers: {},
+  normalizeValue: R.identity,
+  onPropUpdate: noop,
+  onPinModeSwitch: noop,
+};
+
+export default Widget;

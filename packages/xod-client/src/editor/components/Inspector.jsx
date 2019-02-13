@@ -10,7 +10,7 @@ import { SELECTION_ENTITY_TYPE, PANEL_IDS, SIDEBAR_IDS } from '../constants';
 import SidebarPanel from '../components/SidebarPanel';
 import NodeInspector from './NodeInspector';
 import PatchInspector from './PatchInspector';
-import Widgets from './inspectorWidgets';
+import { HintWidget } from './inspectorWidgets';
 import { noop, isMany, isOne } from '../../utils/ramda';
 
 import { RenderableSelection } from '../../types';
@@ -24,7 +24,7 @@ import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 const InspectorMessage = ({ text }) => (
   <div className="Inspector-content">
-    <Widgets.HintWidget text={text} />
+    <HintWidget text={text} />
   </div>
 );
 

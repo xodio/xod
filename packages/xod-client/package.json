@@ -19,6 +19,7 @@
     "lib": "./dist"
   },
   "dependencies": {
+    "big.js": "^5.2.2",
     "classnames": "^2.2.5",
     "codemirror": "^5.31.0",
     "escape-string-regexp": "^1.0.5",
