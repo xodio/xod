@@ -23,6 +23,46 @@
       },
       "path": "@/from-bus"
     },
+    "@/input-boolean": {
+      "description": "Input terminal node. Adds a new boolean input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-boolean"
+    },
+    "@/input-byte": {
+      "description": "Input terminal node. Adds a new byte input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-byte"
+    },
+    "@/input-dead": {
+      "description": "This terminal should not be visible to an end-user.",
+      "path": "@/input-dead"
+    },
+    "@/input-number": {
+      "description": "Input terminal node. Adds a new number input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-number"
+    },
+    "@/input-port": {
+      "description": "Input terminal node. Adds a new port input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-port"
+    },
+    "@/input-pulse": {
+      "description": "Input terminal node. Adds a new pulse input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-pulse"
+    },
+    "@/input-string": {
+      "description": "Input terminal node. Adds a new string input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
+      "path": "@/input-string"
+    },
+    "@/input-t1": {
+      "description": "Generic input terminal node. Adds a new input pin of a generic type `t1` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t1` is deduced from values and links bound to the created inputs of type `t1`.",
+      "path": "@/input-t1"
+    },
+    "@/input-t2": {
+      "description": "Generic input terminal node. Adds a new input pin of a generic type `t2` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t2` is deduced from values and links bound to the created inputs of type `t2`.",
+      "path": "@/input-t2"
+    },
+    "@/input-t3": {
+      "description": "Generic input terminal node. Adds a new input pin of a generic type `t3` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t3` is deduced from values and links bound to the created inputs of type `t3`.",
+      "path": "@/input-t3"
+    },
     "@/jumper": {
       "description": "A simple no-operation node. Use jumpers to reflow links making them easier to read",
       "links": {
@@ -62,8 +102,49 @@
       "description": "Tells XOD that the patch containing this node is implemented in C++ rather than as a composition of other nodes. All nodes other than terminals and other special markers are ignored",
       "path": "@/not-implemented-in-xod"
     },
+    "@/output-boolean": {
+      "description": "Output terminal node. Adds a new boolean output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-boolean"
+    },
+    "@/output-byte": {
+      "description": "Output terminal node. Adds a new byte output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-byte"
+    },
+    "@/output-dead": {
+      "description": "This terminal should not be visible to end-user.",
+      "path": "@/output-dead"
+    },
+    "@/output-number": {
+      "description": "Output terminal node. Adds a new number output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-number"
+    },
+    "@/output-port": {
+      "description": "Output terminal node. Adds a new port output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-port"
+    },
+    "@/output-pulse": {
+      "description": "Output terminal node. Adds a new pulse output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-pulse"
+    },
     "@/output-self": {
+      "description": "Output terminal marker node. A patch containing this node defines a new custom type with the name matching the patch name. The internal data layout must be described in C++ using the `not-implemented-in-xod` node. Using this marker leads to automatic creation of input-xxx and output-xxx terminal patch nodes next to the original patch.",
       "path": "@/output-self"
+    },
+    "@/output-string": {
+      "description": "Output terminal node. Adds a new string output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
+      "path": "@/output-string"
+    },
+    "@/output-t1": {
+      "description": "Generic output terminal node. Adds a new output pin of a generic type `t1` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t1` is deduced from values and links bound to input pins of type `t1`.",
+      "path": "@/output-t1"
+    },
+    "@/output-t2": {
+      "description": "Generic output terminal node. Adds a new output pin of a generic type `t2` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t2` is deduced from values and links bound to input pins of type `t2`.",
+      "path": "@/output-t2"
+    },
+    "@/output-t3": {
+      "description": "Generic output terminal node. Adds a new output pin of a generic type `t3` to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. Placing this node onto a patch node makes it generic. The concrete type for `t3` is deduced from values and links bound to input pins of type `t3`.",
+      "path": "@/output-t3"
     },
     "@/tabtest": {
       "description": "A marker node which defines a tabular test (tabtest) for the patch node. A tabtest is a kind of unit test expressed as a send-in/check-out table.",
