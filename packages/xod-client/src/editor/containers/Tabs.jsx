@@ -3,10 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  SortableContainer as sortableContainer,
-  SortableElement as sortableElement,
-} from 'react-sortable-hoc';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 
 import * as Actions from '../actions';
 import * as Selectors from '../selectors';
@@ -53,20 +50,24 @@ class Tabs extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onSwitchTab = this.onSwitchTab.bind(this);
+    this.onTabClick = this.onTabClick.bind(this);
     this.onCloseTab = this.onCloseTab.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
 
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
-  onSwitchTab(tabId) {
-    // a little hack to correctly handle onBlur etc events
-    setTimeout(() => this.props.actions.switchTab(tabId), 0);
+  onTabClick(tabId, event) {
+    if (event.button === 1) {
+      this.onCloseTab(tabId);
+    } else {
+      // a little hack to correctly handle onBlur etc events
+      setTimeout(() => this.props.actions.switchTab(tabId), 0);
+    }
   }
 
   onCloseTab(tabId) {
-    // a little hack to correctly handle onBlur etc events, same as in onSwitchTab
+    // a little hack to correctly handle onBlur etc events, same as in onTabClick
     setTimeout(() => this.props.actions.closeTab(tabId), 0);
   }
 
@@ -111,7 +112,7 @@ class Tabs extends React.Component {
           lockToContainerEdges
           lockOffset="-5%"
           helperClass="is-sorting"
-          onClick={this.onSwitchTab}
+          onClick={this.onTabClick}
           onClose={this.onCloseTab}
         />
       </div>

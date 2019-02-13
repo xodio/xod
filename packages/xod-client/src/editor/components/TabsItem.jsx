@@ -8,7 +8,7 @@ const TabsItem = ({ data, onClick, onClose }) => {
     'is-active': data.isActive,
   });
 
-  const handleClick = () => onClick(data.id);
+  const handleClick = event => onClick(data.id, event);
   const handleClose = event => {
     event.stopPropagation();
     onClose(data.id);
