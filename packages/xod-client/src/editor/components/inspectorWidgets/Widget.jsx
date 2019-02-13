@@ -1,11 +1,10 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../../utils/constants';
-import { noop } from '../../../utils/ramda';
 import deepSCU from '../../../utils/deepSCU';
-import { NODE_PROPERTY_KIND } from '../../../project/constants';
 
 const commonKeyDownHandlers = {
   [KEYCODE.ESCAPE]: function escape(event) {
@@ -58,10 +57,6 @@ class Widget extends React.Component {
     if (this.keyDownHandlers[keycode]) {
       this.keyDownHandlers[keycode].call(this, event);
     }
-  }
-
-  isDisabled() {
-    return this.props.kind === NODE_PROPERTY_KIND.PIN && this.props.isConnected;
   }
 
   updateValue(value) {
@@ -134,7 +129,6 @@ class Widget extends React.Component {
           {...restProps}
           elementId={`widget_${this.props.keyName}`}
           value={this.state.value}
-          disabled={this.isDisabled()}
           onBlur={this.onBlur}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
@@ -154,7 +148,6 @@ Widget.propTypes = {
     PropTypes.bool,
     PropTypes.array,
   ]),
-  isConnected: PropTypes.bool,
   component: PropTypes.func.isRequired, // a `class` which we're making to extend React.Component is also a function
   keyDownHandlers: PropTypes.objectOf(PropTypes.func),
   commitOnChange: PropTypes.bool,
