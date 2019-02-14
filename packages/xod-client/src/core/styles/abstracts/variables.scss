@@ -14,7 +14,7 @@ $color-success: #579205;
 $color-canvas-background: $dark-deep;
 $color-canvas-background-gridlines: $dark-light;
 $color-canvas-face: #646464;
-$color-canvas-face-light: #A7A7A7;
+$color-canvas-face-light: $chalk-light;
 $color-canvas-face-text: #a7a7a7;
 $color-canvas-selected: #4ed5ed;
 $color-highlight: #eeeeee;
@@ -30,7 +30,7 @@ $color-datatype-custom: $terracotta;
 $color-datatype-dead: $error;
 
 $color-node-fill: #222222;
-$color-node-outline: #bbbbbb;
+$color-node-outline: $light-grey-bright;
 $color-pin-fill: #262626;
 
 $color-watch-node-text: $color-canvas-face-text;
@@ -44,7 +44,7 @@ $color-watch-node-highlight-outline: #bce88e;
 $color-comment-text: #d0ccc0;
 $color-comment-handle: #605f5b;
 
-$color-pinlabel: $color-canvas-face-text; //#8b8b8b;
+$color-pinlabel: $grey-bright;
 
 $color-toolbar-background: #b3b3b3;
 $color-toolbar-foreground: #000;

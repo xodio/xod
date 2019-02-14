@@ -12,35 +12,6 @@ import {
   PIN_HIGHLIGHT_RADIUS,
 } from '../nodeLayout';
 
-/**
- * An outline of half of the circle, that indicated that Pin is generic
- * even it has a deduced type.
- */
-// :: Number -> Number -> Boolean -> ReactElement
-const genericPinMarker = (pinCircleCenter, output) => {
-  // To avoid using complex paths we draw just a circle
-  // but draw only half of the outline by CSS.
-
-  // To do it with CSS we have to:
-  //  1. Calculate the length of the circle (circumference).
-  const circumference = Math.PI * PIN_RADIUS * 2;
-  //  2. Calculate distance beetween dashes
-  const dasharray = 0.5 * circumference;
-  //  3. And then set `dasharray` to draw a half of outline
-  //  4. And set `dashoffset` to draw another half (for output Pin)
-  return (
-    <circle
-      className="generic-pin-marker"
-      {...pinCircleCenter}
-      r={PIN_RADIUS}
-      style={{
-        strokeDashoffset: output ? dasharray : 0,
-        strokeDasharray: dasharray,
-      }}
-    />
-  );
-};
-
 const Pin = props => {
   const isOutput = props.direction === PIN_DIRECTION.OUTPUT;
 
@@ -104,9 +75,9 @@ const Pin = props => {
           r={PIN_INNER_RADIUS}
         />
       ) : null}
-      {isGenericType(props.type)
-        ? genericPinMarker(pinCircleCenter, isOutput)
-        : null}
+      {isGenericType(props.type) ? (
+        <circle className="generic-pin-marker" {...pinCircleCenter} r={1} />
+      ) : null}
       {variadicDots}
     </g>
   );

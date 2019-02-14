@@ -26,10 +26,13 @@ const PatchSVG = ({
     ref={svgRef}
     {...restProps}
   >
-    <defs>
-      <DraggedNodeShadowFilter />
-    </defs>
-    {children}
+    {/* Nested svg to compensate bluring of strokes */}
+    <svg xmlns="http://www.w3.org/2000/svg" x="0.5" y="0.5">
+      <defs>
+        <DraggedNodeShadowFilter />
+      </defs>
+      {children}
+    </svg>
   </svg>
 );
 

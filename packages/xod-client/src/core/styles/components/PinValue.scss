@@ -1,0 +1,24 @@
+.PinValue {
+  font-family: $font-family-condensed;
+  font-weight: 400;
+  font-size: 11px;
+  color: $color-datatype-generic;
+  user-select: none;
+
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  line-height: 1;
+
+  // For terminals:
+  &.string { color: $color-datatype-string; }
+  &.number { color: $color-datatype-number; }
+  &.boolean { color: $color-datatype-boolean; }
+  &.pulse { color: $color-datatype-pulse; }
+  &.byte { color: $color-datatype-byte; }
+  &.port { color: $color-datatype-port; }
+  &.dead, &.conflicting { color: $color-datatype-dead; }
+  &.self, &.custom { color: $color-datatype-custom; }
+}

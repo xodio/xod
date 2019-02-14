@@ -3,14 +3,20 @@ import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
 import { foldMaybe } from 'xod-func-tools';
 
-const BASE_SIZE_UNIT = 17;
+const BASE_SIZE_UNIT = 5;
+
+export const NODE_HEIGHT = BASE_SIZE_UNIT * 13;
 
 export const SLOT_SIZE = {
-  WIDTH: BASE_SIZE_UNIT * 2,
-  HEIGHT: BASE_SIZE_UNIT * 6,
+  WIDTH: BASE_SIZE_UNIT * 8 + 4,
+  HEIGHT: NODE_HEIGHT + BASE_SIZE_UNIT * 8,
 };
 
-export const NODE_HEIGHT = BASE_SIZE_UNIT * 3;
+const PINVALUE_GAP = 4;
+export const PINVALUE_WIDTH = SLOT_SIZE.WIDTH - PINVALUE_GAP / 2;
+
+const PINLABEL_GAP = 8;
+export const PINLABEL_WIDTH = SLOT_SIZE.WIDTH - PINLABEL_GAP / 2;
 
 export const DEFAULT_PANNING_OFFSET = {
   x: NODE_HEIGHT,
@@ -21,18 +27,22 @@ export const LINK_HOTSPOT_SIZE = {
   WIDTH: 8,
 };
 
-export const NODE_CORNER_RADIUS = 5;
+export const NODE_CORNER_RADIUS = 3;
 
 export const RESIZE_HANDLE_SIZE = 12;
+export const VARIADIC_HANDLE_WIDTH = 4;
+export const VARIADIC_HANDLE_HEIGHT = BASE_SIZE_UNIT * 5;
 
-export const PIN_RADIUS = 6;
+export const PIN_RADIUS = 4;
 export const PIN_INNER_RADIUS = PIN_RADIUS - 2;
 export const PIN_RADIUS_WITH_OUTER_STROKE = PIN_RADIUS + 3;
 export const PIN_RADIUS_WITH_SHADOW = PIN_RADIUS + 4; // TODO: rename
 export const PIN_HIGHLIGHT_RADIUS = 15;
-export const PIN_OFFSET_FROM_NODE_EDGE = 3;
+export const PIN_HOVER_HIGHLIGHT_RADIUS = PIN_RADIUS;
+export const PIN_HOTSPOT_RADIUS = PIN_HIGHLIGHT_RADIUS;
+export const PIN_OFFSET_FROM_NODE_EDGE = 0;
 
-export const TEXT_OFFSET_FROM_PIN_BORDER = 10;
+export const TEXT_OFFSET_FROM_PIN_BORDER = 3;
 
 // :: { input: Number, output: Number } -> Size
 const nodeSizeInSlots = pinCountByDirection => ({
@@ -221,3 +231,27 @@ export const getBusNodePositionForPin = (node, pin) => {
       SLOT_SIZE.HEIGHT * (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
   };
 };
+
+// :: Number -> Boolean -> PIN_DIRECTION -> { x: Number, y: Number } -> { x, y, width, height }
+const getPinTextProps = (width, isLabel, direction, position) => {
+  const FONT_HEIGHT = 11;
+  const isAboveNodeBorder = direction === XP.PIN_DIRECTION.OUTPUT || !isLabel;
+  const compensateFontHeight = isAboveNodeBorder ? FONT_HEIGHT : 0;
+  const offsetFromNodeBorder =
+    (PIN_RADIUS + TEXT_OFFSET_FROM_PIN_BORDER) * (isAboveNodeBorder ? -1 : 1);
+
+  return {
+    x: position.x - width / 2,
+    y: position.y - compensateFontHeight + offsetFromNodeBorder,
+    width,
+    height: FONT_HEIGHT,
+  };
+};
+
+// :: PIN_DIRECTION -> { x: Number, y: Number } -> { x, y, width, height }
+export const getPinValueProps = (pinDirection, position) =>
+  getPinTextProps(PINVALUE_WIDTH, false, pinDirection, position);
+
+// :: PIN_DIRECTION -> { x: Number, y: Number } -> { x, y, width, height }
+export const getPinLabelProps = (pinDirection, position) =>
+  getPinTextProps(PINLABEL_WIDTH, true, pinDirection, position);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { PIN_RADIUS, PIN_HIGHLIGHT_RADIUS } from '../nodeLayout';
+import { PIN_HOTSPOT_RADIUS, PIN_HOVER_HIGHLIGHT_RADIUS } from '../nodeLayout';
 
 import deepSCU from '../../utils/deepSCU';
 
@@ -45,9 +45,13 @@ export default class PinOverlay extends React.Component {
         <circle
           className="linkingHighlight"
           {...pinCircleCenter}
-          r={PIN_HIGHLIGHT_RADIUS}
+          r={PIN_HOVER_HIGHLIGHT_RADIUS}
         />
-        <circle className="symbol" {...pinCircleCenter} r={PIN_RADIUS} />
+        <circle
+          className="hotspot"
+          {...pinCircleCenter}
+          r={PIN_HOTSPOT_RADIUS}
+        />
       </g>
     );
   }

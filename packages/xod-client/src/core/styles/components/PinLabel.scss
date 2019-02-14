@@ -1,14 +1,14 @@
 .PinLabel {
   font-family: $font-family-condensed;
   font-weight: 500;
-  font-size: 10px;
-  dominant-baseline: central;
-  fill: $color-pinlabel;
+  font-size: 11px;
+  color: $color-pinlabel;
   user-select: none;
 
-  &.outline {
-    stroke: #262626;
-    stroke-linejoin: round;
-    stroke-width: 5;
-  }
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  line-height: 1;
 }
