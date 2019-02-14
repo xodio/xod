@@ -173,6 +173,18 @@ export const injectProjectTypeHints = def(
 // :: String -> Boolean
 export const isPathBuiltIn = R.has(R.__, BUILT_IN_PATCHES);
 
+// :: PatchPath -> PinDirection -> String
+const generateCustomTypeTerminalDescription = (constructorPath, direction) =>
+  R.join(' ', [
+    direction === CONST.PIN_DIRECTION.INPUT ? 'Input' : 'Output',
+    'terminal node.',
+    'Adds a new pin of type',
+    constructorPath,
+    'to the patch node which contains this node.',
+    'Terminal label and description are propagated to the pin.',
+    'Horizontal position relative to other terminals defines the pin order',
+  ]);
+
 // :: Project -> Map PatchPath Patch
 const getPatches = memoizeOnlyLast(project => {
   // those are not built-in or auto-generated patches
@@ -181,11 +193,16 @@ const getPatches = memoizeOnlyLast(project => {
   const customTypeTerminals = R.compose(
     R.indexBy(Patch.getPatchPath),
     R.chain(constructorPatchPath =>
-      R.compose(
-        R.map(terminalPath =>
-          Patch.setPatchPath(terminalPath, Patch.createPatch())
-        ),
-        R.map(PatchPathUtils.getTerminalPath(R.__, constructorPatchPath))
+      R.map(dir =>
+        R.pipe(
+          Patch.createPatch,
+          Patch.setPatchPath(
+            PatchPathUtils.getTerminalPath(dir, constructorPatchPath)
+          ),
+          Patch.setPatchDescription(
+            generateCustomTypeTerminalDescription(constructorPatchPath, dir)
+          )
+        )()
       )([CONST.PIN_DIRECTION.INPUT, CONST.PIN_DIRECTION.OUTPUT])
     ),
     R.map(Patch.getPatchPath),

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const fs = require('fs');
 const path = require('path');
 const R = require('ramda');
@@ -8,15 +10,8 @@ const XP = require('..');
 const targetPath = path.resolve(__dirname, '../dist/built-in-patches.json');
 const xodballPath = path.resolve(__dirname, '../built-in-patches.xodball');
 
-// generate terminal patches programmatically
-// in case some are missing in a xodball
-// (for example, when adding a new type)
-const terminalPatches = R.compose(
-  R.indexBy(XP.getPatchPath),
-  R.map(patchPath => R.pipe(XP.createPatch, XP.setPatchPath(patchPath))())
-)(XP.BUILT_IN_TERMINAL_PATCH_PATHS);
-
-const nonTerminalPatches = R.compose(
+// Load xodball, convert to Map PatchPath Patch
+const patches = R.compose(
   R.indexBy(XP.getPatchPath),
   R.map(
     R.over(
@@ -30,10 +25,18 @@ const nonTerminalPatches = R.compose(
   p => fs.readFileSync(p, 'utf8')
 )(xodballPath);
 
-const json = JSON.stringify(
-  R.merge(terminalPatches, nonTerminalPatches),
-  null,
-  2
-);
+// Verify the build-in-patches.json provides all terminals, they might be
+// generated automatically but it’s hard to create a good automatic
+// description
+R.unless(R.isEmpty, missing => {
+  const msg = `${xodballPath} misses some terminal patches: ${missing.join(
+    ', '
+  )}`;
+  console.error(msg);
+  process.exit(missing.length);
+})(R.difference(XP.BUILT_IN_TERMINAL_PATCH_PATHS, R.keys(patches)));
+
+const json = JSON.stringify(patches, null, 2);
+
 fs.writeFileSync(targetPath, json);
 process.exit(0);
