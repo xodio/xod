@@ -1,0 +1,57 @@
+.CppPatchDocs {
+  .title {
+    display: block;
+    font-family: $font-family-condensed;
+    font-size: $font-size-l;
+    color: $color-canvas-selected;
+    margin-bottom: .5em;
+  }
+  .pin-direction {
+    display: block;
+    color: $sidebar-color-subtitle;
+    margin-bottom: 0.25em;
+  }
+
+  ul {
+    display: block;
+    list-style: circle;
+    list-style-position: outside;
+    margin: 0 0 1em 0;
+    padding: 0 0 0 1em;
+  }
+
+  li {
+    margin-left: .5em;
+    margin-bottom: .5em;
+  }
+
+  .pin-title {
+    display: block;
+  }
+  .pin-type {
+    display: block;
+    font-family: $font-family-normal;
+    font-size: $font-size-m;
+    font-weight: 700;
+    color: $color-datatype-custom;
+
+    &.boolean { color: $color-datatype-boolean }
+    &.pulse { color: $color-datatype-pulse }
+    &.number { color: $color-datatype-number }
+    &.string { color: $color-datatype-string }
+    &.generic { color: $color-datatype-generic }
+    &.byte { color: $color-datatype-byte }
+    &.port { color: $color-datatype-port }
+  }
+
+  a {
+    color: $color-canvas-selected;
+    cursor: pointer;
+
+    .fa { margin-right: .5em; }
+
+    &:hover, &:active {
+      text-decoration: none;
+    }
+  }
+}
