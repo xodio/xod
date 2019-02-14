@@ -984,21 +984,6 @@ export const toposortNodes = def(
 );
 
 /**
- * Function removes debug nodes and links to these nodes
- * from the patch. It could be used in transpilation without
- * debug mode to omit unuseful debug nodes from compiled program.
- */
-export const removeDebugNodes = def(
-  'removeDebugNodes :: Patch -> Patch',
-  patch =>
-    R.compose(
-      R.reduce((acc, node) => dissocNode(node, acc), patch),
-      R.filter(R.compose(isAmong(CONST.DEBUG_NODETYPES), Node.getNodeType)),
-      listNodes
-    )(patch)
-);
-
-/**
  * Returns a map of pins for Node, that points to a patch that exists.
  * So Pins are fully valid, contains proper types and etc.
  */

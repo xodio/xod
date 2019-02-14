@@ -1647,4 +1647,70 @@ describe('Project', () => {
       );
     });
   });
+
+  describe('remove debug nodes', () => {
+    it('should return patch without debug nodes and links', () => {
+      const projectWithDebugNodes = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              foo: {
+                id: 'foo',
+                type: '@/foo',
+              },
+            },
+          },
+          '@/foo': {
+            nodes: {
+              watch: {
+                id: 'watch',
+                type: 'xod/core/watch',
+              },
+              add: {
+                id: 'add',
+                type: 'xod/core/add',
+              },
+            },
+            links: {
+              l1: {
+                id: 'l1',
+                input: { nodeId: 'watch', pinKey: 'whatever' },
+                output: { nodeId: 'add', pinKey: 'whatever' },
+              },
+            },
+          },
+          'xod/core/watch': {},
+          'xod/core/add': {},
+        },
+      });
+
+      const projectWithoutDebugNodes = Helper.defaultizeProject({
+        patches: {
+          '@/main': {
+            nodes: {
+              foo: {
+                id: 'foo',
+                type: '@/foo',
+              },
+            },
+          },
+          '@/foo': {
+            nodes: {
+              add: {
+                id: 'add',
+                type: 'xod/core/add',
+              },
+            },
+          },
+          'xod/core/watch': {},
+          'xod/core/add': {},
+        },
+      });
+
+      assert.deepEqual(
+        Project.removeDebugNodes('@/main', projectWithDebugNodes),
+        projectWithoutDebugNodes
+      );
+    });
+  });
 });

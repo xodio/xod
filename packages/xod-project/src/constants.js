@@ -109,6 +109,8 @@ export const PULSE_CONST_NODETYPES = {
 // to debug xod programm, it should be omitted
 // from Project before transpilation without
 // turned on debug mode
+// tweak-* nodes should not be omitted,
+// they will just act as slightly less efficient constants
 export const DEBUG_NODETYPES = [
   'xod/core/watch',
   'xod/core/console-log',
