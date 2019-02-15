@@ -126,7 +126,10 @@ export * from './typeDeduction';
 export * from './TypeDeduction_Js.bs';
 export { default as autoresolveTypes } from './autoresolveTypes';
 export { default as messages } from './messages';
-export { ensureLiteral, migrateBoundValuesToBoundLiterals } from './legacy';
+export {
+  ensureLiteral,
+  migrateBoundValuesToBoundLiterals,
+} from './migrations/boundValuesToBoundLiterals';
 export { sortGraph } from './gmath';
 export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
 

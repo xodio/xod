@@ -7,7 +7,7 @@ import { PIN_TYPE } from '../src/constants';
 import {
   ensureLiteral,
   migrateBoundValuesToBoundLiterals,
-} from '../src/legacy';
+} from '../src/migrations/boundValuesToBoundLiterals';
 import { listLocalPatches } from '../src/project';
 import { listNodes } from '../src/patch';
 import * as Helper from './helpers';
@@ -22,7 +22,7 @@ assert.strictEqualJustValue = (actual, expected) => {
   assert.strictEqual(val, expected);
 };
 
-describe('Legacy', () => {
+describe('Migration: bound values to bound literals', () => {
   describe('ensureLiteral', () => {
     it('returns Maybe.Just Literal for Boolean types', () => {
       // DataValue -> Literal

@@ -2,13 +2,13 @@ import R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { enquote, unquote, foldMaybe, catMaybies } from 'xod-func-tools';
 
-import { def } from './types';
-import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from './constants';
+import { def } from '../types';
+import { PIN_TYPE, INPUT_PULSE_PIN_BINDING_OPTIONS } from '../constants';
 
-import * as Project from './project';
-import * as Patch from './patch';
-import * as Node from './node';
-import * as Pin from './pin';
+import * as Project from '../project';
+import * as Patch from '../patch';
+import * as Node from '../node';
+import * as Pin from '../pin';
 
 //
 // Literals
