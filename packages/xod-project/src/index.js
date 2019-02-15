@@ -54,7 +54,6 @@ export {
   assocComment,
   dissocComment,
   upsertComments,
-  removeDebugNodes,
   getTopologyMap,
   applyNodeIdMap,
   resolveNodeTypesInPatch,

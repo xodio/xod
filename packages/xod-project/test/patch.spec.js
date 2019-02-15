@@ -1410,64 +1410,6 @@ describe('Patch', () => {
       });
     });
 
-    describe('remove debug nodes', () => {
-      it('should return patch without debug nodes and links', () => {
-        const origPatch = Helper.defaultizePatch({
-          nodes: {
-            a: {
-              id: 'a',
-              type: 'xod/core/watch',
-            },
-            b: {
-              id: 'b',
-              type: 'xod/core/add',
-            },
-          },
-          links: {
-            b2a: {
-              id: 'b2a',
-              input: { nodeId: 'a', pinKey: 'IN' },
-              output: { nodeId: 'a', pinKey: 'OUT' },
-            },
-          },
-        });
-        const expectedPatch = Helper.defaultizePatch({
-          nodes: {
-            b: {
-              id: 'b',
-              type: 'xod/core/add',
-            },
-          },
-          links: {},
-        });
-
-        assert.deepEqual(Patch.removeDebugNodes(origPatch), expectedPatch);
-      });
-      it('should not affect patch without debug nodes', () => {
-        const origPatch = Helper.defaultizePatch({
-          nodes: {
-            a: {
-              id: 'a',
-              type: 'xod/core/multiply',
-            },
-            b: {
-              id: 'b',
-              type: 'xod/core/add',
-            },
-          },
-          links: {
-            b2a: {
-              id: 'b2a',
-              input: { nodeId: 'a', pinKey: 'IN_0' },
-              output: { nodeId: 'a', pinKey: 'OUT' },
-            },
-          },
-        });
-
-        assert.strictEqual(Patch.removeDebugNodes(origPatch), origPatch);
-      });
-    });
-
     describe('sameNodesList', () => {
       it('returns false if Node added', () => {
         const prevPatch = Helper.defaultizePatch({ nodes: { a: {}, b: {} } });

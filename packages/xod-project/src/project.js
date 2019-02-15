@@ -1252,3 +1252,35 @@ export const validatePatchReqursively = def(
       getPatchByPath
     )(patchPath, project)
 );
+
+/**
+ * Function removes debug nodes and links to these nodes from the patch and it's dependencies.
+ * It could be used in transpilation without debug mode to omit unuseful debug nodes from compiled program.
+ */
+export const removeDebugNodes = def(
+  'removeDebugNodes :: PatchPath -> Project -> Project',
+  (entryPatchPath, project) =>
+    R.compose(
+      R.reduce(
+        (accProject, patchPath) =>
+          R.over(
+            lensPatch(patchPath),
+            patch =>
+              R.compose(
+                R.reduce(
+                  (accPatch, node) => Patch.dissocNode(node, accPatch),
+                  patch
+                ),
+                R.filter(
+                  R.compose(isAmong(CONST.DEBUG_NODETYPES), Node.getNodeType)
+                ),
+                Patch.listNodes
+              )(patch),
+            accProject
+          ),
+        project
+      ),
+      R.append(entryPatchPath),
+      getPatchDependencies(entryPatchPath)
+    )(project)
+);

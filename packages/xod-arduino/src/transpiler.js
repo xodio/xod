@@ -479,11 +479,11 @@ const transformProjectWithImpls = def(
       R.chain(XP.flatten(R.__, path)),
       R.map(XP.expandVariadicNodes(path)),
       R.chain(XP.autoresolveTypes(path)),
+      R.map(XP.jumperizePatchRecursively(path)),
       R.unless(
         () => liveness !== LIVENESS.NONE,
-        R.chain(XP.updatePatch(path, XP.removeDebugNodes))
+        R.map(XP.removeDebugNodes(path))
       ),
-      R.map(XP.jumperizePatchRecursively(path)),
       XP.validatePatchReqursively(path)
       // begin preparing project for transpilation
     )(project)
