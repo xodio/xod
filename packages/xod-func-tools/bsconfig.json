@@ -10,6 +10,9 @@
   },
   "suffix": ".bs.js",
   "bs-dependencies": [],
+  "warnings": {
+    "error" : "+a"
+  },
   "namespace": true,
   "refmt": 3
 }

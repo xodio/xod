@@ -13,6 +13,9 @@
     "belt-holes",
     "xod-func-tools"
   ],
+  "warnings": {
+    "error" : "+a"
+  },
   "namespace": true,
   "refmt": 3
 }
