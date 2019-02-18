@@ -254,10 +254,19 @@ class Editor extends React.Component {
       />
     ) : null;
 
+    const areSidebarsMaximized = R.compose(
+      R.map(R.pipe(R.filter(R.prop('maximized')), R.isEmpty, R.not)),
+      R.groupBy(R.prop('sidebar')),
+      R.values
+    )(this.props.panelsSettings);
+
     return (
       <HotKeys
         handlers={this.getHotkeyHandlers()}
-        className="Editor"
+        className={cn('Editor', {
+          leftSidebarMaximized: areSidebarsMaximized[SIDEBAR_IDS.LEFT],
+          rightSidebarMaximized: areSidebarsMaximized[SIDEBAR_IDS.RIGHT],
+        })}
         id="Editor"
       >
         <Sidebar id={SIDEBAR_IDS.LEFT} windowSize={this.props.size} />
@@ -303,6 +312,7 @@ Editor.propTypes = {
   project: PropTypes.object,
   currentTab: sanctuaryPropType($Maybe($.Object)),
   attachmentEditorTabs: PropTypes.array,
+  panelsSettings: PropTypes.object.isRequired,
   searchPatches: PropTypes.func.isRequired,
   isHelpboxVisible: PropTypes.bool,
   isDebugSessionRunning: PropTypes.bool,
@@ -354,6 +364,7 @@ const mapStateToProps = R.applySpec({
   isDebugSessionOutdated: DebuggerSelectors.isDebugSessionOutdated,
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
   isTabtestRunning: EditorSelectors.isTabtestRunning,
+  panelsSettings: EditorSelectors.getAllPanelsSettings,
 });
 
 const mapDispatchToProps = dispatch => ({
