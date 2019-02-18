@@ -155,7 +155,7 @@ export const setNodeDescription = def(
  */
 export const setNodePosition = def(
   'setNodePosition :: Position -> Node -> Node',
-  R.assoc('position')
+  (pos, node) => R.assoc('position', pos, node)
 );
 
 /**
@@ -172,7 +172,7 @@ export const getNodeSize = def('getNodeSize :: Node -> Size', R.prop('size'));
 
 export const setNodeSize = def(
   'setNodeSize :: Size -> Node -> Node',
-  R.assoc('size')
+  (size, node) => R.assoc('size', size, node)
 );
 
 /**

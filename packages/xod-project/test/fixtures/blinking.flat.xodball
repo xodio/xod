@@ -1955,40 +1955,45 @@
           "id": "ryFxRcNdKg",
           "type": "xod/core/digital-output",
           "position": {
-            "x": 305,
-            "y": 430
+            "x": 9,
+            "y": 4.2,
+            "units": "slots"
           }
         },
         "S1ulA9NuFx": {
           "id": "S1ulA9NuFx",
           "type": "xod/patch-nodes/input-string",
           "position": {
-            "x": 172,
-            "y": 104
+            "x": 5.05,
+            "y": 1,
+            "units": "slots"
           }
         },
         "B1wg0qVOtg": {
           "id": "B1wg0qVOtg",
           "type": "xod/patch-nodes/input-number",
           "position": {
-            "x": 418,
-            "y": 104
+            "x": 12.25,
+            "y": 1,
+            "units": "slots"
           }
         },
         "rJUgCqNuKl": {
           "id": "rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
-            "x": 453,
-            "y": 298
+            "x": 13.3,
+            "y": 2.95,
+            "units": "slots"
           }
         },
         "HkSgA94OYx": {
           "id": "HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
-            "x": 354,
-            "y": 218
+            "x": 10.4,
+            "y": 2.1,
+            "units": "slots"
           }
         }
       },
@@ -2004,32 +2009,36 @@
           "id": "BJ4l0cVdKe~ryFxRcNdKg",
           "type": "xod/core/digital-output",
           "position": {
-            "x": 305,
-            "y": 430
+            "x": 9,
+            "y": 4.2,
+            "units": "slots"
           }
         },
         "BJ4l0cVdKe~rJUgCqNuKl": {
           "id": "BJ4l0cVdKe~rJUgCqNuKl",
           "type": "xod/math/multiply",
           "position": {
-            "x": 453,
-            "y": 298
+            "x": 13.3,
+            "y": 2.95,
+            "units": "slots"
           }
         },
         "BJ4l0cVdKe~HkSgA94OYx": {
           "id": "BJ4l0cVdKe~HkSgA94OYx",
           "type": "xod/math/multiply",
           "position": {
-            "x": 354,
-            "y": 218
+            "x": 10.4,
+            "y": 2.1,
+            "units": "slots"
           }
         },
         "SJ7g05EdFe~rJWgAqVOtx": {
           "id": "SJ7g05EdFe~rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
-            "x": 271,
-            "y": 355
+            "x": 8,
+            "y": 3.45,
+            "units": "slots"
           }
         },
         "SJ7g05EdFe~rJxgAqV_tl": {
@@ -2039,8 +2048,9 @@
           "id": "SJ7g05EdFe~rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
-            "x": 267,
-            "y": 215
+            "x": 7.9,
+            "y": 2.1,
+            "units": "slots"
           }
         },
         "SJ7g05EdFe~BJGgAcVOtx-to-BJ4l0cVdKe~B1wg0qVOtg-pin-__in__": {
@@ -2048,7 +2058,8 @@
           "type": "xod/core/cast-to-number(boolean)",
           "position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "units": "slots"
           }
         }
       },
@@ -2174,32 +2185,52 @@
           "id": "BJGgAcVOtx",
           "type": "xod/patch-nodes/output-boolean",
           "position": {
-            "x": 263,
-            "y": 508
+            "x": 7.75,
+            "y": 5,
+            "units": "slots"
           }
         },
         "rJWgAqVOtx": {
           "id": "rJWgAqVOtx",
           "type": "xod/core/latch",
           "position": {
-            "x": 271,
-            "y": 355
+            "x": 8,
+            "y": 3.45,
+            "units": "slots"
           }
         },
         "rJxgAqV_tl": {
           "id": "rJxgAqV_tl",
           "type": "xod/core/clock",
           "position": {
-            "x": 267,
-            "y": 215
+            "x": 7.9,
+            "y": 2.1,
+            "units": "slots"
           }
         },
         "B1eR5EOYg": {
           "id": "B1eR5EOYg",
           "type": "xod/patch-nodes/input-number",
           "position": {
-            "x": 268,
-            "y": 103
+            "x": 7.9,
+            "y": 1,
+            "units": "slots"
+          }
+        }
+      },
+      "comments": {
+        "SyichvVHN": {
+          "content": "Test comment",
+          "id": "SyichvVHN",
+          "position": {
+            "x": 1.25,
+            "y": 1,
+            "units": "slots"
+          },
+          "size": {
+            "height": 2,
+            "width": 4,
+            "units": "slots"
           }
         }
       },

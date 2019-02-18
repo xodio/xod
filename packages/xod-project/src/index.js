@@ -82,6 +82,8 @@ export {
   samePatchValidity,
   validateBuses,
   hasNodeWithType,
+  convertPatchDimensionsToSlots,
+  convertPatchDimensionsToPixels,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,
@@ -130,6 +132,12 @@ export {
   ensureLiteral,
   migrateBoundValuesToBoundLiterals,
 } from './migrations/boundValuesToBoundLiterals';
+export {
+  migrateProjectDimensionsToSlots,
+  migratePatchDimensionsToSlots,
+  convertPositionValueToSlots,
+  addPositionAndSizeUnitsToPatchEntities,
+} from './migrations/unitlessToSlots';
 export { sortGraph } from './gmath';
 export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
 

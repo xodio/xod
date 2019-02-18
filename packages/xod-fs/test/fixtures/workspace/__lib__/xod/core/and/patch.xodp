@@ -3,8 +3,9 @@
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 2.25,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -12,6 +13,7 @@
       "id": "a",
       "label": "First input",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -21,7 +23,8 @@
       "id": "b",
       "label": "Second input",
       "position": {
-        "x": 200,
+        "units": "slots",
+        "x": 4.75,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -31,8 +34,9 @@
       "id": "out",
       "label": "output",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 300
+        "y": 3
       },
       "type": "xod/patch-nodes/output-boolean"
     }

@@ -33,19 +33,14 @@ describe('buses', () => {
   });
 
   describe('splitLinksToBuses', () => {
-    const SLOT_WIDTH = 30;
-    const SLOT_HEIGHT = 100;
-
     const getBusNodePositionForPin = (node, pin) => {
       const nodePosition = XP.getNodePosition(node);
       const pinDirection = XP.getPinDirection(pin);
       const pinOrder = XP.getPinOrder(pin);
 
       return {
-        x: nodePosition.x + pinOrder * SLOT_WIDTH,
-        y:
-          nodePosition.y +
-          SLOT_HEIGHT * (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
+        x: nodePosition.x + pinOrder,
+        y: nodePosition.y + pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1,
       };
     };
 

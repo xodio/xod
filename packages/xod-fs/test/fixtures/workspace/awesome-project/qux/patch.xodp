@@ -16,16 +16,18 @@
     {
       "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
       "position": {
-        "x": 276,
-        "y": 155
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "4da4c29d-f482-47c2-825e-a969084b1116",
       "position": {
-        "x": 310,
-        "y": 307
+        "units": "slots",
+        "x": 9.1,
+        "y": 3
       },
       "type": "xod/core/led"
     }

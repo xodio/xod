@@ -47,7 +47,7 @@ const createAdditionalValueTerminalGroups = (
     R.prop('value')
   )(variadicPins);
 
-  const DISTANCE_BETWEEN_TERMINALS = 50;
+  const DISTANCE_BETWEEN_TERMINALS = 1;
   const valueTerminalsGroupWidth = arityStep * DISTANCE_BETWEEN_TERMINALS;
   const getValueTerminalX = (terminalGroupIndex, terminalIndex) =>
     rightmostInputTerminalX +
@@ -77,12 +77,16 @@ const createAdditionalValueTerminalGroups = (
 
 const createExpansionNodes = (patch, desiredArityLevel) => {
   const nodeType = Patch.getPatchPath(patch);
+  const arityStep = R.compose(
+    explodeMaybe('Patch is guaranteed to be variadic at this point'),
+    Patch.getArityStepFromPatch
+  )(patch);
   return R.compose(
     R.map(idx =>
       Node.createNode(
         {
-          x: 100 * idx,
-          y: 100 * idx,
+          x: arityStep * idx,
+          y: idx + 1,
         },
         nodeType
       )

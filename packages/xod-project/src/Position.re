@@ -1,7 +1,7 @@
 type t = {
   .
-  "x": int,
-  "y": int,
+  "x": float,
+  "y": float,
 };
 
-let origin = {"x": 0, "y": 0};
+let origin = {"x": 0.0, "y": 0.0 };

@@ -3,8 +3,9 @@
     {
       "id": "5c03e488-fefd-4f12-gq6a-78d209d9148c",
       "position": {
-        "x": 292,
-        "y": 182
+        "units": "slots",
+        "x": 6.75,
+        "y": 1.8
       },
       "type": "xod/core/pot"
     }

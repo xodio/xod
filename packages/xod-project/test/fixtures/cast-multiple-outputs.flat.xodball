@@ -279,7 +279,8 @@
           "id": "HyXhclKUZ-to-B1VMtgtUb-pin-BkeKcj6ZZ",
           "position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/core/cast-to-string(number)",
           "label": "",
@@ -291,7 +292,8 @@
           "id": "HyXhclKUZ-to-B1VMtgtUb-pin-Hkqu9oaWb",
           "position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/core/cast-to-string(number)",
           "label": "",

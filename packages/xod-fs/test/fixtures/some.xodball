@@ -1,5 +1,4 @@
 {
-  "version": "0.0.42",
   "authors": [
     "Amperka team"
   ],
@@ -9,32 +8,6 @@
       "path": "@/empty-local-patch"
     },
     "@/main": {
-      "nodes": {
-        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
-          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
-          "position": {
-            "x": 292,
-            "y": 182
-          },
-          "type": "xod/core/pot"
-        },
-        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
-          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
-          "position": {
-            "x": 363,
-            "y": 322
-          },
-          "type": "@/qux"
-        },
-        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
-          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
-          "position": {
-            "x": 163,
-            "y": 314
-          },
-          "type": "xod/core/and"
-        }
-      },
       "links": {
         "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f": {
           "id": "1d78b081-ebfe-4a2d-b857-08a3b9ddd90f",
@@ -59,27 +32,55 @@
           }
         }
       },
+      "nodes": {
+        "2c03e470-fefd-4f58-be6a-58d209d9158c": {
+          "id": "2c03e470-fefd-4f58-be6a-58d209d9158c",
+          "position": {
+            "units": "slots",
+            "x": 9,
+            "y": 2
+          },
+          "type": "xod/core/pot"
+        },
+        "4d716df5-81e7-4845-9b82-31a54c1634d7": {
+          "id": "4d716df5-81e7-4845-9b82-31a54c1634d7",
+          "position": {
+            "units": "slots",
+            "x": 11,
+            "y": 3
+          },
+          "type": "@/qux"
+        },
+        "89c69d91-b484-478d-8990-027e5f0a2e3e": {
+          "id": "89c69d91-b484-478d-8990-027e5f0a2e3e",
+          "position": {
+            "units": "slots",
+            "x": 5,
+            "y": 3
+          },
+          "type": "xod/core/and"
+        }
+      },
       "path": "@/main"
     },
     "@/qux": {
-      "nodes": {
-        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
-          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
-          "position": {
-            "x": 276,
-            "y": 155
-          },
-          "type": "xod/patch-nodes/input-number"
+      "attachments": [
+        {
+          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n",
+          "encoding": "utf8",
+          "filename": "README.md"
         },
-        "4da4c29d-f482-47c2-825e-a969084b1116": {
-          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
-          "position": {
-            "x": 310,
-            "y": 307
-          },
-          "type": "xod/core/led"
+        {
+          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC",
+          "encoding": "base64",
+          "filename": "img/20x20.png"
+        },
+        {
+          "content": "// Impl loaded fine!\n",
+          "encoding": "utf8",
+          "filename": "patch.cpp"
         }
-      },
+      ],
       "links": {
         "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1": {
           "id": "30dafe79-37e6-4fc0-a8b8-fa5e912ffef1",
@@ -93,24 +94,28 @@
           }
         }
       },
-      "path": "@/qux",
-      "attachments": [
-        {
-          "filename": "README.md",
-          "encoding": "utf8",
-          "content": "# Hello world!\n\n- It's a test file\n- If you see a correct content — it passed!\n- Also it could contain any UTF-8 characters, like this one 😎 or even кириллица!\n\nHave a nice day!\n"
+      "nodes": {
+        "38395ee5-8634-40f9-b7fa-dfe9eee208e8": {
+          "id": "38395ee5-8634-40f9-b7fa-dfe9eee208e8",
+          "position": {
+            "units": "slots",
+            "x": 8,
+            "y": 2
+          },
+          "type": "xod/patch-nodes/input-number"
         },
-        {
-          "filename": "img/20x20.png",
-          "encoding": "base64",
-          "content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAG1BMVEXMzMyWlpaxsbGqqqq3t7fFxcWjo6OcnJy+vr5AT8FzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAMElEQVQImWNgoBFQVkmBka7i4QxQklmRkUGlAUQyqLCHM4SBSYYkoCqVhiSwDioCAPhiB33L/sGeAAAAAElFTkSuQmCC"
-        },
-        {
-          "filename": "patch.cpp",
-          "encoding": "utf8",
-          "content": "// Impl loaded fine!\n"
+        "4da4c29d-f482-47c2-825e-a969084b1116": {
+          "id": "4da4c29d-f482-47c2-825e-a969084b1116",
+          "position": {
+            "units": "slots",
+            "x": 9,
+            "y": 3
+          },
+          "type": "xod/core/led"
         }
-      ]
+      },
+      "path": "@/qux"
     }
-  }
+  },
+  "version": "0.0.42"
 }

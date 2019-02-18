@@ -19,6 +19,10 @@ import {
   addMissingOptionalProjectFields,
   omitEmptyOptionalProjectFields,
 } from './optionalFieldsUtils';
+import {
+  migrateProjectDimensionsToSlots,
+  addPositionAndSizeUnitsToPatchEntities,
+} from './migrations/unitlessToSlots';
 import { Project, def } from './types';
 
 export const fromXodballData = def(
@@ -27,6 +31,7 @@ export const fromXodballData = def(
     R.map(injectProjectTypeHints),
     foldEither(() => fail('INVALID_XODBALL_FORMAT', {}), Either.of),
     validateSanctuaryType(Project),
+    migrateProjectDimensionsToSlots,
     addMissingOptionalProjectFields
   )
 );
@@ -48,6 +53,7 @@ export const toXodball = def(
   'toXodball :: Project -> String',
   R.compose(
     p => JSON.stringify(p, null, 2),
+    R.evolve({ patches: R.map(addPositionAndSizeUnitsToPatchEntities) }),
     omitTypeHints,
     omitEmptyOptionalProjectFields,
     R.converge(omitPatches, [
