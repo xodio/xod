@@ -22,7 +22,7 @@
   ],
   "bs-dev-dependencies": ["@glennsl/bs-jest"],
   "warnings": {
-    "error" : "+101"
+    "error" : "+a"
   },
   "namespace": false,
   "refmt": 3
