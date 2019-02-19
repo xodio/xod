@@ -5,8 +5,31 @@
   position: relative;
   height: 30px;
 
-
   list-style: none;
   margin: 0;
-  padding: 0 4px;
+
+  // bottom padding to push horizontal scrollbar away
+  padding: 0 4px 30px 4px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  // to prevent flashes of scrollbar in firefox when adding tabs
+  scrollbar-width: none;
+
+  &.isOverflowed {
+    padding: 0 20px;
+
+    .tabsScrollLeft {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .tabsScrollRight {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
 }
