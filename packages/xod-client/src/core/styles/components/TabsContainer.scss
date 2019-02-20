@@ -13,9 +13,11 @@
   overflow-x: scroll;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  // to prevent flashes of scrollbar in firefox when adding tabs
+  // to prevent flashes of scrollbar when adding tabs
   scrollbar-width: none;
-
+  &::-webkit-scrollbar { 
+      display: none; 
+  }
   &.isOverflowed {
     padding: 0 20px;
 

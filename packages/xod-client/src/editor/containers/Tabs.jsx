@@ -143,6 +143,7 @@ class Tabs extends React.Component {
           lockToContainerEdges
           lockOffset="-5%"
           helperClass="is-sorting"
+          distance={10}
           onClick={this.onTabClick}
           onClose={this.onCloseTab}
           forwardedRef={this.setTabsRef}

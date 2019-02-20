@@ -57,6 +57,7 @@
     "reselect": "^2.5.4",
     "sanctuary-def": "^0.14.0",
     "shortid": "^2.2.8",
+    "smooth-scroll-into-view-if-needed": "^1.1.23",
     "throttle-debounce": "^1.0.1",
     "url-parse": "^1.1.9",
     "url-search-params-polyfill": "^2.0.1",
