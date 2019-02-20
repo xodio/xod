@@ -127,8 +127,9 @@
     {
       "id": "B1L-OKCZ7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/core/defer"
     },
@@ -137,7 +138,8 @@
       "id": "B1S9JuXRbX",
       "label": "RST",
       "position": {
-        "x": 374,
+        "units": "slots",
+        "x": 11,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -147,7 +149,8 @@
       "id": "BJ-qyu70ZX",
       "label": "S",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -156,16 +159,18 @@
       "description": "Pulses when a value passes through",
       "id": "BJmqJ_XRb7",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "H1VqydXA-X",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "@/pass-if"
     },
@@ -173,7 +178,8 @@
       "description": "Try to push a new value through",
       "id": "HJec1dQCZ7",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -181,8 +187,9 @@
     {
       "id": "HkDc1OQCWX",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/core/equal"
     },
@@ -192,8 +199,9 @@
       },
       "id": "SJLcyuXRWm",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/core/flip-flop"
     },
@@ -201,7 +209,8 @@
       "description": "A value to be pushed through",
       "id": "Skc1_Q0-X",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -210,16 +219,18 @@
       "description": "The last value passed through",
       "id": "r1M51O7Rbm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "r1dcyumC-m",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/core/pulse-on-true"
     }

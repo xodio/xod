@@ -81,13 +81,14 @@
   ],
   "nodes": [
     {
-      "boundValues": {
-        "SJqZ8COrDkW": 1
+      "boundLiterals": {
+        "SJqZ8COrDkW": "1"
       },
       "id": "BkESVJLs2z",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -95,7 +96,8 @@
       "id": "BkrwKrGhG",
       "label": "X0",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -103,8 +105,9 @@
     {
       "id": "HyXrE1Ls2M",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -112,7 +115,8 @@
       "id": "HypuFHG3z",
       "label": "X1",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -122,7 +126,8 @@
       "id": "SJ-BNy8s2G",
       "label": "IDX",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -132,19 +137,21 @@
       "id": "SyHEk8jhz",
       "label": "_",
       "position": {
-        "x": -34,
-        "y": 306
+        "units": "slots",
+        "x": -1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "boundValues": {
-        "rkJ4URuHDJ-": 1
+      "boundLiterals": {
+        "rkJ4URuHDJ-": "1"
       },
       "id": "SyIHNkUinz",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "@/subtract"
     },
@@ -152,15 +159,17 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "r1ctYrM3G",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "r1wH4yIj3G",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"

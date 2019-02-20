@@ -4,16 +4,18 @@
     {
       "id": "S153u0w1E",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,8 +26,9 @@
       "id": "ryVmUAOrvkb",
       "label": "BOOT",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     }

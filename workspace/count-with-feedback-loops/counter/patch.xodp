@@ -74,24 +74,27 @@
       },
       "id": "BJokvUQmQ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/core/delay"
     },
     {
       "id": "ByNj1PLXXX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "H17jyPL7X7",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -101,23 +104,26 @@
       },
       "id": "HkHoyPUQ7m",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/core/any"
     },
     {
       "id": "Sybs1w8m7Q",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/core/count"
     },
     {
       "id": "r1GoJwIQmX",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -125,8 +131,9 @@
     {
       "id": "r1gsyDUmmX",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/core/defer"
     }

@@ -4,16 +4,18 @@
     {
       "id": "B1eYyON8EE",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "Sk1e_NIVE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/output-boolean"
     }

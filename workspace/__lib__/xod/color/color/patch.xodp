@@ -4,14 +4,16 @@
     {
       "id": "HJ53--ss7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/output-self"
     },
     {
       "id": "Hyec-WssX",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -20,7 +22,8 @@
     {
       "id": "SymqbZjiQ",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/utility"

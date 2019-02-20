@@ -163,24 +163,27 @@
       },
       "id": "B1UpHSrOQ",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/core/pad-with-zeroes"
     },
     {
       "id": "BkvDEzR1Om",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "HJ7D4fRkdm",
       "position": {
-        "x": 67,
-        "y": 101
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/unpack-datetime"
     },
@@ -190,16 +193,18 @@
       },
       "id": "HkD6rBrOQ",
       "position": {
-        "x": 510,
-        "y": 204
+        "units": "slots",
+        "x": 15,
+        "y": 2
       },
       "type": "xod/core/pad-with-zeroes"
     },
     {
       "id": "Hy_D4G0JOX",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "@/input-datetime"
     },
@@ -209,8 +214,9 @@
       },
       "id": "r1H2BrruX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/core/pad-with-zeroes"
     },
@@ -220,8 +226,9 @@
       },
       "id": "rk7arBH_Q",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/core/pad-with-zeroes"
     },
@@ -231,8 +238,9 @@
       },
       "id": "rkSPVz0kOQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/core/format-number"
     },
@@ -249,8 +257,9 @@
       },
       "id": "rkxPEzCyuX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/core/concat"
     },
@@ -260,8 +269,9 @@
       },
       "id": "ryBaSBHdX",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/core/pad-with-zeroes"
     }

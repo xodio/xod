@@ -194,16 +194,18 @@
       "description": "The last read byte",
       "id": "B1gVQTOwfQ",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "BJFE7puwGm",
       "position": {
-        "x": 408,
-        "y": 408
+        "units": "slots",
+        "x": 12,
+        "y": 4
       },
       "type": "xod/core/defer"
     },
@@ -212,7 +214,8 @@
       "id": "BJFL2dvMX",
       "label": "BGN",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -220,8 +223,9 @@
     {
       "id": "BkQE7auwGQ",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "@/is-open"
     },
@@ -229,16 +233,18 @@
       "id": "Byh0WrXN7",
       "label": "SOCK",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "HJfVXa_vMX",
       "position": {
-        "x": 238,
-        "y": 510
+        "units": "slots",
+        "x": 7,
+        "y": 5
       },
       "type": "@/close"
     },
@@ -246,32 +252,36 @@
       "id": "S1rzGSQ47",
       "label": "SOCK",
       "position": {
-        "x": 204,
-        "y": 510
+        "units": "slots",
+        "x": 6,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "SJHV7pdPMQ",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "@/read-byte"
     },
     {
       "id": "SJq4maODzQ",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/core/any"
     },
     {
       "id": "SkVmp_wMQ",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/has-available-byte"
     },
@@ -279,8 +289,9 @@
       "description": "Pulses when a new byte is read",
       "id": "SyZVX6_Df7",
       "position": {
-        "x": 136,
-        "y": 612
+        "units": "slots",
+        "x": 4,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -288,16 +299,18 @@
       "id": "r1hbfSmNX",
       "label": "SOCK",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "r1uVX6OvMm",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/core/any"
     },
@@ -306,7 +319,8 @@
       "id": "rJyDi_wGQ",
       "label": "SOCK",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"
@@ -315,8 +329,9 @@
       "id": "rkvkGBmN7",
       "label": "SOCK",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -325,8 +340,9 @@
       "id": "ryU4XT_PMX",
       "label": "CLS",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -334,8 +350,9 @@
       "id": "ryXWGr7VQ",
       "label": "SOCK",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     }

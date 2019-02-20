@@ -215,7 +215,8 @@
     {
       "id": "Bk4xOtBvm",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/core/constant-number"
@@ -223,8 +224,9 @@
     {
       "id": "BkQ4nDKBDX",
       "position": {
-        "x": 272,
-        "y": 306
+        "units": "slots",
+        "x": 8,
+        "y": 3
       },
       "type": "xod/core/and"
     },
@@ -233,8 +235,9 @@
       "id": "ByN3wtHPm",
       "label": "AM",
       "position": {
-        "x": 272,
-        "y": 408
+        "units": "slots",
+        "x": 8,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -244,8 +247,9 @@
       },
       "id": "HJxVnPYBDX",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/core/equal"
     },
@@ -254,8 +258,9 @@
       "id": "S16OEYrPX",
       "label": "12H",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -265,16 +270,18 @@
       },
       "id": "SJfE2wFSPX",
       "position": {
-        "x": 408,
-        "y": 102
+        "units": "slots",
+        "x": 12,
+        "y": 1
       },
       "type": "xod/core/less"
     },
     {
       "id": "SkZV3PFHw7",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/core/xor"
     },
@@ -284,7 +291,8 @@
       },
       "id": "SyVj4KBvm",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/core/constant-number"
@@ -292,16 +300,18 @@
     {
       "id": "SyXa4YrDX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/core/if-else"
     },
     {
       "id": "rJ4E2PFHP7",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/core/greater"
     },
@@ -310,7 +320,8 @@
       "id": "ry3w4Frv7",
       "label": "24H",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -321,16 +332,18 @@
       },
       "id": "ryfcVKrwX",
       "position": {
-        "x": -34,
-        "y": 102
+        "units": "slots",
+        "x": -1,
+        "y": 1
       },
       "type": "xod/core/greater"
     },
     {
       "id": "ryp1SYBwm",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/core/subtract"
     }

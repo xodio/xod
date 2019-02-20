@@ -4,15 +4,17 @@
     {
       "id": "HJmMmX7yz",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rJ_-QmmJz",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -20,8 +22,9 @@
     {
       "id": "rk6bX7Q1M",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -29,8 +32,9 @@
       "description": "Use `xod/math/log-e` instead",
       "id": "ryD0fjtyQ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     }

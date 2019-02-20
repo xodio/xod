@@ -6,8 +6,9 @@
       "id": "B134j4neZ",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -16,8 +17,9 @@
       "id": "HJ6HsEngZ",
       "label": "SIG",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-boolean"
     },
@@ -25,16 +27,18 @@
       "description": "Use `xod/gpio/digital-write` instead",
       "id": "r1fbAJskX",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "rkwUj42xb",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

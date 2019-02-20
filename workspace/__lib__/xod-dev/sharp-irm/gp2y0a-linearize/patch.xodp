@@ -116,7 +116,8 @@
       "id": "BJeRBfLji7",
       "label": "Ymin",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -125,8 +126,9 @@
       "id": "BkH0BzIsjX",
       "label": "SHFT",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -134,7 +136,8 @@
       "id": "BkUArfLsi7",
       "label": "Ymax",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -142,8 +145,9 @@
     {
       "id": "Bks0rGUsjX",
       "position": {
-        "x": 374,
-        "y": 102
+        "units": "slots",
+        "x": 11,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
@@ -151,8 +155,9 @@
       "id": "HJdRrGLio7",
       "label": "Dm",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -160,7 +165,8 @@
       "id": "Hkt0SGUsiX",
       "label": "V",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -169,7 +175,8 @@
       "id": "SkCrMIjjm",
       "label": "Xmax",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -182,8 +189,9 @@
       "id": "Sy9CHMUjjm",
       "label": "/100",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/core/divide"
     },
@@ -191,7 +199,8 @@
       "id": "r1Z0rMUjiX",
       "label": "Xmin",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -202,8 +211,9 @@
       },
       "id": "rJvASzLsjm",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/core/subtract"
     },
@@ -215,16 +225,18 @@
       "id": "ry7ASfUosm",
       "label": "1/Y",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/core/divide"
     },
     {
       "id": "ryNCSzLji7",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/math/map"
     }

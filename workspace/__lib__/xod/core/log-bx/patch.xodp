@@ -61,8 +61,9 @@
     {
       "id": "BJlTr7Qmyz",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -70,7 +71,8 @@
       "id": "BygImmmkG",
       "label": "X",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -79,6 +81,7 @@
       "id": "S16BQmmkG",
       "label": "B",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -88,32 +91,36 @@
       "description": "Use `xod/math/log-bx` instead",
       "id": "SJeRzitkX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "Skc977QJM",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/divide"
     },
     {
       "id": "Sy7_XQmkG",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/log-e"
     },
     {
       "id": "rJcFmQQ1G",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/log-e"
     }

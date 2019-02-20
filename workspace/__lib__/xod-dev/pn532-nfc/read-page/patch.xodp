@@ -4,16 +4,18 @@
     {
       "id": "B1U93P6DQ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "BJlwc3w6PQ",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -22,7 +24,8 @@
       "id": "BysY2PaDQ",
       "label": "READ",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -30,16 +33,18 @@
     {
       "id": "Byw9hw6wQ",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "H1H52DaD7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -47,6 +52,7 @@
       "id": "Hk1F2vTPm",
       "label": "DEV",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -57,8 +63,9 @@
       "id": "HkVohwTDX",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -70,7 +77,8 @@
       "id": "HkrKnPpwX",
       "label": "PAGE",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -80,16 +88,18 @@
       "id": "SkMohwTPm",
       "label": "OK",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ryx52w6w7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

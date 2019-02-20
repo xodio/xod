@@ -96,8 +96,9 @@
       "id": "Bk7dTEaTo7",
       "label": "DONE",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -109,8 +110,9 @@
       "id": "ByPu6NaasX",
       "label": "UPD",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -119,24 +121,27 @@
       "id": "Byl_64pToQ",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ByzOTNT6jX",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/gpio/analog-read"
     },
     {
       "id": "H1Vu6NT6jQ",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/core/multiply"
     },
@@ -145,8 +150,9 @@
       "id": "HyLO6VT6iX",
       "label": "Dm",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -159,8 +165,9 @@
       },
       "id": "S1Wu646TjQ",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "@/gp2y0a-linearize"
     },
@@ -172,8 +179,9 @@
       "id": "SkBdpVTaim",
       "label": "PORT",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-port"
     },
@@ -185,8 +193,9 @@
       "id": "rJ_pETpsm",
       "label": "AVcc",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     }

@@ -4,12 +4,14 @@
       "content": "Brace yourself, because we are about to learn about the `text-lcd-16x2` node! If you haven’t already guessed, this node is used to control 16x2 LCD screens.\n\nNow, let’s concentrate on the two `constant-string` nodes. These nodes contain and transmit data of type *string*. Yellow is used to indicate string type pins and links. A string is just another name for a line of ordinary text. This sentence is a string!\n\n## Instructions\n\n1. Wire LCD and its contrast pot as shown on the [scheme](https://xod.io/docs/tutorial/26-lcd/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_26). \n2. Link the `VAL` pins of the `constant-string` nodes to the `L1` and `L2` inputs on the screen node. `L1` and `L2` stand for the first and second line of the screen\n3. Upload the sketch to the Arduino.\n\nYou should now see “Hello world!” displayed on the screen.\n\nCool? Try to display your own message on the screen.",
       "id": "SkSPe8ybM",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "size": {
-        "height": 561,
-        "width": 306
+        "height": 6,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -27,8 +29,9 @@
       },
       "id": "BJLI75r9Z",
       "position": {
-        "x": 442,
-        "y": 918
+        "units": "slots",
+        "x": 13,
+        "y": 9
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -38,8 +41,9 @@
       },
       "id": "By6RU3IqZ",
       "position": {
-        "x": 646,
-        "y": 816
+        "units": "slots",
+        "x": 19,
+        "y": 8
       },
       "type": "xod/core/constant-string"
     },
@@ -49,8 +53,9 @@
       },
       "id": "ryvyP3I9-",
       "position": {
-        "x": 680,
-        "y": 816
+        "units": "slots",
+        "x": 20,
+        "y": 8
       },
       "type": "xod/core/constant-string"
     }

@@ -6,8 +6,9 @@
       "id": "BJgZ80uBw1-",
       "label": "MIN",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -16,16 +17,18 @@
       "id": "BkmZL0uSv1W",
       "label": "X",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -33,8 +36,9 @@
       "description": "Use `xod/math/clip` instead",
       "id": "r1RTZjKy7",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -46,8 +50,9 @@
       "id": "rJWWUAdHDyW",
       "label": "XC",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -56,8 +61,9 @@
       "id": "ryzZIC_BDJW",
       "label": "MAX",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     }

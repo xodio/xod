@@ -60,64 +60,72 @@
     {
       "id": "BkfD6dCPlN",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "@/color-rgb-bytes"
     },
     {
       "id": "By_VdrfZV",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "Bywp_RwgE",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "HJQw6ORwx4",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "SJZD6u0Pe4",
       "position": {
-        "x": 135,
-        "y": 101
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
     {
       "id": "SJxwp_CPeN",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "SyD0OAweV",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "ryjaORDgE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/format-color"
     }

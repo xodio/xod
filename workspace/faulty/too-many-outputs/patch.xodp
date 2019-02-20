@@ -3,72 +3,81 @@
     {
       "id": "Bkby9_1vb",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "H14e5uyDZ",
       "position": {
-        "x": 778,
-        "y": 224
+        "units": "slots",
+        "x": 22.95,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "Hy0CF_kDW",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "S1N1cdJDW",
       "position": {
-        "x": 266,
-        "y": 224
+        "units": "slots",
+        "x": 7.9,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJ_e9uJvZ",
       "position": {
-        "x": 906,
-        "y": 224
+        "units": "slots",
+        "x": 26.7,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "SkhkcdyDb",
       "position": {
-        "x": 522,
-        "y": 224
+        "units": "slots",
+        "x": 15.35,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "rJ4ZcukDb",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rkO1quyPW",
       "position": {
-        "x": 394,
-        "y": 224
+        "units": "slots",
+        "x": 11.65,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "rkbl5dyPb",
       "position": {
-        "x": 650,
-        "y": 224
+        "units": "slots",
+        "x": 19.1,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     }

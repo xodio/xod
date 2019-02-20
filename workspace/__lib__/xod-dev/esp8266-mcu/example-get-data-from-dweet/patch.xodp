@@ -4,36 +4,42 @@
       "content": "If request succeeds, request fresh value after 1 second\nIf request fails, retry after 5 seconds",
       "id": "BJnIU4Kt7",
       "position": {
-        "x": 476,
-        "y": 510
+        "units": "slots",
+        "x": 14,
+        "y": 5
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     },
     {
       "content": "⚠️ Make sure to specify SSID and password of your WiFi network",
       "id": "H1hkLF9Fm",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 272
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "tip: use `https://dweet.io/dweet/for/xod-esp8266-iot?lum=100` to put desired values\n",
       "id": "SkhZRSUVFY7",
       "position": {
-        "x": 544,
-        "y": 408
+        "units": "slots",
+        "x": 16,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 442
+        "height": 1,
+        "units": "slots",
+        "width": 11
       }
     }
   ],
@@ -266,8 +272,9 @@
       },
       "id": "B1-gRSUVYYX",
       "position": {
-        "x": 612,
-        "y": 612
+        "units": "slots",
+        "x": 18,
+        "y": 6
       },
       "type": "xod/core/delay"
     },
@@ -275,8 +282,9 @@
       "id": "B19RHUNYt7",
       "label": "RST",
       "position": {
-        "x": 374,
-        "y": 510
+        "units": "slots",
+        "x": 11,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -286,8 +294,9 @@
       },
       "id": "BJCSI4tYQ",
       "position": {
-        "x": 272,
-        "y": 612
+        "units": "slots",
+        "x": 8,
+        "y": 6
       },
       "type": "xod/stream/pass-from-sequence"
     },
@@ -295,16 +304,18 @@
       "id": "ByXASI4FKm",
       "label": "RST",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "Byj0rUNKKQ",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/core/any"
     },
@@ -312,8 +323,9 @@
       "id": "H1BCFNKKm",
       "label": "AGAIN",
       "position": {
-        "x": 578,
-        "y": 816
+        "units": "slots",
+        "x": 17,
+        "y": 8
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -324,16 +336,18 @@
       },
       "id": "Hk6RBINtYX",
       "position": {
-        "x": 271,
-        "y": 407
+        "units": "slots",
+        "x": 8,
+        "y": 4
       },
       "type": "@/http-request(esp8266-mcu-inet)"
     },
     {
       "id": "HydRr8NttQ",
       "position": {
-        "x": 272,
-        "y": 816
+        "units": "slots",
+        "x": 8,
+        "y": 8
       },
       "type": "xod/stream/parse-integer"
     },
@@ -341,8 +355,9 @@
       "id": "Sy2CBUNYt7",
       "label": "RST",
       "position": {
-        "x": 340,
-        "y": 714
+        "units": "slots",
+        "x": 10,
+        "y": 7
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -352,16 +367,18 @@
       },
       "id": "SyETcEtKm",
       "position": {
-        "x": 476,
-        "y": 612
+        "units": "slots",
+        "x": 14,
+        "y": 6
       },
       "type": "xod/core/delay"
     },
     {
       "id": "SyFdPQqtQ",
       "position": {
-        "x": 510,
-        "y": 714
+        "units": "slots",
+        "x": 15,
+        "y": 7
       },
       "type": "xod/core/any"
     },
@@ -372,8 +389,9 @@
       },
       "id": "r1F8u4ttm",
       "position": {
-        "x": 136,
-        "y": 918
+        "units": "slots",
+        "x": 4,
+        "y": 9
       },
       "type": "xod/math/map-clip"
     },
@@ -381,8 +399,9 @@
       "id": "rkMCr8EtYX",
       "label": "AGAIN",
       "position": {
-        "x": 442,
-        "y": 102
+        "units": "slots",
+        "x": 13,
+        "y": 1
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -392,16 +411,18 @@
       },
       "id": "rkWAH8EYtQ",
       "position": {
-        "x": 238,
-        "y": 1020
+        "units": "slots",
+        "x": 7,
+        "y": 10
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "rkv29jyc7",
       "position": {
-        "x": 578,
-        "y": 714
+        "units": "slots",
+        "x": 17,
+        "y": 7
       },
       "type": "xod/core/defer"
     },
@@ -412,8 +433,9 @@
       },
       "id": "ryJlRBU4FYQ",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "@/connect"
     }

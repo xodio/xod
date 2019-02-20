@@ -127,7 +127,8 @@
     {
       "id": "BJlcwE3b84",
       "position": {
-        "x": 132,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -135,71 +136,80 @@
     {
       "id": "BkHAeaMUV",
       "position": {
-        "x": 220,
-        "y": 210
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/jumper"
     },
     {
       "id": "HJWCxTz84",
       "position": {
-        "x": 176,
-        "y": 210
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/jumper"
     },
     {
       "id": "HkQqwE3-IN",
       "position": {
-        "x": 88,
-        "y": 210
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/core/less"
     },
     {
       "id": "HkumV5ML4",
       "position": {
-        "x": 396,
-        "y": 105
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "HyfcD43-U4",
       "position": {
-        "x": 308,
-        "y": 105
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/variadic-1"
     },
     {
       "id": "S122lpfI4",
       "position": {
-        "x": 0,
-        "y": 210
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/is-nan"
     },
     {
       "id": "Sk4hl6fL4",
       "position": {
-        "x": 44,
-        "y": 315
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/core/or"
     },
     {
       "id": "Sy-9wN2-UE",
       "position": {
-        "x": 132,
-        "y": 525
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "rJ5vEnbI4",
       "position": {
-        "x": 88,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -207,8 +217,9 @@
     {
       "id": "rJV5PN3bLN",
       "position": {
-        "x": 132,
-        "y": 420
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/core/if-else"
     }

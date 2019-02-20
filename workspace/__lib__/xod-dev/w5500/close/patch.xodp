@@ -6,8 +6,9 @@
       "id": "BJsYpQtZm",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,7 +17,8 @@
       "id": "SJldxXCv-m",
       "label": "CLS",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -26,6 +28,7 @@
       "id": "rJ53A_vzQ",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -34,8 +37,9 @@
     {
       "id": "rybOeQRDb7",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

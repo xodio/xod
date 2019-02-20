@@ -4,24 +4,28 @@
       "content": "You can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\nLet’s do a classic experiment: blink the LED.\n\n## Instructions\n\n1. Assemble a [circuit with the LED](https://xod.io/docs/tutorial/24-flip-flop/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_24). Do not forget to specify the desired port in the `PORT` pin.\n2. Set the flashing frequency in seconds using `IVAL`.\n3. Upload the patch to the Arduino.\n\nThe LED will now turn on and off at the frequency you've chosen.\nTry to control the flashing speed of the LED with a potentiometer. To do this, connect the output of a pot node to the `IVAL` pin.",
       "id": "Hy-l49nxf",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
       "size": {
-        "height": 459,
-        "width": 306
+        "height": 5,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "Each time a pulse arrives at the `TGL` pin, the node toggles the boolean value on the `MEM` pin from `false` to `true` and vice versa.",
       "id": "SJVeV52ez",
       "position": {
-        "x": 510,
-        "y": 204
+        "units": "slots",
+        "x": 15,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     }
   ],
@@ -56,8 +60,9 @@
       },
       "id": "ByXLOXV9W",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "type": "xod/core/clock"
     },
@@ -67,16 +72,18 @@
       },
       "id": "HyA_GKr9W",
       "position": {
-        "x": 340,
-        "y": 306
+        "units": "slots",
+        "x": 10,
+        "y": 3
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "HyNvOmN5b",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "type": "xod/core/flip-flop"
     }

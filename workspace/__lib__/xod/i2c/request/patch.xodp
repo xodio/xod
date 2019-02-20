@@ -6,7 +6,8 @@
       "id": "BkRw4E3kX",
       "label": "ADDR",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -16,6 +17,7 @@
       "id": "Hk1dRQh17",
       "label": "I2C",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -26,8 +28,9 @@
       "id": "S1eJu0Q2JQ",
       "label": "ERR",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -36,7 +39,8 @@
       "id": "SJjmdOVOW",
       "label": "SEND",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -46,8 +50,9 @@
       "id": "Sk7BudNdZ",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -59,7 +64,8 @@
       "id": "r1NONEn1m",
       "label": "N",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -67,8 +73,9 @@
     {
       "id": "rkoN_dNOW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

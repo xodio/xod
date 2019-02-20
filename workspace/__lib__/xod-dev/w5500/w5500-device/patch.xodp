@@ -9,8 +9,9 @@
       "id": "HyvDHC7G7",
       "label": "CS",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-port"
     },
@@ -19,16 +20,18 @@
       "id": "SJfNS0XfX",
       "label": "DEV",
       "position": {
-        "x": 34,
-        "y": 510
+        "units": "slots",
+        "x": 1,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-self"
     },
     {
       "id": "r194BCmfX",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,8 +40,9 @@
       "id": "rkKSHAXMQ",
       "label": "MAC",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/net/input-mac-address"
     }

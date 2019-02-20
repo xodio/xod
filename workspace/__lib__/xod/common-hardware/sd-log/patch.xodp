@@ -6,8 +6,9 @@
       "id": "B1WaLt8gm",
       "label": "DONE",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,7 +17,8 @@
       "id": "BJGhy4lgG",
       "label": "CS",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -26,7 +28,8 @@
       "id": "BJK0yEglf",
       "label": "W",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -36,8 +39,9 @@
       "id": "HJcUcHexf",
       "label": "ERR",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -46,7 +50,8 @@
       "id": "SJ1CkNggf",
       "label": "LINE",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -54,8 +59,9 @@
     {
       "id": "SkfZlVggM",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -64,7 +70,8 @@
       "id": "rJbTJVxxM",
       "label": "FILE",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"

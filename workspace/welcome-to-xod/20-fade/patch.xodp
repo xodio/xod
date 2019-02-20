@@ -4,12 +4,14 @@
       "content": "Now, our servo can turn to the set angle at its maximum speed. High speed is not\nalways necessary and can damage the servo itself if the shaft hits an obstacle.\n\nLet’s improve our patch by making the servo move more smoothly. To achieve that, we'll need to set the `VAL` pin value along with a series of transitional values. There's a node for that, and it's called `fade`.\n\nThe `fade` node is in `xod/core`. This node sets a series of transitional values, so it will smoothen our servo motion.\n\nThe `TARG` pin waits for a target value.\n\nThe `RATE` pin is a number that defines amount of change for the transitional\nvalues per each second.\n\nThe output pin returns 0 at the start of the program. Then, it starts to move toward the `TARG` value by the `RATE` steps. The value of the output pin is saved, so if the `TARG` value changes, the output will start to move to this value from the last one returned.\n\n## Instructions\n\n1. Set the `RATE` value to 0.1.\n\n2. Upload the patch to the Arduino.\n\nNow, the servo will turn at a speed of 18° per second (0.1 = 18°).",
       "id": "rkO6OLqiZ",
       "position": {
-        "x": -34,
+        "units": "slots",
+        "x": -1,
         "y": 0
       },
       "size": {
-        "height": 663,
-        "width": 306
+        "height": 7,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -66,8 +68,9 @@
       },
       "id": "B185dU5s-",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "type": "xod/core/fade"
     },
@@ -77,8 +80,9 @@
       },
       "id": "B1ki_85jZ",
       "position": {
-        "x": 306,
-        "y": 408
+        "units": "slots",
+        "x": 9,
+        "y": 4
       },
       "type": "xod/common-hardware/servo"
     },
@@ -88,16 +92,18 @@
       },
       "id": "BkiYd85o-",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/core/if-else"
     },
     {
       "id": "BkqfdIqob",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/core/greater"
     },
@@ -107,7 +113,8 @@
       },
       "id": "rJ1l0H9Z7",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/common-hardware/analog-sensor"

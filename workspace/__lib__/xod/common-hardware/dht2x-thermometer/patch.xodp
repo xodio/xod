@@ -118,8 +118,9 @@
       "id": "B1DVgcBeX",
       "label": "DONE",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -128,8 +129,9 @@
       "id": "BJewNgqHxQ",
       "label": "ERR",
       "position": {
-        "x": 272,
-        "y": 408
+        "units": "slots",
+        "x": 8,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -138,16 +140,18 @@
       "id": "BJx9xZi1f",
       "label": "RH",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HkpQeWs1M",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/dhtxx-read-raw"
     },
@@ -156,8 +160,9 @@
       "id": "Hyt9xbo1M",
       "label": "Tc",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -169,8 +174,9 @@
       "id": "SJpVg-jJM",
       "label": "UPD",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -179,16 +185,18 @@
       "id": "rJ84xbjyG",
       "label": "PORT",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-port"
     },
     {
       "id": "ry6debo1z",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "@/dht2x-pack"
     }

@@ -9,16 +9,18 @@
       "id": "HJgzhKxmvm",
       "label": "DAY",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "Hy9KKgXwQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -27,7 +29,8 @@
       "id": "HygQhYlQw7",
       "label": "SEC",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -37,8 +40,9 @@
       "id": "S1-M2YemPQ",
       "label": "HOUR",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -47,16 +51,18 @@
       "id": "SkQnYg7wQ",
       "label": "MIN",
       "position": {
-        "x": 135,
-        "y": -1
+        "units": "slots",
+        "x": 4,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "r1ZqKlXPX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-self"
     },
@@ -68,8 +74,9 @@
       "id": "r1f2FeXP7",
       "label": "MON",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -81,8 +88,9 @@
       "id": "ryjoteXwm",
       "label": "YEAR",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     }

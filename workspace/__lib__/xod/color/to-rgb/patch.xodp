@@ -116,8 +116,9 @@
     {
       "id": "B14Poboo7",
       "position": {
-        "x": -136,
-        "y": 102
+        "units": "slots",
+        "x": -4,
+        "y": 1
       },
       "type": "xod/bits/u8-to-number"
     },
@@ -126,16 +127,18 @@
       "id": "B1efXsbiom",
       "label": "B",
       "position": {
-        "x": 272,
-        "y": 306
+        "units": "slots",
+        "x": 8,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BJeOvsbism",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/bits/u8-to-number"
     },
@@ -146,8 +149,9 @@
       },
       "id": "By5GsWjs7",
       "position": {
-        "x": -136,
-        "y": 204
+        "units": "slots",
+        "x": -4,
+        "y": 2
       },
       "type": "xod/math/map-clip"
     },
@@ -156,8 +160,9 @@
       "id": "ByzXjZjjX",
       "label": "G",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -168,24 +173,27 @@
       },
       "id": "HJx5fjWjo7",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/math/map-clip"
     },
     {
       "id": "HkbyibsjQ",
       "position": {
-        "x": 34,
-        "y": -102
+        "units": "slots",
+        "x": 1,
+        "y": -1
       },
       "type": "@/input-color"
     },
     {
       "id": "S1uwoWoim",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/bits/u8-to-number"
     },
@@ -194,8 +202,9 @@
       "id": "SJKyjZjim",
       "label": "R",
       "position": {
-        "x": -136,
-        "y": 306
+        "units": "slots",
+        "x": -4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -206,15 +215,17 @@
       },
       "id": "SJWqGi-jo7",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/math/map-clip"
     },
     {
       "id": "r13HiWoj7",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/to-rgb-bytes"

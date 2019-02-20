@@ -85,8 +85,9 @@
       "id": "BJ244qwLZ",
       "label": "Tc",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -96,8 +97,9 @@
       },
       "id": "BJHDuWi1M",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/core/divide"
     },
@@ -106,16 +108,18 @@
       "id": "HkgBE9D8Z",
       "label": "RH",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SJg4_Wo1M",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/dhtxx-read-raw"
     },
@@ -124,6 +128,7 @@
       "id": "SkUQV5wIb",
       "label": "PORT",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -134,8 +139,9 @@
       "id": "Syc4CYBxQ",
       "label": "DONE",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -144,8 +150,9 @@
       "id": "rJeq4CYSl7",
       "label": "ERR",
       "position": {
-        "x": 272,
-        "y": 408
+        "units": "slots",
+        "x": 8,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -157,7 +164,8 @@
       "id": "ryeE45PLZ",
       "label": "UPD",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

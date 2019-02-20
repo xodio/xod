@@ -4,12 +4,14 @@
       "content": "Do not accept another INIT until current request is complete",
       "id": "Sy0J_rC9m",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "size": {
-        "height": 153,
-        "width": 170
+        "height": 2,
+        "units": "slots",
+        "width": 4
       }
     }
   ],
@@ -398,24 +400,27 @@
       },
       "id": "B1U0CH2PFQ",
       "position": {
-        "x": 442,
-        "y": 204
+        "units": "slots",
+        "x": 13,
+        "y": 2
       },
       "type": "xod/core/concat"
     },
     {
       "id": "BJO382PtQ",
       "position": {
-        "x": 34,
-        "y": 510
+        "units": "slots",
+        "x": 1,
+        "y": 5
       },
       "type": "@/send"
     },
     {
       "id": "BJaqmQ0cm",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/core/branch"
     },
@@ -427,8 +432,9 @@
       "id": "BJcR0ShvYQ",
       "label": "HDRS",
       "position": {
-        "x": 544,
-        "y": -204
+        "units": "slots",
+        "x": 16,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -437,8 +443,9 @@
       "id": "BJpCRr2vt7",
       "label": "DONE",
       "position": {
-        "x": 136,
-        "y": 714
+        "units": "slots",
+        "x": 4,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -446,8 +453,9 @@
       "id": "BkXgHvhwtX",
       "label": "HOST",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -455,8 +463,9 @@
       "id": "BkZeBwhvYm",
       "label": "HOST",
       "position": {
-        "x": 442,
-        "y": 102
+        "units": "slots",
+        "x": 13,
+        "y": 1
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -468,8 +477,9 @@
       "id": "ByWlRArnDFQ",
       "label": "METH",
       "position": {
-        "x": 408,
-        "y": -204
+        "units": "slots",
+        "x": 12,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -478,8 +488,9 @@
       "id": "H1A0CH3PYm",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 714
+        "units": "slots",
+        "x": 6,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -489,8 +500,9 @@
       },
       "id": "H1ACr2vFX",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/net/format-http-request"
     },
@@ -498,8 +510,9 @@
       "id": "H1lBv2wF7",
       "label": "HOST",
       "position": {
-        "x": 68,
-        "y": -102
+        "units": "slots",
+        "x": 2,
+        "y": -1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -511,8 +524,9 @@
       "id": "HJjCAB2DF7",
       "label": "HOST",
       "position": {
-        "x": 68,
-        "y": -204
+        "units": "slots",
+        "x": 2,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -520,8 +534,9 @@
       "id": "HkT4BXC9X",
       "label": "lock",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -530,8 +545,9 @@
       "id": "Hku0ArhDYX",
       "label": "CHAR",
       "position": {
-        "x": -1,
-        "y": 713
+        "units": "slots",
+        "x": -0.05,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -543,8 +559,9 @@
       "id": "Hkv0CrnPYQ",
       "label": "BODY",
       "position": {
-        "x": 612,
-        "y": -204
+        "units": "slots",
+        "x": 18,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -552,7 +569,8 @@
       "id": "HyW3SD3vF7",
       "label": "PORT",
       "position": {
-        "x": 510,
+        "units": "slots",
+        "x": 15,
         "y": 0
       },
       "type": "xod/patch-nodes/from-bus"
@@ -563,8 +581,9 @@
       },
       "id": "Hyg00BnPK7",
       "position": {
-        "x": 510,
-        "y": 102
+        "units": "slots",
+        "x": 15,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
@@ -573,8 +592,9 @@
       "id": "S1Tl8hwFQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": -204
+        "y": -2
       },
       "type": "@/input-esp8266-mcu-inet"
     },
@@ -582,8 +602,9 @@
       "id": "S1xGBmCq7",
       "label": "lock",
       "position": {
-        "x": 306,
-        "y": -204
+        "units": "slots",
+        "x": 9,
+        "y": -2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -591,31 +612,35 @@
       "id": "SJRQBmR5Q",
       "label": "unlock",
       "position": {
-        "x": 68,
-        "y": 714
+        "units": "slots",
+        "x": 2,
+        "y": 7
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "SJSC3hDKQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "@/receive"
     },
     {
       "id": "Sk7VL7R97",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/core/defer"
     },
     {
       "id": "Ski5GQAqm",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/core/flip-flop"
@@ -628,8 +653,9 @@
       "id": "SyM00ShDY7",
       "label": "PORT",
       "position": {
-        "x": 136,
-        "y": -204
+        "units": "slots",
+        "x": 4,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -638,8 +664,9 @@
       "id": "r1E0RH3vYQ",
       "label": "RCV",
       "position": {
-        "x": 34,
-        "y": 714
+        "units": "slots",
+        "x": 1,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -647,8 +674,9 @@
       "id": "r1QnBD2vFm",
       "label": "PORT",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -656,8 +684,9 @@
       "arityLevel": 2,
       "id": "rJ7C0HhPKX",
       "position": {
-        "x": 203,
-        "y": 611
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "xod/core/any"
     },
@@ -665,16 +694,18 @@
       "id": "rknSDnPYQ",
       "label": "PORT",
       "position": {
-        "x": 136,
-        "y": -102
+        "units": "slots",
+        "x": 4,
+        "y": -1
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "ryE1I3vFm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/open-tcp"
     },
@@ -686,8 +717,9 @@
       "id": "ryYRCBhvFX",
       "label": "PATH",
       "position": {
-        "x": 476,
-        "y": -204
+        "units": "slots",
+        "x": 14,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -695,8 +727,9 @@
       "id": "ryYxr7A5X",
       "label": "unlock",
       "position": {
-        "x": 238,
-        "y": -204
+        "units": "slots",
+        "x": 7,
+        "y": -2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -705,8 +738,9 @@
       "id": "rygl0RH3wtm",
       "label": "INIT",
       "position": {
-        "x": 680,
-        "y": -204
+        "units": "slots",
+        "x": 20,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -716,8 +750,9 @@
       },
       "id": "ryuJH7CcX",
       "position": {
-        "x": 238,
-        "y": -102
+        "units": "slots",
+        "x": 7,
+        "y": -1
       },
       "type": "xod/core/any"
     }

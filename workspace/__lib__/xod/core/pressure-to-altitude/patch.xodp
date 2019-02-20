@@ -4,24 +4,28 @@
       "content": "Pascals to mbar.",
       "id": "BksNEbYMm",
       "position": {
-        "x": -102,
-        "y": -102
+        "units": "slots",
+        "x": -3,
+        "y": -1
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     },
     {
       "content": "The altimeter setting.\nThe standard pressure level of 1013.25 mbar",
       "id": "S1wLE-tG7",
       "position": {
-        "x": -102,
+        "units": "slots",
+        "x": -3,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     }
   ],
@@ -101,8 +105,9 @@
       },
       "id": "ByoLpkYzQ",
       "position": {
-        "x": -238,
-        "y": 306
+        "units": "slots",
+        "x": -7,
+        "y": 3
       },
       "type": "@/multiply"
     },
@@ -111,8 +116,9 @@
       "id": "SkG8Lv1FMQ",
       "label": "Ppa",
       "position": {
-        "x": -204,
-        "y": -204
+        "units": "slots",
+        "x": -6,
+        "y": -2
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -121,8 +127,9 @@
       "id": "SkUUPyKGX",
       "label": "ALT",
       "position": {
-        "x": -238,
-        "y": 408
+        "units": "slots",
+        "x": -7,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -132,7 +139,8 @@
       },
       "id": "Sya2nJFGQ",
       "position": {
-        "x": -204,
+        "units": "slots",
+        "x": -6,
         "y": 0
       },
       "type": "@/divide"
@@ -140,8 +148,9 @@
     {
       "id": "Syb88wJFzQ",
       "position": {
-        "x": -272,
-        "y": -204
+        "units": "slots",
+        "x": -8,
+        "y": -2
       },
       "type": "xod/patch-nodes/utility"
     },
@@ -151,8 +160,9 @@
       },
       "id": "r1HohyKM7",
       "position": {
-        "x": -204,
-        "y": 102
+        "units": "slots",
+        "x": -6,
+        "y": 1
       },
       "type": "xod/math/pow"
     },
@@ -162,8 +172,9 @@
       },
       "id": "r1wQ6kYzQ",
       "position": {
-        "x": -238,
-        "y": 204
+        "units": "slots",
+        "x": -7,
+        "y": 2
       },
       "type": "@/subtract"
     },
@@ -173,8 +184,9 @@
       },
       "id": "ryfQ2JYGm",
       "position": {
-        "x": -204,
-        "y": -102
+        "units": "slots",
+        "x": -6,
+        "y": -1
       },
       "type": "@/multiply"
     }

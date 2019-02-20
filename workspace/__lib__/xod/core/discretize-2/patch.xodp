@@ -94,8 +94,9 @@
     {
       "id": "HJw2cTbFW",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -103,7 +104,8 @@
       "id": "r1SqqabFZ",
       "label": "T1",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -112,8 +114,9 @@
       "description": "Use xod/core/discretize with adjusted arity instead",
       "id": "r1VsXK0KG",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -121,7 +124,8 @@
       "id": "rJl5qpZYZ",
       "label": "T0",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -131,8 +135,9 @@
       "id": "rkVicaZFZ",
       "label": "IDX",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -141,8 +146,9 @@
       "id": "rkpc9pZYb",
       "label": "T",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -150,7 +156,8 @@
       "id": "ryLFq6btW",
       "label": "X",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -161,16 +168,18 @@
       },
       "id": "rymEUTGYb",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/if-else"
     },
     {
       "id": "ryua56WYb",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/if-else"
     }

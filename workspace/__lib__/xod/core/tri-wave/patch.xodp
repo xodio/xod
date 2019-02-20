@@ -88,7 +88,8 @@
       "id": "Bke855F1z",
       "label": "UPD",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -96,8 +97,9 @@
     {
       "id": "HJ04rcKyM",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/tri-wave-map"
     },
@@ -109,7 +111,8 @@
       "id": "HJ4Sc5FJG",
       "label": "EN",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -122,7 +125,8 @@
       "id": "HJU8B5tkM",
       "label": "T",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -130,8 +134,9 @@
     {
       "id": "HywSB5FyG",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "@/timer"
     },
@@ -140,7 +145,8 @@
       "id": "S1iB5qFkz",
       "label": "RST",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -150,8 +156,9 @@
       "id": "SyFLcqtJG",
       "label": "OUT",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -160,8 +167,9 @@
       "id": "rykP99t1z",
       "label": "N",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     }

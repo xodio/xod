@@ -84,7 +84,8 @@
       "id": "BJEV4BMmQ",
       "label": "RST",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -98,8 +99,9 @@
       },
       "id": "BJqfNrGXm",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "@/select"
     },
@@ -107,16 +109,18 @@
       "description": "Pulses whenever the string output changes",
       "id": "HJEOEHzm7",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJtNErGmQ",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "@/any"
     },
@@ -124,7 +128,8 @@
       "id": "r1X4NSMXm",
       "label": "ERR",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -133,7 +138,8 @@
       "id": "rJgVVBzQm",
       "label": "OK",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -141,8 +147,9 @@
     {
       "id": "rJsINSz7m",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "@/boot"
     },
@@ -150,8 +157,9 @@
       "description": "The resulting string. The starting value is “...”",
       "id": "rysPErzmm",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-string"
     }

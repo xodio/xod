@@ -73,23 +73,26 @@
       "description": "Use `xod/math/discretize` instead",
       "id": "BJPnGsF1m",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "HJw2cTbFW",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/less"
     },
     {
       "id": "SyLXO0Wuz",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"
@@ -98,7 +101,8 @@
       "id": "r1SqqabFZ",
       "label": "T1",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -107,7 +111,8 @@
       "id": "rJl5qpZYZ",
       "label": "T0",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -117,8 +122,9 @@
       "id": "rkpc9pZYb",
       "label": "T",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -126,7 +132,8 @@
       "id": "ryLFq6btW",
       "label": "X",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -134,8 +141,9 @@
     {
       "id": "ryua56WYb",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/if-else"
     }

@@ -4,60 +4,70 @@
       "content": "<- Create the device",
       "id": "BJNQ-vLum",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Read data from one page",
       "id": "ByOhbv8dX",
       "position": {
-        "x": 340,
-        "y": 510
+        "units": "slots",
+        "x": 10,
+        "y": 5
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Initialize it on boot",
       "id": "ByzV-vLdQ",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Detect an NFC tag and read its UID. This is a required step to read or write data to the tag",
       "id": "H185bw8_X",
       "position": {
-        "x": 340,
-        "y": 408
+        "units": "slots",
+        "x": 10,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- After the initialization it will constantly try to detect an NFC tag",
       "id": "rJav-v8O7",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -199,24 +209,27 @@
     {
       "id": "B143mOpv7",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
     {
       "id": "B198SupDQ",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "@/pair-tag"
     },
     {
       "id": "B1BzbD8dm",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/core/continuously-pausable"
     },
@@ -226,8 +239,9 @@
       },
       "id": "Bk26aD6P7",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/init"
     },
@@ -237,8 +251,9 @@
       },
       "id": "BkWjXu6P7",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "@/read-page"
     },
@@ -246,8 +261,9 @@
       "id": "ByXTaw6PQ",
       "label": "DEV",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -257,7 +273,8 @@
       },
       "id": "HJc2aPTwm",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/pn532-device"
@@ -265,8 +282,9 @@
     {
       "id": "HkZm2muTv7",
       "position": {
-        "x": 170,
-        "y": 612
+        "units": "slots",
+        "x": 5,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
@@ -274,32 +292,36 @@
       "id": "SknLSuaPQ",
       "label": "DEV",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "rJftQuTDm",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/core/flip-flop"
     },
     {
       "id": "rk4mh7dpwm",
       "position": {
-        "x": 204,
-        "y": 612
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
     {
       "id": "ryznQOTvX",
       "position": {
-        "x": 136,
-        "y": 612
+        "units": "slots",
+        "x": 4,
+        "y": 6
       },
       "type": "xod/core/watch"
     }

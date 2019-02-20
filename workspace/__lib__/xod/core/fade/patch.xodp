@@ -5,8 +5,9 @@
       "description": "The current animation value.",
       "id": "BJ0M5JKUW",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -18,16 +19,18 @@
       "id": "BkweckF8-",
       "label": "RATE",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "Byx7KRPyN",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -39,8 +42,9 @@
       "id": "HJblc1YUZ",
       "label": "UPD",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -49,16 +53,18 @@
       "id": "HyYJqJFLZ",
       "label": "TARG",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "Sk7m5kYIb",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

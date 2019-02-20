@@ -4,7 +4,8 @@
     {
       "id": "BkF78AurDJW",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -12,8 +13,9 @@
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -21,8 +23,9 @@
       "description": "Use `xod/math/round` instead",
       "id": "rJnLEoFJX",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -32,8 +35,9 @@
       },
       "id": "rkO7L0uSP1Z",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     }

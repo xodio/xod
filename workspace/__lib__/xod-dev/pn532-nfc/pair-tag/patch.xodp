@@ -6,16 +6,18 @@
       "id": "Sk3BHM2Pm",
       "label": "UID",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "@/output-nfc-uid"
     },
     {
       "id": "Sy1HHz3vQ",
       "position": {
-        "x": -34,
-        "y": 102
+        "units": "slots",
+        "x": -1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -23,7 +25,8 @@
       "id": "r1QEHf3DX",
       "label": "DEV",
       "position": {
-        "x": -34,
+        "units": "slots",
+        "x": -1,
         "y": 0
       },
       "type": "@/input-pn532-device"
@@ -33,8 +36,9 @@
       "id": "rkQUBzhvQ",
       "label": "OK",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -43,7 +47,8 @@
       "id": "rytEHf3vm",
       "label": "PAIR",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -53,8 +58,9 @@
       "id": "rywIrfhP7",
       "label": "ERR",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

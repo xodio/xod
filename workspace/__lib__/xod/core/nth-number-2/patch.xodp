@@ -62,7 +62,8 @@
       "id": "BkGyBpZKZ",
       "label": "X1",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -71,7 +72,8 @@
       "id": "S13CNpbK-",
       "label": "X0",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -80,16 +82,18 @@
       "description": "Use xod/core/nth-number with adjusted arity instead",
       "id": "S1nnmK0Kf",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "SJrESpZKW",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -97,8 +101,9 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "rJCJSpbt-",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -107,7 +112,8 @@
       "id": "rJXCVpWtZ",
       "label": "IDX",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -118,8 +124,9 @@
       },
       "id": "rJcQrTWtZ",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/less"
     }

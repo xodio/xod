@@ -236,16 +236,18 @@
     {
       "id": "B1-jimffX",
       "position": {
-        "x": 476,
-        "y": 816
+        "units": "slots",
+        "x": 14,
+        "y": 8
       },
       "type": "xod/core/any"
     },
     {
       "id": "BJo1OQMQm",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "@/ethernet-shield"
     },
@@ -257,8 +259,9 @@
       },
       "id": "BkYKp8YCZm",
       "position": {
-        "x": 306,
-        "y": 918
+        "units": "slots",
+        "x": 9,
+        "y": 9
       },
       "type": "xod/common-hardware/text-lcd-16x2-i2c"
     },
@@ -269,8 +272,9 @@
       },
       "id": "H11vZoAZm",
       "position": {
-        "x": 510,
-        "y": 408
+        "units": "slots",
+        "x": 15,
+        "y": 4
       },
       "type": "xod/stream/pass-until"
     },
@@ -280,8 +284,9 @@
       },
       "id": "H1TqkjAWQ",
       "position": {
-        "x": 476,
-        "y": 510
+        "units": "slots",
+        "x": 14,
+        "y": 5
       },
       "type": "xod/stream/accumulate-string"
     },
@@ -292,8 +297,9 @@
       },
       "id": "HkZ1lKDMX",
       "position": {
-        "x": 544,
-        "y": 204
+        "units": "slots",
+        "x": 16,
+        "y": 2
       },
       "type": "@/http-request(w5500-inet)"
     },
@@ -303,24 +309,27 @@
       },
       "id": "Hy7vDi0bm",
       "position": {
-        "x": 510,
-        "y": 306
+        "units": "slots",
+        "x": 15,
+        "y": 3
       },
       "type": "xod/stream/pass-from-sequence"
     },
     {
       "id": "HyjY6UKRbQ",
       "position": {
-        "x": 170,
-        "y": 612
+        "units": "slots",
+        "x": 5,
+        "y": 6
       },
       "type": "xod/net/format-ip"
     },
     {
       "id": "SJrwBjPMQ",
       "position": {
-        "x": 170,
-        "y": 510
+        "units": "slots",
+        "x": 5,
+        "y": 5
       },
       "type": "@/lan-ip"
     },
@@ -333,8 +342,9 @@
       },
       "id": "Skg7RtXGm",
       "position": {
-        "x": 476,
-        "y": 714
+        "units": "slots",
+        "x": 14,
+        "y": 7
       },
       "type": "xod/core/select"
     },
@@ -347,8 +357,9 @@
       },
       "id": "r1yCTFQGX",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/core/select"
     }

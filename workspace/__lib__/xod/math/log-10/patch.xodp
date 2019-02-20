@@ -4,32 +4,36 @@
     {
       "id": "B1uF6vf1V",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "H1g7mXQ7yf",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HkQQXQ7kf",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "r1-mQXQmkf",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

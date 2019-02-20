@@ -94,8 +94,9 @@
     {
       "id": "B1nCwnt1z",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/divide"
     },
@@ -107,7 +108,8 @@
       "id": "BJNZzE3YJG",
       "label": "IN",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -120,7 +122,8 @@
       "id": "BJUWz4nt1G",
       "label": "T",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -130,16 +133,18 @@
       "id": "H1z-fVnFyz",
       "label": "N",
       "position": {
-        "x": 272,
-        "y": 612
+        "units": "slots",
+        "x": 8,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HJxq4nKkz",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "@/cos"
     },
@@ -151,16 +156,18 @@
       },
       "id": "Hksx_nF1G",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "@/map-range"
     },
     {
       "id": "S1G5O3Kkf",
       "position": {
-        "x": 272,
-        "y": 306
+        "units": "slots",
+        "x": 8,
+        "y": 3
       },
       "type": "@/floor"
     },
@@ -172,8 +179,9 @@
       "id": "S1mWMV3tyf",
       "label": "× 2𝜋",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "@/multiply"
     },
@@ -182,8 +190,9 @@
       "id": "r1e-zV2Fyz",
       "label": "OUT",
       "position": {
-        "x": 68,
-        "y": 612
+        "units": "slots",
+        "x": 2,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-number"
     }

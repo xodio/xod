@@ -99,7 +99,8 @@
       "id": "BkUmmMIoiQ",
       "label": "AVcc",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -109,8 +110,9 @@
       "id": "H1NQXfLsim",
       "label": "ERR",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -123,16 +125,18 @@
       },
       "id": "H1S_MUsjQ",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "@/gp2y0a-linearize"
     },
     {
       "id": "HJ-QXGIojQ",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
@@ -141,16 +145,18 @@
       "id": "HkQXGLsjm",
       "label": "DONE",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HkqXQa6iX",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/core/multiply"
     },
@@ -162,7 +168,8 @@
       "id": "HyG7XMUsj7",
       "label": "PORT",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -172,8 +179,9 @@
       "id": "HymQQMLojm",
       "label": "Dm",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -185,7 +193,8 @@
       "id": "rkeQ7fUos7",
       "label": "UPD",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

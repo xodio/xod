@@ -84,7 +84,8 @@
       "id": "BkGyBpZKZ",
       "label": "X1",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -94,8 +95,9 @@
       "id": "HyNBEJXdG",
       "label": "_",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -105,8 +107,9 @@
       },
       "id": "HywtN1QdM",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/subtract"
     },
@@ -114,7 +117,8 @@
       "id": "S13CNpbK-",
       "label": "X0",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -122,8 +126,9 @@
     {
       "id": "SJrESpZKW",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -131,7 +136,8 @@
       "description": "Use xod/core/nth-input instead",
       "id": "SkoRFSz3f",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/deprecated"
@@ -140,8 +146,9 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "rJCJSpbt-",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -150,7 +157,8 @@
       "id": "rJXCVpWtZ",
       "label": "IDX",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -161,15 +169,17 @@
       },
       "id": "rJcQrTWtZ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/less"
     },
     {
       "id": "ryJ0VH7Of",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"

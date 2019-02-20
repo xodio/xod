@@ -107,8 +107,9 @@
       },
       "id": "BksoSk7Gb",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/core/less"
     },
@@ -116,7 +117,8 @@
       "id": "By1UmyQzb",
       "label": "UPD",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -125,8 +127,9 @@
       "id": "ByYVLkXGW",
       "label": "ST",
       "position": {
-        "x": 340,
-        "y": 408
+        "units": "slots",
+        "x": 10,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -134,7 +137,8 @@
       "id": "H1BmSyQfW",
       "label": "SEN",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -142,8 +146,9 @@
     {
       "id": "H1Y-UJXG-",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/core/to-percent"
     },
@@ -151,7 +156,8 @@
       "id": "HJmDrymzW",
       "label": "PUMP",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -160,8 +166,9 @@
       "id": "S1afrk7GW",
       "label": "Moisture sensor",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/core/analog-input"
     },
@@ -169,8 +176,9 @@
       "id": "S1jFHymG-",
       "label": "Pump",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/core/digital-output"
     },
@@ -178,7 +186,8 @@
       "id": "SJTLQkXz-",
       "label": "NAME",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -186,8 +195,9 @@
     {
       "id": "r19MUJ7MZ",
       "position": {
-        "x": 340,
-        "y": 306
+        "units": "slots",
+        "x": 10,
+        "y": 3
       },
       "type": "xod/core/concat"
     }

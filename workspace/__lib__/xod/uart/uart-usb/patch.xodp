@@ -9,7 +9,8 @@
       "id": "BytfJKIWX",
       "label": "BAUD",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -17,8 +18,9 @@
     {
       "id": "SJQ39d8bm",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -27,8 +29,9 @@
       "id": "Sk450OL-X",
       "label": "UART",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/output-uart"
     },
@@ -37,8 +40,9 @@
       "id": "Sy7H0DUuQ",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -50,7 +54,8 @@
       "id": "ryx7rCvIuQ",
       "label": "INIT",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

@@ -5,8 +5,9 @@
       "description": "The current time value in seconds.",
       "id": "BJMlTDdJM",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -15,7 +16,8 @@
       "id": "HJF16v_kz",
       "label": "RST",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -23,8 +25,9 @@
     {
       "id": "HJbf6PdJG",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -36,7 +39,8 @@
       "id": "S1akTPOJf",
       "label": "UPD",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -49,7 +53,8 @@
       "id": "r1W1Tw_yz",
       "label": "EN",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"

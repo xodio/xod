@@ -4,12 +4,14 @@
       "content": "The MSB in D2 stores temperature sign",
       "id": "Hk8tJZokG",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 170
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     }
   ],
@@ -199,16 +201,18 @@
       },
       "id": "B1JY0go1G",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/core/greater"
     },
     {
       "id": "BJky1bsJz",
       "position": {
-        "x": 476,
-        "y": 408
+        "units": "slots",
+        "x": 14,
+        "y": 4
       },
       "type": "xod/core/word-to-number"
     },
@@ -216,8 +220,9 @@
       "id": "Bkl-lClskG",
       "label": "D3",
       "position": {
-        "x": 510,
-        "y": 102
+        "units": "slots",
+        "x": 15,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -227,8 +232,9 @@
       },
       "id": "Byqq0ljkz",
       "position": {
-        "x": 340,
-        "y": 408
+        "units": "slots",
+        "x": 10,
+        "y": 4
       },
       "type": "xod/core/subtract"
     },
@@ -236,24 +242,27 @@
       "id": "HJEIAxs1z",
       "label": "RH",
       "position": {
-        "x": 68,
-        "y": 816
+        "units": "slots",
+        "x": 2,
+        "y": 8
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HJeXkWjJM",
       "position": {
-        "x": 306,
-        "y": 612
+        "units": "slots",
+        "x": 9,
+        "y": 6
       },
       "type": "xod/core/subtract"
     },
     {
       "id": "S1MLPjz9M",
       "position": {
-        "x": 578,
-        "y": 408
+        "units": "slots",
+        "x": 17,
+        "y": 4
       },
       "type": "xod/patch-nodes/utility"
     },
@@ -261,16 +270,18 @@
       "id": "S1qS1ZjkG",
       "label": "Tc",
       "position": {
-        "x": 272,
-        "y": 918
+        "units": "slots",
+        "x": 8,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SkY7RxsJM",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/word-to-number"
     },
@@ -278,8 +289,9 @@
       "id": "Sku1Rls1G",
       "label": "D0",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -289,8 +301,9 @@
       },
       "id": "Sy8v7bikf",
       "position": {
-        "x": 272,
-        "y": 816
+        "units": "slots",
+        "x": 8,
+        "y": 8
       },
       "type": "xod/core/divide"
     },
@@ -298,16 +311,18 @@
       "id": "SyZlAxsJf",
       "label": "D2",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "SynxkbsJz",
       "position": {
-        "x": 340,
-        "y": 510
+        "units": "slots",
+        "x": 10,
+        "y": 5
       },
       "type": "xod/core/word-to-number"
     },
@@ -318,8 +333,9 @@
       "description": "Divide by 10 to calculate percents. Divide by 100 to convert to [0, 1] range",
       "id": "r1EHReikf",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/core/divide"
     },
@@ -327,16 +343,18 @@
       "id": "r1xx0xjkM",
       "label": "D1",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "rJO11bj1z",
       "position": {
-        "x": 272,
-        "y": 714
+        "units": "slots",
+        "x": 8,
+        "y": 7
       },
       "type": "xod/core/if-else"
     }

@@ -237,8 +237,9 @@
       "id": "B1tjJtVd-",
       "label": "TOUT",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -246,8 +247,9 @@
       "description": "Use `xod/i2c/request` along with a chain of `xod/i2c/read` instead.",
       "id": "H1qLPQEgX",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -255,16 +257,18 @@
       "id": "HJM8TViP-",
       "label": "B5",
       "position": {
-        "x": 10,
-        "y": 848
+        "units": "slots",
+        "x": 0.25,
+        "y": 8.3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HkdZxtVd-",
       "position": {
-        "x": 138,
-        "y": 328
+        "units": "slots",
+        "x": 4.05,
+        "y": 3.2
       },
       "type": "@/i2c-read"
     },
@@ -272,16 +276,18 @@
       "id": "Hkg8T4sPZ",
       "label": "B4",
       "position": {
-        "x": 10,
-        "y": 744
+        "units": "slots",
+        "x": 0.25,
+        "y": 7.25
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "Hyt7xt4_W",
       "position": {
-        "x": 138,
-        "y": 536
+        "units": "slots",
+        "x": 4.05,
+        "y": 5.25
       },
       "type": "@/i2c-read"
     },
@@ -289,16 +295,18 @@
       "id": "SJiBp4ivb",
       "label": "B2",
       "position": {
-        "x": 10,
-        "y": 536
+        "units": "slots",
+        "x": 0.25,
+        "y": 5.25
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SJiXeFEO-",
       "position": {
-        "x": 138,
-        "y": 640
+        "units": "slots",
+        "x": 4.05,
+        "y": 6.25
       },
       "type": "@/i2c-read"
     },
@@ -306,16 +314,18 @@
       "id": "SJx2a4swb",
       "label": "DONE",
       "position": {
-        "x": 138,
-        "y": 952
+        "units": "slots",
+        "x": 4.05,
+        "y": 9.3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SkCQet4_-",
       "position": {
-        "x": 138,
-        "y": 744
+        "units": "slots",
+        "x": 4.05,
+        "y": 7.25
       },
       "type": "@/i2c-read"
     },
@@ -323,8 +333,9 @@
       "id": "Sy6ST4jPZ",
       "label": "B3",
       "position": {
-        "x": 10,
-        "y": 640
+        "units": "slots",
+        "x": 0.25,
+        "y": 6.25
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -332,8 +343,9 @@
       "id": "SyaaaEsw-",
       "label": "UPD",
       "position": {
-        "x": 394,
-        "y": 16
+        "units": "slots",
+        "x": 11.65,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -341,8 +353,9 @@
       "id": "SydBa4ov-",
       "label": "B1",
       "position": {
-        "x": 10,
-        "y": 432
+        "units": "slots",
+        "x": 0.25,
+        "y": 4.2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -352,8 +365,9 @@
       },
       "id": "r1Tvyt4_W",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "@/i2c-request"
     },
@@ -361,24 +375,27 @@
       "id": "rJIHaEoPZ",
       "label": "B0",
       "position": {
-        "x": 10,
-        "y": 328
+        "units": "slots",
+        "x": 0.25,
+        "y": 3.2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "rJL5yFEdZ",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "@/i2c-read"
     },
     {
       "id": "rkHXgtNub",
       "position": {
-        "x": 138,
-        "y": 432
+        "units": "slots",
+        "x": 4.05,
+        "y": 4.2
       },
       "type": "@/i2c-read"
     },
@@ -386,8 +403,9 @@
       "id": "ryy0h4owW",
       "label": "ADDR",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     }

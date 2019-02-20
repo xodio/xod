@@ -64,8 +64,9 @@
       },
       "id": "HJqHeCBb-",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/core/branch"
     },
@@ -76,7 +77,8 @@
       },
       "id": "HkKQlCr-W",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/core/digital-input"
@@ -89,8 +91,9 @@
       },
       "id": "Hy-YeCB-b",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/core/flip-flop"
     },
@@ -101,8 +104,9 @@
       },
       "id": "SyVrxRS-W",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/branch"
     },
@@ -113,7 +117,8 @@
       },
       "id": "rkrQlRrWb",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/core/digital-input"
@@ -125,8 +130,9 @@
       },
       "id": "ryQslRHbb",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/core/digital-output"
     }

@@ -9,7 +9,8 @@
       "id": "BJfmXQFwpZ",
       "label": "EN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -17,14 +18,16 @@
     {
       "id": "Bk2VQKwab",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "H137mYw6W",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -33,8 +36,9 @@
     {
       "id": "rJXmXtvaZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

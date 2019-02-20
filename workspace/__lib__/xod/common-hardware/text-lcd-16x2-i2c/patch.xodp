@@ -6,7 +6,8 @@
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -16,7 +17,8 @@
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -26,8 +28,9 @@
       "id": "HJlMoNFIx7",
       "label": "DONE",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -39,7 +42,8 @@
       "id": "HkMi4t8xX",
       "label": "UPD",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -47,8 +51,9 @@
     {
       "id": "SkRdV5YWW",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -60,7 +65,8 @@
       "id": "SkkWMb9A-",
       "label": "BL",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -73,7 +79,8 @@
       "id": "rJlYT7EfW",
       "label": "ADDR",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"

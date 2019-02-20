@@ -240,8 +240,9 @@
       },
       "id": "BJDDE3LZQ",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
@@ -252,8 +253,9 @@
       },
       "id": "BJQtV2IZQ",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/join"
     },
@@ -262,8 +264,9 @@
       "id": "BJpRMhI-X",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -273,8 +276,9 @@
       },
       "id": "BkZvEh8ZQ",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
@@ -283,7 +287,8 @@
       "id": "HJc6c6DbQ",
       "label": "UART",
       "position": {
-        "x": -102,
+        "units": "slots",
+        "x": -3,
         "y": 0
       },
       "type": "xod/uart/input-uart"
@@ -296,7 +301,8 @@
       "id": "HJmUM2IZQ",
       "label": "BAUD",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -309,7 +315,8 @@
       "id": "Hk7az3LWQ",
       "label": "P",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -322,7 +329,8 @@
       "id": "HkK9z2U-7",
       "label": "DB",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -330,8 +338,9 @@
     {
       "id": "HyTHF6w-7",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/uart/end"
     },
@@ -341,16 +350,18 @@
       },
       "id": "HyxdPNhLZ7",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
     {
       "id": "S1tF3uXMX",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/core/any"
     },
@@ -360,8 +371,9 @@
       },
       "id": "SJ_wE3LZm",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
@@ -371,15 +383,17 @@
       },
       "id": "Sys_4h8-X",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "type": "xod/core/format-number"
     },
     {
       "id": "r1-kBT_zm",
       "position": {
-        "x": 476,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/patch-nodes/utility"
@@ -390,8 +404,9 @@
       },
       "id": "r1_c4nIbQ",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/core/concat"
     },
@@ -403,7 +418,8 @@
       "id": "rk3nfhLWQ",
       "label": "SB",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -411,16 +427,18 @@
     {
       "id": "rkUIu6Pbm",
       "position": {
-        "x": -34,
-        "y": 408
+        "units": "slots",
+        "x": -1,
+        "y": 4
       },
       "type": "xod/uart/print"
     },
     {
       "id": "ryE7t6DZm",
       "position": {
-        "x": -102,
-        "y": 408
+        "units": "slots",
+        "x": -3,
+        "y": 4
       },
       "type": "xod/uart/begin"
     },
@@ -432,7 +450,8 @@
       "id": "ryKmKaw-m",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -445,7 +464,8 @@
       "id": "ryjaznU-7",
       "label": "FC",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

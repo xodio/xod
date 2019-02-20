@@ -127,8 +127,9 @@
       "id": "B1SVlxu8_Q",
       "label": "UART",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -136,8 +137,9 @@
       "id": "B1bNgeO8_X",
       "label": "UART",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -148,8 +150,9 @@
       },
       "id": "BJAIVuqZm",
       "position": {
-        "x": 170,
-        "y": -102
+        "units": "slots",
+        "x": 5,
+        "y": -1
       },
       "type": "xod/core/delay"
     },
@@ -159,24 +162,27 @@
       },
       "id": "BJR8Q_c-X",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "@/read-bytes"
     },
     {
       "id": "BkwPEuc-Q",
       "position": {
-        "x": 272,
-        "y": -102
+        "units": "slots",
+        "x": 8,
+        "y": -1
       },
       "type": "xod/core/watch"
     },
     {
       "id": "By_4VdqbX",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "@/end"
     },
@@ -186,8 +192,9 @@
       },
       "id": "SJB8Quc-X",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "@/print"
     },
@@ -195,23 +202,26 @@
       "id": "Sk4xluU_X",
       "label": "UART",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "SkFwQdcZ7",
       "position": {
-        "x": 306,
-        "y": 408
+        "units": "slots",
+        "x": 9,
+        "y": 4
       },
       "type": "xod/core/console-log"
     },
     {
       "id": "rJKaK_qWX",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "@/uart"
@@ -220,8 +230,9 @@
       "id": "rJmEll_8_Q",
       "label": "UART",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     }

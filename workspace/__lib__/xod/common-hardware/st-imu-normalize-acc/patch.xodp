@@ -4,12 +4,14 @@
       "content": "Given 16-bit number, only 12 MSB contain data. So we divide by 16 to shift right by 4 bits.\n\nWe ge a value in milli-g. Divide by 1000 to convert to g.\n\nFinally, the divisor is 16000",
       "id": "ByVVj-7Kb",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "size": {
-        "height": 153,
-        "width": 340
+        "height": 2,
+        "units": "slots",
+        "width": 8
       }
     }
   ],
@@ -42,16 +44,18 @@
     {
       "id": "ByLYwoG9M",
       "position": {
-        "x": 510,
-        "y": 102
+        "units": "slots",
+        "x": 15,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
     {
       "id": "HyEMj-mFb",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -61,15 +65,17 @@
       },
       "id": "SJ1TjWXKZ",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/divide"
     },
     {
       "id": "SkhbobXKW",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

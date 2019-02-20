@@ -2,45 +2,50 @@
   "description": "Performs logical left-shift of `IN` by `N` bits.",
   "nodes": [
     {
+      "description": "Input number. Interpreted as a signed 32-bit interger",
       "id": "HkjNO_xxz",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
-      "type": "xod/patch-nodes/input-number",
-      "description": "Input number. Interpreted as a signed 32-bit interger"
+      "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Shift bits count. Truncated to an integer. Negative values round to zero",
       "id": "HylHuulxf",
       "label": "N",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
-      "type": "xod/patch-nodes/input-number",
-      "description": "Shift bits count. Truncated to an integer. Negative values round to zero"
+      "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "SkEHO_lef",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SygauOggG",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rJhduCvJ4",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/tabtest"
     }

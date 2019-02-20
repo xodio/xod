@@ -96,7 +96,8 @@
       "id": "B1pDRtEdb",
       "label": "SEN",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -104,8 +105,9 @@
     {
       "id": "B1zcwszcM",
       "position": {
-        "x": 408,
-        "y": 102
+        "units": "slots",
+        "x": 12,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
@@ -114,16 +116,18 @@
       "id": "H1C7ycV_b",
       "label": "IDX",
       "position": {
-        "x": 442,
-        "y": 408
+        "units": "slots",
+        "x": 13,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HJinnpbFb",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/core/discretize-4"
     },
@@ -132,7 +136,8 @@
       "id": "r1NqAYVdb",
       "label": "S1",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -142,8 +147,9 @@
       "id": "r1lUy5N_b",
       "label": "REG",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -152,7 +158,8 @@
       "id": "rk850K4u-",
       "label": "S2",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -167,8 +174,9 @@
       },
       "id": "ry-B5jBlm",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/core/nth-input"
     },
@@ -177,7 +185,8 @@
       "id": "ryP8LnZtZ",
       "label": "S3",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -187,7 +196,8 @@
       "id": "rynt0KE_W",
       "label": "S0",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

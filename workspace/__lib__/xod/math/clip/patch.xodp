@@ -5,8 +5,9 @@
       "description": "The result. Equals to `X` if it is already in the range, otherwise, its `Xc` rounded to a nearest bound: `MIN` or `MAX`.",
       "id": "BJRURA1nW",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -15,7 +16,8 @@
       "id": "H1WURCknW",
       "label": "MIN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -23,8 +25,9 @@
     {
       "id": "H1g6D6PMJV",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -33,7 +36,8 @@
       "id": "Hk2H0A13-",
       "label": "X",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -46,7 +50,8 @@
       "id": "Hy_U0013b",
       "label": "MAX",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -54,8 +59,9 @@
     {
       "id": "rkEdA0k2b",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

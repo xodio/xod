@@ -6,7 +6,8 @@
       "id": "Sk9A4oDMm",
       "label": "INET",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/input-w5500-inet"
@@ -16,16 +17,18 @@
       "id": "r15ySjwzQ",
       "label": "IP",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/net/output-ip-address"
     },
     {
       "id": "rkNlrjDfm",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

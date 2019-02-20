@@ -151,8 +151,9 @@
       "id": "BySz0iWtW",
       "label": "Yg",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -164,7 +165,8 @@
       "id": "Byq6VeDl7",
       "label": "INIT",
       "position": {
-        "x": 442,
+        "units": "slots",
+        "x": 13,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -172,8 +174,9 @@
     {
       "id": "H13Jn-mK-",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/st-imu-normalize-acc"
     },
@@ -182,8 +185,9 @@
       "id": "H1gEM8nHxm",
       "label": "DONE",
       "position": {
-        "x": 237,
-        "y": 305
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -192,16 +196,18 @@
       "id": "HJzzRiWt-",
       "label": "Xg",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "Hk013Z7t-",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/st-imu-normalize-acc"
     },
@@ -209,16 +215,18 @@
       "id": "S1-EzU2rlm",
       "label": "I2C",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/i2c/input-i2c"
     },
     {
       "id": "S1-e3WXFZ",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/st-imu-normalize-acc"
     },
@@ -230,7 +238,8 @@
       "id": "S1x-AsWKb",
       "label": "SENS",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -243,7 +252,8 @@
       "id": "SJFeRsZYW",
       "label": "ADDR",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -253,8 +263,9 @@
       "id": "SkEzUhHlX",
       "label": "ERR",
       "position": {
-        "x": 271,
-        "y": 305
+        "units": "slots",
+        "x": 8,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -266,7 +277,8 @@
       "id": "Syc-0sWtZ",
       "label": "UPD",
       "position": {
-        "x": 476,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -284,8 +296,9 @@
       },
       "id": "r1ZJ0iWFW",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/st-imu-generic-sensor"
     },
@@ -294,8 +307,9 @@
       "id": "rkPG0s-YZ",
       "label": "Zg",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     }

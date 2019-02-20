@@ -4,8 +4,9 @@
     {
       "id": "BJXXLBwPfQ",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -17,7 +18,8 @@
       "id": "BJfXLrPDzm",
       "label": "CONN",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -25,7 +27,8 @@
     {
       "id": "ByF36Re7Q",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/utility"
@@ -35,8 +38,9 @@
       "id": "H1b7LrDPGm",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -45,6 +49,7 @@
       "id": "HkhKBPPfX",
       "label": "DEV",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -55,8 +60,9 @@
       "id": "rJ6H7ovfQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/output-w5500-inet"
     },
@@ -65,8 +71,9 @@
       "id": "ryx7LHwPfm",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

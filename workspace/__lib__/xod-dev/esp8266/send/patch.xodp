@@ -6,6 +6,7 @@
       "id": "B13DYZTM7",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -14,8 +15,9 @@
     {
       "id": "BkMWIWLqW7",
       "position": {
-        "x": 33,
-        "y": 101
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,7 +26,8 @@
       "id": "HJmbIb89bm",
       "label": "SEND",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -34,8 +37,9 @@
       "id": "HkWZL-Lc-7",
       "label": "ERR",
       "position": {
-        "x": 67,
-        "y": 203
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -44,7 +48,8 @@
       "id": "S1NWLb89WQ",
       "label": "MSG",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -54,7 +59,8 @@
       "id": "S1SRqomzX",
       "label": "INET",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/input-esp8266-inet"
@@ -64,8 +70,9 @@
       "id": "r1WUb8qWX",
       "label": "DONE",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

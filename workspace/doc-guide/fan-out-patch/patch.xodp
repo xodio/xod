@@ -38,7 +38,8 @@
     {
       "id": "B1QMw9Ht-",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/core/analog-input"
@@ -46,24 +47,27 @@
     {
       "id": "BJgXD5HF-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "HkO7v5rYW",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "ryJmvcSFZ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/common-hardware/led"
     }

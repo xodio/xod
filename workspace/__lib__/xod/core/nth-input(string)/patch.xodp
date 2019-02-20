@@ -83,8 +83,9 @@
     {
       "id": "Bkk6bLfhz",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/if-else(string)"
     },
@@ -94,8 +95,9 @@
       },
       "id": "Hk8HB-8fhM",
       "position": {
-        "x": 67,
-        "y": 101
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -104,8 +106,9 @@
       "id": "HyxBrZLM3f",
       "label": "_",
       "position": {
-        "x": -1,
-        "y": 305
+        "units": "slots",
+        "x": -0.05,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -114,8 +117,9 @@
       "id": "SJHSSZ8f3f",
       "label": "IDX",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -123,15 +127,17 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "r1g3WLf2G",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "r1wBBWIMnM",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"
@@ -142,8 +148,9 @@
       },
       "id": "rkbBH-IGnz",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "@/subtract"
     },
@@ -151,7 +158,8 @@
       "id": "rkhYW8f3f",
       "label": "X1",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -160,7 +168,8 @@
       "id": "ry4tZ8Gnf",
       "label": "X0",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"

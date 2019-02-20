@@ -4,8 +4,9 @@
     {
       "id": "BJS9ReQv7",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,8 +15,9 @@
       "id": "BJZls0g7DQ",
       "label": "HOUR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -24,8 +26,9 @@
       "id": "BkbiCl7v7",
       "label": "SEC",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -34,8 +37,9 @@
       "id": "HJLWQZQPm",
       "label": "WDAY",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -44,8 +48,9 @@
       "id": "HyA5RgXD7",
       "label": "YEAR",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -54,8 +59,9 @@
       "id": "SJgsCeQvm",
       "label": "MON",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -64,8 +70,9 @@
       "id": "r1MljClXPm",
       "label": "MIN",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -74,15 +81,17 @@
       "id": "rJglsCgmvm",
       "label": "DAY",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "rkCYRgQDm",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/input-datetime"

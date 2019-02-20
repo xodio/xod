@@ -9,8 +9,9 @@
       "id": "Bk4gU0drwJ-",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -19,7 +20,8 @@
       "id": "H1mlUC_HDJZ",
       "label": "RST",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -29,16 +31,18 @@
       "id": "HkU3vNoTW",
       "label": "ACT",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "SJfgF0D1E",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -47,7 +51,8 @@
       "id": "SkSuD6LMb",
       "label": "SET",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -57,6 +62,7 @@
       "id": "Skre8ROSv1-",
       "label": "T",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -65,8 +71,9 @@
     {
       "id": "noNativeImpl",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

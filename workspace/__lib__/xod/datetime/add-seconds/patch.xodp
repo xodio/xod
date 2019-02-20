@@ -6,7 +6,8 @@
       "id": "HJRLHWQw7",
       "label": "T",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -14,22 +15,25 @@
     {
       "id": "HkELBWXw7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "Sk18BWmwX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/output-datetime"
     },
     {
       "id": "Syb8BW7wm",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },

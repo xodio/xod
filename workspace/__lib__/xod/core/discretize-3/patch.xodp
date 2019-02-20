@@ -138,8 +138,9 @@
     {
       "id": "BJgKoTbKZ",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -147,7 +148,8 @@
       "id": "ByZ4oTWYb",
       "label": "T0",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -156,7 +158,8 @@
       "id": "H1T7s6ZKW",
       "label": "X",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -167,8 +170,9 @@
       },
       "id": "HJnuj6bKZ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -177,24 +181,27 @@
       "id": "HJtroa-tW",
       "label": "T",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SkPwiaWY-",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/discretize-2"
     },
     {
       "id": "rk-OiaZY-",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -202,8 +209,9 @@
       "description": "Use xod/core/discretize with adjusted arity instead",
       "id": "rkcsXtCtM",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -211,7 +219,8 @@
       "id": "ryDEo6bF-",
       "label": "T2",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -220,7 +229,8 @@
       "id": "ryNEs6-tZ",
       "label": "T1",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -230,8 +240,9 @@
       "id": "rysIoTZFZ",
       "label": "IDX",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     }

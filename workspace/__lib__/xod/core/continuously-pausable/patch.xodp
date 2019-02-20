@@ -4,16 +4,18 @@
     {
       "id": "B1EkFCD1E",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "BJGvpuPab",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -22,8 +24,9 @@
       "id": "BklspuwpW",
       "label": "TICK",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -35,7 +38,8 @@
       "id": "SkJ46dw6-",
       "label": "EN",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"

@@ -160,8 +160,9 @@
     {
       "id": "B1LVJ6mZWQ",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/bits/u8-to-number"
     },
@@ -172,8 +173,9 @@
       },
       "id": "BJ4E1p7bWm",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/core/join"
     },
@@ -181,8 +183,9 @@
       "description": "The IP address as a string",
       "id": "By1xaQb-m",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -190,7 +193,8 @@
       "description": "The IP address",
       "id": "H17mp7ZZX",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "@/input-ip-address"
@@ -201,24 +205,27 @@
       },
       "id": "H1i4kpm-Z7",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "type": "xod/core/format-number"
     },
     {
       "id": "HkcE1amZbQ",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/bits/u8-to-number"
     },
     {
       "id": "HyrNkaXWbX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/bits/u8-to-number"
     },
@@ -228,8 +235,9 @@
       },
       "id": "HywNJTQWZ7",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/core/format-number"
     },
@@ -239,24 +247,27 @@
       },
       "id": "r1N1TmZZm",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "xod/core/format-number"
     },
     {
       "id": "r1b41a7bW7",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/bits/u8-to-number"
     },
     {
       "id": "rkXE1TQb-7",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "@/ip-to-octets"
     },
@@ -266,8 +277,9 @@
       },
       "id": "ryuEy6mZbQ",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/core/format-number"
     }

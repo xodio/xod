@@ -4,8 +4,9 @@
     {
       "id": "B1gOUWz2Pm",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -13,6 +14,7 @@
       "id": "ByOB-GnDQ",
       "label": "UID",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -21,56 +23,63 @@
     {
       "id": "H1VLZGhD7",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "HJSIWMhPX",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "HJhBWGhvQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "Hy8L-fhDX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "SkwLZGnPm",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "rkWUWMnPm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "rku8WGhDX",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     }

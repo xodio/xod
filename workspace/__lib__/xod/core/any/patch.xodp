@@ -7,15 +7,17 @@
       },
       "id": "ByHmL0uHPk-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ByU7LRuSPkW",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -23,7 +25,8 @@
     {
       "id": "HJIw1ZsPz",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"
@@ -31,14 +34,16 @@
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "ryv7IRdSP1b",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },

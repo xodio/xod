@@ -6,7 +6,8 @@
       "id": "HJi_30PZX",
       "label": "CHAR",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -19,6 +20,7 @@
       "id": "HkAv2Av-X",
       "label": "CAP",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -27,8 +29,9 @@
     {
       "id": "HyLm6CwbX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,7 +40,8 @@
       "id": "HyvKhAv-7",
       "label": "RST",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -47,8 +51,9 @@
       "id": "S1K4pADWX",
       "label": "UPD",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -57,8 +62,9 @@
       "id": "S1s7pCDbQ",
       "label": "STR",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -67,8 +73,9 @@
       "id": "SkwBVl_bX",
       "label": "FULL",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -77,7 +84,8 @@
       "id": "r1NYhRDZ7",
       "label": "PUSH",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

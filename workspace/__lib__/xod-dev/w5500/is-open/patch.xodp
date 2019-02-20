@@ -6,8 +6,9 @@
       "id": "BJQB3m4tZ7",
       "label": "Y",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,8 +17,9 @@
       "id": "BJzB2QNFbQ",
       "label": "N",
       "position": {
-        "x": 101,
-        "y": 203
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -26,6 +28,7 @@
       "id": "Hke2RdvMm",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -36,16 +39,18 @@
       "id": "Hyxr3m4tZQ",
       "label": "CHK",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "rkr37EKWm",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

@@ -9,7 +9,8 @@
       "id": "B1P17Fwa-",
       "label": "EN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -18,7 +19,8 @@
       "description": "Use xod/core/gate instead",
       "id": "BJD6wBGnG",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/deprecated"
@@ -26,6 +28,7 @@
     {
       "id": "SJY1mYPT-",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -34,16 +37,18 @@
     {
       "id": "Skng7tDaW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "rJ8l7twT-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

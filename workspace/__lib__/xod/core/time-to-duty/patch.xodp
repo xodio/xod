@@ -73,8 +73,9 @@
       "id": "BJK85RY1G",
       "label": "T",
       "position": {
-        "x": 34,
-        "y": 510
+        "units": "slots",
+        "x": 1,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -82,16 +83,18 @@
       "id": "BJZr50KyG",
       "label": "Toff",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "Bknv50Kkf",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/add"
     },
@@ -99,8 +102,9 @@
       "id": "HJ1SqAFkG",
       "label": "Ton",
       "position": {
-        "x": -68,
-        "y": 102
+        "units": "slots",
+        "x": -2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -109,16 +113,18 @@
       "id": "Hy-vqRtJG",
       "label": "DUTY",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "S11t5CtJG",
       "position": {
-        "x": -68,
-        "y": 306
+        "units": "slots",
+        "x": -2,
+        "y": 3
       },
       "type": "@/divide"
     }

@@ -63,16 +63,18 @@
       "id": "B1xZM2uIl7",
       "label": "ERR",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ByW3idLeX",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
@@ -81,8 +83,9 @@
       "id": "H1sM2A12-",
       "label": "VAL",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -94,7 +97,8 @@
       "id": "Hkry2AJhW",
       "label": "PORT",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -107,7 +111,8 @@
       "id": "S1TehAk2b",
       "label": "UPD",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -117,8 +122,9 @@
       "id": "rJ-z2dIl7",
       "label": "DONE",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

@@ -4,24 +4,28 @@
       "content": "Yet another way is the Quick Search feature:\n\n1. Press “I” key or *double-click* anywhere on the patch.\n2. Type what you are looking for.\n\nIt searches not only in nodes titles, but even in the nodes description, like a small and dumb built-in Google. ",
       "id": "Hy229X-hZ",
       "position": {
-        "x": 374,
-        "y": 408
+        "units": "slots",
+        "x": 11,
+        "y": 4
       },
       "size": {
-        "height": 153,
-        "width": 442
+        "height": 2,
+        "units": "slots",
+        "width": 11
       }
     },
     {
       "content": "Now, let’s turn on two LEDs together! You will need another `led` node.\n\n## Instructions\n\n1. Assemble a circuit according to the [scheme](https://xod.io/docs/tutorial/06-adding-nodes/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_06).\n2. In the node list (below the `welcome-to-xod`), you will find `xod/common-hardware` section. This is a *library* where you can find nodes to work with specific hardware.\n3. Find the `led` node. Note that nodes are arranged in alphabetical order.\n4. Hover the cursor over that node and click the burger button to access a context menu. There click “Place” to add the node onto a patch.\n5. Drag the new node to any slot. \n6. Now, assign the new values for the `PORT` and `LUM` pins to turn on the second LED.\n7. Upload the patch to the Arduino.\n\nBoth LEDs should turn on now.\n\nAlternatively, you may *drag* a node from the Project Browser instead of using the context menu. Try to add yet more `led` nodes to your project.",
       "id": "SJwr3fhFb",
       "position": {
-        "x": -34,
+        "units": "slots",
+        "x": -1,
         "y": 0
       },
       "size": {
-        "height": 561,
-        "width": 306
+        "height": 6,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -33,8 +37,9 @@
       },
       "id": "Hkg_WP4Kb",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/common-hardware/led"
     }

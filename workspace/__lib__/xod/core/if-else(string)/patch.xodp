@@ -6,16 +6,18 @@
       "id": "H1SnkoxC-",
       "label": "COND",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-boolean"
     },
     {
       "id": "H1ebxolAW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,7 +26,8 @@
       "id": "H1k6ksgA-",
       "label": "T",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -34,7 +37,8 @@
       "id": "S151eoeAW",
       "label": "F",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -42,8 +46,9 @@
     {
       "id": "SJuBFRPk4",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -52,8 +57,9 @@
       "id": "rkPlxjg0W",
       "label": "R",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-string"
     }

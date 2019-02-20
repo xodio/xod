@@ -6,16 +6,18 @@
       "id": "ByzTg3LZX",
       "label": "ERR",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HkdzAcLZ7",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,7 +26,8 @@
       "id": "Sk8_R9L-X",
       "label": "MSG",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -34,7 +37,8 @@
       "id": "SkLcRqIZm",
       "label": "SND",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -44,8 +48,9 @@
       "id": "r1NYAqIZ7",
       "label": "DONE",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -54,7 +59,8 @@
       "id": "ryg9suwMX",
       "label": "SOCK",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"

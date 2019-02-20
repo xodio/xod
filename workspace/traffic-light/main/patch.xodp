@@ -104,7 +104,8 @@
     {
       "id": "BJYldmi6b",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/core/boot"
@@ -118,24 +119,27 @@
       "id": "BkSAI066b",
       "label": "yellow-red",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "@/state"
     },
     {
       "id": "H1uBdXs6W",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "xod/core/defer-pulse"
     },
     {
       "id": "HJYLu7iTW",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/core/any"
     },
@@ -147,8 +151,9 @@
       "id": "Hyy1uXoa-",
       "label": "red",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/state"
     },
@@ -158,8 +163,9 @@
       },
       "id": "S1q5b-6TZ",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "type": "xod/common-hardware/button"
     },
@@ -171,8 +177,9 @@
       "id": "Sym1_msa-",
       "label": "green",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "@/state"
     },
@@ -184,8 +191,9 @@
       "id": "rybJ_7spZ",
       "label": "yellow",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "@/state"
     }

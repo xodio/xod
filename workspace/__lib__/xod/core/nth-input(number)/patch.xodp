@@ -85,8 +85,9 @@
       "id": "BJlMxW8M3f",
       "label": "_",
       "position": {
-        "x": -1,
-        "y": 305
+        "units": "slots",
+        "x": -0.05,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -94,8 +95,9 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "H1rzg-Uf3M",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -104,8 +106,9 @@
       "id": "Hk8GeZIfnM",
       "label": "IDX",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -113,7 +116,8 @@
       "id": "HkzeZ8G3f",
       "label": "X1",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -121,8 +125,9 @@
     {
       "id": "SyXGgWIznz",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/if-else(number)"
     },
@@ -132,8 +137,9 @@
       },
       "id": "SywfxWUGhf",
       "position": {
-        "x": 67,
-        "y": 101
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -141,7 +147,8 @@
       "id": "r1Gzl-8Ghz",
       "label": "X0",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -152,15 +159,17 @@
       },
       "id": "r1WzgZLMhG",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "@/subtract"
     },
     {
       "id": "rJOGxb8MhG",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"

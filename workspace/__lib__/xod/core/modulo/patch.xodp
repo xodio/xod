@@ -4,8 +4,9 @@
     {
       "id": "B1RPYRP1N",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -13,8 +14,9 @@
       "description": "Denumerator",
       "id": "BJvrLOuyz",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -22,16 +24,18 @@
       "description": "The remainder rounded towards zero",
       "id": "Hku_LuOyz",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SkCOUu_1f",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -39,8 +43,9 @@
       "description": "Numerator",
       "id": "ryKV8d_1f",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     }
