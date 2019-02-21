@@ -111,6 +111,17 @@ export const AliasType = R.curry((packageName, docUrl, typeName, type) =>
   NullaryType(packageName, docUrl, typeName, hasType(type))
 );
 
+// EnxtendedModel :: String -> String -> String -> Type -> StrMap Type -> Type
+export const ExtendedModel = R.curry(
+  (packageName, docUrl, typeName, baseModel, schema) =>
+    NullaryType(
+      packageName,
+      docUrl,
+      typeName,
+      R.both(hasType(baseModel), hasType($.RecordType(schema)))
+    )
+);
+
 //-----------------------------------------------------------------------------
 //
 // General purpose types

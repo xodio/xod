@@ -16,14 +16,7 @@ const AliasType = XF.AliasType(packageName, docUrl);
 const Model = XF.Model(packageName, docUrl);
 const OneOfType = XF.OneOfType(packageName, docUrl);
 const EnumType = XF.EnumType(packageName, docUrl);
-
-const ExtendedModel = (typeName, baseModel, schema) =>
-  XF.NullaryType(
-    packageName,
-    docUrl,
-    typeName,
-    R.both(XF.hasType(baseModel), XF.hasType($.RecordType(schema)))
-  );
+const ExtendedModel = XF.ExtendedModel(packageName, docUrl);
 
 export const Point = Model('Point', {
   x: $.Number,
