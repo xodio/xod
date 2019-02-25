@@ -28,6 +28,7 @@
 
 .Sidebar-title {
   display: flex;
+  flex-shrink: 0;
   height: 28px;
   margin: 0;
   background: $sidebar-color-bg;
