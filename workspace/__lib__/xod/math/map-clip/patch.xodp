@@ -2,14 +2,25 @@
   "description": "Projects a number from one range to another preserving ratio. Then clips a result to the target range.",
   "links": [
     {
-      "id": "B1-dxJl2Z",
+      "id": "B1bdH2-LN",
+      "input": {
+        "nodeId": "ryZQg1x2Z",
+        "pinKey": "Hy_U0013b"
+      },
+      "output": {
+        "nodeId": "rJ9Pr3b8N",
+        "pinKey": "B1Db43ZUV"
+      }
+    },
+    {
+      "id": "BJedHn-UN",
       "input": {
         "nodeId": "ryZQg1x2Z",
         "pinKey": "H1WURCknW"
       },
       "output": {
-        "nodeId": "BJTBgke3b",
-        "pinKey": "__out__"
+        "nodeId": "rkPvH2ZL4",
+        "pinKey": "Sy-9wN2-UE"
       }
     },
     {
@@ -20,6 +31,17 @@
       },
       "output": {
         "nodeId": "SJbSlJxh-",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByS_HhWUN",
+      "input": {
+        "nodeId": "rkPvH2ZL4",
+        "pinKey": "rJ5vEnbI4"
+      },
+      "output": {
+        "nodeId": "BJTBgke3b",
         "pinKey": "__out__"
       }
     },
@@ -57,6 +79,17 @@
       }
     },
     {
+      "id": "Hyo_S2WIN",
+      "input": {
+        "nodeId": "rJ9Pr3b8N",
+        "pinKey": "HJxWEh-84"
+      },
+      "output": {
+        "nodeId": "HkFBgJehW",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Sy5DeJehb",
       "input": {
         "nodeId": "S1TMl1ehW",
@@ -64,17 +97,6 @@
       },
       "output": {
         "nodeId": "BJTBgke3b",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "r11uxJenb",
-      "input": {
-        "nodeId": "ryZQg1x2Z",
-        "pinKey": "Hy_U0013b"
-      },
-      "output": {
-        "nodeId": "HkFBgJehW",
         "pinKey": "__out__"
       }
     },
@@ -99,14 +121,36 @@
         "nodeId": "HJjEe1lnb",
         "pinKey": "__out__"
       }
+    },
+    {
+      "id": "r1dOSn-I4",
+      "input": {
+        "nodeId": "rkPvH2ZL4",
+        "pinKey": "BJlcwE3b84"
+      },
+      "output": {
+        "nodeId": "HkFBgJehW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk9uS2WUV",
+      "input": {
+        "nodeId": "rJ9Pr3b8N",
+        "pinKey": "H1RlNn-I4"
+      },
+      "output": {
+        "nodeId": "BJTBgke3b",
+        "pinKey": "__out__"
+      }
     }
   ],
   "nodes": [
     {
       "id": "B1ew5aDMkE",
       "position": {
-        "x": 408,
-        "y": 204
+        "x": 484,
+        "y": 210
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -115,8 +159,8 @@
       "id": "B1rSeJlnZ",
       "label": "Smax",
       "position": {
-        "x": 238,
-        "y": 102
+        "x": 264,
+        "y": 105
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -125,8 +169,8 @@
       "id": "BJTBgke3b",
       "label": "Tmin",
       "position": {
-        "x": 272,
-        "y": 102
+        "x": 308,
+        "y": 105
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -135,26 +179,26 @@
       "id": "HJjEe1lnb",
       "label": "X",
       "position": {
-        "x": 170,
-        "y": 102
+        "x": 176,
+        "y": 105
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "Source range upper bound",
+      "description": "Target range upper bound",
       "id": "HkFBgJehW",
       "label": "Tmax",
       "position": {
-        "x": 306,
-        "y": 102
+        "x": 352,
+        "y": 105
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "S1TMl1ehW",
       "position": {
-        "x": 170,
-        "y": 204
+        "x": 176,
+        "y": 210
       },
       "type": "@/map"
     },
@@ -163,25 +207,41 @@
       "id": "SJbSlJxh-",
       "label": "Smin",
       "position": {
-        "x": 204,
-        "y": 102
+        "x": 220,
+        "y": 105
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJ9Pr3b8N",
+      "position": {
+        "x": 308,
+        "y": 315
+      },
+      "type": "@/max"
     },
     {
       "description": "The resulting mapped and clipped value of `X`.",
       "id": "rJFmgJehW",
       "position": {
-        "x": 170,
-        "y": 408
+        "x": 176,
+        "y": 525
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "id": "rkPvH2ZL4",
+      "position": {
+        "x": 220,
+        "y": 315
+      },
+      "type": "@/min"
+    },
+    {
       "id": "ryZQg1x2Z",
       "position": {
-        "x": 170,
-        "y": 306
+        "x": 176,
+        "y": 420
       },
       "type": "@/clip"
     }

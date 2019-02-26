@@ -1,0 +1,16 @@
+IN1	IN2	OUT
+0.1	0.01	0.01
+-0.5	0.5	-0.5
+500	2300	500
+-20	-1	-20
+
+Inf	100	100
+-Inf	100	-Inf
+
+// when any of inputs is NaN — return NaN
+NaN	1	NaN
+1	NaN	NaN
+NaN	Inf	NaN
+Inf	NaN	NaN
+NaN	-Inf	NaN
+-Inf	NaN	NaN

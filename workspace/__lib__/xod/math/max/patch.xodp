@@ -1,0 +1,216 @@
+{
+  "description": "Outputs the largest of provided numbers",
+  "links": [
+    {
+      "id": "B1dxe6f8N",
+      "input": {
+        "nodeId": "Bk7geaGLV",
+        "pinKey": "BJaG80urD1-"
+      },
+      "output": {
+        "nodeId": "rJBgR3MIV",
+        "pinKey": "r1HN9cepQ"
+      }
+    },
+    {
+      "id": "BkigxTMUV",
+      "input": {
+        "nodeId": "B1Db43ZUV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1JQN3ZIV",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "H1WXuYMLV",
+      "input": {
+        "nodeId": "SJPG4nWI4",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "HJxWEh-84",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hklm_FfUV",
+      "input": {
+        "nodeId": "SJPG4nWI4",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "H1RlNn-I4",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkqHDFG8N",
+      "input": {
+        "nodeId": "S1JQN3ZIV",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "BJrNvtGIN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyhBvFMUV",
+      "input": {
+        "nodeId": "S1JQN3ZIV",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "BkDSvtfUN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S14bC2GLV",
+      "input": {
+        "nodeId": "rJBgR3MIV",
+        "pinKey": "rkDGq9laQ"
+      },
+      "output": {
+        "nodeId": "HJxWEh-84",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkNTDFzUN",
+      "input": {
+        "nodeId": "BkDSvtfUN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJxWEh-84",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyKlepfIE",
+      "input": {
+        "nodeId": "S1JQN3ZIV",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "Bk7geaGLV",
+        "pinKey": "SJyXI0OrD1-"
+      }
+    },
+    {
+      "id": "r1SaPtMIE",
+      "input": {
+        "nodeId": "BJrNvtGIN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1RlNn-I4",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryLlgpzUV",
+      "input": {
+        "nodeId": "Bk7geaGLV",
+        "pinKey": "HJCfI0dBDkb"
+      },
+      "output": {
+        "nodeId": "SJPG4nWI4",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Db43ZUV",
+      "position": {
+        "x": 132,
+        "y": 525
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BJrNvtGIN",
+      "position": {
+        "x": 176,
+        "y": 210
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "Bk7geaGLV",
+      "position": {
+        "x": 44,
+        "y": 315
+      },
+      "type": "xod/core/or"
+    },
+    {
+      "id": "BkDSvtfUN",
+      "position": {
+        "x": 220,
+        "y": 210
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "H1RlNn-I4",
+      "position": {
+        "x": 88,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJxWEh-84",
+      "position": {
+        "x": 132,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1JQN3ZIV",
+      "position": {
+        "x": 132,
+        "y": 420
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "SJPG4nWI4",
+      "position": {
+        "x": 88,
+        "y": 210
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "Ski-EhbLV",
+      "position": {
+        "x": 308,
+        "y": 105
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "id": "rJBgR3MIV",
+      "position": {
+        "x": 0,
+        "y": 210
+      },
+      "type": "@/is-nan"
+    },
+    {
+      "id": "rkTHSqzLV",
+      "position": {
+        "x": 396,
+        "y": 105
+      },
+      "type": "xod/patch-nodes/tabtest"
+    }
+  ]
+}
