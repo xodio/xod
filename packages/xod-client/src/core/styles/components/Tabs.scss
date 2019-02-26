@@ -1,6 +1,9 @@
 .Tabs {
   background: $chrome-outlines;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  overflow: hidden;
 
   .Sidebar-title {
     display: flex;
@@ -10,5 +13,18 @@
     width: auto;
     display: flex;
     flex-grow: 1;
+  }
+
+  .ScrollTabs {
+    padding: 4px 8px 0 8px;
+    border: none;
+    background: $chrome-outlines;
+    color: $color-tabs-unactive-text;
+    font-weight: bold;
+
+    &:hover {
+      color: $color-tabs-active-text;
+      cursor: pointer;
+    }
   }
 }

@@ -6,7 +6,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   flex-shrink: 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
 
   background: $sidebar-color-bg;
 
@@ -27,7 +27,8 @@
 }
 
 .Sidebar-title {
-  display: block;
+  display: flex;
+  flex-shrink: 0;
   height: 28px;
   margin: 0;
   background: $sidebar-color-bg;
@@ -43,11 +44,9 @@
     height: 28px;
 
     &.Sidebar-title--left {
-      float: left;
       border-right: 2px solid $chrome-outlines;
     }
     &.Sidebar-title--right {
-      float: right;
       border-left: 2px solid $chrome-outlines;
     }
   }

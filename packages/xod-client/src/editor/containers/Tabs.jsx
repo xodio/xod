@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'react-fa';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -25,26 +26,31 @@ const SortableItem = sortableElement(({ value }) => (
   />
 ));
 
-const SortableList = sortableContainer(({ items, onClick, onClose }) => (
-  <TabsContainer>
-    {items.map((value, index) => {
-      const item = R.merge(value, {
-        onClick,
-        onClose,
-      });
+const SortableList = sortableContainer(
+  ({ items, onClick, onClose, forwardedRef, onOverflowChange }) => (
+    <TabsContainer
+      forwardedRef={forwardedRef}
+      onOverflowChange={onOverflowChange}
+    >
+      {items.map((value, index) => {
+        const item = R.merge(value, {
+          onClick,
+          onClose,
+        });
 
-      return (
-        <SortableItem
-          key={`item-${value.id}`}
-          index={index}
-          value={item}
-          onClick={onClick}
-          onClose={onClose}
-        />
-      );
-    })}
-  </TabsContainer>
-));
+        return (
+          <SortableItem
+            key={`item-${value.id}`}
+            index={index}
+            value={item}
+            onClick={onClick}
+            onClose={onClose}
+          />
+        );
+      })}
+    </TabsContainer>
+  )
+);
 
 class Tabs extends React.Component {
   constructor(props) {
@@ -53,6 +59,13 @@ class Tabs extends React.Component {
     this.onTabClick = this.onTabClick.bind(this);
     this.onCloseTab = this.onCloseTab.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+
+    this.tabsListRef = null;
+    this.state = { isTabsListOverflown: false };
+    this.setTabsRef = this.setTabsRef.bind(this);
+    this.onTabsListOverflowChange = this.onTabsListOverflowChange.bind(this);
+    this.scrollTabsLeft = this.scrollTabsLeft.bind(this);
+    this.scrollTabsRight = this.scrollTabsRight.bind(this);
 
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
@@ -82,11 +95,28 @@ class Tabs extends React.Component {
     )(tabs);
   }
 
+  onTabsListOverflowChange(isTabsListOverflown) {
+    this.setState({ isTabsListOverflown });
+  }
+
+  setTabsRef(ref) {
+    this.tabsListRef = ref;
+  }
+
   getTabs() {
     return R.sortBy(R.prop('index'))(R.values(this.props.tabs));
   }
 
+  scrollTabsLeft() {
+    this.tabsListRef.scrollLeft -= 100;
+  }
+
+  scrollTabsRight() {
+    this.tabsListRef.scrollLeft += 100;
+  }
+
   render() {
+    const { isTabsListOverflown } = this.state;
     const tabs = this.getTabs();
     return (
       <div className="Tabs">
@@ -97,13 +127,14 @@ class Tabs extends React.Component {
           onTogglePanel={this.props.actions.togglePanel}
           isLoggedIn={this.props.userAuthorised}
         />
-        <SidebarSwitches
-          id={SIDEBAR_IDS.RIGHT}
-          isMinimized
-          panels={this.props.panels}
-          onTogglePanel={this.props.actions.togglePanel}
-          isLoggedIn={this.props.userAuthorised}
-        />
+        {isTabsListOverflown ? (
+          <Icon
+            Component="button"
+            className="ScrollTabs"
+            name="angle-left"
+            onClickCapture={this.scrollTabsLeft}
+          />
+        ) : null}
         <SortableList
           items={tabs}
           onSortEnd={this.onSortEnd}
@@ -112,8 +143,26 @@ class Tabs extends React.Component {
           lockToContainerEdges
           lockOffset="-5%"
           helperClass="is-sorting"
+          distance={10}
           onClick={this.onTabClick}
           onClose={this.onCloseTab}
+          forwardedRef={this.setTabsRef}
+          onOverflowChange={this.onTabsListOverflowChange}
+        />
+        {isTabsListOverflown ? (
+          <Icon
+            Component="button"
+            className="ScrollTabs"
+            name="angle-right"
+            onClickCapture={this.scrollTabsRight}
+          />
+        ) : null}
+        <SidebarSwitches
+          id={SIDEBAR_IDS.RIGHT}
+          isMinimized
+          panels={this.props.panels}
+          onTogglePanel={this.props.actions.togglePanel}
+          isLoggedIn={this.props.userAuthorised}
         />
       </div>
     );
