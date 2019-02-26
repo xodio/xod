@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import R from 'ramda';
 import * as XP from 'xod-project';
 
 import { WIDGET_TYPE } from '../constants';
@@ -10,6 +11,7 @@ import {
   Widget,
   HintWidget,
   NodeSpecializationWidget,
+  PulseTweakWidget,
   getNodeWidgetConfig,
 } from './inspectorWidgets';
 
@@ -19,7 +21,19 @@ import { getUtmSiteUrl } from '../../utils/urls';
 
 import * as MESSAGES from '../messages';
 
-const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
+const isTweakPulseNode = R.compose(
+  nodeType =>
+    XP.isTweakPath(nodeType) && XP.getTweakType(nodeType) === XP.PIN_TYPE.PULSE,
+  XP.getNodeType
+);
+
+const NodeInspector = ({
+  node,
+  isDebugSession,
+  onPropUpdate,
+  onNodeSpecializationChanged,
+  onSendTweakPulse,
+}) => {
   const type = XP.getNodeType(node);
   const baseName = XP.getBaseName(type);
   const nodeId = XP.getNodeId(node);
@@ -58,7 +72,16 @@ const NodeInspector = ({ node, onPropUpdate, onNodeSpecializationChanged }) => {
 
       {DeadNodeMessage}
 
-      <PinWidgetsGroup node={node} onPropUpdate={onPropUpdate} />
+      <ul>
+        {isDebugSession && isTweakPulseNode(node) ? (
+          <PulseTweakWidget
+            onSendTweakPulse={onSendTweakPulse}
+            nodeId={nodeId}
+          />
+        ) : (
+          <PinWidgetsGroup node={node} onPropUpdate={onPropUpdate} />
+        )}
+      </ul>
 
       <Widget
         {...getNodeWidgetConfig(WIDGET_TYPE.LABEL)}
@@ -90,6 +113,8 @@ NodeInspector.propTypes = {
   node: sanctuaryPropType(RenderableNode),
   onPropUpdate: PropTypes.func.isRequired,
   onNodeSpecializationChanged: PropTypes.func.isRequired,
+  isDebugSession: PropTypes.bool.isRequired,
+  onSendTweakPulse: PropTypes.func.isRequired,
 };
 
 export default NodeInspector;

@@ -22,6 +22,7 @@ import * as EditorSelectors from '../selectors';
 import * as ProjectActions from '../../project/actions';
 import * as ProjectSelectors from '../../project/selectors';
 import * as UserSelectors from '../../user/selectors';
+import * as DebuggerSelectors from '../../debugger/selectors';
 import { RenderableSelection } from '../../types';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { SIDEBAR_IDS, PANEL_IDS, FOCUS_AREAS } from '../constants';
@@ -147,6 +148,8 @@ class Sidebar extends React.Component {
             this.props.actions.changeNodeSpecialization
           }
           onPatchDescriptionUpdate={this.props.actions.updatePatchDescription}
+          onSendTweakPulse={this.props.actions.sendTweakPulse}
+          isDebugSession={this.props.isDebugSession}
         />
       </FocusTrap>
     );
@@ -237,6 +240,7 @@ Sidebar.propTypes = {
   windowSize: PropTypes.object.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatch: sanctuaryPropType($Maybe(XP.Patch)),
+  isDebugSession: PropTypes.bool.isRequired,
   panels: PropTypes.objectOf(
     PropTypes.shape({
       /* eslint-disable react/no-unused-prop-types */
@@ -253,6 +257,7 @@ Sidebar.propTypes = {
     resizePanels: PropTypes.func.isRequired,
     togglePanel: PropTypes.func.isRequired,
     setFocusedArea: PropTypes.func.isRequired,
+    sendTweakPulse: PropTypes.func.isRequired,
   }),
   userAuthorised: PropTypes.bool.isRequired,
 };
@@ -262,6 +267,7 @@ const mapStateToProps = R.applySpec({
   currentPatch: ProjectSelectors.getCurrentPatch,
   panels: EditorSelectors.getAllPanelsSettings,
   userAuthorised: UserSelectors.isAuthorized,
+  isDebugSession: DebuggerSelectors.isDebugSession,
 });
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
@@ -272,6 +278,7 @@ const mapDispatchToProps = dispatch => ({
       resizePanels: EditorActions.resizePanels,
       togglePanel: EditorActions.togglePanel,
       setFocusedArea: EditorActions.setFocusedArea,
+      sendTweakPulse: EditorActions.sendTweakPulse,
     },
     dispatch
   ),

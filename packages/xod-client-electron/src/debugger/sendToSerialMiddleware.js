@@ -17,10 +17,10 @@ export default ({ getState }) => next => action => {
     ipcRenderer.send(DEBUG_SERIAL_SEND, action.payload);
   }
 
-  if (
-    action.type === client.NODE_UPDATE_PROPERTY &&
-    client.isSerialDebugRunning(state)
-  ) {
+  const isTweakActionType =
+    action.type === client.NODE_UPDATE_PROPERTY ||
+    action.type === client.TWEAK_PULSE_SENT;
+  if (isTweakActionType && client.isSerialDebugRunning(state)) {
     const { id: nodeId, value, patchPath } = action.payload;
     const nodeType = R.compose(
       XP.getNodeType,

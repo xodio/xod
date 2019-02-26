@@ -49,11 +49,19 @@ const renderSelectedComment = () => (
   <InspectorMessage text="Comments do not have any properties." />
 );
 const renderSelectedNode = R.curry(
-  (onPropUpdate, onNodeSpecializationChanged, selection) => (
+  (
+    onPropUpdate,
+    onNodeSpecializationChanged,
+    onSendTweakPulse,
+    isDebugSession,
+    selection
+  ) => (
     <NodeInspector
       node={selection[0].data}
       onPropUpdate={onPropUpdate}
       onNodeSpecializationChanged={onNodeSpecializationChanged}
+      onSendTweakPulse={onSendTweakPulse}
+      isDebugSession={isDebugSession}
     />
   )
 );
@@ -97,9 +105,11 @@ const Inspector = ({
   autohide,
   selection,
   currentPatch,
+  isDebugSession,
   onPropUpdate,
   onNodeSpecializationChanged,
   onPatchDescriptionUpdate,
+  onSendTweakPulse,
 }) => {
   const inspectorContent = R.cond([
     [isMany, renderSelectedManyElements],
@@ -107,7 +117,12 @@ const Inspector = ({
     [isSingleComment, renderSelectedComment],
     [
       isSingleNode,
-      renderSelectedNode(onPropUpdate, onNodeSpecializationChanged),
+      renderSelectedNode(
+        onPropUpdate,
+        onNodeSpecializationChanged,
+        onSendTweakPulse,
+        isDebugSession
+      ),
     ],
     [
       isPatchSelected(currentPatch),
@@ -134,9 +149,11 @@ Inspector.propTypes = {
   autohide: PropTypes.bool.isRequired,
   selection: sanctuaryPropType($.Array(RenderableSelection)),
   currentPatch: sanctuaryPropType($Maybe(Patch)),
+  isDebugSession: PropTypes.bool.isRequired,
   onPropUpdate: PropTypes.func.isRequired,
   onNodeSpecializationChanged: PropTypes.func.isRequired,
   onPatchDescriptionUpdate: PropTypes.func.isRequired,
+  onSendTweakPulse: PropTypes.func.isRequired,
 };
 
 Inspector.defaultProps = {
