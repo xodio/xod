@@ -11,3 +11,13 @@ __time(ms)	IVAL	EN	RST	TICK
 500	1	true	pulse	no-pulse
 1001	1	true	no-pulse	no-pulse
 1501	1	true	no-pulse	pulse
+// edge case: when IVAL is 0, `clock` should constantly emit pulses
+0	0	true	no-pulse	pulse
+1	0	true	no-pulse	pulse
+2	1	true	no-pulse	pulse
+1003	1	true	no-pulse	pulse
+// edge case: when IVAL is negative, behave like it's 0
+0	-1	true	no-pulse	pulse
+1	-1	true	no-pulse	pulse
+2	1	true	no-pulse	pulse
+1003	1	true	no-pulse	pulse
