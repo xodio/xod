@@ -42,6 +42,12 @@ import changingArityLevelMode from './modes/changingArityLevel';
 
 import nodeHoverContextType from '../../nodeHoverContextType';
 
+import {
+  pixelPositionToSlots,
+  slotPositionToPixels,
+  pixelSizeToSlots,
+} from '../../../project/nodeLayout';
+
 const MODE_HANDLERS = {
   [EDITOR_MODE.DEFAULT]: selectingMode,
   [EDITOR_MODE.LINKING]: linkingMode,
@@ -74,7 +80,7 @@ class Patch extends React.Component {
         [mode]: MODE_HANDLERS[mode].getInitialState(props),
       },
       hoveredNodeId: null,
-      offset: this.props.offset,
+      offset: slotPositionToPixels(this.props.offset),
     };
 
     // Store is shift key was pressed on the first triggered Wheel event
@@ -101,6 +107,9 @@ class Patch extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.setShiftKey = debounce(50, true, this.setShiftKey.bind(this));
     this.getShiftKey = this.getShiftKey.bind(this);
+
+    this.addNode = this.addNode.bind(this);
+    this.resizeWorkarea = debounce(200, this.resizeWorkarea.bind(this));
   }
 
   getChildContext() {
@@ -120,7 +129,7 @@ class Patch extends React.Component {
       !R.equals(nextProps.offset, this.state.offset) &&
       !R.equals(nextProps.offset, this.props.offset)
     ) {
-      this.setState({ offset: nextProps.offset });
+      this.setState({ offset: slotPositionToPixels(nextProps.offset) });
     }
     if (nextProps.tabType != null && this.props.tabType !== nextProps.tabType) {
       this.goToMode(DEFAULT_MODES[nextProps.tabType]);
@@ -206,7 +215,7 @@ class Patch extends React.Component {
   }
 
   dispatchOffsetUpdate(newOffset) {
-    this.props.actions.setOffset(newOffset);
+    this.props.actions.setOffset(pixelPositionToSlots(newOffset));
   }
 
   handleScroll(event) {
@@ -249,6 +258,20 @@ class Patch extends React.Component {
     )(this.state.offset);
   }
 
+  addNode(patchPath, newNodePosition) {
+    this.props.actions.addNode(
+      patchPath,
+      pixelPositionToSlots(newNodePosition),
+      this.props.patchPath
+    );
+  }
+
+  resizeWorkarea(width, height) {
+    return R.compose(this.props.actions.patchWorkareaResized, pixelSizeToSlots)(
+      { width, height }
+    );
+  }
+
   render() {
     const { currentMode } = this.state;
     /**
@@ -273,7 +296,7 @@ class Patch extends React.Component {
         <ReactResizeDetector
           handleWidth
           handleHeight
-          onResize={this.props.actions.patchWorkareaResized}
+          onResize={this.resizeWorkarea}
         />
         {MODE_HANDLERS[currentMode].render(this.getApi(currentMode), project)}
       </div>

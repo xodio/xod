@@ -11,10 +11,11 @@ import {
 
 import {
   addPoints,
-  nodeSizeInSlotsToPixels,
+  slotSizeToPixels,
   slotPositionToPixels,
   snapPositionToSlots,
   snapNodePositionToSlots,
+  pixelPositionToSlots,
   getBusNodePositionForPin,
 } from './nodeLayout';
 import {
@@ -76,7 +77,12 @@ const moveEntities = (positionLens, deltaPosition) =>
   R.map(
     R.over(
       positionLens,
-      R.compose(snapNodePositionToSlots, addPoints(deltaPosition))
+      R.compose(
+        pixelPositionToSlots,
+        snapNodePositionToSlots,
+        addPoints(deltaPosition),
+        slotPositionToPixels
+      )
     )
   );
 
@@ -451,7 +457,7 @@ export default (state = {}, action) => {
 
       const newComment = XP.createComment(
         slotPositionToPixels({ x: 1, y: 1 }),
-        nodeSizeInSlotsToPixels({ width: 4, height: 1 }),
+        slotSizeToPixels({ width: 4, height: 1 }),
         'Double-click to edit comment'
       );
 

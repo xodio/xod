@@ -32,11 +32,11 @@ const isLineIntersectsLeft = (box, { from, to }) =>
   ]);
 
 // Nodes
-const getNodeBoundBox = ({ position, size }) => ({
-  from: position,
+const getNodeBoundBox = ({ pxPosition, pxSize }) => ({
+  from: pxPosition,
   to: {
-    x: position.x + size.width,
-    y: position.y + size.height,
+    x: pxPosition.x + pxSize.width,
+    y: pxPosition.y + pxSize.height,
   },
 });
 const isNodeBetween = R.curry((box, node) => {

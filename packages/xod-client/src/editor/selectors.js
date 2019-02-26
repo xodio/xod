@@ -7,6 +7,7 @@ import * as XP from 'xod-project';
 import {
   addPoints,
   subtractPoints,
+  slotSizeToPixels,
   DEFAULT_PANNING_OFFSET,
 } from '../project/nodeLayout';
 import { SIDEBAR_IDS, TAB_TYPES } from './constants';
@@ -106,7 +107,7 @@ export const hasSelection = createSelector(
 //
 export const getDraggedPreviewSize = R.pipe(
   getEditor,
-  R.prop('draggedPreviewSize')
+  R.compose(slotSizeToPixels, R.prop('draggedPreviewSize'))
 );
 
 //
@@ -122,7 +123,7 @@ export const getPatchWorkareaSize = R.compose(
 //
 export const getDefaultNodePlacePosition = createSelector(
   [getCurrentPatchOffset],
-  R.compose(addPoints({ x: 50, y: 50 }), subtractPoints({ x: 0, y: 0 }))
+  R.compose(addPoints({ x: 1.5, y: 0.5 }), subtractPoints({ x: 0, y: 0 }))
 );
 
 //

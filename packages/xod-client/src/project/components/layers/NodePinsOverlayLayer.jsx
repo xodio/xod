@@ -26,9 +26,9 @@ const NodePinsOverlayLayer = ({
           <NodePinsOverlay
             key={node.id}
             id={node.id}
-            position={node.position}
+            position={node.pxPosition}
             nodeLabel={node.label || getBaseName(node.type)}
-            size={node.size}
+            size={node.pxSize}
             pins={node.pins}
             linkingPin={linkingPin}
             onPinMouseUp={onPinMouseUp}

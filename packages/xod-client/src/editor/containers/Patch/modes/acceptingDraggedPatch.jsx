@@ -17,8 +17,8 @@ const acceptingDraggedPatchMode = {
     const snappedPreviews = api.props.isPatchDraggedOver
       ? [
           {
-            position: api.state.previewPosition,
-            size: api.props.draggedPreviewSize,
+            pxPosition: api.state.previewPosition,
+            pxSize: api.props.draggedPreviewSize,
           },
         ]
       : [];

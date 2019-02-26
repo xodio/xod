@@ -32,10 +32,10 @@ const getSnappedPreviews = (draggedNodes, draggedComments, deltaPosition) =>
     R.map(
       R.compose(
         R.over(
-          R.lensProp('position'),
+          R.lensProp('pxPosition'),
           R.compose(snapNodePositionToSlots, addPoints(deltaPosition))
         ),
-        R.pick(['size', 'position'])
+        R.pick(['pxSize', 'pxPosition'])
       )
     ),
     R.concat

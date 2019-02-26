@@ -400,7 +400,6 @@ describe('project reducer', () => {
       const newSize = {
         width: 100100100,
         height: 200200200,
-        units: XP.UNITS.PIXELS,
       };
 
       store.dispatch(resizeComment(testCommentId, newSize));

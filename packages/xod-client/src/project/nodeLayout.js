@@ -22,8 +22,8 @@ const PINLABEL_GAP = 8;
 export const PINLABEL_WIDTH = SLOT_SIZE.WIDTH - PINLABEL_GAP / 2;
 
 export const DEFAULT_PANNING_OFFSET = {
-  x: NODE_HEIGHT,
-  y: NODE_HEIGHT,
+  x: 1.5, // In slots
+  y: 0.75, // In slots
 };
 
 export const LINK_HOTSPOT_SIZE = {
@@ -47,25 +47,51 @@ export const PIN_OFFSET_FROM_NODE_EDGE = 0;
 
 export const TEXT_OFFSET_FROM_PIN_BORDER = 3;
 
-// :: { input: Number, output: Number } -> Size
-const nodeSizeInSlots = pinCountByDirection => ({
-  width: Math.max(pinCountByDirection.input, pinCountByDirection.output, 1),
-  height: 1,
+// =============================================================================
+//
+// Position / Size converters
+//
+// =============================================================================
+
+// :: Size -> Size
+export const pixelSizeToSlots = R.evolve({
+  width: px => Math.ceil(px / SLOT_SIZE.WIDTH),
+  height: px => Math.ceil(px / SLOT_SIZE.HEIGHT),
 });
 
-/**
- * converts size in slots to size in pixels
- */
 // :: Size -> Size
-export const nodeSizeInSlotsToPixels = R.evolve({
+export const slotSizeToPixels = R.evolve({
   width: slots => slots * SLOT_SIZE.WIDTH,
   height: slots => R.dec(slots) * SLOT_SIZE.HEIGHT + NODE_HEIGHT,
 });
 
+// :: Position -> Position
+export const pixelPositionToSlots = R.evolve({
+  x: px => px / SLOT_SIZE.WIDTH,
+  y: px => px / SLOT_SIZE.HEIGHT,
+});
+
+// :: Position -> Position
+export const slotPositionToPixels = R.evolve({
+  x: slots => Math.ceil(slots * SLOT_SIZE.WIDTH),
+  y: slots => Math.ceil(slots * SLOT_SIZE.HEIGHT),
+});
+
+// =============================================================================
+//
+// Node layout calculations
+//
+// =============================================================================
+
+// :: { input: Number, output: Number } -> Size
+const nodeSizeByPinsInSlots = pinCountByDirection => ({
+  width: Math.max(pinCountByDirection.input, pinCountByDirection.output, 1),
+  height: 1,
+});
+
 // :: [Pin] -> Size
 export const calcutaleNodeSizeFromPins = R.compose(
-  nodeSizeInSlotsToPixels,
-  nodeSizeInSlots,
+  nodeSizeByPinsInSlots,
   R.map(R.length),
   R.merge({ input: [], output: [] }),
   R.groupBy(R.prop('direction'))
@@ -93,20 +119,30 @@ export const calculatePinPosition = R.curry((nodeSize, pin) => {
  * @param node - dereferenced node
  */
 export const addNodePositioning = node => {
-  const calculatedSize = R.compose(calcutaleNodeSizeFromPins, R.values)(
-    node.pins
-  );
-  const size = {
-    width: Math.max(calculatedSize.width, node.size.width),
-    height: Math.max(calculatedSize.height, node.size.height),
+  const calculatedSize = R.compose(
+    slotSizeToPixels,
+    calcutaleNodeSizeFromPins,
+    R.values
+  )(node.pins);
+  const sizeInPx = slotSizeToPixels(node.size);
+  const pxSize = {
+    width: Math.max(calculatedSize.width, sizeInPx.width),
+    height: Math.max(calculatedSize.height, sizeInPx.height),
   };
 
+  const pxPosition = slotPositionToPixels(node.position);
+
   const pins = R.map(pin => {
-    const position = calculatePinPosition(size, pin);
-    return R.merge(pin, { position });
+    const pinPosition = calculatePinPosition(pxSize, pin);
+    return R.merge(pin, { position: pinPosition });
   }, node.pins);
 
-  return R.merge(node, { size, pins, originalSize: calculatedSize });
+  return R.merge(node, {
+    pxSize,
+    pxPosition,
+    pins,
+    originalSize: calculatedSize,
+  });
 };
 
 export const addNodesPositioning = R.map(addNodePositioning);
@@ -132,10 +168,9 @@ export const addLinksPositioning = nodes =>
         R.assoc('position', nodes[pin.nodeId].pins[pin.pinKey].position, pin),
       R.pick(['input', 'output'], link)
     );
-
     return R.merge(link, {
-      from: addPoints(nodes[input.nodeId].position, input.position) || null,
-      to: addPoints(nodes[output.nodeId].position, output.position) || null,
+      from: addPoints(nodes[input.nodeId].pxPosition, input.position) || null,
+      to: addPoints(nodes[output.nodeId].pxPosition, output.position) || null,
     });
   });
 
@@ -146,14 +181,6 @@ export const addLinksPositioning = nodes =>
 export const nodePositionInPixelsToSlots = R.evolve({
   x: x => Math.floor(x / SLOT_SIZE.WIDTH),
   y: y => Math.floor(y / SLOT_SIZE.HEIGHT),
-});
-
-/**
- * convert position in slots to pixels
- */
-export const slotPositionToPixels = ({ x, y }) => ({
-  x: x * SLOT_SIZE.WIDTH,
-  y: y * SLOT_SIZE.HEIGHT,
 });
 
 export const pointToSize = ({ x, y }) => ({ width: x, height: y });
@@ -177,7 +204,7 @@ export const snapNodePositionToSlots = R.compose(
 );
 
 export const snapNodeSizeToSlots = R.compose(
-  nodeSizeInSlotsToPixels,
+  slotSizeToPixels,
   pointToSize,
   nodePositionInPixelsToSlots,
   addPoints({ x: SLOT_SIZE.WIDTH * 0.75, y: SLOT_SIZE.HEIGHT * 1.1 }),

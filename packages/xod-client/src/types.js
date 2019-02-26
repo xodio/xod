@@ -12,7 +12,6 @@ import { SELECTION_ENTITY_TYPE } from './editor/constants';
 const packageName = 'xod-client';
 const docUrl = 'http://xod.io/docs/dev/xod-client/#';
 
-const AliasType = XF.AliasType(packageName, docUrl);
 const Model = XF.Model(packageName, docUrl);
 const OneOfType = XF.OneOfType(packageName, docUrl);
 const EnumType = XF.EnumType(packageName, docUrl);
@@ -38,7 +37,8 @@ export const RenderablePin = ExtendedModel('RenderablePin', XP.Pin, {
 export const RenderableNode = ExtendedModel('RenderableNode', XP.Node, {
   pins: $.StrMap(RenderablePin),
   label: $.String,
-  size: Size,
+  pxPosition: Point,
+  pxSize: Size,
 });
 
 export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {
@@ -47,7 +47,14 @@ export const RenderableLink = ExtendedModel('RenderableLink', XP.Link, {
   to: Point,
 });
 
-export const RenderableComment = AliasType('RenderableComment', XP.Comment);
+export const RenderableComment = ExtendedModel(
+  'RenderableComment',
+  XP.Comment,
+  {
+    pxPosition: Point,
+    pxSize: Size,
+  }
+);
 
 const RenderableEntity = OneOfType('RenderableEntity', [
   RenderableNode,

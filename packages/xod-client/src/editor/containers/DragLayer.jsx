@@ -42,7 +42,7 @@ class CustomDragLayer extends React.PureComponent {
     const { x, y } = addPoints(offsetFromSourceRoot, currentOffset);
 
     return {
-      transform: `translate(${x}px, ${y}px)`,
+      transform: `translate(${x + 0.5}px, ${y + 0.5}px)`,
     };
   }
 
@@ -51,7 +51,15 @@ class CustomDragLayer extends React.PureComponent {
       maybeRenderedPatch => maybeRenderedPatch.getOrElse(null),
       R.map(
         R.compose(
-          props => <Node {...props} isDragged noEvents />,
+          props => (
+            <Node
+              {...props}
+              position={props.pxPosition}
+              size={props.pxSize}
+              isDragged
+              noEvents
+            />
+          ),
           patchToNodeProps(false)
         )
       ),

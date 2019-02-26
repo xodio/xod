@@ -12,7 +12,10 @@ import { COMMAND } from '../../../../utils/constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import { snapPositionToSlots } from '../../../../project/nodeLayout';
+import {
+  snapPositionToSlots,
+  pixelPositionToSlots,
+} from '../../../../project/nodeLayout';
 
 import {
   bindApi,
@@ -208,11 +211,12 @@ const selectingMode = {
     api.props.actions.deselectAll();
   },
   onBackgroundDoubleClick(api, event) {
-    R.compose(api.props.onDoubleClick, snapPositionToSlots, getMousePosition)(
-      api.getStorage().patchSvgRef,
-      api.getOffset(),
-      event
-    );
+    R.compose(
+      api.props.onDoubleClick,
+      pixelPositionToSlots,
+      snapPositionToSlots,
+      getMousePosition
+    )(api.getStorage().patchSvgRef, api.getOffset(), event);
   },
   onBackgroundMouseDown(api, event) {
     api.setState({

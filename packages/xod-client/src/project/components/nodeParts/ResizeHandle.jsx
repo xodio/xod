@@ -4,7 +4,7 @@ import { noop } from 'xod-func-tools';
 
 import { NODE_CORNER_RADIUS, RESIZE_HANDLE_SIZE } from '../../nodeLayout';
 
-const ResizeHandle = ({ id, size, onResizeHandleMouseDown }) => (
+const ResizeHandle = ({ id, pxSize, onResizeHandleMouseDown }) => (
   <path
     key={`node_${id}_resizeHandle`}
     className="NodeResizeHandle"
@@ -13,7 +13,7 @@ const ResizeHandle = ({ id, size, onResizeHandleMouseDown }) => (
       return onResizeHandleMouseDown(event, id);
     }}
     d={`
-          M${size.width - RESIZE_HANDLE_SIZE} ${size.height}
+          M${pxSize.width - RESIZE_HANDLE_SIZE} ${pxSize.height}
           l ${RESIZE_HANDLE_SIZE} ${-RESIZE_HANDLE_SIZE}
           v ${RESIZE_HANDLE_SIZE - NODE_CORNER_RADIUS}
           c 0 ${NODE_CORNER_RADIUS /
@@ -26,7 +26,7 @@ const ResizeHandle = ({ id, size, onResizeHandleMouseDown }) => (
 
 ResizeHandle.propTypes = {
   id: PropTypes.string.isRequired,
-  size: PropTypes.object.isRequired,
+  pxSize: PropTypes.object.isRequired,
   onResizeHandleMouseDown: PropTypes.func,
 };
 

@@ -22,11 +22,11 @@ describe('Maquee selecting geometry', () => {
     { from: { x: -10, y: -10 }, to: { x: 110, y: 110 } },
   ];
   const nodes = [
-    { position: { x: 10, y: 10 }, size: { width: 90, height: 40 } },
-    { position: { x: 10, y: 10 }, size: { width: 40, height: 40 } },
-    { position: { x: 0, y: 0 }, size: { width: 40, height: 40 } },
-    { position: { x: 120, y: 120 }, size: { width: 40, height: 40 } },
-    { position: { x: -10, y: -10 }, size: { width: 140, height: 40 } },
+    { pxPosition: { x: 10, y: 10 }, pxSize: { width: 90, height: 40 } },
+    { pxPosition: { x: 10, y: 10 }, pxSize: { width: 40, height: 40 } },
+    { pxPosition: { x: 0, y: 0 }, pxSize: { width: 40, height: 40 } },
+    { pxPosition: { x: 120, y: 120 }, pxSize: { width: 40, height: 40 } },
+    { pxPosition: { x: -10, y: -10 }, pxSize: { width: 140, height: 40 } },
   ];
 
   it('isInclusiveSelection() returns valid values', () => {

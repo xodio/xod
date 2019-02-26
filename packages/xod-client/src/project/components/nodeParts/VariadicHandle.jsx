@@ -20,10 +20,10 @@ const COMPENSATE_BLURING = 0.5;
  *
  * :: { width, height } -> String
  */
-const getVariadicPoints = size => {
-  const xRight = size.width - COMPENSATE_BLURING;
-  const xLeft = size.width - VARIADIC_HANDLE_WIDTH - COMPENSATE_BLURING;
-  const yTop = (size.height - VARIADIC_HANDLE_HEIGHT) / 2;
+const getVariadicPoints = pxSize => {
+  const xRight = pxSize.width - COMPENSATE_BLURING;
+  const xLeft = pxSize.width - VARIADIC_HANDLE_WIDTH - COMPENSATE_BLURING;
+  const yTop = (pxSize.height - VARIADIC_HANDLE_HEIGHT) / 2;
   const yBottom = yTop + VARIADIC_HANDLE_HEIGHT;
 
   const points = [
@@ -42,22 +42,22 @@ const VariadicHandle = props => (
       className="VariadicHandle--clickArea"
       rx={NODE_CORNER_RADIUS}
       ry={NODE_CORNER_RADIUS}
-      x={props.size.width - VARIADIC_HANDLE_WIDTH * 2}
+      x={props.pxSize.width - VARIADIC_HANDLE_WIDTH * 2}
       y={-1}
       width={VARIADIC_HANDLE_WIDTH * 2 + 2}
-      height={props.size.height + 1}
+      height={props.pxSize.height + 1}
       fill="rgba(255,0,0,.5)"
       onMouseDown={props.onMouseDown}
     />
     <polygon
       className="VariadicHandle--grip"
-      points={getVariadicPoints(props.size)}
+      points={getVariadicPoints(props.pxSize)}
     />
   </g>
 );
 
 VariadicHandle.propTypes = {
-  size: PropTypes.shape({
+  pxSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }).isRequired,

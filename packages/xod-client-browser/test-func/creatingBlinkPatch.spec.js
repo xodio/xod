@@ -91,7 +91,7 @@ describe('creating blink patch', () => {
     await clockNode.drag(150, 10);
 
     const { x, y } = await clockNode.getBoundingClientRect();
-    assert.deepEqual({ x, y }, { x: 399.5, y: 128.5 });
+    assert.deepEqual({ x, y }, { x: 400.5, y: 142.5 });
   });
 
   it('adds rest of the nodes needed for blink patch', async () => {

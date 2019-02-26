@@ -11,7 +11,7 @@ import ResizeHandle from './ResizeHandle';
 const NODE_BODY_RECT_PROPS = {
   rx: NODE_CORNER_RADIUS,
   ry: NODE_CORNER_RADIUS,
-  // size is set in root svg, let's occupy it all
+  // pxSize is set in root svg, let's occupy it all
   width: '100%',
   height: '100%',
 };
@@ -26,14 +26,14 @@ const RegularNodeBody = props => (
     <rect className="body" {...NODE_BODY_RECT_PROPS} />
     <NodeLabel
       text={props.label || XP.getBaseName(props.type)}
-      width={props.size.width - NODE_LABEL_MARGIN * 2}
-      height={props.size.height}
+      width={props.pxSize.width - NODE_LABEL_MARGIN * 2}
+      height={props.pxSize.height}
       x={NODE_LABEL_MARGIN}
     />
     <rect className="outline" {...NODE_BODY_RECT_PROPS} />
     {props.isVariadic ? (
       <VariadicHandle
-        size={props.size}
+        pxSize={props.pxSize}
         onMouseDown={event => {
           event.stopPropagation();
           props.onVariadicHandleDown(event, props.id);
@@ -54,7 +54,7 @@ RegularNodeBody.propTypes = {
   label: PropTypes.string,
   isVariadic: PropTypes.bool,
   isResizable: PropTypes.bool,
-  size: PropTypes.shape({
+  pxSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }),
