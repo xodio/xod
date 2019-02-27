@@ -14,8 +14,9 @@ const JumperNodeBody = ({ pins }) => {
 
   const type = R.cond([
     [() => inConnected, R.pipe(R.prop(INPUT_PINKEY), getRenderablePinType)],
-    [() => outConnected, R.pipe(R.prop(OUTPUT_PINKEY), getRenderablePinType)],
-    [R.T, R.always('generic')],
+    // if output pin is not connected as well,
+    // it will fall back to good old `t1`
+    [R.T, R.pipe(R.prop(OUTPUT_PINKEY), getRenderablePinType)],
   ])(pins);
 
   const isConnected =
