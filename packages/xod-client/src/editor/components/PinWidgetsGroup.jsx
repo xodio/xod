@@ -8,7 +8,7 @@ import { Widget, getNodeWidgetConfig } from './inspectorWidgets';
 
 const PinWidgetsGroup = ({ node, onPropUpdate }) =>
   R.compose(
-    widgets => <ul>{widgets}</ul>,
+    widgets => <React.Fragment>{widgets}</React.Fragment>,
     R.map(renderablePin => {
       const widgetProps = R.applySpec({
         entityId: R.prop('nodeId'),

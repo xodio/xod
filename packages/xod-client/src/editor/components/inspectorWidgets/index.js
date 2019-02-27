@@ -148,6 +148,7 @@ export {
 } from './pinWidgets/DisabledInputWidget';
 export { default as DescriptionWidget } from './DescriptionWidget';
 export { default as LabelWidget } from './LabelWidget';
+export { default as PulseTweakWidget } from './PulseTweakWidget';
 export {
   default as NodeSpecializationWidget,
 } from './NodeSpecializationWidget';

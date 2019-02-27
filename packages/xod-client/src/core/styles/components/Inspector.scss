@@ -132,6 +132,12 @@
   }
 }
 
+.inspectorButton {
+  box-sizing: border-box;
+  line-height: 16px;
+  padding: 5px 4px;
+}
+
 .Widget {
   margin: 6px 0;
   overflow: hidden;
@@ -215,6 +221,7 @@
 
   .inspector-input-wrapper,
   .inspectorTextInput,
+  .inspectorButton,
   .inspectorSelectInput {
     float: right;
     width: 120px;

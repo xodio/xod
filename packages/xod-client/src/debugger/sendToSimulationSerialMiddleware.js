@@ -10,12 +10,15 @@ import {
 import * as editorSelectors from '../editor/selectors';
 
 import { NODE_UPDATE_PROPERTY } from '../project/actionTypes';
+import { TWEAK_PULSE_SENT } from '../editor/actionTypes';
 
 export default ({ getState }) => next => action => {
   const state = getState();
   const result = next(action);
 
-  if (action.type === NODE_UPDATE_PROPERTY && isSimulationRunning(state)) {
+  const isTweakActionType =
+    action.type === NODE_UPDATE_PROPERTY || action.type === TWEAK_PULSE_SENT;
+  if (isTweakActionType && isSimulationRunning(state)) {
     const { id: nodeId, value, patchPath } = action.payload;
     const nodeType = R.compose(
       XP.getNodeType,

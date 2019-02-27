@@ -80,6 +80,7 @@ PinWidget.propTypes = {
 
 PinWidget.defaultProps = {
   children: null,
+  isLastVariadicGroup: false,
 };
 
 export default PinWidget;

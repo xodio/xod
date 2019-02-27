@@ -879,3 +879,15 @@ export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
       });
     });
 };
+
+export const sendTweakPulse = tweakNodeId => (dispatch, getState) => {
+  Selectors.getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.TWEAK_PULSE_SENT,
+      payload: {
+        patchPath,
+        id: tweakNodeId,
+      },
+    })
+  );
+};
