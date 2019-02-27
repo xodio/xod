@@ -36,7 +36,6 @@ export const shallDeduceTypes = R.curry((project, action) =>
         isAmong([
           PAT.PROJECT_UPDATE_META,
           PAT.NODE_ADD,
-          PAT.NODE_CHANGE_ARITY_LEVEL,
           PAT.NODE_RESIZE,
           PAT.COMMENT_ADD,
           PAT.COMMENT_RESIZE,
@@ -52,6 +51,7 @@ export const shallDeduceTypes = R.curry((project, action) =>
           // PAT.PATCH_RENAME,
           // PAT.BULK_DELETE_ENTITIES,
           // PAT.LINK_ADD,
+          // PAT.NODE_CHANGE_ARITY_LEVEL,
           // PAT.NODE_CHANGE_SPECIALIZATION,
           // For NODE_UPDATE_PROPERTY will be a special check
         ])
