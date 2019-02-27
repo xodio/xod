@@ -85,16 +85,18 @@
       "id": "BJllkG0Ub",
       "label": "Dm",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BkS50ZRUb",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/hc-sr04-ultrasonic-time"
     },
@@ -105,8 +107,9 @@
       "description": "Multiply by 340 m/s (speed of sound) and divide by 2 (roundtrip)",
       "id": "H17aAZ08Z",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/core/multiply"
     },
@@ -118,7 +121,8 @@
       "id": "SJmoRbAUW",
       "label": "PING",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -128,7 +132,8 @@
       "id": "r1xoR-C8-",
       "label": "ECHO",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -138,7 +143,8 @@
       "id": "rJa50WCL-",
       "label": "TRIG",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -148,8 +154,9 @@
       "id": "rJutFjHxQ",
       "label": "ERR",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -158,8 +165,9 @@
       "id": "ryguFKiSlQ",
       "label": "DONE",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     }

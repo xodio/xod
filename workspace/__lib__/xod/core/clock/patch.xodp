@@ -9,7 +9,8 @@
       "id": "B13SCNhl-",
       "label": "IVAL",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -19,7 +20,8 @@
       "id": "BJJICN2lW",
       "label": "RST",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -27,16 +29,18 @@
     {
       "id": "BJKLAE3xW",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "BJgAdRPJE",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -45,8 +49,9 @@
       "id": "HJU8CE2lW",
       "label": "TICK",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -58,7 +63,8 @@
       "id": "r1jzp_DTZ",
       "label": "EN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"

@@ -4,8 +4,9 @@
     {
       "id": "BkXkhxTDt7",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,6 +15,7 @@
       "id": "HkEhxaDYX",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -24,8 +26,9 @@
       "id": "Hkkhe6vYX",
       "label": "Y",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -34,8 +37,9 @@
       "id": "r1f1heaDtQ",
       "label": "CHK",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -44,8 +48,9 @@
       "id": "rJgkhxTvKX",
       "label": "N",
       "position": {
-        "x": 101,
-        "y": 203
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

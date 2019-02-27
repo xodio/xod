@@ -20,24 +20,27 @@
       },
       "id": "ByYn3jnU-",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/core/constant-number"
     },
     {
       "id": "HJiqavz1V",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "rJpy6in8-",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/output-number"
     }

@@ -4,48 +4,56 @@
       "content": "Request line",
       "id": "B1ecjzKbQ",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     },
     {
       "content": "Connection header",
       "id": "H1PunGYWQ",
       "position": {
-        "x": 204,
-        "y": 408
+        "units": "slots",
+        "x": 6,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     },
     {
       "content": "Host header",
       "id": "HJjnoMY-7",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     },
     {
       "content": "Content-Length header",
       "id": "HJs0AMtW7",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "size": {
-        "height": 51,
-        "width": 204
+        "height": 1,
+        "units": "slots",
+        "width": 5
       }
     }
   ],
@@ -226,8 +234,9 @@
       },
       "id": "B1uzjGKbm",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/concat"
     },
@@ -238,8 +247,9 @@
       },
       "id": "BJTfozKZm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "xod/core/join"
     },
@@ -251,7 +261,8 @@
       "id": "BJqntfKbm",
       "label": "HOST",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -262,8 +273,9 @@
       },
       "id": "ByRaCGKZQ",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/core/concat"
     },
@@ -273,8 +285,9 @@
       },
       "id": "H1CtJXY-7",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "type": "xod/core/format-number"
     },
@@ -282,16 +295,18 @@
       "description": "The HTTP request message",
       "id": "H1leYGFbm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "HkOFkQK-m",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/core/length(string)"
     },
@@ -303,7 +318,8 @@
       "id": "HkcCKGYZ7",
       "label": "PATH",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -314,8 +330,9 @@
       },
       "id": "HyU8nzK-m",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/core/concat"
     },
@@ -327,7 +344,8 @@
       "id": "Hyd95MK-m",
       "label": "HDRS",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -340,7 +358,8 @@
       "id": "SkQFtMKZm",
       "label": "METH",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -351,8 +370,9 @@
       },
       "id": "SkYijzKWm",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/concat"
     },
@@ -364,7 +384,8 @@
       "id": "Sy5v9zFZ7",
       "label": "BODY",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -374,7 +395,8 @@
       "id": "rJiucMFW7",
       "label": "KA",
       "position": {
-        "x": 374,
+        "units": "slots",
+        "x": 11,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -386,8 +408,9 @@
       },
       "id": "rJrZnMFbm",
       "position": {
-        "x": 374,
-        "y": 306
+        "units": "slots",
+        "x": 11,
+        "y": 3
       },
       "type": "xod/core/if-else"
     }

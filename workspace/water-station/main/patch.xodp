@@ -57,8 +57,9 @@
       },
       "id": "BkugQ2aW-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -68,7 +69,8 @@
       },
       "id": "H1td7jabb",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/core/clock"
@@ -82,8 +84,9 @@
       },
       "id": "SJHtPk7Gb",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "@/plant"
     },
@@ -96,8 +99,9 @@
       },
       "id": "rk1KD1mMZ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/plant"
     }

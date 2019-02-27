@@ -61,8 +61,9 @@
       "id": "B1ZWOcHFZ",
       "label": "downstream",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "@/abc-patch-downstream"
     },
@@ -70,8 +71,9 @@
       "id": "BJ_tdqStb",
       "label": "M3",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/abc-patch-middle"
     },
@@ -79,7 +81,8 @@
       "id": "BkQ3P5HKW",
       "label": "upstream",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/abc-patch-upstream"
@@ -88,8 +91,9 @@
       "id": "r1Bcu9rYb",
       "label": "M1",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/abc-patch-middle"
     },
@@ -97,8 +101,9 @@
       "id": "ryJi_9BYb",
       "label": "M2",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/abc-patch-middle"
     }

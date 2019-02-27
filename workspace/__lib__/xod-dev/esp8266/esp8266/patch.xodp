@@ -4,12 +4,14 @@
       "content": "<<< If error occured here it means that ESP already communicating with another baudrate (possibly, target baudrate), so just go further.\n\nIt could happen if board was not resetted before upload.",
       "id": "HJQsQ7YWm",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "size": {
-        "height": 153,
-        "width": 340
+        "height": 2,
+        "units": "slots",
+        "width": 8
       }
     }
   ],
@@ -209,7 +211,8 @@
       "id": "B1u35TvW7",
       "label": "UART",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/uart/input-uart"
@@ -217,8 +220,9 @@
     {
       "id": "BkpSyI9b7",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/uart/change-baud-rate"
     },
@@ -229,8 +233,9 @@
       },
       "id": "HJSYExuW7",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/esp8266-config"
     },
@@ -239,8 +244,9 @@
       "id": "S1IevgdZX",
       "label": "DONE",
       "position": {
-        "x": 170,
-        "y": 714
+        "units": "slots",
+        "x": 5,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -249,16 +255,18 @@
       "id": "S1bUPlu-X",
       "label": "DEV",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "@/output-esp8266-device"
     },
     {
       "id": "S1m2qTw-Q",
       "position": {
-        "x": 102,
-        "y": 510
+        "units": "slots",
+        "x": 3,
+        "y": 5
       },
       "type": "@/esp8266-device"
     },
@@ -270,7 +278,8 @@
       "id": "SkGwvedbQ",
       "label": "BAUD",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -283,7 +292,8 @@
       "id": "SkoRLg_ZQ",
       "label": "INIT",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -291,32 +301,36 @@
     {
       "id": "rJU0d1TGX",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/core/defer"
     },
     {
       "id": "rk30OyaMX",
       "position": {
-        "x": 204,
-        "y": 510
+        "units": "slots",
+        "x": 6,
+        "y": 5
       },
       "type": "xod/core/any"
     },
     {
       "id": "rkN6UxuZX",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/uart/begin"
     },
     {
       "id": "rkeK2VY-m",
       "position": {
-        "x": 170,
-        "y": 612
+        "units": "slots",
+        "x": 5,
+        "y": 6
       },
       "type": "@/kick"
     }

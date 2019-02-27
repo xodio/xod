@@ -8,8 +8,8 @@ import NodeLabel from './NodeLabel';
 
 const TerminalNodeBody = props => {
   const isInput = XP.isInputTerminalPath(props.type);
-  const radius = props.size.width / 2;
-  const yOffset = isInput ? props.size.height - props.size.width : 0;
+  const radius = props.pxSize.width / 2;
+  const yOffset = isInput ? props.pxSize.height - props.pxSize.width : 0;
   const circleProps = {
     cx: radius,
     cy: radius + yOffset,
@@ -25,8 +25,8 @@ const TerminalNodeBody = props => {
       <circle className="body" {...circleProps} />
       <NodeLabel
         text={terminalLabel}
-        width={props.size.width}
-        height={props.size.width}
+        width={props.pxSize.width}
+        height={props.pxSize.width}
         y={yOffset + (isInput ? -1 : 1)}
       />
       <circle
@@ -47,7 +47,7 @@ TerminalNodeBody.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   normalizedLabel: PropTypes.string,
-  size: PropTypes.shape({
+  pxSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }),

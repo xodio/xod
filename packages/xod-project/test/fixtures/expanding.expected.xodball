@@ -1,4 +1,5 @@
 {
+  "name": "",
   "patches": {
     "@/main": {
       "nodes": {
@@ -6,8 +7,9 @@
           "arityLevel": 5,
           "id": "HysZyLy_G",
           "position": {
-            "x": -136,
-            "y": -102
+            "units": "slots",
+            "x": -4,
+            "y": -1
           },
           "type": "@/my-variadic-$5"
         }
@@ -19,25 +21,28 @@
         "B1qn0SJuM": {
           "id": "B1qn0SJuM",
           "position": {
-            "x": 578,
+            "units": "slots",
+            "x": 17,
             "y": 0
           },
           "type": "xod/patch-nodes/variadic-2"
         },
         "By1oTHyuz": {
-          "label": "SH1",
           "id": "By1oTHyuz",
+          "label": "SH1",
           "position": {
-            "x": 34,
+            "units": "slots",
+            "x": 1,
             "y": 0
           },
           "type": "xod/patch-nodes/input-boolean"
         },
         "ByZ0o0HyOz": {
-          "label": "V2",
           "id": "ByZ0o0HyOz",
+          "label": "V2",
           "position": {
-            "x": 476,
+            "units": "slots",
+            "x": 14,
             "y": 0
           },
           "type": "xod/patch-nodes/input-string"
@@ -45,34 +50,38 @@
         "H13YRHyOM": {
           "id": "H13YRHyOM",
           "position": {
-            "x": 170,
-            "y": 204
+            "units": "slots",
+            "x": 5,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-number"
         },
         "HkCo0rJuM": {
-          "label": "V1",
           "id": "HkCo0rJuM",
+          "label": "V1",
           "position": {
-            "x": 408,
+            "units": "slots",
+            "x": 12,
             "y": 0
           },
           "type": "xod/patch-nodes/input-number"
         },
         "Hkl2pHkuz": {
-          "label": "A3",
           "id": "Hkl2pHkuz",
+          "label": "A3",
           "position": {
-            "x": 306,
+            "units": "slots",
+            "x": 9,
             "y": 0
           },
           "type": "xod/patch-nodes/input-string"
         },
         "HytsTHkOf": {
-          "label": "A2",
           "id": "HytsTHkOf",
+          "label": "A2",
           "position": {
-            "x": 238,
+            "units": "slots",
+            "x": 7,
             "y": 0
           },
           "type": "xod/patch-nodes/input-pulse"
@@ -80,16 +89,18 @@
         "S16hpryOG": {
           "id": "S16hpryOG",
           "position": {
-            "x": 306,
-            "y": 204
+            "units": "slots",
+            "x": 9,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-string"
         },
         "Sk1jCBJ_M": {
-          "label": "SH2",
           "id": "Sk1jCBJ_M",
+          "label": "SH2",
           "position": {
-            "x": 102,
+            "units": "slots",
+            "x": 3,
             "y": 0
           },
           "type": "xod/patch-nodes/input-pulse"
@@ -97,16 +108,18 @@
         "SkUhpHkdf": {
           "id": "SkUhpHkdf",
           "position": {
-            "x": 238,
-            "y": 204
+            "units": "slots",
+            "x": 7,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-pulse"
         },
         "ryNjTHyOz": {
-          "label": "A1",
           "id": "ryNjTHyOz",
+          "label": "A1",
           "position": {
-            "x": 170,
+            "units": "slots",
+            "x": 5,
             "y": 0
           },
           "type": "xod/patch-nodes/input-number"
@@ -117,19 +130,21 @@
     "@/my-variadic-$5": {
       "nodes": {
         "By1oTHyuz": {
-          "label": "SH1",
           "id": "By1oTHyuz",
+          "label": "SH1",
           "position": {
-            "x": 34,
+            "units": "slots",
+            "x": 1,
             "y": 0
           },
           "type": "xod/patch-nodes/input-boolean"
         },
         "ByZ0o0HyOz": {
-          "label": "V2",
           "id": "ByZ0o0HyOz",
+          "label": "V2",
           "position": {
-            "x": 476,
+            "units": "slots",
+            "x": 14,
             "y": 0
           },
           "type": "xod/patch-nodes/input-string"
@@ -137,34 +152,38 @@
         "H13YRHyOM": {
           "id": "H13YRHyOM",
           "position": {
-            "x": 170,
-            "y": 204
+            "units": "slots",
+            "x": 5,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-number"
         },
         "HkCo0rJuM": {
-          "label": "V1",
           "id": "HkCo0rJuM",
+          "label": "V1",
           "position": {
-            "x": 408,
+            "units": "slots",
+            "x": 12,
             "y": 0
           },
           "type": "xod/patch-nodes/input-number"
         },
         "Hkl2pHkuz": {
-          "label": "A3",
           "id": "Hkl2pHkuz",
+          "label": "A3",
           "position": {
-            "x": 306,
+            "units": "slots",
+            "x": 9,
             "y": 0
           },
           "type": "xod/patch-nodes/input-string"
         },
         "HytsTHkOf": {
-          "label": "A2",
           "id": "HytsTHkOf",
+          "label": "A2",
           "position": {
-            "x": 238,
+            "units": "slots",
+            "x": 7,
             "y": 0
           },
           "type": "xod/patch-nodes/input-pulse"
@@ -172,16 +191,18 @@
         "S16hpryOG": {
           "id": "S16hpryOG",
           "position": {
-            "x": 306,
-            "y": 204
+            "units": "slots",
+            "x": 9,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-string"
         },
         "Sk1jCBJ_M": {
-          "label": "SH2",
           "id": "Sk1jCBJ_M",
+          "label": "SH2",
           "position": {
-            "x": 102,
+            "units": "slots",
+            "x": 3,
             "y": 0
           },
           "type": "xod/patch-nodes/input-pulse"
@@ -189,248 +210,263 @@
         "SkUhpHkdf": {
           "id": "SkUhpHkdf",
           "position": {
-            "x": 238,
-            "y": 204
+            "units": "slots",
+            "x": 7,
+            "y": 2
           },
           "type": "xod/patch-nodes/output-pulse"
         },
         "ryNjTHyOz": {
-          "label": "A1",
           "id": "ryNjTHyOz",
+          "label": "A1",
           "position": {
-            "x": 170,
+            "units": "slots",
+            "x": 5,
             "y": 0
           },
           "type": "xod/patch-nodes/input-number"
         },
         "HkCo0rJuM-$1": {
-          "label": "V1",
           "id": "HkCo0rJuM-$1",
+          "label": "V1",
           "position": {
-            "x": 526,
-            "y": 0
+            "x": 15,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-number"
         },
         "ByZ0o0HyOz-$1": {
-          "label": "V2",
           "id": "ByZ0o0HyOz-$1",
+          "label": "V2",
           "position": {
-            "x": 576,
-            "y": 0
+            "x": 16,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-string"
         },
         "HkCo0rJuM-$2": {
-          "label": "V1",
           "id": "HkCo0rJuM-$2",
+          "label": "V1",
           "position": {
-            "x": 626,
-            "y": 0
+            "x": 17,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-number"
         },
         "ByZ0o0HyOz-$2": {
-          "label": "V2",
           "id": "ByZ0o0HyOz-$2",
+          "label": "V2",
           "position": {
-            "x": 676,
-            "y": 0
+            "x": 18,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-string"
         },
         "HkCo0rJuM-$3": {
-          "label": "V1",
           "id": "HkCo0rJuM-$3",
+          "label": "V1",
           "position": {
-            "x": 726,
-            "y": 0
+            "x": 19,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-number"
         },
         "ByZ0o0HyOz-$3": {
-          "label": "V2",
           "id": "ByZ0o0HyOz-$3",
+          "label": "V2",
           "position": {
-            "x": 776,
-            "y": 0
+            "x": 20,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-string"
         },
         "HkCo0rJuM-$4": {
-          "label": "V1",
           "id": "HkCo0rJuM-$4",
+          "label": "V1",
           "position": {
-            "x": 826,
-            "y": 0
+            "x": 21,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-number"
         },
         "ByZ0o0HyOz-$4": {
-          "label": "V2",
           "id": "ByZ0o0HyOz-$4",
+          "label": "V2",
           "position": {
-            "x": 876,
-            "y": 0
+            "x": 22,
+            "y": 0,
+            "units": "slots"
           },
           "type": "xod/patch-nodes/input-string"
         },
-        "SJm79rXOz": {
-          "id": "SJm79rXOz",
+        "B1aC3oqrE": {
+          "id": "B1aC3oqrE",
           "type": "@/my-variadic",
           "position": {
             "x": 0,
-            "y": 0
+            "y": 1,
+            "units": "slots"
           }
         },
-        "Syx7m9BXuM": {
-          "id": "Syx7m9BXuM",
+        "rklTRhi9BE": {
+          "id": "rklTRhi9BE",
           "type": "@/my-variadic",
           "position": {
-            "x": 100,
-            "y": 100
+            "x": 2,
+            "y": 2,
+            "units": "slots"
           }
         },
-        "rk-7X5SmdM": {
-          "id": "rk-7X5SmdM",
+        "HJZpCnjqB4": {
+          "id": "HJZpCnjqB4",
           "type": "@/my-variadic",
           "position": {
-            "x": 200,
-            "y": 200
+            "x": 4,
+            "y": 3,
+            "units": "slots"
           }
         },
-        "HkfQm9HQOG": {
-          "id": "HkfQm9HQOG",
+        "S1zpC2i9rN": {
+          "id": "S1zpC2i9rN",
           "type": "@/my-variadic",
           "position": {
-            "x": 300,
-            "y": 300
+            "x": 6,
+            "y": 4,
+            "units": "slots"
           }
         },
-        "HkQX79Hm_f": {
-          "id": "HkQX79Hm_f",
+        "HkQTAnj5H4": {
+          "id": "HkQTAnj5H4",
           "type": "@/my-variadic",
           "position": {
-            "x": 400,
-            "y": 400
+            "x": 8,
+            "y": 5,
+            "units": "slots"
           }
         }
       },
       "links": {
-        "SkEQXcSXuf": {
-          "id": "SkEQXcSXuf",
+        "SyVaRhs9H4": {
+          "id": "SyVaRhs9H4",
           "output": {
             "nodeId": "By1oTHyuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "By1oTHyuz"
           }
         },
-        "SkS77qrmuM": {
-          "id": "SkS77qrmuM",
+        "SkH6CnoqSE": {
+          "id": "SkH6CnoqSE",
           "output": {
             "nodeId": "By1oTHyuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "By1oTHyuz"
           }
         },
-        "ryUQQqBmdM": {
-          "id": "ryUQQqBmdM",
+        "BJ86RhsqrN": {
+          "id": "BJ86RhsqrN",
           "output": {
             "nodeId": "By1oTHyuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "By1oTHyuz"
           }
         },
-        "BkD7QqHQdG": {
-          "id": "BkD7QqHQdG",
+        "HyDaRhsqSN": {
+          "id": "HyDaRhsqSN",
           "output": {
             "nodeId": "By1oTHyuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "By1oTHyuz"
           }
         },
-        "ryumQqSmOf": {
-          "id": "ryumQqSmOf",
+        "Skd60no9HN": {
+          "id": "Skd60no9HN",
           "output": {
             "nodeId": "By1oTHyuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "By1oTHyuz"
           }
         },
-        "SktXm9H7dz": {
-          "id": "SktXm9H7dz",
+        "SkYT0no5H4": {
+          "id": "SkYT0no5H4",
           "output": {
             "nodeId": "Sk1jCBJ_M",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "Sk1jCBJ_M"
           }
         },
-        "Sy5XQqSQ_M": {
-          "id": "Sy5XQqSQ_M",
+        "H19TA2i5HE": {
+          "id": "H19TA2i5HE",
           "output": {
             "nodeId": "Sk1jCBJ_M",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "Sk1jCBJ_M"
           }
         },
-        "S1iQ75BmuG": {
-          "id": "S1iQ75BmuG",
+        "ryi6A2iqSN": {
+          "id": "ryi6A2iqSN",
           "output": {
             "nodeId": "Sk1jCBJ_M",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "Sk1jCBJ_M"
           }
         },
-        "S12mX5SXOf": {
-          "id": "S12mX5SXOf",
+        "rJ3T03i5rV": {
+          "id": "rJ3T03i5rV",
           "output": {
             "nodeId": "Sk1jCBJ_M",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "Sk1jCBJ_M"
           }
         },
-        "rk6XmcB7_M": {
-          "id": "rk6XmcB7_M",
+        "H16TRnsqBN": {
+          "id": "H16TRnsqBN",
           "output": {
             "nodeId": "Sk1jCBJ_M",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "Sk1jCBJ_M"
           }
         },
-        "ryCmQcSmOf": {
-          "id": "ryCmQcSmOf",
+        "ByCpR3s9rN": {
+          "id": "ByCpR3s9rN",
           "output": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "H13YRHyOM"
           },
           "input": {
@@ -438,10 +474,10 @@
             "pinKey": "__in__"
           }
         },
-        "ryyxQmcSmuz": {
-          "id": "ryyxQmcSmuz",
+        "SJJl6C3icBV": {
+          "id": "SJJl6C3icBV",
           "output": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "SkUhpHkdf"
           },
           "input": {
@@ -449,10 +485,10 @@
             "pinKey": "__in__"
           }
         },
-        "SJggXXcHQOG": {
-          "id": "SJggXXcHQOG",
+        "SylgaC3i5HN": {
+          "id": "SylgaC3i5HN",
           "output": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "S16hpryOG"
           },
           "input": {
@@ -460,284 +496,283 @@
             "pinKey": "__in__"
           }
         },
-        "HyWgQ7cS7uz": {
-          "id": "HyWgQ7cS7uz",
+        "HkZeaC2icSE": {
+          "id": "HkZeaC2icSE",
           "output": {
             "nodeId": "ryNjTHyOz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "ryNjTHyOz"
           }
         },
-        "r1zlQmqSmuf": {
-          "id": "r1zlQmqSmuf",
+        "r1MxTCniqrN": {
+          "id": "r1MxTCniqrN",
           "output": {
             "nodeId": "HytsTHkOf",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "HytsTHkOf"
           }
         },
-        "BkXe779S7Oz": {
-          "id": "BkXe779S7Oz",
+        "rJ7ea03jcHN": {
+          "id": "rJ7ea03jcHN",
           "output": {
             "nodeId": "Hkl2pHkuz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "Hkl2pHkuz"
           }
         },
-        "SkVgQmqHQOM": {
-          "id": "SkVgQmqHQOM",
+        "HkVl602o9rN": {
+          "id": "HkVl602o9rN",
           "output": {
             "nodeId": "HkCo0rJuM",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "HkCo0rJuM"
           }
         },
-        "HJremX5SmdM": {
-          "id": "HJremX5SmdM",
+        "HySgaAno5S4": {
+          "id": "HySgaAno5S4",
           "output": {
             "nodeId": "ByZ0o0HyOz",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "ByZ0o0HyOz"
           }
         },
-        "ByIeXQ9Hm_G": {
-          "id": "ByIeXQ9Hm_G",
+        "SyIeaC3sqrV": {
+          "id": "SyIeaC3sqrV",
           "output": {
             "nodeId": "HkCo0rJuM-$1",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "HkCo0rJuM"
           }
         },
-        "BJweXQcrm_M": {
-          "id": "BJweXQcrm_M",
+        "HJDeTC3j5S4": {
+          "id": "HJDeTC3j5S4",
           "output": {
             "nodeId": "ByZ0o0HyOz-$1",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "ByZ0o0HyOz"
           }
         },
-        "Skdx7X5Bm_z": {
-          "id": "Skdx7X5Bm_z",
+        "Bk_gpAhs5rE": {
+          "id": "Bk_gpAhs5rE",
           "output": {
             "nodeId": "HkCo0rJuM-$2",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "HkCo0rJuM"
           }
         },
-        "ryYe7X9HmOM": {
-          "id": "ryYe7X9HmOM",
+        "rJYgTA2s9B4": {
+          "id": "rJYgTA2s9B4",
           "output": {
             "nodeId": "ByZ0o0HyOz-$2",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "ByZ0o0HyOz"
           }
         },
-        "rJqxXQqHQuG": {
-          "id": "rJqxXQqHQuG",
+        "By5laA3iqH4": {
+          "id": "By5laA3iqH4",
           "output": {
             "nodeId": "HkCo0rJuM-$3",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "HkCo0rJuM"
           }
         },
-        "ByolQQqrQuz": {
-          "id": "ByolQQqrQuz",
+        "HkolTC2jqrE": {
+          "id": "HkolTC2jqrE",
           "output": {
             "nodeId": "ByZ0o0HyOz-$3",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "ByZ0o0HyOz"
           }
         },
-        "S1nlQXqB7dG": {
-          "id": "S1nlQXqB7dG",
+        "BJnxpR3s9SN": {
+          "id": "BJnxpR3s9SN",
           "output": {
             "nodeId": "HkCo0rJuM-$4",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "HkCo0rJuM"
           }
         },
-        "B16gXm9SXdG": {
-          "id": "B16gXm9SXdG",
+        "H1Tg602i5HV": {
+          "id": "H1Tg602i5HV",
           "output": {
             "nodeId": "ByZ0o0HyOz-$4",
             "pinKey": "__out__"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "ByZ0o0HyOz"
           }
         },
-        "B1CemXcSXuz": {
-          "id": "B1CemXcSXuz",
+        "BJ0ep02ocHV": {
+          "id": "BJ0ep02ocHV",
           "output": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "H13YRHyOM"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "ryNjTHyOz"
           }
         },
-        "Hk1bmQcHmOG": {
-          "id": "Hk1bmQcHmOG",
+        "H1JW6AnsqS4": {
+          "id": "H1JW6AnsqS4",
           "output": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "SkUhpHkdf"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "HytsTHkOf"
           }
         },
-        "H1g-QXcBmdf": {
-          "id": "H1g-QXcBmdf",
+        "BkxWTChsqSE": {
+          "id": "BkxWTChsqSE",
           "output": {
-            "nodeId": "SJm79rXOz",
+            "nodeId": "B1aC3oqrE",
             "pinKey": "S16hpryOG"
           },
           "input": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "Hkl2pHkuz"
           }
         },
-        "ryWZmX9B7Of": {
-          "id": "ryWZmX9B7Of",
+        "BkZWp02oqr4": {
+          "id": "BkZWp02oqr4",
           "output": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "H13YRHyOM"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "ryNjTHyOz"
           }
         },
-        "SJfb7QcHQdG": {
-          "id": "SJfb7QcHQdG",
+        "B1G-T03jqBV": {
+          "id": "B1G-T03jqBV",
           "output": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "SkUhpHkdf"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "HytsTHkOf"
           }
         },
-        "BkQ-7QqSX_G": {
-          "id": "BkQ-7QqSX_G",
+        "HJX-TChsqBN": {
+          "id": "HJX-TChsqBN",
           "output": {
-            "nodeId": "Syx7m9BXuM",
+            "nodeId": "rklTRhi9BE",
             "pinKey": "S16hpryOG"
           },
           "input": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "Hkl2pHkuz"
           }
         },
-        "S1V-m7qHX_f": {
-          "id": "S1V-m7qHX_f",
+        "rJ4baAno5S4": {
+          "id": "rJ4baAno5S4",
           "output": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "H13YRHyOM"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "ryNjTHyOz"
           }
         },
-        "BJrWX79SXuz": {
-          "id": "BJrWX79SXuz",
+        "B1rZaC2s9rE": {
+          "id": "B1rZaC2s9rE",
           "output": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "SkUhpHkdf"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "HytsTHkOf"
           }
         },
-        "r18ZQ79rXdf": {
-          "id": "r18ZQ79rXdf",
+        "ryIWTC3iqS4": {
+          "id": "ryIWTC3iqS4",
           "output": {
-            "nodeId": "rk-7X5SmdM",
+            "nodeId": "HJZpCnjqB4",
             "pinKey": "S16hpryOG"
           },
           "input": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "Hkl2pHkuz"
           }
         },
-        "Hkv-XXcrXOG": {
-          "id": "Hkv-XXcrXOG",
+        "HyPbp03jcr4": {
+          "id": "HyPbp03jcr4",
           "output": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "H13YRHyOM"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "ryNjTHyOz"
           }
         },
-        "ryd-mX5r7_G": {
-          "id": "ryd-mX5r7_G",
+        "r1ub603o9rE": {
+          "id": "r1ub603o9rE",
           "output": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "SkUhpHkdf"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "HytsTHkOf"
           }
         },
-        "BkYZQX9BQOM": {
-          "id": "BkYZQX9BQOM",
+        "r1YWaC2s5SE": {
+          "id": "r1YWaC2s5SE",
           "output": {
-            "nodeId": "HkfQm9HQOG",
+            "nodeId": "S1zpC2i9rN",
             "pinKey": "S16hpryOG"
           },
           "input": {
-            "nodeId": "HkQX79Hm_f",
+            "nodeId": "HkQTAnj5H4",
             "pinKey": "Hkl2pHkuz"
           }
         }
       },
       "path": "@/my-variadic-$5"
     }
-  },
-  "name": ""
+  }
 }

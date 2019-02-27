@@ -6,7 +6,8 @@
       "id": "B1vdYXhkQ",
       "label": "I2C",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/input-i2c"
@@ -14,8 +15,9 @@
     {
       "id": "SJJbvdEOb",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,7 +26,8 @@
       "id": "Sk2oU_Vdb",
       "label": "SEND",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -34,8 +37,9 @@
       "id": "SyewuY7nJm",
       "label": "ERR",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -44,8 +48,9 @@
       "id": "ryviw_EOb",
       "label": "DONE",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

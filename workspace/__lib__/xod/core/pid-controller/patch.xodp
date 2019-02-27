@@ -4,48 +4,56 @@
       "content": "Integral\n↓↓↓",
       "id": "BJO-V45Vz",
       "position": {
-        "x": 204,
-        "y": 408
+        "units": "slots",
+        "x": 6,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 102
+        "height": 1,
+        "units": "slots",
+        "width": 3
       }
     },
     {
       "content": "← Error value",
       "id": "H1DGJN5Ef",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     },
     {
       "content": "Proportional\n↓↓↓",
       "id": "SJ7x4E5Ez",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 102
+        "height": 1,
+        "units": "slots",
+        "width": 3
       }
     },
     {
       "content": "Derivative\n↓↓↓",
       "id": "SyWGNVcVz",
       "position": {
-        "x": 374,
-        "y": 408
+        "units": "slots",
+        "x": 11,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 102
+        "height": 1,
+        "units": "slots",
+        "width": 3
       }
     }
   ],
@@ -331,40 +339,45 @@
     {
       "id": "B10IeNqNM",
       "position": {
-        "x": 374,
-        "y": 612
+        "units": "slots",
+        "x": 11,
+        "y": 6
       },
       "type": "@/divide"
     },
     {
       "id": "B1s6aX9Vf",
       "position": {
-        "x": 34,
-        "y": 816
+        "units": "slots",
+        "x": 1,
+        "y": 8
       },
       "type": "@/multiply"
     },
     {
       "id": "BJwXAXq4M",
       "position": {
-        "x": 102,
-        "y": 918
+        "units": "slots",
+        "x": 3,
+        "y": 9
       },
       "type": "@/add"
     },
     {
       "id": "BkW-1E54M",
       "position": {
-        "x": 510,
-        "y": 306
+        "units": "slots",
+        "x": 15,
+        "y": 3
       },
       "type": "@/delta-time"
     },
     {
       "id": "BkaBeN54z",
       "position": {
-        "x": 374,
-        "y": 510
+        "units": "slots",
+        "x": 11,
+        "y": 5
       },
       "type": "@/delta"
     },
@@ -372,8 +385,9 @@
       "description": "Computed effect value. Usually sent to an actuator like motor, cooler, etc.",
       "id": "BycP9Q9NM",
       "position": {
-        "x": 204,
-        "y": 1122
+        "units": "slots",
+        "x": 6,
+        "y": 11
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -382,16 +396,18 @@
       "id": "ByeiM975VM",
       "label": "Ki",
       "position": {
-        "x": 238,
-        "y": 714
+        "units": "slots",
+        "x": 7,
+        "y": 7
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "H1991N9EM",
       "position": {
-        "x": 204,
-        "y": 510
+        "units": "slots",
+        "x": 6,
+        "y": 5
       },
       "type": "@/multiply"
     },
@@ -403,8 +419,9 @@
       "id": "H1QHqmcNz",
       "label": "UPD",
       "position": {
-        "x": 408,
-        "y": 102
+        "units": "slots",
+        "x": 12,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -413,16 +430,18 @@
       "id": "H1hf57qVG",
       "label": "Kd",
       "position": {
-        "x": 340,
-        "y": 714
+        "units": "slots",
+        "x": 10,
+        "y": 7
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "H1p3aX5VM",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/subtract"
     },
@@ -431,16 +450,18 @@
       "id": "HJVnt7c4f",
       "label": "IN",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HJhZl45Vz",
       "position": {
-        "x": 204,
-        "y": 816
+        "units": "slots",
+        "x": 6,
+        "y": 8
       },
       "type": "@/multiply"
     },
@@ -449,24 +470,27 @@
       "id": "HkYH9QcEz",
       "label": "RST",
       "position": {
-        "x": 442,
-        "y": 102
+        "units": "slots",
+        "x": 13,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "S1JSRX5Nz",
       "position": {
-        "x": 204,
-        "y": 1020
+        "units": "slots",
+        "x": 6,
+        "y": 10
       },
       "type": "@/add"
     },
     {
       "id": "r19lC79VM",
       "position": {
-        "x": 204,
-        "y": 612
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "@/count"
     },
@@ -475,8 +499,9 @@
       "id": "rJszc7qNG",
       "label": "Kp",
       "position": {
-        "x": 68,
-        "y": 714
+        "units": "slots",
+        "x": 2,
+        "y": 7
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -485,16 +510,18 @@
       "id": "rkY46Q5NG",
       "label": "TARG",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "rkt9gE9Nz",
       "position": {
-        "x": 340,
-        "y": 816
+        "units": "slots",
+        "x": 10,
+        "y": 8
       },
       "type": "@/multiply"
     }

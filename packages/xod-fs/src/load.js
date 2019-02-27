@@ -109,6 +109,7 @@ const readXodFile = projectPath => xodfile =>
               R.assoc('path', XP.getLocalPath(getPatchName(xodfile))),
               convertPatchFileContentsToPatch,
               rejectOnInvalidPatchFileContents(filePath),
+              XP.migratePatchDimensionsToSlots,
               addMissingOptionsToPatchFileContents,
               Promise.resolve.bind(Promise)
             )(patch),

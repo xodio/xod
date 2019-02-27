@@ -4,12 +4,14 @@
       "content": "Suspend the wave generator right after the last `true` without waiting for the cycle tail (`false`). Such way we avoid a short `true` triggering caused by the defer node at the end.",
       "id": "ByJRI0Kyf",
       "position": {
-        "x": -238,
-        "y": 714
+        "units": "slots",
+        "x": -7,
+        "y": 7
       },
       "size": {
-        "height": 153,
-        "width": 238
+        "height": 2,
+        "units": "slots",
+        "width": 6
       }
     }
   ],
@@ -251,8 +253,9 @@
     {
       "id": "BJQLDRtJf",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "@/any"
     },
@@ -261,8 +264,9 @@
       "id": "Bk95-J9yM",
       "label": "ACT",
       "position": {
-        "x": 170,
-        "y": 1020
+        "units": "slots",
+        "x": 5,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -271,8 +275,9 @@
       "id": "BkE-fCKJG",
       "label": "OUT",
       "position": {
-        "x": 102,
-        "y": 1020
+        "units": "slots",
+        "x": 3,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -281,48 +286,54 @@
       "id": "ByUpxAtJG",
       "label": "RST",
       "position": {
-        "x": 510,
-        "y": 102
+        "units": "slots",
+        "x": 15,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "HJ5XbRFJz",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "@/square-wave"
     },
     {
       "id": "HJTjb0FyM",
       "position": {
-        "x": 544,
-        "y": 816
+        "units": "slots",
+        "x": 16,
+        "y": 8
       },
       "type": "@/defer-pulse"
     },
     {
       "id": "HkIkG0tJz",
       "position": {
-        "x": 510,
-        "y": 204
+        "units": "slots",
+        "x": 15,
+        "y": 2
       },
       "type": "@/any"
     },
     {
       "id": "Hkgc2CK1z",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/time-to-duty"
     },
     {
       "id": "S15nBCF1G",
       "position": {
-        "x": 34,
-        "y": 714
+        "units": "slots",
+        "x": 1,
+        "y": 7
       },
       "type": "@/nor"
     },
@@ -331,8 +342,9 @@
       "id": "S1vneCK1z",
       "label": "SET",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -344,16 +356,18 @@
       "id": "SJ1e-CKkf",
       "label": "Toff",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "r19PbRFkG",
       "position": {
-        "x": -68,
-        "y": 612
+        "units": "slots",
+        "x": -2,
+        "y": 6
       },
       "type": "@/less"
     },
@@ -362,8 +376,9 @@
       "id": "r1Is6RFkG",
       "label": "Nc",
       "position": {
-        "x": 136,
-        "y": 1020
+        "units": "slots",
+        "x": 4,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -375,8 +390,9 @@
       "id": "r1v0xCYJf",
       "label": "Ton",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -387,16 +403,18 @@
       },
       "id": "rJO3UCFkG",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "@/add"
     },
     {
       "id": "rJSSW0Y1f",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "@/flip-flop"
     },
@@ -408,8 +426,9 @@
       "id": "rknsx0tyf",
       "label": "N",
       "position": {
-        "x": -34,
-        "y": 102
+        "units": "slots",
+        "x": -1,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     }

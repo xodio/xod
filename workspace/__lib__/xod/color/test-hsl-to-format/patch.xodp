@@ -60,64 +60,72 @@
     {
       "id": "B1Zy84yOe4",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "BJk8EJOeN",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/color-hsl"
     },
     {
       "id": "BkGJL4J_gE",
       "position": {
-        "x": 135,
-        "y": 101
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
     {
       "id": "H1ePr4yul4",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/format-color"
     },
     {
       "id": "HytGuBMWV",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "S1PSVJdxV",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "rJmkU4yOgE",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "rkxyLEkulV",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     }

@@ -37,7 +37,7 @@ describe('Comment', () => {
 
     describe('setCommentPosition', () => {
       it('should return a new Comment with a specified Position', () => {
-        const newPosition = { x: 321, y: 765 };
+        const newPosition = { x: 5, y: 15 };
         const newComment = XP.setCommentPosition(newPosition, defaultComment);
 
         assert.deepEqual(XP.getCommentPosition(newComment), newPosition);
@@ -46,7 +46,7 @@ describe('Comment', () => {
 
     describe('setCommentSize', () => {
       it('should return a new Comment with a specified Size', () => {
-        const newSize = { width: 888, height: 777 };
+        const newSize = { width: 4, height: 10 };
         const newComment = XP.setCommentSize(newSize, defaultComment);
 
         assert.deepEqual(XP.getCommentSize(newComment), newSize);

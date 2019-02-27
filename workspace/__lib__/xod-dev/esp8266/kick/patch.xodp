@@ -6,8 +6,9 @@
       "id": "BkP4hVFZ7",
       "label": "OK",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,7 +17,8 @@
       "id": "Bksm24tZ7",
       "label": "DEV",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/input-esp8266-device"
@@ -26,16 +28,18 @@
       "id": "BypE34YZm",
       "label": "ERR",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJEHhNKbX",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -44,7 +48,8 @@
       "id": "r1Z43NYbX",
       "label": "KICK",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

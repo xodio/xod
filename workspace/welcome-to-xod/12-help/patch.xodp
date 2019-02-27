@@ -4,24 +4,28 @@
       "content": "Actually, we were lucky in the previous patch because the range of values from `pot` (0–1) matched the range accepted by the `servo` node. However, that doesn’t always happen. Often, value ranges on different nodes are incompatible, and we need to match them.\n\n## Instructions\n\n1. Find out the range of the `Tc` output pin on the thermometer node. To do so, click the node, and then click the book icon in the Inspector. You will see a help page. The other way to do it is to click on the node and then press the H key.\n\n2. Read the description. Every node’s description contains full information about the node including the input and output ranges and the types of data.\n\nNow you can figure out the node range by yourself; you just need to read the help page. Proceed to the next patch.",
       "id": "B1bloO6YZ",
       "position": {
-        "x": -68,
+        "units": "slots",
+        "x": -2,
         "y": 0
       },
       "size": {
-        "height": 459,
-        "width": 306
+        "height": 5,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "This node allows one to read data from TMP36 thermometers.\n- `PORT` — an analog Arduino port the thermometer is connected to.\n- `Tc` — the temperature value.",
       "id": "H13O5OpYb",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "size": {
-        "height": 153,
-        "width": 272
+        "height": 2,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -32,8 +36,9 @@
       },
       "id": "Hy3tvDEKZ",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/common-hardware/servo"
     },
@@ -43,7 +48,8 @@
       },
       "id": "rkEKww4tW",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/common-hardware/thermometer-tmp36"

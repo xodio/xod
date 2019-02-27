@@ -6,8 +6,9 @@
       "id": "Bk6SU2wtQ",
       "label": "ERR",
       "position": {
-        "x": 67,
-        "y": 203
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,8 +17,9 @@
       "id": "BkW6rLnwFQ",
       "label": "MSG",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -26,8 +28,9 @@
       "id": "HyQ6rIhDtX",
       "label": "DONE",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -36,8 +39,9 @@
       "id": "SJf6BU2PKQ",
       "label": "SND",
       "position": {
-        "x": 203,
-        "y": -1
+        "units": "slots",
+        "x": 6,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -46,6 +50,7 @@
       "id": "rJX8L2vKQ",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -54,8 +59,9 @@
     {
       "id": "rJeprU3vYX",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

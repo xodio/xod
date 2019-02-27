@@ -3,8 +3,9 @@
     {
       "id": "Bkb4eM3DX",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -12,7 +13,8 @@
       "id": "HkqxwGnDm",
       "label": "IRQ",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -21,8 +23,9 @@
       "id": "rJ5Exf2P7",
       "label": "DEV",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-self"
     }

@@ -129,8 +129,9 @@
       "id": "B1N47NimzX",
       "label": "DONE",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -139,16 +140,18 @@
       "id": "BJQEQEjmGm",
       "label": "DEV",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "@/input-esp8266-device"
     },
     {
       "id": "BJqfBoXfX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/get-local-ip"
     },
@@ -157,8 +160,9 @@
       "id": "HkVQVo7fX",
       "label": "CONN",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -167,16 +171,18 @@
       "id": "HkbN7Vj7fm",
       "label": "PWD",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "HyyyriXM7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/esp8266-inet"
     },
@@ -185,16 +191,18 @@
       "id": "SJlVXVsQfX",
       "label": "SSID",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "SyffroXGQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/connect-wifi"
     },
@@ -203,8 +211,9 @@
       "id": "r1iQVs7fm",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "@/output-esp8266-inet"
     },
@@ -213,8 +222,9 @@
       "id": "rkzN74sXzQ",
       "label": "ERR",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     }

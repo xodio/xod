@@ -138,13 +138,13 @@ const PatchDocs = ({ patch, minimal }) => {
   const nodeProps = patchToNodeProps(true, patch);
 
   const scaleFactor =
-    nodeProps.size.width < MAX_NODE_WIDTH
+    nodeProps.pxSize.width < MAX_NODE_WIDTH
       ? 1
-      : MAX_NODE_WIDTH / nodeProps.size.width;
+      : MAX_NODE_WIDTH / nodeProps.pxSize.width;
 
   const fromNodeEdgeToPin = scaleFactor * (SLOT_SIZE.WIDTH / 2);
   const scaledNodeWidth =
-    nodeProps.size.width * scaleFactor + fromNodeEdgeToPin;
+    nodeProps.pxSize.width * scaleFactor + fromNodeEdgeToPin;
   const distanceToFirstPin = minimal
     ? 0
     : fromNodeEdgeToPin + NODE_POSITION_IN_PREVIEW.x * scaleFactor - 1;
@@ -198,7 +198,7 @@ const PatchDocs = ({ patch, minimal }) => {
               <g transform={`scale(${scaleFactor})`}>
                 <Node
                   {...nodeProps}
-                  position={NODE_POSITION_IN_PREVIEW}
+                  pxPosition={NODE_POSITION_IN_PREVIEW}
                   noEvents
                 />
               </g>

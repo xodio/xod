@@ -4,84 +4,98 @@
       "content": "The `count` node sends the accumulated rotation angle to the servo.",
       "id": "Bk9DtCS9b",
       "position": {
-        "x": 510,
-        "y": 408
+        "units": "slots",
+        "x": 15,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 510
+        "height": 1,
+        "units": "slots",
+        "width": 12
       }
     },
     {
       "content": "The `clock` node provides the pulse frequency for sending data to the servo.",
       "id": "HkCIYRB9b",
       "position": {
-        "x": 544,
-        "y": 306
+        "units": "slots",
+        "x": 16,
+        "y": 3
       },
       "size": {
-        "height": 51,
-        "width": 476
+        "height": 1,
+        "units": "slots",
+        "width": 11
       }
     },
     {
       "content": "This node sends a pulse to `flip-flop` once every 30 seconds, changing its value from `true` to `false` and back.",
       "id": "HyAXORSqb",
       "position": {
-        "x": 544,
+        "units": "slots",
+        "x": 16,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     },
     {
       "content": "The `flip-flop` node changes the state on the `MEM` pin from 0 to 1 every 30 seconds. Fortunately, the boolean and number data types are compatible with each other — `true` and `false` are automatically converted to `1` and `0` for the `map` `X` input\n",
       "id": "S14Ht0S9b",
       "position": {
-        "x": 510,
-        "y": 102
+        "units": "slots",
+        "x": 15,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 612
+        "height": 1,
+        "units": "slots",
+        "width": 14
       }
     },
     {
       "content": "The `servo` node receives a value from 0 to 1 in the `VAL` pin, which corresponds to the rotation of the shaft from 0° to 180°, respectively.",
       "id": "SJ7uYCrqb",
       "position": {
-        "x": 510,
-        "y": 510
+        "units": "slots",
+        "x": 15,
+        "y": 5
       },
       "size": {
-        "height": 51,
-        "width": 544
+        "height": 1,
+        "units": "slots",
+        "width": 13
       }
     },
     {
       "content": "The `map` node is used to set the rotation angle of the servo for one send from `count`.",
       "id": "r1VItCB9b",
       "position": {
-        "x": 578,
-        "y": 204
+        "units": "slots",
+        "x": 17,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 442
+        "height": 1,
+        "units": "slots",
+        "width": 11
       }
     },
     {
       "content": "By using multiple independent pulse signals, we can create complex programs to control our devices. Here, we use two clock nodes to rotate the servo in one direction and then the other.\n\nThis patch is a little bigger than what we've seen so far. A good rule of thumb in XOD is to *read the patch from the bottom up*. That way you can see the cause and effect relationship created by the flow of the patch. First, you see the result and then what caused it!\n\nPay close attention to the `map` node. Instead of using it in the standard manner, we are simply using it to flip the sign of the output value.\n\n## Instructions\n\n1. Assemble the [servo drive circuit](https://xod.io/docs/tutorial/25-multiple-timelines/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_25).\n2. Upload the patch to the Arduino.\n\nThe servo should now start ticking in one direction for 30 seconds and then in the other direction for 30 seconds.",
       "id": "ry1duHkZM",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "size": {
-        "height": 459,
-        "width": 306
+        "height": 5,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -151,16 +165,18 @@
       },
       "id": "B1Epd2S9Z",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/math/map"
     },
     {
       "id": "H1p5Y7E9-",
       "position": {
-        "x": 374,
-        "y": 102
+        "units": "slots",
+        "x": 11,
+        "y": 1
       },
       "type": "xod/core/flip-flop"
     },
@@ -171,8 +187,9 @@
       "id": "HkJcYQN5W",
       "label": "step-clock",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/core/clock"
     },
@@ -182,8 +199,9 @@
       },
       "id": "HyJKY74q-",
       "position": {
-        "x": 374,
-        "y": 510
+        "units": "slots",
+        "x": 11,
+        "y": 5
       },
       "type": "xod/common-hardware/servo"
     },
@@ -191,8 +209,9 @@
       "id": "SkEoF7Vq-",
       "label": "count",
       "position": {
-        "x": 374,
-        "y": 408
+        "units": "slots",
+        "x": 11,
+        "y": 4
       },
       "type": "xod/core/count"
     },
@@ -203,7 +222,8 @@
       "id": "SywtF745W",
       "label": "long-clock",
       "position": {
-        "x": 374,
+        "units": "slots",
+        "x": 11,
         "y": 0
       },
       "type": "xod/core/clock"

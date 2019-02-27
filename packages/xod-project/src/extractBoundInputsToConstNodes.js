@@ -7,7 +7,7 @@ import * as Node from './node';
 import * as Link from './link';
 import * as Patch from './patch';
 import * as Project from './project';
-import { ensureLiteral } from './legacy';
+import { ensureLiteral } from './migrations/boundValuesToBoundLiterals';
 import {
   PIN_TYPE,
   CONST_NODETYPES,

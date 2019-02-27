@@ -73,8 +73,9 @@
       "id": "B1NHjCtJz",
       "label": "Ton",
       "position": {
-        "x": 102,
-        "y": 510
+        "units": "slots",
+        "x": 3,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -83,16 +84,18 @@
       "id": "BJuXiAK1z",
       "label": "DUTY",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "S1NLjRt1f",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/multiply"
     },
@@ -100,8 +103,9 @@
       "id": "S1jHo0FJf",
       "label": "Toff",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -109,16 +113,18 @@
       "id": "SkWQoRFyf",
       "label": "T",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "r1aUiCtJG",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/subtract"
     }

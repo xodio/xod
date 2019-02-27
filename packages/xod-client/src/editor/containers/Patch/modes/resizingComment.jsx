@@ -2,8 +2,6 @@ import * as R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import * as XP from 'xod-project';
-
 import { EDITOR_MODE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
@@ -15,9 +13,12 @@ import {
   pointToSize,
   sizeToPoint,
   snapNodeSizeToSlots,
+  pixelSizeToSlots,
   NODE_HEIGHT,
   SLOT_SIZE,
 } from '../../../../project/nodeLayout';
+
+import { getPxSize } from '../../../../project/pxDimensions';
 
 import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
@@ -33,7 +34,7 @@ const addDeltaToSize = R.uncurryN(2)(deltaPosition =>
 const addDeltaToCommentSizes = R.uncurryN(2)(deltaPosition =>
   R.map(
     R.over(
-      R.lensProp('size'),
+      R.lensProp('pxSize'),
       R.compose(
         R.evolve({
           width: R.max(SLOT_SIZE.WIDTH),
@@ -72,9 +73,10 @@ const resizingCommentMode = {
     const deltaPosition = getDeltaPosition(api);
 
     const newSize = R.compose(
+      pixelSizeToSlots,
       snapNodeSizeToSlots,
       addDeltaToSize(deltaPosition),
-      XP.getCommentSize,
+      getPxSize,
       R.prop(resizedCommentId)
     )(api.props.comments);
 
@@ -95,8 +97,8 @@ const resizingCommentMode = {
     const snappedPreviews = R.compose(
       R.map(
         R.compose(
-          R.over(R.lensProp('size'), snapNodeSizeToSlots),
-          R.pick(['size', 'position'])
+          R.over(R.lensProp('pxSize'), snapNodeSizeToSlots),
+          R.pick(['pxSize', 'pxPosition'])
         )
       ),
       R.values

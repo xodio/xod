@@ -3,8 +3,9 @@
     {
       "id": "Bk-49Oyw-",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "@/too-many-outputs"
     }

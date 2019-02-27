@@ -5,16 +5,18 @@
       "id": "BybKKmSDQ",
       "label": "I2C",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/i2c/output-i2c"
     },
     {
       "id": "BytuKmSD7",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -23,8 +25,9 @@
       "id": "Sy6KYmHwQ",
       "label": "ADDR",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -32,7 +35,8 @@
       "id": "SylWKmrvm",
       "label": "DEV",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/input-rtc-device"

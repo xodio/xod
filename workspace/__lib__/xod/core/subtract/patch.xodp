@@ -4,6 +4,7 @@
     {
       "id": "BypX80uSD1Z",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -15,23 +16,26 @@
       },
       "id": "HyRmUCdBDkZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "noNativeImpl",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rkJ4URuHDJ-",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

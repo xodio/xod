@@ -4,84 +4,98 @@
       "content": "<- Blink 3 times to notify that writing is complete",
       "id": "B1xa5wI_7",
       "position": {
-        "x": 340,
-        "y": 714
+        "units": "slots",
+        "x": 10,
+        "y": 7
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Pulse once when an NFC tag is detected",
       "id": "BJ_LjDUOm",
       "position": {
-        "x": 340,
-        "y": 510
+        "units": "slots",
+        "x": 10,
+        "y": 5
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Detect an NFC tag and read its UID. This is a **required step** to read or write data to the tag",
       "id": "BkGvOqPLuQ",
       "position": {
-        "x": 340,
-        "y": 408
+        "units": "slots",
+        "x": 10,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Initialize it on boot",
       "id": "BkgPucPI_m",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- After the initialization it will constantly try to detect an NFC tag",
       "id": "H1fb3qDL_X",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Create the device",
       "id": "HkPu5DId7",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Write data to the page",
       "id": "rkmvucPIuQ",
       "position": {
-        "x": 340,
-        "y": 612
+        "units": "slots",
+        "x": 10,
+        "y": 6
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -223,8 +237,9 @@
     {
       "id": "B13PY5d6w7",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "@/pair-tag"
     },
@@ -232,8 +247,9 @@
       "id": "BkaDF9d6vQ",
       "label": "DEV",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -241,8 +257,9 @@
       "id": "BkxDK9dpw7",
       "label": "DEV",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -250,8 +267,9 @@
       "id": "H1wwYcd6P7",
       "label": "DEV",
       "position": {
-        "x": -34,
-        "y": 510
+        "units": "slots",
+        "x": -1,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -262,8 +280,9 @@
       },
       "id": "HJ6t9u6wQ",
       "position": {
-        "x": -34,
-        "y": 612
+        "units": "slots",
+        "x": -1,
+        "y": 6
       },
       "type": "@/write-page"
     },
@@ -275,16 +294,18 @@
       },
       "id": "HJLSGK6Pm",
       "position": {
-        "x": -136,
-        "y": 714
+        "units": "slots",
+        "x": -4,
+        "y": 7
       },
       "type": "xod/core/flip-n-times"
     },
     {
       "id": "HyeZcPUdQ",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/core/continuously-pausable"
     },
@@ -292,8 +313,9 @@
       "id": "S1-vF9daD7",
       "label": "DEV",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -303,8 +325,9 @@
       },
       "id": "SJORc_awm",
       "position": {
-        "x": 34,
-        "y": 714
+        "units": "slots",
+        "x": 1,
+        "y": 7
       },
       "type": "xod/common-hardware/led"
     },
@@ -314,8 +337,9 @@
       },
       "id": "SywYcupwm",
       "position": {
-        "x": 67,
-        "y": 101
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/init"
     },
@@ -325,24 +349,27 @@
       },
       "id": "rkGDt5u6v7",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "@/pn532-device"
     },
     {
       "id": "ryABiDIOQ",
       "position": {
-        "x": 170,
-        "y": 510
+        "units": "slots",
+        "x": 5,
+        "y": 5
       },
       "type": "xod/core/flip-flop"
     },
     {
       "id": "ryQDtcupDQ",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/flip-flop"
     }

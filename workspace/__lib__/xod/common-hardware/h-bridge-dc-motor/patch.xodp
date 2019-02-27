@@ -160,8 +160,9 @@
     {
       "id": "B1_bdsSeX",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/core/any"
     },
@@ -173,7 +174,8 @@
       "id": "Bk53PjBeX",
       "label": "UPD",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -181,24 +183,27 @@
     {
       "id": "BkVCDire7",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/math/abs"
     },
     {
       "id": "H1To0fRL-",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/core/less"
     },
     {
       "id": "Hk65Porlm",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/gpio/pwm-write"
     },
@@ -207,7 +212,8 @@
       "id": "HknX0fRU-",
       "label": "PWM",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -217,6 +223,7 @@
       "id": "S18NCzAIb",
       "label": "DIR",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -227,7 +234,8 @@
       "id": "SJpVAGRUW",
       "label": "SPD",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -235,8 +243,9 @@
     {
       "id": "SkntwoSeX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/gpio/digital-write"
     },
@@ -245,16 +254,18 @@
       "id": "r1GfdoBgQ",
       "label": "ERR",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ryS-dirgQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/core/any"
     },
@@ -263,8 +274,9 @@
       "id": "ryezMusBx7",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
     }

@@ -105,6 +105,7 @@
     {
       "id": "BJKLyhe0W",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -113,7 +114,8 @@
     {
       "id": "BJWtUJhgR-",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -121,23 +123,26 @@
     {
       "id": "BkIvJheRb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/concat-3"
     },
     {
       "id": "BkM_k2lCZ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/concat"
     },
     {
       "id": "HJeYIkheCZ",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -145,7 +150,8 @@
     {
       "id": "HyXtUJnxCW",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -153,7 +159,8 @@
     {
       "id": "S16UJhg0b",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -161,16 +168,18 @@
     {
       "id": "S1nPy3eR-",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/concat-3"
     },
     {
       "id": "S1s_y2l0W",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -178,15 +187,17 @@
       "description": "Use xod/core/concat with adjusted arity instead",
       "id": "SkBcmY0Yf",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "rJzKUJ3eA-",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"

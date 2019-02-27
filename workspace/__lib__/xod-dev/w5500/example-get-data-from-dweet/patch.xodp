@@ -4,12 +4,14 @@
       "content": "tip: use `https://dweet.io/dweet/for/xod-w5500-iot?lum=100` to put desired values\n",
       "id": "BJ05DWWM7",
       "position": {
-        "x": 544,
-        "y": 306
+        "units": "slots",
+        "x": 16,
+        "y": 3
       },
       "size": {
-        "height": 51,
-        "width": 442
+        "height": 1,
+        "units": "slots",
+        "width": 11
       }
     }
   ],
@@ -352,8 +354,9 @@
       },
       "id": "B1tuIZbGX",
       "position": {
-        "x": 442,
-        "y": 612
+        "units": "slots",
+        "x": 13,
+        "y": 6
       },
       "type": "xod/core/divide"
     },
@@ -366,8 +369,9 @@
       },
       "id": "BJwS3FmMX",
       "position": {
-        "x": 34,
-        "y": 816
+        "units": "slots",
+        "x": 1,
+        "y": 8
       },
       "type": "xod/core/select"
     },
@@ -377,24 +381,27 @@
       },
       "id": "BkD1uZReMm",
       "position": {
-        "x": 544,
-        "y": 408
+        "units": "slots",
+        "x": 16,
+        "y": 4
       },
       "type": "xod/stream/pass-from-sequence"
     },
     {
       "id": "ByKydWRlf7",
       "position": {
-        "x": 101,
-        "y": 713
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/net/format-ip"
     },
     {
       "id": "HJ-mdCeGX",
       "position": {
-        "x": 748,
-        "y": 102
+        "units": "slots",
+        "x": 22,
+        "y": 1
       },
       "type": "xod/core/defer"
     },
@@ -405,8 +412,9 @@
       },
       "id": "HJRobYvGm",
       "position": {
-        "x": 544,
-        "y": 204
+        "units": "slots",
+        "x": 16,
+        "y": 2
       },
       "type": "@/http-request(w5500-inet)"
     },
@@ -418,15 +426,17 @@
       },
       "id": "Hkx1uZAeMQ",
       "position": {
-        "x": 306,
-        "y": 1020
+        "units": "slots",
+        "x": 9,
+        "y": 10
       },
       "type": "xod/common-hardware/text-lcd-16x2-i2c"
     },
     {
       "id": "SJxudQzQm",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "@/ethernet-shield"
@@ -434,8 +444,9 @@
     {
       "id": "Sy3fSoPzX",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "@/lan-ip"
     },
@@ -443,7 +454,8 @@
       "arityLevel": 2,
       "id": "rJUC-Clz7",
       "position": {
-        "x": 748,
+        "units": "slots",
+        "x": 22,
         "y": 0
       },
       "type": "xod/core/any"
@@ -451,8 +463,9 @@
     {
       "id": "rJxGM0lfX",
       "position": {
-        "x": 544,
-        "y": 510
+        "units": "slots",
+        "x": 16,
+        "y": 5
       },
       "type": "xod/stream/parse-integer"
     },
@@ -462,8 +475,9 @@
       },
       "id": "rk9l_CeG7",
       "position": {
-        "x": 816,
-        "y": 408
+        "units": "slots",
+        "x": 24,
+        "y": 4
       },
       "type": "xod/core/delay"
     },
@@ -473,8 +487,9 @@
       },
       "id": "rkNt8WWG7",
       "position": {
-        "x": 408,
-        "y": 714
+        "units": "slots",
+        "x": 12,
+        "y": 7
       },
       "type": "xod/common-hardware/led"
     },
@@ -484,16 +499,18 @@
       },
       "id": "ry0obClG7",
       "position": {
-        "x": 544,
-        "y": 714
+        "units": "slots",
+        "x": 16,
+        "y": 7
       },
       "type": "xod/core/format-number"
     },
     {
       "id": "ry8ZqKZMQ",
       "position": {
-        "x": 510,
-        "y": 918
+        "units": "slots",
+        "x": 15,
+        "y": 9
       },
       "type": "xod/core/any"
     },
@@ -506,8 +523,9 @@
       },
       "id": "ryy32Fmf7",
       "position": {
-        "x": 510,
-        "y": 816
+        "units": "slots",
+        "x": 15,
+        "y": 8
       },
       "type": "xod/core/select"
     }

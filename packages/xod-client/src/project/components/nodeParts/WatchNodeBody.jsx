@@ -10,7 +10,7 @@ import ResizeHandle from './ResizeHandle';
 const NODE_BODY_RECT_PROPS = {
   rx: NODE_CORNER_RADIUS,
   ry: NODE_CORNER_RADIUS,
-  // size is set in root svg, let's occupy it all
+  // pxSize is set in root svg, let's occupy it all
   width: '100%',
   height: '100%',
 };
@@ -20,8 +20,8 @@ const WatchNodeBody = props => (
     <rect className="body" {...NODE_BODY_RECT_PROPS} />
     <NodeLabel
       text={props.nodeValue || props.label || XP.getBaseName(props.type)}
-      width={props.size.width}
-      height={props.size.height}
+      width={props.pxSize.width}
+      height={props.pxSize.height}
     />
     <rect className="outline" {...NODE_BODY_RECT_PROPS} />
     <ResizeHandle {...props} />
@@ -31,7 +31,7 @@ const WatchNodeBody = props => (
 WatchNodeBody.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
-  size: PropTypes.shape({
+  pxSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }),

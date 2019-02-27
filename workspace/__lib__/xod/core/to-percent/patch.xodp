@@ -53,8 +53,9 @@
       },
       "id": "HJXqjj6ZZ",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "@/format-number"
     },
@@ -62,8 +63,9 @@
       "id": "S19J9j6WZ",
       "label": "NUM",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -73,8 +75,9 @@
       },
       "id": "SkUG5s6bb",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "@/multiply"
     },
@@ -82,8 +85,9 @@
       "id": "rk4-cs6-W",
       "label": "PERC",
       "position": {
-        "x": 10,
-        "y": 432
+        "units": "slots",
+        "x": 0.25,
+        "y": 4.2
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -93,8 +97,9 @@
       },
       "id": "ryegsjpW-",
       "position": {
-        "x": 10,
-        "y": 328
+        "units": "slots",
+        "x": 0.25,
+        "y": 3.2
       },
       "type": "@/concat"
     }

@@ -9,7 +9,8 @@
       "id": "B1P1nFwaM",
       "label": "EN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -17,6 +18,7 @@
     {
       "id": "SJ-1mZPTz",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -25,16 +27,18 @@
     {
       "id": "OkPg7GDaW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "rJZl7twTQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/abstract"
     }

@@ -90,16 +90,18 @@
       },
       "id": "HJ-gr3Aqb",
       "position": {
-        "x": 306,
-        "y": 510
+        "units": "slots",
+        "x": 9,
+        "y": 5
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
     {
       "id": "HyUxwL7mm",
       "position": {
-        "x": 578,
-        "y": 306
+        "units": "slots",
+        "x": 17,
+        "y": 3
       },
       "type": "@/counter"
     },
@@ -109,7 +111,8 @@
       },
       "id": "Sk0KS30c-",
       "position": {
-        "x": 476,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/core/clock"
@@ -117,16 +120,18 @@
     {
       "id": "r1etS3RcW",
       "position": {
-        "x": 442,
-        "y": 102
+        "units": "slots",
+        "x": 13,
+        "y": 1
       },
       "type": "xod/core/count"
     },
     {
       "id": "rJwoRITYG",
       "position": {
-        "x": 612,
-        "y": 204
+        "units": "slots",
+        "x": 18,
+        "y": 2
       },
       "type": "xod/core/defer(boolean)"
     },
@@ -136,8 +141,9 @@
       },
       "id": "ryyAS2RqW",
       "position": {
-        "x": 510,
-        "y": 204
+        "units": "slots",
+        "x": 15,
+        "y": 2
       },
       "type": "xod/core/greater"
     }

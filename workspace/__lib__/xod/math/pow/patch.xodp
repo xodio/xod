@@ -4,8 +4,9 @@
     {
       "id": "BJ2iaDzJV",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -13,8 +14,9 @@
       "id": "BkC5cn2LW",
       "label": "EXP",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -22,24 +24,27 @@
       "id": "Hya9cnh8W",
       "label": "BASE",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "Syoiqh2LZ",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "r1Wnq3hUb",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

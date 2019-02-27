@@ -4,12 +4,14 @@
       "content": "give everything else a chance to initialize before `connect` blocks execution",
       "id": "r1NFR0e7X",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 272
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -132,16 +134,18 @@
       "id": "B1UUEfYMX",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/output-w5500-inet"
     },
     {
       "id": "BkhXCAlXQ",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/core/defer"
     },
@@ -150,16 +154,18 @@
       "id": "H1ZLMdSLWQ",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HJ6-RRlQm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/connect-manual-blocking"
     },
@@ -168,7 +174,8 @@
       "id": "HyVxSMFzQ",
       "label": "GTW",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -181,7 +188,8 @@
       "id": "Syz8zur8WQ",
       "label": "CONN",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -191,7 +199,8 @@
       "id": "r1XbSzFz7",
       "label": "SBN",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -201,7 +210,8 @@
       "id": "rkZSNzKz7",
       "label": "DNS",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -211,8 +221,9 @@
       "id": "rkgIz_SLW7",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -221,7 +232,8 @@
       "id": "rkuXdr8-Q",
       "label": "IP",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-ip-address"
@@ -231,8 +243,9 @@
       "id": "rygPuMYz7",
       "label": "DEV",
       "position": {
-        "x": -2,
-        "y": -2
+        "units": "slots",
+        "x": -0.1,
+        "y": -0.05
       },
       "type": "@/input-w5500-device"
     }

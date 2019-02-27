@@ -83,7 +83,8 @@
     {
       "id": "BJxOCieAW",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -91,55 +92,62 @@
     {
       "id": "BkEj0se0Z",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "BykdRsgR-",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "H1g9RolAb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/concat"
     },
     {
       "id": "HJo_RjlC-",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/concat"
     },
     {
       "id": "HkDdRoxCb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/concat"
     },
     {
       "id": "SylJ_0ilRW",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
     {
       "id": "rkeguColC-",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -148,8 +156,9 @@
       "description": "Use xod/core/concat with adjusted arity instead",
       "id": "rySFXY0Kz",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     }

@@ -5,8 +5,9 @@
       "description": "3rd octet",
       "id": "B1e1bZMxWm",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -14,8 +15,9 @@
       "description": "1st octet",
       "id": "Hkhe-flbQ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -23,16 +25,18 @@
       "description": "2nd octet",
       "id": "HykbbzxZ7",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "rJfMAblZX",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -40,7 +44,8 @@
       "description": "The IP address",
       "id": "rk1-AWlbm",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/input-ip-address"
@@ -49,8 +54,9 @@
       "description": "4th octet",
       "id": "ryxbZMeWQ",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     }

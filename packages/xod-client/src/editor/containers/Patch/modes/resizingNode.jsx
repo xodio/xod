@@ -5,8 +5,6 @@ import * as R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 
-import * as XP from 'xod-project';
-
 import { EDITOR_MODE } from '../../../constants';
 
 import PatchSVG from '../../../../project/components/PatchSVG';
@@ -18,10 +16,12 @@ import {
   pointToSize,
   sizeToPoint,
   snapNodeSizeToSlots,
+  pixelSizeToSlots,
   NODE_HEIGHT,
   PIN_RADIUS,
   SLOT_SIZE,
 } from '../../../../project/nodeLayout';
+import { getPxSize } from '../../../../project/pxDimensions';
 
 import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
@@ -61,7 +61,7 @@ const addDeltaToNodeSizes = R.uncurryN(2)(deltaPosition =>
         )
       ),
       R.over(
-        R.lensProp('size'),
+        R.lensProp('pxSize'),
         R.compose(
           R.evolve({
             width: R.max(SLOT_SIZE.WIDTH),
@@ -105,14 +105,14 @@ const resizingNodeMode = {
       }),
       snapNodeSizeToSlots,
       addDeltaToSize(deltaPosition),
-      XP.getNodeSize
+      getPxSize
     )(resizedNode);
 
     // In case that User resized Node to it's default size — just drop it to
     // zero values. In this case it will be omitted from xodball
     const sizeToSet = R.equals(resizedNode.originalSize, newSize)
       ? { width: 0, height: 0 }
-      : newSize;
+      : pixelSizeToSlots(newSize);
 
     api.props.actions.resizeNode(resizedNodeId, sizeToSet);
     api.goToMode(EDITOR_MODE.DEFAULT);
@@ -130,8 +130,8 @@ const resizingNodeMode = {
     const snappedPreviews = R.compose(
       R.map(
         R.compose(
-          R.over(R.lensProp('size'), snapNodeSizeToSlots),
-          R.pick(['size', 'position'])
+          R.over(R.lensProp('pxSize'), snapNodeSizeToSlots),
+          R.pick(['pxSize', 'pxPosition'])
         )
       ),
       R.values

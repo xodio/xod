@@ -4,8 +4,9 @@
     {
       "id": "H1MAWAu8-",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,8 +15,9 @@
       "id": "HJAq-A_8-",
       "label": "INC",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -27,8 +29,9 @@
       "id": "HJvqZ0dLZ",
       "label": "STEP",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -37,8 +40,9 @@
       "id": "SkUjZA_L-",
       "label": "RST",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -46,8 +50,9 @@
       "description": "The accumulated value.",
       "id": "r1yhZRd8W",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-number"
     }

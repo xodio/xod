@@ -4,8 +4,9 @@
     {
       "id": "SJ_i04svZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,6 +15,7 @@
       "id": "rJhKCEovZ",
       "label": "HI",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -23,8 +25,9 @@
       "description": "The result number. Equals to `HI` shifted left on 8 bits bitwise or’ed with `LO`.",
       "id": "rySsCNowW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -33,7 +36,8 @@
       "id": "ryv504owW",
       "label": "LO",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

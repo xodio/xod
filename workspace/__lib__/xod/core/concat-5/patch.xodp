@@ -94,15 +94,17 @@
     {
       "id": "B1XXk2eCZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/concat-3"
     },
     {
       "id": "B1gDlJngC-",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -110,7 +112,8 @@
     {
       "id": "BJkZ1hgA-",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -118,15 +121,17 @@
     {
       "id": "BkS413lAZ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "@/concat"
     },
     {
       "id": "BkbDg12xAb",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -134,15 +139,17 @@
     {
       "id": "BkwSkhxR-",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "BkxkZyngA-",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -150,8 +157,9 @@
     {
       "id": "H104Jhe0b",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/concat"
     },
@@ -159,14 +167,16 @@
       "description": "Use xod/core/concat with adjusted arity instead",
       "id": "r1CKmYCKG",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "rJwg1hlA-",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },

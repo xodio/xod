@@ -226,16 +226,18 @@
     {
       "id": "B18QI9LKZ",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "@/adxl335-convert"
     },
     {
       "id": "B1OMIqIYb",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "@/adxl335-convert"
     },
@@ -244,16 +246,18 @@
       "id": "B1sBHcItb",
       "label": "Z",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BJibrqIt-",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
@@ -265,7 +269,8 @@
       "id": "BkdA4cUFW",
       "label": "Px",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -278,7 +283,8 @@
       "id": "BynRV5UKb",
       "label": "Pz",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -288,16 +294,18 @@
       "id": "H1EVB58Y-",
       "label": "X",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HkrZrcIt-",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
@@ -306,8 +314,9 @@
       "id": "S1DHH5LFb",
       "label": "Y",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -315,8 +324,9 @@
       "arityLevel": 2,
       "id": "SJdYhFBl7",
       "position": {
-        "x": 340,
-        "y": 306
+        "units": "slots",
+        "x": 10,
+        "y": 3
       },
       "type": "xod/core/any"
     },
@@ -325,8 +335,9 @@
       "id": "Syl_tntHxX",
       "label": "DONE",
       "position": {
-        "x": 340,
-        "y": 408
+        "units": "slots",
+        "x": 10,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -334,24 +345,27 @@
       "arityLevel": 2,
       "id": "r1GEnKBxX",
       "position": {
-        "x": 442,
-        "y": 306
+        "units": "slots",
+        "x": 13,
+        "y": 3
       },
       "type": "xod/core/any"
     },
     {
       "id": "rJAbScLFZ",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
     {
       "id": "rk17898F-",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "@/adxl335-convert"
     },
@@ -363,7 +377,8 @@
       "id": "rk9RE5ItW",
       "label": "Py",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -376,7 +391,8 @@
       "id": "rkEkrcLKb",
       "label": "UPD",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -386,8 +402,9 @@
       "id": "ry4YhtBxQ",
       "label": "ERR",
       "position": {
-        "x": 442,
-        "y": 408
+        "units": "slots",
+        "x": 13,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     }

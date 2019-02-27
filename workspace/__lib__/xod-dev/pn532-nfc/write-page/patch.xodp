@@ -6,7 +6,8 @@
       "id": "BklWqO6PQ",
       "label": "UPD",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -14,7 +15,8 @@
     {
       "id": "H1eY1c_pw7",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -23,6 +25,7 @@
       "id": "H1rhKuaDQ",
       "label": "DEV",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -33,15 +36,17 @@
       "id": "SJ4l5dTPm",
       "label": "ERR",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SkYkqO6D7",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -54,7 +59,8 @@
       "id": "SyJkqdpPQ",
       "label": "PAGE",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -64,15 +70,17 @@
       "id": "Syblcupvm",
       "label": "OK",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "r1_k9dTDm",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -80,15 +88,17 @@
     {
       "id": "r1hkcOaDm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rywk9upvX",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"

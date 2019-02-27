@@ -4,7 +4,8 @@
     {
       "id": "ByfGSDjQE",
       "position": {
-        "x": -272,
+        "units": "slots",
+        "x": -8,
         "y": 0
       },
       "type": "xod/patch-nodes/output-number"
@@ -12,8 +13,9 @@
     {
       "id": "ByvGHviQ4",
       "position": {
-        "x": -272,
-        "y": -102
+        "units": "slots",
+        "x": -8,
+        "y": -1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

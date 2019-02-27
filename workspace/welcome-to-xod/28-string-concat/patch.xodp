@@ -4,24 +4,28 @@
       "content": "Concat allows you to merge two strings into one. The new string will have the input to the `IN1` pin placed in the beginning and the input to the `IN2` pin placed at the end.",
       "id": "HyXbS17bf",
       "position": {
-        "x": 646,
-        "y": 714
+        "units": "slots",
+        "x": 19,
+        "y": 7
       },
       "size": {
-        "height": 153,
-        "width": 204
+        "height": 2,
+        "units": "slots",
+        "width": 5
       }
     },
     {
       "content": "We have already learned how to display readings from our sensors. But if we have more than one sensor, we'll need a way to tell the readings apart.\n\nThe `concat` node will help us solve this problem.\n\n## Instructions\n\n1. Assemble the [circuit with a thermometer, photoresistor, and LCD](https://xod.io/docs/tutorial/28-string-concat/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_28).\n2. Find the `constant-string` node in the library. Add one above each `concat`.\n3. Assign string values to each node using the Inspector. Try something like “Temp: ” and “Light: ” to keep things short. Put a space at the end so that when we combine it with another string they won't bunch up.\n4. Link the `VAL` pins of the `constant-string` nodes to the left pins of the `concat` nodes. The left input is the beginning of the line, it’s the first part.\n5. Link the outputs of the thermometer and photoresistor to the right pins on the `concat` nodes. They will be the second part of the generated string.\n6. Upload the patch to the Arduino.\n\nNow, the readings from your sensors are displayed on the screen with a convenient label!\n\n## Try it yourself\n\nTry to display the measurement label before the reading and the units of measurement afterward. Use two more `concat` nodes for this. But remember, you only have 16 characters per line.\n\nTry to convert degrees Celsius to degrees Fahrenheit and label them accordingly. You will find a clue for this task in patch 14.\n",
       "id": "S1jgrJ7Wz",
       "position": {
-        "x": -102,
-        "y": 510
+        "units": "slots",
+        "x": -3,
+        "y": 5
       },
       "size": {
-        "height": 867,
-        "width": 306
+        "height": 9,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -53,16 +57,18 @@
     {
       "id": "B1V26JIc-",
       "position": {
-        "x": 340,
-        "y": 714
+        "units": "slots",
+        "x": 10,
+        "y": 7
       },
       "type": "xod/core/concat"
     },
     {
       "id": "S1ykdOLqb",
       "position": {
-        "x": 544,
-        "y": 714
+        "units": "slots",
+        "x": 16,
+        "y": 7
       },
       "type": "xod/core/concat"
     },
@@ -73,8 +79,9 @@
       "id": "SJ5JxLq-X",
       "label": "Photoresistor",
       "position": {
-        "x": 578,
-        "y": 612
+        "units": "slots",
+        "x": 17,
+        "y": 6
       },
       "type": "xod/common-hardware/analog-sensor"
     },
@@ -89,8 +96,9 @@
       },
       "id": "SJHcpyUqb",
       "position": {
-        "x": 238,
-        "y": 816
+        "units": "slots",
+        "x": 7,
+        "y": 8
       },
       "type": "xod/common-hardware/text-lcd-16x2"
     },
@@ -100,8 +108,9 @@
       },
       "id": "r19sT1I9-",
       "position": {
-        "x": 374,
-        "y": 612
+        "units": "slots",
+        "x": 11,
+        "y": 6
       },
       "type": "xod/common-hardware/thermometer-tmp36"
     }

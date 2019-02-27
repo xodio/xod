@@ -6,8 +6,9 @@
       "id": "B143qAq1Q",
       "label": "PORT",
       "position": {
-        "x": 33,
-        "y": -1
+        "units": "slots",
+        "x": 1,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-port"
     },
@@ -19,8 +20,9 @@
       "id": "B1gI0urv1W",
       "label": "SIG",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -29,8 +31,9 @@
       "id": "S1fi5aqyQ",
       "label": "ERR",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -42,7 +45,8 @@
       "id": "SyLCdSwJZ",
       "label": "UPD",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -50,8 +54,9 @@
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -60,8 +65,9 @@
       "id": "rkw3cp9k7",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

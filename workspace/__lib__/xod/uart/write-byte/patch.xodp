@@ -6,8 +6,9 @@
       "id": "BkHrP2I-m",
       "label": "UART",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "@/input-uart"
     },
@@ -16,16 +17,18 @@
       "id": "HJxHrv3I-m",
       "label": "DONE",
       "position": {
-        "x": -1,
-        "y": 203
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "Hy-rrDnUZm",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,7 +40,8 @@
       "id": "Hyz0PhIbm",
       "label": "SEND",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -47,7 +51,8 @@
       "id": "rJaSP2UZm",
       "label": "BYTE",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -57,8 +62,9 @@
       "id": "ryQ_w28Zm",
       "label": "ERR",
       "position": {
-        "x": 33,
-        "y": 203
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

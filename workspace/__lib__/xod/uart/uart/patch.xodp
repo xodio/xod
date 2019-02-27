@@ -6,8 +6,9 @@
       "id": "ByJ65dU-X",
       "label": "UART",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-self"
     },
@@ -19,16 +20,18 @@
       "id": "H1DwMu5bX",
       "label": "BAUD",
       "position": {
-        "x": 33,
-        "y": 101
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "S1taqd8Z7",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -40,8 +43,9 @@
       "id": "SJCqmwIO7",
       "label": "INIT",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -50,8 +54,9 @@
       "id": "rJAd7vLOQ",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     }

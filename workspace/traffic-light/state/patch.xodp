@@ -204,8 +204,9 @@
       "id": "B1NpDXoaZ",
       "label": "SKIP",
       "position": {
-        "x": 476,
-        "y": 102
+        "units": "slots",
+        "x": 14,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -213,8 +214,9 @@
       "id": "B1PryZTTZ",
       "label": "R",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-boolean"
     },
@@ -224,8 +226,9 @@
       },
       "id": "B1gA1Z6TW",
       "position": {
-        "x": 204,
-        "y": 510
+        "units": "slots",
+        "x": 6,
+        "y": 5
       },
       "type": "xod/common-hardware/led"
     },
@@ -233,8 +236,9 @@
       "id": "B1piPQsa-",
       "label": "START",
       "position": {
-        "x": 442,
-        "y": 102
+        "units": "slots",
+        "x": 13,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -244,16 +248,18 @@
       },
       "id": "BJPRkZa6W",
       "position": {
-        "x": 272,
-        "y": 510
+        "units": "slots",
+        "x": 8,
+        "y": 5
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "BJfcybTTb",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/core/gate-boolean"
     },
@@ -261,32 +267,36 @@
       "id": "Hk-hPmoTZ",
       "label": "DONE",
       "position": {
-        "x": 408,
-        "y": 612
+        "units": "slots",
+        "x": 12,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HkIOmg0pW",
       "position": {
-        "x": 578,
-        "y": 204
+        "units": "slots",
+        "x": 17,
+        "y": 2
       },
       "type": "xod/core/defer-pulse"
     },
     {
       "id": "Hy1GWZTTW",
       "position": {
-        "x": 442,
-        "y": 408
+        "units": "slots",
+        "x": 13,
+        "y": 4
       },
       "type": "xod/core/gate-pulse"
     },
     {
       "id": "S1hLNDi6W",
       "position": {
-        "x": 408,
-        "y": 510
+        "units": "slots",
+        "x": 12,
+        "y": 5
       },
       "type": "xod/core/any"
     },
@@ -294,8 +304,9 @@
       "id": "SJGIkWpTZ",
       "label": "Y",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-boolean"
     },
@@ -306,8 +317,9 @@
       "id": "SJg7tQjTW",
       "label": "DUR",
       "position": {
-        "x": 408,
-        "y": 102
+        "units": "slots",
+        "x": 12,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -315,16 +327,18 @@
       "id": "SkK81baTZ",
       "label": "G",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-boolean"
     },
     {
       "id": "SkhOkZ6p-",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/core/gate-boolean"
     },
@@ -334,24 +348,27 @@
       },
       "id": "SyITkWa6b",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "Syt5JWpaZ",
       "position": {
-        "x": 306,
-        "y": 408
+        "units": "slots",
+        "x": 9,
+        "y": 4
       },
       "type": "xod/core/gate-boolean"
     },
     {
       "id": "rJf2MPjpZ",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/core/delay"
     }

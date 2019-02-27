@@ -7,6 +7,7 @@ import {
   getOptimalPanningOffset,
   calcutaleNodeSizeFromPins,
   calculatePinPosition,
+  slotSizeToPixels,
 } from './nodeLayout';
 
 import { LINK_ERRORS } from '../editor/constants';
@@ -95,6 +96,7 @@ export const patchToNodeProps = R.curry(
   (shouldnormalizeEmptyPinLabels, patch) => {
     const pins = XP.listPins(patch);
     const size = calcutaleNodeSizeFromPins(pins);
+    const pxSize = slotSizeToPixels(size);
     const type = XP.getPatchPath(patch);
     const isVariadic = XP.isVariadicPatch(patch);
     const arityStep = foldMaybe(0, R.identity, XP.getArityStepFromPatch(patch));
@@ -104,7 +106,9 @@ export const patchToNodeProps = R.curry(
       type,
       label: '',
       position: { x: 0, y: 0 },
+      pxPosition: { x: 0, y: 0 },
       size,
+      pxSize,
       isVariadic,
       pins: R.compose(
         R.when(
@@ -128,7 +132,7 @@ export const patchToNodeProps = R.curry(
             type: XP.getPinType,
             direction: XP.getPinDirection,
             label: XP.getPinLabel,
-            position: calculatePinPosition(size),
+            position: calculatePinPosition(pxSize),
           })
         ),
         shouldnormalizeEmptyPinLabels ? XP.normalizeEmptyPinLabels : R.identity

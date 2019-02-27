@@ -4,12 +4,14 @@
       "content": "The LED is on because of the `led` node.\nA node is a visual representation of some physical device (such as the ports on an Arduino) or some function (adding, subtracting, or more complicated stuff).\n\nThe small colored circles on the nodes are called *pins*. Pins are divided into inputs and outputs. Inputs are always on the top side of the nodes, outputs on the bottom.\n\nThe `led` node is a simple LED-controlling node. It can control only one single-colored LED. The node has input pins `PORT` and `LUM` along with a few other pins you can ignore for now.\n\nPins are used to transfer data between nodes. Nodes process these values and take some action or give a result. In our case, the `led` node transfers the led brightnes value (set in `LUM`) to the Arduino port (set in `PORT`).\n\n## Instructions\n\n1. Click on the `led` node. You will see the Inspector under the list of projects. You can set the node parameters in the Inspector.\n\n2. In the Inspector, change the `LUM` value from 1 to 0.\n\n3. Upload the program to the Arduino. To do so, select Deploy → Upload to Arduino from the menu.\n\nThe LED will switch off after the upload because Arduino sent a value of 0 to the LED's pin. Physically speaking, it stopped delivering voltage to the pin.",
       "id": "H1nSnynt-",
       "position": {
-        "x": -68,
+        "units": "slots",
+        "x": -2,
         "y": 0
       },
       "size": {
-        "height": 765,
-        "width": 306
+        "height": 8,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -21,8 +23,9 @@
       },
       "id": "BykwlvEF-",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/common-hardware/led"
     }

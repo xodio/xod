@@ -4,15 +4,17 @@
     {
       "id": "BJBnbzhvX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "HJ12-z2PQ",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/input-nfc-uid"
@@ -20,14 +22,16 @@
     {
       "id": "HkMpbM2wm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "rkpjZM3D7",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },

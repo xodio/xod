@@ -4,8 +4,9 @@
     {
       "id": "BLKANE3xW",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,16 +15,18 @@
       "id": "C0nt1n10Wl",
       "label": "TICK",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "S1wkFAwyV",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     }

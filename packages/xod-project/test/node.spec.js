@@ -62,16 +62,20 @@ describe('Node', () => {
   });
   describe('getNodePosition', () => {
     it('should return node position', () => {
-      const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
+      const node = Helper.defaultizeNode({
+        position: { x: 1, y: 1 },
+      });
       assert.hasAllKeys(Node.getNodePosition(node), ['x', 'y']);
     });
   });
   describe('setNodePosition', () => {
     it('should return node in new position', () => {
-      const node = Helper.defaultizeNode({ position: { x: 1, y: 1 } });
-      const newNode = Node.setNodePosition({ x: 10, y: 10 }, node);
-
-      assert.deepEqual(Node.getNodePosition(newNode), { x: 10, y: 10 });
+      const node = Helper.defaultizeNode({
+        position: { x: 1, y: 1 },
+      });
+      const newPosition = { x: 10, y: 20 };
+      const newNode = Node.setNodePosition(newPosition, node);
+      assert.deepEqual(Node.getNodePosition(newNode), newPosition);
     });
   });
   describe('getNodeLabel', () => {

@@ -9,6 +9,8 @@ import {
   addNodePositioning,
   addLinksPositioning,
   addPoints,
+  slotPositionToPixels,
+  slotSizeToPixels,
 } from './nodeLayout';
 import { SELECTION_ENTITY_TYPE } from '../editor/constants';
 import {
@@ -28,6 +30,7 @@ import {
   getRenderablePinType,
   getNormalizedLabelsForPatch,
 } from '../project/utils';
+import { setPxPosition, setPxSize } from './pxDimensions';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
 
@@ -49,7 +52,18 @@ const getIndexedPatchEntitiesBy = R.curry((getter, project, maybePatchPath) =>
 // :: State -> StrMap Comment
 export const getCurrentPatchComments = createSelector(
   [getProject, getCurrentPatchPath],
-  getIndexedPatchEntitiesBy(XP.listComments)
+  R.compose(
+    R.map(
+      R.compose(
+        R.over(R.lens(XP.getCommentSize, setPxSize), slotSizeToPixels),
+        R.over(
+          R.lens(XP.getCommentPosition, setPxPosition),
+          slotPositionToPixels
+        )
+      )
+    ),
+    getIndexedPatchEntitiesBy(XP.listComments)
+  )
 );
 
 // :: State -> StrMap Link
@@ -391,7 +405,7 @@ export const getLinkGhost = createSelector(
     return {
       id: '',
       type: pin.type,
-      from: addPoints(pin.position, node.position),
+      from: addPoints(pin.position, node.pxPosition),
       to: { x: 0, y: 0 },
     };
   }

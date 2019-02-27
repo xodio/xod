@@ -6,8 +6,9 @@
       "id": "B1ZUA_Hv1W",
       "label": "PORT",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -19,8 +20,9 @@
       "id": "B1gI0urv1W",
       "label": "SIG",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -28,8 +30,9 @@
       "description": "Use `xod/gpio/digital-read` instead",
       "id": "H1oxA1o17",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -41,16 +44,18 @@
       "id": "SyLCdSwJZ",
       "label": "UPD",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

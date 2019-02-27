@@ -37,10 +37,10 @@ export const convertPatchFileContentsToPatch = def(
   fsPatch =>
     R.compose(
       XP.upsertLinks(
-        R.map(R.assoc('@@type', 'xod-project/Link'), fsPatch.links)
+        R.map(R.assoc('@@type', 'xod-project/Link'), R.values(fsPatch.links))
       ),
       XP.upsertNodes(
-        R.map(R.assoc('@@type', 'xod-project/Node'), fsPatch.nodes)
+        R.map(R.assoc('@@type', 'xod-project/Node'), R.values(fsPatch.nodes))
       ),
       XP.upsertComments(fsPatch.comments),
       XP.setPatchDescription(fsPatch.description),

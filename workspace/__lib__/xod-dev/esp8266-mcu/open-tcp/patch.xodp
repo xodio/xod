@@ -6,8 +6,9 @@
       "id": "B1ENaAjwtm",
       "label": "ERR",
       "position": {
-        "x": 203,
-        "y": 203
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,16 +17,18 @@
       "id": "ByZE6AjDt7",
       "label": "CONN",
       "position": {
-        "x": 305,
-        "y": -1
+        "units": "slots",
+        "x": 9,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "H1BNpCiPK7",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -34,8 +37,9 @@
       "id": "H1mYNnvY7",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/output-socket"
     },
@@ -44,6 +48,7 @@
       "id": "SkEJyhvFQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -54,8 +59,9 @@
       "id": "r1EpRjDYQ",
       "label": "DONE",
       "position": {
-        "x": 101,
-        "y": 203
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -67,8 +73,9 @@
       "id": "ryL4pAjPKX",
       "label": "PORT",
       "position": {
-        "x": 203,
-        "y": -1
+        "units": "slots",
+        "x": 6,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -80,8 +87,9 @@
       "id": "ryQ46CovFm",
       "label": "SRV",
       "position": {
-        "x": 101,
-        "y": -1
+        "units": "slots",
+        "x": 3,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     }

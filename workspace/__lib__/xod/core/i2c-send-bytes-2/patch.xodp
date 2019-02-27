@@ -94,8 +94,9 @@
       "id": "H17P5VsPZ",
       "label": "B0",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -103,8 +104,9 @@
       "id": "HJEUcEswW",
       "label": "ADDR",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -112,16 +114,18 @@
       "id": "HkKvqEswZ",
       "label": "B1",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HkNjgtNOZ",
       "position": {
-        "x": 266,
-        "y": 432
+        "units": "slots",
+        "x": 7.9,
+        "y": 4.2
       },
       "type": "@/i2c-end-transmission"
     },
@@ -129,8 +133,9 @@
       "description": "Use a chain of `xod/i2c/begin-transmission` + `xod/i2c/write` + `xod/i2c/end-transmission` instead.",
       "id": "S1xy2v74lm",
       "position": {
-        "x": 442,
-        "y": 204
+        "units": "slots",
+        "x": 13,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -138,16 +143,18 @@
       "id": "SkDMTNjwW",
       "label": "DONE",
       "position": {
-        "x": 266,
-        "y": 536
+        "units": "slots",
+        "x": 7.9,
+        "y": 5.25
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SybilYN_Z",
       "position": {
-        "x": 266,
-        "y": 120
+        "units": "slots",
+        "x": 7.9,
+        "y": 1.15
       },
       "type": "@/i2c-begin-transmission"
     },
@@ -155,24 +162,27 @@
       "id": "r1ypaEoDW",
       "label": "SEND",
       "position": {
-        "x": 394,
-        "y": 16
+        "units": "slots",
+        "x": 11.65,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "rk3jltV_b",
       "position": {
-        "x": 266,
-        "y": 328
+        "units": "slots",
+        "x": 7.9,
+        "y": 3.2
       },
       "type": "@/i2c-write"
     },
     {
       "id": "rkFogtVOZ",
       "position": {
-        "x": 266,
-        "y": 224
+        "units": "slots",
+        "x": 7.9,
+        "y": 2.15
       },
       "type": "@/i2c-write"
     }

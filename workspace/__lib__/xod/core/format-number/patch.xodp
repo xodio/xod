@@ -6,8 +6,9 @@
       "id": "BJlHojaWZ",
       "label": "NUM",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -19,24 +20,27 @@
       "id": "HJTIija-W",
       "label": "DIG",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HJtXKRwJ4",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "S1wYijaWb",
       "position": {
-        "x": 138,
-        "y": 120
+        "units": "slots",
+        "x": 4.05,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -45,8 +49,9 @@
       "id": "r1H_oipZb",
       "label": "STR",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-string"
     }

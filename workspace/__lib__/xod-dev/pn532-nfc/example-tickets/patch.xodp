@@ -4,108 +4,126 @@
       "content": "<- Check whether the tickets remained on the NFC tag and returns tickets count or `0`",
       "id": "H1bauwIOQ",
       "position": {
-        "x": 544,
-        "y": 510
+        "units": "slots",
+        "x": 16,
+        "y": 5
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     },
     {
       "content": "<- Blink!",
       "id": "S1dAKPL_m",
       "position": {
-        "x": 544,
-        "y": 816
+        "units": "slots",
+        "x": 16,
+        "y": 8
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     },
     {
       "content": "<- Read number of tickets from an NFC tag. We store it in the highest byte",
       "id": "S1hEuw8O7",
       "position": {
-        "x": 544,
-        "y": 306
+        "units": "slots",
+        "x": 16,
+        "y": 3
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- A detailed description of using these nodes is in the example `example-read-page`",
       "id": "Sy_5Dv8d7",
       "position": {
-        "x": 544,
-        "y": 102
+        "units": "slots",
+        "x": 16,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- If there was an unused ticket the led will blink once, if not — it will blink several times",
       "id": "r1FFKvU_m",
       "position": {
-        "x": 544,
-        "y": 714
+        "units": "slots",
+        "x": 16,
+        "y": 7
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     },
     {
       "content": "<- Convert byte into number, subtract one ticket and convert backward",
       "id": "rJFtdDUO7",
       "position": {
-        "x": 544,
-        "y": 408
+        "units": "slots",
+        "x": 16,
+        "y": 4
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Write remained tickets on the NFC tag",
       "id": "rkiwYv8uQ",
       "position": {
-        "x": 544,
-        "y": 612
+        "units": "slots",
+        "x": 16,
+        "y": 6
       },
       "size": {
-        "height": 51,
-        "width": 340
+        "height": 1,
+        "units": "slots",
+        "width": 8
       }
     },
     {
       "content": "<- Constant to read/write a data to the same page",
       "id": "rkyiLv8dm",
       "position": {
-        "x": 544,
+        "units": "slots",
+        "x": 16,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "<- Pulse once when NFC tag detected to avoid write-off of several tickets",
       "id": "ryUQDD8_X",
       "position": {
-        "x": 544,
-        "y": 204
+        "units": "slots",
+        "x": 16,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 306
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -449,8 +467,9 @@
       },
       "id": "B18Jet6DX",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/core/if-else"
     },
@@ -460,8 +479,9 @@
       },
       "id": "B1Isyt6PQ",
       "position": {
-        "x": 272,
-        "y": 816
+        "units": "slots",
+        "x": 8,
+        "y": 8
       },
       "type": "xod/common-hardware/led"
     },
@@ -471,16 +491,18 @@
       },
       "id": "BkA_c_aPm",
       "position": {
-        "x": 67,
-        "y": 101
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/init"
     },
     {
       "id": "BkQRO5_pwm",
       "position": {
-        "x": 135,
-        "y": 101
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/core/flip-flop"
     },
@@ -488,8 +510,9 @@
       "id": "H1pQ1YaDm",
       "label": "PAGE",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -497,8 +520,9 @@
       "id": "HJwCuqd6vX",
       "label": "DEV",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -508,8 +532,9 @@
       },
       "id": "HkLLyYaDm",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "xod/core/if-else"
     },
@@ -517,8 +542,9 @@
       "id": "HyW0dcOTDX",
       "label": "DEV",
       "position": {
-        "x": 67,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -526,8 +552,9 @@
       "id": "HyYF3_6wQ",
       "label": "DEV",
       "position": {
-        "x": 238,
-        "y": 510
+        "units": "slots",
+        "x": 7,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -537,24 +564,27 @@
       },
       "id": "HyfCdcdpvm",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "@/pn532-device"
     },
     {
       "id": "Hyg_2_6DX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/bits/u8-to-number"
     },
     {
       "id": "S1N91F6vm",
       "position": {
-        "x": 306,
-        "y": 714
+        "units": "slots",
+        "x": 9,
+        "y": 7
       },
       "type": "xod/core/flip-n-times"
     },
@@ -565,12 +595,14 @@
       "id": "S1Qc3dTPQ",
       "label": "PAGE WITH TICKETS",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "size": {
-        "height": 51,
-        "width": 136
+        "height": 1,
+        "units": "slots",
+        "width": 4
       },
       "type": "xod/core/constant-number"
     },
@@ -581,8 +613,9 @@
       },
       "id": "S1eakYpv7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 714
+        "y": 7
       },
       "type": "xod/core/if-else"
     },
@@ -590,8 +623,9 @@
       "id": "S1gR_cdaPX",
       "label": "DEV",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -599,7 +633,8 @@
       "id": "SJpC_9uTPm",
       "label": "DEV",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/from-bus"
@@ -607,8 +642,9 @@
     {
       "id": "SJxV4Y6DX",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/core/continuously-pausable"
     },
@@ -616,16 +652,18 @@
       "id": "SkJN1KavX",
       "label": "PAGE",
       "position": {
-        "x": 272,
-        "y": 510
+        "units": "slots",
+        "x": 8,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "SknCO5uTDQ",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "@/pair-tag"
     },
@@ -635,32 +673,36 @@
       },
       "id": "rJUAu5_pvQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/read-page"
     },
     {
       "id": "rJwK3uaDm",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "@/write-page"
     },
     {
       "id": "rk1Y2u6D7",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/bits/number-to-u8"
     },
     {
       "id": "rk9SkFaw7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "xod/core/greater"
     },
@@ -671,8 +713,9 @@
       },
       "id": "rkDWxKTvX",
       "position": {
-        "x": 204,
-        "y": 714
+        "units": "slots",
+        "x": 6,
+        "y": 7
       },
       "type": "xod/core/if-else"
     },
@@ -682,16 +725,18 @@
       },
       "id": "rkU_ndpPX",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "xod/core/subtract"
     },
     {
       "id": "rkwx6OpvQ",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/core/flip-flop"
     },
@@ -699,8 +744,9 @@
       "id": "ryVXJK6Dm",
       "label": "PAGE",
       "position": {
-        "x": 408,
-        "y": 102
+        "units": "slots",
+        "x": 12,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     }

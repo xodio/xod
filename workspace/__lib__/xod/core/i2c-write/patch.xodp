@@ -4,8 +4,9 @@
       "id": "H1jODuEOW",
       "label": "BYTE",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -13,8 +14,9 @@
       "id": "S1dKPuVdW",
       "label": "SEND",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -22,16 +24,18 @@
       "id": "SJB3vO4uZ",
       "label": "DONE",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "r1j2DdNO-",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -39,8 +43,9 @@
       "description": "Use a chain of `xod/i2c/write` instead.",
       "id": "ryPnPQNgQ",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     }

@@ -82,6 +82,8 @@ export {
   samePatchValidity,
   validateBuses,
   hasNodeWithType,
+  convertPatchDimensionsToSlots,
+  convertPatchDimensionsToPixels,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,
@@ -126,7 +128,16 @@ export * from './typeDeduction';
 export * from './TypeDeduction_Js.bs';
 export { default as autoresolveTypes } from './autoresolveTypes';
 export { default as messages } from './messages';
-export { ensureLiteral, migrateBoundValuesToBoundLiterals } from './legacy';
+export {
+  ensureLiteral,
+  migrateBoundValuesToBoundLiterals,
+} from './migrations/boundValuesToBoundLiterals';
+export {
+  migrateProjectDimensionsToSlots,
+  migratePatchDimensionsToSlots,
+  convertPositionValueToSlots,
+  addPositionAndSizeUnitsToPatchEntities,
+} from './migrations/unitlessToSlots';
 export { sortGraph } from './gmath';
 export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
 

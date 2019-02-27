@@ -4,48 +4,56 @@
       "content": "<- Toggle state of the LED when our tag is detected",
       "id": "B12UJvL_X",
       "position": {
-        "x": 340,
-        "y": 306
+        "units": "slots",
+        "x": 10,
+        "y": 3
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     },
     {
       "content": "<- Pass pulse to update the led only if it is our tag",
       "id": "ByLcRUL_Q",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     },
     {
       "content": "<- Check out the UID of your tag and then just bind\nthis values into `my-card` node",
       "id": "HJPolPIuQ",
       "position": {
-        "x": 306,
-        "y": 612
+        "units": "slots",
+        "x": 9,
+        "y": 6
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     },
     {
       "content": "<- Compare an UID of detected tag with our UID",
       "id": "ryqtkDU_Q",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 408
+        "height": 1,
+        "units": "slots",
+        "width": 10
       }
     }
   ],
@@ -265,16 +273,18 @@
       "id": "B1-rVyD8_Q",
       "label": "UPD",
       "position": {
-        "x": 374,
-        "y": 408
+        "units": "slots",
+        "x": 11,
+        "y": 4
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "B1WlvOf2PQ",
       "position": {
-        "x": 136,
-        "y": 612
+        "units": "slots",
+        "x": 4,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
@@ -282,8 +292,9 @@
       "id": "BJBVkvLuX",
       "label": "UPD",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -294,16 +305,18 @@
       "id": "BJrRGv6vm",
       "label": "built-in led",
       "position": {
-        "x": 306,
-        "y": 510
+        "units": "slots",
+        "x": 9,
+        "y": 5
       },
       "type": "xod/common-hardware/led"
     },
     {
       "id": "BkZwOM2wQ",
       "position": {
-        "x": 204,
-        "y": 612
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
@@ -320,7 +333,8 @@
       "id": "BkdfDSnvX",
       "label": "my-card",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "@/nfc-uid"
@@ -328,8 +342,9 @@
     {
       "id": "Bkegw_MhD7",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
@@ -339,7 +354,8 @@
       },
       "id": "BkiB_M3DQ",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/nfc-scanner"
@@ -347,80 +363,90 @@
     {
       "id": "H1gZPufhwQ",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
     {
       "id": "HJF6axedm",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/core/flip-flop"
     },
     {
       "id": "HkTWCxldQ",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "xod/core/and"
     },
     {
       "id": "Hkflw_M2v7",
       "position": {
-        "x": 170,
-        "y": 612
+        "units": "slots",
+        "x": 5,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
     {
       "id": "Hy0NDr2D7",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "@/equal(nfc-uid)"
     },
     {
       "id": "HyDhAUUuX",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/pulse-on-true"
     },
     {
       "id": "HyxDufnDQ",
       "position": {
-        "x": 68,
-        "y": 612
+        "units": "slots",
+        "x": 2,
+        "y": 6
       },
       "type": "xod/core/watch"
     },
     {
       "id": "SJ98dzhD7",
       "position": {
-        "x": 34,
-        "y": 510
+        "units": "slots",
+        "x": 1,
+        "y": 5
       },
       "type": "@/unpack-nfc-uid"
     },
     {
       "id": "Syoazv6P7",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/core/gate"
     },
     {
       "id": "rkpUOM3vm",
       "position": {
-        "x": 34,
-        "y": 612
+        "units": "slots",
+        "x": 1,
+        "y": 6
       },
       "type": "xod/core/watch"
     }

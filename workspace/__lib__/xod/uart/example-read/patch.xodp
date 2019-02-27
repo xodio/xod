@@ -93,8 +93,9 @@
     {
       "id": "By2yRpDbQ",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "xod/core/watch"
     },
@@ -104,16 +105,18 @@
       },
       "id": "H1sZygu-m",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/read-bytes"
     },
     {
       "id": "HkdbAKXzQ",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "@/end"
     },
@@ -125,8 +128,9 @@
       "description": "Hack to make watch nodes works on Leonardo",
       "id": "S1XgMnT6DWm",
       "position": {
-        "x": 34,
-        "y": -102
+        "units": "slots",
+        "x": 1,
+        "y": -1
       },
       "type": "xod/core/delay"
     },
@@ -136,8 +140,9 @@
       },
       "id": "SylfhpTDZm",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/print"
     },
@@ -148,7 +153,8 @@
       },
       "id": "rJGM36TvZ7",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/soft-uart"

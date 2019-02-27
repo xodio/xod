@@ -602,24 +602,27 @@
       "id": "B1mHrOxxG",
       "label": "YEAR",
       "position": {
-        "x": -68,
-        "y": 1020
+        "units": "slots",
+        "x": -2,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "B1nP-Kxgz",
       "position": {
-        "x": 238,
-        "y": 816
+        "units": "slots",
+        "x": 7,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
     {
       "id": "BJ9Y-Yxez",
       "position": {
-        "x": 34,
-        "y": 816
+        "units": "slots",
+        "x": 1,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -627,8 +630,9 @@
       "description": "Use `xod-dev/ds-rtc/rtc` instead",
       "id": "BJMekwSd7",
       "position": {
-        "x": -102,
-        "y": 102
+        "units": "slots",
+        "x": -3,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -637,16 +641,18 @@
       "id": "BkcHSuxxM",
       "label": "MO",
       "position": {
-        "x": 34,
-        "y": 1020
+        "units": "slots",
+        "x": 1,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "Bkepv-tlef",
       "position": {
-        "x": 544,
-        "y": 816
+        "units": "slots",
+        "x": 16,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -655,56 +661,63 @@
       "id": "BkofQqBx7",
       "label": "ERR",
       "position": {
-        "x": 714,
-        "y": 1020
+        "units": "slots",
+        "x": 21,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "BkrqBdlef",
       "position": {
-        "x": 680,
-        "y": 204
+        "units": "slots",
+        "x": 20,
+        "y": 2
       },
       "type": "xod/i2c/begin-transmission"
     },
     {
       "id": "ByeWI_llM",
       "position": {
-        "x": 442,
-        "y": 612
+        "units": "slots",
+        "x": 13,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "ByqDbYexz",
       "position": {
-        "x": 136,
-        "y": 816
+        "units": "slots",
+        "x": 4,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
     {
       "id": "ByqeDOxxf",
       "position": {
-        "x": 34,
-        "y": 612
+        "units": "slots",
+        "x": 1,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "HJRnrulxG",
       "position": {
-        "x": 646,
-        "y": 306
+        "units": "slots",
+        "x": 19,
+        "y": 3
       },
       "type": "xod/i2c/write-byte"
     },
     {
       "id": "HJXx8dgxf",
       "position": {
-        "x": 544,
-        "y": 612
+        "units": "slots",
+        "x": 16,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
@@ -713,16 +726,18 @@
       "id": "HJl3HHOgxf",
       "label": "MIN",
       "position": {
-        "x": 442,
-        "y": 1020
+        "units": "slots",
+        "x": 13,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HJtxwuxeG",
       "position": {
-        "x": 136,
-        "y": 612
+        "units": "slots",
+        "x": 4,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
@@ -731,8 +746,9 @@
       "id": "Hy-_00Olgf",
       "label": "WD",
       "position": {
-        "x": 238,
-        "y": 1020
+        "units": "slots",
+        "x": 7,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -743,8 +759,9 @@
       "description": "MSB is a control bit",
       "id": "Hy2QFOlgM",
       "position": {
-        "x": 544,
-        "y": 714
+        "units": "slots",
+        "x": 16,
+        "y": 7
       },
       "type": "xod/bits/bitwise-and"
     },
@@ -752,32 +769,36 @@
       "id": "HywAb5Hxm",
       "label": "I2C",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/i2c/input-i2c"
     },
     {
       "id": "S16DbKeeG",
       "position": {
-        "x": 442,
-        "y": 816
+        "units": "slots",
+        "x": 13,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
     {
       "id": "S1ngP_xxM",
       "position": {
-        "x": -68,
-        "y": 612
+        "units": "slots",
+        "x": -2,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "S1wevuxlz",
       "position": {
-        "x": 340,
-        "y": 612
+        "units": "slots",
+        "x": 10,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
@@ -787,8 +808,9 @@
       },
       "id": "SJdz-pMlz",
       "position": {
-        "x": -68,
-        "y": 918
+        "units": "slots",
+        "x": -2,
+        "y": 9
       },
       "type": "xod/core/add"
     },
@@ -798,24 +820,27 @@
       },
       "id": "SyXRHdelG",
       "position": {
-        "x": 578,
-        "y": 510
+        "units": "slots",
+        "x": 17,
+        "y": 5
       },
       "type": "xod/i2c/request"
     },
     {
       "id": "Sym8WYlgG",
       "position": {
-        "x": -68,
-        "y": 816
+        "units": "slots",
+        "x": -2,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
     {
       "id": "SyuaBOxlM",
       "position": {
-        "x": 646,
-        "y": 408
+        "units": "slots",
+        "x": 19,
+        "y": 4
       },
       "type": "xod/i2c/end-transmission"
     },
@@ -827,8 +852,9 @@
       "id": "r1MmSdlgM",
       "label": "ADDR",
       "position": {
-        "x": 612,
-        "y": 102
+        "units": "slots",
+        "x": 18,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-byte"
     },
@@ -837,8 +863,9 @@
       "id": "r1THSOxeG",
       "label": "SEC",
       "position": {
-        "x": 544,
-        "y": 1020
+        "units": "slots",
+        "x": 16,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -850,8 +877,9 @@
       "id": "r1o7Hdlgf",
       "label": "UPD",
       "position": {
-        "x": 748,
-        "y": 102
+        "units": "slots",
+        "x": 22,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -860,8 +888,9 @@
       "id": "rJ2SBOlez",
       "label": "HOUR",
       "position": {
-        "x": 340,
-        "y": 1020
+        "units": "slots",
+        "x": 10,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -872,16 +901,18 @@
       "description": "MSB are control bits",
       "id": "rJHIt_geG",
       "position": {
-        "x": 340,
-        "y": 714
+        "units": "slots",
+        "x": 10,
+        "y": 7
       },
       "type": "xod/bits/bitwise-and"
     },
     {
       "id": "rJguRC_ggG",
       "position": {
-        "x": 238,
-        "y": 612
+        "units": "slots",
+        "x": 7,
+        "y": 6
       },
       "type": "xod/i2c/read-byte"
     },
@@ -890,16 +921,18 @@
       "id": "rJiSSuxlf",
       "label": "DAY",
       "position": {
-        "x": 136,
-        "y": 1020
+        "units": "slots",
+        "x": 4,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "rkenwbYggM",
       "position": {
-        "x": 340,
-        "y": 816
+        "units": "slots",
+        "x": 10,
+        "y": 8
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -908,8 +941,9 @@
       "id": "rkesGQcrgX",
       "label": "DONE",
       "position": {
-        "x": 646,
-        "y": 1020
+        "units": "slots",
+        "x": 19,
+        "y": 10
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -917,8 +951,9 @@
       "arityLevel": 10,
       "id": "ryRX75Se7",
       "position": {
-        "x": 680,
-        "y": 918
+        "units": "slots",
+        "x": 20,
+        "y": 9
       },
       "type": "xod/core/any"
     }

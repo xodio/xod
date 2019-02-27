@@ -4,24 +4,28 @@
       "content": "* `and`: returns `true` if both (`IN1` *and* `IN2`) are `true`.\n* `or`: returns `true` if `IN1`, `IN2`, or both are `true`.\n* `xor` returns `true` if only one of `IN1` and `IN2` is `true`\n* `not` inverts the input value.\n\nExplore other logic nodes by yourself using node help (click a node and press H key).",
       "id": "H1I643knZ",
       "position": {
-        "x": 612,
-        "y": 204
+        "units": "slots",
+        "x": 18,
+        "y": 2
       },
       "size": {
-        "height": 153,
-        "width": 442
+        "height": 2,
+        "units": "slots",
+        "width": 11
       }
     },
     {
       "content": "Boolean values are cool. You can use them to construct complex logic systems. In XOD, you will find a lot of nodes for this purpose. All of them are located in `xod/core`.\n\n## Instructions\n\n1. Assemble a [circuit with two buttons and a LED](https://xod.io/docs/tutorial/16-logic/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_16).\n\n2. Upload the patch to the Arduino.\n\nThe `and` node returns `false` until both buttons are pressed. The not node inverts the value from the `and` node, so the `LUM` pin receives its true value (1). Thus, the LED turns on.\n\nPressing one of the buttons changes nothing. The LED will turn off only when the `LUM` pin receives false (0). This will happen only if the `not` node receives the true value, which is possible only if both buttons are pressed at the same time.",
       "id": "H1YyvTRt-",
       "position": {
-        "x": -34,
+        "units": "slots",
+        "x": -1,
         "y": 0
       },
       "size": {
-        "height": 459,
-        "width": 306
+        "height": 5,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -75,8 +79,9 @@
     {
       "id": "BJ3z5DEtZ",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/core/not"
     },
@@ -86,8 +91,9 @@
       },
       "id": "ByCkcvVYW",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "type": "xod/common-hardware/led"
     },
@@ -97,7 +103,8 @@
       },
       "id": "ByHgcw4Yb",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/common-hardware/button"
@@ -108,7 +115,8 @@
       },
       "id": "ByVg5w4F-",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "type": "xod/common-hardware/button"
@@ -116,40 +124,45 @@
     {
       "id": "Byp-5wEF-",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/core/and"
     },
     {
       "id": "H1xr5vNtZ",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/core/nor"
     },
     {
       "id": "r1U4cD4Yb",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/core/or"
     },
     {
       "id": "r1rHcPVYZ",
       "position": {
-        "x": 510,
-        "y": 306
+        "units": "slots",
+        "x": 15,
+        "y": 3
       },
       "type": "xod/core/xor"
     },
     {
       "id": "rkTBcPEFZ",
       "position": {
-        "x": 510,
-        "y": 204
+        "units": "slots",
+        "x": 15,
+        "y": 2
       },
       "type": "xod/core/nand"
     }

@@ -8,8 +8,9 @@
       "description": "3rd octet",
       "id": "BJ-GeebB-Q",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-byte"
     },
@@ -20,16 +21,18 @@
       "description": "2nd octet",
       "id": "HyMxxWSWQ",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-byte"
     },
     {
       "id": "r1wK2bgbQ",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -37,8 +40,9 @@
       "description": "IP address",
       "id": "rJkt2WxZm",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-self"
     },
@@ -49,8 +53,9 @@
       "description": "1st octet",
       "id": "ryMGggZH-Q",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-byte"
     },
@@ -61,8 +66,9 @@
       "description": "4th octet",
       "id": "ryefxxZBZm",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-byte"
     }

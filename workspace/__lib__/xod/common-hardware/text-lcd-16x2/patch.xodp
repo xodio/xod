@@ -6,7 +6,8 @@
       "id": "B1TSE9tZ-",
       "label": "L1",
       "position": {
-        "x": 408,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -16,7 +17,8 @@
       "id": "BJJqaX4Gb",
       "label": "D4",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -26,7 +28,8 @@
       "id": "H1bLN9F-b",
       "label": "L2",
       "position": {
-        "x": 476,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -36,7 +39,8 @@
       "id": "HJysTXVMb",
       "label": "D6",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -49,7 +53,8 @@
       "id": "Hkc3rF8xX",
       "label": "UPD",
       "position": {
-        "x": 544,
+        "units": "slots",
+        "x": 16,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -59,7 +64,8 @@
       "id": "S1nqa7NMZ",
       "label": "D5",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -69,8 +75,9 @@
       "id": "SJecnSYLx7",
       "label": "DONE",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -79,7 +86,8 @@
       "id": "SkBK6Q4fb",
       "label": "EN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -87,8 +95,9 @@
     {
       "id": "SkRdV5YWW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -97,6 +106,7 @@
       "id": "rJlYT7EfW",
       "label": "RS",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -107,7 +117,8 @@
       "id": "rkbjp7Ezb",
       "label": "D7",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"

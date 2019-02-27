@@ -94,8 +94,9 @@
     {
       "id": "BJWiEcFyz",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "@/absolute"
     },
@@ -104,8 +105,9 @@
       "id": "BkK3N5Y1M",
       "label": "OUT",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -115,8 +117,9 @@
       },
       "id": "BkwiVqKkM",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "@/subtract"
     },
@@ -125,8 +128,9 @@
       "id": "HyiTVcFJG",
       "label": "N",
       "position": {
-        "x": 204,
-        "y": 714
+        "units": "slots",
+        "x": 6,
+        "y": 7
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -136,8 +140,9 @@
       },
       "id": "S1VYE5t1z",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "@/multiply"
     },
@@ -149,16 +154,18 @@
       "id": "S1i0E5KkM",
       "label": "IN",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "SJ9v4qKJf",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "@/saw-wave-map"
     },
@@ -170,8 +177,9 @@
       "id": "Sy7eS5tyz",
       "label": "T",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -181,8 +189,9 @@
       },
       "id": "rJUcEqKJM",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "@/subtract"
     }

@@ -106,7 +106,8 @@
       "id": "B1-BIa-t-",
       "label": "X3",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -114,8 +115,9 @@
     {
       "id": "B1JELTZKb",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/nth-number-3"
     },
@@ -123,7 +125,8 @@
       "id": "BJTNLT-Kb",
       "label": "X1",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -132,7 +135,8 @@
       "id": "Bk1HU6btW",
       "label": "X2",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -141,7 +145,8 @@
       "id": "BkDVUp-t-",
       "label": "X0",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -150,8 +155,9 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "H1HILaWFb",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -159,8 +165,9 @@
       "description": "Use xod/core/nth-number with adjusted arity instead",
       "id": "HJupmFAYz",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -170,16 +177,18 @@
       },
       "id": "SJ7v8pbYb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "@/less"
     },
     {
       "id": "SygOI6Wt-",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -188,7 +197,8 @@
       "id": "r1m4LpWKb",
       "label": "IDX",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

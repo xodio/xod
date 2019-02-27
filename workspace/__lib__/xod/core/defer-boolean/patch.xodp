@@ -4,6 +4,7 @@
     {
       "id": "BJI7P8t9Z",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -12,8 +13,9 @@
     {
       "id": "HJhXDIY9-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
@@ -21,16 +23,18 @@
       "description": "Use xod/core/defer or its specialization.",
       "id": "HJmCdoMcG",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "rkFQwUYc-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

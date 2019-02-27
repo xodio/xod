@@ -6,8 +6,9 @@
       "id": "B10vYoHlQ",
       "label": "DONE",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -16,6 +17,7 @@
       "id": "Bk2zMWALZ",
       "label": "TRIG",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -26,8 +28,9 @@
       "id": "H1iPYsSe7",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -36,8 +39,9 @@
       "id": "Syn7fWCLZ",
       "label": "Ts",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -46,7 +50,8 @@
       "id": "rJ0fMWALb",
       "label": "ECHO",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -59,7 +64,8 @@
       "id": "rJPQfbCIW",
       "label": "PING",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -67,8 +73,9 @@
     {
       "id": "rkJUMWRIW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

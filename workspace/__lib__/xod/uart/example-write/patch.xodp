@@ -522,8 +522,9 @@
     {
       "id": "B1KXG3vZm",
       "position": {
-        "x": 986,
-        "y": 714
+        "units": "slots",
+        "x": 29,
+        "y": 7
       },
       "type": "xod/core/defer"
     },
@@ -531,8 +532,9 @@
       "id": "B1Ueiv8uX",
       "label": "UART",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/to-bus"
     },
@@ -540,24 +542,27 @@
       "id": "B1ae8xsvU_7",
       "label": "UART",
       "position": {
-        "x": 306,
-        "y": 204
+        "units": "slots",
+        "x": 9,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "B1lrjfnDWX",
       "position": {
-        "x": 510,
-        "y": 714
+        "units": "slots",
+        "x": 15,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
     {
       "id": "BJ1df3v-Q",
       "position": {
-        "x": 408,
-        "y": 714
+        "units": "slots",
+        "x": 12,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
@@ -565,16 +570,18 @@
       "id": "BJQgUeiwLu7",
       "label": "UART",
       "position": {
-        "x": 102,
-        "y": 510
+        "units": "slots",
+        "x": 3,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "BJeDGhvbX",
       "position": {
-        "x": 204,
-        "y": 714
+        "units": "slots",
+        "x": 6,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
@@ -582,8 +589,9 @@
       "id": "Bk6IgjvUOQ",
       "label": "UART",
       "position": {
-        "x": 816,
-        "y": 510
+        "units": "slots",
+        "x": 24,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -591,8 +599,9 @@
       "id": "BkWgIgswUum",
       "label": "UART",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -600,32 +609,36 @@
       "id": "BkrUesPLd7",
       "label": "UART",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "By8z-3Dbm",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "@/flush"
     },
     {
       "id": "ByML3nU-m",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "Byltif2wbm",
       "position": {
-        "x": 816,
-        "y": 714
+        "units": "slots",
+        "x": 24,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
@@ -633,8 +646,9 @@
       "id": "BywLesv8dm",
       "label": "UART",
       "position": {
-        "x": 204,
-        "y": 510
+        "units": "slots",
+        "x": 6,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -644,8 +658,9 @@
       },
       "id": "H1GNToPWX",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "@/write-byte"
     },
@@ -655,24 +670,27 @@
       },
       "id": "H1tBTivb7",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "type": "@/write-byte"
     },
     {
       "id": "HJFIh3U-Q",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 714
+        "y": 7
       },
       "type": "xod/core/watch"
     },
     {
       "id": "HJdiznwW7",
       "position": {
-        "x": 714,
-        "y": 612
+        "units": "slots",
+        "x": 21,
+        "y": 6
       },
       "type": "@/read-byte"
     },
@@ -683,7 +701,8 @@
       },
       "id": "HJtfh3LWm",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/soft-uart"
@@ -692,8 +711,9 @@
       "id": "Hk1-UloD8d7",
       "label": "UART",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -701,24 +721,27 @@
       "id": "HkBxLljPUuQ",
       "label": "UART",
       "position": {
-        "x": 714,
-        "y": 510
+        "units": "slots",
+        "x": 21,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "HkovG3Pb7",
       "position": {
-        "x": 306,
-        "y": 714
+        "units": "slots",
+        "x": 9,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
     {
       "id": "HkrsG3wZQ",
       "position": {
-        "x": 510,
-        "y": 612
+        "units": "slots",
+        "x": 15,
+        "y": 6
       },
       "type": "@/read-byte"
     },
@@ -728,8 +751,9 @@
       },
       "id": "HydubhvbQ",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/core/gate"
     },
@@ -739,8 +763,9 @@
       },
       "id": "HyjNTjv-7",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "@/write-byte"
     },
@@ -750,8 +775,9 @@
       },
       "id": "S1M7powbm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/write-byte"
     },
@@ -759,24 +785,27 @@
       "id": "SJ1xIlsDIOm",
       "label": "UART",
       "position": {
-        "x": 510,
-        "y": 510
+        "units": "slots",
+        "x": 15,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "SJZn-3w-Q",
       "position": {
-        "x": 918,
-        "y": 714
+        "units": "slots",
+        "x": 27,
+        "y": 7
       },
       "type": "xod/core/any"
     },
     {
       "id": "SJn83hIZX",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
@@ -784,8 +813,9 @@
       "id": "SJsl8esPIOQ",
       "label": "UART",
       "position": {
-        "x": 952,
-        "y": 510
+        "units": "slots",
+        "x": 28,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -793,8 +823,9 @@
       "id": "SkDe8xsPIuQ",
       "label": "UART",
       "position": {
-        "x": 306,
-        "y": 510
+        "units": "slots",
+        "x": 9,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -806,7 +837,8 @@
       "description": "Hack to make watch nodes works on Leonardo",
       "id": "SkG9l2DbQ",
       "position": {
-        "x": -102,
+        "units": "slots",
+        "x": -3,
         "y": 0
       },
       "type": "xod/core/delay"
@@ -815,8 +847,9 @@
       "id": "SkXIgjDIuQ",
       "label": "UART",
       "position": {
-        "x": 408,
-        "y": 510
+        "units": "slots",
+        "x": 12,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -824,32 +857,36 @@
       "id": "SkYIgjDIuX",
       "label": "UART",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "SyBDM2PZQ",
       "position": {
-        "x": 408,
-        "y": 612
+        "units": "slots",
+        "x": 12,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "r1vsfnvZX",
       "position": {
-        "x": 612,
-        "y": 612
+        "units": "slots",
+        "x": 18,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "rJQFZ2wbm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/core/flip-flop"
     },
@@ -857,64 +894,72 @@
       "id": "rJYeUeivUdm",
       "label": "UART",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "rJxDsMhvZ7",
       "position": {
-        "x": 612,
-        "y": 714
+        "units": "slots",
+        "x": 18,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
     {
       "id": "rkVwG2PZm",
       "position": {
-        "x": 306,
-        "y": 612
+        "units": "slots",
+        "x": 9,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "rkYoMnDbX",
       "position": {
-        "x": 816,
-        "y": 612
+        "units": "slots",
+        "x": 24,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "rkldofnDb7",
       "position": {
-        "x": 714,
-        "y": 714
+        "units": "slots",
+        "x": 21,
+        "y": 7
       },
       "type": "xod/core/watch"
     },
     {
       "id": "ry78znP-Q",
       "position": {
-        "x": 204,
-        "y": 612
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "@/read-byte"
     },
     {
       "id": "ry7D2nU-X",
       "position": {
-        "x": 952,
-        "y": 612
+        "units": "slots",
+        "x": 28,
+        "y": 6
       },
       "type": "@/end"
     },
     {
       "id": "ryLHh2UWQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "@/read-byte"
     },
@@ -922,8 +967,9 @@
       "id": "ryoUgjwI_7",
       "label": "UART",
       "position": {
-        "x": 612,
-        "y": 510
+        "units": "slots",
+        "x": 18,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     }

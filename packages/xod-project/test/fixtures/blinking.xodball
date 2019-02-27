@@ -2700,7 +2700,20 @@
       "label": "Main"
     },
     "@/blink": {
-      "comments": {},
+      "comments": {
+        "SyichvVHN": {
+          "content": "Test comment",
+          "id": "SyichvVHN",
+          "position": {
+            "x": 44,
+            "y": 105
+          },
+          "size": {
+            "height": 65,
+            "width": 176
+          }
+        }
+      },
       "description": "",
       "path": "@/blink",
       "nodes": {

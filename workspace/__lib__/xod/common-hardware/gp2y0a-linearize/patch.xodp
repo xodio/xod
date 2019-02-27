@@ -128,8 +128,9 @@
       "id": "B1p1KBvIW",
       "label": "Xmax",
       "position": {
-        "x": 522,
-        "y": 16
+        "units": "slots",
+        "x": 15.35,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -137,8 +138,9 @@
       "id": "BJrkFSDL-",
       "label": "Ymin",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -146,8 +148,9 @@
       "description": "Use `xod-dev/sharp-irm/gp2y0a-linearize` instead",
       "id": "BkfmHIii7",
       "position": {
-        "x": 442,
-        "y": 204
+        "units": "slots",
+        "x": 13,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -155,8 +158,9 @@
       "id": "BkqJFHDLW",
       "label": "Xmin",
       "position": {
-        "x": 394,
-        "y": 16
+        "units": "slots",
+        "x": 11.65,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -168,8 +172,9 @@
       "id": "BymKDSw8W",
       "label": "×5",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/core/multiply"
     },
@@ -181,16 +186,18 @@
       "id": "HJ8g_rP8W",
       "label": "1/Y",
       "position": {
-        "x": 266,
-        "y": 328
+        "units": "slots",
+        "x": 7.9,
+        "y": 3.2
       },
       "type": "xod/core/divide"
     },
     {
       "id": "HJA0wrDU-",
       "position": {
-        "x": 138,
-        "y": 224
+        "units": "slots",
+        "x": 4.05,
+        "y": 2.15
       },
       "type": "xod/math/map"
     },
@@ -198,8 +205,9 @@
       "id": "HJSHFHwI-",
       "label": "SHFT",
       "position": {
-        "x": 522,
-        "y": 328
+        "units": "slots",
+        "x": 15.35,
+        "y": 3.2
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -207,8 +215,9 @@
       "id": "HJd1YBDL-",
       "label": "Ymax",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -218,8 +227,9 @@
       },
       "id": "Hk1vOrPIZ",
       "position": {
-        "x": 394,
-        "y": 432
+        "units": "slots",
+        "x": 11.65,
+        "y": 4.2
       },
       "type": "xod/core/subtract"
     },
@@ -227,8 +237,9 @@
       "id": "Hyl3dSw8-",
       "label": "Dm",
       "position": {
-        "x": 394,
-        "y": 640
+        "units": "slots",
+        "x": 11.65,
+        "y": 6.25
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -236,8 +247,9 @@
       "id": "SyTBDSwIZ",
       "label": "A",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -249,16 +261,18 @@
       "id": "rJE5_BwLb",
       "label": "/100",
       "position": {
-        "x": 394,
-        "y": 536
+        "units": "slots",
+        "x": 11.65,
+        "y": 5.25
       },
       "type": "xod/core/divide"
     },
     {
       "id": "rJSwPjG9z",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/patch-nodes/utility"
     }

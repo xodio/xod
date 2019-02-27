@@ -25,9 +25,9 @@ const labelOffsets = {
   [XP.FROM_BUS_PATH]: 4,
 };
 
-const BusNodeBody = ({ type, size, pins, label }) => {
+const BusNodeBody = ({ type, pxSize, pins, label }) => {
   const polygonProps = {
-    points: polygonPointsGetters[type](size),
+    points: polygonPointsGetters[type](pxSize),
     strokeLinejoin: 'round',
   };
 
@@ -42,8 +42,8 @@ const BusNodeBody = ({ type, size, pins, label }) => {
       <polygon className="body" {...polygonProps} />
       <NodeLabel
         text={label}
-        width={size.width}
-        height={size.width}
+        width={pxSize.width}
+        height={pxSize.width}
         y={labelOffsets[type]}
       />
       <polygon {...polygonProps} className={classNames('outline', dataType)} />
@@ -56,7 +56,7 @@ BusNodeBody.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
   /* eslint-disable react/no-unused-prop-types */
-  size: PropTypes.shape({
+  pxSize: PropTypes.shape({
     width: PropTypes.number,
     height: PropTypes.number,
   }),

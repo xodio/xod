@@ -129,24 +129,27 @@
       "id": "B1TNbyu-X",
       "label": "ERR",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HJKlW1dZm",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "@/read-byte"
     },
     {
       "id": "HkYbVft-X",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/core/any"
     },
@@ -155,7 +158,8 @@
       "id": "SJaxW1ubX",
       "label": "UART",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "@/input-uart"
@@ -163,8 +167,9 @@
     {
       "id": "SJbWXMY-Q",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "@/is-available"
     },
@@ -173,8 +178,9 @@
       "id": "r1_4-kdbm",
       "label": "RCV",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -183,16 +189,18 @@
       "id": "rJ2IpKQMX",
       "label": "END",
       "position": {
-        "x": 306,
-        "y": 408
+        "units": "slots",
+        "x": 9,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "rJQWNzYb7",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/core/defer"
     },
@@ -200,8 +208,9 @@
       "description": "The last received byte from the UART",
       "id": "rkVBb1uZ7",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -210,7 +219,8 @@
       "id": "rkc7Wyu-m",
       "label": "READ",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

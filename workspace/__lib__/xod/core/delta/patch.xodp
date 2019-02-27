@@ -4,16 +4,18 @@
     {
       "id": "HyJCAXqNG",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "S1QztADJN",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
@@ -22,7 +24,8 @@
       "id": "S1bhCQqVM",
       "label": "UPD",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -31,8 +34,9 @@
       "description": "The last difference value.",
       "id": "SkFpRm9Nz",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -41,7 +45,8 @@
       "id": "SyYn0X5NM",
       "label": "RST",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -51,7 +56,8 @@
       "id": "ry9j0mqEz",
       "label": "IN",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

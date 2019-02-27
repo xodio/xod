@@ -4,24 +4,28 @@
       "content": "Volts to G",
       "id": "HJ6y89UYZ",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "size": {
-        "height": 51,
-        "width": 204
+        "height": 1,
+        "units": "slots",
+        "width": 5
       }
     },
     {
       "content": "Unit range to volts",
       "id": "rJ4or5It-",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 204
+        "height": 1,
+        "units": "slots",
+        "width": 5
       }
     }
   ],
@@ -65,8 +69,9 @@
     {
       "id": "HkKBwsM5M",
       "position": {
-        "x": 544,
-        "y": 102
+        "units": "slots",
+        "x": 16,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
@@ -76,8 +81,9 @@
       },
       "id": "S1pcrcIKW",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/core/multiply"
     },
@@ -89,23 +95,26 @@
       },
       "id": "SJMTS58KW",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/math/map"
     },
     {
       "id": "ryCtrcUtb",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "ryvYBcLt-",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

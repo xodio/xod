@@ -105,15 +105,17 @@
     {
       "id": "B1dKR1Uonz",
       "position": {
-        "x": 238,
-        "y": 204
+        "units": "slots",
+        "x": 7,
+        "y": 2
       },
       "type": "@/flip-flop"
     },
     {
       "id": "BkiBD0buG",
       "position": {
-        "x": 476,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-2"
@@ -121,8 +123,9 @@
     {
       "id": "HyzFRyLohf",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -130,7 +133,8 @@
       "id": "S10qrR6UZ",
       "label": "X1",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -138,16 +142,18 @@
     {
       "id": "S1yaHC6UW",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "SyY01LinM",
       "position": {
-        "x": 408,
-        "y": 204
+        "units": "slots",
+        "x": 12,
+        "y": 2
       },
       "type": "@/any"
     },
@@ -155,7 +161,8 @@
       "id": "rJUjrCTUb",
       "label": "S2",
       "position": {
-        "x": 340,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -163,8 +170,9 @@
     {
       "id": "rkWHDAW_f",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -172,7 +180,8 @@
       "id": "rkmiHCaIZ",
       "label": "S1",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -181,7 +190,8 @@
       "id": "rygjH06LW",
       "label": "X2",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"

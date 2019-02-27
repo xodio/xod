@@ -5,14 +5,16 @@
       "description": "Use xod/core/equal instead",
       "id": "ByZl-dof9G",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "__in__",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -21,24 +23,27 @@
     {
       "id": "__out__",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 300
+        "y": 3
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rkllW_szcf",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     }

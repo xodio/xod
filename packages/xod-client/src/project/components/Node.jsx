@@ -129,8 +129,8 @@ class Node extends React.Component {
       label,
       linkingPin,
       pins,
-      position,
-      size,
+      pxPosition,
+      pxSize,
       type,
       isDragged,
       isDeprecated,
@@ -182,9 +182,9 @@ class Node extends React.Component {
           <svg
             key={id}
             style={svgStyle}
-            {...position}
-            {...size}
-            viewBox={`0 0 ${size.width} ${size.height}`}
+            {...pxPosition}
+            {...pxSize}
+            viewBox={`0 0 ${pxSize.width} ${pxSize.height}`}
             onMouseOver={(...args) => {
               onMouseOver(...args);
               this.onMouseOver(id);
@@ -240,8 +240,8 @@ Node.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   pins: PropTypes.any.isRequired,
-  size: PropTypes.any.isRequired,
-  position: PropTypes.object.isRequired,
+  pxSize: PropTypes.any.isRequired,
+  pxPosition: PropTypes.object.isRequired,
   errors: PropTypes.arrayOf(PropTypes.instanceOf(Error)),
   isDeprecated: PropTypes.bool,
   isSelected: PropTypes.bool,

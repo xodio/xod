@@ -6,6 +6,7 @@
       "id": "r1MjIjmMQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -14,8 +15,9 @@
     {
       "id": "rkj3Ij7Mm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,8 +26,9 @@
       "id": "ryCpUsmMQ",
       "label": "IP",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/net/output-ip-address"
     }

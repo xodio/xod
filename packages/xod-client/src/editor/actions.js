@@ -252,9 +252,9 @@ export const moveSelection = deltaPosition => (dispatch, getState) => {
   );
 };
 
-export const patchWorkareaResized = (width, height) => ({
+export const patchWorkareaResized = slotSize => ({
   type: ActionType.PATCH_WORKAREA_RESIZED,
-  payload: { width, height },
+  payload: slotSize,
 });
 
 export const setCurrentPatchOffset = newOffset => ({

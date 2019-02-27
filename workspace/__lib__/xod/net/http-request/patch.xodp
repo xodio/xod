@@ -4,8 +4,9 @@
     {
       "id": "BJ9_qeWXm",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/abstract"
     },
@@ -17,7 +18,8 @@
       "id": "BJbecH5x-Xm",
       "label": "HDRS",
       "position": {
-        "x": 339,
+        "units": "slots",
+        "x": 10,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -27,8 +29,9 @@
       "id": "H15S9xWQX",
       "label": "CHAR",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -37,7 +40,8 @@
       "id": "H1e9S9e-mQ",
       "label": "INIT",
       "position": {
-        "x": 475,
+        "units": "slots",
+        "x": 14,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -50,7 +54,8 @@
       "id": "HJzqrceZQm",
       "label": "PATH",
       "position": {
-        "x": 271,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -63,7 +68,8 @@
       "id": "Hkygqrcx-mQ",
       "label": "BODY",
       "position": {
-        "x": 407,
+        "units": "slots",
+        "x": 12,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -73,6 +79,7 @@
       "id": "S1SP9lW7X",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -86,7 +93,8 @@
       "id": "S1c9Hcl-7m",
       "label": "METH",
       "position": {
-        "x": 203,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -99,8 +107,9 @@
       "id": "S1geqrqgWmX",
       "label": "HOST",
       "position": {
-        "x": 66,
-        "y": -1
+        "units": "slots",
+        "x": 2,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -109,8 +118,9 @@
       "id": "S1sqHqebm7",
       "label": "RCV",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -119,8 +129,9 @@
       "id": "SJGl9r9l-m7",
       "label": "END",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -129,8 +140,9 @@
       "id": "SJPcScgbQX",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -142,8 +154,9 @@
       "id": "rkE5B5xbXQ",
       "label": "PORT",
       "position": {
-        "x": 134,
-        "y": -1
+        "units": "slots",
+        "x": 4,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-number"
     }

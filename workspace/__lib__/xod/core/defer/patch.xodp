@@ -4,6 +4,7 @@
     {
       "id": "BJI7P8t9Z",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -12,16 +13,18 @@
     {
       "id": "HJhXDIY9-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
       "id": "rkFQwUYc-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/abstract"
     }

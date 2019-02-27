@@ -4,6 +4,7 @@
     {
       "id": "HkOV8CdSvyW",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -15,15 +16,17 @@
       },
       "id": "Hkw48AdSPyb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
     },
     {
       "id": "SkKNUR_SwyW",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -31,15 +34,17 @@
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "r15nxZjvM",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/variadic-1"

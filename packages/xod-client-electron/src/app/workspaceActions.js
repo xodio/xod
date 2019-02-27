@@ -42,6 +42,7 @@ const emitSelectProject = R.curry((send, projectMeta) =>
 // pub through rendererWindow.WebContents.send(...)
 // :: (a -> ()) -> Error -> Promise.Rejected Error
 const handleError = R.curry((send, err) => {
+  console.log(err); // eslint-disable-line no-console
   send(EVENTS.WORKSPACE_ERROR, errorToPlainObject(err));
   return Promise.reject(err);
 });
@@ -190,9 +191,9 @@ export const onSaveAll = R.curry(
 
 // :: (Path -> ()) -> (String -> a -> ()) -> Path -> Promise Project Error
 export const onLoadProject = R.curry((updateProjectPath, send, pathToOpen) =>
-  loadProjectByPath(updateProjectPath, pathToOpen)
-    .then(project => send(EVENTS.REQUEST_SHOW_PROJECT, project))
-    .catch(err => send(EVENTS.WORKSPACE_ERROR, errorToPlainObject(err)))
+  loadProjectByPath(updateProjectPath, pathToOpen).then(project =>
+    send(EVENTS.REQUEST_SHOW_PROJECT, project)
+  )
 );
 
 // :: (Path -> ()) -> (String -> a -> ()) -> (() -> Path) -> Path -> Promise Project Error
@@ -388,13 +389,14 @@ export const subscribeToSwitchWorkspace = ipcMain =>
 
 // onLoadProject
 export const subscribeToLoadProject = R.curry((store, ipcMain) =>
-  ipcMain.on(EVENTS.LOAD_PROJECT, (event, projectPath) =>
-    onLoadProject(
+  ipcMain.on(EVENTS.LOAD_PROJECT, (event, projectPath) => {
+    const send = ipcSender(event);
+    return onLoadProject(
       store.dispatch.updateProjectPath,
-      ipcSender(event),
+      send,
       projectPath
-    )
-  )
+    ).catch(handleError(send));
+  })
 );
 
 // =============================================================================

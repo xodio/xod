@@ -107,8 +107,9 @@
       "id": "B1rSeJlnZ",
       "label": "Smax",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -117,8 +118,9 @@
       "id": "BJTBgke3b",
       "label": "Tmin",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -127,8 +129,9 @@
       "id": "HJjEe1lnb",
       "label": "X",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -137,16 +140,18 @@
       "id": "HkFBgJehW",
       "label": "Tmax",
       "position": {
-        "x": 306,
-        "y": 102
+        "units": "slots",
+        "x": 9,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "S1TMl1ehW",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "@/map-range"
     },
@@ -155,8 +160,9 @@
       "id": "SJbSlJxh-",
       "label": "Smin",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -164,8 +170,9 @@
       "description": "Use `xod/math/map-clip` instead",
       "id": "r10CMiKyX",
       "position": {
-        "x": 374,
-        "y": 204
+        "units": "slots",
+        "x": 11,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -174,16 +181,18 @@
       "id": "rJFmgJehW",
       "label": "Xmc",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "ryZQg1x2Z",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "@/clip"
     }

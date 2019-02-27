@@ -623,8 +623,9 @@
       "description": "The last datetime value read successfully. The default startup value is 1970-01-01 00:00:00",
       "id": "B1ZM_yx_7",
       "position": {
-        "x": 34,
-        "y": 1224
+        "units": "slots",
+        "x": 1,
+        "y": 12
       },
       "type": "xod/datetime/output-datetime"
     },
@@ -633,16 +634,18 @@
       "id": "Bk1-TcV4HDX",
       "label": "DONE",
       "position": {
-        "x": 714,
-        "y": 1122
+        "units": "slots",
+        "x": 21,
+        "y": 11
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "BkF69EErDm",
       "position": {
-        "x": 748,
-        "y": 408
+        "units": "slots",
+        "x": 22,
+        "y": 4
       },
       "type": "xod/i2c/write-byte"
     },
@@ -650,16 +653,18 @@
       "id": "BkeaEEHvm",
       "label": "I2C",
       "position": {
-        "x": 612,
-        "y": 612
+        "units": "slots",
+        "x": 18,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "BkhacV4rvm",
       "position": {
-        "x": 204,
-        "y": 714
+        "units": "slots",
+        "x": 6,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
@@ -667,8 +672,9 @@
       "arityLevel": 10,
       "id": "BklWa5NNrPX",
       "position": {
-        "x": 748,
-        "y": 1020
+        "units": "slots",
+        "x": 22,
+        "y": 10
       },
       "type": "xod/core/any"
     },
@@ -677,8 +683,9 @@
       "id": "By4a5VEBDX",
       "label": "ERR",
       "position": {
-        "x": 748,
-        "y": 1122
+        "units": "slots",
+        "x": 22,
+        "y": 11
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -686,16 +693,18 @@
       "id": "ByAj44Bvm",
       "label": "I2C",
       "position": {
-        "x": 204,
-        "y": 408
+        "units": "slots",
+        "x": 6,
+        "y": 4
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "ByRxT5EVHwX",
       "position": {
-        "x": 408,
-        "y": 918
+        "units": "slots",
+        "x": 12,
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -705,8 +714,9 @@
       },
       "id": "ByXxTqNEBDX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 1020
+        "y": 10
       },
       "type": "xod/core/add"
     },
@@ -714,8 +724,9 @@
       "id": "H181H4BvX",
       "label": "ADDR",
       "position": {
-        "x": 816,
-        "y": 204
+        "units": "slots",
+        "x": 24,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -723,8 +734,9 @@
       "id": "H1uREVHDQ",
       "label": "I2C",
       "position": {
-        "x": 646,
-        "y": 510
+        "units": "slots",
+        "x": 19,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -732,8 +744,9 @@
       "id": "H1z2E4rwQ",
       "label": "I2C",
       "position": {
-        "x": 102,
-        "y": 612
+        "units": "slots",
+        "x": 3,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -741,16 +754,18 @@
       "id": "HJKONEBPX",
       "label": "DEV",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "@/input-rtc-device"
     },
     {
       "id": "HJZpc4NHDQ",
       "position": {
-        "x": 102,
-        "y": 918
+        "units": "slots",
+        "x": 3,
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -761,16 +776,18 @@
       "description": "MSB are control bits",
       "id": "HJje6qNVrDX",
       "position": {
-        "x": 408,
-        "y": 816
+        "units": "slots",
+        "x": 12,
+        "y": 8
       },
       "type": "xod/bits/bitwise-and"
     },
     {
       "id": "HJrlpcN4BDQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 918
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -778,8 +795,9 @@
       "id": "HJxnNEHDQ",
       "label": "I2C",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 612
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -787,24 +805,27 @@
       "id": "HkNJHNSwQ",
       "label": "ADDR",
       "position": {
-        "x": 680,
-        "y": 510
+        "units": "slots",
+        "x": 20,
+        "y": 5
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "HkOT5NNBD7",
       "position": {
-        "x": 102,
-        "y": 714
+        "units": "slots",
+        "x": 3,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "HkxeT5E4SDm",
       "position": {
-        "x": 510,
-        "y": 918
+        "units": "slots",
+        "x": 15,
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -812,8 +833,9 @@
       "id": "S1C644HPQ",
       "label": "I2C",
       "position": {
-        "x": 748,
-        "y": 306
+        "units": "slots",
+        "x": 22,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -821,8 +843,9 @@
       "id": "S1n2E4Bwm",
       "label": "I2C",
       "position": {
-        "x": 306,
-        "y": 612
+        "units": "slots",
+        "x": 9,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -830,24 +853,27 @@
       "id": "SJG1SVHPm",
       "label": "ADDR",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "SJPpq44HwQ",
       "position": {
-        "x": 204,
-        "y": 918
+        "units": "slots",
+        "x": 6,
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
     {
       "id": "SJm6q4ESP7",
       "position": {
-        "x": 612,
-        "y": 918
+        "units": "slots",
+        "x": 18,
+        "y": 9
       },
       "type": "xod/bits/bcd-to-dec"
     },
@@ -855,32 +881,36 @@
       "id": "SJnTNNBPm",
       "label": "I2C",
       "position": {
-        "x": 782,
-        "y": 204
+        "units": "slots",
+        "x": 23,
+        "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "Skqp9VNrPQ",
       "position": {
-        "x": 612,
-        "y": 714
+        "units": "slots",
+        "x": 18,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "SyZlTq4NSw7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 714
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "Syng65ENSD7",
       "position": {
-        "x": 306,
-        "y": 714
+        "units": "slots",
+        "x": 9,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
@@ -888,8 +918,9 @@
       "id": "Syp3VEHvX",
       "label": "I2C",
       "position": {
-        "x": 408,
-        "y": 612
+        "units": "slots",
+        "x": 12,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -900,24 +931,27 @@
       "description": "MSB is a control bit",
       "id": "r1C69NVHD7",
       "position": {
-        "x": 612,
-        "y": 816
+        "units": "slots",
+        "x": 18,
+        "y": 8
       },
       "type": "xod/bits/bitwise-and"
     },
     {
       "id": "r1UpcNVBwm",
       "position": {
-        "x": 510,
-        "y": 714
+        "units": "slots",
+        "x": 15,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     },
     {
       "id": "rJnu4VrvX",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "@/unpack-rtc-device"
     },
@@ -925,8 +959,9 @@
       "id": "rk9hEESv7",
       "label": "I2C",
       "position": {
-        "x": 204,
-        "y": 612
+        "units": "slots",
+        "x": 6,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -936,24 +971,27 @@
       },
       "id": "rkEx6qENrDX",
       "position": {
-        "x": 646,
-        "y": 612
+        "units": "slots",
+        "x": 19,
+        "y": 6
       },
       "type": "xod/i2c/request"
     },
     {
       "id": "rkIg6qENSP7",
       "position": {
-        "x": 714,
-        "y": 510
+        "units": "slots",
+        "x": 21,
+        "y": 5
       },
       "type": "xod/i2c/end-transmission"
     },
     {
       "id": "rkqgO1e_7",
       "position": {
-        "x": 34,
-        "y": 1122
+        "units": "slots",
+        "x": 1,
+        "y": 11
       },
       "type": "xod/datetime/datetime"
     },
@@ -961,16 +999,18 @@
       "id": "ry1aEEHvX",
       "label": "I2C",
       "position": {
-        "x": 510,
-        "y": 612
+        "units": "slots",
+        "x": 15,
+        "y": 6
       },
       "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "ryBp544SPQ",
       "position": {
-        "x": 782,
-        "y": 306
+        "units": "slots",
+        "x": 23,
+        "y": 3
       },
       "type": "xod/i2c/begin-transmission"
     },
@@ -978,8 +1018,9 @@
       "id": "ryYK04ErDX",
       "label": "I2C",
       "position": {
-        "x": 714,
-        "y": 408
+        "units": "slots",
+        "x": 21,
+        "y": 4
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -991,16 +1032,18 @@
       "id": "rytlTcNErP7",
       "label": "UPD",
       "position": {
-        "x": 850,
-        "y": 204
+        "units": "slots",
+        "x": 25,
+        "y": 2
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "ryzxp9VNHPQ",
       "position": {
-        "x": 408,
-        "y": 714
+        "units": "slots",
+        "x": 12,
+        "y": 7
       },
       "type": "xod/i2c/read-byte"
     }

@@ -9,7 +9,8 @@
       "id": "B1oX8RlMQ",
       "label": "CHK",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -17,8 +18,9 @@
     {
       "id": "BJ4IIRlG7",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -27,8 +29,9 @@
       "id": "HkIVUAxzm",
       "label": "Y",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -37,8 +40,9 @@
       "id": "S1nVLAgMX",
       "label": "N",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -47,6 +51,7 @@
       "id": "SkjkcZpfQ",
       "label": "SOCK",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -57,7 +62,8 @@
       "id": "rklvsoQGm",
       "label": "INET",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "@/input-esp8266-inet"

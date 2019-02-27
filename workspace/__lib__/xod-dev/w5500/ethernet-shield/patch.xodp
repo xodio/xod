@@ -74,8 +74,9 @@
       "id": "B1eGmvQMQm",
       "label": "OK",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -87,7 +88,8 @@
       "id": "Bkf7wmGXX",
       "label": "CONN",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -95,8 +97,9 @@
     {
       "id": "ByZZgDmzmm",
       "position": {
-        "x": 102,
-        "y": 306
+        "units": "slots",
+        "x": 3,
+        "y": 3
       },
       "type": "@/connect"
     },
@@ -105,8 +108,9 @@
       "id": "HyrGXPmMQ7",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 408
+        "units": "slots",
+        "x": 6,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -115,8 +119,9 @@
       "id": "SJmf7PmzX7",
       "label": "INET",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "@/output-w5500-inet"
     },
@@ -126,8 +131,9 @@
       },
       "id": "SkWevXGQQ",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "@/w5500-device"
     },
@@ -142,8 +148,9 @@
       },
       "id": "r1lWgwmzQm",
       "position": {
-        "x": -34,
-        "y": 102
+        "units": "slots",
+        "x": -1,
+        "y": 1
       },
       "type": "xod/net/mac-address"
     }

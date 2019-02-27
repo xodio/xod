@@ -108,8 +108,8 @@ class Comment extends React.Component {
     const {
       id,
       content,
-      position,
-      size,
+      pxPosition,
+      pxSize,
       isSelected,
       isDragged,
       hidden,
@@ -139,11 +139,16 @@ class Comment extends React.Component {
         onDoubleClick={this.beginEditing}
       >
         <clipPath id={maskId}>
-          <rect className="mask" {...position} {...size} {...bodyRectProps} />
+          <rect
+            className="mask"
+            {...pxPosition}
+            {...pxSize}
+            {...bodyRectProps}
+          />
         </clipPath>
         <rect
-          {...position}
-          {...size}
+          {...pxPosition}
+          {...pxSize}
           className="body"
           clipPath={`url(#${maskId})`}
         />
@@ -151,14 +156,19 @@ class Comment extends React.Component {
           clipPath={`url(#${maskId})`}
           className="CommentResizeHandle"
           d={`
-              M${position.x + size.width} ${position.y + size.height}
+              M${pxPosition.x + pxSize.width} ${pxPosition.y + pxSize.height}
               v ${-RESIZE_HANDLE_SIZE}
               l ${-RESIZE_HANDLE_SIZE} ${RESIZE_HANDLE_SIZE}
               Z
             `}
         />
-        <rect className="outline" {...position} {...size} {...bodyRectProps} />
-        <foreignObject {...size} {...position}>
+        <rect
+          className="outline"
+          {...pxPosition}
+          {...pxSize}
+          {...bodyRectProps}
+        />
+        <foreignObject {...pxSize} {...pxPosition}>
           <div className="container" xmlns="http://www.w3.org/1999/xhtml">
             {isEditing ? (
               <textarea
@@ -179,8 +189,8 @@ class Comment extends React.Component {
         <rect
           className="resizeHandleOverlay"
           onMouseDown={this.onResizeHandleMouseDown}
-          x={position.x + size.width - RESIZE_HANDLE_SIZE}
-          y={position.y + size.height - RESIZE_HANDLE_SIZE}
+          x={pxPosition.x + pxSize.width - RESIZE_HANDLE_SIZE}
+          y={pxPosition.y + pxSize.height - RESIZE_HANDLE_SIZE}
           width={RESIZE_HANDLE_SIZE}
           height={RESIZE_HANDLE_SIZE}
         />
@@ -192,8 +202,8 @@ class Comment extends React.Component {
 Comment.propTypes = {
   id: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
-  size: PropTypes.any.isRequired,
-  position: PropTypes.object.isRequired,
+  pxSize: PropTypes.any.isRequired,
+  pxPosition: PropTypes.object.isRequired,
   isSelected: PropTypes.bool,
   isDragged: PropTypes.bool,
   hidden: PropTypes.bool,

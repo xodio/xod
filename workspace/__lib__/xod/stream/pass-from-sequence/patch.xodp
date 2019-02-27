@@ -128,8 +128,9 @@
       "description": "A character to be pushed through",
       "id": "B18iIoA-m",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-byte"
     },
@@ -138,7 +139,8 @@
       "id": "BJhHwoRb7",
       "label": "RST",
       "position": {
-        "x": 306,
+        "units": "slots",
+        "x": 9,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -146,8 +148,9 @@
     {
       "id": "BJzFp8sCW7",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/core/defer"
     },
@@ -157,16 +160,18 @@
       },
       "id": "HkFTIiCWQ",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/pulse-on-sequence"
     },
     {
       "id": "S1lK6UiCWQ",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/core/flip-flop"
     },
@@ -174,8 +179,9 @@
       "description": "A character that passed through",
       "id": "SkSGwoAZQ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 510
+        "y": 5
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -183,16 +189,18 @@
       "description": "Pulses when a character passes through",
       "id": "SkYZwiRbm",
       "position": {
-        "x": 34,
-        "y": 510
+        "units": "slots",
+        "x": 1,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "r1-t68jC-Q",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "@/pass-if"
     },
@@ -201,8 +209,9 @@
       "id": "rkZ8oIj0-m",
       "label": "SEQ",
       "position": {
-        "x": 203,
-        "y": -1
+        "units": "slots",
+        "x": 6,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -210,7 +219,8 @@
       "description": "Try to push a new character through",
       "id": "rklUo8jA-Q",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

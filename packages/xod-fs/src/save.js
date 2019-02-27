@@ -75,7 +75,10 @@ export const saveProjectEntirely = R.curry((dirPath, project) =>
             isPatchFile,
             R.over(
               R.lensProp('content'),
-              omitDefaultOptionsFromPatchFileContents
+              R.compose(
+                XP.addPositionAndSizeUnitsToPatchEntities,
+                omitDefaultOptionsFromPatchFileContents
+              )
             ),
           ],
           [
@@ -151,7 +154,13 @@ const savePatchChanges = def(
       R.map(
         R.when(
           isPatchFile,
-          R.over(R.lensProp('content'), omitDefaultOptionsFromPatchFileContents)
+          R.over(
+            R.lensProp('content'),
+            R.compose(
+              XP.addPositionAndSizeUnitsToPatchEntities,
+              omitDefaultOptionsFromPatchFileContents
+            )
+          )
         )
       ),
       R.unnest,

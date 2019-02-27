@@ -4,12 +4,14 @@
       "content": "⚠️ Make sure to specify SSID and password of your WiFi network",
       "id": "BklorYcYX",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 272
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -118,8 +120,9 @@
     {
       "id": "H1uamCnqm",
       "position": {
-        "x": 136,
-        "y": 510
+        "units": "slots",
+        "x": 4,
+        "y": 5
       },
       "type": "xod/stream/accumulate-string"
     },
@@ -130,8 +133,9 @@
       },
       "id": "Hy7K7awF7",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "@/http-request(esp8266-mcu-inet)"
     },
@@ -142,20 +146,23 @@
       },
       "id": "SJlyTMpPYX",
       "position": {
-        "x": 170,
-        "y": 408
+        "units": "slots",
+        "x": 5,
+        "y": 4
       },
       "type": "xod/stream/pass-until"
     },
     {
       "id": "SJtk4RhqX",
       "position": {
-        "x": 136,
-        "y": 612
+        "units": "slots",
+        "x": 4,
+        "y": 6
       },
       "size": {
-        "height": 51,
-        "width": 238
+        "height": 1,
+        "units": "slots",
+        "width": 6
       },
       "type": "xod/core/watch"
     },
@@ -165,8 +172,9 @@
       },
       "id": "SkMy6faPFQ",
       "position": {
-        "x": 170,
-        "y": 306
+        "units": "slots",
+        "x": 5,
+        "y": 3
       },
       "type": "xod/stream/pass-from-sequence"
     },
@@ -177,8 +185,9 @@
       },
       "id": "r1ArzjUFm",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "@/connect"
     }

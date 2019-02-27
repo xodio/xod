@@ -2,15 +2,19 @@ import { DropTarget } from 'react-dnd';
 
 import { EDITOR_MODE, DRAGGED_ENTITY_TYPE } from '../../constants';
 
-import { snapNodePositionToSlots } from '../../../project/nodeLayout';
+import {
+  snapNodePositionToSlots,
+  slotPositionToPixels,
+} from '../../../project/nodeLayout';
 
 const getDraggedPatchPosition = (props, monitor, component) => {
   const globalDropPosition = monitor.getClientOffset();
   const bbox = component.dropTargetRootRef.getBoundingClientRect();
+  const pxOffset = slotPositionToPixels(props.offset);
 
   return snapNodePositionToSlots({
-    x: globalDropPosition.x - bbox.left - props.offset.x,
-    y: globalDropPosition.y - bbox.top - props.offset.y,
+    x: globalDropPosition.x - bbox.left - pxOffset.x,
+    y: globalDropPosition.y - bbox.top - pxOffset.y,
   });
 };
 
@@ -22,7 +26,7 @@ const dropTarget = {
 
     const { patchPath } = monitor.getItem();
 
-    props.actions.addNode(patchPath, newNodePosition, props.patchPath);
+    component.addNode(patchPath, newNodePosition);
     component.goToDefaultMode();
   },
   hover(props, monitor, component) {

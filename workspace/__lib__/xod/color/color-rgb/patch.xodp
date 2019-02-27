@@ -120,8 +120,9 @@
       },
       "id": "BkE95WojQ",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/math/map-clip"
     },
@@ -132,16 +133,18 @@
       },
       "id": "HJdd5Zio7",
       "position": {
-        "x": -136,
-        "y": 102
+        "units": "slots",
+        "x": -4,
+        "y": 1
       },
       "type": "xod/math/map-clip"
     },
     {
       "id": "HyS2vZsoX",
       "position": {
-        "x": -136,
-        "y": 204
+        "units": "slots",
+        "x": -4,
+        "y": 2
       },
       "type": "xod/bits/number-to-u8"
     },
@@ -150,7 +153,8 @@
       "id": "HyquDboo7",
       "label": "R",
       "position": {
-        "x": -136,
+        "units": "slots",
+        "x": -4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -160,7 +164,8 @@
       "id": "S1yKPZjjQ",
       "label": "G",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -168,32 +173,36 @@
     {
       "id": "SJjhvWjiQ",
       "position": {
-        "x": 272,
-        "y": 204
+        "units": "slots",
+        "x": 8,
+        "y": 2
       },
       "type": "xod/bits/number-to-u8"
     },
     {
       "id": "Skk5DZsiQ",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "@/output-color"
     },
     {
       "id": "SkqnPZjsX",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/bits/number-to-u8"
     },
     {
       "id": "SyB5PWio7",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "@/color-rgb-bytes"
     },
@@ -204,8 +213,9 @@
       },
       "id": "ryx4c9Wjj7",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/math/map-clip"
     },
@@ -214,7 +224,8 @@
       "id": "ryxkYD-joQ",
       "label": "B",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"

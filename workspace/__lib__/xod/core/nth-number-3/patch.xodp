@@ -95,7 +95,8 @@
       "id": "B1kcrabFZ",
       "label": "X2",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -104,16 +105,18 @@
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "BJVz8TbYZ",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "HJi1ITZYb",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "@/if-else"
     },
@@ -121,7 +124,8 @@
       "id": "SJ5tSTZY-",
       "label": "X0",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -130,8 +134,9 @@
       "description": "Use xod/core/nth-number with adjusted arity instead",
       "id": "SJMTmtCFf",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -139,7 +144,8 @@
       "id": "SJhFra-t-",
       "label": "X1",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -149,7 +155,8 @@
       "id": "SkPtBp-FW",
       "label": "IDX",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -160,16 +167,18 @@
       },
       "id": "SyPRHTWFZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/less"
     },
     {
       "id": "r1UjH6ZF-",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "@/nth-number-2"
     }

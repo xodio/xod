@@ -5,7 +5,8 @@
       "description": "Push the next character",
       "id": "B14qE5RZ7",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -14,8 +15,9 @@
       "description": "Pulses each time when sequence is encountered",
       "id": "BJmjV9A-m",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -23,7 +25,8 @@
       "description": "The next character in the stream",
       "id": "HkAtN5CbX",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -33,7 +36,8 @@
       "id": "Hy9qN5AZm",
       "label": "SEQ",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
@@ -41,8 +45,9 @@
     {
       "id": "SJYoE5Ab7",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

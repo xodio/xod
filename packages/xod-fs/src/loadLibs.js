@@ -45,6 +45,7 @@ const readLibFiles = libfiles => {
           R.assoc('path', `${name}/${getPatchName(patchPath)}`),
           convertPatchFileContentsToPatch,
           rejectOnInvalidPatchFileContents(patchPath),
+          XP.migratePatchDimensionsToSlots,
           addMissingOptionsToPatchFileContents,
           readJSON
         )(patchPath)

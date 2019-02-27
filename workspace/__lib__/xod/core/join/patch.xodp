@@ -50,16 +50,18 @@
     {
       "id": "HJo8NB4uG",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/variadic-1"
     },
     {
       "id": "HJrBNr4dG",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
@@ -67,8 +69,9 @@
       "arityLevel": 2,
       "id": "HkyDwHEuz",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/concat"
     },
@@ -76,8 +79,9 @@
       "id": "HynENHNOz",
       "label": "S1",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -89,8 +93,9 @@
       "id": "rJGQNB4df",
       "label": "D",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -98,8 +103,9 @@
       "id": "rJJHNrVuM",
       "label": "S2",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/input-string"
     }

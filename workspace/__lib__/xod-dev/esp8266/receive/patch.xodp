@@ -160,8 +160,9 @@
     {
       "id": "B1bRgdMMX",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/receive-one-byte"
     },
@@ -170,8 +171,9 @@
       "id": "BJN-og_zzm",
       "label": "CHAR",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 408
+        "y": 4
       },
       "type": "xod/patch-nodes/output-byte"
     },
@@ -180,8 +182,9 @@
       "id": "ByXZseuGGm",
       "label": "RCV",
       "position": {
-        "x": 68,
-        "y": 408
+        "units": "slots",
+        "x": 2,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -190,7 +193,8 @@
       "id": "Byl-jxOGGQ",
       "label": "BGN",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -198,16 +202,18 @@
     {
       "id": "H15J-_zMQ",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/core/defer"
     },
     {
       "id": "H1xMoiFfMm",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/core/defer"
     },
@@ -216,7 +222,8 @@
       "id": "HJaAFbTzQ",
       "label": "SOCK",
       "position": {
-        "x": -34,
+        "units": "slots",
+        "x": -1,
         "y": 0
       },
       "type": "xod/net/input-socket"
@@ -224,8 +231,9 @@
     {
       "id": "S1lZAxOMfm",
       "position": {
-        "x": -34,
-        "y": 204
+        "units": "slots",
+        "x": -1,
+        "y": 2
       },
       "type": "@/is-open"
     },
@@ -233,8 +241,9 @@
       "arityLevel": 2,
       "id": "SybWRluGz7",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/any"
     },
@@ -243,6 +252,7 @@
       "id": "rJMIsjQMQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -253,8 +263,9 @@
       "id": "rJb-iluMG7",
       "label": "CLS",
       "position": {
-        "x": 136,
-        "y": 408
+        "units": "slots",
+        "x": 4,
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     }

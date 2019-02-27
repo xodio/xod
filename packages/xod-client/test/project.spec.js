@@ -397,7 +397,10 @@ describe('project reducer', () => {
     it('should resize a comment', () => {
       store.dispatch(addComment());
       const testCommentId = getAddedCommentId(testPatchPath, store.getState());
-      const newSize = { width: 100100100, height: 200200200 };
+      const newSize = {
+        width: 100100100,
+        height: 200200200,
+      };
 
       store.dispatch(resizeComment(testCommentId, newSize));
 

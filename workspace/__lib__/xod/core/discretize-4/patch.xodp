@@ -151,8 +151,9 @@
       "id": "B16H3TWtZ",
       "label": "IDX",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -160,7 +161,8 @@
       "id": "BJVbhaZtb",
       "label": "T2",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -169,7 +171,8 @@
       "id": "Byme2abtW",
       "label": "T0",
       "position": {
-        "x": 170,
+        "units": "slots",
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -177,8 +180,9 @@
     {
       "id": "H1hX2abYZ",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "@/less"
     },
@@ -187,8 +191,9 @@
       "id": "HyDrn6btb",
       "label": "T",
       "position": {
-        "x": 204,
-        "y": 306
+        "units": "slots",
+        "x": 6,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -196,8 +201,9 @@
       "description": "Use xod/core/discretize with adjusted arity instead",
       "id": "HyghXKCFM",
       "position": {
-        "x": 340,
-        "y": 204
+        "units": "slots",
+        "x": 10,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -205,7 +211,8 @@
       "id": "S1w-2pbtZ",
       "label": "T3",
       "position": {
-        "x": 272,
+        "units": "slots",
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -214,7 +221,8 @@
       "id": "S1y-habt-",
       "label": "T1",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -223,7 +231,8 @@
       "id": "SJWxhTWtZ",
       "label": "X",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -231,8 +240,9 @@
     {
       "id": "SJxr3pZYZ",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "@/if-else"
     },
@@ -242,16 +252,18 @@
       },
       "id": "rJ3Eh6bFb",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "@/if-else"
     },
     {
       "id": "rJpkhpZt-",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "@/discretize-3"
     }

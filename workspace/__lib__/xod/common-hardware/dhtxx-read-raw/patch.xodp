@@ -6,16 +6,18 @@
       "id": "BkevC3xokz",
       "label": "D2",
       "position": {
-        "x": 68,
-        "y": 204
+        "units": "slots",
+        "x": 2,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "BklSohxsyz",
       "position": {
-        "x": -1,
-        "y": 101
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -24,8 +26,9 @@
       "id": "BkwC2ljkz",
       "label": "D1",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -34,8 +37,9 @@
       "id": "H1Sh3gsyG",
       "label": "D0",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -44,8 +48,9 @@
       "id": "H1uC2ejkz",
       "label": "D3",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -54,8 +59,9 @@
       "id": "HJMBihlj1G",
       "label": "PORT",
       "position": {
-        "x": -1,
-        "y": -1
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
       },
       "type": "xod/patch-nodes/input-port"
     },
@@ -64,8 +70,9 @@
       "id": "HJgDdJqrxm",
       "label": "ERR",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -74,8 +81,9 @@
       "id": "S1Dd1qSgQ",
       "label": "DONE",
       "position": {
-        "x": 170,
-        "y": 204
+        "units": "slots",
+        "x": 5,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -87,7 +95,8 @@
       "id": "SyQSohgjJz",
       "label": "UPD",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -95,8 +104,9 @@
     {
       "id": "ry9LPiG5z",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     }

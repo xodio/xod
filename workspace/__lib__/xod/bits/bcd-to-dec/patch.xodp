@@ -94,7 +94,8 @@
     {
       "id": "B1OZ_uxlf",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -102,8 +103,9 @@
     {
       "id": "B1d65uelM",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/core/add"
     },
@@ -113,24 +115,27 @@
       },
       "id": "BJ1p9dggf",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/core/multiply"
     },
     {
       "id": "BJO5vRvkE",
       "position": {
-        "x": 272,
-        "y": 102
+        "units": "slots",
+        "x": 8,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "HyTqUBpJ7",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/u8-to-number"
     },
@@ -140,16 +145,18 @@
       },
       "id": "S12C5_elM",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "@/bitwise-and"
     },
     {
       "id": "SJJzOullz",
       "position": {
-        "x": 102,
-        "y": 510
+        "units": "slots",
+        "x": 3,
+        "y": 5
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -159,16 +166,18 @@
       },
       "id": "rkojcOgxz",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/shift-right"
     },
     {
       "id": "ryLj8ra17",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "@/u8-to-number"
     }

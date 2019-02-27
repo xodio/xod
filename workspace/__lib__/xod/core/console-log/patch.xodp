@@ -5,8 +5,9 @@
       "description": "Use `xod/debug/console-log` instead",
       "id": "HJH0G0b44",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -14,8 +15,9 @@
       "id": "HJdO9HwJ-",
       "label": "LINE",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-string"
     },
@@ -23,16 +25,18 @@
       "id": "S1n95SDJb",
       "label": "DUMP",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

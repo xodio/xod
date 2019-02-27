@@ -5,8 +5,9 @@
       "id": "B1Eb_dVuW",
       "label": "ADDR",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -14,8 +15,9 @@
       "description": "Use `xod/i2c/request` instead.",
       "id": "BkRBwmNxm",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     },
@@ -24,8 +26,9 @@
       "id": "Hk3Wdu4dZ",
       "label": "N",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -34,8 +37,9 @@
       "id": "SJjmdOVOW",
       "label": "SEND",
       "position": {
-        "x": 266,
-        "y": 16
+        "units": "slots",
+        "x": 7.9,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -44,16 +48,18 @@
       "id": "Sk7BudNdZ",
       "label": "DONE",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "rkoN_dNOW",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     }

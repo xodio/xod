@@ -184,7 +184,7 @@ describe('Save project and libraries', () => {
             nodes: [
               {
                 id: 'a',
-                position: { x: 0, y: 0 },
+                position: { x: 0, y: 0, units: 'slots' },
                 type: '@/foo',
               },
             ],

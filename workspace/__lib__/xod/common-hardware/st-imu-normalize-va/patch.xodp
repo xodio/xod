@@ -4,12 +4,14 @@
       "content": "Convert milli-degree-per-second to degree-per-second",
       "id": "HJeJRWXKZ",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 238
+        "height": 1,
+        "units": "slots",
+        "width": 6
       }
     }
   ],
@@ -53,6 +55,7 @@
     {
       "id": "By2rpbQFb",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -61,24 +64,27 @@
     {
       "id": "ByntwoG5f",
       "position": {
-        "x": 374,
-        "y": 102
+        "units": "slots",
+        "x": 11,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
     {
       "id": "Hye8p-7FW",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "Sym_RZQtb",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/units/deg-to-rad"
     },
@@ -88,8 +94,9 @@
       },
       "id": "rJOApZXF-",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/core/divide"
     }

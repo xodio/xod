@@ -4,14 +4,16 @@
     {
       "id": "HJR1uifqM",
       "position": {
-        "x": 170,
-        "y": 102
+        "units": "slots",
+        "x": 5,
+        "y": 1
       },
       "type": "xod/patch-nodes/utility"
     },
     {
       "id": "__in__",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -20,24 +22,27 @@
     {
       "id": "__out__",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 300
+        "y": 3
       },
       "type": "xod/patch-nodes/output-string"
     },
     {
       "id": "noNativeImpl",
       "position": {
-        "x": 100,
-        "y": 100
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "rkF6O0v14",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     }

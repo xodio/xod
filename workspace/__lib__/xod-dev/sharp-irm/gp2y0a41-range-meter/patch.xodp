@@ -99,8 +99,9 @@
       "id": "B1SUkH6po7",
       "label": "PORT",
       "position": {
-        "x": -238,
-        "y": -102
+        "units": "slots",
+        "x": -7,
+        "y": -1
       },
       "type": "xod/patch-nodes/input-port"
     },
@@ -112,15 +113,17 @@
       "id": "HJIJSaps7",
       "label": "AVcc",
       "position": {
-        "x": -170,
-        "y": -102
+        "units": "slots",
+        "x": -5,
+        "y": -1
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HJfIyrp6j7",
       "position": {
-        "x": -170,
+        "units": "slots",
+        "x": -5,
         "y": 0
       },
       "type": "xod/gpio/analog-read"
@@ -130,16 +133,18 @@
       "id": "HJmIyHa6o7",
       "label": "DONE",
       "position": {
-        "x": -136,
-        "y": 102
+        "units": "slots",
+        "x": -4,
+        "y": 1
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "HJteppps7",
       "position": {
-        "x": -238,
-        "y": 102
+        "units": "slots",
+        "x": -7,
+        "y": 1
       },
       "type": "xod/core/multiply"
     },
@@ -153,8 +158,9 @@
       },
       "id": "SJ-81rTTs7",
       "position": {
-        "x": -238,
-        "y": 204
+        "units": "slots",
+        "x": -7,
+        "y": 2
       },
       "type": "@/gp2y0a-linearize"
     },
@@ -163,8 +169,9 @@
       "id": "rJxI1SpTs7",
       "label": "ERR",
       "position": {
-        "x": -102,
-        "y": 102
+        "units": "slots",
+        "x": -3,
+        "y": 1
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -173,8 +180,9 @@
       "id": "ryI8yHT6iX",
       "label": "Dm",
       "position": {
-        "x": -238,
-        "y": 306
+        "units": "slots",
+        "x": -7,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -186,8 +194,9 @@
       "id": "ryvIyH66oX",
       "label": "UPD",
       "position": {
-        "x": -102,
-        "y": -102
+        "units": "slots",
+        "x": -3,
+        "y": -1
       },
       "type": "xod/patch-nodes/input-pulse"
     }

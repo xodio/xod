@@ -4,8 +4,9 @@
     {
       "id": "BJwn87t-m",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -14,7 +15,8 @@
       "id": "Bk-iLQKZ7",
       "label": "DEV",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "@/input-esp8266-device"
@@ -24,7 +26,8 @@
       "id": "HJHjLXYbQ",
       "label": "SET",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -34,8 +37,9 @@
       "id": "HyWhI7tbm",
       "label": "ERR",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -44,8 +48,9 @@
       "id": "ry6iLQtbX",
       "label": "DONE",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     }

@@ -31,20 +31,22 @@
       },
       "id": "By6HVYHZb",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/core/clock"
     },
     {
       "boundLiterals": {
-        "rJjXFA9JQ": "D13",
-        "HJ6HsEngZ": "False"
+        "HJ6HsEngZ": "False",
+        "rJjXFA9JQ": "D13"
       },
       "id": "SyeDNFBWZ",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/gpio/digital-write"
     },
@@ -56,8 +58,9 @@
       },
       "id": "rkwIEFrWb",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/flip-flop"
     }

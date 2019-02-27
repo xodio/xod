@@ -251,7 +251,8 @@
       },
       "id": "B1HQVMaGX",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/core/delay"
@@ -262,7 +263,8 @@
       },
       "id": "BJvP5OXGX",
       "position": {
-        "x": 136,
+        "units": "slots",
+        "x": 4,
         "y": 0
       },
       "type": "xod/uart/uart-1"
@@ -270,8 +272,9 @@
     {
       "id": "BkdWzTdG7",
       "position": {
-        "x": 714,
-        "y": 408
+        "units": "slots",
+        "x": 21,
+        "y": 4
       },
       "type": "xod/core/console-log"
     },
@@ -281,8 +284,9 @@
       },
       "id": "BkhHXfFMQ",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "xod/core/concat"
     },
@@ -292,8 +296,9 @@
       },
       "id": "Byw4_wqfX",
       "position": {
-        "x": 238,
-        "y": 408
+        "units": "slots",
+        "x": 7,
+        "y": 4
       },
       "type": "xod/stream/pass-from-sequence"
     },
@@ -304,24 +309,27 @@
       },
       "id": "H1QUGzKzX",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "@/http-request(esp8266-inet)"
     },
     {
       "id": "H1kG3jmMX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/lan-ip"
     },
     {
       "id": "HkkbK7KWm",
       "position": {
-        "x": 136,
-        "y": 204
+        "units": "slots",
+        "x": 4,
+        "y": 2
       },
       "type": "@/set-station-mode"
     },
@@ -332,8 +340,9 @@
       },
       "id": "HklCKsmzm",
       "position": {
-        "x": 204,
-        "y": 204
+        "units": "slots",
+        "x": 6,
+        "y": 2
       },
       "type": "@/connect"
     },
@@ -343,8 +352,9 @@
       },
       "id": "HyQKfztzm",
       "position": {
-        "x": 374,
-        "y": 408
+        "units": "slots",
+        "x": 11,
+        "y": 4
       },
       "type": "xod/stream/pass-until"
     },
@@ -354,8 +364,9 @@
       },
       "id": "Sk-F_guWm",
       "position": {
-        "x": 136,
-        "y": 102
+        "units": "slots",
+        "x": 4,
+        "y": 1
       },
       "type": "@/esp8266"
     },
@@ -365,8 +376,9 @@
       },
       "id": "SypUXfKMQ",
       "position": {
-        "x": 646,
-        "y": 408
+        "units": "slots",
+        "x": 19,
+        "y": 4
       },
       "type": "xod/core/concat"
     },
@@ -376,24 +388,27 @@
       },
       "id": "r1aezp_fX",
       "position": {
-        "x": 510,
-        "y": 408
+        "units": "slots",
+        "x": 15,
+        "y": 4
       },
       "type": "xod/stream/accumulate-string"
     },
     {
       "id": "r1nG2i7GX",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/net/format-ip"
     },
     {
       "id": "rJAmhs7M7",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "xod/core/console-log"
     }

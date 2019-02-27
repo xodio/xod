@@ -105,23 +105,26 @@
     {
       "id": "B1Axu3Wxf",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "xod/math/floor"
     },
     {
       "id": "B1gyXAWlz",
       "position": {
-        "x": 68,
-        "y": 510
+        "units": "slots",
+        "x": 2,
+        "y": 5
       },
       "type": "@/bitwise-or"
     },
     {
       "id": "H12cvhZeG",
       "position": {
-        "x": 34,
+        "units": "slots",
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -132,8 +135,9 @@
       },
       "id": "HkXfO3bef",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "@/shift-left"
     },
@@ -143,40 +147,45 @@
       },
       "id": "Hy9hPhWxG",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "type": "xod/core/modulo"
     },
     {
       "id": "HySKISpyX",
       "position": {
-        "x": 34,
-        "y": 408
+        "units": "slots",
+        "x": 1,
+        "y": 4
       },
       "type": "@/number-to-u8"
     },
     {
       "id": "S1TsDnbgM",
       "position": {
-        "x": 68,
-        "y": 612
+        "units": "slots",
+        "x": 2,
+        "y": 6
       },
       "type": "xod/patch-nodes/output-byte"
     },
     {
       "id": "SJ_svAP1E",
       "position": {
-        "x": 238,
-        "y": 102
+        "units": "slots",
+        "x": 7,
+        "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
     },
     {
       "id": "r1COLrakX",
       "position": {
-        "x": 102,
-        "y": 408
+        "units": "slots",
+        "x": 3,
+        "y": 4
       },
       "type": "@/number-to-u8"
     },
@@ -186,8 +195,9 @@
       },
       "id": "rJvRD3WeG",
       "position": {
-        "x": 34,
-        "y": 102
+        "units": "slots",
+        "x": 1,
+        "y": 1
       },
       "type": "xod/core/divide"
     }

@@ -4,8 +4,9 @@
     {
       "id": "B1dMI7RWX",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 102
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -13,8 +14,9 @@
       "description": "A value that passed through",
       "id": "HyqbI70-7",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "xod/patch-nodes/output-t1"
     },
@@ -22,6 +24,7 @@
       "description": "A value to be pushed through",
       "id": "S1618X0bX",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -31,8 +34,9 @@
       "description": "Pulses when a value passes through",
       "id": "SkgG870bX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -41,7 +45,8 @@
       "id": "SyN0S7RZ7",
       "label": "COND",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -50,7 +55,8 @@
       "description": "Try to push a new value through",
       "id": "rJ5aSXCWm",
       "position": {
-        "x": 102,
+        "units": "slots",
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

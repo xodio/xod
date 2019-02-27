@@ -4,12 +4,14 @@
       "content": "give everything else a chance to initialize before `connect` blocks execution",
       "id": "S1T3RAg77",
       "position": {
-        "x": 102,
-        "y": 102
+        "units": "slots",
+        "x": 3,
+        "y": 1
       },
       "size": {
-        "height": 51,
-        "width": 272
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     }
   ],
@@ -91,7 +93,8 @@
       "id": "BJfXLrPDzm",
       "label": "CONN",
       "position": {
-        "x": 68,
+        "units": "slots",
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -101,8 +104,9 @@
       "id": "H1b7LrDPGm",
       "label": "DONE",
       "position": {
-        "x": 68,
-        "y": 306
+        "units": "slots",
+        "x": 2,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -111,6 +115,7 @@
       "id": "HkhKBPPfX",
       "label": "DEV",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -119,8 +124,9 @@
     {
       "id": "r1G10Al7X",
       "position": {
-        "x": 68,
-        "y": 102
+        "units": "slots",
+        "x": 2,
+        "y": 1
       },
       "type": "xod/core/defer"
     },
@@ -129,16 +135,18 @@
       "id": "rJ6H7ovfQ",
       "label": "INET",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 306
+        "y": 3
       },
       "type": "@/output-w5500-inet"
     },
     {
       "id": "rynaT0e7Q",
       "position": {
+        "units": "slots",
         "x": 0,
-        "y": 204
+        "y": 2
       },
       "type": "@/connect-blocking"
     },
@@ -147,8 +155,9 @@
       "id": "ryx7LHwPfm",
       "label": "ERR",
       "position": {
-        "x": 136,
-        "y": 306
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     }

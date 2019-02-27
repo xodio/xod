@@ -77,7 +77,8 @@
       "id": "B1rqmq_8Z",
       "label": "UPD",
       "position": {
-        "x": 238,
+        "units": "slots",
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -90,7 +91,8 @@
       "id": "ByaY75_Ib",
       "label": "PORT",
       "position": {
-        "x": 204,
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -100,8 +102,9 @@
       "id": "H1JpXq_I-",
       "label": "Dm",
       "position": {
-        "x": 34,
-        "y": 306
+        "units": "slots",
+        "x": 1,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -110,16 +113,18 @@
       "id": "HkbMd8sBeQ",
       "label": "ERR",
       "position": {
-        "x": 272,
-        "y": 306
+        "units": "slots",
+        "x": 8,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJM_UorxX",
       "position": {
-        "x": 204,
-        "y": 102
+        "units": "slots",
+        "x": 6,
+        "y": 1
       },
       "type": "xod/gpio/analog-read"
     },
@@ -128,8 +133,9 @@
       "id": "SJlM_LoBlQ",
       "label": "DONE",
       "position": {
-        "x": 238,
-        "y": 306
+        "units": "slots",
+        "x": 7,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -142,8 +148,9 @@
       },
       "id": "SycjXcO8Z",
       "position": {
-        "x": 34,
-        "y": 204
+        "units": "slots",
+        "x": 1,
+        "y": 2
       },
       "type": "@/gp2y0a-linearize"
     },
@@ -151,8 +158,9 @@
       "description": "Use `xod-dev/sharp-irm/gp2y0a21-range-meter` instead",
       "id": "rkxRS8osQ",
       "position": {
-        "x": 340,
-        "y": 102
+        "units": "slots",
+        "x": 10,
+        "y": 1
       },
       "type": "xod/patch-nodes/deprecated"
     }

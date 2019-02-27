@@ -3,8 +3,9 @@
     {
       "id": "B13jr_VOW",
       "position": {
-        "x": 10,
-        "y": 120
+        "units": "slots",
+        "x": 0.25,
+        "y": 1.15
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -12,8 +13,9 @@
       "id": "BJfKruVdb",
       "label": "SEND",
       "position": {
-        "x": 138,
-        "y": 16
+        "units": "slots",
+        "x": 4.05,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -21,8 +23,9 @@
       "id": "HJbjB_Nd-",
       "label": "DONE",
       "position": {
-        "x": 10,
-        "y": 224
+        "units": "slots",
+        "x": 0.25,
+        "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -30,8 +33,9 @@
       "id": "HkLOB_EuZ",
       "label": "ADDR",
       "position": {
-        "x": 10,
-        "y": 16
+        "units": "slots",
+        "x": 0.25,
+        "y": 0.15
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -39,8 +43,9 @@
       "description": "Use `xod/i2c/begin-transmission` instead.",
       "id": "r1dfDm4gX",
       "position": {
-        "x": 102,
-        "y": 204
+        "units": "slots",
+        "x": 3,
+        "y": 2
       },
       "type": "xod/patch-nodes/deprecated"
     }

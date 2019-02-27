@@ -4,36 +4,42 @@
       "content": "↑ This reads X Y Z register data and multiplies it by a sensitivity multiplier (sm)",
       "id": "BkgWdYE_-",
       "position": {
-        "x": 748,
-        "y": 1020
+        "units": "slots",
+        "x": 22,
+        "y": 10
       },
       "size": {
-        "height": 51,
-        "width": 272
+        "height": 1,
+        "units": "slots",
+        "width": 7
       }
     },
     {
       "content": "↑ This sends commands to adjust sensitivity (CTRL_REG4)",
       "id": "HJI6DtEu-",
       "position": {
-        "x": 204,
-        "y": 918
+        "units": "slots",
+        "x": 6,
+        "y": 9
       },
       "size": {
-        "height": 51,
-        "width": 238
+        "height": 1,
+        "units": "slots",
+        "width": 6
       }
     },
     {
       "content": "↑ This is one-time initialization to go out of sleep mode and start measuring data along all axes (CTRL_REG1)",
       "id": "HJQVOKE_W",
       "position": {
-        "x": -102,
-        "y": 510
+        "units": "slots",
+        "x": -3,
+        "y": 5
       },
       "size": {
-        "height": 153,
-        "width": 204
+        "height": 2,
+        "units": "slots",
+        "width": 5
       }
     }
   ],
@@ -441,8 +447,9 @@
       "id": "B129S2SeX",
       "label": "DONE",
       "position": {
-        "x": 952,
-        "y": 918
+        "units": "slots",
+        "x": 28,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -450,7 +457,8 @@
       "id": "BJvFHnSlQ",
       "label": "I2C",
       "position": {
-        "x": -102,
+        "units": "slots",
+        "x": -3,
         "y": 0
       },
       "type": "xod/i2c/input-i2c"
@@ -458,8 +466,9 @@
     {
       "id": "BkSwzeDxm",
       "position": {
-        "x": 748,
-        "y": 306
+        "units": "slots",
+        "x": 22,
+        "y": 3
       },
       "type": "@/st-imu-read-xyz"
     },
@@ -468,6 +477,7 @@
       "id": "BkVN0JQYW",
       "label": "REG1",
       "position": {
+        "units": "slots",
         "x": 0,
         "y": 0
       },
@@ -479,8 +489,9 @@
       },
       "id": "BkuWJxPe7",
       "position": {
-        "x": -102,
-        "y": 408
+        "units": "slots",
+        "x": -3,
+        "y": 4
       },
       "type": "@/st-imu-write-register"
     },
@@ -489,8 +500,9 @@
       "id": "ByfrajWF-",
       "label": "S1",
       "position": {
-        "x": 374,
-        "y": 306
+        "units": "slots",
+        "x": 11,
+        "y": 3
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -498,8 +510,9 @@
       "id": "ByyoB2Hxm",
       "label": "ERR",
       "position": {
-        "x": 1020,
-        "y": 918
+        "units": "slots",
+        "x": 30,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -507,8 +520,9 @@
       "arityLevel": 2,
       "id": "H1PJU_Uxm",
       "position": {
-        "x": 1020,
-        "y": 816
+        "units": "slots",
+        "x": 30,
+        "y": 8
       },
       "type": "xod/core/any"
     },
@@ -517,8 +531,9 @@
       "id": "HJaCs4jDW",
       "label": "SENS",
       "position": {
-        "x": 306,
-        "y": 306
+        "units": "slots",
+        "x": 9,
+        "y": 3
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -528,8 +543,9 @@
       },
       "id": "Hk8o1gwxQ",
       "position": {
-        "x": 204,
-        "y": 816
+        "units": "slots",
+        "x": 6,
+        "y": 8
       },
       "type": "@/st-imu-write-register"
     },
@@ -538,24 +554,27 @@
       "id": "HkI8TabKZ",
       "label": "S3",
       "position": {
-        "x": 442,
-        "y": 306
+        "units": "slots",
+        "x": 13,
+        "y": 3
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "HkzjTvLl7",
       "position": {
-        "x": 306,
-        "y": 714
+        "units": "slots",
+        "x": 9,
+        "y": 7
       },
       "type": "xod/bits/number-to-u8"
     },
     {
       "id": "HyB8M9V_-",
       "position": {
-        "x": 748,
-        "y": 714
+        "units": "slots",
+        "x": 22,
+        "y": 7
       },
       "type": "xod/core/multiply"
     },
@@ -564,8 +583,9 @@
       "id": "HyDRXZXKb",
       "label": "SM1",
       "position": {
-        "x": 578,
-        "y": 408
+        "units": "slots",
+        "x": 17,
+        "y": 4
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -577,7 +597,8 @@
       "id": "HyPRoViP-",
       "label": "ADDR",
       "position": {
-        "x": -68,
+        "units": "slots",
+        "x": -2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
@@ -587,8 +608,9 @@
       "id": "HyTe3Ejv-",
       "label": "Z",
       "position": {
-        "x": 884,
-        "y": 918
+        "units": "slots",
+        "x": 26,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -597,8 +619,9 @@
       "id": "S1_e24ov-",
       "label": "Y",
       "position": {
-        "x": 816,
-        "y": 918
+        "units": "slots",
+        "x": 24,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -607,16 +630,18 @@
       "id": "SJ5A7bXFb",
       "label": "SM2",
       "position": {
-        "x": 612,
-        "y": 408
+        "units": "slots",
+        "x": 18,
+        "y": 4
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "SJgPf9V_Z",
       "position": {
-        "x": 884,
-        "y": 714
+        "units": "slots",
+        "x": 26,
+        "y": 7
       },
       "type": "xod/core/multiply"
     },
@@ -625,8 +650,9 @@
       "id": "Sk-e2ViDb",
       "label": "X",
       "position": {
-        "x": 748,
-        "y": 918
+        "units": "slots",
+        "x": 22,
+        "y": 9
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -637,7 +663,8 @@
       "id": "Sky8yewgQ",
       "label": "INIT",
       "position": {
-        "x": 748,
+        "units": "slots",
+        "x": 22,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -647,8 +674,9 @@
       "id": "SymAXb7KW",
       "label": "SM0",
       "position": {
-        "x": 544,
-        "y": 408
+        "units": "slots",
+        "x": 16,
+        "y": 4
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -657,8 +685,9 @@
       "id": "r10RQb7FZ",
       "label": "SM3",
       "position": {
-        "x": 646,
-        "y": 408
+        "units": "slots",
+        "x": 19,
+        "y": 4
       },
       "type": "xod/patch-nodes/input-number"
     },
@@ -666,8 +695,9 @@
       "arityLevel": 3,
       "id": "r1vwqwLeX",
       "position": {
-        "x": 510,
-        "y": 510
+        "units": "slots",
+        "x": 15,
+        "y": 5
       },
       "type": "xod/core/nth-input"
     },
@@ -679,15 +709,17 @@
       },
       "id": "rJCtZ5NdW",
       "position": {
-        "x": 306,
-        "y": 408
+        "units": "slots",
+        "x": 9,
+        "y": 4
       },
       "type": "@/st-imu-round-sensitivity"
     },
     {
       "id": "rJxtPiG9M",
       "position": {
-        "x": -170,
+        "units": "slots",
+        "x": -5,
         "y": 0
       },
       "type": "xod/patch-nodes/utility"
@@ -700,7 +732,8 @@
       "id": "rkIkhEsvW",
       "label": "UPD",
       "position": {
-        "x": 816,
+        "units": "slots",
+        "x": 24,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -710,16 +743,18 @@
       "id": "rkKV6s-Yb",
       "label": "S0",
       "position": {
-        "x": 340,
-        "y": 306
+        "units": "slots",
+        "x": 10,
+        "y": 3
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "rkTIfcEuW",
       "position": {
-        "x": 816,
-        "y": 714
+        "units": "slots",
+        "x": 24,
+        "y": 7
       },
       "type": "xod/core/multiply"
     },
@@ -728,8 +763,9 @@
       "id": "ryrBTjZtZ",
       "label": "S2",
       "position": {
-        "x": 408,
-        "y": 306
+        "units": "slots",
+        "x": 12,
+        "y": 3
       },
       "type": "xod/patch-nodes/input-number"
     }
