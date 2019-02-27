@@ -6,7 +6,11 @@ import * as EAT from '../editor/actionTypes';
 
 // :: Action -> Boolean
 const isLoadingProjectAction = R.propSatisfies(
-  isAmong([PAT.PROJECT_IMPORT, PAT.PROJECT_OPEN]),
+  isAmong([
+    PAT.PROJECT_IMPORT,
+    PAT.PROJECT_OPEN,
+    EAT.INSTALL_LIBRARIES_COMPLETE,
+  ]),
   'type'
 );
 
