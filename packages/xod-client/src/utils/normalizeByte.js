@@ -58,7 +58,7 @@ const escapeSpecialChars = R.cond([
 export default R.cond([
   [isLikeCharLiteral, escapeSpecialChars],
   // 0b1011 -> 00001011b
-  [R.startsWith('0b'), R.pipe(R.drop(2), parseBin, toBin)],
+  [R.test(/^0b[01]+$/), R.pipe(R.drop(2), parseBin, toBin)],
   // 1011b -> 00001011b
   [R.endsWith('b'), R.pipe(R.init, parseBin, toBin)],
   // ah -> 0Ah
