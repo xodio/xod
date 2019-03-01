@@ -68,7 +68,7 @@ export const pixelSizeToSlots = R.evolve({
 // :: Size -> Size
 export const slotSizeToPixels = R.evolve({
   width: slots => slots * SLOT_SIZE.WIDTH,
-  height: slots => R.dec(slots) * SLOT_SIZE.HEIGHT + NODE_HEIGHT,
+  height: slots => slots * SLOT_SIZE.HEIGHT - SLOT_SIZE.GAP,
 });
 
 // :: Position -> Position
@@ -210,11 +210,13 @@ export const snapNodePositionToSlots = R.compose(
 );
 
 export const snapNodeSizeToSlots = R.compose(
-  slotSizeToPixels,
   pointToSize,
-  nodePositionInPixelsToSlots,
-  addPoints({ x: SLOT_SIZE.WIDTH * 0.75, y: SLOT_SIZE.HEIGHT * 1.1 }),
-  sizeToPoint
+  R.evolve({
+    x: x => Math.ceil(x),
+    y: y => Math.ceil(y),
+  }),
+  sizeToPoint,
+  pixelSizeToSlots
 );
 
 // :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Maybe Position
