@@ -4,6 +4,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
+import * as XP from 'xod-project';
 
 import { EDITOR_MODE } from '../../../constants';
 
@@ -24,6 +25,25 @@ import {
 import { getPxSize } from '../../../../project/pxDimensions';
 
 import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
+import { isLinkConnectedToNodeIds } from '../../../../project/utils';
+import { shortenDraggedLinks } from './moving';
+
+const updateLinksPositions = R.uncurryN(2)(resizedNodes =>
+  R.map(link => {
+    // only outputs are moving during node resizing
+    const nodeId = XP.getLinkOutputNodeId(link);
+
+    if (!R.has(nodeId, resizedNodes)) return link;
+
+    const node = resizedNodes[nodeId];
+    // pins are moved only vertically during resizing,
+    // so we don't touch the `x`
+    const linkEndY =
+      node.pxPosition.y + node.pins[XP.getLinkOutputPinKey(link)].position.y;
+
+    return R.assocPath(['to', 'y'], linkEndY, link);
+  })
+);
 
 let patchSvgRef = null;
 
@@ -122,10 +142,18 @@ const resizingNodeMode = {
     const deltaPosition = getDeltaPosition(api);
 
     const { resizedNodeId, idleNodes } = api.state;
+
     const resizedNodes = R.compose(
       addDeltaToNodeSizes(deltaPosition),
       R.pick([resizedNodeId])
     )(api.props.nodes);
+
+    const [draggedLinks, idleLinks] = R.compose(
+      R.over(R.lensIndex(0), updateLinksPositions(resizedNodes)),
+      R.partition(isLinkConnectedToNodeIds([resizedNodeId]))
+    )(api.props.links);
+
+    const shortenedDraggedLinks = shortenDraggedLinks(draggedLinks);
 
     const snappedPreviews = R.compose(
       R.map(
@@ -157,10 +185,7 @@ const resizingNodeMode = {
               selection={api.props.selection}
               onFinishEditing={api.props.actions.editComment}
             />
-            <Layers.Links
-              links={api.props.links}
-              selection={api.props.selection}
-            />
+            <Layers.Links links={idleLinks} selection={api.props.selection} />
             <Layers.Nodes
               nodes={idleNodes}
               selection={api.props.selection}
@@ -178,8 +203,14 @@ const resizingNodeMode = {
             />
 
             <Layers.SnappingPreview previews={snappedPreviews} />
+            <Layers.Links
+              key="dragged links"
+              links={shortenedDraggedLinks}
+              selection={api.props.selection}
+              isDragged
+            />
             <Layers.Nodes
-              key="resized comment"
+              key="resized node"
               areDragged
               nodes={resizedNodes}
               selection={api.props.selection}
