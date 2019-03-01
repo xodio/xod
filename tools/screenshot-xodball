@@ -36,14 +36,15 @@ const [
   patchBaseName,
   screenshotDestPath,
   desiredScreenshotHeight,
+  desiredScreenshotWidth,
 ] = process.argv.slice(2);
 
 const patchboardTopLeft = {
-  x: 202,
-  y: 64,
+  x: 202, // sidebar width + 2px border
+  y: 64, // menu + tabs height
 };
 const desiredScreenshotSize = {
-  width: 700,
+  width: parseInt(desiredScreenshotWidth, 10) || 700,
   height: parseInt(desiredScreenshotHeight, 10) || 700,
 };
 const deploymentPanelHeight = 26;
