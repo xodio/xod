@@ -15,6 +15,8 @@ export const SLOT_SIZE = {
   GAP: GAP_BETWEEN_LINES,
 };
 
+export const GAP_IN_SLOTS = SLOT_SIZE.GAP / SLOT_SIZE.HEIGHT;
+
 const PINVALUE_GAP = 4;
 export const PINVALUE_WIDTH = SLOT_SIZE.WIDTH - PINVALUE_GAP / 2;
 
@@ -55,8 +57,8 @@ export const TEXT_OFFSET_FROM_PIN_BORDER = 3;
 
 // :: Size -> Size
 export const pixelSizeToSlots = R.evolve({
-  width: px => Math.ceil(px / SLOT_SIZE.WIDTH),
-  height: px => Math.ceil(px / SLOT_SIZE.HEIGHT),
+  width: px => px / SLOT_SIZE.WIDTH,
+  height: px => px / SLOT_SIZE.HEIGHT,
 });
 
 // :: Size -> Size

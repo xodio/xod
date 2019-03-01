@@ -9,6 +9,7 @@ import {
   getTopLeftPosition,
   sizeToPoint,
   subtractPoints,
+  GAP_IN_SLOTS,
 } from '../project/nodeLayout';
 import {
   SELECTION_ENTITY_TYPE,
@@ -155,7 +156,7 @@ export const getBoundingBox = R.curry((currentPatch, project, entities) => {
   return {
     ...topLeft,
     width: bottomRight.x - topLeft.x,
-    height: bottomRight.y - topLeft.y,
+    height: bottomRight.y - topLeft.y - GAP_IN_SLOTS,
   };
 });
 
