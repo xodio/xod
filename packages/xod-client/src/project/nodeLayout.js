@@ -3,6 +3,10 @@ import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
 import { foldMaybe } from 'xod-func-tools';
 
+// SVG elements with thin stroke has to be moved by 0.5px
+// to make pixel perfect stroke instead of blurred one
+export const COMPENSATE_SVG = 0.5;
+
 export const BASE_SIZE_UNIT = 5;
 
 export const NODE_HEIGHT = BASE_SIZE_UNIT * 13;
@@ -101,8 +105,8 @@ export const calcutaleNodeSizeFromPins = R.compose(
 
 // :: Number -> Number -> Position
 const pinOrderToPosition = R.curry((nodeWidth, pinOrder) => ({
-  x: pinOrder * SLOT_SIZE.WIDTH + SLOT_SIZE.WIDTH / 2,
-  y: PIN_OFFSET_FROM_NODE_EDGE,
+  x: pinOrder * SLOT_SIZE.WIDTH + SLOT_SIZE.WIDTH / 2 - COMPENSATE_SVG,
+  y: PIN_OFFSET_FROM_NODE_EDGE + COMPENSATE_SVG,
 }));
 
 // :: Size -> Pin -> Position
