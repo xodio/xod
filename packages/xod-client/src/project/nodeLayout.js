@@ -261,10 +261,8 @@ export const getBusNodePositionForPin = (node, pin) => {
   const pinOrder = XP.getPinOrder(pin);
 
   return {
-    x: nodePosition.x + pinOrder * SLOT_SIZE.WIDTH,
-    y:
-      nodePosition.y +
-      SLOT_SIZE.HEIGHT * (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
+    x: nodePosition.x + pinOrder,
+    y: nodePosition.y + (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
   };
 };
 
