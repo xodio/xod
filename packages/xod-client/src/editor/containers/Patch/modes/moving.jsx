@@ -62,6 +62,20 @@ const updateLinksPositions = R.uncurryN(3)((draggedNodeIds, deltaPosition) =>
   )
 );
 
+// We have to shorten dragged links to avoid overlapping
+// Pins with ending of the Link, cause it became ugly
+// when User drags Link connected to the variadic Pin,
+// that contains "dots" symbol inside it.
+export const shortenDraggedLinks = R.map(link =>
+  R.compose(
+    R.assoc('from', R.__, link),
+    R.converge(changeLineLength(R.negate(PIN_RADIUS_WITH_OUTER_STROKE)), [
+      R.prop('to'),
+      R.prop('from'),
+    ])
+  )(link)
+);
+
 const movingMode = {
   getInitialState(props, { mousePosition, dragStartPosition }) {
     const draggedNodeIds = getSelectedEntityIdsOfType(
@@ -131,19 +145,7 @@ const movingMode = {
       R.partition(isLinkConnectedToNodeIds(draggedNodeIds))
     )(api.props.links);
 
-    // We have to shorten dragged links to avoid overlapping
-    // Pins with ending of the Link, cause it became ugly
-    // when User drags Link connected to the variadic Pin,
-    // that contains "dots" symbol inside it.
-    const shortenedDraggedLinks = R.map(link =>
-      R.compose(
-        R.assoc('from', R.__, link),
-        R.converge(changeLineLength(R.negate(PIN_RADIUS_WITH_OUTER_STROKE)), [
-          R.prop('to'),
-          R.prop('from'),
-        ])
-      )(link)
-    )(draggedLinks);
+    const shortenedDraggedLinks = shortenDraggedLinks(draggedLinks);
 
     const snappedPreviews = getSnappedPreviews(
       draggedNodes,
