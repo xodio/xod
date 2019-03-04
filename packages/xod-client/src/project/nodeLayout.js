@@ -68,7 +68,7 @@ export const pixelSizeToSlots = R.evolve({
 // :: Size -> Size
 export const slotSizeToPixels = R.evolve({
   width: slots => slots * SLOT_SIZE.WIDTH,
-  height: slots => R.dec(slots) * SLOT_SIZE.HEIGHT + NODE_HEIGHT,
+  height: slots => slots * SLOT_SIZE.HEIGHT - SLOT_SIZE.GAP,
 });
 
 // :: Position -> Position
@@ -210,11 +210,13 @@ export const snapNodePositionToSlots = R.compose(
 );
 
 export const snapNodeSizeToSlots = R.compose(
-  slotSizeToPixels,
   pointToSize,
-  nodePositionInPixelsToSlots,
-  addPoints({ x: SLOT_SIZE.WIDTH * 0.75, y: SLOT_SIZE.HEIGHT * 1.1 }),
-  sizeToPoint
+  R.evolve({
+    x: x => Math.ceil(x),
+    y: y => Math.ceil(y),
+  }),
+  sizeToPoint,
+  pixelSizeToSlots
 );
 
 // :: ([Number] -> Number) -> ([Number] -> Number) -> [Position] -> Maybe Position
@@ -261,10 +263,8 @@ export const getBusNodePositionForPin = (node, pin) => {
   const pinOrder = XP.getPinOrder(pin);
 
   return {
-    x: nodePosition.x + pinOrder * SLOT_SIZE.WIDTH,
-    y:
-      nodePosition.y +
-      SLOT_SIZE.HEIGHT * (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
+    x: nodePosition.x + pinOrder,
+    y: nodePosition.y + (pinDirection === XP.PIN_DIRECTION.INPUT ? -1 : 1),
   };
 };
 

@@ -13,7 +13,7 @@ import {
   pointToSize,
   sizeToPoint,
   snapNodeSizeToSlots,
-  pixelSizeToSlots,
+  slotSizeToPixels,
   NODE_HEIGHT,
   SLOT_SIZE,
 } from '../../../../project/nodeLayout';
@@ -73,7 +73,6 @@ const resizingCommentMode = {
     const deltaPosition = getDeltaPosition(api);
 
     const newSize = R.compose(
-      pixelSizeToSlots,
       snapNodeSizeToSlots,
       addDeltaToSize(deltaPosition),
       getPxSize,
@@ -97,7 +96,10 @@ const resizingCommentMode = {
     const snappedPreviews = R.compose(
       R.map(
         R.compose(
-          R.over(R.lensProp('pxSize'), snapNodeSizeToSlots),
+          R.over(
+            R.lensProp('pxSize'),
+            R.pipe(snapNodeSizeToSlots, slotSizeToPixels)
+          ),
           R.pick(['pxSize', 'pxPosition'])
         )
       ),

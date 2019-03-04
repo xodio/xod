@@ -18,6 +18,7 @@ import {
   sizeToPoint,
   snapNodeSizeToSlots,
   pixelSizeToSlots,
+  slotSizeToPixels,
   NODE_HEIGHT,
   PIN_RADIUS,
   SLOT_SIZE,
@@ -118,10 +119,18 @@ const resizingNodeMode = {
 
     const resizedNode = R.prop(resizedNodeId, api.props.nodes);
 
+    const originalSizeInSlots = R.compose(
+      R.evolve({
+        width: Math.ceil,
+        height: Math.ceil,
+      }),
+      pixelSizeToSlots
+    )(resizedNode.originalSize);
+
     const newSize = R.compose(
       R.evolve({
-        width: R.max(resizedNode.originalSize.width),
-        height: R.max(resizedNode.originalSize.height),
+        width: R.max(originalSizeInSlots.width),
+        height: R.max(originalSizeInSlots.height),
       }),
       snapNodeSizeToSlots,
       addDeltaToSize(deltaPosition),
@@ -130,9 +139,9 @@ const resizingNodeMode = {
 
     // In case that User resized Node to it's default size — just drop it to
     // zero values. In this case it will be omitted from xodball
-    const sizeToSet = R.equals(resizedNode.originalSize, newSize)
+    const sizeToSet = R.equals(originalSizeInSlots, newSize)
       ? { width: 0, height: 0 }
-      : pixelSizeToSlots(newSize);
+      : newSize;
 
     api.props.actions.resizeNode(resizedNodeId, sizeToSet);
     api.goToMode(EDITOR_MODE.DEFAULT);
@@ -158,7 +167,10 @@ const resizingNodeMode = {
     const snappedPreviews = R.compose(
       R.map(
         R.compose(
-          R.over(R.lensProp('pxSize'), snapNodeSizeToSlots),
+          R.over(
+            R.lensProp('pxSize'),
+            R.pipe(snapNodeSizeToSlots, slotSizeToPixels)
+          ),
           R.pick(['pxSize', 'pxPosition'])
         )
       ),
