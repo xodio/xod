@@ -6,7 +6,11 @@ import { TAB_TYPES } from '../../../constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
-import { addPoints, subtractPoints } from '../../../../project/nodeLayout';
+import {
+  addPoints,
+  subtractPoints,
+  pixelPositionToSlots,
+} from '../../../../project/nodeLayout';
 
 import {
   getOffsetMatrix,
@@ -66,7 +70,7 @@ const panningMode = {
       const offset = getCurrentOffset(api);
       api.setState({ isPanning: false });
       api.setOffset(offset);
-      api.props.actions.setOffset(offset);
+      api.props.actions.setOffset(pixelPositionToSlots(offset));
     }
 
     if (isMiddleButtonPressed(event)) {
@@ -79,7 +83,7 @@ const panningMode = {
     if (api.state.isPanning) {
       const offset = getCurrentOffset(api);
       api.setState({ isPanning: false });
-      api.props.actions.setOffset(offset);
+      api.props.actions.setOffset(pixelPositionToSlots(offset));
     }
 
     api.goToDefaultMode();
