@@ -11,7 +11,6 @@ import {
 
 import {
   addPoints,
-  slotSizeToPixels,
   slotPositionToPixels,
   snapPositionToSlots,
   snapNodePositionToSlots,
@@ -456,8 +455,8 @@ export default (state = {}, action) => {
       const { patchPath } = action.payload;
 
       const newComment = XP.createComment(
-        slotPositionToPixels({ x: 1, y: 1 }),
-        slotSizeToPixels({ width: 4, height: 1 }),
+        { x: 1, y: 1 },
+        { width: 4, height: 1 },
         'Double-click to edit comment'
       );
 
