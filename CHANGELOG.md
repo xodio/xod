@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Improve patch board design that shows bound values (#1684)
+* [ide] Make sure nodes and comments are always aligned to slots grid (#1695)
+* [ide] Show a list of available inputs/outputs in QuickHelp when C++ or tabtest editors are open (#1682)
+* [ide] Make tabline scrollable if too many tabs are open (#1694)
+* [ide] Close tabs on middle click (#1686)
+* [nodes] Add descriptions to all `xod/patch-nodes` and auto-generated terminals for custom types (#1685)
+
+### New nodes
+
+* [`xod/debug/tweak-pulse`](https://xod.io/libs/xod/debug/tweak-pulse/) (#1701)
+* [`xod/math/min`](https://xod.io/libs/xod/math/min/) and [`xod/math/max`](https://xod.io/libs/xod/math/max/) (#1700)
+* [`xod/core/integrate-dt`](https://xod.io/libs/xod/core/integrate-dt/) (#1590)
+
+### Bug fixes
+
+* [ide] Fix links looking detached when resizing watch and constant nodes (#1707)
+* [ide] Prevent `0bh` byte literal from being converted to `00000000b` (#1704)
+* [ide] Fix coloring of jumper node when it’s connected to generic pins (#1703)
+* [ide] Fix utility markers being ignored in installed library (#1702)
+* [ide] Fix coloring of generic pins after changing arity of variadic nodes (#1702)
+* [nodes] Make `clock` behave like `continuously` when IVAL is set to 0 (#1698)
+* [ide] Prevent compilation error that could occur if there are debug nodes in nested patches (#1688)
+* [nodes] Make `xod/math/abs` correctly handle decimal values on esp8266 (#1677)
+* [ide] Make tab key work properly in Inspector (#1681)
+* [ide] Fix normalizing pin labels in generated C++ code (#1682)
+* [nodes] Make `xod/math/map-clip` output correct values when target range bounds are reversed (#1700)
+
 <a name="0.27.0"></a>
 
 ## 0.27.0 (2019-02-08)
