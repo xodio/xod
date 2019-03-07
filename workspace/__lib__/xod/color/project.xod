@@ -5,5 +5,5 @@
   "description": "Library to work with color",
   "license": "AGPL-3.0",
   "name": "color",
-  "version": "0.27.0"
+  "version": "0.28.0"
 }

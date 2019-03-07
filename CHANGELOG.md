@@ -2,12 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## Not yet released
+<a name="0.28.0"></a>
+
+## 0.28.0 (2019-03-07)
 
 ### Features and enhancements
 
 * [ide] Improve patch board design that shows bound values (#1684)
 * [ide] Make sure nodes and comments are always aligned to slots grid (#1695)
+* [ide] Allow any unicode symbols to be used as a terminal label (#1682)
 * [ide] Show a list of available inputs/outputs in QuickHelp when C++ or tabtest editors are open (#1682)
 * [ide] Make tabline scrollable if too many tabs are open (#1694)
 * [ide] Close tabs on middle click (#1686)

@@ -1,6 +1,6 @@
 {
   "name": "belt-holes",
-  "version": "0.25.0",
+  "version": "0.28.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build": "bsb -make-world",
