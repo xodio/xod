@@ -5,5 +5,5 @@
   "description": "Nodes to read analog infrared range meters by Sharp (GP2Y0A) and convert the signal to distance values.",
   "license": "AGPL-3.0",
   "name": "sharp-irm",
-  "version": "0.27.0"
+  "version": "0.28.0"
 }
