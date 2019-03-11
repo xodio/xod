@@ -103,6 +103,9 @@ const height =
   await menubar.clickTopLevelItem('View');
   await menubar.clickMenuItem('Pan to Center');
 
+  // move mouse out from the view area to avoid hover effects
+  await page.mouse.move(10000, 10000);
+
   await page.screenshot({
     path: screenshotDestPath,
     clip: Object.assign({}, patchboardTopLeft, desiredScreenshotSize),
