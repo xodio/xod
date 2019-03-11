@@ -12,7 +12,6 @@ import {
 import {
   addPoints,
   slotPositionToPixels,
-  snapPositionToSlots,
   snapNodePositionToSlots,
   pixelPositionToSlots,
   getBusNodePositionForPin,
@@ -413,14 +412,13 @@ export default (state = {}, action) => {
         position,
       } = action.payload;
 
-      const busNodePosition = snapPositionToSlots(position);
       const busNodeType =
         pinDirection === XP.PIN_DIRECTION.INPUT
           ? XP.FROM_BUS_PATH
           : XP.TO_BUS_PATH;
 
       const busNode = R.compose(XP.setNodeLabel(label), XP.createNode)(
-        busNodePosition,
+        position,
         busNodeType
       );
 
