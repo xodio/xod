@@ -5,5 +5,5 @@
   "description": "Nodes of XOD to deal with GPIO (hardware pins)",
   "license": "AGPL-3.0",
   "name": "gpio",
-  "version": "0.28.0"
+  "version": "0.28.1"
 }
