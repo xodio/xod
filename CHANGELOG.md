@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.28.1"></a>
+
+## 0.28.1 (2019-03-15)
+
+### Bug fixes
+
+* [ide] Make pin labels brighter to improve readability (#1717)
+* [ide] Fixed positioning of a bus node created when dragging a link from pin (#1716)
+* [ide] Fix C++ editor with a lot of content affecting tabs height (#1719)
+
 <a name="0.28.0"></a>
 
 ## 0.28.0 (2019-03-07)

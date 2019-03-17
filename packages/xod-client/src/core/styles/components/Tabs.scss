@@ -2,6 +2,7 @@
   background: $chrome-outlines;
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   height: 30px;
   overflow: hidden;
 
