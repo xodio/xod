@@ -6,6 +6,11 @@ import { COMMAND } from '../../../../utils/constants';
 import PatchSVG from '../../../../project/components/PatchSVG';
 import * as Layers from '../../../../project/components/layers';
 
+import {
+  snapPositionToSlots,
+  pixelPositionToSlots,
+} from '../../../../project/nodeLayout';
+
 import { getOffsetMatrix, bindApi, getMousePosition } from '../modeUtils';
 
 const abort = api => {
@@ -45,9 +50,13 @@ const linkingMode = {
     const { nodeId, pinKey } = api.props.linkingPin;
     const node = api.props.nodes[nodeId];
 
+    const mouseSlotPosition = pixelPositionToSlots(
+      snapPositionToSlots(api.state.mousePosition)
+    );
+
     api.props.actions.addBusNode(
       api.props.patchPath,
-      api.state.mousePosition,
+      mouseSlotPosition,
       node,
       pinKey
     );

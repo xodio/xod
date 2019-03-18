@@ -1,6 +1,7 @@
 .Breadcrumbs {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
   align-items: center;
   box-sizing: border-box;
   height: 40px;

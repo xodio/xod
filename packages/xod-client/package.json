@@ -1,6 +1,6 @@
 {
   "name": "xod-client",
-  "version": "0.28.0",
+  "version": "0.28.1",
   "description": "XOD project: Client application",
   "scripts": {
     "build": "babel src/ -d dist/ --source-maps",
