@@ -487,6 +487,7 @@ export default (state = initialState, action) => {
       return R.compose(
         addPlainTextToDebuggerLog(MSG.SIMULATION_ABORTED),
         R.assoc('activeSession', SESSION_TYPE.NONE),
+        R.assoc('watchNodeValues', {}),
         R.assoc('isPreparingSimulation', false),
         hideProgressBar
       )(state);
