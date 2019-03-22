@@ -25,11 +25,11 @@ module Value = {
     String.sub(str, 0, String.length(str) - 1);
   let byteStringToInt = str =>
     switch (str) {
-    | bin when Re.test(bin, [%re {|/b$/|}]) =>
+    | bin when Re.test_([%re {|/b$/|}], bin) =>
       "0b" ++ init(bin) |. int_of_string |. (x => Byte(x))
-    | hex when Re.test(hex, [%re {|/h$/|}]) =>
+    | hex when Re.test_([%re {|/h$/|}], hex) =>
       "0x" ++ init(hex) |. int_of_string |. (x => Byte(x))
-    | dec when Re.test(dec, [%re {|/d$/|}]) =>
+    | dec when Re.test_([%re {|/d$/|}], dec) =>
       init(dec) |. int_of_string |. (x => Byte(x))
     | x => Invalid(x)
     };
@@ -49,16 +49,16 @@ module Value = {
     | "Inf" => Number(infinity)
     | "+Inf" => Number(infinity)
     | "-Inf" => Number(neg_infinity)
-    | numString when Re.test(numString, numberRegex) =>
+    | numString when Re.test_(numberRegex, numString) =>
       Number(Js.Float.fromString(numString))
-    | approxNumString when Re.test(approxNumString, approxNumberRegex) =>
+    | approxNumString when Re.test_(approxNumberRegex, approxNumString) =>
       let strWithoutTilde =
         approxNumString |> Js.String.replaceByRe([%re {|/~$/|}], "");
       let num = Js.Float.fromString(strWithoutTilde);
       ApproxNumber(num, getPrecision(strWithoutTilde));
-    | quotedString when Re.test(quotedString, stringRegex) =>
+    | quotedString when Re.test_(stringRegex, quotedString) =>
       String(unquote(quotedString))
-    | byteString when Re.test(byteString, byteRegex) =>
+    | byteString when Re.test_(byteRegex, byteString) =>
       byteStringToInt(byteString)
     | x => Invalid(x)
     };

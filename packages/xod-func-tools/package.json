@@ -23,7 +23,7 @@
     "sanctuary-type-identifiers": "^2.0.1"
   },
   "devDependencies": {
-    "bs-platform": "^3.1.5",
+    "bs-platform": "5.0.0",
     "chai": "^4.1.2"
   },
   "files": [

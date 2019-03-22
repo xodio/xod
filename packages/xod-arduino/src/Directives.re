@@ -42,7 +42,7 @@ module Re = {
     );
   let remove = (~flags="gm", str, regex) => replace(~flags, str, regex, "");
   let test = (~flags="gm", str, regex) =>
-    Js.Re.test(str, Js.Re.fromStringWithFlags(regex, ~flags));
+    Js.Re.test_(Js.Re.fromStringWithFlags(regex, ~flags), str);
   let matches = (~flags="gm", str, regex) => {
     let reObj = Js.Re.fromStringWithFlags(regex, ~flags);
     /* Extracts the current match, ignoring capturing groups.
@@ -54,7 +54,7 @@ module Re = {
       |. Js.Nullable.toOption
       |. Option.getExn;
     let rec captureNext = () : list(string) =>
-      switch (Js.Re.exec(str, reObj)) {
+      switch (Js.Re.exec_(reObj, str)) {
       | None => []
       | Some(result) => List.add(captureNext(), fullMatch(result))
       };

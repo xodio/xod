@@ -22,7 +22,7 @@
   "dependencies": {
     "@glennsl/bs-revamp": "^0.1.1",
     "belt-holes": "^0.28.0",
-    "bs-platform": "^3.1.5",
+    "bs-platform": "5.0.0",
     "handlebars": "^4.0.6",
     "hm-def": "^0.3.2",
     "ramda": "^0.24.1",

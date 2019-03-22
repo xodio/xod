@@ -15,8 +15,8 @@
   "license": "AGPL-3.0",
   "main": "src/BeltHoles.bs.js",
   "devDependencies": {
-    "@glennsl/bs-jest": "^0.4.2",
-    "bs-platform": "^3.1.5"
+    "@glennsl/bs-jest": "^0.4.8",
+    "bs-platform": "5.0.0"
   },
   "jest": {
     "testMatch": [
