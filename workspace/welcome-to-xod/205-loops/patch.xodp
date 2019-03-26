@@ -1,0 +1,230 @@
+{
+  "comments": [
+    {
+      "content": "# Loops\n\nLet's make a simple traffic light. Each light is activated by the `delay` node. When the latest one finishes it sends a pulse to the begining and our traffic light starts over.\n\nTo make the loop we need a special `defer` node. When `defer` node receives some value or pulse it postpones downstream nodes evaluation until the next transaction. To better understand the execution model read the [guide](https://xod.io/docs/guide/execution-model/#feedback-loops-handling).\n\nThe `defer` node is always required when you make a loop to avoid deadlocks. For now, you can remember to place `defer` nodes right in the places where you want to complete the loop.\n\nProgram begins with the initial `boot` pulse. Then each delay node triggers the next one. The latest one pulses back to the beginning, and it works continuously.\n\nLet's bring the button back and make it starts with the button press.\n\n## Instructions\n\n1. Replace `boot` with the `button` node and bind the corresponding `PORT` value.\n\n2. Link with a free pin of the `any` node.\n\n3. Upload the program.\n\n4. Press the button.",
+      "id": "S1Noua9DuN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJvk0cv_E",
+      "input": {
+        "nodeId": "ByH1C9w_V",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "ryPnaqwON",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "Bkqn65wOE",
+      "input": {
+        "nodeId": "ryPnaqwON",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "ByZs_TqvOV",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "HkHpDWWtE",
+      "input": {
+        "nodeId": "Hy2dZdq_E",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "BJrt-u5dV",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "HkUIvbZK4",
+      "input": {
+        "nodeId": "BJrt-u5dV",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "ByH1C9w_V",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "HynbvzbYN",
+      "input": {
+        "nodeId": "Hy2dZdq_E",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "HycWDzbY4",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "r1Yoq2oO4",
+      "input": {
+        "nodeId": "ByZs_TqvOV",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "Hy2dZdq_E",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rkLuvbbYE",
+      "input": {
+        "nodeId": "H1ZdvbWK4",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "ryPnaqwON",
+        "pinKey": "HkU3vNoTW"
+      }
+    },
+    {
+      "id": "rySdv-WYE",
+      "input": {
+        "nodeId": "BJGdPZWtV",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "ByH1C9w_V",
+        "pinKey": "HkU3vNoTW"
+      }
+    },
+    {
+      "id": "rydvD-Wt4",
+      "input": {
+        "nodeId": "SkBPDWZYN",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "ByZs_TqvOV",
+        "pinKey": "HkU3vNoTW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "BJGdPZWtV",
+      "label": "Red LED",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 4
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "BJrt-u5dV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "boundLiterals": {
+        "SkSuD6LMb": "On Boot",
+        "Skre8ROSv1-": "5"
+      },
+      "id": "ByH1C9w_V",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 4
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "boundLiterals": {
+        "SkSuD6LMb": "On Boot",
+        "Skre8ROSv1-": "3"
+      },
+      "id": "ByZs_TqvOV",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 2
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D12"
+      },
+      "id": "H1ZdvbWK4",
+      "label": "Yellow LED",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 3
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundLiterals": {
+        "ByU7LRuSPkW": "On Boot",
+        "ryv7IRdSP1b": "On Boot"
+      },
+      "id": "Hy2dZdq_E",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 1
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "HycWDzbY4",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 0
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D11"
+      },
+      "id": "SkBPDWZYN",
+      "label": "Green LED",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 2
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundLiterals": {
+        "SkSuD6LMb": "On Boot",
+        "Skre8ROSv1-": "2"
+      },
+      "id": "ryPnaqwON",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 3
+      },
+      "type": "xod/core/delay"
+    }
+  ]
+}

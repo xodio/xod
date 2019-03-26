@@ -1,0 +1,98 @@
+{
+  "comments": [
+    {
+      "content": "# Run for X Seconds\n\nLet's make a device that turns on the LED for three seconds when you press the button.\n\nThe `delay` node helps us with this task. Generally, this node is used to postpone a pulse for some time, but when `delay` node is activated it also outputs `True` value on the `ACT` pin. That's what we need.\n\n## Instructions\n\n1. Replace `boot` with the `button` node and bind the corresponding `PORT`.\n\n2. Link it with the `SET` pin of the `delay` node.\n\n3. Change the `T` value to 3.\n\n4. Upload the program and press the button.\n\n## Additional Excercise\n\nCombine a few `delay` nodes by chaining `DONE` and `SET` pins to get a custom pattern of the blinking LED. Use the `or` node to combine `ACT` values as necessary.",
+      "id": "SJr0M7FU_E",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "HJSUXFL_E",
+      "input": {
+        "nodeId": "Sy-Cfmt8uE",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BJTSmtLOV",
+        "pinKey": "HkU3vNoTW"
+      }
+    },
+    {
+      "id": "SkDUmKUuV",
+      "input": {
+        "nodeId": "r1xAGQFI_V",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "BJTSmtLOV",
+        "pinKey": "HkU3vNoTW"
+      }
+    },
+    {
+      "id": "SyyCVWZt4",
+      "input": {
+        "nodeId": "BJTSmtLOV",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "SkAaV-bYE",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "SkSuD6LMb": "On Boot",
+        "Skre8ROSv1-": "10"
+      },
+      "id": "BJTSmtLOV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/delay"
+    },
+    {
+      "id": "SkAaV-bYE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/core/boot"
+    },
+    {
+      "id": "Sy-Cfmt8uE",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "r1xAGQFI_V",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

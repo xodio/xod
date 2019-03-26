@@ -1,0 +1,120 @@
+{
+  "comments": [
+    {
+      "content": "# String Formatting\n\nHere is a program with a text LCD that shows the temperature. We already formatted the thermometers output to get a human readable string on the LCD like \"Temp: 14.3C\".\n\nThe `format-number` node transforms the number value to a string with a desired precision.\n\nThe `concat` node concatenates a three parts of the string that we want to see on the display.\n\nLet's improve the program show the degree character.\n\nTo show non-ASCII characters you should specify a hexadecimal character code. It differs on other LCD models, so check out specifications for your model. However, if you have an MT-16S2H, a degree character is \"\\x99\".\n\n## Instructions\n\n1. Set 2 to `DIG`.\n\n2. Add one more input pin for the `concat` node by grabbing the handle.\n\n3. Bind \"\\x99\" instead of \"C\".\n\n4. Bind \"C\" to the latest pin of `concat`.\n\n5. Upload the program.\n",
+      "id": "rJBpp5JKV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1Ypc4GK4",
+      "input": {
+        "nodeId": "Bk8a5NfFN",
+        "pinKey": "B1TSE9tZ-"
+      },
+      "output": {
+        "nodeId": "HkNkC5yKV",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SJCmOrfFV",
+      "input": {
+        "nodeId": "HkT0TcyFE",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "HyY0RjktV",
+        "pinKey": "rkFgMITM-"
+      }
+    },
+    {
+      "id": "SkBBTBGtN",
+      "input": {
+        "nodeId": "HkNkC5yKV",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "HkT0TcyFE",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
+      "id": "r1V8k31tE",
+      "input": {
+        "nodeId": "HyY0RjktV",
+        "pinKey": "Hk_1fUaMW"
+      },
+      "output": {
+        "nodeId": "SkGApqJKV",
+        "pinKey": "HJU8CE2lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bk8a5NfFN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+    },
+    {
+      "arityLevel": 3,
+      "boundLiterals": {
+        "BkeKcj6ZZ-$1": "\"\\x99\"",
+        "BkeKcj6ZZ-$2": "\"C\"",
+        "Hkqu9oaWb": "\"Temp:\""
+      },
+      "id": "HkNkC5yKV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "1"
+      },
+      "id": "HkT0TcyFE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/format-number"
+    },
+    {
+      "id": "HyY0RjktV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    },
+    {
+      "id": "SkGApqJKV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    }
+  ]
+}

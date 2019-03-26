@@ -1,0 +1,94 @@
+{
+  "comments": [
+    {
+      "content": "# Manipulator\n\nTODO\n\nExplode.\nCopy `arm`s.\nBind values.\nAdd button.\n\nAdditional: add other servo actions.",
+      "id": "Hk40r24-_N",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1pAvHZdV",
+      "input": {
+        "nodeId": "ByZRrnEWuN",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "HyhRwBbOE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByzRBnVZO4",
+      "input": {
+        "nodeId": "B1gRHhVW_V",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "B1Rr3VZOE",
+        "pinKey": "H1sM2A12-"
+      }
+    },
+    {
+      "id": "H1yJur-_4",
+      "input": {
+        "nodeId": "HyhRwBbOE",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1Rr3VZOE",
+        "pinKey": "H1sM2A12-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Rr3VZOE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/common-hardware/pot"
+    },
+    {
+      "id": "B1gRHhVW_V",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "S1vGmu6Gb": "D9"
+      },
+      "id": "ByZRrnEWuN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "id": "HyhRwBbOE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/jumper"
+    }
+  ]
+}

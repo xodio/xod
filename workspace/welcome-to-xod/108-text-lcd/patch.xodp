@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "content": "# Display Text on LCD\n\nThere are many variants of liquid crystal displays (LCD). Among them, text displays are simplest to communicate with. A text LCD can expose either of interfaces:\n- I2C\n- Parallel interface\n\nXOD supports both.\n\n## Instructions\n\n1. Examine your LCD and decide which node fits it. Remove another one.\n\n2. Assemble the [circuit](#TODO) that matches your LCD model.\n\n3. Bind pins or set the I2C address.\n\n4. Bind \"Wuzzup!\" to the `L1` pin.\n\n5. Link `tweak-string` with `L2`.\n\n6. Upload the patch with the interactive session enabled.\n\n7. Select `tweak-string`.\n\n8. Type some text and press the Enter key.",
+      "id": "By72G_HbdN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1TSE9tZ-": "\"Hello\"",
+        "BJJqaX4Gb": "D11",
+        "H1bLN9F-b": "\"World\"",
+        "HJysTXVMb": "D9",
+        "S1nqa7NMZ": "D10",
+        "SkBK6Q4fb": "D12",
+        "rJlYT7EfW": "D13",
+        "rkbjp7Ezb": "D8"
+      },
+      "id": "BJ0UOrbdE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/text-lcd-16x2"
+    },
+    {
+      "id": "HkL8cbZFV",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "B1TSE9tZ-": "\"Hello\"",
+        "H1bLN9F-b": "\"World\""
+      },
+      "id": "rJWvOSbuN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+    }
+  ]
+}
