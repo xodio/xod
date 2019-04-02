@@ -64,10 +64,7 @@ _self.onmessage = e => {
       _self.importScripts(runtimeUrl);
       const opts = Object.assign(suite, {
         // Make possible downloading of wasmFile from dedicated webserver:
-        locateFile: fileName => {
-          if (fileName === 'main.wasm') return wasmUrl;
-          return fileName;
-        },
+        locateFile: () => wasmUrl,
         onAbort: x =>
           _self.postMessage({
             type: 'abort',
