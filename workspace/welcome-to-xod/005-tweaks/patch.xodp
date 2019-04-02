@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "content": "Restarting a program every time you change a value in the Inspector is not very convenient.\nWith `tweak-`nodes, you can adjust values while the program is running.\n\n## Instrucions\n\n1. Add `tweak-number` node to the patch.\n2. Link `tweak-number`'s output pin to `count`'s `STEP` pin.\n3. Start the simulation.\n4. Double click the tweak node.\n5. Input for tweak node's output value will focus in the Inspector. Change the value and press enter.\n6. Observe how the counter value is changing.\n7. Repeat the process for the tweak node that is connected to `clock`'s `IVAL` pin.\n8. Observe how the clock speed has changed.\n",
+      "id": "Bk86OdKuN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "Tip: you can use up/down keyboard keys in the Inspector to adjust numeric values by 0.1 (or hold shift to adjust by 1).",
+      "id": "H1mAsFFdE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 11
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "S1m_w9GawV",
+      "input": {
+        "nodeId": "H1eOP5GpPE",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "SkdPczaD4",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "SkLFcGpDV",
+      "input": {
+        "nodeId": "SkdPczaD4",
+        "pinKey": "B13SCNhl-"
+      },
+      "output": {
+        "nodeId": "r1NYczTwN",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "SkM_DczawE",
+      "input": {
+        "nodeId": "rJWuDqG6DV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1eOP5GpPE",
+        "pinKey": "r1yhZRd8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1eOP5GpPE",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "SkdPczaD4",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "1.6"
+      },
+      "id": "r1NYczTwN",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "id": "rJWuDqG6DV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}

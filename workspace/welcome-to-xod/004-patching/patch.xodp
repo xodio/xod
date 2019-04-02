@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "content": "Now it's time to learn how to add nodes and link them together. Let's recreate our counting program from scratch so we'll have two independent counters.\n\n## Instructions\n\n1. *Double-click* on some empty space on the patch or press the \"i\" key on your keyboard.\n\n2. The *Suggester* will appear. Type `clock` into it and press *enter*\n\n3. A new `clock` node will appear in the place you double-clicked in step 1.\n\n4. Try moving a node by clicking and dragging it.\n\n5. Repeat steps 2-4 to add `count` and `watch` nodes.\n\n6. Create a link between `clock`'s `TICK` pin and `count`'s `INC` pin by clicking on one pin, then on the other.\n\n7. Create a link between `count`'s output pin and `watch`'s input pin.\n",
+      "id": "Hy-6APFO4",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "Another way of duplicating a group of nodes and links is selecting them by clicking on an empty space and dragging and using *Edit* menu (or your systems standard keyboard shortcuts) to copy and paste them.",
+      "id": "rkOBIOtO4",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 4
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 10
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJ9BguYdE",
+      "input": {
+        "nodeId": "HJgDCDMpPV",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "ByP0vzTPE",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "HkGDRDG6DN",
+      "input": {
+        "nodeId": "Sk-PRvGpDV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "HJgDCDMpPV",
+        "pinKey": "r1yhZRd8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ByP0vzTPE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "HJgDCDMpPV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "Sk-PRvGpDV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}

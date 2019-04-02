@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "content": "If anything goes wrong or you have no idea what to do, we have [hints for every patch](https://xod.io/docs/tutorial/01-hello/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_01) on the web.",
+      "id": "S1y1tBawN",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 9
+      }
+    },
+    {
+      "content": "Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. \n\n## Instructions\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. This is a special tutorial project you’re working with right now. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, we are in patch `001-hello`. The next part of the tutorial is in patch `002-simulate`. Double-click it, and let's meet there!\n\n",
+      "id": "ry7eOGTwE",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": -2
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkCcBG6PV",
+      "input": {
+        "nodeId": "H1j5Hz6DN",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SyucBGpDE",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "rygsrMpP4",
+      "input": {
+        "nodeId": "SyucBGpDE",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "SJm9BG6wE",
+        "pinKey": "HJU8CE2lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1j5Hz6DN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "SJm9BG6wE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": -1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "SyucBGpDE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/core/count"
+    }
+  ]
+}

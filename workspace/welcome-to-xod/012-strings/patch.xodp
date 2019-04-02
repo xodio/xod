@@ -1,0 +1,168 @@
+{
+  "comments": [
+    {
+      "content": "Another important data type is *strings*. Strings represent pieces of text like “Hello World!” or \"https://xod.io\".\n\n## Instructions\n\n1. Run the Simulation.\n2. Observe how the message alternates between \"Hello World\" and \"Hello XOD\".\n3. Change values of `tweak-string-16`s to change the message.\n4. Add a third pin to `concat` and bind an exclamation point to it.\n\nNotice that tweak nodes for strings are a bit special. For optimisation purposes XOD needs to know the maximum length of the tweaked string, so there are several ones available. Try to choose the smallest ones.",
+      "id": "H12oaYV6PN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "ByE2GGWKV",
+      "input": {
+        "nodeId": "H1f3GfWFV",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "SyZoTKVpDN",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HypAY46v4",
+      "input": {
+        "nodeId": "Bkh0FNTDV",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "rklsaYEpPN",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "SyOurBRD4",
+      "input": {
+        "nodeId": "SyZoTKVpDN",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "S15HrHRDE",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "r1DOBHRDE",
+      "input": {
+        "nodeId": "SyZoTKVpDN",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "rJVSrHCwN",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "rJHnGfbYN",
+      "input": {
+        "nodeId": "Hyi6FEpPV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1f3GfWFV",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "rkZJ5VavV",
+      "input": {
+        "nodeId": "SyZoTKVpDN",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "Bkh0FNTDV",
+        "pinKey": "HkyxURuSPyW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bkh0FNTDV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "boundLiterals": {
+        "Hkqu9oaWb": "\"Hello \""
+      },
+      "id": "H1f3GfWFV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 4
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "id": "Hyi6FEpPV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"World\""
+      },
+      "id": "S15HrHRDE",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "id": "SyZoTKVpDN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"XOD\""
+      },
+      "id": "rJVSrHCwN",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "1"
+      },
+      "id": "rklsaYEpPN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    }
+  ]
+}

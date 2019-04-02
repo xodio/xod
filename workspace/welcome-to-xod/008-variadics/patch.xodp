@@ -1,0 +1,215 @@
+{
+  "comments": [
+    {
+      "content": "Check out the `or` node. In the previous lesson we saw that it has just two inputs, but now it has four! That's because some of the nodes in XOD are *variadic* — you can change their number of inputs. \n\n## Instructions\n\n1. Hover over the right side of the `add` node. Your cursor should become a double arrow.\n2. Click and drag to the right to add more inputs.\n\nVariadic nodes can be recognised by the handle at the right side. Also, their pins are marked as variadic in the help panels.",
+      "id": "H19EghQpvE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1RAndRO4",
+      "input": {
+        "nodeId": "BylRnd0_E",
+        "pinKey": "HJCfI0dBDkb-$2"
+      },
+      "output": {
+        "nodeId": "rkZOj_CuV",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "BJXdQajON",
+      "input": {
+        "nodeId": "Hysgh7pD4",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "HkeuXpodV",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "HkSCnuR_N",
+      "input": {
+        "nodeId": "SyePjO0ON",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BylRnd0_E",
+        "pinKey": "SJyXI0OrD1-"
+      }
+    },
+    {
+      "id": "S1JSz4pD4",
+      "input": {
+        "nodeId": "Hysgh7pD4",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "rkadWN6vN",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "SyNChdR_E",
+      "input": {
+        "nodeId": "BylRnd0_E",
+        "pinKey": "BJaG80urD1-"
+      },
+      "output": {
+        "nodeId": "S1yOoOAu4",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "rkL02_0OE",
+      "input": {
+        "nodeId": "BylRnd0_E",
+        "pinKey": "HJCfI0dBDkb"
+      },
+      "output": {
+        "nodeId": "r1x_jOC_E",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "ryxbhmTwN",
+      "input": {
+        "nodeId": "B1-4xh7pvV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "Hysgh7pD4",
+        "pinKey": "SyomIRurDJ-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1-4xh7pvV",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "11"
+      },
+      "id": "BJKFQao_4",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "arityLevel": 3,
+      "id": "BylRnd0_E",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/core/or"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "42"
+      },
+      "id": "HkeuXpodV",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "id": "Hysgh7pD4",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 2
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "id": "S1yOoOAu4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "id": "SyePjO0ON",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "Sk1e_NIVE": "False"
+      },
+      "id": "r1x_jOC_E",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "boundLiterals": {
+        "Sk1e_NIVE": "True"
+      },
+      "id": "rkZOj_CuV",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.5"
+      },
+      "id": "rkadWN6vN",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-number"
+    }
+  ]
+}

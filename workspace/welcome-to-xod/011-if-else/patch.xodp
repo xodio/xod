@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "content": "- `COND` - general input.\n- `T` - value passed to the `R` pin if `COND` receives true.\n- `F` - value passed to the `R` pin if `COND` receives false.\n- `R` - general output\n",
+      "id": "HJ0DFOAwE",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 4
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 10
+      }
+    },
+    {
+      "content": "Choosing between values based on some condition is a very common task. For that, there is an `if-else` node in `xod/core`.\n\nThe `COND` pin of this node checks the boolean input value. If `COND` receives true, the node sets the value from the `T` pin to the `R` pin. When it receives false, it sets the value from the `F` pin to the `R` pin.\n\n## Instructions\n\n1. Run the simulation.\n2. Change the value of the `tweak-boolean` node, observe how `if-else` output chenges.\n3. Try replacing `tweak-boolean` with a `flop-flop` with `TGL` pin connected to a `clock`.",
+      "id": "Sy45VFVpPV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkC8FNpDN",
+      "input": {
+        "nodeId": "rkiIt4aP4",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "rJg54K4TDN",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "H1WEDYE6PN",
+      "input": {
+        "nodeId": "B1gEvFVawV",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "rJ4DFVpvE",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "HyAHYE6w4",
+      "input": {
+        "nodeId": "ry9NK46v4",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BysSt4TPE",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HyevK4TPE",
+      "input": {
+        "nodeId": "BysSt4TPE",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "rkiIt4aP4",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "S178FVaPV",
+      "input": {
+        "nodeId": "BysSt4TPE",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "SkzLFNpwE",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "ryIwF4pP4",
+      "input": {
+        "nodeId": "BysSt4TPE",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "B1gEvFVawV",
+        "pinKey": "r1yhZRd8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HJvqZ0dLZ": "-1"
+      },
+      "id": "B1gEvFVawV",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "BysSt4TPE",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 4
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "boundLiterals": {
+        "Sk1e_NIVE": "True"
+      },
+      "id": "SkzLFNpwE",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 3
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "2"
+      },
+      "id": "rJ4DFVpvE",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "0.5"
+      },
+      "id": "rJg54K4TDN",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "rkiIt4aP4",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "ry9NK46v4",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 5
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 3
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}
