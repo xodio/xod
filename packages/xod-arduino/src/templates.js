@@ -167,8 +167,11 @@ Handlebars.registerHelper('ns', R.pipe(R.prop('patchPath'), patchPathToNSName));
 Handlebars.registerHelper('json', JSON.stringify);
 
 // https://github.com/wycats/handlebars.js/issues/927
-Handlebars.registerHelper('switch', function switchHelper(value, options) {
-  this._switch_value_ = value;
+Handlebars.registerHelper('switchByTweakType', function switchHelper(
+  value,
+  options
+) {
+  this._switch_value_ = XP.getTweakType(value);
   const html = options.fn(this); // Process the body of the switch block
   delete this._switch_value_;
   return html;
@@ -181,6 +184,8 @@ Handlebars.registerHelper('case', function caseHelper(value, options) {
 
   return undefined;
 });
+
+Handlebars.registerHelper('getStringTweakLength', XP.getStringTweakLength);
 
 // Returns declaration type specifier for an initial value of an output
 Handlebars.registerHelper(
