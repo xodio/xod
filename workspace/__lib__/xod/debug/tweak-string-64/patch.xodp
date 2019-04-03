@@ -1,0 +1,23 @@
+{
+  "description": "Outputs a 64-character string which you may change in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "H157HwsX6",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "H1wh06BEX",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}

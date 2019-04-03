@@ -49,25 +49,25 @@ void handleTweaks() {
           {{#eachTweakNode nodes}}
             case {{ id }}:
                 {
-                {{#switch patch.patchPath}}
-                  {{#case "xod/debug/tweak-number"}}
+                {{#switchByTweakType patch.patchPath}}
+                  {{#case "number"}}
                     node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseFloat();
                   {{/case}}
-                  {{#case "xod/debug/tweak-byte"}}
+                  {{#case "byte"}}
                     node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseInt();
                   {{/case}}
-                  {{#case "xod/debug/tweak-pulse"}}
+                  {{#case "pulse"}}
                     node_{{ id }}.output_OUT = 1;
                   {{/case}}
-                  {{#case "xod/debug/tweak-boolean"}}
+                  {{#case "boolean"}}
                     node_{{ id }}.output_OUT = (bool)XOD_DEBUG_SERIAL.parseInt();
                   {{/case}}
-                  {{#case "xod/debug/tweak-string-16"}}
+                  {{#case "string"}}
                     XOD_DEBUG_SERIAL.read(); // consume the ':' separator that was left after parsing node id
-                    size_t readChars = XOD_DEBUG_SERIAL.readBytesUntil('\r', node_{{ id }}.state.buff, 16);
+                    size_t readChars = XOD_DEBUG_SERIAL.readBytesUntil('\r', node_{{ id }}.state.buff, {{getStringTweakLength patch.patchPath}});
                     node_{{ id }}.state.buff[readChars] = '\0';
                   {{/case}}
-                {{/switch}}
+                {{/switchByTweakType}}
                     // to run evaluate and mark all downstream nodes as dirty
                     node_{{ id }}.isNodeDirty = true;
                     node_{{ id }}.isOutputDirty_OUT = true;
