@@ -1,0 +1,111 @@
+{
+  "comments": [
+    {
+      "content": "There are also a lot of additional libraries created by community listed at http://xod.io/libs/. We'll learn how to install them (and even create our own) a bit later.",
+      "id": "BkKdu3xt4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 6
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "By now you should be a bit bored by the `clock` and `counter`. Let's learn how to explore other nodes XOD has to offer.\n\n## Instructions\n\n1. Scroll to the `xod/math` section in the Project Browser, and expand it by clicking.\n2. Click on the `clip` patch, and then press the H key. Help panel with description will appear.\n3. Click on other patch. Help panel will move and show description for it.\n4. Select some node on the patch board and press the H key. Quick Help panel will appear at the right side of the patch board.\n",
+      "id": "Hy25Dd0wE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "As you probably noticed from previous lessons, help panel also automatically appears when using Suggester.",
+      "id": "SycXweWYV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 9
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "Hk6RlJWFV",
+      "input": {
+        "nodeId": "SJ-T9u0u4",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1qCxJbKV",
+        "pinKey": "BJRURA1nW"
+      }
+    },
+    {
+      "id": "ryR0xyZKN",
+      "input": {
+        "nodeId": "H1qCxJbKV",
+        "pinKey": "Hk2H0A13-"
+      },
+      "output": {
+        "nodeId": "SyfhqOR_4",
+        "pinKey": "ByfGSDjQE"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "H1WURCknW": "1",
+        "Hy_U0013b": "5"
+      },
+      "id": "H1qCxJbKV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/math/clip"
+    },
+    {
+      "id": "SJ-T9u0u4",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "9"
+      },
+      "id": "SyfhqOR_4",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-number"
+    }
+  ]
+}

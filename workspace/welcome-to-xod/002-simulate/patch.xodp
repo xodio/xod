@@ -1,0 +1,76 @@
+{
+  "comments": [
+    {
+      "content": "Let's learn how to run our program!\n\nUsually, you will want deploy it to some real hardware. But XOD also has a Simulation mode that allows to run a program right inside the IDE.\n\nIt's useful to quickly test some ideas of just play around.\n\n## Instructions\n\n1. Select Deploy → Simulate from the main menu.\n\n2. Observe how your current patch opens in a special `Debugger` tab, and the `watch` node becomes alive and shows current counter value.\n\n3. To finish a simulation session press the `Stop` button in the upper right corner or close the `Debugger`.",
+      "id": "rkDASa1dN",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": -1
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "HkzE6HMaPV",
+      "input": {
+        "nodeId": "ryZVTSM6vE",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1lV6HGTvE",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "SyXEaSz6vN",
+      "input": {
+        "nodeId": "H1lV6HGTvE",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "Hy4przaDV",
+        "pinKey": "HJU8CE2lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1lV6HGTvE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "Hy4przaDV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "ryZVTSM6vE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}

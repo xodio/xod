@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "content": "Each time a pulse arrives at the `TGL` pin, the node toggles the boolean value on the `MEM` pin from `false` to `true` and vice versa.",
+      "id": "BJKVFuRDE",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 10
+      }
+    },
+    {
+      "content": "You can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\n## Instructions\n\n1. Replace `clock` node with `tweak-pulse` node.\n2. Add a couple more `tweak-pulse`s and connect them to `flip-flop`'s `SET` and `RST` pins.\n3. Run the simulation, try sending pulses to each pin and observe how the `MEM` value changes.\n",
+      "id": "SyRmtuAw4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 3,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "HkhyP4pDV",
+      "input": {
+        "nodeId": "Hys1vVpDV",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "BJMpR8VTwV",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "SJR1PVaPV",
+      "input": {
+        "nodeId": "r1baCUE6w4",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "Hys1vVpDV",
+        "pinKey": "HkyxURuSPyW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJMpR8VTwV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "Hys1vVpDV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "r1baCUE6w4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}

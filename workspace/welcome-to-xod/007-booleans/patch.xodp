@@ -1,0 +1,156 @@
+{
+  "comments": [
+    {
+      "content": "In previous lessons we mostly dealt with numbers (like counter increment and clock interval). Now let's talk about *booleans*. They have only 2 possible values — *true* or *false*, but are extremely useful and common. Indicating whether some condition is met, should a device be on or off, did some operation succeed — that's a job for a *boolean*!\n\n## Instructions\n\n1. Read the descriptions for `and`, `or` and `not` nodes.\n2. Guess what the output value of `and` will be.\n3. Run the simulation to confirm it.\n4. Use `tweak-boolean` nodes to change it to the opposite value.\n5. Check out descriptions for `nand`, `nor` and `xor` nodes.",
+      "id": "ByANvORwN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJcjW7pidV",
+      "input": {
+        "nodeId": "HysWmajdV",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "B1gj-mTod4",
+        "pinKey": "SJyXI0OrD1-"
+      }
+    },
+    {
+      "id": "BktjWXaoON",
+      "input": {
+        "nodeId": "B1gj-mTod4",
+        "pinKey": "HJCfI0dBDkb"
+      },
+      "output": {
+        "nodeId": "S1zibm6o_V",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "H1vsZQaoO4",
+      "input": {
+        "nodeId": "B1SoZ76iuN",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "HysWmajdV",
+        "pinKey": "B1gN80uHvk-"
+      }
+    },
+    {
+      "id": "HJIo-7TsdV",
+      "input": {
+        "nodeId": "Sy4s-76i_E",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "By7i-majON",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "HydjbXajuV",
+      "input": {
+        "nodeId": "B1gj-mTod4",
+        "pinKey": "BJaG80urD1-"
+      },
+      "output": {
+        "nodeId": "rkbi-mTouN",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "rkjsZX6o_V",
+      "input": {
+        "nodeId": "HysWmajdV",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "Sy4s-76i_E",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1SoZ76iuN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "B1gj-mTod4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/or"
+    },
+    {
+      "id": "By7i-majON",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "id": "HysWmajdV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "id": "S1zibm6o_V",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "id": "Sy4s-76i_E",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "id": "rkbi-mTouN",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-boolean"
+    }
+  ]
+}

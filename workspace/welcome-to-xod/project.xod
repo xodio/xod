@@ -1,9 +1,6 @@
 {
-  "authors": [
-    "xod"
-  ],
   "description": "A crash course tutorial baked as a project",
   "license": "MIT",
   "name": "welcome-to-xod",
-  "version": "0.14.0"
+  "version": "0.29.0"
 }
