@@ -2,6 +2,16 @@
   "description": "Packs two bytes into an integer number",
   "nodes": [
     {
+      "description": "Use `xod/bits/i16-to-number` instead",
+      "id": "S1AxlFmtV",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SJ_i04svZ",
       "position": {
         "units": "slots",
