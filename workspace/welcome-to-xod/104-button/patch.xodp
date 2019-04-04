@@ -1,0 +1,77 @@
+{
+  "comments": [
+    {
+      "content": "# Buttons\n\nWe have already added the `button` node from `xod/common-hardware`.\n\nTake a look at button outputs. It has a `PRS` pin, which is `true` when it is pressed. On each input pulse either of output pulses is emitted:\n- `DONE` if the reading is done, wherever the button is pressed or not\n- `ERR` if the reading of hardware port is impossible, for example, the incorrect port number defined in the `PORT` pin\n\nThis is a standard pattern for side-effect nodes representing hardware or, for example, the Internet.\n\nLet's make the LED glow while the button is pressed.\n\n## Instructions\n\n1. Assemble the [circuit with a button and LED](#TODO).\n\n2. Set the `PORT` value of the `button` node.\n\n3. Link `PRS` to `LUM`.\n\n4. Upload your patch.",
+      "id": "HJzSJTKCwV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "## Additional Exercise\n\nNow let's place the already familiar node `flip-flop` between `button` and `led` to switch the LED on or off on each press.",
+      "id": "r1Ha3O1ON",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "SJTd6_J_N",
+      "input": {
+        "nodeId": "Hyn_aukuV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "ryITdiRwN",
+        "pinKey": "BJ--G1tI-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Hyn_aukuV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D11"
+      },
+      "id": "S1Sbc50w4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "id": "ryITdiRwN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/common-hardware/button"
+    }
+  ]
+}

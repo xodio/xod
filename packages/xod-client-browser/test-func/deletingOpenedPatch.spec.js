@@ -15,7 +15,7 @@ it('deletes an open patch', async () => {
   await patchGroup.clickOnTrigger();
   assert.isTrue(await patchGroup.isExpanded(), 'patch group is open');
 
-  const patchGroupItem = await patchGroup.findPatchGroupItem('01-hello');
+  const patchGroupItem = await patchGroup.findPatchGroupItem('100-hardware');
   await patchGroupItem.click();
   assert.isTrue(await patchGroupItem.isSelected(), 'patch is selected');
 
@@ -28,10 +28,13 @@ it('deletes an open patch', async () => {
   assert.equal(await popup.getTitle(), 'Delete the patch');
   await popup.clickConfirm();
 
-  assert.isNull(await EditorTab.findByName(page, '01-hello'), 'tab is closed');
+  assert.isNull(
+    await EditorTab.findByName(page, '100-hardware'),
+    'tab is closed'
+  );
 
   assert.isNull(
-    await patchGroup.findPatchGroupItem('01-hello'),
+    await patchGroup.findPatchGroupItem('100-hardware'),
     'patch is not available in project browser'
   );
 });

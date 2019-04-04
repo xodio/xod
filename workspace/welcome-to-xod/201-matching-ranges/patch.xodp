@@ -1,0 +1,116 @@
+{
+  "comments": [
+    {
+      "content": "## Clipping Ranges\n\nThe `map` node will now linearly map the 20–50°C range to 0–90°. Let’s raise the sensitivity. Say, we want to map 15–30°C to 0–90° rotation.\n\nHowever, what happens if the `X` pin of the `map` receives data that is outside the input range (10 or 42, for example)? The output value which is the servo angle falls outside the desired range.\n\nFor such cases, there is a sibling node called `map-clip`. It works the same way, but any input that is out of the range rounds to `Smin` or `Smax`.  Thus, if `X` receives the value of 10, the `map-clip` node accepts it as 15, and 42 as 30.\n\n## Practice\n\n1. Replace the `map` node with `map-clip` and try it out.\n\n2. Replace the thermometer with `analog-sensor` for LDR and play with values.\n\n3. Draw a gauge on the paper and attach it to the servo.",
+      "id": "Hy7-DWAyuV",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "# Matching Ranges\n\nIf you have finished `109-thermometer`, you have noticed that the thermometer node outputs the temperature value to the `Tc` pin in degrees Celsius. The `servo` node can work only with values ranging from 0 to 1.\n\nThe practical task is to make the servo rotate smoothly from 0 to 90°, reflecting a temperature change from 20°C to 50°C.\n\nYou can do this using a few math nodes, but we have a special node for such cases. This node is called `map`.\n\n## Instructions\n\n1. Connect a TMP36 thermometer to the board as shown on the [scheme](#TODO).\n\n2. Link the `Tc` pin to the `X` pin on the `map` node.\n\n3. Define the input range. In our case, it's from 20 to 50. Open the Inspector for `map`, and then set `Smin` to 20 and `Smax` to 50.\n\n4. Define the output range: set the `Tmin` to 0 and `Tmax` to 0.5.\n\n5. Link the `Xm` output to the `VAL` servo input.\n\nTry to heat the thermometer with a hot object (e.g., a paper knife heated with a lighter). At the temperature of 35 °C (half the input range), the servo should rotate to 45°, which is the midpoint of the output range.",
+      "id": "rJGWw-CJdE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkKgLJ-uE",
+      "input": {
+        "nodeId": "HyTjSJWOV",
+        "pinKey": "r1sfQ_6fb"
+      },
+      "output": {
+        "nodeId": "H1zoryb_E",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "HJFADybON",
+      "input": {
+        "nodeId": "BysnwJ-dN",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1zoryb_E",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "HyOkUyWdV",
+      "input": {
+        "nodeId": "H1zoryb_E",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "Hy6crJbuE",
+        "pinKey": "rkFgMITM-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BysnwJ-dN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "HJCWLAdSwyW": "30",
+        "rkpbU0OrwyZ": "1",
+        "ry1z8CuBDy-": "15"
+      },
+      "id": "H1zoryb_E",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/math/map"
+    },
+    {
+      "boundLiterals": {
+        "H1s0WI6MZ": "A1"
+      },
+      "id": "Hy6crJbuE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    },
+    {
+      "boundLiterals": {
+        "S1vGmu6Gb": "D9"
+      },
+      "id": "HyTjSJWOV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/common-hardware/servo"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "content": "# Interactive Session\n\nAs you run the simulation, you can run an *interactive session*. Tweaks and watches go live while running the program on an Arduino board.\n\n## Instructions\n\n1. Connect the Arduino board to your computer.\n\n2. Upload the program with the interactive session enabled. To do this, select Deploy → Upload to Arduino from the main menu and check \"Debug after upload\" or click the \"bug\" icon in the deployment pane below.\n\n3. After the interactive session has been started, select `tweak-boolean` and change its value. The built-in LED on the board reacts to these changes.\n\nTo stop the interactive session press \"Stop\" button on the green panel above. To start the interactive session again, you have to upload the program again.",
+      "id": "Syx5p6EAv4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "## Additional Exercise\n\nPlace `tweak-pulse` and link it with `UPD` pin and start the interactive session again. Now your LED changes the brightness only after you send a pulse.",
+      "id": "r1bznrRDN",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "rkLIoHAPE",
+      "input": {
+        "nodeId": "r1ZP7AE0DN",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "SJ78sSRPV",
+        "pinKey": "Sk1e_NIVE"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "SJ78sSRPV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "r1ZP7AE0DN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

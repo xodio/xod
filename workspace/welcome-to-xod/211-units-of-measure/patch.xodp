@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "content": "# Units of Measure\n\nThe standard `xod/units` library contains a few nodes for converting some popular units. For example, Celsius to Fahrenheit, degrees to radians and so on.\n\nOne of these nodes (`c-to-f`) already placed on the patch. So the program shows temperature in Fahrenheit on the LCD.\n\nLet's improve the program to see a temperature in Fahrenheit only when the button is pressed.\n\n## Instructions\n\n1. Add `if-else` below `button`.\n\n2. Link `PRS` with `COND`.\n\n3. Link `Tc` with `F`.\n\n4. Link output from `c-to-f` with `T`.\n\n5. Link `R` with the second pin of `concat`.\n\n6. Upload the program.\n\n7. Press the button.\n\nGreat! However, we still get a \"C\" on the LCD, even when the temperature converted to the Fahrenheit. Let's fix it.\n\n1. Add one more `if-else`.\n\n2. Link `PRS` to the new `COND` pin.\n\n3. Bind `\"F\"` to the `T` pin, and `\"C\"` to the `F` pin. Note that you need to write quotes because the `if-else` node is abstract and use generic types. So it deduces types from links or bound values. See the [generic nodes guide](https://xod.io/docs/guide/generics/) for better understanding.\n\n4. Link `R` with the latest pin of the `concat` node.\n\n5. Upload the program again.",
+      "id": "ByAtz2JY4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 8,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "Bk9usEzYV",
+      "input": {
+        "nodeId": "H1E_oNGF4",
+        "pinKey": "Skd9Qa_8W"
+      },
+      "output": {
+        "nodeId": "SyeS9M2kt4",
+        "pinKey": "rkFgMITM-"
+      }
+    },
+    {
+      "id": "BkkaG31FE",
+      "input": {
+        "nodeId": "H1aifnJYN",
+        "pinKey": "B1TSE9tZ-"
+      },
+      "output": {
+        "nodeId": "Hk_2f3yYV",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "rJBFiNGtN",
+      "input": {
+        "nodeId": "Hk_2f3yYV",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "H1E_oNGF4",
+        "pinKey": "H1kiQaO8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1E_oNGF4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/units/c-to-f"
+    },
+    {
+      "id": "H1aifnJYN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+    },
+    {
+      "boundLiterals": {
+        "ByNiWkt8Z": "D13"
+      },
+      "id": "HkRTG31KE",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "type": "xod/common-hardware/button"
+    },
+    {
+      "arityLevel": 3,
+      "boundLiterals": {
+        "BkeKcj6ZZ-$1": "\"\\x99\"",
+        "BkeKcj6ZZ-$2": "\"C\"",
+        "Hkqu9oaWb": "\"Temp: \""
+      },
+      "id": "Hk_2f3yYV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "id": "SyeS9M2kt4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    }
+  ]
+}

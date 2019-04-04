@@ -75,11 +75,12 @@ describe('xod-patch-search/index', () => {
       const results = search(indexData, 'therm');
       assert.equal(
         results[0].item.path,
-        'xod/common-hardware/thermometer-tmp36' // Cause this node has a `thermometer` in the path and it alphabetically sorted
+        'xod/common-hardware/thermometer-tmp36'
       );
+      assert.equal(results[1].item.path, '@/109-thermometer');
       assert.equal(
-        results[1].item.path,
-        'xod/common-hardware/dht11-thermometer' // Cause this node has a `thermometer` in the path and it alphabetically sorted
+        results[2].item.path,
+        'xod/common-hardware/dht11-thermometer'
       );
     });
 

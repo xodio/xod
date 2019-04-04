@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "content": "# Fade\n\nHere is a program with the LED that turns on smoothly while the button pressed.\n\nTo make a smooth transition from 0 to 1 and vice versa we use the `fade` node from the XOD standard library. It transforms its output value toward the target value with the rate specified.\n\nIn some cases this node helps to reduce bouncing or power bursts. For example, when you rotate a motor without smooth acceleration, it can cause a voltage drop and whole device reboot.\n\n## Instructions\n\n1. Replace `led` with `servo`.\n\n2. Set 2 to the `RATE` value to get a faster transition.\n\n3. Upload the program.\n\n4. Press and hold the button a few times.\n\nRemove the `fade` node and take a look at the board. When the motor starts moving you can see board LEDs are dimming; the board even can reboot.",
+      "id": "rkUlhBcDkYV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkzT6D1FN",
+      "input": {
+        "nodeId": "BJLhH5vJY4",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "HJTd9D1Y4",
+        "pinKey": "BJ0M5JKUW"
+      }
+    },
+    {
+      "id": "Sk4cwZfKV",
+      "input": {
+        "nodeId": "HJTd9D1Y4",
+        "pinKey": "HyYJqJFLZ"
+      },
+      "output": {
+        "nodeId": "Sk8i4WMYV",
+        "pinKey": "BJ--G1tI-"
+      }
+    },
+    {
+      "id": "rybppvkYN",
+      "input": {
+        "nodeId": "HyV2r5vJKN",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "HJTd9D1Y4",
+        "pinKey": "BJ0M5JKUW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJLhH5vJY4",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 3
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "BJ0M5JKUW": "0",
+        "BkweckF8-": "1"
+      },
+      "id": "HJTd9D1Y4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/fade"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D11"
+      },
+      "id": "HyV2r5vJKN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/led"
+    },
+    {
+      "boundLiterals": {
+        "ByNiWkt8Z": "D13"
+      },
+      "id": "Sk8i4WMYV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/common-hardware/button"
+    }
+  ]
+}

@@ -30,28 +30,37 @@ describe('Test FS things', () => {
   it('opens welcome-to-xod project on first start', () =>
     ide.page.assertProjectIsOpened('welcome-to-xod'));
 
-  describe('saving welcome-to-xod project to disk', () => {
+  describe('opening and saving blink project to disk', () => {
+    it('opens blink project', () =>
+      ide.app.electron.ipcRenderer
+        .emit(TRIGGER_LOAD_PROJECT, bundledWsPath('blink/project.xod'))
+        .then(() => ide.page.assertProjectIsOpened('blink')));
+
     const compareSavedWithFixture = () =>
       dircompare.compareSync(
-        ide.wsPath('welcome-to-xod'),
-        path.join(__dirname, '../src/workspace/welcome-to-xod'),
+        ide.wsPath('blink'),
+        path.join(__dirname, '../src/workspace/blink'),
         {
           compareContent: true,
-          excludeFilter: '.DS_Store,.directory,.Trash-*,Thumbs.db,desktop.ini',
+          excludeFilter:
+            '.DS_Store,.directory,.Trash-*,Thumbs.db,desktop.ini,__fixtures__',
         }
       );
 
     const saveAsXodballAndCheck = () =>
       ide.app.electron.ipcRenderer
-        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod.xodball'))
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('blink.xodball'))
         .then(ide.page.waitUntilProjectSaved)
         .then(() => {
           const expectedXodball = fse.readFileSync(
-            path.join(__dirname, './fixtures/welcome-to-xod.xodball'),
+            path.join(
+              __dirname,
+              '../src/workspace/blink/__fixtures__/blink.xodball'
+            ),
             'utf8'
           );
           const actualXodball = fse.readFileSync(
-            ide.wsPath('welcome-to-xod.xodball'),
+            ide.wsPath('blink.xodball'),
             'utf8'
           );
           assert.equal(actualXodball, expectedXodball);
@@ -60,15 +69,15 @@ describe('Test FS things', () => {
     // !!! Ideally, we should simulate clicking 'file -> save',
     // check that a file dialog appears and enter desired path there.
     // But spectron can't handle file dialogs :(
-    it('saves welcome project to disk as xodball', saveAsXodballAndCheck);
+    it('saves blink project to disk as xodball', saveAsXodballAndCheck);
     it(
-      'saves welcome project to disk as xodball again and it remains the same',
+      'saves blink project to disk as xodball again and it remains the same',
       saveAsXodballAndCheck
     );
 
-    it('saves welcome project to disk', () =>
+    it('saves blink project to disk', () =>
       ide.app.electron.ipcRenderer
-        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('blink'))
         .then(ide.page.waitUntilProjectSaved));
 
     it('is exaclty like bundled welcome project', () => {
@@ -78,7 +87,7 @@ describe('Test FS things', () => {
 
     it('saves a project for a second time without changing anything', () =>
       ide.app.electron.ipcRenderer
-        .emit(TRIGGER_SAVE_AS, ide.wsPath('welcome-to-xod'))
+        .emit(TRIGGER_SAVE_AS, ide.wsPath('blink'))
         .then(ide.page.waitUntilProjectSaved));
 
     it('remains the same after saving for a second time', () => {
@@ -137,7 +146,7 @@ describe('Test FS things', () => {
 
     before(() => {
       userCustomFileInLibPath = ide.libPath('xod/core/add/accounting.txt');
-      userCustomFileInProject = ide.wsPath('welcome-to-xod/02-deploy/note.txt');
+      userCustomFileInProject = ide.wsPath('blink/my-patch/note.txt');
     });
 
     // Prepare local project changes
@@ -154,19 +163,17 @@ describe('Test FS things', () => {
         .then(() => ide.page.clickAddNodeButton('input-string'))
         .then(() => ide.page.expandPatchGroup('xod/patch-nodes')));
 
-    it('delete another patch (`01-hello`)', () =>
+    it('delete another patch (`main`)', () =>
       ide.page
-        .expandPatchGroup('welcome-to-xod')
-        .then(() => ide.page.deletePatch('01-hello'))
-        .then(() =>
-          ide.page.assertNodeUnavailableInProjectBrowser('01-hello')
-        ));
+        .expandPatchGroup('blink')
+        .then(() => ide.page.deletePatch('main'))
+        .then(() => ide.page.assertNodeUnavailableInProjectBrowser('main')));
 
-    it('modify another patch (`04-pwm`)', () =>
+    it('modify newly created patch (`my-patch`)', () =>
       ide.page
-        .expandPatchGroup('welcome-to-xod')
-        .then(() => ide.page.scrollToPatchInProjectBrowser('04-pwm'))
-        .then(() => ide.page.openPatchFromProjectBrowser('04-pwm'))
+        .expandPatchGroup('blink')
+        .then(() => ide.page.scrollToPatchInProjectBrowser('my-patch'))
+        .then(() => ide.page.openPatchFromProjectBrowser('my-patch'))
         .then(() => ide.page.expandPatchGroup('xod/patch-nodes'))
         .then(() => ide.page.scrollToPatchInProjectBrowser('input-string'))
         .then(() => ide.page.selectPatchInProjectBrowser('input-string'))
@@ -174,11 +181,15 @@ describe('Test FS things', () => {
         .then(() => ide.page.expandPatchGroup('xod/patch-nodes')));
 
     it('put user file to the patch directory of the project', () =>
-      fse.writeFile(
-        userCustomFileInProject,
-        'My awesome note, that should not been deleted on project save!',
-        'utf8'
-      ));
+      fse
+        .ensureFile(userCustomFileInProject)
+        .then(() =>
+          fse.writeFile(
+            userCustomFileInProject,
+            'My awesome note, that should not been deleted on project save!',
+            'utf8'
+          )
+        ));
 
     // Prepare changes for already saved library (by installing lib)
     it('open library patch `xod/core/clock`', () =>
@@ -235,8 +246,8 @@ describe('Test FS things', () => {
     it('checks that saved only changes in the local project', () =>
       Promise.all([
         assert.eventually.isTrue(
-          fse.pathExists(ide.wsPath('welcome-to-xod/my-patch/patch.xodp')),
-          'Expected to `my-patch` be saved in the `welcome-to-xod` project, actually did not.'
+          fse.pathExists(ide.wsPath('blink/my-patch/patch.xodp')),
+          'Expected to `my-patch` be saved in the `blink` project, actually did not.'
         ),
         assert.eventually.isTrue(
           fse.pathExists(userCustomFileInProject),

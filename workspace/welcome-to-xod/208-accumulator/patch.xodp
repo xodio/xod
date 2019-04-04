@@ -1,0 +1,237 @@
+{
+  "comments": [
+    {
+      "content": "# Accumulator\n\nLet's make a device which helps us in adding numbers. We will learn how to memorize values and update them.\n\nThe XOD standard library contains a `buffer` node which memorizes the input value when it receives a pulse.\n\nTo make some calculations and change it we should make a loop from its output to the calculations and back to its input.\n\nThen, to avoid limitless calculations and make it possible to reset the buffer we need a `select` node. It produces the calculation result to the `buffer` node on a pulse.\n\nIn this example we're using the `add` node, but the calculation may be arbitrary complex.\n\n## Instructions\n\n1. Upload the program.\n\n2. Change the `tweak-number` value.\n\n3. Send pulse from the \"ADD\" node.\n\n4. Repeat the second and third steps a few times.\n\n5. Send pulse from \"RESET\".\n\nReplace tweak nodes with a coin acceptor and button to make a ticket system or photo booth.",
+      "id": "Sy6ZBBij_E",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1qjTsoOE",
+      "input": {
+        "nodeId": "rk_ipoo_E",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByVoajjuN",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "ByiqpjouN",
+      "input": {
+        "nodeId": "BkY4OiiON",
+        "pinKey": "HkXm80uHPyb"
+      },
+      "output": {
+        "nodeId": "ryrvujjd4",
+        "pinKey": "S1yaHC6UW"
+      }
+    },
+    {
+      "id": "H1WOdsjuN",
+      "input": {
+        "nodeId": "BkCE_ijO4",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "BJ3m_ij_V",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "S1Staii_N",
+      "input": {
+        "nodeId": "BkCE_ijO4",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "rJVF6sjdN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJgjTsi_4",
+      "input": {
+        "nodeId": "r1IEdsodV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "BkY4OiiON",
+        "pinKey": "r1lQLAOBwJb"
+      }
+    },
+    {
+      "id": "SkYFasj_4",
+      "input": {
+        "nodeId": "ryrvujjd4",
+        "pinKey": "S10qrR6UZ"
+      },
+      "output": {
+        "nodeId": "BkCE_ijO4",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "rkFwusi_N",
+      "input": {
+        "nodeId": "ryrvujjd4",
+        "pinKey": "rkmiHCaIZ"
+      },
+      "output": {
+        "nodeId": "Hk-VOooON",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "ry6qajoO4",
+      "input": {
+        "nodeId": "BkY4OiiON",
+        "pinKey": "Hy-QUR_BPkZ"
+      },
+      "output": {
+        "nodeId": "ryrvujjd4",
+        "pinKey": "rkWHDAW_f"
+      }
+    },
+    {
+      "id": "ryIqTooOE",
+      "input": {
+        "nodeId": "ryrvujjd4",
+        "pinKey": "rJUjrCTUb"
+      },
+      "output": {
+        "nodeId": "H1-c6siuN",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "ryrsaso_N",
+      "input": {
+        "nodeId": "ByVoajjuN",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "BkY4OiiON",
+        "pinKey": "r1lQLAOBwJb"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0"
+      },
+      "id": "BJ3m_ij_V",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "id": "BkCE_ijO4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "id": "BkY4OiiON",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/core/buffer"
+    },
+    {
+      "id": "ByVoajjuN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "id": "H1-c6siuN",
+      "label": "RESET",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-pulse"
+    },
+    {
+      "id": "Hk-VOooON",
+      "label": "ADD",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-pulse"
+    },
+    {
+      "id": "r1IEdsodV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 5
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "rJVF6sjdN",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "rk_ipoo_E",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "rygjH06LW": "0"
+      },
+      "id": "ryrvujjd4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/core/select"
+    }
+  ]
+}

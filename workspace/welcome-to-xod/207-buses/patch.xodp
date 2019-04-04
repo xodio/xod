@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "content": "# Buses\n\nIt's time to learn how to keep the program clean and get rid of link intersections.\n\nYou can see triangle nodes on the patch. These nodes are called *buses*.\n\nIt's an alternative way to link nodes' pins. They create “invisible” links. There are two node types in `xod/patch-nodes` that work in tandem:\n\n- `to-bus` — defines a new bus\n\n- `from-bus` — sources data from an existing bus\n\nBus nodes with the same label are considered to be implicitly interconnected by XOD. You can make a few `from-bus` nodes with the same label.\n\nLet's link the `IVAL` pin with the counter output using bus nodes.\n\n## Instructions\n\n1. First of all, we'll make a loop. So place a `defer` node.\n\n2. Place `to-bus`.\n\n3. Label it \"IVAL\".\n\n4. Link these nodes.\n\n5. Click on the `IVAL` pin of the `clock` node and the press \"B\" button on your keyboard. The label automatically sets from the linking pin label.\n\n6. Upload the program.\n\n\nAnother fast way to create a bus is from existing link. Select a link and press \"B\". It breaks the link and adds bus nodes instead.",
+      "id": "SJpHCJF8O4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -1
+      },
+      "size": {
+        "height": 8,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1xGj9bzK4",
+      "input": {
+        "nodeId": "S1d_cZzKN",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "rJfjcWztE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy_32bGFE",
+      "input": {
+        "nodeId": "rJLnh-Mt4",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "S1d_cZzKN",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "Hyj5qbfYE",
+      "input": {
+        "nodeId": "SyF9qZfKN",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "SykcqZztN",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    },
+    {
+      "id": "SkGFqWzY4",
+      "input": {
+        "nodeId": "S1d_cZzKN",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "HJeYcbzKN",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "rkb9c-ftN",
+      "input": {
+        "nodeId": "SykcqZztN",
+        "pinKey": "rJXICuSwyW"
+      },
+      "output": {
+        "nodeId": "S1d_cZzKN",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "rylRcc-fFE",
+      "input": {
+        "nodeId": "rJRqcZzK4",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyF9qZfKN",
+        "pinKey": "HJhXDIY9-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HJeYcbzKN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundLiterals": {
+        "r1yhZRd8W": "0"
+      },
+      "id": "S1d_cZzKN",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "SyF9qZfKN",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 3
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "boundLiterals": {
+        "HJG8C_SPkb": "10"
+      },
+      "id": "SykcqZztN",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/core/equal"
+    },
+    {
+      "id": "rJLnh-Mt4",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "rJRqcZzK4",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "rJfjcWztE",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    }
+  ]
+}

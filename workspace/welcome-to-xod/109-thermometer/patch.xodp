@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "content": "You can convert Celsius to Fahrenheit using `xod/units/c-to-f` node.\n\nMoreover, you can add a `concat` node and show the temperature on the display like \"22C\" instead of a plain number. See `210-string-formatting` for more details.",
+      "id": "BykL9xbYV",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 1
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "# Show Temperature on LCD\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\nWe'll use a TMP36 thermometer for this task. We have a node `thermometer-tmp36` for this chip in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Instructions\n\n1. Add a thermometer to your [circuit as shown](#TODO).\n\n2. Set the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
+      "id": "ryQEf7FyO4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "SyZtEYkOE",
+      "input": {
+        "nodeId": "SJOT7K1dE",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJm37Fkd4",
+        "pinKey": "rkFgMITM-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJoArYJON",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+    },
+    {
+      "id": "SJOT7K1dE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "SJm37Fkd4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    }
+  ]
+}

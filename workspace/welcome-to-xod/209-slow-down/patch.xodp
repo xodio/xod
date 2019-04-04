@@ -1,0 +1,54 @@
+{
+  "comments": [
+    {
+      "content": "# Slow Down\n\nYou often see the \"Loop\" value bound to `UPD` pins.\n\n\"Loop\" (also known as \"Continuously\") means that XOD tries to pulse these nodes as fast as it can. So these nodes evaluate themselves on each transaction.\n\nSometimes it's excessive and may lead to slowing the program performance. Especially if you're working with sensors that depend on timing like an ultrasonic range meter.\n\nTo avoid this, you can replace the \"Continuously\" with another source that pulses with the desired interval or only when necessary. For example, a `clock` node.\n\n## Instructions\n\n1. Place a `clock` node.\n2. Link it with the `UPD` pin of the `thermometer-tmp36` node.\n3. Place `pulse-on-change` between `Tc` and `UPD` of the text LCD.\n4. Upload the program.\n5. Heat the thermometer.",
+      "id": "rkzvF9ytV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "SJ7oKq1KV",
+      "input": {
+        "nodeId": "Bkv9F91FV",
+        "pinKey": "H1bLN9F-b"
+      },
+      "output": {
+        "nodeId": "B1JqY9JYE",
+        "pinKey": "rkFgMITM-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1JqY9JYE",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/common-hardware/thermometer-tmp36"
+    },
+    {
+      "boundLiterals": {
+        "B1TSE9tZ-": "\"Temperature:\""
+      },
+      "id": "Bkv9F91FV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "comments": [
+    {
+      "content": "# Upload the Program\n\nLet's upload this patch to the Arduino board to see the built-in LED blinking.\n\n## Instructions\n\n1. Connect the Arduino board to your computer.\n\n2. Upload the program. To do this, hit Deploy → Upload to Arduino from the main menu or click the lightning icon in the deployment pane at the bottom of the screen.\n\n## Additional Exercise\n\nChange the `IVAL` value on the `clock` node and upload the program again. See how the blinking frequency of the LED changes.",
+      "id": "SkxcsVCvV",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B16rcECPN",
+      "input": {
+        "nodeId": "H1iH5ERv4",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "B1dBcNADN",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "BkgLcN0vV",
+      "input": {
+        "nodeId": "HJyLcNCvV",
+        "pinKey": "HyYh1a3LZ"
+      },
+      "output": {
+        "nodeId": "H1iH5ERv4",
+        "pinKey": "HkyxURuSPyW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1dBcNADN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "H1iH5ERv4",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "boundLiterals": {
+        "B1oqkTnIb": "D13"
+      },
+      "id": "HJyLcNCvV",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 3
+      },
+      "type": "xod/common-hardware/led"
+    }
+  ]
+}

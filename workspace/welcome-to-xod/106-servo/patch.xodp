@@ -1,0 +1,63 @@
+{
+  "comments": [
+    {
+      "content": "# Servo\n\nControlling servos in XOD is just as easy as controlling LEDs. There is a node called `servo`. Find it in `xod/common-hardware`.\n\nThe `servo` node accepts a number in the range from 0.0 to 1.0 and maps it to the rated arm rotation limits of the servo motor.\n\nLet's link `pot` with `servo` to control the servo angle with the potentiometer.\n\n## Instructions\n\n1. Connect a servo to the Arduino board as shown on the [scheme](#TODO).\n\n2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the `servo` node.\n\n3. Upload the patch to the board.\n\nTurn the potentiometer knob, and watch the servo turns.\n",
+      "id": "HymTfYNZ_N",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkfaMKVZOE",
+      "input": {
+        "nodeId": "HybpMFEWuE",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "Ske6MK4-uV",
+        "pinKey": "H1sM2A12-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "S1vGmu6Gb": "D9"
+      },
+      "id": "ByUj9VWd4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/common-hardware/servo"
+    },
+    {
+      "id": "HybpMFEWuE",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "Ske6MK4-uV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/common-hardware/pot"
+    }
+  ]
+}
