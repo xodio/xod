@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "content": "# Creating a New Patch\n\nHere is a patch that checks if a number is between `0.4` and `0.7`. Let's make it reusable. We will make a node that takes three numbers and outputs a boolean. The first number is the one we want to check and the other two are boundaries instead of the hard-coded `0.4` and `0.7`.\n\n⚠️ Before you proceed, remember the location of this chapter in the Project Browser to return to it after you complete the instructions.\n\n## Instructions\n\n1. Select `less`, `greater` and `nor` nodes  and copy them to the clipboard.\n2. Select File -> New Patch... from the main menu.\n3. Choose a name (`between` is a nice one).\n4. Your new patch will open in a new tab. Paste nodes that you copied earlier inside.\n",
+      "id": "SkZ6KsEFE",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 1
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJosTaOKN",
+      "input": {
+        "nodeId": "BktiaTOtV",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1_YaadK4",
+        "pinKey": "rJqfIRdHwkW"
+      }
+    },
+    {
+      "id": "H1sKTTuKE",
+      "input": {
+        "nodeId": "H1_YaadK4",
+        "pinKey": "S1dG8AOBPJW"
+      },
+      "output": {
+        "nodeId": "BJpLTauYE",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "HkO96adK4",
+      "input": {
+        "nodeId": "BJpLTauYE",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "Hy19pauKN",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "SJ5tppdtV",
+      "input": {
+        "nodeId": "H1_YaadK4",
+        "pinKey": "r1tz8CdBDkb"
+      },
+      "output": {
+        "nodeId": "Hkh7TTOtN",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "rkDqaadKE",
+      "input": {
+        "nodeId": "Hkh7TTOtN",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "Hy19pauKN",
+        "pinKey": "ByfGSDjQE"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "0.7"
+      },
+      "id": "BJpLTauYE",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 4
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "BktiaTOtV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 7
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "H1_YaadK4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "type": "xod/core/nor"
+    },
+    {
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.4"
+      },
+      "id": "Hkh7TTOtN",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 4
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.5"
+      },
+      "id": "Hy19pauKN",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/tweak-number"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "comments": [
+    {
+      "content": "# Check Your New Patch\n\nIf it looks like this one, you did everything right!\nContinue to the next tutorial.\n",
+      "id": "Sys38g5FN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 9
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BkXJAVectE",
+      "input": {
+        "nodeId": "S1-yRVxqK4",
+        "pinKey": "S1dG8AOBPJW"
+      },
+      "output": {
+        "nodeId": "rklyREgqtN",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "BkfyRNgqFE",
+      "input": {
+        "nodeId": "S1-yRVxqK4",
+        "pinKey": "r1tz8CdBDkb"
+      },
+      "output": {
+        "nodeId": "rJyCNl9YE",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "S1-yRVxqK4",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 2
+      },
+      "type": "xod/core/nor"
+    },
+    {
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.4"
+      },
+      "id": "rJyCNl9YE",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "0.7"
+      },
+      "id": "rklyREgqtN",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 1
+      },
+      "type": "xod/core/greater"
+    }
+  ]
+}

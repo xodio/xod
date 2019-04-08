@@ -1,0 +1,128 @@
+{
+  "comments": [
+    {
+      "content": "# Terminals\n\nWe need a way for the between node to get values in and put values out. In XOD patch nodes interact with the outside world using terminal nodes. You can find the terminal nodes in `xod/patch-nodes` library, they are called `input-number`, `input-pulse`, `output-boolean`, etc.\n\nWe already placed an `input-number` and `output-boolean` instead of `tweak-number` and `watch`. Because of them, our node will have one number input pin and one boolean output. You can check it out by highlighting it in Project browser and invoking a help panel.\n\n## Instructions\n\n1. Add two more `input-number`s.\n2. Connect them to `less` and `greater`'s pins instead of hardcoded `0.4` and `0.7` values.\n3. Check how the node looks now in the help panel.\n\nNote that node's pin order is determined by the order of respective terminals. Try adding an `input-string` and moving it between other terminals.",
+      "id": "rkyWciVFV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJId0a_FV",
+      "input": {
+        "nodeId": "r1gT8CaOYE",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "SkX_Ca_YV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyfaUCp_FE",
+      "input": {
+        "nodeId": "rk-pLC6uYV",
+        "pinKey": "r1tz8CdBDkb"
+      },
+      "output": {
+        "nodeId": "S1T8RTdKV",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "SJsvAaOFN",
+      "input": {
+        "nodeId": "ByYwA6dKN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rk-pLC6uYV",
+        "pinKey": "rJqfIRdHwkW"
+      }
+    },
+    {
+      "id": "ryVOAp_YE",
+      "input": {
+        "nodeId": "S1T8RTdKV",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "SkX_Ca_YV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryma8Cp_t4",
+      "input": {
+        "nodeId": "rk-pLC6uYV",
+        "pinKey": "S1dG8AOBPJW"
+      },
+      "output": {
+        "nodeId": "r1gT8CaOYE",
+        "pinKey": "B19RYS3lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ByYwA6dKN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.4"
+      },
+      "id": "S1T8RTdKV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "SkX_Ca_YV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "0.7"
+      },
+      "id": "r1gT8CaOYE",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 3
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "rk-pLC6uYV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "type": "xod/core/nor"
+    }
+  ]
+}

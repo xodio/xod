@@ -1,0 +1,88 @@
+{
+  "comments": [
+    {
+      "content": "# Using Your New Node\n\nNow you can use the new node just like any other. Add it from the Suggester or by dragging from the Project Browser.",
+      "id": "BkIsFbYY4",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "HyVFAaOY4",
+      "input": {
+        "nodeId": "ry4r9sVtV",
+        "pinKey": "SkX_Ca_YV"
+      },
+      "output": {
+        "nodeId": "rkZKC6dF4",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "Sk65C6uY4",
+      "input": {
+        "nodeId": "HyKqCTOFN",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "ry4r9sVtV",
+        "pinKey": "ByYwA6dKN"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HyKqCTOFN",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 5
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.5"
+      },
+      "id": "rkZKC6dF4",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "boundLiterals": {
+        "SybBlRdtN": "0.7",
+        "rygHlRuFV": "0.4"
+      },
+      "id": "ry4r9sVtV",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 4
+      },
+      "type": "@/303-add-terminals"
+    }
+  ]
+}
