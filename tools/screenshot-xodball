@@ -23,6 +23,38 @@ const {
   default: EditorTab,
 } = require('xod-client-browser/test-func/pageObjects/EditorTab');
 
+// For bounding box calculation:
+const path = require('path');
+const { loadProject } = require('xod-fs/dist/load');
+const XP = require('xod-project/dist');
+const {
+  SLOT_SIZE,
+  slotPositionToPixels,
+} = require('xod-client/dist/project/nodeLayout');
+const getBBox = require('xod-client/dist/editor/utils').getBoundingBoxSize;
+
+const getPatchHeight = (pathToProject, patchName) =>
+  loadProject([path.resolve(__dirname, '../workspace')], pathToProject).then(
+    proj => {
+      const patch = XP.getPatchByPathUnsafe(`@/${patchName}`, proj);
+      const entities = {
+        nodes: XP.listNodes(patch),
+        comments: XP.listComments(patch),
+        links: XP.listLinks(patch),
+      };
+      return (
+        slotPositionToPixels(getBBox(patch, proj, entities)).y + SLOT_SIZE.GAP
+      );
+    }
+  );
+
+const calculateHeight = (pathToProject, patchName, desiredHeight) => {
+  const h = parseInt(desiredHeight, 10);
+  return h ? Promise.resolve(h) : getPatchHeight(pathToProject, patchName);
+};
+
+// ---
+
 if (process.argv.length < 5) {
   // eslint-disable-next-line no-console
   console.error(
@@ -42,17 +74,23 @@ const patchboardTopLeft = {
   x: 202,
   y: 64,
 };
-const desiredScreenshotSize = {
-  width: 700,
-  height: parseInt(desiredScreenshotHeight, 10) || 700,
-};
-const deploymentPanelHeight = 26;
-
-const width = patchboardTopLeft.x + desiredScreenshotSize.width;
-const height =
-  patchboardTopLeft.y + desiredScreenshotSize.height + deploymentPanelHeight;
-
 (async () => {
+  const screenshotHeight = await calculateHeight(
+    pathToXodball,
+    patchBaseName,
+    desiredScreenshotHeight
+  );
+
+  const desiredScreenshotSize = {
+    width: 700,
+    height: screenshotHeight || 700,
+  };
+  const deploymentPanelHeight = 26;
+
+  const width = patchboardTopLeft.x + desiredScreenshotSize.width;
+  const height =
+    patchboardTopLeft.y + desiredScreenshotSize.height + deploymentPanelHeight;
+
   await startServer();
 
   const browser = await puppeteer.launch({
