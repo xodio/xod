@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "# Show Temperature on LCD\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\nWe'll use a TMP36 thermometer for this task. We have a node `thermometer-tmp36` for this chip in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Instructions\n\n1. Add a thermometer to your [circuit as shown](#TODO).\n\n2. Set the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
+      "content": "# Show Temperature on LCD\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\nWe'll use a TMP36 thermometer for this task. We have a node `thermometer-tmp36` for this chip in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Instructions\n\n1. Add a thermometer to your [circuit as shown](https://xod.io/docs/tutorial/109-thermometer/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_109#assemble-circuit).\n\n2. Ensure the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
       "id": "ryQEf7FyO4",
       "position": {
         "units": "slots",
@@ -62,6 +62,9 @@
       "type": "xod/debug/watch"
     },
     {
+      "boundLiterals": {
+        "H1s0WI6MZ": "A1"
+      },
       "id": "SJm37Fkd4",
       "position": {
         "units": "slots",
