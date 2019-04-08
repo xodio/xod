@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Another important data type is *strings*. Strings represent pieces of text like “Hello World!” or \"https://xod.io\".\n\n## Instructions\n\n1. Run the Simulation.\n2. Observe how the message alternates between \"Hello World\" and \"Hello XOD\".\n3. Change values of `tweak-string-16`s to change the message.\n4. Add a third pin to `concat` and bind an exclamation point to it.\n\nNotice that tweak nodes for strings are a bit special. For optimisation purposes XOD needs to know the maximum length of the tweaked string, so there are several ones available. Try to choose the smallest ones.",
+      "content": "# Strings\n\nAnother important data type is *strings*. Strings represent pieces of text like “Hello World!” or \"https://xod.io\".\n\n## Instructions\n\n1. Run the Simulation.\n2. Observe how the message alternates between \"Hello World\" and \"Hello XOD\".\n3. Change values of `tweak-string-16`s to change the message.\n4. Add a third pin to `concat` and bind an exclamation point to it.\n\nNotice that tweak nodes for strings are a bit special. For optimisation purposes XOD needs to know the maximum length of the tweaked string, so there are several ones available. Try to choose the smallest ones.",
       "id": "H12oaYV6PN",
       "position": {
         "units": "slots",

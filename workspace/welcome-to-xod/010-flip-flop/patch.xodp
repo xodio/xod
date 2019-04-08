@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "You can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\n## Instructions\n\n1. Replace `clock` node with `tweak-pulse` node.\n2. Add a couple more `tweak-pulse`s and connect them to `flip-flop`'s `SET` and `RST` pins.\n3. Run the simulation, try sending pulses to each pin and observe how the `MEM` value changes.\n",
+      "content": "# Flip-flops\n\nYou can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\n## Instructions\n\n1. Replace `clock` node with `tweak-pulse` node.\n2. Add a couple more `tweak-pulse`s and connect them to `flip-flop`'s `SET` and `RST` pins.\n3. Run the simulation, try sending pulses to each pin and observe how the `MEM` value changes.\n",
       "id": "SyRmtuAw4",
       "position": {
         "units": "slots",
@@ -23,7 +23,7 @@
         "y": 0
       },
       "size": {
-        "height": 3,
+        "height": 4,
         "units": "slots",
         "width": 7
       }
