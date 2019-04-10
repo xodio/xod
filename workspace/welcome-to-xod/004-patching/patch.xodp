@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Now it's time to learn how to add nodes and link them together. Let's recreate our counting program from scratch so we'll have two independent counters.\n\n## Instructions\n\n1. *Double-click* on some empty space on the patch or press the \"i\" key on your keyboard.\n\n2. The *Suggester* will appear. Type `clock` into it and press *enter*\n\n3. A new `clock` node will appear in the place you double-clicked in step 1.\n\n4. Try moving a node by clicking and dragging it.\n\n5. Repeat steps 2-4 to add `count` and `watch` nodes.\n\n6. Create a link between `clock`'s `TICK` pin and `count`'s `INC` pin by clicking on one pin, then on the other.\n\n7. Create a link between `count`'s output pin and `watch`'s input pin.\n",
+      "content": "# Patching\n\nNow it's time to learn how to add nodes and link them together. Let's recreate our counting program from scratch so we'll have two independent counters.\n\n## Instructions\n\n1. *Double-click* on some empty space on the patch or press the \"i\" key on your keyboard.\n\n2. The *Suggester* will appear. Type `clock` into it and press *enter*\n\n3. A new `clock` node will appear in the place you double-clicked in step 1.\n\n4. Try moving a node by clicking and dragging it.\n\n5. Repeat steps 2-4 to add `count` and `watch` nodes.\n\n6. Create a link between `clock`'s `TICK` pin and `count`'s `INC` pin by clicking on one pin, then on the other.\n\n7. Create a link between `count`'s output pin and `watch`'s input pin.\n",
       "id": "Hy-6APFO4",
       "position": {
         "units": "slots",
@@ -9,7 +9,7 @@
         "y": 0
       },
       "size": {
-        "height": 4,
+        "height": 5,
         "units": "slots",
         "width": 8
       }
@@ -20,7 +20,7 @@
       "position": {
         "units": "slots",
         "x": -2,
-        "y": 4
+        "y": 5
       },
       "size": {
         "height": 2,

@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Check out the `or` node. In the previous lesson we saw that it has just two inputs, but now it has four! That's because some of the nodes in XOD are *variadic* — you can change their number of inputs. \n\n## Instructions\n\n1. Hover over the right side of the `add` node. Your cursor should become a double arrow.\n2. Click and drag to the right to add more inputs.\n\nVariadic nodes can be recognised by the handle at the right side. Also, their pins are marked as variadic in the help panels.",
+      "content": "# Variadic Nodes\n\nCheck out the `or` node. In the previous lesson we saw that it has just two inputs, but now it has four! That's because some of the nodes in XOD are *variadic* — you can change their number of inputs. \n\n## Instructions\n\n1. Hover over the right side of the `add` node. Your cursor should become a double arrow.\n2. Click and drag to the right to add more inputs.\n\nVariadic nodes can be recognised by the handle at the right side. Also, their pins are marked as variadic in the help panels.",
       "id": "H19EghQpvE",
       "position": {
         "units": "slots",

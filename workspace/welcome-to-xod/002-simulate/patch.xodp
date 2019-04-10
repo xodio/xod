@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Let's learn how to run our program!\n\nUsually, you will want deploy it to some real hardware. But XOD also has a Simulation mode that allows to run a program right inside the IDE.\n\nIt's useful to quickly test some ideas of just play around.\n\n## Instructions\n\n1. Select Deploy → Simulate from the main menu.\n\n2. Observe how your current patch opens in a special `Debugger` tab, and the `watch` node becomes alive and shows current counter value.\n\n3. To finish a simulation session press the `Stop` button in the upper right corner or close the `Debugger`.",
+      "content": "# Running Simulation\n\nLet's learn how to run our program!\n\nUsually, you will want deploy it to some real hardware. But XOD also has a Simulation mode that allows to run a program right inside the IDE.\n\nIt's useful to quickly test some ideas of just play around.\n\n## Instructions\n\n1. Select Deploy → Simulate from the main menu.\n\n2. Observe how your current patch opens in a special `Debugger` tab, and the `watch` node becomes alive and shows current counter value.\n\n3. To finish a simulation session press the `Stop` button in the upper right corner or close the `Debugger`.",
       "id": "rkDASa1dN",
       "position": {
         "units": "slots",

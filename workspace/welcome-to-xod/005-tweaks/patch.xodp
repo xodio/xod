@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Restarting a program every time you change a value in the Inspector is not very convenient.\nWith `tweak-`nodes, you can adjust values while the program is running.\n\n## Instrucions\n\n1. Add `tweak-number` node to the patch.\n2. Link `tweak-number`'s output pin to `count`'s `STEP` pin.\n3. Start the simulation.\n4. Double click the tweak node.\n5. Input for tweak node's output value will focus in the Inspector. Change the value and press enter.\n6. Observe how the counter value is changing.\n7. Repeat the process for the tweak node that is connected to `clock`'s `IVAL` pin.\n8. Observe how the clock speed has changed.\n",
+      "content": "# Tweaks\n\nRestarting a program every time you change a value in the Inspector is not very convenient.\nWith `tweak-`nodes, you can adjust values while the program is running.\n\n## Instrucions\n\n1. Add `tweak-number` node to the patch.\n2. Link `tweak-number`'s output pin to `count`'s `STEP` pin.\n3. Start the simulation.\n4. Double click the tweak node.\n5. Input for tweak node's output value will focus in the Inspector. Change the value and press enter.\n6. Observe how the counter value is changing.\n7. Repeat the process for the tweak node that is connected to `clock`'s `IVAL` pin.\n8. Observe how the clock speed has changed.\n",
       "id": "Bk86OdKuN",
       "position": {
         "units": "slots",

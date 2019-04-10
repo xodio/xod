@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "In previous lessons we mostly dealt with numbers (like counter increment and clock interval). Now let's talk about *booleans*. They have only 2 possible values — *true* or *false*, but are extremely useful and common. Indicating whether some condition is met, should a device be on or off, did some operation succeed — that's a job for a *boolean*!\n\n## Instructions\n\n1. Read the descriptions for `and`, `or` and `not` nodes.\n2. Guess what the output value of `and` will be.\n3. Run the simulation to confirm it.\n4. Use `tweak-boolean` nodes to change it to the opposite value.\n5. Check out descriptions for `nand`, `nor` and `xor` nodes.",
+      "content": "# Booleans\n\nIn previous lessons we mostly dealt with numbers (like counter increment and clock interval). Now let's talk about *booleans*. They have only 2 possible values — *true* or *false*, but are extremely useful and common. Indicating whether some condition is met, should a device be on or off, did some operation succeed — that's a job for a *boolean*!\n\n## Instructions\n\n1. Read the descriptions for `and`, `or` and `not` nodes.\n2. Guess what the output value of `and` will be.\n3. Run the simulation to confirm it.\n4. Use `tweak-boolean` nodes to change it to the opposite value.\n5. Check out descriptions for `nand`, `nor` and `xor` nodes.",
       "id": "ByANvORwN",
       "position": {
         "units": "slots",
