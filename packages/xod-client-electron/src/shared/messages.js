@@ -1,6 +1,5 @@
 import composeMessage from './composeMessage';
 
-export const BEGIN_COMPILATION_IN_CLOUD = 'Compiling code in the cloud...';
 export const CODE_TRANSPILED =
   'Project was successfully transpiled. Searching for device...';
 export const PORT_FOUND =
