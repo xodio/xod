@@ -868,7 +868,6 @@ class App extends client.App {
         selectedPort={this.props.selectedPort}
         listBoards={listBoards}
         listPorts={this.constructor.listPorts}
-        compileLimitLeft={this.props.compileLimitLeft}
         updateCompileLimit={this.props.actions.updateCompileLimit}
         initialDebugAfterUpload={
           this.props.popupsData.uploadToArduinoConfig.debugAfterUpload
@@ -998,7 +997,6 @@ App.propTypes = R.merge(client.App.propTypes, {
   project: client.sanctuaryPropType(Project),
   actions: PropTypes.objectOf(PropTypes.func),
   upload: PropTypes.object,
-  compileLimitLeft: PropTypes.number,
   workspace: PropTypes.string,
   selectedPort: PropTypes.object,
   isSimulationAbortable: PropTypes.bool.isRequired,
@@ -1018,7 +1016,6 @@ const mapStateToProps = R.applySpec({
   saveProcess: getSaveProcess,
   currentPatchPath: client.getCurrentPatchPath,
   selectedPort: getSelectedSerialPort,
-  compileLimitLeft: client.getCompileLimitLeft,
   isSimulationAbortable: client.isSimulationAbortable,
   isDeploymentInProgress,
   popups: {
