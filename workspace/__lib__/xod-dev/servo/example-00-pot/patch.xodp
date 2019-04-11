@@ -1,0 +1,38 @@
+{
+  "links": [
+    {
+      "id": "S1umWxBtN",
+      "input": {
+        "nodeId": "Bym7-lHYN",
+        "pinKey": "Bk5lexBtE"
+      },
+      "output": {
+        "nodeId": "r1TbqP4HV",
+        "pinKey": "H1sM2A12-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "BkXK1eBYV": "D10"
+      },
+      "id": "Bym7-lHYN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "@/servo"
+    },
+    {
+      "id": "r1TbqP4HV",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/common-hardware/pot"
+    }
+  ]
+}
