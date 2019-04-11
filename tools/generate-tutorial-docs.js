@@ -160,9 +160,7 @@ const extractCommentsFromProject = projectPath =>
 // =============================================================================
 
 const formatScreenshotCommand = patchName =>
-  `"$SHOT" "$SRC" ${patchName} ${
-    options.output
-  }/${patchName}/${patchName}.patch.png`;
+  `"$SHOT" "$SRC" ${patchName} ./${patchName}/${patchName}.patch.png`;
 
 const generateScreenshotScript = projectPath =>
   getProjectPatchDirs(projectPath)
