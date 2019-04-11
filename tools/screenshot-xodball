@@ -42,9 +42,13 @@ const getPatchHeight = (pathToProject, patchName) =>
         comments: XP.listComments(patch),
         links: XP.listLinks(patch),
       };
-      return (
-        slotPositionToPixels(getBBox(patch, proj, entities)).y + SLOT_SIZE.GAP
-      );
+
+      const patchBbox = slotPositionToPixels(getBBox(patch, proj, entities));
+
+      if (patchBbox.y <= 0)
+        return Promise.reject(`Patch "${patchName}" is empty.`);
+
+      return patchBbox.y + SLOT_SIZE.GAP;
     }
   );
 
@@ -79,7 +83,10 @@ const patchboardTopLeft = {
     pathToXodball,
     patchBaseName,
     desiredScreenshotHeight
-  );
+  ).catch(err => {
+    process.stdout.write(`${err}\n`);
+    process.exit(1);
+  });
 
   const desiredScreenshotSize = {
     width: 700,
