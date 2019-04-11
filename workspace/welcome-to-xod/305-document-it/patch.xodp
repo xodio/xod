@@ -1,0 +1,43 @@
+{
+  "comments": [
+    {
+      "content": "Conventionally XOD uses pin labels that are similar to IC leg labels. The labels can contain at most four characters, and usually, they are mnemonics or abbreviations. The restriction allows rendering patches quite densely.",
+      "id": "H1ycAbFFV",
+      "position": {
+        "units": "slots",
+        "x": -6,
+        "y": 4
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 9
+      }
+    },
+    {
+      "content": "# Adding Documentation\n\nThe only thing our node lacks is proper documentation. The pins are unlabeled and the help panel does not describe what it does at all. Let's fix that.\n\n## Instructions\n\n1. Double-click on a node to open a respective patch for editing. (Or just open it from the Project Browser.)\n2. Add labels to terminal nodes in the Inspector. They will become pin labels.\n3. Add descriptions to terminal nodes. They will become pin descriptions in the help panel.\n4. Click on any empty space on the patch to see the Inspector for the whole patch.\n5. Add the description for the whole patch. It will become the node's description for the node in the help panel.",
+      "id": "r1Hd6WYFE",
+      "position": {
+        "units": "slots",
+        "x": -6,
+        "y": 0
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 8
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HkBUWeFF4",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/303-add-terminals"
+    }
+  ]
+}

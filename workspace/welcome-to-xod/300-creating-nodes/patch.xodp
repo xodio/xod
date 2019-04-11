@@ -1,0 +1,18 @@
+{
+  "comments": [
+    {
+      "content": "# Creating Your Own Nodes\n\nIn this part of the tutorial, you will learn how to create your own XOD nodes.\n\nWe will take an existing patch, and *extract* a part of it into a separate node and add pins to control hard-coded parameters. Then we will add labels and descriptions that will be displayed in the help panel for our node, just like in XOD's standard library.",
+      "id": "HJmjFoNFV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "size": {
+        "height": 3,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ]
+}
