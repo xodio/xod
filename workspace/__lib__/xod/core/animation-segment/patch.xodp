@@ -1,0 +1,324 @@
+{
+  "description": "Animates a number making it run from one boundary to another with the given rate.",
+  "links": [
+    {
+      "id": "Bkct0p9r4",
+      "input": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "SkYq4r_B4"
+      },
+      "output": {
+        "nodeId": "BJSKA65HV",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "BkkYCa5SN",
+      "input": {
+        "nodeId": "rk6OAp9r4",
+        "pinKey": "H1SVIAuBDJZ"
+      },
+      "output": {
+        "nodeId": "HJBORpqB4",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    },
+    {
+      "id": "ByKORp9SV",
+      "input": {
+        "nodeId": "HJBORpqB4",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "BkE3a4uHV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1PtRaqBV",
+      "input": {
+        "nodeId": "BJSKA65HV",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "HJIa6E_r4",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1wRNSOHV",
+      "input": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "BkbYcVSuHE"
+      },
+      "output": {
+        "nodeId": "H1010NuBE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ_u0pqHV",
+      "input": {
+        "nodeId": "HJBORpqB4",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "r1AsTEuHE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJqxrrdSV",
+      "input": {
+        "nodeId": "Bk--RE_rV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJ8JHB_r4",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "HJylSB_BE",
+      "input": {
+        "nodeId": "HJ8JHB_r4",
+        "pinKey": "rkpbU0OrwyZ"
+      },
+      "output": {
+        "nodeId": "BkE3a4uHV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJKYAp5r4",
+      "input": {
+        "nodeId": "BJSKA65HV",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "rk6OAp9r4",
+        "pinKey": "B1LNICdSDJW"
+      }
+    },
+    {
+      "id": "SkHDZTqrE",
+      "input": {
+        "nodeId": "rkyv-a5S4",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "rJJhl6cH4"
+      }
+    },
+    {
+      "id": "SkOCNr_B4",
+      "input": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "SylFqNr_S4"
+      },
+      "output": {
+        "nodeId": "S1Rp6EuBE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r13xrS_BE",
+      "input": {
+        "nodeId": "ry6X04drV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "H1e_sEruBN"
+      }
+    },
+    {
+      "id": "rk5CEBdSN",
+      "input": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "ByGYcNBdS4"
+      },
+      "output": {
+        "nodeId": "rJIn0NdBV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk7eBBdH4",
+      "input": {
+        "nodeId": "HJ8JHB_r4",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "SkBRVSuH4",
+        "pinKey": "HJ_oNS_HE"
+      }
+    },
+    {
+      "id": "rkpyHruBE",
+      "input": {
+        "nodeId": "HJ8JHB_r4",
+        "pinKey": "rJbGU0_Hv1Z"
+      },
+      "output": {
+        "nodeId": "r1AsTEuHE",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJSKA65HV",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 4
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "description": "The current value of number animation.",
+      "id": "Bk--RE_rV",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 8
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "The final value of `OUT` in the animation.",
+      "id": "BkE3a4uHV",
+      "label": "TO",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Quickly rewind `OUT` to `FROM` and stop the animation",
+      "id": "H1010NuBE",
+      "label": "REV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "HJCWLAdSwyW": "1"
+      },
+      "id": "HJ8JHB_r4",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 7
+      },
+      "type": "xod/math/map"
+    },
+    {
+      "id": "HJBORpqB4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Defines the animation speed: amount of `OUT` change per second",
+      "id": "HJIa6E_r4",
+      "label": "RATE",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Set `OUT` to `FROM` and start animation. If the animation is in progress already it is cancelled, the new one is started.",
+      "id": "S1Rp6EuBE",
+      "label": "PLAY",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SkBRVSuH4",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "type": "@/animation-unit"
+    },
+    {
+      "description": "The starting value of `OUT` in the animation.",
+      "id": "r1AsTEuHE",
+      "label": "FROM",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Quickly forward `OUT` to `TO` and stop the animation.",
+      "id": "rJIn0NdBV",
+      "label": "FWD",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rk6OAp9r4",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/math/abs"
+    },
+    {
+      "description": "Pulses when the animation completes, that is the `OUT` value reaches the end. The pulse is not emitted when the animation is stopped with `REV` or `FWD`.",
+      "id": "rkyv-a5S4",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 8
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Active. Outputs whether the animation is in progress.",
+      "id": "ry6X04drV",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 8
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}
