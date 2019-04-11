@@ -13,16 +13,16 @@ defs:
 
   cache:
     cache-node_modules: &cache-node_modules
-      key: node_modules-{{ arch }}-{{ checksum "yarn.lock" }}
+      key: node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
       paths:
         - node_modules
 
     restore-node_modules: &restore-node_modules
       keys:
-        - node_modules-{{ arch }}-{{ checksum "yarn.lock" }}
+        - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
         # if cache for exact version of `yarn.lock` is not present then
         # load any most recent one
-        - node_modules-{{ arch }}
+        - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs

@@ -43,7 +43,7 @@ class PopupUploadConfig extends React.Component {
   }
 
   onBoardChanged(event) {
-    this.changeBoard(event.target.value);
+    this.changeBoard(parseInt(event.target.value, 10) || 0);
   }
 
   onUploadClicked() {
@@ -94,8 +94,15 @@ class PopupUploadConfig extends React.Component {
           isBoardSelected && boards[selectedBoard.index];
 
         const defaultBoardIndex = R.compose(
-          R.defaultTo(0),
-          R.findIndex(R.propEq('fqbn', 'arduino:avr:uno'))
+          R.when(R.equals(-1), R.always(0)),
+          R.findIndex(
+            R.either(
+              // If arduino:avr is not installed yet:
+              R.propEq('name', 'Arduino/Genuino Uno'),
+              // If it already installed:
+              R.propEq('fqbn', 'arduino:avr:uno')
+            )
+          )
         )(boards);
 
         if (!isBoardSelected || !doesSelectedBoardExist) {

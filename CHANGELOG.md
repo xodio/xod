@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.28.2"></a>
+
+## 0.28.2 (2019-03-28)
+
+### Bug fixes
+
+* [ide] Fix upload to the default board on a fresh installation of XOD IDE (#1732)
+
 <a name="0.28.1"></a>
 
 ## 0.28.1 (2019-03-15)
