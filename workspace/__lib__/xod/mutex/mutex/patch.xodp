@@ -1,0 +1,23 @@
+{
+  "description": "Describes a mutually exclusive resource. Used to avoid conflicts between nodes controlling long-running processes. No two processes may lock a mutex at the same time.",
+  "nodes": [
+    {
+      "id": "HJAPJgcFE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "HJNdye9FN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
