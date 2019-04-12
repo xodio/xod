@@ -7,6 +7,8 @@ import PatchGroupItemContextMenu from './pageObjects/PatchGroupItemContextMenu';
 import ConfirmationPopup from './pageObjects/ConfirmationPopup';
 import EditorTab from './pageObjects/EditorTab';
 
+const PATCH_NAME = '001-hello';
+
 it('deletes an open patch', async () => {
   const page = await getPage(browser);
   const projectBrowser = await ProjectBrowser.findOnPage(page);
@@ -15,7 +17,7 @@ it('deletes an open patch', async () => {
   await patchGroup.clickOnTrigger();
   assert.isTrue(await patchGroup.isExpanded(), 'patch group is open');
 
-  const patchGroupItem = await patchGroup.findPatchGroupItem('100-hardware');
+  const patchGroupItem = await patchGroup.findPatchGroupItem(PATCH_NAME);
   await patchGroupItem.click();
   assert.isTrue(await patchGroupItem.isSelected(), 'patch is selected');
 
@@ -28,13 +30,10 @@ it('deletes an open patch', async () => {
   assert.equal(await popup.getTitle(), 'Delete the patch');
   await popup.clickConfirm();
 
-  assert.isNull(
-    await EditorTab.findByName(page, '100-hardware'),
-    'tab is closed'
-  );
+  assert.isNull(await EditorTab.findByName(page, PATCH_NAME), 'tab is closed');
 
   assert.isNull(
-    await patchGroup.findPatchGroupItem('100-hardware'),
+    await patchGroup.findPatchGroupItem(PATCH_NAME),
     'patch is not available in project browser'
   );
 });

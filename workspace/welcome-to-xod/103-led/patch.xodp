@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "## Instructions\n\n1. Assemble a circuit according to the [scheme](#TODO), and connect the Arduino to your computer.\n\n2. Set the value of the `PORT` pin to `D11`. Leading \"D\" means that it's a digital port.\n\n3. Replace the `tweak-boolean` node with `tweak-number`.\n\n4. Upload the program with the interactive session enabled.\n\n5. Change the value of `tweak-number` in the range from 0 to 1 and see how the brightness of the LED changes.",
+      "content": "## Instructions\n\n1. Assemble a circuit according to the [scheme](https://xod.io/docs/tutorial/103-led/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_103#assemble-circuit), and connect the Arduino to your computer.\n\n2. Set the value of the `PORT` pin to `D11`. Leading \"D\" means that it's a digital port.\n\n3. Replace the `tweak-boolean` node with `tweak-number`.\n\n4. Upload the program with the interactive session enabled.\n\n5. Change the value of `tweak-number` in the range from 0 to 1 and see how the brightness of the LED changes.",
       "id": "ryhJWc0P4",
       "position": {
         "units": "slots",
