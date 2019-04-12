@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Manipulator\n\nTODO\n\nExplode.\nCopy `arm`s.\nBind values.\nAdd button.\n\nAdditional: add other servo actions.",
+      "content": "# Manipulator\n\nControlling the servo with a potentiometer or another analog sensor is easy. However, what if we want to make some complex movements with servos?\n\nOn the patch board, you see `servo-device`. This node defines a servo for the further usage: the port, minimum, and maximum pulse widths which correspond to the minimum and maximum angles of the servo.\n\nThe `servo-device` node links to nodes that work with servos: `rotate-slow` in this example. The `rotate-slow` node rotates the servo to the angle specified in `VAL` with the `RATE` speed when a `DO` pulse is received. You may chain these nodes to make a sequential movement.\n\nYou may notice that `rotate-slow` have `MUX` pins. It's another custom type called `mutex` that allows only one node to act at the same time.\n\nThis program rotates the servo to the maximum angle slowly and then turn it back twice as fast on a button press. The button is ignored until rotation completes.\n\nUpload the program and check it out.",
       "id": "Hk40r24-_N",
       "position": {
         "units": "slots",
@@ -9,86 +9,134 @@
         "y": 0
       },
       "size": {
-        "height": 5,
+        "height": 6,
         "units": "slots",
         "width": 7
+      }
+    },
+    {
+      "content": "The `xod-dev/servo` library also contains a `rotate` node. The main difference between it and `rotate-slow` that it rotates the servo immediately ignoring `MUX`.\n\nLet's change the servo trajectory.\n\n## Instructions\n\n1. Add two more `rotate-slow` nodes.\n\n2. Link all nodes in the same way.\n\n3. Adjust pin values of `rotate-slow`.\n\n4. Upload the program and press the button.",
+      "id": "SyhsB70YV",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 2
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 6
       }
     }
   ],
   "links": [
     {
-      "id": "B1pAvHZdV",
+      "id": "HkvZIeXCKV",
       "input": {
-        "nodeId": "ByZRrnEWuN",
-        "pinKey": "r1sfQ_6fb"
+        "nodeId": "B17bLx70Y4",
+        "pinKey": "r11svP4H4"
       },
       "output": {
-        "nodeId": "HyhRwBbOE",
-        "pinKey": "__out__"
+        "nodeId": "ByM-LgQ0FV",
+        "pinKey": "ryCUDDES4"
       }
     },
     {
-      "id": "ByzRBnVZO4",
+      "id": "S15ZIemRtV",
       "input": {
-        "nodeId": "B1gRHhVW_V",
-        "pinKey": "HkXK-dGob"
+        "nodeId": "ByM-LgQ0FV",
+        "pinKey": "r11svP4H4"
       },
       "output": {
-        "nodeId": "B1Rr3VZOE",
-        "pinKey": "H1sM2A12-"
+        "nodeId": "B1Z8gQAYE",
+        "pinKey": "BJ--G1tI-"
       }
     },
     {
-      "id": "H1yJur-_4",
+      "id": "SJIZ8lmRYN",
       "input": {
-        "nodeId": "HyhRwBbOE",
-        "pinKey": "__in__"
+        "nodeId": "B17bLx70Y4",
+        "pinKey": "SkC4wvEr4"
       },
       "output": {
-        "nodeId": "B1Rr3VZOE",
-        "pinKey": "H1sM2A12-"
+        "nodeId": "ByM-LgQ0FV",
+        "pinKey": "HJuBDDNSV"
+      }
+    },
+    {
+      "id": "rJBIxQRKE",
+      "input": {
+        "nodeId": "ByM-LgQ0FV",
+        "pinKey": "SkC4wvEr4"
+      },
+      "output": {
+        "nodeId": "SJ7d0fRFV",
+        "pinKey": "HJmZvD4SE"
+      }
+    },
+    {
+      "id": "rJR-UlX0K4",
+      "input": {
+        "nodeId": "B17bLx70Y4",
+        "pinKey": "Sykbxl5Y4"
+      },
+      "output": {
+        "nodeId": "ByM-LgQ0FV",
+        "pinKey": "HJIWegcFE"
       }
     }
   ],
   "nodes": [
     {
-      "id": "B1Rr3VZOE",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 1
-      },
-      "type": "xod/common-hardware/pot"
-    },
-    {
-      "id": "B1gRHhVW_V",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 2
-      },
-      "type": "xod/debug/watch"
-    },
-    {
       "boundLiterals": {
-        "S1vGmu6Gb": "D9"
+        "HkvdPw4S4": "0",
+        "S1n9Yv4r4": "0.6"
       },
-      "id": "ByZRrnEWuN",
+      "id": "B17bLx70Y4",
       "position": {
         "units": "slots",
         "x": 8,
         "y": 3
       },
-      "type": "xod/common-hardware/servo"
+      "type": "xod-dev/servo/rotate-slow"
     },
     {
-      "id": "HyhRwBbOE",
+      "boundLiterals": {
+        "ByNiWkt8Z": "D13"
+      },
+      "id": "B1Z8gQAYE",
       "position": {
         "units": "slots",
-        "x": 9,
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/common-hardware/button"
+    },
+    {
+      "boundLiterals": {
+        "HkvdPw4S4": "1",
+        "S1n9Yv4r4": "0.3",
+        "r11svP4H4": "On Boot"
+      },
+      "id": "ByM-LgQ0FV",
+      "position": {
+        "units": "slots",
+        "x": 8,
         "y": 2
       },
-      "type": "xod/patch-nodes/jumper"
+      "type": "xod-dev/servo/rotate-slow"
+    },
+    {
+      "boundLiterals": {
+        "HyNOLPVB4": "D9"
+      },
+      "id": "SJ7d0fRFV",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod-dev/servo/servo-device"
     }
   ]
 }
