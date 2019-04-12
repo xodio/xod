@@ -1,0 +1,69 @@
+{
+  "description": "Extracts the current target position value from the servo device",
+  "nodes": [
+    {
+      "description": "The servo device",
+      "id": "B1WX3NuSN",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/output-servo-device"
+    },
+    {
+      "description": "The servo device",
+      "id": "B1yXnEOrN",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "@/input-servo-device"
+    },
+    {
+      "description": "Current shaft position in the [0; 1] range. Note, this is the value the servo strives to be at, it may be inequal to the current physical shaft position.",
+      "id": "H13434dH4",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Pulses when the position is updated",
+      "id": "H1vgFZBYE",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Re-requests the position.",
+      "id": "S1Ig6VurV",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "r1AlaE_HV",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

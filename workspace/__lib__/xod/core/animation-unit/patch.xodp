@@ -1,0 +1,96 @@
+{
+  "description": "Animates a number making it run from 0.0 to 1.0",
+  "nodes": [
+    {
+      "description": "Quickly rewind `OUT` to 0.0 and stop the animation",
+      "id": "BkbYcVSuHE",
+      "label": "REV",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Quickly forward `OUT` to 1.0 and stop the animation.",
+      "id": "ByGYcNBdS4",
+      "label": "FWD",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__in__": "True"
+      },
+      "description": "Active. Outputs whether the animation is in progress.",
+      "id": "H1e_sEruBN",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "description": "The current value of number animation. Always in range [0, 1].",
+      "id": "HJ_oNS_HE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Defines the animation speed: amount of `OUT` change per second",
+      "id": "SkYq4r_B4",
+      "label": "RATE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Set `OUT` to 0.0 and start animation. If the animation is in progress already it is cancelled, the new one is started.",
+      "id": "SylFqNr_S4",
+      "label": "PLAY",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the animation completes, that is the `OUT` value reaches 1.0. The pulse is not emitted when the animation is stopped with `REV` or `FWD`.",
+      "id": "rJJhl6cH4",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ryM6VS_SV",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

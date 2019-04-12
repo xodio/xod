@@ -1,0 +1,102 @@
+{
+  "description": "Locks/unlocks a mutex and exposes its activity state. Useful to create state machines.",
+  "nodes": [
+    {
+      "description": "Release the mutex lock",
+      "id": "BkeRUbQ5YV",
+      "label": "RLS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The mutex",
+      "id": "By4C8Z7cK4",
+      "label": "MUX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-mutex"
+    },
+    {
+      "description": "Acquire the mutex lock",
+      "id": "H1L08Z7cKE",
+      "label": "ACQ",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJW0LZQcKE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The mutex",
+      "id": "HkG0UbX9FV",
+      "label": "MUX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-mutex"
+    },
+    {
+      "description": "Pulses continuously (with maximal possible rate) whenever the mutex is locked by this particular node instance",
+      "id": "SJJlGmqKE",
+      "label": "LOOP",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses if the mutex lock released successfully, that is, it belonged to this particular node instance at the moment of `RLS` pulse",
+      "id": "SkBCLZ7qYE",
+      "label": "RLSd",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses if the mutex lock acquired successfully, that is, it was free at the moment of `ACQ` pulse",
+      "id": "r1XA8bQ5tE",
+      "label": "ACQd",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Outputs whether the mutex is locked by this particular node instance",
+      "id": "r1wJGQ5YN",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}

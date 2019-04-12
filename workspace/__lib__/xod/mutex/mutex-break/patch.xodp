@@ -1,0 +1,58 @@
+{
+  "description": "Forces mutex release/unlock regardless of who owns it currently.",
+  "nodes": [
+    {
+      "description": "Do break",
+      "id": "B1WNKGgqFV",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The mutex",
+      "id": "H1GNKfg5tE",
+      "label": "MUX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-mutex"
+    },
+    {
+      "description": "Fires when the mutex is free. In practice immediatelly after `DO`.",
+      "id": "HkEKMl5Y4",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HygNtGx9t4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The mutex",
+      "id": "rJmVtze9YV",
+      "label": "MUX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-mutex"
+    }
+  ]
+}

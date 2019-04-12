@@ -1,0 +1,102 @@
+{
+  "description": "Locks/unlocks a mutex and passes/rejects pulses through itself depending on the mutex lock state",
+  "nodes": [
+    {
+      "description": "Follows a pulse on `IN` if the mutex is acquired by this particular instance of the node",
+      "id": "BJsBc5FHE",
+      "label": "OUT",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Release the mutex lock",
+      "id": "Bk-GcqKrN",
+      "label": "RLS",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BkMOqqtSE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The mutex",
+      "id": "H1OMflcK4",
+      "label": "MUX",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "@/input-mutex"
+    },
+    {
+      "description": "Pulses if the mutex lock acquired successfully, that is, it was free at the moment of `ACQ` pulse",
+      "id": "H1jVq9FrE",
+      "label": "ACQd",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The mutex",
+      "id": "HJAMzx9KN",
+      "label": "MUX'",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/output-mutex"
+    },
+    {
+      "description": "Pulses if the mutex lock released successfully, that is, it belonged to this particular node instance at the moment of `RLS` pulse",
+      "id": "HyESq9FHN",
+      "label": "RLSd",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Acquire the mutex lock",
+      "id": "S15-cqKrV",
+      "label": "ACQ",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "A pulse to pass or reject",
+      "id": "S1KM9qFBE",
+      "label": "IN",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
