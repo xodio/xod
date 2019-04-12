@@ -67,6 +67,16 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Use `xod-dev/servo/servo` instead",
+      "id": "rku2bm0YN",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }
