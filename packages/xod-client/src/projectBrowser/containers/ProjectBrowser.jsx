@@ -221,6 +221,7 @@ class ProjectBrowser extends React.Component {
         type="my"
         name={projectName}
         onClose={this.deselectIfInLocalPatches}
+        withErrors={R.any(R.prop('dead'), localPatches)}
       >
         {localPatches.map(this.renderItem)}
       </PatchGroup>
@@ -275,6 +276,7 @@ class ProjectBrowser extends React.Component {
             type="library"
             name={libName}
             onClose={this.deselectIfInLibrary(libName)}
+            withErrors={R.any(R.prop('dead'), libPatches)}
           >
             {libPatches.map(this.renderItem)}
           </PatchGroup>

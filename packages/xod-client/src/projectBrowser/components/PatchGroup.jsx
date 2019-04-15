@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Collapsible from 'react-collapsible';
+import cls from 'classnames';
 
 import { noop } from '../../utils/ramda';
 
-const PatchGroup = ({ name, children, type, onClose }) => (
+const PatchGroup = ({ name, children, type, onClose, withErrors }) => (
   <Collapsible
     classParentString="PatchGroup"
     data-id={name} // TODO: leave only a single data-id.
     trigger={
       <span className="patch-group-trigger" data-id={name}>
+        <span
+          className={cls('icon', type, { 'with-errors': withErrors })}
+          title={withErrors ? 'Library contains errors' : ''}
+        />
         {name}
       </span>
     }
@@ -29,10 +34,12 @@ PatchGroup.propTypes = {
   children: PropTypes.node,
   type: PropTypes.oneOf(['library', 'my']),
   onClose: PropTypes.func,
+  withErrors: PropTypes.boolean,
 };
 
 PatchGroup.defaultProps = {
   onClose: noop,
+  withErrors: false,
 };
 
 export default PatchGroup;
