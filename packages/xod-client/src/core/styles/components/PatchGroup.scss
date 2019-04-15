@@ -7,14 +7,14 @@
     text-decoration: none;
     position: relative;
     border-top: 1px solid $sidebar-color-border;
-    padding: 10px 10px 9px 30px;
+    padding: 10px 10px 9px 26px;
     color: $sidebar-color-text;
     user-select: none;
     line-height: 1em;
 
-    &.my:before,
-    &.library:before {
-      content: '';
+    & .icon.my,
+    & .icon.library {
+      display: block;
       position: absolute;
       left: 6px;
       top: 8px;
@@ -25,10 +25,17 @@
       background: url(../assets/icons/project.svg) no-repeat;
     }
 
-    &.library:before {
+    & .icon.library {
       width: 14px;
       height: 14px;
       background: url(../assets/icons/libs.svg) no-repeat;
+    }
+
+    & .icon.my.with-errors {
+      background-image: url(../assets/icons/project-err.svg);
+    }
+    & .icon.library.with-errors {
+      background-image: url(../assets/icons/libs-err.svg);
     }
   }
 
