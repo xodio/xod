@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Terminals\n\nWe need a way for the between node to get values in and put values out. In XOD patch nodes interact with the outside world using terminal nodes. You can find the terminal nodes in `xod/patch-nodes` library, they are called `input-number`, `input-pulse`, `output-boolean`, etc.\n\nWe already placed an `input-number` and `output-boolean` instead of `tweak-number` and `watch`. Because of them, our node will have one number input pin and one boolean output. You can check it out by highlighting it in Project browser and invoking a help panel.\n\n## Instructions\n\n1. Add two more `input-number`s.\n2. Connect them to `less` and `greater`'s pins instead of hardcoded `0.4` and `0.7` values.\n3. Check how the node looks now in the help panel.\n\nNote that node's pin order is determined by the order of respective terminals. Try adding an `input-string` and moving it between other terminals.",
+      "content": "## Pin naming convention\n\nConventionally XOD uses pin labels that are similar to IC leg labels. The labels contain at most four characters, and usually, they are mnemonics or abbreviations. The restriction allows rendering patches quite densely.",
+      "id": "B1nOwhZq4",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 5
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "# Terminals\n\nWe need a way for the `between` node to get values in and put values out. In XOD patch nodes interact with the outside world using terminal nodes. You can find the terminal nodes in `xod/patch-nodes` library, they are called `input-number`, `input-pulse`, `output-boolean`, etc.\n\nOn this patch, we already placed an `input-number` and `output-boolean` instead of `tweak-number` and `watch`. The terminals give our node one number input pin and one boolean output. You can check it out by invoking the help box for the node in Project Browser.\n\n## Instructions\n\n1. Reflect the changes to your `between` patch: copy/paste the `IN` and `OUT` terminals there and link them accordingly.\n1. Add two more `input-number`s.\n2. Connect them to `less` and `greater`'s pins instead of hardcoded `0.4` and `0.7` values.\n3. Label the new terminals as `MIN` and `MAX` using Inspector.\n4. Check how the node looks now in the help panel.\n\nNote that node's pin order is determined by the order of respective terminals. Try to reorder the input terminals and look how it affects the preview in the help panel.",
       "id": "rkyWciVFV",
       "position": {
         "units": "slots",

@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Creating a New Patch\n\nHere is a patch that checks if a number is between `0.4` and `0.7`. Let's make it reusable. We will make a node that takes three numbers and outputs a boolean. The first number is the one we want to check and the other two are boundaries instead of the hard-coded `0.4` and `0.7`.\n\n⚠️ Before you proceed, remember the location of this chapter in the Project Browser to return to it after you complete the instructions.\n\n## Instructions\n\n1. Select `less`, `greater` and `nor` nodes  and copy them to the clipboard.\n2. Select File -> New Patch... from the main menu.\n3. Choose a name (`between` is a nice one).\n4. Your new patch will open in a new tab. Paste nodes that you copied earlier inside.\n",
+      "content": "For the rest of this part of the tutorial we’ll evolve the node chapter after the chapter and effectively create many versions of it with incremental improvements. We recommend to mirror the improvements to the sole patch you created just now.",
+      "id": "HyUpM3Z5E",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 6
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "# Creating a New Patch\n\nHere is a patch that checks if a number is between `0.4` and `0.7`. Let's make it reusable by converting into a node that takes three numbers and outputs a boolean. The first number is the one we want to check and the other two are boundaries instead of the hard-coded `0.4` and `0.7`.\n\n⚠️ Before you proceed, remember the location of this chapter in the Project Browser to come back after you complete the instructions. Keeping the track might be easier if you open [this part of the tutorial in a web-browser](https://xod.io/docs/tutorial/301-create-new-patch/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_301).\n\n## Instructions\n\n1. Select `less`, `greater`, and `nor` nodes  and copy them to the clipboard.\n2. Select File -> New Patch... from the main menu.\n3. Choose a name (`between` is a nice one).\n4. Your new patch will open in a new tab. Paste the nodes that you copied earlier there.\n",
       "id": "SkZ6KsEFE",
       "position": {
         "units": "slots",
