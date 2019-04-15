@@ -250,7 +250,6 @@ class PopupUploadConfig extends React.Component {
   render() {
     const boards = this.renderBoardSelect();
     const boardOptions = this.renderBoardOptions();
-    const compileLimitLeft = this.props.compileLimitLeft;
 
     return (
       <PopupForm
@@ -268,23 +267,6 @@ class PopupUploadConfig extends React.Component {
             listPorts={this.props.listPorts}
             onPortChanged={this.props.onPortChanged}
           />
-        </div>
-        <div className="ModalContent">
-          <input
-            id="compileInCloud"
-            type="checkbox"
-            checked={this.state.doCompileInCloud}
-            disabled={compileLimitLeft <= 0}
-            onChange={this.onCloudCompilationChanged}
-          />
-          <label htmlFor="compileInCloud">
-            Compile in the cloud&nbsp;
-            {compileLimitLeft ? (
-              <span>({compileLimitLeft} left)</span>
-            ) : (
-              <span>(currently offline)</span>
-            )}
-          </label>
         </div>
         <div className="ModalContent">
           <input
@@ -318,7 +300,6 @@ PopupUploadConfig.propTypes = {
   isDeploymentInProgress: PropTypes.bool,
   initialDebugAfterUpload: PropTypes.bool,
   selectedPort: PropTypes.object,
-  compileLimitLeft: PropTypes.number,
   updateCompileLimit: PropTypes.func,
   getSelectedBoard: PropTypes.func,
   listBoards: PropTypes.func,
