@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "## 👆 Generics\n\nNote, the `if-else` node can work with numbers *and* strings depending on the incoming value type. The pins which accept various types are called *generic*. You can spot them by the little dot in the center.\n\nIf you want to bind a string value to a generic pin, you should enquote it because the number `3.14` and the string `\"3.14\"` are the different things. The quotes explicitly tell XOD you’ve meant a string value.",
+      "content": "## 👆 Generics\n\nNote, the `if-else` node can work with numbers *or* strings depending on the incoming value type. The pins which accept various types are called *generic*. You can spot them by the little dot in the center.\n\nIf you want to bind a string value to a generic pin, you should enquote it because the number `3.14` and the string `\"3.14\"` are different things. The quotes explicitly tell XOD you’ve meant a string value.",
       "id": "BkFwA0Z9V",
       "position": {
         "units": "slots",

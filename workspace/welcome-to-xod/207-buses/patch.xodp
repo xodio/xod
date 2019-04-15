@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "## 👆 Shortcut\n\nAnother fast way to create a bus is from existing link. Select a link and press \"B\". XOD breaks the link and adds bus nodes instead.",
+      "content": "## 👆 Shortcut\n\nAnother fast way to create a bus is from an existing link. Select a link and press \"B\". XOD breaks the link and adds bus nodes instead.",
       "id": "SJJLDWfqE",
       "position": {
         "units": "slots",

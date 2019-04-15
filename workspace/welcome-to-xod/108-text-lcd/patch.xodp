@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "## 👆 Too many variations\n\nThe world of text LCDs is too wide to guess you LCD pinout and parameters. The provided circuit will work for some models, but not for others. Refer to your particular display documentation to precisely determine its address, data pinout, contrast pin wiring, digital and backlight powering scheme.\n\nFor the rest of the tutorial we assume you have an I²C LCD listening on 27h address. Adjust patches accordingly if you’ve got another model.",
+      "content": "## 👆 Too many variations\n\nThe world of text LCDs is too wide to guess your LCD pinout and parameters. The provided circuit will work for some models, but not for others. Refer to your particular display documentation to precisely determine its address, data pinout, contrast pin wiring, digital and backlight powering scheme.\n\nFor the rest of the tutorial we assume you have an I²C LCD listening on 27h address. Adjust patches accordingly if you’ve got another model.",
       "id": "H1UzTgf9N",
       "position": {
         "units": "slots",
