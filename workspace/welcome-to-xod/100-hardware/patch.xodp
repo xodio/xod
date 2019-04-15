@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Working with Hardware\n\nIn this part of the tutorial, you learn how to upload the program to the board and work with hardware modules.\n\nTo upload programs to Arduino, you need to [install the desktop version](https://xod.io/downloads/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_100) of XOD. The browser version does not have permissions to access USB ports. Nevertheless, you can upload XOD programs even from the browser version if you have the original Arduino IDE installed by copying and pasting the generated code.\n\nIf you have no hardware on hand, skip to `200-patterns` section and go on replacing hardware nodes with `watch`es and `tweak`s.",
+      "content": "# Working with Hardware\n\nIn this part of the tutorial, you will learn how to upload programs to your Arduino (or compatible) controller board and work with hardware modules.\n\nTo upload programs to Arduino, you need to [install the desktop version](https://xod.io/downloads/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) of XOD. The browser version does not have enough permissions to access USB ports. Nevertheless, you can upload XOD programs even from the browser version if you have the original Arduino IDE installed by copying and pasting the generated code.\n\nIf you have no hardware on hand, don’t give up. Skip to the `200-patterns` part and go on replacing hardware nodes with `watch`es and `tweak`s.",
       "id": "S1x6FBAP4",
       "position": {
         "units": "slots",

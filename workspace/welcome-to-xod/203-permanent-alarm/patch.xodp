@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Permanent Alarm\n\nLet's extend the alarm device and make the LED turn on until we reset it.\n\nAdd a `flip-flop` node. When the value gets out of the range, the `or` node sends a pulse to the `SET` pin of the `flip-flop` node. So `MEM` returns `True` until we reset or toggle it.\n\nLet's make it resettable.\n\n## Instructions\n\n1. Add the `button` node.\n\n2. Set the corresponding `PORT`.\n\n3. Link `PRS` with the `RST` pin.\n\n4. Upload the program.\n\n5. Heat or cool down the thermometer.",
+      "content": "# Permanent Alarm\n\nLet's extend the alarm device and make the LED stay enabled after trigerring even after the condition is no longer met. This is useful to signalize that something gone wrong even if it was not observed immediatelly.\n\nWhen the value gets out of the range, the `or` node sends a pulse to the `SET` pin of the `flip-flop` node. So `MEM` returns `True` until we reset it, toggle it, or reboot the board.\n\n## Instructions\n\nLet's make the alarm resettable.\n\n1. Add a `button` node.\n2. Set the corresponding `PORT`.\n3. Link `PRS` with the `RST` pin.\n4. Upload the program.\n\nHeat or cool down the thermometer. Use the new button to turn the alarm off until the new trigger event is encountered.",
       "id": "By-2_Dz_V",
       "position": {
         "units": "slots",

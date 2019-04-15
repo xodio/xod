@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Patterns\n\nIn this part of the tutorial you meet the most popular and useful patterns of doing something more complex than a blinking LED. Learn how to deal with loops, keep and change state, make smooth transitions and so on.\n\nMoreover, this part of the tutorial is a handbook that can be useful for your projects in the future. So don't be shy to come back.\n\nThis part will be updated from time to time.",
+      "content": "# Patterns\n\nIn this part of the tutorial you meet the most popular and useful patterns of doing something more complex than a blinking LED. Learn how to deal with loops, keep and change state, make smooth transitions and so on.\n\nThis part of the tutorial is a handbook that can be useful for your projects in the future. So don't be shy to come back.",
       "id": "H1ILK61_E",
       "position": {
         "units": "slots",
@@ -9,7 +9,7 @@
         "y": 0
       },
       "size": {
-        "height": 4,
+        "height": 3,
         "units": "slots",
         "width": 7
       }

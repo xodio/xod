@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Next Steps\n\nWhat you've just learned about making nodes is totally sufficient for day-to-day XODing.\n\nBut if you are interested in a more in-depth guide (for example, if you already have some expirience in Arduino programming), check out https://xod.io/docs/guide/#making-your-own-nodes. There you will learn about creating nodes in C++, testing them using tabtests and wrapping existing Arduino libraries.",
+      "content": "# Next Steps\n\nWhat you've just learned about making nodes is totally sufficient for day-to-day xoding.\n\nIf you are interested in a more in-depth guide on creating nodes, check out the [docs on xod.io](https://xod.io/docs/guide/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#making-your-own-nodes). There you will learn about creating nodes in C++, testing them using tabtests and wrapping existing Arduino libraries.",
       "id": "Hkln2lqFV",
       "position": {
         "units": "slots",

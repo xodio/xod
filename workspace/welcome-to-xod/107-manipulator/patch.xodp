@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Manipulator\n\nControlling the servo with a potentiometer or another analog sensor is easy. However, what if we want to make some complex movements with servos?\n\nOn the patch board, you see `servo-device`. This node defines a servo for the further usage: the port, minimum, and maximum pulse widths which correspond to the minimum and maximum angles of the servo.\n\nThe `servo-device` node links to nodes that work with servos: `rotate-slow` in this example. The `rotate-slow` node rotates the servo to the angle specified in `VAL` with the `RATE` speed when a `DO` pulse is received. You may chain these nodes to make a sequential movement.\n\nYou may notice that `rotate-slow` have `MUX` pins. It's another custom type called `mutex` that allows only one node to act at the same time.\n\nThis program rotates the servo to the maximum angle slowly and then turn it back twice as fast on a button press. The button is ignored until rotation completes.\n\nUpload the program and check it out.",
+      "content": "# Manipulator\n\nControlling the servo with a potentiometer or another analog sensor is easy. However, what if we want to make some complex movements with servos?\n\nOn the patch board, you see `servo-device`. This node defines a servo for the further usage: the port, minimum, and maximum pulse widths which correspond to the operating limits of the servo.\n\nThe `servo-device` node links to nodes that work with servos: `rotate-slow` in this example. The `rotate-slow` node rotates the servo to the angle specified in `VAL` with the `RATE` speed when a `DO` pulse is received. You may chain these nodes to make a sequential movement.\n\nYou may notice that `rotate-slow` have `MUX` pins. It's another custom type called `mutex` that allows only one node to act at the same time.\n\nThis program rotates the servo to the maximum angle slowly and then turn it back twice as fast on a button press. The button is ignored until rotation completes.\n\nUpload the program and check it out.\n\n## Exercise\n\nLet's change the servo trajectory.\n\n1. Add two more `rotate-slow` nodes.\n2. Link all nodes in the same way.\n3. Adjust pin values of `rotate-slow`.\n4. Upload the program.\n\nPress the button and see how the servo fulfills your order.",
       "id": "Hk40r24-_N",
       "position": {
         "units": "slots",
@@ -9,23 +9,23 @@
         "y": 0
       },
       "size": {
-        "height": 6,
+        "height": 8,
         "units": "slots",
-        "width": 7
+        "width": 8
       }
     },
     {
-      "content": "The `xod-dev/servo` library also contains a `rotate` node. The main difference between it and `rotate-slow` that it rotates the servo immediately ignoring `MUX`.\n\nLet's change the servo trajectory.\n\n## Instructions\n\n1. Add two more `rotate-slow` nodes.\n\n2. Link all nodes in the same way.\n\n3. Adjust pin values of `rotate-slow`.\n\n4. Upload the program and press the button.",
+      "content": "## 👆 Simple nodes vs device nodes\n\nThe `xod-dev/servo` library also contains a `rotate` node. The main difference between it and `rotate-slow` that it rotates the servo immediately ignoring `MUX`.\n\nAnd if you wonder how the simple `servo` node used in the previous chapter works: under the hood, it is a trivial composition of `servo-device` and `rotate` with a few terminals exposed to you. Simple nodes (also known as quickstart nodes) are enough for basic applications and when you need more, you use raw device nodes along with action nodes like you do in this chapter.\n\nThis idiom is applicable to other hardware as well.",
       "id": "SyhsB70YV",
       "position": {
         "units": "slots",
-        "x": 14,
-        "y": 2
+        "x": 17,
+        "y": 3
       },
       "size": {
         "height": 4,
         "units": "slots",
-        "width": 6
+        "width": 7
       }
     }
   ],
@@ -95,7 +95,7 @@
       "id": "B17bLx70Y4",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 10,
         "y": 3
       },
       "type": "xod-dev/servo/rotate-slow"
@@ -107,7 +107,7 @@
       "id": "B1Z8gQAYE",
       "position": {
         "units": "slots",
-        "x": 12,
+        "x": 14,
         "y": 1
       },
       "type": "xod/common-hardware/button"
@@ -121,7 +121,7 @@
       "id": "ByM-LgQ0FV",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 10,
         "y": 2
       },
       "type": "xod-dev/servo/rotate-slow"
@@ -133,7 +133,7 @@
       "id": "SJ7d0fRFV",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 10,
         "y": 1
       },
       "type": "xod-dev/servo/servo-device"

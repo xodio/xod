@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Using Your New Node\n\nNow you can use the new node just like any other. Add it from the Suggester or by dragging from the Project Browser.",
+      "content": "# Using Your New Node\n\nNow you can use the new node just like any other.\n\n## Instructions\n\n1. Drag’n’drop your `between` node from Project Browser to this patch and replace the `303-...` node with it.\n2. Add a few more `between`’s: double click on empty space and type “between”. Your node is here and denoted as `@/between`.\n3. Bind some values to the inputs of new `between` nodes, add some `tweak-number` and `watch` nodes to play.\n4. Run simulation to check how the new node works.",
       "id": "BkIsFbYY4",
       "position": {
         "units": "slots",
@@ -9,9 +9,37 @@
         "y": 2
       },
       "size": {
-        "height": 2,
+        "height": 4,
         "units": "slots",
         "width": 8
+      }
+    },
+    {
+      "content": "### Paths starting with @/\n\nThe at (*@*) symbol in the patch path shown by the quick search suggester denotes “*this project*”. That is, the node is located in the current projects, not in a library.",
+      "id": "H18QI2Z5E",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 6
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "<- Place your `between` node instead",
+      "id": "SkyiV2bcE",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
       }
     }
   ],

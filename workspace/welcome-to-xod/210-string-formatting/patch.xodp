@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# String Formatting\n\nHere is a program with a text LCD that shows the temperature. We already formatted the thermometers output to get a human readable string on the LCD like \"Temp: 14.3C\".\n\nThe `format-number` node transforms the number value to a string with a desired precision.\n\nThe `concat` node concatenates a three parts of the string that we want to see on the display.\n\nLet's improve the program show the degree character.\n\nTo show non-ASCII characters you should specify a hexadecimal character code. It differs on other LCD models, so check out specifications for your model. However, if you have an MT-16S2H, a degree character is \"\\x99\".\n\n## Instructions\n\n1. Set 2 to `DIG`.\n\n2. Add one more input pin for the `concat` node by grabbing the handle.\n\n3. Bind \"\\x99\" instead of \"C\".\n\n4. Bind \"C\" to the latest pin of `concat`.\n\n5. Upload the program.\n",
+      "content": "# String Formatting\n\nHere is a program with a text LCD that shows the temperature. We already formatted the thermometers output to get a human readable string on the LCD like \"Temp: 14.3C\".\n\nThe `format-number` node transforms the number value to a string with a desired precision.\n\nThe `concat` node concatenates a three parts of the string that we want to see on the display.\n\nTo show non-ASCII characters you should specify its hexadecimal character code in the special \"\\x\" notation. Codes differ on various LCD models. For example, if you have an MT-16S2H, the degree character is \"\\x99\". Check out character tables for your model in its datasheet.\n\n## Instructions\n\nLet's improve the thermometer to show the degree character on the LCD.\n\n1. Bind 2 to `DIG`.\n2. Add one more input pin for the `concat` node by grabbing the handle.\n3. Bind \"\\x99\" instead of \"C\".\n4. Bind \"C\" to the latest pin of `concat`.\n5. Upload the program.",
       "id": "rJBpp5JKV",
       "position": {
         "units": "slots",
@@ -9,7 +9,7 @@
         "y": 0
       },
       "size": {
-        "height": 6,
+        "height": 7,
         "units": "slots",
         "width": 7
       }
@@ -72,10 +72,10 @@
       "type": "xod/common-hardware/text-lcd-16x2-i2c"
     },
     {
-      "arityLevel": 3,
+      "arityLevel": 2,
       "boundLiterals": {
-        "BkeKcj6ZZ-$1": "\"\\x99\"",
-        "BkeKcj6ZZ-$2": "\"C\"",
+        "BkeKcj6ZZ-$1": "\"C\"",
+        "BkeKcj6ZZ-$2": "\"\"",
         "Hkqu9oaWb": "\"Temp:\""
       },
       "id": "HkNkC5yKV",

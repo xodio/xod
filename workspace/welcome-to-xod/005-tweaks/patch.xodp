@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Tweaks\n\nRestarting a program every time you change a value in the Inspector is not very convenient.\nWith `tweak-`nodes, you can adjust values while the program is running.\n\n## Instrucions\n\n1. Add `tweak-number` node to the patch.\n2. Link `tweak-number`'s output pin to `count`'s `STEP` pin.\n3. Start the simulation.\n4. Double click the tweak node.\n5. Input for tweak node's output value will focus in the Inspector. Change the value and press enter.\n6. Observe how the counter value is changing.\n7. Repeat the process for the tweak node that is connected to `clock`'s `IVAL` pin.\n8. Observe how the clock speed has changed.\n",
+      "content": "# Tweaks\n\nRestarting a program every time you change a value in the Inspector is inconvenient.\nWith `tweak-*` nodes, you can adjust values while the program is running.\n\nOn the current patch we added a `tweak-number` linked to `IVAL` already.\n\n## Exercise\n\nLet’s learn how to add new tweaks to your program and control them in runtime.\n\n1. Add `tweak-number` node to the patch.\n2. Link `tweak-number`'s output pin to `count`'s `STEP` pin.\n3. Start the simulation.\n4. Double click the tweak node; the text box for tweak value will focus in Inspector.\n5. Change the value to `2.0` and press Enter.\n6. Adjust the value of the tweak linked to `clock`'s `IVAL` pin.\n\nTake a note how the changes are immediately applied while you are in the simulation mode. Try some other values and see how they behave.",
       "id": "Bk86OdKuN",
       "position": {
         "units": "slots",
@@ -9,23 +9,23 @@
         "y": 0
       },
       "size": {
-        "height": 4,
+        "height": 5,
         "units": "slots",
         "width": 8
       }
     },
     {
-      "content": "Tip: you can use up/down keyboard keys in the Inspector to adjust numeric values by 0.1 (or hold shift to adjust by 1).",
+      "content": "## 👆 Save some typing\n\nUse Up/Down keyboard keys in the Inspector to adjust numeric values by 0.1. Hold Shift to adjust by 1.0.",
       "id": "H1mAsFFdE",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 10,
         "y": 4
       },
       "size": {
-        "height": 1,
+        "height": 2,
         "units": "slots",
-        "width": 11
+        "width": 7
       }
     }
   ],

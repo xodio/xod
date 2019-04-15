@@ -1,21 +1,7 @@
 {
   "comments": [
     {
-      "content": "There are also a lot of additional libraries created by community listed at [https://xod.io/libs/](https://xod.io/libs/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_006). We'll learn how to install them (and even create our own) a bit later.",
-      "id": "BkKdu3xt4",
-      "position": {
-        "units": "slots",
-        "x": 0,
-        "y": 6
-      },
-      "size": {
-        "height": 2,
-        "units": "slots",
-        "width": 8
-      }
-    },
-    {
-      "content": "# Help\n\nBy now you should be a bit bored by the `clock` and `counter`. Let's learn how to explore other nodes XOD has to offer.\n\n## Instructions\n\n1. Scroll to the `xod/math` section in the Project Browser, and expand it by clicking.\n2. Click on the `clip` patch, and then press the H key. Help panel with description will appear.\n3. Click on other patch. Help panel will move and show description for it.\n4. Select some node on the patch board and press the H key. Quick Help panel will appear at the right side of the patch board.\n",
+      "content": "# Getting Help\n\nBy now you should be a bit bored by the `clock` and `counter`. XOD offers many more nodes to work with and yet more [nodes are shared by the community](https://xod.io/libs/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) members. What a node does is described with a short annotation carried with the node. Your discovery starts with reading these descriptions.\n\n## Exercise\n\nLet's learn a few ways to see nodes’ descriptions.\n\n1. Scroll to the `xod/math` section in the Project Browser and click to expand it.\n2. Click on the `clip` patch, and then press the H key. A help box with the description will appear.\n3. Click on another patch. Help panel will move and show a description for it.\n4. Select some node on the patch board and press the H key. Quick Help panel will appear at the right side of the patch board.\n\nDiscover a few more nodes bundled within the XOD standard library.",
       "id": "Hy25Dd0wE",
       "position": {
         "units": "slots",
@@ -23,23 +9,37 @@
         "y": 1
       },
       "size": {
-        "height": 4,
+        "height": 6,
         "units": "slots",
         "width": 7
       }
     },
     {
-      "content": "As you probably noticed from previous lessons, help panel also automatically appears when using Suggester.",
+      "content": "## 👆 Help while searching\n\nAs you probably noticed from previous lessons, the help boxes also automatically appear when using Suggester.",
       "id": "SycXweWYV",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 8,
         "y": 5
       },
       "size": {
-        "height": 1,
+        "height": 2,
         "units": "slots",
-        "width": 9
+        "width": 7
+      }
+    },
+    {
+      "content": "## Extra exercise\n\nUsing all the knowledge you have up to this moment, try to make a program which shows a cosine of a continuously increasing angle. Math is beautiful!",
+      "id": "rJdie0Z9E",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 5
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 7
       }
     }
   ],

@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "You can convert Celsius to Fahrenheit using `xod/units/c-to-f` node.\n\nMoreover, you can add a `concat` node and show the temperature on the display like \"22C\" instead of a plain number. See `210-string-formatting` for more details.",
+      "content": "## 👆 Output formatting\n\nYou can convert Celsius to Fahrenheit using `xod/units/c-to-f` node.\n\nMoreover, you can add a `concat` node and show the temperature on the display like \"22C\" instead of a plain number. See `210-string-formatting` for more details.",
       "id": "BykL9xbYV",
       "position": {
         "units": "slots",
@@ -9,13 +9,13 @@
         "y": 1
       },
       "size": {
-        "height": 2,
+        "height": 3,
         "units": "slots",
         "width": 6
       }
     },
     {
-      "content": "# Show Temperature on LCD\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\nWe'll use a TMP36 thermometer for this task. We have a node `thermometer-tmp36` for this chip in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Instructions\n\n1. Add a thermometer to your [circuit as shown](https://xod.io/docs/tutorial/109-thermometer/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial_109#assemble-circuit).\n\n2. Ensure the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
+      "content": "# Thermometer\n\nWhat if you need to control the ambient air temperature?\n\nA popular chip to measure temperature is TMP36 thermometer. XOD has a node `thermometer-tmp36` for this IC in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Exercise\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\n1. Add a thermometer to your [circuit as shown](https://xod.io/docs/tutorial/109-thermometer/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#circuit).\n\n2. Ensure the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
       "id": "ryQEf7FyO4",
       "position": {
         "units": "slots",
@@ -23,7 +23,7 @@
         "y": 0
       },
       "size": {
-        "height": 6,
+        "height": 5,
         "units": "slots",
         "width": 7
       }

@@ -1,21 +1,7 @@
 {
   "comments": [
     {
-      "content": "Each time a pulse arrives at the `TGL` pin, the node toggles the boolean value on the `MEM` pin from `false` to `true` and vice versa.",
-      "id": "BJKVFuRDE",
-      "position": {
-        "units": "slots",
-        "x": 13,
-        "y": 2
-      },
-      "size": {
-        "height": 1,
-        "units": "slots",
-        "width": 10
-      }
-    },
-    {
-      "content": "# Flip-flops\n\nYou can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses.\n\n## Instructions\n\n1. Replace `clock` node with `tweak-pulse` node.\n2. Add a couple more `tweak-pulse`s and connect them to `flip-flop`'s `SET` and `RST` pins.\n3. Run the simulation, try sending pulses to each pin and observe how the `MEM` value changes.\n",
+      "content": "# Flip-flops\n\nYou can control the behavior of many nodes with pulses. A very useful node is `flip-flop`. It acts like a virtual switch, whose states can be controlled by pulses. A pulse on `SET` turns the stored `MEM` value to true. `RST` resets `MEM` to false. And a pulse on `TGL` inverses the `MEM` value.\n\nThe patch shown here toggles the output boolean value each second.\n\n## Exercise\n\nLet’s experiment with the `flip-flop` node.\n\n1. Replace `clock` node with `tweak-pulse` node.\n2. Add a couple more `tweak-pulse`s and connect them to `flip-flop`'s `SET` and `RST` pins.\n3. Run the simulation, and send pulses to each pin\n\nObserve how the `MEM` value changes when sending several pulses to the same pin in a row.\n",
       "id": "SyRmtuAw4",
       "position": {
         "units": "slots",
@@ -23,7 +9,7 @@
         "y": 0
       },
       "size": {
-        "height": 4,
+        "height": 5,
         "units": "slots",
         "width": 7
       }

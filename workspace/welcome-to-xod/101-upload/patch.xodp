@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Upload the Program\n\nLet's upload this patch to the Arduino board to see the built-in LED blinking.\n\n## Instructions\n\n1. Connect the Arduino board to your computer.\n\n2. Upload the program. To do this, hit Deploy → Upload to Arduino from the main menu or click the lightning icon in the deployment pane at the bottom of the screen.\n\n## Additional Exercise\n\nChange the `IVAL` value on the `clock` node and upload the program again. See how the blinking frequency of the LED changes.",
+      "content": "# Uploading Programs\n\nTo make a program work XOD converts it to C++ code, then compiles it to a binary firmware compatible with the board of choice, then pushes the binary to the board itself.\n\nThe process is automated and runs behind the scenes once you hit “Upload”. However, many tools are involved and the initial XOD IDE installation can lack some of them. When you upload to a new kind of a board for the first time, a message will appear asking to Download & Install required tools. Confirm to setup them automatically. Keep in mind, it can consume 200 MB or so of Internet traffic and take up a few minutes.\n\n## Exercise\n\nLet's upload this patch to the Arduino board to see the built-in LED blinking.\n\n1. Connect the Arduino board to your computer with a USB cable.\n2. Upload the program. To do this, hit Deploy → Upload to Arduino from the main menu.\n3. If some tools are missing, confirm the installation by clicking Download & Install in the message appeared.\n\nSee the on-board LED usually marked with the `L` letter blinking.\n\nChange the `IVAL` value on the `clock` node and upload the program again. See how the blinking frequency of the LED changes.",
       "id": "SkxcsVCvV",
       "position": {
         "units": "slots",
@@ -9,9 +9,23 @@
         "y": 0
       },
       "size": {
-        "height": 4,
+        "height": 7,
         "units": "slots",
         "width": 7
+      }
+    },
+    {
+      "content": "## 👆 Shortcut\n\nYou can click the button with a lightning icon in the deployment pane at the bottom of the screen instead of using the main menu.",
+      "id": "rysUAJz5N",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 4
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 6
       }
     }
   ],

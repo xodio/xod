@@ -1,21 +1,7 @@
 {
   "comments": [
     {
-      "content": "Conventionally XOD uses pin labels that are similar to IC leg labels. The labels can contain at most four characters, and usually, they are mnemonics or abbreviations. The restriction allows rendering patches quite densely.",
-      "id": "H1ycAbFFV",
-      "position": {
-        "units": "slots",
-        "x": -6,
-        "y": 4
-      },
-      "size": {
-        "height": 2,
-        "units": "slots",
-        "width": 9
-      }
-    },
-    {
-      "content": "# Adding Documentation\n\nThe only thing our node lacks is proper documentation. The pins are unlabeled and the help panel does not describe what it does at all. Let's fix that.\n\n## Instructions\n\n1. Double-click on a node to open a respective patch for editing. (Or just open it from the Project Browser.)\n2. Add labels to terminal nodes in the Inspector. They will become pin labels.\n3. Add descriptions to terminal nodes. They will become pin descriptions in the help panel.\n4. Click on any empty space on the patch to see the Inspector for the whole patch.\n5. Add the description for the whole patch. It will become the node's description for the node in the help panel.",
+      "content": "# Adding Documentation\n\nThe only thing our node lacks is proper documentation. The pins are unlabeled and the help panel does not describe what it does at all. Let's fix that.\n\n## Instructions\n\nApply the instructions to your `between` node.\n\n1. Using Inspector add descriptions to the terminal nodes. They will become pin descriptions in the help panel.\n2. Click on any empty space on the patch to see the Inspector for the whole patch.\n3. Add the description for the whole patch. It will become the node's description for the node in the help panel.\n4. Invoke the help box to see how the documentation renders.",
       "id": "r1Hd6WYFE",
       "position": {
         "units": "slots",
@@ -29,15 +15,158 @@
       }
     }
   ],
+  "description": "Checks whether a number falls inside the range specified",
+  "links": [
+    {
+      "id": "H1ASvh-9E",
+      "input": {
+        "nodeId": "ryfnfwh-9V",
+        "pinKey": "HJbACN3gb"
+      },
+      "output": {
+        "nodeId": "SkOHvnW94",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyI3zwh-c4",
+      "input": {
+        "nodeId": "S1hMvhZq4",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJX3MDhW5V",
+        "pinKey": "rJqfIRdHwkW"
+      }
+    },
+    {
+      "id": "SJHhfv3Z9N",
+      "input": {
+        "nodeId": "rJX3MDhW5V",
+        "pinKey": "r1tz8CdBDkb"
+      },
+      "output": {
+        "nodeId": "rye3zPhZcV",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "SkDhfDh-5E",
+      "input": {
+        "nodeId": "rye3zPhZcV",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "HyWnMvnZqV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1LHDn-c4",
+      "input": {
+        "nodeId": "rye3zPhZcV",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "rJkBDh-qV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry42zPhb94",
+      "input": {
+        "nodeId": "ryfnfwh-9V",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "HyWnMvnZqV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryOnfwhb54",
+      "input": {
+        "nodeId": "rJX3MDhW5V",
+        "pinKey": "S1dG8AOBPJW"
+      },
+      "output": {
+        "nodeId": "ryfnfwh-9V",
+        "pinKey": "B19RYS3lW"
+      }
+    }
+  ],
   "nodes": [
     {
-      "id": "HkBUWeFF4",
+      "id": "HyWnMvnZqV",
       "position": {
         "units": "slots",
         "x": 4,
         "y": 1
       },
-      "type": "@/303-add-terminals"
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1hMvhZq4",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "SkOHvnW94",
+      "label": "MAX",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJX3MDhW5V",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 4
+      },
+      "type": "xod/core/nor"
+    },
+    {
+      "description": "The lower boundary of the range. Inclusive.",
+      "id": "rJkBDh-qV",
+      "label": "MIN",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "SJqZ8COrDkW": "0.4"
+      },
+      "id": "rye3zPhZcV",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "0.7"
+      },
+      "id": "ryfnfwh-9V",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 3
+      },
+      "type": "xod/core/greater"
     }
   ]
 }
