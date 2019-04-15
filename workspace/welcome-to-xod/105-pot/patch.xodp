@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Potentiometer\n\nThe potentiometer reads an analog value from the hardware port and outputs a normalized result in the range from `0.0` to `1.0`, depending on the angle of the knob.\n\nIt brings an easy solution to control LEDs, servos, and system coefficients.\n\n## Exercise\n\nLet's control the brightness of the LED with a potentiometer.\n\n1. Connect a potentiometer to the Arduino  board according to the [scheme](https://xod.io/docs/tutorial/105-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#assemble-circuit).\n\n2. Set the `PORT` pin value on the `pot` node to `A0` because it’s connected to the analog board port A0.\n\n3. Link the `pot` node `VAL` pin to the `LUM` pin on the `led` node.\n\n4. Upload your patch.\n\nRotate the knob and see how the LED reacts it. Cool, eh?",
+      "content": "# Potentiometer\n\nThe potentiometer reads an analog value from the hardware port and outputs a normalized result in the range from `0.0` to `1.0`, depending on the angle of the knob.\n\nIt brings an easy solution to control LEDs, servos, and system coefficients.\n\n## Exercise\n\nLet's control the brightness of the LED with a potentiometer.\n\n1. Connect a potentiometer to the Arduino  board according to the [scheme](https://xod.io/docs/tutorial/105-pot/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#circuit).\n\n2. Set the `PORT` pin value on the `pot` node to `A0` because it’s connected to the analog board port A0.\n\n3. Link the `pot` node `VAL` pin to the `LUM` pin on the `led` node.\n\n4. Upload your patch.\n\nRotate the knob and see how the LED reacts it. Cool, eh?",
       "id": "ryWrUpd1uN",
       "position": {
         "units": "slots",

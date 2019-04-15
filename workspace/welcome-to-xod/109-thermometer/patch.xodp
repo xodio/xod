@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "# Thermometer\n\nWhat if you need to control the ambient air temperature?\n\nA popular chip to measure temperature is TMP36 thermometer. XOD have a node `thermometer-tmp36` for this IC in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Exercise\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\n1. Add a thermometer to your [circuit as shown](https://xod.io/docs/tutorial/109-thermometer/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#assemble-circuit).\n\n2. Ensure the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
+      "content": "# Thermometer\n\nWhat if you need to control the ambient air temperature?\n\nA popular chip to measure temperature is TMP36 thermometer. XOD have a node `thermometer-tmp36` for this IC in `xod/common-hardware`. It outputs the temperature in degrees Celsius.\n\n## Exercise\n\nShowing static text on the LCD is boring. So let's make a smarter device and show the temperature on the LCD.\n\n1. Add a thermometer to your [circuit as shown](https://xod.io/docs/tutorial/109-thermometer/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#circuit).\n\n2. Ensure the correct `PORT` for the `thermometer-tmp36` node.\n\n3. Link `Tc` of `thermometer-tmp36` with `L1` of `text-lcd-16x2-i2c`.\n\n4. Upload your patch.\n\nNow you have a portable thermometer.",
       "id": "ryQEf7FyO4",
       "position": {
         "units": "slots",
