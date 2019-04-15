@@ -35,7 +35,7 @@ module.exports = merge.smart(getBaseConfig(__dirname), {
       'process.env.XOD_HOSTNAME': JSON.stringify(process.env.XOD_HOSTNAME || 'xod.io'),
       'process.env.XOD_SITE_DOMAIN': JSON.stringify('https://xod.io/'),
       'process.env.XOD_FORUM_DOMAIN': JSON.stringify('https://forum.xod.io/'),
-      'process.env.XOD_UTM_SOURCE': JSON.stringify('ide-desktop'),
+      'process.env.XOD_UTM_SOURCE': JSON.stringify('ide'),
     }),
     // Workaround to remove iconv warning:
     // "Critical dependency: the request of a dependency is an expression"
