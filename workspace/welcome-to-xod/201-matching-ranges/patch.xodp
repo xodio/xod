@@ -31,10 +31,10 @@
   ],
   "links": [
     {
-      "id": "BkKgLJ-uE",
+      "id": "ByKdDmf9V",
       "input": {
-        "nodeId": "HyTjSJWOV",
-        "pinKey": "r1sfQ_6fb"
+        "nodeId": "r1Zdv7z94",
+        "pinKey": "Bk5lexBtE"
       },
       "output": {
         "nodeId": "H1zoryb_E",
@@ -102,15 +102,15 @@
     },
     {
       "boundLiterals": {
-        "S1vGmu6Gb": "D9"
+        "BkXK1eBYV": "D9"
       },
-      "id": "HyTjSJWOV",
+      "id": "r1Zdv7z94",
       "position": {
         "units": "slots",
         "x": 8,
         "y": 4
       },
-      "type": "xod/common-hardware/servo"
+      "type": "xod-dev/servo/servo"
     }
   ]
 }
