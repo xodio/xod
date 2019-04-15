@@ -1,21 +1,21 @@
 {
   "comments": [
     {
-      "content": "If anything goes wrong or you have no idea what to do, we have [hints for every patch](https://xod.io/docs/tutorial/001-hello/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) on the web.",
-      "id": "S1y1tBawN",
+      "content": "## 👆 Web hints\n\nIf anything goes wrong or you have no idea what to do, we have [hints for every patch](https://xod.io/docs/tutorial/001-hello/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) on the web.",
+      "id": "BJjRza-cE",
       "position": {
         "units": "slots",
-        "x": -2,
-        "y": 3
+        "x": 8,
+        "y": 2
       },
       "size": {
-        "height": 1,
+        "height": 2,
         "units": "slots",
-        "width": 9
+        "width": 6
       }
     },
     {
-      "content": "# Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. \n\n## Instructions\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. This is a special tutorial project you’re working with right now. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, we are in patch `001-hello`. The next part of the tutorial is in patch `002-simulate`. Double-click it, and let's meet there!\n\n",
+      "content": "# Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. Patches are like documents or source files in other systems.\n\nSeveral related patches form a *project*. Currently you are working on a project named `welcome-to-xod`.\n\n## Exercise\n\nLet’s learn how to navigate a project.\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, you are in the patch `001-hello`. The next chapter of the tutorial is in the patch `002-simulate`. Double-click it, and let's meet there!",
       "id": "ry7eOGTwE",
       "position": {
         "units": "slots",

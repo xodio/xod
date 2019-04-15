@@ -1,21 +1,7 @@
 {
   "comments": [
     {
-      "content": "- `COND` - general input.\n- `T` - value passed to the `R` pin if `COND` receives true.\n- `F` - value passed to the `R` pin if `COND` receives false.\n- `R` - general output\n",
-      "id": "HJ0DFOAwE",
-      "position": {
-        "units": "slots",
-        "x": 15,
-        "y": 4
-      },
-      "size": {
-        "height": 2,
-        "units": "slots",
-        "width": 10
-      }
-    },
-    {
-      "content": "# Branching\n\nChoosing between values based on some condition is a very common task. For that, there is an `if-else` node in `xod/core`.\n\nThe `COND` pin of this node checks the boolean input value. If `COND` receives true, the node sets the value from the `T` pin to the `R` pin. When it receives false, it sets the value from the `F` pin to the `R` pin.\n\n## Instructions\n\n1. Run the simulation.\n2. Change the value of the `tweak-boolean` node, observe how `if-else` output chenges.\n3. Try replacing `tweak-boolean` with a `flop-flop` with `TGL` pin connected to a `clock`.",
+      "content": "# Branching\n\nChoosing between values based on some condition is a common task. For this, there is an `if-else` node in `xod/core`.\n\nThe `COND` pin of this node checks the boolean input value. If `COND` receives true, the node sets the value from the `T` pin to the `R` pin. When it receives false, it sets the value from the `F` pin to the `R` pin.\n\n## Exercise\n\nLearn how `if-else` behaves.\n\n1. Run the simulation.\n2. Change the value of the `tweak-boolean` node, observe how `if-else` output chenges.\n3. Replace `tweak-boolean` with a `flop-flop` with `TGL` pin connected to a `clock`.",
       "id": "Sy45VFVpPV",
       "position": {
         "units": "slots",

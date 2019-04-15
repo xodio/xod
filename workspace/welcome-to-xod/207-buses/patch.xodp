@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Buses\n\nIt's time to learn how to keep the program clean and get rid of link intersections.\n\nYou can see triangle nodes on the patch. These nodes are called *buses*.\n\nIt's an alternative way to link nodes' pins. They create “invisible” links. There are two node types in `xod/patch-nodes` that work in tandem:\n\n- `to-bus` — defines a new bus\n\n- `from-bus` — sources data from an existing bus\n\nBus nodes with the same label are considered to be implicitly interconnected by XOD. You can make a few `from-bus` nodes with the same label.\n\nLet's link the `IVAL` pin with the counter output using bus nodes.\n\n## Instructions\n\n1. First of all, we'll make a loop. So place a `defer` node.\n\n2. Place `to-bus`.\n\n3. Label it \"IVAL\".\n\n4. Link these nodes.\n\n5. Click on the `IVAL` pin of the `clock` node and the press \"B\" button on your keyboard. The label automatically sets from the linking pin label.\n\n6. Upload the program.\n\n\nAnother fast way to create a bus is from existing link. Select a link and press \"B\". It breaks the link and adds bus nodes instead.",
+      "content": "## 👆 Shortcut\n\nAnother fast way to create a bus is from existing link. Select a link and press \"B\". XOD breaks the link and adds bus nodes instead.",
+      "id": "SJJLDWfqE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "# Buses\n\nIt's time to learn how to keep the program clean and get rid of link intersections.\n\nYou can see triangle nodes on the patch. These nodes are called *buses*.\n\nIt's an alternative way to link nodes' pins. They create “invisible” links. There are two node types in `xod/patch-nodes` that work in tandem:\n\n- `to-bus` — defines a new bus\n\n- `from-bus` — sources data from an existing bus\n\nBus nodes with the same label are considered to be implicitly interconnected by XOD. You can make a few `from-bus` nodes with the same label.\n\n## Exercise\n\nLink the `IVAL` pin with the counter output using bus nodes.\n\n1. First of all, we'll make a loop. So place a `defer` node.\n2. Place `to-bus`.\n3. Label it \"IVAL\".\n4. Link these nodes.\n5. Click on the `IVAL` pin of the `clock` node and the press the \"B\" key on your keyboard. The label automatically sets from the linking pin label.\n6. Upload the program.",
       "id": "SJpHCJF8O4",
       "position": {
         "units": "slots",
@@ -9,7 +23,7 @@
         "y": -1
       },
       "size": {
-        "height": 8,
+        "height": 7,
         "units": "slots",
         "width": 7
       }

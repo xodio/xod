@@ -1,7 +1,35 @@
 {
   "comments": [
     {
-      "content": "# Interactive Session\n\nAs you run the simulation, you can run an *interactive session*. Tweaks and watches go live while running the program on an Arduino board.\n\n## Instructions\n\n1. Connect the Arduino board to your computer.\n\n2. Upload the program with the interactive session enabled. To do this, select Deploy → Upload to Arduino from the main menu and check \"Debug after upload\" or click the \"bug\" icon in the deployment pane below.\n\n3. After the interactive session has been started, select `tweak-boolean` and change its value. The built-in LED on the board reacts to these changes.\n\nTo stop the interactive session press \"Stop\" button on the green panel above. To start the interactive session again, you have to upload the program again.",
+      "content": "## Debug protocol\n\nDuring interactive sessions XOD IDE and the board keep connection open and exchange with messages about value changes. These message are simple plain-text lines and you can see them in the Serial tab of the Deployment pane.\n\nClick the funnel icon and make sure “Watched Values” is checked. To echo the messages to the log.",
+      "id": "Bk5hgeM54",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 5
+      },
+      "size": {
+        "height": 3,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "## 👆 Shortcut\n\nClick the button with a bug icon in the deployment pane below. To quickly access the upload dialog with “Debug after upload” checked.",
+      "id": "H1kTkgf9N",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "# Interactive Session\n\nAs you run the simulation, you can run an *interactive session* on the board also known as debugger. Tweaks and watches go live while running the program on physical hardware.\n\n## Exercise\n\nLet’s control our LED in real time.\n\n1. Connect the Arduino board to your computer.\n\n2. Upload the program with the interactive session enabled: hit Deploy → Upload to Arduino and check \"Debug after upload\".\n\n3. Once the interactive session has been started, select `tweak-boolean` and change its value; see how the built-in LED on the board reacts to these changes.\n\nTo stop the interactive session press \"Stop\" button on the green panel above. To start the interactive session again, you have to re-upload the program.",
       "id": "Syx5p6EAv4",
       "position": {
         "units": "slots",
@@ -12,20 +40,6 @@
         "height": 5,
         "units": "slots",
         "width": 7
-      }
-    },
-    {
-      "content": "## Additional Exercise\n\nPlace `tweak-pulse` and link it with `UPD` pin and start the interactive session again. Now your LED changes the brightness only after you send a pulse.",
-      "id": "r1bznrRDN",
-      "position": {
-        "units": "slots",
-        "x": 12,
-        "y": 2
-      },
-      "size": {
-        "height": 2,
-        "units": "slots",
-        "width": 5
       }
     }
   ],

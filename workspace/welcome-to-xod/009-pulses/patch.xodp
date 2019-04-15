@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Pulses\n\nIn previous lessons, we talked how a `clock` node \"ticks\". To be more precise, it outputs a *pulse*.\n\nThis data type is very different from all the others like numbers and booleans. All values ​​in the XOD are transferred to the links continuously, even if the values ​​haven't changed. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nAnd of course, we have a `tweak-pulse` node to send pulses manually during simulation. Let's play with it.\n\n## Instructions\n\n1. Run the simulation.\n2. Select `tweak-pulse` node.\n3. Press the \"Pulse\" button in the Inspector. The counter will reset back to 0.\n4. Replace the `clock` node with an another `tweak-pulse` and restart the simulation.\n5. Increment the counter by manually sending pulses to `INC` pin.\n",
+      "content": "# Pulses\n\nIn previous lessons, we told that the `clock` node ticks. To be more precise, the node outputs *pulses*.\n\nThis data type is very different from all the others like numbers and booleans. Values ​​in the XOD are transferred to the links continuously, even if they don’t change. They are like voltage. The pulse data type is different. Imagine something like a flash. It’s basically a message to trigger something else. It does not transmit any data. Howerver, it is useful when you need to convey that an event has occurred or tell something else to work.\n\nAnd of course, XOD offers a `tweak-pulse` node to send pulses manually during simulation.\n\n## Exercice\n\nLet’s play with pulses using `tweak-pulse`.\n\n1. Run the simulation.\n2. Select the `tweak-pulse` node.\n3. Press the “pulse” button in the Inspector; the counter will reset back to 0.\n4. Replace the `clock` node with an another `tweak-pulse` and restart the simulation.\n5. Increment the counter by manually sending pulses to `INC` pin.\n",
       "id": "B1BIP_AwN",
       "position": {
         "units": "slots",
@@ -9,7 +9,7 @@
         "y": 0
       },
       "size": {
-        "height": 6,
+        "height": 7,
         "units": "slots",
         "width": 7
       }

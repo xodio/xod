@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Running Simulation\n\nLet's learn how to run our program!\n\nUsually, you will want deploy it to some real hardware. But XOD also has a Simulation mode that allows to run a program right inside the IDE.\n\nIt's useful to quickly test some ideas of just play around.\n\n## Instructions\n\n1. Select Deploy → Simulate from the main menu.\n\n2. Observe how your current patch opens in a special `Debugger` tab, and the `watch` node becomes alive and shows current counter value.\n\n3. To finish a simulation session press the `Stop` button in the upper right corner or close the `Debugger`.",
+      "content": "## 👆 Shortcut\n\nUse the button with a *gamepad* icon on the deployment pane to run the simulation with a single click. The deployment pane is at the bottom of the IDE window.",
+      "id": "HkT2f6bcN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "# Running Simulation\n\nEventually, you will want deploy to some real hardware. But for the start, XOD also offers a simulation mode that allows running a program right inside the IDE.\n\nIt's useful to quickly test some ideas or just play around.\n\n## Exercise\n\nLet's learn how to run our program!\n\n1. Hit Deploy → Simulate from the main menu.\n2. Observe how your current patch opens in a special “Debugger” tab, and the `watch` node becomes alive demonstrating the current counter value.\n3. To finish the simulation session press the “Stop” button in the upper right corner or close the debugger tab.\n",
       "id": "rkDASa1dN",
       "position": {
         "units": "slots",

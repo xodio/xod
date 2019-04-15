@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Alarm\n\nHere is the program of a simple alarm device, which turns the LED on when the temperature gets higher than the desired value.\n\nAs you can note, we use the `greater` node, one of the comparison nodes from the XOD standard library.\n\nLet's change the logic a bit and make alarm working whenever the temperature gets lower than the desired threshold. Moreover, let's set this value using a potentiometer.\n\n## Instructions\n\n1. Replace the `greater` node with `less`.\n\n2. Place the `map` node and bind values to map 0.0...1.0 range to 15...30 degrees Celsius.\n\n3. Place `pot` and bind the corresponding `PORT`.\n\n4. Link `pot`, `map`, and `less` nodes.\n\n5. Upload the program.\n\n6. Rotate the potentiometer knob.\n\n## Additional Exercise\n\nUse both `greater` and `less` nodes to alarm only when the temperature is out of the range. Hint: you need the `or` node.",
+      "content": "# Alarm\n\nHere is the program of a simple alarm device, which turns the LED on when the temperature gets higher than the desired value.\n\nAs you can note, we use the `greater` node, one of the comparison nodes from the XOD standard library.\n\n## Exercise\n\nChange the logic to make the alarm working whenever the temperature gets *lower* than the threshold. Let to set this value using a potentiometer.\n\n1. Replace the `greater` node with `less`.\n\n2. Place the `map` node and bind values to map 0.0...1.0 range to 15...30 degrees Celsius.\n\n3. Place `pot` and bind the corresponding `PORT`.\n\n4. Link `pot`, `map`, and `less` nodes.\n\n5. Upload the program.\n\nRotate the potentiometer knob to set the threshold. Heat and cool down the thermometer to see how it works.",
       "id": "rJIJ_OybOE",
       "position": {
         "units": "slots",
@@ -10,6 +10,20 @@
       },
       "size": {
         "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "## Additional Exercise\n\nUse both `greater` and `less` nodes to alarm only when the temperature is out of the range. Hint: you need the `or` node.",
+      "id": "rJp5G-G5E",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 4
+      },
+      "size": {
+        "height": 2,
         "units": "slots",
         "width": 7
       }

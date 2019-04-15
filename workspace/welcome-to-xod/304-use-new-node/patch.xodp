@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Using Your New Node\n\nNow you can use the new node just like any other.\n\n## Instructions\n\n1. Drag’n’drop your `between` node from Inspector to this patch and replace the `303-...` node with it.\n2. Add a few more `between`’s: double click on empty space and type “between”. Your node is here and denoted as `@/between`.\n3. Bind some values to the inputs of new `between` nodes, add some `input-number` and `watch` nodes to play.\n4. Run simulation to check how the new node works.",
+      "content": "# Using Your New Node\n\nNow you can use the new node just like any other.\n\n## Instructions\n\n1. Drag’n’drop your `between` node from Project Browser to this patch and replace the `303-...` node with it.\n2. Add a few more `between`’s: double click on empty space and type “between”. Your node is here and denoted as `@/between`.\n3. Bind some values to the inputs of new `between` nodes, add some `tweak-number` and `watch` nodes to play.\n4. Run simulation to check how the new node works.",
       "id": "BkIsFbYY4",
       "position": {
         "units": "slots",

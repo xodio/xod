@@ -1,15 +1,29 @@
 {
   "comments": [
     {
-      "content": "# Strings\n\nAnother important data type is *strings*. Strings represent pieces of text like “Hello World!” or \"[https://xod.io](https://xod.io/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)\".\n\n## Instructions\n\n1. Run the Simulation.\n2. Observe how the message alternates between \"Hello World\" and \"Hello XOD\".\n3. Change values of `tweak-string-16`s to change the message.\n4. Add a third pin to `concat` and bind an exclamation point to it.\n\nNotice that tweak nodes for strings are a bit special. For optimisation purposes XOD needs to know the maximum length of the tweaked string, so there are several ones available. Try to choose the smallest ones.",
+      "content": "## 👆 Generics\n\nNote, the `if-else` node can work with numbers *and* strings depending on the incoming value type. The pins which accept various types are called *generic*. You can spot them by the little dot in the center.\n\nIf you want to bind a string value to a generic pin, you should enquote it because the number `3.14` and the string `\"3.14\"` are the different things. The quotes explicitly tell XOD you’ve meant a string value.",
+      "id": "BkFwA0Z9V",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 4
+      },
+      "size": {
+        "height": 3,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "# Strings\n\nAnother important data type is a *string*. Strings represent pieces of text like “Hello World!” or \"[https://xod.io](https://xod.io/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)\". XOD depicts the string type in yellow.\n\nTweak nodes for strings are a bit special. For optimisation purposes XOD needs to know the maximum length of the tweaked string, so there are several ones available. When you want to add a string tweak, choose the smallest one necessary.\n\nThe standard library contains a few nodes to work with strings and text. One useful node is `concat`. It joins several parts into a single one. This allows creating a message out of several data sources.\n\n## Exercise\n\nTry strings in runtime.\n\n1. Run the Simulation.\n2. Observe how the message alternates between \"Hello World\" and \"Hello XOD\".\n3. Change values of `tweak-string-16`s to change the message.\n4. Add a third pin to `concat` and bind an exclamation point to it.",
       "id": "H12oaYV6PN",
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "size": {
-        "height": 4,
+        "height": 6,
         "units": "slots",
         "width": 7
       }

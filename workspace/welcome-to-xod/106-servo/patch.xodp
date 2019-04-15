@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Servo\n\nControlling servos in XOD is just as easy as controlling LEDs. There is a node called `servo`. Find it in `xod-dev/servo`.\n\nThe `servo` node accepts a number in the range from 0.0 to 1.0 and maps it to the rated arm rotation limits of the servo motor.\n\nLet's link `pot` with `servo` to control the servo angle with the potentiometer.\n\n## Instructions\n\n1. Connect a servo to the Arduino board as shown on the [scheme](#TODO).\n\n2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the `servo` node.\n\n3. Upload the patch to the board.\n\nTurn the potentiometer knob, and watch the servo turns.\n",
+      "content": "## 👆 Motors are power hogs\n\nIf you wiggle the potentiometer fast enough you can encounter board reboots. It is because motors consume a lot of power when accelerate and if powered from the same power line as the microcontroller, the latter is left with no power at all.\n\nTo fight the effect in hardware, decouple digital parts of the circuit with capacitors and DC/DC converters. Use efficient power supplies along with (or instead of) your PC USB.\n\nTo deal with it in software, start and stop motors slowly. `206-fade` gives one possible way to acheive it.",
+      "id": "BJcJOxG5E",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "# Servo\n\nControlling servos in XOD is just as easy as controlling LEDs. There is a node called `servo`. Find it in `xod-dev/servo`.\n\nThe `servo` node accepts a number in the range from 0.0 to 1.0 and maps it to the rated arm rotation limits of the servo motor.\n\n## Exercise\n\nLet's link `pot` with `servo` to control the servo angle with the potentiometer.\n\n1. Connect a servo to the Arduino board as shown on the [scheme](#TODO).\n\n2. Link the `VAL` pin of the `pot` node to the `VAL` pin of the `servo` node.\n\n3. Upload the patch to the board.\n\nTurn the potentiometer knob, and watch the servo turns.\n",
       "id": "HymTfYNZ_N",
       "position": {
         "units": "slots",
@@ -25,6 +39,17 @@
       "output": {
         "nodeId": "Ske6MK4-uV",
         "pinKey": "H1sM2A12-"
+      }
+    },
+    {
+      "id": "r1X5wxMqN",
+      "input": {
+        "nodeId": "SyN7WQRKV",
+        "pinKey": "Bk5lexBtE"
+      },
+      "output": {
+        "nodeId": "r1b5Dlz5E",
+        "pinKey": "ByfGSDjQE"
       }
     }
   ],
@@ -55,9 +80,21 @@
       "position": {
         "units": "slots",
         "x": 8,
-        "y": 3
+        "y": 4
       },
       "type": "xod-dev/servo/servo"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.5"
+      },
+      "id": "r1b5Dlz5E",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/debug/tweak-number"
     }
   ]
 }

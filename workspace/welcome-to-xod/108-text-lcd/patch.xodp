@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "# Display Text on LCD\n\nThere are many variants of liquid crystal displays (LCD). Among them, text displays are simplest to communicate with. A text LCD can expose either of interfaces:\n- I2C\n- Parallel interface\n\nXOD supports both.\n\n## Instructions\n\n1. Examine your LCD and decide which node fits it. Remove another one.\n\n2. Assemble the [circuit](https://xod.io/docs/tutorial/108-text-lcd/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#assemble-circuit) that matches your LCD model.\n\n3. Bind pins or set the I2C address.\n\n4. Bind \"Wuzzup!\" to the `L1` pin.\n\n5. Link `tweak-string` with `L2`.\n\n6. Upload the patch with the interactive session enabled.\n\n7. Select `tweak-string`.\n\n8. Type some text and press the Enter key.",
+      "content": "# Display Text on LCD\n\nThere are many variants of liquid crystal displays (LCD). Among them, text displays are simplest to communicate with. A text LCD can expose either of physical interfaces:\n\n- I2C\n- Parallel\n\nXOD supports both.\n\n## Exercise\n\nLet’s show some text on an LCD.\n\n1. Examine your LCD and decide which node fits it. Remove another one.\n2. Assemble the [circuit](https://xod.io/docs/tutorial/108-text-lcd/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial#assemble-circuit) that matches your LCD model.\n3. Bind pins or set the I2C address.\n4. Bind \"Wuzzup!\" to the `L1` pin.\n5. Link `tweak-string` with `L2`.\n6. Upload the patch with the interactive session enabled.\n7. Select `tweak-string`.\n8. Type some text and press the Enter key.",
       "id": "By72G_HbdN",
       "position": {
         "units": "slots",
@@ -9,7 +9,21 @@
         "y": 0
       },
       "size": {
-        "height": 5,
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "## 👆 Too many variations\n\nThe world of text LCDs is too wide to guess you LCD pinout and parameters. The provided circuit will work for some models, but not for others. Refer to your particular display documentation to precisely determine its address, data pinout, contrast pin wiring, digital and backlight powering scheme.\n\nFor the rest of the tutorial we assume you have an I²C LCD listening on 27h address. Adjust patches accordingly if you’ve got another model.",
+      "id": "H1UzTgf9N",
+      "position": {
+        "units": "slots",
+        "x": 18,
+        "y": 2
+      },
+      "size": {
+        "height": 3,
         "units": "slots",
         "width": 7
       }

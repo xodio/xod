@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Run for X Seconds\n\nLet's make a device that turns on the LED for three seconds when you press the button.\n\nThe `delay` node helps us with this task. Generally, this node is used to postpone a pulse for some time, but when `delay` node is activated it also outputs `True` value on the `ACT` pin. That's what we need.\n\n## Instructions\n\n1. Replace `boot` with the `button` node and bind the corresponding `PORT`.\n\n2. Link it with the `SET` pin of the `delay` node.\n\n3. Change the `T` value to 3.\n\n4. Upload the program and press the button.\n\n## Additional Excercise\n\nCombine a few `delay` nodes by chaining `DONE` and `SET` pins to get a custom pattern of the blinking LED. Use the `or` node to combine `ACT` values as necessary.",
+      "content": "## Additional excercise\n\nCombine a few `delay` nodes by chaining `DONE` and `SET` pins to get a custom pattern of the blinking LED. Use the `or` node to combine `ACT` values as necessary.",
+      "id": "Hy82VbGqN",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 2
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "# Run for X Seconds\n\nHere is a device that turns on the LED for ten seconds on boot.\n\nThe `delay` node helps us with this task. Generally, this node is used to postpone a pulse for some time, but when the `delay` node is activated it also outputs `True` value on the `ACT` pin. That's what we need.\n\n## Exercise\n\nLet’s modify the device so that the LED turns on for three seconds on a button press.\n\n1. Replace `boot` with the a `button` node and bind the corresponding `PORT`.\n2. Link it with the `SET` pin of the `delay` node.\n3. Change the `T` value to 3.\n4. Upload the program\n\nPress the button and see how the LED behaves. Try to press the button many times while the LED glows and see how each press postpones the delay to be elapsed three seconds after the *last* press.\n\n",
       "id": "SJr0M7FU_E",
       "position": {
         "units": "slots",

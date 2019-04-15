@@ -1,7 +1,21 @@
 {
   "comments": [
     {
-      "content": "# Patching\n\nNow it's time to learn how to add nodes and link them together. Let's recreate our counting program from scratch so we'll have two independent counters.\n\n## Instructions\n\n1. *Double-click* on some empty space on the patch or press the \"i\" key on your keyboard.\n\n2. The *Suggester* will appear. Type `clock` into it and press *enter*\n\n3. A new `clock` node will appear in the place you double-clicked in step 1.\n\n4. Try moving a node by clicking and dragging it.\n\n5. Repeat steps 2-4 to add `count` and `watch` nodes.\n\n6. Create a link between `clock`'s `TICK` pin and `count`'s `INC` pin by clicking on one pin, then on the other.\n\n7. Create a link between `count`'s output pin and `watch`'s input pin.\n",
+      "content": "## 👆 Ways to add node\n\nAlternatively to double-clicking you can also press the “I” key or hit Edit → Add Node.\n\nIf you don’t remember the name of a node, try to find it in Project Browser. Once you spot it there, drag’n’drop the item to the patch board or hit Place in its context menu.",
+      "id": "BJJH5p-cV",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 6
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "# Patching\n\nYou guess correctly, you may add nodes and link them to build brand new programs and improve existing.\n\n## Exercise\n\nLet's extend our counting program so that we'll have two independent counters.\n\n1. Double-click on some empty space on the patch; the suggester line will appear.\n2. Start typing “clock” into it and press Enter once you see `xod/core/clock`.\n3. A new `clock` node will appear where you have double-clicked.\n4. Move the node around by dragging it.\n5. Repeat steps 1-4 to add `count` and `watch` nodes.\n6. Create a link between `clock`'s `TICK` pin and `count`'s `INC` pin by clicking on one pin, then the other.\n7. Create a link between `count`'s output pin and `watch`'s input pin.\n\nRun the simulation to see how the counters work in parallel. Try to set different `IVAL` parameters and see how it changes the behavior.",
       "id": "Hy-6APFO4",
       "position": {
         "units": "slots",
@@ -9,23 +23,23 @@
         "y": 0
       },
       "size": {
-        "height": 5,
+        "height": 6,
         "units": "slots",
         "width": 8
       }
     },
     {
-      "content": "Another way of duplicating a group of nodes and links is selecting them by clicking on an empty space and dragging and using *Edit* menu (or your systems standard keyboard shortcuts) to copy and paste them.",
+      "content": "## 👆 Copy/paste\n\nAnother way of duplicating a group of nodes and links is selecting them by drawing a frame around to select multiple nodes at once and then copy/paste using the Edit menu or keyboard shortcuts traditional for your OS.\n\nIf you draw the selection frame from left to right, a node is selected only if fits inside completely; if you draw from right to left, the nodes which intersect the frame are also selected.",
       "id": "rkOBIOtO4",
       "position": {
         "units": "slots",
-        "x": -2,
-        "y": 5
+        "x": 8,
+        "y": 4
       },
       "size": {
-        "height": 2,
+        "height": 3,
         "units": "slots",
-        "width": 10
+        "width": 7
       }
     }
   ],
