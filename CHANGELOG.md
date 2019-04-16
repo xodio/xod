@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Reworked built-in tutorial that covers all the new features (#1731, #1735, #1743, #1745, #1750, #1753)
+* [ide] Mark libraries and projects with red icons if they contain errors (#1752)
+
+### New nodes
+
+* [xod/mutex](https://xod.io/libs/xod/mutex) — a library to works with mutually exclusive resources. Used to avoid conflicts between nodes controlling long-running processes. (#1748)
+* [xod-dev/servo](https://xod.io/libs/xod-dev/servo) — a library to work with RC hobby servos (#1748)
+* Add [animation-unit](https://xod.io/libs/xod/core/animation-unit) and [animation-segment](https://xod.io/libs/xod/core/animation-segment) nodes to `xod/core` (#1748)
+* Add `tweak-string-32`, `tweak-string-64` and `tweak-string-128` nodes to [xod/debug](https://xod.io/libs/xod/debug) (#1738)
+
+### Bug fixes
+
+* [ide] Prevent displaying watch values from previous simulation when rerunning a simulation of the same patch (#1726)
+
+### Deprecations and removals
+
+* Deprecate `xod/common-hardware/servo` in favour of `xod-dev/servo` library (#1751)
+* Deprecate `xod/core/word-to-number` in favour of `xod/bits/i16-to-number` (#1739)
+* Remove “Compile in the cloud” option during upload. Will bring it back once XOD allows flashing over the air. (#1746)
+
 <a name="0.28.2"></a>
 
 ## 0.28.2 (2019-03-28)
