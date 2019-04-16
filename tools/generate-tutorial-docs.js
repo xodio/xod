@@ -108,6 +108,9 @@ const getH1 = R.compose(
   R.match(/^# (.+)$/gm)
 );
 
+// :: PatchName -> String
+const getExerciseNumber = R.compose(R.head, R.match(/^(\d{3})/g));
+
 // Lists patch directories
 const getProjectPatchDirs = projectPath =>
   fs
@@ -237,7 +240,7 @@ const generateTutorials = projectPath =>
 
         // H2
         const h2 = R.match(/^##\s.+$/gm, patchContent);
-        const h2PosI = patchContent.indexOf(h2);
+        const h2PosI = patchContent.indexOf(h2[0]);
         const h2Pos = h2PosI > -1 ? h2PosI : patchContent.length;
 
         // Content parts
@@ -289,10 +292,21 @@ ${generatePaginator(prevLesson, nextLesson)}
 const generateRootIndex = () => {
   const patchIndex = R.compose(
     R.join('\n'),
-    R.addIndex(R.map)(
-      ([patchName, content], idx) =>
-        `${idx}. [${getH1(content)}](./${patchName}/)`
+    R.map(
+      R.compose(
+        sectionContent => `<ol class="ui list">${sectionContent}</ol>`,
+        R.join('\n'),
+        R.map(([patchName, content]) =>
+          [
+            `<li value="${getExerciseNumber(patchName)}">`,
+            `  <a href="./${patchName}/">${getH1(content)}</a>`,
+            '</li>',
+          ].join('\n')
+        )
+      )
     ),
+    R.values,
+    R.groupBy(R.pipe(R.head, R.head)), // Group by first symbol in PatchName
     R.sortBy(R.head),
     R.toPairs
   )(comments);
