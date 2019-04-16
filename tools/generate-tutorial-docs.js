@@ -35,6 +35,7 @@ const { loadProject, saveProjectAsXodball } = require('xod-fs');
 
 // =============================================================================
 const PROJECT_NAME = 'welcome-to-xod';
+const XODBALL_FILE = `${PROJECT_NAME}.xodball`;
 const NO_SCREENSHOTS_FLAG = '--no-screenshots';
 
 const GENERATED_FILE_COMMENT = `
@@ -56,6 +57,12 @@ Then run auto-generator tool (xod/tools/generate-tutorial-docs.js).
 // to autogenerate docs
 // :: Map PatchName String
 const comments = {};
+
+// List of PatchPath that not empty.
+// Used in generating of
+// - chapter documentation to avoid pointing on nonexisting image
+// - screenshotter script to avoid attempt of screenshotting empty patch
+let nonEmptyPatchPaths = [];
 
 // =============================================================================
 // Arguments parsing
@@ -120,7 +127,7 @@ const getProjectPatchDirs = projectPath =>
 
 // Saves a multifile project as Xodball
 const saveAsXodball = source => {
-  const output = path.resolve(options.output, `${PROJECT_NAME}.xodball`);
+  const output = path.resolve(options.output, XODBALL_FILE);
   const bundledWs = path.resolve(__dirname, '..', 'workspace');
   return loadProject([bundledWs], source).then(saveProjectAsXodball(output));
 };
@@ -159,31 +166,55 @@ const extractCommentsFromProject = projectPath =>
     .then(xodpFiles => Promise.all(R.map(extractCommentsFromPatch, xodpFiles)));
 
 // =============================================================================
+// Store non-empty patch paths into `nonEmptyPatchPaths` variable
+// =============================================================================
+
+// :: [PatchName] -> Promise.Resolve [PatchName]
+const storeNonEmptyPatchPaths = () =>
+  fse.readJSON(path.join(options.output, XODBALL_FILE)).then(
+    R.compose(
+      _nonEmptyPatchPaths => {
+        nonEmptyPatchPaths = _nonEmptyPatchPaths;
+      },
+      arr => arr.sort(),
+      R.map(R.replace('@/', '')),
+      R.keys,
+      R.reject(
+        R.either(
+          R.complement(R.has('nodes')),
+          R.propSatisfies(R.isEmpty, 'nodes')
+        )
+      ),
+      R.prop('patches')
+    ),
+    err => {
+      process.stderr.write(err);
+      process.exit(1);
+    }
+  );
+
+// =============================================================================
 // Screenshotter command generator
 // =============================================================================
 
 const formatScreenshotCommand = patchName =>
   `"$SHOT" "$SRC" ${patchName} ./${patchName}/${patchName}.patch.png`;
 
-const generateScreenshotScript = projectPath =>
-  getProjectPatchDirs(projectPath)
-    .then(R.map(p => path.basename(p)))
-    .then(patchNames =>
-      fs.writeFile(
-        path.join(options.output, 'update-screenshots.sh'),
-        [
-          '#!/bin/sh',
-          '',
-          `SRC=${PROJECT_NAME}.xodball`,
-          '',
-          R.compose(
-            R.join('\n\n'),
-            R.map(formatScreenshotCommand),
-            R.reject(isIntroPart)
-          )(patchNames),
-        ].join('\n')
-      )
-    );
+const generateScreenshotScript = () =>
+  fs.writeFile(
+    path.join(options.output, 'update-screenshots.sh'),
+    [
+      '#!/bin/sh',
+      '',
+      `SRC=${XODBALL_FILE}`,
+      '',
+      R.compose(
+        R.join('\n\n'),
+        R.map(formatScreenshotCommand),
+        R.reject(isIntroPart)
+      )(nonEmptyPatchPaths),
+    ].join('\n')
+  );
 
 // =============================================================================
 // Tutorial content generators
@@ -233,9 +264,10 @@ const generateTutorials = projectPath =>
 
         // Image
         const h1 = getH1(patchContent);
-        const img = isIntroPart(patchName)
-          ? ''
-          : `![Screenshot of ${patchName}](./${patchName}.patch.png)`;
+        const img =
+          isIntroPart(patchName) || nonEmptyPatchPaths.indexOf(patchName) === -1
+            ? ''
+            : `![Screenshot of ${patchName}](./${patchName}.patch.png)`;
         const imgPos = patchContent.indexOf(h1) + h1.length;
 
         // H2
@@ -342,9 +374,10 @@ fs.mkdtemp(path.join(os.tmpdir(), 'tutorial-docs-')).then(tmpDir => {
   return fse
     .copy(options.input, CONVERTED_PROJECT)
     .then(() => extractCommentsFromProject(CONVERTED_PROJECT))
-    .then(() => saveAsXodball(CONVERTED_PROJECT))
     .then(() => fse.ensureDir(options.output))
-    .then(() => generateScreenshotScript(CONVERTED_PROJECT))
+    .then(() => saveAsXodball(CONVERTED_PROJECT))
+    .then(() => storeNonEmptyPatchPaths())
+    .then(() => generateScreenshotScript())
     .then(() => generateTutorials(CONVERTED_PROJECT))
     .then(() => generateRootIndex())
     .then(() =>
