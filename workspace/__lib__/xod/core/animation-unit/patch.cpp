@@ -8,7 +8,7 @@ struct State {
 void evaluate(Context ctx) {
     auto now = transactionTime();
     auto state = getState(ctx);
-    auto rate = max(0, getValue<input_RATE>(ctx));
+    auto rate = max((Number)0, getValue<input_RATE>(ctx));
     auto out = getValue<output_OUT>(ctx);
 
     if (isInputDirty<input_FWD>(ctx)) {
