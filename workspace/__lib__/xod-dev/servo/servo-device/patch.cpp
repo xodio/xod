@@ -33,7 +33,7 @@ class XServo : public Servo {
         this->attach(port, pulseMin, pulseMax);
     }
 
-    Number read01() const {
+    Number read01() {
         int us = this->readMicroseconds();
         return (Number)(us - pulseMin) / (Number)(pulseMax - pulseMin);
     }
