@@ -1,0 +1,115 @@
+{
+  "links": [
+    {
+      "id": "HkJrv4IcV",
+      "input": {
+        "nodeId": "SJnND4LqE",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "S1QWNwEU5V",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyAEPNU9E",
+      "input": {
+        "nodeId": "SJnND4LqE",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "ByNbEv4I5V",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJlrDVLcV",
+      "input": {
+        "nodeId": "H1eZNwN8qN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJnND4LqE",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "ry-SvN8c4",
+      "input": {
+        "nodeId": "SJnND4LqE",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "HJWbVwNLqN",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Value to be output if condition is true",
+      "id": "ByNbEv4I5V",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__in__": "0"
+      },
+      "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
+      "id": "H1eZNwN8qN",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Condition value",
+      "id": "HJWbVwNLqN",
+      "label": "COND",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Value to be output if condition is false",
+      "id": "S1QWNwEU5V",
+      "label": "F",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "SJnND4LqE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "SyB-Ew4UcV",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    }
+  ]
+}
