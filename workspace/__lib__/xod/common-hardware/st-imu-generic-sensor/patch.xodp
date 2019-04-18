@@ -15,11 +15,25 @@
       }
     },
     {
+      "content": "Allow reading only after setup is done",
+      "id": "By8nzR4qE",
+      "position": {
+        "units": "slots",
+        "x": 26,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    },
+    {
       "content": "↑ This sends commands to adjust sensitivity (CTRL_REG4)",
       "id": "HJI6DtEu-",
       "position": {
         "units": "slots",
-        "x": 6,
+        "x": 8,
         "y": 9
       },
       "size": {
@@ -57,6 +71,17 @@
       }
     },
     {
+      "id": "B1gdabR4qV",
+      "input": {
+        "nodeId": "ByOTbC45V",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hk8o1gwxQ",
+        "pinKey": "rkIUqA1Pl7"
+      }
+    },
+    {
       "id": "B1mczxvg7",
       "input": {
         "nodeId": "H1PJU_Uxm",
@@ -68,6 +93,17 @@
       }
     },
     {
+      "id": "BJ4sZRE5E",
+      "input": {
+        "nodeId": "BkSwzeDxm",
+        "pinKey": "ry8jNWxveQ"
+      },
+      "output": {
+        "nodeId": "rJWsZAVq4",
+        "pinKey": "HJ1uXKDpb"
+      }
+    },
+    {
       "id": "BkpY9PUxQ",
       "input": {
         "nodeId": "SJgPf9V_Z",
@@ -76,6 +112,17 @@
       "output": {
         "nodeId": "r1vwqwLeX",
         "pinKey": "r1ctYrM3G"
+      }
+    },
+    {
+      "id": "BkxGeMCV5E",
+      "input": {
+        "nodeId": "Hyi1GCEcN",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "BJMxM0EqN",
+        "pinKey": "__out__"
       }
     },
     {
@@ -109,17 +156,6 @@
       "output": {
         "nodeId": "BkSwzeDxm",
         "pinKey": "SySo4-ePeX"
-      }
-    },
-    {
-      "id": "ByyizxPem",
-      "input": {
-        "nodeId": "BkSwzeDxm",
-        "pinKey": "ry8jNWxveQ"
-      },
-      "output": {
-        "nodeId": "rkIkhEsvW",
-        "pinKey": "__out__"
       }
     },
     {
@@ -163,6 +199,28 @@
       },
       "output": {
         "nodeId": "BJvFHnSlQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJyxfR4cN",
+      "input": {
+        "nodeId": "rJWsZAVq4",
+        "pinKey": "BJf6HXtDaW"
+      },
+      "output": {
+        "nodeId": "Hyi1GCEcN",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "Hk8oWCNqE",
+      "input": {
+        "nodeId": "rJWsZAVq4",
+        "pinKey": "S1VDQYD6W"
+      },
+      "output": {
+        "nodeId": "rkIkhEsvW",
         "pinKey": "__out__"
       }
     },
@@ -454,6 +512,16 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "id": "BJMxM0EqN",
+      "label": "init ok",
+      "position": {
+        "units": "slots",
+        "x": 25,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
       "id": "BJvFHnSlQ",
       "label": "I2C",
       "position": {
@@ -494,6 +562,16 @@
         "y": 4
       },
       "type": "@/st-imu-write-register"
+    },
+    {
+      "id": "ByOTbC45V",
+      "label": "init ok",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 9
+      },
+      "type": "xod/patch-nodes/to-bus"
     },
     {
       "description": "Available 1-level sensitivity.",
@@ -615,6 +693,15 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "id": "Hyi1GCEcN",
+      "position": {
+        "units": "slots",
+        "x": 25,
+        "y": 1
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
       "description": "Y register value adjusted with sensitivity multiplier",
       "id": "S1_e24ov-",
       "label": "Y",
@@ -665,7 +752,7 @@
       "position": {
         "units": "slots",
         "x": 22,
-        "y": 0
+        "y": -1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
@@ -716,6 +803,15 @@
       "type": "@/st-imu-round-sensitivity"
     },
     {
+      "id": "rJWsZAVq4",
+      "position": {
+        "units": "slots",
+        "x": 24,
+        "y": 2
+      },
+      "type": "xod/core/gate(pulse)"
+    },
+    {
       "id": "rJxtPiG9M",
       "position": {
         "units": "slots",
@@ -734,7 +830,7 @@
       "position": {
         "units": "slots",
         "x": 24,
-        "y": 0
+        "y": -1
       },
       "type": "xod/patch-nodes/input-pulse"
     },
