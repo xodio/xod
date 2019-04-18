@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.29.1"></a>
+
+## 0.29.1 (2019-04-18)
+
+### Bug fixes
+
+* [nodes] Fixed compatibility of `xod-dev/servo/servo-device` and `xod/core/animation-unit` with ESP8266 and some other platforms (#1759)
+* [nodes] Prevent race condition on initialisation of `lis331dlh-accelerometer`, `lis331hh-accelerometer` and `lis3dh-accelerometer` (#1761)
+* [nodes] Added missing descriptions to `xod-dev/servo`, `xod/mutex`, `xod/net` and `xod/stream` libraries (#1760)
+
 <a name="0.29.0"></a>
 
 ## 0.29.0 (2019-04-16)
