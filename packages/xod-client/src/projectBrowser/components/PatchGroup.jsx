@@ -34,7 +34,7 @@ PatchGroup.propTypes = {
   children: PropTypes.node,
   type: PropTypes.oneOf(['library', 'my']),
   onClose: PropTypes.func,
-  withErrors: PropTypes.boolean,
+  withErrors: PropTypes.bool,
 };
 
 PatchGroup.defaultProps = {
