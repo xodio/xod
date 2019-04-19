@@ -1,0 +1,111 @@
+{
+  "links": [
+    {
+      "id": "HJwpw4I5N",
+      "input": {
+        "nodeId": "S1H6vV8cV",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJEzcPEL9V",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HkDnD4I54",
+      "input": {
+        "nodeId": "HJEzcPEL9V",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "S169wEIcE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S182wN8cE",
+      "input": {
+        "nodeId": "HJEzcPEL9V",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "BJ29wEL5N",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk_McwEIqE",
+      "input": {
+        "nodeId": "HJEzcPEL9V",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "HyezcPELq4",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Condition value",
+      "id": "BJ29wEL5N",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "HJEzcPEL9V",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "description": "Condition value",
+      "id": "HyezcPELq4",
+      "label": "COND",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Condition value",
+      "id": "S169wEIcE",
+      "label": "F",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "S1H6vV8cV",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "ryQzcP4I5N",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    }
+  ]
+}

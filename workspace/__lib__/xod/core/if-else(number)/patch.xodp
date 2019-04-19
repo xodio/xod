@@ -2,6 +2,16 @@
   "description": "Outputs either input value depending on condition",
   "nodes": [
     {
+      "description": "Use the generic `xod/core/if-else` instead",
+      "id": "Hk1ASEUc4",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__in__": "0"
       },

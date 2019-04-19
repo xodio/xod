@@ -1,0 +1,112 @@
+{
+  "links": [
+    {
+      "id": "HJnRL4894",
+      "input": {
+        "nodeId": "rkORLVU5N",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "SJ76a84LcN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJA0LEL5N",
+      "input": {
+        "nodeId": "r1raaLEUcE",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkORLVU5N",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "Sy9C8EL9V",
+      "input": {
+        "nodeId": "rkORLVU5N",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "r1gaTUNI9E",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Syi0LVU9E",
+      "input": {
+        "nodeId": "rkORLVU5N",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "H1fppLE8c4",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "By4TpI4IqV",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "description": "String to be output if condition is true",
+      "id": "H1fppLE8c4",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "String to be output if condition is false",
+      "id": "SJ76a84LcN",
+      "label": "F",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Condition value",
+      "id": "r1gaTUNI9E",
+      "label": "COND",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Outputs string from `T` if `COND` is true, and `F` otherwise",
+      "id": "r1raaLEUcE",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "rkORLVU5N",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/if-else"
+    }
+  ]
+}

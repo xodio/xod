@@ -1,0 +1,4 @@
+COND	T	F	R
+false	0.5	1.25	1.25
+false	10	20	20
+true	10	20	10

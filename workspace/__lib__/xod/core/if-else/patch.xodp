@@ -2,13 +2,22 @@
   "description": "Outputs either input value depending on condition",
   "nodes": [
     {
+      "id": "Hkx_QNIqN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
       "description": "Outputs value of `T` if `COND` is true, and `F` otherwise",
       "id": "S13xLCuHvkW",
       "label": "R",
       "position": {
         "units": "slots",
-        "x": 0.25,
-        "y": 2.15
+        "x": 0,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-t1"
     },
@@ -18,19 +27,10 @@
       "label": "COND",
       "position": {
         "units": "slots",
-        "x": 0.25,
-        "y": 0.15
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
-    },
-    {
-      "id": "abstract",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/abstract"
     },
     {
       "description": "Value to be output if condition is false",
@@ -38,8 +38,8 @@
       "label": "F",
       "position": {
         "units": "slots",
-        "x": 7.9,
-        "y": 0.15
+        "x": 8,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
     },
@@ -49,8 +49,8 @@
       "label": "T",
       "position": {
         "units": "slots",
-        "x": 4.05,
-        "y": 0.15
+        "x": 4,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
     }
