@@ -63,6 +63,8 @@ export const TPatch = Model('TPatch', {
   isDefer: $.Boolean,
   isConstant: $.Boolean,
   usesTimeouts: $.Boolean,
+  catchesErrors: $.Boolean,
+  raisesErrors: $.Boolean,
   usesNodeId: $.Boolean,
   outputs: $.Array(TPatchOutput),
   inputs: $.Array(TPatchInput),
@@ -88,6 +90,7 @@ export const TNode = Model('TNode', {
   id: TNodeId,
   originalId: NodeId,
   patch: TPatch,
+  upstreamErrorRaisers: $.Array(TNodeId),
   outputs: $.Array(TNodeOutput),
   inputs: $.Array(TNodeInput),
 });

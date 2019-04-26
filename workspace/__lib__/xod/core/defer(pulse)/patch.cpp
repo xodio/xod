@@ -1,12 +1,19 @@
+#pragma XOD error_catch enable
+
 struct State {
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-        setTimeout(ctx, 0);
-    } else if (isTimedOut(ctx)) {
-        emitValue<output_OUT>(ctx, true);
+    auto err = getError<input_IN>(ctx);
+    if (err) {
+        raiseError(ctx, err);
+    } else {
+        if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
+            setTimeout(ctx, 0);
+        } else {
+            emitValue<output_OUT>(ctx, true);
+        }
     }
 }

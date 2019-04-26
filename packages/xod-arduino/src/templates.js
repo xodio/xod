@@ -236,6 +236,11 @@ Handlebars.registerHelper('cppValue', (type, value) =>
   })(value)
 );
 
+Handlebars.registerHelper(
+  'hasUpstreamErrorRaisers',
+  nodeOrInput => nodeOrInput.upstreamErrorRaisers.length > 0
+);
+
 // A helper to quickly introduce a new filtered {{each ...}} loop
 function registerHandlebarsFilterLoopHelper(name, predicate) {
   Handlebars.registerHelper(name, (list, block) =>
@@ -267,6 +272,10 @@ registerHandlebarsFilterLoopHelper(
   R.complement(R.has('fromNodeId'))
 );
 registerHandlebarsFilterLoopHelper('eachDirtyablePin', R.prop('isDirtyable'));
+registerHandlebarsFilterLoopHelper(
+  'eachInputPinWithUpstreamRaisers',
+  R.pathOr(0, ['upstreamErrorRaisers', 'length'])
+);
 
 // =============================================================================
 //

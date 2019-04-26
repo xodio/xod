@@ -2,7 +2,11 @@ open Belt;
 
 let isDirtienessEnabled = Directives.isDirtienessEnabled;
 
+let doesCatchErrors = Directives.doesCatchErrors;
+
 let isNodeIdEnabled = Directives.isNodeIdEnabled;
+
+let doesRaiseErrors = Directives.doesRaiseErrors;
 
 let areTimeoutsEnabled = Directives.areTimeoutsEnabled;
 

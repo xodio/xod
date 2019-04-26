@@ -30,6 +30,11 @@ let areTimeoutsEnabled: code => bool;
 let isNodeIdEnabled: code => bool;
 
 /**
+  Returns if `raiseError` is found in the code.
+ */
+let doesRaiseErrors: code => bool;
+
+/**
   Returns whether a particular pin requires dirtieness storage. Prefers an
   explicit declaration.
 
@@ -44,6 +49,11 @@ let isNodeIdEnabled: code => bool;
   `isInputDirty<input_FOO>` is found in the code and disabled otherwise.
  */
 let isDirtienessEnabled: (code, string) => bool;
+
+/**
+  Returns wether node declares itself as an error catcher
+ */
+let doesCatchErrors: code => bool;
 
 /** Returns a list of found XOD pragmas in the order of occurence */
 let findXodPragmas: code => list(Pragma.t);

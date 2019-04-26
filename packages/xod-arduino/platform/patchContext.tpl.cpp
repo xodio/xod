@@ -3,6 +3,12 @@
 
 struct Node {
     State state;
+  {{#if raisesErrors}}
+    uint8_t ownError;
+  {{/if}}
+  {{#if catchesErrors}}
+    uint8_t prevCaughtError;
+  {{/if}}
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
   {{/if}}
@@ -40,6 +46,11 @@ template<> struct ValueType<output_{{ pinKey }}> { using T = {{ cppType type }};
 
 struct ContextObject {
     Node* _node;
+  {{#if catchesErrors}}
+    {{#each inputs}}
+    uint8_t _error_input_{{ pinKey }};
+    {{/each}}
+  {{/if}}
   {{#if usesNodeId}}
     uint16_t _nodeId;
   {{/if}}
@@ -109,4 +120,20 @@ State* getState(Context ctx) {
 uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
+{{/if}}
+
+{{#if catchesErrors}}
+
+template<typename InputT> uint8_t getError(Context ctx) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "{{#each inputs}} input_{{pinKey}}{{/each}}");
+    return 0;
+}
+
+{{#each inputs}}
+template<> uint8_t getError<input_{{ pinKey }}>(Context ctx) {
+    return ctx->_error_input_{{ pinKey }};
+}
+{{/each}}
 {{/if}}
