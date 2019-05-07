@@ -64,6 +64,7 @@ class Link extends React.Component {
       'is-ghost': this.props.isGhost,
       'is-dead': this.props.dead,
       'is-dragged': this.props.isDragged,
+      'is-error-affected': this.props.isAffectedByErrorRaiser,
     });
 
     const clickable = this.isClickable();
@@ -127,6 +128,7 @@ Link.propTypes = {
   isOverlay: PropTypes.bool,
   isDragged: PropTypes.bool,
   onClick: PropTypes.func,
+  isAffectedByErrorRaiser: PropTypes.bool,
 };
 
 Link.defaultProps = {
@@ -136,6 +138,7 @@ Link.defaultProps = {
   isGhost: false,
   isOverlay: false,
   isDragged: false,
+  isAffectedByErrorRaiser: false,
   onClick: noop,
 };
 

@@ -10,6 +10,8 @@ import {
 import { DEBUGGER_TAB_ID } from '../editor/constants';
 import { SESSION_TYPE } from './constants';
 
+import { createMemoizedSelector } from '../utils/selectorTools';
+
 export const getDebuggerState = R.prop('debugger');
 
 export const isDebugSession = R.compose(
@@ -111,6 +113,17 @@ export const getUploadProgress = R.compose(
   getDebuggerState
 );
 
+// :: Number -> [BreadcrumbChunk] -> String
+const getChunksPath = R.curry((activeIndex, chunks) =>
+  R.compose(
+    R.join('~'),
+    R.append(''),
+    R.pluck('nodeId'),
+    R.tail, // remove first cause it's entry patch without any nodeId
+    R.take(activeIndex + 1)
+  )(chunks)
+);
+
 export const getWatchNodeValuesForCurrentPatch = createSelector(
   [
     getCurrentTabId,
@@ -118,19 +131,13 @@ export const getWatchNodeValuesForCurrentPatch = createSelector(
     getBreadcrumbChunks,
     getBreadcrumbActiveIndex,
   ],
-  (maybeTabId, nodeValues, chunks, activeIndex) =>
+  (maybeTabId, nodeMap, chunks, activeIndex) =>
     foldMaybe(
       {},
       tabId => {
         if (tabId !== DEBUGGER_TAB_ID) return {};
 
-        const nodeIdPath = R.compose(
-          R.join('~'),
-          R.append(''),
-          R.map(R.prop('nodeId')),
-          R.tail, // remove first cause it's entry patch without any nodeId
-          R.take(activeIndex + 1)
-        )(chunks);
+        const nodeIdPath = getChunksPath(activeIndex, chunks);
 
         return R.compose(
           R.fromPairs,
@@ -142,14 +149,91 @@ export const getWatchNodeValuesForCurrentPatch = createSelector(
             R.compose(
               R.ifElse(
                 () => activeIndex === 0,
-                R.complement(R.contains)('~'),
+                R.complement(R.contains('~')),
                 R.startsWith(nodeIdPath)
               ),
               R.nth(0)
             )
           ),
           R.toPairs
-        )(nodeValues);
+        )(nodeMap);
+      },
+      maybeTabId
+    )
+);
+
+export const getInteractiveNodeErrorCodes = R.compose(
+  R.prop('interactiveNodeErrorCodes'),
+  getDebuggerState
+);
+
+export const getPinsAffectedByErrorRaisers = R.compose(
+  R.prop('pinsAffectedByErrorRaisers'),
+  getDebuggerState
+);
+
+export const getPinsAffectedByErrorRaisersForCurrentChunk = createMemoizedSelector(
+  [
+    getCurrentTabId,
+    getPinsAffectedByErrorRaisers,
+    getBreadcrumbChunks,
+    getBreadcrumbActiveIndex,
+  ],
+  [R.equals, R.equals, R.equals, R.equals],
+  (maybeTabId, pinPairs, chunks, activeIndex) =>
+    foldMaybe(
+      {},
+      tabId => {
+        if (tabId !== DEBUGGER_TAB_ID) return {};
+        const nodeIdPath = getChunksPath(activeIndex, chunks);
+
+        return R.compose(
+          R.map(R.map(R.over(R.lensIndex(1), R.replace(nodeIdPath, '')))),
+          R.map(R.filter(R.compose(R.startsWith(nodeIdPath), R.nth(1))))
+        )(pinPairs);
+      },
+      maybeTabId
+    )
+);
+
+export const getInteractiveNodeErrorCodesForCurrentChunk = createMemoizedSelector(
+  [
+    getCurrentTabId,
+    getInteractiveNodeErrorCodes,
+    getBreadcrumbChunks,
+    getBreadcrumbActiveIndex,
+  ],
+  [R.equals, R.equals, R.equals, R.equals],
+  (maybeTabId, nodeMap, chunks, activeIndex) =>
+    foldMaybe(
+      {},
+      tabId => {
+        if (tabId !== DEBUGGER_TAB_ID) return {};
+        const nodeIdPath = getChunksPath(activeIndex, chunks);
+
+        return R.compose(
+          // Merge with the original to make possible to easily mark affected nodes
+          R.merge(nodeMap),
+          R.fromPairs,
+          // Generate pairs for all chunks
+          // E.G.
+          // [['a~b~c', 10]] => [['a', 10], ['a~b', 10], ['a~b~c', 10]]
+          R.reduce((acc, [origPath, errCode]) => {
+            const nodePathChunks = R.split('~', origPath);
+            const allPaths = R.addIndex(R.map)((_, idx) =>
+              R.compose(R.append(errCode), R.of, R.join('~'), R.take(idx + 1))(
+                nodePathChunks
+              )
+            )(nodePathChunks);
+            return R.concat(allPaths, acc);
+          }, []),
+          R.when(
+            () => activeIndex !== 0,
+            R.map(R.over(R.lensIndex(0), R.replace(nodeIdPath, '')))
+          ),
+          R.filter(R.compose(R.startsWith(nodeIdPath), R.nth(0))),
+          R.toPairs
+        )(nodeMap);
       },
       maybeTabId
     )

@@ -10,11 +10,17 @@ import {
   fail,
   explodeMaybe,
 } from 'xod-func-tools';
-import { Project, isValidIdentifier, IDENTIFIER_RULES } from 'xod-project';
+import {
+  Project,
+  isValidIdentifier,
+  IDENTIFIER_RULES,
+  getPatchByPath,
+} from 'xod-project';
 import {
   transformProject,
   transpile,
   getNodeIdsMap,
+  getPinsAffectedByErrorRaisers,
   LIVENESS,
 } from 'xod-arduino';
 
@@ -100,20 +106,29 @@ export default class App extends React.Component {
           this.props.actions.addError,
           R.when(R.is(Error), formatErrorMessage)
         ),
-        ({ code, nodeIdsMap }) =>
+        ({ code, nodeIdsMap, pinsAffectedByErrorRaisers }) =>
           this.props.actions.runSimulation(
             explodeMaybe(
               'currentPatchPath already folded in `transformProjectForTranspiler`',
               this.props.currentPatchPath
             ),
             nodeIdsMap,
-            code
+            code,
+            pinsAffectedByErrorRaisers
           )
       ),
       R.map(
         R.applySpec({
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
+          pinsAffectedByErrorRaisers: tProj =>
+            R.compose(
+              foldMaybe(
+                {},
+                getPinsAffectedByErrorRaisers(tProj, R.__, this.props.project)
+              ),
+              R.chain(getPatchByPath(R.__, this.props.project))
+            )(this.props.currentPatchPath),
         })
       )
     )(eitherTProject);

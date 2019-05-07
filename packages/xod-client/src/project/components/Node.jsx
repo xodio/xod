@@ -134,6 +134,8 @@ class Node extends React.Component {
       type,
       isDragged,
       isDeprecated,
+      raisedErrorCode,
+      isAffectedByErrorRaiser,
     } = this.props;
 
     const pinsArr = R.values(pins);
@@ -145,6 +147,8 @@ class Node extends React.Component {
       'is-variadic': this.props.isVariadic,
       'is-changing-arity': this.props.isChangingArity,
       'is-errored': this.props.errors.length > 0,
+      'is-error-raised': !!raisedErrorCode,
+      'is-error-affected': isAffectedByErrorRaiser,
       'is-hovered': this.isNodeHovered(),
       'is-deprecated': this.props.isDeprecated,
     });
@@ -163,13 +167,25 @@ class Node extends React.Component {
 
     const isTerminalNode = XP.isTerminalPatchPath(type);
 
-    const errMessage =
-      this.props.errors.length > 0
-        ? R.compose(
+    const errMessage = R.cond([
+      [
+        () => this.props.errors.length > 0,
+        () =>
+          R.compose(
             R.join(';\n'),
             R.map(R.pipe(formatErrorMessage, R.prop('note')))
-          )(this.props.errors)
-        : null;
+          )(this.props.errors),
+      ],
+      [
+        () => !!raisedErrorCode,
+        R.always(`Node evaluation stopped with error code: ${raisedErrorCode}`),
+      ],
+      [
+        () => isAffectedByErrorRaiser,
+        R.always('Node evaluation stopped by some upstream nodes'),
+      ],
+      [R.T, R.always(null)],
+    ])();
 
     return (
       <TooltipHOC
@@ -257,6 +273,8 @@ Node.propTypes = {
   onMouseUp: PropTypes.func,
   onDoubleClick: PropTypes.func,
   noNodeHovering: PropTypes.bool,
+  raisedErrorCode: PropTypes.number,
+  isAffectedByErrorRaiser: PropTypes.bool,
 };
 
 Node.defaultProps = {
@@ -273,6 +291,7 @@ Node.defaultProps = {
   onDoubleClick: noop,
   pinLinkabilityValidator: R.F,
   noNodeHovering: false,
+  isAffectedByErrorRaiser: false,
 };
 
 export default Node;

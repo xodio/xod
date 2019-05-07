@@ -814,10 +814,12 @@ export const abortSimulation = () => (dispatch, getState) => {
   });
 };
 
-export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
-  dispatch,
-  getState
-) => {
+export const runSimulation = (
+  simulationPatchPath,
+  nodeIdsMap,
+  code,
+  pinsAffectedByErrorRaisers
+) => (dispatch, getState) => {
   dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
 
   const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
@@ -846,6 +848,7 @@ export const runSimulation = (simulationPatchPath, nodeIdsMap, code) => (
             payload: {
               worker,
               nodeIdsMap,
+              pinsAffectedByErrorRaisers,
               patchPath: simulationPatchPath,
             },
           });

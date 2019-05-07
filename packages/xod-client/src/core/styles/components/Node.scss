@@ -4,6 +4,8 @@
   text-shadow: 0 1px 1px $color-node-fill;
 }
 
+$error-disappear-time: 250ms;
+
 .Node {
   .body {
     width: 100%;
@@ -16,6 +18,7 @@
     fill: transparent;
     stroke: $color-node-outline;
     stroke-width: 1px;
+    transition: stroke $error-disappear-time;
 
     // For terminals:
     &.string { stroke: $color-datatype-string; }
@@ -42,6 +45,32 @@
       stroke: $error;
     }
   }
+
+  &.is-error-raised, &.is-error-affected {
+    .nodeLabel {
+      color: $error-text !important;
+      transition: color 0s;
+    }
+    .bus-node .outline {
+      stroke: $error !important;
+    }
+    .jumper-line {
+      stroke: $error !important;
+    }
+  }
+  &.is-error-raised {
+    .outline {
+      stroke: $error;
+      transition: stroke 0s;
+    }
+    .VariadicHandle--grip {
+      fill: $error;
+    }
+    .NodeResizeHandle {
+      fill: $error;
+    }
+  }
+  &.is-error-affected {}
 
   &.is-variadic {}
 
@@ -144,6 +173,8 @@
     text-overflow: ellipsis;
     cursor: default;
     user-select: none;
+
+    transition: color $error-disappear-time;
   }
 
   &.is-hovered {

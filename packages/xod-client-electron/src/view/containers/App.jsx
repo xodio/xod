@@ -9,9 +9,10 @@ import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
-import { Project, getProjectName } from 'xod-project';
+import { Project, getProjectName, getPatchByPath } from 'xod-project';
 import {
   foldEither,
+  foldMaybe,
   isAmong,
   explodeMaybe,
   noop,
@@ -22,6 +23,7 @@ import {
 import {
   transpile,
   getNodeIdsMap,
+  getPinsAffectedByErrorRaisers,
   getRequireUrls,
   LIVENESS,
 } from 'xod-arduino';
@@ -350,21 +352,35 @@ class App extends client.App {
           foldEither(
             error =>
               this.props.actions.addError(client.composeMessage(error.message)),
-            nodeIdsMap => {
+            tProject => {
+              const nodeIdsMap = getNodeIdsMap(tProject);
               if (this.props.currentPatchPath.isNothing) return;
               const currentPatchPath = explodeMaybe(
                 'Imposible error: currentPatchPath is Nothing',
                 this.props.currentPatchPath
               );
 
+              const pinsAffectedByErrorRaisers = R.compose(
+                foldMaybe(
+                  {},
+                  getPinsAffectedByErrorRaisers(
+                    tProject,
+                    R.__,
+                    this.props.project
+                  )
+                ),
+                getPatchByPath(R.__, this.props.project)
+              )(currentPatchPath);
+
               this.props.actions.startDebuggerSession(
                 client.createSystemMessage('Debug session started'),
                 nodeIdsMap,
+                pinsAffectedByErrorRaisers,
                 currentPatchPath
               );
               debuggerIPC.sendStartDebuggerSession(ipcRenderer, port, 'Debug');
             },
-            R.map(getNodeIdsMap, eitherTProject)
+            eitherTProject
           );
         }
       })

@@ -32,6 +32,7 @@ const Pin = props => {
     hasConflictingBoundValue,
     'is-connected': props.isConnected,
     'is-invalid': props.isInvalid,
+    'is-error-affected': props.isAffectedByErrorRaiser,
   });
 
   const pinCircleCenter = {
@@ -96,6 +97,7 @@ Pin.propTypes = {
   isInvalid: PropTypes.bool,
   isAcceptingLinks: PropTypes.bool,
   isLastVariadicGroup: PropTypes.bool,
+  isAffectedByErrorRaiser: PropTypes.bool,
 };
 
 export default Pin;

@@ -53,6 +53,10 @@
     @include link-parts-coloring($color-canvas-selected);
   }
 
+  &.is-error-affected {
+    @include link-parts-coloring($error);
+  }
+
   &.is-dead {
     @include link-parts-coloring($error);
     stroke-dasharray: 2,2;

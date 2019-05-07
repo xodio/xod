@@ -24,6 +24,8 @@ export const DEBUGGER_MESSAGE_TYPES = {
   ERROR: 'error',
 };
 
+const XOD_ERROR_PREFIX = '+XOD_ERR';
+
 //------------------------------------------------------------------------------
 //
 // Utils
@@ -46,6 +48,9 @@ const xodMessageRegExp = /^(\+\w+):(\d+):(\d+):(.+)/;
 
 // :: String -> Boolean
 export const isXodMessage = R.test(xodMessageRegExp);
+
+// :: XodMessage -> Boolean
+export const isXodErrorMessage = R.propEq('prefix', XOD_ERROR_PREFIX);
 
 // :: String -> XodMessage
 export const createXodMessage = input =>
