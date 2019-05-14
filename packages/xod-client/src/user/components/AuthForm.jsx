@@ -39,7 +39,7 @@ class AuthForm extends React.Component {
     return (
       <form onSubmit={this.onLogin}>
         <div className="whyLogin">
-          Log in to increase quotas and access more features
+          Log in to increase cloud limits and access more features
         </div>
 
         <input
