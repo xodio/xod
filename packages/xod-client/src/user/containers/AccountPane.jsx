@@ -46,8 +46,8 @@ const AccountPane = ({
         )}
       </div>
 
-      <div className="dailyQuotas">
-        <div className="title">Daily quotas</div>
+      <div className="cloudLimits">
+        <div className="title">Cloud limits</div>
         <div>
           Compilations:{' '}
           {compilationsLeft == null ? 'currently offline' : compilationsLeft}
