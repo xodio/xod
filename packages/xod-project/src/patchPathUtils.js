@@ -24,6 +24,8 @@ export {
   isValidPatchPath,
   isTerminalPatchPath,
   isWatchPatchPath,
+  isFromBusPatchPath,
+  isToBusPatchPath,
   isBusPatchPath,
   isJumperPatchPath,
   isBuiltInLibName,

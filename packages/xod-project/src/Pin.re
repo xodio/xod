@@ -40,6 +40,10 @@ let getDirection = (pin: t) : direction => {
   };
 };
 
+let isOutput = (pin: t) : bool => pin |. getDirection |. dir => (dir === Output);
+
+let isInput = (pin: t) : bool => pin |. getDirection |. dir => (dir === Input);
+
 [@bs.module ".."]
 external _normalizeLabels : array(t) => array(t) = "normalizeEmptyPinLabels";
 

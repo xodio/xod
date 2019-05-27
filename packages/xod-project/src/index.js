@@ -2,6 +2,7 @@ import { curry } from 'ramda';
 
 // because functions exported from Reason are uncurried
 import { jumperizePatchRecursivelyU, splitLinksToBusesU } from './Buses_Js.bs';
+import { listUpstreamPinsToNiixU } from './Traversing_Js.bs';
 
 export * from './project';
 export {
@@ -143,3 +144,4 @@ export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
 
 export const jumperizePatchRecursively = curry(jumperizePatchRecursivelyU);
 export const splitLinksToBuses = curry(splitLinksToBusesU);
+export const listUpstreamPinsToNiix = curry(listUpstreamPinsToNiixU);

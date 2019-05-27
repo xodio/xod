@@ -1,0 +1,800 @@
+{
+  "name": "",
+  "patches": {
+    "@/basic": {
+      "links": {
+        "r1Od4qH6V": {
+          "id": "r1Od4qH6V",
+          "input": {
+            "nodeId": "bottomNode",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "topNode",
+            "pinKey": "endPin"
+          }
+        }
+      },
+      "nodes": {
+        "bottomNode": {
+          "id": "bottomNode",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        },
+        "topNode": {
+          "id": "topNode",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/top"
+        }
+      },
+      "path": "@/basic"
+    },
+    "@/bottom": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "ByFIITraN": {
+          "id": "ByFIITraN",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/utility"
+        },
+        "SJuipNKTN": {
+          "id": "SJuipNKTN",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "startPin": {
+          "id": "startPin",
+          "label": "START",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/bottom"
+    },
+    "@/buses": {
+      "links": {
+        "BJT-9FHT4": {
+          "id": "BJT-9FHT4",
+          "input": {
+            "nodeId": "ry9lcYSp4",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "HkIZ5traN",
+            "pinKey": "__out__"
+          }
+        },
+        "Bk7OAKSa4": {
+          "id": "Bk7OAKSa4",
+          "input": {
+            "nodeId": "BJfxcYHTV",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "topNode",
+            "pinKey": "endPin"
+          }
+        },
+        "SkXWqtBT4": {
+          "id": "SkXWqtBT4",
+          "input": {
+            "nodeId": "S14l5KBpN",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "S11bqYH64",
+            "pinKey": "__out__"
+          }
+        },
+        "ryB_0YBpV": {
+          "id": "ryB_0YBpV",
+          "input": {
+            "nodeId": "bottomNode",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "S1vbqYB6N",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "BJfxcYHTV": {
+          "id": "BJfxcYHTV",
+          "label": "3",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "HkIZ5traN": {
+          "id": "HkIZ5traN",
+          "label": "2",
+          "position": {
+            "x": 4,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "S11bqYH64": {
+          "id": "S11bqYH64",
+          "label": "3",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "S14l5KBpN": {
+          "id": "S14l5KBpN",
+          "label": "2",
+          "position": {
+            "x": 2,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "S1vbqYB6N": {
+          "id": "S1vbqYB6N",
+          "label": "1",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "bottomNode": {
+          "id": "bottomNode",
+          "position": {
+            "x": 1,
+            "y": 3,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        },
+        "ry9lcYSp4": {
+          "id": "ry9lcYSp4",
+          "label": "1",
+          "position": {
+            "x": 4,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "topNode": {
+          "id": "topNode",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/top"
+        }
+      },
+      "path": "@/buses"
+    },
+    "@/buses-and-jumpers": {
+      "links": {
+        "BJyVctHT4": {
+          "id": "BJyVctHT4",
+          "input": {
+            "nodeId": "BJA7cKBaN",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "ByBSQ9YHa4",
+            "pinKey": "__out__"
+          }
+        },
+        "BkyScKSTE": {
+          "id": "BkyScKSTE",
+          "input": {
+            "nodeId": "SJcNcFBT4",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SJLrm9KB6V",
+            "pinKey": "__out__"
+          }
+        },
+        "Sk9PAFS6E": {
+          "id": "Sk9PAFS6E",
+          "input": {
+            "nodeId": "bottomNode",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "SJcNcFBT4",
+            "pinKey": "__out__"
+          }
+        },
+        "rJBE5FS64": {
+          "id": "rJBE5FS64",
+          "input": {
+            "nodeId": "SyXV5FHp4",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "BJA7cKBaN",
+            "pinKey": "__out__"
+          }
+        },
+        "rkvDCFSTV": {
+          "id": "rkvDCFSTV",
+          "input": {
+            "nodeId": "H1WrQ5FBpE",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "topNode",
+            "pinKey": "endPin"
+          }
+        },
+        "rkwHQcFrTN": {
+          "id": "rkwHQcFrTN",
+          "input": {
+            "nodeId": "H1GS79FB6N",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "ByNrQcFSaV",
+            "pinKey": "__out__"
+          }
+        },
+        "ryI45KBp4": {
+          "id": "ryI45KBp4",
+          "input": {
+            "nodeId": "rkXSQqtSp4",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SyXV5FHp4",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "BJA7cKBaN": {
+          "id": "BJA7cKBaN",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "ByBSQ9YHa4": {
+          "id": "ByBSQ9YHa4",
+          "label": "2",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "ByNrQcFSaV": {
+          "id": "ByNrQcFSaV",
+          "label": "3",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "H1GS79FB6N": {
+          "id": "H1GS79FB6N",
+          "label": "2",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "H1WrQ5FBpE": {
+          "id": "H1WrQ5FBpE",
+          "label": "3",
+          "position": {
+            "x": 0,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "SJLrm9KB6V": {
+          "id": "SJLrm9KB6V",
+          "label": "1",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/from-bus"
+        },
+        "SJcNcFBT4": {
+          "id": "SJcNcFBT4",
+          "position": {
+            "x": 0,
+            "y": 3,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "SyXV5FHp4": {
+          "id": "SyXV5FHp4",
+          "position": {
+            "x": 5,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "bottomNode": {
+          "id": "bottomNode",
+          "position": {
+            "x": 0,
+            "y": 4,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        },
+        "rkXSQqtSp4": {
+          "id": "rkXSQqtSp4",
+          "label": "1",
+          "position": {
+            "x": 5,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/to-bus"
+        },
+        "topNode": {
+          "id": "topNode",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/top"
+        }
+      },
+      "path": "@/buses-and-jumpers"
+    },
+    "@/identity-pin": {
+      "links": {
+        "H1LarprTN": {
+          "id": "H1LarprTN",
+          "input": {
+            "nodeId": "nullNode",
+            "pinKey": "nullNodeInputPin"
+          },
+          "output": {
+            "nodeId": "inputNullPin",
+            "pinKey": "__out__"
+          }
+        },
+        "H1nw5Kr6V": {
+          "id": "H1nw5Kr6V",
+          "input": {
+            "nodeId": "identityPin",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "HJjD9YS6V",
+            "pinKey": "__out__"
+          }
+        },
+        "SJ0P9tr6E": {
+          "id": "SJ0P9tr6E",
+          "input": {
+            "nodeId": "HJjD9YS6V",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "inputNullPin",
+            "pinKey": "__out__"
+          }
+        },
+        "rkwar6Bp4": {
+          "id": "rkwar6Bp4",
+          "input": {
+            "nodeId": "outputNullPin",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "nullNode",
+            "pinKey": "nullNodeOutputPin"
+          }
+        }
+      },
+      "nodes": {
+        "HJjD9YS6V": {
+          "id": "HJjD9YS6V",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "nullNode": {
+          "id": "nullNode",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/null"
+        },
+        "SkBsrTHTE": {
+          "id": "SkBsrTHTE",
+          "position": {
+            "x": 5,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/utility"
+        },
+        "identityPin": {
+          "id": "identityPin",
+          "label": "IDNT",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "inputNullPin": {
+          "id": "inputNullPin",
+          "label": "NULL",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "outputNullPin": {
+          "id": "outputNullPin",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-number"
+        }
+      },
+      "path": "@/identity-pin"
+    },
+    "@/jumpers": {
+      "links": {
+        "HyB6FFHTN": {
+          "id": "HyB6FFHTN",
+          "input": {
+            "nodeId": "rJanFtr64",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "H1s3KtHp4",
+            "pinKey": "__out__"
+          }
+        },
+        "r1E6YKBT4": {
+          "id": "r1E6YKBT4",
+          "input": {
+            "nodeId": "r1C3KFB6V",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "rJanFtr64",
+            "pinKey": "__out__"
+          }
+        },
+        "rkgY0tr6V": {
+          "id": "rkgY0tr6V",
+          "input": {
+            "nodeId": "bottomNode",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "r1C3KFB6V",
+            "pinKey": "__out__"
+          }
+        },
+        "ryUpFFHpE": {
+          "id": "ryUpFFHpE",
+          "input": {
+            "nodeId": "H1s3KtHp4",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "Hy9nKYB6V",
+            "pinKey": "__out__"
+          }
+        },
+        "rypOCKraE": {
+          "id": "rypOCKraE",
+          "input": {
+            "nodeId": "Hy9nKYB6V",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "topNode",
+            "pinKey": "endPin"
+          }
+        }
+      },
+      "nodes": {
+        "H1s3KtHp4": {
+          "id": "H1s3KtHp4",
+          "position": {
+            "x": -4,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "Hy9nKYB6V": {
+          "id": "Hy9nKYB6V",
+          "position": {
+            "x": -5,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "bottomNode": {
+          "id": "bottomNode",
+          "position": {
+            "x": -2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        },
+        "r1C3KFB6V": {
+          "id": "r1C3KFB6V",
+          "position": {
+            "x": -2,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "rJanFtr64": {
+          "id": "rJanFtr64",
+          "position": {
+            "x": -3,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/jumper"
+        },
+        "topNode": {
+          "id": "topNode",
+          "position": {
+            "x": -5,
+            "y": -1,
+            "units": "slots"
+          },
+          "type": "@/top"
+        }
+      },
+      "path": "@/jumpers"
+    },
+    "@/no-links": {
+      "nodes": {
+        "bottomNode": {
+          "id": "bottomNode",
+          "position": {
+            "x": 0,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        }
+      },
+      "path": "@/no-links"
+    },
+    "@/null": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "H1doVTS6E": {
+          "id": "H1doVTS6E",
+          "position": {
+            "x": 0,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "nullNodeOutputPin": {
+          "id": "nullNodeOutputPin",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "r1sqrarpE": {
+          "id": "r1sqrarpE",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/utility"
+        },
+        "nullNodeInputPin": {
+          "id": "nullNodeInputPin",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/null"
+    },
+    "@/top": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n{{ GENERATED_CODE }}\n\nvoid evaluate(Context ctx) {\n    //auto inValue = getValue<input_IN>(ctx);\n    //emitValue<output_OUT>(ctx, inValue);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "nodes": {
+        "Hkoj64YaE": {
+          "id": "Hkoj64YaE",
+          "position": {
+            "x": 1,
+            "y": 3,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "endPin": {
+          "id": "endPin",
+          "label": "END",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "r1xyPL6Ba4": {
+          "id": "r1xyPL6Ba4",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/utility"
+        }
+      },
+      "path": "@/top"
+    },
+    "@/with-identity-pin": {
+      "links": {
+        "By0X0FHTV": {
+          "id": "By0X0FHTV",
+          "input": {
+            "nodeId": "bottomNodeToIdentity",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "nodeWithIdentityPin",
+            "pinKey": "identityPin"
+          }
+        },
+        "S1Q4AYrpE": {
+          "id": "S1Q4AYrpE",
+          "input": {
+            "nodeId": "bottomNodeToNull",
+            "pinKey": "startPin"
+          },
+          "output": {
+            "nodeId": "nodeWithIdentityPin",
+            "pinKey": "outputNullPin"
+          }
+        },
+        "rywMAtH6N": {
+          "id": "rywMAtH6N",
+          "input": {
+            "nodeId": "nodeWithIdentityPin",
+            "pinKey": "inputNullPin"
+          },
+          "output": {
+            "nodeId": "topNode",
+            "pinKey": "endPin"
+          }
+        }
+      },
+      "nodes": {
+        "nodeWithIdentityPin": {
+          "id": "nodeWithIdentityPin",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/identity-pin"
+        },
+        "topNode": {
+          "id": "topNode",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/top"
+        },
+        "bottomNodeToIdentity": {
+          "id": "bottomNodeToIdentity",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        },
+        "bottomNodeToNull": {
+          "id": "bottomNodeToNull",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "@/bottom"
+        }
+      },
+      "path": "@/with-identity-pin"
+    }
+  }
+}
