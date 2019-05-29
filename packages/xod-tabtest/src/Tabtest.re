@@ -205,6 +205,8 @@ module TestCase = {
            let probeName = Strings.cppEscape(name);
            switch (record |. TabData.Record.get(name)) {
            | Some(Pulse(false)) => {j|// No pulse for $name|j}
+           | Some(RaisedError(errCode)) =>
+             {j|INJECT_ERROR(probe_$probeName, $errCode);|j};
            | Some(value) =>
              let literal = valueToLiteral(value);
              {j|INJECT(probe_$probeName, $literal);|j};
@@ -226,6 +228,11 @@ module TestCase = {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
            | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
+           | Some(RaisedError(errCode)) =>
+            Cpp.requireEqual(
+               {j|probe_$name.prevCaughtError|j},
+               string_of_int(errCode),
+             )
            | Some(value) =>
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
@@ -244,6 +251,7 @@ module TestCase = {
       ])
     );
   };
+
   /* Generates a complete C++ source file with the test case for given data.
        @param name     a free-form string to use as Catch2 TEST_CASE name
        @param tabData  \m/
@@ -283,7 +291,11 @@ module TestCase = {
         "",
         "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
+        "        (probe).ownError = 0; \\",
         "        (probe).isNodeDirty = true;",
+        "",
+        "#define INJECT_ERROR(probe, errCode) \\",
+        "        (probe).ownError = errCode;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])

@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 

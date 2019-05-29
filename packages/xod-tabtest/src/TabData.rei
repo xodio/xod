@@ -20,6 +20,7 @@ module Value: {
     | Byte(int)
     | Errcode(int)
     | Pulse(bool)
+    | RaisedError(int)
     | Invalid(string);
 };
 

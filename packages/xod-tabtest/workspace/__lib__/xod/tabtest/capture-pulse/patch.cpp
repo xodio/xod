@@ -1,3 +1,5 @@
+#pragma XOD error_catch enable
+
 struct State {
     bool lastValue = false;
 };

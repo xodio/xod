@@ -1,0 +1,64 @@
+{
+  "links": [
+    {
+      "id": "B1F-N6taTE",
+      "input": {
+        "nodeId": "B1XbE6t664",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkGZVTF6pV",
+        "pinKey": "rJ1KDn83E"
+      }
+    },
+    {
+      "id": "S13Nptp6V",
+      "input": {
+        "nodeId": "rkGZVTF6pV",
+        "pinKey": "HJ-lH0Bj4"
+      },
+      "output": {
+        "nodeId": "B1UbNTFTTN",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1UbNTFTTN",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "B1XbE6t664",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-errcode"
+    },
+    {
+      "id": "rkGZVTF6pV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/error-code"
+    },
+    {
+      "id": "rywb4atTT4",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    }
+  ]
+}
