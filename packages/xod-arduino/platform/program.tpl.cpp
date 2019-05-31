@@ -25,6 +25,12 @@ namespace xod {
 {{#unless patch.isConstant}}
 {{ ns patch }}::Node node_{{ id }} = {
     {{ ns patch }}::State(), // state default
+  {{#if patch.raisesErrors}}
+    0, // ownError
+  {{/if}}
+  {{#if patch.catchesErrors}}
+    0, // prevCaughtError
+  {{/if}}
   {{#if patch.usesTimeouts}}
     0, // timeoutAt
   {{/if}}
@@ -106,13 +112,19 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
   {{#eachDeferNode nodes}}
     {
+    {{#if (hasUpstreamErrorRaisers this)}}
+        // no need to touch defers with errors on this stage
+        if (node_{{ id }}.isNodeDirty && !node_{{ id }}.ownError) {
+    {{else}}
         if (node_{{ id }}.isNodeDirty) {
+    {{/if}}
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN({{ id }});
 
             {{ns patch }}::ContextObject ctxObj;
             ctxObj._node = &node_{{ id }};
             ctxObj._isInputDirty_IN = false;
+            ctxObj._error_input_IN = 0;
 
             {{ ns patch }}::evaluate(&ctxObj);
 
@@ -138,7 +150,46 @@ void runTransaction() {
     // Evaluate all dirty nodes
   {{#eachNonConstantNode nodes}}
     { // {{ ns patch }} #{{ id }}
+    {{#if (hasUpstreamErrorRaisers this)}}
+      {{#eachInputPinWithUpstreamRaisers inputs}}
+        uint8_t error_input_{{ pinKey }} = 0;
+        {{#each upstreamErrorRaisers}}
+        error_input_{{ ../pinKey }} = max(error_input_{{ ../pinKey }}, node_{{ this }}.ownError);
+        {{/each}}
+      {{/eachInputPinWithUpstreamRaisers}}
+
+        uint8_t maxUpstreamError = 0;
+      {{#eachInputPinWithUpstreamRaisers inputs}}
+        maxUpstreamError = max(maxUpstreamError, error_input_{{ pinKey }});
+      {{/eachInputPinWithUpstreamRaisers}}
+
+      {{#if patch.raisesErrors}}
+        uint8_t currentError = {{#if patch.catchesErrors~}}
+                                maxUpstreamError;
+                               {{~else~}}
+                                max(node_{{ id }}.ownError, maxUpstreamError);
+                               {{~/if}}
+      {{else}}
+        uint8_t currentError = maxUpstreamError;
+      {{/if}}
+
+      {{#unless patch.catchesErrors}}
+        bool hasNoUpstreamError = {{#if patch.raisesErrors~}}
+                                    node_{{ id }}.ownError >= maxUpstreamError;
+                                  {{~else~}}
+                                    maxUpstreamError == 0;
+                                  {{~/if}}
+      {{/unless}}
+
+        if (node_{{ id }}.isNodeDirty {{#if patch.catchesErrors~}}
+                                        || node_{{ id }}.prevCaughtError != currentError
+                                      {{~else~}}
+                                        && hasNoUpstreamError
+                                      {{~/if~}}
+        ) {
+    {{else}}
         if (node_{{ id }}.isNodeDirty) {
+    {{/if}}
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN({{ id }});
 
@@ -146,6 +197,16 @@ void runTransaction() {
             ctxObj._node = &node_{{ id }};
           {{#if patch.usesNodeId}}
             ctxObj._nodeId = {{ id }};
+          {{/if}}
+
+          {{#if patch.catchesErrors}}
+            {{#each inputs}}
+            ctxObj._error_input_{{ pinKey }} = {{#if (hasUpstreamErrorRaisers this)~}}
+                                                 error_input_{{ pinKey }}
+                                               {{~else~}}
+                                                 0
+                                               {{~/if~}};
+            {{/each}}
           {{/if}}
 
             // copy data from upstream nodes into context
@@ -187,7 +248,28 @@ void runTransaction() {
             {{/if}}
           {{/eachLinkedInput}}
 
+          {{#if patch.raisesErrors}}
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+            uint8_t prevOwnError = node_{{ id }}.ownError;
+#endif
+            // give the node a chance to recover from it's own previous error
+            node_{{ id }}.ownError = 0;
+          {{/if}}
+
             {{ ns patch }}::evaluate(&ctxObj);
+
+          {{#if patch.raisesErrors}}
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+            if (prevOwnError && !node_{{ id }}.ownError) {
+                // report that the node recovered from error
+                detail::printErrorToDebugSerial({{ id }}, 0);
+            }
+#endif
+          {{/if}}
+
+          {{#if patch.catchesErrors}}
+            node_{{ id }}.prevCaughtError = {{#if (hasUpstreamErrorRaisers this)}}currentError{{else}}0{{/if}};
+          {{/if}}
 
             // mark downstream nodes dirty
           {{#each outputs }}

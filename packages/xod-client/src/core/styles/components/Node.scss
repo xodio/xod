@@ -24,6 +24,7 @@
     &.pulse { stroke: $color-datatype-pulse; }
     &.byte { stroke: $color-datatype-byte; }
     &.port { stroke: $color-datatype-port; }
+    &.errcode { stroke: $color-datatype-errcode; }
     &.dead { stroke: $color-datatype-dead; }
     &.self, &.custom { stroke: $color-datatype-custom; }
   }
@@ -106,6 +107,9 @@
     }
     &.byte {
       stroke: $color-datatype-byte;
+    }
+    &.errcode {
+      stroke: $color-datatype-errcode;
     }
     &.error {
       stroke: $color-datatype-dead;

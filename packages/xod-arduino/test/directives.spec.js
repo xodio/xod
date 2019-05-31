@@ -2,6 +2,7 @@ import { assert } from 'chai';
 
 import {
   isDirtienessEnabled,
+  doesCatchErrors,
   isNodeIdEnabled,
   areTimeoutsEnabled,
   stripCppComments,
@@ -345,5 +346,26 @@ describe('Dirtieness', () => {
       `;
 
     assert.equal(isDirtienessEnabled(code, 'input_FOO'), true);
+  });
+});
+
+describe('Error catching', () => {
+  it('considers error catching disabled by default', () => {
+    const code = `
+    void evaluate(Context ctx) {
+    }
+    `;
+
+    assert.equal(doesCatchErrors(code), false);
+  });
+
+  it('recognises XOD error_catch pragma', () => {
+    const code = `
+      #pragma XOD error_catch enable
+      void evaluate(Context ctx) {
+      }
+      `;
+
+    assert.equal(doesCatchErrors(code), true);
   });
 });

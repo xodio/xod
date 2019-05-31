@@ -122,6 +122,11 @@ let isNodeIdEnabled = code =>
   |. Code.lastPragmaEndis("nodeid")
   |. Endis.toBoolean(Code.doesReferSymbol("getNodeId", code));
 
+let doesRaiseErrors = (code) =>
+  code
+  |. Code.lastPragmaEndis("error_raise")
+  |. Endis.toBoolean(Code.doesReferSymbol("raiseError", code));
+
 let isDirtienessEnabled = (code, identifier) =>
   code
   |. Code.findXodPragmas
@@ -137,6 +142,11 @@ let isDirtienessEnabled = (code, identifier) =>
        | _ => acc
        }
      );
+
+let doesCatchErrors = (code) =>
+  code
+  |. Code.lastPragmaEndis("error_catch")
+  |. Endis.toBoolean(Code.doesReferSymbol("getError", code));
 
 let findXodPragmas = Code.findXodPragmas;
 

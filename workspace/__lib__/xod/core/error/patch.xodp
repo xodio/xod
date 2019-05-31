@@ -1,0 +1,51 @@
+{
+  "nodes": [
+    {
+      "id": "BydY8n8n4",
+      "label": "CODE",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-errcode"
+    },
+    {
+      "id": "H1JuNDn9E",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "id": "r13uED2cN",
+      "label": "ERR",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "rJ5jED25V",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rkdPED3cE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    }
+  ]
+}

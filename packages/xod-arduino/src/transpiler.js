@@ -6,6 +6,7 @@ import {
   reverseLookup,
   maybeProp,
   foldEither,
+  foldMaybe,
   isAmong,
   fail,
   cppEscape,
@@ -19,7 +20,9 @@ import { LIVENESS } from './constants';
 import {
   areTimeoutsEnabled,
   isNodeIdEnabled,
+  doesRaiseErrors,
   isDirtienessEnabled,
+  doesCatchErrors,
   findRequireUrls,
 } from './directives';
 
@@ -153,7 +156,9 @@ const convertPatchToTPatch = def(
       isDefer: XP.isDeferNodeType(patchPath),
       isConstant: XP.isConstantNodeType(patchPath),
       usesTimeouts: areTimeoutsEnabled(impl),
-      usesNodeId: isNodeIdEnabled(impl),
+      catchesErrors: doesCatchErrors(impl),
+      raisesErrors: doesRaiseErrors(impl),
+      usesNodeId: R.either(isNodeIdEnabled, doesRaiseErrors)(impl),
     };
 
     return R.mergeAll([
@@ -383,10 +388,49 @@ const getTNodeInputs = def(
   }
 );
 
+const calculateUpstreamErrorRaisers = R.compose(
+  R.sortBy(R.prop('id')),
+  R.values,
+  R.reduce((accTNodesMap, tNode) => {
+    const inputsWithCalculatedUpstreamErrorRaisers = R.map(tNodeInput => {
+      const upstreamRaisersForPin = R.compose(
+        R.reject(R.equals(tNode.id)), // could happen with defers
+        foldMaybe([], upstreamTNode =>
+          R.concat(
+            upstreamTNode.patch.raisesErrors ? [upstreamTNode.id] : [],
+            upstreamTNode.patch.catchesErrors
+              ? []
+              : upstreamTNode.upstreamErrorRaisers
+          )
+        ),
+        R.chain(maybeProp(R.__, accTNodesMap)),
+        R.map(R.toString),
+        maybeProp('fromNodeId')
+      )(tNodeInput);
+
+      return R.assoc('upstreamErrorRaisers', upstreamRaisersForPin, tNodeInput);
+    }, tNode.inputs);
+
+    const upstreamErrorRaisers = R.compose(
+      R.uniq,
+      R.chain(R.prop('upstreamErrorRaisers'))
+    )(inputsWithCalculatedUpstreamErrorRaisers);
+
+    const updatedTNode = R.compose(
+      R.assoc('inputs', inputsWithCalculatedUpstreamErrorRaisers),
+      R.assoc('upstreamErrorRaisers', upstreamErrorRaisers)
+    )(tNode);
+
+    return R.assoc(tNode.id, updatedTNode, accTNodesMap);
+  }, {}),
+  R.converge(R.concat, [R.filter(R.path(['patch', 'isDefer'])), R.identity])
+);
+
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Map NodeId String -> Project -> [TNode]',
   (entryPath, patches, nodeIdsMap, project) =>
     R.compose(
+      calculateUpstreamErrorRaisers,
       R.sortBy(R.prop('id')),
       R.map(
         R.applySpec({

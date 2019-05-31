@@ -1,3 +1,6 @@
+
+#pragma XOD error_catch enable
+
 struct State {
 };
 
@@ -7,6 +10,7 @@ void evaluate(Context ctx) {
   if (!isInputDirty<input_IN>(ctx))
       return;
 
+  auto err = getError<input_IN>(ctx);
   auto line = getValue<input_IN>(ctx);
 
   TimeMs tNow = transactionTime();
@@ -15,8 +19,14 @@ void evaluate(Context ctx) {
   XOD_DEBUG_SERIAL.print(':');
   XOD_DEBUG_SERIAL.print(getNodeId(ctx));
   XOD_DEBUG_SERIAL.print(':');
-  for (auto it = line.iterate(); it; ++it)
+  if (err) {
+    XOD_DEBUG_SERIAL.print('E');
+    XOD_DEBUG_SERIAL.print((int)err);
+  } else {
+    for (auto it = line.iterate(); it; ++it)
       XOD_DEBUG_SERIAL.print((char)*it);
+  }
+
   XOD_DEBUG_SERIAL.print('\r');
   XOD_DEBUG_SERIAL.print('\n');
   XOD_DEBUG_SERIAL.flush();

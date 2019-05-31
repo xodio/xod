@@ -5,6 +5,7 @@ import { PIN_TYPE, isGenericType } from 'xod-project';
 
 import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
+import ErrcodeWidget from './pinWidgets/ErrcodePinWidget';
 import PulseWidget from './pinWidgets/PulsePinWidget';
 import StringWidget from './pinWidgets/StringPinWidget';
 import GenericPinWidget from './pinWidgets/GenericPinWidget';
@@ -16,6 +17,7 @@ import { WIDGET_TYPE } from '../../constants';
 import { KEYCODE } from '../../../utils/constants';
 import normalizeByte from '../../../utils/normalizeByte';
 import normalizeNumber from '../../../utils/normalizeNumber';
+import normalizeErrcode from '../../../utils/normalizeErrcode';
 import normalizePort from '../../../utils/normalizePort';
 import normalizeGenericValue from '../../../utils/normalizeGenericValue';
 
@@ -75,6 +77,12 @@ const WIDGET_MAPPING = {
       submitAndSelectOnEnter
     ),
     normalizeValue: normalizeNumber,
+  },
+  [WIDGET_TYPE.ERRCODE]: {
+    component: ErrcodeWidget,
+    dataType: PIN_TYPE.ERRCODE,
+    keyDownHandlers: submitAndSelectOnEnter,
+    normalizeValue: normalizeErrcode,
   },
   [WIDGET_TYPE.BYTE]: {
     component: NumberWidget,

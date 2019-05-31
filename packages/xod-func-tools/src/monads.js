@@ -211,7 +211,7 @@ export const leftIf = def(
 );
 
 export const maybeProp = def(
-  'maybeProp :: String -> StrMap a -> Maybe a',
+  'maybeProp :: String -> Object -> Maybe a',
   R.compose(Maybe, R.prop)
 );
 
