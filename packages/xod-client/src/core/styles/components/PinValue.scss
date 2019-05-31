@@ -19,6 +19,7 @@
   &.pulse { color: $color-datatype-pulse; }
   &.byte { color: $color-datatype-byte; }
   &.port { color: $color-datatype-port; }
+  &.errcode { color: $color-datatype-errcode; }
   &.dead, &.conflicting { color: $color-datatype-dead; }
   &.self, &.custom { color: $color-datatype-custom; }
 }

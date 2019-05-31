@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {
+      "boundLiterals": {},
+      "id": "I0y3RV3eA",
+      "label": "VAL",
+      "position": {
+        "x": 10,
+        "y": 120
+      },
+      "type": "xod/patch-nodes/output-errcode"
+    },
+    {
+      "id": "M42nRN2lQ",
+      "position": {
+        "x": 10,
+        "y": 16
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

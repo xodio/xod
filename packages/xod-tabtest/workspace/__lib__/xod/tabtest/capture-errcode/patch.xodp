@@ -1,0 +1,22 @@
+{
+  "description": "Capturing probe for tabular test framework",
+  "nodes": [
+    {
+      "id": "P1iYAOaoA",
+      "position": {
+        "x": 34,
+        "y": 102
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "VkXK-dSoC",
+      "label": "VAL",
+      "position": {
+        "x": 34,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-errcode"
+    }
+  ]
+}

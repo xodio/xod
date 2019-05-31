@@ -45,6 +45,10 @@
     @include link-parts-coloring($color-datatype-port);
   }
 
+  &.errcode {
+    @include link-parts-coloring($color-datatype-errcode);
+  }
+
   &.is-selected, &.is-dead.is-selected {
     @include link-parts-coloring($color-canvas-selected);
   }
