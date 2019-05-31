@@ -1,0 +1,109 @@
+{
+  "links": [
+    {
+      "id": "BJ0hed-TN",
+      "input": {
+        "nodeId": "SkijedZ6V",
+        "pinKey": "HyZtOld-a4"
+      },
+      "output": {
+        "nodeId": "Bk2he_bpE",
+        "pinKey": "H1JuNDn9E"
+      }
+    },
+    {
+      "id": "BJEnedZaV",
+      "input": {
+        "nodeId": "H1M3lO-aN",
+        "pinKey": "HJ-lH0Bj4"
+      },
+      "output": {
+        "nodeId": "SkijedZ6V",
+        "pinKey": "HkeYOgdWpV"
+      }
+    },
+    {
+      "id": "H1mne_baV",
+      "input": {
+        "nodeId": "HJ8sg_ZTN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1M3lO-aN",
+        "pinKey": "rJ1KDn83E"
+      }
+    },
+    {
+      "id": "r1NTg_W6E",
+      "input": {
+        "nodeId": "SkijedZ6V",
+        "pinKey": "HyFuxO-p4"
+      },
+      "output": {
+        "nodeId": "Hk39xubaE",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "BydY8n8n4": "E75",
+        "r13uED2cN": "True",
+        "rkdPED3cE": "0"
+      },
+      "id": "Bk2he_bpE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/error"
+    },
+    {
+      "id": "H1M3lO-aN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/core/error-code"
+    },
+    {
+      "id": "HJ8sg_ZTN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-errcode"
+    },
+    {
+      "id": "HJ91ZOZ64",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "Hk39xubaE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "SkijedZ6V",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/reraise-if"
+    }
+  ]
+}
