@@ -1,5 +1,6 @@
+import * as R from 'ramda';
 import 'url-search-params-polyfill';
-import { rejectWithCode } from 'xod-func-tools';
+import { rejectWithCode, foldMaybe, noop } from 'xod-func-tools';
 
 import {
   getCompileLimitUrl,
@@ -11,36 +12,18 @@ import { addError } from '../messages/actions';
 import * as ActionTypes from './actionTypes';
 import * as Messages from './messages';
 import * as ERR_CODES from './errorCodes';
-
-export const updateCompileLimit = (startup = false) => dispatch =>
-  fetch(getCompileLimitUrl(), {
-    headers: startup ? { 'x-launch': 'true' } : {},
-  })
-    .then(res => (res.ok ? res.json() : null))
-    .catch(() => null)
-    .then(limit =>
-      dispatch({
-        type: ActionTypes.UPDATE_COMPILE_LIMIT,
-        payload: limit,
-      })
-    );
+import { getAccessToken } from './selectors';
 
 const setGrant = grant => ({
   type: ActionTypes.SET_AUTH_GRANT,
   payload: grant,
 });
 
-/**
- * User has a cookie with only a session id.
- * To know his username and other data we need to fetch
- * a keycloak grant from server
- */
-export const fetchGrant = () => dispatch =>
+const refreshGrant = () => dispatch =>
   fetch(getWhoamiUrl(), { credentials: 'include' })
     .then(res => (res.ok ? res.json() : null))
     .then(grant => {
       dispatch(setGrant(grant));
-      dispatch(updateCompileLimit(false));
 
       return grant;
     })
@@ -50,6 +33,66 @@ export const fetchGrant = () => dispatch =>
         new Error(Messages.SERVICE_UNAVAILABLE)
       )
     );
+
+/**
+ * Function that sends some request using Authorization token
+ * and tries to refresh the token on error 403.
+ * If it still fails it returns rejected Promise with an error.
+ *
+ * It accepts one argument of Function type with the signature:
+ * (Headers -> Promise FetchResult FetchError)
+ *
+ * Where `Headers` is an object, which will be modified with
+ * `Authorization` header.
+ */
+const requestAuthorized = (requestAction, headers) => (dispatch, getState) => {
+  const headersWithAuthorization = R.compose(
+    foldMaybe(headers, accessToken => ({
+      Authorization: `Bearer ${accessToken}`,
+      ...headers,
+    })),
+    getAccessToken
+  )(getState());
+
+  const run = () => requestAction(headersWithAuthorization);
+  return run()
+    .then(res => {
+      if (res.status > 400) {
+        return dispatch(refreshGrant()).then(() => run());
+      }
+      return res;
+    })
+    .then(res => {
+      if (!res.ok) {
+        const err = new Error(res.statusText);
+        err.status = res.status;
+        throw err;
+      }
+      return res.json();
+    });
+};
+
+const fetchLimits = headers => fetch(getCompileLimitUrl(), { headers });
+
+export const updateCompileLimit = (startup = false) => dispatch => {
+  const basicHeaders = startup ? { 'x-launch': 'true' } : {};
+  return dispatch(requestAuthorized(fetchLimits, basicHeaders))
+    .then(limit =>
+      dispatch({
+        type: ActionTypes.UPDATE_COMPILE_LIMIT,
+        payload: limit,
+      })
+    )
+    .catch(noop); // Do not show any errors and just leave limits as is
+};
+
+/**
+ * User has a cookie with only a session id.
+ * To know his username and other data we need to fetch
+ * a keycloak grant from server
+ */
+export const fetchGrant = (startup = false) => dispatch =>
+  dispatch(refreshGrant()).then(() => dispatch(updateCompileLimit(startup)));
 
 export const login = (username, password) => dispatch => {
   const form = new URLSearchParams();
