@@ -1,0 +1,212 @@
+{
+  "links": [
+    {
+      "id": "B1DpWw6aV",
+      "input": {
+        "nodeId": "H1rabPaTN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "Hyap1vaaN"
+      }
+    },
+    {
+      "id": "BJCkGDaTE",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "SkpnJvTTN-$2"
+      },
+      "output": {
+        "nodeId": "S1LkfvpaN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk3lMwTaN",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "r1H21vppN"
+      },
+      "output": {
+        "nodeId": "H1xgMPpTN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByRxfPTa4",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "r1H21vppN-$2"
+      },
+      "output": {
+        "nodeId": "BkSgMvaTV",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hk2yfPTpV",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "SkpnJvTTN"
+      },
+      "output": {
+        "nodeId": "Sy4JGvT64",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyMkGvTp4",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "BkeKyP66E"
+      },
+      "output": {
+        "nodeId": "ry-1zvTaE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJQKZwp6E",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "r1b_1v6T4"
+      },
+      "output": {
+        "nodeId": "r1fYWDpTN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJpJzDTTE",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "SkpnJvTTN-$1"
+      },
+      "output": {
+        "nodeId": "HkS1Gva64",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1plMPTp4",
+      "input": {
+        "nodeId": "SJCD-wpTN",
+        "pinKey": "r1H21vppN-$1"
+      },
+      "output": {
+        "nodeId": "BJExzPT64",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJExzPT64",
+      "label": "X2",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "BkSgMvaTV",
+      "label": "X3",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1rabPaTN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "H1xgMPpTN",
+      "label": "X1",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HkS1Gva64",
+      "label": "Y2",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "S1LkfvpaN",
+      "label": "Y3",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "S1VXrPa64",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "arityLevel": 3,
+      "id": "SJCD-wpTN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/core/switch-case"
+    },
+    {
+      "id": "Sy4JGvT64",
+      "label": "Y1",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "r1fYWDpTN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ry-1zvTaE",
+      "label": "DEF",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

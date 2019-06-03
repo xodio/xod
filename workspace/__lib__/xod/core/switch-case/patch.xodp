@@ -1,0 +1,202 @@
+{
+  "description": "Outputs Yn value when the corresponding Xn equals IN. If IN is not found among Xns, outputs DEF.",
+  "links": [
+    {
+      "id": "BJXelPTp4",
+      "input": {
+        "nodeId": "Hyap1vaaN",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HksAyvaaE",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "ByYJeDTaE",
+      "input": {
+        "nodeId": "HyLCJP6TN",
+        "pinKey": "HJG8C_SPkb"
+      },
+      "output": {
+        "nodeId": "r1H21vppN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJxObgv6pV",
+      "input": {
+        "nodeId": "rydblvaT4",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkeKyP66E",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkGdbeP66E",
+      "input": {
+        "nodeId": "HksAyvaaE",
+        "pinKey": "r1AgIROHDJW"
+      },
+      "output": {
+        "nodeId": "rk-O-gvp6E",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkklxDppE",
+      "input": {
+        "nodeId": "HksAyvaaE",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "SkpnJvTTN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1ZNlw66V",
+      "input": {
+        "nodeId": "HyJEeDpp4",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1b_1v6T4",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1ikxPpT4",
+      "input": {
+        "nodeId": "HksAyvaaE",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "HyLCJP6TN",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    },
+    {
+      "id": "ry7VxwaTV",
+      "input": {
+        "nodeId": "HyLCJP6TN",
+        "pinKey": "rJXICuSwyW"
+      },
+      "output": {
+        "nodeId": "HyJEeDpp4",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Default value that is emitted if IN did not match any Xns",
+      "id": "BkeKyP66E",
+      "label": "DEF",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t2"
+    },
+    {
+      "id": "ByUYew6TV",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/variadic-2"
+    },
+    {
+      "id": "HksAyvaaE",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "@/if-else"
+    },
+    {
+      "id": "HyJEeDpp4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "HyLCJP6TN",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/equal"
+    },
+    {
+      "id": "Hyap1vaaN",
+      "label": "OUT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-t2"
+    },
+    {
+      "id": "SkpnJvTTN",
+      "label": "Y1",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t2"
+    },
+    {
+      "id": "r1H21vppN",
+      "label": "X1",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "r1b_1v6T4",
+      "label": "IN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "rk-O-gvp6E",
+      "label": "DEF",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "rydblvaT4",
+      "label": "DEF",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    }
+  ]
+}
