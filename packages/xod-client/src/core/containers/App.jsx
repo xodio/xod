@@ -67,7 +67,7 @@ export default class App extends React.Component {
     document.addEventListener('cut', this.props.actions.cutEntities);
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
-    this.props.actions.updateCompileLimit(/* startup */ true);
+    this.props.actions.fetchGrant(/* startup */ true);
   }
 
   onShowCodeArduino() {
@@ -205,7 +205,6 @@ App.propTypes = {
   isSimulationAbortable: PropTypes.bool.isRequired,
   actions: PropTypes.shape({
     selectAll: PropTypes.func.isRequired,
-    updateCompileLimit: PropTypes.func.isRequired,
     createProject: PropTypes.func.isRequired,
     updateProjectMeta: PropTypes.func.isRequired,
     hideAllPopups: PropTypes.func.isRequired,
@@ -249,7 +248,6 @@ App.propTypes = {
 
 App.actions = {
   selectAll,
-  updateCompileLimit: actions.updateCompileLimit,
   createProject: actions.createProject,
   requestPublishProject: actions.requestPublishProject,
   cancelPublishingProject: actions.cancelPublishingProject,

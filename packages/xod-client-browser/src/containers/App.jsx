@@ -59,7 +59,6 @@ class App extends client.App {
     document.addEventListener('click', this.onDocumentClick);
 
     props.actions.openProject(props.tutorialProject);
-    props.actions.fetchGrant();
   }
 
   onDocumentClick(e) {

@@ -35,7 +35,6 @@ class PopupUploadConfig extends React.Component {
     this.getSelectedBoard().then(selectedBoard =>
       this.getBoards(selectedBoard)
     );
-    this.props.updateCompileLimit();
   }
 
   onClose() {
@@ -300,7 +299,6 @@ PopupUploadConfig.propTypes = {
   isDeploymentInProgress: PropTypes.bool,
   initialDebugAfterUpload: PropTypes.bool,
   selectedPort: PropTypes.object,
-  updateCompileLimit: PropTypes.func,
   getSelectedBoard: PropTypes.func,
   listBoards: PropTypes.func,
   listPorts: PropTypes.func,

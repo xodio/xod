@@ -228,9 +228,6 @@ class App extends client.App {
         ipcRenderer.send(EVENTS.LOAD_PROJECT, projectPath);
       });
     }
-
-    // request for data from main process
-    props.actions.fetchGrant();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -868,7 +865,6 @@ class App extends client.App {
         selectedPort={this.props.selectedPort}
         listBoards={listBoards}
         listPorts={this.constructor.listPorts}
-        updateCompileLimit={this.props.actions.updateCompileLimit}
         initialDebugAfterUpload={
           this.props.popupsData.uploadToArduinoConfig.debugAfterUpload
         }
