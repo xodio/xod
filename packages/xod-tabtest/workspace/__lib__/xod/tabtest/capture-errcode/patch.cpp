@@ -1,3 +1,5 @@
+#pragma XOD error_catch enable
+
 struct State {
     uint8_t lastValue;
 };

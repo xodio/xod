@@ -13,12 +13,14 @@ module Value = {
     | Byte(int)
     | Errcode(int)
     | Pulse(bool)
+    | RaisedError(int)
     | Invalid(string);
   let numberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?$/|}];
   let approxNumberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?~$/|}];
   let stringRegex = [%re {|/^".*"$/|}];
   let byteRegex = [%re {|/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/i|}];
   let errcodeRegex = [%re {|/^E\d{1,3}$/|}];
+  let raisedErrorRegex = [%re {|/^E\d{1,3}!$/|}];
   let unquote = str =>
     str
     |> Js.String.replaceByRe([%re "/^\"/"], "")
@@ -55,6 +57,9 @@ module Value = {
     | "-Inf" => Number(neg_infinity)
     | errcodeString when Re.test_(errcodeRegex, errcodeString) =>
       Errcode(tail(errcodeString) |> int_of_string)
+    | raisedErrorString when Re.test_(raisedErrorRegex, raisedErrorString) =>
+      let trimmedErrcode = String.sub(raisedErrorString, 1, String.length(raisedErrorString) - 2);
+      RaisedError(trimmedErrcode |> int_of_string);
     | numString when Re.test_(numberRegex, numString) =>
       Number(Js.Float.fromString(numString))
     | approxNumString when Re.test_(approxNumberRegex, approxNumString) =>
