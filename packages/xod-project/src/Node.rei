@@ -8,6 +8,8 @@ let create: PatchPath.t => t;
 
 let getId: t => id;
 
+let setId: (id, t) => t;
+
 let getType: t => PatchPath.t;
 
 let setType: (PatchPath.t, t) => t;

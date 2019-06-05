@@ -27,6 +27,7 @@ import * as EAT from '../editor/actionTypes';
 import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE, SESSION_TYPE } from './constants';
 import * as MSG from './messages';
 import { STATUS } from '../utils/constants';
+import { isXodErrorMessage } from './debugProtocol';
 
 import {
   createSystemMessage,
@@ -135,7 +136,28 @@ const updateWatchNodeValues = R.curry((messageList, state) => {
     renameKeys(MapToRekey),
     R.map(R.compose(R.prop('content'), R.last)),
     R.groupBy(R.prop('nodeId')),
-    R.filter(R.propEq('type', 'xod'))
+    R.filter(R.propEq('type', UPLOAD_MSG_TYPE.XOD))
+  )(messageList);
+});
+
+const updateInteractiveNodeErrorCodes = R.curry((messageList, state) => {
+  const MapToRekey = R.prop('nodeIdsMap', state);
+  return R.compose(
+    newValues =>
+      R.over(
+        R.lensProp('interactiveNodeErrorCodes'),
+        R.compose(R.reject(R.equals(0)), R.merge(R.__, newValues)),
+        state
+      ),
+    renameKeys(MapToRekey),
+    R.map(
+      R.reduce((acc, val) => {
+        const errorCode = parseInt(val.content, 10);
+        return errorCode > acc ? errorCode : acc;
+      }, 0)
+    ),
+    R.groupBy(R.prop('nodeId')),
+    R.filter(isXodErrorMessage)
   )(messageList);
 });
 
@@ -174,6 +196,15 @@ const formatWasmError = err => {
       return err.message || err;
   }
 };
+
+const rekeyAndAssocPinsAffectedByErrorRaisers = R.curry(
+  (keyMap, pinsAffectedByErrorRaisers, state) =>
+    R.assoc(
+      'pinsAffectedByErrorRaisers',
+      renameKeys(keyMap, pinsAffectedByErrorRaisers),
+      state
+    )
+);
 
 // =============================================================================
 //
@@ -358,6 +389,7 @@ export default (state = initialState, action) => {
         showPanelOnErrorMessages,
         addErrorMessage,
         addMessagesOrIncrementSkippedLines(logMessages),
+        updateInteractiveNodeErrorCodes(allMessages),
         updateWatchNodeValues(allMessages)
       )(state);
     }
@@ -380,7 +412,8 @@ export default (state = initialState, action) => {
         overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
         overStageError(LOG_TAB_TYPE.TESTER)(R.always(''))
       )(state);
-    case DEBUG_SESSION_STARTED:
+    case DEBUG_SESSION_STARTED: {
+      const invertedNodeIdsMap = invertMap(action.payload.nodeIdsMap);
       return R.compose(
         addMessageToDebuggerLog(action.payload.message),
         overStageError(LOG_TAB_TYPE.DEBUGGER)(R.always('')),
@@ -388,11 +421,16 @@ export default (state = initialState, action) => {
         R.assoc('currentStage', LOG_TAB_TYPE.DEBUGGER),
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
-        R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap)),
+        R.assoc('nodeIdsMap', invertedNodeIdsMap),
+        rekeyAndAssocPinsAffectedByErrorRaisers(
+          invertedNodeIdsMap,
+          action.payload.pinsAffectedByErrorRaisers
+        ),
         R.assoc('activeSession', SESSION_TYPE.DEBUG),
         R.assoc('isOutdated', false),
         showDebuggerPane
       )(state);
+    }
     case SERIAL_SESSION_STARTED:
       return R.compose(
         addMessageToDebuggerLog(action.payload.message),
@@ -411,6 +449,8 @@ export default (state = initialState, action) => {
         addMessageToDebuggerLog(action.payload.message),
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
+        R.assoc('interactiveNodeErrorCodes', {}),
+        R.assoc('pinsAffectedByErrorRaisers', {}),
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
         R.assoc('activeSession', SESSION_TYPE.NONE)
@@ -474,20 +514,28 @@ export default (state = initialState, action) => {
         addPlainTextToDebuggerLog(MSG.SIMULATION_RUNNING),
         R.assoc('uploadProgress', 75)
       )(state);
-    case EAT.SIMULATION_LAUNCHED:
+    case EAT.SIMULATION_LAUNCHED: {
+      const invertedNodeIdsMap = invertMap(action.payload.nodeIdsMap);
       return R.compose(
         addPlainTextToDebuggerLog(MSG.SIMULATION_LAUNCHED),
         R.assoc('activeSession', SESSION_TYPE.SIMULATON),
         R.assoc('isPreparingSimulation', false),
         R.assoc('isOutdated', false),
         R.assoc('uploadProgress', null),
-        R.assoc('nodeIdsMap', invertMap(action.payload.nodeIdsMap))
+        R.assoc('nodeIdsMap', invertedNodeIdsMap),
+        rekeyAndAssocPinsAffectedByErrorRaisers(
+          invertedNodeIdsMap,
+          action.payload.pinsAffectedByErrorRaisers
+        )
       )(state);
+    }
     case EAT.SIMULATION_ABORT:
       return R.compose(
         addPlainTextToDebuggerLog(MSG.SIMULATION_ABORTED),
         R.assoc('activeSession', SESSION_TYPE.NONE),
         R.assoc('watchNodeValues', {}),
+        R.assoc('interactiveNodeErrorCodes', {}),
+        R.assoc('pinsAffectedByErrorRaisers', {}),
         R.assoc('isPreparingSimulation', false),
         hideProgressBar
       )(state);

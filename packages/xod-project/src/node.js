@@ -85,6 +85,18 @@ export const getNodeId = def(
 );
 
 /**
+ * Only for using in `xod-project`
+ * @function setNodeId
+ * @param {NodeId} nodeId
+ * @param {Node} node
+ * @returns {Node}
+ */
+export const setNodeId = def(
+  'setNodeId :: NodeId -> Node -> Node',
+  R.assoc('id')
+);
+
+/**
  * @function getNodeType
  * @param {Node} node
  * @returns {string}

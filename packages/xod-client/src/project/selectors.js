@@ -32,6 +32,11 @@ import {
 } from '../project/utils';
 import { setPxPosition, setPxSize } from './pxDimensions';
 
+import {
+  getInteractiveNodeErrorCodesForCurrentChunk,
+  getPinsAffectedByErrorRaisersForCurrentChunk,
+} from '../debugger/selectors';
+
 import { createMemoizedSelector } from '../utils/selectorTools';
 
 export const getProject = R.prop('project');
@@ -269,6 +274,105 @@ const addPinErrors = R.curry((patchPath, errors, renderableNode) =>
   )
 );
 
+// :: Map NodeId ErrorCode -> RenderableNode -> RenderableNode
+const addErrorCode = R.curry((interactiveNodeErrorCodes, node) => {
+  const errorCode = R.defaultTo(
+    null,
+    R.prop(node.id, interactiveNodeErrorCodes)
+  );
+  return R.assoc('raisedErrorCode', errorCode, node);
+});
+
+// :: Map NodeId ErrorCode -> Map NodeId [NodeId] -> NodeId -> Boolean
+const isNodeIdAffectedByErrorRaiser = R.curry(
+  (interactiveNodeErrorCodes, pinsAffectedByErrorRaisers, nodeId) => {
+    // :: [[PinKey, NodeId]]
+    const erroredPairs = R.compose(
+      R.unnest,
+      R.values,
+      R.pick(R.__, pinsAffectedByErrorRaisers),
+      R.keys
+    )(interactiveNodeErrorCodes);
+
+    return R.any(R.propEq(1, nodeId), erroredPairs);
+  }
+);
+
+// :: Map NodeId ErrorCode -> Boolean
+const isNodeIdRaisesError = R.flip(R.has);
+
+const markNodeAffectedByErrorRaiser = R.curry(
+  (currentPatch, interactiveNodeErrorCodes, pinsAffectedByErrorRaisers, node) =>
+    R.compose(
+      R.assoc('isAffectedByErrorRaiser', R.__, node),
+      isNodeIdAffectedByErrorRaiser
+    )(interactiveNodeErrorCodes, pinsAffectedByErrorRaisers, node.id)
+);
+
+// Marks all output pins as error affected
+// :: RenderableNode -> RenderableNode
+const markAllOutputPinsAffectedByErrorRaisers = node =>
+  R.over(
+    R.lensProp('pins'),
+    R.map(pin =>
+      R.compose(R.assoc('isAffectedByErrorRaiser', R.__, pin), XP.isOutputPin)(
+        pin
+      )
+    ),
+    node
+  );
+
+// :: Project -> Map NodeId ErrorCode -> Map NodeId [NodeId] -> Patch -> RenderableNode -> RenderableNode
+const markPinsAffectedByErrorRaisers = R.curry(
+  (
+    project,
+    interactiveNodeErrorCodes,
+    pinsAffectedByErrorRaisers,
+    curPatch,
+    node
+  ) => {
+    const maybeNodesPatch = XP.getPatchByPath(node.type, project);
+    // :: [[PinKey, NodeId]]
+    const erroredPairs = R.compose(
+      R.unnest,
+      R.values,
+      R.pick(R.__, pinsAffectedByErrorRaisers),
+      R.keys
+    )(interactiveNodeErrorCodes);
+
+    return foldMaybe(
+      node,
+      nodesPatch =>
+        R.compose(
+          R.when(
+            R.both(
+              R.pipe(
+                R.prop('id'),
+                isNodeIdRaisesError(interactiveNodeErrorCodes)
+              ),
+              () => XP.isPatchNotImplementedInXod(nodesPatch)
+            ),
+            markAllOutputPinsAffectedByErrorRaisers
+          ),
+          R.over(
+            R.lensProp('pins'),
+            R.map(pin =>
+              R.when(
+                () =>
+                  R.any(
+                    R.both(R.propEq(0, pin.key), R.propEq(1, node.id)),
+                    erroredPairs
+                  ),
+                R.assoc('isAffectedByErrorRaiser', true)
+              )(pin)
+            )
+          )
+        )(node),
+      maybeNodesPatch
+    );
+  }
+);
+
 // getRenderableNode ::
 //    Node ->
 //    Patch ->
@@ -276,11 +380,39 @@ const addPinErrors = R.curry((patchPath, errors, renderableNode) =>
 //    Map PatchPath DeducedPinTypes ->
 //    Project ->
 //    Map PatchPath PatchErrors ->
+//    Map NodeId ErrorCode ->
+//    Map NodeId [NodeId] ->
 //    RenderableNode
 export const getRenderableNode = R.curry(
-  (node, currentPatch, connectedPins, deducedPinTypes, project, errors) => {
+  (
+    node,
+    currentPatch,
+    connectedPins,
+    deducedPinTypes,
+    project,
+    errors,
+    interactiveNodeErrorCodes,
+    pinsAffectedByErrorRaisers
+  ) => {
     const curPatchPath = XP.getPatchPath(currentPatch);
     return R.compose(
+      R.unless(
+        () => R.isEmpty(interactiveNodeErrorCodes),
+        R.compose(
+          markPinsAffectedByErrorRaisers(
+            project,
+            interactiveNodeErrorCodes,
+            pinsAffectedByErrorRaisers,
+            currentPatch
+          ),
+          markNodeAffectedByErrorRaiser(
+            currentPatch,
+            interactiveNodeErrorCodes,
+            pinsAffectedByErrorRaisers
+          ),
+          addErrorCode(interactiveNodeErrorCodes)
+        )
+      ),
       assocDeducedPinTypes(deducedPinTypes),
       addSpecializationsList(project),
       markDeprecatedNodes(project),
@@ -304,15 +436,28 @@ export const getRenderableNodes = createMemoizedSelector(
     getConnectedPins,
     getDeducedPinTypes,
     getErrors,
+    getInteractiveNodeErrorCodesForCurrentChunk,
+    getPinsAffectedByErrorRaisersForCurrentChunk,
   ],
-  [R.equals, R.equals, R.equals, R.equals, R.equals, R.equals],
+  [
+    R.equals,
+    R.equals,
+    R.equals,
+    R.equals,
+    R.equals,
+    R.equals,
+    R.equals,
+    R.equals,
+  ],
   (
     project,
     maybeCurrentPatch,
     currentPatchNodes,
     connectedPins,
     deducedPinTypes,
-    errors
+    errors,
+    interactiveNodeErrorCodes,
+    pinsAffectedByErrorRaisers
   ) =>
     foldMaybe(
       {},
@@ -341,7 +486,9 @@ export const getRenderableNodes = createMemoizedSelector(
               connectedPins,
               deducedPinTypes,
               project,
-              errors
+              errors,
+              interactiveNodeErrorCodes,
+              pinsAffectedByErrorRaisers
             )
           )
         )(currentPatchNodes),
@@ -367,13 +514,27 @@ export const getRenderableLinks = createMemoizedSelector(
         R.map(link =>
           R.compose(
             newLink => {
+              const inputNodeId = XP.getLinkInputNodeId(link);
+              const inputPinKey = XP.getLinkInputPinKey(link);
               const outputNodeId = XP.getLinkOutputNodeId(link);
               const outputPinKey = XP.getLinkOutputPinKey(link);
-              return R.assoc(
-                'type',
-                getRenderablePinType(nodes[outputNodeId].pins[outputPinKey]),
-                newLink
-              );
+
+              const isOutputPinWithError =
+                nodes[outputNodeId].pins[outputPinKey]
+                  .isAffectedByErrorRaiser ||
+                !!nodes[outputNodeId].raisedErrorCode;
+              const isInputPinWithError =
+                nodes[inputNodeId].pins[inputPinKey].isAffectedByErrorRaiser;
+              const isLinkAffectedByError =
+                isOutputPinWithError && isInputPinWithError;
+
+              return R.compose(
+                R.assoc('isAffectedByErrorRaiser', isLinkAffectedByError),
+                R.assoc(
+                  'type',
+                  getRenderablePinType(nodes[outputNodeId].pins[outputPinKey])
+                )
+              )(newLink);
             },
             R.ifElse(
               R.isEmpty,

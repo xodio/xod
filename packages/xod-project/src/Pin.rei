@@ -25,6 +25,10 @@ type dataType = string;
 
 let getDirection: t => direction;
 
+let isOutput: t => bool;
+
+let isInput: t => bool;
+
 let normalizeLabels: list(t) => list(t);
 
 let getPrimitiveTypeExn: t => primitiveDataType;

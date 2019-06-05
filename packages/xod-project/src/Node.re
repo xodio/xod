@@ -11,6 +11,8 @@ let create = patchPath => _create(Position.origin, patchPath);
 
 [@bs.module ".."] external getId : t => id = "getNodeId";
 
+[@bs.module ".."] external setId : (id, t) => t = "setNodeId";
+
 [@bs.module ".."] external getType : t => PatchPath.t = "getNodeType";
 
 [@bs.module ".."] external setType : (PatchPath.t, t) => t = "setNodeType";

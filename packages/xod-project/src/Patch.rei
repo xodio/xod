@@ -43,3 +43,12 @@ let getAttachments: t => list(Attachment.t);
 let getTabtestContent: t => option(string);
 
 let hasTabtest: t => bool;
+
+let isNotImplementedInXod: t => bool;
+
+let isAbstract: t => bool;
+let isTerminal: t => bool;
+let isJumper: t => bool;
+let isBus: t => bool;
+let isFromBus: t => bool;
+let isToBus: t => bool;

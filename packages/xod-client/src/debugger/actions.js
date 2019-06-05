@@ -33,12 +33,14 @@ export const selectDebuggerTab = tab => ({
 export const startDebuggerSession = (
   message,
   nodeIdsMap,
+  pinsAffectedByErrorRaisers,
   currentPatchPath
 ) => ({
   type: AT.DEBUG_SESSION_STARTED,
   payload: {
     message,
     nodeIdsMap,
+    pinsAffectedByErrorRaisers,
     patchPath: currentPatchPath,
   },
 });

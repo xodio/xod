@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 
 import {
   explodeMaybe,
@@ -10,6 +10,8 @@ import {
   isAmong,
   fail,
   cppEscape,
+  mergeAllWithConcat,
+  catMaybies,
 } from 'xod-func-tools';
 import * as XP from 'xod-project';
 import { def } from './types';
@@ -370,6 +372,7 @@ const getTNodeInputs = def(
 
     // :: Link -> TNodeInput
     const constructTNodeInput = R.applySpec({
+      originalPinKey: XP.getLinkInputPinKey,
       pinKey: R.compose(R.prop(R.__, nodePins), XP.getLinkInputPinKey),
       fromNodeId: R.compose(toInt, XP.getLinkOutputNodeId),
       fromPatch: getUpstreamNodePatch,
@@ -540,6 +543,78 @@ export const getNodeIdsMap = def(
     R.map(node => [node.originalId, String(node.id)]),
     R.prop('nodes')
   )
+);
+
+export const getPinsAffectedByErrorRaisers = def(
+  'getPinsAffectedByErrorRaisers :: TProject -> Patch -> Project -> Map Number [Pair PinKey NodeId]',
+  (tProject, currentPatch, project) => {
+    const hasNoUpstreamErrorRaisers = R.propSatisfies(
+      R.isEmpty,
+      'upstreamErrorRaisers'
+    );
+
+    return R.compose(
+      mergeAllWithConcat,
+      R.map(R.map(R.of)),
+      R.unnest,
+      catMaybies,
+      R.map(
+        ({
+          originalPinKey,
+          upstreamErrorRaisers,
+          ownerNodeId,
+          ownerNodeType,
+        }) => {
+          const rootNodeId = R.compose(R.head, R.split('~'))(ownerNodeId);
+          const maybeNode = XP.getNodeById(rootNodeId, currentPatch);
+          const maybeNodePatch = XP.getPatchByPath(ownerNodeType, project);
+          const maybePin = R.chain(
+            XP.getPinByKey(originalPinKey),
+            maybeNodePatch
+          );
+
+          return R.compose(
+            R.map(([pin, node]) =>
+              R.compose(
+                R.map(R.fromPairs),
+                R.map(pairs =>
+                  R.map(
+                    errRaiserId => [errRaiserId, pairs],
+                    upstreamErrorRaisers
+                  )
+                ),
+                R.map(
+                  R.compose(
+                    R.over(R.lensIndex(0), XP.getPinKey),
+                    R.over(R.lensIndex(1), XP.getNodeId)
+                  )
+                ),
+                XP.listUpstreamPinsToNiix(R.__, currentPatch, project)
+              )([[pin, node]])
+            ),
+            R.sequence(Maybe.of)
+          )([maybePin, maybeNode]);
+        }
+      ),
+      R.unnest,
+      R.map(tNode =>
+        R.compose(
+          R.map(
+            R.compose(
+              R.assoc('ownerNodeId', tNode.originalId),
+              R.assoc('ownerNodeType', tNode.patch.patchPath),
+              R.pick(['originalPinKey', 'upstreamErrorRaisers'])
+            )
+          ),
+          R.reject(hasNoUpstreamErrorRaisers),
+          R.values,
+          R.prop('inputs')
+        )(tNode)
+      ),
+      R.reject(hasNoUpstreamErrorRaisers),
+      R.prop('nodes')
+    )(tProject);
+  }
 );
 
 export const transformProject = def(

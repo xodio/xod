@@ -109,3 +109,15 @@ let getTabtestContent = t =>
   |. Option.map(Attachment.getContent);
 
 let hasTabtest = t => getAttachments(t) |. List.some(Attachment.isTabtest);
+
+[@bs.module ".."]
+external isNotImplementedInXod : t => bool = "isPatchNotImplementedInXod";
+
+[@bs.module ".."]
+external isAbstract : t => bool = "isAbstractPatch";
+
+let isTerminal = patch => patch |. getPath |. PatchPath.isTerminal;
+let isJumper = patch => patch |. getPath |. PatchPath.isJumper;
+let isBus = patch => patch |. getPath |. PatchPath.isBus;
+let isFromBus = patch => patch |. getPath |. PatchPath.isFromBus;
+let isToBus = patch => patch |. getPath |. PatchPath.isToBus;

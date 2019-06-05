@@ -19,6 +19,7 @@ const LinksLayer = ({ links, selection, isDragged = false }) => (
           to={link.to}
           type={link.type}
           dead={link.dead}
+          isAffectedByErrorRaiser={link.isAffectedByErrorRaiser}
           isDragged={isDragged}
           isSelected={isLinkSelected(selection, link.id)}
         />
