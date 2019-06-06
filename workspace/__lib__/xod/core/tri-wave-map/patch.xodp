@@ -2,17 +2,6 @@
   "description": "Computes triangle function value",
   "links": [
     {
-      "id": "B1EsVcYJG",
-      "input": {
-        "nodeId": "BJWiEcFyz",
-        "pinKey": "H1SVIAuBDJZ"
-      },
-      "output": {
-        "nodeId": "rJUcEqKJM",
-        "pinKey": "HyRmUCdBDkZ"
-      }
-    },
-    {
       "id": "Bkg6VcKJz",
       "input": {
         "nodeId": "BkK3N5Y1M",
@@ -32,6 +21,17 @@
       "output": {
         "nodeId": "S1i0E5KkM",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJeOKsIRE",
+      "input": {
+        "nodeId": "BkwiVqKkM",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "SkcwYoURN",
+        "pinKey": "B1LNICdSDJW"
       }
     },
     {
@@ -68,14 +68,14 @@
       }
     },
     {
-      "id": "Sy5jEcFkf",
+      "id": "rJ0wYi80N",
       "input": {
-        "nodeId": "BkwiVqKkM",
-        "pinKey": "rkJ4URuHDJ-"
+        "nodeId": "SkcwYoURN",
+        "pinKey": "H1SVIAuBDJZ"
       },
       "output": {
-        "nodeId": "BJWiEcFyz",
-        "pinKey": "B1LNICdSDJW"
+        "nodeId": "rJUcEqKJM",
+        "pinKey": "HyRmUCdBDkZ"
       }
     },
     {
@@ -91,15 +91,6 @@
     }
   ],
   "nodes": [
-    {
-      "id": "BJWiEcFyz",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 5
-      },
-      "type": "@/absolute"
-    },
     {
       "description": "The function value in [0, 1] range. Starts from 0.",
       "id": "BkK3N5Y1M",
@@ -168,6 +159,15 @@
         "y": 2
       },
       "type": "@/saw-wave-map"
+    },
+    {
+      "id": "SkcwYoURN",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 5
+      },
+      "type": "xod/math/abs"
     },
     {
       "boundLiterals": {
