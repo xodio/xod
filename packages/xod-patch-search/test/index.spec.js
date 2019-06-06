@@ -26,7 +26,7 @@ describe('xod-patch-search/index', () => {
 
     it('searches by path correctly', () => {
       const result = search(indexData, 'path:number');
-      assert.equal(result[0].item.path, 'xod/core/nth-number');
+      assert.equal(result[0].item.path, 'xod/core/format-number');
     });
 
     it('searches by lib correctly', () => {

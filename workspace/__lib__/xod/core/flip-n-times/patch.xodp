@@ -73,17 +73,6 @@
       }
     },
     {
-      "id": "Hk_6SCF1z",
-      "input": {
-        "nodeId": "HJTjb0FyM",
-        "pinKey": "Hk-UvIK9b"
-      },
-      "output": {
-        "nodeId": "S15nBCF1G",
-        "pinKey": "rJqfIRdHwkW"
-      }
-    },
-    {
       "id": "Hkfo-yc1f",
       "input": {
         "nodeId": "Bk95-J9yM",
@@ -125,6 +114,17 @@
       "output": {
         "nodeId": "SJ1e-CKkf",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJO1J5BCV",
+      "input": {
+        "nodeId": "HkIkG0tJz",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "r17k1cSCN",
+        "pinKey": "S1K8wUY9b"
       }
     },
     {
@@ -205,17 +205,6 @@
       }
     },
     {
-      "id": "SyQgzCF1M",
-      "input": {
-        "nodeId": "HkIkG0tJz",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "HJTjb0FyM",
-        "pinKey": "S1K8wUY9b"
-      }
-    },
-    {
       "id": "rJjPD0KkG",
       "input": {
         "nodeId": "BJQLDRtJf",
@@ -246,6 +235,17 @@
       "output": {
         "nodeId": "S1vneCK1z",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryI11qrCV",
+      "input": {
+        "nodeId": "r17k1cSCN",
+        "pinKey": "Hk-UvIK9b"
+      },
+      "output": {
+        "nodeId": "S15nBCF1G",
+        "pinKey": "rJqfIRdHwkW"
       }
     }
   ],
@@ -302,15 +302,6 @@
       "type": "@/square-wave"
     },
     {
-      "id": "HJTjb0FyM",
-      "position": {
-        "units": "slots",
-        "x": 16,
-        "y": 8
-      },
-      "type": "@/defer-pulse"
-    },
-    {
       "id": "HkIkG0tJz",
       "position": {
         "units": "slots",
@@ -361,6 +352,15 @@
         "y": 1
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r17k1cSCN",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 6
+      },
+      "type": "@/defer(pulse)"
     },
     {
       "id": "r19PbRFkG",
