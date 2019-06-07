@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -15,7 +17,7 @@ void evaluate(Context ctx) {
 
     uint32_t versiondata = nfc->getFirmwareVersion();
     if (!versiondata) {
-      emitValue<output_ERR>(ctx, 1);
+      raiseError(ctx);
       return;
     }
 

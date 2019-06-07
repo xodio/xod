@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 // clang-format off
 {{#global}}
@@ -29,7 +30,7 @@ void evaluate(Context ctx) {
     if (state->client.connect(serverNameBuff, port)) {
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx);
     }
 
     emitValue<output_SOCK>(ctx, &state->client);

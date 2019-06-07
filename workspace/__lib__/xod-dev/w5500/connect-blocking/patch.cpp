@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 {{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>
@@ -24,7 +26,8 @@ void evaluate(Context ctx) {
 #endif
         inet.ip = (uint32_t)0;
         inet.isConnected = false;
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx);
+        return;
     } else {
         inet.ip = (uint32_t)Ethernet.localIP();
         inet.isConnected = true;

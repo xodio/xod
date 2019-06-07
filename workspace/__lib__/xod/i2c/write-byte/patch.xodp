@@ -1,5 +1,5 @@
 {
-  "description": "Pushes a byte to send queue.",
+  "description": "Pushes a byte to send queue.\n\nPossible errors:\n— No bytes written. Probably due to buffer overflow.",
   "nodes": [
     {
       "description": "I²C interface object",
@@ -53,17 +53,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "description": "Pulses when the write fails. E.g., due to buffer overflow.",
-      "id": "rJxr5J42ym",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {
     bool reading;
@@ -102,17 +103,30 @@ void evaluate(Context ctx) {
     State* state = getState(ctx);
     uint8_t port = (uint8_t)getValue<input_PORT>(ctx);
 
+    if (!isValidDigitalPort(port)) {
+        raiseError(ctx); // Invalid port
+        return;
+    }
     if (state->reading) {
         uint8_t data[5];
         auto status = readValues(port, data);
-        if (status == DHT_OK) {
-            emitValue<output_D0>(ctx, data[0]);
-            emitValue<output_D1>(ctx, data[1]);
-            emitValue<output_D2>(ctx, data[2]);
-            emitValue<output_D3>(ctx, data[3]);
-            emitValue<output_DONE>(ctx, 1);
-        } else {
-            emitValue<output_ERR>(ctx, 1);
+        switch (status) {
+            case DHT_OK:
+                emitValue<output_D0>(ctx, data[0]);
+                emitValue<output_D1>(ctx, data[1]);
+                emitValue<output_D2>(ctx, data[2]);
+                emitValue<output_D3>(ctx, data[3]);
+                emitValue<output_DONE>(ctx, 1);
+                break;
+            case DHT_START_FAILED_1:
+            case DHT_START_FAILED_2:
+                raiseError(ctx);
+                break;
+            case DHT_READ_TIMEOUT:
+                raiseError(ctx);
+                break;
+            case DHT_CHECKSUM_FAILURE:
+                raiseError(ctx);
         }
 
         enterIdleState(port);

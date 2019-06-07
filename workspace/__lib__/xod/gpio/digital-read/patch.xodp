@@ -1,5 +1,5 @@
 {
-  "description": "Reads digital signal value from board GPIO port",
+  "description": "Reads digital signal value from board GPIO port.\n\nPossible errors:\n— Invalid port",
   "nodes": [
     {
       "description": "Board port to read from",
@@ -25,17 +25,6 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-boolean"
-    },
-    {
-      "description": "Fires if update failed. E.g. `PORT` does not exist.",
-      "id": "S1fi5aqyQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

@@ -1,5 +1,5 @@
 {
-  "description": "Open a TCP connection to the specified server",
+  "description": "Open a TCP connection to the specified server\n\nPossible errors:\n— Can't open TCP connection",
   "nodes": [
     {
       "description": "Pulses when the connection is successfully open",
@@ -58,17 +58,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "description": "Pulses when opening failed",
-      "id": "S1RkGwrbm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "Sk4JMPrZX",

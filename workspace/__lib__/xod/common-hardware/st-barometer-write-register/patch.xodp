@@ -78,39 +78,6 @@
       }
     },
     {
-      "id": "HyHxWE16wWQ",
-      "input": {
-        "nodeId": "ryLbN1TwWm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "HyKWVJ6PZm",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
-      "id": "HyT-N1TP-X",
-      "input": {
-        "nodeId": "SyZVk6PbX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ryLbN1TwWm",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "HyclZEJpw-m",
-      "input": {
-        "nodeId": "ryLbN1TwWm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SyMWN16D-m",
-        "pinKey": "SyUMZQ2JQ"
-      }
-    },
-    {
       "id": "SJ0bVk6Db7",
       "input": {
         "nodeId": "SJ7b4kaPZQ",
@@ -130,17 +97,6 @@
       "output": {
         "nodeId": "SyMWN16D-m",
         "pinKey": "HJbjB_Nd-"
-      }
-    },
-    {
-      "id": "SJzlbNk6D-X",
-      "input": {
-        "nodeId": "ryLbN1TwWm",
-        "pinKey": "ByU7LRuSPkW-$2"
-      },
-      "output": {
-        "nodeId": "r1-ZNJ6w-Q",
-        "pinKey": "SyewuY7nJm"
       }
     },
     {
@@ -174,17 +130,6 @@
       "output": {
         "nodeId": "H1i-E1pDbQ",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJnxb41TPW7",
-      "input": {
-        "nodeId": "ryLbN1TwWm",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "SJ7b4kaPZQ",
-        "pinKey": "rJxr5J42ym"
       }
     }
   ],
@@ -272,20 +217,10 @@
       "type": "xod/i2c/begin-transmission"
     },
     {
-      "id": "SyZVk6PbX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 16,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "id": "r1-ZNJ6w-Q",
       "position": {
         "units": "slots",
-        "x": 17,
+        "x": 15,
         "y": 2
       },
       "type": "xod/i2c/end-transmission"
@@ -301,21 +236,11 @@
       "type": "xod/i2c/input-i2c"
     },
     {
-      "arityLevel": 3,
-      "id": "ryLbN1TwWm",
-      "position": {
-        "units": "slots",
-        "x": 16,
-        "y": 3
-      },
-      "type": "xod/core/any"
-    },
-    {
       "id": "ryc-V1pPZX",
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 14,
+        "x": 15,
         "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"

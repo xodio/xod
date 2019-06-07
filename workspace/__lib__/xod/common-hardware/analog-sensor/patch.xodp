@@ -1,5 +1,5 @@
 {
-  "description": "Reads analog signal value from analog sensor",
+  "description": "Reads analog signal value from analog sensor.\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "HkDlNcCJQ",
@@ -44,17 +44,6 @@
         "nodeId": "SkUhQ5RkQ",
         "pinKey": "__out__"
       }
-    },
-    {
-      "id": "ryFyXyJeX",
-      "input": {
-        "nodeId": "H1P1711gm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "r1niX9AJQ",
-        "pinKey": "HJgzpqacyX"
-      }
     }
   ],
   "nodes": [
@@ -79,17 +68,6 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "description": "Fires if update failed. E.g. `PORT` is not an ADC port.\n",
-      "id": "H1P1711gm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

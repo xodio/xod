@@ -1,5 +1,5 @@
 {
-  "description": "Reads temperature from a DS18B20 sensor. Expects single-drop bus setup, i.e. one thermometer on a port.",
+  "description": "Reads temperature from a DS18B20 sensor. Expects single-drop bus setup, i.e. one thermometer on a port.\n\nPossible errors:\n— Invalid port\n— Initialization sequence error",
   "nodes": [
     {
       "description": "Board port number the sensor is connected to.",
@@ -31,17 +31,6 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "S1bbjqBgm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

@@ -1,5 +1,5 @@
 {
-  "description": "Reads the next byte received from an I²C device after `request` succeeded.",
+  "description": "Reads the next byte received from an I²C device after `request` succeeded.\n\nPossible errors:\n236 - Can't read byte",
   "nodes": [
     {
       "description": "The byte read",
@@ -22,17 +22,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Pulses when read fails. E.g., due to the buffer underflow.",
-      "id": "SygH-3mhyX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SyvJYdVdW",

@@ -1,5 +1,5 @@
 {
-  "description": "Writes data to the specified page of a Mifare Ultralight NFC tag.\nTo write data to a tag it should be paired first (use `pair-tag`)",
+  "description": "Writes data to the specified page of a Mifare Ultralight NFC tag.\nTo write data to a tag it should be paired first (use `pair-tag`)\n\nPossible errors:\n— Can't write the value",
   "nodes": [
     {
       "description": "Trigger writing to an NFC tag",
@@ -30,17 +30,6 @@
         "y": 0
       },
       "type": "@/input-pn532-device"
-    },
-    {
-      "description": "Fires on failed writing",
-      "id": "SJ4l5dTPm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SkYkqO6D7",

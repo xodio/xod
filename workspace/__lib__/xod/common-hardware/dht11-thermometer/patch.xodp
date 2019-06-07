@@ -1,5 +1,5 @@
 {
-  "description": "Reads temperature and humidity from a DHT11 sensor. Also named RHT01.",
+  "description": "Reads temperature and humidity from a DHT11 sensor. Also named RHT01.\n\nPossible errors:\n— Checksum failure\n— Read timeout\n— Initialization error\n— Invalid port",
   "links": [
     {
       "id": "B1m4_Zs1M",
@@ -10,17 +10,6 @@
       "output": {
         "nodeId": "SkUQV5wIb",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "BJ27eqSgX",
-      "input": {
-        "nodeId": "rJeq4CYSl7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SJg4_Wo1M",
-        "pinKey": "HJgDdJqrxm"
       }
     },
     {
@@ -141,17 +130,6 @@
       "position": {
         "units": "slots",
         "x": 5,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "rJeq4CYSl7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 8,
         "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"

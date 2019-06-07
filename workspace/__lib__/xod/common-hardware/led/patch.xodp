@@ -1,5 +1,5 @@
 {
-  "description": "Drives a generic single color dimmable LED. The conversion between luminance and LED power is biased so that change in brightness on range 0…1 is percepted more or less uniformly by a human.",
+  "description": "Drives a generic single color dimmable LED. The conversion between luminance and LED power is biased so that change in brightness on range 0…1 is percepted more or less uniformly by a human.\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "ByOBjd8lm",
@@ -54,17 +54,6 @@
       "output": {
         "nodeId": "HJP1juIl7",
         "pinKey": "SkwRqaq17"
-      }
-    },
-    {
-      "id": "ryQ_jO8xQ",
-      "input": {
-        "nodeId": "r13Dj_IxQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HJP1juIl7",
-        "pinKey": "S1eDAq69yX"
       }
     }
   ],
@@ -122,17 +111,6 @@
         "y": 1
       },
       "type": "xod/math/cube"
-    },
-    {
-      "description": "Fires if write failed. E.g. `PORT` does not exist.",
-      "id": "r13Dj_IxQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Fires on writing complete",

@@ -1,5 +1,5 @@
 {
-  "description": "Establish an internet connection via Wi-Fi using ESP8266",
+  "description": "Establish an internet connection via Wi-Fi using ESP8266.\n\nPossible errors:\n— Connection failed\n— Can't get local IP address",
   "links": [
     {
       "id": "B1LfBjXGX",
@@ -76,17 +76,6 @@
       "output": {
         "nodeId": "BJQEQEjmGm",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rktt8iXfX",
-      "input": {
-        "nodeId": "rkzN74sXzQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyffroXGQ",
-        "pinKey": "SyMXl3L-7"
       }
     },
     {
@@ -216,17 +205,6 @@
         "y": 4
       },
       "type": "@/output-esp8266-inet"
-    },
-    {
-      "description": "Pulses if the connection failed",
-      "id": "rkzN74sXzQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

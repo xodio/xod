@@ -1,5 +1,5 @@
 {
-  "description": "Sends a message through an opened TCP/UDP connection",
+  "description": "Sends a message through an opened TCP/UDP connection\n\nPossible errors:\n— Can't send data to the socket",
   "nodes": [
     {
       "description": "A socket",
@@ -31,17 +31,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Pulses when sending failed (for example, the connection is not open)",
-      "id": "HkWZL-Lc-7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "The message to send",

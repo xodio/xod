@@ -23,6 +23,6 @@ void evaluate(Context ctx) {
         emitValue<output_UID>(ctx, uid);
         emitValue<output_OK>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        emitValue<output_NA>(ctx, 1);
     }
 }

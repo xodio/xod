@@ -1,17 +1,6 @@
 {
-  "description": "Writes a new date/time value to a DS1307, DS1337, DS1338, or DS3231 real-time clock IC. Useful as a throw-away node to setup the RTC once after you install a backup battery.",
+  "description": "Writes a new date/time value to a DS1307, DS1337, DS1338, or DS3231 real-time clock IC. Useful as a throw-away node to setup the RTC once after you install a backup battery.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow.",
   "links": [
-    {
-      "id": "B1rL95SeQ",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$2"
-      },
-      "output": {
-        "nodeId": "r1QyD2WgG",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
     {
       "id": "BJkIbTGxM",
       "input": {
@@ -200,17 +189,6 @@
       }
     },
     {
-      "id": "HyOvccBlm",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$8"
-      },
-      "output": {
-        "nodeId": "HkMt83-xG",
-        "pinKey": "SyUMZQ2JQ"
-      }
-    },
-    {
       "id": "S1KLch-lf",
       "input": {
         "nodeId": "rkv1ch-eM",
@@ -222,17 +200,6 @@
       }
     },
     {
-      "id": "S1NPq9SlX",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$7"
-      },
-      "output": {
-        "nodeId": "SyupI2ZeM",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "S1Yk55BeQ",
       "input": {
         "nodeId": "SyryPhWgz",
@@ -241,17 +208,6 @@
       "output": {
         "nodeId": "Hy3RF2Zef",
         "pinKey": "S1TsDnbgM"
-      }
-    },
-    {
-      "id": "SJCUqcSxm",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$5"
-      },
-      "output": {
-        "nodeId": "SyryPhWgz",
-        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -274,17 +230,6 @@
       "output": {
         "nodeId": "r1SQLh-gf",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJjLccrgQ",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$4"
-      },
-      "output": {
-        "nodeId": "HyVJP3bez",
-        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -332,17 +277,6 @@
       }
     },
     {
-      "id": "SykIqqHgm",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "HJWkD2-xG",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "r1BWw3Zxf",
       "input": {
         "nodeId": "B1eXyv2Zlf",
@@ -351,17 +285,6 @@
       "output": {
         "nodeId": "HyVJP3bez",
         "pinKey": "SJB3vO4uZ"
-      }
-    },
-    {
-      "id": "r1OI99re7",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$3"
-      },
-      "output": {
-        "nodeId": "B1eXyv2Zlf",
-        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -387,28 +310,6 @@
       }
     },
     {
-      "id": "r1kOc9Be7",
-      "input": {
-        "nodeId": "B1k455HgQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "r1pHccSem",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "BywsI3-lz",
-        "pinKey": "SyewuY7nJm"
-      }
-    },
-    {
       "id": "r1xc55Hlm",
       "input": {
         "nodeId": "HyVJP3bez",
@@ -420,17 +321,6 @@
       }
     },
     {
-      "id": "rJM89crem",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "rJM1Dnbgz",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "rk1o5qrgX",
       "input": {
         "nodeId": "HkMt83-xG",
@@ -439,17 +329,6 @@
       "output": {
         "nodeId": "Sy_d99HlQ",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rkZDccreQ",
-      "input": {
-        "nodeId": "rkHSqcSxm",
-        "pinKey": "ByU7LRuSPkW-$6"
-      },
-      "output": {
-        "nodeId": "rJlHkD3Zgf",
-        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -567,17 +446,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Fires if write failed",
-      "id": "B1k455HgQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": -7,
-        "y": 6
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "BJTpKhbeM",
@@ -843,16 +711,6 @@
         "y": 3
       },
       "type": "xod/i2c/write-byte"
-    },
-    {
-      "arityLevel": 9,
-      "id": "rkHSqcSxm",
-      "position": {
-        "units": "slots",
-        "x": -7,
-        "y": 5
-      },
-      "type": "xod/core/any"
     },
     {
       "id": "rkv1ch-eM",
