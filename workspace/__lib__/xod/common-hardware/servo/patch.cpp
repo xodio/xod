@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 {{#global}}
 #include <Servo.h>
@@ -17,7 +18,7 @@ void evaluate(Context ctx) {
     State* state = getState(ctx);
     auto port = (int)getValue<input_PORT>(ctx);
     if (!isValidDigitalPort(port)) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx);
         return;
     }
 

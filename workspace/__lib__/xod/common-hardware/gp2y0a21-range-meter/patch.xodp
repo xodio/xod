@@ -1,5 +1,5 @@
 {
-  "description": "Reads Sharp infrared range meter GP2Y0A21YK0F (the one with 10…80 cm range).",
+  "description": "Reads Sharp infrared range meter GP2Y0A21YK0F (the one with 10…80 cm range).\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "B17GOIorxX",
@@ -32,17 +32,6 @@
       "output": {
         "nodeId": "B1rqmq_8Z",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "HkzzOUiSgQ",
-      "input": {
-        "nodeId": "HkbMd8sBeQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SJM_UorxX",
-        "pinKey": "HJgzpqacyX"
       }
     },
     {
@@ -107,17 +96,6 @@
         "y": 3
       },
       "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "HkbMd8sBeQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SJM_UorxX",

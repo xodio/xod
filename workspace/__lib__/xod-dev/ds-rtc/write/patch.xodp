@@ -1,5 +1,5 @@
 {
-  "description": "Writes a datetime value into the memory of a RTC device",
+  "description": "Writes a datetime value into the memory of a RTC device.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow",
   "links": [
     {
       "id": "B1VZ_QTQSPm",
@@ -112,17 +112,6 @@
       }
     },
     {
-      "id": "BkwMu7aXrDX",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$4"
-      },
-      "output": {
-        "nodeId": "H1p_mT7BPm",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "By-OPJldX",
       "input": {
         "nodeId": "S1-4vyldm",
@@ -200,28 +189,6 @@
       }
     },
     {
-      "id": "HkAeu767rPX",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$2"
-      },
-      "output": {
-        "nodeId": "ryLeuXTQHDQ",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
-      "id": "HkGQO7TXHwm",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SJHd7p7HD7",
-        "pinKey": "SyewuY7nJm"
-      }
-    },
-    {
       "id": "HkGbuQ67rwX",
       "input": {
         "nodeId": "H1p_mT7BPm",
@@ -266,17 +233,6 @@
       }
     },
     {
-      "id": "S1E7_XaXHvm",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "rJce_QaXSv7",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "S1VpDkeuQ",
       "input": {
         "nodeId": "rJsdm6QSDQ",
@@ -285,17 +241,6 @@
       "output": {
         "nodeId": "S1-4vyldm",
         "pinKey": "r1MljClXPm"
-      }
-    },
-    {
-      "id": "S1WQuQaQSPQ",
-      "input": {
-        "nodeId": "S1M_QaXHvm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByHmL0uHPk-"
       }
     },
     {
@@ -365,28 +310,6 @@
       }
     },
     {
-      "id": "Sy2f_QT7BPm",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "B1Du7TQSwX",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
-      "id": "SyRz_Xp7SPX",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$3"
-      },
-      "output": {
-        "nodeId": "SJlump7HvX",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "SygoT6mrwQ",
       "input": {
         "nodeId": "ryLeuXTQHDQ",
@@ -420,17 +343,6 @@
       }
     },
     {
-      "id": "r1MGOmaQBwm",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$7"
-      },
-      "output": {
-        "nodeId": "BJEld7aQrDX",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
       "id": "r1xZ_Q6XrD7",
       "input": {
         "nodeId": "SJHd7p7HD7",
@@ -439,39 +351,6 @@
       "output": {
         "nodeId": "B1Du7TQSwX",
         "pinKey": "SJB3vO4uZ"
-      }
-    },
-    {
-      "id": "rJLm_XT7BvQ",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$6"
-      },
-      "output": {
-        "nodeId": "Syixump7BvX",
-        "pinKey": "rJxr5J42ym"
-      }
-    },
-    {
-      "id": "rJxMd7aQHP7",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$8"
-      },
-      "output": {
-        "nodeId": "H19OXpmHD7",
-        "pinKey": "SyUMZQ2JQ"
-      }
-    },
-    {
-      "id": "rkEGd7aQrP7",
-      "input": {
-        "nodeId": "Hk2xdX6QHPX",
-        "pinKey": "ByU7LRuSPkW-$5"
-      },
-      "output": {
-        "nodeId": "rkmedmTXBvX",
-        "pinKey": "rJxr5J42ym"
       }
     },
     {
@@ -721,16 +600,6 @@
       "type": "xod/patch-nodes/from-bus"
     },
     {
-      "arityLevel": 9,
-      "id": "Hk2xdX6QHPX",
-      "position": {
-        "units": "slots",
-        "x": 12,
-        "y": 6
-      },
-      "type": "xod/core/any"
-    },
-    {
       "id": "Hk80p7rvQ",
       "label": "ADDR",
       "position": {
@@ -787,17 +656,6 @@
         "y": 3
       },
       "type": "xod/bits/dec-to-bcd"
-    },
-    {
-      "description": "Fires if a write failed",
-      "id": "S1M_QaXHvm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 12,
-        "y": 7
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "S1zC6QHwm",

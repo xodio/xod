@@ -1,5 +1,5 @@
 {
-  "description": "Reads analog signal value from board ADC port",
+  "description": "Reads analog signal value from board ADC port.\n\nPossible errors:\n— Invalid port",
   "nodes": [
     {
       "description": "Fires on reading complete",
@@ -20,17 +20,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "description": "Fires if update failed. E.g. `PORT` is not an ADC port.",
-      "id": "HJgzpqacyX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

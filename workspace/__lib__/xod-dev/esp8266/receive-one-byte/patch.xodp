@@ -1,5 +1,5 @@
 {
-  "description": "Read a single byte of the response from an opened connection",
+  "description": "Read a single byte of the response from an opened connection\n\nPossible errors:\n— Can't receive a data from the socket\n— No available bytes to read",
   "nodes": [
     {
       "description": "Read the byte",
@@ -20,17 +20,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/utility"
-    },
-    {
-      "description": "Pulses if TCP connection closed or can't read the byte",
-      "id": "HJ-_3x_9WQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "A socket",

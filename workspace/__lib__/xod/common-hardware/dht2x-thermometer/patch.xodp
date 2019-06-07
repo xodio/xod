@@ -1,5 +1,5 @@
 {
-  "description": "Reads temperature and humidity from a DHT21 or compatible sensor: DHT21, DHT22, DHT33, DHT44, AM2301, HM2301, AM2302, AM2303, RHT02, RHT03, RHT04, RHT05.",
+  "description": "Reads temperature and humidity from a DHT21 or compatible sensor: DHT21, DHT22, DHT33, DHT44, AM2301, HM2301, AM2302, AM2303, RHT02, RHT03, RHT04, RHT05.\n\nPossible errors:\n— Checksum failure\n— Read timeout\n— Initialization error\n— Invalid port",
   "links": [
     {
       "id": "B1OVeWsyM",
@@ -90,17 +90,6 @@
       }
     },
     {
-      "id": "ryZHxcHeX",
-      "input": {
-        "nodeId": "BJewNgqHxQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HkpQeWs1M",
-        "pinKey": "HJgDdJqrxm"
-      }
-    },
-    {
       "id": "rygYlWiJM",
       "input": {
         "nodeId": "ry6debo1z",
@@ -120,17 +109,6 @@
       "position": {
         "units": "slots",
         "x": 7,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "description": "Fires if update failed.",
-      "id": "BJewNgqHxQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 8,
         "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"

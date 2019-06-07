@@ -24,17 +24,6 @@
       "type": "@/input-esp8266-device"
     },
     {
-      "description": "Pulses when no answer received",
-      "id": "BypE34YZm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "id": "SJEHhNKbX",
       "position": {
         "units": "slots",

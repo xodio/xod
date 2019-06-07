@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 {{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>
@@ -14,6 +16,11 @@ void evaluate(Context ctx) {
 
     auto client = EthernetClient(getValue<input_SOCK>(ctx));
     uint8_t b = client.read();
+
+    if (!b) {
+        raiseError(ctx);
+        return;
+    }
 
     emitValue<output_B>(ctx, b);
     emitValue<output_DONE>(ctx, 1);

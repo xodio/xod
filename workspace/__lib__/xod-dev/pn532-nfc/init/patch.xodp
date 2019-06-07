@@ -1,5 +1,5 @@
 {
-  "description": "Initializes RFID/NFC module",
+  "description": "Initializes RFID/NFC module\n\nPossible errors:\n— Initialization error",
   "nodes": [
     {
       "id": "H1BoxMhD7",
@@ -9,17 +9,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "description": "Fires if the initialization failed",
-      "id": "HJGngfnvX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Fires on the successful initialization",

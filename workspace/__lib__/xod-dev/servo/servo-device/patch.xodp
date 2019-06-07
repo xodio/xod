@@ -1,5 +1,5 @@
 {
-  "description": "Represents an RC hobby servo device",
+  "description": "Represents an RC hobby servo device\n\nPossible errors:\n— Invalid port",
   "nodes": [
     {
       "boundLiterals": {

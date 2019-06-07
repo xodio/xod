@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -11,7 +13,7 @@ void evaluate(Context ctx) {
 
     auto uart = getValue<input_UART>(ctx);
     if (!uart->available()) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx);
         return;
     }
 
@@ -20,6 +22,6 @@ void evaluate(Context ctx) {
         emitValue<output_DONE>(ctx, 1);
         emitValue<output_BYTE>(ctx, byte);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx); // Can't read byte
     }
 }

@@ -1,5 +1,5 @@
 {
-  "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range)",
+  "description": "Reads Sharp infrared range meter GP2Y0A41SK0F (the one with 4…30 cm range).\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "B1Ct6p6jX",
@@ -43,17 +43,6 @@
       "output": {
         "nodeId": "ryvIyH66oX",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "H11gL1BaTiQ",
-      "input": {
-        "nodeId": "rJxI1SpTs7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HJfIyrp6j7",
-        "pinKey": "HJgzpqacyX"
       }
     },
     {
@@ -163,17 +152,6 @@
         "y": 2
       },
       "type": "@/gp2y0a-linearize"
-    },
-    {
-      "description": "Fires if reading failed. For example, in the case of the wrong port number",
-      "id": "rJxI1SpTs7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": -3,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Measured distance in meters. Trustworthy only for distances in [0.04, 0.3] meters range. Returns wrong values if an object is too close to the sensor",

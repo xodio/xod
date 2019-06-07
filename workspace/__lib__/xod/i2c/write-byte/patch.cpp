@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -10,7 +12,7 @@ void evaluate(Context ctx) {
     auto wire = getValue<input_I2C>(ctx);
     auto written = wire->write(getValue<input_BYTE>(ctx));
     if (written != 1) {
-      emitValue<output_ERR>(ctx, 1);
+      raiseError(ctx); // No bytes written
       return;
     }
 

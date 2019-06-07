@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -5,8 +7,8 @@ struct State {
 {{ GENERATED_CODE }}
 // clang-format on
 
-void emitErr(Context ctx) {
-    emitValue<output_ERR>(ctx, 1);
+void raiseErr(Context ctx) {
+    raiseError(ctx); // No bytes written
 }
 
 void evaluate(Context ctx) {
@@ -19,12 +21,12 @@ void evaluate(Context ctx) {
     for (auto it = data.iterate(); it; ++it) {
         bool err = !(uart->writeByte((char)*it));
         if (err)
-            return emitErr(ctx);
+            return raiseErr(ctx);
     }
     if (!uart->writeByte('\r'))
-        return emitErr(ctx);
+        return raiseErr(ctx);
     if (!uart->writeByte('\n'))
-        return emitErr(ctx);
+        return raiseErr(ctx);
     uart->flush();
     emitValue<output_DONE>(ctx, 1);
 }
