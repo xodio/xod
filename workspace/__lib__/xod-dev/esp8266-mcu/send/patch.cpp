@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {
 };
@@ -18,7 +19,7 @@ void evaluate(Context ctx) {
     for (auto it = msg.iterate(); it; ++it) {
         lastWriteSize = client->write((char)*it);
         if (lastWriteSize == 0) {
-            emitValue<output_ERR>(ctx, 1);
+            raiseError(ctx, 47);
             return;
         }
     }

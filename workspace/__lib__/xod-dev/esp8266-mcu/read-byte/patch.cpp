@@ -13,7 +13,7 @@ void evaluate(Context ctx) {
     auto client = getValue<input_SOCK>(ctx);
     int b = client->read();
     if (b < 0) {
-        emitValue<output_ERR>(ctx, 1);
+        emitValue<output_NA>(ctx, 1);
         return;
     }
 

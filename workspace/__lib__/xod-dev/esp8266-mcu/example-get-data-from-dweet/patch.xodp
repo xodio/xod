@@ -5,7 +5,7 @@
       "id": "BJnIU4Kt7",
       "position": {
         "units": "slots",
-        "x": 14,
+        "x": 17,
         "y": 5
       },
       "size": {
@@ -144,6 +144,17 @@
       }
     },
     {
+      "id": "Hk4wAV-JS",
+      "input": {
+        "nodeId": "B1-gRSUVYYX",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "H1KUREbJr",
+        "pinKey": "HkPQCTHiE"
+      }
+    },
+    {
       "id": "Hk7lASLEKtm",
       "input": {
         "nodeId": "Byj0rUNKKQ",
@@ -199,21 +210,21 @@
       }
     },
     {
-      "id": "SksWAS8VtKQ",
-      "input": {
-        "nodeId": "B1-gRSUVYYX",
-        "pinKey": "SkSuD6LMb"
-      },
-      "output": {
-        "nodeId": "Hk6RBINtYX",
-        "pinKey": "H1A0CH3PYm"
-      }
-    },
-    {
       "id": "SyC65NFKQ",
       "input": {
         "nodeId": "SyETcEtKm",
         "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "Hk6RBINtYX",
+        "pinKey": "BJpCRr2vt7"
+      }
+    },
+    {
+      "id": "r1jIR4-JS",
+      "input": {
+        "nodeId": "H1KUREbJr",
+        "pinKey": "BypMC6riE"
       },
       "output": {
         "nodeId": "Hk6RBINtYX",
@@ -328,6 +339,15 @@
         "y": 8
       },
       "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "H1KUREbJr",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 5
+      },
+      "type": "xod/core/pulse-on-error"
     },
     {
       "boundLiterals": {

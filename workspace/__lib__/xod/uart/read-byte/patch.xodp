@@ -1,5 +1,5 @@
 {
-  "description": "Reads one byte from UART",
+  "description": "Reads one byte from UART.\n\nPossible errors:\n236 — Can't read byte",
   "nodes": [
     {
       "description": "An UART object",
@@ -7,8 +7,8 @@
       "label": "UART",
       "position": {
         "units": "slots",
-        "x": -0.05,
-        "y": -0.05
+        "x": 0,
+        "y": 0
       },
       "type": "@/input-uart"
     },
@@ -35,9 +35,9 @@
       "type": "xod/patch-nodes/output-byte"
     },
     {
-      "description": "Pulses when UART have not available byte to read or reading failed",
+      "description": "Pulses when UART have no available byte to read",
       "id": "r17lKDnLW7",
-      "label": "ERR",
+      "label": "NA",
       "position": {
         "units": "slots",
         "x": 2,

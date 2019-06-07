@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 {{#global}}
 #include <Servo.h>
@@ -55,8 +56,14 @@ using Type = XServo*;
 void evaluate(Context ctx) {
     State* servo = getState(ctx);
 
+    auto port = getValue<input_PORT>(ctx);
+    if (!isValidDigitalPort(port)) {
+        raiseError(ctx, 255);
+        return;
+    }
+
     servo->reattach(
-        getValue<input_PORT>(ctx),
+        port,
         getValue<input_Pmin>(ctx),
         getValue<input_Pmax>(ctx)
     );

@@ -1,5 +1,5 @@
 {
-  "description": "Performs an HTTP request and returns the response as a stream of characters",
+  "description": "Performs an HTTP request and returns the response as a stream of characters\n\nPossible errors:\n45 — Can't open TCP connection\n47 — Can't send the data to the socket",
   "links": [
     {
       "id": "B1tS0uqfm",
@@ -46,17 +46,6 @@
       }
     },
     {
-      "id": "H14EyYwG7",
-      "input": {
-        "nodeId": "H1LrpdwGQ",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "ByLwI_vG7",
-        "pinKey": "S1RkGwrbm"
-      }
-    },
-    {
       "id": "H1TD2OPfQ",
       "input": {
         "nodeId": "SkfKidwf7",
@@ -76,17 +65,6 @@
       "output": {
         "nodeId": "BksmRd5M7",
         "pinKey": "r1H_oipZb"
-      }
-    },
-    {
-      "id": "HJk86OwGm",
-      "input": {
-        "nodeId": "rJMAEpOvGX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1LrpdwGQ",
-        "pinKey": "ByHmL0uHPk-"
       }
     },
     {
@@ -186,17 +164,6 @@
       "output": {
         "nodeId": "HJmdi_wGm",
         "pinKey": "B1gVQTOwfQ"
-      }
-    },
-    {
-      "id": "r1fNJYwzQ",
-      "input": {
-        "nodeId": "H1LrpdwGQ",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SkfKidwf7",
-        "pinKey": "ByzTg3LZX"
       }
     },
     {
@@ -302,15 +269,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "H1LrpdwGQ",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 6
-      },
-      "type": "xod/core/any"
     },
     {
       "description": "Pulses when a new response character is received",
@@ -428,17 +386,6 @@
       "position": {
         "units": "slots",
         "x": 5,
-        "y": 7
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "description": "Pulses if the request failed",
-      "id": "rJMAEpOvGX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 7,
         "y": 7
       },
       "type": "xod/patch-nodes/output-pulse"

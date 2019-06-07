@@ -15,7 +15,7 @@
       }
     }
   ],
-  "description": "Performs an HTTP request and returns the response as a stream of characters",
+  "description": "Performs an HTTP request and returns the response as a stream of characters\n\nPossible errors:\n45 — Can't open TCP connection\n47 — Can't send the data to the socket\n",
   "links": [
     {
       "id": "B1MJahPFm",
@@ -26,17 +26,6 @@
       "output": {
         "nodeId": "SJSC3hDKQ",
         "pinKey": "HyNOn3vt7"
-      }
-    },
-    {
-      "id": "B1jiSXRq7",
-      "input": {
-        "nodeId": "rJ7C0HhPKX",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "BJaqmQ0cm",
-        "pinKey": "SyM2ATB-b"
       }
     },
     {
@@ -293,17 +282,6 @@
       }
     },
     {
-      "id": "SJdCUhwFX",
-      "input": {
-        "nodeId": "rJ7C0HhPKX",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "BJO382PtQ",
-        "pinKey": "Bk6SU2wtQ"
-      }
-    },
-    {
       "id": "SJzhrwnvtQ",
       "input": {
         "nodeId": "Hyg00BnPK7",
@@ -323,17 +301,6 @@
       "output": {
         "nodeId": "B1U0CH2PFQ",
         "pinKey": "rksccsp-W"
-      }
-    },
-    {
-      "id": "SkgbvhDF7",
-      "input": {
-        "nodeId": "rJ7C0HhPKX",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "ryE1I3vFm",
-        "pinKey": "B1ENaAjwtm"
       }
     },
     {
@@ -378,17 +345,6 @@
       "output": {
         "nodeId": "SJSC3hDKQ",
         "pinKey": "rkANu2hwtQ"
-      }
-    },
-    {
-      "id": "rytg0RBnDtX",
-      "input": {
-        "nodeId": "H1A0CH3PYm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "rJ7C0HhPKX",
-        "pinKey": "ByHmL0uHPk-"
       }
     }
   ],
@@ -482,17 +438,6 @@
         "y": -2
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "description": "Pulses if the request failed",
-      "id": "H1A0CH3PYm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 7
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
@@ -679,16 +624,6 @@
         "y": 2
       },
       "type": "xod/patch-nodes/from-bus"
-    },
-    {
-      "arityLevel": 2,
-      "id": "rJ7C0HhPKX",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 6
-      },
-      "type": "xod/core/any"
     },
     {
       "id": "rknSDnPYQ",

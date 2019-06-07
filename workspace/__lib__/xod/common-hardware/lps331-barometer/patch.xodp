@@ -1,5 +1,5 @@
 {
-  "description": "Reads temprature, pressure, altitude from a barometer based on LPS331 chip by STMicroelectronics.",
+  "description": "Reads temprature, pressure, altitude from a barometer based on LPS331 chip by STMicroelectronics.\n\nPossible errors:\n254 — Invalid I2C address\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error\n237 — No bytes written. Probably due to buffer overflow\n240 — Can't read the value",
   "links": [
     {
       "id": "ByJ6pyOW7",
@@ -32,28 +32,6 @@
       "output": {
         "nodeId": "ByHWiAPWQ",
         "pinKey": "BkqLCOSw1W"
-      }
-    },
-    {
-      "id": "HJks7Tw-7",
-      "input": {
-        "nodeId": "H1-VK76P-m",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SyRVJaPbX",
-        "pinKey": "SyZVk6PbX"
-      }
-    },
-    {
-      "id": "HJtsp1O-X",
-      "input": {
-        "nodeId": "H1-VK76P-m",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "HJB9T1OWQ",
-        "pinKey": "HkVINj1dWX"
       }
     },
     {
@@ -131,17 +109,6 @@
       "output": {
         "nodeId": "SJ-7KJ6wbX",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJzEYm6PWm",
-      "input": {
-        "nodeId": "HkeEKQaPWm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1-VK76P-m",
-        "pinKey": "ByHmL0uHPk-"
       }
     },
     {
@@ -242,17 +209,6 @@
         "nodeId": "H18GsAPZQ",
         "pinKey": "SyomIRurDJ-"
       }
-    },
-    {
-      "id": "rkp576D-Q",
-      "input": {
-        "nodeId": "H1-VK76P-m",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "SynQlav-Q",
-        "pinKey": "S137QgaDWQ"
-      }
     }
   ],
   "nodes": [
@@ -290,16 +246,6 @@
         "y": 4
       },
       "type": "xod/core/divide"
-    },
-    {
-      "arityLevel": 3,
-      "id": "H1-VK76P-m",
-      "position": {
-        "units": "slots",
-        "x": 21,
-        "y": 4
-      },
-      "type": "xod/core/any"
     },
     {
       "boundLiterals": {
@@ -359,17 +305,6 @@
         "y": 0
       },
       "type": "xod/i2c/input-i2c"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "HkeEKQaPWm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 21,
-        "y": 6
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "Hy3jZWKfX",

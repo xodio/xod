@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -10,7 +12,7 @@ void evaluate(Context ctx) {
     const uint8_t port = getValue<input_PORT>(ctx);
 
     if (!isValidAnalogPort(port)) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 255);
         return;
     }
 

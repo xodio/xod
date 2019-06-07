@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -10,10 +12,15 @@ void evaluate(Context ctx) {
     auto wire = getValue<input_I2C>(ctx);
     if (!wire->available()) {
         emitValue<output_BYTE>(ctx, 0x00);
-        emitValue<output_ERR>(ctx, 1);
+        emitValue<output_NA>(ctx, 1);
         return;
     }
 
-    emitValue<output_BYTE>(ctx, (uint8_t)wire->read());
-    emitValue<output_DONE>(ctx, 1);
+    uint8_t res = (uint8_t)wire->read();
+    if (res) {
+        emitValue<output_BYTE>(ctx, res);
+        emitValue<output_DONE>(ctx, 1);
+    } else {
+        raiseError(ctx, 236); // Can't read byte
+    }
 }

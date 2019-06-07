@@ -1,4 +1,5 @@
 #pragma XOD error_catch enable
+#pragma XOD error_raise enable
 
 struct State {
 };

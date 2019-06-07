@@ -136,17 +136,6 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Pulses if the request failed",
-      "id": "SJPcScgbQX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "boundLiterals": {
         "__out__": "80"
       },

@@ -1,5 +1,5 @@
 {
-  "description": "Writes a string bytes per byte into UART.",
+  "description": "Writes a string bytes per byte into UART.\n\nPossible errors:\n237 — No bytes written. Probably due to buffer overflow",
   "nodes": [
     {
       "id": "B1-6LFh8-7",
@@ -34,17 +34,6 @@
         "y": -0.05
       },
       "type": "@/input-uart"
-    },
-    {
-      "description": "Pulses when something went wrong and all string was not written",
-      "id": "S1maLFnU-Q",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Pulses when all String has been written",

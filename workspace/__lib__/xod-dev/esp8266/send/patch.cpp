@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {
 };
@@ -19,6 +20,6 @@ void evaluate(Context ctx) {
     if (inet.wifi->send(_req)) {
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 47);
     }
 }

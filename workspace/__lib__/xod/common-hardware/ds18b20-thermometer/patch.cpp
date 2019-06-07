@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 /*
  *  Datasheet can be found at
  *  https://cdn-shop.adafruit.com/datasheets/DS18B20.pdf
@@ -129,10 +131,15 @@ void evaluate(Context ctx) {
         return;
 
     auto port = getValue<input_PORT>(ctx);
+    if (!isValidDigitalPort(port)) {
+        raiseError(ctx, 255); // Invalid port
+        return;
+    }
+
     Number tc;
     bool success = readTemperature(port, &tc);
     if (!success) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 244); // Initialization sequence error
         return;
     }
 

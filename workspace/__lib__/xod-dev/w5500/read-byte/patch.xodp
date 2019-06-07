@@ -1,5 +1,5 @@
 {
-  "description": "Read a single byte of the response from an opened connection",
+  "description": "Read a single byte of the response from an opened connection\n\nPossible errors:\n48 — Can't receive the data from the socket",
   "nodes": [
     {
       "description": "Read the byte",

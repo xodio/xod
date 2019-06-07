@@ -1,5 +1,5 @@
 {
-  "description": "Utility. Reads raw data bytes from a DHTxx thermometer with one-wire interface.",
+  "description": "Utility. Reads raw data bytes from a DHTxx thermometer with one-wire interface.\n\nPossible errors:\n60 — Checksum failure\n242 — Read timeout\n244 — Initialization error\n255 — Invalid port",
   "nodes": [
     {
       "description": "2-nd byte (temperature high) of the reading",
@@ -64,17 +64,6 @@
         "y": -0.05
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Fires if update failed.",
-      "id": "HJgDdJqrxm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Fires on reading complete",

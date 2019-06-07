@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -10,7 +12,7 @@ void evaluate(Context ctx) {
     uint8_t addr = getValue<input_ADDR>(ctx);
 
     if (addr > 127) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 254); // Invalid I2C address
         return;
     }
 

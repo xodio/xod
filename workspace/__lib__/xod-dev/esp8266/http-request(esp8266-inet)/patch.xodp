@@ -1,5 +1,5 @@
 {
-  "description": "Performs an HTTP request and returns the response as a stream of characters",
+  "description": "Performs an HTTP request and returns the response as a stream of characters\n\nPossible errors:\n45 — Can't open TCP connection\n47 — Can't send data to the socket",
   "links": [
     {
       "id": "B15JgXpGm",
@@ -65,28 +65,6 @@
       "output": {
         "nodeId": "SkejCxMtMX",
         "pinKey": "ByXZseuGGm"
-      }
-    },
-    {
-      "id": "HJtQzGtzX",
-      "input": {
-        "nodeId": "Skw7zMFzX",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "H1bi0gMYf7",
-        "pinKey": "r1bnKl8qbm"
-      }
-    },
-    {
-      "id": "Hy57GGFGm",
-      "input": {
-        "nodeId": "Skw7zMFzX",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "HkiCeGKMm",
-        "pinKey": "HkWZL-Lc-7"
       }
     },
     {
@@ -255,17 +233,6 @@
       }
     },
     {
-      "id": "rJj7MztzQ",
-      "input": {
-        "nodeId": "HyPhbGtGm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "Skw7zMFzX",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
       "id": "rkEkZztGX",
       "input": {
         "nodeId": "H1bi0gMYf7",
@@ -285,17 +252,6 @@
       "output": {
         "nodeId": "rkQBTlMYzm",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "ryIwrGFM7",
-      "input": {
-        "nodeId": "Skw7zMFzX",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "S1c8rzYMQ",
-        "pinKey": "r1NjgRvq-m"
       }
     },
     {
@@ -421,21 +377,10 @@
       "type": "@/send"
     },
     {
-      "description": "Pulses if the request failed",
-      "id": "HyPhbGtGm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 6
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "id": "S1c8rzYMQ",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 11,
         "y": 4
       },
       "type": "@/close"
@@ -482,20 +427,10 @@
       "id": "SkejCxMtMX",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 8,
         "y": 4
       },
       "type": "@/receive"
-    },
-    {
-      "arityLevel": 2,
-      "id": "Skw7zMFzX",
-      "position": {
-        "units": "slots",
-        "x": 0,
-        "y": 5
-      },
-      "type": "xod/core/any"
     },
     {
       "id": "Sy8Z-fKzX",

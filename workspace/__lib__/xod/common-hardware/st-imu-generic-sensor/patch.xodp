@@ -57,7 +57,7 @@
       }
     }
   ],
-  "description": "Utility node. Reads raw X/Y/Z data from a STMicroelectronics IMU sensor.",
+  "description": "Utility node. Reads raw X/Y/Z data from a STMicroelectronics IMU sensor.\n\nPossible errors:\n254 — Invalid I2C address\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error\n237 — No bytes written. Probably due to buffer overflow\n240 — Can't read the value",
   "links": [
     {
       "id": "B1S9cPLgX",
@@ -79,17 +79,6 @@
       "output": {
         "nodeId": "Hk8o1gwxQ",
         "pinKey": "rkIUqA1Pl7"
-      }
-    },
-    {
-      "id": "B1mczxvg7",
-      "input": {
-        "nodeId": "H1PJU_Uxm",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "BkSwzeDxm",
-        "pinKey": "SJmHWlwe7"
       }
     },
     {
@@ -167,28 +156,6 @@
       "output": {
         "nodeId": "BkSwzeDxm",
         "pinKey": "By2jEWgDxQ"
-      }
-    },
-    {
-      "id": "H1RV1gweX",
-      "input": {
-        "nodeId": "H1PJU_Uxm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "BkuWJxPe7",
-        "pinKey": "B1Y2A1Dl7"
-      }
-    },
-    {
-      "id": "HJ61L_Ix7",
-      "input": {
-        "nodeId": "ByyoB2Hxm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1PJU_Uxm",
-        "pinKey": "ByHmL0uHPk-"
       }
     },
     {
@@ -467,17 +434,6 @@
       }
     },
     {
-      "id": "rkQWglwl7",
-      "input": {
-        "nodeId": "H1PJU_Uxm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "Hk8o1gwxQ",
-        "pinKey": "B1Y2A1Dl7"
-      }
-    },
-    {
       "id": "ryIM1evg7",
       "input": {
         "nodeId": "BkuWJxPe7",
@@ -583,26 +539,6 @@
         "y": 3
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "ByyoB2Hxm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 30,
-        "y": 9
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "arityLevel": 2,
-      "id": "H1PJU_Uxm",
-      "position": {
-        "units": "slots",
-        "x": 30,
-        "y": 8
-      },
-      "type": "xod/core/any"
     },
     {
       "description": "Desired sensitivity value. Inaccurate values are rounded up to one of [S0, S1, S2, S3].",

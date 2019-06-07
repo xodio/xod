@@ -1,5 +1,5 @@
 {
-  "description": "Writes a single byte in the UART",
+  "description": "Writes a single byte in the UART.\n\nPossible errors:\n237 — No bytes written. Probably due to buffer overflow",
   "nodes": [
     {
       "description": "An UART object",
@@ -56,17 +56,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-byte"
-    },
-    {
-      "description": "Pulses when writting of byte has been failed",
-      "id": "ryQ_w28Zm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

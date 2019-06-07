@@ -1,5 +1,5 @@
 {
-  "description": "Read a response from an opened connection as a stream of bytes until it closes",
+  "description": "Read a response from an opened connection as a stream of bytes until it closes\n\nPossible errors:\n48 — Can't receive a data from the socket\n235 — No available bytes to read",
   "links": [
     {
       "id": "BJoojo7G7",
@@ -24,17 +24,6 @@
       }
     },
     {
-      "id": "BkghoKzMQ",
-      "input": {
-        "nodeId": "SybWRluGz7",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "H1xMoiFfMm",
-        "pinKey": "HJhXDIY9-"
-      }
-    },
-    {
       "id": "ByslctGf7",
       "input": {
         "nodeId": "BJN-og_zzm",
@@ -43,17 +32,6 @@
       "output": {
         "nodeId": "B1bRgdMMX",
         "pinKey": "rJRkr0xfX"
-      }
-    },
-    {
-      "id": "HyIEyifz7",
-      "input": {
-        "nodeId": "H1xMoiFfMm",
-        "pinKey": "BJI7P8t9Z"
-      },
-      "output": {
-        "nodeId": "B1bRgdMMX",
-        "pinKey": "HJ-_3x_9WQ"
       }
     },
     {
@@ -209,15 +187,6 @@
       "type": "xod/core/defer"
     },
     {
-      "id": "H1xMoiFfMm",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/core/defer"
-    },
-    {
       "description": "A socket",
       "id": "HJaAFbTzQ",
       "label": "SOCK",
@@ -238,7 +207,6 @@
       "type": "@/is-open"
     },
     {
-      "arityLevel": 2,
       "id": "SybWRluGz7",
       "position": {
         "units": "slots",

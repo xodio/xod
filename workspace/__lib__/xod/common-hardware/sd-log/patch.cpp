@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 {{#global}}
 #include <SPI.h>
@@ -24,7 +25,7 @@ void evaluate(Context ctx) {
 
     if (!state->begun) {
         // Initialization failed (wrong connection, no SD card)
-        emitValue<output_ERR>(ctx, true);
+        raiseError(ctx, 244);
         return;
     }
 
@@ -35,7 +36,7 @@ void evaluate(Context ctx) {
         // Failed to open the file. Maybe, SD card gone,
         // try to reinit next time
         state->begun = false;
-        emitValue<output_ERR>(ctx, true);
+        raiseError(ctx, 50); // Can't open file
         return;
     }
 
@@ -45,7 +46,7 @@ void evaluate(Context ctx) {
         lastWriteSize = file.print(*it);
         if (lastWriteSize == 0) {
             state->begun = false;
-            emitValue<output_ERR>(ctx, true);
+            raiseError(ctx, 237); // No bytes written
             return;
         }
     }
@@ -53,6 +54,5 @@ void evaluate(Context ctx) {
     file.print('\n');
     file.flush();
     file.close();
-    emitValue<output_ERR>(ctx, false);
     emitValue<output_DONE>(ctx, 1);
 }

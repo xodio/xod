@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {
 };
@@ -23,6 +24,6 @@ void evaluate(Context ctx) {
         emitValue<output_SOCK>(ctx, 0);
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 45);
     }
 }

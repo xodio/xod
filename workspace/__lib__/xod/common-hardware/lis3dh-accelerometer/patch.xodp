@@ -1,5 +1,5 @@
 {
-  "description": "Reads acceleration from an accelerometer based on LIS3DH IC by STMicroelectronics. It is expected the accelerometer is connected to the first hardware I²C bus.",
+  "description": "Reads acceleration from an accelerometer based on LIS3DH IC by STMicroelectronics. It is expected the accelerometer is connected to the first hardware I²C bus.\n\nPossible errors:\n254 — Invalid I2C address\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error\n237 — No bytes written. Probably due to buffer overflow\n240 — Can't read the value",
   "links": [
     {
       "id": "BJPjh-QYW",
@@ -76,17 +76,6 @@
       "output": {
         "nodeId": "SJFeRsZYW",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "Hy2VLhBeQ",
-      "input": {
-        "nodeId": "H1LNU3Hl7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "r1ZJ0iWFW",
-        "pinKey": "ByyoB2Hxm"
       }
     },
     {
@@ -176,17 +165,6 @@
         "y": 3
       },
       "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "description": "Fires if reading failed",
-      "id": "H1LNU3Hl7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Acceleration along X axis. Expressed in ɡ units.",

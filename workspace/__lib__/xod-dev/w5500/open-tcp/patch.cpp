@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 {{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>
@@ -24,7 +26,7 @@ void evaluate(Context ctx) {
     if (client.connect(serverNameBuff, port)) {
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 45);
     }
 
     emitValue<output_SOCK>(ctx, client.getSocketNumber());

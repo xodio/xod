@@ -35,17 +35,6 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Pulses when error occured",
-      "id": "r1NjgRvq-m",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "description": "An internet connection",
       "id": "rkW8SftM7",
       "label": "INET",

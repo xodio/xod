@@ -1,5 +1,5 @@
 {
-  "description": "Requests N bytes from a given slave I²C device",
+  "description": "Requests N bytes from a given slave I²C device.\n\nPossible errors:\n254 — Invalid I2C address",
   "nodes": [
     {
       "description": "Slave device I²C address to request from",
@@ -22,17 +22,6 @@
         "y": 0
       },
       "type": "@/input-i2c"
-    },
-    {
-      "description": "Pulses if request failed. E.g., due to an invalid `ADDR`.",
-      "id": "S1eJu0Q2JQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Sends the request",

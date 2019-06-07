@@ -1,5 +1,5 @@
 {
-  "description": "Ends a transmission to a slave device initiated with `begin-transmission`. All bytes queued for writing with `write-byte` will flush at the moment of this node trigerring.",
+  "description": "Ends a transmission to a slave device initiated with `begin-transmission`. All bytes queued for writing with `write-byte` will flush at the moment of this node trigerring.\n\nPossible errors:\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error",
   "nodes": [
     {
       "description": "I²C interface object",
@@ -31,17 +31,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Triggers when the transmission fails to end/flush.",
-      "id": "SyewuY7nJm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Pulses when the transmission successfully completes.",

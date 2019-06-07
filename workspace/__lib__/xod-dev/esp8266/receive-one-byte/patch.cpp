@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {};
 
@@ -11,7 +12,7 @@ void evaluate(Context ctx) {
 
     auto inet = getValue<input_INET>(ctx);
     if (!inet.wifi->isSocketOpen()) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 48);
         return;
     }
 
@@ -20,6 +21,6 @@ void evaluate(Context ctx) {
         emitValue<output_CHAR>(ctx, (uint8_t)r);
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 235);
     }
 }

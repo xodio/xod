@@ -1,5 +1,5 @@
 {
-  "description": "Represents a real-time clock module based on a DS1302/DS1307/DS3231 chip. Use the node to track the current wall-clock time which was previously set in the module",
+  "description": "Represents a real-time clock module based on a DS1302/DS1307/DS3231 chip. Use the node to track the current wall-clock time which was previously set in the module\n\nPossible errors:\n254 — Invalid I2C address\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error\n237 — No bytes written. Probably due to buffer overflow\n240 — Can't read the value",
   "links": [
     {
       "id": "HyEQOJxuX",
@@ -66,17 +66,6 @@
         "nodeId": "H1Q7O1l_X",
         "pinKey": "B1ZM_yx_7"
       }
-    },
-    {
-      "id": "ryqXuJxu7",
-      "input": {
-        "nodeId": "HkxCO4rPX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1Q7O1l_X",
-        "pinKey": "By4a5VEBDX"
-      }
     }
   ],
   "nodes": [
@@ -110,17 +99,6 @@
         "y": 2
       },
       "type": "@/read"
-    },
-    {
-      "description": "Fires if a read faied",
-      "id": "HkxCO4rPX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "Skn5_NrvX",

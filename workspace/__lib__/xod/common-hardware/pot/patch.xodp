@@ -1,5 +1,5 @@
 {
-  "description": "Reads values from a generic potentiometer. Basically a thin wrapper around `analog-input` for a simpler learning experience.",
+  "description": "Reads values from a generic potentiometer. Basically a thin wrapper around `analog-input` for a simpler learning experience.\n\nPossible errors:\n255 — Invalid port",
   "links": [
     {
       "id": "B1If3dUgX",
@@ -35,17 +35,6 @@
       }
     },
     {
-      "id": "SyvfnOUem",
-      "input": {
-        "nodeId": "B1xZM2uIl7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ByW3idLeX",
-        "pinKey": "HJgzpqacyX"
-      }
-    },
-    {
       "id": "rk7ZndUxX",
       "input": {
         "nodeId": "H1sM2A12-",
@@ -58,17 +47,6 @@
     }
   ],
   "nodes": [
-    {
-      "description": "Fires if update failed. E.g. `PORT` is not an ADC port.",
-      "id": "B1xZM2uIl7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
     {
       "id": "ByW3idLeX",
       "position": {

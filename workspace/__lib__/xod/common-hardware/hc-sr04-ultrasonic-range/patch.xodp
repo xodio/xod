@@ -1,5 +1,5 @@
 {
-  "description": "Measures distance with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).",
+  "description": "Measures distance with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).\n\nPossible errors:\n255 — Invalid port\n244 — Initialization error",
   "links": [
     {
       "id": "BJPoR-ALb",
@@ -150,9 +150,9 @@
       "type": "xod/patch-nodes/input-port"
     },
     {
-      "description": "Fires if ping failed",
+      "description": "Fires if no echo received",
       "id": "rJutFjHxQ",
-      "label": "ERR",
+      "label": "NE",
       "position": {
         "units": "slots",
         "x": 7,

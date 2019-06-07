@@ -1,5 +1,5 @@
 {
-  "description": "Reads angular velocity from a gyroscope based on L3G4200 IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.",
+  "description": "Reads angular velocity from a gyroscope based on L3G4200 IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.\n\nPossible errors:\n254 — Invalid I2C address\n230 — Data too long to fit in transmit buffer\n231 — Received NACK on transmit of address\n232 — Received NACK on transmit of data\n1 — Other error\n237 — No bytes written. Probably due to buffer overflow\n240 — Can't read the value",
   "links": [
     {
       "id": "BkbiR-XKb",
@@ -123,17 +123,6 @@
       }
     },
     {
-      "id": "ryPlU2Sg7",
-      "input": {
-        "nodeId": "BkeiArnBgm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HJ0lHkQYW",
-        "pinKey": "ByyoB2Hxm"
-      }
-    },
-    {
       "id": "ryk9SymtW",
       "input": {
         "nodeId": "HJ0lHkQYW",
@@ -146,17 +135,6 @@
     }
   ],
   "nodes": [
-    {
-      "description": "Fires if reading failed",
-      "id": "BkeiArnBgm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
     {
       "id": "ByK90ZXY-",
       "position": {

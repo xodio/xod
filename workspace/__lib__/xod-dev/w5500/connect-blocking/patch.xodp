@@ -1,5 +1,5 @@
 {
-  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
+  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server\n\nPossible errors:\n41 — Connection failed",
   "nodes": [
     {
       "id": "BJXXLBwPfQ",
@@ -65,17 +65,6 @@
         "y": 2
       },
       "type": "@/output-w5500-inet"
-    },
-    {
-      "description": "Pulses if the connection failed",
-      "id": "ryx7LHwPfm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

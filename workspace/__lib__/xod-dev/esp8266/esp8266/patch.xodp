@@ -15,8 +15,30 @@
       }
     }
   ],
-  "description": "Initialize ESP8266 and configure it to communicate at a specific baud rate",
+  "description": "Initialize ESP8266 and configure it to communicate at a specific baud rate\n\nPossible errors:\n237 — No bytes written. Probably due to buffer overflow\n245 — Hardware responded with an error",
   "links": [
+    {
+      "id": "B154z4-1B",
+      "input": {
+        "nodeId": "BkdNMNW1H",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "Hk3kwl_-X"
+      }
+    },
+    {
+      "id": "B1JYMEb1r",
+      "input": {
+        "nodeId": "HkmSGNb1B",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "S1m2qTw-Q",
+        "pinKey": "Hk3kwl_-X"
+      }
+    },
     {
       "id": "BJrpLlObX",
       "input": {
@@ -62,6 +84,17 @@
       }
     },
     {
+      "id": "H1GOfEWyH",
+      "input": {
+        "nodeId": "SyZOG4ZJS",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "HyoDzNbyr",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
       "id": "HJ8DPld-7",
       "input": {
         "nodeId": "HJSYExuW7",
@@ -73,25 +106,47 @@
       }
     },
     {
-      "id": "HyRCukTMQ",
+      "id": "HkdUzN-1r",
       "input": {
-        "nodeId": "rkeK2VY-m",
-        "pinKey": "r1Z43NYbX"
+        "nodeId": "ByEUzVWyH",
+        "pinKey": "B1P1nFwaM"
       },
       "output": {
-        "nodeId": "rk30OyaMX",
-        "pinKey": "ByHmL0uHPk-"
+        "nodeId": "rJprfEb1r",
+        "pinKey": "HktZUCdrPkZ"
       }
     },
     {
-      "id": "Hyl1KJ6Mm",
+      "id": "HyKUGN-yS",
       "input": {
-        "nodeId": "rk30OyaMX",
-        "pinKey": "ryv7IRdSP1b"
+        "nodeId": "ByEUzVWyH",
+        "pinKey": "SJ-1mZPTz"
       },
       "output": {
-        "nodeId": "S1m2qTw-Q",
-        "pinKey": "Hk3kwl_-X"
+        "nodeId": "HJUNME-JH",
+        "pinKey": "HkPQCTHiE"
+      }
+    },
+    {
+      "id": "S13DfE-kB",
+      "input": {
+        "nodeId": "HyoDzNbyr",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "ByEUzVWyH",
+        "pinKey": "OkPg7GDaW"
+      }
+    },
+    {
+      "id": "SJ24f4-JS",
+      "input": {
+        "nodeId": "HJUNME-JH",
+        "pinKey": "BypMC6riE"
+      },
+      "output": {
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "BkP4hVFZ7"
       }
     },
     {
@@ -117,6 +172,17 @@
       }
     },
     {
+      "id": "SJwrz4WJH",
+      "input": {
+        "nodeId": "HkmSGNb1B",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "HJUNME-JH",
+        "pinKey": "HkPQCTHiE"
+      }
+    },
+    {
       "id": "Sk11DluWm",
       "input": {
         "nodeId": "rkN6UxuZX",
@@ -125,17 +191,6 @@
       "output": {
         "nodeId": "SkoRLg_ZQ",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SkDRd16GQ",
-      "input": {
-        "nodeId": "rJU0d1TGX",
-        "pinKey": "BJI7P8t9Z"
-      },
-      "output": {
-        "nodeId": "rkeK2VY-m",
-        "pinKey": "BypE34YZm"
       }
     },
     {
@@ -172,6 +227,28 @@
       }
     },
     {
+      "id": "Syy8zEbyH",
+      "input": {
+        "nodeId": "rJprfEb1r",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "HkmSGNb1B",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "r1N_fEZ1B",
+      "input": {
+        "nodeId": "BkdNMNW1H",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "SyZOG4ZJS",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
       "id": "rJL5kIc-m",
       "input": {
         "nodeId": "S1m2qTw-Q",
@@ -194,14 +271,14 @@
       }
     },
     {
-      "id": "ryJ1KJaGQ",
+      "id": "ryKNzEWyH",
       "input": {
-        "nodeId": "rk30OyaMX",
-        "pinKey": "ByU7LRuSPkW"
+        "nodeId": "rkeK2VY-m",
+        "pinKey": "r1Z43NYbX"
       },
       "output": {
-        "nodeId": "rJU0d1TGX",
-        "pinKey": "HJhXDIY9-"
+        "nodeId": "BkdNMNW1H",
+        "pinKey": "ByHmL0uHPk-"
       }
     }
   ],
@@ -218,6 +295,15 @@
       "type": "xod/uart/input-uart"
     },
     {
+      "id": "BkdNMNW1H",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 5
+      },
+      "type": "xod/core/any"
+    },
+    {
       "id": "BkpSyI9b7",
       "position": {
         "units": "slots",
@@ -225,6 +311,15 @@
         "y": 4
       },
       "type": "xod/uart/change-baud-rate"
+    },
+    {
+      "id": "ByEUzVWyH",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 8
+      },
+      "type": "xod/core/gate"
     },
     {
       "boundLiterals": {
@@ -240,13 +335,43 @@
       "type": "@/esp8266-config"
     },
     {
+      "id": "HJUNME-JH",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 7
+      },
+      "type": "xod/core/pulse-on-error"
+    },
+    {
+      "id": "HkmSGNb1B",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 8
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "boundLiterals": {
+        "Skre8ROSv1-": "0.1"
+      },
+      "id": "HyoDzNbyr",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 8
+      },
+      "type": "xod/core/delay"
+    },
+    {
       "description": "Pulses when ESP8266 initialized and configured",
       "id": "S1IevgdZX",
       "label": "DONE",
       "position": {
         "units": "slots",
         "x": 5,
-        "y": 7
+        "y": 9
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -257,7 +382,7 @@
       "position": {
         "units": "slots",
         "x": 3,
-        "y": 7
+        "y": 9
       },
       "type": "@/output-esp8266-device"
     },
@@ -299,22 +424,25 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "rJU0d1TGX",
+      "id": "SyZOG4ZJS",
       "position": {
         "units": "slots",
-        "x": 7,
-        "y": 6
+        "x": 16,
+        "y": 8
       },
       "type": "xod/core/defer"
     },
     {
-      "id": "rk30OyaMX",
+      "boundLiterals": {
+        "SJqZ8COrDkW": "3"
+      },
+      "id": "rJprfEb1r",
       "position": {
         "units": "slots",
-        "x": 6,
-        "y": 5
+        "x": 9,
+        "y": 8
       },
-      "type": "xod/core/any"
+      "type": "xod/core/less"
     },
     {
       "id": "rkN6UxuZX",

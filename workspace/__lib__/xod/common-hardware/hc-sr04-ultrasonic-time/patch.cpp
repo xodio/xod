@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 struct State {
     TimeMs cooldownUntil = 0;
@@ -59,6 +60,11 @@ void evaluate(Context ctx) {
     auto echoPort = (uint8_t)getValue<input_ECHO>(ctx);
     auto trigPort = (uint8_t)getValue<input_TRIG>(ctx);
 
+    if (!isValidDigitalPort(echoPort) || !isValidDigitalPort(trigPort)) {
+        raiseError(ctx, 255); // Invalid port
+        return;
+    }
+
     uint32_t t;
     auto status = pingSync(
         (uint8_t)getValue<input_ECHO>(ctx),
@@ -72,7 +78,9 @@ void evaluate(Context ctx) {
     if (status == HCSR04_OK) {
         emitValue<output_Ts>(ctx, Number(t) / 1000000.0);
         emitValue<output_DONE>(ctx, 1);
+    } else if (status == HCSR04_NO_ECHO) {
+        emitValue<output_NE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 244); // HCSR04_WRONG_CONNECTION
     }
 }

@@ -1,5 +1,5 @@
 {
-  "description": "Appends lines of text to a file on SD card",
+  "description": "Appends lines of text to a file on SD card.\n\nPossible errors:\n50 — Can't open a file\n244 — Initialization failed or no SD card\n237 — Can't write data to SD card\n",
   "nodes": [
     {
       "description": "Fires when write is done",
@@ -33,17 +33,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Outputs `false` if the last write succeed. Set to `true` if an error occured: wrong connection, missing or bad SD card, write protection.",
-      "id": "HJcUcHexf",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-boolean"
     },
     {
       "description": "Line to append",

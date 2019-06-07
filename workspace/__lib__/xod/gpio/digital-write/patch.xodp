@@ -1,5 +1,5 @@
 {
-  "description": "Outputs high or low signal on a board port",
+  "description": "Outputs high or low signal on a board port.\n\nPossible errors:\n255 — Invalid port",
   "nodes": [
     {
       "boundLiterals": {
@@ -36,17 +36,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Fires if write failed. E.g. `PORT` does not exist.",
-      "id": "rJl2TqpqyX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "rkwUj42xb",

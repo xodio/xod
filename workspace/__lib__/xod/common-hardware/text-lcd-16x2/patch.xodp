@@ -1,5 +1,5 @@
 {
-  "description": "Drives a text LCD screen with HD44780 chip",
+  "description": "Drives a text LCD screen with HD44780 chip.\n\nPossible errors:\n255 — Invalid port",
   "nodes": [
     {
       "description": "Text for the first line",

@@ -1,3 +1,5 @@
+#pragma XOD error_raise enable
+
 struct State {
 };
 
@@ -15,6 +17,6 @@ void evaluate(Context ctx) {
     if (res) {
         emitValue<output_DONE>(ctx, 1);
     } else {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError(ctx, 237); // No bytes written
     }
 }

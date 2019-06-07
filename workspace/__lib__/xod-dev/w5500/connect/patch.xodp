@@ -15,7 +15,7 @@
       }
     }
   ],
-  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server",
+  "description": "Establish an internet connection by automatically getting all required configuration info from a DHCP server\n\nPossible errors:\n41 — Connection failed",
   "links": [
     {
       "id": "BJ-ApRx7m",
@@ -37,17 +37,6 @@
       "output": {
         "nodeId": "r1G10Al7X",
         "pinKey": "HJhXDIY9-"
-      }
-    },
-    {
-      "id": "H1QRTClQm",
-      "input": {
-        "nodeId": "ryx7LHwPfm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "rynaT0e7Q",
-        "pinKey": "ryx7LHwPfm"
       }
     },
     {
@@ -149,17 +138,6 @@
         "y": 2
       },
       "type": "@/connect-blocking"
-    },
-    {
-      "description": "Pulses if the connection failed",
-      "id": "ryx7LHwPfm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

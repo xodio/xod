@@ -1,5 +1,5 @@
 {
-  "description": "Reads a generic button or another mechanical switch. It is expected that the button is normally high, i.e. it is pulled up with a resistor. The node provides signal debounce with 20 ms settle delay.",
+  "description": "Reads a generic button or another mechanical switch. It is expected that the button is normally high, i.e. it is pulled up with a resistor. The node provides signal debounce with 20 ms settle delay.\n\nPossible errors:\n255 — Invalid port",
   "links": [
     {
       "id": "HJ9jvsrFW",
@@ -32,17 +32,6 @@
       "output": {
         "nodeId": "SyQpaFBgX",
         "pinKey": "rkw3cp9k7"
-      }
-    },
-    {
-      "id": "rJfkRKrlm",
-      "input": {
-        "nodeId": "HkxsCatSxQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "S1fi5aqyQ"
       }
     },
     {
@@ -124,17 +113,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Fires if update failed.",
-      "id": "HkxsCatSxQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 10,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Fires on reading complete",

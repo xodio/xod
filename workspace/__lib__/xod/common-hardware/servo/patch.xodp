@@ -1,17 +1,6 @@
 {
-  "description": "Drives a standard hobby servo",
+  "description": "Drives a standard hobby servo.\n\nPossible errors:\n255 — Invalid port",
   "nodes": [
-    {
-      "description": "Fires if write failed. E.g. `PORT` does not exist.",
-      "id": "BJgBlMF8xm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
     {
       "description": "Fires on writing complete",
       "id": "Hk-rxfFUxm",

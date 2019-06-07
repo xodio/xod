@@ -1,17 +1,6 @@
 {
-  "description": "Initialise w5500-based ethernet shield and establish internet connection",
+  "description": "Initialise w5500-based ethernet shield and establish internet connection\n\nPossible errors:\n41 — Connection failed\n255 — Invalid port",
   "links": [
-    {
-      "id": "BkaVvmzXQ",
-      "input": {
-        "nodeId": "HyrGXPmMQ7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ByZZgDmzmm",
-        "pinKey": "ryx7LHwPfm"
-      }
-    },
     {
       "id": "ByiNw7MQQ",
       "input": {
@@ -102,17 +91,6 @@
         "y": 3
       },
       "type": "@/connect"
-    },
-    {
-      "description": "Pulses if the connection failed",
-      "id": "HyrGXPmMQ7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "An internet connection",

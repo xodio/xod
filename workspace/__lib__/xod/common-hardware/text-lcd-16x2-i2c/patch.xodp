@@ -1,5 +1,5 @@
 {
-  "description": "Drives a text LCD screen with a PCF8574 or PCA8574 I²C expander module. Usually have a value in range 0x20-0x27 or 0x38-0x3F. Consult LCD/expander documentation to know the exact value.",
+  "description": "Drives a text LCD screen with a PCF8574 or PCA8574 I²C expander module. Usually have a value in range 0x20-0x27 or 0x38-0x3F. Consult LCD/expander documentation to know the exact value.\n\nPossible errors:\n254 — Invalid I2C address",
   "nodes": [
     {
       "description": "Text for the first line",

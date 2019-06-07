@@ -1,5 +1,5 @@
 {
-  "description": "Requests local IP from ESP8266 device, that connected to some network",
+  "description": "Requests local IP from ESP8266 device, that connected to some network.\n\nPossible errors:\n49 — Can't get local IP address",
   "nodes": [
     {
       "description": "Pulses when IP address received",

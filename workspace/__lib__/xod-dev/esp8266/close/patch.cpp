@@ -11,10 +11,6 @@ void evaluate(Context ctx) {
         return;
 
     auto inet = getValue<input_INET>(ctx);
-
-    if (inet.wifi->releaseTCP()) {
-        emitValue<output_DONE>(ctx, 1);
-    } else {
-        emitValue<output_ERR>(ctx, 1);
-    }
+    inet.wifi->releaseTCP();
+    emitValue<output_DONE>(ctx, 1);
 }

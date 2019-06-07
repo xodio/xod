@@ -1,5 +1,5 @@
 {
-  "description": "A quick-start node which represents an RFID/NFC module.\nInitializes the module and reads the UID of a detected card",
+  "description": "A quick-start node which represents an RFID/NFC module.\nInitializes the module and reads the UID of a detected card\n\nPossible errors:\n244 — Initialization error",
   "links": [
     {
       "id": "B1kbuz3Dm",
@@ -10,17 +10,6 @@
       "output": {
         "nodeId": "ryEwwG3v7",
         "pinKey": "rkQUBzhvQ"
-      }
-    },
-    {
-      "id": "BJcZOfhv7",
-      "input": {
-        "nodeId": "SyLW_f2vm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "ryEwwG3v7",
-        "pinKey": "rywIrfhP7"
       }
     },
     {
@@ -65,28 +54,6 @@
       "output": {
         "nodeId": "ryEwwG3v7",
         "pinKey": "rkQUBzhvQ"
-      }
-    },
-    {
-      "id": "HkoZdMhvX",
-      "input": {
-        "nodeId": "BkZbdfhvm",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyLW_f2vm",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "HyOZOz2v7",
-      "input": {
-        "nodeId": "SyLW_f2vm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "S17QDMnDm",
-        "pinKey": "HJGngfnvX"
       }
     },
     {
@@ -213,17 +180,6 @@
   ],
   "nodes": [
     {
-      "description": "Fires if there is no NFC tag",
-      "id": "BkZbdfhvm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 10,
-        "y": 5
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "description": "True when the most recent scan detected an NFC tag",
       "id": "Bkcyhxxum",
       "label": "TAG",
@@ -326,15 +282,6 @@
         "y": 4
       },
       "type": "xod/core/flip-flop"
-    },
-    {
-      "id": "SyLW_f2vm",
-      "position": {
-        "units": "slots",
-        "x": 10,
-        "y": 4
-      },
-      "type": "xod/core/any"
     },
     {
       "id": "SyRBPf3DQ",

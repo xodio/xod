@@ -35,7 +35,7 @@
     {
       "description": "Pulses when there is no byte to read",
       "id": "rJQtld157",
-      "label": "ERR",
+      "label": "NA",
       "position": {
         "units": "slots",
         "x": 4,
