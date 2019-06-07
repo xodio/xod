@@ -1041,21 +1041,24 @@ void evaluate(Context ctx) {
 } // namespace xod__core__continuously
 
 //-----------------------------------------------------------------------------
-// xod/core/digital-input implementation
+// xod/gpio/digital-read implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__digital_input {
+namespace xod__gpio__digital_read {
 
 struct State {
-    int configuredPort = -1;
 };
 
 struct Node {
     State state;
     Logic output_SIG;
+    Logic output_DONE;
+    Logic output_ERR;
 
     union {
         struct {
             bool isOutputDirty_SIG : 1;
+            bool isOutputDirty_DONE : 1;
+            bool isOutputDirty_ERR : 1;
             bool isNodeDirty : 1;
         };
 
@@ -1066,16 +1069,20 @@ struct Node {
 struct input_PORT { };
 struct input_UPD { };
 struct output_SIG { };
+struct output_DONE { };
+struct output_ERR { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_PORT> { using T = Number; };
+template<> struct ValueType<input_PORT> { using T = uint8_t; };
 template<> struct ValueType<input_UPD> { using T = Logic; };
 template<> struct ValueType<output_SIG> { using T = Logic; };
+template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<output_ERR> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_PORT;
+    uint8_t _input_PORT;
     Logic _input_UPD;
 
     bool _isInputDirty_UPD;
@@ -1087,10 +1094,10 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
             " input_PORT input_UPD" \
-            " output_SIG");
+            " output_SIG output_DONE output_ERR");
 }
 
-template<> Number getValue<input_PORT>(Context ctx) {
+template<> uint8_t getValue<input_PORT>(Context ctx) {
     return ctx->_input_PORT;
 }
 template<> Logic getValue<input_UPD>(Context ctx) {
@@ -1098,6 +1105,12 @@ template<> Logic getValue<input_UPD>(Context ctx) {
 }
 template<> Logic getValue<output_SIG>(Context ctx) {
     return ctx->_node->output_SIG;
+}
+template<> Logic getValue<output_DONE>(Context ctx) {
+    return ctx->_node->output_DONE;
+}
+template<> Logic getValue<output_ERR>(Context ctx) {
+    return ctx->_node->output_ERR;
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1114,12 +1127,20 @@ template<> bool isInputDirty<input_UPD>(Context ctx) {
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            " output_SIG");
+            " output_SIG output_DONE output_ERR");
 }
 
 template<> void emitValue<output_SIG>(Context ctx, Logic val) {
     ctx->_node->output_SIG = val;
     ctx->_node->isOutputDirty_SIG = true;
+}
+template<> void emitValue<output_DONE>(Context ctx, Logic val) {
+    ctx->_node->output_DONE = val;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+template<> void emitValue<output_ERR>(Context ctx, Logic val) {
+    ctx->_node->output_ERR = val;
+    ctx->_node->isOutputDirty_ERR = true;
 }
 
 State* getState(Context ctx) {
@@ -1130,19 +1151,18 @@ void evaluate(Context ctx) {
     if (!isInputDirty<input_UPD>(ctx))
         return;
 
-    State* state = getState(ctx);
-    const int port = (int)getValue<input_PORT>(ctx);
-    if (port != state->configuredPort) {
-        ::pinMode(port, INPUT);
-        // Store configured port so to avoid repeating `pinMode` on
-        // subsequent requests
-        state->configuredPort = port;
+    const uint8_t port = getValue<input_PORT>(ctx);
+    if (!isValidDigitalPort(port)) {
+        emitValue<output_ERR>(ctx, 1);
+        return;
     }
 
+    ::pinMode(port, INPUT);
     emitValue<output_SIG>(ctx, ::digitalRead(port));
+    emitValue<output_DONE>(ctx, 1);
 }
 
-} // namespace xod__core__digital_input
+} // namespace xod__gpio__digital_read
 
 //-----------------------------------------------------------------------------
 // xod/core/branch implementation
@@ -1373,19 +1393,22 @@ void evaluate(Context ctx) {
 } // namespace xod__core__flip_flop
 
 //-----------------------------------------------------------------------------
-// xod/core/digital-output implementation
+// xod/gpio/digital-write implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__digital_output {
+namespace xod__gpio__digital_write {
 
 struct State {
-    int configuredPort = -1;
 };
 
 struct Node {
     State state;
+    Logic output_DONE;
+    Logic output_ERR;
 
     union {
         struct {
+            bool isOutputDirty_DONE : 1;
+            bool isOutputDirty_ERR : 1;
             bool isNodeDirty : 1;
         };
 
@@ -1395,17 +1418,25 @@ struct Node {
 
 struct input_PORT { };
 struct input_SIG { };
+struct input_UPD { };
+struct output_DONE { };
+struct output_ERR { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_PORT> { using T = Number; };
+template<> struct ValueType<input_PORT> { using T = uint8_t; };
 template<> struct ValueType<input_SIG> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<output_ERR> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
 
-    Number _input_PORT;
+    uint8_t _input_PORT;
     Logic _input_SIG;
+    Logic _input_UPD;
 
+    bool _isInputDirty_UPD;
 };
 
 using Context = ContextObject*;
@@ -1413,28 +1444,50 @@ using Context = ContextObject*;
 template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
-            " input_PORT input_SIG" \
-            "");
+            " input_PORT input_SIG input_UPD" \
+            " output_DONE output_ERR");
 }
 
-template<> Number getValue<input_PORT>(Context ctx) {
+template<> uint8_t getValue<input_PORT>(Context ctx) {
     return ctx->_input_PORT;
 }
 template<> Logic getValue<input_SIG>(Context ctx) {
     return ctx->_input_SIG;
 }
+template<> Logic getValue<input_UPD>(Context ctx) {
+    return ctx->_input_UPD;
+}
+template<> Logic getValue<output_DONE>(Context ctx) {
+    return ctx->_node->output_DONE;
+}
+template<> Logic getValue<output_ERR>(Context ctx) {
+    return ctx->_node->output_ERR;
+}
 
 template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
-            "");
+            " input_UPD");
     return false;
+}
+
+template<> bool isInputDirty<input_UPD>(Context ctx) {
+    return ctx->_isInputDirty_UPD;
 }
 
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            "");
+            " output_DONE output_ERR");
+}
+
+template<> void emitValue<output_DONE>(Context ctx, Logic val) {
+    ctx->_node->output_DONE = val;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+template<> void emitValue<output_ERR>(Context ctx, Logic val) {
+    ctx->_node->output_ERR = val;
+    ctx->_node->isOutputDirty_ERR = true;
 }
 
 State* getState(Context ctx) {
@@ -1442,20 +1495,22 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    const int port = (int)getValue<input_PORT>(ctx);
-    if (port != state->configuredPort) {
-        ::pinMode(port, OUTPUT);
-        // Store configured port so to avoid repeating `pinMode` call if just
-        // SIG is updated
-        state->configuredPort = port;
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
+    const uint8_t port = getValue<input_PORT>(ctx);
+    if (!isValidDigitalPort(port)) {
+        emitValue<output_ERR>(ctx, 1);
+        return;
     }
 
+    ::pinMode(port, OUTPUT);
     const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
+    emitValue<output_DONE>(ctx, 1);
 }
 
-} // namespace xod__core__digital_output
+} // namespace xod__gpio__digital_write
 
 } // namespace xod
 
@@ -1474,17 +1529,21 @@ namespace xod {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 
-constexpr Number node_0_output_VAL = 12;
+constexpr uint8_t node_0_output_VAL = 13;
 
-constexpr Number node_1_output_VAL = 11;
+constexpr uint8_t node_1_output_VAL = 11;
 
-constexpr Number node_2_output_VAL = 13;
+constexpr uint8_t node_2_output_VAL = 13;
 
 constexpr Logic node_3_output_TICK = false;
 
 constexpr Logic node_4_output_SIG = false;
+constexpr Logic node_4_output_DONE = false;
+constexpr Logic node_4_output_ERR = false;
 
 constexpr Logic node_5_output_SIG = false;
+constexpr Logic node_5_output_DONE = false;
+constexpr Logic node_5_output_ERR = false;
 
 constexpr Logic node_6_output_T = false;
 constexpr Logic node_6_output_F = false;
@@ -1493,6 +1552,9 @@ constexpr Logic node_7_output_T = false;
 constexpr Logic node_7_output_F = false;
 
 constexpr Logic node_8_output_MEM = false;
+
+constexpr Logic node_9_output_DONE = false;
+constexpr Logic node_9_output_ERR = false;
 
 #pragma GCC diagnostic pop
 
@@ -1503,16 +1565,24 @@ xod__core__continuously::Node node_3 = {
     false, // TICK dirty
     true // node itself dirty
 };
-xod__core__digital_input::Node node_4 = {
-    xod__core__digital_input::State(), // state default
+xod__gpio__digital_read::Node node_4 = {
+    xod__gpio__digital_read::State(), // state default
     node_4_output_SIG, // output SIG default
+    node_4_output_DONE, // output DONE default
+    node_4_output_ERR, // output ERR default
     true, // SIG dirty
+    false, // DONE dirty
+    false, // ERR dirty
     true // node itself dirty
 };
-xod__core__digital_input::Node node_5 = {
-    xod__core__digital_input::State(), // state default
+xod__gpio__digital_read::Node node_5 = {
+    xod__gpio__digital_read::State(), // state default
     node_5_output_SIG, // output SIG default
+    node_5_output_DONE, // output DONE default
+    node_5_output_ERR, // output ERR default
     true, // SIG dirty
+    false, // DONE dirty
+    false, // ERR dirty
     true // node itself dirty
 };
 xod__core__branch::Node node_6 = {
@@ -1537,8 +1607,12 @@ xod__core__flip_flop::Node node_8 = {
     true, // MEM dirty
     true // node itself dirty
 };
-xod__core__digital_output::Node node_9 = {
-    xod__core__digital_output::State(), // state default
+xod__gpio__digital_write::Node node_9 = {
+    xod__gpio__digital_write::State(), // state default
+    node_9_output_DONE, // output DONE default
+    node_9_output_ERR, // output ERR default
+    false, // DONE dirty
+    false, // ERR dirty
     true // node itself dirty
 };
 
@@ -1591,18 +1665,19 @@ void runTransaction() {
             xod__core__continuously::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
-            node_6.isNodeDirty |= node_3.isOutputDirty_TICK;
             node_4.isNodeDirty |= node_3.isOutputDirty_TICK;
-            node_7.isNodeDirty |= node_3.isOutputDirty_TICK;
+            node_6.isNodeDirty |= node_3.isOutputDirty_TICK;
             node_5.isNodeDirty |= node_3.isOutputDirty_TICK;
+            node_7.isNodeDirty |= node_3.isOutputDirty_TICK;
+            node_9.isNodeDirty |= node_3.isOutputDirty_TICK;
         }
     }
-    { // xod__core__digital_input #4
+    { // xod__gpio__digital_read #4
         if (node_4.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(4);
 
-            xod__core__digital_input::ContextObject ctxObj;
+            xod__gpio__digital_read::ContextObject ctxObj;
             ctxObj._node = &node_4;
 
             // copy data from upstream nodes into context
@@ -1611,18 +1686,18 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
-            xod__core__digital_input::evaluate(&ctxObj);
+            xod__gpio__digital_read::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_6.isNodeDirty |= node_4.isOutputDirty_SIG;
         }
     }
-    { // xod__core__digital_input #5
+    { // xod__gpio__digital_read #5
         if (node_5.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(5);
 
-            xod__core__digital_input::ContextObject ctxObj;
+            xod__gpio__digital_read::ContextObject ctxObj;
             ctxObj._node = &node_5;
 
             // copy data from upstream nodes into context
@@ -1631,7 +1706,7 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
-            xod__core__digital_input::evaluate(&ctxObj);
+            xod__gpio__digital_read::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
             node_7.isNodeDirty |= node_5.isOutputDirty_SIG;
@@ -1699,19 +1774,22 @@ void runTransaction() {
             node_9.isNodeDirty |= node_8.isOutputDirty_MEM;
         }
     }
-    { // xod__core__digital_output #9
+    { // xod__gpio__digital_write #9
         if (node_9.isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
-            xod__core__digital_output::ContextObject ctxObj;
+            xod__gpio__digital_write::ContextObject ctxObj;
             ctxObj._node = &node_9;
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_2_output_VAL;
             ctxObj._input_SIG = node_8.output_MEM;
+            ctxObj._input_UPD = node_3.output_TICK;
 
-            xod__core__digital_output::evaluate(&ctxObj);
+            ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
+
+            xod__gpio__digital_write::evaluate(&ctxObj);
 
             // mark downstream nodes dirty
         }

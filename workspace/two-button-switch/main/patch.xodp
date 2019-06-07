@@ -23,20 +23,20 @@
       }
     },
     {
-      "id": "Hkf8xCrZ-",
+      "id": "SkrKxR80N",
       "input": {
         "nodeId": "SyVrxRS-W",
         "pinKey": "S1OlUAuBD1-"
       },
       "output": {
-        "nodeId": "rkrQlRrWb",
+        "nodeId": "SksIeAUAV",
         "pinKey": "B1gI0urv1W"
       }
     },
     {
-      "id": "SyhsxRS-W",
+      "id": "r1e5x0U0N",
       "input": {
-        "nodeId": "ryQslRHbb",
+        "nodeId": "rk2KxCL0E",
         "pinKey": "HJ6HsEngZ"
       },
       "output": {
@@ -45,18 +45,30 @@
       }
     },
     {
-      "id": "rJNUgASZW",
+      "id": "ryVteCIA4",
       "input": {
         "nodeId": "HJqHeCBb-",
         "pinKey": "S1OlUAuBD1-"
       },
       "output": {
-        "nodeId": "HkKQlCr-W",
+        "nodeId": "BJXvxRIAN",
         "pinKey": "B1gI0urv1W"
       }
     }
   ],
   "nodes": [
+    {
+      "boundLiterals": {
+        "B143qAq1Q": "D13"
+      },
+      "id": "BJXvxRIAN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/gpio/digital-read"
+    },
     {
       "boundLiterals": {
         "HkDgIRdrv1W": "Continuously",
@@ -69,19 +81,6 @@
         "y": 1
       },
       "type": "xod/core/branch"
-    },
-    {
-      "boundLiterals": {
-        "B1ZUA_Hv1W": "12",
-        "SyLCdSwJZ": "Continuously"
-      },
-      "id": "HkKQlCr-W",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 0
-      },
-      "type": "xod/core/digital-input"
     },
     {
       "boundLiterals": {
@@ -99,6 +98,18 @@
     },
     {
       "boundLiterals": {
+        "B143qAq1Q": "D11"
+      },
+      "id": "SksIeAUAV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/gpio/digital-read"
+    },
+    {
+      "boundLiterals": {
         "HkDgIRdrv1W": "Continuously",
         "S1OlUAuBD1-": "False"
       },
@@ -112,29 +123,15 @@
     },
     {
       "boundLiterals": {
-        "B1ZUA_Hv1W": "11",
-        "SyLCdSwJZ": "Continuously"
+        "rJjXFA9JQ": "D13"
       },
-      "id": "rkrQlRrWb",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 0
-      },
-      "type": "xod/core/digital-input"
-    },
-    {
-      "boundLiterals": {
-        "B134j4neZ": "13",
-        "HJ6HsEngZ": "False"
-      },
-      "id": "ryQslRHbb",
+      "id": "rk2KxCL0E",
       "position": {
         "units": "slots",
         "x": 3,
         "y": 3
       },
-      "type": "xod/core/digital-output"
+      "type": "xod/gpio/digital-write"
     }
   ]
 }

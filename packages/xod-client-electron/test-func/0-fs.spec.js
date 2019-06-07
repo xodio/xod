@@ -284,7 +284,7 @@ describe('Test FS things', () => {
             .then(extractListOfUsedNodeTypes),
           [
             'xod/patch-nodes/input-number',
-            'xod/core/map-range',
+            'xod/math/map',
             'xod/patch-nodes/output-number',
             'xod/patch-nodes/input-string', // new one
           ],

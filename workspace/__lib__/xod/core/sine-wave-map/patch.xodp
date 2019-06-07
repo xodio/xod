@@ -2,36 +2,14 @@
   "description": "Computes sine wave function value. It’s a periodical function with range [0, 1] which starts from 0.",
   "links": [
     {
-      "id": "B1V543FJG",
+      "id": "BkBSKjI04",
       "input": {
-        "nodeId": "HJxq4nKkz",
-        "pinKey": "HJiwJ33LW"
-      },
-      "output": {
-        "nodeId": "S1mWMV3tyf",
-        "pinKey": "BkQzLCurwJZ"
-      }
-    },
-    {
-      "id": "BkLh_htJz",
-      "input": {
-        "nodeId": "S1G5O3Kkf",
+        "nodeId": "SJbHKjICN",
         "pinKey": "SklxICdHP1b"
       },
       "output": {
         "nodeId": "B1nCwnt1z",
         "pinKey": "BkqLCOSw1W"
-      }
-    },
-    {
-      "id": "BkMhOnFyM",
-      "input": {
-        "nodeId": "H1z-fVnFyz",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "S1G5O3Kkf",
-        "pinKey": "rkWeUCdBDkZ"
       }
     },
     {
@@ -46,6 +24,17 @@
       }
     },
     {
+      "id": "H13rKiUAN",
+      "input": {
+        "nodeId": "Hk9HYiLCE",
+        "pinKey": "HJiwJ33LW"
+      },
+      "output": {
+        "nodeId": "S1mWMV3tyf",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
       "id": "HymkdnY1M",
       "input": {
         "nodeId": "B1nCwnt1z",
@@ -57,25 +46,14 @@
       }
     },
     {
-      "id": "SJpldhF1M",
+      "id": "SJ7CFoLAN",
       "input": {
-        "nodeId": "Hksx_nF1G",
+        "nodeId": "Syv6YiL0V",
         "pinKey": "BJlzICOSv1-"
       },
       "output": {
-        "nodeId": "HJxq4nKkz",
+        "nodeId": "Hk9HYiLCE",
         "pinKey": "Bkpwy22I-"
-      }
-    },
-    {
-      "id": "SyXZOhK1G",
-      "input": {
-        "nodeId": "r1e-zV2Fyz",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "Hksx_nF1G",
-        "pinKey": "H12bIR_SPyZ"
       }
     },
     {
@@ -87,6 +65,28 @@
       "output": {
         "nodeId": "BJNZzE3YJG",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJ7rKo8AE",
+      "input": {
+        "nodeId": "H1z-fVnFyz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJbHKjICN",
+        "pinKey": "rkWeUCdBDkZ"
+      }
+    },
+    {
+      "id": "rJH0KoI0N",
+      "input": {
+        "nodeId": "r1e-zV2Fyz",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Syv6YiL0V",
+        "pinKey": "H12bIR_SPyZ"
       }
     }
   ],
@@ -140,36 +140,13 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "id": "HJxq4nKkz",
+      "id": "Hk9HYiLCE",
       "position": {
         "units": "slots",
         "x": 2,
         "y": 4
       },
-      "type": "@/cos"
-    },
-    {
-      "boundLiterals": {
-        "HJCWLAdSwyW": "-1",
-        "rkpbU0OrwyZ": "1",
-        "ry1z8CuBDy-": "1"
-      },
-      "id": "Hksx_nF1G",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 5
-      },
-      "type": "@/map-range"
-    },
-    {
-      "id": "S1G5O3Kkf",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 3
-      },
-      "type": "@/floor"
+      "type": "xod/math/cos"
     },
     {
       "boundLiterals": {
@@ -184,6 +161,29 @@
         "y": 3
       },
       "type": "@/multiply"
+    },
+    {
+      "id": "SJbHKjICN",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/math/floor"
+    },
+    {
+      "boundLiterals": {
+        "HJCWLAdSwyW": "-1",
+        "rkpbU0OrwyZ": "1",
+        "ry1z8CuBDy-": "1"
+      },
+      "id": "Syv6YiL0V",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 5
+      },
+      "type": "xod/math/map"
     },
     {
       "description": "The function value in [0, 1] range. Starts from 0.",

@@ -2,17 +2,6 @@
   "description": "Computes sawtooth function value",
   "links": [
     {
-      "id": "B1l28uOyf",
-      "input": {
-        "nodeId": "rkCsLuOyz",
-        "pinKey": "SklxICdHP1b"
-      },
-      "output": {
-        "nodeId": "r1wcUddJz",
-        "pinKey": "BkqLCOSw1W"
-      }
-    },
-    {
       "id": "Bk9qI_Oyz",
       "input": {
         "nodeId": "r1wcUddJz",
@@ -46,13 +35,24 @@
       }
     },
     {
-      "id": "H1b2UdOkG",
+      "id": "HJmJwc8A4",
+      "input": {
+        "nodeId": "SyMJwcURV",
+        "pinKey": "SklxICdHP1b"
+      },
+      "output": {
+        "nodeId": "r1wcUddJz",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "HkrJD9LCE",
       "input": {
         "nodeId": "B1a7B_O1z",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "rkCsLuOyz",
+        "nodeId": "SyMJwcURV",
         "pinKey": "rkWeUCdBDkZ"
       }
     },
@@ -150,6 +150,15 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "id": "SyMJwcURV",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/math/floor"
+    },
+    {
       "id": "r1FFU_d1f",
       "position": {
         "units": "slots",
@@ -175,15 +184,6 @@
         "y": 3
       },
       "type": "@/divide"
-    },
-    {
-      "id": "rkCsLuOyz",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 3
-      },
-      "type": "@/floor"
     }
   ]
 }
