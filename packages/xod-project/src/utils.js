@@ -200,7 +200,7 @@ export const isValidErrcodeLiteral = def(
     R.test(/^E\d{1,3}$/g),
     R.pipe(R.tail, n => {
       const parsed = parseInt(n, 10);
-      const isInBounds = parsed >= 0 && parsed <= 127;
+      const isInBounds = parsed >= 0 && parsed <= 255;
       return parsed.toString(10) === n && isInBounds;
     })
   )

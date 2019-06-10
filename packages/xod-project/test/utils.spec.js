@@ -125,13 +125,13 @@ describe('Utils', () => {
       assertIsValid('E8');
       assertIsValid('E10');
       assertIsValid('E100');
-      assertIsValid('E127');
+      assertIsValid('E255');
     });
 
     it('should treat out of range error codes as invalid', () => {
       assertIsInvalid('E-1');
       assertIsInvalid('E-10');
-      assertIsInvalid('E128');
+      assertIsInvalid('E256');
       assertIsInvalid('E567');
       assertIsInvalid('E1227');
     });
@@ -214,6 +214,7 @@ describe('Utils', () => {
       expectType('E0', PIN_TYPE.ERRCODE);
       expectType('E42', PIN_TYPE.ERRCODE);
       expectType('E127', PIN_TYPE.ERRCODE);
+      expectType('E255', PIN_TYPE.ERRCODE);
     });
   });
 });

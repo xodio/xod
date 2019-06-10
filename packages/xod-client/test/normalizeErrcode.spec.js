@@ -23,7 +23,7 @@ describe('normalizeErrcode', () => {
   });
 
   describe('ensure boundaries', () => {
-    test('E128', 'E127');
+    test('E256', 'E255');
     test('E-1', 'E0');
   });
 
@@ -31,5 +31,6 @@ describe('normalizeErrcode', () => {
     test('E0', 'E0');
     test('E42', 'E42');
     test('E127', 'E127');
+    test('E255', 'E255');
   });
 });
