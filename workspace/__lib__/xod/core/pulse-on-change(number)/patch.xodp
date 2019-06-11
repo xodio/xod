@@ -2,13 +2,13 @@
   "description": "Emits a pulse every time input value changes.",
   "nodes": [
     {
-      "id": "Bk-DbROUA",
+      "id": "Bk-DbROUZ",
       "position": {
         "units": "slots",
         "x": 0.25,
         "y": 1.15
       },
-      "type": "xod/patch-nodes/abstract"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "id": "BkjI-COLb",
@@ -17,7 +17,7 @@
         "x": 0.25,
         "y": 0.15
       },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/input-number"
     },
     {
       "id": "ByAIWR_UZ",
@@ -27,6 +27,15 @@
         "y": 2.15
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkxo_tCPJ4",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
     }
   ]
 }

@@ -1,0 +1,8 @@
+IN	OUT
+"initial string"	no-pulse
+"hello there"	pulse
+"hello there"	no-pulse
+"a"	pulse
+"aa"	pulse
+"aaaaaaa"	pulse
+"aaaaaaa"	no-pulse
