@@ -4,7 +4,7 @@ import { getAllStatesForEvent } from '../shared/eventStates';
 
 // :: Map EVENT_STATE EVENT_NAME_WITH_STATE -> _
 const removeListenersForAllEventStates = R.compose(
-  R.forEach(ipcRenderer.removeAllListeners),
+  R.forEach(ipcRenderer.removeAllListeners.bind(ipcRenderer)),
   R.values
 );
 
