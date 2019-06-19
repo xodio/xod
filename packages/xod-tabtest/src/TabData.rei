@@ -18,7 +18,6 @@ module Value: {
     | Boolean(bool)
     | String(string)
     | Byte(int)
-    | Errcode(int)
     | Pulse(bool)
     | RaisedError(int)
     | Invalid(string);

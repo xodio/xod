@@ -37,7 +37,6 @@ module Probe = {
       | Number => "number"
       | Byte => "byte"
       | String => "string"
-      | Errcode => "errcode"
       }
     );
   /* Creates a new probe node matching the type of pin provided */

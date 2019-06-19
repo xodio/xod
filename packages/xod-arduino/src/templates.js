@@ -77,7 +77,6 @@ const builtInTypeNames = {
   [XP.PIN_TYPE.STRING]: 'XString',
   [XP.PIN_TYPE.BYTE]: 'uint8_t',
   [XP.PIN_TYPE.PORT]: 'uint8_t',
-  [XP.PIN_TYPE.ERRCODE]: 'uint8_t',
 };
 
 // Converts DataType value to a corresponding C++ storage type
@@ -234,7 +233,6 @@ Handlebars.registerHelper('cppValue', (type, value) =>
     [XP.PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
     [XP.PIN_TYPE.BYTE]: cppByteLiteral,
     [XP.PIN_TYPE.PORT]: cppPortLiteral,
-    [XP.PIN_TYPE.ERRCODE]: R.tail, // remove leading 'E'
   })(value)
 );
 

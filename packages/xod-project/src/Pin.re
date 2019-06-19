@@ -19,8 +19,7 @@ type primitiveDataType =
   | Boolean
   | Number
   | Byte
-  | String
-  | Errcode;
+  | String;
 
 type dataType = string;
 
@@ -60,7 +59,6 @@ let getPrimitiveTypeExn = (pin: t) : primitiveDataType => {
   | "number" => Number
   | "byte" => Byte
   | "string" => String
-  | "errcode" => Errcode
   | _ =>
     Js.Exn.raiseTypeError(
       {j|Pin type should be "pulse", "boolean", "number", etc, got "$tp"|j},

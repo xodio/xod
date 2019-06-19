@@ -11,8 +11,7 @@ type primitiveDataType =
   | Boolean
   | Number
   | Byte
-  | String
-  | Errcode;
+  | String;
 
 /* TODO: "upgrade" to variant?
      something like

@@ -16,7 +16,6 @@ export const PIN_TYPE = {
   BOOLEAN: 'boolean',
   PULSE: 'pulse',
   BYTE: 'byte',
-  ERRCODE: 'errcode',
   PORT: 'port',
   DEAD: 'dead',
   // generic types
@@ -38,7 +37,6 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.PULSE]: INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER,
   [PIN_TYPE.BYTE]: '00h',
   [PIN_TYPE.PORT]: 'D0',
-  [PIN_TYPE.ERRCODE]: 'E0',
   [PIN_TYPE.DEAD]: '',
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
@@ -63,7 +61,7 @@ export const MAX_ARITY_STEP = 3;
  */
 export const STATIC_TYPES_COMPATIBILITY = {
   [PIN_TYPE.BOOLEAN]: {
-    [PIN_TYPE.BOOLEAN]: true, // TODO: this is redundant because of implementation of `canCastTypes`
+    [PIN_TYPE.BOOLEAN]: true,
     [PIN_TYPE.NUMBER]: true,
     [PIN_TYPE.PULSE]: true,
     [PIN_TYPE.STRING]: true,
@@ -75,10 +73,6 @@ export const STATIC_TYPES_COMPATIBILITY = {
   },
   [PIN_TYPE.BYTE]: {
     [PIN_TYPE.BYTE]: true,
-    [PIN_TYPE.STRING]: true,
-  },
-  [PIN_TYPE.ERRCODE]: {
-    [PIN_TYPE.ERRCODE]: true,
     [PIN_TYPE.STRING]: true,
   },
   // nothing can be cast to or from pulse
@@ -101,7 +95,6 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
-  [PIN_TYPE.ERRCODE]: 'xod/core/constant-errcode',
 };
 
 // node types that provide a constant pulse,

@@ -60,10 +60,6 @@
       @include symbol-coloring($color-datatype-byte);
     }
 
-    &.errcode {
-      @include symbol-coloring($color-datatype-errcode);
-    }
-
     &.dead, &.is-invalid, &.conflicting, &.is-error-affected {
       @include symbol-coloring($color-datatype-dead);
     }
