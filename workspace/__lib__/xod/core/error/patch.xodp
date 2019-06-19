@@ -1,16 +1,6 @@
 {
   "nodes": [
     {
-      "id": "BydY8n8n4",
-      "label": "CODE",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-errcode"
-    },
-    {
       "id": "H1JuNDn9E",
       "position": {
         "units": "slots",
