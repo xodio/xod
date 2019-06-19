@@ -157,11 +157,11 @@ bool isValidAnalogPort(uint8_t port) {
 }
 
 template<typename ContextT>
-void raiseError(ContextT* ctx, uint8_t errCode) {
-    ctx->_node->ownError = errCode;
+void raiseError(ContextT* ctx) {
+    ctx->_node->ownError = 1;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, errCode);
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
 #endif
 }
 
