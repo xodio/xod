@@ -176,10 +176,7 @@ class Node extends React.Component {
             R.map(R.pipe(formatErrorMessage, R.prop('note')))
           )(this.props.errors),
       ],
-      [
-        () => !!raisedErrorCode,
-        R.always(`Node evaluation stopped with error code: ${raisedErrorCode}`),
-      ],
+      [() => !!raisedErrorCode, R.always('Node raised an error')],
       [
         () => isAffectedByErrorRaiser,
         R.always('Node evaluation stopped by some upstream nodes'),
