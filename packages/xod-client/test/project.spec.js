@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import { assert } from 'chai';
 import { Maybe } from 'ramda-fantasy';
-import { defaultizeProject } from 'xod-project/test/helpers';
 
 import * as XP from 'xod-project';
 
@@ -11,13 +10,7 @@ import initialState from '../src/core/state';
 import generateReducers from '../src/core/reducer';
 import { getProject } from '../src/project/selectors';
 
-import { NODETYPE_ERROR_TYPES } from '../src/editor/constants';
-import { NODETYPE_ERRORS } from '../src/project/messages';
-
-import { addError } from '../src/messages/actions';
-import { switchPatch } from '../src/editor/actions';
 import {
-  openProject,
   createProject,
   updateProjectMeta,
   addPatch,
@@ -416,60 +409,6 @@ describe('project reducer', () => {
 
       const commentAfter = getAddedComment(testPatchPath, store.getState());
       assert.deepEqual(XP.getCommentContent(commentAfter), newContent);
-    });
-  });
-});
-
-describe('project actions', () => {
-  describe('bulkDeleteNodesAndComments', () => {
-    let store = null;
-    const project = defaultizeProject({
-      patches: {
-        '@/main': {
-          nodes: {
-            instanceOfPatchInQuestion: { type: '@/foo' },
-            someOtherNode: { type: 'xod/patch-nodes/input-number' },
-          },
-          links: {
-            someLink: {
-              input: {
-                nodeId: 'instanceOfPatchInQuestion',
-                pinKey: 'importantTerminal',
-              },
-              output: { nodeId: 'someOtherNode', pinKey: '__out__' },
-            },
-          },
-        },
-        '@/foo': {
-          nodes: {
-            importantTerminal: { type: 'xod/patch-nodes/input-number' },
-            notImportantTerminal: { type: 'xod/patch-nodes/input-number' },
-          },
-        },
-      },
-    });
-
-    beforeEach(() => {
-      store = createStore(
-        generateReducers(),
-        initialState,
-        applyMiddleware(thunk)
-      );
-      store.dispatch(openProject(project));
-    });
-
-    it('should display an error message if we try to delete a used terminal node', () => {
-      const patchPath = '@/foo';
-      store.dispatch(switchPatch(patchPath));
-      const action = store.dispatch(
-        bulkDeleteNodesAndComments(['importantTerminal'], [], [], patchPath)
-      );
-      const expectedAction = addError(
-        NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]
-      );
-
-      assert.deepEqual(action.type, expectedAction.type);
-      assert.deepEqual(action.payload, expectedAction.payload);
     });
   });
 });

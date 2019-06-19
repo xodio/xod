@@ -5,7 +5,6 @@ import { publish } from 'xod-pm';
 import { foldMaybe, rejectWithCode } from 'xod-func-tools';
 
 import { addConfirmation, addError } from '../messages/actions';
-import { NODETYPE_ERROR_TYPES } from '../editor/constants';
 import { PROJECT_BROWSER_ERRORS } from '../projectBrowser/messages';
 import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
@@ -14,7 +13,7 @@ import { getGrant } from '../user/selectors';
 import { fetchGrant } from '../user/actions';
 import { LOG_IN_TO_CONTINUE } from '../user/messages';
 import { AUTHORIZATION_NEEDED } from '../user/errorCodes';
-import { SUCCESSFULLY_PUBLISHED, NODETYPE_ERRORS } from './messages';
+import { SUCCESSFULLY_PUBLISHED } from './messages';
 import { getProject } from './selectors';
 import { getPmSwaggerUrl } from '../utils/urls';
 import composeMessage from '../messages/composeMessage';
@@ -296,43 +295,20 @@ export const bulkMoveNodesAndComments = (
   },
 });
 
-// TODO: move to xod-project?
-const isNodeWithIdInUse = R.curry((project, patchPath, nodeId) => {
-  const patch = XP.getPatchByPathUnsafe(patchPath, project);
-  const node = XP.getNodeByIdUnsafe(nodeId, patch);
-
-  return (
-    XP.isPinNode(node) && XP.isTerminalNodeInUse(nodeId, patchPath, project)
-  );
-});
-
 export const bulkDeleteNodesAndComments = (
   nodeIds,
   linkIds,
   commentIds,
   patchPath
-) => (dispatch, getState) => {
-  const state = getState();
-  const project = getProject(state);
-
-  if (R.any(isNodeWithIdInUse(project, patchPath), nodeIds)) {
-    return dispatch(
-      addError(
-        NODETYPE_ERRORS[NODETYPE_ERROR_TYPES.CANT_DELETE_USED_PIN_OF_PATCHNODE]
-      )
-    );
-  }
-
-  return dispatch({
-    type: ActionType.BULK_DELETE_ENTITIES,
-    payload: {
-      nodeIds,
-      linkIds,
-      commentIds,
-      patchPath,
-    },
-  });
-};
+) => ({
+  type: ActionType.BULK_DELETE_ENTITIES,
+  payload: {
+    nodeIds,
+    linkIds,
+    commentIds,
+    patchPath,
+  },
+});
 
 export const changeArityLevel = (nodeId, patchPath, newArityLevel) => ({
   type: ActionType.NODE_CHANGE_ARITY_LEVEL,
