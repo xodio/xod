@@ -2137,7 +2137,7 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 void evaluate(Context ctx) {
     auto err = getError<input_IN>(ctx);
     if (err) {
-        raiseError(ctx, err);
+        raiseError(ctx);
     } else {
         if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
             setTimeout(ctx, 0);
@@ -2254,7 +2254,7 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 void evaluate(Context ctx) {
     auto err = getError<input_IN>(ctx);
     if (err) {
-        raiseError(ctx, err);
+        raiseError(ctx);
     } else {
         if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
             setTimeout(ctx, 0);
