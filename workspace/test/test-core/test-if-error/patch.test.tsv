@@ -1,5 +1,5 @@
 IN	DEF	OUT
 42	1337	42
-E13!	1337	1337
-42	E13!	E13!	// If DEF carries an error — reraise it
-E121!	E13!	E13!
+error	1337	1337
+42	error	error	// If DEF carries an error — reraise it
+error	error	error

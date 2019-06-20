@@ -1,7 +1,7 @@
 #pragma XOD error_catch enable
 
 struct State {
-    Number lastValue;
+    uint8_t lastValue;
 };
 
 {{ GENERATED_CODE }}

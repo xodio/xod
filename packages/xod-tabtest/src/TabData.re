@@ -12,7 +12,7 @@ module Value = {
     | String(string)
     | Byte(int)
     | Pulse(bool)
-    | RaisedError(int)
+    | RaisedError
     | Invalid(string);
   let numberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?$/|}];
   let approxNumberRegex = [%re {|/^[+-]?(?=.)*\d*(?:\.\d+)?~$/|}];
@@ -46,6 +46,7 @@ module Value = {
     | "false" => Boolean(false)
     | "pulse" => Pulse(true)
     | "no-pulse" => Pulse(false)
+    | "error" => RaisedError
     | "NaN" => NaN
     | "Inf" => Number(infinity)
     | "+Inf" => Number(infinity)

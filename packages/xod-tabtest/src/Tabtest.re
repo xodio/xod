@@ -204,8 +204,8 @@ module TestCase = {
            let probeName = Strings.cppEscape(name);
            switch (record |. TabData.Record.get(name)) {
            | Some(Pulse(false)) => {j|// No pulse for $name|j}
-           | Some(RaisedError(errCode)) =>
-             {j|INJECT_ERROR(probe_$probeName, $errCode);|j};
+           | Some(RaisedError) =>
+             {j|INJECT_ERROR(probe_$probeName);|j};
            | Some(value) =>
              let literal = valueToLiteral(value);
              {j|INJECT(probe_$probeName, $literal);|j};
@@ -227,11 +227,8 @@ module TestCase = {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
            | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
-           | Some(RaisedError(errCode)) =>
-            Cpp.requireEqual(
-               {j|probe_$name.prevCaughtError|j},
-               string_of_int(errCode),
-             )
+           | Some(RaisedError) =>
+            Cpp.requireEqual({j|probe_$name.prevCaughtError|j}, "1")
            | Some(value) =>
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
@@ -293,8 +290,8 @@ module TestCase = {
         "        (probe).ownError = 0; \\",
         "        (probe).isNodeDirty = true;",
         "",
-        "#define INJECT_ERROR(probe, errCode) \\",
-        "        (probe).ownError = errCode;",
+        "#define INJECT_ERROR(probe) \\",
+        "        (probe).ownError = 1;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])

@@ -1,5 +1,5 @@
 IN	OUT
 10	no-pulse
-E42!	pulse
-E10!	pulse
+error	pulse
 5	no-pulse
+error	pulse

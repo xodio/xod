@@ -19,7 +19,7 @@ module Value: {
     | String(string)
     | Byte(int)
     | Pulse(bool)
-    | RaisedError(int)
+    | RaisedError
     | Invalid(string);
 };
 

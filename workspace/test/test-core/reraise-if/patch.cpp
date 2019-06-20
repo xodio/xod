@@ -8,7 +8,7 @@ struct State {
 
 void evaluate(Context ctx) {
     if (getValue<input_RR>(ctx)) {
-        raiseError(ctx, getError<input_IN>(ctx));
+        raiseError(ctx);
     } else {
         emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
     }
