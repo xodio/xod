@@ -12,17 +12,6 @@
       }
     },
     {
-      "id": "SkcvznY6T4",
-      "input": {
-        "nodeId": "BkwGhFapE",
-        "pinKey": "BydY8n8n4"
-      },
-      "output": {
-        "nodeId": "SyZPf3tppE",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "r1fxPzhKa64",
       "input": {
         "nodeId": "BkwGhFapE",
@@ -91,16 +80,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "id": "SyZPf3tppE",
-      "label": "CODE",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-errcode"
     }
   ]
 }

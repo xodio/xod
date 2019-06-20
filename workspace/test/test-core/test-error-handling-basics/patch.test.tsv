@@ -1,10 +1,7 @@
-IN	IS_ERR	CODE	OUT	ERR_P	ERR_C
-// if IS_ERR is false, error is not raised (no pulse, ERR_C is 0), input value is passed as is
-12345	false	E10	12345	no-pulse	E0
-42	false	E13	42	no-pulse	E0
+IN	IS_ERR	OUT	ERR_P
+12345	false	12345	no-pulse
+42	false	42	no-pulse
 // if IS_ERR is true, error is raised
-	true	E10	42	pulse	E10
-// error code is passed around
-	true	E77	42	pulse	E77
+	true	42	pulse
 // after recovery from error
-	false	E77	42	no-pulse	E0
+	false	42	no-pulse

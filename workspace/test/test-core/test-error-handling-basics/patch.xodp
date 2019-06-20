@@ -1,28 +1,6 @@
 {
   "links": [
     {
-      "id": "B1C28283V",
-      "input": {
-        "nodeId": "By6lk18j4",
-        "pinKey": "BydY8n8n4"
-      },
-      "output": {
-        "nodeId": "HJc2U2UnN",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "BJ00w38nV",
-      "input": {
-        "nodeId": "SkT0v3Lh4",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SJ8u1y8s4",
-        "pinKey": "rJ1KDn83E"
-      }
-    },
-    {
       "id": "H14P11Lj4",
       "input": {
         "nodeId": "r1GD1J8jN",
@@ -53,17 +31,6 @@
       "output": {
         "nodeId": "r1zZ1yIoN",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SyOuJ1UoE",
-      "input": {
-        "nodeId": "SJ8u1y8s4",
-        "pinKey": "HJ-lH0Bj4"
-      },
-      "output": {
-        "nodeId": "By6lk18j4",
-        "pinKey": "H1JuNDn9E"
       }
     },
     {
@@ -114,45 +81,16 @@
       "id": "ByW8kkLjV",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 5,
         "y": 4
       },
       "type": "xod/core/pulse-on-error"
     },
     {
-      "id": "HJc2U2UnN",
-      "label": "CODE",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-errcode"
-    },
-    {
-      "id": "SJ8u1y8s4",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 4
-      },
-      "type": "xod/core/error-code"
-    },
-    {
-      "id": "SkT0v3Lh4",
-      "label": "ERR_C",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 5
-      },
-      "type": "xod/patch-nodes/output-errcode"
-    },
-    {
       "id": "SktVkkLjE",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 3,
         "y": 5
       },
       "type": "xod/patch-nodes/output-number"
@@ -161,7 +99,7 @@
       "id": "SyVA11Uj4",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 3,
         "y": 4
       },
       "type": "xod/patch-nodes/jumper"
@@ -171,7 +109,7 @@
       "label": "ERR_P",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 5,
         "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
