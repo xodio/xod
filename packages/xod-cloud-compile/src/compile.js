@@ -46,9 +46,17 @@ const compile = R.curry((hostname, accessToken, suite, opts) => {
     )
     .then(res => {
       if (!res.ok) {
-        return res.json().then(json => Promise.reject(
-          createError(EC.WASM_COMPILATION_ERROR, json)
-        ));
+        return res.json()
+          .then(json => {
+            switch (res.status) {
+              case 401: return createError(EC.WRONG_AUTHORIZATION_TOKEN, json);
+              case 402: return createError(EC.COMPILATION_LIMIT_EXCEEDED, json);
+              case 422: return createError(EC.WASM_COMPILATION_ERROR, json);
+              default: return createError(EC.WASM_UNKNOWN_COMPILATION_ERROR, json);
+            }
+          })
+          .catch(() => createError(EC.COMPILATION_SERVICE_ERROR, res.body))
+          .then(x => Promise.reject(x));
       }
       return res;
     })

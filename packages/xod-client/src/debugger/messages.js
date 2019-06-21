@@ -18,9 +18,17 @@ export const WASM_NO_RUNTIME_FOUND = 'Unable to get URL of WASM runtime script';
 export const WASM_BINARY_NOT_FOUND = 'Unable to get URL of WASM binary file';
 
 export const WASM_BUILDING_ERROR = `The generated C++ code contains errors. It can be due to a bad node implementation
-  or if your board is not compatible with XOD runtime code. The original compiler error
-  message is above. Fix C++ errors to continue. If you believe it is a bug, report the
-  problem to XOD developers.`;
+or if your board is not compatible with XOD runtime code. The original compiler error
+message is above. Fix C++ errors to continue. If you believe it is a bug, report the
+problem to XOD developers.`;
+
+export const WASM_NETWORK_ERROR =
+  'Network error: can not compile in the cloud. Check your internet connection.';
+export const WRONG_AUTHORIZATION_TOKEN =
+  'Wrong authorization token. Please, logout, log in and then try again.';
+export const COMPILATION_LIMIT_EXCEEDED = 'Cloud compilation limits exceeded.';
+export const COMPILATION_SERVICE_OFFLINE =
+  'Cloud compilation service is temporarily unavailable. Try again later.';
 
 export const TABTEST_GENERATING_CODE = 'Generating C++ code…';
 export const TABTEST_BUILDING = 'Building…';
