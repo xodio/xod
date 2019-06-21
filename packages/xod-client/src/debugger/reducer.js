@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { renameKeys, invertMap } from 'xod-func-tools';
+import { renameKeys, invertMap, foldMaybe, maybePath } from 'xod-func-tools';
 
 import { ERROR_CODES } from 'xod-cloud-compile';
 
@@ -165,20 +165,47 @@ const showDebuggerPane = R.assoc('isVisible', true);
 
 const hideProgressBar = R.assoc('uploadProgress', null);
 
+const getMessageFromErrResponce = R.compose(
+  foldMaybe('', R.concat(R.__, '\n')),
+  maybePath(['payload', 'message'])
+);
+
+const getStdErrLogFromErrResponce = R.compose(
+  foldMaybe(
+    '',
+    R.compose(
+      R.join('\n'),
+      R.reject(R.either(R.isNil, R.isEmpty)),
+      R.pluck('stderr')
+    )
+  ),
+  maybePath(['payload', 'logs'])
+);
+
+const getErrorTypeFromErrResponce = R.compose(
+  foldMaybe('', errType => `Error type: ${errType}\n`),
+  maybePath(['payload', 'data', 'type'])
+);
+
 const formatWasmError = err => {
   switch (err.type) {
     case ERROR_CODES.WASM_COMPILATION_RESULTS_FETCH_ERROR:
-      return err.payload.message;
-
+      return MSG.WASM_NETWORK_ERROR;
+    case ERROR_CODES.WRONG_AUTHORIZATION_TOKEN:
+      return MSG.WRONG_AUTHORIZATION_TOKEN;
+    case ERROR_CODES.COMPILATION_LIMIT_EXCEEDED:
+      return MSG.COMPILATION_LIMIT_EXCEEDED;
+    case ERROR_CODES.COMPILATION_SERVICE_ERROR:
+      return MSG.COMPILATION_SERVICE_OFFLINE;
+    case ERROR_CODES.WASM_UNKNOWN_COMPILATION_ERROR: {
+      const logs = getStdErrLogFromErrResponce(err);
+      const messageWithNl = getMessageFromErrResponce(err);
+      return `${messageWithNl}${logs}`;
+    }
     case ERROR_CODES.WASM_COMPILATION_ERROR: {
-      const logs = R.compose(
-        R.join('\n'),
-        R.reject(R.either(R.isNil, R.isEmpty)),
-        R.map(R.prop('stderr')),
-        R.propOr([], 'logs')
-      )(err.payload);
-
-      return `${err.payload.message}\n${logs}\n\n${MSG.WASM_BUILDING_ERROR}`;
+      const logs = getStdErrLogFromErrResponce(err);
+      const messageWithNl = getMessageFromErrResponce(err);
+      return `${messageWithNl}${logs}\n\n${MSG.WASM_BUILDING_ERROR}`;
     }
 
     case ERROR_CODES.WASM_EXECUTION_ABORT:
@@ -192,8 +219,14 @@ const formatWasmError = err => {
     case ERROR_CODES.WASM_BINARY_NOT_FOUND:
       return MSG.WASM_BINARY_NOT_FOUND;
 
-    default:
-      return err.message || err;
+    default: {
+      const message = err.message
+        ? `${err.message}\n`
+        : getMessageFromErrResponce(err);
+      const stdErr = getStdErrLogFromErrResponce(err);
+      const errType = getErrorTypeFromErrResponce(err);
+      return `${message}${errType}${stdErr}`;
+    }
   }
 };
 
