@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import EventEmitter from 'events';
 import path from 'path';
-import { Maybe } from 'ramda-fantasy';
 
 import * as XP from 'xod-project';
 import {
@@ -21,7 +20,7 @@ import {
   rejectWithCode,
   allPromises,
   notNil,
-  explodeMaybe,
+  foldMaybeWith,
 } from 'xod-func-tools';
 
 import * as settings from './settings';
@@ -241,6 +240,17 @@ const ensureWorkspace = workspacePath =>
     throw err;
   });
 
+const openBundledProject = R.curry((send, updateProjectPath, oldPath) => {
+  const isFirstLaunch = R.isEmpty(oldPath);
+  const projectName = isFirstLaunch ? 'welcome-to-xod' : 'welcome-again';
+  return onOpenBundledProject(send, updateProjectPath, projectName).then(() => {
+    // TODO: better pass it along the project with REQUEST_SHOW_PROJECT event
+    if (!isFirstLaunch) {
+      send(EVENTS.PAN_TO_CENTER);
+    }
+  });
+});
+
 // :: (String -> a -> ()) -> (() -> Promise Path Error) ->
 //    -> (Path -> Promise Path Error) -> Promise ProjectMeta[] Error
 export const onIDELaunch = R.curry(
@@ -260,32 +270,16 @@ export const onIDELaunch = R.curry(
       pathSaver,
       ensureWorkspace,
       updateWorkspace(send, oldPath),
-      () => {
-        const maybePatchToOpen = getFileToOpen();
-
-        if (Maybe.isNothing(maybePatchToOpen)) {
-          const isFirstLaunch = R.isEmpty(oldPath);
-          const projectName = isFirstLaunch
-            ? 'welcome-to-xod'
-            : 'welcome-again';
-          return onOpenBundledProject(
-            send,
-            updateProjectPath,
-            projectName
-          ).then(() => {
-            // TODO: better pass it along the project with REQUEST_SHOW_PROJECT event
-            if (!isFirstLaunch) {
-              send(EVENTS.PAN_TO_CENTER);
-            }
-          });
-        }
-
-        const projectPath = explodeMaybe(
-          'Imposible error: we just checked Maybe for being Nothing',
-          maybePatchToOpen
-        );
-        return onLoadProject(updateProjectPath, send, projectPath);
-      }
+      () =>
+        foldMaybeWith(
+          () => openBundledProject(send, updateProjectPath, oldPath),
+          projectPath =>
+            onLoadProject(updateProjectPath, send, projectPath).catch(err => {
+              handleError(send, err); // send error to renderer process
+              return openBundledProject(send, updateProjectPath, oldPath);
+            }),
+          getFileToOpen()
+        )
     )()
       .catch(
         catchInvalidWorkspace(err => {
