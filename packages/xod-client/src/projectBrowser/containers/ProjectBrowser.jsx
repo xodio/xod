@@ -263,7 +263,7 @@ class ProjectBrowser extends React.Component {
     // is implemented in the component for better performance.
     // :: { LibName: [Patch] } -> { LibName: [Patch] }
     const rejectPatchesByFilterOptions = R.map(
-      R.reject(R.anyPass(rejectPatchFunctions))
+      R.reject(R.both(R.propEq('dead', false), R.anyPass(rejectPatchFunctions)))
     );
 
     const libComponents = R.compose(
