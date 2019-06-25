@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "bs-platform": "5.0.0",
     "classnames": "^2.2.5",
     "cpx": "^1.5.0",
     "electron-context-menu": "^0.12.1",
@@ -67,6 +68,11 @@
     "appId": "io.xod.ide",
     "productName": "XOD IDE",
     "buildDependenciesFromSource": true,
+    "files": [
+      "**/*",
+      "!**/node_modules/bs-platform/**/*",
+      "**/node_modules/bs-platform/lib/js/**/*"
+    ],
     "extraResources": [
       {
         "from": "arduino-cli",
