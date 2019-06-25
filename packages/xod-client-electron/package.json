@@ -70,6 +70,8 @@
     "buildDependenciesFromSource": true,
     "files": [
       "**/*",
+      "!**/node_modules/xod-arduino/**/*",
+      "**/node_modules/xod-arduino/dist/**/*",
       "!**/node_modules/bs-platform/**/*",
       "**/node_modules/bs-platform/lib/js/**/*"
     ],
