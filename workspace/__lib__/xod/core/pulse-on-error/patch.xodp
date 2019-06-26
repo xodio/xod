@@ -1,13 +1,49 @@
 {
+  "description": "Fires a pulse when the upstream node enters the error state.",
+  "links": [
+    {
+      "id": "BJSN7mber",
+      "input": {
+        "nodeId": "HkPQCTHiE",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJz4XQWeH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJm4Qm-er",
+      "input": {
+        "nodeId": "BJz4XQWeH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkTXXQbeH",
+        "pinKey": "rJagQXblS"
+      }
+    },
+    {
+      "id": "HkkEmQZxr",
+      "input": {
+        "nodeId": "SkTXXQbeH",
+        "pinKey": "Hygwgm7Wgr"
+      },
+      "output": {
+        "nodeId": "BypMC6riE",
+        "pinKey": "__out__"
+      }
+    }
+  ],
   "nodes": [
     {
-      "id": "Bk-7AaSoE",
+      "id": "BJz4XQWeH",
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 1
+        "y": 2
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "type": "@/pulse-on-true"
     },
     {
       "id": "BypMC6riE",
@@ -23,9 +59,18 @@
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 2
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SkTXXQbeH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/has-error"
     }
   ]
 }
