@@ -3,7 +3,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "__out__": "750"
+        "__out__": "544"
       },
       "description": "The minimal rated pulse width (in µS) ",
       "id": "ByJ9IwVBV",
@@ -17,7 +17,7 @@
     },
     {
       "boundLiterals": {
-        "__out__": "2250"
+        "__out__": "2400"
       },
       "description": "The maximal rated pulse width (in µS) ",
       "id": "H15qLDVSE",
