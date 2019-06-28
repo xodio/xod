@@ -49,6 +49,8 @@ const optionNameRegExp = /^menu\.([a-zA-Z0-9_]+)=(.+)$/;
 
 const boardOptionRegExp = /^([a-zA-Z0-9_]+)\.menu\.([a-zA-Z0-9_]+)\.([a-zA-Z0-9_]+)=(.+)$/;
 
+const disableRtsOptionRegExp = /^([a-zA-Z0-9_]+)\.serial\.disableRTS=(.+)$/;
+
 const osRegExp = /(linux|macosx|windows)/;
 
 // =============================================================================
@@ -137,13 +139,27 @@ export const parseOptions = R.compose(lines => {
  * :: Map BoardId [Option] -> (InstalledBoard | AvailableBoard) -> (InstalledBoard | AvailableBoard)
  */
 export const patchBoardWithOptions = R.curry((boardsTxtContent, board) => {
-  const options = parseOptions(boardsTxtContent);
-
   if (!R.has('fqbn', board)) return board;
+
+  // TODO: calling this (as well as parseOptions) each time is probably quite inefficient
+  const disableRtsByBoard = R.compose(
+    R.fromPairs,
+    R.map(([, boardId, value]) => [boardId, value === 'true']),
+    R.reject(R.isEmpty),
+    R.map(R.match(disableRtsOptionRegExp)),
+    getLines
+  )(boardsTxtContent);
+
   const boardId = R.pipe(R.prop('fqbn'), R.split(':'), R.last)(board);
-  return R.pipe(R.propOr([], boardId), R.assoc('options', R.__, board))(
-    options
+
+  const boardOptions = R.compose(R.propOr([], boardId), parseOptions)(
+    boardsTxtContent
   );
+
+  return R.pipe(
+    R.assoc('disableRts', disableRtsByBoard[boardId] || false),
+    R.assoc('options', boardOptions)
+  )(board);
 });
 
 // =============================================================================
@@ -179,6 +195,7 @@ export const patchBoardsWithOptions = R.curry(
         R.prop('fqbn')
       )(board);
       const boardTxtContents = R.propOr('', coreId, boardTxtContentsByCoreId);
+
       return patchBoardWithOptions(boardTxtContents, board);
     }, boards);
   }

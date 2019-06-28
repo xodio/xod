@@ -120,16 +120,19 @@ const expectedBoards = [
     name: 'Generic ESP8266 Module',
     fqbn: 'esp8266:esp8266:generic',
     options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
   },
   {
     name: 'Amperka WiFi Slot',
     fqbn: 'esp8266:esp8266:wifi_slot',
     options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
   },
   {
     name: 'Arduino Due',
     fqbn: 'arduino:sam:due',
     options: [],
+    disableRts: false,
   },
   {
     name: 'Arduino/Genuino Uno (not installed)',

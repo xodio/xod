@@ -90,7 +90,7 @@ export const checkPort = port =>
 //
 // =============================================================================
 
-const openPortForReading = async (port, onData, onClose) => {
+const openPortForReading = async (port, disableRts, onData, onClose) => {
   const ports = await xd.listPorts();
   const newPort = R.find(
     R.allPass([
@@ -111,7 +111,9 @@ const openPortForReading = async (port, onData, onClose) => {
 
   const portName = R.prop('comName', port);
 
-  return delay(400).then(() => xd.openAndReadPort(portName, onData, onClose));
+  return delay(400).then(() =>
+    xd.openAndReadPort(portName, disableRts, onData, onClose)
+  );
 };
 
 const isDeviceNotFound = R.propEq(
@@ -139,7 +141,7 @@ const isDeviceNotFound = R.propEq(
  */
 export const startDebugSessionHandler = (onOpenCb, onCloseCb) => (
   event,
-  { port, sessionKind }
+  { port, sessionKind, board }
 ) => {
   let сollectedMessages = [];
   const throttleDelay = 100; // ms
@@ -177,8 +179,10 @@ export const startDebugSessionHandler = (onOpenCb, onCloseCb) => (
   const maxTriesToSearch = 7;
   const searchDelay = 300;
 
+  const disableRts = R.propOr(false, 'disableRts', board);
+
   const runDebug = () =>
-    openPortForReading(port, onData, onClose).catch(async err => {
+    openPortForReading(port, disableRts, onData, onClose).catch(async err => {
       if (triesToSearchDevice >= maxTriesToSearch || !isDeviceNotFound(err)) {
         return err;
       }

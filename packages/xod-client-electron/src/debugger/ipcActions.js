@@ -9,10 +9,16 @@ export const subscribeOnDebuggerEvents = (ipcRenderer, app) => {
   });
 };
 
-export const sendStartDebuggerSession = (ipcRenderer, port, sessionKind) => {
+export const sendStartDebuggerSession = (
+  ipcRenderer,
+  port,
+  sessionKind,
+  board
+) => {
   ipcRenderer.send(EVENTS.START_DEBUG_SESSION, {
     port,
     sessionKind,
+    board,
   });
 };
 
