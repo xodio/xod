@@ -130,37 +130,13 @@ export const parseOptions = R.compose(lines => {
   return R.map(convertIntermediateOptions(optionNames), options);
 }, getLines);
 
-/**
- * Converts { name, fqbn } objects into InstalledBoard objects.
- *
- * If there is no options for the board or it is not installed yet, it will
- * be returned untouched.
- *
- * :: Map BoardId [Option] -> (InstalledBoard | AvailableBoard) -> (InstalledBoard | AvailableBoard)
- */
-export const patchBoardWithOptions = R.curry((boardsTxtContent, board) => {
-  if (!R.has('fqbn', board)) return board;
-
-  // TODO: calling this (as well as parseOptions) each time is probably quite inefficient
-  const disableRtsByBoard = R.compose(
-    R.fromPairs,
-    R.map(([, boardId, value]) => [boardId, value === 'true']),
-    R.reject(R.isEmpty),
-    R.map(R.match(disableRtsOptionRegExp)),
-    getLines
-  )(boardsTxtContent);
-
-  const boardId = R.pipe(R.prop('fqbn'), R.split(':'), R.last)(board);
-
-  const boardOptions = R.compose(R.propOr([], boardId), parseOptions)(
-    boardsTxtContent
-  );
-
-  return R.pipe(
-    R.assoc('disableRts', disableRtsByBoard[boardId] || false),
-    R.assoc('options', boardOptions)
-  )(board);
-});
+const parseDisableRts = R.compose(
+  R.fromPairs,
+  R.map(([, boardId, value]) => [boardId, value === 'true']),
+  R.reject(R.isEmpty),
+  R.map(R.match(disableRtsOptionRegExp)),
+  getLines
+);
 
 // =============================================================================
 //
@@ -185,18 +161,40 @@ export const patchBoardsWithOptions = R.curry(
       R.indexBy(R.prop('ID'))
     )(cores);
 
+    const optionsByCoreAndBoard = R.map(
+      boardsTxtContents => ({
+        disableRts: parseDisableRts(boardsTxtContents),
+        options: parseOptions(boardsTxtContents),
+      }),
+      boardTxtContentsByCoreId
+    );
+
     return R.map(board => {
       if (!R.has('fqbn', board)) return board;
 
-      const coreId = R.compose(
-        R.join(':'),
-        R.init,
-        R.split(':'),
-        R.prop('fqbn')
-      )(board);
-      const boardTxtContents = R.propOr('', coreId, boardTxtContentsByCoreId);
+      const fqbnParts = board.fqbn.split(':');
+      const coreId = R.compose(R.join(':'), R.init)(fqbnParts);
+      const boardId = R.last(fqbnParts);
 
-      return patchBoardWithOptions(boardTxtContents, board);
+      const options = R.pathOr(
+        [],
+        [coreId, 'options', boardId],
+        optionsByCoreAndBoard
+      );
+
+      const disableRts = R.pathOr(
+        false,
+        [coreId, 'disableRts', boardId],
+        optionsByCoreAndBoard
+      );
+
+      return R.merge(
+        {
+          options,
+          disableRts,
+        },
+        board
+      );
     }, boards);
   }
 );
