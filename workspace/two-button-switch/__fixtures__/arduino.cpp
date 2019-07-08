@@ -922,15 +922,6 @@ bool isValidAnalogPort(uint8_t port) {
 #endif
 }
 
-template<typename ContextT>
-void raiseError(ContextT* ctx) {
-    ctx->_node->ownError = 1;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
-}
-
 } // namespace xod
 
 //----------------------------------------------------------------------------
@@ -1052,7 +1043,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
+    bool hasOwnError;
     Logic output_SIG;
     Logic output_DONE;
 
@@ -1142,6 +1133,17 @@ State* getState(Context ctx) {
 
 uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
+}
+
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_SIG = true;
+    ctx->_node->isOutputDirty_DONE = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
 }
 
 void evaluate(Context ctx) {
@@ -1401,7 +1403,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
+    bool hasOwnError;
     Logic output_DONE;
 
     union {
@@ -1488,6 +1490,16 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_DONE = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+
 void evaluate(Context ctx) {
     if (!isInputDirty<input_UPD>(ctx))
         return;
@@ -1558,7 +1570,7 @@ xod__core__continuously::Node node_3 = {
 };
 xod__gpio__digital_read::Node node_4 = {
     xod__gpio__digital_read::State(), // state default
-    0, // ownError
+    false, // hasOwnError
     node_4_output_SIG, // output SIG default
     node_4_output_DONE, // output DONE default
     true, // SIG dirty
@@ -1567,7 +1579,7 @@ xod__gpio__digital_read::Node node_4 = {
 };
 xod__gpio__digital_read::Node node_5 = {
     xod__gpio__digital_read::State(), // state default
-    0, // ownError
+    false, // hasOwnError
     node_5_output_SIG, // output SIG default
     node_5_output_DONE, // output DONE default
     true, // SIG dirty
@@ -1598,7 +1610,7 @@ xod__core__flip_flop::Node node_8 = {
 };
 xod__gpio__digital_write::Node node_9 = {
     xod__gpio__digital_write::State(), // state default
-    0, // ownError
+    false, // hasOwnError
     node_9_output_DONE, // output DONE default
     false, // DONE dirty
     true // node itself dirty
@@ -1676,15 +1688,15 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_4.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_4.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_4.ownError = 0;
+            node_4.hasOwnError = false;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_4.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_4.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(4, 0);
             }
@@ -1710,15 +1722,15 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_5.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_5.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_5.ownError = 0;
+            node_5.hasOwnError = false;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_5.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_5.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(5, 0);
             }
@@ -1729,16 +1741,13 @@ void runTransaction() {
         }
     }
     { // xod__core__branch #6
-        uint8_t error_input_GATE = 0;
-        error_input_GATE = max(error_input_GATE, node_4.ownError);
+        bool error_input_GATE = false;
+        error_input_GATE |= node_4.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_GATE);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_GATE;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_6.isNodeDirty && hasNoUpstreamError) {
+        if (node_6.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(6);
 
@@ -1753,21 +1762,22 @@ void runTransaction() {
 
             xod__core__branch::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_6.isNodeDirty) {
             // mark downstream nodes dirty
             node_8.isNodeDirty |= node_6.isOutputDirty_F;
         }
     }
     { // xod__core__branch #7
-        uint8_t error_input_GATE = 0;
-        error_input_GATE = max(error_input_GATE, node_5.ownError);
+        bool error_input_GATE = false;
+        error_input_GATE |= node_5.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_GATE);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_GATE;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_7.isNodeDirty && hasNoUpstreamError) {
+        if (node_7.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
 
@@ -1782,24 +1792,25 @@ void runTransaction() {
 
             xod__core__branch::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_7.isNodeDirty) {
             // mark downstream nodes dirty
             node_8.isNodeDirty |= node_7.isOutputDirty_F;
         }
     }
     { // xod__core__flip_flop #8
-        uint8_t error_input_SET = 0;
-        error_input_SET = max(error_input_SET, node_5.ownError);
-        uint8_t error_input_RST = 0;
-        error_input_RST = max(error_input_RST, node_4.ownError);
+        bool error_input_SET = false;
+        error_input_SET |= node_5.hasOwnError;
+        bool error_input_RST = false;
+        error_input_RST |= node_4.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_SET);
-        maxUpstreamError = max(maxUpstreamError, error_input_RST);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_SET;
+        hasUpstreamError |= error_input_RST;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_8.isNodeDirty && hasNoUpstreamError) {
+        if (node_8.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(8);
 
@@ -1816,21 +1827,23 @@ void runTransaction() {
 
             xod__core__flip_flop::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_8.isNodeDirty) {
             // mark downstream nodes dirty
             node_9.isNodeDirty |= node_8.isOutputDirty_MEM;
         }
     }
     { // xod__gpio__digital_write #9
-        uint8_t error_input_SIG = 0;
-        error_input_SIG = max(error_input_SIG, node_5.ownError);
-        error_input_SIG = max(error_input_SIG, node_4.ownError);
+        bool error_input_SIG = false;
+        error_input_SIG |= node_5.hasOwnError;
+        error_input_SIG |= node_4.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_SIG);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_SIG;
 
-        uint8_t currentError = max(node_9.ownError, maxUpstreamError);
-        bool hasNoUpstreamError = node_9.ownError >= maxUpstreamError;
-        if (node_9.isNodeDirty && hasNoUpstreamError) {
+        if (node_9.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
@@ -1846,20 +1859,24 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_9.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_9.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_9.ownError = 0;
+            node_9.hasOwnError = false;
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_9.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_9.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(9, 0);
             }
 #endif
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_9.isNodeDirty) {
             // mark downstream nodes dirty
         }
     }

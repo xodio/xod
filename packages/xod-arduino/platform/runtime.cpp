@@ -156,15 +156,6 @@ bool isValidAnalogPort(uint8_t port) {
 #endif
 }
 
-template<typename ContextT>
-void raiseError(ContextT* ctx) {
-    ctx->_node->ownError = 1;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
-}
-
 } // namespace xod
 
 //----------------------------------------------------------------------------

@@ -26,10 +26,7 @@ namespace xod {
 {{ ns patch }}::Node node_{{ id }} = {
     {{ ns patch }}::State(), // state default
   {{#if patch.raisesErrors}}
-    0, // ownError
-  {{/if}}
-  {{#if patch.catchesErrors}}
-    0, // prevCaughtError
+    false, // hasOwnError
   {{/if}}
   {{#if patch.usesTimeouts}}
     0, // timeoutAt
@@ -112,27 +109,25 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
   {{#eachDeferNode nodes}}
     {
-    {{#if (hasUpstreamErrorRaisers this)}}
-        // no need to touch defers with errors on this stage
-        if (node_{{ id }}.isNodeDirty && !node_{{ id }}.ownError) {
-    {{else}}
         if (node_{{ id }}.isNodeDirty) {
-    {{/if}}
-            XOD_TRACE_F("Trigger defer node #");
-            XOD_TRACE_LN({{ id }});
+            // if a defer has an error, do not evaluate it, but spread the dirtyness
+            if ({{#if (hasUpstreamErrorRaisers this)}}!node_{{ id }}.hasOwnError{{else}}true{{/if}}) {
+              XOD_TRACE_F("Trigger defer node #");
+              XOD_TRACE_LN({{ id }});
 
-            {{ns patch }}::ContextObject ctxObj;
-            ctxObj._node = &node_{{ id }};
-            ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+              {{ns patch }}::ContextObject ctxObj;
+              ctxObj._node = &node_{{ id }};
+              ctxObj._isInputDirty_IN = false;
+              ctxObj._error_input_IN = 0;
 
-            {{ ns patch }}::evaluate(&ctxObj);
+              {{ ns patch }}::evaluate(&ctxObj);
+            }
 
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty |= node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
+            node_{{ this }}.isNodeDirty = true;
             {{/each}}
             {{else}}
             {{#each to}}
@@ -151,42 +146,21 @@ void runTransaction() {
   {{#eachNonConstantNode nodes}}
     { // {{ ns patch }} #{{ id }}
     {{#if (hasUpstreamErrorRaisers this)}}
+      {{!-- // finding upstream errors for each individual input --}}
       {{#eachInputPinWithUpstreamRaisers inputs}}
-        uint8_t error_input_{{ pinKey }} = 0;
+        bool error_input_{{ pinKey }} = false;
         {{#each upstreamErrorRaisers}}
-        error_input_{{ ../pinKey }} = max(error_input_{{ ../pinKey }}, node_{{ this }}.ownError);
+        error_input_{{ ../pinKey }} |= node_{{ this }}.hasOwnError;
         {{/each}}
       {{/eachInputPinWithUpstreamRaisers}}
 
-        uint8_t maxUpstreamError = 0;
+      {{!-- // finding if any input has upstream errors --}}
+        bool hasUpstreamError = false;
       {{#eachInputPinWithUpstreamRaisers inputs}}
-        maxUpstreamError = max(maxUpstreamError, error_input_{{ pinKey }});
+        hasUpstreamError |= error_input_{{ pinKey }};
       {{/eachInputPinWithUpstreamRaisers}}
 
-      {{#if patch.raisesErrors}}
-        uint8_t currentError = {{#if patch.catchesErrors~}}
-                                maxUpstreamError;
-                               {{~else~}}
-                                max(node_{{ id }}.ownError, maxUpstreamError);
-                               {{~/if}}
-      {{else}}
-        uint8_t currentError = maxUpstreamError;
-      {{/if}}
-
-      {{#unless patch.catchesErrors}}
-        bool hasNoUpstreamError = {{#if patch.raisesErrors~}}
-                                    node_{{ id }}.ownError >= maxUpstreamError;
-                                  {{~else~}}
-                                    maxUpstreamError == 0;
-                                  {{~/if}}
-      {{/unless}}
-
-        if (node_{{ id }}.isNodeDirty {{#if patch.catchesErrors~}}
-                                        || node_{{ id }}.prevCaughtError != currentError
-                                      {{~else~}}
-                                        && hasNoUpstreamError
-                                      {{~/if~}}
-        ) {
+        if (node_{{ id }}.isNodeDirty {{~#unless patch.catchesErrors}} && !hasUpstreamError{{/unless}}) {
     {{else}}
         if (node_{{ id }}.isNodeDirty) {
     {{/if}}
@@ -250,27 +224,29 @@ void runTransaction() {
 
           {{#if patch.raisesErrors}}
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_{{ id }}.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_{{ id }}.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_{{ id }}.ownError = 0;
+            node_{{ id }}.hasOwnError = false;
           {{/if}}
 
             {{ ns patch }}::evaluate(&ctxObj);
 
           {{#if patch.raisesErrors}}
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_{{ id }}.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_{{ id }}.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial({{ id }}, 0);
             }
 #endif
           {{/if}}
 
-          {{#if patch.catchesErrors}}
-            node_{{ id }}.prevCaughtError = {{#if (hasUpstreamErrorRaisers this)}}currentError{{else}}0{{/if}};
-          {{/if}}
-
+      {{#if (hasUpstreamErrorRaisers this)}}
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_{{ id }}.isNodeDirty) {
+      {{/if}}
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}

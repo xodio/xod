@@ -228,7 +228,7 @@ module TestCase = {
            switch (record |. Map.String.get(name)) {
            | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
            | Some(RaisedError) =>
-            Cpp.requireEqual({j|probe_$name.prevCaughtError|j}, "1")
+            Cpp.requireEqual({j|probe_$name.state.hadError|j}, "true")
            | Some(value) =>
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
@@ -287,11 +287,12 @@ module TestCase = {
         "",
         "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
-        "        (probe).ownError = 0; \\",
+        "        (probe).state.shouldRaise = false; \\",
         "        (probe).isNodeDirty = true;",
         "",
         "#define INJECT_ERROR(probe) \\",
-        "        (probe).ownError = 1;",
+        "        (probe).state.shouldRaise = true;\\",
+        "        (probe).isNodeDirty = true;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])
