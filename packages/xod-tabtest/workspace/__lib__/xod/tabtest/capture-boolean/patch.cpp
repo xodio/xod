@@ -2,10 +2,13 @@
 
 struct State {
     bool lastValue;
+    bool hadError = false;
 };
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    getState(ctx)->lastValue = getValue<input_VAL>(ctx);
+    auto state = getState(ctx);
+    state->lastValue = getValue<input_VAL>(ctx);
+    state->hadError = getError<input_VAL>(ctx);
 }

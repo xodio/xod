@@ -922,15 +922,6 @@ bool isValidAnalogPort(uint8_t port) {
 #endif
 }
 
-template<typename ContextT>
-void raiseError(ContextT* ctx) {
-    ctx->_node->ownError = 1;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
-}
-
 } // namespace xod
 
 //----------------------------------------------------------------------------
@@ -1853,7 +1844,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
+    bool hasOwnError;
     Logic output_DONE;
 
     union {
@@ -1976,6 +1967,16 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_DONE = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+
 void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
     lcd->setCursor(0, lineIndex);
     uint8_t whitespace = 16;
@@ -2045,8 +2046,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
-    uint8_t prevCaughtError;
+    bool hasOwnError;
     TimeMs timeoutAt;
     Logic output_OUT;
 
@@ -2123,6 +2123,16 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_OUT = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+
 template<typename InputT> uint8_t getError(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
@@ -2138,6 +2148,7 @@ void evaluate(Context ctx) {
     auto err = getError<input_IN>(ctx);
     if (err) {
         raiseError(ctx);
+        setTimeout(ctx, 0);
     } else {
         if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
             setTimeout(ctx, 0);
@@ -2162,8 +2173,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
-    uint8_t prevCaughtError;
+    bool hasOwnError;
     TimeMs timeoutAt;
     Logic output_OUT;
 
@@ -2240,6 +2250,16 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_OUT = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+
 template<typename InputT> uint8_t getError(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
@@ -2255,6 +2275,7 @@ void evaluate(Context ctx) {
     auto err = getError<input_IN>(ctx);
     if (err) {
         raiseError(ctx);
+        setTimeout(ctx, 0);
     } else {
         if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
             setTimeout(ctx, 0);
@@ -2413,15 +2434,14 @@ xod__core__cast_to_string__number::Node node_22 = {
 };
 xod__common_hardware__text_lcd_16x2::Node node_23 = {
     xod__common_hardware__text_lcd_16x2::State(), // state default
-    0, // ownError
+    false, // hasOwnError
     node_23_output_DONE, // output DONE default
     false, // DONE dirty
     true // node itself dirty
 };
 xod__core__defer__pulse::Node node_24 = {
     xod__core__defer__pulse::State(), // state default
-    0, // ownError
-    0, // prevCaughtError
+    false, // hasOwnError
     0, // timeoutAt
     node_24_output_OUT, // output OUT default
     false, // OUT dirty
@@ -2429,8 +2449,7 @@ xod__core__defer__pulse::Node node_24 = {
 };
 xod__core__defer__boolean::Node node_25 = {
     xod__core__defer__boolean::State(), // state default
-    0, // ownError
-    0, // prevCaughtError
+    false, // hasOwnError
     0, // timeoutAt
     node_25_output_OUT, // output OUT default
     true, // OUT dirty
@@ -2477,18 +2496,21 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
     {
         if (node_24.isNodeDirty) {
-            XOD_TRACE_F("Trigger defer node #");
-            XOD_TRACE_LN(24);
+            // if a defer has an error, do not evaluate it, but spread the dirtyness
+            if (true) {
+              XOD_TRACE_F("Trigger defer node #");
+              XOD_TRACE_LN(24);
 
-            xod__core__defer__pulse::ContextObject ctxObj;
-            ctxObj._node = &node_24;
-            ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+              xod__core__defer__pulse::ContextObject ctxObj;
+              ctxObj._node = &node_24;
+              ctxObj._isInputDirty_IN = false;
+              ctxObj._error_input_IN = 0;
 
-            xod__core__defer__pulse::evaluate(&ctxObj);
+              xod__core__defer__pulse::evaluate(&ctxObj);
+            }
 
             // mark downstream nodes dirty
-            node_15.isNodeDirty |= node_24.isOutputDirty_OUT;
+            node_15.isNodeDirty = true;
 
             node_24.isNodeDirty = false;
             detail::clearTimeout(&node_24);
@@ -2496,18 +2518,21 @@ void runTransaction() {
     }
     {
         if (node_25.isNodeDirty) {
-            XOD_TRACE_F("Trigger defer node #");
-            XOD_TRACE_LN(25);
+            // if a defer has an error, do not evaluate it, but spread the dirtyness
+            if (true) {
+              XOD_TRACE_F("Trigger defer node #");
+              XOD_TRACE_LN(25);
 
-            xod__core__defer__boolean::ContextObject ctxObj;
-            ctxObj._node = &node_25;
-            ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+              xod__core__defer__boolean::ContextObject ctxObj;
+              ctxObj._node = &node_25;
+              ctxObj._isInputDirty_IN = false;
+              ctxObj._error_input_IN = 0;
 
-            xod__core__defer__boolean::evaluate(&ctxObj);
+              xod__core__defer__boolean::evaluate(&ctxObj);
+            }
 
             // mark downstream nodes dirty
-            node_0.isNodeDirty |= node_25.isOutputDirty_OUT;
+            node_0.isNodeDirty = true;
 
             node_25.isNodeDirty = false;
             detail::clearTimeout(&node_25);
@@ -2516,16 +2541,13 @@ void runTransaction() {
 
     // Evaluate all dirty nodes
     { // xod__core__cast_to_pulse__boolean #0
-        uint8_t error_input_IN = 0;
-        error_input_IN = max(error_input_IN, node_25.ownError);
+        bool error_input_IN = false;
+        error_input_IN |= node_25.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_IN);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_IN;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_0.isNodeDirty && hasNoUpstreamError) {
+        if (node_0.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
 
@@ -2537,6 +2559,10 @@ void runTransaction() {
 
             xod__core__cast_to_pulse__boolean::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_0.isNodeDirty) {
             // mark downstream nodes dirty
             node_18.isNodeDirty |= node_0.isOutputDirty_OUT;
         }
@@ -2574,16 +2600,13 @@ void runTransaction() {
         }
     }
     { // xod__core__any #15
-        uint8_t error_input_IN1 = 0;
-        error_input_IN1 = max(error_input_IN1, node_24.ownError);
+        bool error_input_IN1 = false;
+        error_input_IN1 |= node_24.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_IN1);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_IN1;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_15.isNodeDirty && hasNoUpstreamError) {
+        if (node_15.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
 
@@ -2599,6 +2622,10 @@ void runTransaction() {
 
             xod__core__any::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_15.isNodeDirty) {
             // mark downstream nodes dirty
             node_17.isNodeDirty |= node_15.isOutputDirty_OUT;
         }
@@ -2625,16 +2652,13 @@ void runTransaction() {
         }
     }
     { // xod__core__delay #17
-        uint8_t error_input_SET = 0;
-        error_input_SET = max(error_input_SET, node_24.ownError);
+        bool error_input_SET = false;
+        error_input_SET |= node_24.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_SET);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_SET;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_17.isNodeDirty && hasNoUpstreamError) {
+        if (node_17.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(17);
 
@@ -2650,22 +2674,23 @@ void runTransaction() {
 
             xod__core__delay::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_17.isNodeDirty) {
             // mark downstream nodes dirty
             node_19.isNodeDirty |= node_17.isOutputDirty_DONE;
             node_24.isNodeDirty |= node_17.isOutputDirty_DONE;
         }
     }
     { // xod__core__count #18
-        uint8_t error_input_RST = 0;
-        error_input_RST = max(error_input_RST, node_25.ownError);
+        bool error_input_RST = false;
+        error_input_RST |= node_25.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_RST);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_RST;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_18.isNodeDirty && hasNoUpstreamError) {
+        if (node_18.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(18);
 
@@ -2682,22 +2707,23 @@ void runTransaction() {
 
             xod__core__count::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_18.isNodeDirty) {
             // mark downstream nodes dirty
             node_20.isNodeDirty |= node_18.isOutputDirty_OUT;
             node_21.isNodeDirty |= node_18.isOutputDirty_OUT;
         }
     }
     { // xod__core__count #19
-        uint8_t error_input_INC = 0;
-        error_input_INC = max(error_input_INC, node_24.ownError);
+        bool error_input_INC = false;
+        error_input_INC |= node_24.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_INC);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_INC;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_19.isNodeDirty && hasNoUpstreamError) {
+        if (node_19.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(19);
 
@@ -2713,21 +2739,22 @@ void runTransaction() {
 
             xod__core__count::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_19.isNodeDirty) {
             // mark downstream nodes dirty
             node_22.isNodeDirty |= node_19.isOutputDirty_OUT;
         }
     }
     { // xod__core__greater #20
-        uint8_t error_input_IN1 = 0;
-        error_input_IN1 = max(error_input_IN1, node_25.ownError);
+        bool error_input_IN1 = false;
+        error_input_IN1 |= node_25.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_IN1);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_IN1;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_20.isNodeDirty && hasNoUpstreamError) {
+        if (node_20.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(20);
 
@@ -2740,21 +2767,22 @@ void runTransaction() {
 
             xod__core__greater::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_20.isNodeDirty) {
             // mark downstream nodes dirty
             node_25.isNodeDirty = true;
         }
     }
     { // xod__core__cast_to_string__number #21
-        uint8_t error_input_IN = 0;
-        error_input_IN = max(error_input_IN, node_25.ownError);
+        bool error_input_IN = false;
+        error_input_IN |= node_25.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_IN);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_IN;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_21.isNodeDirty && hasNoUpstreamError) {
+        if (node_21.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(21);
 
@@ -2766,21 +2794,22 @@ void runTransaction() {
 
             xod__core__cast_to_string__number::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_21.isNodeDirty) {
             // mark downstream nodes dirty
             node_23.isNodeDirty = true;
         }
     }
     { // xod__core__cast_to_string__number #22
-        uint8_t error_input_IN = 0;
-        error_input_IN = max(error_input_IN, node_24.ownError);
+        bool error_input_IN = false;
+        error_input_IN |= node_24.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_IN);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_IN;
 
-        uint8_t currentError = maxUpstreamError;
-
-        bool hasNoUpstreamError = maxUpstreamError == 0;
-        if (node_22.isNodeDirty && hasNoUpstreamError) {
+        if (node_22.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(22);
 
@@ -2792,23 +2821,25 @@ void runTransaction() {
 
             xod__core__cast_to_string__number::evaluate(&ctxObj);
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_22.isNodeDirty) {
             // mark downstream nodes dirty
             node_23.isNodeDirty = true;
         }
     }
     { // xod__common_hardware__text_lcd_16x2 #23
-        uint8_t error_input_L1 = 0;
-        error_input_L1 = max(error_input_L1, node_25.ownError);
-        uint8_t error_input_L2 = 0;
-        error_input_L2 = max(error_input_L2, node_24.ownError);
+        bool error_input_L1 = false;
+        error_input_L1 |= node_25.hasOwnError;
+        bool error_input_L2 = false;
+        error_input_L2 |= node_24.hasOwnError;
 
-        uint8_t maxUpstreamError = 0;
-        maxUpstreamError = max(maxUpstreamError, error_input_L1);
-        maxUpstreamError = max(maxUpstreamError, error_input_L2);
+        bool hasUpstreamError = false;
+        hasUpstreamError |= error_input_L1;
+        hasUpstreamError |= error_input_L2;
 
-        uint8_t currentError = max(node_23.ownError, maxUpstreamError);
-        bool hasNoUpstreamError = node_23.ownError >= maxUpstreamError;
-        if (node_23.isNodeDirty && hasNoUpstreamError) {
+        if (node_23.isNodeDirty && !hasUpstreamError) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(23);
 
@@ -2830,20 +2861,24 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_23.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_23.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_23.ownError = 0;
+            node_23.hasOwnError = false;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_23.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_23.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(23, 0);
             }
 #endif
 
+        }
+        // even if the node did not evaluate, mark downstream nodes as
+        // dirty to spread the errors to the catchers
+        if (node_23.isNodeDirty) {
             // mark downstream nodes dirty
         }
     }
@@ -2864,21 +2899,19 @@ void runTransaction() {
             ctxObj._isInputDirty_IN = node_17.isOutputDirty_DONE;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_24.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_24.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_24.ownError = 0;
+            node_24.hasOwnError = false;
 
             xod__core__defer__pulse::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_24.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_24.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(24, 0);
             }
 #endif
-
-            node_24.prevCaughtError = 0;
 
             // mark downstream nodes dirty
             node_15.isNodeDirty |= node_24.isOutputDirty_OUT;
@@ -2901,21 +2934,19 @@ void runTransaction() {
             ctxObj._isInputDirty_IN = true;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_25.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_25.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_25.ownError = 0;
+            node_25.hasOwnError = false;
 
             xod__core__defer__boolean::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_25.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_25.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(25, 0);
             }
 #endif
-
-            node_25.prevCaughtError = 0;
 
             // mark downstream nodes dirty
             node_0.isNodeDirty |= node_25.isOutputDirty_OUT;

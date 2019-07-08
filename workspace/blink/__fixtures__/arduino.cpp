@@ -922,15 +922,6 @@ bool isValidAnalogPort(uint8_t port) {
 #endif
 }
 
-template<typename ContextT>
-void raiseError(ContextT* ctx) {
-    ctx->_node->ownError = 1;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
-}
-
 } // namespace xod
 
 //----------------------------------------------------------------------------
@@ -1301,7 +1292,7 @@ struct State {
 
 struct Node {
     State state;
-    uint8_t ownError;
+    bool hasOwnError;
     Logic output_DONE;
 
     union {
@@ -1388,6 +1379,16 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    ctx->_node->isOutputDirty_DONE = true;
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+
 void evaluate(Context ctx) {
     if (!isInputDirty<input_UPD>(ctx))
         return;
@@ -1461,7 +1462,7 @@ xod__core__flip_flop::Node node_5 = {
 };
 xod__gpio__digital_write::Node node_6 = {
     xod__gpio__digital_write::State(), // state default
-    0, // ownError
+    false, // hasOwnError
     node_6_output_DONE, // output DONE default
     false, // DONE dirty
     true // node itself dirty
@@ -1579,15 +1580,15 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t prevOwnError = node_6.ownError;
+            uint8_t hadOwnErrorBeforeEvaluation = node_6.hasOwnError;
 #endif
             // give the node a chance to recover from it's own previous error
-            node_6.ownError = 0;
+            node_6.hasOwnError = false;
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (prevOwnError && !node_6.ownError) {
+            if (hadOwnErrorBeforeEvaluation && !node_6.hasOwnError) {
                 // report that the node recovered from error
                 detail::printErrorToDebugSerial(6, 0);
             }

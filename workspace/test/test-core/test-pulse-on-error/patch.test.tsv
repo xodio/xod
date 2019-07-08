@@ -3,3 +3,5 @@ IN	OUT
 error	pulse
 5	no-pulse
 error	pulse
+error	pulse	// must work even if there were no "normal" values in between
+error	pulse

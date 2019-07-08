@@ -4,10 +4,7 @@
 struct Node {
     State state;
   {{#if raisesErrors}}
-    uint8_t ownError;
-  {{/if}}
-  {{#if catchesErrors}}
-    uint8_t prevCaughtError;
+    bool hasOwnError;
   {{/if}}
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
@@ -121,6 +118,24 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 {{/if}}
+
+
+{{#if raisesErrors}}
+void raiseError(Context ctx) {
+    ctx->_node->hasOwnError = true;
+
+    {{#each outputs}}
+    {{#if isDirtyable}}
+    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    {{/if}}
+    {{/each}}
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
+#endif
+}
+{{/if}}
+
 
 {{#if catchesErrors}}
 
