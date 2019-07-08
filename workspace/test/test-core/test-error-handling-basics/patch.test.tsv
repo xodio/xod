@@ -2,6 +2,6 @@ IN	IS_ERR	OUT	ERR_P
 12345	false	12345	no-pulse
 42	false	42	no-pulse
 // if IS_ERR is true, error is raised
-	true	42	pulse
+	true	error	pulse
 // after recovery from error
 	false	42	no-pulse
