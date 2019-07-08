@@ -226,14 +226,20 @@ module TestCase = {
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
-           | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
+           | Some(NaN) => Cpp.source([
+             Cpp.requireIsNan({j|probe_$name.state.lastValue|j}),
+             Cpp.requireEqual({j|probe_$name.state.hadError|j}, "false")
+           ])
            | Some(RaisedError) =>
             Cpp.requireEqual({j|probe_$name.state.hadError|j}, "true")
            | Some(value) =>
+            Cpp.source([
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
                valueToLiteral(value),
-             )
+             ),
+             Cpp.requireEqual({j|probe_$name.state.hadError|j}, "false")
+            ])
            | None => {j|// no expectation for $name|j}
            };
          });
