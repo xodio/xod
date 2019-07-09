@@ -11,7 +11,7 @@ void evaluate(Context ctx) {
 
     if (defError) {
         // "DEF" input should not contain an error — reraise it
-        raiseError(ctx);
+        raiseError<output_OUT>(ctx);
     } else {
         emitValue<output_OUT>(ctx, getError<input_IN>(ctx) ? getValue<input_DEF>(ctx) : getValue<input_IN>(ctx));
     }

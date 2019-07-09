@@ -7,7 +7,7 @@ struct State {
 
 void evaluate(Context ctx) {
     if (getValue<input_ERR>(ctx)) {
-        raiseError(ctx);
+        raiseError<output_OUT>(ctx);
     } else {
         if (isInputDirty<input_IN>(ctx))
             emitValue<output_OUT>(ctx, 1);

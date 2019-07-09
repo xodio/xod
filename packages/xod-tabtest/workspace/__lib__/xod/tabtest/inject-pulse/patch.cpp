@@ -9,7 +9,7 @@ struct State {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
     if (state->shouldRaise) {
-        raiseError(ctx);
+        raiseError<output_VAL>(ctx);
         state->shouldRaise = false;
     } else if (getValue<output_VAL>(ctx)) {
         // Any call of `emitValue` marks output port as dirty

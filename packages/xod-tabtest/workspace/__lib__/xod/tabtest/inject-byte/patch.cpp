@@ -9,7 +9,7 @@ struct State {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
     if (state->shouldRaise) {
-        raiseError(ctx);
+        raiseError<output_VAL>(ctx);
         state->shouldRaise = false;
     } else {
         emitValue<output_VAL>(ctx, getValue<output_VAL>(ctx));

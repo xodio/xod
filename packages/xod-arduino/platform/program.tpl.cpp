@@ -26,7 +26,9 @@ namespace xod {
 {{ ns patch }}::Node node_{{ id }} = {
     {{ ns patch }}::State(), // state default
   {{#if patch.raisesErrors}}
-    false, // hasOwnError
+    {{#each outputs}}
+    false, // {{ pinKey }} has no errors on start
+    {{/each}}
   {{/if}}
   {{#if patch.usesTimeouts}}
     0, // timeoutAt
@@ -111,23 +113,23 @@ void runTransaction() {
     {
         if (node_{{ id }}.isNodeDirty) {
             // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if ({{#if (hasUpstreamErrorRaisers this)}}!node_{{ id }}.hasOwnError{{else}}true{{/if}}) {
-              XOD_TRACE_F("Trigger defer node #");
-              XOD_TRACE_LN({{ id }});
+            if (!node_{{ id }}.errorFlags) {
+                XOD_TRACE_F("Trigger defer node #");
+                XOD_TRACE_LN({{ id }});
 
-              {{ns patch }}::ContextObject ctxObj;
-              ctxObj._node = &node_{{ id }};
-              ctxObj._isInputDirty_IN = false;
-              ctxObj._error_input_IN = 0;
+                {{ns patch }}::ContextObject ctxObj;
+                ctxObj._node = &node_{{ id }};
+                ctxObj._isInputDirty_IN = false;
+                ctxObj._error_input_IN = 0;
 
-              {{ ns patch }}::evaluate(&ctxObj);
+                {{ ns patch }}::evaluate(&ctxObj);
             }
 
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty = true;
+            node_{{ this }}.isNodeDirty |= (node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errorFlags);
             {{/each}}
             {{else}}
             {{#each to}}
@@ -150,7 +152,7 @@ void runTransaction() {
       {{#eachInputPinWithUpstreamRaisers inputs}}
         bool error_input_{{ pinKey }} = false;
         {{#each upstreamErrorRaisers}}
-        error_input_{{ ../pinKey }} |= node_{{ this }}.hasOwnError;
+        error_input_{{ ../pinKey }} |= node_{{ nodeId }}.outputHasError_{{ pinKey }};
         {{/each}}
       {{/eachInputPinWithUpstreamRaisers}}
 
@@ -224,19 +226,18 @@ void runTransaction() {
 
           {{#if patch.raisesErrors}}
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t hadOwnErrorBeforeEvaluation = node_{{ id }}.hasOwnError;
+            ErrorFlags previousErrorFlags = node_{{ id }}.errorFlags;
 #endif
-            // give the node a chance to recover from it's own previous error
-            node_{{ id }}.hasOwnError = false;
+            // give the node a chance to recover from it's own previous errors
+            node_{{ id }}.errorFlags = 0;
           {{/if}}
 
             {{ ns patch }}::evaluate(&ctxObj);
 
           {{#if patch.raisesErrors}}
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (hadOwnErrorBeforeEvaluation && !node_{{ id }}.hasOwnError) {
-                // report that the node recovered from error
-                detail::printErrorToDebugSerial({{ id }}, 0);
+            if (previousErrorFlags != node_{{ id }}.errorFlags) {
+                detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errorFlags);
             }
 #endif
           {{/if}}
@@ -267,6 +268,19 @@ void runTransaction() {
   {{#eachNonConstantNode nodes}}
     node_{{ id }}.dirtyFlags = 0;
   {{/eachNonConstantNode}}
+
+    // Сlean errors from pulse outputs
+  {{#eachNonConstantNode nodes}}
+    {{#if patch.raisesErrors}}
+    {{#eachPulseOutput patch.outputs}}
+    if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+      node_{{ ../id }}.outputHasError_{{ pinKey }} = false;
+      detail::printErrorToDebugSerial({{ ../id }}, node_{{ ../id }}.errorFlags);
+    }
+    {{/eachPulseOutput}}
+    {{/if}}
+  {{/eachNonConstantNode}}
+
   {{#eachNodeUsingTimeouts nodes}}
     detail::clearStaleTimeout(&node_{{ id }});
   {{/eachNodeUsingTimeouts}}

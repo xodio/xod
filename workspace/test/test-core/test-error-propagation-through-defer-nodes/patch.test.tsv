@@ -1,6 +1,6 @@
 __time(ms)	ERR	OUT1	OUT2	OUT3	OUT4	OUT5
-0	false	false	pulse	""	0	0
-5	true	false	pulse	""	0	0
+0	false	false	no-pulse	""	0	0
+5	true	false	no-pulse	""	0	0
 6	true	error	error	error	error	error
 15	false	error	error	error	error	error
 16	false	false	no-pulse	""	0	0

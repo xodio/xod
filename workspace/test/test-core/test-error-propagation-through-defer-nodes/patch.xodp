@@ -12,17 +12,6 @@
       }
     },
     {
-      "id": "B1cf3HY1r",
-      "input": {
-        "nodeId": "B1ePmGu-pN",
-        "pinKey": "rkdPED3cE"
-      },
-      "output": {
-        "nodeId": "HktG3BKyB",
-        "pinKey": "ryVmUAOrvkb"
-      }
-    },
-    {
       "id": "BkrN9ZYkr",
       "input": {
         "nodeId": "rkQ4qZYyr",
@@ -290,15 +279,6 @@
         "y": 3
       },
       "type": "xod/core/defer(boolean)"
-    },
-    {
-      "id": "HktG3BKyB",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 1
-      },
-      "type": "xod/core/boot"
     },
     {
       "id": "Hy-zG7dZTE",
