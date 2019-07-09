@@ -397,10 +397,17 @@ const calculateUpstreamErrorRaisers = R.compose(
   R.reduce((accTNodesMap, tNode) => {
     const inputsWithCalculatedUpstreamErrorRaisers = R.map(tNodeInput => {
       const upstreamRaisersForPin = R.compose(
-        R.reject(R.equals(tNode.id)), // could happen with defers
+        R.reject(R.propEq('nodeId', tNode.id)), // could happen with defers
         foldMaybe([], upstreamTNode =>
           R.concat(
-            upstreamTNode.patch.raisesErrors ? [upstreamTNode.id] : [],
+            upstreamTNode.patch.raisesErrors
+              ? [
+                  {
+                    nodeId: upstreamTNode.id,
+                    pinKey: tNodeInput.fromPinKey,
+                  },
+                ]
+              : [],
             upstreamTNode.patch.catchesErrors
               ? []
               : upstreamTNode.upstreamErrorRaisers

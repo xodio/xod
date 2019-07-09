@@ -9,7 +9,7 @@ struct State {
 void evaluate(Context ctx) {
     auto err = getError<input_IN>(ctx);
     if (err) {
-        raiseError(ctx);
+        raiseError<output_OUT>(ctx);
         setTimeout(ctx, 0);
     } else {
         if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated

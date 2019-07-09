@@ -4,7 +4,15 @@
 struct Node {
     State state;
   {{#if raisesErrors}}
-    bool hasOwnError;
+    union {
+        struct {
+          {{#each outputs}}
+            bool outputHasError_{{ pinKey }} : 1;
+          {{/each}}
+        };
+
+        ErrorFlags errorFlags;
+    };
   {{/if}}
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
@@ -121,19 +129,30 @@ uint16_t getNodeId(Context ctx) {
 
 
 {{#if raisesErrors}}
-void raiseError(Context ctx) {
-    ctx->_node->hasOwnError = true;
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
+}
 
-    {{#each outputs}}
+{{#each outputs}}
+template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
+    ctx->_node->outputHasError_{{ pinKey }} = true;
     {{#if isDirtyable}}
     ctx->_node->isOutputDirty_{{ pinKey }} = true;
     {{/if}}
-    {{/each}}
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
 }
+{{/each}}
+
+void raiseError(Context ctx) {
+  {{#each outputs}}
+    ctx->_node->outputHasError_{{ pinKey }} = true;
+    {{#if isDirtyable}}
+    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    {{/if}}
+  {{/each}}
+}
+
 {{/if}}
 
 

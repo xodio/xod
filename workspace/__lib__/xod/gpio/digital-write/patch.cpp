@@ -11,7 +11,7 @@ void evaluate(Context ctx) {
 
     const uint8_t port = getValue<input_PORT>(ctx);
     if (!isValidDigitalPort(port)) {
-        raiseError(ctx);
+        raiseError<output_DONE>(ctx);
         return;
     }
 

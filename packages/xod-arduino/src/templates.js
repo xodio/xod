@@ -276,6 +276,10 @@ registerHandlebarsFilterLoopHelper(
   'eachInputPinWithUpstreamRaisers',
   R.pathOr(0, ['upstreamErrorRaisers', 'length'])
 );
+registerHandlebarsFilterLoopHelper(
+  'eachPulseOutput',
+  R.propEq('type', XP.PIN_TYPE.PULSE)
+);
 
 // =============================================================================
 //

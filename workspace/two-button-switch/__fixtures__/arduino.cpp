@@ -83,6 +83,7 @@ typedef double Number;
 typedef bool Logic;
 typedef unsigned long TimeMs;
 typedef uint8_t DirtyFlags;
+typedef uint8_t ErrorFlags;
 } // namespace xod
 
 /*=============================================================================
@@ -864,18 +865,18 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
+void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errCode) {
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
     XOD_DEBUG_SERIAL.print(':');
     XOD_DEBUG_SERIAL.print(nodeId);
     XOD_DEBUG_SERIAL.print(':');
-    XOD_DEBUG_SERIAL.print((int)errCode);
+    XOD_DEBUG_SERIAL.print(errorFlags, DEC);
     XOD_DEBUG_SERIAL.print('\r');
     XOD_DEBUG_SERIAL.print('\n');
-}
 #endif
+}
 
 } // namespace detail
 
@@ -1043,7 +1044,14 @@ struct State {
 
 struct Node {
     State state;
-    bool hasOwnError;
+    union {
+        struct {
+            bool outputHasError_SIG : 1;
+            bool outputHasError_DONE : 1;
+        };
+
+        ErrorFlags errorFlags;
+    };
     Logic output_SIG;
     Logic output_DONE;
 
@@ -1135,15 +1143,26 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
-void raiseError(Context ctx) {
-    ctx->_node->hasOwnError = true;
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_SIG output_DONE");
+}
 
+template<> void raiseError<output_SIG>(Context ctx) {
+    ctx->_node->outputHasError_SIG = true;
     ctx->_node->isOutputDirty_SIG = true;
+}
+template<> void raiseError<output_DONE>(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
     ctx->_node->isOutputDirty_DONE = true;
+}
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
+void raiseError(Context ctx) {
+    ctx->_node->outputHasError_SIG = true;
+    ctx->_node->isOutputDirty_SIG = true;
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1403,7 +1422,13 @@ struct State {
 
 struct Node {
     State state;
-    bool hasOwnError;
+    union {
+        struct {
+            bool outputHasError_DONE : 1;
+        };
+
+        ErrorFlags errorFlags;
+    };
     Logic output_DONE;
 
     union {
@@ -1490,14 +1515,20 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 
-void raiseError(Context ctx) {
-    ctx->_node->hasOwnError = true;
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_DONE");
+}
 
+template<> void raiseError<output_DONE>(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
     ctx->_node->isOutputDirty_DONE = true;
+}
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, 1);
-#endif
+void raiseError(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1506,7 +1537,7 @@ void evaluate(Context ctx) {
 
     const uint8_t port = getValue<input_PORT>(ctx);
     if (!isValidDigitalPort(port)) {
-        raiseError(ctx);
+        raiseError<output_DONE>(ctx);
         return;
     }
 
@@ -1570,7 +1601,8 @@ xod__core__continuously::Node node_3 = {
 };
 xod__gpio__digital_read::Node node_4 = {
     xod__gpio__digital_read::State(), // state default
-    false, // hasOwnError
+    false, // SIG has no errors on start
+    false, // DONE has no errors on start
     node_4_output_SIG, // output SIG default
     node_4_output_DONE, // output DONE default
     true, // SIG dirty
@@ -1579,7 +1611,8 @@ xod__gpio__digital_read::Node node_4 = {
 };
 xod__gpio__digital_read::Node node_5 = {
     xod__gpio__digital_read::State(), // state default
-    false, // hasOwnError
+    false, // SIG has no errors on start
+    false, // DONE has no errors on start
     node_5_output_SIG, // output SIG default
     node_5_output_DONE, // output DONE default
     true, // SIG dirty
@@ -1610,7 +1643,7 @@ xod__core__flip_flop::Node node_8 = {
 };
 xod__gpio__digital_write::Node node_9 = {
     xod__gpio__digital_write::State(), // state default
-    false, // hasOwnError
+    false, // DONE has no errors on start
     node_9_output_DONE, // output DONE default
     false, // DONE dirty
     true // node itself dirty
@@ -1688,17 +1721,16 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t hadOwnErrorBeforeEvaluation = node_4.hasOwnError;
+            ErrorFlags previousErrorFlags = node_4.errorFlags;
 #endif
-            // give the node a chance to recover from it's own previous error
-            node_4.hasOwnError = false;
+            // give the node a chance to recover from it's own previous errors
+            node_4.errorFlags = 0;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (hadOwnErrorBeforeEvaluation && !node_4.hasOwnError) {
-                // report that the node recovered from error
-                detail::printErrorToDebugSerial(4, 0);
+            if (previousErrorFlags != node_4.errorFlags) {
+                detail::printErrorToDebugSerial(4, node_4.errorFlags);
             }
 #endif
 
@@ -1722,17 +1754,16 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t hadOwnErrorBeforeEvaluation = node_5.hasOwnError;
+            ErrorFlags previousErrorFlags = node_5.errorFlags;
 #endif
-            // give the node a chance to recover from it's own previous error
-            node_5.hasOwnError = false;
+            // give the node a chance to recover from it's own previous errors
+            node_5.errorFlags = 0;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (hadOwnErrorBeforeEvaluation && !node_5.hasOwnError) {
-                // report that the node recovered from error
-                detail::printErrorToDebugSerial(5, 0);
+            if (previousErrorFlags != node_5.errorFlags) {
+                detail::printErrorToDebugSerial(5, node_5.errorFlags);
             }
 #endif
 
@@ -1742,7 +1773,7 @@ void runTransaction() {
     }
     { // xod__core__branch #6
         bool error_input_GATE = false;
-        error_input_GATE |= node_4.hasOwnError;
+        error_input_GATE |= node_4.outputHasError_SIG;
 
         bool hasUpstreamError = false;
         hasUpstreamError |= error_input_GATE;
@@ -1772,7 +1803,7 @@ void runTransaction() {
     }
     { // xod__core__branch #7
         bool error_input_GATE = false;
-        error_input_GATE |= node_5.hasOwnError;
+        error_input_GATE |= node_5.outputHasError_SIG;
 
         bool hasUpstreamError = false;
         hasUpstreamError |= error_input_GATE;
@@ -1802,9 +1833,9 @@ void runTransaction() {
     }
     { // xod__core__flip_flop #8
         bool error_input_SET = false;
-        error_input_SET |= node_5.hasOwnError;
+        error_input_SET |= node_5.outputHasError_SIG;
         bool error_input_RST = false;
-        error_input_RST |= node_4.hasOwnError;
+        error_input_RST |= node_4.outputHasError_SIG;
 
         bool hasUpstreamError = false;
         hasUpstreamError |= error_input_SET;
@@ -1837,8 +1868,8 @@ void runTransaction() {
     }
     { // xod__gpio__digital_write #9
         bool error_input_SIG = false;
-        error_input_SIG |= node_5.hasOwnError;
-        error_input_SIG |= node_4.hasOwnError;
+        error_input_SIG |= node_5.outputHasError_SIG;
+        error_input_SIG |= node_4.outputHasError_SIG;
 
         bool hasUpstreamError = false;
         hasUpstreamError |= error_input_SIG;
@@ -1859,17 +1890,16 @@ void runTransaction() {
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            uint8_t hadOwnErrorBeforeEvaluation = node_9.hasOwnError;
+            ErrorFlags previousErrorFlags = node_9.errorFlags;
 #endif
-            // give the node a chance to recover from it's own previous error
-            node_9.hasOwnError = false;
+            // give the node a chance to recover from it's own previous errors
+            node_9.errorFlags = 0;
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-            if (hadOwnErrorBeforeEvaluation && !node_9.hasOwnError) {
-                // report that the node recovered from error
-                detail::printErrorToDebugSerial(9, 0);
+            if (previousErrorFlags != node_9.errorFlags) {
+                detail::printErrorToDebugSerial(9, node_9.errorFlags);
             }
 #endif
 
@@ -1889,6 +1919,21 @@ void runTransaction() {
     node_7.dirtyFlags = 0;
     node_8.dirtyFlags = 0;
     node_9.dirtyFlags = 0;
+
+    // Сlean errors from pulse outputs
+    if (node_4.outputHasError_DONE) {
+      node_4.outputHasError_DONE = false;
+      detail::printErrorToDebugSerial(4, node_4.errorFlags);
+    }
+    if (node_5.outputHasError_DONE) {
+      node_5.outputHasError_DONE = false;
+      detail::printErrorToDebugSerial(5, node_5.errorFlags);
+    }
+    if (node_9.outputHasError_DONE) {
+      node_9.outputHasError_DONE = false;
+      detail::printErrorToDebugSerial(9, node_9.errorFlags);
+    }
+
     detail::clearStaleTimeout(&node_3);
 
     XOD_TRACE_F("Transaction completed, t=");
