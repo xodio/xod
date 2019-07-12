@@ -2055,6 +2055,7 @@ namespace xod__core__defer__pulse {
 //#pragma XOD error_raise enable
 
 struct State {
+    bool shouldRaiseAtTheNextDeferOnlyRun = false;
 };
 
 struct Node {
@@ -2170,16 +2171,23 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 }
 
 void evaluate(Context ctx) {
-    auto err = getError<input_IN>(ctx);
-    if (err) {
-        raiseError<output_OUT>(ctx);
-        setTimeout(ctx, 0);
-    } else {
-        if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-            setTimeout(ctx, 0);
-        } else {
-            emitValue<output_OUT>(ctx, true);
+    auto state = getState(ctx);
+
+    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
+        if (getError<input_IN>(ctx)) {
+            state->shouldRaiseAtTheNextDeferOnlyRun = true;
         }
+
+        setTimeout(ctx, 0);
+    } else { // This means that we are at the defer-only stage
+        if (isSettingUp()) return;
+
+        if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+            raiseError<output_OUT>(ctx);
+            state->shouldRaiseAtTheNextDeferOnlyRun = false;
+        }
+
+        emitValue<output_OUT>(ctx, true);
     }
 }
 
