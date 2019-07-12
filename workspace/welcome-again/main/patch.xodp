@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "Welcome to XOD again!\n\nDid you complete the built-in tutorial? We recommend you to do it:\n\n»»                                                              ««\n»»»»              [Open Built-in Tutorial Project](xod://actions/open-tutorial)              ««««\n»»                                                              ««\n\nStarting a new project? Delete this comment and start tinkering.\nOr use “File” menu to open an existing project.",
+      "content": "Welcome to XOD again!\n\nDid you complete the built-in tutorial? We recommend you to do it:\n\n»»                                                              ««\n»»»»              [Open Built-in Tutorial Project](xod://actions/open-tutorial)              ««««\n»»                                                              ««\n\nStarting a new project? Delete this comment and start tinkering.\nOr use “File” menu to open an existing project. If you ever need\na controller board, sensors, or hardware modules for the project\npick everything you need at [amperka.com](https://amperka.com/?utm_source=xod&utm_campaign=embed&utm_medium=ide)",
       "id": "HyZlIT6Bf",
       "position": {
         "units": "slots",
