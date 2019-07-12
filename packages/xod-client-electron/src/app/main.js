@@ -240,7 +240,8 @@ const onReady = () => {
     )
   );
   ipcMain.on(EVENTS.DEBUG_SERIAL_SEND, (event, str) => {
-    if (!debugPort) return;
+    if (!debugPort || !debugPort.write) return;
+
     debugPort.write(str);
   });
   ipcMain.on(EVENTS.STOP_DEBUG_SESSION, stopDebugSession);
