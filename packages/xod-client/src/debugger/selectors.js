@@ -124,6 +124,15 @@ const getChunksPath = R.curry((activeIndex, chunks) =>
   )(chunks)
 );
 
+export const getCurrentChunksPath = createSelector(
+  [getCurrentTabId, getBreadcrumbChunks, getBreadcrumbActiveIndex],
+  (maybeTabId, chunks, activeIndex) =>
+    R.chain(tabId => {
+      if (tabId !== DEBUGGER_TAB_ID) return Maybe.Nothing();
+      return Maybe.Just(getChunksPath(activeIndex, chunks));
+    }, maybeTabId)
+);
+
 export const getWatchNodeValuesForCurrentPatch = createSelector(
   [
     getCurrentTabId,

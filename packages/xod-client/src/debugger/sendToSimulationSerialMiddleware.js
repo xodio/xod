@@ -1,10 +1,12 @@
 import * as R from 'ramda';
 import * as XP from 'xod-project';
+import { foldMaybe } from 'xod-func-tools';
 import { formatTweakMessage } from 'xod-arduino';
 
 import { getProject } from '../project/selectors';
 import {
   isSimulationRunning,
+  getCurrentChunksPath,
   getInvertedDebuggerNodeIdsMap,
 } from './selectors';
 import * as editorSelectors from '../editor/selectors';
@@ -28,8 +30,12 @@ export default ({ getState }) => next => action => {
     )(state);
 
     if (XP.isTweakPath(nodeType)) {
+      const nodeIdPath = R.compose(
+        foldMaybe(nodeId, R.concat(R.__, nodeId)),
+        getCurrentChunksPath
+      )(state);
       const debuggerNodeId = R.compose(
-        R.prop(nodeId),
+        R.prop(nodeIdPath),
         getInvertedDebuggerNodeIdsMap
       )(state);
 
