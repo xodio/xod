@@ -134,7 +134,7 @@ class Node extends React.Component {
       type,
       isDragged,
       isDeprecated,
-      raisedErrorCode,
+      errorRaised,
       isAffectedByErrorRaiser,
     } = this.props;
 
@@ -147,7 +147,7 @@ class Node extends React.Component {
       'is-variadic': this.props.isVariadic,
       'is-changing-arity': this.props.isChangingArity,
       'is-errored': this.props.errors.length > 0,
-      'is-error-raised': !!raisedErrorCode,
+      'is-error-raised': !!errorRaised,
       'is-error-affected': isAffectedByErrorRaiser,
       'is-hovered': this.isNodeHovered(),
       'is-deprecated': this.props.isDeprecated,
@@ -176,7 +176,7 @@ class Node extends React.Component {
             R.map(R.pipe(formatErrorMessage, R.prop('note')))
           )(this.props.errors),
       ],
-      [() => !!raisedErrorCode, R.always('Node raised an error')],
+      [() => !!errorRaised, R.always('Node raised an error')],
       [
         () => isAffectedByErrorRaiser,
         R.always('Node evaluation stopped by some upstream nodes'),
@@ -270,7 +270,7 @@ Node.propTypes = {
   onMouseUp: PropTypes.func,
   onDoubleClick: PropTypes.func,
   noNodeHovering: PropTypes.bool,
-  raisedErrorCode: PropTypes.number,
+  errorRaised: PropTypes.bool,
   isAffectedByErrorRaiser: PropTypes.bool,
 };
 
@@ -289,6 +289,7 @@ Node.defaultProps = {
   pinLinkabilityValidator: R.F,
   noNodeHovering: false,
   isAffectedByErrorRaiser: false,
+  errorRaised: false,
 };
 
 export default Node;

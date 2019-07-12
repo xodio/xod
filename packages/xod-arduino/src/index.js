@@ -2,6 +2,7 @@ export {
   transpile,
   transformProject,
   getNodeIdsMap,
+  getNodePinKeysMap,
   getPinsAffectedByErrorRaisers,
   getRequireUrls,
 } from './transpiler';

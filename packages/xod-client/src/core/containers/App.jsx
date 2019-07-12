@@ -20,6 +20,7 @@ import {
   transformProject,
   transpile,
   getNodeIdsMap,
+  getNodePinKeysMap,
   getPinsAffectedByErrorRaisers,
   LIVENESS,
 } from 'xod-arduino';
@@ -106,13 +107,14 @@ export default class App extends React.Component {
           this.props.actions.addError,
           R.when(R.is(Error), formatErrorMessage)
         ),
-        ({ code, nodeIdsMap, pinsAffectedByErrorRaisers }) =>
+        ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
           this.props.actions.runSimulation(
             explodeMaybe(
               'currentPatchPath already folded in `transformProjectForTranspiler`',
               this.props.currentPatchPath
             ),
             nodeIdsMap,
+            nodePinKeysMap,
             code,
             pinsAffectedByErrorRaisers
           )
@@ -121,6 +123,7 @@ export default class App extends React.Component {
         R.applySpec({
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
+          nodePinKeysMap: getNodePinKeysMap,
           pinsAffectedByErrorRaisers: tProj =>
             R.compose(
               foldMaybe(

@@ -38,7 +38,7 @@ const NodesLayer = ({
             position={node.pxPosition}
             pxPosition={node.pxPosition}
             errors={node.errors}
-            raisedErrorCode={node.raisedErrorCode}
+            errorRaised={node.errorRaised}
             isAffectedByErrorRaiser={node.isAffectedByErrorRaiser}
             isDeprecated={node.isDeprecated}
             hidden={node.hidden}
@@ -72,7 +72,6 @@ const NodesLayer = ({
 NodesLayer.defaultProps = {
   areDragged: false,
   nodeValues: {},
-  interactiveNodeErrorCodes: {},
   nodesAffectedByErrorRaisers: {},
 };
 
