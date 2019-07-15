@@ -34,6 +34,6 @@ export default {
   nodeIdsMap: {},
   watchNodeValues: {},
   uploadProgress: null,
-  interactiveNodeErrorCodes: {},
+  interactiveErroredNodePins: {},
   pinsAffectedByErrorRaisers: {},
 };

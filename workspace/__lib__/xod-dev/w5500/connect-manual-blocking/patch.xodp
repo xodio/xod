@@ -89,17 +89,6 @@
       "type": "xod/net/input-ip-address"
     },
     {
-      "description": "Pulses if the connection failed",
-      "id": "rkgIz_SLW7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "description": "Own IP address",
       "id": "rkuXdr8-Q",
       "label": "IP",

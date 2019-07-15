@@ -1,5 +1,5 @@
 {
-  "description": "Connect to a WiFi network with a given SSID and password",
+  "description": "Connect to a WiFi network with a given SSID and password\n\nPossible errors:\n— Connection failed",
   "nodes": [
     {
       "id": "BJxASTtLYm",
@@ -31,17 +31,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "description": "Pulses if the connection failed\n",
-      "id": "HJ7RrpFUY7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Name of the Wi-Fi network",

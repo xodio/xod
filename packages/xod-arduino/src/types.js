@@ -86,11 +86,16 @@ const TNodeInput = Model('TNodeInput', {
   fromPinKey: TPinKey,
 });
 
+const UpstreamErrorRaiser = Model('UpstreamErrorRaiser', {
+  nodeId: TNodeId,
+  pinKey: TPinKey,
+});
+
 export const TNode = Model('TNode', {
   id: TNodeId,
   originalId: NodeId,
   patch: TPatch,
-  upstreamErrorRaisers: $.Array(TNodeId),
+  upstreamErrorRaisers: $.Array(UpstreamErrorRaiser),
   outputs: $.Array(TNodeOutput),
   inputs: $.Array(TNodeInput),
 });

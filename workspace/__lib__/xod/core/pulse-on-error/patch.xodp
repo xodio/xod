@@ -1,14 +1,6 @@
 {
+  "description": "Fires a pulse when the upstream node enters the error state.",
   "nodes": [
-    {
-      "id": "Bk-7AaSoE",
-      "position": {
-        "units": "slots",
-        "x": 0,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
     {
       "id": "BypMC6riE",
       "position": {
@@ -26,6 +18,15 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1XIK3x-S",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
   ]
 }

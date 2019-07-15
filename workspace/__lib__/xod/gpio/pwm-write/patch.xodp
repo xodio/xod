@@ -1,5 +1,5 @@
 {
-  "description": "Outputs hardware-supported PWM signal on a board port",
+  "description": "Outputs hardware-supported PWM signal on a board port.\n\nPossible errors:\n— Invalid port",
   "nodes": [
     {
       "boundLiterals": {
@@ -25,17 +25,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
-    },
-    {
-      "description": "Fires if write failed. E.g. `PORT` does not exist.",
-      "id": "S1eDAq69yX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Fires on writing complete",

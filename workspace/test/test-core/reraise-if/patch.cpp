@@ -1,5 +1,5 @@
-
 #pragma XOD error_catch enable
+#pragma XOD error_raise enable
 
 struct State {
 };
@@ -8,7 +8,7 @@ struct State {
 
 void evaluate(Context ctx) {
     if (getValue<input_RR>(ctx)) {
-        raiseError(ctx, getError<input_IN>(ctx));
+        raiseError<output_OUT>(ctx);
     } else {
         emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
     }

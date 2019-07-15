@@ -23,6 +23,7 @@ import {
 import {
   transpile,
   getNodeIdsMap,
+  getNodePinKeysMap,
   getPinsAffectedByErrorRaisers,
   getRequireUrls,
   LIVENESS,
@@ -354,6 +355,7 @@ class App extends client.App {
               this.props.actions.addError(client.composeMessage(error.message)),
             tProject => {
               const nodeIdsMap = getNodeIdsMap(tProject);
+              const nodePinKeysMap = getNodePinKeysMap(tProject);
               if (this.props.currentPatchPath.isNothing) return;
               const currentPatchPath = explodeMaybe(
                 'Imposible error: currentPatchPath is Nothing',
@@ -375,6 +377,7 @@ class App extends client.App {
               this.props.actions.startDebuggerSession(
                 client.createSystemMessage('Debug session started'),
                 nodeIdsMap,
+                nodePinKeysMap,
                 pinsAffectedByErrorRaisers,
                 currentPatchPath
               );

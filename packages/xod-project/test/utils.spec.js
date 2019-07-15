@@ -114,39 +114,6 @@ describe('Utils', () => {
     });
   });
 
-  describe('isValidErrcodeLiteral', () => {
-    const assertIsValid = x =>
-      assert.isTrue(Utils.isValidErrcodeLiteral(x), `${x} must be valid`);
-    const assertIsInvalid = x =>
-      assert.isFalse(Utils.isValidErrcodeLiteral(x), `${x} must be invalid`);
-
-    it('should recognise valid literals', () => {
-      assertIsValid('E0');
-      assertIsValid('E8');
-      assertIsValid('E10');
-      assertIsValid('E100');
-      assertIsValid('E255');
-    });
-
-    it('should treat out of range error codes as invalid', () => {
-      assertIsInvalid('E-1');
-      assertIsInvalid('E-10');
-      assertIsInvalid('E256');
-      assertIsInvalid('E567');
-      assertIsInvalid('E1227');
-    });
-
-    it('should treat ill-formed literals as invalid', () => {
-      assertIsInvalid('42');
-      assertIsInvalid('e42');
-      assertIsInvalid('E01');
-      assertIsInvalid('E011');
-      assertIsInvalid('E0x08');
-      assertIsInvalid('E8h');
-      assertIsInvalid('E0b11');
-    });
-  });
-
   describe('getTypeFromLiteral', () => {
     const expectType = (literal, expectedType) =>
       R.compose(
@@ -208,13 +175,6 @@ describe('Utils', () => {
       expectType('PD20', PIN_TYPE.PORT);
       expectType('PE8', PIN_TYPE.PORT);
       expectType('PF0', PIN_TYPE.PORT);
-    });
-
-    it('should recognise errcode literals', () => {
-      expectType('E0', PIN_TYPE.ERRCODE);
-      expectType('E42', PIN_TYPE.ERRCODE);
-      expectType('E127', PIN_TYPE.ERRCODE);
-      expectType('E255', PIN_TYPE.ERRCODE);
     });
   });
 });

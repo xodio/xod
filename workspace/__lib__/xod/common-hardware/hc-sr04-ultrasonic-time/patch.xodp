@@ -1,5 +1,5 @@
 {
-  "description": "Measures sound roundtrip time with HC-SR04 ultrasonic range meter. Keeps output intact if a ping fails (no echo or wrong connection).",
+  "description": "Measures sound roundtrip time with HC-SR04 ultrasonic range meter. Outputs infinity on no echo.\n\nPossible errors:\n— Invalid port\n— Wrong connection",
   "nodes": [
     {
       "description": "Fires when ping is done",
@@ -22,17 +22,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Fires if ping failed",
-      "id": "H1iPYsSe7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Last measured sound roundtrip time in seconds.",

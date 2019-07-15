@@ -4,10 +4,15 @@
 struct Node {
     State state;
   {{#if raisesErrors}}
-    uint8_t ownError;
-  {{/if}}
-  {{#if catchesErrors}}
-    uint8_t prevCaughtError;
+    union {
+        struct {
+          {{#each outputs}}
+            bool outputHasError_{{ pinKey }} : 1;
+          {{/each}}
+        };
+
+        ErrorFlags errorFlags;
+    };
   {{/if}}
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
@@ -121,6 +126,35 @@ uint16_t getNodeId(Context ctx) {
     return ctx->_nodeId;
 }
 {{/if}}
+
+
+{{#if raisesErrors}}
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
+}
+
+{{#each outputs}}
+template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
+    ctx->_node->outputHasError_{{ pinKey }} = true;
+    {{#if isDirtyable}}
+    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    {{/if}}
+}
+{{/each}}
+
+void raiseError(Context ctx) {
+  {{#each outputs}}
+    ctx->_node->outputHasError_{{ pinKey }} = true;
+    {{#if isDirtyable}}
+    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    {{/if}}
+  {{/each}}
+}
+
+{{/if}}
+
 
 {{#if catchesErrors}}
 

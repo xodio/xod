@@ -35,10 +35,6 @@
       "description": "This terminal should not be visible to an end-user.",
       "path": "@/input-dead"
     },
-    "@/input-errcode": {
-      "description": "Input terminal node. Adds a new errcode input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
-      "path": "@/input-errcode"
-    },
     "@/input-number": {
       "description": "Input terminal node. Adds a new number input pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order. A value bound to the terminal node pin becomes the default for the created input pin.",
       "path": "@/input-number"
@@ -117,10 +113,6 @@
     "@/output-dead": {
       "description": "This terminal should not be visible to end-user.",
       "path": "@/output-dead"
-    },
-    "@/output-errcode": {
-      "description": "Output terminal node. Adds a new errcode output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",
-      "path": "@/output-errcode"
     },
     "@/output-number": {
       "description": "Output terminal node. Adds a new number output pin to the patch node which contains this node. Terminal label and description are propagated to the pin. Horizontal position relative to other terminals defines the pin order.",

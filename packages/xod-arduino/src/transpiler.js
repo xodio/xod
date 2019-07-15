@@ -10,7 +10,6 @@ import {
   isAmong,
   fail,
   cppEscape,
-  mergeAllWithConcat,
   catMaybies,
 } from 'xod-func-tools';
 import * as XP from 'xod-project';
@@ -397,10 +396,17 @@ const calculateUpstreamErrorRaisers = R.compose(
   R.reduce((accTNodesMap, tNode) => {
     const inputsWithCalculatedUpstreamErrorRaisers = R.map(tNodeInput => {
       const upstreamRaisersForPin = R.compose(
-        R.reject(R.equals(tNode.id)), // could happen with defers
+        R.reject(R.propEq('nodeId', tNode.id)), // could happen with defers
         foldMaybe([], upstreamTNode =>
           R.concat(
-            upstreamTNode.patch.raisesErrors ? [upstreamTNode.id] : [],
+            upstreamTNode.patch.raisesErrors
+              ? [
+                  {
+                    nodeId: upstreamTNode.id,
+                    pinKey: tNodeInput.fromPinKey,
+                  },
+                ]
+              : [],
             upstreamTNode.patch.catchesErrors
               ? []
               : upstreamTNode.upstreamErrorRaisers
@@ -545,71 +551,205 @@ export const getNodeIdsMap = def(
   )
 );
 
+export const getNodePinKeysMap = def(
+  'getNodePinKeysMap :: TProject -> Map NodeId [PinKey]',
+  R.compose(
+    R.fromPairs,
+    R.map(node => [node.originalId, R.pluck('pinKey', node.patch.outputs)]),
+    R.prop('nodes')
+  )
+);
+
+const getParentPatch = def(
+  'getParentPatch :: NodeId -> Patch -> Project -> Maybe Patch',
+  (fullNodeId, rootPatch, project) =>
+    R.compose(
+      R.reduce(
+        (parentPatch, nodeId) =>
+          R.chain(
+            R.compose(
+              R.chain(XP.getPatchByNode(R.__, project)),
+              XP.getNodeById(nodeId)
+            ),
+            parentPatch
+          ),
+        Maybe(rootPatch)
+      ),
+      R.init,
+      R.split('~')
+    )(fullNodeId)
+);
+
+/**
+ * Utility function to get upstream pin pairs
+ *
+ * Accepts the intermediate object `ExtendedTInput`:
+ * {
+ *   originalPinKey: PinKey,
+ *   upstreamErrorRaisers: [Int],
+ *   ownerNodeId: NodeId,          // chained, like `aa~bb~cc`
+ *   ownerNodeType: PatchPath,
+ * }
+ *
+ * Returns another intermediate object `PinPairGroup`:
+ * {
+ *   pinPairs: [Pair Pin Node],   // Node with updated id (chained), like `aa~bb~cc`
+ *   upstreamErrorRaisers: [Int],
+ *   parentNodeId: NodeId,        // chained
+ *   parentPatch: Patch,
+ * }
+ */
+const getUpstreamPinPairsByPinPair = def(
+  'getUpstreamPinPairsByPinPair :: Patch -> Project -> Object -> Maybe Object',
+  (
+    currentPatch,
+    project,
+    { originalPinKey, upstreamErrorRaisers, ownerNodeId, ownerNodeType }
+  ) => {
+    const parentNodeId = R.compose(R.join('~'), R.init, R.split('~'))(
+      ownerNodeId
+    );
+    const finalNodeId = R.compose(R.last, R.split('~'))(ownerNodeId);
+    const maybeParentPatch = getParentPatch(ownerNodeId, currentPatch, project);
+    const maybeNode = R.chain(XP.getNodeById(finalNodeId), maybeParentPatch);
+    const maybeNodePatch = XP.getPatchByPath(ownerNodeType, project);
+    const maybePin = R.chain(XP.getPinByKey(originalPinKey), maybeNodePatch);
+
+    return R.compose(
+      R.map(([pin, node, parentPatch]) =>
+        R.compose(
+          pinPairs => ({
+            pinPairs,
+            upstreamErrorRaisers,
+            parentNodeId,
+            parentPatch,
+          }),
+          XP.listUpstreamPinsToNiix(R.__, parentPatch, project)
+        )([[pin, node]])
+      ),
+      R.sequence(Maybe.of)
+    )([maybePin, maybeNode, maybeParentPatch]);
+  }
+);
+
+// Object :: { nodeId: NodeId, pinKey: PinKey }
+const createAffectedPinsTree = def(
+  'createAffectedPinsTree :: [Object] -> [Pair PinKey NodeId] -> [Map Number (Map PinKey [Pair PinKey NodeId])]',
+  (upstreamErrorRaisers, pairs) =>
+    R.reduce(
+      (acc, errRaiser) =>
+        R.over(
+          R.lensProp(errRaiser.nodeId),
+          R.compose(
+            R.over(
+              R.lensProp(errRaiser.pinKey),
+              R.compose(R.concat(pairs), R.defaultTo([]))
+            ),
+            R.defaultTo({})
+          ),
+          acc
+        ),
+      {}
+    )(upstreamErrorRaisers)
+);
+
 export const getPinsAffectedByErrorRaisers = def(
-  'getPinsAffectedByErrorRaisers :: TProject -> Patch -> Project -> Map Number [Pair PinKey NodeId]',
+  'getPinsAffectedByErrorRaisers :: TProject -> Patch -> Project -> Map Number (Map PinKey [Pair PinKey NodeId])',
   (tProject, currentPatch, project) => {
     const hasNoUpstreamErrorRaisers = R.propSatisfies(
       R.isEmpty,
       'upstreamErrorRaisers'
     );
 
-    return R.compose(
-      mergeAllWithConcat,
-      R.map(R.map(R.of)),
-      R.unnest,
-      catMaybies,
-      R.map(
-        ({
-          originalPinKey,
-          upstreamErrorRaisers,
-          ownerNodeId,
-          ownerNodeType,
-        }) => {
-          const rootNodeId = R.compose(R.head, R.split('~'))(ownerNodeId);
-          const maybeNode = XP.getNodeById(rootNodeId, currentPatch);
-          const maybeNodePatch = XP.getPatchByPath(ownerNodeType, project);
-          const maybePin = R.chain(
-            XP.getPinByKey(originalPinKey),
-            maybeNodePatch
-          );
-
-          return R.compose(
-            R.map(([pin, node]) =>
-              R.compose(
-                R.map(R.fromPairs),
-                R.map(pairs =>
-                  R.map(
-                    errRaiserId => [errRaiserId, pairs],
-                    upstreamErrorRaisers
-                  )
-                ),
-                R.map(
-                  R.compose(
-                    R.over(R.lensIndex(0), XP.getPinKey),
-                    R.over(R.lensIndex(1), XP.getNodeId)
-                  )
-                ),
-                XP.listUpstreamPinsToNiix(R.__, currentPatch, project)
-              )([[pin, node]])
-            ),
-            R.sequence(Maybe.of)
-          )([maybePin, maybeNode]);
-        }
-      ),
-      R.unnest,
-      R.map(tNode =>
+    const convertPinPairGroupsToPinPairs = R.compose(
+      R.reduce((acc, next) => R.mergeDeepWith(R.concat, acc, next), {}),
+      R.map(pinPairsGroup =>
         R.compose(
+          createAffectedPinsTree(pinPairsGroup.upstreamErrorRaisers),
           R.map(
             R.compose(
-              R.assoc('ownerNodeId', tNode.originalId),
-              R.assoc('ownerNodeType', tNode.patch.patchPath),
-              R.pick(['originalPinKey', 'upstreamErrorRaisers'])
+              R.over(R.lensIndex(0), XP.getPinKey),
+              R.over(
+                R.lensIndex(1),
+                R.pipe(
+                  XP.getNodeId,
+                  nId =>
+                    pinPairsGroup.parentPatch === currentPatch
+                      ? nId
+                      : `${pinPairsGroup.parentNodeId}~${nId}`
+                )
+              )
             )
+          )
+        )(pinPairsGroup.pinPairs)
+      )
+    );
+
+    return R.compose(
+      // Convert intermediate PinPairGroups into PinPairs:
+      convertPinPairGroupsToPinPairs,
+      // Get upstream PinPairGroups for all pin pairs that ended traversing on
+      // the input terminal, because it traverses inside the patch and can't get
+      // on the upper level.
+      // This step ensures that we have a full chain of upstream pin pairs:
+      R.reduce((acc, pinPairsGroup) => {
+        const parentInputPinKeys = R.compose(
+          R.map(XP.getPinKey),
+          XP.listInputPins
+        )(pinPairsGroup.parentPatch);
+
+        return R.ifElse(
+          () =>
+            // composite patch upstream nodes ended on input terminal
+            !XP.isPatchNotImplementedInXod(pinPairsGroup.parentPatch) &&
+            R.any(
+              R.compose(
+                R.both(
+                  R.compose(XP.isInputTerminalPath, XP.getNodeType),
+                  R.compose(isAmong(parentInputPinKeys), XP.getNodeId)
+                ),
+                R.nth(1)
+              )
+            )(pinPairsGroup.pinPairs),
+          R.compose(
+            R.concat(R.__, acc),
+            R.append(pinPairsGroup),
+            catMaybies,
+            R.map(([_, node]) =>
+              getUpstreamPinPairsByPinPair(currentPatch, project, {
+                originalPinKey: XP.getNodeId(node),
+                upstreamErrorRaisers: pinPairsGroup.upstreamErrorRaisers,
+                ownerNodeId: pinPairsGroup.parentNodeId,
+                ownerNodeType: XP.getPatchPath(pinPairsGroup.parentPatch),
+              })
+            ),
+            R.filter(
+              R.compose(isAmong(parentInputPinKeys), XP.getNodeId, R.nth(1))
+            ),
+            R.prop('pinPairs')
           ),
-          R.reject(hasNoUpstreamErrorRaisers),
-          R.values,
-          R.prop('inputs')
-        )(tNode)
+          R.append(R.__, acc)
+        )(pinPairsGroup);
+      }, []),
+      // Get upstream PinPairGroups for them:
+      catMaybies,
+      R.map(getUpstreamPinPairsByPinPair(currentPatch, project)),
+      // Prepare ExtendedTInput objects:
+      R.reduce(
+        (acc, tNode) =>
+          R.compose(
+            R.concat(acc),
+            R.map(tInput => ({
+              originalPinKey: tInput.originalPinKey,
+              upstreamErrorRaisers: tInput.upstreamErrorRaisers,
+              ownerNodeId: tNode.originalId,
+              ownerNodeType: tNode.patch.patchPath,
+            })),
+            R.reject(hasNoUpstreamErrorRaisers),
+            R.values,
+            R.prop('inputs')
+          )(tNode),
+        []
       ),
       R.reject(hasNoUpstreamErrorRaisers),
       R.prop('nodes')

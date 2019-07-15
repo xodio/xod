@@ -1,4 +1,4 @@
 IN	OUT
-false	E0
-true	E75
-false	E0	// succesfully "recovers" from error
+false	0
+true	error
+false	0	// succesfully "recovers" from error

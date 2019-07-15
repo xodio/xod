@@ -1,5 +1,5 @@
 {
-  "description": "Reads acceleration from an ADXL335 based sensor. Note that concrete ADXL335 instances differ from each other and their output should be adjusted for precise mesearument.\n\nBy default the values are coarse although reasonable enough to determine shaking and approximate orientation.\n\nFor an ideally factored accelerometer the outputs are in range ±3ɡ.",
+  "description": "Reads acceleration from an ADXL335 based sensor. Note that concrete ADXL335 instances differ from each other and their output should be adjusted for precise mesearument.\n\nBy default the values are coarse although reasonable enough to determine shaking and approximate orientation.\n\nFor an ideally factored accelerometer the outputs are in range ±3ɡ.\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "B1U7Bc8F-",
@@ -79,17 +79,6 @@
       }
     },
     {
-      "id": "S1FEnYrgX",
-      "input": {
-        "nodeId": "r1GEnKBxX",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "HkrZrcIt-",
-        "pinKey": "HJgzpqacyX"
-      }
-    },
-    {
       "id": "S1qj3trem",
       "input": {
         "nodeId": "Syl_tntHxX",
@@ -156,28 +145,6 @@
       }
     },
     {
-      "id": "rJj4htSlQ",
-      "input": {
-        "nodeId": "r1GEnKBxX",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "BJibrqIt-",
-        "pinKey": "HJgzpqacyX"
-      }
-    },
-    {
-      "id": "rkA4ntSl7",
-      "input": {
-        "nodeId": "r1GEnKBxX",
-        "pinKey": "ByU7LRuSPkW-$1"
-      },
-      "output": {
-        "nodeId": "rJAbScLFZ",
-        "pinKey": "HJgzpqacyX"
-      }
-    },
-    {
       "id": "rkEXBcItZ",
       "input": {
         "nodeId": "BJibrqIt-",
@@ -200,17 +167,6 @@
       }
     },
     {
-      "id": "ryS2nKBgm",
-      "input": {
-        "nodeId": "ry4YhtBxQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "r1GEnKBxX",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
       "id": "rytchtBxQ",
       "input": {
         "nodeId": "SJdYhFBl7",
@@ -227,7 +183,7 @@
       "id": "B18QI9LKZ",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 5,
         "y": 3
       },
       "type": "@/adxl335-convert"
@@ -247,7 +203,7 @@
       "label": "Z",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 5,
         "y": 4
       },
       "type": "xod/patch-nodes/output-number"
@@ -256,7 +212,7 @@
       "id": "BJibrqIt-",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 3,
         "y": 1
       },
       "type": "xod/gpio/analog-read"
@@ -284,7 +240,7 @@
       "label": "Pz",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -315,7 +271,7 @@
       "label": "Y",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 3,
         "y": 4
       },
       "type": "xod/patch-nodes/output-number"
@@ -325,7 +281,7 @@
       "id": "SJdYhFBl7",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 7,
         "y": 3
       },
       "type": "xod/core/any"
@@ -336,26 +292,16 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 7,
         "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "arityLevel": 2,
-      "id": "r1GEnKBxX",
-      "position": {
-        "units": "slots",
-        "x": 13,
-        "y": 3
-      },
-      "type": "xod/core/any"
-    },
-    {
       "id": "rJAbScLFZ",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 5,
         "y": 1
       },
       "type": "xod/gpio/analog-read"
@@ -364,7 +310,7 @@
       "id": "rk17898F-",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 3,
         "y": 3
       },
       "type": "@/adxl335-convert"
@@ -378,7 +324,7 @@
       "label": "Py",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 3,
         "y": 0
       },
       "type": "xod/patch-nodes/input-port"
@@ -392,21 +338,10 @@
       "label": "UPD",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Fires if reading failed.",
-      "id": "ry4YhtBxQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 13,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

@@ -33,6 +33,7 @@ export const selectDebuggerTab = tab => ({
 export const startDebuggerSession = (
   message,
   nodeIdsMap,
+  nodePinKeysMap,
   pinsAffectedByErrorRaisers,
   currentPatchPath
 ) => ({
@@ -40,6 +41,7 @@ export const startDebuggerSession = (
   payload: {
     message,
     nodeIdsMap,
+    nodePinKeysMap,
     pinsAffectedByErrorRaisers,
     patchPath: currentPatchPath,
   },

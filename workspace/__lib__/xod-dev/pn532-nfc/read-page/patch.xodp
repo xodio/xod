@@ -1,5 +1,5 @@
 {
-  "description": "Reads one page of a Mifare Ultralight NFC tag.\nTo read data from a tag it should be paired first (use `pair-tag`)",
+  "description": "Reads one page of a Mifare Ultralight NFC tag.\nTo read data from a tag it should be paired first (use `pair-tag`)\n\nPossible errors:\n— Can't read the value",
   "nodes": [
     {
       "id": "B1U93P6DQ",
@@ -57,17 +57,6 @@
         "y": 0
       },
       "type": "@/input-pn532-device"
-    },
-    {
-      "description": "Fires on failed reading",
-      "id": "HkVohwTDX",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {

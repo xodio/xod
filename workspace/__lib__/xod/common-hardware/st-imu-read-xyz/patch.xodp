@@ -1,16 +1,6 @@
 {
+  "description": "\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow\n— Can't read the value",
   "links": [
-    {
-      "id": "B14bMxvgX",
-      "input": {
-        "nodeId": "SJmHWlwe7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
     {
       "id": "B1Jzi4Wevgm",
       "input": {
@@ -56,17 +46,6 @@
       }
     },
     {
-      "id": "BJQejN-xDlX",
-      "input": {
-        "nodeId": "BkwoNWxDgX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HkGs4bePxm",
-        "pinKey": "r1WVwX_W1Q"
-      }
-    },
-    {
       "id": "BJxzj4WgDeX",
       "input": {
         "nodeId": "HJojVZgwg7",
@@ -75,17 +54,6 @@
       "output": {
         "nodeId": "rJToNWgDlm",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "BkFlsEZewe7",
-      "input": {
-        "nodeId": "By2jEWgDxQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1esNWxDxX",
-        "pinKey": "r1WVwX_W1Q"
       }
     },
     {
@@ -108,39 +76,6 @@
       "output": {
         "nodeId": "ryAiVbxvlQ",
         "pinKey": "SJB3vO4uZ"
-      }
-    },
-    {
-      "id": "ByxJGePeX",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$3"
-      },
-      "output": {
-        "nodeId": "BJqo4Wlvxm",
-        "pinKey": "SygH-3mhyX"
-      }
-    },
-    {
-      "id": "H1dJfevgQ",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$5"
-      },
-      "output": {
-        "nodeId": "rkMgoNWgPeQ",
-        "pinKey": "SyUMZQ2JQ"
-      }
-    },
-    {
-      "id": "H1ehZxPx7",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "Hys4blDxX",
-        "pinKey": "SygH-3mhyX"
       }
     },
     {
@@ -177,17 +112,6 @@
       }
     },
     {
-      "id": "HkDCWxvx7",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "rk_o4WlwlQ",
-        "pinKey": "SygH-3mhyX"
-      }
-    },
-    {
       "id": "HkY-jNZeDeQ",
       "input": {
         "nodeId": "BJqo4Wlvxm",
@@ -207,17 +131,6 @@
       "output": {
         "nodeId": "B1Wej4bxve7",
         "pinKey": "rypZF_Nub"
-      }
-    },
-    {
-      "id": "HkaRZlDx7",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$2"
-      },
-      "output": {
-        "nodeId": "S1FiNWgwgQ",
-        "pinKey": "SygH-3mhyX"
       }
     },
     {
@@ -243,25 +156,14 @@
       }
     },
     {
-      "id": "Hy9Cbewgm",
+      "id": "HyNv-Nber",
       "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$1"
+        "nodeId": "r1boEblwgX",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "B1Wej4bxve7",
-        "pinKey": "SygH-3mhyX"
-      }
-    },
-    {
-      "id": "HyokMxwgQ",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$6"
-      },
-      "output": {
-        "nodeId": "ryAiVbxvlQ",
-        "pinKey": "rJxr5J42ym"
+        "nodeId": "HkkxjVbxPl7",
+        "pinKey": "r1WVwX_W1Q"
       }
     },
     {
@@ -298,17 +200,6 @@
       }
     },
     {
-      "id": "SJ-ezeDl7",
-      "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$8"
-      },
-      "output": {
-        "nodeId": "HJojVZgwg7",
-        "pinKey": "S1eJu0Q2JQ"
-      }
-    },
-    {
       "id": "Sk0ljN-lPlX",
       "input": {
         "nodeId": "rkMgoNWgPeQ",
@@ -328,17 +219,6 @@
       "output": {
         "nodeId": "r1ego4-xwgX",
         "pinKey": "ryviw_EOb"
-      }
-    },
-    {
-      "id": "SksZj4-xPxm",
-      "input": {
-        "nodeId": "r1boEblwgX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HkkxjVbxPl7",
-        "pinKey": "r1WVwX_W1Q"
       }
     },
     {
@@ -364,25 +244,25 @@
       }
     },
     {
-      "id": "SyCJzevlQ",
+      "id": "SyFwbV-eS",
       "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$7"
+        "nodeId": "BkwoNWxDgX",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "r1ego4-xwgX",
-        "pinKey": "SyewuY7nJm"
+        "nodeId": "HkGs4bePxm",
+        "pinKey": "r1WVwX_W1Q"
       }
     },
     {
-      "id": "SymkzlPx7",
+      "id": "r11u-N-gr",
       "input": {
-        "nodeId": "S1KUZxvxm",
-        "pinKey": "ByU7LRuSPkW-$4"
+        "nodeId": "By2jEWgDxQ",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "rk7sEWeDlX",
-        "pinKey": "SygH-3mhyX"
+        "nodeId": "H1esNWxDxX",
+        "pinKey": "r1WVwX_W1Q"
       }
     },
     {
@@ -480,7 +360,7 @@
       "label": "I2C",
       "position": {
         "units": "slots",
-        "x": -0.05,
+        "x": 0,
         "y": 4
       },
       "type": "xod/i2c/input-i2c"
@@ -489,7 +369,7 @@
       "id": "B1Wej4bxve7",
       "position": {
         "units": "slots",
-        "x": 9,
+        "x": 7,
         "y": 6
       },
       "type": "xod/i2c/read-byte"
@@ -507,7 +387,7 @@
       "id": "BJqo4Wlvxm",
       "position": {
         "units": "slots",
-        "x": 17,
+        "x": 13,
         "y": 6
       },
       "type": "xod/i2c/read-byte"
@@ -517,8 +397,8 @@
       "label": "Y",
       "position": {
         "units": "slots",
-        "x": 9,
-        "y": 9
+        "x": 7,
+        "y": 8
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -527,8 +407,8 @@
       "label": "Z",
       "position": {
         "units": "slots",
-        "x": 17,
-        "y": 9
+        "x": 13,
+        "y": 8
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -536,8 +416,8 @@
       "id": "H1esNWxDxX",
       "position": {
         "units": "slots",
-        "x": 17,
-        "y": 8
+        "x": 13,
+        "y": 7
       },
       "type": "xod/bits/i16-to-number"
     },
@@ -557,8 +437,8 @@
       "id": "HkGs4bePxm",
       "position": {
         "units": "slots",
-        "x": 9,
-        "y": 8
+        "x": 7,
+        "y": 7
       },
       "type": "xod/bits/i16-to-number"
     },
@@ -567,7 +447,7 @@
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 8
+        "y": 7
       },
       "type": "xod/bits/i16-to-number"
     },
@@ -584,38 +464,18 @@
       "id": "S1FiNWgwgQ",
       "position": {
         "units": "slots",
-        "x": 13,
+        "x": 9,
         "y": 6
       },
       "type": "xod/i2c/read-byte"
-    },
-    {
-      "arityLevel": 9,
-      "id": "S1KUZxvxm",
-      "position": {
-        "units": "slots",
-        "x": 28,
-        "y": 8
-      },
-      "type": "xod/core/any"
-    },
-    {
-      "id": "SJmHWlwe7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 28,
-        "y": 9
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "SySo4-ePeX",
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 22,
-        "y": 9
+        "x": 16,
+        "y": 8
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -625,7 +485,7 @@
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 9
+        "y": 8
       },
       "type": "xod/patch-nodes/output-number"
     },
@@ -652,7 +512,7 @@
       "id": "rk7sEWeDlX",
       "position": {
         "units": "slots",
-        "x": 21,
+        "x": 15,
         "y": 6
       },
       "type": "xod/i2c/read-byte"
@@ -670,7 +530,7 @@
       "id": "rk_o4WlwlQ",
       "position": {
         "units": "slots",
-        "x": 5,
+        "x": 3,
         "y": 6
       },
       "type": "xod/i2c/read-byte"

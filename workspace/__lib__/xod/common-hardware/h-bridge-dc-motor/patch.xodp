@@ -1,5 +1,5 @@
 {
-  "description": "Drives a DC motor through H-Bridge IC such as L293 or L298.",
+  "description": "Drives a DC motor through H-Bridge IC such as L293 or L298.\n\nPossible errors:\n— Invalid port",
   "links": [
     {
       "id": "B1XnCMRU-",
@@ -68,17 +68,6 @@
       }
     },
     {
-      "id": "H1FQOoHgX",
-      "input": {
-        "nodeId": "B1_bdsSeX",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "SkntwoSeX",
-        "pinKey": "rJl2TqpqyX"
-      }
-    },
-    {
       "id": "H1U7OoBxQ",
       "input": {
         "nodeId": "ryS-dirgQ",
@@ -123,17 +112,6 @@
       }
     },
     {
-      "id": "Sy9m_oHem",
-      "input": {
-        "nodeId": "B1_bdsSeX",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "Hk65Porlm",
-        "pinKey": "S1eDAq69yX"
-      }
-    },
-    {
       "id": "SywowoSxX",
       "input": {
         "nodeId": "Hk65Porlm",
@@ -143,29 +121,9 @@
         "nodeId": "HknX0fRU-",
         "pinKey": "__out__"
       }
-    },
-    {
-      "id": "rklV_org7",
-      "input": {
-        "nodeId": "r1GfdoBgQ",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "B1_bdsSeX",
-        "pinKey": "ByHmL0uHPk-"
-      }
     }
   ],
   "nodes": [
-    {
-      "id": "B1_bdsSeX",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 4
-      },
-      "type": "xod/core/any"
-    },
     {
       "boundLiterals": {
         "__out__": "Continuously"
@@ -248,17 +206,6 @@
         "y": 3
       },
       "type": "xod/gpio/digital-write"
-    },
-    {
-      "description": "Fires if write failed",
-      "id": "r1GfdoBgQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 5
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "ryS-dirgQ",

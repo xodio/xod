@@ -1,17 +1,6 @@
 {
-  "description": "Send a message through an opened TCP connection",
+  "description": "Send a message through an opened TCP connection\n\nPossible errors:\n— Can't send the data to the socket",
   "nodes": [
-    {
-      "description": "Pulses when sending failed (for example, the connection is not open)",
-      "id": "Bk6SU2wtQ",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
     {
       "description": "The message to send",
       "id": "BkW6rLnwFQ",

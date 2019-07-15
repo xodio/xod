@@ -83,6 +83,7 @@ typedef double Number;
 typedef bool Logic;
 typedef unsigned long TimeMs;
 typedef uint8_t DirtyFlags;
+typedef uint8_t ErrorFlags;
 } // namespace xod
 
 /*=============================================================================
@@ -864,18 +865,18 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
+void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errCode) {
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
     XOD_DEBUG_SERIAL.print(':');
     XOD_DEBUG_SERIAL.print(nodeId);
     XOD_DEBUG_SERIAL.print(':');
-    XOD_DEBUG_SERIAL.print((int)errCode);
+    XOD_DEBUG_SERIAL.print(errorFlags, DEC);
     XOD_DEBUG_SERIAL.print('\r');
     XOD_DEBUG_SERIAL.print('\n');
-}
 #endif
+}
 
 } // namespace detail
 
@@ -919,15 +920,6 @@ bool isValidAnalogPort(uint8_t port) {
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
     return true;
-#endif
-}
-
-template<typename ContextT>
-void raiseError(ContextT* ctx, uint8_t errCode) {
-    ctx->_node->ownError = errCode;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, errCode);
 #endif
 }
 
@@ -1216,6 +1208,8 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__common_hardware__text_lcd_16x2 {
 
+//#pragma XOD error_raise enable
+
 // --- Enter global namespace ---
 }}
 #include <LiquidCrystal.h>
@@ -1229,6 +1223,13 @@ struct State {
 
 struct Node {
     State state;
+    union {
+        struct {
+            bool outputHasError_DONE : 1;
+        };
+
+        ErrorFlags errorFlags;
+    };
     Logic output_DONE;
 
     union {
@@ -1266,6 +1267,7 @@ template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
+    uint16_t _nodeId;
 
     uint8_t _input_RS;
     uint8_t _input_EN;
@@ -1346,6 +1348,26 @@ State* getState(Context ctx) {
     return &ctx->_node->state;
 }
 
+uint16_t getNodeId(Context ctx) {
+    return ctx->_nodeId;
+}
+
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_DONE");
+}
+
+template<> void raiseError<output_DONE>(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+
+void raiseError(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+
 void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
     lcd->setCursor(0, lineIndex);
     uint8_t whitespace = 16;
@@ -1364,6 +1386,25 @@ void evaluate(Context ctx) {
     State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {
+        auto rsPort = getValue<input_RS>(ctx);
+        auto enPort = getValue<input_EN>(ctx);
+        auto d4Port = getValue<input_D4>(ctx);
+        auto d5Port = getValue<input_D5>(ctx);
+        auto d6Port = getValue<input_D6>(ctx);
+        auto d7Port = getValue<input_D7>(ctx);
+
+        if (
+            !isValidDigitalPort(rsPort) ||
+            !isValidDigitalPort(enPort) ||
+            !isValidDigitalPort(d4Port) ||
+            !isValidDigitalPort(d5Port) ||
+            !isValidDigitalPort(d6Port) ||
+            !isValidDigitalPort(d7Port)
+        ) {
+            raiseError(ctx);
+            return;
+        }
+
         state->lcd = lcd = new LiquidCrystal(
             (int)getValue<input_RS>(ctx),
             (int)getValue<input_EN>(ctx),
@@ -1443,6 +1484,7 @@ xod__core__cast_to_string__number::Node node_9 = {
 };
 xod__common_hardware__text_lcd_16x2::Node node_10 = {
     xod__common_hardware__text_lcd_16x2::State(), // state default
+    false, // DONE has no errors on start
     node_10_output_DONE, // output DONE default
     false, // DONE dirty
     true // node itself dirty
@@ -1544,6 +1586,7 @@ void runTransaction() {
 
             xod__common_hardware__text_lcd_16x2::ContextObject ctxObj;
             ctxObj._node = &node_10;
+            ctxObj._nodeId = 10;
 
             // copy data from upstream nodes into context
             ctxObj._input_RS = node_0_output_VAL;
@@ -1558,7 +1601,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
+            ErrorFlags previousErrorFlags = node_10.errorFlags;
+            // give the node a chance to recover from it's own previous errors
+            node_10.errorFlags = 0;
+
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
+
+            if (previousErrorFlags != node_10.errorFlags) {
+                detail::printErrorToDebugSerial(10, node_10.errorFlags);
+            }
 
             // mark downstream nodes dirty
         }
@@ -1569,6 +1620,13 @@ void runTransaction() {
     node_8.dirtyFlags = 0;
     node_9.dirtyFlags = 0;
     node_10.dirtyFlags = 0;
+
+    // Сlean errors from pulse outputs
+    if (node_10.outputHasError_DONE) {
+      node_10.outputHasError_DONE = false;
+      detail::printErrorToDebugSerial(10, node_10.errorFlags);
+    }
+
     detail::clearStaleTimeout(&node_7);
 
     XOD_TRACE_F("Transaction completed, t=");

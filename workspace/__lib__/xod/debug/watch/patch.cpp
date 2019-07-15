@@ -20,8 +20,7 @@ void evaluate(Context ctx) {
   XOD_DEBUG_SERIAL.print(getNodeId(ctx));
   XOD_DEBUG_SERIAL.print(':');
   if (err) {
-    XOD_DEBUG_SERIAL.print('E');
-    XOD_DEBUG_SERIAL.print((int)err);
+    XOD_DEBUG_SERIAL.print(F("ERR"));
   } else {
     for (auto it = line.iterate(); it; ++it)
       XOD_DEBUG_SERIAL.print((char)*it);

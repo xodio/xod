@@ -1,5 +1,5 @@
 {
-  "description": "Set ESP8266 in the station mode",
+  "description": "Set ESP8266 in the station mode\n\nPossible errors:\n— Hardware responded with an error",
   "nodes": [
     {
       "id": "BJwn87t-m",
@@ -31,17 +31,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Pulses if answer did not received",
-      "id": "HyWhI7tbm",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "Pulses when station mode setted successfully",

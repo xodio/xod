@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 {{#global}}
 #include <Wire.h>
@@ -29,6 +30,10 @@ void evaluate(Context ctx) {
     auto lcd = state->lcd;
     if (!state->lcd) {
         uint8_t addr = getValue<input_ADDR>(ctx);
+        if (addr > 127) {
+            raiseError(ctx);
+            return;
+        }
         state->lcd = lcd = new LiquidCrystal_I2C(addr, 16, 2);
         lcd->begin();
     }

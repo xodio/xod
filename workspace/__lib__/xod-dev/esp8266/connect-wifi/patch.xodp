@@ -1,5 +1,5 @@
 {
-  "description": "Establish an internet connection via Wi-Fi using ESP8266",
+  "description": "Establish an internet connection via Wi-Fi using ESP8266.\n\nPossible errors:\n— Connection failed",
   "nodes": [
     {
       "description": "Establish the connection",
@@ -42,17 +42,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "description": "Pulses if the connection failed",
-      "id": "SyMXl3L-7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "rkrMNi7GQ",

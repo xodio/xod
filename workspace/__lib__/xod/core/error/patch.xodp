@@ -1,16 +1,8 @@
 {
+  "description": "Raises an error when the `ERR` input pin receives the `True` value. Otherwise, the node passes the value from the `IN` pin to the `OUT` pin.",
   "nodes": [
     {
-      "id": "BydY8n8n4",
-      "label": "CODE",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-errcode"
-    },
-    {
+      "description": "The value passed through the node.",
       "id": "H1JuNDn9E",
       "position": {
         "units": "slots",
@@ -20,6 +12,7 @@
       "type": "xod/patch-nodes/output-t1"
     },
     {
+      "description": "The node raises an error on the `True` value.",
       "id": "r13uED2cN",
       "label": "ERR",
       "position": {
@@ -39,6 +32,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "A value to pass through the node.",
       "id": "rkdPED3cE",
       "position": {
         "units": "slots",

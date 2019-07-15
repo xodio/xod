@@ -1,0 +1,5 @@
+ERR1	ERR2	OUT1	OUT2
+false	false	1	2
+true	true	error	error
+true	false	error	2
+false	true	1	error

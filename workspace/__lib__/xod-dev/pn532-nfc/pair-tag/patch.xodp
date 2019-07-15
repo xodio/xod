@@ -56,7 +56,7 @@
     {
       "description": "Fires if there is no NFC tag",
       "id": "rywIrfhP7",
-      "label": "ERR",
+      "label": "NA",
       "position": {
         "units": "slots",
         "x": 3,

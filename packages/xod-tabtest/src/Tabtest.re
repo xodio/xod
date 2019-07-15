@@ -37,7 +37,6 @@ module Probe = {
       | Number => "number"
       | Byte => "byte"
       | String => "string"
-      | Errcode => "errcode"
       }
     );
   /* Creates a new probe node matching the type of pin provided */
@@ -205,8 +204,8 @@ module TestCase = {
            let probeName = Strings.cppEscape(name);
            switch (record |. TabData.Record.get(name)) {
            | Some(Pulse(false)) => {j|// No pulse for $name|j}
-           | Some(RaisedError(errCode)) =>
-             {j|INJECT_ERROR(probe_$probeName, $errCode);|j};
+           | Some(RaisedError) =>
+             {j|INJECT_ERROR(probe_$probeName);|j};
            | Some(value) =>
              let literal = valueToLiteral(value);
              {j|INJECT(probe_$probeName, $literal);|j};
@@ -227,17 +226,20 @@ module TestCase = {
       |. Probes.map(probe => {
            let name = probe |. Probe.getTargetPin |. Pin.getLabel;
            switch (record |. Map.String.get(name)) {
-           | Some(NaN) => Cpp.requireIsNan({j|probe_$name.state.lastValue|j})
-           | Some(RaisedError(errCode)) =>
-            Cpp.requireEqual(
-               {j|probe_$name.prevCaughtError|j},
-               string_of_int(errCode),
-             )
+           | Some(NaN) => Cpp.source([
+             Cpp.requireIsNan({j|probe_$name.state.lastValue|j}),
+             Cpp.requireEqual({j|probe_$name.state.hadError|j}, "false")
+           ])
+           | Some(RaisedError) =>
+            Cpp.requireEqual({j|probe_$name.state.hadError|j}, "true")
            | Some(value) =>
+            Cpp.source([
              Cpp.requireEqual(
                {j|probe_$name.state.lastValue|j},
                valueToLiteral(value),
-             )
+             ),
+             Cpp.requireEqual({j|probe_$name.state.hadError|j}, "false")
+            ])
            | None => {j|// no expectation for $name|j}
            };
          });
@@ -291,11 +293,12 @@ module TestCase = {
         "",
         "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
-        "        (probe).ownError = 0; \\",
+        "        (probe).state.shouldRaise = false; \\",
         "        (probe).isNodeDirty = true;",
         "",
-        "#define INJECT_ERROR(probe, errCode) \\",
-        "        (probe).ownError = errCode;",
+        "#define INJECT_ERROR(probe) \\",
+        "        (probe).state.shouldRaise = true;\\",
+        "        (probe).isNodeDirty = true;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])

@@ -98,18 +98,18 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
+void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errCode) {
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
     XOD_DEBUG_SERIAL.print(':');
     XOD_DEBUG_SERIAL.print(nodeId);
     XOD_DEBUG_SERIAL.print(':');
-    XOD_DEBUG_SERIAL.print((int)errCode);
+    XOD_DEBUG_SERIAL.print(errorFlags, DEC);
     XOD_DEBUG_SERIAL.print('\r');
     XOD_DEBUG_SERIAL.print('\n');
-}
 #endif
+}
 
 } // namespace detail
 
@@ -153,15 +153,6 @@ bool isValidAnalogPort(uint8_t port) {
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
     return true;
-#endif
-}
-
-template<typename ContextT>
-void raiseError(ContextT* ctx, uint8_t errCode) {
-    ctx->_node->ownError = errCode;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, errCode);
 #endif
 }
 

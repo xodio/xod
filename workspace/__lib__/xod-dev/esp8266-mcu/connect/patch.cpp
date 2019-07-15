@@ -1,3 +1,4 @@
+#pragma XOD error_raise enable
 
 // clang-format off
 {{#global}}
@@ -48,7 +49,7 @@ void evaluate(Context ctx) {
             state->rechecksLeft -= 1;
 
             if (state->rechecksLeft == 0) {
-                emitValue<output_ERR>(ctx, 1);
+                raiseError(ctx); // Connection failed
             } else {
                 setTimeout(ctx, RECEHCK_DURATION_MS);
             }

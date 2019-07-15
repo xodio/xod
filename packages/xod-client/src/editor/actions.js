@@ -817,6 +817,7 @@ export const abortSimulation = () => (dispatch, getState) => {
 export const runSimulation = (
   simulationPatchPath,
   nodeIdsMap,
+  nodePinKeysMap,
   code,
   pinsAffectedByErrorRaisers
 ) => (dispatch, getState) => {
@@ -848,6 +849,7 @@ export const runSimulation = (
             payload: {
               worker,
               nodeIdsMap,
+              nodePinKeysMap,
               pinsAffectedByErrorRaisers,
               patchPath: simulationPatchPath,
             },

@@ -12,25 +12,14 @@
       }
     },
     {
-      "id": "BJEnedZaV",
+      "id": "HJdXDbYyS",
       "input": {
-        "nodeId": "H1M3lO-aN",
-        "pinKey": "HJ-lH0Bj4"
+        "nodeId": "HkL7D-t1S",
+        "pinKey": "__in__"
       },
       "output": {
         "nodeId": "SkijedZ6V",
         "pinKey": "HkeYOgdWpV"
-      }
-    },
-    {
-      "id": "H1mne_baV",
-      "input": {
-        "nodeId": "HJ8sg_ZTN",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1M3lO-aN",
-        "pinKey": "rJ1KDn83E"
       }
     },
     {
@@ -48,7 +37,7 @@
   "nodes": [
     {
       "boundLiterals": {
-        "BydY8n8n4": "E75",
+        "BydY8n8n4": "E1",
         "r13uED2cN": "True",
         "rkdPED3cE": "0"
       },
@@ -59,24 +48,6 @@
         "y": 1
       },
       "type": "xod/core/error"
-    },
-    {
-      "id": "H1M3lO-aN",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 3
-      },
-      "type": "xod/core/error-code"
-    },
-    {
-      "id": "HJ8sg_ZTN",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-errcode"
     },
     {
       "id": "HJ91ZOZ64",
@@ -95,6 +66,15 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "HkL7D-t1S",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
     },
     {
       "id": "SkijedZ6V",

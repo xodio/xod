@@ -1,5 +1,7 @@
 IN	OUT
 10	no-pulse
-E42!	pulse
-E10!	pulse
+error	pulse
 5	no-pulse
+error	pulse
+error	pulse	// must work even if there were no "normal" values in between
+error	pulse

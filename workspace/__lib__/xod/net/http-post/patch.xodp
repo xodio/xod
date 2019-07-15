@@ -35,17 +35,6 @@
       }
     },
     {
-      "id": "HkRS4Jb-Q7",
-      "input": {
-        "nodeId": "SyVSV1bbX7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "BJH4J-bXX",
-        "pinKey": "SJPcScgbQX"
-      }
-    },
-    {
       "id": "HyZerEk-WXX",
       "input": {
         "nodeId": "BJH4J-bXX",
@@ -210,17 +199,6 @@
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "description": "Pulses if the request failed",
-      "id": "SyVSV1bbX7",
-      "label": "ERR",
-      "position": {
-        "units": "slots",
-        "x": 6,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"

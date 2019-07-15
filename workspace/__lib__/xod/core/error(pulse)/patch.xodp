@@ -1,0 +1,45 @@
+{
+  "description": "Raises an error when the `ERR` input pin receives the `True` value. Otherwise, it fires the pulse on the `OUT` pin when the `IN` pin receives a pulse.",
+  "nodes": [
+    {
+      "description": "The pulse passed through the node.",
+      "id": "H2JuNDn8C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The node raises an error on the `True` value.",
+      "id": "r13uED2cN",
+      "label": "ERR",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "rJ5jED25V",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A pulse to pass through the node.",
+      "id": "rkdP4D3bF",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

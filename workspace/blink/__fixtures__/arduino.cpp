@@ -83,6 +83,7 @@ typedef double Number;
 typedef bool Logic;
 typedef unsigned long TimeMs;
 typedef uint8_t DirtyFlags;
+typedef uint8_t ErrorFlags;
 } // namespace xod
 
 /*=============================================================================
@@ -864,18 +865,18 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
+void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errCode) {
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
     XOD_DEBUG_SERIAL.print(':');
     XOD_DEBUG_SERIAL.print(nodeId);
     XOD_DEBUG_SERIAL.print(':');
-    XOD_DEBUG_SERIAL.print((int)errCode);
+    XOD_DEBUG_SERIAL.print(errorFlags, DEC);
     XOD_DEBUG_SERIAL.print('\r');
     XOD_DEBUG_SERIAL.print('\n');
-}
 #endif
+}
 
 } // namespace detail
 
@@ -919,15 +920,6 @@ bool isValidAnalogPort(uint8_t port) {
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
     return true;
-#endif
-}
-
-template<typename ContextT>
-void raiseError(ContextT* ctx, uint8_t errCode) {
-    ctx->_node->ownError = errCode;
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::printErrorToDebugSerial(ctx->_nodeId, errCode);
 #endif
 }
 
@@ -1294,18 +1286,25 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_write {
 
+//#pragma XOD error_raise enable
+
 struct State {
 };
 
 struct Node {
     State state;
+    union {
+        struct {
+            bool outputHasError_DONE : 1;
+        };
+
+        ErrorFlags errorFlags;
+    };
     Logic output_DONE;
-    Logic output_ERR;
 
     union {
         struct {
             bool isOutputDirty_DONE : 1;
-            bool isOutputDirty_ERR : 1;
             bool isNodeDirty : 1;
         };
 
@@ -1317,17 +1316,16 @@ struct input_PORT { };
 struct input_SIG { };
 struct input_UPD { };
 struct output_DONE { };
-struct output_ERR { };
 
 template<typename PinT> struct ValueType { using T = void; };
 template<> struct ValueType<input_PORT> { using T = uint8_t; };
 template<> struct ValueType<input_SIG> { using T = Logic; };
 template<> struct ValueType<input_UPD> { using T = Logic; };
 template<> struct ValueType<output_DONE> { using T = Logic; };
-template<> struct ValueType<output_ERR> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
+    uint16_t _nodeId;
 
     uint8_t _input_PORT;
     Logic _input_SIG;
@@ -1342,7 +1340,7 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
     static_assert(always_false<PinT>::value,
             "Invalid pin descriptor. Expected one of:" \
             " input_PORT input_SIG input_UPD" \
-            " output_DONE output_ERR");
+            " output_DONE");
 }
 
 template<> uint8_t getValue<input_PORT>(Context ctx) {
@@ -1356,9 +1354,6 @@ template<> Logic getValue<input_UPD>(Context ctx) {
 }
 template<> Logic getValue<output_DONE>(Context ctx) {
     return ctx->_node->output_DONE;
-}
-template<> Logic getValue<output_ERR>(Context ctx) {
-    return ctx->_node->output_ERR;
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1375,20 +1370,36 @@ template<> bool isInputDirty<input_UPD>(Context ctx) {
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            " output_DONE output_ERR");
+            " output_DONE");
 }
 
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_node->isOutputDirty_DONE = true;
 }
-template<> void emitValue<output_ERR>(Context ctx, Logic val) {
-    ctx->_node->output_ERR = val;
-    ctx->_node->isOutputDirty_ERR = true;
-}
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
+}
+
+uint16_t getNodeId(Context ctx) {
+    return ctx->_nodeId;
+}
+
+template<typename OutputT> void raiseError(Context ctx) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            " output_DONE");
+}
+
+template<> void raiseError<output_DONE>(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
+}
+
+void raiseError(Context ctx) {
+    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1397,7 +1408,7 @@ void evaluate(Context ctx) {
 
     const uint8_t port = getValue<input_PORT>(ctx);
     if (!isValidDigitalPort(port)) {
-        emitValue<output_ERR>(ctx, 1);
+        raiseError<output_DONE>(ctx);
         return;
     }
 
@@ -1439,7 +1450,6 @@ constexpr Logic node_4_output_TICK = false;
 constexpr Logic node_5_output_MEM = false;
 
 constexpr Logic node_6_output_DONE = false;
-constexpr Logic node_6_output_ERR = false;
 
 #pragma GCC diagnostic pop
 
@@ -1465,10 +1475,9 @@ xod__core__flip_flop::Node node_5 = {
 };
 xod__gpio__digital_write::Node node_6 = {
     xod__gpio__digital_write::State(), // state default
+    false, // DONE has no errors on start
     node_6_output_DONE, // output DONE default
-    node_6_output_ERR, // output ERR default
     false, // DONE dirty
-    false, // ERR dirty
     true // node itself dirty
 };
 
@@ -1574,6 +1583,7 @@ void runTransaction() {
 
             xod__gpio__digital_write::ContextObject ctxObj;
             ctxObj._node = &node_6;
+            ctxObj._nodeId = 6;
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_2_output_VAL;
@@ -1582,7 +1592,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
+            ErrorFlags previousErrorFlags = node_6.errorFlags;
+            // give the node a chance to recover from it's own previous errors
+            node_6.errorFlags = 0;
+
             xod__gpio__digital_write::evaluate(&ctxObj);
+
+            if (previousErrorFlags != node_6.errorFlags) {
+                detail::printErrorToDebugSerial(6, node_6.errorFlags);
+            }
 
             // mark downstream nodes dirty
         }
@@ -1593,6 +1611,13 @@ void runTransaction() {
     node_4.dirtyFlags = 0;
     node_5.dirtyFlags = 0;
     node_6.dirtyFlags = 0;
+
+    // Сlean errors from pulse outputs
+    if (node_6.outputHasError_DONE) {
+      node_6.outputHasError_DONE = false;
+      detail::printErrorToDebugSerial(6, node_6.errorFlags);
+    }
+
     detail::clearStaleTimeout(&node_3);
     detail::clearStaleTimeout(&node_4);
 
