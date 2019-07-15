@@ -225,9 +225,7 @@ void runTransaction() {
           {{/eachLinkedInput}}
 
           {{#if patch.raisesErrors}}
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_{{ id }}.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_{{ id }}.errorFlags = 0;
           {{/if}}
@@ -235,11 +233,9 @@ void runTransaction() {
             {{ ns patch }}::evaluate(&ctxObj);
 
           {{#if patch.raisesErrors}}
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_{{ id }}.errorFlags) {
                 detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errorFlags);
             }
-#endif
           {{/if}}
 
       {{#if (hasUpstreamErrorRaisers this)}}

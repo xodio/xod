@@ -1720,19 +1720,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_4.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_4.errorFlags = 0;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_4.errorFlags) {
                 detail::printErrorToDebugSerial(4, node_4.errorFlags);
             }
-#endif
 
             // mark downstream nodes dirty
             node_6.isNodeDirty |= node_4.isOutputDirty_SIG;
@@ -1753,19 +1749,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_5.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_5.errorFlags = 0;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_5.errorFlags) {
                 detail::printErrorToDebugSerial(5, node_5.errorFlags);
             }
-#endif
 
             // mark downstream nodes dirty
             node_7.isNodeDirty |= node_5.isOutputDirty_SIG;
@@ -1889,19 +1881,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_9.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_9.errorFlags = 0;
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_9.errorFlags) {
                 detail::printErrorToDebugSerial(9, node_9.errorFlags);
             }
-#endif
 
         }
         // even if the node did not evaluate, mark downstream nodes as

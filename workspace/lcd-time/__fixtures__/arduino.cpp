@@ -1601,19 +1601,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_10.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_10.errorFlags = 0;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_10.errorFlags) {
                 detail::printErrorToDebugSerial(10, node_10.errorFlags);
             }
-#endif
 
             // mark downstream nodes dirty
         }

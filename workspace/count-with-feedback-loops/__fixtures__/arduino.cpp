@@ -2905,19 +2905,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = node_7.isOutputDirty_TICK;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_23.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_23.errorFlags = 0;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_23.errorFlags) {
                 detail::printErrorToDebugSerial(23, node_23.errorFlags);
             }
-#endif
 
         }
         // even if the node did not evaluate, mark downstream nodes as
@@ -2942,19 +2938,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_IN = node_17.isOutputDirty_DONE;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_24.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_24.errorFlags = 0;
 
             xod__core__defer__pulse::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_24.errorFlags) {
                 detail::printErrorToDebugSerial(24, node_24.errorFlags);
             }
-#endif
 
             // mark downstream nodes dirty
             node_15.isNodeDirty |= node_24.isOutputDirty_OUT;
@@ -2976,19 +2968,15 @@ void runTransaction() {
 
             ctxObj._isInputDirty_IN = true;
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             ErrorFlags previousErrorFlags = node_25.errorFlags;
-#endif
             // give the node a chance to recover from it's own previous errors
             node_25.errorFlags = 0;
 
             xod__core__defer__boolean::evaluate(&ctxObj);
 
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
             if (previousErrorFlags != node_25.errorFlags) {
                 detail::printErrorToDebugSerial(25, node_25.errorFlags);
             }
-#endif
 
             // mark downstream nodes dirty
             node_0.isNodeDirty |= node_25.isOutputDirty_OUT;
