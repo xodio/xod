@@ -9,7 +9,6 @@ import {
   parseIntermediateOptions,
   convertIntermediateOptions,
   parseOptions,
-  patchBoardWithOptions,
   patchBoardsWithOptions,
 } from '../src/optionParser';
 
@@ -113,6 +112,14 @@ const boards = [
     packageName: 'Arduino AVR Boards',
     version: '1.6.21',
   },
+  {
+    name: 'Generic Fictional Board',
+    fqbn: 'fictional:fake:generic',
+  },
+  {
+    name: 'Another Fictional Board',
+    fqbn: 'fictional:fake:another_one',
+  },
 ];
 
 const expectedBoards = [
@@ -120,22 +127,37 @@ const expectedBoards = [
     name: 'Generic ESP8266 Module',
     fqbn: 'esp8266:esp8266:generic',
     options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
   },
   {
     name: 'Amperka WiFi Slot',
     fqbn: 'esp8266:esp8266:wifi_slot',
     options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
   },
   {
     name: 'Arduino Due',
     fqbn: 'arduino:sam:due',
     options: [],
+    disableRts: false,
   },
   {
     name: 'Arduino/Genuino Uno (not installed)',
     package: 'arduino:avr',
     packageName: 'Arduino AVR Boards',
     version: '1.6.21',
+  },
+  {
+    name: 'Generic Fictional Board',
+    fqbn: 'fictional:fake:generic',
+    options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
+  },
+  {
+    name: 'Another Fictional Board',
+    fqbn: 'fictional:fake:another_one',
+    options: [cpuFrequencyOptions, uploadSpeedOptions],
+    disableRts: true,
   },
 ];
 
@@ -187,29 +209,13 @@ describe('Option Parser', () => {
     ]);
   });
 
-  it('Correctly patches Board objects with Options', () => {
-    assert.deepEqual(
-      patchBoardWithOptions(espBoardsTxtContent, boards[0]),
-      expectedBoards[0]
-    );
-    assert.deepEqual(
-      patchBoardWithOptions(espBoardsTxtContent, boards[1]),
-      expectedBoards[1]
-    );
-    assert.deepEqual(
-      patchBoardWithOptions(espBoardsTxtContent, boards[2]),
-      expectedBoards[2]
-    );
-    assert.deepEqual(
-      patchBoardWithOptions(espBoardsTxtContent, boards[3]),
-      expectedBoards[3]
-    );
-  });
-
   it('Correctly loads boards.txt and patches all boards', () =>
     patchBoardsWithOptions(
       fixtureDir,
-      [{ ID: 'esp8266:esp8266', Installed: '2.4.2' }],
+      [
+        { ID: 'esp8266:esp8266', Installed: '2.4.2' },
+        { ID: 'fictional:fake', Installed: '1.2.3' },
+      ],
       boards
     ).then(res => assert.sameDeepMembers(res, expectedBoards)));
 });

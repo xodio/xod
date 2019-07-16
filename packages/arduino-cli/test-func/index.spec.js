@@ -146,6 +146,7 @@ describe('Arduino Cli', () => {
             name: 'Arduino/Genuino Uno',
             fqbn: 'arduino:avr:uno',
             options: [],
+            disableRts: false,
           },
           {
             name: 'Arduino/Genuino Mega or Mega 2560',
@@ -166,6 +167,7 @@ describe('Arduino Cli', () => {
                 ],
               },
             ],
+            disableRts: false,
           },
         ]);
       }));

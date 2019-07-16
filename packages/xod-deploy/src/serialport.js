@@ -119,8 +119,8 @@ export const closePort = port =>
     });
   });
 
-// :: PortName -> (String -> *) -> Promise Port Error
-export const openAndReadPort = (portName, onData, onClose) => {
+// :: PortName -> Boolean -> (String -> *) -> (* -> *) -> Promise Port Error
+export const openAndReadPort = (portName, disableRts, onData, onClose) => {
   // eslint-disable-next-line global-require
   const SerialPort = require('serialport');
 
@@ -131,6 +131,7 @@ export const openAndReadPort = (portName, onData, onClose) => {
     // (see https://github.com/node-serialport/node-serialport/issues/1678),
     // which causes issues with some boards using CP2102 USB to Serial chip
     hupcl: false,
+    rtscts: !disableRts,
   }).then(
     R.tap(port => {
       const parser = port.pipe(

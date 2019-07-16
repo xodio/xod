@@ -381,7 +381,12 @@ class App extends client.App {
                 pinsAffectedByErrorRaisers,
                 currentPatchPath
               );
-              debuggerIPC.sendStartDebuggerSession(ipcRenderer, port, 'Debug');
+              debuggerIPC.sendStartDebuggerSession(
+                ipcRenderer,
+                port,
+                'Debug',
+                board
+              );
             },
             eitherTProject
           );
@@ -581,7 +586,8 @@ class App extends client.App {
       debuggerIPC.sendStartDebuggerSession(
         ipcRenderer,
         this.props.selectedPort,
-        'Serial'
+        'Serial',
+        {}
       );
       this.props.actions.startSerialSession(
         client.createSystemMessage('Serial session started')
