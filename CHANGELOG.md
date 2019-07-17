@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] The errors mechanism. (#1777, #1784, #1818)
+* [ide] Errors are visualized in XOD IDE during the simulation and debug. (#1797)
+* [ide] Cancel the restriction of deleting terminals in use. Now, this is allowed and will cause the patches which use the terminal to become broken which is quickly fixable by undoing the deletion or removing the offending links. (#1809)
+* [ide] Upgrade the underlying UI Electron platform from 1.8 to 4.2 which makes IDE a bit more responsive and brings Gtk3 on Linux. (#1811)
+* [ide] Link to amperka.com on the welcome banner. Should we have some profit after all! (#1820)
+* [nodes] The `ERR` pulses gone from the standard library in favor of using the errors. (#1808)
+* [nodes] `xod/core/if-else` is now truly generic and works with any types. (#1767)
+* [nodes] `xod/core/pulse-on-change` is now an abstract generic and have implementation for numbers and strings. (#1806)
+* [nodes] Make servo pulse limit defaults in `xod-dev/servo` match Arduino defaults. (#1815)
+
+### New nodes
+
+* [xod/core/switch-case](https://xod.io/libs/xod/core/switch-case/) — a generic discrete variant mapper. (#1785)
+* [xod-dev/esp8266-mcu/is-connected](https://xod.io/libs/xod-dev/esp8266-mcu/is-connected/) — check whether you’re online (#1786)
+* `error`, `has-error`, `pulse-on-error`, `if-error` in `xod/core` to support the new error concept. (#1777)
+
+### Bug fixes
+
+* [ide] Show that patches are broken even if they are hidden by the deprecated/utility filter. (#1813)
+* [ide] Opening not-a-xod file no longer breaks workspace creation. (#1812)
+* [ide] Exclude the whole BuckleScript platform from bundling into the distro. Makes XOD IDE ⅓ smaller in size. (#1814)
+* [ide] Fix nested tweaks updates ignore/collide during debugging and simulation. (#1821)
+* [ide] Respect `serial.disableRTS` option from platform’s `boards.txt` when opening the serial port for debugging. Previously it broke debugging for Arduino Leonardo, Micro, ATmega32U4 on Windows. (#1816)
+
+### Deprecations and removals
+
+* Remove all nodes deprecated back in 0.19, 0.20, and 0.21. (#1799)
+
 <a name="0.29.1"></a>
 
 ## 0.29.1 (2019-04-18)
