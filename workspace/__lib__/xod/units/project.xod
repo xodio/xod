@@ -5,5 +5,5 @@
   "description": "Units of measurement conversions",
   "license": "AGPL-3.0",
   "name": "units",
-  "version": "0.29.1"
+  "version": "0.30.0"
 }
