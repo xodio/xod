@@ -92,7 +92,9 @@ export const updateCompileLimit = (startup = false) => dispatch => {
  * a keycloak grant from server
  */
 export const fetchGrant = (startup = false) => dispatch =>
-  dispatch(refreshGrant()).then(() => dispatch(updateCompileLimit(startup)));
+  dispatch(refreshGrant()).then(
+    R.tap(() => dispatch(updateCompileLimit(startup)))
+  );
 
 export const login = (username, password) => dispatch => {
   const form = new URLSearchParams();
