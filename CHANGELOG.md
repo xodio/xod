@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.30.1"></a>
+
+## 0.30.1 (2019-07-19)
+
+### Bug fixes
+
+* [nodes] Ensure that `error`, `if-error` and `has-error` work correctly with pulse data type (#1825)
+* [ide] Fix library publishing process (#1827)
+
 <a name="0.30.0"></a>
 
 ## 0.30.0 (2019-07-17)
