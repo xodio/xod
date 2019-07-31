@@ -1,0 +1,116 @@
+{
+  "links": [
+    {
+      "id": "B1SISBp-Xr",
+      "input": {
+        "nodeId": "rkM8SH6WXr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "HyxLSSa-7B",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "HJ0HBp-XS",
+      "input": {
+        "nodeId": "rkM8SH6WXr",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "H1_3jmkXB",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "rJ5rHT-mB",
+      "input": {
+        "nodeId": "HyxLSSa-7B",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "By3Ki7kQH",
+        "pinKey": "Skzk0Fm1mH"
+      }
+    },
+    {
+      "id": "rJhrr6WmH",
+      "input": {
+        "nodeId": "HyxLSSa-7B",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "H1mhiXkmH",
+        "pinKey": "H1wh06BEV"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1Ak971XS": "D10",
+        "BJMRJqQ1Xr": "D9",
+        "H1e01q7kXr": "D12",
+        "Syb0J5XymB": "D11",
+        "r1X0y5XkQS": "D8",
+        "rJ4Ayq7ymH": "D13"
+      },
+      "id": "By3Ki7kQH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/text-lcd-parallel-device"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"It works!\""
+      },
+      "id": "H1_3jmkXB",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"Hello\""
+      },
+      "id": "H1mhiXkmH",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "SJKHrSeQH": "Continuously"
+      },
+      "id": "HyxLSSa-7B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "1",
+        "SJKHrSeQH": "Continuously"
+      },
+      "id": "rkM8SH6WXr",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 3
+      },
+      "type": "@/print-at"
+    }
+  ]
+}

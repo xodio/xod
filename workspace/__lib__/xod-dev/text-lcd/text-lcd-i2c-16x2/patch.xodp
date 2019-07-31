@@ -1,0 +1,535 @@
+{
+  "description": "A quick-start node drives a text LCD screen with a PCF8574 or PCA8574 I²C expander module. Usually have a value in range 0x20-0x27 or 0x38-0x3F. Consult LCD/expander documentation to know the exact value.",
+  "links": [
+    {
+      "id": "B12CEbBymr",
+      "input": {
+        "nodeId": "SkjaR41QH",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "HkiR4bB1Xr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B15pHTWmH",
+      "input": {
+        "nodeId": "Bk4L0VkXS",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "SytpB6WXr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1W9AVJmB",
+      "input": {
+        "nodeId": "SJRKAVkmH",
+        "pinKey": "Sy3aTyCzS"
+      },
+      "output": {
+        "nodeId": "rkedCVkXS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJyJ8pZmH",
+      "input": {
+        "nodeId": "B1qTR4yQS",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "SynRH6bmH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByoP1r17H",
+      "input": {
+        "nodeId": "r1nU1SkXS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryeI1SJXB",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "Byp9S6WQr",
+      "input": {
+        "nodeId": "Hki5BaWQr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "rJv0REyXS",
+        "pinKey": "HJnQJbCfr"
+      }
+    },
+    {
+      "id": "H1ERSpWXr",
+      "input": {
+        "nodeId": "HyJRS6W7H",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rySRdBkQB",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "H1PC_HkmB",
+      "input": {
+        "nodeId": "rySRdBkQB",
+        "pinKey": "S1XteAATV"
+      },
+      "output": {
+        "nodeId": "rJgnw0417B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJICNZBJ7S",
+      "input": {
+        "nodeId": "rySRNZHJmH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Skb2DR4JQS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJOCNZry7B",
+      "input": {
+        "nodeId": "Bk4L0VkXS",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "HyvAEWS17H",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkTJ8TbQS",
+      "input": {
+        "nodeId": "ryeI1SJXB",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "Hki5BaWQr",
+        "pinKey": "S1zKHHSx7H"
+      }
+    },
+    {
+      "id": "HkxkL6b7r",
+      "input": {
+        "nodeId": "rJv0REyXS",
+        "pinKey": "Sk8kkWAfS"
+      },
+      "output": {
+        "nodeId": "SynRH6bmH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy9CEWHymH",
+      "input": {
+        "nodeId": "B1qTR4yQS",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "S1tAEZB1QH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy9TOry7B",
+      "input": {
+        "nodeId": "H1AidryXr",
+        "pinKey": "S1XteAATV"
+      },
+      "output": {
+        "nodeId": "BJ3DAE1QS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyFCRVJmB",
+      "input": {
+        "nodeId": "rJv0REyXS",
+        "pinKey": "BJg11ZRzB"
+      },
+      "output": {
+        "nodeId": "SJRKAVkmH",
+        "pinKey": "rJZSQgAfS"
+      }
+    },
+    {
+      "id": "HyRiraZ7H",
+      "input": {
+        "nodeId": "rJpoBT-Qr",
+        "pinKey": "SJKHrSeQH"
+      },
+      "output": {
+        "nodeId": "SkjaR41QH",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "HynyU6ZXS",
+      "input": {
+        "nodeId": "rJpoBT-Qr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "Hki5BaWQr",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "S17LJByQB",
+      "input": {
+        "nodeId": "ryeI1SJXB",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "rJv0REyXS",
+        "pinKey": "S1Y8yWRGr"
+      }
+    },
+    {
+      "id": "SJ1jH6ZXS",
+      "input": {
+        "nodeId": "Hki5BaWQr",
+        "pinKey": "SJKHrSeQH"
+      },
+      "output": {
+        "nodeId": "Bk4L0VkXS",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "SJ7JL6-QS",
+      "input": {
+        "nodeId": "SynRH6bmH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rya8CVyXS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk2aHpb7S",
+      "input": {
+        "nodeId": "Hki5BaWQr",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "SytpB6WXr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkAyUpZmS",
+      "input": {
+        "nodeId": "ryeI1SJXB",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "rJpoBT-Qr",
+        "pinKey": "S1zKHHSx7H"
+      }
+    },
+    {
+      "id": "SyXCHp-mr",
+      "input": {
+        "nodeId": "rJpoBT-Qr",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "HyJRS6W7H",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkMAB6WXH",
+      "input": {
+        "nodeId": "SkjaR41QH",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "HyJRS6W7H",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkpTraWXB",
+      "input": {
+        "nodeId": "SytpB6WXr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1AidryXr",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "ryoARNk7r",
+      "input": {
+        "nodeId": "rJv0REyXS",
+        "pinKey": "SJbIkb0zr"
+      },
+      "output": {
+        "nodeId": "B1qTR4yQS",
+        "pinKey": "H1fx68wzB"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1qTR4yQS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "description": "Text for the first line",
+      "id": "BJ3DAE1QS",
+      "label": "L1",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "Bk4L0VkXS",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "boundLiterals": {
+        "Sk4Kl0RT4": "\"ERR\""
+      },
+      "id": "H1AidryXr",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/core/if-error"
+    },
+    {
+      "id": "Hki5BaWQr",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 5
+      },
+      "type": "@/print-at"
+    },
+    {
+      "id": "HkiR4bB1Xr",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "HyJRS6W7H",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "HyvAEWS17H",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "S1tAEZB1QH",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SJRKAVkmH",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 5
+      },
+      "type": "@/text-lcd-i2c-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Fires update of LCD display on incoming value change while `ACT` is true.",
+      "id": "Skb2DR4JQS",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "SkjaR41QH",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 4
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "SynRH6bmH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "SytpB6WXr",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "Fires when write is done",
+      "id": "r1nU1SkXS",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 7
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Text for the second line",
+      "id": "rJgnw0417B",
+      "label": "L2",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "1"
+      },
+      "id": "rJpoBT-Qr",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "type": "@/print-at"
+    },
+    {
+      "id": "rJv0REyXS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "@/set-backlight"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "27h"
+      },
+      "description": "I²C address of the expander chip.",
+      "id": "rkedCVkXS",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rySRNZHJmH",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "Sk4Kl0RT4": "\"ERR\""
+      },
+      "id": "rySRdBkQB",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/if-error"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Backlight enable/disable",
+      "id": "rya8CVyXS",
+      "label": "BL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "arityLevel": 2,
+      "id": "ryeI1SJXB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 6
+      },
+      "type": "xod/core/any"
+    }
+  ]
+}

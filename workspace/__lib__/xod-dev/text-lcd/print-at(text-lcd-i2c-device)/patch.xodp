@@ -1,0 +1,103 @@
+{
+  "nodes": [
+    {
+      "description": "Update the allocated area content",
+      "id": "BkNZDBemr",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires when the allocated area is updated",
+      "id": "H1M4bPBeQr",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Text to print on the row",
+      "id": "HJWEWwSlmS",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "S1RSwBlmH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An I2C text LCD device",
+      "id": "SJ3ZDSemB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-text-lcd-i2c-device"
+    },
+    {
+      "description": "Position in the row. Starts from 0.",
+      "id": "Sk84WwSgXH",
+      "label": "POS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The row index on the display. Starts from 0.",
+      "id": "SkVEbvSxXr",
+      "label": "ROW",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryg3bDrxXB",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-text-lcd-i2c-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "+Inf"
+      },
+      "description": "The length of the allocated area on the LCD screen.",
+      "id": "ryvVZwBeQr",
+      "label": "LEN",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -49,6 +49,16 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Use `xod-dev/text-lcd/text-lcd-i2c-16x2` instead.",
+      "id": "HkugOHkXS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SkRdV5YWW",
       "position": {
         "units": "slots",

@@ -1,0 +1,57 @@
+{
+  "description": "Clears the LCD screen and positions the cursor in the upper-left corner",
+  "nodes": [
+    {
+      "id": "Bybin8xkmB",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-text-lcd-i2c-device"
+    },
+    {
+      "description": "Fires when LCD is cleared",
+      "id": "H1fihUlkmS",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An I2C text LCD device",
+      "id": "H1snUgJXS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-text-lcd-i2c-device"
+    },
+    {
+      "description": "Clear the display",
+      "id": "HJms2IlyXB",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rkli2LeyXH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

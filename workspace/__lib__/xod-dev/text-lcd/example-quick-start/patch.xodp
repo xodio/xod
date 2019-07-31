@@ -1,0 +1,124 @@
+{
+  "links": [
+    {
+      "id": "By2dH6-Xr",
+      "input": {
+        "nodeId": "H1jwHTbXH",
+        "pinKey": "BJ3DAE1QS"
+      },
+      "output": {
+        "nodeId": "ryF_raW7H",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "SyDYHT-QS",
+      "input": {
+        "nodeId": "S1XOH6WXB",
+        "pinKey": "HJbIhGB1XB"
+      },
+      "output": {
+        "nodeId": "S1xEtSpZmB",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "rkTuHTWXS",
+      "input": {
+        "nodeId": "H1jwHTbXH",
+        "pinKey": "rJgnw0417B"
+      },
+      "output": {
+        "nodeId": "ry9uBabQr",
+        "pinKey": "H1wh06BEV"
+      }
+    },
+    {
+      "id": "ryUYBpbXB",
+      "input": {
+        "nodeId": "S1XOH6WXB",
+        "pinKey": "HJInzryQr"
+      },
+      "output": {
+        "nodeId": "rJNFSpZ7H",
+        "pinKey": "H1wh06BEV"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1jwHTbXH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/text-lcd-i2c-16x2"
+    },
+    {
+      "boundLiterals": {
+        "BJxIhfrk7B": "D11",
+        "SkzI2fBkmH": "D9",
+        "r1QLnzH1mr": "D10",
+        "rk8I2fHkXH": "D8",
+        "rkVLnGSJQS": "D12",
+        "ryHL2GHyQS": "D13"
+      },
+      "id": "S1XOH6WXB",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "@/text-lcd-parallel-16x2"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"World\""
+      },
+      "id": "S1xEtSpZmB",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"Hello\""
+      },
+      "id": "rJNFSpZ7H",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"World\""
+      },
+      "id": "ry9uBabQr",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-string-16"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEV": "\"Hello\""
+      },
+      "id": "ryF_raW7H",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-string-16"
+    }
+  ]
+}

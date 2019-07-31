@@ -1,0 +1,57 @@
+{
+  "description": "Clears the LCD screen and positions the cursor in the upper-left corner",
+  "nodes": [
+    {
+      "id": "BkgMKnXJQr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Clear the display",
+      "id": "HJ7GKnQ1QS",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rJettnmy7S",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-text-lcd-parallel-device"
+    },
+    {
+      "description": "A text LCD device with parallel interface",
+      "id": "ryKtnX17B",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-text-lcd-parallel-device"
+    },
+    {
+      "description": "Fires when LCD is cleared",
+      "id": "ryffY27J7H",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

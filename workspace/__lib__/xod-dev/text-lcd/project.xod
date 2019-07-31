@@ -1,0 +1,6 @@
+{
+  "description": "Nodes to drive a common text liquid crystal displays with I²C or parallel interfaces.",
+  "license": "AGPL-3.0",
+  "name": "text-lcd",
+  "version": "0.1.0"
+}
