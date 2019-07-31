@@ -24,5 +24,17 @@ void evaluate(Context ctx) {
 
     Type nfc = new (state->mem) Adafruit_PN532(irq, NOT_A_PORT);
 
+    // Initialize the device
+    nfc->begin();
+    // Ensure the device is working
+    uint32_t versiondata = nfc->getFirmwareVersion();
+    if (!versiondata) {
+      raiseError(ctx);
+      return;
+    }
+    // Configure the device
+    nfc->setPassiveActivationRetries(0x01);
+    nfc->SAMConfig();
+
     emitValue<output_DEV>(ctx, nfc);
 }

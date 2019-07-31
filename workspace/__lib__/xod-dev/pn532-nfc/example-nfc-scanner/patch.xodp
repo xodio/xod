@@ -5,27 +5,13 @@
       "id": "B12UJvL_X",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 8,
         "y": 3
       },
       "size": {
         "height": 1,
         "units": "slots",
-        "width": 10
-      }
-    },
-    {
-      "content": "<- Pass pulse to update the led only if it is our tag",
-      "id": "ByLcRUL_Q",
-      "position": {
-        "units": "slots",
-        "x": 10,
-        "y": 2
-      },
-      "size": {
-        "height": 1,
-        "units": "slots",
-        "width": 10
+        "width": 6
       }
     },
     {
@@ -34,12 +20,12 @@
       "position": {
         "units": "slots",
         "x": 9,
-        "y": 6
+        "y": 5
       },
       "size": {
         "height": 1,
         "units": "slots",
-        "width": 10
+        "width": 5
       }
     },
     {
@@ -47,13 +33,13 @@
       "id": "ryqtkDU_Q",
       "position": {
         "units": "slots",
-        "x": 10,
+        "x": 9,
         "y": 1
       },
       "size": {
         "height": 1,
         "units": "slots",
-        "width": 10
+        "width": 5
       }
     }
   ],
@@ -67,6 +53,17 @@
       "output": {
         "nodeId": "SJ98dzhD7",
         "pinKey": "rku8WGhDX"
+      }
+    },
+    {
+      "id": "BJjTC56fr",
+      "input": {
+        "nodeId": "HkTWCxldQ",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "Byr0GwwMB"
       }
     },
     {
@@ -103,80 +100,25 @@
       }
     },
     {
-      "id": "ByR0Tgx_X",
+      "id": "Bko305pMH",
+      "input": {
+        "nodeId": "Hy0NDr2D7",
+        "pinKey": "rkpjZM3D7"
+      },
+      "output": {
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "B1vSAzDPGr"
+      }
+    },
+    {
+      "id": "H1-Gki6MB",
       "input": {
         "nodeId": "BJrRGv6vm",
         "pinKey": "HyYh1a3LZ"
       },
       "output": {
-        "nodeId": "HJF6axedm",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "H1MrN1v8_m",
-      "input": {
-        "nodeId": "BJrRGv6vm",
-        "pinKey": "SkW3wouIeQ"
-      },
-      "output": {
-        "nodeId": "B1-rVyD8_Q",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "HJ4z0eeum",
-      "input": {
-        "nodeId": "HJF6axedm",
-        "pinKey": "ryTIROHwkW"
-      },
-      "output": {
         "nodeId": "HkTWCxldQ",
         "pinKey": "B1gN80uHvk-"
-      }
-    },
-    {
-      "id": "HJFnA88_m",
-      "input": {
-        "nodeId": "HyDhAUUuX",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "BkiB_M3DQ",
-        "pinKey": "Bkcyhxxum"
-      }
-    },
-    {
-      "id": "SJJ0GDaDm",
-      "input": {
-        "nodeId": "Syoazv6P7",
-        "pinKey": "B1P1nFwaM"
-      },
-      "output": {
-        "nodeId": "Hy0NDr2D7",
-        "pinKey": "HkMpbM2wm"
-      }
-    },
-    {
-      "id": "SJiLuf2vQ",
-      "input": {
-        "nodeId": "SJ98dzhD7",
-        "pinKey": "ByOB-GnDQ"
-      },
-      "output": {
-        "nodeId": "BkiB_M3DQ",
-        "pinKey": "S1ek_zhDQ"
-      }
-    },
-    {
-      "id": "SyWMAgeO7",
-      "input": {
-        "nodeId": "HkTWCxldQ",
-        "pinKey": "SJMVU0urvkZ"
-      },
-      "output": {
-        "nodeId": "BkiB_M3DQ",
-        "pinKey": "Bkcyhxxum"
       }
     },
     {
@@ -191,14 +133,14 @@
       }
     },
     {
-      "id": "r1lS4kvIO7",
+      "id": "SyuaAcazB",
       "input": {
-        "nodeId": "BJBVkvLuX",
-        "pinKey": "__in__"
+        "nodeId": "SJ98dzhD7",
+        "pinKey": "ByOB-GnDQ"
       },
       "output": {
-        "nodeId": "Syoazv6P7",
-        "pinKey": "OkPg7GDaW"
+        "nodeId": "BkiB_M3DQ",
+        "pinKey": "B1vSAzDPGr"
       }
     },
     {
@@ -224,17 +166,6 @@
       }
     },
     {
-      "id": "rk9nCI8_7",
-      "input": {
-        "nodeId": "Syoazv6P7",
-        "pinKey": "SJ-1mZPTz"
-      },
-      "output": {
-        "nodeId": "HyDhAUUuX",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "rkdDdGnwQ",
       "input": {
         "nodeId": "H1gZPufhwQ",
@@ -255,48 +186,17 @@
         "nodeId": "BkdfDSnvX",
         "pinKey": "B1tGWG2D7"
       }
-    },
-    {
-      "id": "rkyHPS2PQ",
-      "input": {
-        "nodeId": "Hy0NDr2D7",
-        "pinKey": "rkpjZM3D7"
-      },
-      "output": {
-        "nodeId": "BkiB_M3DQ",
-        "pinKey": "S1ek_zhDQ"
-      }
     }
   ],
   "nodes": [
-    {
-      "id": "B1-rVyD8_Q",
-      "label": "UPD",
-      "position": {
-        "units": "slots",
-        "x": 11,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/from-bus"
-    },
     {
       "id": "B1WlvOf2PQ",
       "position": {
         "units": "slots",
         "x": 4,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
-    },
-    {
-      "id": "BJBVkvLuX",
-      "label": "UPD",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/to-bus"
     },
     {
       "boundLiterals": {
@@ -306,8 +206,8 @@
       "label": "built-in led",
       "position": {
         "units": "slots",
-        "x": 9,
-        "y": 5
+        "x": 4,
+        "y": 3
       },
       "type": "xod/common-hardware/led"
     },
@@ -316,7 +216,7 @@
       "position": {
         "units": "slots",
         "x": 6,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
     },
@@ -344,7 +244,7 @@
       "position": {
         "units": "slots",
         "x": 3,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
     },
@@ -365,25 +265,16 @@
       "position": {
         "units": "slots",
         "x": 7,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
-    },
-    {
-      "id": "HJF6axedm",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 3
-      },
-      "type": "xod/core/flip-flop"
     },
     {
       "id": "HkTWCxldQ",
       "position": {
         "units": "slots",
         "x": 5,
-        "y": 3
+        "y": 2
       },
       "type": "xod/core/and"
     },
@@ -392,7 +283,7 @@
       "position": {
         "units": "slots",
         "x": 5,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
     },
@@ -406,20 +297,11 @@
       "type": "@/equal(nfc-uid)"
     },
     {
-      "id": "HyDhAUUuX",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/core/pulse-on-true"
-    },
-    {
       "id": "HyxDufnDQ",
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
     },
@@ -428,25 +310,16 @@
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 5
+        "y": 4
       },
       "type": "@/unpack-nfc-uid"
-    },
-    {
-      "id": "Syoazv6P7",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 2
-      },
-      "type": "xod/core/gate"
     },
     {
       "id": "rkpUOM3vm",
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 6
+        "y": 5
       },
       "type": "xod/core/watch"
     }

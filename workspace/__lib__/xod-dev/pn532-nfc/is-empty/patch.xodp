@@ -1,0 +1,77 @@
+{
+  "description": "Checks whether a UID is empty which corresponds to “no tag”",
+  "links": [
+    {
+      "id": "B1TezRBzB",
+      "input": {
+        "nodeId": "SJcgG0HMr",
+        "pinKey": "rJXICuSwyW"
+      },
+      "output": {
+        "nodeId": "HJ9JMCHfH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy2efRrGH",
+      "input": {
+        "nodeId": "SJcgG0HMr",
+        "pinKey": "HJG8C_SPkb"
+      },
+      "output": {
+        "nodeId": "SJElf0rfH",
+        "pinKey": "B1tGWG2D7"
+      }
+    },
+    {
+      "id": "rkCeMCrfB",
+      "input": {
+        "nodeId": "ryegMRSzS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJcgG0HMr",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "The UID of an NFC tag",
+      "id": "HJ9JMCHfH",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "@/input-nfc-uid"
+    },
+    {
+      "id": "SJElf0rfH",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "@/nfc-uid"
+    },
+    {
+      "id": "SJcgG0HMr",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/core/equal"
+    },
+    {
+      "id": "ryegMRSzS",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}
