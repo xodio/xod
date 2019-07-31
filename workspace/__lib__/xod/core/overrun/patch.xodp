@@ -1,0 +1,234 @@
+{
+  "description": "Delays changes of the `EN` value from true to false by the specified time. Switching `EN` from false to true acts instantly.",
+  "links": [
+    {
+      "id": "B1WAueIMr",
+      "input": {
+        "nodeId": "Sk56ueUfS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Byxiiue8MB",
+        "pinKey": "Bk4gU0drwJ-"
+      }
+    },
+    {
+      "id": "BJYPaA-7S",
+      "input": {
+        "nodeId": "Byxiiue8MB",
+        "pinKey": "H1mlUC_HDJZ"
+      },
+      "output": {
+        "nodeId": "ryzD60-Qr",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HJLvpRbQH",
+      "input": {
+        "nodeId": "SkHDTR-mH",
+        "pinKey": "BJaG80urD1-"
+      },
+      "output": {
+        "nodeId": "Byxiiue8MB",
+        "pinKey": "HkU3vNoTW"
+      }
+    },
+    {
+      "id": "Hkqd6R-Qr",
+      "input": {
+        "nodeId": "Byxiiue8MB",
+        "pinKey": "SkSuD6LMb"
+      },
+      "output": {
+        "nodeId": "r1w_a0W7H",
+        "pinKey": "BJxRgAO8-"
+      }
+    },
+    {
+      "id": "HyOOpAZmB",
+      "input": {
+        "nodeId": "r1w_a0W7H",
+        "pinKey": "H1v3lCu8-"
+      },
+      "output": {
+        "nodeId": "HJEh_lLGH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HywDTRZmS",
+      "input": {
+        "nodeId": "By1A_gLfB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkHDTR-mH",
+        "pinKey": "SJyXI0OrD1-"
+      }
+    },
+    {
+      "id": "r1ZuTRZmr",
+      "input": {
+        "nodeId": "ryzD60-Qr",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "HJEh_lLGH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk03_gIMr",
+      "input": {
+        "nodeId": "Byxiiue8MB",
+        "pinKey": "Skre8ROSv1-"
+      },
+      "output": {
+        "nodeId": "Sk3hdlIMr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkgFaCWmB",
+      "input": {
+        "nodeId": "SkHDTR-mH",
+        "pinKey": "HJCfI0dBDkb"
+      },
+      "output": {
+        "nodeId": "rkktpRbmB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkzF6Rb7B",
+      "input": {
+        "nodeId": "rkktpRbmB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJEh_lLGH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rysP6RW7H",
+      "input": {
+        "nodeId": "ryzD60-Qr",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "HkkyKlLGB",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Outputs true when `EN` is true or it became false less than `T` seconds ago",
+      "id": "By1A_gLfB",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "boundLiterals": {
+        "Skre8ROSv1-": "3"
+      },
+      "id": "Byxiiue8MB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/delay"
+    },
+    {
+      "description": "The enableness value to monitor",
+      "id": "HJEh_lLGH",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Resets the overrun timer causing `ACT` to switch to false immediately. The `DONE` pulse will not fire.",
+      "id": "HkkyKlLGB",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Time to overrun in seconds",
+      "id": "Sk3hdlIMr",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses once the overrun is over",
+      "id": "Sk56ueUfS",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SkHDTR-mH",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "@/or"
+    },
+    {
+      "id": "r1w_a0W7H",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/pulse-on-false"
+    },
+    {
+      "id": "rkktpRbmB",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "ryzD60-Qr",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "@/any"
+    }
+  ]
+}
