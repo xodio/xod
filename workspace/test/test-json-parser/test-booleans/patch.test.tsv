@@ -1,0 +1,21 @@
+IN1	IN2	B1	P1	B2	P2
+'{'	pulse
+'\"'	pulse
+'t'	pulse
+'\"'	pulse
+':'	pulse
+'t'	pulse
+'r'	pulse
+'u'	pulse
+'e'	pulse	true	pulse	false	no-pulse
+','	pulse
+'\"'	pulse
+'f'	pulse
+'\"'	pulse
+':'	pulse
+'f'	pulse
+'a'	pulse
+'l'	pulse
+'s'	pulse
+'e'	pulse	true	no-pulse	false	pulse
+'}'	pulse

@@ -1,0 +1,11 @@
+IN1	IN2	OUT
+'{'	pulse	false
+'\"'	pulse
+'x'	pulse
+'\"'	pulse
+':'	pulse
+'n'	pulse
+'u'	pulse
+'l'	pulse
+'p'	pulse	true
+'}'	pulse
