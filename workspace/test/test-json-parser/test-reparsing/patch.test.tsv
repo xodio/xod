@@ -1,0 +1,56 @@
+IN1	IN2	RST	OUT1	OUT2
+'{'	pulse
+'\"'	pulse
+'f'	pulse
+'o'	pulse
+'o'	pulse
+'\"'	pulse
+':'	pulse
+'['	pulse
+'{'	pulse
+'}'	pulse
+','	pulse
+'{'	pulse
+'\"'	pulse
+'b'	pulse
+'a'	pulse
+'r'	pulse
+'\"'	pulse
+':'	pulse
+'-'	pulse
+'0'	pulse
+'.'	pulse
+'0'	pulse
+'1'	pulse
+'2'	pulse
+'}'	pulse		-0.012	pulse
+']'	pulse
+'}'	pulse
+		pulse	-0.012		// now let's stream it again
+'{'	pulse
+'\"'	pulse
+'f'	pulse
+'o'	pulse
+'o'	pulse
+'\"'	pulse
+':'	pulse
+'['	pulse
+'{'	pulse
+'}'	pulse
+','	pulse
+'{'	pulse
+'\"'	pulse
+'b'	pulse
+'a'	pulse
+'r'	pulse
+'\"'	pulse
+':'	pulse
+'-'	pulse
+'0'	pulse
+'.'	pulse
+'0'	pulse
+'4'	pulse
+'2'	pulse
+'}'	pulse		-0.042	pulse
+']'	pulse
+'}'	pulse

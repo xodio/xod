@@ -1,0 +1,65 @@
+{
+  "description": "Parses a stream of characters that represent a JSON document.",
+  "nodes": [
+    {
+      "description": "The character of a JSON document",
+      "id": "B10fvZPMS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "HJtmwbPfr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Process a character of a JSON document",
+      "id": "HyeAGPWPMH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Resets the parser to start a new document",
+      "id": "SkQL-Vl4r",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Parsed chunk of a JSON document",
+      "id": "Sy0WvbPzr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-parsed-json-chunk"
+    },
+    {
+      "description": "Pulses when a new parsed chunk is produced",
+      "id": "SyzAfvbwGr",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}
