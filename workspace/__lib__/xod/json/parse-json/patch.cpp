@@ -1,34 +1,26 @@
 
 using xod::json_parser::ParserState;
 
-#define STACK_OBJECT             0
-#define STACK_ARRAY              1
-#define STACK_KEY                2
-#define STACK_STRING             3
+enum class Stack : uint8_t {
+  OBJECT = 0,
+  ARRAY = 1,
+  KEY = 2,
+  STRING = 3
+};
 
 bool isFirstCharInNumber(char c) {
     return (c >= '0' && c <= '9') || c == '-';
 }
 
-// We don't use `strchr` because buffer we search in is not \0 - terminated
-bool doesCharArrayContain(char myArray[], int length, char c) {
-    for (int i = 0; i < length; i++) {
-      if (myArray[i] == c) {
-        return true;
-      }
-    }
-    return false;
-}
-
 struct ContextObject;
 
 // we only use buffer to validate numbers, booleans and `null`
-#define BUFFER_MAX_LENGTH 64
+#define BUFFER_MAX_LENGTH 16
 
 class JsonParser {
   private:
     ParserState state;
-    int stack[20];
+    Stack stack[20];
     int stackPos = 0;
 
     bool doEmitWhitespace = false;
@@ -142,8 +134,8 @@ void JsonParser::parse(Context ctx, char c) {
     case ParserState::AFTER_OBJECT:
     case ParserState::AFTER_VALUE: {
       // not safe for size == 0!!!
-      int within = stack[stackPos - 1];
-      if (within == STACK_OBJECT) {
+      Stack within = stack[stackPos - 1];
+      if (within == Stack::OBJECT) {
         if (c == '}') {
           endObject();
         } else if (c == ',') {
@@ -152,7 +144,7 @@ void JsonParser::parse(Context ctx, char c) {
             // Expected ',' or '}' while parsing object
             raiseErrorUntilReset(ctx);
         }
-      } else if (within == STACK_ARRAY) {
+      } else if (within == Stack::ARRAY) {
         if (c == ']') {
           endArray(ctx);
         } else if (c == ',') {
@@ -171,26 +163,26 @@ void JsonParser::parse(Context ctx, char c) {
         buffer[bufferPos] = c;
         increaseBufferPointer();
       } else if (c == '.') {
-        if (doesCharArrayContain(buffer, bufferPos, '.')) {
+        if (memchr(buffer, '.', bufferPos)) {
           /// Cannot have multiple decimal points in a number
           raiseErrorUntilReset(ctx);
-        } else if (doesCharArrayContain(buffer, bufferPos, 'e')) {
+        } else if (memchr(buffer, 'e', bufferPos)) {
           // Cannot have a decimal point in an exponent
           raiseErrorUntilReset(ctx);
         }
         buffer[bufferPos] = c;
         increaseBufferPointer();
       } else if (c == 'e' || c == 'E') {
-        if (doesCharArrayContain(buffer, bufferPos, 'e')) {
+        if (memchr(buffer, 'e', bufferPos)) {
           // Cannot have multiple exponents in a number
           raiseErrorUntilReset(ctx);
         }
-        buffer[bufferPos] = c;
+        buffer[bufferPos] = 'e';
         increaseBufferPointer();
       } else if (c == '+' || c == '-') {
         char last = buffer[bufferPos - 1];
-        if (!(last == 'e' || last == 'E')) {
-          // Can only have '+' or '-' after the 'e' or 'E' in a number.
+        if (last != 'e') {
+          // Can only have '+' or '-' after the 'e' in a number.
           raiseErrorUntilReset(ctx);
         }
         buffer[bufferPos] = c;
@@ -253,12 +245,12 @@ void JsonParser::increaseBufferPointer() {
 }
 
 void JsonParser::endString(Context ctx) {
-    int popped = stack[stackPos - 1];
+    Stack popped = stack[stackPos - 1];
     stackPos--;
-    if (popped == STACK_KEY) {
+    if (popped == Stack::KEY) {
       buffer[bufferPos] = '\0';
       state = ParserState::END_KEY;
-    } else if (popped == STACK_STRING) {
+    } else if (popped == Stack::STRING) {
       buffer[bufferPos] = '\0';
       state = ParserState::AFTER_VALUE;
     } else {
@@ -296,9 +288,9 @@ void JsonParser::startValue(Context ctx, char c) {
 }
 
 void JsonParser::endArray(Context ctx) {
-    int popped = stack[stackPos - 1];
+    Stack popped = stack[stackPos - 1];
     stackPos--;
-    if (popped != STACK_ARRAY) {
+    if (popped != Stack::ARRAY) {
       // Unexpected end of array encountered
       raiseErrorUntilReset(ctx);
     }
@@ -309,15 +301,15 @@ void JsonParser::endArray(Context ctx) {
 }
 
 void JsonParser::startKey() {
-    stack[stackPos] = STACK_KEY;
+    stack[stackPos] = Stack::KEY;
     stackPos++;
     state = ParserState::IN_STRING;
 }
 
 void JsonParser::endObject() {
-    int popped = stack[stackPos];
+    Stack popped = stack[stackPos];
     stackPos--;
-    if (popped != STACK_OBJECT) {
+    if (popped != Stack::OBJECT) {
       // throw new ParsingError($this->_line_number, $this->_char_number,
       // "Unexpected end of object encountered.");
     }
@@ -402,18 +394,18 @@ void JsonParser::endNull(Context ctx) {
 
 void JsonParser::startArray() {
     state = ParserState::START_ARRAY;
-    stack[stackPos] = STACK_ARRAY;
+    stack[stackPos] = Stack::ARRAY;
     stackPos++;
 }
 
 void JsonParser::startObject() {
     state = ParserState::START_OBJECT;
-    stack[stackPos] = STACK_OBJECT;
+    stack[stackPos] = Stack::OBJECT;
     stackPos++;
 }
 
 void JsonParser::startString() {
-    stack[stackPos] = STACK_STRING;
+    stack[stackPos] = Stack::STRING;
     stackPos++;
     state = ParserState::IN_STRING;
 }
