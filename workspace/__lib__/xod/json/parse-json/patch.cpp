@@ -1,5 +1,5 @@
 
-using xod::xod__json__parsed_json_stream::ParserState;
+using xod::json_parser::ParserState;
 
 #define STACK_OBJECT             0
 #define STACK_ARRAY              1

@@ -1,4 +1,8 @@
 
+{{#global}}
+namespace xod {
+namespace json_parser {
+
 enum class ParserState : int8_t {
     START_DOCUMENT = 0,
     DONE = -1,
@@ -19,10 +23,14 @@ enum class ParserState : int8_t {
     AFTER_OBJECT = 17,
 };
 
+} // namespace json_parser
+} // namespace xod
+{{/global}}
+
 struct State {};
 
 struct Type {
-    ParserState state;
+    xod::json_parser::ParserState state;
     uint8_t character;
 };
 

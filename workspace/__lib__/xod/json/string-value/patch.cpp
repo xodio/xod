@@ -1,5 +1,5 @@
 
-using xod::xod__json__parsed_json_stream::ParserState;
+using xod::json_parser::ParserState;
 
 struct State {
     char* buff;
