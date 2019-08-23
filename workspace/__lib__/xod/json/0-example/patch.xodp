@@ -1,4 +1,20 @@
 {
+  "comments": [
+    {
+      "content": "Usually you will receive such stream of characters as an [HTTP response](https://xod.io/docs/guide/http-get/).\nBut in this example we're faking it with a special utility node.\n",
+      "id": "B1nTX_aEB",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 12
+      }
+    }
+  ],
   "links": [
     {
       "id": "B1McsrpNH",

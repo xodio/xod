@@ -2,6 +2,7 @@
   "description": "Parses a stream of characters that represent a JSON document.",
   "nodes": [
     {
+      "description": "The character of a JSON document",
       "id": "B10fvZPMS",
       "position": {
         "units": "slots",
@@ -20,6 +21,7 @@
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
+      "description": "Process a character of a JSON document",
       "id": "HyeAGPWPMH",
       "position": {
         "units": "slots",
@@ -40,15 +42,17 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Parsed chunk of a JSON document",
       "id": "Sy0WvbPzr",
       "position": {
         "units": "slots",
         "x": 1,
         "y": 2
       },
-      "type": "@/output-parsed-json-stream"
+      "type": "@/output-parsed-json-chunk"
     },
     {
+      "description": "Pulses when a new parsed chunk is produced",
       "id": "SyzAfvbwGr",
       "position": {
         "units": "slots",

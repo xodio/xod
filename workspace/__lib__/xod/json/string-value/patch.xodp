@@ -2,6 +2,7 @@
   "description": "Extracts a string from a JSON stream",
   "nodes": [
     {
+      "description": "Process the incoming parsed chunk",
       "id": "Hkx8Kr71QB",
       "position": {
         "units": "slots",
@@ -11,13 +12,14 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "Parsed chunk of a JSON document",
       "id": "HyLKSQ1Qr",
       "position": {
         "units": "slots",
         "x": 2,
         "y": 0
       },
-      "type": "@/input-parsed-json-stream"
+      "type": "@/input-parsed-json-chunk"
     },
     {
       "boundLiterals": {
@@ -34,6 +36,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Extracted value\n",
       "id": "r1427mJQr",
       "position": {
         "units": "slots",
@@ -43,6 +46,7 @@
       "type": "xod/patch-nodes/output-string"
     },
     {
+      "description": "Pulses when a value is sucessfully extracted from parsed chunks",
       "id": "rJchQQ17S",
       "label": "DONE",
       "position": {
