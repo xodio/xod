@@ -298,7 +298,7 @@
         "x": 3,
         "y": 2
       },
-      "type": "@/stream-string"
+      "type": "xod/debug/stream-string"
     }
   ]
 }

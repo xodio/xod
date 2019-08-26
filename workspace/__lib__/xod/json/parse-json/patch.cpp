@@ -1,7 +1,7 @@
 
 using xod::json_parser::ParserState;
 
-enum class Stack : uint8_t {
+enum class StackItem : uint8_t {
   OBJECT = 0,
   ARRAY = 1,
   KEY = 2,
@@ -20,7 +20,7 @@ struct ContextObject;
 class JsonParser {
   private:
     ParserState state;
-    Stack stack[20];
+    StackItem stack[20];
     int stackPos = 0;
 
     bool doEmitWhitespace = false;
@@ -42,7 +42,7 @@ class JsonParser {
     void endTrue(ContextObject* ctx);
     void endDocument();
     void endNumber();
-    void endObject();
+    void endObject(ContextObject* ctx);
 
   public:
     JsonParser();
@@ -109,7 +109,7 @@ void JsonParser::parse(Context ctx, char c) {
     case ParserState::START_OBJECT:
     case ParserState::IN_OBJECT:
       if (c == '}') {
-        endObject();
+        endObject(ctx);
       } else if (c == '"') {
         startKey();
       } else {
@@ -134,17 +134,17 @@ void JsonParser::parse(Context ctx, char c) {
     case ParserState::AFTER_OBJECT:
     case ParserState::AFTER_VALUE: {
       // not safe for size == 0!!!
-      Stack within = stack[stackPos - 1];
-      if (within == Stack::OBJECT) {
+      StackItem within = stack[stackPos - 1];
+      if (within == StackItem::OBJECT) {
         if (c == '}') {
-          endObject();
+          endObject(ctx);
         } else if (c == ',') {
           state = ParserState::IN_OBJECT;
         } else {
             // Expected ',' or '}' while parsing object
             raiseErrorUntilReset(ctx);
         }
-      } else if (within == Stack::ARRAY) {
+      } else if (within == StackItem::ARRAY) {
         if (c == ']') {
           endArray(ctx);
         } else if (c == ',') {
@@ -220,8 +220,9 @@ void JsonParser::parse(Context ctx, char c) {
       } else if (c == '{') {
         startObject();
       } else {
-        // TODO: questionable requirement
-        // Document must start with object or array
+        // Document must start with object or array.
+        // Questionable, but it conforms to https://tools.ietf.org/html/rfc4627
+        // which says "A JSON text is a serialized object or array."
         raiseErrorUntilReset(ctx);
       }
       break;
@@ -245,12 +246,12 @@ void JsonParser::increaseBufferPointer() {
 }
 
 void JsonParser::endString(Context ctx) {
-    Stack popped = stack[stackPos - 1];
+    StackItem popped = stack[stackPos - 1];
     stackPos--;
-    if (popped == Stack::KEY) {
+    if (popped == StackItem::KEY) {
       buffer[bufferPos] = '\0';
       state = ParserState::END_KEY;
-    } else if (popped == Stack::STRING) {
+    } else if (popped == StackItem::STRING) {
       buffer[bufferPos] = '\0';
       state = ParserState::AFTER_VALUE;
     } else {
@@ -288,9 +289,9 @@ void JsonParser::startValue(Context ctx, char c) {
 }
 
 void JsonParser::endArray(Context ctx) {
-    Stack popped = stack[stackPos - 1];
+    StackItem popped = stack[stackPos - 1];
     stackPos--;
-    if (popped != Stack::ARRAY) {
+    if (popped != StackItem::ARRAY) {
       // Unexpected end of array encountered
       raiseErrorUntilReset(ctx);
     }
@@ -301,17 +302,17 @@ void JsonParser::endArray(Context ctx) {
 }
 
 void JsonParser::startKey() {
-    stack[stackPos] = Stack::KEY;
+    stack[stackPos] = StackItem::KEY;
     stackPos++;
     state = ParserState::IN_STRING;
 }
 
-void JsonParser::endObject() {
-    Stack popped = stack[stackPos];
+void JsonParser::endObject(Context ctx) {
+    StackItem popped = stack[stackPos];
     stackPos--;
-    if (popped != Stack::OBJECT) {
-      // throw new ParsingError($this->_line_number, $this->_char_number,
-      // "Unexpected end of object encountered.");
+    if (popped != StackItem::OBJECT) {
+      // Unexpected end of object encountered
+      raiseErrorUntilReset(ctx);
     }
     state = ParserState::AFTER_OBJECT;
     if (stackPos == 0) {
@@ -394,18 +395,18 @@ void JsonParser::endNull(Context ctx) {
 
 void JsonParser::startArray() {
     state = ParserState::START_ARRAY;
-    stack[stackPos] = Stack::ARRAY;
+    stack[stackPos] = StackItem::ARRAY;
     stackPos++;
 }
 
 void JsonParser::startObject() {
     state = ParserState::START_OBJECT;
-    stack[stackPos] = Stack::OBJECT;
+    stack[stackPos] = StackItem::OBJECT;
     stackPos++;
 }
 
 void JsonParser::startString() {
-    stack[stackPos] = Stack::STRING;
+    stack[stackPos] = StackItem::STRING;
     stackPos++;
     state = ParserState::IN_STRING;
 }
