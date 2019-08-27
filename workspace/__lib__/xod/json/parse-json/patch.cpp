@@ -308,7 +308,7 @@ void JsonParser::startKey() {
 }
 
 void JsonParser::endObject(Context ctx) {
-    StackItem popped = stack[stackPos];
+    StackItem popped = stack[stackPos - 1];
     stackPos--;
     if (popped != StackItem::OBJECT) {
       // Unexpected end of object encountered
