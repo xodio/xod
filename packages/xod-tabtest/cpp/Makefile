@@ -21,5 +21,5 @@ all: $(RUNNERS)
 test: $(RUNNERS)
 	@for x in $(RUNNERS); do \
 	  echo ./$$x; \
-	  ./$$x; \
+	  ./$$x || exit 1; \
 	done
