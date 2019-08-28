@@ -1,6 +1,9 @@
 __time(ms)	ERR	OUT1	OUT2	OUT3	OUT4	OUT5
-0	false	false	no-pulse	""	0	0
-5	true	false	no-pulse	""	0	0
-6	true	error	error	error	error	error
-15	false	error	error	error	error	error
-16	false	false	no-pulse	""	0	0
+1	false	false	""	0	0	no-pulse
+2	false	true	"hello"	42	'F'	pulse
+
+11	true	true	"hello"	42	'F'	pulse
+12	true	error	error	error	error	error
+
+21	false	error	error	error	error	error
+22	false	true	"hello"	42	'F'	pulse
