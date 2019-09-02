@@ -1,0 +1,389 @@
+{
+  "description": "Performs an HTTP GET request and returns the response as a stream of parsed JSON chunks.",
+  "links": [
+    {
+      "id": "BkWF4CqHH",
+      "input": {
+        "nodeId": "Hkn_E0qHS",
+        "pinKey": "H1C4uJ07r"
+      },
+      "output": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "SkDiRgZQX"
+      }
+    },
+    {
+      "id": "ByNbVC5HS",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "Bk5vjCxW7Q"
+      },
+      "output": {
+        "nodeId": "B1NgE0cHS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByVUcEA5BH",
+      "input": {
+        "nodeId": "Hkn_E0qHS",
+        "pinKey": "ByZru1R7B"
+      },
+      "output": {
+        "nodeId": "SJ7UqV05BB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BymtECcHH",
+      "input": {
+        "nodeId": "rJGBNC5SB",
+        "pinKey": "B10fvZPMS"
+      },
+      "output": {
+        "nodeId": "Hkn_E0qHS",
+        "pinKey": "rknpc1CXH"
+      }
+    },
+    {
+      "id": "H1evE0cHH",
+      "input": {
+        "nodeId": "SkhUE09HH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "SyKDiAgbXQ"
+      }
+    },
+    {
+      "id": "HkGFEA9HH",
+      "input": {
+        "nodeId": "Hkn_E0qHS",
+        "pinKey": "H14EdJ07B"
+      },
+      "output": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "rJrPsAgWXm"
+      }
+    },
+    {
+      "id": "Hkx5VA9BB",
+      "input": {
+        "nodeId": "HJPVxERcBr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJGBNC5SB",
+        "pinKey": "SyzAfvbwGr"
+      }
+    },
+    {
+      "id": "S1DWEA5BB",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "SkWvi0lWQ7"
+      },
+      "output": {
+        "nodeId": "S1ENg4R9rS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1JvNRqrB",
+      "input": {
+        "nodeId": "SkrVlER9Hr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkhUE09HH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1qZEA5Sr",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "rkxwo0lWmm"
+      },
+      "output": {
+        "nodeId": "S1dEl4A5rH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkKb4AqBH",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "SJuviRxZmm"
+      },
+      "output": {
+        "nodeId": "rkfNeEA9rH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkqA86sBS",
+      "input": {
+        "nodeId": "rkmCUpsrS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1dEl4A5rH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyLW4CcSS",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "H1GDoAgWmQ"
+      },
+      "output": {
+        "nodeId": "ByeVg4AcBS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyW9NA5rS",
+      "input": {
+        "nodeId": "ryWdNR9SS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJGBNC5SB",
+        "pinKey": "Sy0WvbPzr"
+      }
+    },
+    {
+      "id": "rJMLc4C5SS",
+      "input": {
+        "nodeId": "rJGBNC5SB",
+        "pinKey": "SkQL-Vl4r"
+      },
+      "output": {
+        "nodeId": "HkWLqECcrr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJx4ZNC9HH",
+      "input": {
+        "nodeId": "HJkbVAcrB",
+        "pinKey": "HkPwjCgZmX"
+      },
+      "output": {
+        "nodeId": "SybNlNA5rr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkEt4CcrH",
+      "input": {
+        "nodeId": "rJGBNC5SB",
+        "pinKey": "HyeAGPWPMH"
+      },
+      "output": {
+        "nodeId": "Hkn_E0qHS",
+        "pinKey": "Ske69JRQB"
+      }
+    },
+    {
+      "id": "rytAL6sBS",
+      "input": {
+        "nodeId": "B1LqEC5BB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkmCUpsrS",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1LqEC5BB",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "description": "An internet connection",
+      "id": "B1NgE0cHS",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A port number on which the server is listening. In most configurations, HTTP web servers listen at port 80",
+      "id": "ByeVg4AcBS",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Pulses when a new JSON chunk is received",
+      "id": "HJPVxERcBr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJkbVAcrB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/http-get"
+    },
+    {
+      "id": "HkWLqECcrr",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "Hkn_E0qHS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "@/http-response-body"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"/\""
+      },
+      "description": "A path to the requested resource",
+      "id": "S1ENg4R9rS",
+      "label": "PATH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Initiate the request",
+      "id": "S1dEl4A5rH",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SJ7UqV05BB",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SkhUE09HH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "Pulses when all response data is received and the connection is closed\n",
+      "id": "SkrVlER9Hr",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"\""
+      },
+      "description": "A domain name of the server",
+      "id": "SybNlNA5rr",
+      "label": "HOST",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rJGBNC5SB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "xod/json/parse-json"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"Accept: application/json\""
+      },
+      "description": "Additional headers",
+      "id": "rkfNeEA9rH",
+      "label": "HDRS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rkmCUpsrS",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "The last received JSON chunk from the response",
+      "id": "ryWdNR9SS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 6
+      },
+      "type": "xod/json/output-parsed-json-chunk"
+    }
+  ]
+}
