@@ -1889,7 +1889,6 @@ template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
-    uint16_t _nodeId;
 
     uint8_t _input_RS;
     uint8_t _input_EN;
@@ -1968,10 +1967,6 @@ template<> void emitValue<output_DONE>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -2090,7 +2085,6 @@ template<> struct ValueType<output_OUT> { using T = Logic; };
 struct ContextObject {
     Node* _node;
     uint8_t _error_input_IN;
-    uint16_t _nodeId;
 
     Logic _input_IN;
 
@@ -2137,10 +2131,6 @@ template<> void emitValue<output_OUT>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -2236,7 +2226,6 @@ template<> struct ValueType<output_OUT> { using T = Logic; };
 struct ContextObject {
     Node* _node;
     uint8_t _error_input_IN;
-    uint16_t _nodeId;
 
     Logic _input_IN;
 
@@ -2283,10 +2272,6 @@ template<> void emitValue<output_OUT>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -2890,7 +2875,6 @@ void runTransaction() {
 
             xod__common_hardware__text_lcd_16x2::ContextObject ctxObj;
             ctxObj._node = &node_23;
-            ctxObj._nodeId = 23;
 
             // copy data from upstream nodes into context
             ctxObj._input_RS = node_1_output_VAL;
@@ -2929,7 +2913,6 @@ void runTransaction() {
 
             xod__core__defer__pulse::ContextObject ctxObj;
             ctxObj._node = &node_24;
-            ctxObj._nodeId = 24;
 
             ctxObj._error_input_IN = 0;
 
@@ -2959,7 +2942,6 @@ void runTransaction() {
 
             xod__core__defer__boolean::ContextObject ctxObj;
             ctxObj._node = &node_25;
-            ctxObj._nodeId = 25;
 
             ctxObj._error_input_IN = 0;
 
