@@ -1,0 +1,55 @@
+{
+  "description": "Extracts a boolean from a JSON stream",
+  "nodes": [
+    {
+      "description": "Process the incoming parsed chunk",
+      "id": "BJeLqCu7S",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when a value is sucessfully extracted from parsed chunks",
+      "id": "Hk7g8qCdQH",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HkEeLqCOmS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Parsed chunk of a JSON document",
+      "id": "SJxlU9R_7B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-parsed-json-chunk"
+    },
+    {
+      "description": "Extracted value",
+      "id": "SkTI90_7S",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "description": "Extracts a number from a JSON stream",
+  "nodes": [
+    {
+      "description": "Process the incoming parsed chunk",
+      "id": "B12D9AOQr",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Extracted value",
+      "id": "B15ucAdQB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "H1G2P9AOQH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when a value is sucessfully extracted from parsed chunks",
+      "id": "HJZhwqCO7S",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Parsed chunk of a JSON document",
+      "id": "r1xnv90_7S",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-parsed-json-chunk"
+    }
+  ]
+}

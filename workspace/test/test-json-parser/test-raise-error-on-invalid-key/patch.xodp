@@ -1,0 +1,104 @@
+{
+  "links": [
+    {
+      "id": "B1IN_1i4S",
+      "input": {
+        "nodeId": "Skr4uJsEB",
+        "pinKey": "Hygwgm7Wgr"
+      },
+      "output": {
+        "nodeId": "SyxnO0qNH",
+        "pinKey": "Sy0WvbPzr"
+      }
+    },
+    {
+      "id": "BktCORqEH",
+      "input": {
+        "nodeId": "SyxnO0qNH",
+        "pinKey": "HyeAGPWPMH"
+      },
+      "output": {
+        "nodeId": "r1VROC9EB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1JBOyj4H",
+      "input": {
+        "nodeId": "SyCVdyi4S",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Skr4uJsEB",
+        "pinKey": "rJagQXblS"
+      }
+    },
+    {
+      "id": "rJ66_AqEB",
+      "input": {
+        "nodeId": "SyxnO0qNH",
+        "pinKey": "B10fvZPMS"
+      },
+      "output": {
+        "nodeId": "SJ2TdRc4B",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJfpuRq4H",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "SJ2TdRc4B",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "Skr4uJsEB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/core/has-error"
+    },
+    {
+      "id": "SyCVdyi4S",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "SyxnO0qNH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/json/parse-json"
+    },
+    {
+      "id": "r1VROC9EB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

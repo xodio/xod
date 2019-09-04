@@ -1,0 +1,304 @@
+{
+  "comments": [
+    {
+      "content": "Usually you will receive such stream of characters as an [HTTP response](https://xod.io/docs/guide/http-get/).\nBut in this example we're faking it with a special utility node.\n",
+      "id": "B1nTX_aEB",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 12
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1McsrpNH",
+      "input": {
+        "nodeId": "B1CYsHa4r",
+        "pinKey": "SyEqH0Ekmr"
+      },
+      "output": {
+        "nodeId": "r1JYiSTNS",
+        "pinKey": "r1K88EhMH"
+      }
+    },
+    {
+      "id": "B1c5sBT4B",
+      "input": {
+        "nodeId": "r1w5iHp4S",
+        "pinKey": "Hkx8Kr71QB"
+      },
+      "output": {
+        "nodeId": "B1CYsHa4r",
+        "pinKey": "H1G9H0VkXS"
+      }
+    },
+    {
+      "id": "BkGn5B6Er",
+      "input": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "B10fvZPMS"
+      },
+      "output": {
+        "nodeId": "rypqqS6Nr",
+        "pinKey": "ry2m6-Uzr"
+      }
+    },
+    {
+      "id": "BkfKor6NH",
+      "input": {
+        "nodeId": "r1JYiSTNS",
+        "pinKey": "rkoS8V3GH"
+      },
+      "output": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "SyzAfvbwGr"
+      }
+    },
+    {
+      "id": "H1CciHaVS",
+      "input": {
+        "nodeId": "B135sBpVS",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "r1w5iHp4S",
+        "pinKey": "r1427mJQr"
+      }
+    },
+    {
+      "id": "H1IvjrpEr",
+      "input": {
+        "nodeId": "SyHwoSpNB",
+        "pinKey": "H1VrIE3fB"
+      },
+      "output": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "Sy0WvbPzr"
+      }
+    },
+    {
+      "id": "H1busrTES",
+      "input": {
+        "nodeId": "B10DiST4B",
+        "pinKey": "B12D9AOQr"
+      },
+      "output": {
+        "nodeId": "SyHwoSpNB",
+        "pinKey": "r1K88EhMH"
+      }
+    },
+    {
+      "id": "HJ-KoraEB",
+      "input": {
+        "nodeId": "r1JYiSTNS",
+        "pinKey": "H1VrIE3fB"
+      },
+      "output": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "Sy0WvbPzr"
+      }
+    },
+    {
+      "id": "HJb5jST4H",
+      "input": {
+        "nodeId": "B1CYsHa4r",
+        "pinKey": "SJ5BCV1QH"
+      },
+      "output": {
+        "nodeId": "r1JYiSTNS",
+        "pinKey": "H1eLIEhGH"
+      }
+    },
+    {
+      "id": "HkSujHaNB",
+      "input": {
+        "nodeId": "H1N_iST4r",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "B10DiST4B",
+        "pinKey": "B15ucAdQB"
+      }
+    },
+    {
+      "id": "Hy0iqBTNH",
+      "input": {
+        "nodeId": "rypqqS6Nr",
+        "pinKey": "ryT-aWIfS"
+      },
+      "output": {
+        "nodeId": "H18sqBaVH",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "S1dqjHaEH",
+      "input": {
+        "nodeId": "r1w5iHp4S",
+        "pinKey": "HyLKSQ1Qr"
+      },
+      "output": {
+        "nodeId": "B1CYsHa4r",
+        "pinKey": "SJgqHCEkXB"
+      }
+    },
+    {
+      "id": "SyX2cHTEr",
+      "input": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "HyeAGPWPMH"
+      },
+      "output": {
+        "nodeId": "rypqqS6Nr",
+        "pinKey": "HyvQ6ZIMH"
+      }
+    },
+    {
+      "id": "r1x_iS6VS",
+      "input": {
+        "nodeId": "B10DiST4B",
+        "pinKey": "r1xnv90_7S"
+      },
+      "output": {
+        "nodeId": "SyHwoSpNB",
+        "pinKey": "H1eLIEhGH"
+      }
+    },
+    {
+      "id": "rJvPsBTNB",
+      "input": {
+        "nodeId": "SyHwoSpNB",
+        "pinKey": "rkoS8V3GH"
+      },
+      "output": {
+        "nodeId": "HkZhcHp4H",
+        "pinKey": "SyzAfvbwGr"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B10DiST4B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "@/number-value"
+    },
+    {
+      "id": "B135sBpVS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 7
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 3
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "rJzURVyXB": "1"
+      },
+      "id": "B1CYsHa4r",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 5
+      },
+      "type": "@/nth"
+    },
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "\"{\"name\": \"Peter\", \"age\": 20, \"pets\": [\"turtle\", \"snail\"]}\""
+      },
+      "id": "H18sqBaVH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 8
+      },
+      "type": "xod/core/constant-string"
+    },
+    {
+      "id": "H1N_iST4r",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 6
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "HkZhcHp4H",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "@/parse-json"
+    },
+    {
+      "boundLiterals": {
+        "rJ9H3vXzB": "\"age\""
+      },
+      "id": "SyHwoSpNB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "@/key"
+    },
+    {
+      "boundLiterals": {
+        "rJ9H3vXzB": "\"pets\""
+      },
+      "id": "r1JYiSTNS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 4
+      },
+      "type": "@/key"
+    },
+    {
+      "id": "r1w5iHp4S",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 6
+      },
+      "type": "@/string-value"
+    },
+    {
+      "id": "rypqqS6Nr",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/debug/stream-string"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "description": "Extracts a value from an object in a JSON stream",
+  "nodes": [
+    {
+      "description": "Parsed chunk of a JSON document",
+      "id": "H1VrIE3fB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "@/input-parsed-json-chunk"
+    },
+    {
+      "description": "Parsed chunk of an extracted value",
+      "id": "H1eLIEhGH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/output-parsed-json-chunk"
+    },
+    {
+      "id": "SyHwIVnGS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when a new parsed chunk is produced",
+      "id": "r1K88EhMH",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Key name",
+      "id": "rJ9H3vXzB",
+      "label": "NAME",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Process the incoming parsed chunk",
+      "id": "rkoS8V3GH",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

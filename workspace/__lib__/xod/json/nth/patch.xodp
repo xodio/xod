@@ -1,0 +1,65 @@
+{
+  "description": "Extracts element with a given index from an array in a JSON stream",
+  "nodes": [
+    {
+      "description": "Pulses when a new parsed chunk is produced",
+      "id": "H1G9H0VkXS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Parsed chunk of a JSON document",
+      "id": "SJ5BCV1QH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-parsed-json-chunk"
+    },
+    {
+      "id": "SJW9S0E17B",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Parsed chunk of an extracted value",
+      "id": "SJgqHCEkXB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "@/output-parsed-json-chunk"
+    },
+    {
+      "description": "Process the incoming parsed chunk",
+      "id": "SyEqH0Ekmr",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Element index",
+      "id": "rJzURVyXB",
+      "label": "N",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
