@@ -1267,7 +1267,6 @@ template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
-    uint16_t _nodeId;
 
     uint8_t _input_RS;
     uint8_t _input_EN;
@@ -1346,10 +1345,6 @@ template<> void emitValue<output_DONE>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -1586,7 +1581,6 @@ void runTransaction() {
 
             xod__common_hardware__text_lcd_16x2::ContextObject ctxObj;
             ctxObj._node = &node_10;
-            ctxObj._nodeId = 10;
 
             // copy data from upstream nodes into context
             ctxObj._input_RS = node_0_output_VAL;

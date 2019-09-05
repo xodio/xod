@@ -1079,7 +1079,6 @@ template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
-    uint16_t _nodeId;
 
     uint8_t _input_PORT;
     Logic _input_UPD;
@@ -1137,10 +1136,6 @@ template<> void emitValue<output_DONE>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -1454,7 +1449,6 @@ template<> struct ValueType<output_DONE> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
-    uint16_t _nodeId;
 
     uint8_t _input_PORT;
     Logic _input_SIG;
@@ -1509,10 +1503,6 @@ template<> void emitValue<output_DONE>(Context ctx, Logic val) {
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-uint16_t getNodeId(Context ctx) {
-    return ctx->_nodeId;
 }
 
 template<typename OutputT> void raiseError(Context ctx) {
@@ -1712,7 +1702,6 @@ void runTransaction() {
 
             xod__gpio__digital_read::ContextObject ctxObj;
             ctxObj._node = &node_4;
-            ctxObj._nodeId = 4;
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_0_output_VAL;
@@ -1741,7 +1730,6 @@ void runTransaction() {
 
             xod__gpio__digital_read::ContextObject ctxObj;
             ctxObj._node = &node_5;
-            ctxObj._nodeId = 5;
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_1_output_VAL;
@@ -1872,7 +1860,6 @@ void runTransaction() {
 
             xod__gpio__digital_write::ContextObject ctxObj;
             ctxObj._node = &node_9;
-            ctxObj._nodeId = 9;
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_2_output_VAL;

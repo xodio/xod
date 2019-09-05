@@ -159,7 +159,7 @@ const convertPatchToTPatch = def(
       usesTimeouts: areTimeoutsEnabled(impl),
       catchesErrors: doesCatchErrors(impl),
       raisesErrors: doesRaiseErrors(impl),
-      usesNodeId: R.either(isNodeIdEnabled, doesRaiseErrors)(impl),
+      usesNodeId: isNodeIdEnabled(impl),
     };
 
     return R.mergeAll([
