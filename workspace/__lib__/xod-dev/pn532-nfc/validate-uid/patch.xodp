@@ -1,0 +1,226 @@
+{
+  "description": "Compares an UID of the NFC  tag with the reference UID.\nReturns `False` on both outputs if the UID of NFC tag is empty.",
+  "links": [
+    {
+      "id": "ByW5QPy8zr",
+      "input": {
+        "nodeId": "S157PJLGB",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "rJx5QPJLMr",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "H1RFD1IGr",
+      "input": {
+        "nodeId": "HyAvPk8zB",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "B1OMhTEGB",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    },
+    {
+      "id": "H1aOPkIGB",
+      "input": {
+        "nodeId": "S157PJLGB",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "ByqOwkIMH",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "Hy_tP1UfS",
+      "input": {
+        "nodeId": "HkMQnaVMB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyAvPk8zB",
+        "pinKey": "B1gN80uHvk-"
+      }
+    },
+    {
+      "id": "Hyl4PkLGS",
+      "input": {
+        "nodeId": "B1OMhTEGB",
+        "pinKey": "HJG8C_SPkb"
+      },
+      "output": {
+        "nodeId": "Byp7wJUfS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyudG3T4fr",
+      "input": {
+        "nodeId": "B1OMhTEGB",
+        "pinKey": "rJXICuSwyW"
+      },
+      "output": {
+        "nodeId": "rkHuzn6NMH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1gFPJ8fS",
+      "input": {
+        "nodeId": "S19DPkIfr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S157PJLGB",
+        "pinKey": "B1gN80uHvk-"
+      }
+    },
+    {
+      "id": "SJpFP1IzS",
+      "input": {
+        "nodeId": "HyAvPk8zB",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "ByqOwkIMH",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "r1A4v1UGB",
+      "input": {
+        "nodeId": "rJx5QPJLMr",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "B1OMhTEGB",
+        "pinKey": "H1E8AuSPkZ"
+      }
+    },
+    {
+      "id": "r1gBkxUMr",
+      "input": {
+        "nodeId": "BkXUDkUGB",
+        "pinKey": "HJ9JMCHfH"
+      },
+      "output": {
+        "nodeId": "rkHuzn6NMH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rksdDJ8MS",
+      "input": {
+        "nodeId": "ByqOwkIMH",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "BkXUDkUGB",
+        "pinKey": "ryegMRSzS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1OMhTEGB",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/equal"
+    },
+    {
+      "id": "BkXUDkUGB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "@/is-empty"
+    },
+    {
+      "description": "Reference UID of an NFC tag",
+      "id": "Byp7wJUfS",
+      "label": "REF",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-nfc-uid"
+    },
+    {
+      "id": "ByqOwkIMH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "description": "Returns `True` if UIDs are equal",
+      "id": "HkMQnaVMB",
+      "label": "GOOD",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "HyAvPk8zB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "id": "S157PJLGB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "description": "Returns `True` if UIDs are not equal and `UID` is not empty.",
+      "id": "S19DPkIfr",
+      "label": "BAD",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "rJx5QPJLMr",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "description": "A UID of an NFC tag",
+      "id": "rkHuzn6NMH",
+      "label": "UID",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-nfc-uid"
+    }
+  ]
+}

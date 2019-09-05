@@ -1,0 +1,432 @@
+{
+  "description": "Drives a text LCD screen with HD44780 chip.",
+  "links": [
+    {
+      "id": "BJiHXBkmr",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "r1X0y5XkQS"
+      },
+      "output": {
+        "nodeId": "ryHL2GHyQS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkMrm0ZQB",
+      "input": {
+        "nodeId": "SyA47CZmB",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "Skzk0Fm1mH"
+      }
+    },
+    {
+      "id": "By-ImrkQS",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "rJ4Ayq7ymH"
+      },
+      "output": {
+        "nodeId": "rk8I2fHkXH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJzOFSkmr",
+      "input": {
+        "nodeId": "HJg2vQByQS",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "r1_vFHJ7H",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "Hk-0V7RWmH",
+      "input": {
+        "nodeId": "rJgCVmRZXr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "SyA47CZmB",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "Hy3B7rJQS",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "BJMRJqQ1Xr"
+      },
+      "output": {
+        "nodeId": "rkVLnGSJQS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyVUQAb7B",
+      "input": {
+        "nodeId": "rkXhPXHyXS",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "rJgCVmRZXr",
+        "pinKey": "S1zKHHSx7H"
+      }
+    },
+    {
+      "id": "S16BmHk7H",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "B1Ak971XS"
+      },
+      "output": {
+        "nodeId": "BJxIhfrk7B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1JL7S17H",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "H1e01q7kXr"
+      },
+      "output": {
+        "nodeId": "SkzI2fBkmH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1MIX0bQr",
+      "input": {
+        "nodeId": "rkXhPXHyXS",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SyA47CZmB",
+        "pinKey": "S1zKHHSx7H"
+      }
+    },
+    {
+      "id": "SJxLXRb7H",
+      "input": {
+        "nodeId": "rJgCVmRZXr",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "r1_vFHJ7H",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "SkIwYH1mH",
+      "input": {
+        "nodeId": "BJ3v7BymS",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "r1fwKS1Xr",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "SkRHQH1QS",
+      "input": {
+        "nodeId": "BJFS7HyQB",
+        "pinKey": "Syb0J5XymB"
+      },
+      "output": {
+        "nodeId": "r1QLnzH1mr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkaSmR-XB",
+      "input": {
+        "nodeId": "SyA47CZmB",
+        "pinKey": "SJKHrSeQH"
+      },
+      "output": {
+        "nodeId": "BJ3v7BymS",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "r10jXrJmr",
+      "input": {
+        "nodeId": "BJ3v7BymS",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "HyjEmHkmB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1WUXRZXS",
+      "input": {
+        "nodeId": "rJgCVmRZXr",
+        "pinKey": "SJKHrSeQH"
+      },
+      "output": {
+        "nodeId": "HJg2vQByQS",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "r1be3vQByXB",
+      "input": {
+        "nodeId": "SyOnDXSyXB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkXhPXHyXS",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "r1yuKH17r",
+      "input": {
+        "nodeId": "r1_vFHJ7H",
+        "pinKey": "S1XteAATV"
+      },
+      "output": {
+        "nodeId": "HJbIhGB1XB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJhr70bXH",
+      "input": {
+        "nodeId": "SyA47CZmB",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "r1fwKS1Xr",
+        "pinKey": "BkV5xRCpE"
+      }
+    },
+    {
+      "id": "ryNwtryQr",
+      "input": {
+        "nodeId": "r1fwKS1Xr",
+        "pinKey": "S1XteAATV"
+      },
+      "output": {
+        "nodeId": "HJInzryQr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryxhmrJmH",
+      "input": {
+        "nodeId": "HJg2vQByQS",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "HyjEmHkmB",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJ3v7BymS",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 2
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "BJFS7HyQB",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "@/text-lcd-parallel-device"
+    },
+    {
+      "description": "Board GPIO port with LCD D4 pin",
+      "id": "BJxIhfrk7B",
+      "label": "D4",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Text for the first line",
+      "id": "HJInzryQr",
+      "label": "L1",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Text for the second line",
+      "id": "HJbIhGB1XB",
+      "label": "L2",
+      "position": {
+        "units": "slots",
+        "x": 19,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "HJg2vQByQS",
+      "position": {
+        "units": "slots",
+        "x": 20,
+        "y": 2
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Fires update of LCD display on incoming value change while `ACT` is true.",
+      "id": "HyjEmHkmB",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 21,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Board GPIO port with LCD D6 pin",
+      "id": "SkzI2fBkmH",
+      "label": "D6",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "SyA47CZmB",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "@/print-at"
+    },
+    {
+      "description": "Fires when write is done",
+      "id": "SyOnDXSyXB",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Board GPIO port with LCD D5 pin",
+      "id": "r1QLnzH1mr",
+      "label": "D5",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "Sk4Kl0RT4": "\"ERR\""
+      },
+      "id": "r1_vFHJ7H",
+      "position": {
+        "units": "slots",
+        "x": 19,
+        "y": 1
+      },
+      "type": "xod/core/if-error"
+    },
+    {
+      "boundLiterals": {
+        "Sk4Kl0RT4": "\"ERR\""
+      },
+      "id": "r1fwKS1Xr",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/core/if-error"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "1"
+      },
+      "id": "rJgCVmRZXr",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 3
+      },
+      "type": "@/print-at"
+    },
+    {
+      "description": "Board GPIO port with LCD D7 pin",
+      "id": "rk8I2fHkXH",
+      "label": "D7",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Board GPIO port with LCD EN pin",
+      "id": "rkVLnGSJQS",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rkXhPXHyXS",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "Board GPIO port with LCD RS pin",
+      "id": "ryHL2GHyQS",
+      "label": "RS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}

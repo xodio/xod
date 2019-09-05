@@ -17,10 +17,10 @@
   ],
   "links": [
     {
-      "id": "B1Ypc4GK4",
+      "id": "Bk0RuFxXB",
       "input": {
-        "nodeId": "Bk8a5NfFN",
-        "pinKey": "B1TSE9tZ-"
+        "nodeId": "H1i0dFl7r",
+        "pinKey": "BJ3DAE1QS"
       },
       "output": {
         "nodeId": "HkNkC5yKV",
@@ -63,13 +63,13 @@
   ],
   "nodes": [
     {
-      "id": "Bk8a5NfFN",
+      "id": "H1i0dFl7r",
       "position": {
         "units": "slots",
         "x": 8,
         "y": 4
       },
-      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+      "type": "xod-dev/text-lcd/text-lcd-i2c-16x2"
     },
     {
       "arityLevel": 2,

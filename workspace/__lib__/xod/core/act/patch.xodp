@@ -1,0 +1,153 @@
+{
+  "description": "Pulses when `ACT` is `True` and one of the following happens: the data on `DATA` pin changes, program boot, `ACT` has changed from `False` to `True`. Use this node to convert a boolean value which denotes activity/enableness to discrete update action pulses which appear right at the moments when you should reflect the changes in incoming data.",
+  "links": [
+    {
+      "id": "BJjtFRb7S",
+      "input": {
+        "nodeId": "H1gNChEl7H",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "Hk74R2Ex7S",
+        "pinKey": "ryVmUAOrvkb"
+      }
+    },
+    {
+      "id": "ByFFFA-mB",
+      "input": {
+        "nodeId": "H1gNChEl7H",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "SyfN0n4l7H",
+        "pinKey": "SygDsK4MS"
+      }
+    },
+    {
+      "id": "HJ_utAWmH",
+      "input": {
+        "nodeId": "H1fx68wzB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BkVVRnEgmH",
+        "pinKey": "OkPg7GDaW"
+      }
+    },
+    {
+      "id": "HyR0h4xXS",
+      "input": {
+        "nodeId": "BkVVRnEgmH",
+        "pinKey": "B1P1nFwaM"
+      },
+      "output": {
+        "nodeId": "H13R3IvGB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyutYA-QH",
+      "input": {
+        "nodeId": "BkVVRnEgmH",
+        "pinKey": "SJ-1mZPTz"
+      },
+      "output": {
+        "nodeId": "H1gNChEl7H",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rkEKtA-QB",
+      "input": {
+        "nodeId": "H1gNChEl7H",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "H13R3IvGB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rynA2NlXS",
+      "input": {
+        "nodeId": "SyfN0n4l7H",
+        "pinKey": "SJHwjt4fr"
+      },
+      "output": {
+        "nodeId": "BytC28DfH",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkVVRnEgmH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "@/gate"
+    },
+    {
+      "description": "The value to watch for changes",
+      "id": "BytC28DfH",
+      "label": "DATA",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "description": "Allows or forbids pulses on `OUT`",
+      "id": "H13R3IvGB",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Fires a pulse on an incoming value change, on boot, on activation but only if `ACT` is set to `True`",
+      "id": "H1fx68wzB",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "arityLevel": 2,
+      "id": "H1gNChEl7H",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/any"
+    },
+    {
+      "id": "Hk74R2Ex7S",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/boot"
+    },
+    {
+      "id": "SyfN0n4l7H",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/pulse-on-change(boolean)"
+    }
+  ]
+}

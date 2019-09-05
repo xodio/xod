@@ -1,0 +1,138 @@
+{
+  "description": "Drives a generic relay module.",
+  "links": [
+    {
+      "id": "H1WNyDDGB",
+      "input": {
+        "nodeId": "HJgNJwwGB",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "HyAya54Gr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyEH-tEMS",
+      "input": {
+        "nodeId": "r1WBWKVMS",
+        "pinKey": "HJ6HsEngZ"
+      },
+      "output": {
+        "nodeId": "SkgXWK4MB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJONyvPfH",
+      "input": {
+        "nodeId": "r1WBWKVMS",
+        "pinKey": "BygApTqym"
+      },
+      "output": {
+        "nodeId": "HJgNJwwGB",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "Sy8rbFNzr",
+      "input": {
+        "nodeId": "r1WBWKVMS",
+        "pinKey": "rJjXFA9JQ"
+      },
+      "output": {
+        "nodeId": "SJdzbYEzH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryH4kwPGH",
+      "input": {
+        "nodeId": "HJgNJwwGB",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "SkgXWK4MB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryTSZtNfB",
+      "input": {
+        "nodeId": "B1jH-YVzB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1WBWKVMS",
+        "pinKey": "ry3pcpqyX"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Fires when the data change is acknowledged",
+      "id": "B1jH-YVzB",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJgNJwwGB",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Makes the node react to incoming values",
+      "id": "HyAya54Gr",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "Board port number the relay is connected to",
+      "id": "SJdzbYEzH",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Engages the relay switch when the value is `True`",
+      "id": "SkgXWK4MB",
+      "label": "ON",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "r1WBWKVMS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/gpio/digital-write"
+    }
+  ]
+}

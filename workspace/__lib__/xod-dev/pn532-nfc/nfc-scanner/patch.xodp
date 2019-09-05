@@ -2,333 +2,230 @@
   "description": "A quick-start node which represents an RFID/NFC module.\nInitializes the module and reads the UID of a detected card\n\nPossible errors:\n— Initialization error",
   "links": [
     {
-      "id": "B1kbuz3Dm",
+      "id": "H1OQ9bvmB",
       "input": {
-        "nodeId": "H15lOG3vm",
-        "pinKey": "__in__"
+        "nodeId": "rkSXcbwQB",
+        "pinKey": "ByU7LRuSPkW"
       },
       "output": {
-        "nodeId": "ryEwwG3v7",
-        "pinKey": "rkQUBzhvQ"
+        "nodeId": "rJpBCMPPGr",
+        "pinKey": "rywIrfhP7"
       }
     },
     {
-      "id": "BJljsDznvm",
+      "id": "HkSgSCMPvGH",
       "input": {
-        "nodeId": "ryEwwG3v7",
-        "pinKey": "r1QEHf3DX"
+        "nodeId": "B12H0Gwvzr",
+        "pinKey": "HkqxwGnDm"
       },
       "output": {
-        "nodeId": "r1jsvGhvX",
+        "nodeId": "r1LrRzPwGH",
         "pinKey": "__out__"
       }
     },
     {
-      "id": "BJutDzhv7",
+      "id": "Hy7-QDDfH",
       "input": {
-        "nodeId": "S1IFwGhv7",
-        "pinKey": "B1P1nFwaM"
+        "nodeId": "SJeb7Pwzr",
+        "pinKey": "SkJ46dw6-"
       },
       "output": {
-        "nodeId": "SyRBPf3DQ",
-        "pinKey": "HkyxURuSPyW"
+        "nodeId": "SJnAfwPMB",
+        "pinKey": "__out__"
       }
     },
     {
-      "id": "BkKcPz3vm",
+      "id": "HyFQ9bvXH",
       "input": {
-        "nodeId": "ryEwwG3v7",
-        "pinKey": "rytEHf3vm"
+        "nodeId": "BkZrRzwPzS",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "HJMcPMhvm",
+        "nodeId": "rkSXcbwQB",
         "pinKey": "ByHmL0uHPk-"
       }
     },
     {
-      "id": "Bkgb2lg_X",
+      "id": "Hyw2ttZXr",
       "input": {
-        "nodeId": "SJie3leOQ",
-        "pinKey": "Bkh8A_Sv1-"
-      },
-      "output": {
-        "nodeId": "ryEwwG3v7",
-        "pinKey": "rkQUBzhvQ"
-      }
-    },
-    {
-      "id": "HylrsvzhDQ",
-      "input": {
-        "nodeId": "S17QDMnDm",
-        "pinKey": "rkTFef3P7"
-      },
-      "output": {
-        "nodeId": "H1SswznPX",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "S1Scvf3Pm",
-      "input": {
-        "nodeId": "HJMcPMhvm",
-        "pinKey": "ryv7IRdSP1b"
-      },
-      "output": {
-        "nodeId": "S1IFwGhv7",
-        "pinKey": "OkPg7GDaW"
-      }
-    },
-    {
-      "id": "S1kQvz3DX",
-      "input": {
-        "nodeId": "rkegvfhD7",
-        "pinKey": "HkqxwGnDm"
-      },
-      "output": {
-        "nodeId": "S1d1wfnDm",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJKIDfnwX",
-      "input": {
-        "nodeId": "SyRBPf3DQ",
-        "pinKey": "Bkh8A_Sv1-"
-      },
-      "output": {
-        "nodeId": "ByQIDMnPm",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJSydMnDX",
-      "input": {
-        "nodeId": "S1ek_zhDQ",
+        "nodeId": "B1vSAzDPGr",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "ryEwwG3v7",
+        "nodeId": "rJpBCMPPGr",
         "pinKey": "Sk3BHM2Pm"
       }
     },
     {
-      "id": "SJluPPznvm",
+      "id": "S1GxBRGPDMB",
       "input": {
-        "nodeId": "rkOPDz3PQ",
+        "nodeId": "BJ_BCGDwzS",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "rJpBCMPPGr",
+        "pinKey": "rkQUBzhvQ"
+      }
+    },
+    {
+      "id": "SJUQ9-PXB",
+      "input": {
+        "nodeId": "rkSXcbwQB",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "rJpBCMPPGr",
+        "pinKey": "rkQUBzhvQ"
+      }
+    },
+    {
+      "id": "Sk5eSCfDvMr",
+      "input": {
+        "nodeId": "Byr0GwwMB",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "rkegvfhD7",
+        "nodeId": "BJ_BCGDwzS",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "SkH3YKb7H",
+      "input": {
+        "nodeId": "rJpBCMPPGr",
+        "pinKey": "r1QEHf3DX"
+      },
+      "output": {
+        "nodeId": "B12H0Gwvzr",
         "pinKey": "rJ5Exf2P7"
       }
     },
     {
-      "id": "Sy4qwzhPm",
+      "id": "SyMhtKbQr",
       "input": {
-        "nodeId": "S1IFwGhv7",
-        "pinKey": "SJ-1mZPTz"
+        "nodeId": "rJpBCMPPGr",
+        "pinKey": "rytEHf3vm"
       },
       "output": {
-        "nodeId": "ByQIDMnPm",
-        "pinKey": "__out__"
+        "nodeId": "SJeb7Pwzr",
+        "pinKey": "BklspuwpW"
       }
     },
     {
-      "id": "SymZ3gx_m",
+      "id": "ryTxS0zPvGS",
       "input": {
-        "nodeId": "Bkcyhxxum",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SJie3leOQ",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "r1v9wfnP7",
-      "input": {
-        "nodeId": "HJMcPMhvm",
-        "pinKey": "ByU7LRuSPkW"
-      },
-      "output": {
-        "nodeId": "S17QDMnDm",
-        "pinKey": "HkCoxf2DX"
-      }
-    },
-    {
-      "id": "rkj8Dznwm",
-      "input": {
-        "nodeId": "S17QDMnDm",
-        "pinKey": "S105eMnP7"
-      },
-      "output": {
-        "nodeId": "SyRBPf3DQ",
-        "pinKey": "HkyxURuSPyW"
-      }
-    },
-    {
-      "id": "ryZ-hxluX",
-      "input": {
-        "nodeId": "SJie3leOQ",
+        "nodeId": "BJ_BCGDwzS",
         "pinKey": "B1RU0OrDkb"
       },
       "output": {
-        "nodeId": "ryEwwG3v7",
+        "nodeId": "rJpBCMPPGr",
         "pinKey": "rywIrfhP7"
       }
     }
   ],
   "nodes": [
     {
-      "description": "True when the most recent scan detected an NFC tag",
-      "id": "Bkcyhxxum",
-      "label": "TAG",
+      "id": "B12H0Gwvzr",
       "position": {
         "units": "slots",
-        "x": 5,
-        "y": 5
-      },
-      "type": "xod/patch-nodes/output-boolean"
-    },
-    {
-      "boundLiterals": {
-        "__out__": "Continuously"
-      },
-      "description": "Triggers scan for an NFC tag",
-      "id": "ByQIDMnPm",
-      "label": "SCAN",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
-      "description": "Fires on successful reading",
-      "id": "H15lOG3vm",
-      "label": "OK",
-      "position": {
-        "units": "slots",
-        "x": 9,
-        "y": 5
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "id": "H1SswznPX",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/from-bus"
-    },
-    {
-      "id": "HJMcPMhvm",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 3
-      },
-      "type": "xod/core/any"
-    },
-    {
-      "id": "S17QDMnDm",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 3
-      },
-      "type": "@/init"
-    },
-    {
-      "id": "S1IFwGhv7",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "xod/core/gate"
-    },
-    {
-      "description": "A port number for the interrupt request",
-      "id": "S1d1wfnDm",
-      "label": "IRQ",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "The UID of a readed NFC tag",
-      "id": "S1ek_zhDQ",
-      "label": "UID",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 5
-      },
-      "type": "@/output-nfc-uid"
-    },
-    {
-      "id": "SJie3leOQ",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 4
-      },
-      "type": "xod/core/flip-flop"
-    },
-    {
-      "id": "SyRBPf3DQ",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 1
-      },
-      "type": "xod/core/flip-flop"
-    },
-    {
-      "id": "r1jsvGhvX",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/from-bus"
-    },
-    {
-      "id": "rkOPDz3PQ",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/to-bus"
-    },
-    {
-      "id": "rkegvfhD7",
-      "position": {
-        "units": "slots",
-        "x": 1,
+        "x": 0,
         "y": 1
       },
       "type": "@/pn532-device"
     },
     {
-      "id": "ryEwwG3v7",
+      "description": "The UID of a readed NFC tag",
+      "id": "B1vSAzDPGr",
+      "label": "UID",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 0,
+        "y": 5
+      },
+      "type": "@/output-nfc-uid"
+    },
+    {
+      "id": "BJ_BCGDwzS",
+      "position": {
+        "units": "slots",
+        "x": 1,
         "y": 3
       },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "description": "Fires on successful reading",
+      "id": "BkZrRzwPzS",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "True when the most recent scan detected an NFC tag",
+      "id": "Byr0GwwMB",
+      "label": "TAG",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "id": "SJeb7Pwzr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/continuously-pausable"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Triggers scan for an NFC tag continuously while `True`.",
+      "id": "SJnAfwPMB",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "A port number for the interrupt request",
+      "id": "r1LrRzPwGH",
+      "label": "IRQ",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rJpBCMPPGr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
       "type": "@/pair-tag"
+    },
+    {
+      "id": "rkSXcbwQB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/core/any"
     }
   ]
 }

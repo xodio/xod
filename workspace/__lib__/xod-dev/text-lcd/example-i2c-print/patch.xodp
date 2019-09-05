@@ -1,0 +1,255 @@
+{
+  "links": [
+    {
+      "id": "B15KV6WQH",
+      "input": {
+        "nodeId": "HJeIFN6bQB",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "SJ3uV6-Xr",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "B1KQYlk7B",
+      "input": {
+        "nodeId": "B1iMYgyQr",
+        "pinKey": "Sk8kkWAfS"
+      },
+      "output": {
+        "nodeId": "rJdQFekXS",
+        "pinKey": "Sk1e_NIVE"
+      }
+    },
+    {
+      "id": "B1lYN6W7r",
+      "input": {
+        "nodeId": "SJ3uV6-Xr",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "B1zWHN17H",
+        "pinKey": "H1wh06BEW"
+      }
+    },
+    {
+      "id": "BJVaFETbQB",
+      "input": {
+        "nodeId": "rkMaY4a-7r",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "SyWTKV6-7S",
+        "pinKey": "H1wh06BEW"
+      }
+    },
+    {
+      "id": "By5QYgJmr",
+      "input": {
+        "nodeId": "B1iMYgyQr",
+        "pinKey": "BJg11ZRzB"
+      },
+      "output": {
+        "nodeId": "HyJMtlkmS",
+        "pinKey": "rJZSQgAfS"
+      }
+    },
+    {
+      "id": "HJ0uV6Z7H",
+      "input": {
+        "nodeId": "SJ3uV6-Xr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "B1iMYgyQr",
+        "pinKey": "HJnQJbCfr"
+      }
+    },
+    {
+      "id": "HkHTYNTZQH",
+      "input": {
+        "nodeId": "rkMaY4a-7r",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "BJlpYNTbmS",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "Hkb9NTZQB",
+      "input": {
+        "nodeId": "BJlpYNTbmS",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "HJeIFN6bQB",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "HymTFNpZQH",
+      "input": {
+        "nodeId": "BJlpYNTbmS",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "HkTFEpZXB",
+        "pinKey": "H1wh06BEW"
+      }
+    },
+    {
+      "id": "rkbLt4T-QS",
+      "input": {
+        "nodeId": "HJeIFN6bQB",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "SkUYNTb7H",
+        "pinKey": "H1wh06BEW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "SJbIkb0zr": "Continuously"
+      },
+      "id": "B1iMYgyQr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "@/set-backlight"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEW": "\"Hello world!\""
+      },
+      "id": "B1zWHN17H",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-32"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "2",
+        "SJKHrSeQH": "Continuously"
+      },
+      "id": "BJlpYNTbmS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 5
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "1",
+        "SJKHrSeQH": "Continuously"
+      },
+      "id": "HJeIFN6bQB",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEW": "\"On the text LCD\""
+      },
+      "id": "HkTFEpZXB",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 4
+      },
+      "type": "xod/debug/tweak-string-32"
+    },
+    {
+      "boundLiterals": {
+        "HkdEXeCMH": "20",
+        "SkeN7eCzr": "4",
+        "Sy3aTyCzS": "38h"
+      },
+      "id": "HyJMtlkmS",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 3
+      },
+      "type": "@/text-lcd-i2c-device"
+    },
+    {
+      "boundLiterals": {
+        "SJKHrSeQH": "Continuously"
+      },
+      "id": "SJ3uV6-Xr",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEW": "\"Nice to meet you\""
+      },
+      "id": "SkUYNTb7H",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-string-32"
+    },
+    {
+      "boundLiterals": {
+        "H1wh06BEW": "\"- XOD\""
+      },
+      "id": "SyWTKV6-7S",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 4
+      },
+      "type": "xod/debug/tweak-string-32"
+    },
+    {
+      "boundLiterals": {
+        "Sk1e_NIVE": "True"
+      },
+      "id": "rJdQFekXS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/debug/tweak-boolean"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "3",
+        "SJKHrSeQH": "Continuously",
+        "SylLSSgmr": "11",
+        "rJ38HSxmH": "5"
+      },
+      "id": "rkMaY4a-7r",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 5
+      },
+      "type": "@/print-at"
+    }
+  ]
+}

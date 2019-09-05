@@ -1,0 +1,71 @@
+{
+  "description": "Turns on or off the backlight of the I²C text LCD.",
+  "nodes": [
+    {
+      "description": "An I2C text LCD device",
+      "id": "BJg11ZRzB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-text-lcd-i2c-device"
+    },
+    {
+      "id": "HJnQJbCfr",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-text-lcd-i2c-device"
+    },
+    {
+      "description": "Fires when backlight is updated",
+      "id": "S1Y8yWRGr",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJ1gJbCMS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Applies `BL` value to the text LCD backlight",
+      "id": "SJbIkb0zr",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Backlight enable/disable",
+      "id": "Sk8kkWAfS",
+      "label": "BL",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    }
+  ]
+}

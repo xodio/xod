@@ -1,0 +1,169 @@
+{
+  "links": [
+    {
+      "id": "B1GvtrlQr",
+      "input": {
+        "nodeId": "ByAItrx7H",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "H1gDYHxXB",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "Bk_FFBgXr",
+      "input": {
+        "nodeId": "ryLFYBxQr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "r1GIYBgXH",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "S1BIKrl7S",
+      "input": {
+        "nodeId": "r1GIYBgXH",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "rkO7_Bemr",
+        "pinKey": "BygFrrHgXr"
+      }
+    },
+    {
+      "id": "SJJ6FreXS",
+      "input": {
+        "nodeId": "r1GIYBgXH",
+        "pinKey": "SJKHrSeQH"
+      },
+      "output": {
+        "nodeId": "SJp2YSgQS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SytutHx7r",
+      "input": {
+        "nodeId": "r1GIYBgXH",
+        "pinKey": "rJ-trBSlmB"
+      },
+      "output": {
+        "nodeId": "ByAItrx7H",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "r10nKrxmr",
+      "input": {
+        "nodeId": "SJp2YSgQS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1gDYHxXB",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "rkYmurgXS",
+      "input": {
+        "nodeId": "rkO7_Bemr",
+        "pinKey": "r1StrSrl7S"
+      },
+      "output": {
+        "nodeId": "ByeeXOSeXH",
+        "pinKey": "rJZSQgAfS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ByAItrx7H",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "boundLiterals": {
+        "HkdEXeCMH": "16",
+        "SkeN7eCzr": "2",
+        "Sy3aTyCzS": "38h"
+      },
+      "id": "ByeeXOSeXH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/text-lcd-i2c-device"
+    },
+    {
+      "id": "H1gDYHxXB",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "SJp2YSgQS",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "boundLiterals": {
+        "SJKHrSeQH": "Continuously",
+        "SylLSSgmr": "10",
+        "rJ-trBSlmB": "\"Value:\"",
+        "rJ38HSxmH": "6"
+      },
+      "id": "r1GIYBgXH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "SJKHrSeQH": "On Boot",
+        "rJ-trBSlmB": "\"Value:\"",
+        "rJ38HSxmH": "10"
+      },
+      "id": "rkO7_Bemr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/print-at"
+    },
+    {
+      "boundLiterals": {
+        "Bk4KSSrxXr": "1",
+        "SJKHrSeQH": "On Boot",
+        "SylLSSgmr": "4",
+        "rJ-trBSlmB": "\"It works, as you see\"",
+        "rJ38HSxmH": "8"
+      },
+      "id": "ryLFYBxQr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "@/print-at"
+    }
+  ]
+}

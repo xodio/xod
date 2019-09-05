@@ -31,25 +31,6 @@
   ],
   "nodes": [
     {
-      "boundLiterals": {
-        "B1TSE9tZ-": "\"Hello\"",
-        "BJJqaX4Gb": "D11",
-        "H1bLN9F-b": "\"World\"",
-        "HJysTXVMb": "D9",
-        "S1nqa7NMZ": "D10",
-        "SkBK6Q4fb": "D12",
-        "rJlYT7EfW": "D13",
-        "rkbjp7Ezb": "D8"
-      },
-      "id": "BJ0UOrbdE",
-      "position": {
-        "units": "slots",
-        "x": 8,
-        "y": 3
-      },
-      "type": "xod/common-hardware/text-lcd-16x2"
-    },
-    {
       "id": "HkL8cbZFV",
       "position": {
         "units": "slots",
@@ -60,16 +41,35 @@
     },
     {
       "boundLiterals": {
-        "B1TSE9tZ-": "\"Hello\"",
-        "H1bLN9F-b": "\"World\""
+        "BJ3DAE1QS": "\"Hello\"",
+        "rJgnw0417B": "\"World\""
       },
-      "id": "rJWvOSbuN",
+      "id": "r12fwKgQr",
       "position": {
         "units": "slots",
         "x": 8,
         "y": 4
       },
-      "type": "xod/common-hardware/text-lcd-16x2-i2c"
+      "type": "xod-dev/text-lcd/text-lcd-i2c-16x2"
+    },
+    {
+      "boundLiterals": {
+        "BJxIhfrk7B": "D11",
+        "HJInzryQr": "\"Hello\"",
+        "HJbIhGB1XB": "\"World\"",
+        "SkzI2fBkmH": "D9",
+        "r1QLnzH1mr": "D10",
+        "rk8I2fHkXH": "D8",
+        "rkVLnGSJQS": "D12",
+        "ryHL2GHyQS": "D13"
+      },
+      "id": "r1G7wFeXB",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod-dev/text-lcd/text-lcd-parallel-16x2"
     }
   ]
 }

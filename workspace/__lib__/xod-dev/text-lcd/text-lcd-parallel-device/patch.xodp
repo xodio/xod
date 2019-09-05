@@ -1,0 +1,115 @@
+{
+  "nodes": [
+    {
+      "description": "Board GPIO port with LCD D4 pin",
+      "id": "B1Ak971XS",
+      "label": "D4",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "16"
+      },
+      "id": "BJ-JCKXJmr",
+      "label": "COLS",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Board GPIO port with LCD EN pin",
+      "id": "BJMRJqQ1Xr",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "H17kCK7J7B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Board GPIO port with LCD D6 pin",
+      "id": "H1e01q7kXr",
+      "label": "D6",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "Skzk0Fm1mH",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "description": "Board GPIO port with LCD D5 pin",
+      "id": "Syb0J5XymB",
+      "label": "D5",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Board GPIO port with LCD RS pin",
+      "id": "r1X0y5XkQS",
+      "label": "RS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Board GPIO port with LCD D7 pin",
+      "id": "rJ4Ayq7ymH",
+      "label": "D7",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "2"
+      },
+      "id": "rJxy0YmkXS",
+      "label": "ROWS",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

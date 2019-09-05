@@ -1,0 +1,189 @@
+{
+  "description": "Passes pulse only once when all `IN` pins received a pulse.",
+  "links": [
+    {
+      "id": "B1RTN-9lmH",
+      "input": {
+        "nodeId": "S1P6NW5g7B",
+        "pinKey": "SJMVU0urvkZ"
+      },
+      "output": {
+        "nodeId": "SyN6Vb5eXS",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "BJja4bcgQH",
+      "input": {
+        "nodeId": "SyN6Vb5eXS",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "Syg6VW9xQS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H18eTVbcx7H",
+      "input": {
+        "nodeId": "SyN6Vb5eXS",
+        "pinKey": "B1RU0OrDkb"
+      },
+      "output": {
+        "nodeId": "ByFTEZ5g7S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1Hx6NZ9l7S",
+      "input": {
+        "nodeId": "H1q6NWcxmS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkpNbqx7r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ66Vb5g7H",
+      "input": {
+        "nodeId": "S1P6NW5g7B",
+        "pinKey": "r1bVLR_BPJW"
+      },
+      "output": {
+        "nodeId": "B1Sa4W9eXr",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "Hy4epVW9gQS",
+      "input": {
+        "nodeId": "B1Sa4W9eXr",
+        "pinKey": "B1RU0OrDkb"
+      },
+      "output": {
+        "nodeId": "ByFTEZ5g7S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S126NbcxmS",
+      "input": {
+        "nodeId": "B1Sa4W9eXr",
+        "pinKey": "Bkh8A_Sv1-"
+      },
+      "output": {
+        "nodeId": "rkM6N-cxmB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SydB-5l7S",
+      "input": {
+        "nodeId": "r1-p4-qgXr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1P6NW5g7B",
+        "pinKey": "B1gN80uHvk-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1Sa4W9eXr",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "ByFTEZ5g7S",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "H1q6NWcxmS",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "S1P6NW5g7B",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/core/and"
+    },
+    {
+      "id": "SJQaEbclXH",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "description": "Reset received pulses and make possible to fire the pulse again",
+      "id": "SkpNbqx7r",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SyN6Vb5eXS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "Syg6VW9xQS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "r1-p4-qgXr",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkM6N-cxmB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
