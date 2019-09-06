@@ -13,17 +13,6 @@
       }
     },
     {
-      "id": "BJCzggrYV",
-      "input": {
-        "nodeId": "SJMllgBFN",
-        "pinKey": "S1Q7C8NdBV"
-      },
-      "output": {
-        "nodeId": "HJXMxxBF4",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "BJdFyxHF4",
       "input": {
         "nodeId": "ByKuJxrYN",
@@ -32,6 +21,17 @@
       "output": {
         "nodeId": "BkXK1eBYV",
         "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1hXoiyIr",
+      "input": {
+        "nodeId": "SJMllgBFN",
+        "pinKey": "S1Q7C8NdBV"
+      },
+      "output": {
+        "nodeId": "S1kZijkUS",
+        "pinKey": "H1fx68wzB"
       }
     },
     {
@@ -50,6 +50,28 @@
       "input": {
         "nodeId": "SJMllgBFN",
         "pinKey": "B1lXALNOS4"
+      },
+      "output": {
+        "nodeId": "Bk5lexBtE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyHGjiy8r",
+      "input": {
+        "nodeId": "S1kZijkUS",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "S1MzssyLr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkDZosyUr",
+      "input": {
+        "nodeId": "S1kZijkUS",
+        "pinKey": "BytC28DfH"
       },
       "output": {
         "nodeId": "Bk5lexBtE",
@@ -83,7 +105,7 @@
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 1
+        "y": 2
       },
       "type": "@/servo-device"
     },
@@ -93,29 +115,39 @@
       "position": {
         "units": "slots",
         "x": 7,
-        "y": 2
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
-        "__out__": "Continuously"
+        "__out__": "True"
       },
-      "id": "HJXMxxBF4",
-      "label": "UPD",
+      "description": "Makes the servo react to incoming values while `ACT` is true",
+      "id": "S1MzssyLr",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "S1kZijkUS",
       "position": {
         "units": "slots",
         "x": 8,
-        "y": 0
+        "y": 1
       },
-      "type": "xod/patch-nodes/input-pulse"
+      "type": "xod/core/act"
     },
     {
       "id": "SJMllgBFN",
       "position": {
         "units": "slots",
         "x": 6,
-        "y": 1
+        "y": 2
       },
       "type": "@/rotate"
     }
