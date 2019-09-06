@@ -46,25 +46,25 @@
       }
     },
     {
-      "id": "BkPgdirx7",
+      "id": "Bkvaqs18r",
       "input": {
         "nodeId": "Hk65Porlm",
         "pinKey": "B14R6TcyQ"
       },
       "output": {
-        "nodeId": "Bk53PjBeX",
-        "pinKey": "__out__"
+        "nodeId": "Skcj5oyLr",
+        "pinKey": "H1fx68wzB"
       }
     },
     {
-      "id": "H19euiSl7",
+      "id": "By9T9okIr",
       "input": {
-        "nodeId": "SkntwoSeX",
-        "pinKey": "BygApTqym"
+        "nodeId": "Skcj5oyLr",
+        "pinKey": "BytC28DfH"
       },
       "output": {
-        "nodeId": "Bk53PjBeX",
-        "pinKey": "__out__"
+        "nodeId": "BkVCDire7",
+        "pinKey": "B1LNICdSDJW"
       }
     },
     {
@@ -79,6 +79,17 @@
       }
     },
     {
+      "id": "HJMncjJ8r",
+      "input": {
+        "nodeId": "Skcj5oyLr",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "ByWU5i18H",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "HJWX_sSlX",
       "input": {
         "nodeId": "ryezMusBx7",
@@ -87,6 +98,17 @@
       "output": {
         "nodeId": "ryS-dirgQ",
         "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HyG65sy8H",
+      "input": {
+        "nodeId": "SkntwoSeX",
+        "pinKey": "BygApTqym"
+      },
+      "output": {
+        "nodeId": "S1wsqsJ8B",
+        "pinKey": "H1fx68wzB"
       }
     },
     {
@@ -112,6 +134,17 @@
       }
     },
     {
+      "id": "SyW25sJIH",
+      "input": {
+        "nodeId": "S1wsqsJ8B",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "ByWU5i18H",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "SywowoSxX",
       "input": {
         "nodeId": "Hk65Porlm",
@@ -121,38 +154,46 @@
         "nodeId": "HknX0fRU-",
         "pinKey": "__out__"
       }
+    },
+    {
+      "id": "rkRhqs1UH",
+      "input": {
+        "nodeId": "S1wsqsJ8B",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "H1To0fRL-",
+        "pinKey": "HktZUCdrPkZ"
+      }
     }
   ],
   "nodes": [
     {
-      "boundLiterals": {
-        "__out__": "Continuously"
-      },
-      "description": "Triggers new write",
-      "id": "Bk53PjBeX",
-      "label": "UPD",
-      "position": {
-        "units": "slots",
-        "x": 12,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-pulse"
-    },
-    {
       "id": "BkVCDire7",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 5,
         "y": 1
       },
       "type": "xod/math/abs"
+    },
+    {
+      "description": "Makes h-bridge reacts on incoming value change while `ACT` is true.",
+      "id": "ByWU5i18H",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
     },
     {
       "id": "H1To0fRL-",
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 2
+        "y": 1
       },
       "type": "xod/core/less"
     },
@@ -188,15 +229,33 @@
       "type": "xod/patch-nodes/input-port"
     },
     {
+      "id": "S1wsqsJ8B",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/core/act"
+    },
+    {
       "description": "Desired speed of the motor in [-1.0, 1.0] range. Negative values denote clockwise rotation, zero denotes full stop, positive values denote counterclockwise direction.",
       "id": "SJpVAGRUW",
       "label": "SPD",
       "position": {
         "units": "slots",
-        "x": 8,
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Skcj5oyLr",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/core/act"
     },
     {
       "id": "SkntwoSeX",
