@@ -178,6 +178,9 @@
       "type": "xod/math/abs"
     },
     {
+      "boundLiterals": {
+        "__out__": "True"
+      },
       "description": "Makes h-bridge reacts on incoming value change while `ACT` is true.",
       "id": "ByWU5i18H",
       "label": "ACT",

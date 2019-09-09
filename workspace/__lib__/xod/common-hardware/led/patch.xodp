@@ -121,6 +121,9 @@
       "type": "xod/math/cube"
     },
     {
+      "boundLiterals": {
+        "__out__": "True"
+      },
       "description": "Updates the luminocity of the LED on incoming value change while `ACT` is true.",
       "id": "rJIdYs1LB",
       "label": "ACT",
