@@ -292,17 +292,6 @@
       }
     },
     {
-      "id": "r1tFLWbzQ",
-      "input": {
-        "nodeId": "rkNt8WWG7",
-        "pinKey": "SkW3wouIeQ"
-      },
-      "output": {
-        "nodeId": "rJxGM0lfX",
-        "pinKey": "BksptX0b7"
-      }
-    },
-    {
       "id": "rJ0b5t-fm",
       "input": {
         "nodeId": "Hkx1uZAeMQ",
