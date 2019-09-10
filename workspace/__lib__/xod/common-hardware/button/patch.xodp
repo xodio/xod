@@ -1,6 +1,28 @@
 {
-  "description": "Reads a generic button or another mechanical switch. It is expected that the button is normally high, i.e. it is pulled up with a resistor. The node provides signal debounce with 20 ms settle delay.\n\nPossible errors:\n— Invalid port",
+  "description": "Reads a generic button or another mechanical switch. It is expected that the button is low while pressed, the on-board pull-up resistor is enabled if possible. The node provides signal debounce with 20 ms settle delay.\n\nPossible errors:\n— Invalid port",
   "links": [
+    {
+      "id": "B1kbb-NIS",
+      "input": {
+        "nodeId": "SyQpaFBgX",
+        "pinKey": "H1uO0eV8S"
+      },
+      "output": {
+        "nodeId": "ByNiWkt8Z",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJeWWW4LB",
+      "input": {
+        "nodeId": "SyQpaFBgX",
+        "pinKey": "r1bOdCeEIH"
+      },
+      "output": {
+        "nodeId": "ByG3ZyKLW",
+        "pinKey": "__out__"
+      }
+    },
     {
       "id": "HJ9jvsrFW",
       "input": {
@@ -13,25 +35,25 @@
       }
     },
     {
-      "id": "HyGRatHxm",
+      "id": "Skz-ZWNLS",
       "input": {
         "nodeId": "BkHBM1FLb",
         "pinKey": "ry3zLA_Bv1Z"
       },
       "output": {
         "nodeId": "SyQpaFBgX",
-        "pinKey": "B1gI0urv1W"
+        "pinKey": "Hkx__ReNIr"
       }
     },
     {
-      "id": "rJEyCKBlQ",
+      "id": "r1WZ-Z48S",
       "input": {
         "nodeId": "SJjATKrlm",
         "pinKey": "__in__"
       },
       "output": {
         "nodeId": "SyQpaFBgX",
-        "pinKey": "rkw3cp9k7"
+        "pinKey": "rJmdOReVIB"
       }
     },
     {
@@ -43,28 +65,6 @@
       "output": {
         "nodeId": "BkHBM1FLb",
         "pinKey": "r1if8ROSDJ-"
-      }
-    },
-    {
-      "id": "ryBTpFrgm",
-      "input": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "B143qAq1Q"
-      },
-      "output": {
-        "nodeId": "ByNiWkt8Z",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "ryuaaFSx7",
-      "input": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "SyLCdSwJZ"
-      },
-      "output": {
-        "nodeId": "ByG3ZyKLW",
-        "pinKey": "__out__"
       }
     }
   ],
@@ -132,7 +132,7 @@
         "x": 6,
         "y": 1
       },
-      "type": "xod/gpio/digital-read"
+      "type": "xod/gpio/digital-read-pullup"
     },
     {
       "boundLiterals": {
