@@ -115,7 +115,7 @@
       "type": "xod/patch-nodes/input-port"
     },
     {
-      "description": "Engages the relay switch when the value is `True`",
+      "description": "Engages the relay switch when the value is `True`. Make sure to keep switching rate lower than allowed by the relay model (often no more than once per second).",
       "id": "SkgXWK4MB",
       "label": "ON",
       "position": {
