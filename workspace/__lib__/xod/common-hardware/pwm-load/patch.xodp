@@ -1,0 +1,135 @@
+{
+  "description": "Represents some actuator connected directly to a pin or through a BJT/FET/SSR which supports PWM power adjustment (e.g. a pump, fan, DC motor, or lamp)",
+  "links": [
+    {
+      "id": "H1XfbfNIB",
+      "input": {
+        "nodeId": "SkZG-zNUB",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "rk6igfNUr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1rMZMN8r",
+      "input": {
+        "nodeId": "r12gbMEIS",
+        "pinKey": "B14R6TcyQ"
+      },
+      "output": {
+        "nodeId": "SkZG-zNUB",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "S13G-GV8r",
+      "input": {
+        "nodeId": "r12gbMEIS",
+        "pinKey": "Syro9C9yQ"
+      },
+      "output": {
+        "nodeId": "rkCKlzEUB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1FzWMNUr",
+      "input": {
+        "nodeId": "r12gbMEIS",
+        "pinKey": "ByXnYHPyb"
+      },
+      "output": {
+        "nodeId": "HkpclMN8B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1NGbMV8S",
+      "input": {
+        "nodeId": "SkZG-zNUB",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "HkpclMN8B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1AW-MN8B",
+      "input": {
+        "nodeId": "HyraxMELr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r12gbMEIS",
+        "pinKey": "SkwRqaq17"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Sets PWM duty cycle for the load in the range [0; 1] where 0.0 is full off and 1.0 is full on.",
+      "id": "HkpclMN8B",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Acknowledge. Pulses when a change on VAL is reflected to the hardware",
+      "id": "HyraxMELr",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SkZG-zNUB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "r12gbMEIS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/gpio/pwm-write"
+    },
+    {
+      "description": "Active. When false, the node does not follow changes of VAL",
+      "id": "rk6igfNUr",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "The board port to which the load signal pin is connected\n",
+      "id": "rkCKlzEUB",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}
