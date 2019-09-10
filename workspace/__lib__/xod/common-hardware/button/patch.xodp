@@ -2,10 +2,21 @@
   "description": "Reads a generic button or another mechanical switch. It is expected that the button is low while pressed, the on-board pull-up resistor is enabled if possible. The node provides signal debounce with 20 ms settle delay.\n\nPossible errors:\n— Invalid port",
   "links": [
     {
-      "id": "B1kbb-NIS",
+      "id": "ByoDg7SIS",
       "input": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "H1uO0eV8S"
+        "nodeId": "BJ--G1tI-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkhUxmHIH",
+        "pinKey": "SkkV4GNLB"
+      }
+    },
+    {
+      "id": "BypUlXr8r",
+      "input": {
+        "nodeId": "rkhUxmHIH",
+        "pinKey": "Syp1NfVIS"
       },
       "output": {
         "nodeId": "ByNiWkt8Z",
@@ -13,10 +24,10 @@
       }
     },
     {
-      "id": "BJeWWW4LB",
+      "id": "HJLvxXB8S",
       "input": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "r1bOdCeEIH"
+        "nodeId": "rkhUxmHIH",
+        "pinKey": "HJFz4zELS"
       },
       "output": {
         "nodeId": "ByG3ZyKLW",
@@ -24,47 +35,14 @@
       }
     },
     {
-      "id": "HJ9jvsrFW",
-      "input": {
-        "nodeId": "BJ--G1tI-",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "rkl8GkKUb",
-        "pinKey": "Sk7EARu8-"
-      }
-    },
-    {
-      "id": "Skz-ZWNLS",
-      "input": {
-        "nodeId": "BkHBM1FLb",
-        "pinKey": "ry3zLA_Bv1Z"
-      },
-      "output": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "Hkx__ReNIr"
-      }
-    },
-    {
-      "id": "r1WZ-Z48S",
+      "id": "rJhPeQSUB",
       "input": {
         "nodeId": "SJjATKrlm",
         "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "SyQpaFBgX",
-        "pinKey": "rJmdOReVIB"
-      }
-    },
-    {
-      "id": "rk_jDiBtW",
-      "input": {
-        "nodeId": "rkl8GkKUb",
-        "pinKey": "S101C0OU-"
-      },
-      "output": {
-        "nodeId": "BkHBM1FLb",
-        "pinKey": "r1if8ROSDJ-"
+        "nodeId": "rkhUxmHIH",
+        "pinKey": "ByFmEf4US"
       }
     }
   ],
@@ -75,19 +53,10 @@
       "label": "PRS",
       "position": {
         "units": "slots",
-        "x": 4,
-        "y": 4
-      },
-      "type": "xod/patch-nodes/output-boolean"
-    },
-    {
-      "id": "BkHBM1FLb",
-      "position": {
-        "units": "slots",
-        "x": 4,
+        "x": 6,
         "y": 2
       },
-      "type": "xod/core/not"
+      "type": "xod/patch-nodes/output-boolean"
     },
     {
       "boundLiterals": {
@@ -98,7 +67,7 @@
       "label": "UPD",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 8,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
@@ -121,30 +90,21 @@
       "position": {
         "units": "slots",
         "x": 7,
-        "y": 4
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "id": "SyQpaFBgX",
+      "boundLiterals": {
+        "r1IbNfVUS": "0.2"
+      },
+      "id": "rkhUxmHIH",
       "position": {
         "units": "slots",
         "x": 6,
         "y": 1
       },
-      "type": "xod/gpio/digital-read-pullup"
-    },
-    {
-      "boundLiterals": {
-        "SkqxAC_LW": "0.02"
-      },
-      "id": "rkl8GkKUb",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "xod/core/debounce"
+      "type": "@/mechanical-switch"
     }
   ]
 }
