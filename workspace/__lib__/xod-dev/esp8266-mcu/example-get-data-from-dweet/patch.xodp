@@ -100,17 +100,6 @@
       }
     },
     {
-      "id": "ByVxABIVtK7",
-      "input": {
-        "nodeId": "rkWAH8EYtQ",
-        "pinKey": "SkW3wouIeQ"
-      },
-      "output": {
-        "nodeId": "HydRr8NttQ",
-        "pinKey": "BksptX0b7"
-      }
-    },
-    {
       "id": "ByXvONKY7",
       "input": {
         "nodeId": "r1F8u4ttm",
