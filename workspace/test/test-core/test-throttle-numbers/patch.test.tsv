@@ -1,0 +1,11 @@
+__time(ms)	IN	OUT
+// T == 1 second
+0	0	0	// Setting up
+0	1	1
+1001	1	1
+2000	3	3
+2100	4	3	// Do not emit new values while throttling in the progress
+2200	5	3
+2500	6	3
+3000	6	3	// Throttle still is in the progress
+3001	6	6	// Emit the last input value when throttle progress finished

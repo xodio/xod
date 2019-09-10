@@ -1,0 +1,48 @@
+{
+  "description": "Throttles input changes to happen no more often than once per interval specified. Useful to limit the rate of updates.",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "IN will propagate to OUT at most once per T seconds",
+      "id": "ByYWULHUr",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The throttled output. Follows IN immediately if T time window has passed since the last update, otherwise conducts IN with a lag so that the time span between updates is no less than T\n",
+      "id": "H1H-LLHUr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "description": "Value or pulse to throttle",
+      "id": "rkzZUUHLB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "ryLmUUBUr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

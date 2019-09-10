@@ -1,0 +1,11 @@
+__time(ms)	IN	OUT
+// T == 1 second
+0	no-pulse	no-pulse	// Setting up
+1000	pulse	pulse	// Pulse on leading edge
+1500	no-pulse	no-pulse
+2001	no-pulse	no-pulse	// And no pulse on trailing if there were no pulses
+3000	pulse	pulse	// Pulse on leading edge
+3100	pulse	no-pulse	// Do not emit pulses while the throttle is in the progress
+3200	pulse	no-pulse
+3500	pulse	no-pulse
+4001	no-pulse	pulse	// Emit the pulse when the throttle is finished

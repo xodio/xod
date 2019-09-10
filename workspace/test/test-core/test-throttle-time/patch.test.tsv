@@ -1,0 +1,10 @@
+__time(ms)	IN	T	OUT
+0	no-pulse	1	no-pulse	// Setting up
+1000	pulse	1	pulse
+2001	no-pulse	1	no-pulse
+3000	pulse	1	pulse
+3100	pulse	2	no-pulse	// Ignore changing of T while in progress
+4001	no-pulse	2	pulse
+5000	pulse	2	pulse
+6001	pulse	2	no-pulse
+7001	no-pulse	2	pulse
