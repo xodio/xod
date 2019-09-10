@@ -275,7 +275,10 @@ module TestCase = {
       |. List.map(
            ((name, id)) => {
              let probeName = Strings.cppEscape(name);
-             {j|auto& probe_$probeName = xod::node_$id;|j}
+             Cpp.source([
+              {j|auto& probe_$probeName = xod::node_$id;|j},
+              {j|#define MARK_DIRTY_probe_$(probeName) xod::g_transaction.node_$(id)_isNodeDirty = true;|j},
+             ])
            }
          );
     let sections =
@@ -294,11 +297,11 @@ module TestCase = {
         "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
         "        (probe).state.shouldRaise = false; \\",
-        "        (probe).isNodeDirty = true;",
+        "        MARK_DIRTY_##probe;",
         "",
         "#define INJECT_ERROR(probe) \\",
         "        (probe).state.shouldRaise = true;\\",
-        "        (probe).isNodeDirty = true;",
+        "        MARK_DIRTY_##probe;",
         "",
         catch2TestCase(name, [source(sections)]),
       ])

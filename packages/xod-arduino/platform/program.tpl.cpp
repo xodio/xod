@@ -21,10 +21,35 @@ namespace xod {
 
 #pragma GCC diagnostic pop
 
+struct TransactionState {
+{{#each nodes}}
+{{#unless patch.isConstant}}
+    bool node_{{id}}_isNodeDirty : 1;
+  {{#each outputs}}
+    bool node_{{ ../id }}_isOutputDirty_{{ pinKey }} : 1;
+  {{/each}}
+  {{#if (hasUpstreamErrorRaisers this)}}
+    bool node_{{id}}_hasUpstreamError : 1;
+  {{/if}}
+{{/unless}}
+{{/each}}
+    TransactionState() {
+    {{#each nodes}}
+      {{#unless patch.isConstant}}
+        node_{{id}}_isNodeDirty = true;
+        {{#eachDirtyablePin outputs}}
+        node_{{ ../id }}_isOutputDirty_{{ pinKey }} = {{ isDirtyOnBoot }};
+        {{/eachDirtyablePin}}
+      {{/unless}}
+    {{/each}}
+    }
+};
+
+TransactionState g_transaction;
+
 {{#each nodes}}
 {{#unless patch.isConstant}}
 {{ ns patch }}::Node node_{{ id }} = {
-    {{ ns patch }}::State(), // state default
   {{#if patch.raisesErrors}}
     {{#each outputs}}
     false, // {{ pinKey }} has no errors on start
@@ -36,10 +61,7 @@ namespace xod {
   {{#each outputs}}
     node_{{ ../id }}_output_{{ pinKey }}, // output {{ pinKey }} default
   {{/each}}
-  {{#eachDirtyablePin outputs}}
-    {{ isDirtyOnBoot }}, // {{ pinKey }} dirty
-  {{/eachDirtyablePin}}
-    true // node itself dirty
+    {{ ns patch }}::State() // state default
 };
 {{/unless}}
 {{/each}}
@@ -74,7 +96,7 @@ void handleTweaks() {
                   {{/case}}
                 {{/switchByTweakType}}
                     // to run evaluate and mark all downstream nodes as dirty
-                    node_{{ id }}.isNodeDirty = true;
+                    g_transaction.node_{{id}}_isNodeDirty = true;
                     node_{{ id }}.isOutputDirty_OUT = true;
                 }
                 break;
@@ -100,7 +122,7 @@ void runTransaction() {
 
     // Check for timeouts
   {{#eachNodeUsingTimeouts nodes}}
-    detail::checkTriggerTimeout(&node_{{ id }});
+    g_transaction.node_{{id}}_isNodeDirty |= detail::isTimedOut(&node_{{id}});
   {{/eachNodeUsingTimeouts}}
 
     // defer-* nodes are always at the very bottom of the graph, so no one will
@@ -111,7 +133,7 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
   {{#eachDeferNode nodes}}
     {
-        if (node_{{ id }}.isNodeDirty) {
+        if (g_transaction.node_{{id}}_isNodeDirty) {
             // if a defer has an error, do not evaluate it, but spread the dirtyness
             if (!node_{{ id }}.errorFlags) {
                 XOD_TRACE_F("Trigger defer node #");
@@ -121,24 +143,41 @@ void runTransaction() {
                 ctxObj._node = &node_{{ id }};
                 ctxObj._isInputDirty_IN = false;
                 ctxObj._error_input_IN = 0;
+              {{#eachDirtyablePin outputs}}
+                ctxObj._isOutputDirty_{{ pinKey }} = false;
+              {{/eachDirtyablePin}}
 
                 {{ ns patch }}::evaluate(&ctxObj);
+
+                // transfer dirtiness state from context to g_transaction
+              {{#eachDirtyablePin outputs}}
+                g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
+              {{/eachDirtyablePin}}
+            }
+
+            if (node_{{ id }}.errorFlags) {
+              {{#each outputs }}
+                {{#each to}}
+                g_transaction.node_{{ this }}_isNodeDirty = true;
+                g_transaction.node_{{ this }}_hasUpstreamError = true;
+                {{/each}}
+              {{/each}}
             }
 
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty |= (node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errorFlags);
+            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errorFlags;
             {{/each}}
             {{else}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty = true;
+            g_transaction.node_{{ this }}_isNodeDirty = true;
             {{/each}}
             {{/if}}
           {{/each}}
 
-            node_{{ id }}.isNodeDirty = false;
+            g_transaction.node_{{id}}_isNodeDirty = false;
             detail::clearTimeout(&node_{{ id }});
         }
     }
@@ -148,23 +187,31 @@ void runTransaction() {
   {{#eachNonConstantNode nodes}}
     { // {{ ns patch }} #{{ id }}
     {{#if (hasUpstreamErrorRaisers this)}}
-      {{!-- // finding upstream errors for each individual input --}}
-      {{#eachInputPinWithUpstreamRaisers inputs}}
-        bool error_input_{{ pinKey }} = false;
-        {{#each upstreamErrorRaisers}}
-        error_input_{{ ../pinKey }} |= node_{{ nodeId }}.outputHasError_{{ pinKey }};
-        {{/each}}
-      {{/eachInputPinWithUpstreamRaisers}}
 
-      {{!-- // finding if any input has upstream errors --}}
-        bool hasUpstreamError = false;
-      {{#eachInputPinWithUpstreamRaisers inputs}}
-        hasUpstreamError |= error_input_{{ pinKey }};
-      {{/eachInputPinWithUpstreamRaisers}}
-
-        if (node_{{ id }}.isNodeDirty {{~#unless patch.catchesErrors}} && !hasUpstreamError{{/unless}}) {
+      {{#if patch.catchesErrors}}
+        if (g_transaction.node_{{id}}_isNodeDirty) {
+          {{!--
+            // finding upstream errors for each individual input
+            // matters only if a node is a catcher
+          --}}
+          {{#eachInputPinWithUpstreamRaisers inputs}}
+            bool error_input_{{ pinKey }} = false;
+            {{#each upstreamErrorRaisers}}
+            error_input_{{ ../pinKey }} |= node_{{ nodeId }}.outputHasError_{{ pinKey }};
+            {{/each}}
+          {{/eachInputPinWithUpstreamRaisers}}
+      {{else}}
+        if (g_transaction.node_{{id}}_hasUpstreamError) {
+          {{#each outputs}}
+            {{#each to}}
+            g_transaction.node_{{this}}_hasUpstreamError = true;
+            g_transaction.node_{{this}}_isNodeDirty = true;
+            {{/each}}
+          {{/each}}
+        } else if (g_transaction.node_{{id}}_isNodeDirty) {
+      {{/if}}
     {{else}}
-        if (node_{{ id }}.isNodeDirty) {
+        if (g_transaction.node_{{id}}_isNodeDirty) {
     {{/if}}
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN({{ id }});
@@ -217,12 +264,16 @@ void runTransaction() {
             {{#if fromPatch.isConstant}}
             ctxObj._isInputDirty_{{ pinKey }} = g_isSettingUp;
             {{else if fromOutput.isDirtyable}}
-            ctxObj._isInputDirty_{{ pinKey }} = node_{{ fromNodeId }}.isOutputDirty_{{ fromPinKey }};
+            ctxObj._isInputDirty_{{ pinKey }} = g_transaction.node_{{fromNodeId}}_isOutputDirty_{{ fromPinKey }};
             {{else}}
             ctxObj._isInputDirty_{{ pinKey }} = true;
             {{/if}}
             {{/if}}
           {{/eachLinkedInput}}
+
+          {{#eachDirtyablePin outputs}}
+            ctxObj._isOutputDirty_{{ pinKey }} = false;
+          {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
             ErrorFlags previousErrorFlags = node_{{ id }}.errorFlags;
@@ -232,37 +283,41 @@ void runTransaction() {
 
             {{ ns patch }}::evaluate(&ctxObj);
 
+            // transfer dirtiness state from context to g_transaction
+          {{#eachDirtyablePin outputs}}
+            g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
+          {{/eachDirtyablePin}}
+
           {{#if patch.raisesErrors}}
             if (previousErrorFlags != node_{{ id }}.errorFlags) {
                 detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errorFlags);
             }
+
+            if (node_{{ id }}.errorFlags) {
+              {{#each outputs}}
+                if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+                  {{#each to}}
+                    g_transaction.node_{{this}}_hasUpstreamError = true;
+                  {{/each}}
+                }
+              {{/each}}
+            }
           {{/if}}
 
-      {{#if (hasUpstreamErrorRaisers this)}}
-        }
-        // even if the node did not evaluate, mark downstream nodes as
-        // dirty to spread the errors to the catchers
-        if (node_{{ id }}.isNodeDirty) {
-      {{/if}}
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty |= node_{{ ../../id }}.isOutputDirty_{{ ../pinKey }};
+            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }};
             {{/each}}
             {{else}}
             {{#each to}}
-            node_{{ this }}.isNodeDirty = true;
+            g_transaction.node_{{this}}_isNodeDirty = true;
             {{/each}}
             {{/if}}
           {{/each}}
         }
     }
-  {{/eachNonConstantNode}}
-
-    // Clear dirtieness and timeouts for all nodes and pins
-  {{#eachNonConstantNode nodes}}
-    node_{{ id }}.dirtyFlags = 0;
   {{/eachNonConstantNode}}
 
     // Сlean errors from pulse outputs
@@ -276,6 +331,9 @@ void runTransaction() {
     {{/eachPulseOutput}}
     {{/if}}
   {{/eachNonConstantNode}}
+
+    // Clear dirtieness and timeouts for all nodes and pins
+    memset(&g_transaction, 0, sizeof(g_transaction));
 
   {{#eachNodeUsingTimeouts nodes}}
     detail::clearStaleTimeout(&node_{{ id }});

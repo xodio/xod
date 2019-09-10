@@ -846,14 +846,6 @@ bool isTimedOut(const NodeT* node) {
     return t && t < transactionTime();
 }
 
-// Marks timed out node dirty. Do not reset timeoutAt here to give
-// a chance for a node to get a reasonable result from `isTimedOut`
-// later during its `evaluate`
-template<typename NodeT>
-void checkTriggerTimeout(NodeT* node) {
-    node->isNodeDirty |= isTimedOut(node);
-}
-
 template<typename NodeT>
 void clearTimeout(NodeT* node) {
     node->timeoutAt = 0;
@@ -966,18 +958,9 @@ struct State {
 };
 
 struct Node {
-    State state;
     TimeMs timeoutAt;
     Logic output_TICK;
-
-    union {
-        struct {
-            bool isOutputDirty_TICK : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 struct output_TICK { };
@@ -988,6 +971,7 @@ template<> struct ValueType<output_TICK> { using T = Logic; };
 struct ContextObject {
     Node* _node;
 
+    bool _isOutputDirty_TICK : 1;
 };
 
 using Context = ContextObject*;
@@ -1018,7 +1002,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_TICK>(Context ctx, Logic val) {
     ctx->_node->output_TICK = val;
-    ctx->_node->isOutputDirty_TICK = true;
+    ctx->_isOutputDirty_TICK = true;
 }
 
 State* getState(Context ctx) {
@@ -1043,7 +1027,6 @@ struct State {
 };
 
 struct Node {
-    State state;
     union {
         struct {
             bool outputHasError_SIG : 1;
@@ -1054,16 +1037,7 @@ struct Node {
     };
     Logic output_SIG;
     Logic output_DONE;
-
-    union {
-        struct {
-            bool isOutputDirty_SIG : 1;
-            bool isOutputDirty_DONE : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 struct input_PORT { };
@@ -1084,6 +1058,9 @@ struct ContextObject {
     Logic _input_UPD;
 
     bool _isInputDirty_UPD;
+
+    bool _isOutputDirty_SIG : 1;
+    bool _isOutputDirty_DONE : 1;
 };
 
 using Context = ContextObject*;
@@ -1127,11 +1104,11 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_SIG>(Context ctx, Logic val) {
     ctx->_node->output_SIG = val;
-    ctx->_node->isOutputDirty_SIG = true;
+    ctx->_isOutputDirty_SIG = true;
 }
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 State* getState(Context ctx) {
@@ -1146,18 +1123,18 @@ template<typename OutputT> void raiseError(Context ctx) {
 
 template<> void raiseError<output_SIG>(Context ctx) {
     ctx->_node->outputHasError_SIG = true;
-    ctx->_node->isOutputDirty_SIG = true;
+    ctx->_isOutputDirty_SIG = true;
 }
 template<> void raiseError<output_DONE>(Context ctx) {
     ctx->_node->outputHasError_DONE = true;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
     ctx->_node->outputHasError_SIG = true;
-    ctx->_node->isOutputDirty_SIG = true;
+    ctx->_isOutputDirty_SIG = true;
     ctx->_node->outputHasError_DONE = true;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1186,19 +1163,9 @@ struct State {
 };
 
 struct Node {
-    State state;
     Logic output_T;
     Logic output_F;
-
-    union {
-        struct {
-            bool isOutputDirty_T : 1;
-            bool isOutputDirty_F : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 struct input_GATE { };
@@ -1219,6 +1186,9 @@ struct ContextObject {
     Logic _input_TRIG;
 
     bool _isInputDirty_TRIG;
+
+    bool _isOutputDirty_T : 1;
+    bool _isOutputDirty_F : 1;
 };
 
 using Context = ContextObject*;
@@ -1262,11 +1232,11 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_T>(Context ctx, Logic val) {
     ctx->_node->output_T = val;
-    ctx->_node->isOutputDirty_T = true;
+    ctx->_isOutputDirty_T = true;
 }
 template<> void emitValue<output_F>(Context ctx, Logic val) {
     ctx->_node->output_F = val;
-    ctx->_node->isOutputDirty_F = true;
+    ctx->_isOutputDirty_F = true;
 }
 
 State* getState(Context ctx) {
@@ -1295,17 +1265,8 @@ struct State {
 };
 
 struct Node {
-    State state;
     Logic output_MEM;
-
-    union {
-        struct {
-            bool isOutputDirty_MEM : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 struct input_SET { };
@@ -1329,6 +1290,8 @@ struct ContextObject {
     bool _isInputDirty_SET;
     bool _isInputDirty_TGL;
     bool _isInputDirty_RST;
+
+    bool _isOutputDirty_MEM : 1;
 };
 
 using Context = ContextObject*;
@@ -1378,7 +1341,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_MEM>(Context ctx, Logic val) {
     ctx->_node->output_MEM = val;
-    ctx->_node->isOutputDirty_MEM = true;
+    ctx->_isOutputDirty_MEM = true;
 }
 
 State* getState(Context ctx) {
@@ -1416,7 +1379,6 @@ struct State {
 };
 
 struct Node {
-    State state;
     union {
         struct {
             bool outputHasError_DONE : 1;
@@ -1425,15 +1387,7 @@ struct Node {
         ErrorFlags errorFlags;
     };
     Logic output_DONE;
-
-    union {
-        struct {
-            bool isOutputDirty_DONE : 1;
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 struct input_PORT { };
@@ -1455,6 +1409,8 @@ struct ContextObject {
     Logic _input_UPD;
 
     bool _isInputDirty_UPD;
+
+    bool _isOutputDirty_DONE : 1;
 };
 
 using Context = ContextObject*;
@@ -1498,7 +1454,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 State* getState(Context ctx) {
@@ -1513,12 +1469,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 
 template<> void raiseError<output_DONE>(Context ctx) {
     ctx->_node->outputHasError_DONE = true;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
     ctx->_node->outputHasError_DONE = true;
-    ctx->_node->isOutputDirty_DONE = true;
+    ctx->_isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1582,61 +1538,90 @@ constexpr Logic node_9_output_DONE = false;
 
 #pragma GCC diagnostic pop
 
+struct TransactionState {
+    bool node_3_isNodeDirty : 1;
+    bool node_3_isOutputDirty_TICK : 1;
+    bool node_4_isNodeDirty : 1;
+    bool node_4_isOutputDirty_SIG : 1;
+    bool node_4_isOutputDirty_DONE : 1;
+    bool node_5_isNodeDirty : 1;
+    bool node_5_isOutputDirty_SIG : 1;
+    bool node_5_isOutputDirty_DONE : 1;
+    bool node_6_isNodeDirty : 1;
+    bool node_6_isOutputDirty_T : 1;
+    bool node_6_isOutputDirty_F : 1;
+    bool node_6_hasUpstreamError : 1;
+    bool node_7_isNodeDirty : 1;
+    bool node_7_isOutputDirty_T : 1;
+    bool node_7_isOutputDirty_F : 1;
+    bool node_7_hasUpstreamError : 1;
+    bool node_8_isNodeDirty : 1;
+    bool node_8_isOutputDirty_MEM : 1;
+    bool node_8_hasUpstreamError : 1;
+    bool node_9_isNodeDirty : 1;
+    bool node_9_isOutputDirty_DONE : 1;
+    bool node_9_hasUpstreamError : 1;
+    TransactionState() {
+        node_3_isNodeDirty = true;
+        node_3_isOutputDirty_TICK = false;
+        node_4_isNodeDirty = true;
+        node_4_isOutputDirty_SIG = true;
+        node_4_isOutputDirty_DONE = false;
+        node_5_isNodeDirty = true;
+        node_5_isOutputDirty_SIG = true;
+        node_5_isOutputDirty_DONE = false;
+        node_6_isNodeDirty = true;
+        node_6_isOutputDirty_T = false;
+        node_6_isOutputDirty_F = false;
+        node_7_isNodeDirty = true;
+        node_7_isOutputDirty_T = false;
+        node_7_isOutputDirty_F = false;
+        node_8_isNodeDirty = true;
+        node_8_isOutputDirty_MEM = true;
+        node_9_isNodeDirty = true;
+        node_9_isOutputDirty_DONE = false;
+    }
+};
+
+TransactionState g_transaction;
+
 xod__core__continuously::Node node_3 = {
-    xod__core__continuously::State(), // state default
     0, // timeoutAt
     node_3_output_TICK, // output TICK default
-    false, // TICK dirty
-    true // node itself dirty
+    xod__core__continuously::State() // state default
 };
 xod__gpio__digital_read::Node node_4 = {
-    xod__gpio__digital_read::State(), // state default
     false, // SIG has no errors on start
     false, // DONE has no errors on start
     node_4_output_SIG, // output SIG default
     node_4_output_DONE, // output DONE default
-    true, // SIG dirty
-    false, // DONE dirty
-    true // node itself dirty
+    xod__gpio__digital_read::State() // state default
 };
 xod__gpio__digital_read::Node node_5 = {
-    xod__gpio__digital_read::State(), // state default
     false, // SIG has no errors on start
     false, // DONE has no errors on start
     node_5_output_SIG, // output SIG default
     node_5_output_DONE, // output DONE default
-    true, // SIG dirty
-    false, // DONE dirty
-    true // node itself dirty
+    xod__gpio__digital_read::State() // state default
 };
 xod__core__branch::Node node_6 = {
-    xod__core__branch::State(), // state default
     node_6_output_T, // output T default
     node_6_output_F, // output F default
-    false, // T dirty
-    false, // F dirty
-    true // node itself dirty
+    xod__core__branch::State() // state default
 };
 xod__core__branch::Node node_7 = {
-    xod__core__branch::State(), // state default
     node_7_output_T, // output T default
     node_7_output_F, // output F default
-    false, // T dirty
-    false, // F dirty
-    true // node itself dirty
+    xod__core__branch::State() // state default
 };
 xod__core__flip_flop::Node node_8 = {
-    xod__core__flip_flop::State(), // state default
     node_8_output_MEM, // output MEM default
-    true, // MEM dirty
-    true // node itself dirty
+    xod__core__flip_flop::State() // state default
 };
 xod__gpio__digital_write::Node node_9 = {
-    xod__gpio__digital_write::State(), // state default
     false, // DONE has no errors on start
     node_9_output_DONE, // output DONE default
-    false, // DONE dirty
-    true // node itself dirty
+    xod__gpio__digital_write::State() // state default
 };
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
@@ -1665,7 +1650,7 @@ void runTransaction() {
 #endif
 
     // Check for timeouts
-    detail::checkTriggerTimeout(&node_3);
+    g_transaction.node_3_isNodeDirty |= detail::isTimedOut(&node_3);
 
     // defer-* nodes are always at the very bottom of the graph, so no one will
     // recieve values emitted by them. We must evaluate them before everybody
@@ -1676,7 +1661,7 @@ void runTransaction() {
 
     // Evaluate all dirty nodes
     { // xod__core__continuously #3
-        if (node_3.isNodeDirty) {
+        if (g_transaction.node_3_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(3);
 
@@ -1685,18 +1670,23 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
 
+            ctxObj._isOutputDirty_TICK = false;
+
             xod__core__continuously::evaluate(&ctxObj);
 
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_3_isOutputDirty_TICK = ctxObj._isOutputDirty_TICK;
+
             // mark downstream nodes dirty
-            node_4.isNodeDirty |= node_3.isOutputDirty_TICK;
-            node_6.isNodeDirty |= node_3.isOutputDirty_TICK;
-            node_5.isNodeDirty |= node_3.isOutputDirty_TICK;
-            node_7.isNodeDirty |= node_3.isOutputDirty_TICK;
-            node_9.isNodeDirty |= node_3.isOutputDirty_TICK;
+            g_transaction.node_4_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
+            g_transaction.node_6_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
+            g_transaction.node_5_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
+            g_transaction.node_7_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
+            g_transaction.node_9_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
         }
     }
     { // xod__gpio__digital_read #4
-        if (node_4.isNodeDirty) {
+        if (g_transaction.node_4_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(4);
 
@@ -1707,7 +1697,10 @@ void runTransaction() {
             ctxObj._input_PORT = node_0_output_VAL;
             ctxObj._input_UPD = node_3.output_TICK;
 
-            ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
+            ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
+
+            ctxObj._isOutputDirty_SIG = false;
+            ctxObj._isOutputDirty_DONE = false;
 
             ErrorFlags previousErrorFlags = node_4.errorFlags;
             // give the node a chance to recover from it's own previous errors
@@ -1715,16 +1708,28 @@ void runTransaction() {
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_4_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
+            g_transaction.node_4_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
+
             if (previousErrorFlags != node_4.errorFlags) {
                 detail::printErrorToDebugSerial(4, node_4.errorFlags);
             }
 
+            if (node_4.errorFlags) {
+                if (node_4.outputHasError_SIG) {
+                    g_transaction.node_6_hasUpstreamError = true;
+                }
+                if (node_4.outputHasError_DONE) {
+                }
+            }
+
             // mark downstream nodes dirty
-            node_6.isNodeDirty |= node_4.isOutputDirty_SIG;
+            g_transaction.node_6_isNodeDirty |= g_transaction.node_4_isOutputDirty_SIG;
         }
     }
     { // xod__gpio__digital_read #5
-        if (node_5.isNodeDirty) {
+        if (g_transaction.node_5_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(5);
 
@@ -1735,7 +1740,10 @@ void runTransaction() {
             ctxObj._input_PORT = node_1_output_VAL;
             ctxObj._input_UPD = node_3.output_TICK;
 
-            ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
+            ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
+
+            ctxObj._isOutputDirty_SIG = false;
+            ctxObj._isOutputDirty_DONE = false;
 
             ErrorFlags previousErrorFlags = node_5.errorFlags;
             // give the node a chance to recover from it's own previous errors
@@ -1743,22 +1751,32 @@ void runTransaction() {
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_5_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
+            g_transaction.node_5_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
+
             if (previousErrorFlags != node_5.errorFlags) {
                 detail::printErrorToDebugSerial(5, node_5.errorFlags);
             }
 
+            if (node_5.errorFlags) {
+                if (node_5.outputHasError_SIG) {
+                    g_transaction.node_7_hasUpstreamError = true;
+                }
+                if (node_5.outputHasError_DONE) {
+                }
+            }
+
             // mark downstream nodes dirty
-            node_7.isNodeDirty |= node_5.isOutputDirty_SIG;
+            g_transaction.node_7_isNodeDirty |= g_transaction.node_5_isOutputDirty_SIG;
         }
     }
     { // xod__core__branch #6
-        bool error_input_GATE = false;
-        error_input_GATE |= node_4.outputHasError_SIG;
 
-        bool hasUpstreamError = false;
-        hasUpstreamError |= error_input_GATE;
-
-        if (node_6.isNodeDirty && !hasUpstreamError) {
+        if (g_transaction.node_6_hasUpstreamError) {
+            g_transaction.node_8_hasUpstreamError = true;
+            g_transaction.node_8_isNodeDirty = true;
+        } else if (g_transaction.node_6_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(6);
 
@@ -1769,26 +1787,27 @@ void runTransaction() {
             ctxObj._input_GATE = node_4.output_SIG;
             ctxObj._input_TRIG = node_3.output_TICK;
 
-            ctxObj._isInputDirty_TRIG = node_3.isOutputDirty_TICK;
+            ctxObj._isInputDirty_TRIG = g_transaction.node_3_isOutputDirty_TICK;
+
+            ctxObj._isOutputDirty_T = false;
+            ctxObj._isOutputDirty_F = false;
 
             xod__core__branch::evaluate(&ctxObj);
 
-        }
-        // even if the node did not evaluate, mark downstream nodes as
-        // dirty to spread the errors to the catchers
-        if (node_6.isNodeDirty) {
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_6_isOutputDirty_T = ctxObj._isOutputDirty_T;
+            g_transaction.node_6_isOutputDirty_F = ctxObj._isOutputDirty_F;
+
             // mark downstream nodes dirty
-            node_8.isNodeDirty |= node_6.isOutputDirty_F;
+            g_transaction.node_8_isNodeDirty |= g_transaction.node_6_isOutputDirty_F;
         }
     }
     { // xod__core__branch #7
-        bool error_input_GATE = false;
-        error_input_GATE |= node_5.outputHasError_SIG;
 
-        bool hasUpstreamError = false;
-        hasUpstreamError |= error_input_GATE;
-
-        if (node_7.isNodeDirty && !hasUpstreamError) {
+        if (g_transaction.node_7_hasUpstreamError) {
+            g_transaction.node_8_hasUpstreamError = true;
+            g_transaction.node_8_isNodeDirty = true;
+        } else if (g_transaction.node_7_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
 
@@ -1799,29 +1818,27 @@ void runTransaction() {
             ctxObj._input_GATE = node_5.output_SIG;
             ctxObj._input_TRIG = node_3.output_TICK;
 
-            ctxObj._isInputDirty_TRIG = node_3.isOutputDirty_TICK;
+            ctxObj._isInputDirty_TRIG = g_transaction.node_3_isOutputDirty_TICK;
+
+            ctxObj._isOutputDirty_T = false;
+            ctxObj._isOutputDirty_F = false;
 
             xod__core__branch::evaluate(&ctxObj);
 
-        }
-        // even if the node did not evaluate, mark downstream nodes as
-        // dirty to spread the errors to the catchers
-        if (node_7.isNodeDirty) {
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_7_isOutputDirty_T = ctxObj._isOutputDirty_T;
+            g_transaction.node_7_isOutputDirty_F = ctxObj._isOutputDirty_F;
+
             // mark downstream nodes dirty
-            node_8.isNodeDirty |= node_7.isOutputDirty_F;
+            g_transaction.node_8_isNodeDirty |= g_transaction.node_7_isOutputDirty_F;
         }
     }
     { // xod__core__flip_flop #8
-        bool error_input_SET = false;
-        error_input_SET |= node_5.outputHasError_SIG;
-        bool error_input_RST = false;
-        error_input_RST |= node_4.outputHasError_SIG;
 
-        bool hasUpstreamError = false;
-        hasUpstreamError |= error_input_SET;
-        hasUpstreamError |= error_input_RST;
-
-        if (node_8.isNodeDirty && !hasUpstreamError) {
+        if (g_transaction.node_8_hasUpstreamError) {
+            g_transaction.node_9_hasUpstreamError = true;
+            g_transaction.node_9_isNodeDirty = true;
+        } else if (g_transaction.node_8_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(8);
 
@@ -1833,28 +1850,24 @@ void runTransaction() {
             ctxObj._input_RST = node_6.output_F;
 
             ctxObj._isInputDirty_TGL = false;
-            ctxObj._isInputDirty_SET = node_7.isOutputDirty_F;
-            ctxObj._isInputDirty_RST = node_6.isOutputDirty_F;
+            ctxObj._isInputDirty_SET = g_transaction.node_7_isOutputDirty_F;
+            ctxObj._isInputDirty_RST = g_transaction.node_6_isOutputDirty_F;
+
+            ctxObj._isOutputDirty_MEM = false;
 
             xod__core__flip_flop::evaluate(&ctxObj);
 
-        }
-        // even if the node did not evaluate, mark downstream nodes as
-        // dirty to spread the errors to the catchers
-        if (node_8.isNodeDirty) {
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_8_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
+
             // mark downstream nodes dirty
-            node_9.isNodeDirty |= node_8.isOutputDirty_MEM;
+            g_transaction.node_9_isNodeDirty |= g_transaction.node_8_isOutputDirty_MEM;
         }
     }
     { // xod__gpio__digital_write #9
-        bool error_input_SIG = false;
-        error_input_SIG |= node_5.outputHasError_SIG;
-        error_input_SIG |= node_4.outputHasError_SIG;
 
-        bool hasUpstreamError = false;
-        hasUpstreamError |= error_input_SIG;
-
-        if (node_9.isNodeDirty && !hasUpstreamError) {
+        if (g_transaction.node_9_hasUpstreamError) {
+        } else if (g_transaction.node_9_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
@@ -1866,7 +1879,9 @@ void runTransaction() {
             ctxObj._input_SIG = node_8.output_MEM;
             ctxObj._input_UPD = node_3.output_TICK;
 
-            ctxObj._isInputDirty_UPD = node_3.isOutputDirty_TICK;
+            ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
+
+            ctxObj._isOutputDirty_DONE = false;
 
             ErrorFlags previousErrorFlags = node_9.errorFlags;
             // give the node a chance to recover from it's own previous errors
@@ -1874,26 +1889,21 @@ void runTransaction() {
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
+            // transfer dirtiness state from context to g_transaction
+            g_transaction.node_9_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
+
             if (previousErrorFlags != node_9.errorFlags) {
                 detail::printErrorToDebugSerial(9, node_9.errorFlags);
             }
 
-        }
-        // even if the node did not evaluate, mark downstream nodes as
-        // dirty to spread the errors to the catchers
-        if (node_9.isNodeDirty) {
+            if (node_9.errorFlags) {
+                if (node_9.outputHasError_DONE) {
+                }
+            }
+
             // mark downstream nodes dirty
         }
     }
-
-    // Clear dirtieness and timeouts for all nodes and pins
-    node_3.dirtyFlags = 0;
-    node_4.dirtyFlags = 0;
-    node_5.dirtyFlags = 0;
-    node_6.dirtyFlags = 0;
-    node_7.dirtyFlags = 0;
-    node_8.dirtyFlags = 0;
-    node_9.dirtyFlags = 0;
 
     // Сlean errors from pulse outputs
     if (node_4.outputHasError_DONE) {
@@ -1908,6 +1918,9 @@ void runTransaction() {
       node_9.outputHasError_DONE = false;
       detail::printErrorToDebugSerial(9, node_9.errorFlags);
     }
+
+    // Clear dirtieness and timeouts for all nodes and pins
+    memset(&g_transaction, 0, sizeof(g_transaction));
 
     detail::clearStaleTimeout(&node_3);
 
