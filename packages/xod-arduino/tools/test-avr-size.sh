@@ -25,10 +25,10 @@ AVR Memory Usage
 ----------------
 Device: atmega328p
 
-Program:    1622 bytes (4.9% Full)
+Program:    1598 bytes (4.9% Full)
 (.text + .data + .bootloader)
 
-Data:         38 bytes (1.9% Full)
+Data:         35 bytes (1.7% Full)
 (.data + .bss + .noinit)"
 
 if [[ $AVR_SIZE_OUTPUT =~ "$EXPECTED_OUTPUT" ]]; then

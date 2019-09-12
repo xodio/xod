@@ -79,14 +79,6 @@ bool isTimedOut(const NodeT* node) {
     return t && t < transactionTime();
 }
 
-// Marks timed out node dirty. Do not reset timeoutAt here to give
-// a chance for a node to get a reasonable result from `isTimedOut`
-// later during its `evaluate`
-template<typename NodeT>
-void checkTriggerTimeout(NodeT* node) {
-    node->isNodeDirty |= isTimedOut(node);
-}
-
 template<typename NodeT>
 void clearTimeout(NodeT* node) {
     node->timeoutAt = 0;

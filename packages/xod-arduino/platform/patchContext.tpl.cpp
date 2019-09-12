@@ -2,7 +2,6 @@
 {{!-- Accepts TPatch context --}}
 
 struct Node {
-    State state;
   {{#if raisesErrors}}
     union {
         struct {
@@ -20,17 +19,7 @@ struct Node {
   {{#each outputs}}
     {{ cppType type }} output_{{ pinKey }};
   {{/each}}
-
-    union {
-        struct {
-          {{#eachDirtyablePin outputs}}
-            bool isOutputDirty_{{ pinKey }} : 1;
-          {{/eachDirtyablePin}}
-            bool isNodeDirty : 1;
-        };
-
-        DirtyFlags dirtyFlags;
-    };
+    State state;
 };
 
 {{#each inputs}}
@@ -66,6 +55,14 @@ struct ContextObject {
 
   {{#eachDirtyablePin inputs}}
     bool _isInputDirty_{{ pinKey }};
+  {{/eachDirtyablePin}}
+
+  {{!--
+    // Constants do not store dirtieness. They are never dirty
+    // except the very first run
+  --}}
+  {{#eachDirtyablePin outputs}}
+    bool _isOutputDirty_{{ pinKey }} : 1;
   {{/eachDirtyablePin}}
 };
 
@@ -112,7 +109,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
     ctx->_node->output_{{ pinKey }} = val;
   {{#if isDirtyable}}
-    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
 }
 {{/each}}
@@ -138,9 +135,9 @@ template<typename OutputT> void raiseError(Context ctx) {
 {{#each outputs}}
 template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
     ctx->_node->outputHasError_{{ pinKey }} = true;
-    {{#if isDirtyable}}
-    ctx->_node->isOutputDirty_{{ pinKey }} = true;
-    {{/if}}
+  {{#if isDirtyable}}
+    ctx->_isOutputDirty_{{ pinKey }} = true;
+  {{/if}}
 }
 {{/each}}
 
@@ -148,7 +145,7 @@ void raiseError(Context ctx) {
   {{#each outputs}}
     ctx->_node->outputHasError_{{ pinKey }} = true;
     {{#if isDirtyable}}
-    ctx->_node->isOutputDirty_{{ pinKey }} = true;
+    ctx->_isOutputDirty_{{ pinKey }} = true;
     {{/if}}
   {{/each}}
 }

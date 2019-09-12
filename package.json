@@ -34,6 +34,7 @@
     "test-strict": "XOD_HM_DEF=strict lerna run test",
     "test-func": "lerna run test-func",
     "test-cpp": "lerna run test-cpp",
+    "tabtest": "ls -d workspace/__lib__/xod/* workspace/test/* | xargs -n 1 yarn xodc tabtest",
     "verify": "yarn prettier-md-check && yarn build && yarn lint && yarn test && yarn test-cpp && yarn test-func",
     "xodc": "node packages/xod-cli/bin/run"
   },
