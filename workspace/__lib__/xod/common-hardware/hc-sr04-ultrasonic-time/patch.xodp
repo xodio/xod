@@ -35,6 +35,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use nodes from the `xod-dev/hc-sr04` standard library instead.",
+      "id": "r1EjbRvLB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Board port to which sensor’s `echo` pin is connected.",
       "id": "rJ0fMWALb",
       "label": "ECHO",
