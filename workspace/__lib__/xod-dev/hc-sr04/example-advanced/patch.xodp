@@ -1,0 +1,153 @@
+{
+  "links": [
+    {
+      "id": "BJkSeCP8B",
+      "input": {
+        "nodeId": "SJIR1CD8B",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "SkYEeRwIr",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "BktRyAv8H",
+      "input": {
+        "nodeId": "SysoapvIS",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SJIR1CD8B",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "ByutA1_LB",
+      "input": {
+        "nodeId": "SyfaTpvIH",
+        "pinKey": "H1moQzcLIr"
+      },
+      "output": {
+        "nodeId": "Syqd01_US",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "SkPAkCwIH",
+      "input": {
+        "nodeId": "SJIR1CD8B",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SyfaTpvIH",
+        "pinKey": "HJZo7GqIIr"
+      }
+    },
+    {
+      "id": "Sy7ap6wIr",
+      "input": {
+        "nodeId": "SyfaTpvIH",
+        "pinKey": "Sy3uWavLr"
+      },
+      "output": {
+        "nodeId": "S1ahTpw8B",
+        "pinKey": "SJTISoL8B"
+      }
+    },
+    {
+      "id": "rJsElAvUH",
+      "input": {
+        "nodeId": "SkYEeRwIr",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "HkIVgRwUH",
+        "pinKey": "B1gfJiULH"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HkIVgRwUH",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/units/standard-sound-speed"
+    },
+    {
+      "boundLiterals": {
+        "SJeMLBsIUH": "D10",
+        "rkMISoUUr": "D9"
+      },
+      "id": "S1ahTpw8B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/hc-sr04-device"
+    },
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "170"
+      },
+      "id": "SJIR1CD8B",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "2"
+      },
+      "id": "SkYEeRwIr",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "SyfaTpvIH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/ping"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "0.2"
+      },
+      "id": "Syqd01_US",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "SysoapvIS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}
