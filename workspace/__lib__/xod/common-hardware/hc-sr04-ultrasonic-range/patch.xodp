@@ -70,6 +70,16 @@
   ],
   "nodes": [
     {
+      "description": "Use `xod-dev/hc-sr04/hc-sr04-range-meter` instead",
+      "id": "B15A-0PUS",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Last measured distance in meters.",
       "id": "BJllkG0Ub",
       "label": "Dm",

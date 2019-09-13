@@ -1,0 +1,44 @@
+{
+  "links": [
+    {
+      "id": "Sk0IZAP8B",
+      "input": {
+        "nodeId": "H1n8ZRvLH",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "ryPLZAwIS",
+        "pinKey": "HJrin98LS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "H1n8ZRvLH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "BkHy258IB": "D9",
+        "H1gBkhc88H": "D10"
+      },
+      "id": "ryPLZAwIS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/hc-sr04-range-meter"
+    }
+  ]
+}

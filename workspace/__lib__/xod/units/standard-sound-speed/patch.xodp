@@ -1,0 +1,39 @@
+{
+  "description": "The speed of sound in dry air at 20 °C (68 °F): 343 meters per second (m/s).",
+  "links": [
+    {
+      "id": "rJff1s8Lr",
+      "input": {
+        "nodeId": "B1gfJiULH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyzWysI8H",
+        "pinKey": "B1x2RV3eZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1gfJiULH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "343"
+      },
+      "id": "HyzWysI8H",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/core/constant-number"
+    }
+  ]
+}

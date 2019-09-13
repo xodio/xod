@@ -1,0 +1,237 @@
+{
+  "links": [
+    {
+      "id": "ByTGWCvIr",
+      "input": {
+        "nodeId": "BkeSs3988B",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkuJ-0P8B",
+        "pinKey": "Bkimz58LS"
+      }
+    },
+    {
+      "id": "HJSJZ0PLB",
+      "input": {
+        "nodeId": "By7JWCPUS",
+        "pinKey": "SJeMLBsIUH"
+      },
+      "output": {
+        "nodeId": "H1gBkhc88H",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkY7-0vLS",
+      "input": {
+        "nodeId": "HJboW-CPUB",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "SkxiZZAvLH",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "HySpgCw8B",
+      "input": {
+        "nodeId": "HkMaeCw8r",
+        "pinKey": "rkzZUUHLB"
+      },
+      "output": {
+        "nodeId": "rJ7Mnq8UB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1foZZCwUr",
+      "input": {
+        "nodeId": "SkxiZZAvLH",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "Bksb-RPUH",
+        "pinKey": "B1gfJiULH"
+      }
+    },
+    {
+      "id": "SyokbCD8r",
+      "input": {
+        "nodeId": "rkuJ-0P8B",
+        "pinKey": "H1moQzcLIr"
+      },
+      "output": {
+        "nodeId": "HkMaeCw8r",
+        "pinKey": "H1H-LLHUr"
+      }
+    },
+    {
+      "id": "rJ7m-0vIH",
+      "input": {
+        "nodeId": "HJboW-CPUB",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "rkuJ-0P8B",
+        "pinKey": "HJZo7GqIIr"
+      }
+    },
+    {
+      "id": "rJV1W0vIS",
+      "input": {
+        "nodeId": "By7JWCPUS",
+        "pinKey": "rkMISoUUr"
+      },
+      "output": {
+        "nodeId": "BkHy258IB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJoMbCDIS",
+      "input": {
+        "nodeId": "HJrin98LS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJboW-CPUB",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rkc1-0vUB",
+      "input": {
+        "nodeId": "rkuJ-0P8B",
+        "pinKey": "Sy3uWavLr"
+      },
+      "output": {
+        "nodeId": "By7JWCPUS",
+        "pinKey": "SJTISoL8B"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Board port to which sensor’s `echo` pin is connected.",
+      "id": "BkHy258IB",
+      "label": "ECHO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires when ping is done",
+      "id": "BkeSs3988B",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Bksb-RPUH",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 1
+      },
+      "type": "xod/units/standard-sound-speed"
+    },
+    {
+      "id": "By7JWCPUS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/hc-sr04-device"
+    },
+    {
+      "description": "Board port to which sensor’s `trig` pin is connected.",
+      "id": "H1gBkhc88H",
+      "label": "TRIG",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "170"
+      },
+      "id": "HJboW-CPUB",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 3
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "description": "Last measured distance in meters. Will be set to +Inf if the sensor gets no echo back",
+      "id": "HJrin98LS",
+      "label": "Dm",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "ByYWULHUr": "0.06"
+      },
+      "id": "HkMaeCw8r",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/core/throttle"
+    },
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "2"
+      },
+      "id": "SkxiZZAvLH",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 2
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new ultrasonic ping which will result in the output update once sound echo is captured. Pulses coming within 60 ms window after the last one are ignored to fight sensor’s PCB resonance.",
+      "id": "rJ7Mnq8UB",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "rkuJ-0P8B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/ping"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "SJTISoL8B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "description": "Board port to which sensor’s `trig` pin is connected.",
+      "id": "SJeMLBsIUH",
+      "label": "TRIG",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "r1Lwro8UH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Board port to which sensor’s `echo` pin is connected.",
+      "id": "rkMISoUUr",
+      "label": "ECHO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}
