@@ -234,12 +234,14 @@ void JsonParser::parse(Context ctx, char c) {
       raiseErrorUntilReset(ctx);
     }
 
+    if ((getState(ctx))->hasError) return;
+
     ValueType<output_OUT1>::T parsed = {};
     parsed.state = state;
     parsed.character = c;
     emitValue<output_OUT1>(ctx, parsed);
     emitValue<output_OUT2>(ctx, true);
-  }
+}
 
 void JsonParser::increaseBufferPointer() {
     bufferPos = min(bufferPos + 1, BUFFER_MAX_LENGTH - 1);
@@ -426,7 +428,6 @@ void evaluate(Context ctx) {
     }
 
     if (state->hasError) {
-      raiseError(ctx);
       return;
     }
 
