@@ -2483,11 +2483,14 @@ void runTransaction() {
                 ctxObj._node = &node_24;
                 ctxObj._isInputDirty_IN = false;
                 ctxObj._error_input_IN = 0;
+
+                // initialize temporary output dirtyness state in the context,
+                // where it can be modified from `raiseError` and `emitValue`
                 ctxObj._isOutputDirty_OUT = false;
 
                 xod__core__defer__pulse::evaluate(&ctxObj);
 
-                // transfer dirtiness state from context to g_transaction
+                // transfer possibly modified dirtiness state from context to g_transaction
                 g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
             }
 
@@ -2514,11 +2517,14 @@ void runTransaction() {
                 ctxObj._node = &node_25;
                 ctxObj._isInputDirty_IN = false;
                 ctxObj._error_input_IN = 0;
+
+                // initialize temporary output dirtyness state in the context,
+                // where it can be modified from `raiseError` and `emitValue`
                 ctxObj._isOutputDirty_OUT = false;
 
                 xod__core__defer__boolean::evaluate(&ctxObj);
 
-                // transfer dirtiness state from context to g_transaction
+                // transfer possibly modified dirtiness state from context to g_transaction
                 g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
             }
 
@@ -2551,11 +2557,13 @@ void runTransaction() {
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_25.output_OUT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             xod__core__cast_to_pulse__boolean::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_0_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
@@ -2572,11 +2580,13 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_TICK = false;
 
             xod__core__continuously::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_7_isOutputDirty_TICK = ctxObj._isOutputDirty_TICK;
 
             // mark downstream nodes dirty
@@ -2593,11 +2603,13 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_BOOT = false;
 
             xod__core__boot::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_9_isOutputDirty_BOOT = ctxObj._isOutputDirty_BOOT;
 
             // mark downstream nodes dirty
@@ -2623,11 +2635,13 @@ void runTransaction() {
             ctxObj._isInputDirty_IN1 = g_transaction.node_24_isOutputDirty_OUT;
             ctxObj._isInputDirty_IN2 = g_transaction.node_9_isOutputDirty_BOOT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             xod__core__any::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_15_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
@@ -2649,11 +2663,13 @@ void runTransaction() {
             ctxObj._isInputDirty_RST = false;
             ctxObj._isInputDirty_EN = g_isSettingUp;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_TICK = false;
 
             xod__core__clock::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_16_isOutputDirty_TICK = ctxObj._isOutputDirty_TICK;
 
             // mark downstream nodes dirty
@@ -2681,12 +2697,14 @@ void runTransaction() {
             ctxObj._isInputDirty_RST = false;
             ctxObj._isInputDirty_SET = g_transaction.node_15_isOutputDirty_OUT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
             ctxObj._isOutputDirty_ACT = false;
 
             xod__core__delay::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_17_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
             g_transaction.node_17_isOutputDirty_ACT = ctxObj._isOutputDirty_ACT;
 
@@ -2717,11 +2735,13 @@ void runTransaction() {
             ctxObj._isInputDirty_INC = g_transaction.node_16_isOutputDirty_TICK;
             ctxObj._isInputDirty_RST = g_transaction.node_0_isOutputDirty_OUT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             xod__core__count::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_18_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
@@ -2748,11 +2768,13 @@ void runTransaction() {
             ctxObj._isInputDirty_RST = false;
             ctxObj._isInputDirty_INC = g_transaction.node_17_isOutputDirty_DONE;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             xod__core__count::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_19_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
@@ -2775,9 +2797,12 @@ void runTransaction() {
             ctxObj._input_IN1 = node_18.output_OUT;
             ctxObj._input_IN2 = node_14_output_VAL;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
+
             xod__core__greater::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
             g_transaction.node_25_isNodeDirty = true;
@@ -2798,9 +2823,12 @@ void runTransaction() {
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_18.output_OUT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
+
             xod__core__cast_to_string__number::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
@@ -2821,9 +2849,12 @@ void runTransaction() {
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_19.output_OUT;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
+
             xod__core__cast_to_string__number::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
@@ -2852,6 +2883,8 @@ void runTransaction() {
 
             ctxObj._isInputDirty_UPD = g_transaction.node_7_isOutputDirty_TICK;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
             ErrorFlags previousErrorFlags = node_23.errorFlags;
@@ -2860,7 +2893,7 @@ void runTransaction() {
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_23_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             if (previousErrorFlags != node_23.errorFlags) {
@@ -2890,6 +2923,8 @@ void runTransaction() {
 
             ctxObj._isInputDirty_IN = g_transaction.node_17_isOutputDirty_DONE;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             ErrorFlags previousErrorFlags = node_24.errorFlags;
@@ -2898,7 +2933,7 @@ void runTransaction() {
 
             xod__core__defer__pulse::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             if (previousErrorFlags != node_24.errorFlags) {
@@ -2930,6 +2965,8 @@ void runTransaction() {
 
             ctxObj._isInputDirty_IN = true;
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
             ErrorFlags previousErrorFlags = node_25.errorFlags;
@@ -2938,7 +2975,7 @@ void runTransaction() {
 
             xod__core__defer__boolean::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             if (previousErrorFlags != node_25.errorFlags) {
