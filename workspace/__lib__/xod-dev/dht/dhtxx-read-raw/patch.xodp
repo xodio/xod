@@ -1,0 +1,103 @@
+{
+  "description": "Utility. Reads raw data bytes from a DHTxx thermometer with one-wire interface.\n\nPossible errors:\n— Checksum failure\n— Read timeout\n— Initialization error\n— Invalid port",
+  "nodes": [
+    {
+      "description": "2-nd byte (temperature high) of the reading",
+      "id": "BkevC3xokz",
+      "label": "D2",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "BklSohxsyz",
+      "position": {
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "1-st byte (humidity low) of the reading",
+      "id": "BkwC2ljkz",
+      "label": "D1",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "0-th byte (humidity high) of the reading",
+      "id": "H1Sh3gsyG",
+      "label": "D0",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "3-rd byte (temperature low) of the reading",
+      "id": "H1uC2ejkz",
+      "label": "D3",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Board port number the thermometer is connected to.",
+      "id": "HJMBihlj1G",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": -0.05,
+        "y": -0.05
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "S1Dd1qSgQ",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers reading values again.",
+      "id": "SyQSohgjJz",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "ry9LPiG5z",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

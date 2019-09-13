@@ -1,0 +1,172 @@
+{
+  "description": "Reads the temperature and humidity.",
+  "links": [
+    {
+      "id": "B1QHdftIS",
+      "input": {
+        "nodeId": "B1xRDDzKUH",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "SJEEufKIB",
+        "pinKey": "H1Sh3gsyG"
+      }
+    },
+    {
+      "id": "HJrRPvzKIB",
+      "input": {
+        "nodeId": "SyWRDvzFIr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1xRDDzKUH",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "HyX1_zYLS",
+      "input": {
+        "nodeId": "S1zy_fKUH",
+        "pinKey": "r14iDMFIH"
+      },
+      "output": {
+        "nodeId": "H1l14GK8S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJESdftIS",
+      "input": {
+        "nodeId": "HkQ0wvfKLH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJEEufKIB",
+        "pinKey": "S1Dd1qSgQ"
+      }
+    },
+    {
+      "id": "SJcVOGKLS",
+      "input": {
+        "nodeId": "SJEEufKIB",
+        "pinKey": "HJMBihlj1G"
+      },
+      "output": {
+        "nodeId": "S1zy_fKUH",
+        "pinKey": "HkKoDGFLH"
+      }
+    },
+    {
+      "id": "SkiVuztLS",
+      "input": {
+        "nodeId": "SJEEufKIB",
+        "pinKey": "SyQSohgjJz"
+      },
+      "output": {
+        "nodeId": "SyUwDGKLB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy-HuMKIH",
+      "input": {
+        "nodeId": "HJCvwftLS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJEEufKIB",
+        "pinKey": "BkevC3xokz"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "100"
+      },
+      "id": "B1xRDDzKUH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "description": "A DHT11 sensor or analog",
+      "id": "H1l14GK8S",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-dht11-device"
+    },
+    {
+      "description": "Last read temperature in °C.",
+      "id": "HJCvwftLS",
+      "label": "Tc",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "HkQ0wvfKLH",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1zy_fKUH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/unpack-dht11-device"
+    },
+    {
+      "id": "SJEEufKIB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/dhtxx-read-raw"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new read",
+      "id": "SyUwDGKLB",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Relative humidity in ragne [0.0, 1.0]",
+      "id": "SyWRDvzFIr",
+      "label": "RH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

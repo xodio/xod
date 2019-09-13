@@ -1,0 +1,35 @@
+{
+  "description": "Represents a DHT11 sensor. Also named RHT01.",
+  "nodes": [
+    {
+      "description": "Board port number the hygrometer is connected to.",
+      "id": "BJJxJGFUH",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "BJjgyGF8B",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rJPekGtLB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

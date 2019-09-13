@@ -1,0 +1,72 @@
+{
+  "description": "Reads the temperature and humidity.",
+  "nodes": [
+    {
+      "description": "Last read temperature in °C.",
+      "id": "B1-sKdMt8H",
+      "label": "Tc",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "A DHT11 or DHT2x sensor or analog",
+      "id": "H1OcufFUB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "HJmq_MtUr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers new read",
+      "id": "rkiYdzt8H",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires on reading complete",
+      "id": "ryGjKuMYIS",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Relative humidity in ragne [0.0, 1.0]",
+      "id": "ryloF_GF8H",
+      "label": "RH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "links": [
+    {
+      "id": "H1Yj_HYIB",
+      "input": {
+        "nodeId": "BJLidrFUH",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1hcdrKLB",
+        "pinKey": "HybttEF8r"
+      }
+    },
+    {
+      "id": "SJ5j_HYUB",
+      "input": {
+        "nodeId": "r1diOBK8H",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "H1hcdrKLB",
+        "pinKey": "SkeWYtEY8S"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJLidrFUH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "BJj5mmtUH": "D8"
+      },
+      "id": "H1hcdrKLB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/dht11-hygrometer"
+    },
+    {
+      "id": "r1diOBK8H",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/debug/watch"
+    }
+  ]
+}
