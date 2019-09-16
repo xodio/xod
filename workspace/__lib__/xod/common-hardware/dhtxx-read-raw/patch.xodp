@@ -2,6 +2,16 @@
   "description": "Utility. Reads raw data bytes from a DHTxx thermometer with one-wire interface.\n\nPossible errors:\n— Checksum failure\n— Read timeout\n— Initialization error\n— Invalid port",
   "nodes": [
     {
+      "description": "Use nodes from `xod-dev/dht` library instead",
+      "id": "BJNhYWpIS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "2-nd byte (temperature high) of the reading",
       "id": "BkevC3xokz",
       "label": "D2",

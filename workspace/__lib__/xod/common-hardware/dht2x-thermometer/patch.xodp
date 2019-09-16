@@ -177,6 +177,16 @@
         "y": 3
       },
       "type": "@/dht2x-pack"
+    },
+    {
+      "description": "Use `xod-dev/dht/dht2x-hygrometer` instead",
+      "id": "ryxjctZpIS",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }
