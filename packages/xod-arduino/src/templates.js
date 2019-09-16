@@ -241,6 +241,10 @@ Handlebars.registerHelper(
   nodeOrInput => nodeOrInput.upstreamErrorRaisers.length > 0
 );
 
+const isTweakNode = R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath);
+
+Handlebars.registerHelper('isTweakNode', isTweakNode);
+
 // A helper to quickly introduce a new filtered {{each ...}} loop
 function registerHandlebarsFilterLoopHelper(name, predicate) {
   Handlebars.registerHelper(name, (list, block) =>
@@ -262,10 +266,7 @@ registerHandlebarsFilterLoopHelper(
   'eachNodeUsingTimeouts',
   R.path(['patch', 'usesTimeouts'])
 );
-registerHandlebarsFilterLoopHelper(
-  'eachTweakNode',
-  R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath)
-);
+registerHandlebarsFilterLoopHelper('eachTweakNode', isTweakNode);
 registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));
 registerHandlebarsFilterLoopHelper(
   'eachNonlinkedInput',

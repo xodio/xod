@@ -96,8 +96,8 @@ void handleTweaks() {
                   {{/case}}
                 {{/switchByTweakType}}
                     // to run evaluate and mark all downstream nodes as dirty
-                    g_transaction.node_{{id}}_isNodeDirty = true;
-                    node_{{ id }}.isOutputDirty_OUT = true;
+                    g_transaction.node_{{ id }}_isNodeDirty = true;
+                    g_transaction.node_{{ id }}_isOutputDirty_OUT = true;
                 }
                 break;
 
@@ -143,13 +143,16 @@ void runTransaction() {
                 ctxObj._node = &node_{{ id }};
                 ctxObj._isInputDirty_IN = false;
                 ctxObj._error_input_IN = 0;
+
+                // initialize temporary output dirtyness state in the context,
+                // where it can be modified from `raiseError` and `emitValue`
               {{#eachDirtyablePin outputs}}
                 ctxObj._isOutputDirty_{{ pinKey }} = false;
               {{/eachDirtyablePin}}
 
                 {{ ns patch }}::evaluate(&ctxObj);
 
-                // transfer dirtiness state from context to g_transaction
+                // transfer possibly modified dirtiness state from context to g_transaction
               {{#eachDirtyablePin outputs}}
                 g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
               {{/eachDirtyablePin}}
@@ -271,8 +274,14 @@ void runTransaction() {
             {{/if}}
           {{/eachLinkedInput}}
 
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
           {{#eachDirtyablePin outputs}}
-            ctxObj._isOutputDirty_{{ pinKey }} = false;
+            ctxObj._isOutputDirty_{{ pinKey }} = {{#if (isTweakNode ../this) ~}}
+                                                   g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }}
+                                                 {{~else~}}
+                                                   false
+                                                 {{~/if~}};
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
@@ -283,7 +292,7 @@ void runTransaction() {
 
             {{ ns patch }}::evaluate(&ctxObj);
 
-            // transfer dirtiness state from context to g_transaction
+            // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
             g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
           {{/eachDirtyablePin}}
