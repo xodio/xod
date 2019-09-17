@@ -27,5 +27,9 @@
     "chai-as-promised": "^6.0.0",
     "dir-compare": "^1.4.0",
     "shelljs": "^0.7.7"
-  }
+  },
+  "files": [
+    "dist",
+    "src"
+  ]
 }
