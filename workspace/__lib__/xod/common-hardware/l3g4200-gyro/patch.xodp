@@ -208,6 +208,16 @@
       "type": "@/st-imu-normalize-va"
     },
     {
+      "description": "Use `xod-dev/st-mems/l3g4200-gyro` instead.",
+      "id": "HyVsyxbDH",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Yaw angular velocity. I.e. spin around Z axis. Expressed in radians per second.",
       "id": "S1uzHkQKW",
       "label": "YAW",

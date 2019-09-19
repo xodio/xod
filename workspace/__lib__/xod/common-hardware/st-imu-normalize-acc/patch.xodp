@@ -51,6 +51,16 @@
       "type": "xod/patch-nodes/utility"
     },
     {
+      "description": "Use `xod-dev/st-mems/normalize-acc` instead.",
+      "id": "H1Qxex-DB",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "HyEMj-mFb",
       "position": {
         "units": "slots",

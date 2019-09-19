@@ -178,6 +178,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod-dev/st-mems/lis3dh-accelerometer` instead.",
+      "id": "HkYY1x-DH",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "2"
       },

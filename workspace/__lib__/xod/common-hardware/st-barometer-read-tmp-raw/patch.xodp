@@ -222,6 +222,16 @@
       "type": "xod/i2c/read-byte"
     },
     {
+      "description": "Use `xod-dev/st-mems/read-temperature` instead.",
+      "id": "B1N01x-PH",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "S1FFN4nkm": "2Bh"
       },

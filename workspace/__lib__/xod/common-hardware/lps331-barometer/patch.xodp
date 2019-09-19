@@ -307,6 +307,16 @@
       "type": "xod/i2c/input-i2c"
     },
     {
+      "description": "Use `xod-dev/st-mems/lps331-barometer` instead.",
+      "id": "HkN91lZPS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "Hy3jZWKfX",
       "position": {
         "units": "slots",

@@ -311,6 +311,16 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod-dev/st-mems/round-sensitivity` instead.",
+      "id": "r1fMxeWwS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Value for CTRL_REG4 to set the sensitivity selected",
       "id": "r1lUy5N_b",
       "label": "REG",

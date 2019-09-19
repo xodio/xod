@@ -249,6 +249,16 @@
       "type": "@/st-imu-normalize-acc"
     },
     {
+      "description": "Use `xod-dev/st-mems/lis331hh-accelerometer` instead.",
+      "id": "r1xK1ebwH",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Acceleration along Z axis. Expressed in ɡ units.",
       "id": "rkPG0s-YZ",
       "label": "Zg",

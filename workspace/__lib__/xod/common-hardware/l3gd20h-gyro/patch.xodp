@@ -240,6 +240,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod-dev/st-mems/l3gd20h-gyro` instead.",
+      "id": "Skmn1x-DS",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "On Boot"
       },

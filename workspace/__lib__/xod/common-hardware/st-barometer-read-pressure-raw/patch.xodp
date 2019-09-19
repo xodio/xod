@@ -302,6 +302,16 @@
       "type": "xod/i2c/end-transmission"
     },
     {
+      "description": "Use `xod-dev/st-mems/read-pressure` instead.",
+      "id": "SkH6ke-vr",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SkMUVskuZ7",
       "label": "pxl",
       "position": {

@@ -244,6 +244,16 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Use `xod-dev/st-mems/write-register` instead.",
+      "id": "rkkQxlZwS",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

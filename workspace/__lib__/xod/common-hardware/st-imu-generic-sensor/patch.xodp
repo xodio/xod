@@ -715,6 +715,16 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod-dev/st-mems/imu-generic` instead.",
+      "id": "r1Kylx-vS",
+      "position": {
+        "units": "slots",
+        "x": -6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "arityLevel": 3,
       "id": "r1vwqwLeX",
       "position": {
