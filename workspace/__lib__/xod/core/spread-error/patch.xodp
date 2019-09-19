@@ -1,0 +1,54 @@
+{
+"description": "If at least one of the inputs has an error the node raises an error on all outputs. If there are no errors the node passes input values through without changes.",
+  "nodes": [
+    {
+      "id": "HJMJipkDB",
+      "label": "A",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "Hk0bopkvr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S14gjaJPB",
+      "label": "A'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "id": "r1vxipkvS",
+      "label": "B'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t2"
+    },
+    {
+      "id": "rJ8kiTJwr",
+      "label": "B",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t2"
+    }
+  ]
+}
