@@ -186,6 +186,16 @@
       "type": "xod/i2c/write-byte"
     },
     {
+      "description": "Use `xod-dev/st-mems/write-register` instead.",
+      "id": "HypRkg-DS",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "HywZE1aPWX",
       "label": "ADDR",
       "position": {

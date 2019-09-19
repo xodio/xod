@@ -1,0 +1,381 @@
+{
+  "links": [
+    {
+      "id": "B1pTk2AUB",
+      "input": {
+        "nodeId": "Sk3py2A8B",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkgIqA1Dgm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJhLcRJPl7",
+      "input": {
+        "nodeId": "rkIUqA1Pl7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "BkEx8qA1vxQ",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HJ4LcCkvlX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByXx8cAyPxX",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "HJbjB_Nd-"
+      }
+    },
+    {
+      "id": "ByeVMJ3ALS",
+      "input": {
+        "nodeId": "rk4z1hAUS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1lgkJnAUr",
+        "pinKey": "SyulJ2RUH"
+      }
+    },
+    {
+      "id": "HJNEGy20US",
+      "input": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "S1QEfy2ALS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkfgU5CkvxQ",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "HJmLcR1wxQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HktG130LS",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "SyssEEhJm"
+      },
+      "output": {
+        "nodeId": "r1lgkJnAUr",
+        "pinKey": "HJYnpiRLH"
+      }
+    },
+    {
+      "id": "S1beLqCJwlm",
+      "input": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "SJ-xky30LB",
+      "input": {
+        "nodeId": "r1lgkJnAUr",
+        "pinKey": "r1QlRj0LB"
+      },
+      "output": {
+        "nodeId": "S1gJJ2AUS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk0U9C1wlm",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "rJrLcCJDeQ",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "SkO4M13A8r",
+      "input": {
+        "nodeId": "ByDL5CJDg7",
+        "pinKey": "B1vdYXhkQ"
+      },
+      "output": {
+        "nodeId": "BkwNG1n0Ir",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk_n1hRLr",
+      "input": {
+        "nodeId": "SJnq12CLr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1gJJ2AUS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyfVG1nRLS",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "HJkfWmny7"
+      },
+      "output": {
+        "nodeId": "SkW4MyhALB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1JCJn08H",
+      "input": {
+        "nodeId": "H1Vay3CLB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sk3py2A8B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1S6y2AIr",
+      "input": {
+        "nodeId": "H1IcA1DxQ",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "H1Vay3CLB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJIEM13CIr",
+      "input": {
+        "nodeId": "H1ZLc0yvlm",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "H1S4fknRUr",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkwNG1n0Ir",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "By2t2C1PB",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "ByDL5CJDg7",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "type": "xod/i2c/end-transmission"
+    },
+    {
+      "boundLiterals": {
+        "BJfKruVdb": "On Boot"
+      },
+      "id": "H1IcA1DxQ",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/i2c/begin-transmission"
+    },
+    {
+      "id": "H1S4fknRUr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "H1Vay3CLB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "H1ZLc0yvlm",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "HJ4LcCkvlX",
+      "label": "KEY",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "HJmLcR1wxQ",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "S1QEfy2ALS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "S1gJJ2AUS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": -2
+      },
+      "type": "@/input-imu-device"
+    },
+    {
+      "id": "SJnq12CLr",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 4
+      },
+      "type": "@/output-imu-device"
+    },
+    {
+      "id": "Sk3py2A8B",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "SkW4MyhALB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "r1lgkJnAUr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -1
+      },
+      "type": "@/unpack-imu-device"
+    },
+    {
+      "boundLiterals": {
+        "S1FFN4nkm": "20h"
+      },
+      "id": "rJrLcCJDeQ",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "rk4z1hAUS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "id": "rkIUqA1Pl7",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkgIqA1Dgm",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

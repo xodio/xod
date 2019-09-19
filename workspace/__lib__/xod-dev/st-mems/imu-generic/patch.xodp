@@ -1,0 +1,486 @@
+{
+  "description": "The type constructor for the generic IMU device.",
+  "links": [
+    {
+      "id": "BJBGc3RUr",
+      "input": {
+        "nodeId": "SJ34PoR8B",
+        "pinKey": "BkZyhcRLS"
+      },
+      "output": {
+        "nodeId": "ryZxf920Lr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJa-onAUS",
+      "input": {
+        "nodeId": "rJe4YpiR8B",
+        "pinKey": "HJmLcR1wxQ"
+      },
+      "output": {
+        "nodeId": "r1cZohCUB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1tOc3CIS",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "BypnLiRIr"
+      },
+      "output": {
+        "nodeId": "HyEu9hR8r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJ2Zon0LS",
+      "input": {
+        "nodeId": "r1cZohCUB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "Bkkr9sAIS"
+      }
+    },
+    {
+      "id": "HJLYqhR8B",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "Hy76n8oCLH"
+      },
+      "output": {
+        "nodeId": "SJGNuc20Lr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJdz9h0Ur",
+      "input": {
+        "nodeId": "SJ34PoR8B",
+        "pinKey": "HJx-12cC8r"
+      },
+      "output": {
+        "nodeId": "ByleG9hCIH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1W-s2CLB",
+      "input": {
+        "nodeId": "HJEtpiALS",
+        "pinKey": "HJmLcR1wxQ"
+      },
+      "output": {
+        "nodeId": "ByebshA8H",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJ1B130LS",
+      "input": {
+        "nodeId": "HJEtpiALS",
+        "pinKey": "S1gJJ2AUS"
+      },
+      "output": {
+        "nodeId": "SJ34PoR8B",
+        "pinKey": "HJCJh9RIS"
+      }
+    },
+    {
+      "id": "SJ7WjhALB",
+      "input": {
+        "nodeId": "ByebshA8H",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hkxf9nRIB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJTOq2RUH",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "rJ4anIjRLr"
+      },
+      "output": {
+        "nodeId": "SkQN_chAIS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sk9Oq3AUB",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "BktThIoRUr"
+      },
+      "output": {
+        "nodeId": "HyBEOchAUr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkM20T1PH",
+      "input": {
+        "nodeId": "ryasCakwr",
+        "pinKey": "rJ8kiTJwr"
+      },
+      "output": {
+        "nodeId": "rJe4YpiR8B",
+        "pinKey": "rkIUqA1Pl7"
+      }
+    },
+    {
+      "id": "SkvYcnCLH",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "rkra28oR8S"
+      },
+      "output": {
+        "nodeId": "BJ4Euc2A8B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyiPq2RLr",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "rygahUi0Ir"
+      },
+      "output": {
+        "nodeId": "HkXvcnALS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1-30Tyvr",
+      "input": {
+        "nodeId": "SyqLTiR8B",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryasCakwr",
+        "pinKey": "S14gjaJPB"
+      }
+    },
+    {
+      "id": "r1bNtpjAIr",
+      "input": {
+        "nodeId": "rJe4YpiR8B",
+        "pinKey": "rkgIqA1Dgm"
+      },
+      "output": {
+        "nodeId": "HJEtpiALS",
+        "pinKey": "rkIUqA1Pl7"
+      }
+    },
+    {
+      "id": "r1ghA61wH",
+      "input": {
+        "nodeId": "ryasCakwr",
+        "pinKey": "HJMJipkDB"
+      },
+      "output": {
+        "nodeId": "rJe4YpiR8B",
+        "pinKey": "SJnq12CLr"
+      }
+    },
+    {
+      "id": "rJfjchRIB",
+      "input": {
+        "nodeId": "SJ34PoR8B",
+        "pinKey": "r1eXijCUS"
+      },
+      "output": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "HJTgosC8r"
+      }
+    },
+    {
+      "id": "rJzEl308H",
+      "input": {
+        "nodeId": "rJe4YpiR8B",
+        "pinKey": "S1gJJ2AUS"
+      },
+      "output": {
+        "nodeId": "HJEtpiALS",
+        "pinKey": "SJnq12CLr"
+      }
+    },
+    {
+      "id": "rkJYqhAIS",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "SkfT28iAIr"
+      },
+      "output": {
+        "nodeId": "HJ-4uqhRIH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkdOq2RLB",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "ByOTnIoRUr"
+      },
+      "output": {
+        "nodeId": "r1UVuqnA8r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryidc2AIr",
+      "input": {
+        "nodeId": "HJVSds0IH",
+        "pinKey": "BkZp28oRLB"
+      },
+      "output": {
+        "nodeId": "rkl4dq30US",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Value multiplier for `S3` sensitivity.",
+      "id": "BJ4Euc2A8B",
+      "label": "SM3",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ByebshA8H",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "ByleG9hCIH",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Value multiplier for `S1` sensitivity.",
+      "id": "HJ-4uqhRIH",
+      "label": "SM1",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "HJ4LcCkvlX": "20h",
+        "rkgIqA1Dgm": "On Boot"
+      },
+      "id": "HJEtpiALS",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 2
+      },
+      "type": "@/write-register(imu-device)"
+    },
+    {
+      "boundLiterals": {
+        "BkZp28oRLB": "2000",
+        "BktThIoRUr": "2000",
+        "ByOTnIoRUr": "250",
+        "BypnLiRIr": "500",
+        "Hy76n8oCLH": "70",
+        "SkfT28iAIr": "17.5",
+        "rJ4anIjRLr": "8.75",
+        "rkra28oR8S": "70",
+        "rygahUi0Ir": "250"
+      },
+      "id": "HJVSds0IH",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "@/imu-config"
+    },
+    {
+      "description": "Desired sensitivity value. Inaccurate values are rounded up to one of [S0, S1, S2, S3].",
+      "id": "HkXvcnALS",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "15d"
+      },
+      "description": "Value for CTRL_REG1 register",
+      "id": "Hkxf9nRIB",
+      "label": "REG1",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Available 2-level sensitivity.",
+      "id": "HyBEOchAUr",
+      "label": "S2",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Available 1-level sensitivity.",
+      "id": "HyEu9hR8r",
+      "label": "S1",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyKGkylvS",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "SJ34PoR8B",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 1
+      },
+      "type": "@/imu-device"
+    },
+    {
+      "description": "Value multiplier for `S2` sensitivity.",
+      "id": "SJGNuc20Lr",
+      "label": "SM2",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value multiplier for `S0` sensitivity.",
+      "id": "SkQN_chAIS",
+      "label": "SM0",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SyqLTiR8B",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 5
+      },
+      "type": "@/output-imu-device"
+    },
+    {
+      "description": "Available 0-level sensitivity.",
+      "id": "r1UVuqnA8r",
+      "label": "S0",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1cZohCUB",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "boundLiterals": {
+        "HJ4LcCkvlX": "23h"
+      },
+      "id": "rJe4YpiR8B",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 3
+      },
+      "type": "@/write-register(imu-device)"
+    },
+    {
+      "description": "Available 3-level sensitivity.",
+      "id": "rkl4dq30US",
+      "label": "S3",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryZxf920Lr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": -1
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "ryasCakwr",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 4
+      },
+      "type": "xod/core/spread-error"
+    }
+  ]
+}

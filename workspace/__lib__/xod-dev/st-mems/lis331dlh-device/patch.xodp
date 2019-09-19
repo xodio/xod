@@ -1,0 +1,120 @@
+{
+  "description": "The type constructor for the accelerometer based on LIS331DLH IC by STMicroelectronics.",
+  "links": [
+    {
+      "id": "B1EJJ01wH",
+      "input": {
+        "nodeId": "SycpRaJwB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJCC0pkDS",
+        "pinKey": "SyqLTiR8B"
+      }
+    },
+    {
+      "id": "BJbyy0JPS",
+      "input": {
+        "nodeId": "SJCC0pkDS",
+        "pinKey": "ryZxf920Lr"
+      },
+      "output": {
+        "nodeId": "Bylc606yDS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "By7ky0ywH",
+      "input": {
+        "nodeId": "SJCC0pkDS",
+        "pinKey": "HkXvcnALS"
+      },
+      "output": {
+        "nodeId": "HyNRAakPH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyMyJRJvr",
+      "input": {
+        "nodeId": "SJCC0pkDS",
+        "pinKey": "ByleG9hCIH"
+      },
+      "output": {
+        "nodeId": "HkgE0R6JPH",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bylc606yDS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "18h"
+      },
+      "description": "I²C address. 18h by default. Some board configurations use 19h instead.",
+      "id": "HkgE0R6JPH",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "2"
+      },
+      "description": "Sensitivity. Can be 2 (default), 4, or 8. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±4g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "HyNRAakPH",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "BJ4Euc2A8B": "3.9",
+        "HJ-4uqhRIH": "2",
+        "HkXvcnALS": "250",
+        "Hkxf9nRIB": "39d",
+        "HyBEOchAUr": "1000",
+        "HyEu9hR8r": "4",
+        "SJGNuc20Lr": "0",
+        "SkQN_chAIS": "1",
+        "r1UVuqnA8r": "2",
+        "rkl4dq30US": "8"
+      },
+      "id": "SJCC0pkDS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/imu-generic"
+    },
+    {
+      "id": "SycpRaJwB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-imu-device"
+    }
+  ]
+}

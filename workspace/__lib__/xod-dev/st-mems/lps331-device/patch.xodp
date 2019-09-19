@@ -1,0 +1,139 @@
+{
+  "description": "The type constructor for the barometer based on LPS331 chip by STMicroelectronics.",
+  "links": [
+    {
+      "id": "BkB-hAkvS",
+      "input": {
+        "nodeId": "HJXZ2AyDH",
+        "pinKey": "SJlKtKRJwB"
+      },
+      "output": {
+        "nodeId": "Hkgoen0JPH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkWx6R1vH",
+      "input": {
+        "nodeId": "Sk6Q2C1PS",
+        "pinKey": "B15s20yDS"
+      },
+      "output": {
+        "nodeId": "HJXZ2AyDH",
+        "pinKey": "rkLs90kvH"
+      }
+    },
+    {
+      "id": "SJVZh0kwS",
+      "input": {
+        "nodeId": "HJXZ2AyDH",
+        "pinKey": "S1YYKAkPH"
+      },
+      "output": {
+        "nodeId": "BJie20kDr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkEM6AJwH",
+      "input": {
+        "nodeId": "SyGM6Cywr",
+        "pinKey": "rJ8kiTJwr"
+      },
+      "output": {
+        "nodeId": "Sk6Q2C1PS",
+        "pinKey": "Bkel3q3C1wB"
+      }
+    },
+    {
+      "id": "SkmMp01Dr",
+      "input": {
+        "nodeId": "SyGM6Cywr",
+        "pinKey": "HJMJipkDB"
+      },
+      "output": {
+        "nodeId": "Sk6Q2C1PS",
+        "pinKey": "BkY3nCyDH"
+      }
+    },
+    {
+      "id": "rJnzaRkPr",
+      "input": {
+        "nodeId": "rkifTAyDH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyGM6Cywr",
+        "pinKey": "S14gjaJPB"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJie20kDr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "HJXZ2AyDH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/barometer-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "01011100b"
+      },
+      "description": "I²C address.",
+      "id": "Hkgoen0JPH",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "BJL29n0kDB": "20h",
+        "HkPn93CyPr": "11100000b",
+        "SJZen930JPH": "On Boot"
+      },
+      "id": "Sk6Q2C1PS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/write-register(barometer-device)"
+    },
+    {
+      "id": "SyGM6Cywr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/core/spread-error"
+    },
+    {
+      "id": "rkifTAyDH",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "@/output-barometer-device"
+    }
+  ]
+}

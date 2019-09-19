@@ -1,0 +1,71 @@
+{
+  "description": "A custom type for the generic STM IMU.",
+  "nodes": [
+    {
+      "id": "BkXIyA1DH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "BkZyhcRLS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "H1bx3c0IB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HJCJh9RIS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "HJx-12cC8r",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "The sensitivity multiplier that applied to each axis of the IMU.",
+      "id": "r1eXijCUS",
+      "label": "MULT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

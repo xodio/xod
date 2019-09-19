@@ -1,0 +1,120 @@
+{
+  "description": "The type constructor for the accelerometer based on LIS331HH IC by STMicroelectronics.",
+  "links": [
+    {
+      "id": "HJ97061Pr",
+      "input": {
+        "nodeId": "rJTlAp1vr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkvZ06ywB",
+        "pinKey": "SyqLTiR8B"
+      }
+    },
+    {
+      "id": "Hk6WCaJPH",
+      "input": {
+        "nodeId": "HkvZ06ywB",
+        "pinKey": "ByleG9hCIH"
+      },
+      "output": {
+        "nodeId": "SJmalATyDH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1hb061wS",
+      "input": {
+        "nodeId": "HkvZ06ywB",
+        "pinKey": "ryZxf920Lr"
+      },
+      "output": {
+        "nodeId": "HyGag06ywH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1870ayDS",
+      "input": {
+        "nodeId": "HkvZ06ywB",
+        "pinKey": "HkXvcnALS"
+      },
+      "output": {
+        "nodeId": "Hkf7Rp1wB",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "6"
+      },
+      "description": "Sensitivity. Can be 6 (default), 12, or 24. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±12g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "Hkf7Rp1wB",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "BJ4Euc2A8B": "12",
+        "HJ-4uqhRIH": "6",
+        "HkXvcnALS": "250",
+        "Hkxf9nRIB": "39d",
+        "HyBEOchAUr": "1000",
+        "HyEu9hR8r": "12",
+        "SJGNuc20Lr": "0",
+        "SkQN_chAIS": "3",
+        "r1UVuqnA8r": "6",
+        "rkl4dq30US": "24"
+      },
+      "id": "HkvZ06ywB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/imu-generic"
+    },
+    {
+      "id": "HyGag06ywH",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "18h"
+      },
+      "description": "I²C address. 18h by default. Some board configurations use 19h instead.",
+      "id": "SJmalATyDH",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "rJTlAp1vr",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-imu-device"
+    }
+  ]
+}

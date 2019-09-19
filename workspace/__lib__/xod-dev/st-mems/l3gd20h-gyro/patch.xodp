@@ -1,0 +1,216 @@
+{
+  "comments": [
+    {
+      "content": "<--\nThe same node works fine for this module too.",
+      "id": "HJswTTkDH",
+      "position": {
+        "units": "slots",
+        "x": -9,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "description": "Reads angular velocity from a gyroscope based on L3GD20H IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow\n— Can't read the value",
+  "links": [
+    {
+      "id": "BySw6pyvr",
+      "input": {
+        "nodeId": "S1S6L31wB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "HkQfr17Kb"
+      }
+    },
+    {
+      "id": "ByyvT61wr",
+      "input": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "rk5-Hy7tW"
+      },
+      "output": {
+        "nodeId": "H14S68n1DB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy0VY6lwS",
+      "input": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "B1hJt6ePB"
+      },
+      "output": {
+        "nodeId": "rJO4KpxvB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HymPp61vB",
+      "input": {
+        "nodeId": "rkgr6UhkDr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "S1uzHkQKW"
+      }
+    },
+    {
+      "id": "r14P6ayvH",
+      "input": {
+        "nodeId": "SJQraLhJvS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "SkBfBymFW"
+      }
+    },
+    {
+      "id": "rJpIaayPr",
+      "input": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "SJFJUhHxX"
+      },
+      "output": {
+        "nodeId": "Hy-BaU31Dr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryRL6a1Dr",
+      "input": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "SJOWBJQKW"
+      },
+      "output": {
+        "nodeId": "HyzST82yPr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rybw6akPS",
+      "input": {
+        "nodeId": "HyAB6LnkPB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hITaJPS",
+        "pinKey": "SyPmUn1DH"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1hITaJPS",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 1
+      },
+      "type": "@/l3g4200-gyro"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "250"
+      },
+      "description": "Sensitivity. Can be 250 (default), 500, or 2000. Defines bounds of measurements expressed in degrees per second. E.g. max ±500 degrees per second. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "H14S68n1DB",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": -11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hy-BaU31Dr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "HyAB6LnkPB",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": -10,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "HyzST82yPr",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Pitch angular velocity. I.e. spin around X axis. Expressed in radians per second.",
+      "id": "S1S6L31wB",
+      "label": "PTCH",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Roll angular velocity. I.e. spin around Y axis. Expressed in radians per second.",
+      "id": "SJQraLhJvS",
+      "label": "ROLL",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers reading of the gyroscope.",
+      "id": "rJO4KpxvB",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": -10,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Yaw angular velocity. I.e. spin around Z axis. Expressed in radians per second.",
+      "id": "rkgr6UhkDr",
+      "label": "YAW",
+      "position": {
+        "units": "slots",
+        "x": -11,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

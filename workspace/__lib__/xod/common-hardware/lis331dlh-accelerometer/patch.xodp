@@ -201,6 +201,16 @@
       "type": "@/st-imu-normalize-acc"
     },
     {
+      "description": "Use `xod-dev/st-mems/lis331dlh-accelerometer` instead.",
+      "id": "HkOvJxZvr",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "S1-EzU2rlm",
       "label": "I2C",
       "position": {

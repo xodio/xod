@@ -80,6 +80,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod-dev/st-mems/normalize-va` instead.",
+      "id": "SkpglebwB",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "Sym_RZQtb",
       "position": {
         "units": "slots",

@@ -1,0 +1,403 @@
+{
+  "comments": [
+    {
+      "content": "S0 was unused before as well,\nbecause getting `IDX` from old `discretize-4` node did not require the first value",
+      "id": "SJ4oMJh0E",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 3
+      }
+    }
+  ],
+  "description": "Rounds up a desired sensitivity of an ST IMU sensor `SEN` to one of [S0, S1, S2, S3]",
+  "links": [
+    {
+      "id": "B1Mh9iSlm",
+      "input": {
+        "nodeId": "r1lUy5N_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry-B5jBlm",
+        "pinKey": "r1ctYrM3G"
+      }
+    },
+    {
+      "id": "BkQveJhRV",
+      "input": {
+        "nodeId": "BklUn-tC4",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "By-HnZKRV",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "H1xsrlbKCV",
+      "input": {
+        "nodeId": "ryoHl-Y0N",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1pDRtEdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJZi1kn0E",
+      "input": {
+        "nodeId": "H1C7ycV_b",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BklUn-tC4",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "HJiP6CoAV",
+      "input": {
+        "nodeId": "H1JXnbtC4",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "H1gHgbYCN",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "HkW6vlWtC4",
+      "input": {
+        "nodeId": "rJpPlWFRN",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "rJg6webFRN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1ZvaCjCV",
+      "input": {
+        "nodeId": "BklUn-tC4",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "S1CDxWYAE",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "SJJr1JhAN",
+      "input": {
+        "nodeId": "By-HnZKRV",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "rJpPlWFRN",
+        "pinKey": "HktZUCdrPkZ"
+      }
+    },
+    {
+      "id": "SkGugWYR4",
+      "input": {
+        "nodeId": "H1gHgbYCN",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "r1NqAYVdb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkXjyy2RV",
+      "input": {
+        "nodeId": "ry-B5jBlm",
+        "pinKey": "SJ-BNy8s2G"
+      },
+      "output": {
+        "nodeId": "BklUn-tC4",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "SkbAweZtCV",
+      "input": {
+        "nodeId": "S1CDxWYAE",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "SkeCwlZtRE",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1xnLe-KRV",
+      "input": {
+        "nodeId": "H1gHgbYCN",
+        "pinKey": "HJjZLRdBw1-"
+      },
+      "output": {
+        "nodeId": "S128gZYRN",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJgwg1nRN",
+      "input": {
+        "nodeId": "By-HnZKRV",
+        "pinKey": "ryTeUROHD1b"
+      },
+      "output": {
+        "nodeId": "H1JXnbtC4",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "rkP_gZtRV",
+      "input": {
+        "nodeId": "S1CDxWYAE",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "ryP8LnZtZ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkVugbYR4",
+      "input": {
+        "nodeId": "rJpPlWFRN",
+        "pinKey": "SJqZ8COrDkW"
+      },
+      "output": {
+        "nodeId": "rk850K4u-",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Sensitivity value as requested by user.",
+      "id": "B1pDRtEdb",
+      "label": "SEN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "B1zcwszcM",
+      "position": {
+        "units": "slots",
+        "x": 17,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "3"
+      },
+      "id": "BklUn-tC4",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 5
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "2"
+      },
+      "id": "By-HnZKRV",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "description": "Sensitivity level index, e.g. 0-th, 1-th, 2-th, or 3-th",
+      "id": "H1C7ycV_b",
+      "label": "IDX",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 8
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "1",
+        "ryTeUROHD1b": "0"
+      },
+      "id": "H1JXnbtC4",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 3
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "H1gHgbYCN",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "Hyit2CsC4",
+      "position": {
+        "units": "slots",
+        "x": 19,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "S128gZYRN",
+      "label": "SEN",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "S1CDxWYAE",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 2
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "id": "SkeCwlZtRE",
+      "label": "SEN",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "description": "Level 2 sensitivity provided by the sensor, e.g. ±4g",
+      "id": "r1NqAYVdb",
+      "label": "S1",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value for CTRL_REG4 to set the sensitivity selected",
+      "id": "r1lUy5N_b",
+      "label": "REG",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 8
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rJg6webFRN",
+      "label": "SEN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "rJpPlWFRN",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/core/less"
+    },
+    {
+      "description": "Level 3 sensitivity provided by the sensor, e.g. ±8g",
+      "id": "rk850K4u-",
+      "label": "S2",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "arityLevel": 3,
+      "boundLiterals": {
+        "BkrwKrGhG": "0",
+        "HypuFHG3z": "16",
+        "HypuFHG3z-$1": "32",
+        "HypuFHG3z-$2": "48"
+      },
+      "id": "ry-B5jBlm",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 7
+      },
+      "type": "xod/core/nth-input"
+    },
+    {
+      "description": "Level 4 sensitivity provided by the sensor, e.g. ±16g",
+      "id": "ryP8LnZtZ",
+      "label": "S3",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Level 1 sensitivity provided by the sensor, e.g. ±2g",
+      "id": "rynt0KE_W",
+      "label": "S0",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ryoHl-Y0N",
+      "label": "SEN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    }
+  ]
+}

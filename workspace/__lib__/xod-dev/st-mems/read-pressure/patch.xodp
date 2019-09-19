@@ -1,0 +1,565 @@
+{
+  "description": "Reads the pressure and altitude from the barometer module.",
+  "links": [
+    {
+      "id": "BJ2iikOZQ",
+      "input": {
+        "nodeId": "H1yojyObQ",
+        "pinKey": "SkylK_Ed-"
+      },
+      "output": {
+        "nodeId": "r19I4ikOWm",
+        "pinKey": "rypZF_Nub"
+      }
+    },
+    {
+      "id": "BJLWPoAJPH",
+      "input": {
+        "nodeId": "SyYUVsJd-7",
+        "pinKey": "HJkfWmny7"
+      },
+      "output": {
+        "nodeId": "ByHbvi0kPr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJSgLVo1_-X",
+      "input": {
+        "nodeId": "SyYUVsJd-7",
+        "pinKey": "BJfKruVdb"
+      },
+      "output": {
+        "nodeId": "HJiL4s1_Zm",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "By2ZDiRyPS",
+      "input": {
+        "nodeId": "SkMUVskuZ7",
+        "pinKey": "ryBWhQhkm"
+      },
+      "output": {
+        "nodeId": "HksbvsAkDH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Byd-PsRkPS",
+      "input": {
+        "nodeId": "r19I4ikOWm",
+        "pinKey": "ryBWhQhkm"
+      },
+      "output": {
+        "nodeId": "Skv-viA1DB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByrXsL0lPS",
+      "input": {
+        "nodeId": "HkeQiLAgwr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyZmj80gDS",
+        "pinKey": "SkUUPyKGX"
+      }
+    },
+    {
+      "id": "H1Sb84oyOb7",
+      "input": {
+        "nodeId": "r12UVjJ_Wm",
+        "pinKey": "S1FFN4nkm"
+      },
+      "output": {
+        "nodeId": "r1pL4jyubX",
+        "pinKey": "rkgRyT6beM"
+      }
+    },
+    {
+      "id": "H1jlUEoJ_ZX",
+      "input": {
+        "nodeId": "SyWUNs1dWX",
+        "pinKey": "SJjmdOVOW"
+      },
+      "output": {
+        "nodeId": "SkDIEokdWX",
+        "pinKey": "ryviw_EOb"
+      }
+    },
+    {
+      "id": "HJ-xINoy_bm",
+      "input": {
+        "nodeId": "SkMUVskuZ7",
+        "pinKey": "SkylK_Ed-"
+      },
+      "output": {
+        "nodeId": "SyWUNs1dWX",
+        "pinKey": "Sk7BudNdZ"
+      }
+    },
+    {
+      "id": "HJj8o0yvS",
+      "input": {
+        "nodeId": "SyYUVsJd-7",
+        "pinKey": "SyssEEhJm"
+      },
+      "output": {
+        "nodeId": "SJ5BoCyPr",
+        "pinKey": "H1uQoA1PS"
+      }
+    },
+    {
+      "id": "HkNOp1d-X",
+      "input": {
+        "nodeId": "HJxPnku-m",
+        "pinKey": "SJRsfob1m"
+      },
+      "output": {
+        "nodeId": "H1yojyObQ",
+        "pinKey": "SJeoE43JQ"
+      }
+    },
+    {
+      "id": "HyPjICgvr",
+      "input": {
+        "nodeId": "B1XsU0evB",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "HJxPnku-m",
+        "pinKey": "r1WVwX_W1Q"
+      }
+    },
+    {
+      "id": "S11ua1_-X",
+      "input": {
+        "nodeId": "HJxPnku-m",
+        "pinKey": "rJvDQd-Jm"
+      },
+      "output": {
+        "nodeId": "SkMUVskuZ7",
+        "pinKey": "SJeoE43JQ"
+      }
+    },
+    {
+      "id": "S1MZviC1DB",
+      "input": {
+        "nodeId": "SyWUNs1dWX",
+        "pinKey": "Hk1dRQh17"
+      },
+      "output": {
+        "nodeId": "H1-bvo0yvr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1Qmo8RlDH",
+      "input": {
+        "nodeId": "SyZmj80gDS",
+        "pinKey": "SkG8Lv1FMQ"
+      },
+      "output": {
+        "nodeId": "B1XsU0evB",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "SJaeI4syO-Q",
+      "input": {
+        "nodeId": "r12UVjJ_Wm",
+        "pinKey": "S1dKPuVdW"
+      },
+      "output": {
+        "nodeId": "SyYUVsJd-7",
+        "pinKey": "HJbjB_Nd-"
+      }
+    },
+    {
+      "id": "SJmg8VjkOWQ",
+      "input": {
+        "nodeId": "SkDIEokdWX",
+        "pinKey": "Sk2oU_Vdb"
+      },
+      "output": {
+        "nodeId": "r12UVjJ_Wm",
+        "pinKey": "SJB3vO4uZ"
+      }
+    },
+    {
+      "id": "Sk3HsC1Dr",
+      "input": {
+        "nodeId": "SJ5BoCyPr",
+        "pinKey": "r1TfiCJvH"
+      },
+      "output": {
+        "nodeId": "ryANjA1vB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkN7oI0lDS",
+      "input": {
+        "nodeId": "HkfXjUCxPS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1XsU0evB",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "SkOl8Eo1_WQ",
+      "input": {
+        "nodeId": "r19I4ikOWm",
+        "pinKey": "SkylK_Ed-"
+      },
+      "output": {
+        "nodeId": "SkMUVskuZ7",
+        "pinKey": "rypZF_Nub"
+      }
+    },
+    {
+      "id": "SkgJhURlDr",
+      "input": {
+        "nodeId": "H1yojyObQ",
+        "pinKey": "ryBWhQhkm"
+      },
+      "output": {
+        "nodeId": "BkynUAewS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Skznj1_-Q",
+      "input": {
+        "nodeId": "BySIViJ_bX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1yojyObQ",
+        "pinKey": "rypZF_Nub"
+      }
+    },
+    {
+      "id": "Syq-Dj0JvB",
+      "input": {
+        "nodeId": "SkDIEokdWX",
+        "pinKey": "B1vdYXhkQ"
+      },
+      "output": {
+        "nodeId": "Skt-wiR1PH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1p8oR1wH",
+      "input": {
+        "nodeId": "SyWUNs1dWX",
+        "pinKey": "BkRw4E3kX"
+      },
+      "output": {
+        "nodeId": "SJ5BoCyPr",
+        "pinKey": "H1uQoA1PS"
+      }
+    },
+    {
+      "id": "r1xvDoAJPH",
+      "input": {
+        "nodeId": "HJPviRJPH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJ5BoCyPr",
+        "pinKey": "SkgOQjRkwB"
+      }
+    },
+    {
+      "id": "rkE-Po0kDH",
+      "input": {
+        "nodeId": "r12UVjJ_Wm",
+        "pinKey": "BJrcyE3y7"
+      },
+      "output": {
+        "nodeId": "ryXbDsRJDB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkMdpku-Q",
+      "input": {
+        "nodeId": "HJxPnku-m",
+        "pinKey": "B1gEDm_W1Q"
+      },
+      "output": {
+        "nodeId": "r19I4ikOWm",
+        "pinKey": "SJeoE43JQ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "40.96"
+      },
+      "id": "B1XsU0evB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 7
+      },
+      "type": "xod/core/divide"
+    },
+    {
+      "id": "BkynUAewS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "ByHbvi0kPr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": -0.05,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "description": "Fires when reading is done.",
+      "id": "BySIViJ_bX",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 9
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "H1-bvo0yvr",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "H1yojyObQ",
+      "label": "ph",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod/i2c/read-byte"
+    },
+    {
+      "id": "HJPviRJPH",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers the new read of the pressure.",
+      "id": "HJiL4s1_Zm",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJxPnku-m",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 6
+      },
+      "type": "xod/bits/i32-to-number"
+    },
+    {
+      "description": "Altitude above the sea level in meters.",
+      "id": "HkeQiLAgwr",
+      "label": "ALT",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 9
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Pressure in pascals.",
+      "id": "HkfXjUCxPS",
+      "label": "Ppa",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 9
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HksbvsAkDH",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SJ5BoCyPr",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "@/unpack-barometer-device"
+    },
+    {
+      "id": "SkDIEokdWX",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/i2c/end-transmission"
+    },
+    {
+      "id": "SkMUVskuZ7",
+      "label": "pxl",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/i2c/read-byte"
+    },
+    {
+      "id": "Skt-wiR1PH",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "Skv-viA1DB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "boundLiterals": {
+        "r1NONEn1m": "3"
+      },
+      "id": "SyWUNs1dWX",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 2
+      },
+      "type": "xod/i2c/request"
+    },
+    {
+      "id": "SyYUVsJd-7",
+      "position": {
+        "units": "slots",
+        "x": -0.05,
+        "y": 2
+      },
+      "type": "xod/i2c/begin-transmission"
+    },
+    {
+      "id": "SyZmj80gDS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 8
+      },
+      "type": "xod/core/pressure-to-altitude"
+    },
+    {
+      "boundLiterals": {
+        "S1FFN4nkm": "2Bh"
+      },
+      "id": "r12UVjJ_Wm",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/i2c/write-byte"
+    },
+    {
+      "id": "r19I4ikOWm",
+      "label": "pl",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 4
+      },
+      "type": "xod/i2c/read-byte"
+    },
+    {
+      "boundLiterals": {
+        "SkC1aTZeM": "128d",
+        "r1zA16pbxM": "28h"
+      },
+      "id": "r1pL4jyubX",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/bits/bitwise-or"
+    },
+    {
+      "id": "ryANjA1vB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": -1
+      },
+      "type": "@/input-barometer-device"
+    },
+    {
+      "id": "ryXbDsRJDB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/from-bus"
+    }
+  ]
+}

@@ -470,6 +470,16 @@
       "type": "xod/i2c/read-byte"
     },
     {
+      "description": "Use `xod-dev/st-mems/read-xyz` instead.",
+      "id": "Sy4blgWvS",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "id": "SySo4-ePeX",
       "label": "DONE",
       "position": {

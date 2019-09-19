@@ -1,0 +1,120 @@
+{
+  "description": "The type constructor for the accelerometer based on LIS3DH IC by STMicroelectronics.",
+  "links": [
+    {
+      "id": "Bk4Ub4TyPB",
+      "input": {
+        "nodeId": "H1UWNayvr",
+        "pinKey": "ryZxf920Lr"
+      },
+      "output": {
+        "nodeId": "HyxL-V6kDB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1XIZ4T1DH",
+      "input": {
+        "nodeId": "H1UWNayvr",
+        "pinKey": "HkXvcnALS"
+      },
+      "output": {
+        "nodeId": "H1zIWN6kPS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJHIWETkwH",
+      "input": {
+        "nodeId": "H1UWNayvr",
+        "pinKey": "ByleG9hCIH"
+      },
+      "output": {
+        "nodeId": "SJ-IZNpJPB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJfM4TkDr",
+      "input": {
+        "nodeId": "BkZMNa1PH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1UWNayvr",
+        "pinKey": "SyqLTiR8B"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BkZMNa1PH",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-imu-device"
+    },
+    {
+      "boundLiterals": {
+        "BJ4Euc2A8B": "48",
+        "HJ-4uqhRIH": "8",
+        "HkXvcnALS": "250",
+        "Hkxf9nRIB": "39d",
+        "HyBEOchAUr": "8",
+        "HyEu9hR8r": "4",
+        "SJGNuc20Lr": "16",
+        "SkQN_chAIS": "4",
+        "r1UVuqnA8r": "2",
+        "rkl4dq30US": "16"
+      },
+      "id": "H1UWNayvr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/imu-generic"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "2"
+      },
+      "description": "Sensitivity. Can be 2 (default), 4, 8, or 16. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±4g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "H1zIWN6kPS",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HyxL-V6kDB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "SJ-IZNpJPB",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

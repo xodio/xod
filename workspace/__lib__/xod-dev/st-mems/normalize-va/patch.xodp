@@ -1,0 +1,104 @@
+{
+  "comments": [
+    {
+      "content": "Convert milli-degree-per-second to degree-per-second",
+      "id": "HJeJRWXKZ",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 6
+      }
+    }
+  ],
+  "description": "Converts raw axis register value of an ST IMU to an angular velocity expressed in radians per second",
+  "links": [
+    {
+      "id": "Byu_AbmYb",
+      "input": {
+        "nodeId": "rJOApZXF-",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "By2rpbQFb",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJKuRZQYW",
+      "input": {
+        "nodeId": "Sym_RZQtb",
+        "pinKey": "BycBRi3I-"
+      },
+      "output": {
+        "nodeId": "rJOApZXF-",
+        "pinKey": "BkqLCOSw1W"
+      }
+    },
+    {
+      "id": "Sk9_CbXK-",
+      "input": {
+        "nodeId": "Hye8p-7FW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sym_RZQtb",
+        "pinKey": "S1AHAj2UW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "By2rpbQFb",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ByntwoG5f",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "Hye8p-7FW",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "Sym_RZQtb",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/units/deg-to-rad"
+    },
+    {
+      "boundLiterals": {
+        "BytUCdHD1-": "1000"
+      },
+      "id": "rJOApZXF-",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/divide"
+    }
+  ]
+}

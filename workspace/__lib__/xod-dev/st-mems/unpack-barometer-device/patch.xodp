@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "H1uQoA1PS",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "HkMmjCkvB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SkgOQjRkwB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/i2c/output-i2c"
+    },
+    {
+      "id": "r1TfiCJvH",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-barometer-device"
+    }
+  ]
+}
