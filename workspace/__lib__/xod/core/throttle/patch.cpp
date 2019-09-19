@@ -28,11 +28,12 @@ void evaluate(Context ctx) {
         }
     }
 
-    if (isTimedOut(ctx)) {
-        state->hasStarted = false;
-    }
     if (isTimedOut(ctx) && state->shouldEmitOnEnd) {
         state->shouldEmitOnEnd = false;
+        TimeMs dt = getValue<input_T>(ctx) * 1000;
+        setTimeout(ctx, dt);
         emitValue<output_OUT>(ctx, inValue);
+    } else if (isTimedOut(ctx)) {
+        state->hasStarted = false;
     }
 }

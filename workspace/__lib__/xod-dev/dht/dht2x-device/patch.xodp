@@ -1,0 +1,35 @@
+{
+  "description": "Represents a DHT21 or compatible sensor: DHT21, DHT22, DHT33, DHT44, AM2301, HM2301, AM2302, AM2303, RHT02, RHT03, RHT04, RHT05.",
+  "nodes": [
+    {
+      "description": "Board port number the hygrometer is connected to.",
+      "id": "B1laoyMYIH",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "H1faiyzKIr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "r1-6ikMF8H",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

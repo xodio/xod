@@ -277,16 +277,6 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
-      "description": "Use nodes from `xod-dev/dht` library instead",
-      "id": "SkViKbaIB",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/deprecated"
-    },
-    {
       "id": "SkY7RxsJM",
       "position": {
         "units": "slots",
