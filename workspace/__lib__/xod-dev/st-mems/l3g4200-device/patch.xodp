@@ -1,0 +1,119 @@
+{
+  "description": "The type constructor for the gyroscope based on L3G4200 IC by STMicroelectronics.",
+  "links": [
+    {
+      "id": "SJE8e6pyDr",
+      "input": {
+        "nodeId": "Sy8l66yvS",
+        "pinKey": "ByleG9hCIH"
+      },
+      "output": {
+        "nodeId": "B1b8xTTyvH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyHbT6yPr",
+      "input": {
+        "nodeId": "B1M-TayPS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sy8l66yvS",
+        "pinKey": "SyqLTiR8B"
+      }
+    },
+    {
+      "id": "r1m8eapyDS",
+      "input": {
+        "nodeId": "Sy8l66yvS",
+        "pinKey": "HkXvcnALS"
+      },
+      "output": {
+        "nodeId": "rkzIgTa1Dr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkB8eap1PS",
+      "input": {
+        "nodeId": "Sy8l66yvS",
+        "pinKey": "ryZxf920Lr"
+      },
+      "output": {
+        "nodeId": "r1gUgpaJPH",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1M-TayPS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-imu-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "B1b8xTTyvH",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "boundLiterals": {
+        "BJ4Euc2A8B": "70",
+        "HJ-4uqhRIH": "17.5",
+        "HkXvcnALS": "250",
+        "HyBEOchAUr": "2000",
+        "HyEu9hR8r": "500",
+        "SJGNuc20Lr": "70",
+        "SkQN_chAIS": "8.75",
+        "r1UVuqnA8r": "250",
+        "rkl4dq30US": "2000"
+      },
+      "id": "Sy8l66yvS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/imu-generic"
+    },
+    {
+      "id": "r1gUgpaJPH",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "250"
+      },
+      "description": "Sensitivity. Can be 250 (default), 500, or 2000. Defines bounds of measurements expressed in degrees per second. E.g. max ±500 degrees per second. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "rkzIgTa1Dr",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "description": "Writes the register to the STM devices.",
+  "nodes": [
+    {
+      "description": "The device passed through.",
+      "id": "B1tnI201PH",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-imu-device"
+    },
+    {
+      "description": "The register key.",
+      "id": "BJrnI30kPB",
+      "label": "KEY",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "The device which should be configured by the register.",
+      "id": "BkZD3CkDr",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "By8d3AkPr",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "description": "The register value.",
+      "id": "ByLnLh0JDr",
+      "label": "VAL",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Triggers the write of the register.",
+      "id": "H1-x2LhCywr",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires when writing is done.",
+      "id": "HkeehLhAJwB",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

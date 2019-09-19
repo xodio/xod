@@ -1,0 +1,313 @@
+{
+  "description": "Calculates the value of sensitivity multiplier and the register to set up the module.",
+  "links": [
+    {
+      "id": "BkQbioRUH",
+      "input": {
+        "nodeId": "HJTgosC8r",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "r1ctYrM3G"
+      }
+    },
+    {
+      "id": "ByMepnIi0UB",
+      "input": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "HypuFHG3z-$2"
+      },
+      "output": {
+        "nodeId": "rkra28oR8S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByZga3IiR8B",
+      "input": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "rk850K4u-"
+      },
+      "output": {
+        "nodeId": "BktThIoRUr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1lxThIoRIB",
+      "input": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "rynt0KE_W"
+      },
+      "output": {
+        "nodeId": "ByOTnIoRUr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyUJii0US",
+      "input": {
+        "nodeId": "Bkkr9sAIS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Skqa2IjCLB",
+        "pinKey": "By_EX_bk7"
+      }
+    },
+    {
+      "id": "HyjpnLoAUr",
+      "input": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "SJ-BNy8s2G"
+      },
+      "output": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "H1C7ycV_b"
+      }
+    },
+    {
+      "id": "S1Qxa3LoCLH",
+      "input": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "r1NqAYVdb"
+      },
+      "output": {
+        "nodeId": "BypnLiRIr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r11ga3IsAUr",
+      "input": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "ryP8LnZtZ"
+      },
+      "output": {
+        "nodeId": "BkZp28oRLB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1Aan8sAIH",
+      "input": {
+        "nodeId": "Skqa2IjCLB",
+        "pinKey": "rktX7OWyX"
+      },
+      "output": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "r1lUy5N_b"
+      }
+    },
+    {
+      "id": "r1ap38iCLB",
+      "input": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "HypuFHG3z"
+      },
+      "output": {
+        "nodeId": "SkfT28iAIr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJ2TnLsC8r",
+      "input": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "BkrwKrGhG"
+      },
+      "output": {
+        "nodeId": "rJ4anIjRLr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJrl638sCLr",
+      "input": {
+        "nodeId": "rkP63IjCIr",
+        "pinKey": "B1pDRtEdb"
+      },
+      "output": {
+        "nodeId": "rygahUi0Ir",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryEgphUs0UH",
+      "input": {
+        "nodeId": "H186hLsALS",
+        "pinKey": "HypuFHG3z-$1"
+      },
+      "output": {
+        "nodeId": "Hy76n8oCLH",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJrDkCJwH",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Available 3-level sensitivity.",
+      "id": "BkZp28oRLB",
+      "label": "S3",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value for CTRL_REG4 to set the selected sensitivity.",
+      "id": "Bkkr9sAIS",
+      "label": "REG4",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Available 2-level sensitivity.",
+      "id": "BktThIoRUr",
+      "label": "S2",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Available 0-level sensitivity.",
+      "id": "ByOTnIoRUr",
+      "label": "S0",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Available 1-level sensitivity.",
+      "id": "BypnLiRIr",
+      "label": "S1",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "arityLevel": 3,
+      "id": "H186hLsALS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -1
+      },
+      "type": "xod/core/nth-input"
+    },
+    {
+      "description": "Multiplier for the selected sensivity",
+      "id": "HJTgosC8r",
+      "label": "MULT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Value multiplier for `S2` sensitivity.",
+      "id": "Hy76n8oCLH",
+      "label": "SM2",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Value multiplier for `S1` sensitivity.",
+      "id": "SkfT28iAIr",
+      "label": "SM1",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Skqa2IjCLB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -1
+      },
+      "type": "xod/bits/number-to-u8"
+    },
+    {
+      "description": "Value multiplier for `S0` sensitivity.",
+      "id": "rJ4anIjRLr",
+      "label": "SM0",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "r1NqAYVdb": "4",
+        "rk850K4u-": "8",
+        "rynt0KE_W": "2"
+      },
+      "id": "rkP63IjCIr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -2
+      },
+      "type": "@/round-sensitivity"
+    },
+    {
+      "description": "Value multiplier for `S3` sensitivity.",
+      "id": "rkra28oR8S",
+      "label": "SM3",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Desired sensitivity value. Inaccurate values are rounded up to one of [S0, S1, S2, S3].",
+      "id": "rygahUi0Ir",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -3
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

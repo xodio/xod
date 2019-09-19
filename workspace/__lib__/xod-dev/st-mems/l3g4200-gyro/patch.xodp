@@ -1,0 +1,303 @@
+{
+  "description": "Reads angular velocity from a gyroscope based on L3G4200 IC by STMicroelectronics. It is expected the gyro is connected to the first hardware I²C bus.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow\n— Can't read the value",
+  "links": [
+    {
+      "id": "B1UMppkPr",
+      "input": {
+        "nodeId": "BJEzTayvB",
+        "pinKey": "rkzIgTa1Dr"
+      },
+      "output": {
+        "nodeId": "rk5-Hy7tW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1LXpp1vr",
+      "input": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "Hy0bp3RUH"
+      },
+      "output": {
+        "nodeId": "BJEzTayvB",
+        "pinKey": "B1M-TayPS"
+      }
+    },
+    {
+      "id": "Hk711rnkvH",
+      "input": {
+        "nodeId": "HJgyyH31vS",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "r1boEblwgX"
+      }
+    },
+    {
+      "id": "HkE1Jrhkvr",
+      "input": {
+        "nodeId": "rkby1B3yDB",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "BkwoNWxDgX"
+      }
+    },
+    {
+      "id": "HkPGpa1vB",
+      "input": {
+        "nodeId": "BJEzTayvB",
+        "pinKey": "B1b8xTTyvH"
+      },
+      "output": {
+        "nodeId": "SJOWBJQKW",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HybMH21wH",
+      "input": {
+        "nodeId": "S1uzHkQKW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1y1S2JPS",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "SJGgtTxPB",
+      "input": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "ry8jNWxveQ"
+      },
+      "output": {
+        "nodeId": "BkelKpgPB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkGMH21vB",
+      "input": {
+        "nodeId": "SkBfBymFW",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkby1B3yDB",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "r1tM6TkwH",
+      "input": {
+        "nodeId": "BJEzTayvB",
+        "pinKey": "r1gUgpaJPH"
+      },
+      "output": {
+        "nodeId": "SJFJUhHxX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJ7etagPr",
+      "input": {
+        "nodeId": "BkelKpgPB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1hJt6ePB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJBykB21PH",
+      "input": {
+        "nodeId": "r1y1S2JPS",
+        "pinKey": "By2rpbQFb"
+      },
+      "output": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "By2jEWgDxQ"
+      }
+    },
+    {
+      "id": "rJXfSnJPr",
+      "input": {
+        "nodeId": "HkQfr17Kb",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJgyyH31vS",
+        "pinKey": "Hye8p-7FW"
+      }
+    },
+    {
+      "id": "rk37LnywH",
+      "input": {
+        "nodeId": "SyPmUn1DH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1fy1S21wS",
+        "pinKey": "SySo4-ePeX"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers reading of the gyroscope.",
+      "id": "B1hJt6ePB",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BJEzTayvB",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/l3g4200-device"
+    },
+    {
+      "id": "BkelKpgPB",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "boundLiterals": {
+        "ry8jNWxveQ": "Continuously"
+      },
+      "id": "H1fy1S21wS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/read-imu-xyz"
+    },
+    {
+      "id": "HJgyyH31vS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "@/normalize-va"
+    },
+    {
+      "description": "Pitch angular velocity. I.e. spin around X axis. Expressed in radians per second.",
+      "id": "HkQfr17Kb",
+      "label": "PTCH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Yaw angular velocity. I.e. spin around Z axis. Expressed in radians per second.",
+      "id": "S1uzHkQKW",
+      "label": "YAW",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SJFJUhHxX",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "SJOWBJQKW",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Roll angular velocity. I.e. spin around Y axis. Expressed in radians per second.",
+      "id": "SkBfBymFW",
+      "label": "ROLL",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "SyPmUn1DH",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "r1y1S2JPS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "@/normalize-va"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "250"
+      },
+      "description": "Sensitivity. Can be 250 (default), 500, or 2000. Defines bounds of measurements expressed in degrees per second. E.g. max ±500 degrees per second. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "rk5-Hy7tW",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkby1B3yDB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "@/normalize-va"
+    }
+  ]
+}

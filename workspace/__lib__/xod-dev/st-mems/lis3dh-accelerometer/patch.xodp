@@ -1,0 +1,303 @@
+{
+  "description": "Reads acceleration from an accelerometer based on LIS3DH IC by STMicroelectronics. It is expected the accelerometer is connected to the first hardware I²C bus.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow\n— Can't read the value",
+  "links": [
+    {
+      "id": "B11_4pkwH",
+      "input": {
+        "nodeId": "rkFPE61PB",
+        "pinKey": "SJ-IZNpJPB"
+      },
+      "output": {
+        "nodeId": "SkeB3DhJwB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJ-hHtpgDS",
+      "input": {
+        "nodeId": "rkehrF6evS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H12SKplDS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H10SYTxPS",
+      "input": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "ry8jNWxveQ"
+      },
+      "output": {
+        "nodeId": "rkehrF6evS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1agr3DnyDr",
+      "input": {
+        "nodeId": "SkaB2w3yPr",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "By2jEWgDxQ"
+      }
+    },
+    {
+      "id": "HkWuVaJwr",
+      "input": {
+        "nodeId": "rkFPE61PB",
+        "pinKey": "H1zIWN6kPS"
+      },
+      "output": {
+        "nodeId": "ryWHnPhJvH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyneH2v2kDH",
+      "input": {
+        "nodeId": "ry3S2w3yvS",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "BkwoNWxDgX"
+      }
+    },
+    {
+      "id": "HyoeS3vnkwH",
+      "input": {
+        "nodeId": "HJtr3whkvH",
+        "pinKey": "SkhbobXKW"
+      },
+      "output": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "r1boEblwgX"
+      }
+    },
+    {
+      "id": "SJFxH3P3Jwr",
+      "input": {
+        "nodeId": "HyjB2whkwr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJtr3whkvH",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "Sk0xr3vhJPH",
+      "input": {
+        "nodeId": "rJcHhDhywB",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "SySo4-ePeX"
+      }
+    },
+    {
+      "id": "rJguE61vr",
+      "input": {
+        "nodeId": "rkFPE61PB",
+        "pinKey": "HyxL-V6kDB"
+      },
+      "output": {
+        "nodeId": "BJrnP21PB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkclS2DnJDB",
+      "input": {
+        "nodeId": "ByOH3D2JPr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry3S2w3yvS",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "ryOeHnw21DB",
+      "input": {
+        "nodeId": "HyCr3PnywS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkaB2w3yPr",
+        "pinKey": "HyEMj-mFb"
+      }
+    },
+    {
+      "id": "ryVONa1wr",
+      "input": {
+        "nodeId": "SkQHhD3JDS",
+        "pinKey": "Hy0bp3RUH"
+      },
+      "output": {
+        "nodeId": "rkFPE61PB",
+        "pinKey": "BkZMNa1PH"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJrnP21PB",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "description": "Acceleration along Y axis. Expressed in ɡ units.",
+      "id": "ByOH3D2JPr",
+      "label": "Yg",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers reading of the accelerometer.",
+      "id": "H12SKplDS",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": -10,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJtr3whkvH",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 3
+      },
+      "type": "@/normalize-acc"
+    },
+    {
+      "description": "Acceleration along Z axis. Expressed in ɡ units.",
+      "id": "HyCr3PnywS",
+      "label": "Zg",
+      "position": {
+        "units": "slots",
+        "x": -11,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Acceleration along X axis. Expressed in ɡ units.",
+      "id": "HyjB2whkwr",
+      "label": "Xg",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "ry8jNWxveQ": "Continuously"
+      },
+      "id": "SkQHhD3JDS",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 2
+      },
+      "type": "@/read-imu-xyz"
+    },
+    {
+      "id": "SkaB2w3yPr",
+      "position": {
+        "units": "slots",
+        "x": -11,
+        "y": 3
+      },
+      "type": "@/normalize-acc"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "68h"
+      },
+      "description": "I²C address. 6Ah by default. Some board configurations use 6Bh instead.",
+      "id": "SkeB3DhJwB",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "rJcHhDhywB",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": -10,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rkFPE61PB",
+      "position": {
+        "units": "slots",
+        "x": -13,
+        "y": 1
+      },
+      "type": "@/lis3dh-device"
+    },
+    {
+      "id": "rkehrF6evS",
+      "position": {
+        "units": "slots",
+        "x": -10,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "ry3S2w3yvS",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 3
+      },
+      "type": "@/normalize-acc"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "6"
+      },
+      "description": "Sensitivity. Can be 2 (default), 4, 8, or 16. Defines bounds of measurements expressed in ɡ (standard gravity) units. E.g. max ±4g. The lower the sensitivity the better output precission. Inaccurate values are rounded up to a nearest correct sensitivity level.",
+      "id": "ryWHnPhJvH",
+      "label": "SENS",
+      "position": {
+        "units": "slots",
+        "x": -11,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

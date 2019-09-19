@@ -1,0 +1,246 @@
+{
+  "description": "Reads temprature, pressure, altitude from a barometer based on LPS331 chip by STMicroelectronics.\n\nPossible errors:\n— Invalid I2C address\n— Data too long to fit in transmit buffer\n— Received NACK on transmit of address\n— Received NACK on transmit of data\n— Other error\n— No bytes written. Probably due to buffer overflow\n— Can't read the value",
+  "links": [
+    {
+      "id": "HkZo61_ZX",
+      "input": {
+        "nodeId": "HJB9T1OWQ",
+        "pinKey": "HJiL4s1_Zm"
+      },
+      "output": {
+        "nodeId": "SynQlav-Q",
+        "pinKey": "rkTm7x6DZm"
+      }
+    },
+    {
+      "id": "HyQSaCkvB",
+      "input": {
+        "nodeId": "SynQlav-Q",
+        "pinKey": "rJRho0ywB"
+      },
+      "output": {
+        "nodeId": "HyAm60kPS",
+        "pinKey": "rkifTAyDH"
+      }
+    },
+    {
+      "id": "HyspL0lDB",
+      "input": {
+        "nodeId": "By4t7avZX",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJB9T1OWQ",
+        "pinKey": "BySIViJ_bX"
+      }
+    },
+    {
+      "id": "S1WVp0JPr",
+      "input": {
+        "nodeId": "HyAm60kPS",
+        "pinKey": "Hkgoen0JPH"
+      },
+      "output": {
+        "nodeId": "SJ-7KJ6wbX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJD8K6gPB",
+      "input": {
+        "nodeId": "SynQlav-Q",
+        "pinKey": "SkEg7mxpw-Q"
+      },
+      "output": {
+        "nodeId": "BJgV8KTxPr",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyCuaAkvH",
+      "input": {
+        "nodeId": "HJB9T1OWQ",
+        "pinKey": "ryANjA1vB"
+      },
+      "output": {
+        "nodeId": "HyAm60kPS",
+        "pinKey": "rkifTAyDH"
+      }
+    },
+    {
+      "id": "SyWEItaeDB",
+      "input": {
+        "nodeId": "BJgV8KTxPr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H148tTlwB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sye4a01vr",
+      "input": {
+        "nodeId": "HyAm60kPS",
+        "pinKey": "BJie20kDr"
+      },
+      "output": {
+        "nodeId": "Hk7Yk6D-m",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJX6UAxPS",
+      "input": {
+        "nodeId": "SJlVI0O-7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJB9T1OWQ",
+        "pinKey": "HkeQiLAgwr"
+      }
+    },
+    {
+      "id": "rkfpLRgPH",
+      "input": {
+        "nodeId": "ryrMqyuWm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJB9T1OWQ",
+        "pinKey": "HkfXjUCxPS"
+      }
+    },
+    {
+      "id": "rkpq8AgPH",
+      "input": {
+        "nodeId": "SyM-ETvZm",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SynQlav-Q",
+        "pinKey": "HyLI80gDS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJgV8KTxPr",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "Fires when reading is done",
+      "id": "By4t7avZX",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers reading of the barometer values.",
+      "id": "H148tTlwB",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HJB9T1OWQ",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "@/read-pressure"
+    },
+    {
+      "id": "Hk7Yk6D-m",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "HyAm60kPS",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "@/lps331-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "01011100b"
+      },
+      "description": "I²C address.",
+      "id": "SJ-7KJ6wbX",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "Altitude above the sea level in meters.",
+      "id": "SJlVI0O-7",
+      "label": "ALT",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Temperature in degrees C.",
+      "id": "SyM-ETvZm",
+      "label": "Tc",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SynQlav-Q",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/read-temperature"
+    },
+    {
+      "description": "Pressure in pascals.",
+      "id": "ryrMqyuWm",
+      "label": "Ppa",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}
