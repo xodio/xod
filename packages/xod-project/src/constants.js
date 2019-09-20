@@ -85,6 +85,7 @@ export const STATIC_TYPES_COMPATIBILITY = {
   },
   [PIN_TYPE.PORT]: {
     [PIN_TYPE.PORT]: true,
+    [PIN_TYPE.STRING]: true,
   },
 };
 
