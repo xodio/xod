@@ -1,0 +1,57 @@
+{
+  "description": "Debounces a number value. The `OUT` value would change only after a period of at least `Ts` seconds while which the input state `ST` has not changed.",
+  "nodes": [
+    {
+      "id": "B1aKv7ZvB",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "H1A0qMbPr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HJmLqmbDB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Value to debounce.",
+      "id": "HyDksfWDH",
+      "label": "ST",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.03"
+      },
+      "description": "Debounce time in seconds.",
+      "id": "r1GRAcMZvr",
+      "label": "Ts",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
