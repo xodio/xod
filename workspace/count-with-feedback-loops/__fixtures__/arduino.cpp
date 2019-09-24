@@ -82,7 +82,6 @@ typedef double Number;
 #endif
 typedef bool Logic;
 typedef unsigned long TimeMs;
-typedef uint8_t DirtyFlags;
 typedef uint8_t ErrorFlags;
 } // namespace xod
 
@@ -857,7 +856,7 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
+void printErrorToDebugSerial(uint16_t nodeId, ErrorFlags errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
@@ -1880,6 +1879,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
+    ctx->_node->outputHasError_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -2037,6 +2037,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
+    ctx->_node->outputHasError_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2085,9 +2086,9 @@ void evaluate(Context ctx) {
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
+        } else {
+            emitValue<output_OUT>(ctx, true);
         }
-
-        emitValue<output_OUT>(ctx, true);
     }
 }
 
@@ -2171,6 +2172,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
+    ctx->_node->outputHasError_OUT = false;
 }
 
 State* getState(Context ctx) {

@@ -111,6 +111,9 @@ template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} v
   {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
+  {{#if ../raisesErrors}}
+    ctx->_node->outputHasError_{{ pinKey }} = false;
+  {{/if}}
 }
 {{/each}}
 

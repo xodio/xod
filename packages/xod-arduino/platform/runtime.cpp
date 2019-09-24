@@ -90,7 +90,7 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
+void printErrorToDebugSerial(uint16_t nodeId, ErrorFlags errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);

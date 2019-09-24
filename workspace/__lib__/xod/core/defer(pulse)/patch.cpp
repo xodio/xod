@@ -18,12 +18,12 @@ void evaluate(Context ctx) {
         setTimeout(ctx, 0);
     } else { // This means that we are at the defer-only stage
         if (isSettingUp()) return;
-        
+
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
+        } else {
+            emitValue<output_OUT>(ctx, true);
         }
-
-        emitValue<output_OUT>(ctx, true);
     }
 }

@@ -13,6 +13,5 @@ typedef double Number;
 #endif
 typedef bool Logic;
 typedef unsigned long TimeMs;
-typedef uint8_t DirtyFlags;
 typedef uint8_t ErrorFlags;
 } // namespace xod

@@ -1,0 +1,5 @@
+RAISE	EMIT	JUST_EVAL	OUT
+no-pulse	pulse	no-pulse	42
+pulse	no-pulse	no-pulse	error
+no-pulse	no-pulse	pulse	error	// if we do not emit a clean value, the error persists
+no-pulse	pulse	no-pulse	42
