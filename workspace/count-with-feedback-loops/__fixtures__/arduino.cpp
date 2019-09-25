@@ -2496,16 +2496,17 @@ void runTransaction() {
                 g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
             }
 
-            if (node_24.errorFlags) {
-                g_transaction.node_15_isNodeDirty = true;
-                g_transaction.node_15_hasUpstreamError = true;
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT || node_24.errorFlags;
 
             g_transaction.node_24_isNodeDirty = false;
             detail::clearTimeout(&node_24);
+        }
+
+        if (node_24.errorFlags) {
+            if (node_24.outputHasError_OUT) {
+                g_transaction.node_15_hasUpstreamError = true;
+            }
         }
     }
     {
@@ -2530,16 +2531,17 @@ void runTransaction() {
                 g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
             }
 
-            if (node_25.errorFlags) {
-                g_transaction.node_0_isNodeDirty = true;
-                g_transaction.node_0_hasUpstreamError = true;
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT || node_25.errorFlags;
 
             g_transaction.node_25_isNodeDirty = false;
             detail::clearTimeout(&node_25);
+        }
+
+        if (node_25.errorFlags) {
+            if (node_25.outputHasError_OUT) {
+                g_transaction.node_0_hasUpstreamError = true;
+            }
         }
     }
 
@@ -2571,6 +2573,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_18_isNodeDirty |= g_transaction.node_0_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__continuously #7
         if (g_transaction.node_7_isNodeDirty) {
@@ -2594,6 +2597,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty |= g_transaction.node_7_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__boot #9
         if (g_transaction.node_9_isNodeDirty) {
@@ -2617,6 +2621,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_9_isOutputDirty_BOOT;
         }
+
     }
     { // xod__core__any #15
 
@@ -2649,6 +2654,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_17_isNodeDirty |= g_transaction.node_15_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__clock #16
         if (g_transaction.node_16_isNodeDirty) {
@@ -2677,6 +2683,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_18_isNodeDirty |= g_transaction.node_16_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__delay #17
 
@@ -2714,6 +2721,7 @@ void runTransaction() {
             g_transaction.node_19_isNodeDirty |= g_transaction.node_17_isOutputDirty_DONE;
             g_transaction.node_24_isNodeDirty |= g_transaction.node_17_isOutputDirty_DONE;
         }
+
     }
     { // xod__core__count #18
 
@@ -2750,6 +2758,7 @@ void runTransaction() {
             g_transaction.node_20_isNodeDirty |= g_transaction.node_18_isOutputDirty_OUT;
             g_transaction.node_21_isNodeDirty |= g_transaction.node_18_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__count #19
 
@@ -2782,6 +2791,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_22_isNodeDirty |= g_transaction.node_19_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__greater #20
 
@@ -2809,6 +2819,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_25_isNodeDirty = true;
         }
+
     }
     { // xod__core__cast_to_string__number #21
 
@@ -2835,6 +2846,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
         }
+
     }
     { // xod__core__cast_to_string__number #22
 
@@ -2861,6 +2873,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
         }
+
     }
     { // xod__common_hardware__text_lcd_16x2 #23
 
@@ -2902,12 +2915,12 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(23, node_23.errorFlags);
             }
 
-            if (node_23.errorFlags) {
-                if (node_23.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
+        }
+
+        if (node_23.errorFlags) {
+            if (node_23.outputHasError_DONE) {
+            }
         }
     }
     { // xod__core__defer__pulse #24
@@ -2942,14 +2955,14 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(24, node_24.errorFlags);
             }
 
-            if (node_24.errorFlags) {
-                if (node_24.outputHasError_OUT) {
-                    g_transaction.node_15_hasUpstreamError = true;
-                }
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT;
+        }
+
+        if (node_24.errorFlags) {
+            if (node_24.outputHasError_OUT) {
+                g_transaction.node_15_hasUpstreamError = true;
+            }
         }
     }
     { // xod__core__defer__boolean #25
@@ -2984,14 +2997,14 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(25, node_25.errorFlags);
             }
 
-            if (node_25.errorFlags) {
-                if (node_25.outputHasError_OUT) {
-                    g_transaction.node_0_hasUpstreamError = true;
-                }
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT;
+        }
+
+        if (node_25.errorFlags) {
+            if (node_25.outputHasError_OUT) {
+                g_transaction.node_0_hasUpstreamError = true;
+            }
         }
     }
 

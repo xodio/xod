@@ -158,15 +158,6 @@ void runTransaction() {
               {{/eachDirtyablePin}}
             }
 
-            if (node_{{ id }}.errorFlags) {
-              {{#each outputs }}
-                {{#each to}}
-                g_transaction.node_{{ this }}_isNodeDirty = true;
-                g_transaction.node_{{ this }}_hasUpstreamError = true;
-                {{/each}}
-              {{/each}}
-            }
-
             // mark downstream nodes dirty
           {{#each outputs }}
             {{#if isDirtyable ~}}
@@ -182,6 +173,16 @@ void runTransaction() {
 
             g_transaction.node_{{id}}_isNodeDirty = false;
             detail::clearTimeout(&node_{{ id }});
+        }
+
+        if (node_{{ id }}.errorFlags) {
+          {{#each outputs}}
+            if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+              {{#each to}}
+                g_transaction.node_{{this}}_hasUpstreamError = true;
+              {{/each}}
+            }
+          {{/each}}
         }
     }
   {{/eachDeferNode}}
@@ -301,16 +302,6 @@ void runTransaction() {
             if (previousErrorFlags != node_{{ id }}.errorFlags) {
                 detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errorFlags);
             }
-
-            if (node_{{ id }}.errorFlags) {
-              {{#each outputs}}
-                if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
-                  {{#each to}}
-                    g_transaction.node_{{this}}_hasUpstreamError = true;
-                  {{/each}}
-                }
-              {{/each}}
-            }
           {{/if}}
 
             // mark downstream nodes dirty
@@ -326,6 +317,18 @@ void runTransaction() {
             {{/if}}
           {{/each}}
         }
+
+      {{#if patch.raisesErrors}}
+        if (node_{{ id }}.errorFlags) {
+          {{#each outputs}}
+            if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+              {{#each to}}
+                g_transaction.node_{{this}}_hasUpstreamError = true;
+              {{/each}}
+            }
+          {{/each}}
+        }
+      {{/if}}
     }
   {{/eachNonConstantNode}}
 

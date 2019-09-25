@@ -1688,6 +1688,7 @@ void runTransaction() {
             g_transaction.node_7_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
             g_transaction.node_9_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
         }
+
     }
     { // xod__gpio__digital_read #4
         if (g_transaction.node_4_isNodeDirty) {
@@ -1722,16 +1723,16 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(4, node_4.errorFlags);
             }
 
-            if (node_4.errorFlags) {
-                if (node_4.outputHasError_SIG) {
-                    g_transaction.node_6_hasUpstreamError = true;
-                }
-                if (node_4.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_6_isNodeDirty |= g_transaction.node_4_isOutputDirty_SIG;
+        }
+
+        if (node_4.errorFlags) {
+            if (node_4.outputHasError_SIG) {
+                g_transaction.node_6_hasUpstreamError = true;
+            }
+            if (node_4.outputHasError_DONE) {
+            }
         }
     }
     { // xod__gpio__digital_read #5
@@ -1767,16 +1768,16 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(5, node_5.errorFlags);
             }
 
-            if (node_5.errorFlags) {
-                if (node_5.outputHasError_SIG) {
-                    g_transaction.node_7_hasUpstreamError = true;
-                }
-                if (node_5.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
             g_transaction.node_7_isNodeDirty |= g_transaction.node_5_isOutputDirty_SIG;
+        }
+
+        if (node_5.errorFlags) {
+            if (node_5.outputHasError_SIG) {
+                g_transaction.node_7_hasUpstreamError = true;
+            }
+            if (node_5.outputHasError_DONE) {
+            }
         }
     }
     { // xod__core__branch #6
@@ -1811,6 +1812,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_8_isNodeDirty |= g_transaction.node_6_isOutputDirty_F;
         }
+
     }
     { // xod__core__branch #7
 
@@ -1844,6 +1846,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_8_isNodeDirty |= g_transaction.node_7_isOutputDirty_F;
         }
+
     }
     { // xod__core__flip_flop #8
 
@@ -1877,6 +1880,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_9_isNodeDirty |= g_transaction.node_8_isOutputDirty_MEM;
         }
+
     }
     { // xod__gpio__digital_write #9
 
@@ -1912,12 +1916,12 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(9, node_9.errorFlags);
             }
 
-            if (node_9.errorFlags) {
-                if (node_9.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
+        }
+
+        if (node_9.errorFlags) {
+            if (node_9.outputHasError_DONE) {
+            }
         }
     }
 

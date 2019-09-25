@@ -1513,6 +1513,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_6_isNodeDirty |= g_transaction.node_3_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__clock #4
         if (g_transaction.node_4_isNodeDirty) {
@@ -1541,6 +1542,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_5_isNodeDirty |= g_transaction.node_4_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__flip_flop #5
         if (g_transaction.node_5_isNodeDirty) {
@@ -1569,6 +1571,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_6_isNodeDirty |= g_transaction.node_5_isOutputDirty_MEM;
         }
+
     }
     { // xod__gpio__digital_write #6
         if (g_transaction.node_6_isNodeDirty) {
@@ -1602,12 +1605,12 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(6, node_6.errorFlags);
             }
 
-            if (node_6.errorFlags) {
-                if (node_6.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
+        }
+
+        if (node_6.errorFlags) {
+            if (node_6.outputHasError_DONE) {
+            }
         }
     }
 

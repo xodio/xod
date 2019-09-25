@@ -1521,6 +1521,7 @@ void runTransaction() {
             g_transaction.node_8_isNodeDirty |= g_transaction.node_7_isOutputDirty_TICK;
             g_transaction.node_10_isNodeDirty |= g_transaction.node_7_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__system_time #8
         if (g_transaction.node_8_isNodeDirty) {
@@ -1545,6 +1546,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_9_isNodeDirty = true;
         }
+
     }
     { // xod__core__cast_to_string__number #9
         if (g_transaction.node_9_isNodeDirty) {
@@ -1567,6 +1569,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_10_isNodeDirty = true;
         }
+
     }
     { // xod__common_hardware__text_lcd_16x2 #10
         if (g_transaction.node_10_isNodeDirty) {
@@ -1606,12 +1609,12 @@ void runTransaction() {
                 detail::printErrorToDebugSerial(10, node_10.errorFlags);
             }
 
-            if (node_10.errorFlags) {
-                if (node_10.outputHasError_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
+        }
+
+        if (node_10.errorFlags) {
+            if (node_10.outputHasError_DONE) {
+            }
         }
     }
 
