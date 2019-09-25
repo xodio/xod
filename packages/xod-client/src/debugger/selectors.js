@@ -230,7 +230,7 @@ export const getInteractiveErroredNodePinsForCurrentChunk = createMemoizedSelect
           R.fromPairs,
           // Generate pairs for all chunks
           // E.G.
-          // [['a~b~c', 10]] => [['a', 10], ['a~b', 10], ['a~b~c', 10]]
+          // [['a~b~c', 10]] => [['a~b', 10], ['a~b~c', 10]]
           R.reduce((acc, [origPath, errCode]) => {
             const nodePathChunks = R.split('~', origPath);
             const allPaths = R.addIndex(R.map)((_, idx) =>
@@ -238,7 +238,13 @@ export const getInteractiveErroredNodePinsForCurrentChunk = createMemoizedSelect
                 nodePathChunks
               )
             )(nodePathChunks);
-            return R.concat(allPaths, acc);
+            return R.compose(
+              R.concat(R.__, acc),
+              // Exclude pair for the first chunk to avoid highlighting
+              // of nodes that have recovered an error inside the patch
+              // and outputs a valid value
+              R.tail
+            )(allPaths);
           }, []),
           R.when(
             () => activeIndex !== 0,
