@@ -167,6 +167,8 @@ module Cpp = {
     ["{", indented(children), "}"] |. BeltHoles.String.joinLines;
   let catch2TestCase = (name, children) =>
     "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
+  let catch2Section = (name, children) =>
+    "SECTION(" ++ enquote(name) ++ ") " ++ block(children);
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
   let requireIsNan = value => {j|REQUIRE(isnan($value));|j};
 };
@@ -243,8 +245,10 @@ module TestCase = {
            | None => {j|// no expectation for $name|j}
            };
          });
+
+    let humanReadableCaseNumber = sectionIndex + 1;
     Cpp.(
-      source([
+      catch2Section({j|Case $humanReadableCaseNumber|j}, [
         "",
         source(injectionStatements),
         setTimeStatement,
