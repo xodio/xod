@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Do not store node id for error raisers and save 2 bytes of RAM for each error raiser node. (#1841)
+* [core] Optimize transaction state keeping. Single bit flags now share common bytes which leads to overall RAM usage decrease. (#1850)
+* [core] Make port type castable to string type (#1857)
+* [core] Wrap tabtests code into sections. When they fail it is easier to find the line causing the error. (#1860)
+* [core] Change error clear conditions. Pulses no longer lose error state at the end of the transaction but stay in error until node re-evaluation. (#1858)
+* [nodes] BREAKING :exclamation: Replace `UPD` inputs pins on idempotent actuator nodes with the `ACT` input pin: [xod-dev/pn532-nfc/nfc-scanner](https://xod.io/libs/xod-dev/pn532-nfc/nfc-scanner/), [xod-dev/servo/servo](https://xod.io/libs/xod-dev/servo/servo/), [xod/common-hardware/h-bridge-dc-motor](https://xod.io/libs/xod/common-hardware/h-bridge-dc-motor/), [xod/common-hardware/led](https://xod.io/libs/xod/common-hardware/led/). (#1842)
+* [ide] Highlight a few more core functions in C++ editor (#1859)
+
+### New nodes
+
+* [xod/core/act](https://xod.io/libs/xod/core/act/) (#1835)
+* [xod/core/overrun](https://xod.io/libs/xod/core/overrun/) (#1835)
+* [xod/core/pulse-on-change(boolean)](https://xod.io/libs/xod/core/pulse-on-change(boolean\)/) (#1835)
+* [xod/core/wait-all](https://xod.io/libs/xod/core/wait-all/) (#1835)
+* [xod/core/wait-all-once](https://xod.io/libs/xod/core/wait-all-once/) (#1835)
+* [xod/debug/stream-string](https://xod.io/libs/xod/debug/stream-string/) (#1838)
+* [xod/json](https://xod.io/libs/xod/json/) — a library to parse a JSON and extract values from it. (#1838)
+* [xod/net/http-get-json](https://xod.io/libs/xod/net/http-get-json/) — makes an HTTP GET request and parses the response as JSON. (#1840)
+* [xod/net/http-response-body](https://xod.io/libs/xod/net/http-response-body/) — skips the response headers and passes only the body. (#1840)
+* [xod/gpio/digital-read-pullup](https://xod.io/libs/xod/gpio/digital-read-pullup/) (#1846)
+* [xod/common-hardware/relay](https://xod.io/libs/xod/common-hardware/relay/) (#1847)
+* [xod/common-hardware/pwm-load](https://xod.io/libs/xod/common-hardware/pwm-load/) (#1847)
+* [xod/common-hardware/binary-sensor](https://xod.io/libs/xod/common-hardware/binary-sensor/) (#1847)
+* [xod/common-hardware/mechanical-switch](https://xod.io/libs/xod/common-hardware/mechanical-switch/) (#1847)
+* [xod/core/throttle](https://xod.io/libs/xod/core/throttle/) (#1849)
+* [xod/units/standard-sound-speed](https://xod.io/libs/xod/units/standard-sound-speed/) (#1851)
+* [xod-dev/text-lcd](https://xod.io/libs/xod-dev/text-lcd/) — a library to work with the common text LCD with parallel or I²C interfaces. (#1851)
+* [xod-dev/hc-sr04](https://xod.io/libs/xod-dev/hc-sr04/) — a library to work with the HC-SR04 ultrasonic range meter module. (#1851)
+* [xod-dev/dht](https://xod.io/libs/xod-dev/dht/) — a library to work with the hygrometer modules: DHT11, DHT21 or compatible. (#1853)
+* [xod-dev/st-mems](https://xod.io/libs/xod-dev/st-mems/) — a library to work with the MEMS by STMicroelectronics. It includes IMUs and barometer. (#1855)
+* [xod/core/spread-error](https://xod.io/libs/xod/core/spread-error/) (#1855)
+* [xod/core/debounce(number)](https://xod.io/libs/xod/core/debounce(number\)/) (#1856)
+
+### Bug fixes
+
+* [core] Fix tabtest runner exit code to avoid ignoring of the failed tests. (#1839)
+* [core] Fix package.json files of some xod packages to publish the latest versions to the NPM. (#1845)
+
+### Deprecations and removals
+
+* Deprecate `xod/common-hardware/hc-sr04-*` nodes in favour of the new `xod-dev/hc-sr04` library (#1851)
+* Deprecate `xod/common-hardware/dht11-*` and `xod/common-hardware/dht2x-*` nodes in favour of the new `xod-dev/dht` library (#1853)
+* Deprecate `xod/common-hardware/text-lcd-16x2` and `xod/common-hardware/text-lcd-16x2-i2c` nodes in favour of the new `xod-dev/text-lcd` library (#1835)
+* Deprecate nodes in the `xod/common-hardware` library which works with STM IMU sensors and barometer in favour of the new ones from `xod-dev/st-mems` library (#1855)
+
 <a name="0.30.1"></a>
 
 ## 0.30.1 (2019-07-19)
