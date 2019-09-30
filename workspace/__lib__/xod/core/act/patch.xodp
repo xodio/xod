@@ -20,7 +20,7 @@
       },
       "output": {
         "nodeId": "SyfN0n4l7H",
-        "pinKey": "SygDsK4MS"
+        "pinKey": "ByAIWR_UZ"
       }
     },
     {
@@ -71,7 +71,7 @@
       "id": "rynA2NlXS",
       "input": {
         "nodeId": "SyfN0n4l7H",
-        "pinKey": "SJHwjt4fr"
+        "pinKey": "BkjI-COLb"
       },
       "output": {
         "nodeId": "BytC28DfH",
@@ -147,7 +147,7 @@
         "x": 1,
         "y": 1
       },
-      "type": "@/pulse-on-change(boolean)"
+      "type": "@/pulse-on-change"
     }
   ]
 }
