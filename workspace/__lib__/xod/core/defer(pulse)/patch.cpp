@@ -16,7 +16,7 @@ void evaluate(Context ctx) {
         }
 
         setTimeout(ctx, 0);
-    } else { // This means that we are at the defer-only stage
+    } else if (isTimedOut(ctx)) { // This means that we are at the defer-only stage
         if (isSettingUp()) return;
 
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
@@ -25,5 +25,7 @@ void evaluate(Context ctx) {
         } else {
             emitValue<output_OUT>(ctx, true);
         }
+    } else if (!isSettingUp()) { // This means that an upstream pulse output was cleared from error
+        setTimeout(ctx, 0);
     }
 }

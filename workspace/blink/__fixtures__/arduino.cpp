@@ -1594,8 +1594,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            // TODO: a copy constructor to make this less ugly?
-            xod__gpio__digital_write::NodeErrors previousErrors = { .flags=node_6.errors.flags };
+            xod__gpio__digital_write::NodeErrors previousErrors = node_6.errors;
 
             node_6.errors.output_DONE = false;
 
@@ -1607,6 +1606,13 @@ void runTransaction() {
             if (previousErrors.flags != node_6.errors.flags) {
                 detail::printErrorToDebugSerial(6, node_6.errors.flags);
 
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_6.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_DONE && !node_6.errors.output_DONE) {
                 }
             }
@@ -1614,6 +1620,7 @@ void runTransaction() {
             // mark downstream nodes dirty
         }
 
+        // propagate errors hold by the node outputs
         if (node_6.errors.flags) {
             if (node_6.errors.output_DONE) {
             }

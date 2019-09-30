@@ -1713,8 +1713,7 @@ void runTransaction() {
             ctxObj._isOutputDirty_SIG = false;
             ctxObj._isOutputDirty_DONE = false;
 
-            // TODO: a copy constructor to make this less ugly?
-            xod__gpio__digital_read::NodeErrors previousErrors = { .flags=node_4.errors.flags };
+            xod__gpio__digital_read::NodeErrors previousErrors = node_4.errors;
 
             node_4.errors.output_DONE = false;
 
@@ -1727,6 +1726,15 @@ void runTransaction() {
             if (previousErrors.flags != node_4.errors.flags) {
                 detail::printErrorToDebugSerial(4, node_4.errors.flags);
 
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_4.errors.output_SIG != previousErrors.output_SIG) {
+                }
+                if (node_4.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_DONE && !node_4.errors.output_DONE) {
                 }
             }
@@ -1735,6 +1743,7 @@ void runTransaction() {
             g_transaction.node_6_isNodeDirty |= g_transaction.node_4_isOutputDirty_SIG;
         }
 
+        // propagate errors hold by the node outputs
         if (node_4.errors.flags) {
             if (node_4.errors.output_SIG) {
                 g_transaction.node_6_hasUpstreamError = true;
@@ -1762,8 +1771,7 @@ void runTransaction() {
             ctxObj._isOutputDirty_SIG = false;
             ctxObj._isOutputDirty_DONE = false;
 
-            // TODO: a copy constructor to make this less ugly?
-            xod__gpio__digital_read::NodeErrors previousErrors = { .flags=node_5.errors.flags };
+            xod__gpio__digital_read::NodeErrors previousErrors = node_5.errors;
 
             node_5.errors.output_DONE = false;
 
@@ -1776,6 +1784,15 @@ void runTransaction() {
             if (previousErrors.flags != node_5.errors.flags) {
                 detail::printErrorToDebugSerial(5, node_5.errors.flags);
 
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_5.errors.output_SIG != previousErrors.output_SIG) {
+                }
+                if (node_5.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_DONE && !node_5.errors.output_DONE) {
                 }
             }
@@ -1784,6 +1801,7 @@ void runTransaction() {
             g_transaction.node_7_isNodeDirty |= g_transaction.node_5_isOutputDirty_SIG;
         }
 
+        // propagate errors hold by the node outputs
         if (node_5.errors.flags) {
             if (node_5.errors.output_SIG) {
                 g_transaction.node_7_hasUpstreamError = true;
@@ -1796,7 +1814,6 @@ void runTransaction() {
 
         if (g_transaction.node_6_hasUpstreamError) {
             g_transaction.node_8_hasUpstreamError = true;
-            g_transaction.node_8_isNodeDirty = true;
         } else if (g_transaction.node_6_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(6);
@@ -1830,7 +1847,6 @@ void runTransaction() {
 
         if (g_transaction.node_7_hasUpstreamError) {
             g_transaction.node_8_hasUpstreamError = true;
-            g_transaction.node_8_isNodeDirty = true;
         } else if (g_transaction.node_7_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
@@ -1864,7 +1880,6 @@ void runTransaction() {
 
         if (g_transaction.node_8_hasUpstreamError) {
             g_transaction.node_9_hasUpstreamError = true;
-            g_transaction.node_9_isNodeDirty = true;
         } else if (g_transaction.node_8_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(8);
@@ -1915,8 +1930,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            // TODO: a copy constructor to make this less ugly?
-            xod__gpio__digital_write::NodeErrors previousErrors = { .flags=node_9.errors.flags };
+            xod__gpio__digital_write::NodeErrors previousErrors = node_9.errors;
 
             node_9.errors.output_DONE = false;
 
@@ -1928,6 +1942,13 @@ void runTransaction() {
             if (previousErrors.flags != node_9.errors.flags) {
                 detail::printErrorToDebugSerial(9, node_9.errors.flags);
 
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_9.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_DONE && !node_9.errors.output_DONE) {
                 }
             }
@@ -1935,6 +1956,7 @@ void runTransaction() {
             // mark downstream nodes dirty
         }
 
+        // propagate errors hold by the node outputs
         if (node_9.errors.flags) {
             if (node_9.errors.output_DONE) {
             }

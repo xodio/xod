@@ -1598,8 +1598,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            // TODO: a copy constructor to make this less ugly?
-            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = { .flags=node_10.errors.flags };
+            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = node_10.errors;
 
             node_10.errors.output_DONE = false;
 
@@ -1611,6 +1610,13 @@ void runTransaction() {
             if (previousErrors.flags != node_10.errors.flags) {
                 detail::printErrorToDebugSerial(10, node_10.errors.flags);
 
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_10.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_DONE && !node_10.errors.output_DONE) {
                 }
             }
@@ -1618,6 +1624,7 @@ void runTransaction() {
             // mark downstream nodes dirty
         }
 
+        // propagate errors hold by the node outputs
         if (node_10.errors.flags) {
             if (node_10.errors.output_DONE) {
             }

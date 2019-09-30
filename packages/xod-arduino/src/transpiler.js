@@ -435,10 +435,52 @@ const calculateUpstreamErrorRaisers = R.compose(
   R.converge(R.concat, [R.filter(R.path(['patch', 'isDefer'])), R.identity])
 );
 
+const calculateNearestDownstreamErrorCatchers = tNodes => {
+  const tNodesById = R.indexBy(R.prop('id'), tNodes);
+
+  function findDownstreamErrorCatchersForOutput(tNodeOutput) {
+    return R.compose(
+      R.chain(downStreamNodeId => {
+        const downstreamTNode = tNodesById[downStreamNodeId];
+
+        return downstreamTNode.patch.catchesErrors
+          ? [downstreamTNode.id]
+          : R.chain(
+              findDownstreamErrorCatchersForOutput,
+              downstreamTNode.outputs
+            );
+      }),
+      R.propOr([], 'to')
+    )(tNodeOutput);
+  }
+
+  return R.map(tNode => {
+    if (!tNode.patch.raisesErrors) return tNode;
+
+    return R.over(
+      R.lensProp('outputs'),
+      R.map(tNodeOutput => {
+        const nearestDownstreamCatchers = R.compose(
+          R.uniq,
+          findDownstreamErrorCatchersForOutput
+        )(tNodeOutput);
+
+        return R.assoc(
+          'nearestDownstreamCatchers',
+          nearestDownstreamCatchers,
+          tNodeOutput
+        );
+      }),
+      tNode
+    );
+  }, tNodes);
+};
+
 const createTNodes = def(
   'createTNodes :: PatchPath -> [TPatch] -> Map NodeId String -> Project -> [TNode]',
   (entryPath, patches, nodeIdsMap, project) =>
     R.compose(
+      calculateNearestDownstreamErrorCatchers,
       calculateUpstreamErrorRaisers,
       R.sortBy(R.prop('id')),
       R.map(
