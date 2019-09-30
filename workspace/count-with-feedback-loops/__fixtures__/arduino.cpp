@@ -1766,14 +1766,16 @@ struct State {
     LiquidCrystal* lcd;
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_DONE : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_DONE : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     Logic output_DONE;
     State state;
 };
@@ -1879,7 +1881,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
-    ctx->_node->outputHasError_DONE = false;
+    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -1893,12 +1895,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
@@ -1970,14 +1972,16 @@ struct State {
     bool shouldRaiseAtTheNextDeferOnlyRun = false;
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_OUT : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_OUT : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     TimeMs timeoutAt;
     Logic output_OUT;
     State state;
@@ -2037,7 +2041,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
-    ctx->_node->outputHasError_OUT = false;
+    ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2051,12 +2055,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
@@ -2105,14 +2109,16 @@ namespace xod__core__defer__boolean {
 struct State {
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_OUT : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_OUT : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     TimeMs timeoutAt;
     Logic output_OUT;
     State state;
@@ -2172,7 +2178,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
-    ctx->_node->outputHasError_OUT = false;
+    ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2186,12 +2192,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
@@ -2477,7 +2483,7 @@ void runTransaction() {
     {
         if (g_transaction.node_24_isNodeDirty) {
             // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if (!node_24.errorFlags) {
+            if (!node_24.errors.flags) {
                 XOD_TRACE_F("Trigger defer node #");
                 XOD_TRACE_LN(24);
 
@@ -2497,14 +2503,14 @@ void runTransaction() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT || node_24.errorFlags;
+            g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT || node_24.errors.flags;
 
             g_transaction.node_24_isNodeDirty = false;
             detail::clearTimeout(&node_24);
         }
 
-        if (node_24.errorFlags) {
-            if (node_24.outputHasError_OUT) {
+        if (node_24.errors.flags) {
+            if (node_24.errors.output_OUT) {
                 g_transaction.node_15_hasUpstreamError = true;
             }
         }
@@ -2512,7 +2518,7 @@ void runTransaction() {
     {
         if (g_transaction.node_25_isNodeDirty) {
             // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if (!node_25.errorFlags) {
+            if (!node_25.errors.flags) {
                 XOD_TRACE_F("Trigger defer node #");
                 XOD_TRACE_LN(25);
 
@@ -2532,14 +2538,14 @@ void runTransaction() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT || node_25.errorFlags;
+            g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT || node_25.errors.flags;
 
             g_transaction.node_25_isNodeDirty = false;
             detail::clearTimeout(&node_25);
         }
 
-        if (node_25.errorFlags) {
-            if (node_25.outputHasError_OUT) {
+        if (node_25.errors.flags) {
+            if (node_25.errors.output_OUT) {
                 g_transaction.node_0_hasUpstreamError = true;
             }
         }
@@ -2902,24 +2908,28 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_23.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_23.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = { .flags=node_23.errors.flags };
+
+            node_23.errors.output_DONE = false;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_23_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_23.errorFlags) {
-                detail::printErrorToDebugSerial(23, node_23.errorFlags);
+            if (previousErrors.flags != node_23.errors.flags) {
+                detail::printErrorToDebugSerial(23, node_23.errors.flags);
+
+                if (previousErrors.output_DONE && !node_23.errors.output_DONE) {
+                }
             }
 
             // mark downstream nodes dirty
         }
 
-        if (node_23.errorFlags) {
-            if (node_23.outputHasError_DONE) {
+        if (node_23.errors.flags) {
+            if (node_23.errors.output_DONE) {
             }
         }
     }
@@ -2942,25 +2952,30 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            ErrorFlags previousErrorFlags = node_24.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_24.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__core__defer__pulse::NodeErrors previousErrors = { .flags=node_24.errors.flags };
+
+            node_24.errors.output_OUT = false;
 
             xod__core__defer__pulse::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
-            if (previousErrorFlags != node_24.errorFlags) {
-                detail::printErrorToDebugSerial(24, node_24.errorFlags);
+            if (previousErrors.flags != node_24.errors.flags) {
+                detail::printErrorToDebugSerial(24, node_24.errors.flags);
+
+                if (previousErrors.output_OUT && !node_24.errors.output_OUT) {
+                    g_transaction.node_15_isNodeDirty = true;
+                }
             }
 
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT;
         }
 
-        if (node_24.errorFlags) {
-            if (node_24.outputHasError_OUT) {
+        if (node_24.errors.flags) {
+            if (node_24.errors.output_OUT) {
                 g_transaction.node_15_hasUpstreamError = true;
             }
         }
@@ -2984,38 +2999,28 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            ErrorFlags previousErrorFlags = node_25.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_25.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__core__defer__boolean::NodeErrors previousErrors = { .flags=node_25.errors.flags };
 
             xod__core__defer__boolean::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
-            if (previousErrorFlags != node_25.errorFlags) {
-                detail::printErrorToDebugSerial(25, node_25.errorFlags);
+            if (previousErrors.flags != node_25.errors.flags) {
+                detail::printErrorToDebugSerial(25, node_25.errors.flags);
+
             }
 
             // mark downstream nodes dirty
             g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT;
         }
 
-        if (node_25.errorFlags) {
-            if (node_25.outputHasError_OUT) {
+        if (node_25.errors.flags) {
+            if (node_25.errors.output_OUT) {
                 g_transaction.node_0_hasUpstreamError = true;
             }
         }
-    }
-
-    // Сlean errors from pulse outputs
-    if (node_23.outputHasError_DONE) {
-      node_23.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(23, node_23.errorFlags);
-    }
-    if (node_24.outputHasError_OUT) {
-      node_24.outputHasError_OUT = false;
-      detail::printErrorToDebugSerial(24, node_24.errorFlags);
     }
 
     // Clear dirtieness and timeouts for all nodes and pins

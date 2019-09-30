@@ -1189,14 +1189,16 @@ struct State {
     LiquidCrystal* lcd;
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_DONE : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_DONE : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     Logic output_DONE;
     State state;
 };
@@ -1302,7 +1304,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
-    ctx->_node->outputHasError_DONE = false;
+    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -1316,12 +1318,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
@@ -1596,32 +1598,30 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_10.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_10.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = { .flags=node_10.errors.flags };
+
+            node_10.errors.output_DONE = false;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_10_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_10.errorFlags) {
-                detail::printErrorToDebugSerial(10, node_10.errorFlags);
+            if (previousErrors.flags != node_10.errors.flags) {
+                detail::printErrorToDebugSerial(10, node_10.errors.flags);
+
+                if (previousErrors.output_DONE && !node_10.errors.output_DONE) {
+                }
             }
 
             // mark downstream nodes dirty
         }
 
-        if (node_10.errorFlags) {
-            if (node_10.outputHasError_DONE) {
+        if (node_10.errors.flags) {
+            if (node_10.errors.output_DONE) {
             }
         }
-    }
-
-    // Сlean errors from pulse outputs
-    if (node_10.outputHasError_DONE) {
-      node_10.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(10, node_10.errorFlags);
     }
 
     // Clear dirtieness and timeouts for all nodes and pins

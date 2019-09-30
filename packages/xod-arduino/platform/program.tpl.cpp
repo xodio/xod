@@ -135,7 +135,7 @@ void runTransaction() {
     {
         if (g_transaction.node_{{id}}_isNodeDirty) {
             // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if (!node_{{ id }}.errorFlags) {
+            if (!node_{{ id }}.errors.flags) {
                 XOD_TRACE_F("Trigger defer node #");
                 XOD_TRACE_LN({{ id }});
 
@@ -162,7 +162,7 @@ void runTransaction() {
           {{#each outputs }}
             {{#if isDirtyable ~}}
             {{#each to}}
-            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errorFlags;
+            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errors.flags;
             {{/each}}
             {{else}}
             {{#each to}}
@@ -175,9 +175,9 @@ void runTransaction() {
             detail::clearTimeout(&node_{{ id }});
         }
 
-        if (node_{{ id }}.errorFlags) {
+        if (node_{{ id }}.errors.flags) {
           {{#each outputs}}
-            if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+            if (node_{{ ../id }}.errors.output_{{ pinKey }}) {
               {{#each to}}
                 g_transaction.node_{{this}}_hasUpstreamError = true;
               {{/each}}
@@ -201,7 +201,7 @@ void runTransaction() {
           {{#eachInputPinWithUpstreamRaisers inputs}}
             bool error_input_{{ pinKey }} = false;
             {{#each upstreamErrorRaisers}}
-            error_input_{{ ../pinKey }} |= node_{{ nodeId }}.outputHasError_{{ pinKey }};
+            error_input_{{ ../pinKey }} |= node_{{ nodeId }}.errors.output_{{ pinKey }};
             {{/each}}
           {{/eachInputPinWithUpstreamRaisers}}
       {{else}}
@@ -286,9 +286,15 @@ void runTransaction() {
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
-            ErrorFlags previousErrorFlags = node_{{ id }}.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_{{ id }}.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            {{ns patch }}::NodeErrors previousErrors = { .flags=node_{{ id }}.errors.flags };
+
+            {{!--
+              // Сlean errors from pulse outputs
+            --}}
+            {{#eachPulseOutput patch.outputs}}
+            node_{{ ../id }}.errors.output_{{ pinKey }} = false;
+            {{/eachPulseOutput}}
           {{/if}}
 
             {{ ns patch }}::evaluate(&ctxObj);
@@ -299,8 +305,20 @@ void runTransaction() {
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
-            if (previousErrorFlags != node_{{ id }}.errorFlags) {
-                detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errorFlags);
+            if (previousErrors.flags != node_{{ id }}.errors.flags) {
+                detail::printErrorToDebugSerial({{ id }}, node_{{ id }}.errors.flags);
+
+              {{!--
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
+              --}}
+              {{#eachPulseOutput outputs}}
+                if (previousErrors.output_{{ pinKey }} && !node_{{ ../id }}.errors.output_{{ pinKey }}) {
+                  {{#each to}}
+                    g_transaction.node_{{this}}_isNodeDirty = true;
+                  {{/each}}
+                }
+              {{/eachPulseOutput}}
             }
           {{/if}}
 
@@ -319,9 +337,9 @@ void runTransaction() {
         }
 
       {{#if patch.raisesErrors}}
-        if (node_{{ id }}.errorFlags) {
+        if (node_{{ id }}.errors.flags) {
           {{#each outputs}}
-            if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
+            if (node_{{ ../id }}.errors.output_{{ pinKey }}) {
               {{#each to}}
                 g_transaction.node_{{this}}_hasUpstreamError = true;
               {{/each}}
@@ -330,18 +348,6 @@ void runTransaction() {
         }
       {{/if}}
     }
-  {{/eachNonConstantNode}}
-
-    // Сlean errors from pulse outputs
-  {{#eachNonConstantNode nodes}}
-    {{#if patch.raisesErrors}}
-    {{#eachPulseOutput patch.outputs}}
-    if (node_{{ ../id }}.outputHasError_{{ pinKey }}) {
-      node_{{ ../id }}.outputHasError_{{ pinKey }} = false;
-      detail::printErrorToDebugSerial({{ ../id }}, node_{{ ../id }}.errorFlags);
-    }
-    {{/eachPulseOutput}}
-    {{/if}}
   {{/eachNonConstantNode}}
 
     // Clear dirtieness and timeouts for all nodes and pins

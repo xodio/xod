@@ -1025,15 +1025,17 @@ namespace xod__gpio__digital_read {
 struct State {
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_SIG : 1;
-            bool outputHasError_DONE : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_SIG : 1;
+        bool output_DONE : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     Logic output_SIG;
     Logic output_DONE;
     State state;
@@ -1104,12 +1106,12 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_SIG>(Context ctx, Logic val) {
     ctx->_node->output_SIG = val;
     ctx->_isOutputDirty_SIG = true;
-    ctx->_node->outputHasError_SIG = false;
+    ctx->_node->errors.output_SIG = false;
 }
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
-    ctx->_node->outputHasError_DONE = false;
+    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -1123,18 +1125,18 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_SIG>(Context ctx) {
-    ctx->_node->outputHasError_SIG = true;
+    ctx->_node->errors.output_SIG = true;
     ctx->_isOutputDirty_SIG = true;
 }
 template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_SIG = true;
+    ctx->_node->errors.output_SIG = true;
     ctx->_isOutputDirty_SIG = true;
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
@@ -1379,14 +1381,16 @@ namespace xod__gpio__digital_write {
 struct State {
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_DONE : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_DONE : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     Logic output_DONE;
     State state;
 };
@@ -1456,7 +1460,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
-    ctx->_node->outputHasError_DONE = false;
+    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -1470,12 +1474,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
@@ -1709,9 +1713,10 @@ void runTransaction() {
             ctxObj._isOutputDirty_SIG = false;
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_4.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_4.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__gpio__digital_read::NodeErrors previousErrors = { .flags=node_4.errors.flags };
+
+            node_4.errors.output_DONE = false;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
@@ -1719,19 +1724,22 @@ void runTransaction() {
             g_transaction.node_4_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
             g_transaction.node_4_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_4.errorFlags) {
-                detail::printErrorToDebugSerial(4, node_4.errorFlags);
+            if (previousErrors.flags != node_4.errors.flags) {
+                detail::printErrorToDebugSerial(4, node_4.errors.flags);
+
+                if (previousErrors.output_DONE && !node_4.errors.output_DONE) {
+                }
             }
 
             // mark downstream nodes dirty
             g_transaction.node_6_isNodeDirty |= g_transaction.node_4_isOutputDirty_SIG;
         }
 
-        if (node_4.errorFlags) {
-            if (node_4.outputHasError_SIG) {
+        if (node_4.errors.flags) {
+            if (node_4.errors.output_SIG) {
                 g_transaction.node_6_hasUpstreamError = true;
             }
-            if (node_4.outputHasError_DONE) {
+            if (node_4.errors.output_DONE) {
             }
         }
     }
@@ -1754,9 +1762,10 @@ void runTransaction() {
             ctxObj._isOutputDirty_SIG = false;
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_5.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_5.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__gpio__digital_read::NodeErrors previousErrors = { .flags=node_5.errors.flags };
+
+            node_5.errors.output_DONE = false;
 
             xod__gpio__digital_read::evaluate(&ctxObj);
 
@@ -1764,19 +1773,22 @@ void runTransaction() {
             g_transaction.node_5_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
             g_transaction.node_5_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_5.errorFlags) {
-                detail::printErrorToDebugSerial(5, node_5.errorFlags);
+            if (previousErrors.flags != node_5.errors.flags) {
+                detail::printErrorToDebugSerial(5, node_5.errors.flags);
+
+                if (previousErrors.output_DONE && !node_5.errors.output_DONE) {
+                }
             }
 
             // mark downstream nodes dirty
             g_transaction.node_7_isNodeDirty |= g_transaction.node_5_isOutputDirty_SIG;
         }
 
-        if (node_5.errorFlags) {
-            if (node_5.outputHasError_SIG) {
+        if (node_5.errors.flags) {
+            if (node_5.errors.output_SIG) {
                 g_transaction.node_7_hasUpstreamError = true;
             }
-            if (node_5.outputHasError_DONE) {
+            if (node_5.errors.output_DONE) {
             }
         }
     }
@@ -1903,40 +1915,30 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_9.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_9.errorFlags = 0;
+            // TODO: a copy constructor to make this less ugly?
+            xod__gpio__digital_write::NodeErrors previousErrors = { .flags=node_9.errors.flags };
+
+            node_9.errors.output_DONE = false;
 
             xod__gpio__digital_write::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_9_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_9.errorFlags) {
-                detail::printErrorToDebugSerial(9, node_9.errorFlags);
+            if (previousErrors.flags != node_9.errors.flags) {
+                detail::printErrorToDebugSerial(9, node_9.errors.flags);
+
+                if (previousErrors.output_DONE && !node_9.errors.output_DONE) {
+                }
             }
 
             // mark downstream nodes dirty
         }
 
-        if (node_9.errorFlags) {
-            if (node_9.outputHasError_DONE) {
+        if (node_9.errors.flags) {
+            if (node_9.errors.output_DONE) {
             }
         }
-    }
-
-    // Сlean errors from pulse outputs
-    if (node_4.outputHasError_DONE) {
-      node_4.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(4, node_4.errorFlags);
-    }
-    if (node_5.outputHasError_DONE) {
-      node_5.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(5, node_5.errorFlags);
-    }
-    if (node_9.outputHasError_DONE) {
-      node_9.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(9, node_9.errorFlags);
     }
 
     // Clear dirtieness and timeouts for all nodes and pins

@@ -7,7 +7,7 @@ no-pulse	pulse
 error	no-pulse
 no-pulse	error
 
-pulse	no-pulse
+pulse	error	// it didn't clear because nothing was evaluated
 error	pulse
 pulse	error
 no-pulse	pulse
