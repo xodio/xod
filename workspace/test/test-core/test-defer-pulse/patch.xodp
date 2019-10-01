@@ -1,0 +1,64 @@
+{
+  "links": [
+    {
+      "id": "B1_9BxgZwH",
+      "input": {
+        "nodeId": "S1qBegbvr",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sym9reeZvS",
+        "pinKey": "S1K8wUY9b"
+      }
+    },
+    {
+      "id": "r1HcalbDr",
+      "input": {
+        "nodeId": "Sym9reeZvS",
+        "pinKey": "Hk-UvIK9b"
+      },
+      "output": {
+        "nodeId": "ryI8exZwB",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "S1qBegbvr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJEcrex-wH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "Sym9reeZvS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/defer(pulse)"
+    },
+    {
+      "id": "ryI8exZwB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

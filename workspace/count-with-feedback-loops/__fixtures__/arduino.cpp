@@ -82,7 +82,6 @@ typedef double Number;
 #endif
 typedef bool Logic;
 typedef unsigned long TimeMs;
-typedef uint8_t DirtyFlags;
 typedef uint8_t ErrorFlags;
 } // namespace xod
 
@@ -857,7 +856,7 @@ void clearStaleTimeout(NodeT* node) {
         clearTimeout(node);
 }
 
-void printErrorToDebugSerial(uint16_t nodeId, uint8_t errorFlags) {
+void printErrorToDebugSerial(uint16_t nodeId, ErrorFlags errorFlags) {
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
     XOD_DEBUG_SERIAL.print(F("+XOD_ERR:"));
     XOD_DEBUG_SERIAL.print(g_transactionTime);
@@ -1767,14 +1766,16 @@ struct State {
     LiquidCrystal* lcd;
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_DONE : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_DONE : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     Logic output_DONE;
     State state;
 };
@@ -1880,6 +1881,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_DONE>(Context ctx, Logic val) {
     ctx->_node->output_DONE = val;
     ctx->_isOutputDirty_DONE = true;
+    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
@@ -1893,12 +1895,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_DONE = true;
+    ctx->_node->errors.output_DONE = true;
     ctx->_isOutputDirty_DONE = true;
 }
 
@@ -1970,14 +1972,16 @@ struct State {
     bool shouldRaiseAtTheNextDeferOnlyRun = false;
 };
 
-struct Node {
-    union {
-        struct {
-            bool outputHasError_OUT : 1;
-        };
-
-        ErrorFlags errorFlags;
+union NodeErrors {
+    struct {
+        bool output_OUT : 1;
     };
+
+    ErrorFlags flags;
+};
+
+struct Node {
+    NodeErrors errors;
     TimeMs timeoutAt;
     Logic output_OUT;
     State state;
@@ -2037,6 +2041,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
+    ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2050,12 +2055,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
@@ -2079,15 +2084,17 @@ void evaluate(Context ctx) {
         }
 
         setTimeout(ctx, 0);
-    } else { // This means that we are at the defer-only stage
+    } else if (isTimedOut(ctx)) { // This means that we are at the defer-only stage
         if (isSettingUp()) return;
 
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
+        } else {
+            emitValue<output_OUT>(ctx, true);
         }
-
-        emitValue<output_OUT>(ctx, true);
+    } else if (!isSettingUp()) { // This means that an upstream pulse output was cleared from error
+        setTimeout(ctx, 0);
     }
 }
 
@@ -2102,16 +2109,19 @@ namespace xod__core__defer__boolean {
 //#pragma XOD error_raise enable
 
 struct State {
+    bool shouldRaiseAtTheNextDeferOnlyRun = false;
+};
+
+union NodeErrors {
+    struct {
+        bool output_OUT : 1;
+    };
+
+    ErrorFlags flags;
 };
 
 struct Node {
-    union {
-        struct {
-            bool outputHasError_OUT : 1;
-        };
-
-        ErrorFlags errorFlags;
-    };
+    NodeErrors errors;
     TimeMs timeoutAt;
     Logic output_OUT;
     State state;
@@ -2171,6 +2181,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
+    ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2184,12 +2195,12 @@ template<typename OutputT> void raiseError(Context ctx) {
 }
 
 template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
 void raiseError(Context ctx) {
-    ctx->_node->outputHasError_OUT = true;
+    ctx->_node->errors.output_OUT = true;
     ctx->_isOutputDirty_OUT = true;
 }
 
@@ -2205,19 +2216,27 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 }
 
 void evaluate(Context ctx) {
-    auto err = getError<input_IN>(ctx);
-    if (err) {
-        raiseError<output_OUT>(ctx);
-        setTimeout(ctx, 0);
-    } else {
-        if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-            setTimeout(ctx, 0);
+    auto state = getState(ctx);
+
+    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
+        if (getError<input_IN>(ctx)) {
+            state->shouldRaiseAtTheNextDeferOnlyRun = true;
+        } else {
             // This will not have any immediate effect, because
             // deferred nodes are at the very bottom of sorted graph.
             // We do this to just save the value for reemission
             // on deferred-only evaluation.
             emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
-        } else { // deferred-only evaluation pass
+        }
+
+        setTimeout(ctx, 0);
+    } else { // This means that we are at the defer-only stage
+        if (isSettingUp()) return;
+
+        if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+            raiseError<output_OUT>(ctx);
+            state->shouldRaiseAtTheNextDeferOnlyRun = false;
+        } else {
             emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
         }
     }
@@ -2474,70 +2493,107 @@ void runTransaction() {
     // evaluate on the regular pass only if it pushed a new value again.
     {
         if (g_transaction.node_24_isNodeDirty) {
-            // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if (!node_24.errorFlags) {
-                XOD_TRACE_F("Trigger defer node #");
-                XOD_TRACE_LN(24);
 
-                xod__core__defer__pulse::ContextObject ctxObj;
-                ctxObj._node = &node_24;
-                ctxObj._isInputDirty_IN = false;
-                ctxObj._error_input_IN = 0;
+            XOD_TRACE_F("Trigger defer node #");
+            XOD_TRACE_LN(24);
 
-                // initialize temporary output dirtyness state in the context,
-                // where it can be modified from `raiseError` and `emitValue`
-                ctxObj._isOutputDirty_OUT = false;
+            xod__core__defer__pulse::ContextObject ctxObj;
+            ctxObj._node = &node_24;
+            ctxObj._isInputDirty_IN = false;
+            ctxObj._error_input_IN = 0;
 
-                xod__core__defer__pulse::evaluate(&ctxObj);
+            ctxObj._error_input_IN = 0;
 
-                // transfer possibly modified dirtiness state from context to g_transaction
-                g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
-            }
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
+            ctxObj._isOutputDirty_OUT = false;
 
-            if (node_24.errorFlags) {
-                g_transaction.node_15_isNodeDirty = true;
-                g_transaction.node_15_hasUpstreamError = true;
+            xod__core__defer__pulse::NodeErrors previousErrors = node_24.errors;
+
+            node_24.errors.output_OUT = false;
+
+            xod__core__defer__pulse::evaluate(&ctxObj);
+
+            // transfer possibly modified dirtiness state from context to g_transaction
+            g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
+
+            if (previousErrors.flags != node_24.errors.flags) {
+                detail::printErrorToDebugSerial(24, node_24.errors.flags);
+
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_24.errors.output_OUT != previousErrors.output_OUT) {
+                    g_transaction.node_24_isNodeDirty = true;
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
+                if (previousErrors.output_OUT && !node_24.errors.output_OUT) {
+                    g_transaction.node_15_isNodeDirty = true;
+                }
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT || node_24.errorFlags;
+            g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT || node_24.errors.flags;
 
             g_transaction.node_24_isNodeDirty = false;
             detail::clearTimeout(&node_24);
         }
+
+        // propagate the error hold by the defer node
+        if (node_24.errors.flags) {
+            if (node_24.errors.output_OUT) {
+                g_transaction.node_15_hasUpstreamError = true;
+            }
+        }
     }
     {
         if (g_transaction.node_25_isNodeDirty) {
-            // if a defer has an error, do not evaluate it, but spread the dirtyness
-            if (!node_25.errorFlags) {
-                XOD_TRACE_F("Trigger defer node #");
-                XOD_TRACE_LN(25);
 
-                xod__core__defer__boolean::ContextObject ctxObj;
-                ctxObj._node = &node_25;
-                ctxObj._isInputDirty_IN = false;
-                ctxObj._error_input_IN = 0;
+            XOD_TRACE_F("Trigger defer node #");
+            XOD_TRACE_LN(25);
 
-                // initialize temporary output dirtyness state in the context,
-                // where it can be modified from `raiseError` and `emitValue`
-                ctxObj._isOutputDirty_OUT = false;
+            xod__core__defer__boolean::ContextObject ctxObj;
+            ctxObj._node = &node_25;
+            ctxObj._isInputDirty_IN = false;
+            ctxObj._error_input_IN = 0;
 
-                xod__core__defer__boolean::evaluate(&ctxObj);
+            ctxObj._error_input_IN = 0;
 
-                // transfer possibly modified dirtiness state from context to g_transaction
-                g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
-            }
+            // initialize temporary output dirtyness state in the context,
+            // where it can be modified from `raiseError` and `emitValue`
+            ctxObj._isOutputDirty_OUT = false;
 
-            if (node_25.errorFlags) {
-                g_transaction.node_0_isNodeDirty = true;
-                g_transaction.node_0_hasUpstreamError = true;
+            xod__core__defer__boolean::NodeErrors previousErrors = node_25.errors;
+
+            xod__core__defer__boolean::evaluate(&ctxObj);
+
+            // transfer possibly modified dirtiness state from context to g_transaction
+            g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
+
+            if (previousErrors.flags != node_25.errors.flags) {
+                detail::printErrorToDebugSerial(25, node_25.errors.flags);
+
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_25.errors.output_OUT != previousErrors.output_OUT) {
+                    g_transaction.node_25_isNodeDirty = true;
+                }
+
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT || node_25.errorFlags;
+            g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT || node_25.errors.flags;
 
             g_transaction.node_25_isNodeDirty = false;
             detail::clearTimeout(&node_25);
+        }
+
+        // propagate the error hold by the defer node
+        if (node_25.errors.flags) {
+            if (node_25.errors.output_OUT) {
+                g_transaction.node_0_hasUpstreamError = true;
+            }
         }
     }
 
@@ -2546,7 +2602,6 @@ void runTransaction() {
 
         if (g_transaction.node_0_hasUpstreamError) {
             g_transaction.node_18_hasUpstreamError = true;
-            g_transaction.node_18_isNodeDirty = true;
         } else if (g_transaction.node_0_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
@@ -2569,6 +2624,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_18_isNodeDirty |= g_transaction.node_0_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__continuously #7
         if (g_transaction.node_7_isNodeDirty) {
@@ -2592,6 +2648,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty |= g_transaction.node_7_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__boot #9
         if (g_transaction.node_9_isNodeDirty) {
@@ -2615,12 +2672,12 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_9_isOutputDirty_BOOT;
         }
+
     }
     { // xod__core__any #15
 
         if (g_transaction.node_15_hasUpstreamError) {
             g_transaction.node_17_hasUpstreamError = true;
-            g_transaction.node_17_isNodeDirty = true;
         } else if (g_transaction.node_15_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
@@ -2647,6 +2704,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_17_isNodeDirty |= g_transaction.node_15_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__clock #16
         if (g_transaction.node_16_isNodeDirty) {
@@ -2675,14 +2733,13 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_18_isNodeDirty |= g_transaction.node_16_isOutputDirty_TICK;
         }
+
     }
     { // xod__core__delay #17
 
         if (g_transaction.node_17_hasUpstreamError) {
             g_transaction.node_19_hasUpstreamError = true;
-            g_transaction.node_19_isNodeDirty = true;
             g_transaction.node_24_hasUpstreamError = true;
-            g_transaction.node_24_isNodeDirty = true;
         } else if (g_transaction.node_17_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(17);
@@ -2712,14 +2769,13 @@ void runTransaction() {
             g_transaction.node_19_isNodeDirty |= g_transaction.node_17_isOutputDirty_DONE;
             g_transaction.node_24_isNodeDirty |= g_transaction.node_17_isOutputDirty_DONE;
         }
+
     }
     { // xod__core__count #18
 
         if (g_transaction.node_18_hasUpstreamError) {
             g_transaction.node_20_hasUpstreamError = true;
-            g_transaction.node_20_isNodeDirty = true;
             g_transaction.node_21_hasUpstreamError = true;
-            g_transaction.node_21_isNodeDirty = true;
         } else if (g_transaction.node_18_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(18);
@@ -2748,12 +2804,12 @@ void runTransaction() {
             g_transaction.node_20_isNodeDirty |= g_transaction.node_18_isOutputDirty_OUT;
             g_transaction.node_21_isNodeDirty |= g_transaction.node_18_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__count #19
 
         if (g_transaction.node_19_hasUpstreamError) {
             g_transaction.node_22_hasUpstreamError = true;
-            g_transaction.node_22_isNodeDirty = true;
         } else if (g_transaction.node_19_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(19);
@@ -2780,12 +2836,12 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_22_isNodeDirty |= g_transaction.node_19_isOutputDirty_OUT;
         }
+
     }
     { // xod__core__greater #20
 
         if (g_transaction.node_20_hasUpstreamError) {
             g_transaction.node_25_hasUpstreamError = true;
-            g_transaction.node_25_isNodeDirty = true;
         } else if (g_transaction.node_20_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(20);
@@ -2807,12 +2863,12 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_25_isNodeDirty = true;
         }
+
     }
     { // xod__core__cast_to_string__number #21
 
         if (g_transaction.node_21_hasUpstreamError) {
             g_transaction.node_23_hasUpstreamError = true;
-            g_transaction.node_23_isNodeDirty = true;
         } else if (g_transaction.node_21_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(21);
@@ -2833,12 +2889,12 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
         }
+
     }
     { // xod__core__cast_to_string__number #22
 
         if (g_transaction.node_22_hasUpstreamError) {
             g_transaction.node_23_hasUpstreamError = true;
-            g_transaction.node_23_isNodeDirty = true;
         } else if (g_transaction.node_22_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(22);
@@ -2859,6 +2915,7 @@ void runTransaction() {
             // mark downstream nodes dirty
             g_transaction.node_23_isNodeDirty = true;
         }
+
     }
     { // xod__common_hardware__text_lcd_16x2 #23
 
@@ -2887,25 +2944,36 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            ErrorFlags previousErrorFlags = node_23.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_23.errorFlags = 0;
+            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = node_23.errors;
+
+            node_23.errors.output_DONE = false;
 
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_23_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrorFlags != node_23.errorFlags) {
-                detail::printErrorToDebugSerial(23, node_23.errorFlags);
-            }
+            if (previousErrors.flags != node_23.errors.flags) {
+                detail::printErrorToDebugSerial(23, node_23.errors.flags);
 
-            if (node_23.errorFlags) {
-                if (node_23.outputHasError_DONE) {
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_23.errors.output_DONE != previousErrors.output_DONE) {
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
+                if (previousErrors.output_DONE && !node_23.errors.output_DONE) {
                 }
             }
 
             // mark downstream nodes dirty
+        }
+
+        // propagate errors hold by the node outputs
+        if (node_23.errors.flags) {
+            if (node_23.errors.output_DONE) {
+            }
         }
     }
     { // xod__core__defer__pulse #24
@@ -2927,27 +2995,38 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            ErrorFlags previousErrorFlags = node_24.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_24.errorFlags = 0;
+            xod__core__defer__pulse::NodeErrors previousErrors = node_24.errors;
 
             xod__core__defer__pulse::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
-            if (previousErrorFlags != node_24.errorFlags) {
-                detail::printErrorToDebugSerial(24, node_24.errorFlags);
-            }
+            if (previousErrors.flags != node_24.errors.flags) {
+                detail::printErrorToDebugSerial(24, node_24.errors.flags);
 
-            if (node_24.errorFlags) {
-                if (node_24.outputHasError_OUT) {
-                    g_transaction.node_15_hasUpstreamError = true;
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_24.errors.output_OUT != previousErrors.output_OUT) {
+                    g_transaction.node_24_isNodeDirty = true;
+                }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
+                if (previousErrors.output_OUT && !node_24.errors.output_OUT) {
+                    g_transaction.node_15_isNodeDirty = true;
                 }
             }
 
             // mark downstream nodes dirty
             g_transaction.node_15_isNodeDirty |= g_transaction.node_24_isOutputDirty_OUT;
+        }
+
+        // propagate errors hold by the node outputs
+        if (node_24.errors.flags) {
+            if (node_24.errors.output_OUT) {
+                g_transaction.node_15_hasUpstreamError = true;
+            }
         }
     }
     { // xod__core__defer__boolean #25
@@ -2969,38 +3048,36 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            ErrorFlags previousErrorFlags = node_25.errorFlags;
-            // give the node a chance to recover from it's own previous errors
-            node_25.errorFlags = 0;
+            xod__core__defer__boolean::NodeErrors previousErrors = node_25.errors;
 
             xod__core__defer__boolean::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
-            if (previousErrorFlags != node_25.errorFlags) {
-                detail::printErrorToDebugSerial(25, node_25.errorFlags);
-            }
+            if (previousErrors.flags != node_25.errors.flags) {
+                detail::printErrorToDebugSerial(25, node_25.errors.flags);
 
-            if (node_25.errorFlags) {
-                if (node_25.outputHasError_OUT) {
-                    g_transaction.node_0_hasUpstreamError = true;
+                // if an error was just raised or cleared from an output,
+                // mark nearest downstream error catchers as dirty
+                if (node_25.errors.output_OUT != previousErrors.output_OUT) {
+                    g_transaction.node_25_isNodeDirty = true;
                 }
+
+                // if a pulse output was cleared from error, mark downstream nodes as dirty
+                // (no matter if a pulse was emitted or not)
             }
 
             // mark downstream nodes dirty
             g_transaction.node_0_isNodeDirty |= g_transaction.node_25_isOutputDirty_OUT;
         }
-    }
 
-    // Сlean errors from pulse outputs
-    if (node_23.outputHasError_DONE) {
-      node_23.outputHasError_DONE = false;
-      detail::printErrorToDebugSerial(23, node_23.errorFlags);
-    }
-    if (node_24.outputHasError_OUT) {
-      node_24.outputHasError_OUT = false;
-      detail::printErrorToDebugSerial(24, node_24.errorFlags);
+        // propagate errors hold by the node outputs
+        if (node_25.errors.flags) {
+            if (node_25.errors.output_OUT) {
+                g_transaction.node_0_hasUpstreamError = true;
+            }
+        }
     }
 
     // Clear dirtieness and timeouts for all nodes and pins

@@ -1,8 +1,0 @@
-__time(ms)	IN	OUT
-0	no-pulse	no-pulse
-1	no-pulse	no-pulse
-2	pulse	no-pulse
-3	no-pulse	pulse
-4	error	no-pulse
-5	no-pulse	error
-6	no-pulse	no-pulse

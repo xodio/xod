@@ -1,0 +1,64 @@
+{
+  "links": [
+    {
+      "id": "HJWr9TQZvH",
+      "input": {
+        "nodeId": "r1rcpQWDH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1gBc6QZDH",
+        "pinKey": "HyZHD8tcW"
+      }
+    },
+    {
+      "id": "ry3q67-vH",
+      "input": {
+        "nodeId": "r1gBc6QZDH",
+        "pinKey": "B15NPUY9W"
+      },
+      "output": {
+        "nodeId": "BJ9c6XZvS",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B15lJE-wr",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "BJ9c6XZvS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1gBc6QZDH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/defer(number)"
+    },
+    {
+      "id": "r1rcpQWDH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

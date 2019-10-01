@@ -1,0 +1,13 @@
+IN	OUT
+no-pulse	no-pulse
+
+pulse	no-pulse
+no-pulse	pulse
+
+error	no-pulse
+no-pulse	error
+
+pulse	error	// it didn't clear because nothing was evaluated
+error	pulse
+pulse	error
+no-pulse	pulse

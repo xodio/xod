@@ -1,17 +1,21 @@
 {{!-- Template for GENERATED_CODE token inside each patch implementation --}}
 {{!-- Accepts TPatch context --}}
 
+{{#if raisesErrors}}
+union NodeErrors {
+    struct {
+      {{#each outputs}}
+        bool output_{{ pinKey }} : 1;
+      {{/each}}
+    };
+
+    ErrorFlags flags;
+};
+{{/if}}
+
 struct Node {
   {{#if raisesErrors}}
-    union {
-        struct {
-          {{#each outputs}}
-            bool outputHasError_{{ pinKey }} : 1;
-          {{/each}}
-        };
-
-        ErrorFlags errorFlags;
-    };
+    NodeErrors errors;
   {{/if}}
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
@@ -111,6 +115,9 @@ template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} v
   {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
+  {{#if ../raisesErrors}}
+    ctx->_node->errors.output_{{ pinKey }} = false;
+  {{/if}}
 }
 {{/each}}
 
@@ -134,7 +141,7 @@ template<typename OutputT> void raiseError(Context ctx) {
 
 {{#each outputs}}
 template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
-    ctx->_node->outputHasError_{{ pinKey }} = true;
+    ctx->_node->errors.output_{{ pinKey }} = true;
   {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
@@ -143,7 +150,7 @@ template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
 
 void raiseError(Context ctx) {
   {{#each outputs}}
-    ctx->_node->outputHasError_{{ pinKey }} = true;
+    ctx->_node->errors.output_{{ pinKey }} = true;
     {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
     {{/if}}
