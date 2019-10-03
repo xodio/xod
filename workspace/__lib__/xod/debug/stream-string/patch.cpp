@@ -8,9 +8,8 @@ struct State {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
 
-    auto str = getValue<input_IN>(ctx);
-
-    if (isSettingUp()) {
+    if (isInputDirty<input_IN>(ctx)) {
+        auto str = getValue<input_IN>(ctx);
         state->it = str.iterate();
     }
 
