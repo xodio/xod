@@ -28,7 +28,7 @@ struct TransactionState {
   {{#each outputs}}
     bool node_{{ ../id }}_isOutputDirty_{{ pinKey }} : 1;
   {{/each}}
-  {{#if (hasUpstreamErrorRaisers this)}}
+  {{#if (needsHasUpstreamErrorFlag this)}}
     bool node_{{id}}_hasUpstreamError : 1;
   {{/if}}
 {{/unless}}
