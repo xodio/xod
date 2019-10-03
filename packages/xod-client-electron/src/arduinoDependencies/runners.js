@@ -15,6 +15,7 @@ import {
   INSTALL_ARDUINO_DEPENDENCIES,
   CHECK_ARDUINO_DEPENDENCY_UPDATES,
   UPGRADE_ARDUINO_DEPENDECIES,
+  UPDATE_INDEXES,
 } from '../shared/events';
 import promisifyIpc from '../view/promisifyIpc';
 
@@ -51,3 +52,6 @@ export const checkArduinoDependencyUpdates = () =>
 // :: _ -> Promise [Core] Error
 export const updateArduinoPackages = onProgress =>
   promisifyIpc(UPGRADE_ARDUINO_DEPENDECIES)(onProgress, null);
+
+// :: _ -> Promise [URL] Error
+export const updateIndexFiles = () => promisifyIpc(UPDATE_INDEXES)(noop, null);
