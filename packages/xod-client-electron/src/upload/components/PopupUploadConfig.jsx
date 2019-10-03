@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
 import { ENUMERATING_BOARDS } from '../../shared/messages';
-import { updateIndexFiles } from '../arduinoCli';
+import { updateIndexFiles } from '../../arduinoDependencies/runners';
 
 import PortSelect from './PortSelect';
 

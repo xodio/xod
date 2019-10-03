@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PopupForm } from 'xod-client';
 
-import { checkArduinoDependencyUpdates } from '../runners';
+import { checkArduinoDependencyUpdates, updateIndexFiles } from '../runners';
 
 class UpdateArduinoPackagesPopup extends React.Component {
   constructor(props) {
@@ -34,7 +34,9 @@ class UpdateArduinoPackagesPopup extends React.Component {
 
   checkUpdates() {
     this.setState({ cores: null });
-    checkArduinoDependencyUpdates().then(cores => this.setState({ cores }));
+    updateIndexFiles()
+      .then(checkArduinoDependencyUpdates)
+      .then(cores => this.setState({ cores }));
   }
 
   renderCores() {
