@@ -236,9 +236,14 @@ Handlebars.registerHelper('cppValue', (type, value) =>
   })(value)
 );
 
+const hasUpstreamErrorRaisers = nodeOrInput =>
+  nodeOrInput.upstreamErrorRaisers.length > 0;
+
+Handlebars.registerHelper('hasUpstreamErrorRaisers', hasUpstreamErrorRaisers);
+
 Handlebars.registerHelper(
-  'hasUpstreamErrorRaisers',
-  nodeOrInput => nodeOrInput.upstreamErrorRaisers.length > 0
+  'needsHasUpstreamErrorFlag',
+  R.either(hasUpstreamErrorRaisers, R.path(['patch', 'isDefer']))
 );
 
 const isTweakNode = R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath);

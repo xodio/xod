@@ -2353,8 +2353,10 @@ struct TransactionState {
     bool node_23_hasUpstreamError : 1;
     bool node_24_isNodeDirty : 1;
     bool node_24_isOutputDirty_OUT : 1;
+    bool node_24_hasUpstreamError : 1;
     bool node_25_isNodeDirty : 1;
     bool node_25_isOutputDirty_OUT : 1;
+    bool node_25_hasUpstreamError : 1;
     TransactionState() {
         node_0_isNodeDirty = true;
         node_0_isOutputDirty_OUT = false;
