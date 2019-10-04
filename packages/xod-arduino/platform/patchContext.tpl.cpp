@@ -116,7 +116,7 @@ template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} v
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
   {{#if ../raisesErrors}}
-    ctx->_node->errors.output_{{ pinKey }} = false;
+    {{#if ../isDefer}}if (isEarlyDeferPass()) {{/if}}ctx->_node->errors.output_{{ pinKey }} = false;
   {{/if}}
 }
 {{/each}}
