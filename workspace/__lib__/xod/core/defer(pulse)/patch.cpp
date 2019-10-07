@@ -3,6 +3,7 @@
 
 struct State {
     bool shouldRaiseAtTheNextDeferOnlyRun = false;
+    bool shouldPulseAtTheNextDeferOnlyRun = false;
 };
 
 {{ GENERATED_CODE }}
@@ -10,22 +11,23 @@ struct State {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
 
-    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        }
-
-        setTimeout(ctx, 0);
-    } else if (isTimedOut(ctx)) { // This means that we are at the defer-only stage
-        if (isSettingUp()) return;
-
+    if (isEarlyDeferPass()) {
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
-        } else {
-            emitValue<output_OUT>(ctx, true);
         }
-    } else if (!isSettingUp()) { // This means that an upstream pulse output was cleared from error
+
+        if (state->shouldPulseAtTheNextDeferOnlyRun) {
+            emitValue<output_OUT>(ctx, true);
+            state->shouldPulseAtTheNextDeferOnlyRun = false;
+        }
+    } else {
+        if (getError<input_IN>(ctx)) {
+            state->shouldRaiseAtTheNextDeferOnlyRun = true;
+        } else if (isInputDirty<input_IN>(ctx)) {
+            state->shouldPulseAtTheNextDeferOnlyRun = true;
+        }
+
         setTimeout(ctx, 0);
     }
 }
