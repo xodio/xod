@@ -1,0 +1,138 @@
+{
+  "links": [
+    {
+      "id": "BkPL-A_ur",
+      "input": {
+        "nodeId": "HyeIZC_dr",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "SkrUWAuOS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkhKbCO_r",
+      "input": {
+        "nodeId": "HyeIZC_dr",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "r18D-Ad_r",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "H1sFWAOur",
+      "input": {
+        "nodeId": "r18D-Ad_r",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "S1XtWCd_r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyStZCudB",
+      "input": {
+        "nodeId": "S1XtWCd_r",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJUOWC__S",
+        "pinKey": "B19RYS3lW"
+      }
+    },
+    {
+      "id": "SJ_dWCduS",
+      "input": {
+        "nodeId": "BJUOWC__S",
+        "pinKey": "rJg00Nhe-"
+      },
+      "output": {
+        "nodeId": "HyeIZC_dr",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "SyYK-Rd_r",
+      "input": {
+        "nodeId": "rJePZ0_ur",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyeIZC_dr",
+        "pinKey": "r1yhZRd8W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HJbACN3gb": "2"
+      },
+      "id": "BJUOWC__S",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/core/greater"
+    },
+    {
+      "id": "HyeIZC_dr",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/core/count"
+    },
+    {
+      "id": "S1XtWCd_r",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 3
+      },
+      "type": "xod/core/pulse-on-true"
+    },
+    {
+      "id": "SkrUWAuOS",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "r18D-Ad_r",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "id": "rJBjb0_OS",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "rJePZ0_ur",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}
