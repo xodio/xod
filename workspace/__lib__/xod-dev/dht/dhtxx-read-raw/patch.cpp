@@ -123,7 +123,7 @@ void evaluate(Context ctx) {
 
         enterIdleState(port);
         state->reading = false;
-    } else if (isInputDirty<input_UPD>(ctx)) {
+    } else if (isInputDirty<input_DO>(ctx)) {
         // initiate request for data
         pinMode(port, OUTPUT);
         digitalWrite(port, LOW);

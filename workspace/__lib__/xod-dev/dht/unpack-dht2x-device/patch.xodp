@@ -10,14 +10,14 @@
       "type": "xod/patch-nodes/utility"
     },
     {
-      "id": "rJ2pvzYIr",
+      "id": "HkELTndOH",
       "label": "DEV",
       "position": {
         "units": "slots",
         "x": 0,
         "y": 0
       },
-      "type": "@/input-dht11-device"
+      "type": "@/input-dht2x-device"
     },
     {
       "id": "rJln6vMKLH",
