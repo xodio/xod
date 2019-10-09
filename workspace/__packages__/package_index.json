@@ -297,13 +297,13 @@
           "size": "4885536",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -344,13 +344,13 @@
           "size": "4890702",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -391,13 +391,13 @@
           "size": "4991331",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -438,13 +438,13 @@
           "size": "4991634",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -485,13 +485,13 @@
           "size": "4993586",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -532,13 +532,13 @@
           "size": "4993644",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -579,13 +579,13 @@
           "size": "4993455",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -626,13 +626,13 @@
           "size": "4993959",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -673,15 +673,15 @@
           "size": "5011829",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -731,15 +731,15 @@
           "size": "5011912",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -789,15 +789,15 @@
           "size": "4897659",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -847,15 +847,15 @@
           "size": "4959420",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -905,15 +905,15 @@
           "size": "4897949",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -963,15 +963,15 @@
           "size": "4897460",
           "boards": [
             {"name": "Arduino Yún"},
-            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno"},
             {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
-            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
             {"name": "Arduino Leonardo Ethernet"},
-            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
             {"name": "Arduino Ethernet"},
@@ -1004,6 +1004,510 @@
               "packager": "arduino",
               "name": "arduinoOTA",
               "version": "1.1.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.6.22",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.22.tar.bz2",
+          "archiveFileName": "avr-1.6.22.tar.bz2",
+          "checksum": "SHA-256:e6399b2a687dd8485cbbfcbfbbd4f8e2e15fe535bbcfd1d81bf93d01e31f7d76",
+          "size": "4907422",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino Uno"},
+            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino Leonardo Ethernet"},
+            {"name": "Arduino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"},
+            {"name": "Adafruit Circuit Playground"},
+            {"name": "Arduino Yún Mini"},
+            {"name": "Arduino Industrial 101"},
+            {"name": "Linino One"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.6.23",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.23.tar.bz2",
+          "archiveFileName": "avr-1.6.23.tar.bz2",
+          "checksum": "SHA-256:18618d7f256f26cd77c35f4c888d5d1b2334f07925094fdc99ac3188722284aa",
+          "size": "5001988",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino Uno"},
+            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino Leonardo Ethernet"},
+            {"name": "Arduino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"},
+            {"name": "Adafruit Circuit Playground"},
+            {"name": "Arduino Yún Mini"},
+            {"name": "Arduino Industrial 101"},
+            {"name": "Linino One"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.8.1",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.8.1.tar.bz2",
+          "archiveFileName": "avr-1.8.1.tar.bz2",
+          "checksum": "SHA-256:4791a52fd058f72557af333abc2dea564c8be47fb38fbd7be75ce2fcfdc214b5",
+          "size": "4941605",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino Uno"},
+            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino Leonardo Ethernet"},
+            {"name": "Arduino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"},
+            {"name": "Adafruit Circuit Playground"},
+            {"name": "Arduino Yún Mini"},
+            {"name": "Arduino Industrial 101"},
+            {"name": "Linino One"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino17"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.6.23",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.6.23.tar.bz2",
+          "archiveFileName": "megaavr-1.6.23.tar.bz2",
+          "checksum": "SHA-256:fd19ed3a52f6de289f46c9b5f65e19bc5c3df95358f18693cfaf25bdfb86f43c",
+          "size": "717681",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.6.24",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.6.24.tar.bz2",
+          "archiveFileName": "megaavr-1.6.24.tar.bz2",
+          "checksum": "SHA-256:0910af1d6eb44b65fee77c81a7a83ee420e6a7c1622f90754e91a5127d317a1d",
+          "size": "709516",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.6.25",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.6.25.tar.bz2",
+          "archiveFileName": "megaavr-1.6.25.tar.bz2",
+          "checksum": "SHA-256:f776e0b8996d1d199699382b311595825911539f2809dec24780c4c0014d45ff",
+          "size": "712366",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.6.26",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.6.26.tar.bz2",
+          "archiveFileName": "megaavr-1.6.26.tar.bz2",
+          "checksum": "SHA-256:d7fe4b40d489c21a89feed6713a2ca9bfb7ed3925536a18de7e5379ffc26737e",
+          "size": "712719",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "5.4.0-atmel3.6.1-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino14"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.1",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.1.tar.bz2",
+          "archiveFileName": "megaavr-1.8.1.tar.bz2",
+          "checksum": "SHA-256:51da414ba5372788ebcd38c8f652cb08152cf20e6a9fd3c398134b2325bf4c68",
+          "size": "817179",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.2",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.2.tar.bz2",
+          "archiveFileName": "megaavr-1.8.2.tar.bz2",
+          "checksum": "SHA-256:0f59e2d9e5f7b7b80ca3bc54cef00beb653c9a9b6454166dfb0e17cd2160a377",
+          "size": "840041",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.3",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.3.tar.bz2",
+          "archiveFileName": "megaavr-1.8.3.tar.bz2",
+          "checksum": "SHA-256:9791d62551f1e6539769a026f903082344b8ae8b921c1796de94a2af368d866d",
+          "size": "856037",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.4",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.4.tar.bz2",
+          "archiveFileName": "megaavr-1.8.4.tar.bz2",
+          "checksum": "SHA-256:ff25944bc6f7b766f8a71b836763517de3b12008b0b08cf24460b8af5a05abd1",
+          "size": "855455",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino16"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino megaAVR Boards",
+          "architecture": "megaavr",
+          "version": "1.8.5",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/megaavr-1.8.5.tar.bz2",
+          "archiveFileName": "megaavr-1.8.5.tar.bz2",
+          "checksum": "SHA-256:d35ca76fa081fb3a282584d498fadb5712a4330fa39cde560e31d72185c940d8",
+          "size": "876954",
+          "boards": [
+            {
+              "name": "Arduino Uno WiFi Rev2"
+            },
+            {
+              "name": "Arduino Nano Every"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "7.3.0-atmel3.6.1-arduino5"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino17"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.3.0"
             }
           ]
         },
@@ -1295,6 +1799,31 @@
           ]
         },
         {
+          "name": "Arduino SAM Boards (32-bits ARM Cortex-M3)",
+          "architecture": "sam",
+          "version": "1.6.12",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/sam-1.6.12.tar.bz2",
+          "archiveFileName": "sam-1.6.12.tar.bz2",
+          "checksum": "SHA-256:1d56d0ceea12a920c4a5c12fff793499354ffba7e93d330786bd2d6f3a191c47",
+          "size": "16496493",
+          "boards": [
+            {"name": "Arduino Due"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.6.1-arduino"
+            }
+          ]
+        },
+        {
           "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
           "architecture": "samd",
           "version": "1.6.0",
@@ -1379,7 +1908,7 @@
           "size": "179578",
           "boards": [
             {
-              "name": "Arduino/Genuino Zero"
+              "name": "Arduino Zero"
             }
           ],
           "toolsDependencies": [
@@ -1415,8 +1944,8 @@
           "checksum": "SHA-256:f3fb17d593cdf5986c201fe3639d71cc1149b43e996a3afa5533c3b4b0c5a532",
           "size": "978163",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" }
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" }
           ],
           "toolsDependencies": [
             {
@@ -1451,7 +1980,7 @@
           "checksum": "SHA-256:02c788e0ae786cabf31c5c27b64d60906d4038f56ee2df689022e32525be7b70",
           "size": "977481",
           "boards": [
-            { "name": "Arduino/Genuino Zero" }
+            { "name": "Arduino Zero" }
           ],
           "toolsDependencies": [
             {
@@ -1486,8 +2015,8 @@
           "checksum": "SHA-256:3f3d70b4081b11ab07fc209702604f2ac3a52bb193b7f0d9fa5bb31071b2b34c",
           "size": "979548",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" }
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" }
           ],
           "toolsDependencies": [
             {
@@ -1522,8 +2051,8 @@
           "checksum": "SHA-256:08e97127acf41ac28c195803be1d22a5cbf720d4cff58db9458af9255d6ee7b3",
           "size": "997331",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" }
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" }
           ],
           "toolsDependencies": [
             {
@@ -1558,8 +2087,8 @@
           "checksum": "SHA-256:7342d0d127b1facdfbe8801759368bb0e6939b8e9a7db86eefb23135e3c701a8",
           "size": "841503",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" }
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" }
           ],
           "toolsDependencies": [
             {
@@ -1594,8 +2123,8 @@
           "checksum": "SHA-256:05bff70561e5f10e86d1d890f647614aac989c4b2c384fc1b568e7d8c96b8267",
           "size": "841801",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" }
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" }
           ],
           "toolsDependencies": [
             {
@@ -1630,8 +2159,8 @@
           "checksum": "SHA-256:404f64575182e3a21fbf38a729d56d50782754c1d0c5bfe17d4c9155dd84d3d2",
           "size": "855221",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" }
           ],
           "toolsDependencies": [
@@ -1672,8 +2201,8 @@
           "checksum": "SHA-256:b2b47e12ae032e7929d33b13b42033fca15de7ef0d5ea90dab68ebf65e6b4f6b",
           "size": "2765368",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino M0" },
             { "name": "Arduino M0 Pro" },
@@ -1723,8 +2252,8 @@
           "checksum": "SHA-256:3ace3a7850e9052f51b819dbf5c09ea487f8bbbdf3c28d5d4709137b18f12bb7",
           "size": "2764312",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino M0" },
             { "name": "Arduino M0 Pro" },
@@ -1773,8 +2302,8 @@
           "checksum": "SHA-256:18803709c1024c2fb122430949df06ee316d7971552ef81c430cba14be673f24",
           "size": "2754767",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
@@ -1819,8 +2348,8 @@
           "checksum": "SHA-256:217f4e0f3c5f2c1a0d74d1b78559aa6f598aeae33ad7fd06ec79eb7294552db2",
           "size": "2777384",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino MKRFox1200" },
             { "name": "Arduino M0 Pro" },
@@ -1871,8 +2400,8 @@
           "checksum": "SHA-256:bb5f9c69530906cba51641a94e3e195deafafe9d6673c90eda544535f02bb7bf",
           "size": "2746416",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino MKRFox1200" },
             { "name": "Arduino M0 Pro" },
@@ -1923,8 +2452,8 @@
           "checksum": "SHA-256:938b0528dddb66ebb3564dc0b6d01206498d2a1abea90a269ce59ee9dae2753d",
           "size": "2795099",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino MKRFox1200" },
             { "name": "Arduino M0 Pro" },
@@ -1975,8 +2504,8 @@
           "checksum": "SHA-256:d44e32b07642f6dc5e480068f52966113baa912f3b5fa6d39cfa4112c4a25e53",
           "size": "2796651",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZero" },
             { "name": "Arduino MKRFox1200" },
             { "name": "Arduino M0 Pro" },
@@ -2027,8 +2556,8 @@
           "checksum": "SHA-256:2c691c23cdf9974526ff33f19b7b060b5c03b7cb4708f61f8eb2629666c3c278",
           "size": "2849852",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZERO" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
@@ -2081,8 +2610,8 @@
           "checksum": "SHA-256:adbc464106abcfb031aeaa8c73ce09340f5aec8805e83bbe6f7a7da974321fa7",
           "size": "2808624",
           "boards": [
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZERO" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
@@ -2136,12 +2665,68 @@
           "size": "2844050",
           "boards": [
             { "name": "Arduino MKR WiFi 1010" },
-            { "name": "Arduino/Genuino Zero" },
-            { "name": "Arduino/Genuino MKR1000" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
             { "name": "Arduino MKRZERO" },
             { "name": "Arduino MKR FOX 1200" },
             { "name": "Arduino MKR WAN 1300" },
             { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino M0 Pro" },
+            { "name": "Arduino M0" },
+            { "name": "Arduino Tian" },
+            { "name": "Adafruit Circuit Playground Express" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.9.0-arduino6-static"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.1.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.6.20",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/samd-1.6.20.tar.bz2",
+          "archiveFileName": "samd-1.6.20.tar.bz2",
+          "checksum": "SHA-256:65a07751d858c7096d4ed9e842768530d41f84c30e26baa398c82e6ad92649bf",
+          "size": "2854887",
+          "boards": [
+            { "name": "Arduino MKR WiFi 1010" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
+            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR FOX 1200" },
+            { "name": "Arduino MKR WAN 1300" },
+            { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino MKR NB 1500" },
             { "name": "Arduino M0 Pro" },
             { "name": "Arduino M0" },
             { "name": "Arduino Tian" },
@@ -2222,6 +2807,62 @@
               "packager": "arduino",
               "name": "CMSIS-Atmel",
               "version": "1.2.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.0"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.6.21",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/samd-1.6.21.tar.bz2",
+          "archiveFileName": "samd-1.6.21.tar.bz2",
+          "checksum": "SHA-256:6ccd8aa87eb0a81ae8b7f34103c2e37edbeb0b358b886f6066db3688c0c5aa54",
+          "size": "2848675",
+          "boards": [
+            { "name": "Arduino MKR WiFi 1010" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
+            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR FOX 1200" },
+            { "name": "Arduino MKR WAN 1300" },
+            { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino MKR NB 1500" },
+            { "name": "Arduino M0 Pro" },
+            { "name": "Arduino M0" },
+            { "name": "Arduino Tian" },
+            { "name": "Adafruit Circuit Playground Express" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "4.8.3-2014q1"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.9.0-arduino6-static"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.1.0"
             },
             {
               "packager": "arduino",
@@ -2331,61 +2972,340 @@
           ]
         },
         {
-          "name": "Arduino STM32F4 Boards",
-          "architecture": "stm32f4",
-          "version": "1.0.0",
+          "name": "Arduino SAMD Beta Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd_beta",
+          "version": "1.6.25",
           "category": "Arduino",
-          "url": "http://downloads.arduino.cc/arduino.org/package_arduino_stm32f4_1.0.0.tar.bz2",
-          "archiveFileName": "package_arduino_stm32f4_1.0.0.tar.bz2",
-          "size": "20499005",
-          "checksum": "SHA-256:79a67167bff45c34a4addf29a4c84904d0dc114c19220bfd204a65e51688b3d1",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/samd-beta-1.6.25.tar.bz2",
+          "archiveFileName": "samd-beta-1.6.25.tar.bz2",
+          "checksum": "SHA-256:95e22b75d2ff1e3a1c9baabad205fbd48964b195390951943035bfbd88286961",
+          "size": "2890759",
           "boards": [
             {
-              "name": "Arduino Star OTTO"
+              "name": "Arduino MKR Vidor 4000"
             }
           ],
           "toolsDependencies": [
             {
               "packager": "arduino",
               "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
+              "version": "7-2017q4"
             },
             {
-             "packager": "arduino",
-             "version": "0.8.0-stm32-arduino1",
-             "name": "dfu-util"
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0-arduino3"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino7"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.2.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
             }
           ]
         },
         {
-          "name": "Arduino STM32F4 Boards",
-          "architecture": "stm32f4",
-          "version": "1.0.1",
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.8.1",
           "category": "Arduino",
-          "url": "http://downloads.arduino.cc/arduino.org/package_arduino_stm32f4_1.0.1.tar.bz2",
-          "archiveFileName": "package_arduino_stm32f4_1.0.1.tar.bz2",
-          "checksum": "SHA-256:e66dd40f8b9faeb6c7400b48745c023aacb65a6d5c700395edc9dd89d2d150c0",
-          "size": "20495225",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/samd-1.8.1.tar.bz2",
+          "archiveFileName": "samd-1.8.1.tar.bz2",
+          "checksum": "SHA-256:a8492b777f7f719fb5270f641b6b13b91ec242f5132b325ede2649dc2bda3117",
+          "size": "2849370",
           "boards": [
-            {
-              "name": "Arduino Star OTTO"
-            }
+            { "name": "Arduino MKR WiFi 1010" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
+            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR FOX 1200" },
+            { "name": "Arduino MKR WAN 1300" },
+            { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino MKR NB 1500" },
+            { "name": "Arduino MKR Vidor 4000" },
+            { "name": "Arduino Nano 33 IoT" },
+            { "name": "Arduino M0 Pro" },
+            { "name": "Arduino M0" },
+            { "name": "Arduino Tian" },
+            { "name": "Adafruit Circuit Playground Express" }
           ],
           "toolsDependencies": [
             {
               "packager": "arduino",
               "name": "arm-none-eabi-gcc",
-              "version": "4.8.3-2014q1"
+              "version": "7-2017q4"
             },
             {
               "packager": "arduino",
-              "name": "dfu-util",
-              "version": "0.9.0-arduino1"
+              "name": "bossac",
+              "version": "1.7.0-arduino3"
             },
             {
               "packager": "arduino",
-              "name": "arduinoSTM32load",
-              "version": "2.0.0"
+              "name": "openocd",
+              "version": "0.10.0-arduino7"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.2.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.8.2",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/samd-1.8.2.tar.bz2",
+          "archiveFileName": "samd-1.8.2.tar.bz2",
+          "checksum": "SHA-256:af75e0d37b63df3b92ecca60285aa59bab66e0bd03bcc4092ea3a1fab3df5258",
+          "size": "2894202",
+          "boards": [
+            { "name": "Arduino MKR WiFi 1010" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
+            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR FOX 1200" },
+            { "name": "Arduino MKR WAN 1300" },
+            { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino MKR NB 1500" },
+            { "name": "Arduino MKR Vidor 4000" },
+            { "name": "Arduino Nano 33 IoT" },
+            { "name": "Arduino M0 Pro" },
+            { "name": "Arduino M0" },
+            { "name": "Arduino Tian" },
+            { "name": "Adafruit Circuit Playground Express" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0-arduino3"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino7"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.2.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino SAMD Boards (32-bits ARM Cortex-M0+)",
+          "architecture": "samd",
+          "version": "1.8.3",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/samd-1.8.3.tar.bz2",
+          "archiveFileName": "samd-1.8.3.tar.bz2",
+          "checksum": "SHA-256:ceac942d67c374e02c3f7586d17a7a4f0ef7bc022627577fd437af928cc21ad3",
+          "size": "2897712",
+          "boards": [
+            { "name": "Arduino MKR WiFi 1010" },
+            { "name": "Arduino Zero" },
+            { "name": "Arduino MKR1000" },
+            { "name": "Arduino MKRZERO" },
+            { "name": "Arduino MKR FOX 1200" },
+            { "name": "Arduino MKR WAN 1300" },
+            { "name": "Arduino MKR GSM 1400" },
+            { "name": "Arduino MKR NB 1500" },
+            { "name": "Arduino MKR Vidor 4000" },
+            { "name": "Arduino Nano 33 IoT" },
+            { "name": "Arduino M0 Pro" },
+            { "name": "Arduino M0" },
+            { "name": "Arduino Tian" },
+            { "name": "Adafruit Circuit Playground Express" }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.7.0-arduino3"
+            },
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino7"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS",
+              "version": "4.5.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "CMSIS-Atmel",
+              "version": "1.2.0"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.2.1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino nRF528x Boards (Mbed OS)",
+          "architecture": "mbed",
+          "version": "1.1.0",
+          "category": "Contributed",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
+          "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.0.tar.bz2",
+          "checksum": "SHA-256:d70d8c98fd5ec9cc0cc05722dda344c325910cdc4c5dddfa976dc9a8f00f5f5b",
+          "size": "35128465",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino9"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino nRF528x Boards (Mbed OS)",
+          "architecture": "mbed",
+          "version": "1.1.1",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
+          "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.1.tar.bz2",
+          "checksum": "SHA-256:ac8d6ec83f8c42e27b4dac9d4b565779ff213dd6bcd879dad876cfdf4a492c07",
+          "size": "35127935",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino9"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino1"
+            }
+          ]
+        },
+        {
+          "name": "Arduino nRF528x Boards (Mbed OS)",
+          "architecture": "mbed",
+          "version": "1.1.2",
+          "category": "Arduino",
+          "url": "http://downloads.arduino.cc/cores/ArduinoCore-nRF52-mbed-1.1.2.tar.bz2",
+          "archiveFileName": "ArduinoCore-nRF52-mbed-1.1.2.tar.bz2",
+          "checksum": "SHA-256:ebe30e9a2cf2d0e18a84df9cd3b1238249c5b1248e0d5238edb36180f1c33d13",
+          "size": "36372757",
+          "help": {
+            "online": "https://github.com/arduino/ArduinoCore-nRF528x-mbedos/issues"
+          },
+          "boards": [
+            {
+              "name": "Arduino Nano 33 BLE"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "openocd",
+              "version": "0.10.0-arduino9"
+            },
+            {
+              "packager": "arduino",
+              "name": "arm-none-eabi-gcc",
+              "version": "7-2017q4"
+            },
+            {
+              "packager": "arduino",
+              "name": "bossac",
+              "version": "1.9.1-arduino1"
             }
           ]
         },
@@ -3014,6 +3934,54 @@
           ]
         },
         {
+          "name": "avr-gcc",
+          "version": "7.3.0-atmel3.6.1-arduino5",
+          "systems": [
+            {
+              "size": "34462042",
+              "checksum": "SHA-256:f4acd5531c6b82c715e2edfa0aadb13fb718b4095b3ea1aa1f7fbde680069639",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "39381972",
+              "checksum": "SHA-256:dd9c70190be370a44fb47dab1514de6d8852b861dfa527964b65c740d8d50c10",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "38492678",
+              "checksum": "SHA-256:f48706317f04452544ab90e75bd1bb193f8af2cb1002f53aa702f27202c1b38f",
+              "host": "x86_64-apple-darwin14",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-apple-darwin14.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-apple-darwin14.tar.bz2"
+            },
+            {
+              "size": "53727984",
+              "checksum": "SHA-256:6d4a5d089a36e5b5252befc73da204555b49e376ce7577ee19ca7f028b295830",
+              "host": "i686-mingw32",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-w64-mingw32.zip"
+            },
+            {
+              "size": "38710087",
+              "checksum": "SHA-256:2ff12739d7ed09688d6b3c2c126e8df69b5bda1a07ab558799f0e576571e0e1d",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "39114120",
+              "checksum": "SHA-256:3effed8ffa1978b6e4a46f1aa2acc629e440b4d77244f71f9b79a916025206fb",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"
+            }
+          ]
+        },
+        {
           "name": "avrdude",
           "version": "6.3.0-arduino2",
           "systems": [
@@ -3226,6 +4194,102 @@
           ]
         },
         {
+          "name": "avrdude",
+          "version": "6.3.0-arduino16",
+          "systems": [
+            {
+              "size": "219642",
+              "checksum": "SHA-256:6fc443445440f0e2d95d70013ed075bceffc2a1babc1e7d4f1ae69c3fe268c57",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avrdude-6.3.0-arduino16-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "229997",
+              "checksum": "SHA-256:7a2726ab2fd18b910abc3d9dd33c4b40d18c34cf12c46f3367932e7fd87c0197",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino16-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "279172",
+              "checksum": "SHA-256:f93dc12a4b30a335ab24b3c628e6cad0ebf2f8adfb7ef50f87c0fc17165b2156",
+              "host": "x86_64-apple-darwin15",
+              "archiveFileName": "avrdude-6.3.0-arduino16-i386-apple-darwin11.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-i386-apple-darwin11.tar.bz2"
+            },
+            {
+              "size": "254085",
+              "checksum": "SHA-256:57856d6e388d333d924afa3e2d5525161dbe0dc670e7caae2720e249606175a7",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino16-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-x86_64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "244393",
+              "checksum": "SHA-256:bdf73358991243a9a8de11a42c80c4ec4b14c82f2222cb0c3c181f62656c41fb",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino16-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "328456",
+              "checksum": "SHA-256:781c16a8bf813fa68fc0f47d427279053c9e098c3aed7165449ac4f0137304dd",
+              "host": "i686-mingw32",
+              "archiveFileName": "avrdude-6.3.0-arduino16-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino16-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
+          "name": "avrdude",
+          "version": "6.3.0-arduino17",
+          "systems": [
+            {
+              "size": "219631",
+              "checksum": "SHA-256:2a8e68c5d803aa6f902ef219f177ec3a4c28275d85cbe272962ad2cd374f50d1",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avrdude-6.3.0-arduino17-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "229852",
+              "checksum": "SHA-256:6cf948f751acfe7b96684537f2291c766ec8b54b4f7dc95539864821456fa9fc",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino17-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "279045",
+              "checksum": "SHA-256:120cc9edaae699e7e9ac50b1b8eb0e7d51fdfa555bac54233c2511e6ee5418c9",
+              "host": "x86_64-apple-darwin12",
+              "archiveFileName": "avrdude-6.3.0-arduino17-x86_64-apple-darwin12.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-x86_64-apple-darwin12.tar.bz2"
+            },
+            {
+              "size": "254271",
+              "checksum": "SHA-256:accdfb920af2aabf4f7461d2ac73c0751760f525216dc4e7657427a78c60d13d",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino17-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-x86_64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "244550",
+              "checksum": "SHA-256:5c8cc6c17db9300e1451fe41cd7178b0442b4490ee6fdbc0aed9811aef96c05f",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino17-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "328460",
+              "checksum": "SHA-256:e99188873c7c5ad8f8f906f068c33600e758b2e36cce3adbd518a21bd266749d",
+              "host": "i686-mingw32",
+              "archiveFileName": "avrdude-6.3.0-arduino17-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
           "name": "arduinoOTA",
           "version": "1.0.0",
           "systems": [
@@ -3393,6 +4457,54 @@
               "host": "i686-mingw32",
               "archiveFileName": "arduinoOTA-1.2.1-windows_386.zip",
               "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.1-windows_386.zip"
+            }
+          ]
+        },
+        {
+          "name": "arduinoOTA",
+          "version": "1.3.0",
+          "systems": [
+            {
+              "size": "2633516",
+              "checksum": "SHA-256:3e7f59d6fbc7a724598303f0d3289d0c4fd137a8973437980658379a024887b2",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.3.0-linux_386.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-linux_386.tar.bz2"
+            },
+            {
+              "size": "2716248",
+              "checksum": "SHA-256:aa45ee2441ffc3a122daec5802941d1fa2ac47adf5c5c481b5e0daa4dc259ffa",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.3.0-linux_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-linux_amd64.tar.bz2"
+            },
+            {
+              "size": "2567435",
+              "checksum": "SHA-256:1888587409b56aef4ba0ab0e6703b3dccba7cc3a022756ba9b908247e5d5a656",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "arduinoOTA-1.3.0-linux_arm.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-linux_arm.tar.bz2"
+            },
+            {
+              "size": "2472427",
+              "checksum": "SHA-256:835ed8f37cffac37e979d1b0f6041559592d3d98be52f0e8611b76c4858e4113",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.3.0-linux_arm64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-linux_arm64.tar.bz2"
+            },
+            {
+              "size": "2766116",
+              "checksum": "SHA-256:d5d0f82ff829c0e434d12a2ee640a6fbd78f893ab37782edbb8b5bf2359d119e",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "arduinoOTA-1.3.0-darwin_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-darwin_amd64.tar.bz2"
+            },
+            {
+              "size": "2768948",
+              "checksum": "SHA-256:051943844eee442460d2c709edefadca184287fffd2b6c100dd53aa742aa05f6",
+              "host": "i686-mingw32",
+              "archiveFileName": "arduinoOTA-1.3.0-windows_386.zip",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.3.0-windows_386.zip"
             }
           ]
         },
@@ -3643,6 +4755,54 @@
           ]
         },
         {
+          "name": "bossac",
+          "version": "1.9.1-arduino1",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-windows.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-windows.tar.gz",
+              "checksum": "SHA-256:fe2d6ef78ca711c78e104e258357ed06b09e95e9356dc72d8d2c9f6670af4b7a",
+              "size": "1260118"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-osx.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-osx.tar.gz",
+              "checksum": "SHA-256:c356632f98d5bae9b4f5d3ad823a5ee89b23078c2b835e8ac39a208f4855b0e6",
+              "size": "47835"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linux64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linux64.tar.gz",
+              "checksum": "SHA-256:d3d324a3503a8db825c01f3b38519e4d4824c4d0e42cb399a16c1e074f9a9a86",
+              "size": "399453"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linux32.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linux32.tar.gz",
+              "checksum": "SHA-256:eec622b8b5a8642af94ec23febfe14c928edd734f144db73b146bf6708d2057f",
+              "size": "384792"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linuxarm.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linuxarm.tar.gz",
+              "checksum": "SHA-256:b42061d2fa2dbd6910d0d295e024f2cff7bb44f3e2ecc0bc2fe71a1f31b0ecba",
+              "size": "361799"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/bossac-1.9.1-arduino1-linuxaarch64.tar.gz",
+              "archiveFileName": "bossac-1.9.1-arduino1-linuxaarch64.tar.gz",
+              "checksum": "SHA-256:b271013841e1e25ee55f241e8c50a56ed775d3b322844e1e3099231ba17f3868",
+              "size": "442657"
+            }
+          ]
+        },
+        {
           "name": "openocd",
           "version": "0.9.0-arduino",
           "systems": [
@@ -3810,6 +4970,102 @@
               "host": "i686-mingw32",
               "archiveFileName": "openocd-0.10.0-arduino7-static-i686-w64-mingw32.zip",
               "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino7-static-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
+          "name": "openocd",
+          "version": "0.10.0-arduino8",
+          "systems": [
+            {
+              "size": "1714346",
+              "checksum": "SHA-256:86c4ea3086b4a1475fd8a1e1daf4585748be093dad4160e816b1bf2502501fb2",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "1778371",
+              "checksum": "SHA-256:500cb112ee92092bbfce69649b90d0284752c5766f5aaf5c24dc754100788ef9",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-aarch64-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-aarch64-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1653652",
+              "checksum": "SHA-256:584b513ebbc4a645a68234d964ba56f042aaf7668d84ba47398a07a294516cc4",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-x86_64-apple-darwin13.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-x86_64-apple-darwin13.tar.bz2"
+            },
+            {
+              "size": "1845547",
+              "checksum": "SHA-256:455d4123146bf6b4b095de86d3340fd01e39bba9c70b2f0bb8e979ac4dddac39",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1781892",
+              "checksum": "SHA-256:5b44889984daefa966b8251edb98445169107ca32f974ca598d4c59e7d2c8901",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-i686-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-i686-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "2190397",
+              "checksum": "SHA-256:35a92f32f2762ef9405d2c684ec7bea2e70c01068f380251aecd9290f5bd5b24",
+              "host": "i686-mingw32",
+              "archiveFileName": "openocd-0.10.0-arduino8-static-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino8-static-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
+          "name": "openocd",
+          "version": "0.10.0-arduino9",
+          "systems": [
+            {
+              "size": "1714657",
+              "checksum": "SHA-256:b814b16b52cef21eacf456cc7a89d7b5d4cb1385bfb8fb82963b7d8151824d93",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-aarch64-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-aarch64-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "1778177",
+              "checksum": "SHA-256:f0443e771f5e3a779949498d3c9bfffd1dd27cdf0ad7136a2db5e80447a7175a",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-arm-linux-gnueabihf.tar.bz2"
+            },
+            {
+              "size": "1782958",
+              "checksum": "SHA-256:a22872918df899cb808f9286141d42438ae5611156c143cfb692069f52a2bddd",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-i686-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-i686-ubuntu12.04-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "2190484",
+              "checksum": "SHA-256:f53f9a2b7f48a2ebc00ea9196bf559d15987d3779bcea4118ebec8925da5a1f6",
+              "host": "i686-mingw32",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-i686-w64-mingw32.zip"
+            },
+            {
+              "size": "1655311",
+              "checksum": "SHA-256:6d47f97919f317bb6e5f1f903127604271d66d149f4625f29b8e0eb5f6c94c64",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-x86_64-apple-darwin13.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-x86_64-apple-darwin13.tar.bz2"
+            },
+            {
+              "size": "1844365",
+              "checksum": "SHA-256:f624552b5ba56aa78d0c1a0e5d18cf2b5694db2ed44080968e22aa1af8f23c1b",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "openocd-0.10.0-arduino9-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/openocd-0.10.0-arduino9-static-x86_64-ubuntu12.04-linux-gnu.tar.bz2"
             }
           ]
         },
@@ -4442,7 +5698,7 @@
           "size": "776592",
           "boards": [
             {
-              "name": "Arduino/Genuino 101"
+              "name": "Arduino 101"
             }
           ],
           "toolsDependencies": [
@@ -4469,7 +5725,7 @@
           "size": "672314",
           "boards": [
             {
-              "name": "Arduino/Genuino 101"
+              "name": "Arduino 101"
             }
           ],
           "toolsDependencies": [
@@ -4496,7 +5752,7 @@
           "size": "729297",
           "boards": [
             {
-              "name": "Arduino/Genuino 101"
+              "name": "Arduino 101"
             }
           ],
           "toolsDependencies": [
@@ -4533,7 +5789,49 @@
           "size": "6242776",
           "boards": [
             {
-              "name": "Arduino/Genuino 101"
+              "name": "Arduino 101"
+            }
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "Intel",
+              "version": "2.0.1",
+              "name": "arduino101load"
+            },
+            {
+              "packager": "arduino",
+              "version": "0.9.0-arduino1",
+              "name": "dfu-util"
+            },
+            {
+              "packager": "Intel",
+              "version": "1.6.9+1.0.1",
+              "name": "arc-elf32"
+            },
+            {
+              "packager": "Intel",
+              "version": "0.9.0+0.1",
+              "name": "openocd"
+            },
+            {
+              "packager": "Intel",
+              "version": "2.0.0",
+              "name": "flashpack"
+            }
+          ]
+        },
+        {
+          "name": "Intel Curie Boards",
+          "version": "2.0.4",
+          "category": "Arduino Certified",
+          "archiveFileName": "corelibs-arduino101-2.0.4.zip",
+          "architecture": "arc32",
+          "url": "https://github.com/arduino/ArduinoCore-arc32/archive/2.0.3.zip",
+          "checksum": "SHA-256:466027da55175ba69115bc5aa859e10d1432cd6b6abfccc10a2687eff35ca906",
+          "size": "6243652",
+          "boards": [
+            {
+              "name": "Arduino 101"
             }
           ],
           "toolsDependencies": [
