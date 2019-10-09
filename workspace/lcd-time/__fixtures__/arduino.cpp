@@ -816,6 +816,7 @@ namespace xod {
 
 TimeMs g_transactionTime;
 bool g_isSettingUp;
+bool g_isEarlyDeferPass;
 
 //----------------------------------------------------------------------------
 // Metaprogramming utilities
@@ -881,6 +882,10 @@ TimeMs transactionTime() {
 
 bool isSettingUp() {
     return g_isSettingUp;
+}
+
+bool isEarlyDeferPass() {
+    return g_isEarlyDeferPass;
 }
 
 template<typename ContextT>
@@ -1479,6 +1484,9 @@ void handleTweaks() {
 } // namespace detail
 #endif
 
+void handleDefers() {
+}
+
 void runTransaction() {
     g_transactionTime = millis();
 
@@ -1497,7 +1505,12 @@ void runTransaction() {
     // else to give them a chance to emit values.
     //
     // If trigerred, keep only output dirty, not the node itself, so it will
-    // evaluate on the regular pass only if it pushed a new value again.
+    // evaluate on the regular pass only if it receives a new value again.
+    if (!isSettingUp()) {
+        g_isEarlyDeferPass = true;
+        handleDefers();
+        g_isEarlyDeferPass = false;
+    }
 
     // Evaluate all dirty nodes
     { // xod__core__continuously #7

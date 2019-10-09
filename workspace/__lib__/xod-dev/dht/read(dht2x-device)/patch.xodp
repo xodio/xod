@@ -24,6 +24,17 @@
       }
     },
     {
+      "id": "By5Ip2ddB",
+      "input": {
+        "nodeId": "B1YU_zt8S",
+        "pinKey": "HkELTndOH"
+      },
+      "output": {
+        "nodeId": "HkJr62O_B",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Bya4IdGFIH",
       "input": {
         "nodeId": "SkENLuzFLH",
@@ -65,17 +76,6 @@
       "output": {
         "nodeId": "SJU4LOftIS",
         "pinKey": "H1Sh3gsyG"
-      }
-    },
-    {
-      "id": "Hkc8OMt8r",
-      "input": {
-        "nodeId": "B1YU_zt8S",
-        "pinKey": "rJ2pvzYIr"
-      },
-      "output": {
-        "nodeId": "ryVLdzFLr",
-        "pinKey": "__out__"
       }
     },
     {
@@ -121,6 +121,17 @@
         "y": 1
       },
       "type": "@/unpack-dht2x-device"
+    },
+    {
+      "description": "A DHT2X sensor or analog",
+      "id": "HkJr62O_B",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-dht2x-device"
     },
     {
       "boundLiterals": {
@@ -186,17 +197,6 @@
         "y": 3
       },
       "type": "@/dht2x-pack"
-    },
-    {
-      "description": "A DHT2X sensor or analog",
-      "id": "ryVLdzFLr",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 0,
-        "y": 0
-      },
-      "type": "@/input-dht11-device"
     }
   ]
 }

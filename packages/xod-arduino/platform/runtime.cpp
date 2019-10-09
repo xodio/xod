@@ -50,6 +50,7 @@ namespace xod {
 
 TimeMs g_transactionTime;
 bool g_isSettingUp;
+bool g_isEarlyDeferPass;
 
 //----------------------------------------------------------------------------
 // Metaprogramming utilities
@@ -115,6 +116,10 @@ TimeMs transactionTime() {
 
 bool isSettingUp() {
     return g_isSettingUp;
+}
+
+bool isEarlyDeferPass() {
+    return g_isEarlyDeferPass;
 }
 
 template<typename ContextT>

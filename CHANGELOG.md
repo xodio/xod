@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.31.1"></a>
+
+## 0.31.1 (2019-10-08)
+
+### Bug fixes
+
+* [core] Fix a bug that caused compilation error if a defer node was used in a feedback loop without an upstream error raiser (#1871)
+* [core] Fix updating of package indexes and bundle the latest one (#1869)
+* [nodes] Fix quickstart node for 20x4 I2C text LCD in `xod-dev/text-lcd` library (#1875)
+* [nodes] Fix wrong types in `xod-dev/dht` library (#1877)
+* [core] Fix errors not propagating through defer nodes in some edge cases (#1873)
+* [nodes] Fix debounce time in `xod/common-hardware/button` (#1880)
+
 <a name="0.31.0"></a>
 
 ## 0.31.0 (2019-10-01)

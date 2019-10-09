@@ -816,6 +816,7 @@ namespace xod {
 
 TimeMs g_transactionTime;
 bool g_isSettingUp;
+bool g_isEarlyDeferPass;
 
 //----------------------------------------------------------------------------
 // Metaprogramming utilities
@@ -881,6 +882,10 @@ TimeMs transactionTime() {
 
 bool isSettingUp() {
     return g_isSettingUp;
+}
+
+bool isEarlyDeferPass() {
+    return g_isEarlyDeferPass;
 }
 
 template<typename ContextT>
@@ -1970,6 +1975,7 @@ namespace xod__core__defer__pulse {
 
 struct State {
     bool shouldRaiseAtTheNextDeferOnlyRun = false;
+    bool shouldPulseAtTheNextDeferOnlyRun = false;
 };
 
 union NodeErrors {
@@ -2041,7 +2047,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
-    ctx->_node->errors.output_OUT = false;
+    if (isEarlyDeferPass()) ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2078,22 +2084,23 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
 
-    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        }
-
-        setTimeout(ctx, 0);
-    } else if (isTimedOut(ctx)) { // This means that we are at the defer-only stage
-        if (isSettingUp()) return;
-
+    if (isEarlyDeferPass()) {
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
-        } else {
-            emitValue<output_OUT>(ctx, true);
         }
-    } else if (!isSettingUp()) { // This means that an upstream pulse output was cleared from error
+
+        if (state->shouldPulseAtTheNextDeferOnlyRun) {
+            emitValue<output_OUT>(ctx, true);
+            state->shouldPulseAtTheNextDeferOnlyRun = false;
+        }
+    } else {
+        if (getError<input_IN>(ctx)) {
+            state->shouldRaiseAtTheNextDeferOnlyRun = true;
+        } else if (isInputDirty<input_IN>(ctx)) {
+            state->shouldPulseAtTheNextDeferOnlyRun = true;
+        }
+
         setTimeout(ctx, 0);
     }
 }
@@ -2140,8 +2147,6 @@ struct ContextObject {
 
     Logic _input_IN;
 
-    bool _isInputDirty_IN;
-
     bool _isOutputDirty_OUT : 1;
 };
 
@@ -2164,12 +2169,8 @@ template<> Logic getValue<output_OUT>(Context ctx) {
 template<typename InputT> bool isInputDirty(Context ctx) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
-            " input_IN");
+            "");
     return false;
-}
-
-template<> bool isInputDirty<input_IN>(Context ctx) {
-    return ctx->_isInputDirty_IN;
 }
 
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
@@ -2181,7 +2182,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 template<> void emitValue<output_OUT>(Context ctx, Logic val) {
     ctx->_node->output_OUT = val;
     ctx->_isOutputDirty_OUT = true;
-    ctx->_node->errors.output_OUT = false;
+    if (isEarlyDeferPass()) ctx->_node->errors.output_OUT = false;
 }
 
 State* getState(Context ctx) {
@@ -2218,27 +2219,22 @@ template<> uint8_t getError<input_IN>(Context ctx) {
 void evaluate(Context ctx) {
     auto state = getState(ctx);
 
-    if (isInputDirty<input_IN>(ctx)) { // This happens only when all nodes are evaluated
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        } else {
-            // This will not have any immediate effect, because
-            // deferred nodes are at the very bottom of sorted graph.
-            // We do this to just save the value for reemission
-            // on deferred-only evaluation.
-            emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
-        }
-
-        setTimeout(ctx, 0);
-    } else { // This means that we are at the defer-only stage
-        if (isSettingUp()) return;
-
+    if (isEarlyDeferPass()) {
         if (state->shouldRaiseAtTheNextDeferOnlyRun) {
             raiseError<output_OUT>(ctx);
             state->shouldRaiseAtTheNextDeferOnlyRun = false;
         } else {
             emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
         }
+    } else {
+        if (getError<input_IN>(ctx)) {
+            state->shouldRaiseAtTheNextDeferOnlyRun = true;
+        } else {
+            // save the value for reemission on deferred-only evaluation pass
+            emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
+        }
+
+        setTimeout(ctx, 0);
     }
 }
 
@@ -2353,8 +2349,10 @@ struct TransactionState {
     bool node_23_hasUpstreamError : 1;
     bool node_24_isNodeDirty : 1;
     bool node_24_isOutputDirty_OUT : 1;
+    bool node_24_hasUpstreamError : 1;
     bool node_25_isNodeDirty : 1;
     bool node_25_isOutputDirty_OUT : 1;
+    bool node_25_hasUpstreamError : 1;
     TransactionState() {
         node_0_isNodeDirty = true;
         node_0_isOutputDirty_OUT = false;
@@ -2468,29 +2466,7 @@ void handleTweaks() {
 } // namespace detail
 #endif
 
-void runTransaction() {
-    g_transactionTime = millis();
-
-    XOD_TRACE_F("Transaction started, t=");
-    XOD_TRACE_LN(g_transactionTime);
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::handleTweaks();
-#endif
-
-    // Check for timeouts
-    g_transaction.node_7_isNodeDirty |= detail::isTimedOut(&node_7);
-    g_transaction.node_16_isNodeDirty |= detail::isTimedOut(&node_16);
-    g_transaction.node_17_isNodeDirty |= detail::isTimedOut(&node_17);
-    g_transaction.node_24_isNodeDirty |= detail::isTimedOut(&node_24);
-    g_transaction.node_25_isNodeDirty |= detail::isTimedOut(&node_25);
-
-    // defer-* nodes are always at the very bottom of the graph, so no one will
-    // recieve values emitted by them. We must evaluate them before everybody
-    // else to give them a chance to emit values.
-    //
-    // If trigerred, keep only output dirty, not the node itself, so it will
-    // evaluate on the regular pass only if it pushed a new value again.
+void handleDefers() {
     {
         if (g_transaction.node_24_isNodeDirty) {
 
@@ -2500,7 +2476,8 @@ void runTransaction() {
             xod__core__defer__pulse::ContextObject ctxObj;
             ctxObj._node = &node_24;
             ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+
+            ctxObj._input_IN = node_17.output_DONE;
 
             ctxObj._error_input_IN = 0;
 
@@ -2555,8 +2532,8 @@ void runTransaction() {
 
             xod__core__defer__boolean::ContextObject ctxObj;
             ctxObj._node = &node_25;
-            ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+
+            ctxObj._input_IN = node_20.output_OUT;
 
             ctxObj._error_input_IN = 0;
 
@@ -2595,6 +2572,36 @@ void runTransaction() {
                 g_transaction.node_0_hasUpstreamError = true;
             }
         }
+    }
+}
+
+void runTransaction() {
+    g_transactionTime = millis();
+
+    XOD_TRACE_F("Transaction started, t=");
+    XOD_TRACE_LN(g_transactionTime);
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::handleTweaks();
+#endif
+
+    // Check for timeouts
+    g_transaction.node_7_isNodeDirty |= detail::isTimedOut(&node_7);
+    g_transaction.node_16_isNodeDirty |= detail::isTimedOut(&node_16);
+    g_transaction.node_17_isNodeDirty |= detail::isTimedOut(&node_17);
+    g_transaction.node_24_isNodeDirty |= detail::isTimedOut(&node_24);
+    g_transaction.node_25_isNodeDirty |= detail::isTimedOut(&node_25);
+
+    // defer-* nodes are always at the very bottom of the graph, so no one will
+    // recieve values emitted by them. We must evaluate them before everybody
+    // else to give them a chance to emit values.
+    //
+    // If trigerred, keep only output dirty, not the node itself, so it will
+    // evaluate on the regular pass only if it receives a new value again.
+    if (!isSettingUp()) {
+        g_isEarlyDeferPass = true;
+        handleDefers();
+        g_isEarlyDeferPass = false;
     }
 
     // Evaluate all dirty nodes
@@ -3041,8 +3048,6 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_20.output_OUT;
-
-            ctxObj._isInputDirty_IN = true;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`

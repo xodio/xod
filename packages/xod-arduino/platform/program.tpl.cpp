@@ -28,7 +28,7 @@ struct TransactionState {
   {{#each outputs}}
     bool node_{{ ../id }}_isOutputDirty_{{ pinKey }} : 1;
   {{/each}}
-  {{#if (hasUpstreamErrorRaisers this)}}
+  {{#if (needsHasUpstreamErrorFlag this)}}
     bool node_{{id}}_hasUpstreamError : 1;
   {{/if}}
 {{/unless}}
@@ -110,27 +110,7 @@ void handleTweaks() {
 } // namespace detail
 #endif
 
-void runTransaction() {
-    g_transactionTime = millis();
-
-    XOD_TRACE_F("Transaction started, t=");
-    XOD_TRACE_LN(g_transactionTime);
-
-#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::handleTweaks();
-#endif
-
-    // Check for timeouts
-  {{#eachNodeUsingTimeouts nodes}}
-    g_transaction.node_{{id}}_isNodeDirty |= detail::isTimedOut(&node_{{id}});
-  {{/eachNodeUsingTimeouts}}
-
-    // defer-* nodes are always at the very bottom of the graph, so no one will
-    // recieve values emitted by them. We must evaluate them before everybody
-    // else to give them a chance to emit values.
-    //
-    // If trigerred, keep only output dirty, not the node itself, so it will
-    // evaluate on the regular pass only if it pushed a new value again.
+void handleDefers() {
   {{#eachDeferNode nodes}}
     {
         if (g_transaction.node_{{id}}_isNodeDirty) {
@@ -146,8 +126,23 @@ void runTransaction() {
 
             {{ns patch }}::ContextObject ctxObj;
             ctxObj._node = &node_{{ id }};
-            ctxObj._isInputDirty_IN = false;
-            ctxObj._error_input_IN = 0;
+          {{#each inputs}}
+            {{#if isDirtyable}}
+            ctxObj._isInputDirty_{{ pinKey }} = false;
+            {{/if}}
+          {{/each}}
+
+          {{#eachLinkedInput inputs}}
+            {{!--
+              // We refer to node_42.output_FOO as data source in case
+              // of a regular node and directly use node_42_output_VAL
+              // initial value constexpr in case of a constant. It’s
+              // because store no Node structures at the global level
+            --}}
+            ctxObj._input_{{ pinKey }} = node_{{ fromNodeId }}
+                {{~#if fromPatch.isConstant }}_{{else}}.{{/if~}}
+                output_{{ fromPinKey }};
+          {{/eachLinkedInput}}
 
           {{#each inputs}}
             ctxObj._error_input_{{ pinKey }} = {{#if (hasUpstreamErrorRaisers this)~}}
@@ -232,6 +227,34 @@ void runTransaction() {
         }
     }
   {{/eachDeferNode}}
+}
+
+void runTransaction() {
+    g_transactionTime = millis();
+
+    XOD_TRACE_F("Transaction started, t=");
+    XOD_TRACE_LN(g_transactionTime);
+
+#if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
+    detail::handleTweaks();
+#endif
+
+    // Check for timeouts
+  {{#eachNodeUsingTimeouts nodes}}
+    g_transaction.node_{{id}}_isNodeDirty |= detail::isTimedOut(&node_{{id}});
+  {{/eachNodeUsingTimeouts}}
+
+    // defer-* nodes are always at the very bottom of the graph, so no one will
+    // recieve values emitted by them. We must evaluate them before everybody
+    // else to give them a chance to emit values.
+    //
+    // If trigerred, keep only output dirty, not the node itself, so it will
+    // evaluate on the regular pass only if it receives a new value again.
+    if (!isSettingUp()) {
+        g_isEarlyDeferPass = true;
+        handleDefers();
+        g_isEarlyDeferPass = false;
+    }
 
     // Evaluate all dirty nodes
   {{#eachNonConstantNode nodes}}
