@@ -19,7 +19,8 @@ export const transformTask = (patchName, debug) => ({
     ctx.transform = transformProject(
       ctx.project,
       patchName,
-      debug ? LIVENESS.DEBUG : LIVENESS.NONE
+      debug ? LIVENESS.DEBUG : LIVENESS.NONE,
+      {} // TODO: make possible to pass some globals here
     );
   },
 });

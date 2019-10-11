@@ -43,6 +43,10 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.T3]: '',
 };
 
+export const GLOBALS_LITERALS = {
+  XOD_USERNAME: '=XOD_USERNAME',
+};
+
 export const MAX_ARITY_STEP = 3;
 
 /**

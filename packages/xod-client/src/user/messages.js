@@ -20,3 +20,10 @@ export const LOG_IN_TO_CONTINUE = {
   // TODO: parametrize action
   note: 'The action requires that you are signed in into your XOD account.',
 };
+
+export const NOT_LOGGED_IN = {
+  title: 'Not logged in',
+  note:
+    'The program uses the `=XOD_USERNAME` literal. You should log in to make it work.',
+  solution: 'Open the Account sidebar to enter your login/password or sign up.',
+};

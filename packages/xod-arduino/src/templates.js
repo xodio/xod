@@ -1,10 +1,11 @@
 import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
-import { unquote } from 'xod-func-tools';
+import { unquote, reverseLookup } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { def } from './types';
+import { SPECIAL_STRING_LITERAL_REPLACEMENTS } from './constants';
 
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
@@ -90,14 +91,29 @@ const cppType = def(
   )
 );
 
+// Replaces special string literal with the C++ replacement
+// :: Literal -> String
+const placeSpecialStringLiteral = R.compose(
+  R.prop(R.__, SPECIAL_STRING_LITERAL_REPLACEMENTS),
+  reverseLookup(R.__, XP.GLOBALS_LITERALS)
+);
+
 // Formats a plain JS string into C++ string object
 const cppStringLiteral = def(
   'cppStringLiteral :: String -> String',
-  R.ifElse(
-    R.isEmpty,
-    R.always('XString()'),
-    str => `XStringCString("${R.replace(/"/g, '\\"', str)}")`
-  )
+  R.cond([
+    // Empty literal: ``
+    [R.isEmpty, R.always('XString()')],
+    // Empty string literal: `""`
+    [R.pipe(unquote, R.isEmpty), R.always('XString()')],
+    // Special string literal: `=XOD_USERNAME`
+    [
+      str => R.any(R.equals(str), R.values(XP.GLOBALS_LITERALS)),
+      placeSpecialStringLiteral,
+    ],
+    // All other strings: "Hello, world"
+    [R.T, str => `XStringCString("${R.replace(/"/g, '\\"', unquote(str))}")`],
+  ])
 );
 
 export const byteLiteralToDecimal = R.ifElse(
@@ -230,7 +246,7 @@ Handlebars.registerHelper('cppValue', (type, value) =>
       [R.equals('NaN'), R.always('NAN')],
       [R.T, R.identity],
     ]),
-    [XP.PIN_TYPE.STRING]: R.pipe(unquote, cppStringLiteral),
+    [XP.PIN_TYPE.STRING]: cppStringLiteral,
     [XP.PIN_TYPE.BYTE]: cppByteLiteral,
     [XP.PIN_TYPE.PORT]: cppPortLiteral,
   })(value)

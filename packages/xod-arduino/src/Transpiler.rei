@@ -20,4 +20,7 @@ type liveness =
   | Debug
   | Simulation;
 
-let transpile: (Project.t, PatchPath.t, liveness) => XResult.t(program);
+type xodGlobals = Map.String.t(string);
+
+let transpile:
+  (Project.t, PatchPath.t, liveness, xodGlobals) => XResult.t(program);
