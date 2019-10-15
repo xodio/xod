@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { enquote, unquote } from 'xod-func-tools';
@@ -6,12 +7,21 @@ import cls from 'classnames';
 
 import PinWidget from './PinWidget';
 
+const isStringModeValue = R.startsWith('"');
+
+const requote = R.pipe(unquote, enquote);
+
 const StringWidget = compose(
   withState('focused', 'setFocus', false),
   // We have to handle input's selection in a tricky way,
   // because we're changing it's value on focus
   withState('selection', 'setSelection', [0, 0]),
   withState('inputRef', 'setInputRef', null),
+  withState('isStringMode', 'setStringMode', props =>
+    isStringModeValue(props.value)
+  ),
+  // We have to handle it in case we just added a leading quote
+  // before the literal
   lifecycle({
     componentDidUpdate(prevProps) {
       if (prevProps.selection !== this.props.selection && this.props.inputRef) {
@@ -23,7 +33,36 @@ const StringWidget = compose(
     },
   }),
   withHandlers({
-    onChange: props => event => props.onChange(enquote(event.target.value)),
+    onChangeHandler: props => event => {
+      const value = event.target.value;
+      props.onChange(props.isStringMode ? requote(value) : value);
+    },
+    onKeyDown: props => event => {
+      if (
+        event.target.selectionStart === 0 &&
+        event.target.selectionEnd === 0
+      ) {
+        // Backspace
+        // If it deletes a "virtual" quote — exit the string mode
+        if (event.keyCode === 8 && props.isStringMode) {
+          event.preventDefault();
+          props.setStringMode(false);
+          props.onChange(event.target.value);
+          return;
+        }
+        // Quote
+        // If it was not a string mode — enter it and do not place an extra quote
+        // In other cases — it will place an extra quote
+        if (event.keyCode === 222 && !props.isStringMode) {
+          event.preventDefault();
+          props.setStringMode(true);
+          props.onChange(requote(event.target.value));
+          return;
+        }
+      }
+
+      props.onKeyDown(event);
+    },
     onFocus: props => event => {
       props.setSelection([
         event.target.selectionStart,
@@ -38,10 +77,11 @@ const StringWidget = compose(
     },
   })
 )(props => {
+  const showQuotes = props.focused && props.isStringMode;
   const wrapperClassNames = cls('inspector-input-wrapper', {
-    'string-focused': props.focused,
+    'with-fake-quotes': showQuotes,
   });
-  const value = props.focused ? unquote(props.value) : props.value;
+  const value = showQuotes ? unquote(props.value) : props.value;
 
   return (
     <PinWidget
@@ -61,7 +101,7 @@ const StringWidget = compose(
           type="text"
           id={props.elementId}
           value={value}
-          onChange={props.onChange}
+          onChange={props.onChangeHandler}
           onFocus={props.onFocus}
           onBlur={props.onBlur}
           onKeyDown={props.onKeyDown}
