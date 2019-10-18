@@ -20,7 +20,7 @@
 #define {{key}} {{value}}
 {{else}}
 //#define {{key}} "value for {{key}}"
-static_assert(false, "Program uses `={{key}}` literal. Uncomment line above, put your username there, and remove this line.");
+static_assert(false, "Program uses `={{key}}` literal. Uncomment line above, put a proper value there, and remove this line.");
 {{/if}}
 {{/each}}
 

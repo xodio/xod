@@ -562,30 +562,41 @@ const transformProjectWithImpls = def(
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
       // :: Either Error TProject
-      R.map(({ transformedProject, nodeIdsMap }) => {
+      R.chain(({ transformedProject, nodeIdsMap }) => {
         const patches = createTPatches(path, transformedProject, project);
-        return R.merge(
-          {
-            config: {
-              XOD_DEBUG: liveness === LIVENESS.DEBUG,
-              XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-              literals: R.compose(
-                R.map(literal => {
-                  const key = R.tail(literal); // Get rid of leading `=`
-                  return {
-                    key,
-                    value: xodGlobals[key],
-                  };
-                }),
-                R.filter(isAmong(XP.GLOBALS_LITERALS)),
-                listBoundLiterals
-              )(path, transformedProject),
-            },
-          },
-          R.applySpec({
-            patches: R.always(patches),
-            nodes: createTNodes(path, patches, nodeIdsMap),
-          })(transformedProject)
+        const eitherLiterals = R.compose(
+          R.sequence(Either.of),
+          R.map(literal => {
+            const key = R.tail(literal); // Get rid of leading `=`
+
+            if (!R.has(key, xodGlobals))
+              return fail('GLOBAL_LITERAL_VALUE_MISSING', { key });
+
+            return Either.of({
+              key,
+              value: xodGlobals[key],
+            });
+          }),
+          R.filter(isAmong(XP.GLOBALS_LITERALS)),
+          listBoundLiterals
+        )(path, transformedProject);
+
+        return R.map(
+          literals =>
+            R.merge(
+              {
+                config: {
+                  XOD_DEBUG: liveness === LIVENESS.DEBUG,
+                  XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+                  literals,
+                },
+              },
+              R.applySpec({
+                patches: R.always(patches),
+                nodes: createTNodes(path, patches, nodeIdsMap),
+              })(transformedProject)
+            ),
+          eitherLiterals
         );
       }),
       R.chain(toposortProject(path)),

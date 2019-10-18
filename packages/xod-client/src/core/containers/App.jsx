@@ -43,8 +43,6 @@ import { selectAll } from '../../editor/actions';
 import {
   NO_PATCH_TO_TRANSPILE,
   SIMULATION_ALREADY_RUNNING,
-  LITERAL_NEEDS_USERNAME,
-  LITERAL_NEEDS_PROJECT_NAME,
 } from '../../editor/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
@@ -95,7 +93,7 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )(LIVENESS.NONE, Either.of({}));
+    )(LIVENESS.NONE, {});
   }
 
   onRunSimulation() {
@@ -147,36 +145,24 @@ export default class App extends React.Component {
   }
 
   getGlobals() {
-    // TODO: Make code prettier!
-    if (this.props.user.isNothing) return Either.Left(LITERAL_NEEDS_USERNAME);
-    const projectName = getProjectName(this.props.project);
-    if (!projectName.length) return Either.Left(LITERAL_NEEDS_PROJECT_NAME);
-
-    return Either.of(
-      catMaybies({
-        XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
-          this.props.user
-        ),
-        XOD_PROJECT: R.compose(R.map(enquote), Maybe.of)(projectName),
-      })
-    );
+    return catMaybies({
+      XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
+        this.props.user
+      ),
+      XOD_PROJECT: R.compose(
+        R.map(enquote),
+        R.ifElse(R.length, Maybe.of, Maybe.Nothing),
+        getProjectName
+      )(this.props.project),
+    });
   }
 
-  transformProjectForTranspiler(liveness, eitherGlobals) {
+  transformProjectForTranspiler(liveness, globals) {
     try {
       return foldMaybe(
         Either.Left(NO_PATCH_TO_TRANSPILE),
         curPatchPath =>
-          R.chain(
-            globals =>
-              transformProject(
-                this.props.project,
-                curPatchPath,
-                liveness,
-                globals
-              ),
-            eitherGlobals
-          ),
+          transformProject(this.props.project, curPatchPath, liveness, globals),
         this.props.currentPatchPath
       );
     } catch (unexpectedError) {

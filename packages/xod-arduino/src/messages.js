@@ -1,3 +1,6 @@
+import { isAmong } from 'xod-func-tools';
+import { GLOBALS_LITERALS } from 'xod-project';
+
 // Stanza creators.
 // See `xod-func-tools` package Stanza type
 export default {
@@ -7,4 +10,35 @@ export default {
     solution:
       'Try to express the node as a XOD patch node composed of smaller C++ nodes or group the outputs into a new custom type.',
   }),
+  GLOBAL_LITERAL_VALUE_MISSING: ({ key }) => {
+    const messages = {
+      UNKNOWN_LITERAL: {
+        title: 'Unknown literal',
+        note: `The program uses an unknown \`=${key}\` literal.`,
+        solution: `Check the literal spelling. See globals reference: https://xod.io/docs/reference/globals/`,
+      },
+      VALUE_MISSING: {
+        title: 'Value for the literal is missing',
+        note: `The program uses the \`=${key}\` literal, but XOD does not know the value for this literal.`,
+        solution:
+          'Report the bug on the forum and attach the xodball if possible',
+      },
+      XOD_USERNAME: {
+        title: 'Not logged in',
+        note:
+          'The program uses the `=XOD_USERNAME` literal. You should log in to make it work.',
+        solution:
+          'Open the Account sidebar to enter your login/password or sign up.',
+      },
+      XOD_PROJECT: {
+        title: 'Project name not set',
+        note: 'The program uses the `=XOD_PROJECT` literal.',
+        solution: 'Set the project name in Project Preferences and try again.',
+      },
+    };
+
+    if (messages[key]) return messages[key];
+    else if (isAmong(GLOBALS_LITERALS, key)) return messages.VALUE_MISSING;
+    return messages.UNKNOWN_LITERAL;
+  },
 };
