@@ -11,6 +11,7 @@ import {
   explodeMaybe,
   catMaybies,
   maybeProp,
+  enquote,
 } from 'xod-func-tools';
 import {
   Project,
@@ -148,7 +149,9 @@ export default class App extends React.Component {
 
     return Either.of(
       catMaybies({
-        XOD_USERNAME: R.chain(maybeProp('username'))(this.props.user),
+        XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
+          this.props.user
+        ),
       })
     );
   }

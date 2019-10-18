@@ -39,10 +39,15 @@ export const Liveness = EnumType('Liveness', [
   LIVENESS.SIMULATION,
 ]);
 
+const TLiteral = Model('TLiteral', {
+  key: $.String,
+  value: $.String,
+});
+
 export const TConfig = Model('TConfig', {
   XOD_DEBUG: $.Boolean,
   XOD_SIMULATION: $.Boolean,
-  XOD_USERNAME_NEEDED: $.Boolean,
+  literals: $.Array(TLiteral),
 });
 
 const TPatchOutput = Model('TPatchOutput', {

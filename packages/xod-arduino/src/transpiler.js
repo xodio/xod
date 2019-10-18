@@ -564,20 +564,23 @@ const transformProjectWithImpls = def(
       // :: Either Error TProject
       R.map(({ transformedProject, nodeIdsMap }) => {
         const patches = createTPatches(path, transformedProject, project);
-
         return R.merge(
           {
-            config: R.merge(
-              {
-                XOD_DEBUG: liveness === LIVENESS.DEBUG,
-                XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-                XOD_USERNAME_NEEDED: R.compose(
-                  R.contains(XP.GLOBALS_LITERALS.XOD_USERNAME),
-                  listBoundLiterals
-                )(path, transformedProject),
-              },
-              xodGlobals
-            ),
+            config: {
+              XOD_DEBUG: liveness === LIVENESS.DEBUG,
+              XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+              literals: R.compose(
+                R.map(literal => {
+                  const key = R.tail(literal); // Get rid of leading `=`
+                  return {
+                    key,
+                    value: xodGlobals[key],
+                  };
+                }),
+                R.filter(isAmong(XP.GLOBALS_LITERALS)),
+                listBoundLiterals
+              )(path, transformedProject),
+            },
           },
           R.applySpec({
             patches: R.always(patches),
