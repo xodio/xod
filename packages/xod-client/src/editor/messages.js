@@ -41,3 +41,16 @@ export const SIMULATION_STOPPED_BY_CLOSING_TAB = {
   note: 'You closed the debugger tab.',
   persistent: false,
 };
+
+export const LITERAL_NEEDS_USERNAME = {
+  title: 'Not logged in',
+  note:
+    'The program uses the `=XOD_USERNAME` literal. You should log in to make it work.',
+  solution: 'Open the Account sidebar to enter your login/password or sign up.',
+};
+
+export const LITERAL_NEEDS_PROJECT_NAME = {
+  title: 'Project name not set',
+  note: 'The program uses the `=XOD_PROJECT` literal.',
+  solution: 'Set the project name in Project Preferences and try again.',
+};

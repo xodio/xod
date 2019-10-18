@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import {
   foldMaybe,
   foldEither,
@@ -18,6 +18,7 @@ import {
   isValidIdentifier,
   IDENTIFIER_RULES,
   getPatchByPath,
+  getProjectName,
 } from 'xod-project';
 import {
   transformProject,
@@ -42,8 +43,9 @@ import { selectAll } from '../../editor/actions';
 import {
   NO_PATCH_TO_TRANSPILE,
   SIMULATION_ALREADY_RUNNING,
+  LITERAL_NEEDS_USERNAME,
+  LITERAL_NEEDS_PROJECT_NAME,
 } from '../../editor/messages';
-import { NOT_LOGGED_IN } from '../../user/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -145,13 +147,17 @@ export default class App extends React.Component {
   }
 
   getGlobals() {
-    if (this.props.user.isNothing) return Either.Left(NOT_LOGGED_IN);
+    // TODO: Make code prettier!
+    if (this.props.user.isNothing) return Either.Left(LITERAL_NEEDS_USERNAME);
+    const projectName = getProjectName(this.props.project);
+    if (!projectName.length) return Either.Left(LITERAL_NEEDS_PROJECT_NAME);
 
     return Either.of(
       catMaybies({
         XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
           this.props.user
         ),
+        XOD_PROJECT: R.compose(R.map(enquote), Maybe.of)(projectName),
       })
     );
   }
