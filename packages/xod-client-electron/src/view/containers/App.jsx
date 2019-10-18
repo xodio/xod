@@ -281,7 +281,8 @@ class App extends client.App {
         : this.props.actions.uploadToArduino();
 
     const eitherTProject = this.transformProjectForTranspiler(
-      debug ? LIVENESS.DEBUG : LIVENESS.NONE
+      debug ? LIVENESS.DEBUG : LIVENESS.NONE,
+      this.getGlobals()
     );
 
     stopDebuggerSession();
@@ -351,8 +352,11 @@ class App extends client.App {
       .then(() => {
         if (debug) {
           foldEither(
-            error =>
-              this.props.actions.addError(client.composeMessage(error.message)),
+            error => {
+              const err = client.composeMessage(error.message);
+              this.props.actions.addError(err);
+              return Promise.reject(err);
+            },
             tProject => {
               const nodeIdsMap = getNodeIdsMap(tProject);
               const nodePinKeysMap = getNodePinKeysMap(tProject);
@@ -398,7 +402,13 @@ class App extends client.App {
           proc.delete();
           return;
         }
-        proc.fail(formatLogError(err), 0);
+        if (err.type) {
+          proc.fail(formatLogError(err), 0);
+        }
+        if (err.title || err.note) {
+          this.props.actions.addError(err);
+          proc.delete();
+        }
       });
   }
 

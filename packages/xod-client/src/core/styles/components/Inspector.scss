@@ -232,7 +232,7 @@
   .inspector-input-wrapper {
     position: relative;
 
-    &.string-focused {
+    &.with-fake-quotes {
       &:before, &:after {
         position: absolute;
         top: 14px;

@@ -86,7 +86,7 @@ const WIDGET_MAPPING = {
     component: StringWidget,
     dataType: PIN_TYPE.STRING,
     keyDownHandlers: submitAndSelectOnEnter,
-    normalizeValue: R.pipe(unquote, enquote),
+    normalizeValue: R.unless(R.startsWith('='), R.pipe(unquote, enquote)),
   },
   [WIDGET_TYPE.LABEL]: {
     component: LabelWidget,

@@ -540,14 +540,25 @@ const checkForNativePatchesWithTooManyOutputs = def(
   }
 );
 
+// :: PatchPath -> Project -> [BoundLiteral]
+const listBoundLiterals = R.curry((curPatchPath, project) =>
+  R.compose(
+    R.unnest,
+    R.map(R.values),
+    R.pluck('boundLiterals'),
+    XP.listNodes,
+    XP.getPatchByPathUnsafe
+  )(curPatchPath, project)
+);
+
 /**
  * Transforms Project into TProject.
  * TProject is an object, that ready to be passed into renderer (handlebars)
  * and it has a ready-to-use values, nothing needed to compute anymore.
  */
 const transformProjectWithImpls = def(
-  'transformProjectWithImpls :: Project -> PatchPath -> Liveness -> Either Error TProject',
-  (project, path, liveness) =>
+  'transformProjectWithImpls :: Project -> PatchPath -> Liveness -> StrMap String -> Either Error TProject',
+  (project, path, liveness, xodGlobals) =>
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
       // :: Either Error TProject
@@ -556,10 +567,17 @@ const transformProjectWithImpls = def(
 
         return R.merge(
           {
-            config: {
-              XOD_DEBUG: liveness === LIVENESS.DEBUG,
-              XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-            },
+            config: R.merge(
+              {
+                XOD_DEBUG: liveness === LIVENESS.DEBUG,
+                XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+                XOD_USERNAME_NEEDED: R.compose(
+                  R.contains(XP.GLOBALS_LITERALS.XOD_USERNAME),
+                  listBoundLiterals
+                )(path, transformedProject),
+              },
+              xodGlobals
+            ),
           },
           R.applySpec({
             patches: R.always(patches),
@@ -800,7 +818,7 @@ export const getPinsAffectedByErrorRaisers = def(
 );
 
 export const transformProject = def(
-  'transformProject :: Project -> PatchPath -> Liveness -> Either Error TProject',
+  'transformProject :: Project -> PatchPath -> Liveness -> StrMap String -> Either Error TProject',
   transformProjectWithImpls
 );
 

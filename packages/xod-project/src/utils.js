@@ -194,6 +194,11 @@ export const isValidCharLiteral = def(
   R.both(isLikeCharLiteral, R.complement(isAmong(unescapedCharLiterals)))
 );
 
+export const isValidStringLiteral = def(
+  'isValidStringLiteral :: String -> Boolean',
+  R.either(isAmong(R.values(CONST.GLOBALS_LITERALS)), R.test(/^".*"$/gi))
+);
+
 export const getTypeFromLiteral = def(
   'getTypeFromLiteral :: DataValue -> Either Error DataType',
   literal => {
@@ -206,7 +211,7 @@ export const getTypeFromLiteral = def(
     if (isAmong(R.values(CONST.INPUT_PULSE_PIN_BINDING_OPTIONS), literal))
       return Either.of(CONST.PIN_TYPE.PULSE);
 
-    if (R.test(/^".*"$/gi, literal)) return Either.of(CONST.PIN_TYPE.STRING);
+    if (isValidStringLiteral(literal)) return Either.of(CONST.PIN_TYPE.STRING);
 
     if (
       R.either(

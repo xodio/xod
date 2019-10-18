@@ -9,6 +9,8 @@ import {
   $Maybe,
   fail,
   explodeMaybe,
+  catMaybies,
+  maybeProp,
 } from 'xod-func-tools';
 import {
   Project,
@@ -40,6 +42,7 @@ import {
   NO_PATCH_TO_TRANSPILE,
   SIMULATION_ALREADY_RUNNING,
 } from '../../editor/messages';
+import { NOT_LOGGED_IN } from '../../user/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -50,6 +53,7 @@ export default class App extends React.Component {
     this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(
       this
     );
+    this.getGlobals = this.getGlobals.bind(this);
 
     /**
      * We have to handle some hotkeys, because:
@@ -88,7 +92,7 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )(LIVENESS.NONE);
+    )(LIVENESS.NONE, Either.of({}));
   }
 
   onRunSimulation() {
@@ -97,16 +101,18 @@ export default class App extends React.Component {
       return;
     }
     this.props.actions.runSimulationRequested();
+
     const eitherTProject = this.transformProjectForTranspiler(
-      LIVENESS.SIMULATION
+      LIVENESS.SIMULATION,
+      this.getGlobals()
     );
 
     R.compose(
       foldEither(
-        R.compose(
-          this.props.actions.addError,
-          R.when(R.is(Error), formatErrorMessage)
-        ),
+        R.compose(err => {
+          this.props.actions.addError(err);
+          this.props.actions.abortSimulation();
+        }, R.when(R.is(Error), formatErrorMessage)),
         ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
           this.props.actions.runSimulation(
             explodeMaybe(
@@ -137,12 +143,31 @@ export default class App extends React.Component {
     )(eitherTProject);
   }
 
-  transformProjectForTranspiler(liveness) {
+  getGlobals() {
+    if (this.props.user.isNothing) return Either.Left(NOT_LOGGED_IN);
+
+    return Either.of(
+      catMaybies({
+        XOD_USERNAME: R.chain(maybeProp('username'))(this.props.user),
+      })
+    );
+  }
+
+  transformProjectForTranspiler(liveness, eitherGlobals) {
     try {
       return foldMaybe(
         Either.Left(NO_PATCH_TO_TRANSPILE),
         curPatchPath =>
-          transformProject(this.props.project, curPatchPath, liveness),
+          R.chain(
+            globals =>
+              transformProject(
+                this.props.project,
+                curPatchPath,
+                liveness,
+                globals
+              ),
+            eitherGlobals
+          ),
         this.props.currentPatchPath
       );
     } catch (unexpectedError) {

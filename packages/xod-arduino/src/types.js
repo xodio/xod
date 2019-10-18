@@ -42,6 +42,7 @@ export const Liveness = EnumType('Liveness', [
 export const TConfig = Model('TConfig', {
   XOD_DEBUG: $.Boolean,
   XOD_SIMULATION: $.Boolean,
+  XOD_USERNAME_NEEDED: $.Boolean,
 });
 
 const TPatchOutput = Model('TPatchOutput', {
