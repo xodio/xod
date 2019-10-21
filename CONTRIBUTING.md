@@ -22,9 +22,7 @@ There are few categories of issues in the XOD GitHub repository:
 
 Classify issue you want to create in advance. If it’s more like a feature or an opinionated tweak, use XOD [forum](https://forum.xod.io) to discuss it. Features come from the [Roadmap](https://github.com/xodio/xod/wiki/Roadmap) and community brainstorms. GitHub issues are things to be scheduled, tracked, and implemented, they are _not_ a place for discussions.
 
-New issues title and body should follow a common structure defined in [ISSUE_TEMPLATE](.github/ISSUE_TEMPLATE.md).
-
-To create a new issue fill in required sections from the issue template and delete sections irrelevant for this issue type.
+If sure, [start a new issue using the proper template](https://github.com/xodio/xod/issues/new/choose).
 
 ## Making changes in the code
 
