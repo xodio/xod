@@ -36,4 +36,5 @@ export default {
   uploadProgress: null,
   interactiveErroredNodePins: {},
   pinsAffectedByErrorRaisers: {},
+  globals: {},
 };

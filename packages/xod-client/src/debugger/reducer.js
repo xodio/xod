@@ -474,6 +474,7 @@ export default (state = initialState, action) => {
         ),
         R.assoc('activeSession', SESSION_TYPE.DEBUG),
         R.assoc('isOutdated', false),
+        R.assoc('globals', action.payload.globals),
         showDebuggerPane
       )(state);
     }
@@ -499,6 +500,7 @@ export default (state = initialState, action) => {
         R.assoc('pinsAffectedByErrorRaisers', {}),
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
+        R.assoc('globals', {}),
         R.assoc('activeSession', SESSION_TYPE.NONE)
       )(state);
     case MARK_DEBUG_SESSION_OUTDATED:
@@ -570,6 +572,7 @@ export default (state = initialState, action) => {
         R.assoc('uploadProgress', null),
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
         R.assoc('nodePinKeysMap', action.payload.nodePinKeysMap),
+        R.assoc('globals', action.payload.globals),
         rekeyAndAssocPinsAffectedByErrorRaisers(
           invertedNodeIdsMap,
           action.payload.pinsAffectedByErrorRaisers
@@ -583,6 +586,7 @@ export default (state = initialState, action) => {
         R.assoc('watchNodeValues', {}),
         R.assoc('interactiveErroredNodePins', {}),
         R.assoc('pinsAffectedByErrorRaisers', {}),
+        R.assoc('globals', {}),
         R.assoc('isPreparingSimulation', false),
         hideProgressBar
       )(state);
@@ -593,6 +597,7 @@ export default (state = initialState, action) => {
         ),
         R.assoc('activeSession', SESSION_TYPE.NONE),
         R.assoc('isPreparingSimulation', false),
+        R.assoc('globals', {}),
         hideProgressBar,
         showDebuggerPane
       )(state);

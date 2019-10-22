@@ -40,9 +40,17 @@ export default ({ getState }) => next => action => {
         client.getInvertedDebuggerNodeIdsMap
       )(state);
 
+      const globals = client.getStoredGlobals(state);
+
+      // If value looks like a global literal — get value from the stored globals
+      const valueToSend = R.when(
+        R.startsWith('='),
+        R.compose(R.propOr(value, R.__, globals), R.tail)
+      )(value);
+
       ipcRenderer.send(
         DEBUG_SERIAL_SEND,
-        formatTweakMessage(nodeType, debuggerNodeId, value)
+        formatTweakMessage(nodeType, debuggerNodeId, valueToSend)
       );
     }
   }

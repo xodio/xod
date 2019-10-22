@@ -251,3 +251,5 @@ export const getInteractiveErroredNodePinsForCurrentChunk = createMemoizedSelect
       maybeTabId
     )
 );
+
+export const getStoredGlobals = R.compose(R.prop('globals'), getDebuggerState);

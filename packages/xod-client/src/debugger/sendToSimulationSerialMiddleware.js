@@ -8,6 +8,7 @@ import {
   isSimulationRunning,
   getCurrentChunksPath,
   getInvertedDebuggerNodeIdsMap,
+  getStoredGlobals,
 } from './selectors';
 import * as editorSelectors from '../editor/selectors';
 
@@ -39,7 +40,15 @@ export default ({ getState }) => next => action => {
         getInvertedDebuggerNodeIdsMap
       )(state);
 
-      const msg = formatTweakMessage(nodeType, debuggerNodeId, value);
+      const globals = getStoredGlobals(state);
+
+      // If value looks like a global literal — get value from the stored globals
+      const valueToSend = R.when(
+        R.startsWith('='),
+        R.compose(R.propOr(value, R.__, globals), R.tail)
+      )(value);
+
+      const msg = formatTweakMessage(nodeType, debuggerNodeId, valueToSend);
       const worker = editorSelectors.simulationWorker(state);
       worker.sendToWasm(msg);
     }
