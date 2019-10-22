@@ -564,10 +564,10 @@ const transformProjectWithImpls = def(
       // :: Either Error TProject
       R.chain(({ transformedProject, nodeIdsMap }) => {
         const patches = createTPatches(path, transformedProject, project);
-        const eitherLiterals = R.compose(
+        const eitherGlobals = R.compose(
           R.sequence(Either.of),
-          R.map(literal => {
-            const key = R.tail(literal); // Get rid of leading `=`
+          R.map(globals => {
+            const key = R.tail(globals); // Get rid of leading `=`
 
             if (!R.has(key, xodGlobals))
               return fail('GLOBAL_LITERAL_VALUE_MISSING', { key });
@@ -582,13 +582,13 @@ const transformProjectWithImpls = def(
         )(path, transformedProject);
 
         return R.map(
-          literals =>
+          globals =>
             R.merge(
               {
                 config: {
                   XOD_DEBUG: liveness === LIVENESS.DEBUG,
                   XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-                  literals,
+                  globals,
                 },
               },
               R.applySpec({
@@ -596,7 +596,7 @@ const transformProjectWithImpls = def(
                 nodes: createTNodes(path, patches, nodeIdsMap),
               })(transformedProject)
             ),
-          eitherLiterals
+          eitherGlobals
         );
       }),
       R.chain(toposortProject(path)),

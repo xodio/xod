@@ -15,7 +15,7 @@
 // Uncomment to trace the program runtime in the Serial Monitor
 //#define XOD_DEBUG_ENABLE_TRACE
 
-{{#each literals}}
+{{#each globals}}
 {{#if value}}
 #define {{key}} {{value}}
 {{else}}

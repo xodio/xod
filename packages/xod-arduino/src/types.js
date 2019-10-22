@@ -39,7 +39,7 @@ export const Liveness = EnumType('Liveness', [
   LIVENESS.SIMULATION,
 ]);
 
-const TLiteral = Model('TLiteral', {
+const TGlobal = Model('TGlobal', {
   key: $.String,
   value: $.String,
 });
@@ -47,7 +47,7 @@ const TLiteral = Model('TLiteral', {
 export const TConfig = Model('TConfig', {
   XOD_DEBUG: $.Boolean,
   XOD_SIMULATION: $.Boolean,
-  literals: $.Array(TLiteral),
+  globals: $.Array(TGlobal),
 });
 
 const TPatchOutput = Model('TPatchOutput', {
