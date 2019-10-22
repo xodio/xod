@@ -2,28 +2,42 @@
 
 [![CircleCI](https://circleci.com/gh/xodio/xod/tree/master.svg?style=shield)](https://circleci.com/gh/xodio/xod/tree/master) [![AppVeyor](https://ci.appveyor.com/api/projects/status/vk5ngjb4xw4m60ks?svg=true)](https://ci.appveyor.com/project/xod/xod)
 
-XOD is a visual programming language for microcontrollers. For documentation and downloads visit https://xod.io.
+XOD is a visual programming language for microcontrollers. This repository contains sources for XOD language core, XOD IDE and XOD standard library.
 
-This repository contains sources for XOD language core, XOD IDE and XOD standard library. XOD documentation is in the [xod-docs](https://github.com/xodio/xod-docs) repository.
+![Xoding demo](./.github/xoding.gif)
 
-## Development copy setup
+## Installation & Quick start
 
-We use [Yarn](https://yarnpkg.com/lang/en/) to run routine tasks on source files. Make sure it is available on your system. Clone the repository and set working directory to its root. Then run
+Download the latest IDE version for desktop or run the browser-based IDE at <https://xod.io>.
 
-    $ yarn
+Documentation and tutorials are at <https://xod.io/docs/>.
 
-to install all JS dependencies.
+## Building from source
 
-### Browser IDE
+XOD is written in JavaScript and ReasonML. You need Node.js and Yarn to build from source. Make sure they are available on your system.
 
-    $ yarn dev:browser
+Clone the repository and set working directory to its root. Then run:
 
-Open <http://localhost:8080> in your browser.
+```bash
+# Install all JavaScript and ReasonML dependencies
+yarn
 
-### Desktop IDE
+# Build all packages of XOD
+yarn build
+```
 
-    $ yarn build:electron
-    $ yarn start:electron
+To start the desktop IDE run:
+
+```bash
+yarn start:electron
+```
+
+Alternatively, run browser-based IDE:
+
+```bash
+yarn dev:browser
+# IDE is available at <http://localhost:8080>
+```
 
 ## Directory structure
 
@@ -45,9 +59,9 @@ You can run several commands on source files. They are available as yarn subcomm
 * `yarn test` — run unit tests
 * `yarn test-cpp` — run C++ code tests
 * `yarn test-func` — run functional tests
+* `yarn tabtest` — run standard library tabular tests
 * `yarn lint` — run the linter to check code style
 * `yarn verify` — build, lint, test; run this prior to a pull request
-* `yarn ci` — install & verify; CI-server uses this command
 * `yarn start:electron` — starts desktop IDE
 * `yarn start:spectron-repl` — starts functional tests environment
 * `yarn storybook` — starts React components viewer for visual inspection
@@ -59,11 +73,15 @@ Note that dependencies between tasks are not resolved. `test` and `start:*` expe
 
 Many commands (notably `build`, `dev`, `test`) support package scoping to save development time. To rebuild only `xod-project`:
 
-    $ yarn build --scope xod-project
+```bash
+yarn build --scope xod-project
+```
 
 To rebuild `xod-project` and its dependencies:
 
-    $ yarn build --scope xod-project --include-filtered-dependencies
+```bash
+yarn build --scope xod-project --include-filtered-dependencies
+```
 
 Those are standard [Lerna flags](https://github.com/lerna/lerna#flags).
 
@@ -75,13 +93,13 @@ You can set `XOD_DEBUG_TESTS` environment variable to keep IDE open on failure: 
 
 Use `yarn start:spectron-repl` to run an interactive session and control the IDE window programmatically.
 
-### Running C++ tests
+### Running C++ and tabular tests
 
-You need `avr-gcc` and [PlatformIO Core](http://platformio.org/get-started/cli) to be installed system-wide to run C++ code tests. They are available as OS packages for most platforms.
+You need `gcc` and `avr-gcc` to be installed system-wide to run C++ code tests. They are available as OS packages for most platforms.
 
 ## License
 
-Copyright 2017 XOD LLC.
+Copyright 2017-2019 XOD Inc.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License, version 3, as published by the Free Software Foundation.
 
@@ -94,5 +112,3 @@ As a special exception, the copyright holders give permission to link the code o
 ## Contributing
 
 Feel free to contribute to the project! See the general [Contibutor’s guide](https://xod.io/docs/contributing/) and [GitHub contribution guidelines](./CONTRIBUTING.md).
-
-Jetbrains users can benefit from [XOD Jetbrains Live Template](tools/xod-jetbrains-live-template/xod-jetbrains-live-template.md).
