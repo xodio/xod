@@ -1,11 +1,10 @@
 import * as R from 'ramda';
 import Handlebars from 'handlebars';
 
-import { unquote, reverseLookup } from 'xod-func-tools';
+import { unquote } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { def } from './types';
-import { SPECIAL_STRING_LITERAL_REPLACEMENTS } from './constants';
 
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
@@ -91,13 +90,6 @@ const cppType = def(
   )
 );
 
-// Replaces special string literal with the C++ replacement
-// :: Literal -> String
-const placeSpecialStringLiteral = R.compose(
-  R.prop(R.__, SPECIAL_STRING_LITERAL_REPLACEMENTS),
-  reverseLookup(R.__, XP.GLOBALS_LITERALS)
-);
-
 // Formats a plain JS string into C++ string object
 const cppStringLiteral = def(
   'cppStringLiteral :: String -> String',
@@ -106,10 +98,10 @@ const cppStringLiteral = def(
     [R.isEmpty, R.always('XString()')],
     // Empty string literal: `""`
     [R.pipe(unquote, R.isEmpty), R.always('XString()')],
-    // Special string literal: `=XOD_USERNAME`
+    // Special string literal: `=XOD_LITERAL`
     [
       str => R.any(R.equals(str), R.values(XP.GLOBALS_LITERALS)),
-      placeSpecialStringLiteral,
+      R.tail, // `XOD_LITERAL`
     ],
     // All other strings: "Hello, world"
     [R.T, str => `XStringCString("${R.replace(/"/g, '\\"', unquote(str))}")`],

@@ -562,27 +562,41 @@ const transformProjectWithImpls = def(
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
       // :: Either Error TProject
-      R.map(({ transformedProject, nodeIdsMap }) => {
+      R.chain(({ transformedProject, nodeIdsMap }) => {
         const patches = createTPatches(path, transformedProject, project);
+        const eitherGlobals = R.compose(
+          R.sequence(Either.of),
+          R.map(globals => {
+            const key = R.tail(globals); // Get rid of leading `=`
 
-        return R.merge(
-          {
-            config: R.merge(
+            if (!R.has(key, xodGlobals))
+              return fail('GLOBAL_LITERAL_VALUE_MISSING', { key });
+
+            return Either.of({
+              key,
+              value: xodGlobals[key],
+            });
+          }),
+          R.filter(isAmong(XP.GLOBALS_LITERALS)),
+          listBoundLiterals
+        )(path, transformedProject);
+
+        return R.map(
+          globals =>
+            R.merge(
               {
-                XOD_DEBUG: liveness === LIVENESS.DEBUG,
-                XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-                XOD_USERNAME_NEEDED: R.compose(
-                  R.contains(XP.GLOBALS_LITERALS.XOD_USERNAME),
-                  listBoundLiterals
-                )(path, transformedProject),
+                config: {
+                  XOD_DEBUG: liveness === LIVENESS.DEBUG,
+                  XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+                  globals,
+                },
               },
-              xodGlobals
+              R.applySpec({
+                patches: R.always(patches),
+                nodes: createTNodes(path, patches, nodeIdsMap),
+              })(transformedProject)
             ),
-          },
-          R.applySpec({
-            patches: R.always(patches),
-            nodes: createTNodes(path, patches, nodeIdsMap),
-          })(transformedProject)
+          eitherGlobals
         );
       }),
       R.chain(toposortProject(path)),

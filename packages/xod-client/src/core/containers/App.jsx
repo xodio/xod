@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
-import { Either } from 'ramda-fantasy';
+import { Maybe, Either } from 'ramda-fantasy';
 import {
   foldMaybe,
   foldEither,
@@ -11,12 +11,14 @@ import {
   explodeMaybe,
   catMaybies,
   maybeProp,
+  enquote,
 } from 'xod-func-tools';
 import {
   Project,
   isValidIdentifier,
   IDENTIFIER_RULES,
   getPatchByPath,
+  getProjectName,
 } from 'xod-project';
 import {
   transformProject,
@@ -42,7 +44,6 @@ import {
   NO_PATCH_TO_TRANSPILE,
   SIMULATION_ALREADY_RUNNING,
 } from '../../editor/messages';
-import { NOT_LOGGED_IN } from '../../user/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -92,7 +93,7 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )(LIVENESS.NONE, Either.of({}));
+    )(LIVENESS.NONE, {});
   }
 
   onRunSimulation() {
@@ -144,30 +145,24 @@ export default class App extends React.Component {
   }
 
   getGlobals() {
-    if (this.props.user.isNothing) return Either.Left(NOT_LOGGED_IN);
-
-    return Either.of(
-      catMaybies({
-        XOD_USERNAME: R.chain(maybeProp('username'))(this.props.user),
-      })
-    );
+    return catMaybies({
+      XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
+        this.props.user
+      ),
+      XOD_PROJECT: R.compose(
+        R.map(enquote),
+        R.ifElse(R.length, Maybe.of, Maybe.Nothing),
+        getProjectName
+      )(this.props.project),
+    });
   }
 
-  transformProjectForTranspiler(liveness, eitherGlobals) {
+  transformProjectForTranspiler(liveness, globals) {
     try {
       return foldMaybe(
         Either.Left(NO_PATCH_TO_TRANSPILE),
         curPatchPath =>
-          R.chain(
-            globals =>
-              transformProject(
-                this.props.project,
-                curPatchPath,
-                liveness,
-                globals
-              ),
-            eitherGlobals
-          ),
+          transformProject(this.props.project, curPatchPath, liveness, globals),
         this.props.currentPatchPath
       );
     } catch (unexpectedError) {
