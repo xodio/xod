@@ -137,6 +137,7 @@ export const defaultizeProject = R.compose(
     version: '0.0.0',
     patches: {},
     name: 'test-project-name',
+    apiKey: '',
   })
 );
 

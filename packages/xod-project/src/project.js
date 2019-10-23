@@ -53,6 +53,7 @@ export const createProject = def('createProject :: () -> Project', () => ({
   version: '0.0.0',
   patches: {},
   name: '',
+  apiKey: '',
 }));
 
 export const getProjectName = def(
@@ -73,6 +74,16 @@ export const getProjectVersion = def(
 export const setProjectVersion = def(
   'setProjectVersion :: Version -> Project -> Project',
   R.assoc('version')
+);
+
+export const getApiKey = def(
+  'getXcsApiKey :: Project -> String',
+  R.prop('apiKey')
+);
+
+export const setApiKey = def(
+  'setXcsApiKey :: String -> Project -> Project',
+  R.assoc('apiKey')
 );
 
 /**
