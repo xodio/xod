@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Icon from 'react-fa';
 import * as XP from 'xod-project';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import PopupForm from '../../utils/components/PopupForm';
@@ -16,6 +17,8 @@ const getInitialState = project => {
     version,
     dirtyVersion: version,
     description: XP.getProjectDescription(project),
+    apiKey: XP.getApiKey(project),
+    isGenerating: false,
   };
 };
 
@@ -29,17 +32,19 @@ class PopupProjectPreferences extends React.Component {
     this.onLicenseChange = this.onLicenseChange.bind(this);
     this.onVersionChange = this.onVersionChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
+    this.onApiKeyChange = this.onApiKeyChange.bind(this);
     this.commitVersionChange = this.commitVersionChange.bind(this);
+    this.generateApiKey = this.generateApiKey.bind(this);
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(getInitialState(nextProps.project));
+    this.setState({ apiKey: XP.getApiKey(nextProps.project) });
   }
 
   onUpdateClicked() {
-    const { name, license, version, description } = this.state;
-    this.props.onChange({ name, license, version, description });
+    const { name, license, version, description, apiKey } = this.state;
+    this.props.onChange({ name, license, version, description, apiKey });
   }
   onNameChange(event) {
     const val = lowercaseKebabMask(event.target.value);
@@ -54,6 +59,9 @@ class PopupProjectPreferences extends React.Component {
   onDescriptionChange(event) {
     this.setState({ description: event.target.value });
   }
+  onApiKeyChange(event) {
+    this.setState({ apiKey: event.target.value });
+  }
 
   commitVersionChange() {
     if (XP.isValidVersion(this.state.dirtyVersion)) {
@@ -61,6 +69,18 @@ class PopupProjectPreferences extends React.Component {
     } else {
       this.setState({ dirtyVersion: this.state.version });
     }
+  }
+
+  generateApiKey() {
+    this.setState({
+      isGenerating: true,
+    });
+
+    this.props.onGenerateApiKey(this.state.name).then(() =>
+      this.setState({
+        isGenerating: false,
+      })
+    );
   }
 
   isValidName() {
@@ -116,6 +136,36 @@ class PopupProjectPreferences extends React.Component {
           />
         </div>
         <div className="ModalContent">
+          <label htmlFor="cloudApiKey">XOD Cloud API Key: </label>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
+          >
+            <input
+              className="inspectorTextInput inspectorInput--full-width"
+              type="text"
+              id="cloudApiKey"
+              value={this.state.apiKey}
+              onChange={this.onApiKeyChange}
+            />
+            <button
+              className="Button Button--small"
+              style={{ marginLeft: '1em', width: '100px' }}
+              onClick={this.generateApiKey}
+              disabled={this.state.isGenerating}
+            >
+              {this.state.isGenerating ? (
+                <Icon name="circle-o-notch" spin />
+              ) : (
+                'Generate'
+              )}
+            </button>
+          </div>
+        </div>
+        <div className="ModalContent">
           <label htmlFor="projectDescription">Description: </label>
           <textarea
             className="inspectorTextInput inspectorInput--full-width"
@@ -141,6 +191,7 @@ class PopupProjectPreferences extends React.Component {
 PopupProjectPreferences.propTypes = {
   isVisible: PropTypes.bool,
   project: sanctuaryPropType(XP.Project), // eslint-disable-line react/no-unused-prop-types
+  onGenerateApiKey: PropTypes.func,
   onChange: PropTypes.func,
   onClose: PropTypes.func,
 };

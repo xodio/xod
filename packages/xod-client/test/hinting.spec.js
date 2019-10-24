@@ -158,6 +158,7 @@ describe('Hinting', () => {
           license: 'MIT',
           description: 'test',
           version: '0.0.1',
+          apiKey: 'test-test-test',
         })
       );
       assert.lengthOf(dispatchedActions, 1);

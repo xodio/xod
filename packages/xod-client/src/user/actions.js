@@ -45,7 +45,10 @@ const refreshGrant = () => dispatch =>
  * Where `Headers` is an object, which will be modified with
  * `Authorization` header.
  */
-const requestAuthorized = (requestAction, headers) => (dispatch, getState) => {
+export const requestAuthorized = (requestAction, headers) => (
+  dispatch,
+  getState
+) => {
   const headersWithAuthorization = R.compose(
     foldMaybe(headers, accessToken => ({
       Authorization: `Bearer ${accessToken}`,
@@ -56,6 +59,7 @@ const requestAuthorized = (requestAction, headers) => (dispatch, getState) => {
 
   const run = () => requestAction(headersWithAuthorization);
   return run()
+    .catch(() => Promise.reject(Messages.SERVICE_UNAVAILABLE))
     .then(res => {
       if (res.status > 400) {
         return dispatch(refreshGrant()).then(() => run());
@@ -63,11 +67,8 @@ const requestAuthorized = (requestAction, headers) => (dispatch, getState) => {
       return res;
     })
     .then(res => {
-      if (!res.ok) {
-        const err = new Error(res.statusText);
-        err.status = res.status;
-        throw err;
-      }
+      if (res.status > 400) return Promise.reject(Messages.LOG_IN_TO_CONTINUE);
+      if (!res.ok) return Promise.reject(Messages.SERVICE_UNAVAILABLE);
       return res.json();
     });
 };

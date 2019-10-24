@@ -137,7 +137,8 @@ export default (state = {}, action) => {
         XP.setProjectName(action.payload.name),
         XP.setProjectVersion(action.payload.version),
         XP.setProjectLicense(action.payload.license),
-        XP.setProjectDescription(action.payload.description)
+        XP.setProjectDescription(action.payload.description),
+        XP.setApiKey(action.payload.apiKey)
       )(state);
 
     case AT.PROJECT_OPEN_WORKSPACE: {
@@ -481,6 +482,9 @@ export default (state = {}, action) => {
         state
       );
     }
+
+    case AT.PROJECT_SET_API_KEY:
+      return XP.setApiKey(action.payload, state);
 
     default:
       return state;

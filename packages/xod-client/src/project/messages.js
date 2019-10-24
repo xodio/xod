@@ -19,3 +19,9 @@ export const LINK_ERRORS = {
     persistent: false,
   },
 };
+
+export const PROJECT_NAME_NEEDED_TO_GENERATE_APIKEY = {
+  title: 'Project name not set',
+  note: 'To issue a new API token the project name must not be empty.',
+  solution: 'Set the project name in Project Preferences and try again.',
+};
