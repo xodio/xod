@@ -69,6 +69,7 @@ describe('project reducer', () => {
           license: 'TEST',
           version: '1.2.3',
           description: 'Test passed',
+          apiKey: 'test',
         })
       );
       const proj = getProject(store.getState());

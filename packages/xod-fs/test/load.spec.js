@@ -26,10 +26,12 @@ describe('Loader', () => {
           path: path.resolve(workspace, projectPath),
           content: {
             authors: ['Amperka team'],
+            apiKey: '',
             description: '',
             license: '',
             name: 'awesome-project',
             version: '0.0.42',
+            patches: {},
           },
         },
       ]);

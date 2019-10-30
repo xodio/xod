@@ -51,3 +51,7 @@ export const getAuthFormUrl = () => `https://${HOSTNAME}/auth/#signup`;
 
 export const getPasswordResetUrl = () =>
   `https://auth.${HOSTNAME}/auth/realms/xod/login-actions/reset-credentials`;
+
+export const getApiUrl = () => `https://api.${HOSTNAME}`;
+
+export const getApiTokensUrl = () => `${getApiUrl()}/iot/tokens`;

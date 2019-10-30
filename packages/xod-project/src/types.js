@@ -147,6 +147,7 @@ export const Project = Model('Project', {
   license: $.String,
   version: Version,
   description: $.String,
+  apiKey: $.String,
 });
 
 export const TerminalNode = NullaryType(

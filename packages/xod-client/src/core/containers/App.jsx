@@ -186,14 +186,15 @@ export default class App extends React.Component {
   }
 
   renderPopupProjectPreferences() {
-    return (
+    return this.props.popups.projectPreferences ? (
       <PopupProjectPreferences
-        isVisible={this.props.popups.projectPreferences}
+        isVisible
         project={this.props.project}
         onChange={this.props.actions.updateProjectMeta}
         onClose={this.props.actions.hideProjectPreferences}
+        onGenerateApiKey={this.props.actions.generateApiKey}
       />
-    );
+    ) : null;
   }
 
   renderPopupPublishProject() {
@@ -280,6 +281,7 @@ App.propTypes = {
     runSimulation: PropTypes.func.isRequired,
     runSimulationRequested: PropTypes.func.isRequired,
     abortSimulation: PropTypes.func.isRequired,
+    generateApiKey: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -327,4 +329,5 @@ App.actions = {
   runSimulation: actions.runSimulation,
   runSimulationRequested: actions.runSimulationRequested,
   abortSimulation: actions.abortSimulation,
+  generateApiKey: actions.generateApiKey,
 };

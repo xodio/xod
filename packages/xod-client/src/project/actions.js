@@ -10,12 +10,15 @@ import * as ActionType from './actionTypes';
 import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
 import { getGrant } from '../user/selectors';
-import { fetchGrant } from '../user/actions';
+import { fetchGrant, requestAuthorized } from '../user/actions';
 import { LOG_IN_TO_CONTINUE } from '../user/messages';
 import { AUTHORIZATION_NEEDED } from '../user/errorCodes';
-import { SUCCESSFULLY_PUBLISHED } from './messages';
+import {
+  SUCCESSFULLY_PUBLISHED,
+  PROJECT_NAME_NEEDED_TO_GENERATE_APIKEY,
+} from './messages';
 import { getProject } from './selectors';
-import { getPmSwaggerUrl } from '../utils/urls';
+import { getPmSwaggerUrl, getApiTokensUrl } from '../utils/urls';
 import composeMessage from '../messages/composeMessage';
 
 //
@@ -31,13 +34,20 @@ export const createProject = () => ({
   type: ActionType.PROJECT_CREATE,
 });
 
-export const updateProjectMeta = ({ name, license, description, version }) => ({
+export const updateProjectMeta = ({
+  name,
+  license,
+  description,
+  version,
+  apiKey,
+}) => ({
   type: ActionType.PROJECT_UPDATE_META,
   payload: {
     name,
     license,
     description,
     version,
+    apiKey,
   },
 });
 
@@ -354,3 +364,36 @@ export const addBusNode = (patchPath, position, renderableNode, pinKey) => {
     },
   };
 };
+
+export const setApiKey = apiKey => ({
+  type: ActionType.PROJECT_SET_API_KEY,
+  payload: apiKey,
+});
+
+const requestNewApiKey = projectName => dispatch => {
+  if (!projectName)
+    return Promise.reject(PROJECT_NAME_NEEDED_TO_GENERATE_APIKEY);
+
+  return dispatch(
+    requestAuthorized(
+      headers =>
+        fetch(getApiTokensUrl(), {
+          method: 'POST',
+          body: JSON.stringify({
+            label: projectName,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+          credentials: 'include',
+        }),
+      {}
+    )
+  ).then(R.prop('id'));
+};
+
+export const generateApiKey = projectName => dispatch =>
+  dispatch(requestNewApiKey(projectName))
+    .then(apiKey => dispatch(setApiKey(apiKey)))
+    .catch(errMsg => dispatch(addError(errMsg)));

@@ -25,6 +25,7 @@ export const OPTIONAL_PROJECT_FIELDS = {
   license: '', // MIT?
   version: '0.0.0',
   description: '',
+  apiKey: '',
 };
 
 export const addMissingOptionalNodeFields = R.merge(OPTIONAL_NODE_FIELDS);

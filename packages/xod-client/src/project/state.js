@@ -2,6 +2,7 @@
 
 export default {
   authors: [],
+  apiKey: '',
   description: '',
   license: '',
   name: '',
