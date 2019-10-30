@@ -55,3 +55,5 @@ export const getPasswordResetUrl = () =>
 export const getApiUrl = () => `https://api.${HOSTNAME}`;
 
 export const getApiTokensUrl = () => `${getApiUrl()}/iot/tokens`;
+
+export const getRenewApiTokenUrl = apiKey => `${getApiTokensUrl()}/${apiKey}`;

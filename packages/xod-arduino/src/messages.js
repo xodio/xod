@@ -23,22 +23,13 @@ export default {
         solution:
           'Report the bug on the forum and attach the xodball if possible',
       },
-      XOD_USERNAME: {
-        title: 'Not logged in',
-        note:
-          'The program uses the `=XOD_USERNAME` literal. You should log in to make it work.',
-        solution:
-          'Open the Account sidebar to enter your login/password or sign up.',
-      },
-      XOD_PROJECT: {
-        title: 'Project name not set',
-        note: 'The program uses the `=XOD_PROJECT` literal.',
-        solution: 'Set the project name in Project Preferences and try again.',
-      },
     };
 
-    if (messages[key]) return messages[key];
-    else if (isAmong(GLOBALS_LITERALS, key)) return messages.VALUE_MISSING;
+    if (messages[key]) {
+      return messages[key];
+    } else if (isAmong(GLOBALS_LITERALS, `=${key}`)) {
+      return messages.VALUE_MISSING;
+    }
     return messages.UNKNOWN_LITERAL;
   },
 };

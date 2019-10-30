@@ -61,14 +61,21 @@ export const requestAuthorized = (requestAction, headers) => (
   return run()
     .catch(() => Promise.reject(Messages.SERVICE_UNAVAILABLE))
     .then(res => {
-      if (res.status > 400) {
+      if (res.status === 401) {
         return dispatch(refreshGrant()).then(() => run());
       }
       return res;
     })
     .then(res => {
-      if (res.status > 400) return Promise.reject(Messages.LOG_IN_TO_CONTINUE);
-      if (!res.ok) return Promise.reject(Messages.SERVICE_UNAVAILABLE);
+      if (res.status === 401)
+        return Promise.reject(Messages.LOG_IN_TO_CONTINUE);
+      if (res.status >= 500)
+        return Promise.reject(Messages.SERVICE_UNAVAILABLE);
+      if (!res.ok) {
+        const err = new Error(res.statusText);
+        err.status = res.status;
+        return Promise.reject(err);
+      }
       return res.json();
     });
 };

@@ -12,6 +12,14 @@ export const rejectWithCode = R.curry((code, err) =>
   Promise.reject(Object.assign(err, { errorCode: code }))
 );
 
+// :: StrMap (Promise a b) -> Promise (StrMap a) b
+export const allValues = promises => {
+  const pairs = R.toPairs(promises);
+  const keys = R.pluck(0, pairs);
+  const vals = R.pluck(1, pairs);
+  return Promise.all(vals).then(x => R.zipObj(keys, x));
+};
+
 // :: [Promise a] -> Promise a
 export const allPromises = promises => Promise.all(promises);
 

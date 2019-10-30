@@ -26,7 +26,7 @@ describe('xod-arduino transpiler', () => {
       );
 
       return loadProject([wsPath()], wsPath(projName))
-        .then(transformProject(R.__, '@/main', LIVENESS.NONE, {}))
+        .then(transformProject(R.__, '@/main', LIVENESS.NONE))
         .then(R.map(transpile))
         .then(explode)
         .then(result =>
@@ -48,14 +48,12 @@ describe('xod-arduino transpiler', () => {
 
   it('returns error for non-existing-patch entry point', () =>
     loadProject([wsPath()], wsPath('blink'))
-      .then(transformProject(R.__, '@/non-existing-patch', LIVENESS.NONE, {}))
+      .then(transformProject(R.__, '@/non-existing-patch', LIVENESS.NONE))
       .then(result => assert.equal(result.isLeft, true)));
 
   it('returns error if some native node has more than 7 outputs', () =>
     loadProject([wsPath()], wsPath('faulty'))
-      .then(
-        transformProject(R.__, '@/too-many-outputs-main', LIVENESS.NONE, {})
-      )
+      .then(transformProject(R.__, '@/too-many-outputs-main', LIVENESS.NONE))
       .then(R.map(transpile))
       .then(
         foldEither(
@@ -73,7 +71,7 @@ describe('xod-arduino transpiler', () => {
     loadProject([wsPath()], wsPath('blink'))
       .then(
         R.pipe(
-          transformProject(R.__, '@/main', LIVENESS.NONE, {}),
+          transformProject(R.__, '@/main', LIVENESS.NONE),
           explodeEither,
           R.prop('nodes')
         )
@@ -108,7 +106,7 @@ describe('xod-arduino transpiler', () => {
         './fixtures/ensure-custom-types-are-defined.xodball'
       )
     )
-      .then(transformProject(R.__, '@/main', LIVENESS.NONE, {}))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(explodeEither)
       .then(tProject => {
         const actualPatchPaths = R.compose(
@@ -131,7 +129,7 @@ describe('xod-arduino transpiler', () => {
     );
 
     return loadProject([wsPath()], xodball)
-      .then(transformProject(R.__, '@/main', LIVENESS.NONE, {}))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(explodeEither)
       .then(tProject => {
         const actualPatchPaths = R.compose(
@@ -187,7 +185,7 @@ describe('getNodeIdsMap', () => {
     };
 
     return loadProject([wsPath()], wsPath('blink'))
-      .then(transformProject(R.__, '@/main', LIVENESS.NONE, {}))
+      .then(transformProject(R.__, '@/main', LIVENESS.NONE))
       .then(R.map(getNodeIdsMap))
       .then(explode)
       .then(result =>

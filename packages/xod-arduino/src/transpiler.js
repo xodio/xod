@@ -540,15 +540,17 @@ const checkForNativePatchesWithTooManyOutputs = def(
   }
 );
 
-// :: PatchPath -> Project -> [BoundLiteral]
-const listBoundLiterals = R.curry((curPatchPath, project) =>
+const getGlobalNamesFromTProject = def(
+  'getGlobalNamesFromTProject :: TProject -> [String]',
   R.compose(
+    R.map(R.tail), // get rid of leading `=`
+    R.uniq,
+    R.filter(R.startsWith('=')),
+    R.pluck('value'),
     R.unnest,
-    R.map(R.values),
-    R.pluck('boundLiterals'),
-    XP.listNodes,
-    XP.getPatchByPathUnsafe
-  )(curPatchPath, project)
+    R.pluck('outputs'),
+    R.prop('nodes')
+  )
 );
 
 /**
@@ -557,46 +559,33 @@ const listBoundLiterals = R.curry((curPatchPath, project) =>
  * and it has a ready-to-use values, nothing needed to compute anymore.
  */
 const transformProjectWithImpls = def(
-  'transformProjectWithImpls :: Project -> PatchPath -> Liveness -> StrMap String -> Either Error TProject',
-  (project, path, liveness, xodGlobals) =>
+  'transformProjectWithImpls :: Project -> PatchPath -> Liveness -> Either Error TProject',
+  (project, path, liveness) =>
     R.compose(
       R.chain(checkForNativePatchesWithTooManyOutputs),
+      // Fill `globals` array with { key: globName } objects for each global referred in the project
+      R.map(tProject =>
+        R.compose(
+          R.assocPath(['config', 'globals'], R.__, tProject),
+          R.map(globalName => ({ key: globalName })),
+          getGlobalNamesFromTProject
+        )(tProject)
+      ),
       // :: Either Error TProject
-      R.chain(({ transformedProject, nodeIdsMap }) => {
+      R.map(({ transformedProject, nodeIdsMap }) => {
         const patches = createTPatches(path, transformedProject, project);
-        const eitherGlobals = R.compose(
-          R.sequence(Either.of),
-          R.map(globals => {
-            const key = R.tail(globals); // Get rid of leading `=`
-
-            if (!R.has(key, xodGlobals))
-              return fail('GLOBAL_LITERAL_VALUE_MISSING', { key });
-
-            return Either.of({
-              key,
-              value: xodGlobals[key],
-            });
-          }),
-          R.filter(isAmong(XP.GLOBALS_LITERALS)),
-          listBoundLiterals
-        )(path, transformedProject);
-
-        return R.map(
-          globals =>
-            R.merge(
-              {
-                config: {
-                  XOD_DEBUG: liveness === LIVENESS.DEBUG,
-                  XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
-                  globals,
-                },
-              },
-              R.applySpec({
-                patches: R.always(patches),
-                nodes: createTNodes(path, patches, nodeIdsMap),
-              })(transformedProject)
-            ),
-          eitherGlobals
+        return R.merge(
+          {
+            config: {
+              XOD_DEBUG: liveness === LIVENESS.DEBUG,
+              XOD_SIMULATION: liveness === LIVENESS.SIMULATION,
+              globals: [],
+            },
+          },
+          R.applySpec({
+            patches: R.always(patches),
+            nodes: createTNodes(path, patches, nodeIdsMap),
+          })(transformedProject)
         );
       }),
       R.chain(toposortProject(path)),
@@ -831,8 +820,35 @@ export const getPinsAffectedByErrorRaisers = def(
   }
 );
 
+export const listGlobals = def(
+  'listGlobals :: TProject -> [String]',
+  R.compose(R.pluck('key'), R.path(['config', 'globals']))
+);
+
+export const extendTProjectWithGlobals = def(
+  'extendTProjectWithGlobals :: StrMap String -> TProject -> Either TProject Error',
+  (globals, tProject) => {
+    const globalsUsedInProject = getGlobalNamesFromTProject(tProject);
+    const keysToSet = R.keys(globals);
+
+    const missedKey = R.find(
+      R.complement(R.contains(R.__, keysToSet)),
+      globalsUsedInProject
+    );
+    if (missedKey)
+      return fail('GLOBAL_LITERAL_VALUE_MISSING', { key: missedKey });
+
+    return R.compose(
+      Either.of,
+      R.assocPath(['config', 'globals'], R.__, tProject),
+      R.map(R.applySpec({ key: R.nth(0), value: R.nth(1) })),
+      R.toPairs
+    )(globals);
+  }
+);
+
 export const transformProject = def(
-  'transformProject :: Project -> PatchPath -> Liveness -> StrMap String -> Either Error TProject',
+  'transformProject :: Project -> PatchPath -> Liveness -> Either Error TProject',
   transformProjectWithImpls
 );
 
