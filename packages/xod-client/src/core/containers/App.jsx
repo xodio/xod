@@ -2,16 +2,18 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'sanctuary-def';
-import { Maybe, Either } from 'ramda-fantasy';
+import { Either } from 'ramda-fantasy';
 import {
   foldMaybe,
   foldEither,
   $Maybe,
   fail,
   explodeMaybe,
-  catMaybies,
+  allValues,
   maybeProp,
   enquote,
+  eitherToPromise,
+  foldMaybeWith,
 } from 'xod-func-tools';
 import {
   Project,
@@ -26,6 +28,8 @@ import {
   getNodeIdsMap,
   getNodePinKeysMap,
   getPinsAffectedByErrorRaisers,
+  listGlobals,
+  extendTProjectWithGlobals,
   LIVENESS,
 } from 'xod-arduino';
 
@@ -44,6 +48,8 @@ import {
   NO_PATCH_TO_TRANSPILE,
   SIMULATION_ALREADY_RUNNING,
 } from '../../editor/messages';
+import { USERNAME_NEEDED_FOR_LITERAL } from '../../user/messages';
+import { PROJECT_NAME_NEEDED_FOR_LITERAL } from '../../project/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -93,7 +99,7 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )(LIVENESS.NONE, {});
+    )(LIVENESS.NONE);
   }
 
   onRunSimulation() {
@@ -104,29 +110,20 @@ export default class App extends React.Component {
     this.props.actions.runSimulationRequested();
 
     const eitherTProject = this.transformProjectForTranspiler(
-      LIVENESS.SIMULATION,
-      this.getGlobals()
+      LIVENESS.SIMULATION
     );
 
-    R.compose(
-      foldEither(
-        R.compose(err => {
-          this.props.actions.addError(err);
-          this.props.actions.abortSimulation();
-        }, R.when(R.is(Error), formatErrorMessage)),
-        ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
-          this.props.actions.runSimulation(
-            explodeMaybe(
-              'currentPatchPath already folded in `transformProjectForTranspiler`',
-              this.props.currentPatchPath
-            ),
-            nodeIdsMap,
-            nodePinKeysMap,
-            code,
-            pinsAffectedByErrorRaisers
+    eitherToPromise(eitherTProject)
+      .then(tProject => {
+        const globalsInProject = listGlobals(tProject);
+        return this.getGlobals(globalsInProject).then(globals =>
+          R.compose(eitherToPromise, extendTProjectWithGlobals)(
+            globals,
+            tProject
           )
-      ),
-      R.map(
+        );
+      })
+      .then(
         R.applySpec({
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
@@ -141,28 +138,64 @@ export default class App extends React.Component {
             )(this.props.currentPatchPath),
         })
       )
-    )(eitherTProject);
+      .then(
+        ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
+          this.props.actions.runSimulation(
+            explodeMaybe(
+              'currentPatchPath already folded in `transformProjectForTranspiler`',
+              this.props.currentPatchPath
+            ),
+            nodeIdsMap,
+            nodePinKeysMap,
+            code,
+            pinsAffectedByErrorRaisers
+          )
+      )
+      .catch(
+        R.compose(err => {
+          this.props.actions.addError(err);
+          this.props.actions.abortSimulation();
+        }, R.when(R.is(Error), formatErrorMessage))
+      );
   }
 
-  getGlobals() {
-    return catMaybies({
-      XOD_USERNAME: R.compose(R.map(enquote), R.chain(maybeProp('username')))(
-        this.props.user
-      ),
-      XOD_PROJECT: R.compose(
-        R.map(enquote),
-        R.ifElse(R.length, Maybe.of, Maybe.Nothing),
-        getProjectName
-      )(this.props.project),
-    });
+  // GlobalName :: String
+  // Like `XOD_TOKEN`, without leading `=`
+  // :: [GlobalName] -> Promise (Map GlobalName String) Error
+  getGlobals(globalNames) {
+    // getters for all globals, will be filtered then
+    const globalGetters = {
+      XOD_USERNAME: () =>
+        R.compose(
+          foldMaybeWith(
+            () => Promise.reject(USERNAME_NEEDED_FOR_LITERAL),
+            enquote
+          ),
+          R.chain(maybeProp('username'))
+        )(this.props.user),
+      XOD_PROJECT: () =>
+        R.compose(
+          R.ifElse(
+            R.length,
+            projectName => Promise.resolve(enquote(projectName)),
+            () => Promise.reject(PROJECT_NAME_NEEDED_FOR_LITERAL)
+          ),
+          getProjectName
+        )(this.props.project),
+      XOD_TOKEN: () => this.props.actions.renewApiToken().then(enquote),
+    };
+
+    return R.compose(allValues, R.map(R.call), R.pick(globalNames))(
+      globalGetters
+    );
   }
 
-  transformProjectForTranspiler(liveness, globals) {
+  transformProjectForTranspiler(liveness) {
     try {
       return foldMaybe(
         Either.Left(NO_PATCH_TO_TRANSPILE),
         curPatchPath =>
-          transformProject(this.props.project, curPatchPath, liveness, globals),
+          transformProject(this.props.project, curPatchPath, liveness),
         this.props.currentPatchPath
       );
     } catch (unexpectedError) {
@@ -282,6 +315,7 @@ App.propTypes = {
     runSimulationRequested: PropTypes.func.isRequired,
     abortSimulation: PropTypes.func.isRequired,
     generateApiKey: PropTypes.func.isRequired,
+    renewApiToken: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -330,4 +364,5 @@ App.actions = {
   runSimulationRequested: actions.runSimulationRequested,
   abortSimulation: actions.abortSimulation,
   generateApiKey: actions.generateApiKey,
+  renewApiToken: actions.renewApiToken,
 };

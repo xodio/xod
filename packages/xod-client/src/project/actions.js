@@ -11,14 +11,20 @@ import { isPatchPathTaken } from './utils';
 import { getCurrentPatchPath } from '../editor/selectors';
 import { getGrant } from '../user/selectors';
 import { fetchGrant, requestAuthorized } from '../user/actions';
-import { LOG_IN_TO_CONTINUE } from '../user/messages';
+import { LOG_IN_TO_CONTINUE, SERVICE_UNAVAILABLE } from '../user/messages';
 import { AUTHORIZATION_NEEDED } from '../user/errorCodes';
 import {
   SUCCESSFULLY_PUBLISHED,
   PROJECT_NAME_NEEDED_TO_GENERATE_APIKEY,
+  CANT_GET_TOKEN_WITHOUT_APIKEY,
+  CANT_GET_TOKEN_BECAUSE_OF_WRONG_APIKEY,
 } from './messages';
 import { getProject } from './selectors';
-import { getPmSwaggerUrl, getApiTokensUrl } from '../utils/urls';
+import {
+  getPmSwaggerUrl,
+  getApiTokensUrl,
+  getRenewApiTokenUrl,
+} from '../utils/urls';
 import composeMessage from '../messages/composeMessage';
 
 //
@@ -397,3 +403,40 @@ export const generateApiKey = projectName => dispatch =>
   dispatch(requestNewApiKey(projectName))
     .then(apiKey => dispatch(setApiKey(apiKey)))
     .catch(errMsg => dispatch(addError(errMsg)));
+
+export const renewApiToken = () => (dispatch, getState) => {
+  const project = getProject(getState());
+  const apiKey = XP.getApiKey(project);
+  if (!apiKey) return Promise.reject(CANT_GET_TOKEN_WITHOUT_APIKEY);
+
+  // TODO: Do we need to check again for the project name?
+  const projectName = XP.getProjectName(project);
+
+  return dispatch(
+    requestAuthorized(headers =>
+      fetch(getRenewApiTokenUrl(apiKey), {
+        method: 'PUT',
+        body: JSON.stringify({
+          label: projectName,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+        credentials: 'include',
+      })
+    )
+  )
+    .then(resp => {
+      if (!R.has('token', resp)) return Promise.reject(SERVICE_UNAVAILABLE);
+      return R.prop('token', resp);
+    })
+    .catch(err => {
+      if (R.is(Error, err)) {
+        if (err.status === 400 || err.status === 404)
+          return Promise.reject(CANT_GET_TOKEN_BECAUSE_OF_WRONG_APIKEY);
+        return Promise.reject(SERVICE_UNAVAILABLE);
+      }
+      return Promise.reject(err);
+    });
+};

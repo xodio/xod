@@ -26,6 +26,8 @@ import {
   getNodePinKeysMap,
   getPinsAffectedByErrorRaisers,
   getRequireUrls,
+  listGlobals,
+  extendTProjectWithGlobals,
   LIVENESS,
 } from 'xod-arduino';
 import { messages as xdbMessages } from 'xod-deploy-bin';
@@ -281,13 +283,21 @@ class App extends client.App {
         : this.props.actions.uploadToArduino();
 
     const eitherTProject = this.transformProjectForTranspiler(
-      debug ? LIVENESS.DEBUG : LIVENESS.NONE,
-      this.getGlobals()
+      debug ? LIVENESS.DEBUG : LIVENESS.NONE
     );
 
     stopDebuggerSession();
 
     eitherToPromise(eitherTProject)
+      .then(tProject => {
+        const globalsInProject = listGlobals(tProject);
+        return this.getGlobals(globalsInProject).then(globals =>
+          R.compose(eitherToPromise, extendTProjectWithGlobals)(
+            globals,
+            tProject
+          )
+        );
+      })
       .then(
         tapP(tProj => {
           const libraries = getRequireUrls(tProj);
