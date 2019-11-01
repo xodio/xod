@@ -1,0 +1,131 @@
+{
+  "description": "Logs a new value to the feed specified.",
+  "links": [
+    {
+      "id": "BJ9DHnt5B",
+      "input": {
+        "nodeId": "ry65KiKqH",
+        "pinKey": "rJP8r3F5H"
+      },
+      "output": {
+        "nodeId": "rJfEHhF5r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByeoYsK5H",
+      "input": {
+        "nodeId": "ry65KiKqH",
+        "pinKey": "Syu0VZCFr"
+      },
+      "output": {
+        "nodeId": "rJgh8tjF9r",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJfjKstqS",
+      "input": {
+        "nodeId": "Bk3UKsF9S",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry65KiKqH",
+        "pinKey": "SJN4rW0KS"
+      }
+    },
+    {
+      "id": "rJcjFjK5r",
+      "input": {
+        "nodeId": "ry65KiKqH",
+        "pinKey": "ByYyHW0FH"
+      },
+      "output": {
+        "nodeId": "ryZ28tst5B",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkuiKjYcr",
+      "input": {
+        "nodeId": "ry65KiKqH",
+        "pinKey": "B1FXSb0YB"
+      },
+      "output": {
+        "nodeId": "r1m2IKiY5r",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Pulses when the value is successfully stored",
+      "id": "Bk3UKsF9S",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Sends the value to the cloud",
+      "id": "r1m2IKiY5r",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "VAL"
+      },
+      "description": "Value to store",
+      "id": "rJfEHhF5r",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t2"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "rJgh8tjF9r",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "ry65KiKqH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/cloud-store-custom"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"my-value\""
+      },
+      "description": "Feed path starting from the project name. The full feed path will be `<username>/<projectname>/<FEED>`",
+      "id": "ryZ28tst5B",
+      "label": "FEED",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}
