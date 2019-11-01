@@ -35,7 +35,8 @@ export const startDebuggerSession = (
   nodeIdsMap,
   nodePinKeysMap,
   pinsAffectedByErrorRaisers,
-  currentPatchPath
+  currentPatchPath,
+  globals
 ) => ({
   type: AT.DEBUG_SESSION_STARTED,
   payload: {
@@ -44,6 +45,7 @@ export const startDebuggerSession = (
     nodePinKeysMap,
     pinsAffectedByErrorRaisers,
     patchPath: currentPatchPath,
+    globals,
   },
 });
 

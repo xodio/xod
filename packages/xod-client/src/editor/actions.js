@@ -819,7 +819,8 @@ export const runSimulation = (
   nodeIdsMap,
   nodePinKeysMap,
   code,
-  pinsAffectedByErrorRaisers
+  pinsAffectedByErrorRaisers,
+  globals
 ) => (dispatch, getState) => {
   dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
 
@@ -852,6 +853,7 @@ export const runSimulation = (
               nodePinKeysMap,
               pinsAffectedByErrorRaisers,
               patchPath: simulationPatchPath,
+              globals,
             },
           });
 

@@ -113,15 +113,17 @@ export default class App extends React.Component {
       LIVENESS.SIMULATION
     );
 
+    let sessionGlobals = []; // TODO: Refactor
     eitherToPromise(eitherTProject)
       .then(tProject => {
         const globalsInProject = listGlobals(tProject);
-        return this.getGlobals(globalsInProject).then(globals =>
-          R.compose(eitherToPromise, extendTProjectWithGlobals)(
+        return this.getGlobals(globalsInProject).then(globals => {
+          sessionGlobals = globals; // TODO: Refactor
+          return R.compose(eitherToPromise, extendTProjectWithGlobals)(
             globals,
             tProject
-          )
-        );
+          );
+        });
       })
       .then(
         R.applySpec({
@@ -148,7 +150,8 @@ export default class App extends React.Component {
             nodeIdsMap,
             nodePinKeysMap,
             code,
-            pinsAffectedByErrorRaisers
+            pinsAffectedByErrorRaisers,
+            sessionGlobals
           )
       )
       .catch(

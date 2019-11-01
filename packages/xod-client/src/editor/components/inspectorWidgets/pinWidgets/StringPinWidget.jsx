@@ -35,7 +35,7 @@ const StringWidget = compose(
   withHandlers({
     onChangeHandler: props => event => {
       const value = event.target.value;
-      props.onChange(props.isStringMode ? requote(value) : value);
+      props.onChange(props.isStringMode ? enquote(value) : value);
     },
     onKeyDown: props => event => {
       if (

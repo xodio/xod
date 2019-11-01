@@ -288,15 +288,18 @@ class App extends client.App {
 
     stopDebuggerSession();
 
+    let sessionGlobals = []; // TODO: Refactor
+
     eitherToPromise(eitherTProject)
       .then(tProject => {
         const globalsInProject = listGlobals(tProject);
-        return this.getGlobals(globalsInProject).then(globals =>
-          R.compose(eitherToPromise, extendTProjectWithGlobals)(
+        return this.getGlobals(globalsInProject).then(globals => {
+          sessionGlobals = globals; // TODO: Refactor
+          return R.compose(eitherToPromise, extendTProjectWithGlobals)(
             globals,
             tProject
-          )
-        );
+          );
+        });
       })
       .then(
         tapP(tProj => {
@@ -393,7 +396,8 @@ class App extends client.App {
                 nodeIdsMap,
                 nodePinKeysMap,
                 pinsAffectedByErrorRaisers,
-                currentPatchPath
+                currentPatchPath,
+                sessionGlobals
               );
               debuggerIPC.sendStartDebuggerSession(
                 ipcRenderer,
