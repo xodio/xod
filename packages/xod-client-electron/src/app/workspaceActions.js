@@ -167,10 +167,10 @@ export const loadProjectByPath = R.curry(
 //   updateProjectPath :: Boolean
 // }
 //
-// :: (Path -> ()) -> (String -> a -> ()) -> (() -> Promise Path Error) -> SaveData ->
+// :: (() -> String) -> (Path -> ()) -> (String -> a -> ()) -> (() -> Promise Path Error) -> SaveData ->
 //    -> Promise Project Error
 export const onSaveAll = R.curry(
-  (updateProjectPath, send, pathGetter, saveData) =>
+  (projectPathGetter, updateProjectPath, send, pathGetter, saveData) =>
     R.pipeP(
       pathGetter,
       saveAll(
@@ -179,12 +179,19 @@ export const onSaveAll = R.curry(
         saveData.oldProject,
         saveData.newProject
       ),
-      R.tap(() => {
-        if (saveData.updateProjectPath) {
+      () => {
+        const prevProjectPath = projectPathGetter();
+
+        if (
+          saveData.updateProjectPath &&
+          prevProjectPath !== saveData.projectPath
+        )
           updateProjectPath(saveData.projectPath);
-        }
-      }),
-      R.always(saveData) // To keep payload in `complete` state of event
+
+        // To keep payload in `complete` state of event
+        // But with additional field `prevProjectPath`
+        return R.assoc('prevProjectPath', prevProjectPath, saveData);
+      }
     )().catch(handleError(send))
 );
 
@@ -327,6 +334,7 @@ const ipcSender = event => (eventName, arg) =>
 // This event is subscribed by subscribeRemoteAction function
 export const subscribeToSaveAll = R.curry((store, event, saveData) =>
   onSaveAll(
+    store.select.projectPath,
     store.dispatch.updateProjectPath,
     ipcSender(event),
     loadWorkspacePath,

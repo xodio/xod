@@ -488,8 +488,6 @@ class App extends client.App {
   saveAs(filePath, shouldUpdateProjectPath, shouldUpdateLastSavedProject) {
     return new Promise((resolve, reject) => {
       this.props.actions.saveAll({
-        oldProject: this.props.lastSavedProject,
-        newProject: this.props.project,
         projectPath: filePath,
         updateProjectPath: shouldUpdateProjectPath,
         updateLastSavedProject: shouldUpdateLastSavedProject,

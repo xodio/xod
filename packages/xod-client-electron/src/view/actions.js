@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 import { ipcRenderer } from 'electron';
+import { basename } from 'path';
 
+import { getProjectName } from 'xod-project';
 import {
   addProcess,
   progressProcess,
@@ -8,8 +10,13 @@ import {
   deleteProcess,
   failProcess,
   addConfirmation,
+  addNotification,
   addError,
   SAVE_ALL,
+  getProject,
+  getLastSavedProject,
+  updateProjectMeta,
+  deriveProjectName,
 } from 'xod-client';
 import * as EVENTS from '../shared/events';
 import * as MESSAGES from '../shared/messages';
@@ -71,7 +78,7 @@ const createAsyncAction = ({
   silent = false,
   onComplete = R.always(undefined),
   onError = R.always(undefined),
-}) => data => dispatch => {
+}) => data => (dispatch, getState) => {
   let processId = null;
 
   if (!silent) {
@@ -99,7 +106,7 @@ const createAsyncAction = ({
         dispatch(addConfirmation(completeMsg));
       }
 
-      onComplete(payload, dispatch);
+      onComplete(payload, dispatch, getState);
     }
   );
 
@@ -129,7 +136,7 @@ const createAsyncAction = ({
         dispatch(addError(extendedErrorMessage));
       }
 
-      onError(err, dispatch);
+      onError(err, dispatch, getState);
     }
   );
 
@@ -142,7 +149,7 @@ const createAsyncAction = ({
 //
 // =============================================================================
 
-export const saveAll = createAsyncAction({
+const saveAllOnFs = createAsyncAction({
   eventName: EVENTS.SAVE_ALL,
   actionType: SAVE_ALL,
   messages: {
@@ -150,7 +157,56 @@ export const saveAll = createAsyncAction({
     complete: MESSAGES.SAVE_ALL_SUCCEED,
     error: MESSAGES.SAVE_ALL_FAILED,
   },
+  onComplete: (payload, dispatch, getState) => {
+    // After save:
+    // if project name equals to the old derived one
+    // and file path is changed — show the message
+    if (!payload.updateProjectPath) return;
+
+    const projectName = R.compose(getProjectName, getProject, getState)();
+    const newDerivedProjectName = deriveProjectName(
+      basename(payload.projectPath)
+    );
+    const prevDerivedProjectName = deriveProjectName(
+      basename(payload.prevProjectPath)
+    );
+    if (
+      projectName === prevDerivedProjectName &&
+      projectName !== newDerivedProjectName
+    )
+      dispatch(
+        addNotification(
+          MESSAGES.dontForgetToChangeProjectName(
+            projectName,
+            newDerivedProjectName
+          )
+        )
+      );
+  },
 });
+
+export const saveAll = payload => (dispatch, getState) => {
+  // Before save: update project name if needed
+  const projectName = R.compose(getProjectName, getProject, getState)();
+  if (payload.updateProjectPath && R.isEmpty(projectName)) {
+    dispatch(
+      updateProjectMeta({
+        name: deriveProjectName(basename(payload.projectPath)),
+      })
+    );
+  }
+  // Save
+  const state = getState();
+  const newProject = getProject(state);
+  const oldProject = getLastSavedProject(state);
+  return dispatch(
+    saveAllOnFs({
+      oldProject,
+      newProject,
+      ...payload,
+    })
+  );
+};
 
 export default {
   saveAll,

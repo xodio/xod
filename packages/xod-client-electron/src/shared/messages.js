@@ -37,3 +37,13 @@ export const updateAvailableMessage = version =>
 
 export const compilationBegun = boardName =>
   `Begin compiling code for the board ${boardName}`;
+
+export const dontForgetToChangeProjectName = (
+  oldProjectName,
+  suggestedProjectName
+) => ({
+  title: 'Project name now differs from filename',
+  note: `The project name is left to be \`${oldProjectName}\`. It might be a good idea to update it to match the new filename \`${suggestedProjectName}\` if you indeed continue to evolve it as a new project.`,
+  solution: 'Hit Edit → Project Preferences to update the settings.',
+  persistent: true,
+});
