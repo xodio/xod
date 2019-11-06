@@ -124,10 +124,10 @@ export const isWatchPatchPath = R.test(/^xod\/(core|debug)\/watch$/);
 export const isJumperPatchPath = R.equals(CONST.JUMPER_PATCH_PATH);
 
 // :: String -> Boolean
-export const isFromBusPatchPath = R.equals(CONST.FROM_BUS_PATH);
+export const isFromBusPatchPath = R.startsWith(CONST.FROM_BUS_PATH);
 
 // :: String -> Boolean
-export const isToBusPatchPath = R.equals(CONST.TO_BUS_PATH);
+export const isToBusPatchPath = R.startsWith(CONST.TO_BUS_PATH);
 
 // :: String -> Boolean
 export const isBusPatchPath = R.either(isFromBusPatchPath, isToBusPatchPath);
