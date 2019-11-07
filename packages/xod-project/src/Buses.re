@@ -12,7 +12,7 @@ let getMatchingBusNodes = patch => {
   let nodes = Patch.listNodes(patch);
   let toBusNodesByLabel =
     nodes
-    |. List.keep(n => Node.getType(n) == toBusPatchPath)
+    |. List.keep(n => Node.getType(n) |> PatchPath.isToBus)
     |. BeltHoles.List.groupByString(Node.getLabel)
     /* having multiple `to-bus` nodes with the same label is forbidden,
        so exclude them from type resolution */
@@ -22,7 +22,7 @@ let getMatchingBusNodes = patch => {
     []; /* short-curcuit for optimization */
   } else {
     nodes
-    |. List.keep(n => Node.getType(n) == fromBusPatchPath)
+    |. List.keep(n => Node.getType(n) |> PatchPath.isFromBus)
     |. BeltHoles.List.groupByString(Node.getLabel)
     |. Map.String.keep((label, _) =>
          Map.String.has(toBusNodesByLabel, label)
@@ -120,14 +120,14 @@ let splitLinksToBuses:
                |> Link.getInputNodeId
                |> Patch.getNodeById(patch)
                |. Option.mapWithDefault(false, n =>
-                    Node.getType(n) == toBusPatchPath
+                    Node.getType(n) |> PatchPath.isToBus
                   );
              let isOutputConnectedToBusNode =
                link
                |> Link.getOutputNodeId
                |> Patch.getNodeById(patch)
                |. Option.mapWithDefault(false, n =>
-                    Node.getType(n) == fromBusPatchPath
+                    Node.getType(n) |> PatchPath.isFromBus
                   );
              ! isOutputConnectedToBusNode && ! isInputConnectedToBusNode;
            });
@@ -146,7 +146,7 @@ let splitLinksToBuses:
                     |> Link.getInputNodeId
                     |> Patch.getNodeById(patch)
                     |. Option.flatMap(node =>
-                         Node.getType(node) == toBusPatchPath ?
+                         Node.getType(node) |> PatchPath.isToBus ?
                            Some(node) : None
                        )
                     |. Option.map(node => (link, node))

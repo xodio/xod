@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "content": "for `test-buses-in-specializations`",
+      "id": "H1l3ONIgoH",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 6
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1NU_VLlor",
+      "input": {
+        "nodeId": "BJZUd4LxiH",
+        "pinKey": "BJnQUR_BwyZ"
+      },
+      "output": {
+        "nodeId": "ByLdE8giS",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1H8dVIgjH",
+      "input": {
+        "nodeId": "SkMUuEUxjS",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HklLuELlsB",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJILO4IgiH",
+      "input": {
+        "nodeId": "SyXU_NLejH",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJZUd4LxiH",
+        "pinKey": "SyomIRurDJ-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HkqmLAOrD1W": "10"
+      },
+      "id": "BJZUd4LxiH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/add"
+    },
+    {
+      "id": "By2_EUgir",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "ByLdE8giS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HklLuELlsB",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "SkMUuEUxjS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "SyXU_NLejH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/to-bus"
+    }
+  ]
+}
