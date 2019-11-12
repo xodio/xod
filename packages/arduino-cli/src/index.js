@@ -1,7 +1,7 @@
 import os from 'os';
 import * as R from 'ramda';
 import { resolve } from 'path';
-import { exec, promisifyChildProcess } from 'promisify-child-process';
+import { promisifyChildProcess } from 'promisify-child-process';
 import crossSpawn from 'cross-spawn';
 import YAML from 'yamljs';
 import { remove } from 'fs-extra';
@@ -16,6 +16,7 @@ const spawn = (bin, args, options) =>
     encoding: 'utf8',
   });
 
+const noop = () => {};
 const IS_WIN = os.platform() === 'win32';
 const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
 
@@ -36,29 +37,11 @@ const ArduinoCli = (pathToBin, config = null) => {
   };
 
   const escapedConfigPath = escapeSpacesNonWin(configPath);
-  const run = args => {
-    const cp = exec(`"${pathToBin}" --config-file=${escapedConfigPath} ${args}`)
-      .then(
-        R.tap(() => {
-          deleteProcess(cp);
-        })
-      )
-      .then(R.prop('stdout'));
-
-    appendProcess(cp);
-
-    return cp;
-  };
   const runWithProgress = async (onProgress, args) => {
-    const spawnArgs = R.compose(
-      R.concat([`--config-file=${escapedConfigPath}`]),
-      R.reject(R.isEmpty),
-      R.split(' ')
-    )(args);
-
+    const spawnArgs = R.concat([`--config-file=${escapedConfigPath}`], args);
     const proc = spawn(escapeSpacesNonWin(pathToBin), spawnArgs, {
       stdio: ['inherit', 'pipe', 'pipe'],
-      shell: true,
+      shell: !IS_WIN, // TODO: Can we get rid of `shell: true` for other platforms?
     });
     proc.stdout.on('data', data => onProgress(data.toString()));
     proc.stderr.on('data', data => onProgress(data.toString()));
@@ -71,10 +54,10 @@ const ArduinoCli = (pathToBin, config = null) => {
 
   const sketch = name => resolve(cfg.sketchbook_path, name);
 
-  const runAndParseJson = args => run(args).then(JSON.parse);
+  const runAndParseJson = args => runWithProgress(noop, args).then(JSON.parse);
 
   const listCores = () =>
-    run('core list --format json')
+    runWithProgress(noop, ['core', 'list', '--format=json'])
       .then(R.when(R.isEmpty, R.always('{}')))
       .then(JSON.parse)
       .then(R.propOr([], 'Platforms'))
@@ -83,12 +66,13 @@ const ArduinoCli = (pathToBin, config = null) => {
   const listBoardsWith = (listCmd, boardsGetter) =>
     Promise.all([
       listCores(),
-      runAndParseJson(`board ${listCmd} --format json`),
+      runAndParseJson(['board', listCmd, '--format=json']),
     ]).then(([cores, boards]) =>
       patchBoardsWithOptions(cfg.arduino_data, cores, boardsGetter(boards))
     );
 
-  const getConfig = () => run('config dump').then(YAML.parse);
+  const getConfig = () =>
+    runWithProgress(noop, ['config', 'dump']).then(YAML.parse);
 
   return {
     killProcesses: () => {
@@ -110,53 +94,58 @@ const ArduinoCli = (pathToBin, config = null) => {
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
     listAvailableBoards: () => listAvailableBoards(getConfig, cfg.arduino_data),
     compile: (onProgress, fqbn, sketchName, verbose = false) =>
-      runWithProgress(
-        onProgress,
-        `compile --fqbn ${fqbn} ${verbose ? '--verbose' : ''} ${sketch(
-          sketchName
-        )}`
-      ),
+      runWithProgress(onProgress, [
+        'compile',
+        `--fqbn=${fqbn}`,
+        `${verbose ? '--verbose' : ''}`,
+        sketch(sketchName),
+      ]),
     upload: (onProgress, port, fqbn, sketchName, verbose = false) =>
-      runWithProgress(
-        onProgress,
-        `upload --fqbn ${fqbn} --port ${port} ${
-          verbose ? '--verbose' : ''
-        } -t ${sketch(sketchName)}`
-      ),
+      runWithProgress(onProgress, [
+        'upload',
+        `--fqbn=${fqbn}`,
+        `--port=${port}`,
+        `${verbose ? '--verbose' : ''}`,
+        '-t',
+        sketch(sketchName),
+      ]),
     core: {
       download: (onProgress, pkgName) =>
         // TODO:
         // Get rid of `remove` the staging directory when
         // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
         remove(resolve(cfg.arduino_data, 'staging')).then(() =>
-          runWithProgress(
-            parseProgressLog(onProgress),
-            `core download ${pkgName}`
-          )
+          runWithProgress(parseProgressLog(onProgress), [
+            'core',
+            'download',
+            pkgName,
+          ])
         ),
       install: (onProgress, pkgName) =>
         // TODO:
         // Get rid of `remove` the staging directory when
         // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
         remove(resolve(cfg.arduino_data, 'staging')).then(() =>
-          runWithProgress(
-            parseProgressLog(onProgress),
-            `core install ${pkgName}`
-          )
+          runWithProgress(parseProgressLog(onProgress), [
+            'core',
+            'install',
+            pkgName,
+          ])
         ),
       list: listCores,
       search: query =>
-        run(`core search ${query} --format json`)
+        runWithProgress(noop, ['core', 'search', query, '--format=json'])
           .then(R.prop('Platforms'))
           .then(R.defaultTo([])),
-      uninstall: pkgName => run(`core uninstall ${pkgName}`),
-      updateIndex: () => run('core update-index'),
+      uninstall: pkgName =>
+        runWithProgress(noop, ['core', 'uninstall', pkgName]),
+      updateIndex: () => runWithProgress(noop, ['core', 'update-index']),
       upgrade: onProgress =>
-        runWithProgress(parseProgressLog(onProgress), 'core upgrade'),
+        runWithProgress(parseProgressLog(onProgress), ['core', 'upgrade']),
     },
-    version: () => runAndParseJson('version').then(R.prop('version')),
+    version: () => runAndParseJson(['version']).then(R.prop('version')),
     createSketch: sketchName =>
-      run(`sketch new ${sketchName}`).then(
+      runWithProgress(noop, ['sketch', 'new', sketchName]).then(
         R.always(resolve(cfg.sketchbook_path, sketchName, `${sketchName}.ino`))
       ),
     setPackageIndexUrls: urls => setPackageIndexUrls(configPath, urls),
