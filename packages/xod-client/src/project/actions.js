@@ -40,21 +40,16 @@ export const createProject = () => ({
   type: ActionType.PROJECT_CREATE,
 });
 
-export const updateProjectMeta = ({
-  name,
-  license,
-  description,
-  version,
-  apiKey,
-}) => ({
+// ProjectMeta :: StrMap String
+// Properties:
+// -  name,
+// -  license,
+// -  description,
+// -  version,
+// -  apiKey,
+export const updateProjectMeta = projectMeta => ({
   type: ActionType.PROJECT_UPDATE_META,
-  payload: {
-    name,
-    license,
-    description,
-    version,
-    apiKey,
-  },
+  payload: projectMeta,
 });
 
 export const openProject = project => ({

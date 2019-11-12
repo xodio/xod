@@ -132,14 +132,22 @@ export default (state = {}, action) => {
       return action.payload;
     }
 
-    case AT.PROJECT_UPDATE_META:
+    case AT.PROJECT_UPDATE_META: {
+      // Update Project meta property only if needed
+      const updateMeta = R.curry((propName, setterFn, _state) =>
+        R.when(
+          () => R.has(propName, action.payload),
+          setterFn(action.payload[propName])
+        )(_state)
+      );
       return R.compose(
-        XP.setProjectName(action.payload.name),
-        XP.setProjectVersion(action.payload.version),
-        XP.setProjectLicense(action.payload.license),
-        XP.setProjectDescription(action.payload.description),
-        XP.setApiKey(action.payload.apiKey)
+        updateMeta('name', XP.setProjectName),
+        updateMeta('version', XP.setProjectVersion),
+        updateMeta('license', XP.setProjectLicense),
+        updateMeta('description', XP.setProjectDescription),
+        updateMeta('apiKey', XP.setApiKey)
       )(state);
+    }
 
     case AT.PROJECT_OPEN_WORKSPACE: {
       const libs = action.payload;

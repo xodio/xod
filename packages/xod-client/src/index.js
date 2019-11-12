@@ -71,6 +71,7 @@ import {
 } from './debugger/debugProtocol';
 
 import initialState from './core/state';
+import { default as deriveProjectName } from './utils/deriveProjectName';
 
 export * from './editor/actions';
 export * from './project/actions';
@@ -134,6 +135,8 @@ export * from './messages/selectors';
 
 export { default as initialState } from './core/state';
 
+export { default as deriveProjectName } from './utils/deriveProjectName';
+
 export {
   createLogMessage,
   isXodMessage,
@@ -177,6 +180,7 @@ export default Object.assign(
     createXodMessage,
     createErrorMessage,
     parseDebuggerMessage,
+    deriveProjectName,
     TAB_CLOSE,
     SAVE_ALL,
     NODE_UPDATE_PROPERTY,
