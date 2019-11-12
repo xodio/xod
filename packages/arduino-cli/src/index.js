@@ -1,7 +1,8 @@
 import os from 'os';
 import * as R from 'ramda';
 import { resolve } from 'path';
-import { exec, spawn } from 'child-process-promise';
+import { exec, promisifyChildProcess } from 'promisify-child-process';
+import crossSpawn from 'cross-spawn';
 import YAML from 'yamljs';
 import { remove } from 'fs-extra';
 
@@ -9,6 +10,11 @@ import { saveConfig, configure, setPackageIndexUrls } from './config';
 import { patchBoardsWithOptions } from './optionParser';
 import listAvailableBoards from './listAvailableBoards';
 import parseProgressLog from './parseProgressLog';
+
+const spawn = (bin, args, options) =>
+  promisifyChildProcess(crossSpawn(bin, args, options), {
+    encoding: 'utf8',
+  });
 
 const IS_WIN = os.platform() === 'win32';
 const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
@@ -31,19 +37,17 @@ const ArduinoCli = (pathToBin, config = null) => {
 
   const escapedConfigPath = escapeSpacesNonWin(configPath);
   const run = args => {
-    const promise = exec(
-      `"${pathToBin}" --config-file=${escapedConfigPath} ${args}`
-    )
+    const cp = exec(`"${pathToBin}" --config-file=${escapedConfigPath} ${args}`)
       .then(
         R.tap(() => {
-          deleteProcess(promise.childProcess);
+          deleteProcess(cp);
         })
       )
       .then(R.prop('stdout'));
 
-    appendProcess(promise.childProcess);
+    appendProcess(cp);
 
-    return promise;
+    return cp;
   };
   const runWithProgress = async (onProgress, args) => {
     const spawnArgs = R.compose(
@@ -52,21 +56,17 @@ const ArduinoCli = (pathToBin, config = null) => {
       R.split(' ')
     )(args);
 
-    const promise = spawn(escapeSpacesNonWin(pathToBin), spawnArgs, {
+    const proc = spawn(escapeSpacesNonWin(pathToBin), spawnArgs, {
       stdio: ['inherit', 'pipe', 'pipe'],
       shell: true,
     });
-    const proc = promise.childProcess;
-
     proc.stdout.on('data', data => onProgress(data.toString()));
     proc.stderr.on('data', data => onProgress(data.toString()));
-    proc.on('exit', () => {
-      deleteProcess(proc);
-    });
+    proc.on('exit', () => deleteProcess(proc));
 
     appendProcess(proc);
 
-    return promise.then(R.prop('stdout'));
+    return proc.then(R.prop('stdout'));
   };
 
   const sketch = name => resolve(cfg.sketchbook_path, name);
