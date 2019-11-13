@@ -1,4 +1,3 @@
-import os from 'os';
 import * as R from 'ramda';
 import { resolve } from 'path';
 import { promisifyChildProcess } from 'promisify-child-process';
@@ -17,8 +16,6 @@ const spawn = (bin, args, options) =>
   });
 
 const noop = () => {};
-const IS_WIN = os.platform() === 'win32';
-const escapeSpacesNonWin = R.unless(() => IS_WIN, R.replace(/\s/g, '\\ '));
 
 /**
  * Initializes object to work with `arduino-cli`
@@ -36,12 +33,10 @@ const ArduinoCli = (pathToBin, config = null) => {
     runningProcesses = R.reject(R.equals(proc), runningProcesses);
   };
 
-  const escapedConfigPath = escapeSpacesNonWin(configPath);
   const runWithProgress = async (onProgress, args) => {
-    const spawnArgs = R.concat([`--config-file=${escapedConfigPath}`], args);
-    const proc = spawn(escapeSpacesNonWin(pathToBin), spawnArgs, {
+    const spawnArgs = R.concat([`--config-file=${configPath}`], args);
+    const proc = spawn(pathToBin, spawnArgs, {
       stdio: ['inherit', 'pipe', 'pipe'],
-      shell: !IS_WIN, // TODO: Can we get rid of `shell: true` for other platforms?
     });
     proc.stdout.on('data', data => onProgress(data.toString()));
     proc.stderr.on('data', data => onProgress(data.toString()));
