@@ -3,7 +3,7 @@ import 'url-search-params-polyfill';
 import { rejectWithCode, foldMaybe, noop } from 'xod-func-tools';
 
 import {
-  getCompileLimitUrl,
+  getApiBillingUrl,
   getWhoamiUrl,
   getLoginUrl,
   getLogoutUrl,
@@ -80,15 +80,15 @@ export const requestAuthorized = (requestAction, headers) => (
     });
 };
 
-const fetchLimits = headers => fetch(getCompileLimitUrl(), { headers });
+const fetchBilling = headers => fetch(getApiBillingUrl(), { headers });
 
-export const updateCompileLimit = (startup = false) => dispatch => {
+export const updateBalances = (startup = false) => dispatch => {
   const basicHeaders = startup ? { 'x-launch': 'true' } : {};
-  return dispatch(requestAuthorized(fetchLimits, basicHeaders))
-    .then(limit =>
+  return dispatch(requestAuthorized(fetchBilling, basicHeaders))
+    .then(billing =>
       dispatch({
-        type: ActionTypes.UPDATE_COMPILE_LIMIT,
-        payload: limit,
+        type: ActionTypes.UPDATE_BALANCES,
+        payload: billing.balances || {},
       })
     )
     .catch(noop); // Do not show any errors and just leave limits as is
@@ -100,9 +100,7 @@ export const updateCompileLimit = (startup = false) => dispatch => {
  * a keycloak grant from server
  */
 export const fetchGrant = (startup = false) => dispatch =>
-  dispatch(refreshGrant()).then(
-    R.tap(() => dispatch(updateCompileLimit(startup)))
-  );
+  dispatch(refreshGrant()).then(R.tap(() => dispatch(updateBalances(startup))));
 
 export const login = (username, password) => dispatch => {
   const form = new URLSearchParams();
@@ -136,7 +134,7 @@ export const logout = () => dispatch => {
   fetch(getLogoutUrl(), { credentials: 'include' })
     .then(() => {
       dispatch(setGrant(null));
-      dispatch(updateCompileLimit(false));
+      dispatch(updateBalances(false));
     })
     .catch(() => dispatch(addError(Messages.SERVICE_UNAVAILABLE)));
 };

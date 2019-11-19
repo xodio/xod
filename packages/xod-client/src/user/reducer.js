@@ -4,8 +4,8 @@ import * as ActionTypes from './actionTypes';
 
 const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case ActionTypes.UPDATE_COMPILE_LIMIT:
-      return R.assoc('limit', action.payload, state);
+    case ActionTypes.UPDATE_BALANCES:
+      return R.assoc('balances', action.payload, state);
     case ActionTypes.LOGIN_STARTED:
       return R.assoc('isAuthorising', true, state);
     case ActionTypes.LOGIN_FAILED:

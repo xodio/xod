@@ -49,7 +49,7 @@ import { parseDebuggerMessage } from '../debugger/debugProtocol';
 import { addMessagesToDebuggerLog } from '../debugger/actions';
 import runWasmWorker from '../workers/run';
 import { getAccessToken } from '../user/selectors';
-import { updateCompileLimit } from '../user/actions';
+import { updateBalances } from '../user/actions';
 
 import {
   getRenderablePin,
@@ -798,7 +798,7 @@ export const runTabtest = patchPath => (dispatch, getState) => {
         meta: { worker: err.worker },
       });
     })
-    .then(() => dispatch(updateCompileLimit(false)));
+    .then(() => dispatch(updateBalances(false)));
 };
 
 export const runSimulationRequested = () => ({
@@ -887,7 +887,7 @@ export const runSimulation = (
         meta: { worker: err.worker },
       });
     })
-    .then(() => dispatch(updateCompileLimit(false)));
+    .then(() => dispatch(updateBalances(false)));
 };
 
 export const sendTweakPulse = tweakNodeId => (dispatch, getState) => {
