@@ -36,7 +36,7 @@ export const parseLibQuery = R.compose(
   R.map(
     R.applySpec({
       owner: R.nth(0),
-      name: R.nth(1),
+      libname: R.nth(1),
       version: R.compose(defaultToLatest, prependVIfNeeded, R.nth(2)),
     })
   ),
@@ -51,7 +51,7 @@ export const parseLibQuery = R.compose(
 // and returns lib name without version ("xod/core").
 export const getLibName = libQuery =>
   R.compose(
-    qp => `${qp.owner}/${qp.name}`,
+    qp => `${qp.owner}/${qp.libname}`,
     explodeMaybe(
       `Expected correct library name format, like "xod/core@0.11.0", but got "${libQuery}"`
     ),
@@ -62,8 +62,8 @@ export const getLibName = libQuery =>
 export const isLibQueryValid = R.compose(Maybe.isJust, parseLibQuery);
 
 // :: LibQueryParams -> LibName
-export const stringifyLibQuery = ({ owner, name, version }) =>
-  `${owner}/${name}@${version}`;
+export const stringifyLibQuery = ({ owner, libname, version }) =>
+  `${owner}/${libname}@${version}`;
 
 // :: (LibQueryParams -> a) -> Maybe LibQueryParams -> Promise a Error
 export const unfoldMaybeLibQuery = R.curry((justFn, maybe) =>
@@ -95,16 +95,6 @@ export const rejectUnexistingVersion = R.curry((params, libdata) =>
       )(libdata)
   )(params)
 );
-
-// :: LibData -> Nullable String
-export const getLibVersion = R.curry(libData => {
-  const version = R.path(['requestParams', 'version'], libData);
-  const versions = R.prop('versions', libData);
-
-  return version === LATEST
-    ? R.head(versions)
-    : R.compose(R.defaultTo(null), R.find(R.equals(version)))(versions);
-});
 
 // Create memoized function to prevent fetching swagger URL
 // on each fetch request

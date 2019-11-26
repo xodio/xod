@@ -43,7 +43,7 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
   const fetchFn = (swagger, params) => {
     const tryFn = () =>
       swagger.apis.Library.getOrgLib({
-        libname: params.name,
+        libname: params.libname,
         orgname: params.owner,
       });
 
@@ -60,8 +60,7 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
         )
       )
       .then(R.prop('obj'))
-      .then(rejectUnexistingVersion(params))
-      .then(R.assoc('requestParams', params));
+      .then(rejectUnexistingVersion(params));
   };
 
   return getSwaggerClient(swaggerUrl).then(swagger =>
@@ -72,12 +71,40 @@ export const fetchLibData = R.curry((swaggerUrl, libQuery) => {
   );
 });
 
+// :: URL -> String -> Promise LibData Error
+export const searchLibraries = R.curry((swaggerUrl, libQuery) => {
+  const fetchFn = (swagger, query) => {
+    const tryFn = () =>
+      swagger.apis.Library.getLibs({
+        q: query,
+      });
+
+    return tryFn()
+      .catch(
+        retryExceptAny400(
+          rejectFetchResult({
+            message: MSG.cantFindLibrary(query), // TODO: Add another message?
+            errorCode: ERR_CODES.CANT_FIND_LIB_BY_NAME,
+            request: query,
+          }),
+          tryFn
+        )
+      )
+      .then(R.prop('obj'))
+      .then(R.prop('records'));
+  };
+
+  return getSwaggerClient(swaggerUrl).then(swagger =>
+    fetchFn(swagger, libQuery)
+  );
+});
+
 // :: URL -> LibName -> Promise Project Error
 export const fetchLibrary = R.curry((swaggerUrl, libQuery) => {
   const fetchFn = (swagger, params) => {
     const tryFn = () =>
       swagger.apis.Version.getLibVersionXodball({
-        libname: params.name,
+        libname: params.libname,
         orgname: params.owner,
         semver_or_latest: params.version,
       });

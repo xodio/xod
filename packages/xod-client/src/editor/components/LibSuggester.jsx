@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Maybe } from 'ramda-fantasy';
 
 import classNames from 'classnames';
 import Autosuggest from 'react-autosuggest';
@@ -8,8 +9,8 @@ import Highlighter from 'react-highlight-words';
 import { Icon } from 'react-fa';
 import debounce from 'throttle-debounce/debounce';
 
-import { fetchLibData, getLibVersion, isLibQueryValid } from 'xod-pm';
-import { isAmong } from 'xod-func-tools';
+import { fetchLibData, searchLibraries, parseLibQuery } from 'xod-pm';
+import { foldMaybe, isAmong } from 'xod-func-tools';
 
 import { getPmSwaggerUrl } from '../../utils/urls';
 import { KEYCODE } from '../../utils/constants';
@@ -17,7 +18,28 @@ import { restoreFocusOnApp } from '../../utils/browser';
 import SuggesterContainer from './SuggesterContainer';
 import * as MSG from '../messages';
 
-const getSuggestionValue = R.prop('requestParams');
+const composeValue = R.curry((suggestion, version) => ({
+  owner: suggestion.owner,
+  libname: suggestion.libname,
+  version,
+}));
+
+const getSuggestionValue = R.curry((searchQuery, suggestion) =>
+  R.compose(
+    foldMaybe(
+      composeValue(suggestion, suggestion.versions[0]),
+      composeValue(suggestion)
+    ),
+    R.chain(({ version }) => {
+      if (version === 'latest') return Maybe.of(suggestion.versions[0]);
+      if (R.contains(version, suggestion.versions)) return Maybe.of(version);
+      return Maybe.Nothing();
+    }),
+    parseLibQuery
+  )(searchQuery)
+);
+
+const getLibVersion = R.compose(R.prop('version'), getSuggestionValue);
 
 const renderNothingFound = () => (
   <div className="error">{MSG.LIB_SUGGESTER_NOTHING_FOUND}</div>
@@ -86,9 +108,7 @@ class LibSuggester extends React.Component {
 
   onSuggestionsFetchRequested({ reason, value }) {
     if (reason !== 'input-changed') return;
-    if (isLibQueryValid(value)) {
-      this.fetchLibData();
-    }
+    if (value.length > 3) this.fetchLibData();
   }
 
   onSuggestionsClearRequested() {
@@ -102,22 +122,53 @@ class LibSuggester extends React.Component {
   }
 
   fetchLibData() {
-    const request = this.state.value;
+    const query = this.state.value;
+
     this.setState({
       loading: true,
       suggestions: [],
       notFound: false,
     });
-    fetchLibData(getPmSwaggerUrl(), request)
+
+    const swaggerUrl = getPmSwaggerUrl();
+    // Search the exact library
+    const exactOne = fetchLibData(swaggerUrl, query)
       .then(R.of) // TODO: Once it will become an array
       .catch(R.always([]))
-      .then(data =>
-        this.setState({
-          suggestions: data,
-          loading: false,
-          notFound: data.length === 0,
-        })
+      .then(
+        R.tap(data =>
+          this.setState(
+            R.evolve({
+              suggestions: R.concat(R.__, data),
+            })
+          )
+        )
       );
+
+    // Search others
+    const otherLibs = searchLibraries(swaggerUrl, query)
+      .catch(R.always([]))
+      .then(
+        R.tap(data =>
+          this.setState(
+            R.evolve({
+              suggestions: R.concat(R.__, data),
+            })
+          )
+        )
+      );
+
+    // TODO: Replace these two requests with one,
+    //       when searchLibraries endpoint will be fixed:
+    //       https://github.com/xodio/services.xod.io/issues/919
+    return Promise.all([exactOne, otherLibs]).then(([exact, found]) =>
+      this.setState(
+        R.evolve({
+          loading: R.always(false),
+          notFound: () => exact.length === 0 && found.length === 0,
+        })
+      )
+    );
   }
 
   storeInputReference(autosuggest) {
@@ -143,6 +194,7 @@ class LibSuggester extends React.Component {
   }
 
   renderItem(item, { isHighlighted }) {
+    const query = this.state.value;
     const cls = classNames('Suggester-item Suggester-item--library', {
       'is-highlighted': isHighlighted,
     });
@@ -160,7 +212,7 @@ class LibSuggester extends React.Component {
             searchWords={[this.state.value]}
             textToHighlight={libName}
           />
-          <span className="version">{getLibVersion(item)}</span>
+          <span className="version">{getLibVersion(query, item)}</span>
         </span>
         <div className="add">
           <span className="author">by {item.owner}</span>
@@ -220,7 +272,7 @@ class LibSuggester extends React.Component {
           inputProps={inputProps}
           alwaysRenderSuggestions
           highlightFirstSuggestion
-          getSuggestionValue={getSuggestionValue}
+          getSuggestionValue={getSuggestionValue(value)}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
