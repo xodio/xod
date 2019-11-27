@@ -15,11 +15,12 @@ void evaluate(Context ctx) {
         return;
     }
 
-    uint8_t res = (uint8_t)wire->read();
-    if (res) {
-        emitValue<output_BYTE>(ctx, res);
-        emitValue<output_DONE>(ctx, 1);
-    } else {
+    auto res = wire->read();
+    if (res == -1) {
         raiseError(ctx); // Can't read byte
-    }
+        return;
+     }
+
+    emitValue<output_BYTE>(ctx, (uint8_t)res);
+    emitValue<output_DONE>(ctx, 1);
 }
