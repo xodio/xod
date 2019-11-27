@@ -1,5 +1,7 @@
 export default {
-  limit: null,
+  balances: {
+    compile: null,
+  },
   isAccountPaneVisible: false,
   grant: null,
   isAuthorising: false,

@@ -37,8 +37,6 @@ export const getUtmForumUrl = getUtmUrl(
 export const HOSTNAME = process.env.XOD_HOSTNAME || 'xod.io';
 
 // :: () -> String
-export const getCompileLimitUrl = () => `https://compile.${HOSTNAME}/limits/`;
-
 export const getPmSwaggerUrl = () => `https://pm.${HOSTNAME}/swagger/`;
 
 export const getLoginUrl = () => `https://${HOSTNAME}/auth/login/`;
@@ -53,6 +51,8 @@ export const getPasswordResetUrl = () =>
   `https://auth.${HOSTNAME}/auth/realms/xod/login-actions/reset-credentials`;
 
 export const getApiUrl = () => `https://api.${HOSTNAME}`;
+
+export const getApiBillingUrl = () => `${getApiUrl()}/billing`;
 
 export const getApiTokensUrl = () => `${getApiUrl()}/iot/tokens`;
 
