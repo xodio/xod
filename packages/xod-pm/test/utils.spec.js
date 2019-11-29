@@ -6,7 +6,6 @@ import {
   prependVIfNeeded,
   defaultToLatest,
   rejectUnexistingVersion,
-  getLibVersion,
 } from '../src/utils';
 
 import * as ERR_CODES from '../src/errorCodes';
@@ -94,22 +93,6 @@ describe('Utils', () => {
       return rejectUnexistingVersion(req('0.16.0'), fixture).catch(err =>
         assert.propertyVal(err, 'errorCode', ERR_CODES.CANT_FIND_LIB_VERSION)
       );
-    });
-  });
-
-  describe('getLibVersion()', () => {
-    const libData = reqVersion => ({
-      versions: ['v0.15.0', 'v0.14.0', 'v0.13.0'],
-      requestParams: { version: reqVersion },
-    });
-
-    it('should return founded version', () => {
-      assert.strictEqual(getLibVersion(libData('latest')), 'v0.15.0');
-      assert.strictEqual(getLibVersion(libData('v0.14.0')), 'v0.14.0');
-    });
-    it('should return null for unexisting version', () => {
-      assert.isNull(getLibVersion(libData('v0.0.1')));
-      assert.isNull(getLibVersion(libData('')));
     });
   });
 });

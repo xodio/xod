@@ -9,13 +9,7 @@ describe('fetching data', () => {
 
   describe('fetchLibData()', () => {
     it('returns Promise with  xod/core library data', () => {
-      const requiredKeys = [
-        'description',
-        'versions',
-        'libname',
-        'owner',
-        'requestParams',
-      ];
+      const requiredKeys = ['description', 'versions', 'libname', 'owner'];
 
       return Promise.all([
         F.fetchLibData(PM_SWAGGER_URL, 'xod/core').then(data =>

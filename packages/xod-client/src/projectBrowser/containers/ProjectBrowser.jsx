@@ -231,15 +231,15 @@ class ProjectBrowser extends React.Component {
   renderLibraryPatches() {
     const { libs, installingLibs } = this.props;
     const installingLibsComponents = R.map(
-      ({ owner, name, version }) => ({
-        name: `${owner}/${name}`,
+      ({ owner, libname, version }) => ({
+        name: `${owner}/${libname}`,
         component: (
           <div
-            key={`${owner}/${name}/${version}`}
+            key={`${owner}/${libname}/${version}`}
             className="PatchGroup PatchGroup--installing library"
           >
             <span className="name">
-              {owner}/{name}
+              {owner}/{libname}
             </span>
             <span className="version">{version}</span>
             <Icon name="circle-o-notch" spin />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { createIndex } from 'xod-patch-search';
+import { createPatchSearcher } from 'xod-patch-search';
 
 import Suggester from '../src/editor/components/Suggester';
 import '../src/core/styles/main.scss';
@@ -75,7 +75,7 @@ storiesOf('Suggester', module)
   ))
   .add('basic', () => (
     <Suggester
-      index={createIndex(indexData)}
+      searchPatches={createPatchSearcher()(indexData)}
       onAddNode={val => {
         // eslint-disable-next-line
         alert(`Node "${val}" will be placed!`);
