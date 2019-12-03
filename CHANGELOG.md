@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Add search for libraries within XOD IDE (#1909)
+* [ide] Derive project name from the saved filename in desktop IDE (#1904)
+* [core] Add `=XOD_USERNAME` literal to use a XOD username in various places and assist easy sharing of the project (#1888)
+* [core] Add `=XOD_PROJECT` literal to use the current project name. For example, as a part of the feed path (#1889)
+* [core] Add `=XOD_TOKEN` literal which is required to authorize with XOD Cloud services (#1900)
+
+### Bug fixes
+
+* [core] Buses with a generic type are resolving and transpiling properly now (#1905)
+* [core] Compilation no longer fails on Windows if PC username contains spaces (#1906)
+* [nodes] Make the program with tweak-string nodes compile for ESP8266 boards (#1902)
+* [nodes] Fix [`xod/i2c/read-byte`](https://xod.io/libs/xod/i2c/read-byte) node error raising on reading `0x00` value (#1910)
+
+### New nodes
+
+* [xod-cloud/feeds](https://xod.io/libs/xod-cloud/feeds) — a library for communicating with XOD Cloud Feeds
+
 <a name="0.31.1"></a>
 
 ## 0.31.1 (2019-10-08)
