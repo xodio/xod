@@ -22,7 +22,7 @@ export default ({ getState }) => next => action => {
   const isTweakActionType =
     action.type === NODE_UPDATE_PROPERTY || action.type === TWEAK_PULSE_SENT;
   if (isTweakActionType && isSimulationRunning(state)) {
-    const { id: nodeId, value, patchPath } = action.payload;
+    const { id: nodeId, value = '', patchPath } = action.payload;
     const nodeType = R.compose(
       XP.getNodeType,
       XP.getNodeByIdUnsafe(nodeId),

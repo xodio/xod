@@ -22,7 +22,7 @@ export default ({ getState }) => next => action => {
     action.type === client.NODE_UPDATE_PROPERTY ||
     action.type === client.TWEAK_PULSE_SENT;
   if (isTweakActionType && client.isSerialDebugRunning(state)) {
-    const { id: nodeId, value, patchPath } = action.payload;
+    const { id: nodeId, value = '', patchPath } = action.payload;
     const nodeType = R.compose(
       XP.getNodeType,
       XP.getNodeByIdUnsafe(nodeId),
