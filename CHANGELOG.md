@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Bug fixes
+
+* [ide] Fix crash on sending tweak pulses (#1914)
+* [core] Fix implementation of placement new operator for cores that do not provide their own (#1915)
+
+### New nodes
+
+* [xod/core/equal(boolean)](https://xod.io/libs/xod/core/equal(boolean\)/) (#1916)
+
 <a name="0.32.0"></a>
 
 ## 0.32.0 (2019-12-04)
