@@ -20,4 +20,9 @@ struct Pulse {
   Pulse(bool) {}
   Pulse(int) {}
 };
+
+struct XColor {
+  uint8_t r, g, b;
+};
+
 } // namespace xod
