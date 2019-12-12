@@ -83,6 +83,12 @@ typedef double Number;
 typedef bool Logic;
 typedef unsigned long TimeMs;
 typedef uint8_t ErrorFlags;
+
+struct Pulse {
+  Pulse() {}
+  Pulse(bool) {}
+  Pulse(int) {}
+};
 } // namespace xod
 
 /*=============================================================================
@@ -965,14 +971,13 @@ struct State {
 
 struct Node {
     TimeMs timeoutAt;
-    Logic output_TICK;
     State state;
 };
 
 struct output_TICK { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<output_TICK> { using T = Logic; };
+template<> struct ValueType<output_TICK> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
@@ -989,8 +994,8 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
             " output_TICK");
 }
 
-template<> Logic getValue<output_TICK>(Context ctx) {
-    return ctx->_node->output_TICK;
+template<> Pulse getValue<output_TICK>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1006,8 +1011,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
             " output_TICK");
 }
 
-template<> void emitValue<output_TICK>(Context ctx, Logic val) {
-    ctx->_node->output_TICK = val;
+template<> void emitValue<output_TICK>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_TICK = true;
 }
 
@@ -1041,13 +1045,11 @@ struct input_UPD { };
 struct output_TIME { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Pulse; };
 template<> struct ValueType<output_TIME> { using T = Number; };
 
 struct ContextObject {
     Node* _node;
-
-    Logic _input_UPD;
 
     bool _isInputDirty_UPD;
 
@@ -1062,8 +1064,8 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
             " output_TIME");
 }
 
-template<> Logic getValue<input_UPD>(Context ctx) {
-    return ctx->_input_UPD;
+template<> Pulse getValue<input_UPD>(Context ctx) {
+    return Pulse();
 }
 template<> Number getValue<output_TIME>(Context ctx) {
     return ctx->_node->output_TIME;
@@ -1206,7 +1208,6 @@ union NodeErrors {
 
 struct Node {
     NodeErrors errors;
-    Logic output_DONE;
     State state;
 };
 
@@ -1230,8 +1231,8 @@ template<> struct ValueType<input_D6> { using T = uint8_t; };
 template<> struct ValueType<input_D7> { using T = uint8_t; };
 template<> struct ValueType<input_L1> { using T = XString; };
 template<> struct ValueType<input_L2> { using T = XString; };
-template<> struct ValueType<input_UPD> { using T = Logic; };
-template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Pulse; };
+template<> struct ValueType<output_DONE> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
@@ -1244,7 +1245,6 @@ struct ContextObject {
     uint8_t _input_D7;
     XString _input_L1;
     XString _input_L2;
-    Logic _input_UPD;
 
     bool _isInputDirty_UPD;
 
@@ -1284,11 +1284,11 @@ template<> XString getValue<input_L1>(Context ctx) {
 template<> XString getValue<input_L2>(Context ctx) {
     return ctx->_input_L2;
 }
-template<> Logic getValue<input_UPD>(Context ctx) {
-    return ctx->_input_UPD;
+template<> Pulse getValue<input_UPD>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<output_DONE>(Context ctx) {
-    return ctx->_node->output_DONE;
+template<> Pulse getValue<output_DONE>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1308,8 +1308,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
             " output_DONE");
 }
 
-template<> void emitValue<output_DONE>(Context ctx, Logic val) {
-    ctx->_node->output_DONE = val;
+template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_DONE = true;
     ctx->_node->errors.output_DONE = false;
 }
@@ -1421,13 +1420,9 @@ constexpr uint8_t node_5_output_VAL = 13;
 
 constexpr XString node_6_output_VAL = XString();
 
-constexpr Logic node_7_output_TICK = false;
-
 constexpr Number node_8_output_TIME = 0;
 
 constexpr XString node_9_output_OUT = XString();
-
-constexpr Logic node_10_output_DONE = false;
 
 #pragma GCC diagnostic pop
 
@@ -1454,7 +1449,6 @@ TransactionState g_transaction;
 
 xod__core__continuously::Node node_7 = {
     0, // timeoutAt
-    node_7_output_TICK, // output TICK default
     xod__core__continuously::State() // state default
 };
 xod__core__system_time::Node node_8 = {
@@ -1467,7 +1461,6 @@ xod__core__cast_to_string__number::Node node_9 = {
 };
 xod__common_hardware__text_lcd_16x2::Node node_10 = {
     false, // DONE has no errors on start
-    node_10_output_DONE, // output DONE default
     xod__common_hardware__text_lcd_16x2::State() // state default
 };
 
@@ -1549,7 +1542,6 @@ void runTransaction() {
             ctxObj._node = &node_8;
 
             // copy data from upstream nodes into context
-            ctxObj._input_UPD = node_7.output_TICK;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_7_isOutputDirty_TICK;
 
@@ -1605,7 +1597,6 @@ void runTransaction() {
             ctxObj._input_D7 = node_5_output_VAL;
             ctxObj._input_L1 = node_9.output_OUT;
             ctxObj._input_L2 = node_6_output_VAL;
-            ctxObj._input_UPD = node_7.output_TICK;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_7_isOutputDirty_TICK;
 

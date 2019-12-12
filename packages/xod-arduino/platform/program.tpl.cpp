@@ -14,9 +14,9 @@ namespace xod {
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 {{#each nodes}}
 {{~ mergePins }}
-{{#each outputs }}
+{{#eachNonPulse outputs }}
 {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
-{{/each}}
+{{/eachNonPulse}}
 {{/each}}
 
 #pragma GCC diagnostic pop
@@ -58,9 +58,9 @@ TransactionState g_transaction;
   {{#if patch.usesTimeouts}}
     0, // timeoutAt
   {{/if}}
-  {{#each outputs}}
+  {{#eachNonPulse outputs}}
     node_{{ ../id }}_output_{{ pinKey }}, // output {{ pinKey }} default
-  {{/each}}
+  {{/eachNonPulse}}
     {{ ns patch }}::State() // state default
 };
 {{/unless}}
@@ -84,7 +84,7 @@ void handleTweaks() {
                     node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseInt();
                   {{/case}}
                   {{#case "pulse"}}
-                    node_{{ id }}.output_OUT = 1;
+                    {{!-- nothing to do here, only marking output as dirty is required --}}
                   {{/case}}
                   {{#case "boolean"}}
                     node_{{ id }}.output_OUT = (bool)XOD_DEBUG_SERIAL.parseInt();
@@ -139,9 +139,11 @@ void handleDefers() {
               // initial value constexpr in case of a constant. It’s
               // because store no Node structures at the global level
             --}}
+            {{#unless (isPulse type)}}
             ctxObj._input_{{ pinKey }} = node_{{ fromNodeId }}
                 {{~#if fromPatch.isConstant }}_{{else}}.{{/if~}}
                 output_{{ fromPinKey }};
+            {{/unless}}
           {{/eachLinkedInput}}
 
           {{#each inputs}}
@@ -312,9 +314,11 @@ void runTransaction() {
               // initial value constexpr in case of a constant. It’s
               // because store no Node structures at the global level
             --}}
+            {{#unless (isPulse type)}}
             ctxObj._input_{{ pinKey }} = node_{{ fromNodeId }}
                 {{~#if fromPatch.isConstant }}_{{else}}.{{/if~}}
                 output_{{ fromPinKey }};
+            {{/unless}}
           {{/eachLinkedInput}}
 
           {{#eachNonlinkedInput inputs}}

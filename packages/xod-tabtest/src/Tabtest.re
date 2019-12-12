@@ -209,6 +209,7 @@ module TestCase = {
             let probeName = Strings.cppEscape(name);
             switch (record->(TabData.Record.get(name))) {
             | Some(Pulse(false)) => {j|// No pulse for $name|j}
+            | Some(Pulse(true)) => {j|INJECT_PULSE(probe_$probeName);|j}
             | Some(RaisedError) => {j|INJECT_ERROR(probe_$probeName);|j}
             | Some(value) =>
               let literal = valueToLiteral(value);
@@ -309,6 +310,11 @@ module TestCase = {
         "",
         "#define INJECT(probe, value) \\",
         "        (probe).output_VAL = (value); \\",
+        "        (probe).state.shouldRaise = false; \\",
+        "        MARK_DIRTY_##probe;",
+        "",
+        "#define INJECT_PULSE(probe) \\",
+        "        (probe).state.shouldPulse = true; \\",
         "        (probe).state.shouldRaise = false; \\",
         "        MARK_DIRTY_##probe;",
         "",
