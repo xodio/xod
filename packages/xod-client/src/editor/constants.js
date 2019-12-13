@@ -25,6 +25,7 @@ export const WIDGET_TYPE = {
   BYTE: XP.PIN_TYPE.BYTE,
   PORT: XP.PIN_TYPE.PORT,
   DEAD: XP.PIN_TYPE.DEAD,
+  COLOR: XP.CUSTOM_TYPE.COLOR,
   LABEL: 'Label',
   IO_LABEL: 'IOLabel',
   TEXTAREA: 'textarea',

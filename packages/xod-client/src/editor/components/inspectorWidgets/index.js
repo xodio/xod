@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import Big from 'big.js';
 import { unquote, enquote } from 'xod-func-tools';
-import { PIN_TYPE, isGenericType } from 'xod-project';
+import { CUSTOM_TYPE, PIN_TYPE, isGenericType } from 'xod-project';
 
 import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
@@ -18,6 +18,7 @@ import normalizeByte from '../../../utils/normalizeByte';
 import normalizeNumber from '../../../utils/normalizeNumber';
 import normalizePort from '../../../utils/normalizePort';
 import normalizeGenericValue from '../../../utils/normalizeGenericValue';
+import normalizeColor from '../../../utils/normalizeColor';
 
 function createArrowKeyHandler(bigStep, smallStep) {
   return function arrowKeyHandler(event) {
@@ -111,6 +112,12 @@ const WIDGET_MAPPING = {
     dataType: PIN_TYPE.PORT,
     keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizePort,
+  },
+  [WIDGET_TYPE.COLOR]: {
+    component: StringWidget, // TODO: Replace with custom widget
+    dataType: CUSTOM_TYPE.COLOR,
+    keyDownHandlers: submitAndSelectOnEnter,
+    normalizeValue: normalizeColor,
   },
 };
 
