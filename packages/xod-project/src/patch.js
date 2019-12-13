@@ -352,7 +352,8 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
   )(patch);
 
   const isBindable =
-    Utils.isBuiltInType(type) && // pins of custom types are never bindable
+    (Utils.isBuiltInType(type) || // pins of built-in types
+      Utils.isBindableCustomType(type)) && // or custom types that supports literals
     !isBusPatch && // pins of bus nodes are never bindable
     (direction === CONST.PIN_DIRECTION.INPUT
       ? true // input pins of built-in types are always bindable

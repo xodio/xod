@@ -17,7 +17,7 @@ import {
   getTerminalDirection,
 } from './patchPathUtils';
 
-import { isBuiltInType } from './utils';
+import { isBuiltInType, isBindableCustomType } from './utils';
 
 /**
  * Input terminal patches have output pins, and vice versa:
@@ -35,6 +35,7 @@ export const getPinKeyForTerminalDirection = direction =>
 const getTerminalPins = R.curry((direction, type) => {
   const pinKey = TERMINAL_PIN_KEYS[OPPOSITE_DIRECTION[direction]];
   const label = direction === DIRECTION.INPUT ? 'OUT' : 'IN';
+  const isBindable = R.either(isBuiltInType, isBindableCustomType)(type);
   const pin = createPin(
     pinKey,
     type,
@@ -43,7 +44,7 @@ const getTerminalPins = R.curry((direction, type) => {
     label,
     '', // description
     // bindable? terminal's pins are always bindable for built-in types
-    isBuiltInType(type),
+    isBindable,
     R.propOr('', type, DEFAULT_VALUE_OF_TYPE)
   );
 

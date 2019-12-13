@@ -96,6 +96,11 @@ export const isBuiltInType = def(
   isAmong(R.values(CONST.PIN_TYPE))
 );
 
+export const isBindableCustomType = def(
+  'isBindableCustomType :: String -> Boolean',
+  isAmong(R.values(CONST.CUSTOM_TYPE))
+);
+
 // =============================================================================
 //
 // Transforming node ids in the patch
@@ -199,6 +204,11 @@ export const isValidStringLiteral = def(
   R.either(isAmong(R.values(CONST.GLOBALS_LITERALS)), R.test(/^".*"$/gi))
 );
 
+export const isValidColorLiteral = def(
+  'isValidColorLiteral :: String -> Boolean',
+  R.test(/^#[0-9A-F]{6}$/)
+);
+
 export const getTypeFromLiteral = def(
   'getTypeFromLiteral :: DataValue -> Either Error DataType',
   literal => {
@@ -224,9 +234,9 @@ export const getTypeFromLiteral = def(
     if (isValidNumberDataValue(literal))
       return Either.of(CONST.PIN_TYPE.NUMBER);
 
-    if (isValidPortLiteral(literal)) {
-      return Either.of(CONST.PIN_TYPE.PORT);
-    }
+    if (isValidPortLiteral(literal)) return Either.of(CONST.PIN_TYPE.PORT);
+
+    if (isValidColorLiteral(literal)) return Either.of(CONST.CUSTOM_TYPE.COLOR);
 
     return fail('BAD_LITERAL_VALUE', { value: literal });
   }

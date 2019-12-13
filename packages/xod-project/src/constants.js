@@ -24,6 +24,13 @@ export const PIN_TYPE = {
   T3: 't3',
 };
 
+/**
+ * Enumeration of custom types with literals
+ */
+export const CUSTOM_TYPE = {
+  COLOR: 'xod/color/color',
+};
+
 export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
   NEVER: 'Never',
   CONTINUOUSLY: 'Continuously',
@@ -37,6 +44,7 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.PULSE]: INPUT_PULSE_PIN_BINDING_OPTIONS.NEVER,
   [PIN_TYPE.BYTE]: '00h',
   [PIN_TYPE.PORT]: 'D0',
+  [CUSTOM_TYPE.COLOR]: '#000000',
   [PIN_TYPE.DEAD]: '',
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
@@ -98,6 +106,7 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
+  [PIN_TYPE.COLOR]: 'xod/color/color',
 };
 
 // node types that provide a constant pulse,
