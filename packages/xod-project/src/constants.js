@@ -1,3 +1,8 @@
+import {
+  getCustomTypeConstructorsMap,
+  getCustomTypeDefaultValuesMap,
+} from './custom-types';
+
 export const IDENTIFIER_RULES = `Only a-z, 0-9 and - are allowed.
   Name must not begin or end with a hypen,
   or contain more than one hypen in a row`;
@@ -41,6 +46,7 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
   [PIN_TYPE.T3]: '',
+  ...getCustomTypeDefaultValuesMap(),
 };
 
 export const GLOBALS_LITERALS = ['=XOD_USERNAME', '=XOD_PROJECT', '=XOD_TOKEN'];
@@ -98,6 +104,7 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
+  ...getCustomTypeConstructorsMap(),
 };
 
 // node types that provide a constant pulse,

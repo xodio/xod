@@ -5,6 +5,7 @@ import shortid from 'shortid';
 import * as Utils from '../src/utils';
 import * as Node from '../src/node';
 import { PIN_TYPE } from '../src/constants';
+import { BINDABLE_CUSTOM_TYPES } from '../src/custom-types';
 import * as Helpers from './helpers';
 
 describe('Utils', () => {
@@ -175,6 +176,11 @@ describe('Utils', () => {
       expectType('PD20', PIN_TYPE.PORT);
       expectType('PE8', PIN_TYPE.PORT);
       expectType('PF0', PIN_TYPE.PORT);
+    });
+
+    it('should recognise color literals', () => {
+      expectType('#000000', BINDABLE_CUSTOM_TYPES.COLOR);
+      expectType('#F3A9CE', BINDABLE_CUSTOM_TYPES.COLOR);
     });
   });
 });

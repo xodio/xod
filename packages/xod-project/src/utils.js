@@ -4,6 +4,10 @@ import shortid from 'shortid';
 import { Either } from 'ramda-fantasy';
 import { isAmong, fail, explodeEither } from 'xod-func-tools';
 
+import {
+  listCustomTypeLiteralValidators,
+  listCustomTypeNames,
+} from './custom-types';
 import * as CONST from './constants';
 import { def } from './types';
 
@@ -199,36 +203,44 @@ export const isValidStringLiteral = def(
   R.either(isAmong(R.values(CONST.GLOBALS_LITERALS)), R.test(/^".*"$/gi))
 );
 
+export const isValidBooleanLiteral = def(
+  'isValidBooleanLiteral :: String -> Boolean',
+  isAmong(['True', 'False'])
+);
+
+export const isValidPulseLiteral = def(
+  'isValidPulseLiteral :: String -> Boolean',
+  isAmong(R.values(CONST.INPUT_PULSE_PIN_BINDING_OPTIONS))
+);
+
+export const isValidByteLiteral = def(
+  'isValidByteLiteral :: String -> Boolean',
+  R.either(isValidCharLiteral, R.test(/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/gi))
+);
+
 export const getTypeFromLiteral = def(
   'getTypeFromLiteral :: DataValue -> Either Error DataType',
   literal => {
-    if (!R.is(String, literal))
-      return fail('BAD_LITERAL_VALUE', { value: literal });
+    const invalidLiteral = () => fail('BAD_LITERAL_VALUE', { value: literal });
+    const t = typeName => () => Either.of(typeName);
 
-    if (isAmong(['True', 'False'], literal))
-      return Either.of(CONST.PIN_TYPE.BOOLEAN);
-
-    if (isAmong(R.values(CONST.INPUT_PULSE_PIN_BINDING_OPTIONS), literal))
-      return Either.of(CONST.PIN_TYPE.PULSE);
-
-    if (isValidStringLiteral(literal)) return Either.of(CONST.PIN_TYPE.STRING);
-
-    if (
-      R.either(
-        isValidCharLiteral,
-        R.test(/^[0-9a-f]{2}h|[0,1]{8}b|\d{1,3}d$/gi)
-      )(literal)
-    )
-      return Either.of(CONST.PIN_TYPE.BYTE);
-
-    if (isValidNumberDataValue(literal))
-      return Either.of(CONST.PIN_TYPE.NUMBER);
-
-    if (isValidPortLiteral(literal)) {
-      return Either.of(CONST.PIN_TYPE.PORT);
-    }
-
-    return fail('BAD_LITERAL_VALUE', { value: literal });
+    return R.cond([
+      // Literals always are Strings
+      [R.complement(R.is(String)), invalidLiteral],
+      // Deducers...
+      [isValidBooleanLiteral, t(CONST.PIN_TYPE.BOOLEAN)],
+      [isValidPulseLiteral, t(CONST.PIN_TYPE.PULSE)],
+      [isValidStringLiteral, t(CONST.PIN_TYPE.STRING)],
+      [isValidByteLiteral, t(CONST.PIN_TYPE.BYTE)],
+      [isValidNumberDataValue, t(CONST.PIN_TYPE.NUMBER)],
+      [isValidPortLiteral, t(CONST.PIN_TYPE.PORT)],
+      ...R.zip(
+        listCustomTypeLiteralValidators(),
+        R.map(t, listCustomTypeNames())
+      ),
+      // Others — invalid
+      [R.T, invalidLiteral],
+    ])(literal);
   }
 );
 
