@@ -79,12 +79,14 @@ export const TPatch = Model('TPatch', {
 });
 
 const TNodeOutput = Model('TNodeOutput', {
+  type: $.String,
   to: $.Array(TNodeId),
   pinKey: TPinKey,
   value: $.Nullable(DataValue),
 });
 
 const TNodeInput = Model('TNodeInput', {
+  type: $.String,
   pinKey: TPinKey,
   fromNodeId: TNodeId,
   fromPatch: TPatch,

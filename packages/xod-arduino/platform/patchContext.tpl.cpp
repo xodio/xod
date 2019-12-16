@@ -20,9 +20,9 @@ struct Node {
   {{#if usesTimeouts}}
     TimeMs timeoutAt;
   {{/if}}
-  {{#each outputs}}
+  {{#eachNonPulse outputs}}
     {{ cppType type }} output_{{ pinKey }};
-  {{/each}}
+  {{/eachNonPulse}}
     State state;
 };
 
@@ -53,9 +53,9 @@ struct ContextObject {
     uint16_t _nodeId;
   {{/if}}
 
-  {{#each inputs}}
+  {{#eachNonPulse inputs}}
     {{ cppType type }} _input_{{ pinKey }};
-  {{/each}}
+  {{/eachNonPulse}}
 
   {{#eachDirtyablePin inputs}}
     bool _isInputDirty_{{ pinKey }};
@@ -81,12 +81,20 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
 
 {{#each inputs}}
 template<> {{ cppType type }} getValue<input_{{ pinKey }}>(Context ctx) {
+  {{#if (isPulse type)}}
+    return Pulse();
+  {{else}}
     return ctx->_input_{{ pinKey }};
+  {{/if}}
 }
 {{/each}}
 {{#each outputs}}
 template<> {{ cppType type }} getValue<output_{{ pinKey }}>(Context ctx) {
+  {{#if (isPulse type)}}
+    return Pulse();
+  {{else}}
     return ctx->_node->output_{{ pinKey }};
+  {{/if}}
 }
 {{/each}}
 
@@ -111,7 +119,9 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 {{#each outputs}}
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
+  {{#unless (isPulse type)}}
     ctx->_node->output_{{ pinKey }} = val;
+  {{/unless}}
   {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}

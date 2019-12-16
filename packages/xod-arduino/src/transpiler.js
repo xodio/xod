@@ -313,13 +313,19 @@ const getTNodeOutputs = def(
   'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
     const nodeId = XP.getNodeId(node);
-    const nodePins = getNodePinLabels(node, project);
+    const nodePinLabels = getNodePinLabels(node, project);
+    const nodePinTypes = R.compose(
+      R.map(XP.getPinType),
+      R.indexBy(XP.getPinKey),
+      getNodePinsUnsafe
+    )(node, project);
 
     return R.compose(
       R.values,
       R.mapObjIndexed((links, pinKey) => ({
+        type: nodePinTypes[pinKey],
         to: getLinksInputNodeIds(links),
-        pinKey: nodePins[pinKey],
+        pinKey: nodePinLabels[pinKey],
         value: XP.getBoundValue(pinKey, node).getOrElse(
           getDefaultPinValue(pinKey, node, project)
         ),
@@ -358,7 +364,12 @@ const getTNodeInputs = def(
   (project, entryPath, patches, node) => {
     const patch = XP.getPatchByPathUnsafe(entryPath, project);
     const nodeId = XP.getNodeId(node);
-    const nodePins = getNodePinLabels(node, project);
+    const nodePinLabels = getNodePinLabels(node, project);
+    const nodePinTypes = R.compose(
+      R.map(XP.getPinType),
+      R.indexBy(XP.getPinKey),
+      getNodePinsUnsafe
+    )(node, project);
 
     // :: Link -> TPatch
     const getUpstreamNodePatch = R.compose(
@@ -371,8 +382,9 @@ const getTNodeInputs = def(
 
     // :: Link -> TNodeInput
     const constructTNodeInput = R.applySpec({
+      type: R.compose(R.prop(R.__, nodePinTypes), XP.getLinkInputPinKey),
       originalPinKey: XP.getLinkInputPinKey,
-      pinKey: R.compose(R.prop(R.__, nodePins), XP.getLinkInputPinKey),
+      pinKey: R.compose(R.prop(R.__, nodePinLabels), XP.getLinkInputPinKey),
       fromNodeId: R.compose(toInt, XP.getLinkOutputNodeId),
       fromPatch: getUpstreamNodePatch,
       fromPinKey: getUpstreamPinLabel,

@@ -71,7 +71,7 @@ const mergeAndListPins = (direction, node) =>
   )(node);
 
 const builtInTypeNames = {
-  [XP.PIN_TYPE.PULSE]: 'Logic',
+  [XP.PIN_TYPE.PULSE]: 'Pulse',
   [XP.PIN_TYPE.BOOLEAN]: 'Logic',
   [XP.PIN_TYPE.NUMBER]: 'Number',
   [XP.PIN_TYPE.STRING]: 'XString',
@@ -258,6 +258,8 @@ const isTweakNode = R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath);
 
 Handlebars.registerHelper('isTweakNode', isTweakNode);
 
+Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
+
 // A helper to quickly introduce a new filtered {{each ...}} loop
 function registerHandlebarsFilterLoopHelper(name, predicate) {
   Handlebars.registerHelper(name, (list, block) =>
@@ -293,6 +295,10 @@ registerHandlebarsFilterLoopHelper(
 registerHandlebarsFilterLoopHelper(
   'eachPulseOutput',
   R.propEq('type', XP.PIN_TYPE.PULSE)
+);
+registerHandlebarsFilterLoopHelper(
+  'eachNonPulse',
+  R.complement(R.propEq('type', XP.PIN_TYPE.PULSE))
 );
 
 // =============================================================================

@@ -83,6 +83,12 @@ typedef double Number;
 typedef bool Logic;
 typedef unsigned long TimeMs;
 typedef uint8_t ErrorFlags;
+
+struct Pulse {
+  Pulse() {}
+  Pulse(bool) {}
+  Pulse(int) {}
+};
 } // namespace xod
 
 /*=============================================================================
@@ -965,14 +971,13 @@ struct State {
 
 struct Node {
     TimeMs timeoutAt;
-    Logic output_TICK;
     State state;
 };
 
 struct output_TICK { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<output_TICK> { using T = Logic; };
+template<> struct ValueType<output_TICK> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
@@ -989,8 +994,8 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
             " output_TICK");
 }
 
-template<> Logic getValue<output_TICK>(Context ctx) {
-    return ctx->_node->output_TICK;
+template<> Pulse getValue<output_TICK>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1006,8 +1011,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
             " output_TICK");
 }
 
-template<> void emitValue<output_TICK>(Context ctx, Logic val) {
-    ctx->_node->output_TICK = val;
+template<> void emitValue<output_TICK>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_TICK = true;
 }
 
@@ -1044,7 +1048,6 @@ union NodeErrors {
 struct Node {
     NodeErrors errors;
     Logic output_SIG;
-    Logic output_DONE;
     State state;
 };
 
@@ -1055,15 +1058,14 @@ struct output_DONE { };
 
 template<typename PinT> struct ValueType { using T = void; };
 template<> struct ValueType<input_PORT> { using T = uint8_t; };
-template<> struct ValueType<input_UPD> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Pulse; };
 template<> struct ValueType<output_SIG> { using T = Logic; };
-template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<output_DONE> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
 
     uint8_t _input_PORT;
-    Logic _input_UPD;
 
     bool _isInputDirty_UPD;
 
@@ -1083,14 +1085,14 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
 template<> uint8_t getValue<input_PORT>(Context ctx) {
     return ctx->_input_PORT;
 }
-template<> Logic getValue<input_UPD>(Context ctx) {
-    return ctx->_input_UPD;
+template<> Pulse getValue<input_UPD>(Context ctx) {
+    return Pulse();
 }
 template<> Logic getValue<output_SIG>(Context ctx) {
     return ctx->_node->output_SIG;
 }
-template<> Logic getValue<output_DONE>(Context ctx) {
-    return ctx->_node->output_DONE;
+template<> Pulse getValue<output_DONE>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1115,8 +1117,7 @@ template<> void emitValue<output_SIG>(Context ctx, Logic val) {
     ctx->_isOutputDirty_SIG = true;
     ctx->_node->errors.output_SIG = false;
 }
-template<> void emitValue<output_DONE>(Context ctx, Logic val) {
-    ctx->_node->output_DONE = val;
+template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_DONE = true;
     ctx->_node->errors.output_DONE = false;
 }
@@ -1173,8 +1174,6 @@ struct State {
 };
 
 struct Node {
-    Logic output_T;
-    Logic output_F;
     State state;
 };
 
@@ -1185,15 +1184,14 @@ struct output_F { };
 
 template<typename PinT> struct ValueType { using T = void; };
 template<> struct ValueType<input_GATE> { using T = Logic; };
-template<> struct ValueType<input_TRIG> { using T = Logic; };
-template<> struct ValueType<output_T> { using T = Logic; };
-template<> struct ValueType<output_F> { using T = Logic; };
+template<> struct ValueType<input_TRIG> { using T = Pulse; };
+template<> struct ValueType<output_T> { using T = Pulse; };
+template<> struct ValueType<output_F> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
 
     Logic _input_GATE;
-    Logic _input_TRIG;
 
     bool _isInputDirty_TRIG;
 
@@ -1213,14 +1211,14 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
 template<> Logic getValue<input_GATE>(Context ctx) {
     return ctx->_input_GATE;
 }
-template<> Logic getValue<input_TRIG>(Context ctx) {
-    return ctx->_input_TRIG;
+template<> Pulse getValue<input_TRIG>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<output_T>(Context ctx) {
-    return ctx->_node->output_T;
+template<> Pulse getValue<output_T>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<output_F>(Context ctx) {
-    return ctx->_node->output_F;
+template<> Pulse getValue<output_F>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1240,12 +1238,10 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
             " output_T output_F");
 }
 
-template<> void emitValue<output_T>(Context ctx, Logic val) {
-    ctx->_node->output_T = val;
+template<> void emitValue<output_T>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_T = true;
 }
-template<> void emitValue<output_F>(Context ctx, Logic val) {
-    ctx->_node->output_F = val;
+template<> void emitValue<output_F>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_F = true;
 }
 
@@ -1285,17 +1281,13 @@ struct input_RST { };
 struct output_MEM { };
 
 template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_SET> { using T = Logic; };
-template<> struct ValueType<input_TGL> { using T = Logic; };
-template<> struct ValueType<input_RST> { using T = Logic; };
+template<> struct ValueType<input_SET> { using T = Pulse; };
+template<> struct ValueType<input_TGL> { using T = Pulse; };
+template<> struct ValueType<input_RST> { using T = Pulse; };
 template<> struct ValueType<output_MEM> { using T = Logic; };
 
 struct ContextObject {
     Node* _node;
-
-    Logic _input_SET;
-    Logic _input_TGL;
-    Logic _input_RST;
 
     bool _isInputDirty_SET;
     bool _isInputDirty_TGL;
@@ -1313,14 +1305,14 @@ template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
             " output_MEM");
 }
 
-template<> Logic getValue<input_SET>(Context ctx) {
-    return ctx->_input_SET;
+template<> Pulse getValue<input_SET>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<input_TGL>(Context ctx) {
-    return ctx->_input_TGL;
+template<> Pulse getValue<input_TGL>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<input_RST>(Context ctx) {
-    return ctx->_input_RST;
+template<> Pulse getValue<input_RST>(Context ctx) {
+    return Pulse();
 }
 template<> Logic getValue<output_MEM>(Context ctx) {
     return ctx->_node->output_MEM;
@@ -1398,7 +1390,6 @@ union NodeErrors {
 
 struct Node {
     NodeErrors errors;
-    Logic output_DONE;
     State state;
 };
 
@@ -1410,15 +1401,14 @@ struct output_DONE { };
 template<typename PinT> struct ValueType { using T = void; };
 template<> struct ValueType<input_PORT> { using T = uint8_t; };
 template<> struct ValueType<input_SIG> { using T = Logic; };
-template<> struct ValueType<input_UPD> { using T = Logic; };
-template<> struct ValueType<output_DONE> { using T = Logic; };
+template<> struct ValueType<input_UPD> { using T = Pulse; };
+template<> struct ValueType<output_DONE> { using T = Pulse; };
 
 struct ContextObject {
     Node* _node;
 
     uint8_t _input_PORT;
     Logic _input_SIG;
-    Logic _input_UPD;
 
     bool _isInputDirty_UPD;
 
@@ -1440,11 +1430,11 @@ template<> uint8_t getValue<input_PORT>(Context ctx) {
 template<> Logic getValue<input_SIG>(Context ctx) {
     return ctx->_input_SIG;
 }
-template<> Logic getValue<input_UPD>(Context ctx) {
-    return ctx->_input_UPD;
+template<> Pulse getValue<input_UPD>(Context ctx) {
+    return Pulse();
 }
-template<> Logic getValue<output_DONE>(Context ctx) {
-    return ctx->_node->output_DONE;
+template<> Pulse getValue<output_DONE>(Context ctx) {
+    return Pulse();
 }
 
 template<typename InputT> bool isInputDirty(Context ctx) {
@@ -1464,8 +1454,7 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
             " output_DONE");
 }
 
-template<> void emitValue<output_DONE>(Context ctx, Logic val) {
-    ctx->_node->output_DONE = val;
+template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_DONE = true;
     ctx->_node->errors.output_DONE = false;
 }
@@ -1531,23 +1520,11 @@ constexpr uint8_t node_1_output_VAL = 11;
 
 constexpr uint8_t node_2_output_VAL = 13;
 
-constexpr Logic node_3_output_TICK = false;
-
 constexpr Logic node_4_output_SIG = false;
-constexpr Logic node_4_output_DONE = false;
 
 constexpr Logic node_5_output_SIG = false;
-constexpr Logic node_5_output_DONE = false;
-
-constexpr Logic node_6_output_T = false;
-constexpr Logic node_6_output_F = false;
-
-constexpr Logic node_7_output_T = false;
-constexpr Logic node_7_output_F = false;
 
 constexpr Logic node_8_output_MEM = false;
-
-constexpr Logic node_9_output_DONE = false;
 
 #pragma GCC diagnostic pop
 
@@ -1600,31 +1577,24 @@ TransactionState g_transaction;
 
 xod__core__continuously::Node node_3 = {
     0, // timeoutAt
-    node_3_output_TICK, // output TICK default
     xod__core__continuously::State() // state default
 };
 xod__gpio__digital_read::Node node_4 = {
     false, // SIG has no errors on start
     false, // DONE has no errors on start
     node_4_output_SIG, // output SIG default
-    node_4_output_DONE, // output DONE default
     xod__gpio__digital_read::State() // state default
 };
 xod__gpio__digital_read::Node node_5 = {
     false, // SIG has no errors on start
     false, // DONE has no errors on start
     node_5_output_SIG, // output SIG default
-    node_5_output_DONE, // output DONE default
     xod__gpio__digital_read::State() // state default
 };
 xod__core__branch::Node node_6 = {
-    node_6_output_T, // output T default
-    node_6_output_F, // output F default
     xod__core__branch::State() // state default
 };
 xod__core__branch::Node node_7 = {
-    node_7_output_T, // output T default
-    node_7_output_F, // output F default
     xod__core__branch::State() // state default
 };
 xod__core__flip_flop::Node node_8 = {
@@ -1633,7 +1603,6 @@ xod__core__flip_flop::Node node_8 = {
 };
 xod__gpio__digital_write::Node node_9 = {
     false, // DONE has no errors on start
-    node_9_output_DONE, // output DONE default
     xod__gpio__digital_write::State() // state default
 };
 
@@ -1719,7 +1688,6 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_0_output_VAL;
-            ctxObj._input_UPD = node_3.output_TICK;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
 
@@ -1777,7 +1745,6 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_1_output_VAL;
-            ctxObj._input_UPD = node_3.output_TICK;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
 
@@ -1838,7 +1805,6 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
             ctxObj._input_GATE = node_4.output_SIG;
-            ctxObj._input_TRIG = node_3.output_TICK;
 
             ctxObj._isInputDirty_TRIG = g_transaction.node_3_isOutputDirty_TICK;
 
@@ -1871,7 +1837,6 @@ void runTransaction() {
 
             // copy data from upstream nodes into context
             ctxObj._input_GATE = node_5.output_SIG;
-            ctxObj._input_TRIG = node_3.output_TICK;
 
             ctxObj._isInputDirty_TRIG = g_transaction.node_3_isOutputDirty_TICK;
 
@@ -1903,8 +1868,6 @@ void runTransaction() {
             ctxObj._node = &node_8;
 
             // copy data from upstream nodes into context
-            ctxObj._input_SET = node_7.output_F;
-            ctxObj._input_RST = node_6.output_F;
 
             ctxObj._isInputDirty_TGL = false;
             ctxObj._isInputDirty_SET = g_transaction.node_7_isOutputDirty_F;
@@ -1937,7 +1900,6 @@ void runTransaction() {
             // copy data from upstream nodes into context
             ctxObj._input_PORT = node_2_output_VAL;
             ctxObj._input_SIG = node_8.output_MEM;
-            ctxObj._input_UPD = node_3.output_TICK;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_3_isOutputDirty_TICK;
 
