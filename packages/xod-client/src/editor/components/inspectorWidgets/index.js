@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import Big from 'big.js';
 import { unquote, enquote } from 'xod-func-tools';
-import { CUSTOM_TYPE, PIN_TYPE, isGenericType } from 'xod-project';
+import { BINDABLE_CUSTOM_TYPES, PIN_TYPE, isGenericType } from 'xod-project';
 
 import BoolWidget from './pinWidgets/BoolPinWidget';
 import NumberWidget from './pinWidgets/NumberPinWidget';
@@ -115,7 +115,7 @@ const WIDGET_MAPPING = {
   },
   [WIDGET_TYPE.COLOR]: {
     component: StringWidget, // TODO: Replace with custom widget
-    dataType: CUSTOM_TYPE.COLOR,
+    dataType: BINDABLE_CUSTOM_TYPES.COLOR,
     keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizeColor,
   },

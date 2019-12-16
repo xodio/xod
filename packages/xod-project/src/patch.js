@@ -50,6 +50,7 @@ import {
   normalizeTypeNameForAbstractsResolution,
   isTweakPath,
 } from './patchPathUtils';
+import { isBindableCustomType } from './custom-types';
 
 import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
@@ -353,7 +354,7 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
 
   const isBindable =
     (Utils.isBuiltInType(type) || // pins of built-in types
-      Utils.isBindableCustomType(type)) && // or custom types that supports literals
+      isBindableCustomType(type)) && // or custom types that supports literals
     !isBusPatch && // pins of bus nodes are never bindable
     (direction === CONST.PIN_DIRECTION.INPUT
       ? true // input pins of built-in types are always bindable

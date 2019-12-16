@@ -241,7 +241,7 @@ Handlebars.registerHelper('cppValue', (type, value) =>
     [XP.PIN_TYPE.STRING]: cppStringLiteral,
     [XP.PIN_TYPE.BYTE]: cppByteLiteral,
     [XP.PIN_TYPE.PORT]: cppPortLiteral,
-    [XP.CUSTOM_TYPE.COLOR]: R.compose(
+    [XP.BINDABLE_CUSTOM_TYPES.COLOR]: R.compose(
       rgb => `/* RGB */ { ${rgb} }`,
       R.join(', '),
       R.map(R.concat('0x')),

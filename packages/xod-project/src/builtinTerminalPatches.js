@@ -17,7 +17,8 @@ import {
   getTerminalDirection,
 } from './patchPathUtils';
 
-import { isBuiltInType, isBindableCustomType } from './utils';
+import { isBuiltInType } from './utils';
+import { isBindableCustomType } from './custom-types';
 
 /**
  * Input terminal patches have output pins, and vice versa:

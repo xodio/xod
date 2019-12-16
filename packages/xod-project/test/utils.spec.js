@@ -4,7 +4,8 @@ import shortid from 'shortid';
 
 import * as Utils from '../src/utils';
 import * as Node from '../src/node';
-import { PIN_TYPE, CUSTOM_TYPE } from '../src/constants';
+import { PIN_TYPE } from '../src/constants';
+import { BINDABLE_CUSTOM_TYPES } from '../src/custom-types';
 import * as Helpers from './helpers';
 
 describe('Utils', () => {
@@ -114,20 +115,6 @@ describe('Utils', () => {
     });
   });
 
-  describe('isValidColorLiteral', () => {
-    it('valid HEX colors: uppercase full notation', () => {
-      assert.isTrue(Utils.isValidColorLiteral('#000000'));
-      assert.isTrue(Utils.isValidColorLiteral('#999999'));
-      assert.isTrue(Utils.isValidColorLiteral('#FA9ECD'));
-    });
-    it('invalid HEX color notation', () => {
-      assert.isFalse(Utils.isValidColorLiteral('#FFF'));
-      assert.isFalse(Utils.isValidColorLiteral('#123'));
-      assert.isFalse(Utils.isValidColorLiteral('#fff000'));
-      assert.isFalse(Utils.isValidColorLiteral('#GGGGGG'));
-    });
-  });
-
   describe('getTypeFromLiteral', () => {
     const expectType = (literal, expectedType) =>
       R.compose(
@@ -192,8 +179,8 @@ describe('Utils', () => {
     });
 
     it('should recognise color literals', () => {
-      expectType('#000000', CUSTOM_TYPE.COLOR);
-      expectType('#F3A9CE', CUSTOM_TYPE.COLOR);
+      expectType('#000000', BINDABLE_CUSTOM_TYPES.COLOR);
+      expectType('#F3A9CE', BINDABLE_CUSTOM_TYPES.COLOR);
     });
   });
 });
