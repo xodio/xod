@@ -1,0 +1,82 @@
+{
+  "comments": [
+    {
+      "content": "Использует tone(), noTone() и delay()",
+      "id": "S1eC2RNkr",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "description": "Play one note with frequency [Hz] and fixed duration [s]",
+  "nodes": [
+    {
+      "id": "BkGQrcHp0E",
+      "label": "Note player",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "D0"
+      },
+      "id": "Sye7H9raCE",
+      "label": "PIN",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "440"
+      },
+      "description": "Sound frequency [Hz]",
+      "id": "r1-7S5HaAN",
+      "label": "FREQ",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.25"
+      },
+      "description": "Sound duration [s]",
+      "id": "rJcPqBaC4",
+      "label": "DUR",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ry7ScSaRV",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
