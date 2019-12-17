@@ -1,0 +1,377 @@
+{
+  "comments": [
+    {
+      "content": "Computing tones' switch frequency",
+      "id": "BJ9vYzSyr",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    },
+    {
+      "content": "Computing actual duration of each tone",
+      "id": "BkeoFzryH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    }
+  ],
+  "description": "Two tone alarm node",
+  "links": [
+    {
+      "id": "B1PMUgekB",
+      "input": {
+        "nodeId": "HkWOrxxJH",
+        "pinKey": "r1-7S5HaAN"
+      },
+      "output": {
+        "nodeId": "SJje7N60N",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJ3IwxlyS",
+      "input": {
+        "nodeId": "By9SDexyS",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "S1-QABeg1S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk2QIxekH",
+      "input": {
+        "nodeId": "HkWOrxxJH",
+        "pinKey": "ry7ScSaRV"
+      },
+      "output": {
+        "nodeId": "SyVWUgeJH",
+        "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "BkDm8elJH",
+      "input": {
+        "nodeId": "SyVWUgeJH",
+        "pinKey": "ry3zLA_Bv1Z"
+      },
+      "output": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "S1aYu6KJf"
+      }
+    },
+    {
+      "id": "BkvQCreeJS",
+      "input": {
+        "nodeId": "SJgmABggkS",
+        "pinKey": "H1v3lCu8-"
+      },
+      "output": {
+        "nodeId": "By7XCrel1S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hk7H8eeJB",
+      "input": {
+        "nodeId": "HkWOrxxJH",
+        "pinKey": "Sye7H9raCE"
+      },
+      "output": {
+        "nodeId": "SJoBpXT0N",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkL8Pxe1r",
+      "input": {
+        "nodeId": "By9SDexyS",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "rymAHxgkH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkgEIllkH",
+      "input": {
+        "nodeId": "S1owBxlkS",
+        "pinKey": "ry7ScSaRV"
+      },
+      "output": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "S1aYu6KJf"
+      }
+    },
+    {
+      "id": "HyI7CBxlyS",
+      "input": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "ByEPkpYkM"
+      },
+      "output": {
+        "nodeId": "By7XCrel1S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1NXRSlgkH",
+      "input": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "rJS8ypK1z"
+      },
+      "output": {
+        "nodeId": "S1-QABeg1S",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1S70BlxyS",
+      "input": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "ryQdyTYkz"
+      },
+      "output": {
+        "nodeId": "SJgmABggkS",
+        "pinKey": "BJxRgAO8-"
+      }
+    },
+    {
+      "id": "SyqDPex1r",
+      "input": {
+        "nodeId": "S1owBxlkS",
+        "pinKey": "rJcPqBaC4"
+      },
+      "output": {
+        "nodeId": "By9SDexyS",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "r1O7CBlekr",
+      "input": {
+        "nodeId": "B1fmRSll1B",
+        "pinKey": "BJ5HJ6t1f"
+      },
+      "output": {
+        "nodeId": "rymAHxgkH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1dKDleJS",
+      "input": {
+        "nodeId": "S17tDlxkH",
+        "pinKey": "rkJ4URuHDJ-"
+      },
+      "output": {
+        "nodeId": "By9SDexyS",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "rk5G8xeJB",
+      "input": {
+        "nodeId": "S1owBxlkS",
+        "pinKey": "r1-7S5HaAN"
+      },
+      "output": {
+        "nodeId": "ryOxQEp0E",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkjFwxxJB",
+      "input": {
+        "nodeId": "S17tDlxkH",
+        "pinKey": "BypX80uSD1Z"
+      },
+      "output": {
+        "nodeId": "rymAHxgkH",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkxHLglkr",
+      "input": {
+        "nodeId": "S1owBxlkS",
+        "pinKey": "Sye7H9raCE"
+      },
+      "output": {
+        "nodeId": "SJoBpXT0N",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryRFveekr",
+      "input": {
+        "nodeId": "HkWOrxxJH",
+        "pinKey": "rJcPqBaC4"
+      },
+      "output": {
+        "nodeId": "S17tDlxkH",
+        "pinKey": "HyRmUCdBDkZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1fmRSll1B",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 3
+      },
+      "type": "xod/core/square-wave"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "id": "By7XCrel1S",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "By9SDexyS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "HkWOrxxJH",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 5
+      },
+      "type": "@/play-note"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.5"
+      },
+      "description": "Defines tone 1 duration in fraction of T pin value",
+      "id": "S1-QABeg1S",
+      "label": "DUTY",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S17tDlxkH",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "xod/core/subtract"
+    },
+    {
+      "id": "S1owBxlkS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 5
+      },
+      "type": "@/play-note"
+    },
+    {
+      "id": "SJgmABggkS",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 2
+      },
+      "type": "xod/core/pulse-on-false"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "660"
+      },
+      "description": "Tone 2  frequency [Hz]",
+      "id": "SJje7N60N",
+      "label": "FRQ2",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJoBpXT0N",
+      "label": "PIN",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "SyVWUgeJH",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 4
+      },
+      "type": "xod/core/not"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "440"
+      },
+      "description": "Tone 1 frequency [Hz]",
+      "id": "ryOxQEp0E",
+      "label": "FRQ1",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Defines the period of one complete cycle",
+      "id": "rymAHxgkH",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
