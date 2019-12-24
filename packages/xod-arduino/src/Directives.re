@@ -132,6 +132,11 @@ let implementsEvaluateTmpl = code =>
   |. Code.lastPragmaEndis("evaluate_tmpl")
   |. Endis.toBoolean(Code.doesReferSymbol("evaluateTmpl", code));
 
+let wantsStateConstructorWithParams = (code) =>
+  code
+  |. Code.lastPragmaEndis("state_constructor_params")
+  |. Endis.toBoolean(false);
+
 let isDirtienessEnabled = (code, identifier) =>
   code
   |. Code.findXodPragmas

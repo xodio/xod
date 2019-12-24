@@ -63,6 +63,16 @@ let isDirtienessEnabled: (code, string) => bool;
 let implementsEvaluateTmpl: code => bool;
 
 /**
+  Returns if a node declares that it needs values
+  of read-only inputs in the state constructor using
+
+    #pragma XOD state_constructor_params enable
+
+  Defaults to false.
+ */
+let wantsStateConstructorWithParams: code => bool;
+
+/**
   Returns wether node declares itself as an error catcher
  */
 let doesCatchErrors: code => bool;
