@@ -127,6 +127,11 @@ let doesRaiseErrors = (code) =>
   |. Code.lastPragmaEndis("error_raise")
   |. Endis.toBoolean(Code.doesReferSymbol("raiseError", code));
 
+let implementsEvaluateTmpl = code =>
+  code
+  |. Code.lastPragmaEndis("evaluate_tmpl")
+  |. Endis.toBoolean(Code.doesReferSymbol("evaluateTmpl", code));
+
 let isDirtienessEnabled = (code, identifier) =>
   code
   |. Code.findXodPragmas

@@ -370,7 +370,19 @@ void runTransaction() {
             {{/unless}}
           {{/if}}
 
+          {{#if patch.implementsEvaluateTmpl}}
+            {{ ns patch }}::evaluateTmpl
+            {{~#if (containsReadOnlyInputs inputs)~}}
+              <
+                {{~#each (readOnlyInputs inputs)~}}
+                  {{#if @index}}, {{/if}}node_{{ fromNodeId }}_output_{{ fromPinKey }}
+                {{~/each~}}
+              >
+            {{~/if~}}
+            (&ctxObj);
+          {{else}}
             {{ ns patch }}::evaluate(&ctxObj);
+          {{/if}}
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
