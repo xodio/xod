@@ -1,5 +1,3 @@
-#pragma XOD error_raise enable
-
 struct State {
 };
 
@@ -17,11 +15,6 @@ void evaluate(Context ctx) {
 
     const uint8_t port = getValue<input_PORT>(ctx);
 
-    if (!isValidDigitalPort(port)) {
-        raiseError(ctx);
-        return;
-    }
-
     auto duty = getValue<input_DUTY>(ctx);
     duty = duty > 1 ? 1 : (duty < 0 ? 0 : duty);
     int val = (int)(duty * pwmRange);
@@ -29,4 +22,11 @@ void evaluate(Context ctx) {
     ::pinMode(port, OUTPUT);
     ::analogWrite(port, val);
     emitValue<output_DONE>(ctx, 1);
+}
+
+template<uint8_t port>
+void evaluateTmpl(Context ctx) {
+    static_assert(isValidDigitalPort(port), "must be a valid digital port");
+
+    evaluate(ctx);
 }

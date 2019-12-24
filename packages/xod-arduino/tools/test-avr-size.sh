@@ -57,5 +57,5 @@ Data:$3
   fi
 }
 
-test_size "blink" "    1582 bytes (4.8% Full)" "         32 bytes (1.6% Full)"
-test_size "big-patch" "   27306 bytes (83.3% Full)" "       1016 bytes (49.6% Full)"
+test_size "blink" "    1562 bytes (4.8% Full)" "         30 bytes (1.5% Full)"
+test_size "big-patch" "   25548 bytes (78.0% Full)" "       1000 bytes (48.8% Full)"
