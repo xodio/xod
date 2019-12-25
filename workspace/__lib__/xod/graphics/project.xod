@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "Nodes to work with graphics in XOD",
+  "license": "AGPL-3.0",
+  "name": "graphics",
+  "version": "0.32.1"
+}
