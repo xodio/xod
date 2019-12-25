@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "ByI99dRaH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "S1ekqVgsB",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SJWV3yviS",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}
