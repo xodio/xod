@@ -1,0 +1,182 @@
+{
+  "description": "A quick-start node drives an SSD1306 based monochrome 128x64 TFT LCD connected through an I2C interface.",
+  "links": [
+    {
+      "id": "B1Xz8hZmU",
+      "input": {
+        "nodeId": "S1de82bm8",
+        "pinKey": "BJgmVh-7I"
+      },
+      "output": {
+        "nodeId": "B1ls-83WmL",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "BJP9L2ZQU",
+      "input": {
+        "nodeId": "HJSlIn-QI",
+        "pinKey": "SJRYLhZmU"
+      },
+      "output": {
+        "nodeId": "SkuSL3WXU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkeN_ukLL",
+      "input": {
+        "nodeId": "S1de82bm8",
+        "pinKey": "HJ6Zd_J8L"
+      },
+      "output": {
+        "nodeId": "HJSlIn-QI",
+        "pinKey": "HyzldOJI8"
+      }
+    },
+    {
+      "id": "HJ9sWIhZXI",
+      "input": {
+        "nodeId": "B1ls-83WmL",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "SJfsbI2bX8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJjE83bQU",
+      "input": {
+        "nodeId": "HJSlIn-QI",
+        "pinKey": "By5FY7hsS"
+      },
+      "output": {
+        "nodeId": "ryVVL2Z78",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkFM8h-mU",
+      "input": {
+        "nodeId": "HyVi-I2b78",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1de82bm8",
+        "pinKey": "Bygxm4h-mL"
+      }
+    },
+    {
+      "id": "SyrG83bXU",
+      "input": {
+        "nodeId": "S1de82bm8",
+        "pinKey": "Sk-lm42W7I"
+      },
+      "output": {
+        "nodeId": "HksZIhWQI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1PjZ8h-QI",
+      "input": {
+        "nodeId": "B1ls-83WmL",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "HksZIhWQI",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1ls-83WmL",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "HJSlIn-QI",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/ssd1306-128x64-i2c-device"
+    },
+    {
+      "description": "A tree of graphic elements created using the xod/graphics library.",
+      "id": "HksZIhWQI",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": -1
+      },
+      "type": "xod/graphics/input-graphics"
+    },
+    {
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "HyVi-I2b78",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "S1de82bm8",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/render"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Makes the display react to incoming changes in a tree of graphic elements while `ACT` is true.",
+      "id": "SJfsbI2bX8",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "3Ch"
+      },
+      "description": "I²C address. 3Ch by default.",
+      "id": "SkuSL3WXU",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "ryVVL2Z78",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    }
+  ]
+}

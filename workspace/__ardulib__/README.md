@@ -11,3 +11,4 @@ The directory contains vendoring copies of some Arduino Libraries used in native
 * `WS2812_NoBuffer` -- custom library for WS2812 without buffer. Based on [SimpleNeopixelDemo](https://github.com/bigjosh/SimpleNeoPixelDemo/blob/master/SimpleNeopixelDemo/SimpleNeopixelDemo.ino) and [Adafruit Neopixel](https://github.com/adafruit/Adafruit_NeoPixel). Tested on AVR platforms and ESP8266.
 * `Graphics` -- custom library. Implements basic graphic functions in XOD.
 * `ST7735` -- custom library. It is used to drive ST7735 chip-based TFT LCD displays controlled by SPI.
+* `SSD1306` -- custom library. It is used to drive SSD1306 chip-based monochrome TFT LCDs controlled by I2C.
