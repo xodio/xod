@@ -2,9 +2,7 @@
 struct State {
 };
 
-struct Type {
-    uint8_t r, g, b;
-};
+using Type = XColor;
 
 // clang-format off
 {{ GENERATED_CODE }}
