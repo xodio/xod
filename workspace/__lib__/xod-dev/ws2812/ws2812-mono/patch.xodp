@@ -13,14 +13,36 @@
       }
     },
     {
-      "id": "Hkic3pkkL",
+      "id": "BkA2vxZ1L",
       "input": {
-        "nodeId": "rJlVJtpkyU",
-        "pinKey": "rJWh8XIqAB"
+        "nodeId": "ByK2veb18",
+        "pinKey": "H13R3IvGB"
       },
       "output": {
-        "nodeId": "SJuc36y1L",
-        "pinKey": "BklspuwpW"
+        "nodeId": "H1wKu611L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1Z6Pl-JL",
+      "input": {
+        "nodeId": "rJVqwxWkL",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "rkijPgZk8",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "H1z6wx-1L",
+      "input": {
+        "nodeId": "rJVqwxWkL",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "ByK2veb18",
+        "pinKey": "H1fx68wzB"
       }
     },
     {
@@ -35,13 +57,13 @@
       }
     },
     {
-      "id": "S1YcnT1JI",
+      "id": "Hylawebk8",
       "input": {
-        "nodeId": "SJuc36y1L",
-        "pinKey": "SkJ46dw6-"
+        "nodeId": "rkijPgZk8",
+        "pinKey": "BytC28DfH"
       },
       "output": {
-        "nodeId": "H1wKu611L",
+        "nodeId": "rJ2uOpk1L",
         "pinKey": "__out__"
       }
     },
@@ -68,6 +90,39 @@
       }
     },
     {
+      "id": "Sknhvg-k8",
+      "input": {
+        "nodeId": "rkijPgZk8",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "H1wKu611L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJkpvg-JU",
+      "input": {
+        "nodeId": "ByK2veb18",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "BJZY_6J1L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJmpvl-kU",
+      "input": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "rJWh8XIqAB"
+      },
+      "output": {
+        "nodeId": "rJVqwxWkL",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
       "id": "rkwyt6kkL",
       "input": {
         "nodeId": "ByVkFakyL",
@@ -90,6 +145,15 @@
         "y": 0
       },
       "type": "xod/color/input-color"
+    },
+    {
+      "id": "ByK2veb18",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/core/act"
     },
     {
       "boundLiterals": {
@@ -119,15 +183,6 @@
       "type": "xod/patch-nodes/input-boolean"
     },
     {
-      "id": "SJuc36y1L",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 1
-      },
-      "type": "xod/core/continuously-pausable"
-    },
-    {
       "boundLiterals": {
         "__out__": "1"
       },
@@ -153,6 +208,15 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "id": "rJVqwxWkL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/core/any"
+    },
+    {
       "id": "rJlVJtpkyU",
       "position": {
         "units": "slots",
@@ -160,6 +224,15 @@
         "y": 2
       },
       "type": "@/fill-solid"
+    },
+    {
+      "id": "rkijPgZk8",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/core/act"
     },
     {
       "description": "The board port `DI` is connected to",
