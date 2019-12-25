@@ -1,0 +1,61 @@
+{
+  "description": "Clears (turns off) of all pixels in the device.",
+  "nodes": [
+    {
+      "description": "The device",
+      "id": "By6jbVYCB",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-ws2812-device"
+    },
+    {
+      "description": "Fires when the operation is done\n",
+      "id": "Hk46jWVFAS",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The device",
+      "id": "Symaj-NYCB",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-ws2812-device"
+    },
+    {
+      "id": "SyxTsWNFRr",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Trigger to turn all pixels off",
+      "id": "SyzTjbEKCH",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

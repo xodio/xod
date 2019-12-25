@@ -1,0 +1,176 @@
+{
+  "description": "A quickstart node to control a LED strip which is always filled with a single color",
+  "links": [
+    {
+      "id": "B1dkY6Jy8",
+      "input": {
+        "nodeId": "ByVkFakyL",
+        "pinKey": "HyI-5XSAr"
+      },
+      "output": {
+        "nodeId": "ryD_dp118",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hkic3pkkL",
+      "input": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "rJWh8XIqAB"
+      },
+      "output": {
+        "nodeId": "SJuc36y1L",
+        "pinKey": "BklspuwpW"
+      }
+    },
+    {
+      "id": "HkkeYT1JI",
+      "input": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "B1387L5RS"
+      },
+      "output": {
+        "nodeId": "ByVkFakyL",
+        "pinKey": "SJxz8XtRS"
+      }
+    },
+    {
+      "id": "S1YcnT1JI",
+      "input": {
+        "nodeId": "SJuc36y1L",
+        "pinKey": "SkJ46dw6-"
+      },
+      "output": {
+        "nodeId": "H1wKu611L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJoJtTy1L",
+      "input": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "SJxhUmIcCr"
+      },
+      "output": {
+        "nodeId": "BJZY_6J1L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkfeKpky8",
+      "input": {
+        "nodeId": "rJAY_pJJ8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "B1Qn8XUqCH"
+      }
+    },
+    {
+      "id": "rkwyt6kkL",
+      "input": {
+        "nodeId": "ByVkFakyL",
+        "pinKey": "S1C-cQBRB"
+      },
+      "output": {
+        "nodeId": "rJ2uOpk1L",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Color value",
+      "id": "BJZY_6J1L",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "ByVkFakyL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "When set to True the LEDs follow changes of `C` as they happen",
+      "id": "H1wKu611L",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "SJuc36y1L",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/core/continuously-pausable"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Number of LEDs in the strip",
+      "id": "rJ2uOpk1L",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Fires when an update operation is done",
+      "id": "rJAY_pJJ8",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "rJlVJtpkyU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/fill-solid"
+    },
+    {
+      "description": "The board port `DI` is connected to",
+      "id": "ryD_dp118",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}
