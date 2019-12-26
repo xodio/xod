@@ -1,0 +1,50 @@
+{
+  "description": "Represents a chained sequence of WS2812 pixels.",
+  "nodes": [
+    {
+      "id": "B1SEcQS0r",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The board port DI is connected to",
+      "id": "HyI-5XSAr",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "8"
+      },
+      "description": "Number of LEDs in the strip",
+      "id": "S1C-cQBRB",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The device",
+      "id": "SJxz8XtRS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

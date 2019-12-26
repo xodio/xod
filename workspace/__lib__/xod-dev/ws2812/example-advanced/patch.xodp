@@ -1,0 +1,233 @@
+{
+  "comments": [
+    {
+      "content": "If flip-flop`s state is \"turned on\" then fill all LEDs with the color continuously.",
+      "id": "By6I8p1JU",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
+      "content": "Button turns the LEDs on or off.",
+      "id": "H1G-8pykU",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": -1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "H1S_hnJkI",
+      "input": {
+        "nodeId": "HkOgNNKCH",
+        "pinKey": "SyzTjbEKCH"
+      },
+      "output": {
+        "nodeId": "rkTw32k1I",
+        "pinKey": "BJxRgAO8-"
+      }
+    },
+    {
+      "id": "HkEt32kkU",
+      "input": {
+        "nodeId": "SyeeNU50S",
+        "pinKey": "B1387L5RS"
+      },
+      "output": {
+        "nodeId": "HkOgNNKCH",
+        "pinKey": "Symaj-NYCB"
+      }
+    },
+    {
+      "id": "Hkw2h3k1U",
+      "input": {
+        "nodeId": "rJNh33Jk8",
+        "pinKey": "SkJ46dw6-"
+      },
+      "output": {
+        "nodeId": "rJ7Pn21kI",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "HyHh33yyU",
+      "input": {
+        "nodeId": "SyeeNU50S",
+        "pinKey": "rJWh8XIqAB"
+      },
+      "output": {
+        "nodeId": "rJNh33Jk8",
+        "pinKey": "BklspuwpW"
+      }
+    },
+    {
+      "id": "SJQbvTk18",
+      "input": {
+        "nodeId": "HkOgNNKCH",
+        "pinKey": "By6jbVYCB"
+      },
+      "output": {
+        "nodeId": "r1P-AUI0r",
+        "pinKey": "SJxz8XtRS"
+      }
+    },
+    {
+      "id": "SyiIh3JJI",
+      "input": {
+        "nodeId": "SyeeNU50S",
+        "pinKey": "SJxhUmIcCr"
+      },
+      "output": {
+        "nodeId": "r1NE2hJk8",
+        "pinKey": "BJyghZosm"
+      }
+    },
+    {
+      "id": "Syxd2n11L",
+      "input": {
+        "nodeId": "rkTw32k1I",
+        "pinKey": "H1v3lCu8-"
+      },
+      "output": {
+        "nodeId": "rJ7Pn21kI",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
+      "id": "r1wV2hk18",
+      "input": {
+        "nodeId": "r1NE2hJk8",
+        "pinKey": "HJgyhboim"
+      },
+      "output": {
+        "nodeId": "BybEn2kkI",
+        "pinKey": "H1sM2A12-"
+      }
+    },
+    {
+      "id": "rkBvn2ykI",
+      "input": {
+        "nodeId": "rJ7Pn21kI",
+        "pinKey": "ryTIROHwkW"
+      },
+      "output": {
+        "nodeId": "rJrUh31kL",
+        "pinKey": "BJ--G1tI-"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "Hkry2AJhW": "A2"
+      },
+      "id": "BybEn2kkI",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/common-hardware/pot"
+    },
+    {
+      "boundLiterals": {
+        "SyzTjbEKCH": "On Boot"
+      },
+      "id": "HkOgNNKCH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/clear"
+    },
+    {
+      "id": "SyeeNU50S",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "@/fill-solid"
+    },
+    {
+      "boundLiterals": {
+        "Symyhboj7": "1",
+        "r1g7J3-ii7": "0.05"
+      },
+      "id": "r1NE2hJk8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/color/color-hsl"
+    },
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "r1P-AUI0r",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 2
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "id": "rJ7Pn21kI",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 1
+      },
+      "type": "xod/core/flip-flop"
+    },
+    {
+      "id": "rJNh33Jk8",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/core/continuously-pausable"
+    },
+    {
+      "boundLiterals": {
+        "ByNiWkt8Z": "A3"
+      },
+      "id": "rJrUh31kL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/common-hardware/button"
+    },
+    {
+      "id": "rkTw32k1I",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/core/pulse-on-false"
+    }
+  ]
+}

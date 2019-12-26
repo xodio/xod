@@ -1,0 +1,72 @@
+{
+  "description": "Sets the color of all pixels in the device to the same value.",
+  "nodes": [
+    {
+      "description": "The device",
+      "id": "B1387L5RS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-ws2812-device"
+    },
+    {
+      "description": "Fires when the fill is done",
+      "id": "B1Qn8XUqCH",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Color value",
+      "id": "SJxhUmIcCr",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "id": "SkplWUcRH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The device",
+      "id": "r1znU7I9Ar",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-ws2812-device"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Trigger to fill all pixels of the device",
+      "id": "rJWh8XIqAB",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
