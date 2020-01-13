@@ -177,7 +177,7 @@
       "label": "ACT",
       "position": {
         "units": "slots",
-        "x": 3,
+        "x": 5,
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
@@ -203,7 +203,7 @@
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 3
+        "y": 4
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -217,11 +217,14 @@
       "type": "xod/core/any"
     },
     {
+      "boundLiterals": {
+        "SkcHZece8": "Inf"
+      },
       "id": "rJlVJtpkyU",
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 2
+        "y": 3
       },
       "type": "@/fill-solid"
     },

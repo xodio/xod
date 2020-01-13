@@ -1,0 +1,312 @@
+{
+  "links": [
+    {
+      "id": "B132iW6Tg8",
+      "input": {
+        "nodeId": "rkB3iWT6g8",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "Byg2sbpTlU",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "B1baZTpxI",
+      "input": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "Sy1uD-qx8"
+      },
+      "output": {
+        "nodeId": "Sky6-pTeU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkAO6Rpe8",
+      "input": {
+        "nodeId": "rko_aRag8",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "S1M2jZTaxI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkXKp0pe8",
+      "input": {
+        "nodeId": "Byg2sbpTlU",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "Sky6-pTeU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1tDpA6gI",
+      "input": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "r1WVLv-9lL"
+      },
+      "output": {
+        "nodeId": "rkB3iWT6g8",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HyvgGpTgU",
+      "input": {
+        "nodeId": "B14hiWTalI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "rklN8DZ9eL"
+      }
+    },
+    {
+      "id": "SJKnoZTTxI",
+      "input": {
+        "nodeId": "By-hjWp6gU",
+        "pinKey": "HyI-5XSAr"
+      },
+      "output": {
+        "nodeId": "Byd2jbapxU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJcnsbaTl8",
+      "input": {
+        "nodeId": "Byg2sbpTlU",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "S1M2jZTaxI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJinob6aeU",
+      "input": {
+        "nodeId": "rkB3iWT6g8",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "HkP3jb6aeI",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "r1C3j-palL",
+      "input": {
+        "nodeId": "HkP3jb6aeI",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "HymhoWTal8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1bxhiWp6xI",
+      "input": {
+        "nodeId": "HkP3jb6aeI",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "S1M2jZTaxI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJNh-pae8",
+      "input": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "H1xmDPZcxU"
+      },
+      "output": {
+        "nodeId": "By-hjWp6gU",
+        "pinKey": "SJxz8XtRS"
+      }
+    },
+    {
+      "id": "rJVg3jbpagL",
+      "input": {
+        "nodeId": "By-hjWp6gU",
+        "pinKey": "S1C-cQBRB"
+      },
+      "output": {
+        "nodeId": "HymhoWTal8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkuO6CpgU",
+      "input": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "Sk7EUvWceI"
+      },
+      "output": {
+        "nodeId": "rJHdTRTeU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryMK6AaxI",
+      "input": {
+        "nodeId": "rko_aRag8",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "rJHdTRTeU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryyqT0agL",
+      "input": {
+        "nodeId": "rkB3iWT6g8",
+        "pinKey": "ByU7LRuSPkW-$1"
+      },
+      "output": {
+        "nodeId": "rko_aRag8",
+        "pinKey": "H1fx68wzB"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Fires when an update operation is done",
+      "id": "B14hiWTalI",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "By-hjWp6gU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "description": "The board port `DI` is connected to",
+      "id": "Byd2jbapxU",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "Byg2sbpTlU",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "HkP3jb6aeI",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Number of LEDs in the strip",
+      "id": "HymhoWTal8",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hyznb6axU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "@/fill-pattern"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "When set to True the LEDs follow changes of `C` as they happen",
+      "id": "S1M2jZTaxI",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "Sky6-pTeU",
+      "label": "PAT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-color-pattern"
+    },
+    {
+      "description": "The number of pixels to shift/wrap in the pattern. It should be an integer. If it is negative or greater than the pattern length the shift is wrapped over. Use shift to create a crawler animation.",
+      "id": "rJHdTRTeU",
+      "label": "SHFT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "arityLevel": 2,
+      "id": "rkB3iWT6g8",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "id": "rko_aRag8",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    }
+  ]
+}

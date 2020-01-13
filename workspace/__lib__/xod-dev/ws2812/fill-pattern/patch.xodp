@@ -1,0 +1,83 @@
+{
+  "description": "Fills the device LEDs with a repeative color pattern.",
+  "nodes": [
+    {
+      "description": "The device",
+      "id": "H1xmDPZcxU",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-ws2812-device"
+    },
+    {
+      "id": "HkGEUDbqgI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The device",
+      "id": "HyQPv-5xI",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-ws2812-device"
+    },
+    {
+      "description": "The number of pixels to shift/wrap in the pattern. It should be an integer. If it is negative or greater than the pattern length the shift is wrapped over. Use shift to create a crawler animation.",
+      "id": "Sk7EUvWceI",
+      "label": "SHFT",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "The color pattern. If the pattern is shorter than the number of LEDs it repeats.",
+      "id": "Sy1uD-qx8",
+      "label": "PAT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-color-pattern"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Trigger to fill pixels of the device with the pattern",
+      "id": "r1WVLv-9lL",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Fires when the fill is done",
+      "id": "rklN8DZ9eL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

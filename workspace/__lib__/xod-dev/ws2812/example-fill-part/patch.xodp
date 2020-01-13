@@ -1,0 +1,63 @@
+{
+  "links": [
+    {
+      "id": "ByXhflqlU",
+      "input": {
+        "nodeId": "BJznMxqlU",
+        "pinKey": "By6jbVYCB"
+      },
+      "output": {
+        "nodeId": "BJhjMxcx8",
+        "pinKey": "SJxz8XtRS"
+      }
+    },
+    {
+      "id": "SJunfe5e8",
+      "input": {
+        "nodeId": "ryD3fl5xL",
+        "pinKey": "B1387L5RS"
+      },
+      "output": {
+        "nodeId": "BJznMxqlU",
+        "pinKey": "Symaj-NYCB"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "BJhjMxcx8",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "id": "BJznMxqlU",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/clear"
+    },
+    {
+      "boundLiterals": {
+        "SJxhUmIcCr": "#100000",
+        "SkcHZece8": "4"
+      },
+      "id": "ryD3fl5xL",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "@/fill-solid"
+    }
+  ]
+}

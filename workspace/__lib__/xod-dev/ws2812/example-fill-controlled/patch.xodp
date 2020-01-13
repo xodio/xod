@@ -1,26 +1,68 @@
 {
   "comments": [
     {
-      "content": "If flip-flop`s state is \"turned on\" then fill all LEDs with the color continuously.",
-      "id": "By6I8p1JU",
+      "content": "This example shows how to control the color of whole LED strip with a potentiometer and turn it on or off with a button.",
+      "id": "BJMAxa6eI",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": -1,
         "y": -1
       },
       "size": {
         "height": 1,
         "units": "slots",
-        "width": 6
+        "width": 13
       }
     },
     {
-      "content": "Button turns the LEDs on or off.",
+      "content": "A button turns the LEDs on or off.",
       "id": "H1G-8pykU",
       "position": {
         "units": "slots",
         "x": -1,
-        "y": -1
+        "y": 0
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    },
+    {
+      "content": "A quick-start node to fill all LEDs with the selected solid color.",
+      "id": "S1CbJaalU",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    },
+    {
+      "content": "When LEDs is turned off — just fill with the black color.",
+      "id": "SyzoyppgL",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    },
+    {
+      "content": "Potentiometer to select the Hue of the color.",
+      "id": "rJ-r1aaeL",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
       },
       "size": {
         "height": 1,
@@ -31,32 +73,10 @@
   ],
   "links": [
     {
-      "id": "H1S_hnJkI",
+      "id": "BJ2Vd3aeI",
       "input": {
-        "nodeId": "HkOgNNKCH",
-        "pinKey": "SyzTjbEKCH"
-      },
-      "output": {
-        "nodeId": "rkTw32k1I",
-        "pinKey": "BJxRgAO8-"
-      }
-    },
-    {
-      "id": "HkEt32kkU",
-      "input": {
-        "nodeId": "SyeeNU50S",
-        "pinKey": "B1387L5RS"
-      },
-      "output": {
-        "nodeId": "HkOgNNKCH",
-        "pinKey": "Symaj-NYCB"
-      }
-    },
-    {
-      "id": "Hkw2h3k1U",
-      "input": {
-        "nodeId": "rJNh33Jk8",
-        "pinKey": "SkJ46dw6-"
+        "nodeId": "SyPVu3TgU",
+        "pinKey": "S1yZIA_rDJZ"
       },
       "output": {
         "nodeId": "rJ7Pn21kI",
@@ -64,32 +84,10 @@
       }
     },
     {
-      "id": "HyHh33yyU",
+      "id": "HkSmZ6pg8",
       "input": {
-        "nodeId": "SyeeNU50S",
-        "pinKey": "rJWh8XIqAB"
-      },
-      "output": {
-        "nodeId": "rJNh33Jk8",
-        "pinKey": "BklspuwpW"
-      }
-    },
-    {
-      "id": "SJQbvTk18",
-      "input": {
-        "nodeId": "HkOgNNKCH",
-        "pinKey": "By6jbVYCB"
-      },
-      "output": {
-        "nodeId": "r1P-AUI0r",
-        "pinKey": "SJxz8XtRS"
-      }
-    },
-    {
-      "id": "SyiIh3JJI",
-      "input": {
-        "nodeId": "SyeeNU50S",
-        "pinKey": "SJxhUmIcCr"
+        "nodeId": "SyPVu3TgU",
+        "pinKey": "ryTeUROHD1b"
       },
       "output": {
         "nodeId": "r1NE2hJk8",
@@ -97,14 +95,14 @@
       }
     },
     {
-      "id": "Syxd2n11L",
+      "id": "Sk1r_nTl8",
       "input": {
-        "nodeId": "rkTw32k1I",
-        "pinKey": "H1v3lCu8-"
+        "nodeId": "SJ3ZO2plL",
+        "pinKey": "BJZY_6J1L"
       },
       "output": {
-        "nodeId": "rJ7Pn21kI",
-        "pinKey": "HkyxURuSPyW"
+        "nodeId": "SyPVu3TgU",
+        "pinKey": "S13xLCuHvkW"
       }
     },
     {
@@ -145,24 +143,29 @@
     },
     {
       "boundLiterals": {
-        "SyzTjbEKCH": "On Boot"
+        "rJ2uOpk1L": "16",
+        "ryD_dp118": "A4"
       },
-      "id": "HkOgNNKCH",
+      "id": "SJ3ZO2plL",
       "position": {
         "units": "slots",
-        "x": 1,
-        "y": 2
+        "x": 3,
+        "y": 3
       },
-      "type": "@/clear"
+      "type": "@/ws2812-mono"
     },
     {
-      "id": "SyeeNU50S",
+      "boundLiterals": {
+        "r1AgIROHDJW": "#000000",
+        "ryTeUROHD1b": "#000000"
+      },
+      "id": "SyPVu3TgU",
       "position": {
         "units": "slots",
         "x": 5,
         "y": 2
       },
-      "type": "@/fill-solid"
+      "type": "xod/core/if-else"
     },
     {
       "boundLiterals": {
@@ -179,34 +182,15 @@
     },
     {
       "boundLiterals": {
-        "HyI-5XSAr": "A4",
-        "S1C-cQBRB": "16"
+        "HkyxURuSPyW": "True"
       },
-      "id": "r1P-AUI0r",
-      "position": {
-        "units": "slots",
-        "x": -3,
-        "y": 2
-      },
-      "type": "@/ws2812-device"
-    },
-    {
       "id": "rJ7Pn21kI",
       "position": {
         "units": "slots",
-        "x": -1,
+        "x": 2,
         "y": 1
       },
       "type": "xod/core/flip-flop"
-    },
-    {
-      "id": "rJNh33Jk8",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 1
-      },
-      "type": "xod/core/continuously-pausable"
     },
     {
       "boundLiterals": {
@@ -215,19 +199,10 @@
       "id": "rJrUh31kL",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 3,
         "y": 0
       },
       "type": "xod/common-hardware/button"
-    },
-    {
-      "id": "rkTw32k1I",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 1
-      },
-      "type": "xod/core/pulse-on-false"
     }
   ]
 }
