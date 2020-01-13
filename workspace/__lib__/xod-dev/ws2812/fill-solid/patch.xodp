@@ -1,5 +1,5 @@
 {
-  "description": "Sets the color of all pixels in the device to the same value.",
+  "description": "Sets the color of pixels in the device to the same value.",
   "nodes": [
     {
       "description": "The device",
@@ -35,6 +35,20 @@
       "type": "xod/color/input-color"
     },
     {
+      "boundLiterals": {
+        "__out__": "-1"
+      },
+      "description": "Number of LEDs to fill up with the solid color. Set `-1` to fill all LEDs.",
+      "id": "SkcHZece8",
+      "label": "NUM",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
       "id": "SkplWUcRH",
       "position": {
         "units": "slots",
@@ -58,12 +72,12 @@
       "boundLiterals": {
         "__out__": "Continuously"
       },
-      "description": "Trigger to fill all pixels of the device",
+      "description": "Trigger to fill pixels of the device",
       "id": "rJWh8XIqAB",
       "label": "DO",
       "position": {
         "units": "slots",
-        "x": 5,
+        "x": 7,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"

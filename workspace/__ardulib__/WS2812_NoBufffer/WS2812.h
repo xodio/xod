@@ -32,6 +32,8 @@ class WS2812 {
 public:
     WS2812(uint8_t pin, uint32_t length);
     void fill(uint8_t r, uint8_t g, uint8_t b);
+    void fill(XColor color);
+    void fill(XColor color, uint32_t pixelsCount);
     void fillPattern(Pattern* pat, uint32_t shift = 0);
     void sendPixel(uint8_t r, uint8_t g, uint8_t b);
     void show();
@@ -209,6 +211,25 @@ void WS2812::fill(uint8_t r, uint8_t g, uint8_t b) {
     sei();
     show();
 }
+
+void WS2812::fill(XColor color) {
+  cli();
+  for (uint32_t i = 0; i < _length; i++) {
+      sendPixel(color.r, color.g, color.b);
+  }
+  sei();
+  show();
+}
+
+void WS2812::fill(XColor color, uint32_t pixelsCount) {
+  cli();
+  for (uint32_t i = 0; i < pixelsCount && i < _length; i++) {
+      sendPixel(color.r, color.g, color.b);
+  }
+  sei();
+  show();
+}
+
 void WS2812::fillPattern(Pattern* pat, uint32_t shift = 0) {
     cli();
 
