@@ -61,7 +61,14 @@ TransactionState g_transaction;
   {{#eachNonPulse outputs}}
     node_{{ ../id }}_output_{{ pinKey }}, // output {{ pinKey }} default
   {{/eachNonPulse}}
-    {{ ns patch }}::State() // state default
+    {{ ns patch }}::State(
+      {{~#if patch.wantsStateConstructorWithParams~}}
+          {{~#each (readOnlyInputs inputs)~}}
+            {{#if @index}}, {{/if~}}
+            node_{{ fromNodeId }}_output_{{ fromPinKey }}
+          {{~/each~}}
+      {{~/if~}}
+    ) // state default
 };
 {{/unless}}
 {{/each}}
@@ -370,7 +377,19 @@ void runTransaction() {
             {{/unless}}
           {{/if}}
 
+          {{#if patch.implementsEvaluateTmpl}}
+            {{ ns patch }}::evaluateTmpl
+            {{~#if (containsReadOnlyInputs inputs)~}}
+              <
+                {{~#each (readOnlyInputs inputs)~}}
+                  {{#if @index}}, {{/if}}node_{{ fromNodeId }}_output_{{ fromPinKey }}
+                {{~/each~}}
+              >
+            {{~/if~}}
+            (&ctxObj);
+          {{else}}
             {{ ns patch }}::evaluate(&ctxObj);
+          {{/if}}
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}

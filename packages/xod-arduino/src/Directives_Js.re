@@ -8,6 +8,10 @@ let isNodeIdEnabled = Directives.isNodeIdEnabled;
 
 let doesRaiseErrors = Directives.doesRaiseErrors;
 
+let implementsEvaluateTmpl = Directives.implementsEvaluateTmpl;
+
+let wantsStateConstructorWithParams = Directives.wantsStateConstructorWithParams;
+
 let areTimeoutsEnabled = Directives.areTimeoutsEnabled;
 
 let stripCppComments = Directives.stripCppComments;

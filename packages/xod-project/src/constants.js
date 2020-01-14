@@ -245,3 +245,8 @@ export const MANAGED_ATTACHMENT_TEMPLATES = {
   [NOT_IMPLEMENTED_IN_XOD_PATH]: IMPL_TEMPLATE,
   [TABTEST_MARKER_PATH]: TABTEST_TEMPLATE,
 };
+
+/**
+ * Types that are could not be redefined at runtime.
+ */
+export const READ_ONLY_TYPES = [PIN_TYPE.PORT];

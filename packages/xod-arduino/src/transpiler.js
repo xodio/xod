@@ -23,6 +23,8 @@ import {
   isNodeIdEnabled,
   doesRaiseErrors,
   isDirtienessEnabled,
+  implementsEvaluateTmpl,
+  wantsStateConstructorWithParams,
   doesCatchErrors,
   findRequireUrls,
 } from './directives';
@@ -160,6 +162,8 @@ const convertPatchToTPatch = def(
       catchesErrors: doesCatchErrors(impl),
       raisesErrors: doesRaiseErrors(impl),
       usesNodeId: isNodeIdEnabled(impl),
+      implementsEvaluateTmpl: implementsEvaluateTmpl(impl),
+      wantsStateConstructorWithParams: wantsStateConstructorWithParams(impl),
     };
 
     return R.mergeAll([

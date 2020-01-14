@@ -916,7 +916,7 @@ bool isTimedOut(const ContextT* ctx) {
     return detail::isTimedOut(ctx->_node);
 }
 
-bool isValidDigitalPort(uint8_t port) {
+constexpr bool isValidDigitalPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
@@ -924,7 +924,7 @@ bool isValidDigitalPort(uint8_t port) {
 #endif
 }
 
-bool isValidAnalogPort(uint8_t port) {
+constexpr bool isValidAnalogPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
@@ -1264,21 +1264,10 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_write {
 
-//#pragma XOD error_raise enable
-
 struct State {
 };
 
-union NodeErrors {
-    struct {
-        bool output_DONE : 1;
-    };
-
-    ErrorFlags flags;
-};
-
 struct Node {
-    NodeErrors errors;
     State state;
 };
 
@@ -1345,27 +1334,10 @@ template<typename OutputT> void emitValue(Context ctx, typename ValueType<Output
 
 template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
     ctx->_isOutputDirty_DONE = true;
-    ctx->_node->errors.output_DONE = false;
 }
 
 State* getState(Context ctx) {
     return &ctx->_node->state;
-}
-
-template<typename OutputT> void raiseError(Context ctx) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_DONE");
-}
-
-template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->errors.output_DONE = true;
-    ctx->_isOutputDirty_DONE = true;
-}
-
-void raiseError(Context ctx) {
-    ctx->_node->errors.output_DONE = true;
-    ctx->_isOutputDirty_DONE = true;
 }
 
 void evaluate(Context ctx) {
@@ -1373,15 +1345,17 @@ void evaluate(Context ctx) {
         return;
 
     const uint8_t port = getValue<input_PORT>(ctx);
-    if (!isValidDigitalPort(port)) {
-        raiseError<output_DONE>(ctx);
-        return;
-    }
-
     ::pinMode(port, OUTPUT);
     const bool val = getValue<input_SIG>(ctx);
     ::digitalWrite(port, val);
     emitValue<output_DONE>(ctx, 1);
+}
+
+template<uint8_t port>
+void evaluateTmpl(Context ctx) {
+    static_assert(isValidDigitalPort(port), "must be a valid digital port");
+
+    evaluate(ctx);
 }
 
 } // namespace xod__gpio__digital_write
@@ -1449,7 +1423,6 @@ xod__core__flip_flop::Node node_5 = {
     xod__core__flip_flop::State() // state default
 };
 xod__gpio__digital_write::Node node_6 = {
-    false, // DONE has no errors on start
     xod__gpio__digital_write::State() // state default
 };
 
@@ -1597,37 +1570,14 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            xod__gpio__digital_write::NodeErrors previousErrors = node_6.errors;
-
-            node_6.errors.output_DONE = false;
-
-            xod__gpio__digital_write::evaluate(&ctxObj);
+            xod__gpio__digital_write::evaluateTmpl<node_2_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_6_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
-            if (previousErrors.flags != node_6.errors.flags) {
-                detail::printErrorToDebugSerial(6, node_6.errors.flags);
-
-                // if an error was just raised or cleared from an output,
-                // mark nearest downstream error catchers as dirty
-                if (node_6.errors.output_DONE != previousErrors.output_DONE) {
-                }
-
-                // if a pulse output was cleared from error, mark downstream nodes as dirty
-                // (no matter if a pulse was emitted or not)
-                if (previousErrors.output_DONE && !node_6.errors.output_DONE) {
-                }
-            }
-
             // mark downstream nodes dirty
         }
 
-        // propagate errors hold by the node outputs
-        if (node_6.errors.flags) {
-            if (node_6.errors.output_DONE) {
-            }
-        }
     }
 
     // Clear dirtieness and timeouts for all nodes and pins

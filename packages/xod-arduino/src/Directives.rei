@@ -51,6 +51,28 @@ let doesRaiseErrors: code => bool;
 let isDirtienessEnabled: (code, string) => bool;
 
 /**
+  Returns whether a C++ code requires `evaluateTmpl`
+  instead of the regular `evaluate`. Prefers an explicit
+  declaration
+
+    #pragma XOD evaluate_tmpl enable
+
+  If no pragma found, looks for `evaluateTmpl` symbol in the code and returns true
+  if it is found.
+ */
+let implementsEvaluateTmpl: code => bool;
+
+/**
+  Returns if a node declares that it needs values
+  of read-only inputs in the state constructor using
+
+    #pragma XOD state_constructor_params enable
+
+  Defaults to false.
+ */
+let wantsStateConstructorWithParams: code => bool;
+
+/**
   Returns wether node declares itself as an error catcher
  */
 let doesCatchErrors: code => bool;
