@@ -24,7 +24,7 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
-      "description": "Color value",
+      "description": "The color",
       "id": "SJxhUmIcCr",
       "label": "C",
       "position": {
@@ -36,9 +36,9 @@
     },
     {
       "boundLiterals": {
-        "__out__": "-1"
+        "__out__": "Inf"
       },
-      "description": "Number of LEDs to fill up with the solid color. Set `-1` to fill all LEDs.",
+      "description": "Number of LEDs to fill up with the solid color. Set `Inf` to fill all LEDs. Set to a negative value to fill from the tail.",
       "id": "SkcHZece8",
       "label": "NUM",
       "position": {

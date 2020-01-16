@@ -162,9 +162,16 @@ void WS2812::fill(XColor color) {
   show();
 }
 
-void WS2812::fill(XColor color, uint32_t pixelsCount) {
+void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail = false) {
   cli();
-  for (uint32_t i = 0; i < pixelsCount && i < _length; i++) {
+  // If fromTail is true
+  // Skip pixels by filling them with black color
+  uint32_t pixelsToSkip = fromTail ? _length - pixelCount : 0;
+  for (uint32_t i = 0; i < pixelsToSkip && i < _length; i++) {
+      sendPixel(0, 0, 0);
+  }
+  // Fill pixels
+  for (uint32_t i = pixelsToSkip; i < (pixelsToSkip + pixelCount); i++) {
       sendPixel(color.r, color.g, color.b);
   }
   sei();
