@@ -11,6 +11,7 @@ import {
   isValidPatchBasename,
   terminalPatchPathRegExp,
 } from './internal/patchPathUtils';
+import { listCustomTypeNames } from './custom-types';
 
 export {
   isLocalMarker,
@@ -112,6 +113,15 @@ export const convertToLocalPath = R.compose(getLocalPath, getBaseName);
 
 const PATCH_NODES_LIB_NAME = 'xod/patch-nodes';
 const dataTypes = R.values(CONST.PIN_TYPE);
+// :: Map BaseName PatchPath
+const bindableCustomTypesMap = R.compose(
+  R.mergeAll,
+  R.map(typeName => ({ [getBaseName(typeName)]: typeName })),
+  listCustomTypeNames
+)();
+const bindableTypes = R.compose(R.concat(dataTypes), R.keys)(
+  bindableCustomTypesMap
+);
 
 // :: String -> Direction
 export const getTerminalDirection = R.compose(
@@ -297,12 +307,21 @@ export const getSpecializationPatchPath = R.curry(
 // utils for tweak nodes
 //
 
-const tweakPathRegExp = new RegExp(`^xod/debug/tweak-(${dataTypes.join('|')})`);
+const tweakPathRegExp = new RegExp(
+  `^xod/debug/tweak-(${bindableTypes.join('|')})`
+);
 
 // :: PatchPath -> Boolean
 export const isTweakPath = R.test(tweakPathRegExp);
 
-export const getTweakType = R.pipe(R.match(tweakPathRegExp), R.nth(1));
+export const getTweakType = R.compose(
+  R.when(
+    R.has(R.__, bindableCustomTypesMap),
+    R.prop(R.__, bindableCustomTypesMap)
+  ),
+  R.nth(1),
+  R.match(tweakPathRegExp)
+);
 
 export const getStringTweakLength = R.pipe(
   R.match(/^xod\/debug\/tweak-string-(\d+)/),
