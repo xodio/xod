@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "content": "This example shows how to clear the whole LED strip and then fill with the red color only last four LEDs.",
+      "id": "SJe1xTTeI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 10
+      }
+    },
+    {
+      "content": "<- Clear all LEDs.",
+      "id": "SJeBeTpl8",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "<- Fill only last 4 LEDs.",
+      "id": "SkUHe66gL",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "<- Setup the device.",
+      "id": "rkXNe66l8",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "Hy7HJmgceI",
+      "input": {
+        "nodeId": "rJ-Hymxqx8",
+        "pinKey": "B1387L5RS"
+      },
+      "output": {
+        "nodeId": "ByxryXe9e8",
+        "pinKey": "Symaj-NYCB"
+      }
+    },
+    {
+      "id": "SyGrJQgqgL",
+      "input": {
+        "nodeId": "ByxryXe9e8",
+        "pinKey": "By6jbVYCB"
+      },
+      "output": {
+        "nodeId": "S1BkQl5e8",
+        "pinKey": "SJxz8XtRS"
+      }
+    },
+    {
+      "id": "r1spDhTeU",
+      "input": {
+        "nodeId": "rJ-Hymxqx8",
+        "pinKey": "rJWh8XIqAB"
+      },
+      "output": {
+        "nodeId": "ByxryXe9e8",
+        "pinKey": "Hk46jWVFAS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "SyzTjbEKCH": "On Boot"
+      },
+      "id": "ByxryXe9e8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/clear"
+    },
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "S1BkQl5e8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "boundLiterals": {
+        "SJxhUmIcCr": "#FF0000",
+        "SkcHZece8": "-4"
+      },
+      "id": "rJ-Hymxqx8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/fill-solid"
+    }
+  ]
+}

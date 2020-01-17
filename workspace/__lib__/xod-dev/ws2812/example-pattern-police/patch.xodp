@@ -1,0 +1,185 @@
+{
+  "comments": [
+    {
+      "content": "<- Convert values between 0...1 into values 0...3. The range of 0...3 corresponds to first...last position of the RED color in the pattern.\n\n<- Get an integer.",
+      "id": "BkgW2C6l8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 6
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "A police flashing light example.",
+      "id": "SkPGiCalL",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 3
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 13
+      }
+    },
+    {
+      "content": "<- Fill the LED strip.",
+      "id": "SkwAhRpeU",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 8
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "<- Pattern with colors: RED, BLUE, BLUE, BLUE",
+      "id": "rJPci06e8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "<- The sine-wave generator is a shift value for the pattern.",
+      "id": "rkf2j0pgI",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 5
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "SyVnkyRxU",
+      "input": {
+        "nodeId": "B1ynkJCgI",
+        "pinKey": "Sky6-pTeU"
+      },
+      "output": {
+        "nodeId": "SJZPh4z1L",
+        "pinKey": "HyxZiEGyL"
+      }
+    },
+    {
+      "id": "rJmwqk9g8",
+      "input": {
+        "nodeId": "HkMwqJcgU",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "rJ3L9JclL",
+        "pinKey": "BJB_WYnYyM"
+      }
+    },
+    {
+      "id": "ryMzi19xI",
+      "input": {
+        "nodeId": "rkR-jk9eI",
+        "pinKey": "BkF78AurDJW"
+      },
+      "output": {
+        "nodeId": "HkMwqJcgU",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    },
+    {
+      "id": "rywnykRg8",
+      "input": {
+        "nodeId": "B1ynkJCgI",
+        "pinKey": "rJHdTRTeU"
+      },
+      "output": {
+        "nodeId": "rkR-jk9eI",
+        "pinKey": "rkO7L0uSP1Z"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "Byd2jbapxU": "A4",
+        "HymhoWTal8": "16"
+      },
+      "id": "B1ynkJCgI",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 8
+      },
+      "type": "@/ws2812-pattern"
+    },
+    {
+      "boundLiterals": {
+        "HJCWLAdSwyW": "1",
+        "rkpbU0OrwyZ": "3"
+      },
+      "id": "HkMwqJcgU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 6
+      },
+      "type": "xod/math/map"
+    },
+    {
+      "arityLevel": 4,
+      "boundLiterals": {
+        "ByH-jEMk8": "#0000FF",
+        "ByH-jEMk8-$1": "#0000FF",
+        "ByH-jEMk8-$2": "#0000FF",
+        "ByH-jEMk8-$3": "#FF0000"
+      },
+      "id": "SJZPh4z1L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "@/pattern"
+    },
+    {
+      "boundLiterals": {
+        "HyMdZFnYkf": "0.5"
+      },
+      "id": "rJ3L9JclL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 5
+      },
+      "type": "xod/core/sine-wave"
+    },
+    {
+      "id": "rkR-jk9eI",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 7
+      },
+      "type": "xod/math/round"
+    }
+  ]
+}

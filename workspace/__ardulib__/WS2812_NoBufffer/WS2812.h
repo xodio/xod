@@ -1,9 +1,12 @@
 #ifndef _WS2812_NO_BUFFER_H_
 #define _WS2812_NO_BUFFER_H_
-#include <Arduino.h>
+
+#include "XColorPattern.h"
+
+using xod::XColor;
+
 // These are the timing constraints taken mostly from the WS2812 datasheets
 // These are chosen to be conservative and avoid problems rather than for maximum throughput
-
 #define T1H 800 // Width of a 1 bit in ns
 #define T1L 450 // Width of a 1 bit in ns
 
@@ -29,6 +32,9 @@ class WS2812 {
 public:
     WS2812(uint8_t pin, uint32_t length);
     void fill(uint8_t r, uint8_t g, uint8_t b);
+    void fill(XColor color);
+    void fill(XColor color, uint32_t pixelCount, bool fromTail = false);
+    void fillPattern(Pattern* pat, uint32_t shift = 0);
     void sendPixel(uint8_t r, uint8_t g, uint8_t b);
     void show();
     uint32_t getLength() const;
@@ -48,5 +54,7 @@ private:
     void sendBit(bool);
     void sendByte(uint8_t);
 };
+
+#include "WS2812.inl"
 
 #endif

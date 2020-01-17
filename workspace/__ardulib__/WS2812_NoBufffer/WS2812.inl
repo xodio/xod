@@ -1,5 +1,3 @@
-#include "WS2812.h"
-
 WS2812::WS2812(uint8_t pin, uint32_t len) {
     _length = len;
     setup(pin);
@@ -150,6 +148,49 @@ void WS2812::fill(uint8_t r, uint8_t g, uint8_t b) {
     cli();
     for (uint32_t i = 0; i < _length; i++) {
         sendPixel(r, g, b);
+    }
+    sei();
+    show();
+}
+
+void WS2812::fill(XColor color) {
+  cli();
+  for (uint32_t i = 0; i < _length; i++) {
+      sendPixel(color.r, color.g, color.b);
+  }
+  sei();
+  show();
+}
+
+void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail = false) {
+  cli();
+  // If fromTail is true
+  // Skip pixels by filling them with black color
+  uint32_t pixelsToSkip = fromTail ? _length - pixelCount : 0;
+  for (uint32_t i = 0; i < pixelsToSkip && i < _length; i++) {
+      sendPixel(0, 0, 0);
+  }
+  // Fill pixels
+  for (uint32_t i = pixelsToSkip; i < (pixelsToSkip + pixelCount); i++) {
+      sendPixel(color.r, color.g, color.b);
+  }
+  sei();
+  show();
+}
+
+void WS2812::fillPattern(Pattern* pat, uint32_t shift = 0) {
+    cli();
+
+    PatternNode* first = pat->first();
+    PatternNode* cur = first;
+    uint32_t _shift = (uint32_t) shift % _length;
+    for (uint32_t s = 0; s < _shift; s++) {
+      cur = cur->nextLooped(first);
+    }
+    for (uint32_t i = 0; i < _length; i++) {
+      XColor color = cur->color();
+      sendPixel(color.r, color.g, color.b);
+      cur = cur->nextLooped(first);
     }
     sei();
     show();

@@ -1,0 +1,56 @@
+{
+  "description": "Adds new colors to the tail of a given pattern.",
+  "nodes": [
+    {
+      "description": "The color to add.",
+      "id": "ByH-jEMk8",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "id": "HyRWoEMkL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The resulting pattern.",
+      "id": "HyxZiEGyL",
+      "label": "PAT'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-color-pattern"
+    },
+    {
+      "id": "S19bjEzkL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "description": "The pattern to extend. Leave empty to create a new pattern.",
+      "id": "SJhxjVMJI",
+      "label": "PAT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-color-pattern"
+    }
+  ]
+}

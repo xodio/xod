@@ -1,0 +1,178 @@
+{
+  "comments": [
+    {
+      "content": "A crawling red dots example.",
+      "id": "HJhS-p6lI",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": -1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    },
+    {
+      "content": "Increment a shift value and fill the LEDs each 200 milliseconds.",
+      "id": "r1yLKRplL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BynhtFDkU",
+      "input": {
+        "nodeId": "rkc3KFvyI",
+        "pinKey": "HJAq-A_8-"
+      },
+      "output": {
+        "nodeId": "Bke2KtwyI",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "H1BKla6lI",
+      "input": {
+        "nodeId": "Hkb3YRPGJL",
+        "pinKey": "r1WVLv-9lL"
+      },
+      "output": {
+        "nodeId": "SyzFlpplI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1P69-5xU",
+      "input": {
+        "nodeId": "Hkb3YRPGJL",
+        "pinKey": "Sy1uD-qx8"
+      },
+      "output": {
+        "nodeId": "HyQQZuMJI",
+        "pinKey": "HyxZiEGyL"
+      }
+    },
+    {
+      "id": "HJIYlT6gI",
+      "input": {
+        "nodeId": "SyzFlpplI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Bke2KtwyI",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "S176qZ9gU",
+      "input": {
+        "nodeId": "Hkb3YRPGJL",
+        "pinKey": "Sk7EUvWceI"
+      },
+      "output": {
+        "nodeId": "rkc3KFvyI",
+        "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "r1jCcW5eU",
+      "input": {
+        "nodeId": "Hkb3YRPGJL",
+        "pinKey": "H1xmDPZcxU"
+      },
+      "output": {
+        "nodeId": "HyqAcb9gI",
+        "pinKey": "SJxz8XtRS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "0.2"
+      },
+      "id": "Bke2KtwyI",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundLiterals": {
+        "HkGg2NGyL": "On Boot"
+      },
+      "id": "Hkb3YRPGJL",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 3
+      },
+      "type": "@/fill-pattern"
+    },
+    {
+      "arityLevel": 4,
+      "boundLiterals": {
+        "ByH-jEMk8": "#550000",
+        "ByH-jEMk8-$1": "#150000",
+        "ByH-jEMk8-$2": "#000000",
+        "ByH-jEMk8-$3": "#000000",
+        "ByH-jEMk8-$4": "#000000",
+        "ByH-jEMk8-$5": "#000000",
+        "ByH-jEMk8-$6": "#000000",
+        "ByH-jEMk8-$7": "#000000",
+        "ByH-jEMk8-$8": "#000000"
+      },
+      "id": "HyQQZuMJI",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 0
+      },
+      "type": "@/pattern"
+    },
+    {
+      "boundLiterals": {
+        "HyI-5XSAr": "A4",
+        "S1C-cQBRB": "16"
+      },
+      "id": "HyqAcb9gI",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 2
+      },
+      "type": "@/ws2812-device"
+    },
+    {
+      "id": "SyzFlpplI",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "id": "rkc3KFvyI",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/core/count"
+    }
+  ]
+}
