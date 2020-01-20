@@ -1,6 +1,6 @@
 
 struct State {
-    Number sample = NAN;
+    uint8_t sample = 0;
 };
 
 {{ GENERATED_CODE }}
