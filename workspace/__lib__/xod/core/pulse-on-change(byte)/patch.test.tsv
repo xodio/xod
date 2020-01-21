@@ -1,0 +1,8 @@
+IN	OUT
+00h	no-pulse
+01h	pulse
+0Ch	pulse
+0Ch	no-pulse
+00010111b	pulse
+17h	no-pulse
+23d	no-pulse
