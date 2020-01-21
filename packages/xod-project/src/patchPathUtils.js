@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { failOnFalse } from 'xod-func-tools';
+import { failOnFalse, maybePath } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
@@ -113,6 +113,7 @@ export const convertToLocalPath = R.compose(getLocalPath, getBaseName);
 
 const PATCH_NODES_LIB_NAME = 'xod/patch-nodes';
 const dataTypes = R.values(CONST.PIN_TYPE);
+
 // :: Map BaseName PatchPath
 const bindableCustomTypesMap = R.compose(
   R.mergeAll,
@@ -202,24 +203,15 @@ export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 // utils for cast patches
 //
 
-// TODO: When custom types will be added this should be generalized.
-//       Also, casting from/to generic types should be forbidden.
-const castTypeRegExp = new RegExp(
-  `^xod/core/cast-to-(${dataTypes.join('|')})\\((${dataTypes.join('|')})\\)$`
-);
-
-// :: String -> Boolean
-export const isCastPatchPath = R.test(castTypeRegExp);
-
 /**
  * Returns path for casting patch
  * @function getCastPatchPath
  * @param {PIN_TYPE} typeIn
  * @param {PIN_TYPE} typeOut
- * @returns {String}
+ * @returns {Maybe<PatchPath>}
  */
 export const getCastPatchPath = (typeIn, typeOut) =>
-  `xod/core/cast-to-${typeOut}(${typeIn})`;
+  maybePath([typeIn, typeOut], CONST.CAST_NODES);
 
 //
 // defer-* nodes
@@ -314,6 +306,7 @@ const tweakPathRegExp = new RegExp(
 // :: PatchPath -> Boolean
 export const isTweakPath = R.test(tweakPathRegExp);
 
+// :: PatchPath -> DataType
 export const getTweakType = R.compose(
   R.when(
     R.has(R.__, bindableCustomTypesMap),

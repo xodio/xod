@@ -1,6 +1,9 @@
+import * as R from 'ramda';
 import { assert } from 'chai';
+import { explodeMaybe } from 'xod-func-tools';
 
 import * as CONST from '../src/constants';
+import { BINDABLE_CUSTOM_TYPES } from '../src/custom-types';
 import * as PatchPathUtils from '../src/patchPathUtils';
 
 import * as Helper from './helpers';
@@ -335,51 +338,40 @@ describe('PatchPathUtils', () => {
   });
 
   describe('Cast patch utils', () => {
-    describe('isCastPatchPath', () => {
-      it('should recognise new cast paths', () => {
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-to-number(boolean)')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-to-pulse(boolean)')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-to-string(boolean)')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-to-boolean(number)')
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath('xod/core/cast-to-string(number)')
-        );
-      });
-    });
     describe('getCastPatchPath', () => {
       it('should return patch paths that are recognised as cast paths', () => {
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath(
-            PatchPathUtils.getCastPatchPath(
-              CONST.PIN_TYPE.BOOLEAN,
-              CONST.PIN_TYPE.NUMBER
-            )
-          )
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath(
-            PatchPathUtils.getCastPatchPath(
-              CONST.PIN_TYPE.BOOLEAN,
-              CONST.PIN_TYPE.STRING
-            )
-          )
-        );
-        assert.isTrue(
-          PatchPathUtils.isCastPatchPath(
-            PatchPathUtils.getCastPatchPath(
-              CONST.PIN_TYPE.NUMBER,
-              CONST.PIN_TYPE.BOOLEAN
-            )
-          )
-        );
+        const testData = [
+          PatchPathUtils.getCastPatchPath(
+            CONST.PIN_TYPE.BOOLEAN,
+            CONST.PIN_TYPE.NUMBER
+          ),
+          PatchPathUtils.getCastPatchPath(
+            CONST.PIN_TYPE.BOOLEAN,
+            CONST.PIN_TYPE.STRING
+          ),
+          PatchPathUtils.getCastPatchPath(
+            CONST.PIN_TYPE.NUMBER,
+            CONST.PIN_TYPE.BOOLEAN
+          ),
+          PatchPathUtils.getCastPatchPath(
+            BINDABLE_CUSTOM_TYPES.COLOR,
+            CONST.PIN_TYPE.STRING
+          ),
+        ];
+        const expected = [
+          'xod/core/cast-to-number(boolean)',
+          'xod/core/cast-to-string(boolean)',
+          'xod/core/cast-to-boolean(number)',
+          'xod/color/format-color',
+        ];
+        R.addIndex(R.forEach)((maybePatchPath, idx) => {
+          Helper.expectMaybeJust(maybePatchPath);
+          const patchPath = explodeMaybe(
+            'Expected Maybe.Just, but got Maybe.Nothing',
+            maybePatchPath
+          );
+          assert.strictEqual(patchPath, expected[idx]);
+        }, testData);
       });
     });
   });

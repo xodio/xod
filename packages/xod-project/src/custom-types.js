@@ -1,6 +1,8 @@
 import * as R from 'ramda';
 import { isAmong } from 'xod-func-tools';
 
+import PIN_TYPE from './internal/pinTypes';
+
 // =============================================================================
 //
 // Add custom type specifications in BINDABLE_CUSTOM_TYPES_SPECS
@@ -15,6 +17,9 @@ export const BINDABLE_CUSTOM_TYPES_SPECS = {
     nodeConstructor: 'xod/color/color',
     defaultValue: '#000000',
     validateLiteral: R.test(/^#[0-9A-F]{6}$/),
+    casts: {
+      [PIN_TYPE.STRING]: 'xod/color/format-color',
+    },
   },
 };
 
@@ -46,3 +51,8 @@ export const listCustomTypeLiteralValidators = () =>
 
 // :: () -> [TypeName]
 export const listCustomTypeNames = () => R.pluck('typeName', typesList);
+
+export const getCustomTypesCompatibility = () =>
+  R.compose(R.pluck('casts'), R.indexBy(R.prop('typeName')), R.values)(
+    BINDABLE_CUSTOM_TYPES_SPECS
+  );

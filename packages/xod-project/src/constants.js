@@ -1,33 +1,19 @@
+import { mapObjIndexed } from 'ramda';
+
+import PIN_TYPE from './internal/pinTypes';
 import {
   getCustomTypeConstructorsMap,
   getCustomTypeDefaultValuesMap,
+  getCustomTypesCompatibility,
 } from './custom-types';
+
+export { PIN_TYPE };
 
 export const IDENTIFIER_RULES = `Only a-z, 0-9 and - are allowed.
   Name must not begin or end with a hypen,
   or contain more than one hypen in a row`;
 
 export const PATCH_BASENAME_RULES = IDENTIFIER_RULES;
-
-/**
- * Enumeration of possible pin types
- *
- * @name PIN_TYPE
- * @enum {string}
- */
-export const PIN_TYPE = {
-  STRING: 'string',
-  NUMBER: 'number',
-  BOOLEAN: 'boolean',
-  PULSE: 'pulse',
-  BYTE: 'byte',
-  PORT: 'port',
-  DEAD: 'dead',
-  // generic types
-  T1: 't1',
-  T2: 't2',
-  T3: 't3',
-};
 
 export const INPUT_PULSE_PIN_BINDING_OPTIONS = {
   NEVER: 'Never',
@@ -67,34 +53,53 @@ export const MAX_ARITY_STEP = 3;
  *
  * @name STATIC_TYPES_COMPATIBILITY
  */
-export const STATIC_TYPES_COMPATIBILITY = {
+const STATIC_TYPES_COMPATIBILITY = {
   [PIN_TYPE.BOOLEAN]: {
-    [PIN_TYPE.BOOLEAN]: true,
     [PIN_TYPE.NUMBER]: true,
     [PIN_TYPE.PULSE]: true,
     [PIN_TYPE.STRING]: true,
   },
   [PIN_TYPE.NUMBER]: {
     [PIN_TYPE.BOOLEAN]: true,
-    [PIN_TYPE.NUMBER]: true,
     [PIN_TYPE.STRING]: true,
   },
   [PIN_TYPE.BYTE]: {
-    [PIN_TYPE.BYTE]: true,
     [PIN_TYPE.STRING]: true,
   },
   // nothing can be cast to or from pulse
-  [PIN_TYPE.PULSE]: {
-    [PIN_TYPE.PULSE]: true,
-  },
   // nothing can be cast from string
-  [PIN_TYPE.STRING]: {
-    [PIN_TYPE.STRING]: true,
-  },
   [PIN_TYPE.PORT]: {
-    [PIN_TYPE.PORT]: true,
     [PIN_TYPE.STRING]: true,
   },
+};
+
+const STATIC_TYPES_CAST_NODES = mapObjIndexed((castsTo, fromType) =>
+  mapObjIndexed(
+    (_, toType) => `xod/core/cast-to-${toType}(${fromType})`,
+    castsTo
+  )
+)(STATIC_TYPES_COMPATIBILITY);
+
+/**
+ * A lookup table that answers the question
+ * 'which node cancast type A to type B'.
+ *
+ * Map contains only types that can be casted.
+ *
+ * :: Map TypeName (Map TypeName PatchPath)
+ * E.G.
+ * {
+ *   [PIN_TYPE.NUMBER]: {
+ *     [PIN_TYPE.BOOLEAN]: 'xod/core/cast-to-number(boolean)',
+ *   },
+ *   'xod/color/color': {
+ *     [PIN_TYPE.STRING]: 'xod/color/format-color',
+ *   },
+ * }
+ */
+export const CAST_NODES = {
+  ...STATIC_TYPES_CAST_NODES,
+  ...getCustomTypesCompatibility(),
 };
 
 // node types that provide a constant value

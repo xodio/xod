@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import shortid from 'shortid';
 
 import { Either } from 'ramda-fantasy';
-import { isAmong, fail, explodeEither } from 'xod-func-tools';
+import { isAmong, fail, explodeEither, notNil } from 'xod-func-tools';
 
 import {
   listCustomTypeLiteralValidators,
@@ -91,7 +91,7 @@ export const canCastTypes = def(
       return true;
     }
 
-    return R.pathOr(false, [from, to], CONST.STATIC_TYPES_COMPATIBILITY);
+    return R.pathSatisfies(notNil, [from, to], CONST.CAST_NODES);
   }
 );
 
