@@ -1,187 +1,75 @@
 {
   "description": "Selects either `X0` or `X1` based on `IDX` index value.",
-  "links": [
-    {
-      "id": "ByT8JLshM",
-      "input": {
-        "nodeId": "r1ctYrM3G",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "S13xLCuHvkW"
-      }
-    },
-    {
-      "id": "BysSVkUo2M",
-      "input": {
-        "nodeId": "SyIHNkUinz",
-        "pinKey": "BypX80uSD1Z"
-      },
-      "output": {
-        "nodeId": "SJ-BNy8s2G",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "H1ZHy8ihf",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "ryTeUROHD1b"
-      },
-      "output": {
-        "nodeId": "BkrwKrGhG",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "S1cS4y8i2G",
-      "input": {
-        "nodeId": "BkESVJLs2z",
-        "pinKey": "HJjZLRdBw1-"
-      },
-      "output": {
-        "nodeId": "SJ-BNy8s2G",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJHr1Lo2G",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "r1AgIROHDJW"
-      },
-      "output": {
-        "nodeId": "HypuFHG3z",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJnH4k8s2z",
-      "input": {
-        "nodeId": "SyHEk8jhz",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyIHNkUinz",
-        "pinKey": "HyRmUCdBDkZ"
-      }
-    },
-    {
-      "id": "rkOBV1LinG",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "S1yZIA_rDJZ"
-      },
-      "output": {
-        "nodeId": "BkESVJLs2z",
-        "pinKey": "HktZUCdrPkZ"
-      }
-    }
-  ],
   "nodes": [
     {
-      "boundLiterals": {
-        "SJqZ8COrDkW": "1"
-      },
-      "id": "BkESVJLs2z",
+      "description": "The selected value. Equals to one of `Xi` input.",
+      "id": "B1EmiViS-U",
       "position": {
         "units": "slots",
-        "x": 1,
-        "y": 1
-      },
-      "type": "@/less"
-    },
-    {
-      "id": "BkrwKrGhG",
-      "label": "X0",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-t1"
-    },
-    {
-      "id": "HkVnCKrbL",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "id": "HyXrE1Ls2M",
-      "position": {
-        "units": "slots",
-        "x": 2,
+        "x": 0,
         "y": 2
       },
-      "type": "@/if-else"
-    },
-    {
-      "id": "HypuFHG3z",
-      "label": "X1",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 0
-      },
-      "type": "xod/patch-nodes/input-t1"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
       "description": "Index to select. All values below 1 are considered to be 0. Values of 1 and above are considered to be 1.",
-      "id": "SJ-BNy8s2G",
+      "id": "BJ-QsNoBZU",
       "label": "IDX",
       "position": {
         "units": "slots",
-        "x": 1,
+        "x": -1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.\n",
-      "id": "SyHEk8jhz",
-      "label": "_",
+      "id": "S1zmoVoHW8",
+      "label": "X0",
       "position": {
         "units": "slots",
-        "x": -1,
-        "y": 3
+        "x": 0,
+        "y": 0
       },
-      "type": "xod/patch-nodes/output-number"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
-      "boundLiterals": {
-        "rkJ4URuHDJ-": "1"
+      "id": "SkXjEjrb8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
       },
-      "id": "SyIHNkUinz",
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "description": "Utility output needed for expanding node. Shoud be ignored by the end user.\n",
+      "id": "SklXsNjBZU",
+      "label": "_",
       "position": {
         "units": "slots",
         "x": -1,
         "y": 2
       },
-      "type": "@/subtract"
+      "type": "xod/patch-nodes/output-number"
     },
     {
-      "description": "The selected value. Equals to one of `Xi` input.",
-      "id": "r1ctYrM3G",
+      "id": "SyXQj4srZ8",
       "position": {
         "units": "slots",
-        "x": 2,
-        "y": 3
+        "x": -1,
+        "y": 1
       },
-      "type": "xod/patch-nodes/output-t1"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
-      "id": "r1wH4yIj3G",
+      "id": "rJS7iEsrbU",
+      "label": "X1",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 1,
         "y": 0
       },
-      "type": "xod/patch-nodes/variadic-1"
+      "type": "xod/patch-nodes/input-t1"
     }
   ]
 }

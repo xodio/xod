@@ -1,4 +1,3 @@
-
 #pragma XOD dirtieness disable
 
 struct State {};
@@ -19,3 +18,4 @@ void evaluate(Context ctx) {
     emitValue<output_OUT>(ctx, cond ? trueVal : falseVal);
     emitValue<output__>(ctx, x - 1);
 }
+
