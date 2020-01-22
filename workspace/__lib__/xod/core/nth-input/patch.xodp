@@ -103,6 +103,15 @@
       "type": "xod/patch-nodes/input-t1"
     },
     {
+      "id": "HkVnCKrbL",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
       "id": "HyXrE1Ls2M",
       "position": {
         "units": "slots",

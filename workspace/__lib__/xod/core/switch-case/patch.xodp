@@ -189,6 +189,15 @@
       "type": "xod/patch-nodes/from-bus"
     },
     {
+      "id": "rkFK0tSWI",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
       "id": "rydblvaT4",
       "label": "DEF",
       "position": {
