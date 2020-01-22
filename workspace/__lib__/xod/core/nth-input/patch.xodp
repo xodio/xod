@@ -1,122 +1,31 @@
 {
   "description": "Selects either `X0` or `X1` based on `IDX` index value.",
-  "links": [
-    {
-      "id": "ByT8JLshM",
-      "input": {
-        "nodeId": "r1ctYrM3G",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "S13xLCuHvkW"
-      }
-    },
-    {
-      "id": "BysSVkUo2M",
-      "input": {
-        "nodeId": "SyIHNkUinz",
-        "pinKey": "BypX80uSD1Z"
-      },
-      "output": {
-        "nodeId": "SJ-BNy8s2G",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "H1ZHy8ihf",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "ryTeUROHD1b"
-      },
-      "output": {
-        "nodeId": "BkrwKrGhG",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "S1cS4y8i2G",
-      "input": {
-        "nodeId": "BkESVJLs2z",
-        "pinKey": "HJjZLRdBw1-"
-      },
-      "output": {
-        "nodeId": "SJ-BNy8s2G",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJHr1Lo2G",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "r1AgIROHDJW"
-      },
-      "output": {
-        "nodeId": "HypuFHG3z",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rJnH4k8s2z",
-      "input": {
-        "nodeId": "SyHEk8jhz",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyIHNkUinz",
-        "pinKey": "HyRmUCdBDkZ"
-      }
-    },
-    {
-      "id": "rkOBV1LinG",
-      "input": {
-        "nodeId": "HyXrE1Ls2M",
-        "pinKey": "S1yZIA_rDJZ"
-      },
-      "output": {
-        "nodeId": "BkESVJLs2z",
-        "pinKey": "HktZUCdrPkZ"
-      }
-    }
-  ],
   "nodes": [
-    {
-      "boundLiterals": {
-        "SJqZ8COrDkW": "1"
-      },
-      "id": "BkESVJLs2z",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 1
-      },
-      "type": "@/less"
-    },
     {
       "id": "BkrwKrGhG",
       "label": "X0",
       "position": {
         "units": "slots",
-        "x": 3,
+        "x": 0,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
     },
     {
-      "id": "HyXrE1Ls2M",
+      "id": "Hy-PBHBW8",
       "position": {
         "units": "slots",
-        "x": 2,
-        "y": 2
+        "x": 0,
+        "y": 1
       },
-      "type": "@/if-else"
+      "type": "xod/patch-nodes/variadic-1"
     },
     {
       "id": "HypuFHG3z",
       "label": "X1",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-t1"
@@ -127,7 +36,7 @@
       "label": "IDX",
       "position": {
         "units": "slots",
-        "x": 1,
+        "x": -1,
         "y": 0
       },
       "type": "xod/patch-nodes/input-number"
@@ -139,40 +48,28 @@
       "position": {
         "units": "slots",
         "x": -1,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-number"
-    },
-    {
-      "boundLiterals": {
-        "rkJ4URuHDJ-": "1"
-      },
-      "id": "SyIHNkUinz",
-      "position": {
-        "units": "slots",
-        "x": -1,
         "y": 2
       },
-      "type": "@/subtract"
+      "type": "xod/patch-nodes/output-number"
     },
     {
       "description": "The selected value. Equals to one of `Xi` input.",
       "id": "r1ctYrM3G",
       "position": {
         "units": "slots",
-        "x": 2,
-        "y": 3
+        "x": 0,
+        "y": 2
       },
       "type": "xod/patch-nodes/output-t1"
     },
     {
-      "id": "r1wH4yIj3G",
+      "id": "r1mZPHrrbU",
       "position": {
         "units": "slots",
-        "x": 7,
-        "y": 0
+        "x": -1,
+        "y": 1
       },
-      "type": "xod/patch-nodes/variadic-1"
+      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
   ]
 }
