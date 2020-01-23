@@ -12,6 +12,9 @@ let implementsEvaluateTmpl = Directives.implementsEvaluateTmpl;
 
 let wantsStateConstructorWithParams = Directives.wantsStateConstructorWithParams;
 
+let getInputsWithWhitelistedDirtyness = code =>
+  code |. Directives.getInputsWithWhitelistedDirtyness |. List.toArray;
+
 let areTimeoutsEnabled = Directives.areTimeoutsEnabled;
 
 let stripCppComments = Directives.stripCppComments;

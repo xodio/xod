@@ -380,6 +380,8 @@ export const renderProject = def(
 
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
+    // TODO: right at the beginning of `program.tpl.cpp`
+    // TNode pins are mutated by mergePins helper
     const program = renderProgram(project.nodes);
 
     return R.join('\n')([

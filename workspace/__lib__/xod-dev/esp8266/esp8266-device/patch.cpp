@@ -1,3 +1,5 @@
+#pragma XOD evaluate_on_pin enable input_INIT
+
 // clang-format off
 {{#global}}
 #include <ESP8266UART.h>

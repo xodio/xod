@@ -1,3 +1,4 @@
+#pragma XOD evaluate_on_pin enable input_CONN
 #pragma XOD error_raise enable
 
 // clang-format off

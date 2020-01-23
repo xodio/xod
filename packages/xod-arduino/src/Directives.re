@@ -82,6 +82,7 @@ module Code = {
   let pragmaLineRegexp = pragmaHeadRegexp ++ ".*";
   let identifierOrStringRegexp = {foo|[\w._-]+|".*?"|foo};
   let enclosingQuotesRegexp = {|^"|"$|};
+  let isInput = identifier => Re.test(identifier, {|^input_|});
   let isOutput = identifier => Re.test(identifier, {|^output_|});
   let tokenizePragma = (pragmaLine: string) : Pragma.t =>
     pragmaLine
@@ -152,6 +153,17 @@ let isDirtienessEnabled = (code, identifier) =>
        | _ => acc
        }
      );
+
+let getInputsWithWhitelistedDirtyness = (code) =>
+  code
+  |. Code.findXodPragmas
+  |. Pragma.filterPragmasByFeature("evaluate_on_pin")
+  |. List.reverse
+  |. List.head
+  |. lastPragma => switch (lastPragma) {
+    | Some([_, "enable", ...inputs]) => inputs |. List.keep(Code.isInput)
+    | _ => []
+  };
 
 let doesCatchErrors = (code) =>
   code

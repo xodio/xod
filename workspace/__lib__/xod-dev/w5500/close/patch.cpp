@@ -1,3 +1,5 @@
+#pragma XOD evaluate_on_pin enable input_CLS
+
 {{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>

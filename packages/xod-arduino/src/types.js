@@ -78,13 +78,22 @@ export const TPatch = Model('TPatch', {
   requirements: $.Array($.String),
 });
 
+const TNodeOutputDestination = Model('TNodeOutputDestination', {
+  id: TNodeId,
+  doesAffectDirtyness: $.Boolean,
+});
+
+// !!!: Before rendering program.tpl.cpp, data from corresponding
+// `TPatchOutput`s gets mixed in here by `mergePins` helper
 const TNodeOutput = Model('TNodeOutput', {
   type: $.String,
-  to: $.Array(TNodeId),
+  to: $.Array(TNodeOutputDestination),
   pinKey: TPinKey,
   value: $.Nullable(DataValue),
 });
 
+// !!!: Before rendering program.tpl.cpp, data from corresponding
+// `TPatchInput`s gets mixed in here by `mergePins` helper
 const TNodeInput = Model('TNodeInput', {
   type: $.String,
   pinKey: TPinKey,
@@ -127,6 +136,7 @@ const env = xEnv.concat([
   TPatchOutput,
   TPatchInput,
   TPatch,
+  TNodeOutputDestination,
   TNodeOutput,
   TNodeInput,
   TNode,

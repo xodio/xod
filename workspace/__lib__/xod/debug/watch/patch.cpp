@@ -1,4 +1,4 @@
-
+#pragma XOD evaluate_on_pin enable input_IN
 #pragma XOD error_catch enable
 
 struct State {

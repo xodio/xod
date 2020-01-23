@@ -1,3 +1,4 @@
+#pragma XOD evaluate_on_pin enable input_PING
 #pragma XOD error_raise enable
 
 struct State {

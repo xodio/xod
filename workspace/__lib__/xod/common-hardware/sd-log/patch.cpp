@@ -1,3 +1,5 @@
+
+#pragma XOD evaluate_on_pin enable input_W
 #pragma XOD error_raise enable
 
 {{#global}}

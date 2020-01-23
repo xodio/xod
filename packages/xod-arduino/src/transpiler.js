@@ -23,6 +23,7 @@ import {
   isNodeIdEnabled,
   doesRaiseErrors,
   isDirtienessEnabled,
+  getInputsWithWhitelistedDirtyness,
   implementsEvaluateTmpl,
   wantsStateConstructorWithParams,
   doesCatchErrors,
@@ -41,11 +42,6 @@ const toInt = R.flip(parseInt)(10);
 const findPatchByPath = def(
   'findPatchByPath :: PatchPath -> [TPatch] -> TPatch',
   (path, patches) => R.find(R.propEq('patchPath', path), patches)
-);
-
-const getLinksInputNodeIds = def(
-  'getLinksInputNodeIds :: [Link] -> [TNodeId]',
-  R.compose(R.uniq, R.map(R.compose(toInt, XP.getLinkInputNodeId)))
 );
 
 const getPatchByNodeId = def(
@@ -164,6 +160,7 @@ const convertPatchToTPatch = def(
       usesNodeId: isNodeIdEnabled(impl),
       implementsEvaluateTmpl: implementsEvaluateTmpl(impl),
       wantsStateConstructorWithParams: wantsStateConstructorWithParams(impl),
+      enabledEvaluateOnPin: !!getInputsWithWhitelistedDirtyness(impl).length,
     };
 
     return R.mergeAll([
@@ -313,6 +310,48 @@ const getDefaultPinValue = def(
     )(node)
 );
 
+const getTNodeOutputDestinations = def(
+  'getTNodeOutputDestinations :: [Link] -> Project -> PatchPath -> [TNodeOutputDestination]',
+  (links, project, entryPath) =>
+    R.compose(
+      R.values,
+      R.mapObjIndexed((linksFromSingleOutputToSameNode, inputNodeId) => {
+        const patch = R.compose(
+          XP.getPatchByPathUnsafe(R.__, project),
+          XP.getNodeType,
+          XP.getNodeByIdUnsafe(inputNodeId),
+          XP.getPatchByPathUnsafe
+        )(entryPath, project);
+
+        const inputPinKeysByLabel = R.compose(
+          R.map(XP.getPinKey),
+          R.indexBy(R.pipe(XP.getPinLabel, cppEscape, l => `input_${l}`)),
+          XP.normalizeEmptyPinLabels,
+          XP.listInputPins
+        )(patch);
+
+        const doesAffectDirtyness = R.compose(
+          R.ifElse(R.isEmpty, R.always(true), whitelistedPinKeys => {
+            const inputPinKeys = R.map(
+              XP.getLinkInputPinKey,
+              linksFromSingleOutputToSameNode
+            );
+            return whitelistedPinKeys.some(pk => inputPinKeys.includes(pk));
+          }),
+          R.map(l => inputPinKeysByLabel[l]),
+          foldMaybe([], getInputsWithWhitelistedDirtyness),
+          XP.getImpl
+        )(patch);
+
+        return {
+          id: toInt(inputNodeId),
+          doesAffectDirtyness,
+        };
+      }),
+      R.groupBy(XP.getLinkInputNodeId)
+    )(links)
+);
+
 const getTNodeOutputs = def(
   'getTNodeOutputs :: Project -> PatchPath -> Node -> [TNodeOutput]',
   (project, entryPath, node) => {
@@ -328,7 +367,7 @@ const getTNodeOutputs = def(
       R.values,
       R.mapObjIndexed((links, pinKey) => ({
         type: nodePinTypes[pinKey],
-        to: getLinksInputNodeIds(links),
+        to: getTNodeOutputDestinations(links, project, entryPath),
         pinKey: nodePinLabels[pinKey],
         value: XP.getBoundValue(pinKey, node).getOrElse(
           getDefaultPinValue(pinKey, node, project)
@@ -466,6 +505,7 @@ const calculateNearestDownstreamErrorCatchers = tNodes => {
               downstreamTNode.outputs
             );
       }),
+      R.map(R.prop('id')),
       R.propOr([], 'to')
     )(tNodeOutput);
   }

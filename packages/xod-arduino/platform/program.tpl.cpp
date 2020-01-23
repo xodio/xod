@@ -209,7 +209,7 @@ void handleDefers() {
                 // (no matter if a pulse was emitted or not)
                 if (previousErrors.output_{{ pinKey }} && !node_{{ ../id }}.errors.output_{{ pinKey }}) {
                   {{#each to}}
-                    g_transaction.node_{{this}}_isNodeDirty = true;
+                    g_transaction.node_{{id}}_isNodeDirty = true;
                   {{/each}}
                 }
               {{/eachPulseOutput}}
@@ -217,15 +217,15 @@ void handleDefers() {
 
             // mark downstream nodes dirty
           {{#each outputs }}
-            {{#if isDirtyable ~}}
             {{#each to}}
-            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }} || node_{{ ../../id }}.errors.flags;
-            {{/each}}
+            {{#if doesAffectDirtyness}}
+            {{#if ../isDirtyable}}
+            g_transaction.node_{{ id }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }};
             {{else}}
-            {{#each to}}
-            g_transaction.node_{{ this }}_isNodeDirty = true;
-            {{/each}}
+            g_transaction.node_{{ id }}_isNodeDirty = true;
             {{/if}}
+            {{/if}}
+            {{/each}}
           {{/each}}
 
             g_transaction.node_{{id}}_isNodeDirty = false;
@@ -237,7 +237,7 @@ void handleDefers() {
           {{#each outputs}}
             if (node_{{ ../id }}.errors.output_{{ pinKey }}) {
               {{#each to}}
-                g_transaction.node_{{this}}_hasUpstreamError = true;
+                g_transaction.node_{{id}}_hasUpstreamError = true;
               {{/each}}
             }
           {{/each}}
@@ -294,7 +294,7 @@ void runTransaction() {
         if (g_transaction.node_{{id}}_hasUpstreamError) {
           {{#each outputs}}
             {{#each to}}
-            g_transaction.node_{{this}}_hasUpstreamError = true;
+            g_transaction.node_{{id}}_hasUpstreamError = true;
             {{/each}}
           {{/each}}
         } else if (g_transaction.node_{{id}}_isNodeDirty) {
@@ -423,7 +423,7 @@ void runTransaction() {
               {{#eachPulseOutput outputs}}
                 if (previousErrors.output_{{ pinKey }} && !node_{{ ../id }}.errors.output_{{ pinKey }}) {
                   {{#each to}}
-                    g_transaction.node_{{this}}_isNodeDirty = true;
+                    g_transaction.node_{{ id }}_isNodeDirty = true;
                   {{/each}}
                 }
               {{/eachPulseOutput}}
@@ -432,15 +432,15 @@ void runTransaction() {
 
             // mark downstream nodes dirty
           {{#each outputs }}
-            {{#if isDirtyable ~}}
             {{#each to}}
-            g_transaction.node_{{ this }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }};
-            {{/each}}
+            {{#if doesAffectDirtyness}}
+            {{#if ../isDirtyable}}
+            g_transaction.node_{{ id }}_isNodeDirty |= g_transaction.node_{{ ../../id }}_isOutputDirty_{{ ../pinKey }};
             {{else}}
-            {{#each to}}
-            g_transaction.node_{{this}}_isNodeDirty = true;
-            {{/each}}
+            g_transaction.node_{{ id }}_isNodeDirty = true;
             {{/if}}
+            {{/if}}
+            {{/each}}
           {{/each}}
         }
 
@@ -450,7 +450,7 @@ void runTransaction() {
           {{#each outputs}}
             if (node_{{ ../id }}.errors.output_{{ pinKey }}) {
               {{#each to}}
-                g_transaction.node_{{this}}_hasUpstreamError = true;
+                g_transaction.node_{{ id }}_hasUpstreamError = true;
               {{/each}}
             }
           {{/each}}

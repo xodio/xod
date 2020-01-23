@@ -80,6 +80,15 @@ let doesCatchErrors: code => bool;
 /** Returns a list of found XOD pragmas in the order of occurence */
 let findXodPragmas: code => list(Pragma.t);
 
+/** 
+  Returns a list of input pin labels declared by pragma
+
+  #pragma XOD evaluate_on_pin enable input_UPD input_RST
+
+  If no pragma found, returns an empty list
+ */
+let getInputsWithWhitelistedDirtyness: code => list(string);
+
 /**
  * Returns a list of strings (URLs) that found in XOD require pragmas:
  *
