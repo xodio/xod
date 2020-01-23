@@ -11,7 +11,7 @@ import {
   isValidPatchBasename,
   terminalPatchPathRegExp,
 } from './internal/patchPathUtils';
-import { listCustomTypeNames } from './custom-types';
+import { BINDABLE_CUSTOM_TYPES_LIST } from './custom-types';
 
 export {
   isLocalMarker,
@@ -115,11 +115,9 @@ const PATCH_NODES_LIB_NAME = 'xod/patch-nodes';
 const dataTypes = R.values(CONST.PIN_TYPE);
 
 // :: Map BaseName PatchPath
-const bindableCustomTypesMap = R.compose(
-  R.mergeAll,
-  R.map(typeName => ({ [getBaseName(typeName)]: typeName })),
-  listCustomTypeNames
-)();
+const bindableCustomTypesMap = R.compose(R.mergeAll, R.indexBy(getBaseName))(
+  BINDABLE_CUSTOM_TYPES_LIST
+);
 const bindableTypes = R.compose(R.concat(dataTypes), R.keys)(
   bindableCustomTypesMap
 );

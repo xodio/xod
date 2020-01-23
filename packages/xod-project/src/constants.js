@@ -2,9 +2,9 @@ import { mapObjIndexed } from 'ramda';
 
 import PIN_TYPE from './internal/pinTypes';
 import {
-  getCustomTypeConstructorsMap,
-  getCustomTypeDefaultValuesMap,
-  getCustomTypesCompatibility,
+  BINDABLE_CUSTOM_TYPE_CONSTRUCTORS,
+  BINDABLE_CUSTOM_TYPE_DEFAULT_VALUES,
+  BINDABLE_CUSTOM_TYPES_CAST_NODES,
 } from './custom-types';
 
 export { PIN_TYPE };
@@ -32,7 +32,7 @@ export const DEFAULT_VALUE_OF_TYPE = {
   [PIN_TYPE.T1]: '',
   [PIN_TYPE.T2]: '',
   [PIN_TYPE.T3]: '',
-  ...getCustomTypeDefaultValuesMap(),
+  ...BINDABLE_CUSTOM_TYPE_DEFAULT_VALUES,
 };
 
 export const GLOBALS_LITERALS = ['=XOD_USERNAME', '=XOD_PROJECT', '=XOD_TOKEN'];
@@ -82,7 +82,7 @@ const STATIC_TYPES_CAST_NODES = mapObjIndexed((castsTo, fromType) =>
 
 /**
  * A lookup table that answers the question
- * 'which node cancast type A to type B'.
+ * 'which node can cast type A to type B'.
  *
  * Map contains only types that can be casted.
  *
@@ -99,7 +99,7 @@ const STATIC_TYPES_CAST_NODES = mapObjIndexed((castsTo, fromType) =>
  */
 export const CAST_NODES = {
   ...STATIC_TYPES_CAST_NODES,
-  ...getCustomTypesCompatibility(),
+  ...BINDABLE_CUSTOM_TYPES_CAST_NODES,
 };
 
 // node types that provide a constant value
@@ -109,7 +109,7 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
-  ...getCustomTypeConstructorsMap(),
+  ...BINDABLE_CUSTOM_TYPE_CONSTRUCTORS,
 };
 
 // node types that provide a constant pulse,
