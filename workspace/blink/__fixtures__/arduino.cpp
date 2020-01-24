@@ -1394,7 +1394,6 @@ struct TransactionState {
     bool node_5_isNodeDirty : 1;
     bool node_5_isOutputDirty_MEM : 1;
     bool node_6_isNodeDirty : 1;
-    bool node_6_isOutputDirty_DONE : 1;
     TransactionState() {
         node_3_isNodeDirty = true;
         node_3_isOutputDirty_TICK = false;
@@ -1403,7 +1402,6 @@ struct TransactionState {
         node_5_isNodeDirty = true;
         node_5_isOutputDirty_MEM = true;
         node_6_isNodeDirty = true;
-        node_6_isOutputDirty_DONE = false;
     }
 };
 
@@ -1571,7 +1569,6 @@ void runTransaction() {
             xod__gpio__digital_write::evaluateTmpl<node_2_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_6_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
         }

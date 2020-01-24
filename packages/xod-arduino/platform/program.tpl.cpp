@@ -26,7 +26,9 @@ struct TransactionState {
 {{#unless patch.isConstant}}
     bool node_{{id}}_isNodeDirty : 1;
   {{#each outputs}}
+    {{#if (isOutputLinked this)}}
     bool node_{{ ../id }}_isOutputDirty_{{ pinKey }} : 1;
+    {{/if}}
   {{/each}}
   {{#if (needsHasUpstreamErrorFlag this)}}
     bool node_{{id}}_hasUpstreamError : 1;
@@ -38,7 +40,9 @@ struct TransactionState {
       {{#unless patch.isConstant}}
         node_{{id}}_isNodeDirty = true;
         {{#eachDirtyablePin outputs}}
+        {{#if (isOutputLinked this)}}
         node_{{ ../id }}_isOutputDirty_{{ pinKey }} = {{ isDirtyOnBoot }};
+        {{/if}}
         {{/eachDirtyablePin}}
       {{/unless}}
     {{/each}}
@@ -80,7 +84,7 @@ void handleTweaks() {
         int tweakedNodeId = XOD_DEBUG_SERIAL.parseInt();
 
         switch (tweakedNodeId) {
-          {{#eachTweakNode nodes}}
+          {{#eachLinkedTweakNode nodes}}
             case {{ id }}:
                 {
                 {{#switchByTweakType patch.patchPath}}
@@ -116,7 +120,7 @@ void handleTweaks() {
                 }
                 break;
 
-          {{/eachTweakNode}}
+          {{/eachLinkedTweakNode}}
         }
 
         XOD_DEBUG_SERIAL.find('\n');
@@ -188,7 +192,9 @@ void handleDefers() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
+            {{#if (isOutputLinked this)}}
             g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
+            {{/if}}
           {{/eachDirtyablePin}}
 
             if (previousErrors.flags != node_{{ id }}.errors.flags) {
@@ -365,7 +371,7 @@ void runTransaction() {
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
           {{#eachDirtyablePin outputs}}
-            ctxObj._isOutputDirty_{{ pinKey }} = {{#if (isTweakNode ../this) ~}}
+            ctxObj._isOutputDirty_{{ pinKey }} = {{#if (isLinkedTweakNode ../this) ~}}
                                                    g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }}
                                                  {{~else~}}
                                                    false
@@ -401,7 +407,9 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
+            {{#if (isOutputLinked this)}}
             g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
+            {{/if}}
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}

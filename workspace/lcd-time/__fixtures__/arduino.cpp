@@ -1437,14 +1437,12 @@ struct TransactionState {
     bool node_9_isNodeDirty : 1;
     bool node_9_isOutputDirty_OUT : 1;
     bool node_10_isNodeDirty : 1;
-    bool node_10_isOutputDirty_DONE : 1;
     TransactionState() {
         node_7_isNodeDirty = true;
         node_7_isOutputDirty_TICK = false;
         node_8_isNodeDirty = true;
         node_9_isNodeDirty = true;
         node_10_isNodeDirty = true;
-        node_10_isOutputDirty_DONE = false;
     }
 };
 
@@ -1613,7 +1611,6 @@ void runTransaction() {
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_10_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             if (previousErrors.flags != node_10.errors.flags) {
                 detail::printErrorToDebugSerial(10, node_10.errors.flags);

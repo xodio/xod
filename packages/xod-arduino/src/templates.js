@@ -261,9 +261,16 @@ Handlebars.registerHelper(
   R.either(hasUpstreamErrorRaisers, R.path(['patch', 'isDefer']))
 );
 
-const isTweakNode = R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath);
+const isOutputLinked = R.pipe(R.pathOr(0, ['to', 'length']));
 
-Handlebars.registerHelper('isTweakNode', isTweakNode);
+Handlebars.registerHelper('isOutputLinked', isOutputLinked);
+
+const isLinkedTweakNode = R.both(
+  R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath),
+  R.pathSatisfies(isOutputLinked, ['outputs', 0])
+);
+
+Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
@@ -299,7 +306,7 @@ registerHandlebarsFilterLoopHelper(
   'eachNodeUsingTimeouts',
   R.path(['patch', 'usesTimeouts'])
 );
-registerHandlebarsFilterLoopHelper('eachTweakNode', isTweakNode);
+registerHandlebarsFilterLoopHelper('eachLinkedTweakNode', isLinkedTweakNode);
 registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));
 registerHandlebarsFilterLoopHelper(
   'eachNonlinkedInput',

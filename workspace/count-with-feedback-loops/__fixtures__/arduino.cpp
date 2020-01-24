@@ -2296,7 +2296,6 @@ struct TransactionState {
     bool node_16_isOutputDirty_TICK : 1;
     bool node_17_isNodeDirty : 1;
     bool node_17_isOutputDirty_DONE : 1;
-    bool node_17_isOutputDirty_ACT : 1;
     bool node_17_hasUpstreamError : 1;
     bool node_18_isNodeDirty : 1;
     bool node_18_isOutputDirty_OUT : 1;
@@ -2314,7 +2313,6 @@ struct TransactionState {
     bool node_22_isOutputDirty_OUT : 1;
     bool node_22_hasUpstreamError : 1;
     bool node_23_isNodeDirty : 1;
-    bool node_23_isOutputDirty_DONE : 1;
     bool node_23_hasUpstreamError : 1;
     bool node_24_isNodeDirty : 1;
     bool node_24_isOutputDirty_OUT : 1;
@@ -2335,7 +2333,6 @@ struct TransactionState {
         node_16_isOutputDirty_TICK = false;
         node_17_isNodeDirty = true;
         node_17_isOutputDirty_DONE = false;
-        node_17_isOutputDirty_ACT = true;
         node_18_isNodeDirty = true;
         node_18_isOutputDirty_OUT = true;
         node_19_isNodeDirty = true;
@@ -2344,7 +2341,6 @@ struct TransactionState {
         node_21_isNodeDirty = true;
         node_22_isNodeDirty = true;
         node_23_isNodeDirty = true;
-        node_23_isOutputDirty_DONE = false;
         node_24_isNodeDirty = true;
         node_24_isOutputDirty_OUT = false;
         node_25_isNodeDirty = true;
@@ -2726,7 +2722,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_17_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
-            g_transaction.node_17_isOutputDirty_ACT = ctxObj._isOutputDirty_ACT;
 
             // mark downstream nodes dirty
             g_transaction.node_19_isNodeDirty |= g_transaction.node_17_isOutputDirty_DONE;
@@ -2908,7 +2903,6 @@ void runTransaction() {
             xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_23_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             if (previousErrors.flags != node_23.errors.flags) {
                 detail::printErrorToDebugSerial(23, node_23.errors.flags);
