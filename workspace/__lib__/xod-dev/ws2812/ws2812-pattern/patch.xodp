@@ -1,4 +1,20 @@
 {
+  "comments": [
+    {
+      "content": "<-- Throttle a pattern to avoid excessive refills, which causes skipping interrupts and other calculations.",
+      "id": "HJ_36EvWU",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
   "links": [
     {
       "id": "B132iW6Tg8",
@@ -12,10 +28,10 @@
       }
     },
     {
-      "id": "B1baZTpxI",
+      "id": "B15oa4PZI",
       "input": {
-        "nodeId": "Hyznb6axU",
-        "pinKey": "Sy1uD-qx8"
+        "nodeId": "rybsTEP-I",
+        "pinKey": "rkzZUUHLB"
       },
       "output": {
         "nodeId": "Sky6-pTeU",
@@ -34,14 +50,14 @@
       }
     },
     {
-      "id": "BkXKp0pe8",
+      "id": "ByJha4wZ8",
       "input": {
         "nodeId": "Byg2sbpTlU",
         "pinKey": "BytC28DfH"
       },
       "output": {
-        "nodeId": "Sky6-pTeU",
-        "pinKey": "__out__"
+        "nodeId": "rybsTEP-I",
+        "pinKey": "H1H-LLHUr"
       }
     },
     {
@@ -97,6 +113,17 @@
       "output": {
         "nodeId": "HkP3jb6aeI",
         "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "Sk6iTEwb8",
+      "input": {
+        "nodeId": "Hyznb6axU",
+        "pinKey": "Sy1uD-qx8"
+      },
+      "output": {
+        "nodeId": "rybsTEP-I",
+        "pinKey": "H1H-LLHUr"
       }
     },
     {
@@ -185,7 +212,7 @@
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 4
+        "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -198,7 +225,7 @@
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 1
+        "y": 2
       },
       "type": "@/ws2812-device"
     },
@@ -218,7 +245,7 @@
       "position": {
         "units": "slots",
         "x": 6,
-        "y": 1
+        "y": 2
       },
       "type": "xod/core/act"
     },
@@ -227,7 +254,7 @@
       "position": {
         "units": "slots",
         "x": 4,
-        "y": 1
+        "y": 2
       },
       "type": "xod/core/act"
     },
@@ -250,7 +277,7 @@
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 3
+        "y": 4
       },
       "type": "@/fill-pattern"
     },
@@ -295,7 +322,7 @@
       "position": {
         "units": "slots",
         "x": 4,
-        "y": 2
+        "y": 3
       },
       "type": "xod/core/any"
     },
@@ -304,9 +331,21 @@
       "position": {
         "units": "slots",
         "x": 8,
-        "y": 1
+        "y": 2
       },
       "type": "xod/core/act"
+    },
+    {
+      "boundLiterals": {
+        "ByYWULHUr": "0.05"
+      },
+      "id": "rybsTEP-I",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/core/throttle"
     }
   ]
 }

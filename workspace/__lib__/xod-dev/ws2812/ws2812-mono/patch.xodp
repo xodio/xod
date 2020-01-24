@@ -1,4 +1,20 @@
 {
+  "comments": [
+    {
+      "content": "<-- Throttle a color to avoid excessive refills, which causes skipping interrupts and other calculations.",
+      "id": "Bk-MERVw-L",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
   "description": "A quickstart node to control a LED strip which is always filled with a single color",
   "links": [
     {
@@ -9,6 +25,17 @@
       },
       "output": {
         "nodeId": "ryD_dp118",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bk0N0EPZU",
+      "input": {
+        "nodeId": "SkxM4CNDZI",
+        "pinKey": "rkzZUUHLB"
+      },
+      "output": {
+        "nodeId": "BJZY_6J1L",
         "pinKey": "__out__"
       }
     },
@@ -57,6 +84,17 @@
       }
     },
     {
+      "id": "HklHAVPWU",
+      "input": {
+        "nodeId": "rJlVJtpkyU",
+        "pinKey": "SJxhUmIcCr"
+      },
+      "output": {
+        "nodeId": "SkxM4CNDZI",
+        "pinKey": "H1H-LLHUr"
+      }
+    },
+    {
       "id": "Hylawebk8",
       "input": {
         "nodeId": "rkijPgZk8",
@@ -64,17 +102,6 @@
       },
       "output": {
         "nodeId": "rJ2uOpk1L",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJoJtTy1L",
-      "input": {
-        "nodeId": "rJlVJtpkyU",
-        "pinKey": "SJxhUmIcCr"
-      },
-      "output": {
-        "nodeId": "BJZY_6J1L",
         "pinKey": "__out__"
       }
     },
@@ -101,17 +128,6 @@
       }
     },
     {
-      "id": "rJkpvg-JU",
-      "input": {
-        "nodeId": "ByK2veb18",
-        "pinKey": "BytC28DfH"
-      },
-      "output": {
-        "nodeId": "BJZY_6J1L",
-        "pinKey": "__out__"
-      }
-    },
-    {
       "id": "rJmpvl-kU",
       "input": {
         "nodeId": "rJlVJtpkyU",
@@ -120,6 +136,17 @@
       "output": {
         "nodeId": "rJVqwxWkL",
         "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "rkZSCEvZ8",
+      "input": {
+        "nodeId": "ByK2veb18",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "SkxM4CNDZI",
+        "pinKey": "H1H-LLHUr"
       }
     },
     {
@@ -151,7 +178,7 @@
       "position": {
         "units": "slots",
         "x": 6,
-        "y": 1
+        "y": 2
       },
       "type": "xod/core/act"
     },
@@ -164,7 +191,7 @@
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 1
+        "y": 2
       },
       "type": "@/ws2812-device"
     },
@@ -181,6 +208,18 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundLiterals": {
+        "ByYWULHUr": "0.05"
+      },
+      "id": "SkxM4CNDZI",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/core/throttle"
     },
     {
       "boundLiterals": {
@@ -203,7 +242,7 @@
       "position": {
         "units": "slots",
         "x": 2,
-        "y": 4
+        "y": 5
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -212,7 +251,7 @@
       "position": {
         "units": "slots",
         "x": 4,
-        "y": 2
+        "y": 3
       },
       "type": "xod/core/any"
     },
@@ -224,7 +263,7 @@
       "position": {
         "units": "slots",
         "x": 1,
-        "y": 3
+        "y": 4
       },
       "type": "@/fill-solid"
     },
@@ -233,7 +272,7 @@
       "position": {
         "units": "slots",
         "x": 4,
-        "y": 1
+        "y": 2
       },
       "type": "xod/core/act"
     },
