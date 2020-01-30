@@ -1,5 +1,5 @@
 {
-  "description": "Represents a line of the default scene style.\n",
+  "description": "Represents a line drawn with the foreground color.",
   "nodes": [
     {
       "description": "Y coordinate of the end point of the line on the canvas.",
