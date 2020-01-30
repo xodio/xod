@@ -9,7 +9,7 @@ using Type = XColor;
 // clang-format on
 
 void evaluate(Context ctx) {
-    Type color;
+    Type color = getValue<output_OUT>(ctx);
     emitValue<output_OUT>(ctx, color);
 }
 
