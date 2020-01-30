@@ -1,5 +1,5 @@
 {
-  "description": "Represents a line of the custom style.\n",
+  "description": "Represents a line with a custom style.",
   "nodes": [
     {
       "id": "S14b4Iwh-8",

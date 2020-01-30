@@ -1,0 +1,67 @@
+{
+  "description": "Represents a point (dot) with a custom style.",
+  "nodes": [
+    {
+      "id": "B1fQYkLnb8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "BJXXYyU2bL",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "description": "Y coordinate of the point on the canvas.",
+      "id": "HJlrc-qlMU",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "X coordinate of the point on the canvas.",
+      "id": "HkSqWcgML",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1gQt182-L",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "description": "Point color.",
+      "id": "SyqKJUnZL",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    }
+  ]
+}
