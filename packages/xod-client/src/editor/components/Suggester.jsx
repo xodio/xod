@@ -11,7 +11,6 @@ import { isAmong, noop } from 'xod-func-tools';
 
 import { KEYCODE } from '../../utils/constants';
 import { restoreFocusOnApp } from '../../utils/browser';
-import { triggerUpdateHelpboxPositionViaSuggester } from '../../editor/utils';
 import SuggesterContainer from './SuggesterContainer';
 
 const getSuggestionValue = ({ item }) => item.path;
@@ -114,7 +113,6 @@ class Suggester extends React.Component {
       );
       this.props.showHelpbox();
       this.props.onHighlight(getSuggestionValue(suggestion));
-      setTimeout(triggerUpdateHelpboxPositionViaSuggester, 1);
     }
   }
 
@@ -230,7 +228,6 @@ class Suggester extends React.Component {
           renderSuggestionsContainer={({ containerProps, children }) => (
             <SuggesterContainer
               containerProps={containerProps}
-              onScroll={triggerUpdateHelpboxPositionViaSuggester}
               onMouseMove={this.onContainerMouseMove}
             >
               {children}
