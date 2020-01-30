@@ -1,0 +1,12 @@
+.ColorPicker {
+  .HueSlider {
+    path.marker {
+      stroke-linecap: round;
+    }
+  }
+
+  .ColorSlider_value, .ColorSlider_label,
+  .HueSlider_value, .HueSlider_label {
+    fill: $sidebar-color-text;
+  }
+}
