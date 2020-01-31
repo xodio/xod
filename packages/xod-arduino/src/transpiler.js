@@ -23,7 +23,7 @@ import {
   isNodeIdEnabled,
   doesRaiseErrors,
   isDirtienessEnabled,
-  getInputsWithWhitelistedDirtyness,
+  getEvaluateOnPinSettings,
   implementsEvaluateTmpl,
   wantsStateConstructorWithParams,
   doesCatchErrors,
@@ -160,7 +160,6 @@ const convertPatchToTPatch = def(
       usesNodeId: isNodeIdEnabled(impl),
       implementsEvaluateTmpl: implementsEvaluateTmpl(impl),
       wantsStateConstructorWithParams: wantsStateConstructorWithParams(impl),
-      enabledEvaluateOnPin: !!getInputsWithWhitelistedDirtyness(impl).length,
     };
 
     return R.mergeAll([
@@ -331,15 +330,24 @@ const getTNodeOutputDestinations = def(
         )(patch);
 
         const doesAffectDirtyness = R.compose(
-          R.ifElse(R.isEmpty, R.always(true), whitelistedPinKeys => {
+          ({ enabled, exceptions }) => {
             const inputPinKeys = R.map(
               XP.getLinkInputPinKey,
               linksFromSingleOutputToSameNode
             );
-            return whitelistedPinKeys.some(pk => inputPinKeys.includes(pk));
-          }),
-          R.map(l => inputPinKeysByLabel[l]),
-          foldMaybe([], getInputsWithWhitelistedDirtyness),
+
+            const exceptionPinKeys = exceptions.map(
+              l => inputPinKeysByLabel[l]
+            );
+
+            return enabled
+              ? !exceptionPinKeys.some(pk => inputPinKeys.includes(pk)) // if not ALL inputs are blacklisted
+              : exceptionPinKeys.some(pk => inputPinKeys.includes(pk)); // if at least one input is whitelisted
+          },
+          getEvaluateOnPinSettings,
+          explodeMaybe(
+            `Implementation for ${XP.getPatchPath(patch)} not found`
+          ),
           XP.getImpl
         )(patch);
 

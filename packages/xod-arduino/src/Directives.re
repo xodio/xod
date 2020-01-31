@@ -82,7 +82,6 @@ module Code = {
   let pragmaLineRegexp = pragmaHeadRegexp ++ ".*";
   let identifierOrStringRegexp = {foo|[\w._-]+|".*?"|foo};
   let enclosingQuotesRegexp = {|^"|"$|};
-  let isInput = identifier => Re.test(identifier, {|^input_|});
   let isOutput = identifier => Re.test(identifier, {|^output_|});
   let tokenizePragma = (pragmaLine: string) : Pragma.t =>
     pragmaLine
@@ -154,16 +153,50 @@ let isDirtienessEnabled = (code, identifier) =>
        }
      );
 
-let getInputsWithWhitelistedDirtyness = (code) =>
+type evaluateOnPinSettings = {
+  enabled: bool,
+  exceptions: Set.String.t
+}
+
+let mergeList = (s: Set.String.t, arr: list(string)): Set.String.t =>
+  s |. Set.String.mergeMany(List.toArray(arr))
+
+let removeList = (s: Set.String.t, arr: list(string)): Set.String.t =>
+  s |. Set.String.removeMany(List.toArray(arr))
+
+let getEvaluateOnPinSettings = (code) =>
   code
   |. Code.findXodPragmas
   |. Pragma.filterPragmasByFeature("evaluate_on_pin")
-  |. List.reverse
-  |. List.head
-  |. lastPragma => switch (lastPragma) {
-    | Some([_, "enable", ...inputs]) => inputs |. List.keep(Code.isInput)
-    | _ => []
-  };
+  |. List.reduce(
+    {
+      enabled: true,
+      exceptions: Set.String.empty,
+    },
+    (acc, pragma) => switch (pragma) {
+      | [_, "enable"] => {
+        enabled: true,
+        exceptions: Set.String.empty,
+      }
+      | [_, "disable"] => {
+        enabled: false,
+        exceptions: Set.String.empty,
+      }
+      | [_, "enable", ...enabledPins] => {
+        ...acc,
+        exceptions: acc.enabled 
+          ? removeList(acc.exceptions, enabledPins)
+          : mergeList(acc.exceptions, enabledPins)
+      }
+      | [_, "disable", ...disabledPins] => {
+        ...acc,
+        exceptions: acc.enabled 
+          ? mergeList(acc.exceptions, disabledPins)
+          : removeList(acc.exceptions, disabledPins)
+      }
+      | _ => acc
+    }
+  );
 
 let doesCatchErrors = (code) =>
   code

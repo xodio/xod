@@ -1751,6 +1751,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__common_hardware__text_lcd_16x2 {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 //#pragma XOD error_raise enable
 
@@ -1912,6 +1913,9 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     State* state = getState(ctx);
     auto lcd = state->lcd;
     if (!state->lcd) {

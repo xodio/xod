@@ -1734,6 +1734,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__analog_read {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
@@ -1818,6 +1819,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     const uint8_t port = getValue<input_PORT>(ctx);
     ::pinMode(port, INPUT);
     emitValue<output_VAL>(ctx, ::analogRead(port) / 1023.);
@@ -1838,6 +1842,7 @@ void evaluateTmpl(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_read_pullup {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
@@ -1922,6 +1927,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     const uint8_t port = getValue<input_PORT>(ctx);
     ::pinMode(port, INPUT_PULLUP);
     emitValue<output_SIG>(ctx, ::digitalRead(port));
@@ -3800,6 +3808,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__pwm_write {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
@@ -3885,6 +3894,9 @@ constexpr Number pwmRange = 255.0;
 #endif
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     const uint8_t port = getValue<input_PORT>(ctx);
 
     auto duty = getValue<input_DUTY>(ctx);
@@ -4260,6 +4272,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__buffer__number {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
@@ -4335,6 +4348,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     emitValue<output_MEM>(ctx, getValue<input_NEW>(ctx));
 }
 
@@ -4417,6 +4433,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__branch {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_TRIG
 
 struct State {
@@ -4499,6 +4516,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_TRIG>(ctx))
+        return;
+
     if (getValue<input_GATE>(ctx)) {
         emitValue<output_T>(ctx, 1);
     } else {
@@ -4785,6 +4805,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod_dev__servo__rotate {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_DO
 
 struct State { };

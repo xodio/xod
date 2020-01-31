@@ -1264,6 +1264,7 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_write {
 
+//#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
@@ -1343,6 +1344,9 @@ State* getState(Context ctx) {
 }
 
 void evaluate(Context ctx) {
+    if (!isInputDirty<input_UPD>(ctx))
+        return;
+
     const uint8_t port = getValue<input_PORT>(ctx);
     ::pinMode(port, OUTPUT);
     const bool val = getValue<input_SIG>(ctx);
