@@ -49,3 +49,5 @@ public:
 };
 
 #include "XGraphics.inl"
+
+#endif // X_GRAPHICS_H
