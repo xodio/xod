@@ -1,0 +1,78 @@
+{
+  "description": "Represents a filled rectangle drawn with the foreground color.",
+  "nodes": [
+    {
+      "description": "Width of the filled rectangle.",
+      "id": "B1Reptbf8",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Height of the filled rectangle.",
+      "id": "BybClpKZG8",
+      "label": "H",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the top-left point of the filled rectangle on the canvas.",
+      "id": "H1MRgTYbML",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "HJUP5IIhZL",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "id": "HkewqIUn-L",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "id": "SkfDcU83b8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "X coordinate of the top-left point of the filled rectangle on the canvas.",
+      "id": "rJxReTY-zU",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
