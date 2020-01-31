@@ -1,0 +1,78 @@
+{
+  "description": "Represents a circle with a custom style.",
+  "nodes": [
+    {
+      "description": "Circle color.",
+      "id": "B1JN8_2-L",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "id": "H1NL78u2ZL",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "description": "X coordinate of the center point of the circle on the canvas.",
+      "id": "Hk4IN9bf8",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Radius of the circle.",
+      "id": "SyZV845WfL",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the center point of the circle on the canvas.",
+      "id": "SyxVIV9ZzI",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rkBUmId2Z8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "ryG8X8dnW8",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    }
+  ]
+}
