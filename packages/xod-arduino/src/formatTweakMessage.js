@@ -11,7 +11,6 @@ export default def(
   'formatTweakMessage :: PatchPath -> NodeId -> DataValue -> String',
   (nodeType, nodeId, value) => {
     const prefix = `+XOD:${nodeId}`;
-
     switch (XP.getTweakType(nodeType)) {
       case XP.PIN_TYPE.NUMBER:
         return `${prefix}:${value}\r\n`;
@@ -26,6 +25,13 @@ export default def(
           s => `${prefix}:${s}\r\n`,
           R.slice(0, XP.getStringTweakLength(nodeType)),
           unquote
+        )(value);
+      case XP.BINDABLE_CUSTOM_TYPES.COLOR:
+        return R.compose(
+          ([r, g, b]) => `${prefix}:${r},${g},${b}\r\n`,
+          R.map(x => parseInt(x, 16)),
+          R.splitEvery(2),
+          R.tail
         )(value);
       default:
         return '';

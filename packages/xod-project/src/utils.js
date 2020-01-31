@@ -2,11 +2,11 @@ import * as R from 'ramda';
 import shortid from 'shortid';
 
 import { Either } from 'ramda-fantasy';
-import { isAmong, fail, explodeEither } from 'xod-func-tools';
+import { isAmong, fail, explodeEither, notNil } from 'xod-func-tools';
 
 import {
-  listCustomTypeLiteralValidators,
-  listCustomTypeNames,
+  BINDABLE_CUSTOM_TYPE_VALIDATORS,
+  BINDABLE_CUSTOM_TYPES_LIST,
 } from './custom-types';
 import * as CONST from './constants';
 import { def } from './types';
@@ -91,7 +91,7 @@ export const canCastTypes = def(
       return true;
     }
 
-    return R.pathOr(false, [from, to], CONST.STATIC_TYPES_COMPATIBILITY);
+    return R.pathSatisfies(notNil, [from, to], CONST.CAST_NODES);
   }
 );
 
@@ -235,8 +235,8 @@ export const getTypeFromLiteral = def(
       [isValidNumberDataValue, t(CONST.PIN_TYPE.NUMBER)],
       [isValidPortLiteral, t(CONST.PIN_TYPE.PORT)],
       ...R.zip(
-        listCustomTypeLiteralValidators(),
-        R.map(t, listCustomTypeNames())
+        R.values(BINDABLE_CUSTOM_TYPE_VALIDATORS),
+        R.map(t, BINDABLE_CUSTOM_TYPES_LIST)
       ),
       // Others — invalid
       [R.T, invalidLiteral],

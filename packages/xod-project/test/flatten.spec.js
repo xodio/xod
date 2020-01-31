@@ -814,11 +814,13 @@ describe('Flatten', () => {
             nodes: {
               __in__: {
                 id: '__in__',
+                direction: 'input',
                 position: { x: 0, y: 0 },
                 type: 'xod/patch-nodes/input-boolean',
               },
               __out__: {
                 id: '__out__',
+                direction: 'output',
                 position: { x: 0, y: 300 },
                 type: 'xod/patch-nodes/input-number',
               },
@@ -950,7 +952,7 @@ describe('Flatten', () => {
                   __out__: {
                     id: '__out__',
                     position: { x: 0, y: 300 },
-                    type: `xod/patch-nodes/input-${typeOut}`,
+                    type: `xod/patch-nodes/output-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
@@ -983,7 +985,6 @@ describe('Flatten', () => {
               }),
             };
           }
-
           const flatProject = flatten(project, '@/main');
           const expectedPath = `xod/core/cast-to-${typeOut}(${typeIn})`; // getCastPatchPath(typeIn, typeOut);
 
@@ -1098,7 +1099,7 @@ describe('Flatten', () => {
                   __out__: {
                     id: '__out__',
                     position: { x: 0, y: 300 },
-                    type: `xod/patch-nodes/input-${typeOut}`,
+                    type: `xod/patch-nodes/output-${typeOut}`,
                   },
                   noNativeImpl: {
                     id: 'noNativeImpl',
@@ -1607,7 +1608,7 @@ describe('Flatten', () => {
               __out__: {
                 id: '__out__',
                 position: { x: 0, y: 300 },
-                type: 'xod/patch-nodes/input-number',
+                type: 'xod/patch-nodes/output-number',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',
@@ -1628,7 +1629,7 @@ describe('Flatten', () => {
               __out__: {
                 id: '__out__',
                 position: { x: 0, y: 300 },
-                type: 'xod/patch-nodes/input-boolean',
+                type: 'xod/patch-nodes/output-boolean',
               },
               noNativeImpl: {
                 id: 'noNativeImpl',

@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { failOnFalse } from 'xod-func-tools';
+import { failOnFalse, maybePath } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
@@ -11,6 +11,7 @@ import {
   isValidPatchBasename,
   terminalPatchPathRegExp,
 } from './internal/patchPathUtils';
+import { BINDABLE_CUSTOM_TYPES_LIST } from './custom-types';
 
 export {
   isLocalMarker,
@@ -113,6 +114,14 @@ export const convertToLocalPath = R.compose(getLocalPath, getBaseName);
 const PATCH_NODES_LIB_NAME = 'xod/patch-nodes';
 const dataTypes = R.values(CONST.PIN_TYPE);
 
+// :: Map BaseName PatchPath
+const bindableCustomTypesMap = R.compose(R.mergeAll, R.indexBy(getBaseName))(
+  BINDABLE_CUSTOM_TYPES_LIST
+);
+const bindableTypes = R.compose(R.concat(dataTypes), R.keys)(
+  bindableCustomTypesMap
+);
+
 // :: String -> Direction
 export const getTerminalDirection = R.compose(
   R.nth(1),
@@ -192,24 +201,15 @@ export const getVariadicPath = n => `${PATCH_NODES_LIB_NAME}/variadic-${n}`;
 // utils for cast patches
 //
 
-// TODO: When custom types will be added this should be generalized.
-//       Also, casting from/to generic types should be forbidden.
-const castTypeRegExp = new RegExp(
-  `^xod/core/cast-to-(${dataTypes.join('|')})\\((${dataTypes.join('|')})\\)$`
-);
-
-// :: String -> Boolean
-export const isCastPatchPath = R.test(castTypeRegExp);
-
 /**
  * Returns path for casting patch
  * @function getCastPatchPath
  * @param {PIN_TYPE} typeIn
  * @param {PIN_TYPE} typeOut
- * @returns {String}
+ * @returns {Maybe<PatchPath>}
  */
 export const getCastPatchPath = (typeIn, typeOut) =>
-  `xod/core/cast-to-${typeOut}(${typeIn})`;
+  maybePath([typeIn, typeOut], CONST.CAST_NODES);
 
 //
 // defer-* nodes
@@ -297,12 +297,22 @@ export const getSpecializationPatchPath = R.curry(
 // utils for tweak nodes
 //
 
-const tweakPathRegExp = new RegExp(`^xod/debug/tweak-(${dataTypes.join('|')})`);
+const tweakPathRegExp = new RegExp(
+  `^xod/debug/tweak-(${bindableTypes.join('|')})`
+);
 
 // :: PatchPath -> Boolean
 export const isTweakPath = R.test(tweakPathRegExp);
 
-export const getTweakType = R.pipe(R.match(tweakPathRegExp), R.nth(1));
+// :: PatchPath -> DataType
+export const getTweakType = R.compose(
+  R.when(
+    R.has(R.__, bindableCustomTypesMap),
+    R.prop(R.__, bindableCustomTypesMap)
+  ),
+  R.nth(1),
+  R.match(tweakPathRegExp)
+);
 
 export const getStringTweakLength = R.pipe(
   R.match(/^xod\/debug\/tweak-string-(\d+)/),

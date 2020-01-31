@@ -1,0 +1,23 @@
+{
+  "description": "Outputs a color value which you may change in real-time during a debug or simulation session",
+  "nodes": [
+    {
+      "id": "SykJ8wjXN",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/color/output-color"
+    },
+    {
+      "id": "rkF0HwimE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

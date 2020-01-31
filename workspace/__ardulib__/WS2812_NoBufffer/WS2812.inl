@@ -179,14 +179,13 @@ void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail = false) {
 }
 
 void WS2812::fillPattern(Pattern* pat, uint32_t shift = 0) {
-    cli();
-
     PatternNode* first = pat->first();
     PatternNode* cur = first;
     uint32_t _shift = (uint32_t) shift % _length;
     for (uint32_t s = 0; s < _shift; s++) {
       cur = cur->nextLooped(first);
     }
+    cli();
     for (uint32_t i = 0; i < _length; i++) {
       XColor color = cur->color();
       sendPixel(color.r, color.g, color.b);

@@ -101,6 +101,14 @@ void handleTweaks() {
                     size_t readChars = XOD_DEBUG_SERIAL.readBytesUntil('\r', node_{{ id }}.state.buff, {{getStringTweakLength patch.patchPath}});
                     node_{{ id }}.state.buff[readChars] = '\0';
                   {{/case}}
+                  {{#case "xod/color/color"}}
+                    node_{{ id }}.output_OUT = {
+                      /* RGB */
+                      (uint8_t)XOD_DEBUG_SERIAL.parseInt(),
+                      (uint8_t)XOD_DEBUG_SERIAL.parseInt(),
+                      (uint8_t)XOD_DEBUG_SERIAL.parseInt()
+                    };
+                  {{/case}}
                 {{/switchByTweakType}}
                     // to run evaluate and mark all downstream nodes as dirty
                     g_transaction.node_{{ id }}_isNodeDirty = true;
