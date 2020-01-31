@@ -1,0 +1,89 @@
+{
+  "description": "Represents a rectangle frame with a custom style.",
+  "nodes": [
+    {
+      "description": "Rectangle frame color.",
+      "id": "B1c7DUnbI",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "description": "Height of the rectangle frame.",
+      "id": "HkW016KWM8",
+      "label": "H",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "X coordinate of the top-left point of the rectangle frame on the canvas.",
+      "id": "HklR1aFZzI",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the top-left point of the rectangle frame on the canvas.",
+      "id": "SJGR1aFWGI",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SJSQmwUnWI",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "id": "r1QmwI2ZL",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "id": "rk-QmDUnZL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Width of the rectangle frame.",
+      "id": "ryRJpYWM8",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
