@@ -1,48 +1,4 @@
 
-CircleOutline::CircleOutline(XGraphics* parent)
-    : XGraphics(parent) {}
-
-void CircleOutline::setPosition(int16_t x, int16_t y, int16_t r) {
-    _a = XVector2<int16_t>(x, y);
-    _r = r;
-}
-
-void CircleOutline::setStyle(XColor* strokeColor) {
-    _strokeColor = strokeColor;
-}
-
-void CircleOutline::renderScanline(XRenderer* renderer, int16_t scanline, uint16_t* buffer, size_t bufferSize) {
-
-    if (scanline < _a.y - _r || scanline > _a.y + _r)
-        return;
-
-    uint16_t color = xcolorTo565(_strokeColor ? *_strokeColor : getFGColor());
-
-    putCircleOutlineOnScanline(_a, _r, scanline, buffer, bufferSize, color);
-}
-
-CircleSolid::CircleSolid(XGraphics* parent)
-    : XGraphics(parent) {}
-
-void CircleSolid::setPosition(int16_t x, int16_t y, int16_t r) {
-    _a = XVector2<int16_t>(x, y);
-    _r = r;
-}
-
-void CircleSolid::setStyle(XColor* fillColor) {
-    _fillColor = fillColor;
-}
-
-void CircleSolid::renderScanline(XRenderer* renderer, int16_t scanline, uint16_t* buffer, size_t bufferSize) {
-
-    if (scanline < _a.y - _r || scanline > _a.y + _r)
-        return;
-
-    uint16_t color = xcolorTo565(_fillColor ? *_fillColor : getFGColor());
-
-    putCircleSolidOnScanline(_a, _r, scanline, buffer, bufferSize, color);
-}
-
 /*
  * The Midpoint Circle Algorithm for drawing circles [Wikipedia](https://en.wikipedia.org/wiki/Midpoint_circle_algorithm).
  * This implementation is augmented by the scanline intersection check during rasterisation.
@@ -136,4 +92,48 @@ void putCircleSolidOnScanline(XVector2<int16_t> a, int16_t r, int16_t scanline, 
             xChange += 2;
         }
     }
+}
+
+CircleOutline::CircleOutline(XGraphics* parent)
+    : XGraphics(parent) {}
+
+void CircleOutline::setPosition(int16_t x, int16_t y, int16_t r) {
+    _a = XVector2<int16_t>(x, y);
+    _r = r;
+}
+
+void CircleOutline::setStyle(XColor* strokeColor) {
+    _strokeColor = strokeColor;
+}
+
+void CircleOutline::renderScanline(XRenderer* renderer, int16_t scanline, uint16_t* buffer, size_t bufferSize) {
+
+    if (scanline < _a.y - _r || scanline > _a.y + _r)
+        return;
+
+    uint16_t color = xcolorTo565(_strokeColor ? *_strokeColor : getFGColor());
+
+    putCircleOutlineOnScanline(_a, _r, scanline, buffer, bufferSize, color);
+}
+
+CircleSolid::CircleSolid(XGraphics* parent)
+    : XGraphics(parent) {}
+
+void CircleSolid::setPosition(int16_t x, int16_t y, int16_t r) {
+    _a = XVector2<int16_t>(x, y);
+    _r = r;
+}
+
+void CircleSolid::setStyle(XColor* fillColor) {
+    _fillColor = fillColor;
+}
+
+void CircleSolid::renderScanline(XRenderer* renderer, int16_t scanline, uint16_t* buffer, size_t bufferSize) {
+
+    if (scanline < _a.y - _r || scanline > _a.y + _r)
+        return;
+
+    uint16_t color = xcolorTo565(_fillColor ? *_fillColor : getFGColor());
+
+    putCircleSolidOnScanline(_a, _r, scanline, buffer, bufferSize, color);
 }
