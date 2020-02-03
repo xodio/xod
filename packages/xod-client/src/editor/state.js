@@ -14,6 +14,12 @@ export default {
     placePosition: null,
     highlightedPatchPath: null,
   },
+  pointingPopups: {
+    colorPickerWidget: {
+      isVisible: false,
+      elementId: null,
+    },
+  },
   tabs: {
     '@/main': {
       id: '@/main',

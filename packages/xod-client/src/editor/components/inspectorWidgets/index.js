@@ -8,6 +8,7 @@ import NumberWidget from './pinWidgets/NumberPinWidget';
 import PulseWidget from './pinWidgets/PulsePinWidget';
 import StringWidget from './pinWidgets/StringPinWidget';
 import GenericPinWidget from './pinWidgets/GenericPinWidget';
+import ColorPinWidget from './pinWidgets/ColorPinWidget';
 import DisabledInputWidget from './pinWidgets/DisabledInputWidget';
 import DescriptionWidget from './DescriptionWidget';
 import LabelWidget from './LabelWidget';
@@ -114,7 +115,7 @@ const WIDGET_MAPPING = {
     normalizeValue: normalizePort,
   },
   [WIDGET_TYPE.COLOR]: {
-    component: StringWidget, // TODO: Replace with custom widget
+    component: ColorPinWidget, // TODO: Replace with custom widget
     dataType: BINDABLE_CUSTOM_TYPES.COLOR,
     keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizeColor,

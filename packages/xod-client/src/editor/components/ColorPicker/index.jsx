@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import convert from 'color-convert';
@@ -8,9 +9,9 @@ import Hue from './Hue';
 import Saturation from './Saturation';
 import Lightness from './Lightness';
 
-const ColorPicker = ({ color, onColorChange }) => {
+const ColorPicker = ({ color, onChange }) => {
   const updateColor = newHsl =>
-    onColorChange({
+    onChange({
       hsl: newHsl,
       hex: `#${convert.hsl.hex(newHsl)}`,
     });
@@ -25,8 +26,8 @@ const ColorPicker = ({ color, onColorChange }) => {
     <div className="ColorPicker">
       <svg
         width={220}
-        height={400}
-        viewBox={`0 0 220 400`}
+        height={330}
+        viewBox={`0 0 220 330`}
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
       >
@@ -45,7 +46,12 @@ const ColorPicker = ({ color, onColorChange }) => {
 
 ColorPicker.propTypes = {
   color: colorPropType,
-  onColorChange: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default ColorPicker;
+
+export const hex2color = hex => ({
+  hsl: convert.hex.hsl(hex),
+  hex,
+});

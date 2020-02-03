@@ -49,9 +49,7 @@ class Widget extends React.Component {
   onBlur() {
     this.commit();
   }
-  onChange(value) {
-    this.updateValue(value);
-  }
+
   onKeyDown(event) {
     const keycode = event.keycode || event.which;
     if (this.keyDownHandlers[keycode]) {
@@ -59,7 +57,7 @@ class Widget extends React.Component {
     }
   }
 
-  updateValue(value, forceCommit = false) {
+  onChange(value, forceCommit = false) {
     const commitCallback =
       this.props.commitOnChange || forceCommit ? this.commit.bind(this) : noop;
 

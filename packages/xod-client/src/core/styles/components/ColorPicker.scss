@@ -1,4 +1,8 @@
+.ColorPickerWidget {
+  width: 220px;
+}
 .ColorPicker {
+  padding: 10px 0;
   .HueSlider {
     path.marker {
       stroke-linecap: round;

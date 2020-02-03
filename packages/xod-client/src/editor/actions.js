@@ -901,3 +901,12 @@ export const sendTweakPulse = tweakNodeId => (dispatch, getState) => {
     })
   );
 };
+
+export const showColorPickerWidget = elementId => ({
+  type: ActionType.SHOW_COLORPICKER_WIDGET,
+  payload: { elementId },
+});
+
+export const hideColorPickerWidget = () => ({
+  type: ActionType.HIDE_COLORPICKER_WIDGET,
+});

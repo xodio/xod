@@ -262,6 +262,16 @@
       float: none;
     }
   }
+  .ClorPicker_toggleBtn {
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    border: none;
+  }
 }
 
 .LabelWidget .inspectorTextInput {
