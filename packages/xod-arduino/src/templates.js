@@ -261,9 +261,22 @@ Handlebars.registerHelper(
   R.either(hasUpstreamErrorRaisers, R.path(['patch', 'isDefer']))
 );
 
-const isTweakNode = R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath);
+const isOutputLinked = R.pipe(R.pathOr(0, ['to', 'length']));
 
-Handlebars.registerHelper('isTweakNode', isTweakNode);
+Handlebars.registerHelper(
+  'shouldOutputStoreDirtyness',
+  R.both(
+    isOutputLinked,
+    R.propSatisfies(R.any(R.prop('doesAffectDirtyness')), 'to')
+  )
+);
+
+const isLinkedTweakNode = R.both(
+  R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath),
+  R.pathSatisfies(isOutputLinked, ['outputs', 0])
+);
+
+Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
@@ -299,7 +312,7 @@ registerHandlebarsFilterLoopHelper(
   'eachNodeUsingTimeouts',
   R.path(['patch', 'usesTimeouts'])
 );
-registerHandlebarsFilterLoopHelper('eachTweakNode', isTweakNode);
+registerHandlebarsFilterLoopHelper('eachLinkedTweakNode', isLinkedTweakNode);
 registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));
 registerHandlebarsFilterLoopHelper(
   'eachNonlinkedInput',
@@ -380,6 +393,8 @@ export const renderProject = def(
 
     const config = renderConfig(project.config);
     const impls = renderImplList(project.patches);
+    // TODO: right at the beginning of `program.tpl.cpp`
+    // TNode pins are mutated by mergePins helper
     const program = renderProgram(project.nodes);
 
     return R.join('\n')([

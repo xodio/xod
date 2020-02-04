@@ -80,6 +80,26 @@ let doesCatchErrors: code => bool;
 /** Returns a list of found XOD pragmas in the order of occurence */
 let findXodPragmas: code => list(Pragma.t);
 
+type evaluateOnPinSettings = {
+  enabled: bool,
+  exceptions: Belt.Set.String.t
+};
+
+/**
+  Returns a record describing if evaluation on pin dirtyness is enabled
+  and possible exceptions.
+
+  For example,
+
+  #pragma XOD evaluate_on_pin disable
+  #pragma XOD evaluate_on_pin enable input_UPD input_RST
+
+  would return { enabled: false, exceptions: ['input_UPD', 'input_RST'] }
+  because the first pragma disables evaluation on all pins,
+  and the second one adds `input_UPD` and `input_RST` as exceptions.
+ */
+let getEvaluateOnPinSettings: code => evaluateOnPinSettings;
+
 /**
  * Returns a list of strings (URLs) that found in XOD require pragmas:
  *

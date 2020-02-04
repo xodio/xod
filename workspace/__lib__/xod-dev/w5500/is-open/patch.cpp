@@ -1,3 +1,6 @@
+#pragma XOD evaluate_on_pin disable
+#pragma XOD evaluate_on_pin enable input_CHK
+
 {{#global}}
 #include <Ethernet2.h>
 {{/global}}

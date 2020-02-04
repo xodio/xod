@@ -1,3 +1,5 @@
+#pragma XOD evaluate_on_pin disable
+#pragma XOD evaluate_on_pin enable input_SEND
 #pragma XOD error_raise enable
 
 struct State {

@@ -12,6 +12,12 @@ let implementsEvaluateTmpl = Directives.implementsEvaluateTmpl;
 
 let wantsStateConstructorWithParams = Directives.wantsStateConstructorWithParams;
 
+let getEvaluateOnPinSettings = code =>
+  code |> Directives.getEvaluateOnPinSettings |> ({enabled, exceptions}) => {
+    "enabled": enabled,
+    "exceptions": Set.String.toArray(exceptions)
+  };
+
 let areTimeoutsEnabled = Directives.areTimeoutsEnabled;
 
 let stripCppComments = Directives.stripCppComments;

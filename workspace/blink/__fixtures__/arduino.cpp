@@ -1264,6 +1264,9 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_write {
 
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
+
 struct State {
 };
 
@@ -1393,18 +1396,14 @@ struct TransactionState {
     bool node_4_isNodeDirty : 1;
     bool node_4_isOutputDirty_TICK : 1;
     bool node_5_isNodeDirty : 1;
-    bool node_5_isOutputDirty_MEM : 1;
     bool node_6_isNodeDirty : 1;
-    bool node_6_isOutputDirty_DONE : 1;
     TransactionState() {
         node_3_isNodeDirty = true;
         node_3_isOutputDirty_TICK = false;
         node_4_isNodeDirty = true;
         node_4_isOutputDirty_TICK = false;
         node_5_isNodeDirty = true;
-        node_5_isOutputDirty_MEM = true;
         node_6_isNodeDirty = true;
-        node_6_isOutputDirty_DONE = false;
     }
 };
 
@@ -1545,10 +1544,8 @@ void runTransaction() {
             xod__core__flip_flop::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_5_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
-            g_transaction.node_6_isNodeDirty |= g_transaction.node_5_isOutputDirty_MEM;
         }
 
     }
@@ -1573,7 +1570,6 @@ void runTransaction() {
             xod__gpio__digital_write::evaluateTmpl<node_2_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_6_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
         }

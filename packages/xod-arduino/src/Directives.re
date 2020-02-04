@@ -153,6 +153,51 @@ let isDirtienessEnabled = (code, identifier) =>
        }
      );
 
+type evaluateOnPinSettings = {
+  enabled: bool,
+  exceptions: Set.String.t
+}
+
+let mergeList = (s: Set.String.t, arr: list(string)): Set.String.t =>
+  s |. Set.String.mergeMany(List.toArray(arr))
+
+let removeList = (s: Set.String.t, arr: list(string)): Set.String.t =>
+  s |. Set.String.removeMany(List.toArray(arr))
+
+let getEvaluateOnPinSettings = (code) =>
+  code
+  |. Code.findXodPragmas
+  |. Pragma.filterPragmasByFeature("evaluate_on_pin")
+  |. List.reduce(
+    {
+      enabled: true,
+      exceptions: Set.String.empty,
+    },
+    (acc, pragma) => switch (pragma) {
+      | [_, "enable"] => {
+        enabled: true,
+        exceptions: Set.String.empty,
+      }
+      | [_, "disable"] => {
+        enabled: false,
+        exceptions: Set.String.empty,
+      }
+      | [_, "enable", ...enabledPins] => {
+        ...acc,
+        exceptions: acc.enabled 
+          ? removeList(acc.exceptions, enabledPins)
+          : mergeList(acc.exceptions, enabledPins)
+      }
+      | [_, "disable", ...disabledPins] => {
+        ...acc,
+        exceptions: acc.enabled 
+          ? mergeList(acc.exceptions, disabledPins)
+          : removeList(acc.exceptions, disabledPins)
+      }
+      | _ => acc
+    }
+  );
+
 let doesCatchErrors = (code) =>
   code
   |. Code.lastPragmaEndis("error_catch")

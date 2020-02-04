@@ -1,4 +1,5 @@
-
+#pragma XOD evaluate_on_pin disable
+#pragma XOD evaluate_on_pin enable input_DO
 struct State {
 };
 

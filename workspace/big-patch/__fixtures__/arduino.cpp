@@ -1734,6 +1734,9 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__analog_read {
 
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
+
 struct State {
 };
 
@@ -1838,6 +1841,9 @@ void evaluateTmpl(Context ctx) {
 // xod/gpio/digital-read-pullup implementation
 //-----------------------------------------------------------------------------
 namespace xod__gpio__digital_read_pullup {
+
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
 
 struct State {
 };
@@ -3802,6 +3808,9 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__gpio__pwm_write {
 
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
+
 struct State {
 };
 
@@ -4263,6 +4272,9 @@ void evaluate(Context ctx) {
 //-----------------------------------------------------------------------------
 namespace xod__core__buffer__number {
 
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
+
 struct State {
 };
 
@@ -4420,6 +4432,9 @@ void evaluate(Context ctx) {
 // xod/core/branch implementation
 //-----------------------------------------------------------------------------
 namespace xod__core__branch {
+
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_TRIG
 
 struct State {
 };
@@ -4789,6 +4804,9 @@ void evaluate(Context ctx) {
 // xod-dev/servo/rotate implementation
 //-----------------------------------------------------------------------------
 namespace xod_dev__servo__rotate {
+
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_DO
 
 struct State { };
 
@@ -5491,7 +5509,6 @@ struct TransactionState {
     bool node_84_isNodeDirty : 1;
     bool node_84_isOutputDirty_OUT : 1;
     bool node_85_isNodeDirty : 1;
-    bool node_85_isOutputDirty_DEV : 1;
     bool node_86_isNodeDirty : 1;
     bool node_86_isOutputDirty_OUT : 1;
     bool node_87_isNodeDirty : 1;
@@ -5508,19 +5525,14 @@ struct TransactionState {
     bool node_92_isOutputDirty_OUT : 1;
     bool node_93_isNodeDirty : 1;
     bool node_93_isOutputDirty_VAL : 1;
-    bool node_93_isOutputDirty_DONE : 1;
     bool node_94_isNodeDirty : 1;
     bool node_94_isOutputDirty_SIG : 1;
-    bool node_94_isOutputDirty_DONE : 1;
     bool node_95_isNodeDirty : 1;
     bool node_95_isOutputDirty_VAL : 1;
-    bool node_95_isOutputDirty_DONE : 1;
     bool node_96_isNodeDirty : 1;
     bool node_96_isOutputDirty_SIG : 1;
-    bool node_96_isOutputDirty_DONE : 1;
     bool node_97_isNodeDirty : 1;
     bool node_97_isOutputDirty_VAL : 1;
-    bool node_97_isOutputDirty_DONE : 1;
     bool node_98_isNodeDirty : 1;
     bool node_98_isOutputDirty_OUT : 1;
     bool node_99_isNodeDirty : 1;
@@ -5578,7 +5590,6 @@ struct TransactionState {
     bool node_123_isOutputDirty_DONE : 1;
     bool node_123_hasUpstreamError : 1;
     bool node_124_isNodeDirty : 1;
-    bool node_124_isOutputDirty_OUT : 1;
     bool node_125_isNodeDirty : 1;
     bool node_125_isOutputDirty_OUT : 1;
     bool node_126_isNodeDirty : 1;
@@ -5614,7 +5625,6 @@ struct TransactionState {
     bool node_140_isNodeDirty : 1;
     bool node_140_isOutputDirty_OUT : 1;
     bool node_141_isNodeDirty : 1;
-    bool node_141_isOutputDirty_R : 1;
     bool node_141_hasUpstreamError : 1;
     bool node_142_isNodeDirty : 1;
     bool node_142_isOutputDirty_TICK : 1;
@@ -5628,7 +5638,6 @@ struct TransactionState {
     bool node_146_isNodeDirty : 1;
     bool node_146_isOutputDirty_MEM : 1;
     bool node_147_isNodeDirty : 1;
-    bool node_147_isOutputDirty_DONE : 1;
     bool node_148_isNodeDirty : 1;
     bool node_148_isOutputDirty_OUT : 1;
     bool node_148_hasUpstreamError : 1;
@@ -5637,7 +5646,6 @@ struct TransactionState {
     bool node_149_hasUpstreamError : 1;
     bool node_150_isNodeDirty : 1;
     bool node_150_isOutputDirty_OUT : 1;
-    bool node_150_isOutputDirty_N : 1;
     bool node_151_isNodeDirty : 1;
     bool node_151_isOutputDirty_OUT : 1;
     bool node_152_isNodeDirty : 1;
@@ -5648,10 +5656,8 @@ struct TransactionState {
     bool node_154_isNodeDirty : 1;
     bool node_154_isOutputDirty_R : 1;
     bool node_155_isNodeDirty : 1;
-    bool node_155_isOutputDirty_R : 1;
     bool node_155_hasUpstreamError : 1;
     bool node_156_isNodeDirty : 1;
-    bool node_156_isOutputDirty_OUT : 1;
     bool node_156_hasUpstreamError : 1;
     bool node_157_isNodeDirty : 1;
     bool node_157_isOutputDirty_MEM : 1;
@@ -5677,7 +5683,6 @@ struct TransactionState {
     bool node_165_isOutputDirty_OUT : 1;
     bool node_166_isNodeDirty : 1;
     bool node_167_isNodeDirty : 1;
-    bool node_167_isOutputDirty_OUT : 1;
     bool node_168_isNodeDirty : 1;
     bool node_168_isOutputDirty_OUT : 1;
     bool node_169_isNodeDirty : 1;
@@ -5697,7 +5702,6 @@ struct TransactionState {
     bool node_175_isNodeDirty : 1;
     bool node_175_isOutputDirty_OUT : 1;
     bool node_176_isNodeDirty : 1;
-    bool node_176_isOutputDirty_OUT : 1;
     bool node_177_isNodeDirty : 1;
     bool node_177_isOutputDirty_OUT : 1;
     bool node_178_isNodeDirty : 1;
@@ -5737,7 +5741,6 @@ struct TransactionState {
     bool node_190_isOutputDirty_OUT : 1;
     bool node_190_hasUpstreamError : 1;
     bool node_191_isNodeDirty : 1;
-    bool node_191_isOutputDirty_DONE : 1;
     bool node_192_isNodeDirty : 1;
     bool node_192_isOutputDirty_OUT : 1;
     bool node_193_isNodeDirty : 1;
@@ -5747,16 +5750,13 @@ struct TransactionState {
     bool node_194_isOutputDirty_OUT : 1;
     bool node_194_hasUpstreamError : 1;
     bool node_195_isNodeDirty : 1;
-    bool node_195_isOutputDirty_DONE : 1;
     bool node_196_isNodeDirty : 1;
-    bool node_196_isOutputDirty_DEVU0027 : 1;
     bool node_196_isOutputDirty_DONE : 1;
     bool node_196_hasUpstreamError : 1;
     bool node_197_isNodeDirty : 1;
     bool node_197_isOutputDirty_OUT : 1;
     bool node_197_hasUpstreamError : 1;
     bool node_198_isNodeDirty : 1;
-    bool node_198_isOutputDirty_OUT : 1;
     bool node_198_hasUpstreamError : 1;
     bool node_199_isNodeDirty : 1;
     bool node_199_isOutputDirty_OUT : 1;
@@ -5765,8 +5765,6 @@ struct TransactionState {
     bool node_200_isOutputDirty_OUT : 1;
     bool node_200_hasUpstreamError : 1;
     bool node_201_isNodeDirty : 1;
-    bool node_201_isOutputDirty_DEVU0027 : 1;
-    bool node_201_isOutputDirty_ACK : 1;
     bool node_201_hasUpstreamError : 1;
     bool node_202_isNodeDirty : 1;
     bool node_202_isOutputDirty_OUT : 1;
@@ -5789,7 +5787,6 @@ struct TransactionState {
         node_83_isOutputDirty_DEV = true;
         node_84_isNodeDirty = true;
         node_85_isNodeDirty = true;
-        node_85_isOutputDirty_DEV = true;
         node_86_isNodeDirty = true;
         node_86_isOutputDirty_OUT = false;
         node_87_isNodeDirty = true;
@@ -5806,19 +5803,14 @@ struct TransactionState {
         node_92_isOutputDirty_OUT = false;
         node_93_isNodeDirty = true;
         node_93_isOutputDirty_VAL = true;
-        node_93_isOutputDirty_DONE = false;
         node_94_isNodeDirty = true;
         node_94_isOutputDirty_SIG = true;
-        node_94_isOutputDirty_DONE = false;
         node_95_isNodeDirty = true;
         node_95_isOutputDirty_VAL = true;
-        node_95_isOutputDirty_DONE = false;
         node_96_isNodeDirty = true;
         node_96_isOutputDirty_SIG = true;
-        node_96_isOutputDirty_DONE = false;
         node_97_isNodeDirty = true;
         node_97_isOutputDirty_VAL = true;
-        node_97_isOutputDirty_DONE = false;
         node_98_isNodeDirty = true;
         node_99_isNodeDirty = true;
         node_99_isOutputDirty_OUT = false;
@@ -5894,14 +5886,12 @@ struct TransactionState {
         node_146_isNodeDirty = true;
         node_146_isOutputDirty_MEM = true;
         node_147_isNodeDirty = true;
-        node_147_isOutputDirty_DONE = false;
         node_148_isNodeDirty = true;
         node_148_isOutputDirty_OUT = true;
         node_149_isNodeDirty = true;
         node_149_isOutputDirty_OUT = false;
         node_150_isNodeDirty = true;
         node_150_isOutputDirty_OUT = true;
-        node_150_isOutputDirty_N = true;
         node_151_isNodeDirty = true;
         node_152_isNodeDirty = true;
         node_153_isNodeDirty = true;
@@ -5969,7 +5959,6 @@ struct TransactionState {
         node_189_isOutputDirty_OUT = false;
         node_190_isNodeDirty = true;
         node_191_isNodeDirty = true;
-        node_191_isOutputDirty_DONE = false;
         node_192_isNodeDirty = true;
         node_192_isOutputDirty_OUT = false;
         node_193_isNodeDirty = true;
@@ -5977,21 +5966,16 @@ struct TransactionState {
         node_194_isNodeDirty = true;
         node_194_isOutputDirty_OUT = false;
         node_195_isNodeDirty = true;
-        node_195_isOutputDirty_DONE = false;
         node_196_isNodeDirty = true;
-        node_196_isOutputDirty_DEVU0027 = true;
         node_196_isOutputDirty_DONE = false;
         node_197_isNodeDirty = true;
         node_197_isOutputDirty_OUT = false;
         node_198_isNodeDirty = true;
-        node_198_isOutputDirty_OUT = false;
         node_199_isNodeDirty = true;
         node_199_isOutputDirty_OUT = false;
         node_200_isNodeDirty = true;
         node_200_isOutputDirty_OUT = false;
         node_201_isNodeDirty = true;
-        node_201_isOutputDirty_DEVU0027 = true;
-        node_201_isOutputDirty_ACK = false;
         node_202_isNodeDirty = true;
         node_202_isOutputDirty_OUT = true;
         node_203_isNodeDirty = true;
@@ -6526,8 +6510,8 @@ void handleDefers() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_107_isNodeDirty |= g_transaction.node_202_isOutputDirty_OUT || node_202.errors.flags;
-            g_transaction.node_116_isNodeDirty |= g_transaction.node_202_isOutputDirty_OUT || node_202.errors.flags;
+            g_transaction.node_107_isNodeDirty |= g_transaction.node_202_isOutputDirty_OUT;
+            g_transaction.node_116_isNodeDirty |= g_transaction.node_202_isOutputDirty_OUT;
 
             g_transaction.node_202_isNodeDirty = false;
             detail::clearTimeout(&node_202);
@@ -6572,9 +6556,9 @@ void handleDefers() {
                 // if an error was just raised or cleared from an output,
                 // mark nearest downstream error catchers as dirty
                 if (node_203.errors.output_OUT != previousErrors.output_OUT) {
-                    g_transaction.node_203_isNodeDirty = true;
-                    g_transaction.node_204_isNodeDirty = true;
                     g_transaction.node_202_isNodeDirty = true;
+                    g_transaction.node_204_isNodeDirty = true;
+                    g_transaction.node_203_isNodeDirty = true;
                 }
 
                 // if a pulse output was cleared from error, mark downstream nodes as dirty
@@ -6585,7 +6569,7 @@ void handleDefers() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_132_isNodeDirty |= g_transaction.node_203_isOutputDirty_OUT || node_203.errors.flags;
+            g_transaction.node_132_isNodeDirty |= g_transaction.node_203_isOutputDirty_OUT;
 
             g_transaction.node_203_isNodeDirty = false;
             detail::clearTimeout(&node_203);
@@ -6637,7 +6621,7 @@ void handleDefers() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_155_isNodeDirty |= g_transaction.node_204_isOutputDirty_OUT || node_204.errors.flags;
+            g_transaction.node_155_isNodeDirty |= g_transaction.node_204_isOutputDirty_OUT;
 
             g_transaction.node_204_isNodeDirty = false;
             detail::clearTimeout(&node_204);
@@ -6735,14 +6719,14 @@ void runTransaction() {
             g_transaction.node_80_isOutputDirty_BOOT = ctxObj._isOutputDirty_BOOT;
 
             // mark downstream nodes dirty
-            g_transaction.node_182_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
-            g_transaction.node_175_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
             g_transaction.node_99_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
-            g_transaction.node_162_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
-            g_transaction.node_184_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
-            g_transaction.node_130_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
-            g_transaction.node_197_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
             g_transaction.node_127_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_130_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_162_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_175_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_182_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_184_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
+            g_transaction.node_197_isNodeDirty |= g_transaction.node_80_isOutputDirty_BOOT;
         }
 
     }
@@ -6766,8 +6750,8 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_166_isNodeDirty = true;
             g_transaction.node_98_isNodeDirty = true;
+            g_transaction.node_166_isNodeDirty = true;
         }
 
     }
@@ -6889,7 +6873,6 @@ void runTransaction() {
             xod_dev__servo__servo_device::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_85_isOutputDirty_DEV = ctxObj._isOutputDirty_DEV;
 
             if (previousErrors.flags != node_85.errors.flags) {
                 detail::printErrorToDebugSerial(85, node_85.errors.flags);
@@ -6904,7 +6887,6 @@ void runTransaction() {
             }
 
             // mark downstream nodes dirty
-            g_transaction.node_201_isNodeDirty |= g_transaction.node_85_isOutputDirty_DEV;
         }
 
         // propagate errors hold by the node outputs
@@ -7111,7 +7093,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_93_isOutputDirty_VAL = ctxObj._isOutputDirty_VAL;
-            g_transaction.node_93_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
             g_transaction.node_100_isNodeDirty |= g_transaction.node_93_isOutputDirty_VAL;
@@ -7140,7 +7121,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_94_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
-            g_transaction.node_94_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
             g_transaction.node_101_isNodeDirty |= g_transaction.node_94_isOutputDirty_SIG;
@@ -7169,7 +7149,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_95_isOutputDirty_VAL = ctxObj._isOutputDirty_VAL;
-            g_transaction.node_95_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
             g_transaction.node_102_isNodeDirty |= g_transaction.node_95_isOutputDirty_VAL;
@@ -7198,7 +7177,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_96_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
-            g_transaction.node_96_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
             g_transaction.node_103_isNodeDirty |= g_transaction.node_96_isOutputDirty_SIG;
@@ -7227,7 +7205,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_97_isOutputDirty_VAL = ctxObj._isOutputDirty_VAL;
-            g_transaction.node_97_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
             g_transaction.node_115_isNodeDirty |= g_transaction.node_97_isOutputDirty_VAL;
@@ -7308,11 +7285,11 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
+            g_transaction.node_105_isNodeDirty = true;
+            g_transaction.node_106_isNodeDirty = true;
+            g_transaction.node_107_isNodeDirty = true;
             g_transaction.node_108_isNodeDirty = true;
             g_transaction.node_116_isNodeDirty = true;
-            g_transaction.node_107_isNodeDirty = true;
-            g_transaction.node_106_isNodeDirty = true;
-            g_transaction.node_105_isNodeDirty = true;
         }
 
     }
@@ -7362,9 +7339,9 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_112_isNodeDirty = true;
-            g_transaction.node_111_isNodeDirty = true;
             g_transaction.node_110_isNodeDirty = true;
+            g_transaction.node_111_isNodeDirty = true;
+            g_transaction.node_112_isNodeDirty = true;
         }
 
     }
@@ -7540,8 +7517,8 @@ void runTransaction() {
             g_transaction.node_109_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
-            g_transaction.node_119_isNodeDirty |= g_transaction.node_109_isOutputDirty_OUT;
             g_transaction.node_118_isNodeDirty |= g_transaction.node_109_isOutputDirty_OUT;
+            g_transaction.node_119_isNodeDirty |= g_transaction.node_109_isOutputDirty_OUT;
         }
 
     }
@@ -7690,8 +7667,8 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_125_isNodeDirty = true;
             g_transaction.node_124_isNodeDirty = true;
+            g_transaction.node_125_isNodeDirty = true;
         }
 
     }
@@ -7923,7 +7900,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_147_isNodeDirty = true;
         }
 
     }
@@ -7999,12 +7975,12 @@ void runTransaction() {
             g_transaction.node_127_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
-            g_transaction.node_173_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
-            g_transaction.node_148_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
-            g_transaction.node_172_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
-            g_transaction.node_149_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
-            g_transaction.node_142_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
             g_transaction.node_132_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
+            g_transaction.node_142_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
+            g_transaction.node_148_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
+            g_transaction.node_149_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
+            g_transaction.node_172_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
+            g_transaction.node_173_isNodeDirty |= g_transaction.node_127_isOutputDirty_OUT;
         }
 
     }
@@ -8108,8 +8084,8 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_163_isNodeDirty = true;
             g_transaction.node_154_isNodeDirty = true;
+            g_transaction.node_163_isNodeDirty = true;
         }
 
     }
@@ -8164,13 +8140,13 @@ void runTransaction() {
 
             // mark downstream nodes dirty
             g_transaction.node_136_isNodeDirty = true;
+            g_transaction.node_137_isNodeDirty = true;
+            g_transaction.node_138_isNodeDirty = true;
+            g_transaction.node_139_isNodeDirty = true;
             g_transaction.node_150_isNodeDirty = true;
             g_transaction.node_151_isNodeDirty = true;
             g_transaction.node_161_isNodeDirty = true;
-            g_transaction.node_137_isNodeDirty = true;
             g_transaction.node_163_isNodeDirty = true;
-            g_transaction.node_138_isNodeDirty = true;
-            g_transaction.node_139_isNodeDirty = true;
         }
 
     }
@@ -8204,8 +8180,8 @@ void runTransaction() {
     { // xod__core__flip_flop #135
 
         if (g_transaction.node_135_hasUpstreamError) {
-            g_transaction.node_142_hasUpstreamError = true;
             g_transaction.node_141_hasUpstreamError = true;
+            g_transaction.node_142_hasUpstreamError = true;
         } else if (g_transaction.node_135_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(135);
@@ -8229,8 +8205,8 @@ void runTransaction() {
             g_transaction.node_135_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
-            g_transaction.node_142_isNodeDirty |= g_transaction.node_135_isOutputDirty_MEM;
             g_transaction.node_141_isNodeDirty |= g_transaction.node_135_isOutputDirty_MEM;
+            g_transaction.node_142_isNodeDirty |= g_transaction.node_135_isOutputDirty_MEM;
         }
 
     }
@@ -8391,7 +8367,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_157_isNodeDirty = true;
         }
 
     }
@@ -8399,8 +8374,8 @@ void runTransaction() {
 
         if (g_transaction.node_142_hasUpstreamError) {
             g_transaction.node_148_hasUpstreamError = true;
-            g_transaction.node_164_hasUpstreamError = true;
             g_transaction.node_149_hasUpstreamError = true;
+            g_transaction.node_164_hasUpstreamError = true;
         } else if (g_transaction.node_142_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(142);
@@ -8426,8 +8401,8 @@ void runTransaction() {
 
             // mark downstream nodes dirty
             g_transaction.node_148_isNodeDirty |= g_transaction.node_142_isOutputDirty_TICK;
-            g_transaction.node_164_isNodeDirty |= g_transaction.node_142_isOutputDirty_TICK;
             g_transaction.node_149_isNodeDirty |= g_transaction.node_142_isOutputDirty_TICK;
+            g_transaction.node_164_isNodeDirty |= g_transaction.node_142_isOutputDirty_TICK;
         }
 
     }
@@ -8480,8 +8455,8 @@ void runTransaction() {
             g_transaction.node_144_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
-            g_transaction.node_152_isNodeDirty |= g_transaction.node_144_isOutputDirty_MEM;
             g_transaction.node_151_isNodeDirty |= g_transaction.node_144_isOutputDirty_MEM;
+            g_transaction.node_152_isNodeDirty |= g_transaction.node_144_isOutputDirty_MEM;
         }
 
     }
@@ -8585,7 +8560,6 @@ void runTransaction() {
             xod__gpio__pwm_write::evaluateTmpl<node_66_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_147_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
         }
@@ -8594,8 +8568,8 @@ void runTransaction() {
     { // xod__core__count #148
 
         if (g_transaction.node_148_hasUpstreamError) {
-            g_transaction.node_156_hasUpstreamError = true;
             g_transaction.node_155_hasUpstreamError = true;
+            g_transaction.node_156_hasUpstreamError = true;
             g_transaction.node_185_hasUpstreamError = true;
         } else if (g_transaction.node_148_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
@@ -8620,8 +8594,8 @@ void runTransaction() {
             g_transaction.node_148_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
-            g_transaction.node_156_isNodeDirty |= g_transaction.node_148_isOutputDirty_OUT;
             g_transaction.node_155_isNodeDirty |= g_transaction.node_148_isOutputDirty_OUT;
+            g_transaction.node_156_isNodeDirty |= g_transaction.node_148_isOutputDirty_OUT;
             g_transaction.node_185_isNodeDirty |= g_transaction.node_148_isOutputDirty_OUT;
         }
 
@@ -8680,7 +8654,6 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_150_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
-            g_transaction.node_150_isOutputDirty_N = ctxObj._isOutputDirty_N;
 
             // mark downstream nodes dirty
             g_transaction.node_158_isNodeDirty |= g_transaction.node_150_isOutputDirty_OUT;
@@ -8812,7 +8785,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_180_isNodeDirty = true;
         }
 
     }
@@ -8839,7 +8811,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_164_isNodeDirty = true;
         }
 
     }
@@ -8940,8 +8911,8 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_168_isNodeDirty = true;
             g_transaction.node_167_isNodeDirty = true;
+            g_transaction.node_168_isNodeDirty = true;
         }
 
     }
@@ -9028,8 +8999,8 @@ void runTransaction() {
 
         if (g_transaction.node_164_hasUpstreamError) {
             g_transaction.node_172_hasUpstreamError = true;
-            g_transaction.node_203_hasUpstreamError = true;
             g_transaction.node_173_hasUpstreamError = true;
+            g_transaction.node_203_hasUpstreamError = true;
         } else if (g_transaction.node_164_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(164);
@@ -9055,8 +9026,8 @@ void runTransaction() {
 
             // mark downstream nodes dirty
             g_transaction.node_172_isNodeDirty |= g_transaction.node_164_isOutputDirty_T;
-            g_transaction.node_203_isNodeDirty |= g_transaction.node_164_isOutputDirty_F;
             g_transaction.node_173_isNodeDirty |= g_transaction.node_164_isOutputDirty_F;
+            g_transaction.node_203_isNodeDirty |= g_transaction.node_164_isOutputDirty_F;
         }
 
     }
@@ -9130,7 +9101,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_191_isNodeDirty = true;
         }
 
     }
@@ -9178,8 +9148,8 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_177_isNodeDirty = true;
             g_transaction.node_176_isNodeDirty = true;
+            g_transaction.node_177_isNodeDirty = true;
         }
 
     }
@@ -9397,7 +9367,6 @@ void runTransaction() {
             // transfer possibly modified dirtiness state from context to g_transaction
 
             // mark downstream nodes dirty
-            g_transaction.node_195_isNodeDirty = true;
         }
 
     }
@@ -9487,8 +9456,8 @@ void runTransaction() {
     { // xod__core__buffer__number #180
 
         if (g_transaction.node_180_hasUpstreamError) {
-            g_transaction.node_204_hasUpstreamError = true;
             g_transaction.node_185_hasUpstreamError = true;
+            g_transaction.node_204_hasUpstreamError = true;
         } else if (g_transaction.node_180_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(180);
@@ -9511,8 +9480,8 @@ void runTransaction() {
             g_transaction.node_180_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
-            g_transaction.node_204_isNodeDirty |= g_transaction.node_180_isOutputDirty_MEM;
             g_transaction.node_185_isNodeDirty |= g_transaction.node_180_isOutputDirty_MEM;
+            g_transaction.node_204_isNodeDirty |= g_transaction.node_180_isOutputDirty_MEM;
         }
 
     }
@@ -9838,7 +9807,6 @@ void runTransaction() {
 
             // mark downstream nodes dirty
             g_transaction.node_194_isNodeDirty = true;
-            g_transaction.node_201_isNodeDirty = true;
         }
 
     }
@@ -9863,7 +9831,6 @@ void runTransaction() {
             xod__gpio__pwm_write::evaluateTmpl<node_26_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_191_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
         }
@@ -9975,7 +9942,6 @@ void runTransaction() {
             xod__gpio__pwm_write::evaluateTmpl<node_24_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_195_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             // mark downstream nodes dirty
         }
@@ -10013,7 +9979,6 @@ void runTransaction() {
             xod_dev__text_lcd__print_at__text_lcd_i2c_device::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_196_isOutputDirty_DEVU0027 = ctxObj._isOutputDirty_DEVU0027;
             g_transaction.node_196_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
 
             if (previousErrors.flags != node_196.errors.flags) {
@@ -10098,7 +10063,6 @@ void runTransaction() {
             xod__core__any::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_198_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
 
             // mark downstream nodes dirty
         }
@@ -10188,8 +10152,6 @@ void runTransaction() {
             xod_dev__servo__rotate::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_201_isOutputDirty_DEVU0027 = ctxObj._isOutputDirty_DEVU0027;
-            g_transaction.node_201_isOutputDirty_ACK = ctxObj._isOutputDirty_ACK;
 
             // mark downstream nodes dirty
         }
@@ -10280,9 +10242,9 @@ void runTransaction() {
                 // if an error was just raised or cleared from an output,
                 // mark nearest downstream error catchers as dirty
                 if (node_203.errors.output_OUT != previousErrors.output_OUT) {
-                    g_transaction.node_203_isNodeDirty = true;
-                    g_transaction.node_204_isNodeDirty = true;
                     g_transaction.node_202_isNodeDirty = true;
+                    g_transaction.node_204_isNodeDirty = true;
+                    g_transaction.node_203_isNodeDirty = true;
                 }
 
                 // if a pulse output was cleared from error, mark downstream nodes as dirty
