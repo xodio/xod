@@ -1396,7 +1396,6 @@ struct TransactionState {
     bool node_4_isNodeDirty : 1;
     bool node_4_isOutputDirty_TICK : 1;
     bool node_5_isNodeDirty : 1;
-    bool node_5_isOutputDirty_MEM : 1;
     bool node_6_isNodeDirty : 1;
     TransactionState() {
         node_3_isNodeDirty = true;
@@ -1404,7 +1403,6 @@ struct TransactionState {
         node_4_isNodeDirty = true;
         node_4_isOutputDirty_TICK = false;
         node_5_isNodeDirty = true;
-        node_5_isOutputDirty_MEM = true;
         node_6_isNodeDirty = true;
     }
 };
@@ -1546,7 +1544,6 @@ void runTransaction() {
             xod__core__flip_flop::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_5_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
         }

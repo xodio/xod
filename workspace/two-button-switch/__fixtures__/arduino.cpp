@@ -1487,29 +1487,23 @@ struct TransactionState {
     bool node_3_isNodeDirty : 1;
     bool node_3_isOutputDirty_TICK : 1;
     bool node_4_isNodeDirty : 1;
-    bool node_4_isOutputDirty_SIG : 1;
     bool node_5_isNodeDirty : 1;
-    bool node_5_isOutputDirty_SIG : 1;
     bool node_6_isNodeDirty : 1;
     bool node_6_isOutputDirty_F : 1;
     bool node_7_isNodeDirty : 1;
     bool node_7_isOutputDirty_F : 1;
     bool node_8_isNodeDirty : 1;
-    bool node_8_isOutputDirty_MEM : 1;
     bool node_9_isNodeDirty : 1;
     TransactionState() {
         node_3_isNodeDirty = true;
         node_3_isOutputDirty_TICK = false;
         node_4_isNodeDirty = true;
-        node_4_isOutputDirty_SIG = true;
         node_5_isNodeDirty = true;
-        node_5_isOutputDirty_SIG = true;
         node_6_isNodeDirty = true;
         node_6_isOutputDirty_F = false;
         node_7_isNodeDirty = true;
         node_7_isOutputDirty_F = false;
         node_8_isNodeDirty = true;
-        node_8_isOutputDirty_MEM = true;
         node_9_isNodeDirty = true;
     }
 };
@@ -1635,7 +1629,6 @@ void runTransaction() {
             xod__gpio__digital_read::evaluateTmpl<node_0_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_4_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
 
             // mark downstream nodes dirty
         }
@@ -1662,7 +1655,6 @@ void runTransaction() {
             xod__gpio__digital_read::evaluateTmpl<node_1_output_VAL>(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_5_isOutputDirty_SIG = ctxObj._isOutputDirty_SIG;
 
             // mark downstream nodes dirty
         }
@@ -1745,7 +1737,6 @@ void runTransaction() {
             xod__core__flip_flop::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_8_isOutputDirty_MEM = ctxObj._isOutputDirty_MEM;
 
             // mark downstream nodes dirty
         }

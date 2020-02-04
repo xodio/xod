@@ -263,7 +263,13 @@ Handlebars.registerHelper(
 
 const isOutputLinked = R.pipe(R.pathOr(0, ['to', 'length']));
 
-Handlebars.registerHelper('isOutputLinked', isOutputLinked);
+Handlebars.registerHelper(
+  'shouldOutputStoreDirtyness',
+  R.both(
+    isOutputLinked,
+    R.propSatisfies(R.any(R.prop('doesAffectDirtyness')), 'to')
+  )
+);
 
 const isLinkedTweakNode = R.both(
   R.pipe(R.path(['patch', 'patchPath']), XP.isTweakPath),

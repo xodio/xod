@@ -26,7 +26,7 @@ struct TransactionState {
 {{#unless patch.isConstant}}
     bool node_{{id}}_isNodeDirty : 1;
   {{#each outputs}}
-    {{#if (isOutputLinked this)}}
+    {{#if (shouldOutputStoreDirtyness this)}}
     bool node_{{ ../id }}_isOutputDirty_{{ pinKey }} : 1;
     {{/if}}
   {{/each}}
@@ -40,7 +40,7 @@ struct TransactionState {
       {{#unless patch.isConstant}}
         node_{{id}}_isNodeDirty = true;
         {{#eachDirtyablePin outputs}}
-        {{#if (isOutputLinked this)}}
+        {{#if (shouldOutputStoreDirtyness this)}}
         node_{{ ../id }}_isOutputDirty_{{ pinKey }} = {{ isDirtyOnBoot }};
         {{/if}}
         {{/eachDirtyablePin}}
@@ -192,7 +192,7 @@ void handleDefers() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
-            {{#if (isOutputLinked this)}}
+            {{#if (shouldOutputStoreDirtyness this)}}
             g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
             {{/if}}
           {{/eachDirtyablePin}}
@@ -407,7 +407,7 @@ void runTransaction() {
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
-            {{#if (isOutputLinked this)}}
+            {{#if (shouldOutputStoreDirtyness this)}}
             g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = ctxObj._isOutputDirty_{{ pinKey }};
             {{/if}}
           {{/eachDirtyablePin}}

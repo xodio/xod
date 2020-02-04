@@ -1439,7 +1439,6 @@ struct TransactionState {
     bool node_8_isNodeDirty : 1;
     bool node_8_isOutputDirty_TIME : 1;
     bool node_9_isNodeDirty : 1;
-    bool node_9_isOutputDirty_OUT : 1;
     bool node_10_isNodeDirty : 1;
     TransactionState() {
         node_7_isNodeDirty = true;

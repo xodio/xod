@@ -5509,7 +5509,6 @@ struct TransactionState {
     bool node_84_isNodeDirty : 1;
     bool node_84_isOutputDirty_OUT : 1;
     bool node_85_isNodeDirty : 1;
-    bool node_85_isOutputDirty_DEV : 1;
     bool node_86_isNodeDirty : 1;
     bool node_86_isOutputDirty_OUT : 1;
     bool node_87_isNodeDirty : 1;
@@ -5591,7 +5590,6 @@ struct TransactionState {
     bool node_123_isOutputDirty_DONE : 1;
     bool node_123_hasUpstreamError : 1;
     bool node_124_isNodeDirty : 1;
-    bool node_124_isOutputDirty_OUT : 1;
     bool node_125_isNodeDirty : 1;
     bool node_125_isOutputDirty_OUT : 1;
     bool node_126_isNodeDirty : 1;
@@ -5627,7 +5625,6 @@ struct TransactionState {
     bool node_140_isNodeDirty : 1;
     bool node_140_isOutputDirty_OUT : 1;
     bool node_141_isNodeDirty : 1;
-    bool node_141_isOutputDirty_R : 1;
     bool node_141_hasUpstreamError : 1;
     bool node_142_isNodeDirty : 1;
     bool node_142_isOutputDirty_TICK : 1;
@@ -5659,10 +5656,8 @@ struct TransactionState {
     bool node_154_isNodeDirty : 1;
     bool node_154_isOutputDirty_R : 1;
     bool node_155_isNodeDirty : 1;
-    bool node_155_isOutputDirty_R : 1;
     bool node_155_hasUpstreamError : 1;
     bool node_156_isNodeDirty : 1;
-    bool node_156_isOutputDirty_OUT : 1;
     bool node_156_hasUpstreamError : 1;
     bool node_157_isNodeDirty : 1;
     bool node_157_isOutputDirty_MEM : 1;
@@ -5688,7 +5683,6 @@ struct TransactionState {
     bool node_165_isOutputDirty_OUT : 1;
     bool node_166_isNodeDirty : 1;
     bool node_167_isNodeDirty : 1;
-    bool node_167_isOutputDirty_OUT : 1;
     bool node_168_isNodeDirty : 1;
     bool node_168_isOutputDirty_OUT : 1;
     bool node_169_isNodeDirty : 1;
@@ -5708,7 +5702,6 @@ struct TransactionState {
     bool node_175_isNodeDirty : 1;
     bool node_175_isOutputDirty_OUT : 1;
     bool node_176_isNodeDirty : 1;
-    bool node_176_isOutputDirty_OUT : 1;
     bool node_177_isNodeDirty : 1;
     bool node_177_isOutputDirty_OUT : 1;
     bool node_178_isNodeDirty : 1;
@@ -5794,7 +5787,6 @@ struct TransactionState {
         node_83_isOutputDirty_DEV = true;
         node_84_isNodeDirty = true;
         node_85_isNodeDirty = true;
-        node_85_isOutputDirty_DEV = true;
         node_86_isNodeDirty = true;
         node_86_isOutputDirty_OUT = false;
         node_87_isNodeDirty = true;
@@ -6881,7 +6873,6 @@ void runTransaction() {
             xod_dev__servo__servo_device::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-            g_transaction.node_85_isOutputDirty_DEV = ctxObj._isOutputDirty_DEV;
 
             if (previousErrors.flags != node_85.errors.flags) {
                 detail::printErrorToDebugSerial(85, node_85.errors.flags);
