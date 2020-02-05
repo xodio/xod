@@ -1,3 +1,5 @@
 catch.hpp linguist-vendored
 workspace/__ardulib__/** linguist-vendored
 workspace/**/__fixtures__/*.cpp linguist-generated
+workspace/**/__fixtures__/*.bin linguist-generated
+workspace/**/__fixtures__/*.hex linguist-generated
