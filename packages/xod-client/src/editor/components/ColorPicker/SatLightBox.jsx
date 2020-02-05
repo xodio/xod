@@ -25,6 +25,8 @@ const calculateNewHSL = (event, hue, containerEl) => {
   return convert.hsv.hsl([hue, saturation, brightness]);
 };
 
+const preventDefaultOnly = event => event.preventDefault();
+
 class SatLightBox extends React.Component {
   constructor(props) {
     super(props);
@@ -42,12 +44,14 @@ class SatLightBox extends React.Component {
   unbindHandlers() {
     document.addEventListener('mousemove', this.handleMove);
     document.addEventListener('mouseup', this.handleEnd);
+    document.addEventListener('dragstart', preventDefaultOnly);
   }
 
   handleStart() {
     this.setState({ dragging: true });
     document.addEventListener('mousemove', this.handleMove);
     document.addEventListener('mouseup', this.handleEnd);
+    document.removeEventListener('dragstart', preventDefaultOnly);
   }
 
   handleMove(event) {
@@ -84,6 +88,7 @@ class SatLightBox extends React.Component {
       top: `${100 - hsv[2]}%`, // brightness
       cursor: this.state.dragging ? 'dragging' : 'drag',
     };
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div
         className="SatLightBox"
@@ -106,6 +111,7 @@ class SatLightBox extends React.Component {
         <div className="SatLightBox_gradients" />
       </div>
     );
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }
 

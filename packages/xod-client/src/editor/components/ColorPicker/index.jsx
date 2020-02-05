@@ -5,7 +5,7 @@ import convert from 'color-convert';
 import { debounce } from 'throttle-debounce';
 
 import colorPropType from './colorPropType';
-import Hue from './Hue';
+import HueCircle from './HueCircle';
 import SatLightBox from './SatLightBox';
 
 const getNewColor = newHsl => ({
@@ -87,26 +87,6 @@ class ColorPicker extends React.Component {
     const { color, hue, saturation, lightness } = this.state;
     return (
       <div className="ColorPicker">
-        <SatLightBox
-          width={110}
-          height={70}
-          color={color}
-          onChange={this.onSaturationLightnessChange}
-        />
-        <svg
-          width={220}
-          height={220}
-          viewBox={`0 0 220 220`}
-          xmlns="http://www.w3.org/2000/svg"
-          version="1.1"
-        >
-          <Hue
-            color={color}
-            onChange={this.onHuePickerChange}
-            default={0}
-            width={220}
-          />
-        </svg>
         <div
           className="ColorPicker_preview"
           style={{
@@ -115,9 +95,20 @@ class ColorPicker extends React.Component {
             }%)`,
           }}
         />
+        <SatLightBox
+          width={110}
+          height={70}
+          color={color}
+          onChange={this.onSaturationLightnessChange}
+        />
+        <HueCircle
+          color={color}
+          onChange={this.onHuePickerChange}
+          default={0}
+          radius={90}
+        />
         <div className="ColorPicker_values">
           <div>
-            <label htmlFor="ColorPicker_Hue">Hue:</label>
             <input
               id="ColorPicker_Hue"
               value={hue}
@@ -125,9 +116,9 @@ class ColorPicker extends React.Component {
               onBlur={this.commitInputs}
               onKeyDown={this.onInputKeyDown}
             />
+            <label htmlFor="ColorPicker_Hue">Hue:</label>
           </div>
           <div>
-            <label htmlFor="ColorPicker_Saturation">Saturation:</label>
             <input
               id="ColorPicker_Saturation"
               value={saturation}
@@ -135,9 +126,9 @@ class ColorPicker extends React.Component {
               onBlur={this.commitInputs}
               onKeyDown={this.onInputKeyDown}
             />
+            <label htmlFor="ColorPicker_Saturation">Saturation:</label>
           </div>
           <div>
-            <label htmlFor="ColorPicker_Lightness">Lightness:</label>
             <input
               id="ColorPicker_Lightness"
               value={lightness}
@@ -145,6 +136,7 @@ class ColorPicker extends React.Component {
               onBlur={this.commitInputs}
               onKeyDown={this.onInputKeyDown}
             />
+            <label htmlFor="ColorPicker_Lightness">Lightness:</label>
           </div>
         </div>
       </div>
