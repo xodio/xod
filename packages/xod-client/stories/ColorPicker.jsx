@@ -9,10 +9,8 @@ import ColorPicker from '../src/editor/components/ColorPicker/index';
 const hsl = [45, 100, 50];
 const hex = convert.hsl.hex(hsl);
 
-const ColorPickerContainer = withState('color', 'onColorChange', { hsl, hex })(
-  ({ color, onColorChange }) => (
-    <ColorPicker color={color} onColorChange={onColorChange} />
-  )
+const ColorPickerContainer = withState('color', 'onChange', { hsl, hex })(
+  ({ color, onChange }) => <ColorPicker color={color} onChange={onChange} />
 );
 
 storiesOf('ColorPicker', module).add('base', () => <ColorPickerContainer />);

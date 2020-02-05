@@ -71,6 +71,41 @@ class Hue extends React.Component {
     this.props.onChange(this.props.default);
   }
 
+  renderValues() {
+    if (!this.props.withValues) return null;
+    return [
+      <text
+        className="HueSlider_value"
+        x={this.radius + BAR_SIZE / 2}
+        y={this.radius + BAR_SIZE / 2}
+        textAnchor="end"
+      >
+        {(this.props.color.hsl[0] / 360).toFixed(3)}
+      </text>,
+      <text
+        className="HueSlider_label"
+        x={-this.radius - BAR_SIZE / 2}
+        y={this.radius + BAR_SIZE / 2}
+        textAnchor="start"
+      >
+        Hue
+      </text>,
+    ];
+  }
+
+  renderPreview() {
+    if (!this.props.withPreview) return null;
+    return (
+      <circle
+        cx={0}
+        cy={0}
+        r={this.previewSize}
+        fill={`hsl(${this.props.color.hsl[0]}, ${this.props.color.hsl[1]}%, ${
+          this.props.color.hsl[2]
+        }%)`}
+      />
+    );
+  }
   render() {
     return (
       <svg x={this.props.x} y={this.props.y}>
@@ -78,6 +113,7 @@ class Hue extends React.Component {
           className="HueSlider"
           transform={`translate(${this.centerOffset},${this.centerOffset})`}
         >
+          {this.renderPreview()}
           <g className="colorCircle">
             {Array.from({ length: 360 }, (_, deg) => (
               <HueSlice
@@ -109,30 +145,7 @@ class Hue extends React.Component {
             onMouseDown={this.handleStart}
             onDoubleClick={this.handleReset}
           />
-          <circle
-            cx={0}
-            cy={0}
-            r={this.previewSize}
-            fill={`hsl(${this.props.color.hsl[0]}, ${
-              this.props.color.hsl[1]
-            }%, ${this.props.color.hsl[2]}%)`}
-          />
-          <text
-            className="HueSlider_value"
-            x={this.radius + BAR_SIZE / 2}
-            y={this.radius + BAR_SIZE / 2}
-            textAnchor="end"
-          >
-            {(this.props.color.hsl[0] / 360).toFixed(3)}
-          </text>
-          <text
-            className="HueSlider_label"
-            x={-this.radius - BAR_SIZE / 2}
-            y={this.radius + BAR_SIZE / 2}
-            textAnchor="start"
-          >
-            Hue
-          </text>
+          {this.renderValues()}
         </g>
       </svg>
     );
@@ -145,6 +158,8 @@ Hue.propTypes = {
   y: PropTypes.number,
   width: PropTypes.number,
   default: PropTypes.number,
+  withPreview: PropTypes.bool,
+  withValues: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
@@ -153,6 +168,8 @@ Hue.defaultProps = {
   y: 0,
   width: 220,
   default: 0,
+  withPreview: false,
+  withPreview: false,
 };
 
 export default Hue;

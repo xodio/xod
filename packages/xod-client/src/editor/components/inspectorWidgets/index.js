@@ -115,7 +115,7 @@ const WIDGET_MAPPING = {
     normalizeValue: normalizePort,
   },
   [WIDGET_TYPE.COLOR]: {
-    component: ColorPinWidget, // TODO: Replace with custom widget
+    component: ColorPinWidget,
     dataType: BINDABLE_CUSTOM_TYPES.COLOR,
     keyDownHandlers: submitAndSelectOnEnter,
     normalizeValue: normalizeColor,

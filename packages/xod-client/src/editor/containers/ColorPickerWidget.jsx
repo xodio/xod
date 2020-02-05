@@ -14,9 +14,6 @@ import PointingPopup from '../components/PointingPopup';
 import ColorPicker from '../components/ColorPicker';
 import colorPropType from '../components/ColorPicker/colorPropType';
 
-import { UPDATE_COLORPICKER_POSITION } from '../constants';
-import { triggerUpdateColorPickerWidgetPosition } from '../utils';
-
 class ColorPickerWidget extends React.Component {
   constructor(props) {
     super(props);
@@ -50,10 +47,8 @@ class ColorPickerWidget extends React.Component {
     return (
       <PointingPopup
         className="ColorPickerWidget"
-        eventNameUpdate={UPDATE_COLORPICKER_POSITION}
         isVisible={this.props.isVisible}
         selectorPointingAt={this.props.widgetId}
-        triggerUpdatePosition={triggerUpdateColorPickerWidgetPosition}
         hidePopup={this.props.actions.hideColorPickerWidget}
       >
         <ColorPicker color={this.state.color} onChange={this.onChange} />

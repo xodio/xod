@@ -910,3 +910,21 @@ export const showColorPickerWidget = elementId => ({
 export const hideColorPickerWidget = () => ({
   type: ActionType.HIDE_COLORPICKER_WIDGET,
 });
+
+export const tweakNodeProperty = (nodeId, kind, key, value) => (
+  dispatch,
+  getState
+) => {
+  Selectors.getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.NODE_PROPERTY_UPDATING,
+      payload: {
+        id: nodeId,
+        kind,
+        key,
+        value,
+        patchPath,
+      },
+    })
+  );
+};

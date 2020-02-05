@@ -1,15 +1,19 @@
+import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { compose, withState, withHandlers, lifecycle } from 'recompose';
+import { debounce } from 'throttle-debounce';
 
-import { showColorPickerWidget } from '../../../actions';
+import { showColorPickerWidget, tweakNodeProperty } from '../../../actions';
 import PinWidget from './PinWidget';
 import { hex2color } from '../../ColorPicker';
 import ColorPickerWidget from '../../../containers/ColorPickerWidget';
+import { isSessionActive } from '../../../../debugger/selectors';
 
 const ColorPinWidget = compose(
+  withState('value', 'setValue', props => props.value),
   withState('focused', 'setFocus', false),
   // We have to handle input's selection in a tricky way,
   // because we're changing it's value on focus
@@ -28,10 +32,30 @@ const ColorPinWidget = compose(
     },
   }),
   withHandlers({
-    onChangeHandler: props => event => {
-      const value = event.target.value;
-      props.onChange(value);
+    commit: ({ onChange }) => debounce(200, value => onChange(value)),
+  }),
+  withHandlers({
+    onChangeHandler: ({
+      entityId,
+      kind,
+      keyName,
+      isActiveSession,
+      tweakColor,
+      setValue,
+      commit,
+    }) => value => {
+      setValue(value);
+      commit(value);
+      if (isActiveSession) {
+        tweakColor(entityId, kind, keyName, value);
+      }
     },
+  }),
+  withHandlers({
+    onInputChange: ({ onChangeHandler }) => event =>
+      onChangeHandler(event.target.value),
+    onWidgetChange: ({ onChangeHandler }) => color =>
+      onChangeHandler(color.hex),
     onFocus: props => event => {
       props.setSelection([
         event.target.selectionStart,
@@ -63,7 +87,7 @@ const ColorPinWidget = compose(
         type="text"
         id={props.elementId}
         value={props.value}
-        onChange={props.onChangeHandler}
+        onChange={props.onInputChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         onKeyDown={props.onKeyDown}
@@ -78,7 +102,7 @@ const ColorPinWidget = compose(
     </span>
     <ColorPickerWidget
       color={hex2color(props.value)}
-      onChange={color => props.onChange(color.hex, true)}
+      onChange={props.onWidgetChange}
     />
   </PinWidget>
 ));
@@ -108,6 +132,15 @@ ColorPinWidget.defaultProps = {
 };
 
 export default connect(
-  () => ({}),
-  dispatch => bindActionCreators({ showColorPickerWidget }, dispatch)
+  R.applySpec({
+    isActiveSession: isSessionActive,
+  }),
+  dispatch =>
+    bindActionCreators(
+      {
+        showColorPickerWidget,
+        tweakColor: tweakNodeProperty,
+      },
+      dispatch
+    )
 )(ColorPinWidget);
