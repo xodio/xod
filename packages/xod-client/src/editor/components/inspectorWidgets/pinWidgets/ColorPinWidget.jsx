@@ -98,7 +98,7 @@ class ColorPinWidget extends React.Component {
             }}
           />
           <button
-            className="ClorPicker_toggleBtn"
+            className="ColorPicker_toggleBtn"
             style={{ background: this.props.value }}
             onClick={() =>
               this.props.showColorPickerWidget(`#${this.inputRef.id}`)
