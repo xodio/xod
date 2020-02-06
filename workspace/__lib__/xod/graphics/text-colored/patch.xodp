@@ -1,0 +1,92 @@
+{
+  "description": "Represents a text printed with a custom style.",
+  "nodes": [
+    {
+      "description": "A string to display.",
+      "id": "B1xo-MZJmL",
+      "label": "S",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Text color.",
+      "id": "H1uMfby7U",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "id": "SJbsbfZkQI",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "description": "Left point of the text on the canvas.",
+      "id": "SkVjZMb17L",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SyHibGWy7U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SysWzWkQ8",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Text scale. A simple point-based magnification algorithm is used, so the value should be an integer greater or equal to 1.",
+      "id": "rJcMa-1QI",
+      "label": "SCL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Top point of the text on the canvas.",
+      "id": "rkXo-f-yX8",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
