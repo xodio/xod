@@ -1,0 +1,81 @@
+{
+  "description": "Represents a text printed with the foreground color.",
+  "nodes": [
+    {
+      "id": "Bklhkb9KfU",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "description": "A string to display.",
+      "id": "By9QmbJ78",
+      "label": "S",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "ByXhkbqFz8",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Text scale. A simple point-based magnification algorithm is used, so the value should be an integer greater or equal to 1.",
+      "id": "Byg9Q7WJ7U",
+      "label": "SCL",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Top point of the text on the canvas.",
+      "id": "H1b9mmW1mL",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkMnyW9KGI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Left point of the text on the canvas.",
+      "id": "Skz5QQWJQU",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}
