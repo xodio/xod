@@ -32,7 +32,7 @@ import {
   TWEAK_PULSE_SENT,
   NODE_PROPERTY_UPDATING,
 } from './editor/actionTypes';
-import { SAVE_ALL, NODE_UPDATE_PROPERTY } from './project/actionTypes';
+import { SAVE_ALL, NODE_PROPERTY_UPDATED } from './project/actionTypes';
 
 import * as EditorConstants from './editor/constants';
 import * as UtilsConstants from './utils/constants';
@@ -96,7 +96,7 @@ export {
 } from './editor/actionTypes';
 export {
   SAVE_ALL,
-  NODE_UPDATE_PROPERTY,
+  NODE_PROPERTY_UPDATED,
   TWEAK_PULSE_SENT,
 } from './project/actionTypes';
 export {
@@ -188,7 +188,7 @@ export default Object.assign(
     deriveProjectName,
     TAB_CLOSE,
     SAVE_ALL,
-    NODE_UPDATE_PROPERTY,
+    NODE_PROPERTY_UPDATED,
     NODE_PROPERTY_UPDATING,
     TWEAK_PULSE_SENT,
     INSTALL_LIBRARIES_COMPLETE,

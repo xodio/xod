@@ -209,7 +209,7 @@ describe('Hinting', () => {
           updateNodeProperty('SJ7g05EdFe', 'property', 'description', 'hello')
         );
         assert.lengthOf(dispatchedActions, 1);
-        assertActionTypeEqual(PAT.NODE_UPDATE_PROPERTY, dispatchedActions[0]);
+        assertActionTypeEqual(PAT.NODE_PROPERTY_UPDATED, dispatchedActions[0]);
       });
 
       it('do not validate on change the Node label', () => {
@@ -217,7 +217,7 @@ describe('Hinting', () => {
           updateNodeProperty('SJ7g05EdFe', 'property', 'label', 'hello')
         );
         assert.lengthOf(dispatchedActions, 1);
-        assertActionTypeEqual(PAT.NODE_UPDATE_PROPERTY, dispatchedActions[0]);
+        assertActionTypeEqual(PAT.NODE_PROPERTY_UPDATED, dispatchedActions[0]);
       });
     });
 

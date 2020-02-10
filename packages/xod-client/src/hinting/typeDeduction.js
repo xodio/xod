@@ -53,14 +53,14 @@ export const shallDeduceTypes = R.curry((project, action) =>
           // PAT.LINK_ADD,
           // PAT.NODE_CHANGE_ARITY_LEVEL,
           // PAT.NODE_CHANGE_SPECIALIZATION,
-          // For NODE_UPDATE_PROPERTY will be a special check
+          // For NODE_PROPERTY_UPDATED will be a special check
         ])
       ),
       'type'
     ),
     // Deduce types only when changed value of generic pin
     R.allPass([
-      R.propEq('type', PAT.NODE_UPDATE_PROPERTY),
+      R.propEq('type', PAT.NODE_PROPERTY_UPDATED),
       R.complement(R.pathEq(['payload', 'key'], 'label')),
       R.compose(
         foldMaybe(false, XP.isGenericPin),

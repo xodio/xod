@@ -310,7 +310,7 @@ export default (state = {}, action) => {
       );
     }
 
-    case AT.NODE_UPDATE_PROPERTY: {
+    case AT.NODE_PROPERTY_UPDATED: {
       const { id, patchPath } = action.payload;
 
       const currentPatchLens = XP.lensPatch(patchPath);
