@@ -1,6 +1,17 @@
 {
   "links": [
     {
+      "id": "B1LNLLlX8",
+      "input": {
+        "nodeId": "HyeIZC_dr",
+        "pinKey": "SkUjZA_L-"
+      },
+      "output": {
+        "nodeId": "r1SKrUxQL",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "BkPL-A_ur",
       "input": {
         "nodeId": "HyeIZC_dr",
@@ -12,36 +23,14 @@
       }
     },
     {
-      "id": "BkhKbCO_r",
+      "id": "SJ5EL8gmU",
       "input": {
-        "nodeId": "HyeIZC_dr",
-        "pinKey": "SkUjZA_L-"
+        "nodeId": "rJLtSUxmU",
+        "pinKey": "__in__"
       },
       "output": {
         "nodeId": "r18D-Ad_r",
         "pinKey": "HJhXDIY9-"
-      }
-    },
-    {
-      "id": "H1sFWAOur",
-      "input": {
-        "nodeId": "r18D-Ad_r",
-        "pinKey": "BJI7P8t9Z"
-      },
-      "output": {
-        "nodeId": "S1XtWCd_r",
-        "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "HyStZCudB",
-      "input": {
-        "nodeId": "S1XtWCd_r",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "BJUOWC__S",
-        "pinKey": "B19RYS3lW"
       }
     },
     {
@@ -53,6 +42,17 @@
       "output": {
         "nodeId": "HyeIZC_dr",
         "pinKey": "r1yhZRd8W"
+      }
+    },
+    {
+      "id": "SkKV8IlmU",
+      "input": {
+        "nodeId": "r18D-Ad_r",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "BJUOWC__S",
+        "pinKey": "B19RYS3lW"
       }
     },
     {
@@ -90,15 +90,6 @@
       "type": "xod/core/count"
     },
     {
-      "id": "S1XtWCd_r",
-      "position": {
-        "units": "slots",
-        "x": 6,
-        "y": 3
-      },
-      "type": "xod/core/pulse-on-true"
-    },
-    {
       "id": "SkrUWAuOS",
       "position": {
         "units": "slots",
@@ -111,10 +102,19 @@
       "id": "r18D-Ad_r",
       "position": {
         "units": "slots",
-        "x": 10,
-        "y": 2
+        "x": 7,
+        "y": 3
       },
       "type": "xod/core/defer"
+    },
+    {
+      "id": "r1SKrUxQL",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "rJBjb0_OS",
@@ -124,6 +124,15 @@
         "y": 1
       },
       "type": "xod/patch-nodes/tabtest"
+    },
+    {
+      "id": "rJLtSUxmU",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "rJePZ0_ur",

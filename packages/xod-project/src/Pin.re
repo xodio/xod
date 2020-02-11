@@ -67,3 +67,5 @@ let getPrimitiveTypeExn = (pin: t) : primitiveDataType => {
 };
 
 let getLabel = pin => pin##label;
+
+let getType = pin => pin##_type;

@@ -35,3 +35,5 @@ let getPrimitiveTypeExn: t => primitiveDataType;
 let getKey: t => key;
 
 let getLabel: t => string;
+
+let getType: t => dataType;

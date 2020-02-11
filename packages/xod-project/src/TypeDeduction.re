@@ -58,40 +58,70 @@ module ResultsMap = {
 external deducePinTypesWithoutBuses_ : (Patch.t, Project.t) => ResultsMap.t_Js =
   "deducePinTypesWithoutBuses";
 
-let jumperOutPinKey = "__out__";
+let toBusInputPinKey = "__in__";
+let fromBusOutputPinKey = "__out__";
 
 let deducePinTypes: (Patch.t, Project.t) => ResultsMap.t =
-  (patch, project) => {
-    let matchingBusNodes = Buses.getMatchingBusNodes(patch);
-    let jumperizedPatch = Buses.jumperizePatch(patch, matchingBusNodes);
+  (originalPatch, project) => {
+    let matchingBusNodes = Buses.getMatchingBusNodes(originalPatch);
+    let jumperizedPatch = Buses.jumperizePatch(originalPatch, matchingBusNodes);
     let deductionResultsForJumperizedPatch =
       jumperizedPatch
       |. deducePinTypesWithoutBuses_(project)
       |. ResultsMap.fromJsDict;
-    List.reduce(
-      matchingBusNodes,
-      deductionResultsForJumperizedPatch,
-      (deductionResults, (toBusNode, fromBusNodes)) => {
-        let jumperNodeId = Node.getId(toBusNode);
-        switch (
-          ResultsMap.get(deductionResults, jumperNodeId, jumperOutPinKey)
-        ) {
-        | None => deductionResults
-        | Some(deductionResultForJumperOut) =>
-          let fromBusNodeIds = List.map(fromBusNodes, Node.getId);
-          let copyResultToFromBusNodes = drs =>
-            List.reduce(fromBusNodeIds, drs, (accDrs, nodeId) =>
-              ResultsMap.assoc(
-                accDrs,
-                nodeId,
-                jumperOutPinKey,
-                deductionResultForJumperOut,
-              )
-            );
-          deductionResults
-          |. ResultsMap.dissoc(jumperNodeId, jumperOutPinKey)
-          |. copyResultToFromBusNodes;
-        };
-      },
-    );
+    
+    switch (List.length(matchingBusNodes)) {
+      | 0 => deductionResultsForJumperizedPatch
+      | _ =>
+        let linksByInputNodeId =
+          originalPatch
+          |. Patch.listLinks
+          |. BeltHoles.List.groupByString(Link.getInputNodeId);
+        List.reduce(
+          matchingBusNodes,
+          deductionResultsForJumperizedPatch,
+          (deductionResults, (toBusNode, fromBusNodes)) => {
+            let toBusNodeId = Node.getId(toBusNode);
+
+            linksByInputNodeId
+            |. Map.String.get(toBusNodeId)
+            |. Option.flatMap(List.head)
+            |. Option.mapWithDefault(deductionResults, linkFromSource => {
+                let sourceNodeId = Link.getOutputNodeId(linkFromSource);
+                let sourcePinKey = Link.getOutputPinKey(linkFromSource);
+
+                let deductionResultForSourceOutput = switch (
+                  ResultsMap.get(deductionResults, sourceNodeId, sourcePinKey)
+                ) {
+                | Some(deductionResult) => deductionResult
+                | None =>
+                    // it's not in the deducted types,
+                    // so it must be a non-generic pin
+                    // (or even from a dead node)
+                    originalPatch
+                    |. Patch.getNodeById(sourceNodeId)
+                    |. Option.flatMap(Project.getPatchByNode(project))
+                    |. Option.flatMap(Patch.getPinByKey(_, sourcePinKey))
+                    |. Option.map(Pin.getType)
+                    |. Option.mapWithDefault(Result.Error([||]), pinType => Result.Ok(pinType));
+                };
+
+                let fromBusNodeIds = List.map(fromBusNodes, Node.getId);
+                let copyResultToFromBusNodes = drs =>
+                  List.reduce(fromBusNodeIds, drs, (accDrs, nodeId) =>
+                    ResultsMap.assoc(
+                      accDrs,
+                      nodeId,
+                      fromBusOutputPinKey,
+                      deductionResultForSourceOutput,
+                    )
+                  );
+
+                deductionResults
+                |. ResultsMap.assoc(toBusNodeId, toBusInputPinKey, deductionResultForSourceOutput)
+                |. copyResultToFromBusNodes;
+              })
+          },
+        );
+    }
   };
