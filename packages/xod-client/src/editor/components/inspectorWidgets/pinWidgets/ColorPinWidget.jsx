@@ -5,17 +5,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { throttle } from 'throttle-debounce';
 
-import { showColorPickerWidget, tweakNodeProperty } from '../../../actions';
+import {
+  showColorPickerWidget,
+  hideColorPickerWidget,
+  tweakNodeProperty,
+} from '../../../actions';
 import PinWidget from './PinWidget';
 import { hex2color } from '../../ColorPicker';
-import ColorPickerWidget from '../../../containers/ColorPickerWidget';
+import ColorPickerWidget from '../ColorPickerWidget';
 import { isSessionActive } from '../../../../debugger/selectors';
+import { getVisibleColorPickerWidgetId } from '../../../selectors';
 
 class ColorPinWidget extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.value,
       focused: false,
       selection: [0, 0],
     };
@@ -28,14 +32,10 @@ class ColorPinWidget extends React.Component {
     this.onWidgetChange = this.onWidgetChange.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.selection !== this.state.selection && this.inputRef) {
-      this.inputRef.setSelectionRange(
-        this.state.selection[0],
-        this.state.selection[1]
-      );
-    }
+
+    this.showColorPickerWidget = this.showColorPickerWidget.bind(this);
+    this.hideColorPickerWidget = this.hideColorPickerWidget.bind(this);
+    this.storeInputRef = this.storeInputRef.bind(this);
   }
 
   onValueTweaked(value) {
@@ -43,7 +43,6 @@ class ColorPinWidget extends React.Component {
     return tweakColor(entityId, kind, keyName, value);
   }
   onChangeHandler(value) {
-    this.setState({ value });
     this.props.onChange(value);
     if (this.props.isActiveSession) {
       this.onValueTweaked(value);
@@ -67,6 +66,17 @@ class ColorPinWidget extends React.Component {
       selection: [0, 0],
     });
     this.props.onBlur();
+  }
+
+  showColorPickerWidget() {
+    this.props.showColorPickerWidget(this.props.elementId);
+  }
+  hideColorPickerWidget() {
+    this.props.hideColorPickerWidget();
+  }
+
+  storeInputRef(el) {
+    this.inputRef = el;
   }
 
   render() {
@@ -93,21 +103,22 @@ class ColorPinWidget extends React.Component {
             onBlur={this.onBlur}
             onKeyDown={this.props.onKeyDown}
             spellCheck={false}
-            ref={el => {
-              this.inputRef = el;
-            }}
+            ref={this.storeInputRef}
           />
           <button
             className="ColorPicker_toggleBtn"
             style={{ background: this.props.value }}
-            onClick={() =>
-              this.props.showColorPickerWidget(`#${this.inputRef.id}`)
-            }
+            onClick={this.showColorPickerWidget}
           />
         </span>
         <ColorPickerWidget
+          widgetId={this.props.elementId}
+          isVisible={
+            this.props.visibleColorPickerWidgetId === this.props.elementId
+          }
           color={hex2color(this.props.value)}
           onChange={this.onWidgetChange}
+          onClose={this.hideColorPickerWidget}
         />
       </PinWidget>
     );
@@ -128,12 +139,14 @@ ColorPinWidget.propTypes = {
   deducedType: PropTypes.object,
   direction: PropTypes.string,
   isActiveSession: PropTypes.bool,
+  visibleColorPickerWidgetId: PropTypes.string,
 
   value: PropTypes.string,
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onKeyDown: PropTypes.func.isRequired,
   showColorPickerWidget: PropTypes.func.isRequired,
+  hideColorPickerWidget: PropTypes.func.isRequired,
   tweakColor: PropTypes.func.isRequired,
 };
 
@@ -141,16 +154,19 @@ ColorPinWidget.defaultProps = {
   label: 'Unnamed property',
   value: '',
   disabled: false,
+  visibleColorPickerWidgetId: null,
 };
 
 export default connect(
   R.applySpec({
     isActiveSession: isSessionActive,
+    visibleColorPickerWidgetId: getVisibleColorPickerWidgetId,
   }),
   dispatch =>
     bindActionCreators(
       {
         showColorPickerWidget,
+        hideColorPickerWidget,
         tweakColor: tweakNodeProperty,
       },
       dispatch

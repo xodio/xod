@@ -42,16 +42,16 @@ class SatLightBox extends React.Component {
     this.unbindHandlers = this.unbindHandlers.bind(this);
   }
   unbindHandlers() {
-    document.addEventListener('mousemove', this.handleMove);
-    document.addEventListener('mouseup', this.handleEnd);
-    document.addEventListener('dragstart', preventDefaultOnly);
+    document.removeEventListener('mousemove', this.handleMove);
+    document.removeEventListener('mouseup', this.handleEnd);
+    document.removeEventListener('dragstart', preventDefaultOnly);
   }
 
   handleStart() {
     this.setState({ dragging: true });
     document.addEventListener('mousemove', this.handleMove);
     document.addEventListener('mouseup', this.handleEnd);
-    document.removeEventListener('dragstart', preventDefaultOnly);
+    document.addEventListener('dragstart', preventDefaultOnly);
   }
 
   handleMove(event) {

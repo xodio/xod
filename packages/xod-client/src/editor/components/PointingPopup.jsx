@@ -11,6 +11,13 @@ import CloseButton from '../../core/components/CloseButton';
 // might be hidden outside the viewbox of the container.
 const ALLOWED_OFFSET = 5;
 
+// :: String -> String
+// It makes a safe selector for `querySelector`.
+// For example, some variadic inputs have an id, like:
+// `#widget_asdasda-$1`, which is not a valid querySelector
+// and we have to escap the `$` symbol.
+const safeSelector = R.replace(/(\$)/g, '\\$1');
+
 const getRelativeOffsetTop = (containerEl, el, offset = 0) => {
   if (el === containerEl) return offset;
   if (el.tagName === 'BODY') return 0;
@@ -88,7 +95,9 @@ class PointingPopup extends React.Component {
   }
   onUpdatePosition() {
     if (!this.ref || !this.props.isVisible) return;
-    const item = document.querySelector(this.props.selectorPointingAt);
+    const item = document.querySelector(
+      safeSelector(this.props.selectorPointingAt)
+    );
     if (!item) return;
     const container = item.closest('.inner-container');
     const position = calculatePointingPopupPosition(container, item);

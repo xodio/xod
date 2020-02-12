@@ -665,21 +665,12 @@ const editorReducer = (state = {}, action) => {
     case EAT.SHOW_COLORPICKER_WIDGET:
       return R.over(
         R.lensProp('pointingPopups'),
-        R.compose(
-          R.assocPath(['colorPickerWidget', 'isVisible'], true),
-          R.assocPath(
-            ['colorPickerWidget', 'elementId'],
-            action.payload.elementId
-          )
-        )
+        R.assoc('colorPickerWidget', action.payload.widgetId)
       )(state);
     case EAT.HIDE_COLORPICKER_WIDGET:
       return R.over(
         R.lensProp('pointingPopups'),
-        R.compose(
-          R.assocPath(['colorPickerWidget', 'isVisible'], false),
-          R.assocPath(['colorPickerWidget', 'elementId'], null)
-        )
+        R.assoc('colorPickerWidget', null)
       )(state);
 
     default:

@@ -902,9 +902,9 @@ export const sendTweakPulse = tweakNodeId => (dispatch, getState) => {
   );
 };
 
-export const showColorPickerWidget = elementId => ({
+export const showColorPickerWidget = widgetId => ({
   type: ActionType.SHOW_COLORPICKER_WIDGET,
-  payload: { elementId },
+  payload: { widgetId },
 });
 
 export const hideColorPickerWidget = () => ({

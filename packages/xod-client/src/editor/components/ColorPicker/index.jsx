@@ -110,7 +110,7 @@ class ColorPicker extends React.Component {
         <div className="ColorPicker_values">
           <div>
             <input
-              id="ColorPicker_Hue"
+              id={`ColorPicker_Hue_${this.props.widgetId}`}
               value={hue}
               onChange={this.onHueInputChange}
               onBlur={this.commitInputs}
@@ -120,7 +120,7 @@ class ColorPicker extends React.Component {
           </div>
           <div>
             <input
-              id="ColorPicker_Saturation"
+              id={`ColorPicker_Saturation_${this.props.widgetId}`}
               value={saturation}
               onChange={this.onSaturationInputChange}
               onBlur={this.commitInputs}
@@ -130,7 +130,7 @@ class ColorPicker extends React.Component {
           </div>
           <div>
             <input
-              id="ColorPicker_Lightness"
+              id={`ColorPicker_Lightness_${this.props.widgetId}`}
               value={lightness}
               onChange={this.onLightnessInputChange}
               onBlur={this.commitInputs}
@@ -145,6 +145,7 @@ class ColorPicker extends React.Component {
 }
 
 ColorPicker.propTypes = {
+  widgetId: PropTypes.string.isRequired,
   color: colorPropType,
   onChange: PropTypes.func,
 };
