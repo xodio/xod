@@ -64,14 +64,14 @@ let fromBusOutputPinKey = "__out__";
 let deducePinTypes: (Patch.t, Project.t) => ResultsMap.t =
   (originalPatch, project) => {
     let matchingBusNodes = Buses.getMatchingBusNodes(originalPatch);
-    let jumperizedPatch = Buses.jumperizePatch(originalPatch, matchingBusNodes);
-    let deductionResultsForJumperizedPatch =
-      jumperizedPatch
+    let linkifiedPatch = Buses.linkifyPatch(originalPatch, matchingBusNodes);
+    let deductionResultsForLinkifiedPatch =
+      linkifiedPatch
       |. deducePinTypesWithoutBuses_(project)
       |. ResultsMap.fromJsDict;
     
     switch (List.length(matchingBusNodes)) {
-      | 0 => deductionResultsForJumperizedPatch
+      | 0 => deductionResultsForLinkifiedPatch
       | _ =>
         let linksByInputNodeId =
           originalPatch
@@ -79,7 +79,7 @@ let deducePinTypes: (Patch.t, Project.t) => ResultsMap.t =
           |. BeltHoles.List.groupByString(Link.getInputNodeId);
         List.reduce(
           matchingBusNodes,
-          deductionResultsForJumperizedPatch,
+          deductionResultsForLinkifiedPatch,
           (deductionResults, (toBusNode, fromBusNodes)) => {
             let toBusNodeId = Node.getId(toBusNode);
 

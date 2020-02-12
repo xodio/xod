@@ -37,7 +37,7 @@ let getMatchingBusNodes = patch => {
   };
 };
 
-let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
+let linkifyPatch: (Patch.t, matchingBusNodes) => Patch.t =
   (originalPatch, matchingBusNodes) => {
     List.reduce(
       matchingBusNodes,
@@ -90,12 +90,12 @@ let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
     );
   };
 
-let jumperizePatchRecursively = (project, entryPatchPath) =>
+let linkifyPatchRecursively = (project, entryPatchPath) =>
   project
   |. Project.getPatchDependencies(entryPatchPath)
   |. List.add(entryPatchPath)
   |. List.keepMap(Project.getPatchByPath(project))
-  |. List.map(p => jumperizePatch(p, getMatchingBusNodes(p)))
+  |. List.map(p => linkifyPatch(p, getMatchingBusNodes(p)))
   |> Project.upsertPatches(project);
 
 /* move to Link module? */

@@ -14,14 +14,14 @@ const calculateNodeIdForStructuralComparison = node => {
 };
 
 describe('buses', () => {
-  describe('jumperizePatchRecursively', () => {
+  describe('linkifyPatchRecursively', () => {
     it('replaces bus nodes with links', () => {
-      const project = H.loadXodball('./fixtures/jumperize.xodball');
+      const project = H.loadXodball('./fixtures/linkify.xodball');
 
-      const actualProject = XP.jumperizePatchRecursively('@/main', project);
+      const actualProject = XP.linkifyPatchRecursively('@/main', project);
 
       const expectedProject = H.loadXodball(
-        './fixtures/jumperize.expected.xodball'
+        './fixtures/linkify.expected.xodball'
       );
 
       H.assertPatchesAreStructurallyEqual(

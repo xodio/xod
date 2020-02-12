@@ -658,7 +658,7 @@ const transformProjectWithImpls = def(
       R.map(XP.extractBoundInputsToConstNodes(path)),
       R.chain(XP.flatten(R.__, path)),
       R.map(XP.expandVariadicNodes(path)),
-      R.map(XP.jumperizePatchRecursively(path)),
+      R.map(XP.linkifyPatchRecursively(path)),
       R.chain(XP.autoresolveTypes(path)),
       R.unless(
         () => liveness !== LIVENESS.NONE,

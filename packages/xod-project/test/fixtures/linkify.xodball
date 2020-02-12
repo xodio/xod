@@ -1,5 +1,5 @@
 {
-  "name": "jumperize",
+  "name": "linkify",
   "patches": {
     "@/bar": {
       "nodes": {
