@@ -1,0 +1,70 @@
+{
+  "description": "The main device node for the ST7735 displays.\n\nPhysically, some displays based on the 7735 chip may differ from each other and have different sets of instructions for initialization. To solve this, the ST7735  node should proceed with an inialize node of a specific type.",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "D255"
+      },
+      "description": "The \"reset input\" board port the display is connected to.  It can be named RESET, RES. If the display does not have a reset port leave the D255 default value at the RST pin.",
+      "id": "H1W97S7eXI",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "H1j0wXe7U",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "The display device.",
+      "id": "HyRfu09iS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "SJxAXhqqoH",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The \"chip select\" board port of the SPI interface the display is connected to.",
+      "id": "r1e5QB7xQI",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
+      "id": "rkqmS7eQU",
+      "label": "DC",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}
