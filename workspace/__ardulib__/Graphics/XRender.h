@@ -7,7 +7,7 @@
  */
 class XRenderer {
 public:
-    virtual void renderScanlinePart(int16_t scanline, int16_t xmin, int16_t xmax, uint16_t* lineBuffer) = 0;
+    virtual void renderScanlinePart(int16_t scanline, int16_t xmin, int16_t xmax, const uint16_t* lineBuffer) = 0;
 
     virtual int16_t getScreenWidth() const;
     virtual int16_t getScreenHeight() const;
