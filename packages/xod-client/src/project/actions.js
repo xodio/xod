@@ -217,7 +217,7 @@ export const updateNodeProperty = (nodeId, propKind, propKey, propValue) => (
 ) => {
   getCurrentPatchPath(getState()).map(patchPath =>
     dispatch({
-      type: ActionType.NODE_UPDATE_PROPERTY,
+      type: ActionType.NODE_PROPERTY_UPDATED,
       payload: {
         id: nodeId,
         kind: propKind,

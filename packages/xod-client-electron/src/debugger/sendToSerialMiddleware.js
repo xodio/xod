@@ -19,8 +19,9 @@ export default ({ getState }) => next => action => {
   }
 
   const isTweakActionType =
-    action.type === client.NODE_UPDATE_PROPERTY ||
-    action.type === client.TWEAK_PULSE_SENT;
+    action.type === client.NODE_PROPERTY_UPDATED ||
+    action.type === client.TWEAK_PULSE_SENT ||
+    action.type === client.NODE_PROPERTY_UPDATING;
   if (isTweakActionType && client.isSerialDebugRunning(state)) {
     const { id: nodeId, value = '', patchPath } = action.payload;
     const nodeType = R.compose(

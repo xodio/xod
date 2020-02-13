@@ -11,11 +11,7 @@ import {
   subtractPoints,
   GAP_IN_SLOTS,
 } from '../project/nodeLayout';
-import {
-  SELECTION_ENTITY_TYPE,
-  PANEL_IDS,
-  UPDATE_HELPBOX_POSITION,
-} from './constants';
+import { SELECTION_ENTITY_TYPE, PANEL_IDS } from './constants';
 
 export const getTabByPatchPath = R.curry((patchPath, tabs) =>
   R.compose(R.find(R.propEq('patchPath', patchPath)), R.values)(tabs)
@@ -311,55 +307,3 @@ export const getMaximizedPanelsBySidebarId = R.compose(
   filterMaximized,
   getPanelsBySidebarId
 );
-
-const calculateHelpboxPosition = (container, item) => {
-  const scrollTop = container.scrollTop;
-  const height = container.offsetHeight;
-  const viewBottom = scrollTop + height;
-
-  const elHeight = item.offsetHeight;
-  const elTop = item.offsetTop;
-  const elBottom = elHeight + elTop;
-  const elVisible = elBottom <= viewBottom && elTop >= scrollTop;
-  const elBox = item.getClientRects()[0];
-
-  return {
-    isVisible: elVisible,
-    top: Math.ceil(elBox.top),
-    left: Math.ceil(elBox.left),
-    right: Math.ceil(elBox.right),
-  };
-};
-
-export const triggerUpdateHelpboxPositionViaProjectBrowser = event => {
-  const container = document
-    .getElementById('ProjectBrowser')
-    .getElementsByClassName('inner-container')[0];
-  const selectedElement =
-    event && event.type === 'click'
-      ? event.target.closest('.PatchGroupItem')
-      : container.getElementsByClassName('isSelected')[0];
-
-  if (container && selectedElement) {
-    window.dispatchEvent(
-      new window.CustomEvent(UPDATE_HELPBOX_POSITION, {
-        detail: calculateHelpboxPosition(container, selectedElement),
-      })
-    );
-  }
-};
-
-export const triggerUpdateHelpboxPositionViaSuggester = () => {
-  const suggester = document.getElementById('Suggester');
-  if (!suggester) return;
-  const container = suggester.getElementsByClassName('inner-container')[0];
-  const item = suggester.getElementsByClassName('is-highlighted')[0];
-
-  if (container && item) {
-    window.dispatchEvent(
-      new window.CustomEvent(UPDATE_HELPBOX_POSITION, {
-        detail: calculateHelpboxPosition(container, item),
-      })
-    );
-  }
-};

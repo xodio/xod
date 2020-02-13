@@ -22,6 +22,7 @@
     "big.js": "^5.2.2",
     "classnames": "^2.2.5",
     "codemirror": "^5.31.0",
+    "color-convert": "^2.0.1",
     "escape-string-regexp": "^1.0.5",
     "font-awesome": "^4.6.3",
     "line-intersection": "^1.0.8",

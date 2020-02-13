@@ -10,7 +10,7 @@ const NodeLabel = ({ text, ...props }) => (
 );
 
 NodeLabel.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string, // could be empty for terminals in Helpbox preview
 };
 
 export default NodeLabel;

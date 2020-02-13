@@ -111,7 +111,7 @@ const shallValidateFunctions = {
       XP.getPatchByPath(action.payload.patchPath)
     )(project);
   },
-  [PAT.NODE_UPDATE_PROPERTY]: (action, project) => {
+  [PAT.NODE_PROPERTY_UPDATED]: (action, project) => {
     const key = action.payload.key;
     // If User changed property, not a pin value — do not validate
     if (key === 'description') return false;

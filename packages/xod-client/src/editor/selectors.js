@@ -237,3 +237,13 @@ export const simulationWorker = R.compose(
   R.prop('simulationWorker'),
   getEditor
 );
+
+//
+// pointing popups
+//
+const getPointingPopups = R.pipe(getEditor, R.prop('pointingPopups'));
+
+export const getVisibleColorPickerWidgetId = R.pipe(
+  getPointingPopups,
+  R.propOr(null, ['colorPickerWidget'])
+);

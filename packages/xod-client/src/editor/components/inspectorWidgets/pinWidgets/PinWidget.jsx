@@ -75,7 +75,7 @@ PinWidget.propTypes = {
   isBindable: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   deducedType: PropTypes.object,
   direction: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-  children: PropTypes.element,
+  children: PropTypes.node,
 };
 
 PinWidget.defaultProps = {

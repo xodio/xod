@@ -85,4 +85,8 @@ SidebarPanel.propTypes = {
   onScroll: PropTypes.func,
 };
 
+SidebarPanel.defaultProps = {
+  onScroll: () => {},
+};
+
 export default SidebarPanel;

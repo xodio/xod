@@ -12,15 +12,20 @@ import {
 } from './selectors';
 import * as editorSelectors from '../editor/selectors';
 
-import { NODE_UPDATE_PROPERTY } from '../project/actionTypes';
-import { TWEAK_PULSE_SENT } from '../editor/actionTypes';
+import { NODE_PROPERTY_UPDATED } from '../project/actionTypes';
+import {
+  TWEAK_PULSE_SENT,
+  NODE_PROPERTY_UPDATING,
+} from '../editor/actionTypes';
 
 export default ({ getState }) => next => action => {
   const state = getState();
   const result = next(action);
 
   const isTweakActionType =
-    action.type === NODE_UPDATE_PROPERTY || action.type === TWEAK_PULSE_SENT;
+    action.type === NODE_PROPERTY_UPDATED ||
+    action.type === TWEAK_PULSE_SENT ||
+    action.type === NODE_PROPERTY_UPDATING;
   if (isTweakActionType && isSimulationRunning(state)) {
     const { id: nodeId, value = '', patchPath } = action.payload;
     const nodeType = R.compose(

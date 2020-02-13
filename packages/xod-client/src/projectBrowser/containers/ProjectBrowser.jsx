@@ -40,7 +40,6 @@ import {
   FILTER_CONTEXT_MENU_ID,
 } from '../constants';
 import { PANEL_IDS, SIDEBAR_IDS } from '../../editor/constants';
-import { triggerUpdateHelpboxPositionViaProjectBrowser } from '../../editor/utils';
 
 const pickPatchPartsForComparsion = R.map(
   R.pick(['isDeprecated', 'isUtility', 'dead', 'path'])
@@ -74,9 +73,6 @@ class ProjectBrowser extends React.Component {
     this.renderItem = this.renderItem.bind(this);
     this.renderLocalPatches = this.renderLocalPatches.bind(this);
     this.renderLibraryPatches = this.renderLibraryPatches.bind(this);
-  }
-  componentDidMount() {
-    triggerUpdateHelpboxPositionViaProjectBrowser();
   }
   shouldComponentUpdate(nextProps) {
     return !R.eqBy(pickPropsForComparsion, nextProps, this.props);
@@ -202,10 +198,7 @@ class ProjectBrowser extends React.Component {
         onDoubleClick={() => switchPatch(path)}
         onBeginDrag={startDraggingPatch}
         isSelected={path === selectedPatchPath}
-        onClick={event => {
-          triggerUpdateHelpboxPositionViaProjectBrowser(event);
-          setSelection(path);
-        }}
+        onClick={() => setSelection(path)}
         collectPropsFn={collectPropsFn}
         hoverButtons={this.renderHoveredButtons(collectPropsFn)}
       />
@@ -360,7 +353,6 @@ class ProjectBrowser extends React.Component {
           sidebarId={this.props.sidebarId}
           autohide={this.props.autohide}
           additionalButtons={this.renderToolbarButtons()}
-          onScroll={triggerUpdateHelpboxPositionViaProjectBrowser}
         >
           {this.renderPatches()}
         </SidebarPanel>

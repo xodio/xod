@@ -901,3 +901,30 @@ export const sendTweakPulse = tweakNodeId => (dispatch, getState) => {
     })
   );
 };
+
+export const showColorPickerWidget = widgetId => ({
+  type: ActionType.SHOW_COLORPICKER_WIDGET,
+  payload: { widgetId },
+});
+
+export const hideColorPickerWidget = () => ({
+  type: ActionType.HIDE_COLORPICKER_WIDGET,
+});
+
+export const tweakNodeProperty = (nodeId, kind, key, value) => (
+  dispatch,
+  getState
+) => {
+  Selectors.getCurrentPatchPath(getState()).map(patchPath =>
+    dispatch({
+      type: ActionType.NODE_PROPERTY_UPDATING,
+      payload: {
+        id: nodeId,
+        kind,
+        key,
+        value,
+        patchPath,
+      },
+    })
+  );
+};

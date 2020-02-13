@@ -662,6 +662,17 @@ const editorReducer = (state = {}, action) => {
         closeTabById(DEBUGGER_TAB_ID)
       )(state);
 
+    case EAT.SHOW_COLORPICKER_WIDGET:
+      return R.over(
+        R.lensProp('pointingPopups'),
+        R.assoc('colorPickerWidget', action.payload.widgetId)
+      )(state);
+    case EAT.HIDE_COLORPICKER_WIDGET:
+      return R.over(
+        R.lensProp('pointingPopups'),
+        R.assoc('colorPickerWidget', null)
+      )(state);
+
     default:
       return state;
   }
