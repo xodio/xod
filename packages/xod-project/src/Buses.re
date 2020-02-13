@@ -6,8 +6,6 @@ type matchingBusNodes = list((Node.t, list(Node.t)));
 
 [@bs.module ".."] external toBusPatchPath : Patch.path = "TO_BUS_PATH";
 
-[@bs.module ".."] external jumperPatchPath : Patch.path = "JUMPER_PATCH_PATH";
-
 let getMatchingBusNodes = patch => {
   let nodes = Patch.listNodes(patch);
   let toBusNodesByLabel =
@@ -39,53 +37,65 @@ let getMatchingBusNodes = patch => {
   };
 };
 
-let jumperizePatch: (Patch.t, matchingBusNodes) => Patch.t =
-  (patch, matchingBusNodes) => {
-    let linksByOutputNodeId =
-      patch
-      |. Patch.listLinks
-      |. BeltHoles.List.groupByString(Link.getOutputNodeId);
+let linkifyPatch: (Patch.t, matchingBusNodes) => Patch.t =
+  (originalPatch, matchingBusNodes) => {
     List.reduce(
       matchingBusNodes,
-      patch,
-      (jPatch, (toBusNode, fromBusNodes)) => {
-        let jumperNodeId = Node.getId(toBusNode);
-        let linksFromJumperToBusDestinations =
-          fromBusNodes
-          |. List.map(fromBusNode =>
-               Map.String.getWithDefault(
-                 linksByOutputNodeId,
-                 Node.getId(fromBusNode),
-                 [],
-               )
-             )
-          |. List.flatten
-          |. List.map(link =>
-               Link.create(
-                 ~toPin=Link.getInputPinKey(link),
-                 ~toNode=Link.getInputNodeId(link),
-                 ~fromPin="__out__",
-                 ~fromNode=jumperNodeId,
-               )
-             );
-        let dissocFromBusNodes = patchWithFromBusNodes =>
-          List.reduce(fromBusNodes, patchWithFromBusNodes, (accP, n) =>
-            Patch.dissocNode(accP, Node.getId(n))
-          );
-        jPatch
-        |. Patch.assocNode(Node.setType(jumperPatchPath, toBusNode))
-        |. dissocFromBusNodes
-        |. Patch.upsertLinks(linksFromJumperToBusDestinations);
+      originalPatch,
+      (patch, (toBusNode, fromBusNodes)) => {
+        let toBusNodeId = Node.getId(toBusNode);
+
+        let linksByOutputNodeId =
+          patch
+          |. Patch.listLinks
+          |. BeltHoles.List.groupByString(Link.getOutputNodeId);
+
+        patch
+          |. Patch.listLinks
+          |. List.keep(l => Link.getInputNodeId(l) == toBusNodeId)
+          |. List.head
+          |. Option.mapWithDefault(patch, linkFromSource => {
+            let sourceNodeId = Link.getOutputNodeId(linkFromSource);
+            let sourcePinKey = Link.getOutputPinKey(linkFromSource);
+
+            let linksFromSourceToBusDestinations =
+            fromBusNodes
+            |. List.map(fromBusNode =>
+                Map.String.getWithDefault(
+                  linksByOutputNodeId,
+                  Node.getId(fromBusNode),
+                  [],
+                )
+              )
+            |. List.flatten
+            |. List.map(link =>
+                Link.create(
+                  ~toPin=Link.getInputPinKey(link),
+                  ~toNode=Link.getInputNodeId(link),
+                  ~fromPin=sourcePinKey,
+                  ~fromNode=sourceNodeId,
+                )
+              );
+
+          let dissocFromBusNodes = patchWithFromBusNodes =>
+            List.reduce(fromBusNodes, patchWithFromBusNodes, (accP, n) =>
+              Patch.dissocNode(accP, Node.getId(n))
+            );
+          patch
+          |. Patch.dissocNode(toBusNodeId)
+          |. dissocFromBusNodes
+          |. Patch.upsertLinks(linksFromSourceToBusDestinations);
+          });
       },
     );
   };
 
-let jumperizePatchRecursively = (project, entryPatchPath) =>
+let linkifyPatchRecursively = (project, entryPatchPath) =>
   project
   |. Project.getPatchDependencies(entryPatchPath)
   |. List.add(entryPatchPath)
   |. List.keepMap(Project.getPatchByPath(project))
-  |. List.map(p => jumperizePatch(p, getMatchingBusNodes(p)))
+  |. List.map(p => linkifyPatch(p, getMatchingBusNodes(p)))
   |> Project.upsertPatches(project);
 
 /* move to Link module? */

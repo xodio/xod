@@ -1,6 +1,6 @@
-let jumperizePatchRecursivelyU: (Patch.path, Project.t) => Project.t =
+let linkifyPatchRecursivelyU: (Patch.path, Project.t) => Project.t =
   (patchPath, project) =>
-    Buses.jumperizePatchRecursively(project, patchPath);
+    Buses.linkifyPatchRecursively(project, patchPath);
 
 let splitLinksToBusesU:
   ((Node.t, Pin.t) => Position.t, Patch.path, array(Link.id), Project.t) =>
