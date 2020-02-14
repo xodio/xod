@@ -114,7 +114,7 @@ void ST7735::begin() {
 
     // Toggle RST low to reset; CS low so it'll listen to us.
     *csport &= ~cspinmask;
-    if (_rst == NOT_A_PIN)
+    if (_rst == 255)
         return;
 
     pinMode(_rst, OUTPUT);
