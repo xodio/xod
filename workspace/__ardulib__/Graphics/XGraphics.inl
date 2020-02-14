@@ -29,7 +29,7 @@ void XGraphics::render(XRenderer* renderer) {
 
     int16_t scanlineCount = (pivotY + canvasBBox.height >= screenHeight) ? screenHeight - pivotY : canvasBBox.height;
 
-    for (int16_t scanline = 0; scanline <= scanlineCount; scanline++) {
+    for (int16_t scanline = 0; scanline < scanlineCount; scanline++) {
         uint16_t buffer[bufferSize];
         renderScanlineRecursively(renderer, scanline, buffer, bufferSize);
         renderer->renderScanlinePart(pivotY + scanline, pivotX, pivotX + bufferSize - 1, buffer);
