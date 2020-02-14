@@ -35,6 +35,6 @@ template <uint8_t cs, uint8_t dc, uint8_t rst>
 void evaluateTmpl(Context ctx) {
     static_assert(isValidDigitalPort(cs), "must be a valid digital port");
     static_assert(isValidDigitalPort(dc), "must be a valid digital port");
-    static_assert(isValidDigitalPort(rst), "must be a valid digital port");
+    static_assert(rst == 255 || isValidDigitalPort(rst), "must be a valid digital port");
     evaluate(ctx);
 }
