@@ -2,5 +2,5 @@
   "description": "Nodes for parsing JSON from a stream of characters",
   "license": "AGPL-3.0",
   "name": "json",
-  "version": "0.32.1"
+  "version": "0.33.0"
 }
