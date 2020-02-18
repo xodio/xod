@@ -916,7 +916,7 @@ bool isTimedOut(const ContextT* ctx) {
     return detail::isTimedOut(ctx->_node);
 }
 
-constexpr bool isValidDigitalPort(uint8_t port) {
+bool isValidDigitalPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
@@ -924,7 +924,7 @@ constexpr bool isValidDigitalPort(uint8_t port) {
 #endif
 }
 
-constexpr bool isValidAnalogPort(uint8_t port) {
+bool isValidAnalogPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else

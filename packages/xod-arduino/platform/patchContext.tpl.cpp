@@ -114,11 +114,10 @@ template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
 template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
-            "{{#each outputs}}{{#unless (isReadOnlyPin this)}} output_{{pinKey}}{{/unless}}{{/each}}");
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
 }
 
 {{#each outputs}}
-{{#unless (isReadOnlyPin this)}}
 template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
   {{#unless (isPulse type)}}
     ctx->_node->output_{{ pinKey }} = val;
@@ -130,7 +129,6 @@ template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} v
     {{#if ../isDefer}}if (isEarlyDeferPass()) {{/if}}ctx->_node->errors.output_{{ pinKey }} = false;
   {{/if}}
 }
-{{/unless}}
 {{/each}}
 
 State* getState(Context ctx) {
@@ -169,7 +167,7 @@ void raiseError(Context ctx) {
   {{/each}}
 }
 
-{{/if}}{{!-- raisesErrors --}}
+{{/if}}
 
 
 {{#if catchesErrors}}
@@ -186,4 +184,4 @@ template<> uint8_t getError<input_{{ pinKey }}>(Context ctx) {
     return ctx->_error_input_{{ pinKey }};
 }
 {{/each}}
-{{/if}}{{!-- catchesErrors --}}
+{{/if}}
