@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not Yet Released
+
+### Features and enhancements
+
+* [ide] Extended support for the `color` type: a value can be entered as hex literal (like `#FACE8D`) or selected using a color picker widget (#1926, #1953)
+* [c++] Move the `XColor` type definition from `xod/color/color` to the global `xod` scope (#1928)
+* [core] Optimize the size of generated C++ code (#1925, #1943)
+
+### Bug fixes
+
+* [ide] Properly stop the running simulation session when opening a new project (#1924)
+* [core] Fix a case when using bus nodes along with generic pins could break type casting (#1958)
+* [nodes] Fix `xod/core/throttle` node that was ignoring incoming values at program starup (#1963)
+
+### New nodes
+
+* [xod/debug/tweak-color](https://xod.io/libs/xod/debug/tweak-color/) — Node for tweaking color values during debug or simulation sessions (#1942)
+* [xod-dev/ws2812](https://xod.io/libs/xod-dev/ws2812/) — Nodes to work with WS2812, also known as NeoPixel (#1931, #1937)
+* [xod/core/pulse-on-change(byte)](<https://xod.io/libs/xod/core/pulse-on-change(byte)/>) — a specialization of `xod/core/pulse-on-change` for the `byte` type. Thanks, @Cesar-S! (#1939)
+
 <a name="0.32.1"></a>
 
 ## 0.32.1 (2019-12-06)
