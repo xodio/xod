@@ -9,7 +9,7 @@ describe("groupByString", () =>
     let outMap =
       BeltHoles.List.groupByString(
         ["foo", "Foo", "Bar", "FOO", "bAr", "baz"],
-        String.lowercase,
+        String.lowercase_ascii,
       );
     let expectedMap =
       Map.String.fromArray([|

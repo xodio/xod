@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
-    "bs-platform": "5.0.0",
+    "bs-platform": "7.1.1",
     "classnames": "^2.2.5",
     "cpx": "^1.5.0",
     "electron-context-menu": "^0.12.1",
