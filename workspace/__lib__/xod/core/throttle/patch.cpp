@@ -12,8 +12,6 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (isSettingUp()) return;
-
     auto state = getState(ctx);
     auto inValue = getValue<input_IN>(ctx);
 
