@@ -168,10 +168,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@glennsl/bs-jest@^0.4.8":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@glennsl/bs-jest/-/bs-jest-0.4.8.tgz#e756ae5b43edc1cdcb4b5592021e50984566dafb"
-  integrity sha512-RU5Bl6Sc9Xdd/BMQUHjEK4qqd3pRfoqzCnU3ncZbNWGndJUHVpuZVbk6IGTqcXSpoaN6eIOppPvLxQP/5yxwKw==
+"@glennsl/bs-jest@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@glennsl/bs-jest/-/bs-jest-0.4.9.tgz#a23af2668dda05947ce9c043fd5a7b295e91cef7"
+  integrity sha512-WAqXMcI6WL7JVvGdakBr1tcw8BYWXHrOZfuA1myMkFggzAv24H/OEwyqaU7x+yXd4cJaBUY8v3SjQ3Pnk/zqsg==
   dependencies:
     jest "^24.3.1"
 
@@ -3547,10 +3547,10 @@ browserslist@^2.10.0:
     caniuse-lite "^1.0.30000780"
     electron-to-chromium "^1.3.28"
 
-bs-platform@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-5.0.0.tgz#f9fded818bafc3891aeb85eb4e0d95b8d8f8b4d7"
-  integrity sha512-zxLobdIaf/r7go47hOgxcd6C0ANh7MYMEtZNb9Al7JdoekzFZI50F4GpZpP8kMh9Z+M5PoPE1WuryT4S8mT8Kg==
+bs-platform@7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-7.1.1.tgz#ed4032de7ab15158c61d8994680a05393e3ddd74"
+  integrity sha512-ckZHR3J+yxyEKXOBHX8+hfzWG2XX5BxhQ4Iw9lulHFGYdAm9Ep9LgKkIah7G6RYADLmVfTxFE48igvY3kkkl+g==
 
 bser@^2.0.0:
   version "2.0.0"

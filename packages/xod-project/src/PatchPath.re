@@ -1,6 +1,6 @@
 type t = string;
 
-[@bs.module ".."] external getBaseName : t => string = "";
+[@bs.module ".."] external getBaseName : t => string = "getBaseName";
 
 [@bs.module ".."] external isTerminal : t => bool = "isTerminalPatchPath";
 

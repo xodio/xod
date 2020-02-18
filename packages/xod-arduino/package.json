@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
-    "bs-platform": "5.0.0",
+    "bs-platform": "7.1.1",
     "chai": "^4.1.2",
     "onchange": "^5.2.0",
     "xod-fs": "^0.33.0"

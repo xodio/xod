@@ -31,7 +31,7 @@
     "xod-func-tools": "^0.32.0"
   },
   "devDependencies": {
-    "bs-platform": "5.0.0",
+    "bs-platform": "7.1.1",
     "chai": "^4.1.2",
     "documentation": "^4.0.0-beta12"
   },

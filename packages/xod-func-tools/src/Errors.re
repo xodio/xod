@@ -1,1 +1,1 @@
-[@bs.module ".."] external createError : (string, 'a) => Js.Exn.t = "";
+[@bs.module ".."] external createError : (string, 'a) => Js.Exn.t = "createError";
