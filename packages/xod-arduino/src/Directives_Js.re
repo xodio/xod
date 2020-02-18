@@ -8,10 +8,6 @@ let isNodeIdEnabled = Directives.isNodeIdEnabled;
 
 let doesRaiseErrors = Directives.doesRaiseErrors;
 
-let implementsEvaluateTmpl = Directives.implementsEvaluateTmpl;
-
-let wantsStateConstructorWithParams = Directives.wantsStateConstructorWithParams;
-
 let getEvaluateOnPinSettings = code =>
   code |> Directives.getEvaluateOnPinSettings |> ({enabled, exceptions}) => {
     "enabled": enabled,

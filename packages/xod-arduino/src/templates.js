@@ -280,17 +280,6 @@ Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
-const isReadOnlyPin = ({ type }) => XP.READ_ONLY_TYPES.includes(type);
-
-Handlebars.registerHelper('isReadOnlyPin', isReadOnlyPin);
-
-Handlebars.registerHelper('readOnlyInputs', R.filter(isReadOnlyPin));
-
-Handlebars.registerHelper(
-  'containsReadOnlyInputs',
-  R.pipe(R.filter(isReadOnlyPin), R.isEmpty, R.not)
-);
-
 // A helper to quickly introduce a new filtered {{each ...}} loop
 function registerHandlebarsFilterLoopHelper(name, predicate) {
   Handlebars.registerHelper(name, (list, block) =>
