@@ -1,0 +1,34 @@
+{
+  "name": "at-internet",
+  "version": "0.1.0",
+  "scripts": {
+    "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
+    "build:re": "bsb -make-world",
+    "build": "yarn build:re",
+    "clean:dist": "rimraf ./lib ./src/**/*.bs.js",
+    "dev": "bsb -w",
+    "test": "jest"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "XOD",
+  "license": "AGPL-3.0",
+  "main": "src/AtInternet.bs.js",
+  "dependencies": {
+    "address": "^1.1.2",
+    "belt-holes": "^0.29.0",
+    "internet-available": "^1.0.0",
+    "tcp-ping": "^0.1.1"
+  },
+  "devDependencies": {
+    "@glennsl/bs-jest": "^0.4.9",
+    "bs-platform": "7.1.1",
+    "ramda": "^0.24.1"
+  },
+  "jest": {
+    "testMatch": [
+      "**/test/**/*_jest.bs.js"
+    ]
+  }
+}
