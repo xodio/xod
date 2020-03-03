@@ -249,7 +249,7 @@ private:
     SPISettings spisettings;
 #endif // SPI_HAS_TRANSACTION
 
-#if defined(ARDUINO_ARCH_SAM) || defined(__ARDUINO_ARC__) || defined(ARDUINO_ARCH_STM32)
+#if defined(ARDUINO_ARCH_SAM) || defined(__ARDUINO_ARC__) || defined(ARDUINO_ARCH_STM32) || defined(ARDUINO_ARCH_ESP8266)
     volatile uint32_t *csport, *rsport;
     uint32_t _cs;
     uint32_t _rs;
