@@ -22,8 +22,8 @@ void XGraphics::render(XRenderer* renderer) {
     int16_t screenWidth = renderer->getScreenWidth();
     int16_t screenHeight = renderer->getScreenHeight();
 
-    int16_t pivotX = max(0, canvasBBox.pivot.x);
-    int16_t pivotY = max(0, canvasBBox.pivot.y);
+    int16_t pivotX = max(0, (int)canvasBBox.pivot.x);
+    int16_t pivotY = max(0, (int)canvasBBox.pivot.y);
 
     size_t bufferSize = (pivotX + canvasBBox.width >= screenWidth) ? screenWidth - pivotX : canvasBBox.width;
 
