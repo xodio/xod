@@ -1,0 +1,89 @@
+{
+  "description": "Represents a rectange image frame filled with a custom bitmap.",
+  "nodes": [
+    {
+      "description": "X coordinate of the top-left point of the image frame on the canvas.",
+      "id": "B1VZtmDa7L",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the top-left point of the image frame on the canvas.",
+      "id": "BygbYmwpQU",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1BWK7v67U",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "description": "Bitmap.",
+      "id": "HkfZFXwTXU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Hyzg3H_5U",
+      "label": "BMP",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-bitmap"
+    },
+    {
+      "description": "Width of the image frame.",
+      "id": "SJ7WFXvamU",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Height of the image frame.",
+      "id": "SkWF7wa7L",
+      "label": "H",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "ry-bFmDaQL",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    }
+  ]
+}
