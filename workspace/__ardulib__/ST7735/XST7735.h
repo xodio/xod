@@ -7,8 +7,16 @@
 
 #define DELAY 0x80
 
-#define ST7735_TFTWIDTH 128
-#define ST7735_TFTHEIGHT 160
+#define ST7735_TFTWIDTH_128 128
+#define ST7735_TFTHEIGHT_160 160
+
+#define ST7735_MADCTL_BGR 0x08
+#define ST7735_MADCTL_MH 0x04
+
+#define ST77XX_MADCTL_MX 0x40
+#define ST77XX_MADCTL_MY 0x80
+#define ST77XX_MADCTL_MV 0x20
+#define ST77XX_MADCTL 0x36
 
 #define ST7735_NOP 0x00
 #define ST7735_SWRESET 0x01
@@ -226,6 +234,8 @@ public:
 
     void renderScanlinePart(int16_t scanline, int16_t xmin, int16_t xmax, const uint16_t* lineBuffer) override;
 
+    void setRotation(uint8_t rotation);
+
     int16_t getScreenWidth() const {
         return _width;
     }
@@ -271,7 +281,7 @@ private:
 
     uint8_t _colstart;
     uint8_t _rowstart;
-#endif // ARDUINO_ARCH_SAM || __ARDUINO_ARC__ || ARDUINO_ARCH_STM32
+#endif // ARDUINO_ARCH_SAM || __ARDUINO_ARC__ || ARDUINO_ARCH_STM32 || || defined(ARDUINO_ARCH_ESP8266)
 };
 
 #endif // X_ST7735_H
