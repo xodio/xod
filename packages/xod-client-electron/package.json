@@ -18,6 +18,7 @@
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "dependencies": {
+    "at-internet": "^0.1.0",
     "babel-polyfill": "^6.16.0",
     "bs-platform": "7.1.1",
     "classnames": "^2.2.5",

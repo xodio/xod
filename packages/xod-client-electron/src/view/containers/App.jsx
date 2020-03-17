@@ -391,13 +391,20 @@ class App extends client.App {
                 getPatchByPath(R.__, this.props.project)
               )(currentPatchPath);
 
+              const tetheringInetNodeId = client.getTetheringInetNodeId(
+                currentPatchPath,
+                nodeIdsMap,
+                this.props.project
+              );
+
               this.props.actions.startDebuggerSession(
                 client.createSystemMessage('Debug session started'),
                 nodeIdsMap,
                 nodePinKeysMap,
                 pinsAffectedByErrorRaisers,
                 currentPatchPath,
-                sessionGlobals
+                sessionGlobals,
+                tetheringInetNodeId
               );
               debuggerIPC.sendStartDebuggerSession(
                 ipcRenderer,
