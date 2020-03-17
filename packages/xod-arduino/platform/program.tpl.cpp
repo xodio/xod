@@ -72,11 +72,30 @@ TransactionState g_transaction;
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
-void handleTweaks() {
-    if (XOD_DEBUG_SERIAL.available() > 0 && XOD_DEBUG_SERIAL.find("+XOD:", 5)) {
+void handleDebugProtocolMessages() {
+    {{#withTetheringInetNode nodes}}
+    bool tetheringInetNodeReceivingData = xod__debug__tethering_inet::TetheringInternet::isReceiving();
+    {{/withTetheringInetNode}}
+    bool rewindToEol = true;
+
+    if (
+      XOD_DEBUG_SERIAL.available() > 0 &&
+      {{#withTetheringInetNode nodes}}
+      !tetheringInetNodeReceivingData &&
+      {{/withTetheringInetNode}}
+      XOD_DEBUG_SERIAL.find("+XOD:", 5)
+    ) {
         int tweakedNodeId = XOD_DEBUG_SERIAL.parseInt();
 
         switch (tweakedNodeId) {
+          {{#withTetheringInetNode nodes}}
+            case {{ id }}:
+              xod__debug__tethering_inet::TetheringInternet::beginReceiving(XOD_DEBUG_SERIAL.parseInt());
+              rewindToEol = false;
+              XOD_DEBUG_SERIAL.read(); // :
+              // The rest of data should be read by nodes
+              break;
+          {{/withTetheringInetNode}}
           {{#eachLinkedTweakNode nodes}}
             case {{ id }}:
                 {
@@ -107,16 +126,17 @@ void handleTweaks() {
                     };
                   {{/case}}
                 {{/switchByTweakType}}
+                    rewindToEol = true;
                     // to run evaluate and mark all downstream nodes as dirty
                     g_transaction.node_{{ id }}_isNodeDirty = true;
                     g_transaction.node_{{ id }}_isOutputDirty_OUT = true;
                 }
                 break;
-
           {{/eachLinkedTweakNode}}
         }
 
-        XOD_DEBUG_SERIAL.find('\n');
+        if (rewindToEol)
+            XOD_DEBUG_SERIAL.find('\n');
     }
 }
 } // namespace detail
@@ -252,7 +272,7 @@ void runTransaction() {
     XOD_TRACE_LN(g_transactionTime);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::handleTweaks();
+    detail::handleDebugProtocolMessages();
 #endif
 
     // Check for timeouts
