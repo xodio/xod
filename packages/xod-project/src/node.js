@@ -13,6 +13,7 @@ import {
   isPathLocal,
   getBaseName,
   isSpecializationPatchBasename,
+  isTetheringInetPatchPath,
 } from './patchPathUtils';
 
 /**
@@ -357,4 +358,13 @@ export const getPinNodeDirection = def(
     [isInputPinNode, R.always(CONST.PIN_DIRECTION.INPUT)],
     [isOutputPinNode, R.always(CONST.PIN_DIRECTION.OUTPUT)],
   ])
+);
+
+/**
+ * Returns True if the Node is tethering inet
+ */
+// :: Node -> Boolean
+export const isTetheringInetNode = R.compose(
+  isTetheringInetPatchPath,
+  getNodeType
 );

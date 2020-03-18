@@ -224,6 +224,8 @@ export const TO_BUS_PATH = 'xod/patch-nodes/to-bus';
 
 export const JUMPER_PATCH_PATH = 'xod/patch-nodes/jumper';
 
+export const TETHERING_INET_PATH = 'xod/debug/tethering-inet';
+
 export const UNTITLED_PROJECT = 'untitled';
 
 // { markerName: fileName }

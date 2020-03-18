@@ -85,6 +85,7 @@ export {
   hasNodeWithType,
   convertPatchDimensionsToSlots,
   convertPatchDimensionsToPixels,
+  findNodeBy,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,
