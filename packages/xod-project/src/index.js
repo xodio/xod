@@ -143,6 +143,9 @@ export {
 export { sortGraph } from './gmath';
 export { BUILT_IN_TERMINAL_PATCH_PATHS } from './builtinTerminalPatches';
 export { BINDABLE_CUSTOM_TYPES } from './custom-types';
+export {
+  default as squashTetheringNodes,
+} from './optimizers/squashTetheringNodes';
 
 export const linkifyPatchRecursively = curry(linkifyPatchRecursivelyU);
 export const splitLinksToBuses = curry(splitLinksToBusesU);

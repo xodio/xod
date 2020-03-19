@@ -663,6 +663,7 @@ const transformProjectWithImpls = def(
       R.chain(toposortProject(path)),
       // end preparing project for transpilation. TODO: extract it into a separate function
       R.map(removeUnusedNodes(path)),
+      R.chain(XP.squashTetheringNodes(path)),
       R.map(XP.extractBoundInputsToConstNodes(path)),
       R.chain(XP.flatten(R.__, path)),
       R.map(XP.expandVariadicNodes(path)),
