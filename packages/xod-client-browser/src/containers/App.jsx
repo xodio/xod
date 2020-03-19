@@ -20,6 +20,7 @@ const DEFAULT_CANVAS_HEIGHT = 600;
 class App extends client.App {
   constructor(props) {
     super(props);
+    this.isBrowser = true;
 
     this.menuRefs = {};
 
