@@ -31,6 +31,7 @@ import {
   listGlobals,
   extendTProjectWithGlobals,
   hasTetheringInternetNode,
+  getTetheringInetNodeId,
   LIVENESS,
 } from 'xod-arduino';
 
@@ -140,6 +141,7 @@ export default class App extends React.Component {
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
           nodePinKeysMap: getNodePinKeysMap,
+          tetheringInetNodeId: getTetheringInetNodeId,
           pinsAffectedByErrorRaisers: tProj =>
             R.compose(
               foldMaybe(
@@ -151,7 +153,13 @@ export default class App extends React.Component {
         })
       )
       .then(
-        ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
+        ({
+          code,
+          nodeIdsMap,
+          nodePinKeysMap,
+          pinsAffectedByErrorRaisers,
+          tetheringInetNodeId,
+        }) =>
           this.props.actions.runSimulation(
             explodeMaybe(
               'currentPatchPath already folded in `transformProjectForTranspiler`',
@@ -161,7 +169,8 @@ export default class App extends React.Component {
             nodePinKeysMap,
             code,
             pinsAffectedByErrorRaisers,
-            sessionGlobals
+            sessionGlobals,
+            tetheringInetNodeId
           )
       )
       .catch(

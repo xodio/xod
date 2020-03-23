@@ -8,6 +8,7 @@ export {
   listGlobals,
   extendTProjectWithGlobals,
   hasTetheringInternetNode,
+  getTetheringInetNodeId,
 } from './transpiler';
 
 export { default as messages } from './messages';

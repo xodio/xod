@@ -28,6 +28,7 @@ import {
   getRequireUrls,
   listGlobals,
   extendTProjectWithGlobals,
+  getTetheringInetNodeId,
   LIVENESS,
 } from 'xod-arduino';
 import { messages as xdbMessages } from 'xod-deploy-bin';
@@ -333,9 +334,7 @@ class App extends client.App {
             });
         })
       )
-      .then(transform =>
-        Promise.all([transpile(transform), loadWorkspacePath()])
-      )
+      .then(tProject => Promise.all([transpile(tProject), loadWorkspacePath()]))
       .then(([code, ws]) =>
         upload(
           progressData => {
@@ -391,11 +390,7 @@ class App extends client.App {
                 getPatchByPath(R.__, this.props.project)
               )(currentPatchPath);
 
-              const tetheringInetNodeId = client.getTetheringInetNodeId(
-                currentPatchPath,
-                nodeIdsMap,
-                this.props.project
-              );
+              const tetheringInetNodeId = getTetheringInetNodeId(tProject);
 
               this.props.actions.startDebuggerSession(
                 client.createSystemMessage('Debug session started'),

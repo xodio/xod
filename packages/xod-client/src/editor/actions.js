@@ -75,7 +75,6 @@ import {
   subtractPoints,
   DEFAULT_PANNING_OFFSET,
 } from '../project/nodeLayout';
-import { getTetheringInetNodeId } from '../debugger/utils';
 
 import { ClipboardEntities } from '../types';
 
@@ -821,7 +820,8 @@ export const runSimulation = (
   nodePinKeysMap,
   code,
   pinsAffectedByErrorRaisers,
-  globals
+  globals,
+  tetheringInetNodeId
 ) => (dispatch, getState) => {
   dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
   const state = getState();
@@ -835,11 +835,6 @@ export const runSimulation = (
   };
 
   const accessToken = foldMaybe(null, R.identity, getAccessToken(state));
-
-  const tetheringInetNodeId = R.compose(
-    getTetheringInetNodeId(simulationPatchPath, nodeIdsMap),
-    ProjectSelectors.getProject
-  )(state);
 
   XCC.compileSimulation(HOSTNAME, accessToken, code)
     .then(
