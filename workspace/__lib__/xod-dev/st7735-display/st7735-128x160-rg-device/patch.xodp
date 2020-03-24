@@ -67,7 +67,7 @@
         "x": 5,
         "y": 2
       },
-      "type": "@/output-st7735"
+      "type": "@/output-st7735-device"
     },
     {
       "id": "BygnH7lm8",
@@ -76,7 +76,7 @@
         "x": 1,
         "y": 1
       },
-      "type": "@/st7735"
+      "type": "@/st7735-device"
     },
     {
       "id": "H1VJtHlQI",

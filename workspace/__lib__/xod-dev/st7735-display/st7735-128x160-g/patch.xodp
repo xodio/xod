@@ -2,14 +2,14 @@
   "description": "A quick-start node drives an ST7735 based TFT LCD 128x160 display of the \"G\" type connected through a hardware SPI interface. ",
   "links": [
     {
-      "id": "BysubMeQL",
+      "id": "Bk3-TYvLL",
       "input": {
-        "nodeId": "Bk8uWMlmU",
+        "nodeId": "By_ZTKwIL",
         "pinKey": "__in__"
       },
       "output": {
         "nodeId": "SyhKJMemL",
-        "pinKey": "rkq5A0qsS"
+        "pinKey": "Sy5I-fD-8"
       }
     },
     {
@@ -54,17 +54,6 @@
       "output": {
         "nodeId": "B1i2yMxXI",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "SJW0JfgQL",
-      "input": {
-        "nodeId": "rJjTkGg7L",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyhKJMemL",
-        "pinKey": "Sy5I-fD-8"
       }
     },
     {
@@ -148,15 +137,15 @@
       "type": "xod/core/act"
     },
     {
-      "description": "The display device.",
-      "id": "Bk8uWMlmU",
-      "label": "DEV",
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "By_ZTKwIL",
+      "label": "ACK",
       "position": {
         "units": "slots",
-        "x": 6,
+        "x": 7,
         "y": 3
       },
-      "type": "@/output-st7735"
+      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "boundLiterals": {
@@ -203,17 +192,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Pulses when the rendering process is done.",
-      "id": "rJjTkGg7L",
-      "label": "DONE",
-      "position": {
-        "units": "slots",
-        "x": 7,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "description": "The \"chip select\" board port of the SPI interface the display is connected to.",

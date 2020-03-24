@@ -46,28 +46,6 @@
       }
     },
     {
-      "id": "HJpXG1vZQ8",
-      "input": {
-        "nodeId": "rkBQMJD-mU",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1NQGkPWXL",
-        "pinKey": "Sy5I-fD-8"
-      }
-    },
-    {
-      "id": "HkKXfywb7U",
-      "input": {
-        "nodeId": "SJ-7zkw-78",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1NQGkPWXL",
-        "pinKey": "rkq5A0qsS"
-      }
-    },
-    {
       "id": "Hklm31DZXL",
       "input": {
         "nodeId": "BkRMywWXI",
@@ -98,6 +76,17 @@
       "output": {
         "nodeId": "rklmf1wbQ8",
         "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "SJHfptD8I",
+      "input": {
+        "nodeId": "HJMGaYvUL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1NQGkPWXL",
+        "pinKey": "Sy5I-fD-8"
       }
     },
     {
@@ -143,6 +132,17 @@
       "type": "@/render"
     },
     {
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "HJMGaYvUL",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "boundLiterals": {
         "__out__": "True"
       },
@@ -155,17 +155,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
-    },
-    {
-      "description": "The display device.",
-      "id": "SJ-7zkw-78",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "@/output-st7735"
     },
     {
       "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
@@ -202,17 +191,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "Pulses when the rendering process is done.",
-      "id": "rkBQMJD-mU",
-      "label": "DONE",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     },
     {
       "id": "rklmf1wbQ8",
