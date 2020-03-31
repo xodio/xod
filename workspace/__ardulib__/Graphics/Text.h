@@ -2,13 +2,11 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-#ifndef PGM_SPACE
 #ifdef __AVR__
 #include <avr/pgmspace.h>
 #elif defined(ESP8266) || defined(ESP32)
 #include <pgmspace.h>
 #endif // __AVR__
-#endif // PGM_SPACE
 
 /*
  * Not all non-AVR boards installs define macros
