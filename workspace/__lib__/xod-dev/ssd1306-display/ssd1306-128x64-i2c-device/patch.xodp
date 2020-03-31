@@ -1,0 +1,48 @@
+{
+  "description": "Device node for an SSD1306 based monochrome 128x64  TFT LCD connected through an I2C interface. ",
+  "nodes": [
+    {
+      "id": "By5FY7hsS",
+      "label": "I2C",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/i2c/input-i2c"
+    },
+    {
+      "id": "Hkg4W34xjS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HyzldOJI8",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "3Ch"
+      },
+      "description": "I²C address. 3Ch by default.",
+      "id": "SJRYLhZmU",
+      "label": "ADDR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

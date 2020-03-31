@@ -1,0 +1,69 @@
+{
+  "description": "Renders a tree of graphic elements and display them on the device.",
+  "nodes": [
+    {
+      "id": "BJblG9nrGU",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers a new rendering process.",
+      "id": "BJgmVh-7I",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the rendering process is done.",
+      "id": "Bygxm4h-mL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The display device.",
+      "id": "HJ6Zd_J8L",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/input-ssd1306-128x64-i2c-device"
+    },
+    {
+      "description": "A tree of graphic elements created using the xod/graphics library.",
+      "id": "Sk-lm42W7I",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/graphics/input-graphics"
+    },
+    {
+      "description": "The display device.",
+      "id": "ryqMOOkLI",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "@/output-ssd1306-128x64-i2c-device"
+    }
+  ]
+}
