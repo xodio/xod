@@ -24,17 +24,6 @@
       }
     },
     {
-      "id": "ByFiNyD-XL",
-      "input": {
-        "nodeId": "SkboVkDZmI",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyVjNyPbQL",
-        "pinKey": "rkq5A0qsS"
-      }
-    },
-    {
       "id": "By_HywZX8",
       "input": {
         "nodeId": "SyVjNyPbQL",
@@ -57,6 +46,17 @@
       }
     },
     {
+      "id": "SkBbTKDUI",
+      "input": {
+        "nodeId": "BkG-TFD8I",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyVjNyPbQL",
+        "pinKey": "Sy5I-fD-8"
+      }
+    },
+    {
       "id": "SkwsJwZmU",
       "input": {
         "nodeId": "rJ7HkvbQ8",
@@ -76,17 +76,6 @@
       "output": {
         "nodeId": "HkviEJvb7I",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "rkTiVywbXI",
-      "input": {
-        "nodeId": "rJHiEkDbXI",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "SyVjNyPbQL",
-        "pinKey": "Sy5I-fD-8"
       }
     },
     {
@@ -113,6 +102,17 @@
     }
   ],
   "nodes": [
+    {
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "BkG-TFD8I",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
     {
       "boundLiterals": {
         "__out__": "D255"
@@ -173,17 +173,6 @@
       "type": "xod/core/act"
     },
     {
-      "description": "The display device.",
-      "id": "SkboVkDZmI",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "@/output-st7735"
-    },
-    {
       "id": "SyVjNyPbQL",
       "position": {
         "units": "slots",
@@ -211,17 +200,6 @@
         "y": 2
       },
       "type": "@/st7735-128x160-rg-device"
-    },
-    {
-      "description": "Pulses when the rendering process is done.",
-      "id": "rJHiEkDbXI",
-      "label": "DONE",
-      "position": {
-        "units": "slots",
-        "x": 5,
-        "y": 3
-      },
-      "type": "xod/patch-nodes/output-pulse"
     }
   ]
 }

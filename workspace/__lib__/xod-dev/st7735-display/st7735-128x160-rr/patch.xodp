@@ -24,17 +24,6 @@
       }
     },
     {
-      "id": "BkF0HkvWm8",
-      "input": {
-        "nodeId": "Hk-AHJDWQ8",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "ryX0rJwZ7I",
-        "pinKey": "rkq5A0qsS"
-      }
-    },
-    {
       "id": "ByjIyw-mU",
       "input": {
         "nodeId": "ryX0rJwZ7I",
@@ -137,9 +126,9 @@
       "type": "@/st7735-128x160-rr-device"
     },
     {
-      "description": "Pulses when the rendering process is done.",
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
       "id": "H1EAS1P-QL",
-      "label": "DONE",
+      "label": "ACK",
       "position": {
         "units": "slots",
         "x": 5,
@@ -171,17 +160,6 @@
         "y": 1
       },
       "type": "xod/patch-nodes/input-port"
-    },
-    {
-      "description": "The display device.",
-      "id": "Hk-AHJDWQ8",
-      "label": "DEV",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 3
-      },
-      "type": "@/output-st7735"
     },
     {
       "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",

@@ -21,7 +21,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-st7735"
+      "type": "@/input-st7735-device"
     },
     {
       "id": "Hy7rcR09oH",
@@ -63,7 +63,7 @@
         "x": 0,
         "y": 2
       },
-      "type": "@/output-st7735"
+      "type": "@/output-st7735-device"
     }
   ]
 }

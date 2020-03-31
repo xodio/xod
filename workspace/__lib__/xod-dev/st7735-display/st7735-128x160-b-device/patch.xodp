@@ -67,7 +67,7 @@
         "x": 2,
         "y": 2
       },
-      "type": "@/output-st7735"
+      "type": "@/output-st7735-device"
     },
     {
       "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
@@ -101,7 +101,7 @@
         "x": -2,
         "y": 1
       },
-      "type": "@/st7735"
+      "type": "@/st7735-device"
     },
     {
       "description": "The \"chip select\" board port of the SPI interface the display is connected to.",

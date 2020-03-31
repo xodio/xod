@@ -18,7 +18,7 @@
         "x": 0,
         "y": 2
       },
-      "type": "@/output-st7735"
+      "type": "@/output-st7735-device"
     },
     {
       "description": "The display device.",
@@ -29,7 +29,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-st7735"
+      "type": "@/input-st7735-device"
     },
     {
       "id": "r1RtdBgX8",
