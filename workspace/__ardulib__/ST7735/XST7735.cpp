@@ -9,8 +9,8 @@ ST7735::ST7735(uint8_t cs, uint8_t dc, uint8_t rst) {
     _cs = cs;
     _rs = dc;
     _rst = rst;
-    _width = ST7735_TFTWIDTH;
-    _height = ST7735_TFTHEIGHT;
+    _width = ST7735_TFTWIDTH_128;
+    _height = ST7735_TFTHEIGHT_160;
 }
 
 void ST7735::writeCmd(uint8_t cmd) {
@@ -85,6 +85,38 @@ void ST7735::commandList(const uint8_t* addr) {
             delay(ms);
         }
     }
+}
+
+void ST7735::setRotation(uint8_t rotation) {
+    uint8_t madctl = 0;
+
+    switch (rotation) {
+    case 0:
+        madctl = ST77XX_MADCTL_MX | ST77XX_MADCTL_MY | ST7735_MADCTL_BGR;
+        _height = ST7735_TFTHEIGHT_160;
+        _width = ST7735_TFTWIDTH_128;
+        break;
+    case 1:
+        madctl = ST77XX_MADCTL_MY | ST77XX_MADCTL_MV | ST7735_MADCTL_BGR;
+        _width = ST7735_TFTHEIGHT_160;
+        _height = ST7735_TFTWIDTH_128;
+        break;
+    case 2:
+        madctl = ST7735_MADCTL_BGR;
+        _height = ST7735_TFTHEIGHT_160;
+        _width = ST7735_TFTWIDTH_128;
+        break;
+    case 3:
+        madctl = ST77XX_MADCTL_MX | ST77XX_MADCTL_MV | ST7735_MADCTL_BGR;
+        _width = ST7735_TFTHEIGHT_160;
+        _height = ST7735_TFTWIDTH_128;
+        break;
+    default:
+        break;
+    }
+
+    writeCmd(ST77XX_MADCTL);
+    writeData(madctl);
 }
 
 void ST7735::begin() {
