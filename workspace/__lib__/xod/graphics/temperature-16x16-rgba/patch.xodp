@@ -1,0 +1,24 @@
+{
+  "description": "The \"Temperature\" colored icon with mask color. 16x16 pixels.",
+  "nodes": [
+    {
+      "id": "BJRhZ0AtU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "HkeC3WRAKI",
+      "label": "BMP",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/output-bitmap"
+    }
+  ]
+}
