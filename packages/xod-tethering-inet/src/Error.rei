@@ -1,3 +1,6 @@
+// Possible errors, which might be used during the debugging the package.
+// These errors are not discovered to the package consumer, because AT commands protocol has a less detailed errors in general.
+
 type t =
   | UNKNOWN_COMMAND
   | INVALID_ARGUMENTS

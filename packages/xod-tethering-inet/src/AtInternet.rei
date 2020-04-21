@@ -1,3 +1,5 @@
+// A main file that exposes the interface to work with the package.
+
 open Belt;
 
 type t = {
