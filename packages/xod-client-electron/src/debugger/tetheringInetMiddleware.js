@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import AtNet from 'at-internet';
+import AtNet from 'xod-tethering-inet';
 import client from 'xod-client';
 import { allPromises } from 'xod-func-tools';
 import { ipcRenderer } from 'electron';

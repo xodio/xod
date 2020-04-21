@@ -1,5 +1,5 @@
 {
-  "name": "at-internet",
+  "name": "xod-tethering-inet",
   "version": "0.1.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
