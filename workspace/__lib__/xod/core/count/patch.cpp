@@ -1,16 +1,13 @@
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        Number count = getValue<output_OUT>(ctx);
 
-{{ GENERATED_CODE }}
+        if (isInputDirty<input_RST>(ctx))
+            count = 0;
+        else if (isInputDirty<input_INC>(ctx))
+            count += getValue<input_STEP>(ctx);
 
-void evaluate(Context ctx) {
-    Number count = getValue<output_OUT>(ctx);
-
-    if (isInputDirty<input_RST>(ctx))
-        count = 0;
-    else if (isInputDirty<input_INC>(ctx))
-        count += getValue<input_STEP>(ctx);
-
-    emitValue<output_OUT>(ctx, count);
+        emitValue<output_OUT>(ctx, count);
+    }
 }

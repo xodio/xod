@@ -9,3 +9,4 @@ update_cpp_fixture ./workspace/count-with-feedback-loops
 update_cpp_fixture ./workspace/lcd-time
 update_cpp_fixture ./workspace/two-button-switch
 update_cpp_fixture ./workspace/big-patch
+update_cpp_fixture ./workspace/dht-pack-unpack

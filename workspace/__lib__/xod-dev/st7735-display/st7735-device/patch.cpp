@@ -17,6 +17,10 @@ using Type = ST7735*;
 // clang-format on
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_CS), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_DC), "must be a valid digital port");
+    static_assert(constant_input_RST == 255 || isValidDigitalPort(constant_input_RST), "must be a valid digital port");
+
     if (!isSettingUp())
         return;
 
@@ -29,12 +33,4 @@ void evaluate(Context ctx) {
     state->dev = new (state->mem) ST7735(cs, dc, rst);
 
     emitValue<output_DEV>(ctx, state->dev);
-}
-
-template <uint8_t cs, uint8_t dc, uint8_t rst>
-void evaluateTmpl(Context ctx) {
-    static_assert(isValidDigitalPort(cs), "must be a valid digital port");
-    static_assert(isValidDigitalPort(dc), "must be a valid digital port");
-    static_assert(rst == 255 || isValidDigitalPort(rst), "must be a valid digital port");
-    evaluate(ctx);
 }

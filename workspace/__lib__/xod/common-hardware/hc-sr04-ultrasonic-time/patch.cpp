@@ -1,6 +1,5 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_PING
-#pragma XOD error_raise enable
 
 struct State {
     TimeMs cooldownUntil = 0;
@@ -52,6 +51,9 @@ Status pingSync(uint8_t echoPort, uint8_t trigPort, uint32_t* outRoundtripUs) {
 }
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_ECHO), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_TRIG), "must be a valid digital port");
+
     if (!isInputDirty<input_PING>(ctx))
         return;
 
@@ -61,11 +63,6 @@ void evaluate(Context ctx) {
 
     auto echoPort = (uint8_t)getValue<input_ECHO>(ctx);
     auto trigPort = (uint8_t)getValue<input_TRIG>(ctx);
-
-    if (!isValidDigitalPort(echoPort) || !isValidDigitalPort(trigPort)) {
-        raiseError(ctx); // Invalid port
-        return;
-    }
 
     uint32_t t;
     auto status = pingSync(

@@ -54,6 +54,7 @@ void evaluate(Context ctx) {
 
     auto dev = getValue<input_DEV>(ctx);
 
+    // TODO: static port validation
     if (!isValidDigitalPort(dev->echoPort) || !isValidDigitalPort(dev->trigPort)) {
         raiseError(ctx); // Invalid port
         return;

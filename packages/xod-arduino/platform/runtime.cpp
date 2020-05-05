@@ -60,6 +60,16 @@ template<typename T> struct always_false {
     enum { value = 0 };
 };
 
+template<typename T> struct identity {
+  typedef T type;
+};
+
+template<typename T> struct remove_pointer                    {typedef T type;};
+template<typename T> struct remove_pointer<T*>                {typedef T type;};
+template<typename T> struct remove_pointer<T* const>          {typedef T type;};
+template<typename T> struct remove_pointer<T* volatile>       {typedef T type;};
+template<typename T> struct remove_pointer<T* const volatile> {typedef T type;};
+
 //----------------------------------------------------------------------------
 // Forward declarations
 //----------------------------------------------------------------------------
@@ -122,22 +132,7 @@ bool isEarlyDeferPass() {
     return g_isEarlyDeferPass;
 }
 
-template<typename ContextT>
-void setTimeout(ContextT* ctx, TimeMs timeout) {
-    ctx->_node->timeoutAt = transactionTime() + timeout;
-}
-
-template<typename ContextT>
-void clearTimeout(ContextT* ctx) {
-    detail::clearTimeout(ctx->_node);
-}
-
-template<typename ContextT>
-bool isTimedOut(const ContextT* ctx) {
-    return detail::isTimedOut(ctx->_node);
-}
-
-bool isValidDigitalPort(uint8_t port) {
+constexpr bool isValidDigitalPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
@@ -145,7 +140,7 @@ bool isValidDigitalPort(uint8_t port) {
 #endif
 }
 
-bool isValidAnalogPort(uint8_t port) {
+constexpr bool isValidAnalogPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else

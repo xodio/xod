@@ -10,8 +10,9 @@ import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/scroll/simplescrollbars';
 
 /* eslint-disable max-len */
-const XOD_TYPE_NAMES = /(Number|NodeId|Context|DirtyFlags|TimeMs|u?int\d{1,2}_t|size_t|XString|State|List|Iterator)\b/gm;
-const XOD_BUILTIN_NAMES = /(getValue|emitValue|isInputDirty|transactionTime|setTimeout|clearTimeout|isTimedOut|evaluate|getState|raiseError|isSettingUp|getError)\b/gm;
+const XOD_TYPE_NAMES = /(Number|NodeId|Context|DirtyFlags|TimeMs|u?int\d{1,2}_t|size_t|XString|State|List|Iterator|(typeof_[A-Za-z0-9_]+))\b/gm;
+const XOD_KEYWORDS = /\b(node|meta)\b/gm;
+const XOD_BUILTIN_NAMES = /(getValue|emitValue|isInputDirty|transactionTime|setTimeout|clearTimeout|isTimedOut|evaluate|getState|raiseError|isSettingUp|getError|(constant_(input|output)_[A-Za-z0-9_]+))\b/gm;
 const ARDUINO_BUILTIN_NAMES = /((digital|analog)(Read|Write)|pinMode|analogReference)\b/gm;
 const XOD_TAG_NAMES = /(((input|output)_[A-Za-z0-9_]+)|GENERATED_CODE)\b/gm;
 /* eslint-enable max-len */
@@ -49,10 +50,15 @@ const createCMHack = R.compose(
           token: 'builtin',
         },
         {
+          regex: XOD_KEYWORDS,
+          token: 'keyword',
+        },
+        {
           regex: createCMHack([
             XOD_TYPE_NAMES,
             XOD_BUILTIN_NAMES,
             ARDUINO_BUILTIN_NAMES,
+            XOD_KEYWORDS,
             XOD_TAG_NAMES,
           ]),
           token: 'variable',

@@ -9,6 +9,11 @@ import {
 
 export { PIN_TYPE };
 
+/**
+ * Types that are cannot be redefined at runtime.
+ */
+export const CONSTANT_PIN_TYPES = [PIN_TYPE.PORT];
+
 export const IDENTIFIER_RULES = `Only a-z, 0-9 and - are allowed.
   Name must not begin or end with a hypen,
   or contain more than one hypen in a row`;
@@ -235,14 +240,22 @@ export const MANAGED_ATTACHMENT_FILENAMES = {
 };
 
 const IMPL_TEMPLATE = `
-struct State {
-};
+node {
+    // Internal state variables defined at this level persists across evaluations
+    Number foo;
+    uint8_t bar = 5;
 
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    //auto inValue = getValue<input_IN>(ctx);
-    //emitValue<output_OUT>(ctx, inValue);
+    void evaluate(Context ctx) {
+        bar += 42;
+        
+        if (isSettingUp()) {
+            // This run once
+            foo = (Number)(bar + 1);
+        }
+        
+        auto inValue = getValue<input_IN>(ctx);
+        emitValue<output_OUT>(ctx, inValue);
+    }
 }
 `;
 

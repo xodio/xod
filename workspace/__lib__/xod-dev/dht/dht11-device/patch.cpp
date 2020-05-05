@@ -1,14 +1,12 @@
 
-struct State {
-    uint8_t port = 0;
-};
+node {
+    meta {
+        struct Dht11Device {
+            static constexpr uint8_t port = constant_input_PORT;
+        };
 
-using Type = State*;
+        using Type = Dht11Device*;
+    }
 
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    auto dev = getState(ctx);
-    dev->port = getValue<input_PORT>(ctx);
-    emitValue<output_DEV>(ctx, dev);
+    void evaluate(Context ctx) {}
 }

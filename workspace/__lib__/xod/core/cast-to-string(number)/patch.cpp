@@ -1,17 +1,17 @@
 
 #pragma XOD dirtieness disable
 
-struct State {
+node {
     char str[16];
     CStringView view;
-    State() : view(str) { }
-};
 
-{{ GENERATED_CODE }}
+    void evaluate(Context ctx) {
+        if (isSettingUp()) {
+            view = CStringView(str);
+        }
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    auto num = getValue<input_IN>(ctx);
-    formatNumber(num, 2, state->str);
-    emitValue<output_OUT>(ctx, XString(&state->view));
+        auto num = getValue<input_IN>(ctx);
+        formatNumber(num, 2, str);
+        emitValue<output_OUT>(ctx, XString(&view));
+    }
 }

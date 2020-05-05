@@ -1,10 +1,11 @@
 
-struct State {
-};
+struct State {};
+
+static constexpr uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    auto dev = getValue<input_DEV>(ctx);
-    emitValue<output_OUT>(ctx, dev->port);
+    // We don't need to worry about emitting from constant outputs.
+    // Outputs will be always dirty on boot, and then the value will never change anyway.
 }

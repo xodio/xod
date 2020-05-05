@@ -5,6 +5,7 @@ import {
   explodeMaybe,
   reverseLookup,
   maybeProp,
+  maybeFind,
   foldEither,
   foldMaybe,
   isAmong,
@@ -184,6 +185,7 @@ const convertPatchToTPatch = def(
 );
 
 // :: Patch -> [PatchPath]
+// todo: the name is incorrect
 const getReferencedCustomTypes = R.compose(R.map(XP.getPinType), XP.listPins);
 
 const getConstructorPatchPaths = def(
@@ -244,6 +246,7 @@ const addConstructionPatchesAtTheTop = def(
       ),
       R.map(
         R.compose(
+          R.assoc('isConstructor', true), // todo: do this in a separate function?
           convertPatchToTPatch,
           XP.getPatchByPathUnsafe(R.__, originalProject)
         )
@@ -251,10 +254,87 @@ const addConstructionPatchesAtTheTop = def(
     )(constructorsPatchPaths)
 );
 
+// :: [TPatch] -> Set PatchPath
+const listTemplatableCustomTypes = toposortedTPatches => {
+  const constructorPatches = R.filter(
+    R.prop('isConstructor'),
+    toposortedTPatches
+  );
+
+  const templatableCustomTypes = new Set();
+
+  // because patches are toposorted, we can do this in a single pass
+  constructorPatches.forEach(({ inputs, patchPath }) => {
+    const isTemplatable = R.any(
+      ({ type }) =>
+        XP.CONSTANT_PIN_TYPES.includes(type) ||
+        templatableCustomTypes.has(type),
+      inputs
+    );
+
+    if (isTemplatable) {
+      templatableCustomTypes.add(patchPath);
+    }
+  });
+
+  return templatableCustomTypes;
+};
+
+const assignPinFlags = toposortedTPatches => {
+  const templatableCustomTypes = listTemplatableCustomTypes(toposortedTPatches);
+
+  if (R.isEmpty(templatableCustomTypes)) {
+    return toposortedTPatches;
+  }
+
+  const isTemplatableCustomTypePin = ({ type }) =>
+    templatableCustomTypes.has(type);
+
+  return R.map(
+    R.compose(
+      tPatch =>
+        R.over(
+          R.lensProp('outputs'),
+          R.map(pin => {
+            const pinFlags = R.applySpec({
+              // "output-self" type is erased in createPinFromTerminalNode
+              // (pin type becomes the same as the patch path)
+              isOutputSelf: ({ type }) => type === tPatch.patchPath,
+              isTemplatableCustomTypePin,
+              // Finds matching input, like DEV and DEV'
+              shortCirquitInputKey: ({ type, pinKey }) =>
+                R.compose(
+                  foldMaybe('', R.prop('pinKey')),
+                  maybeFind(
+                    i => i.type === type && `${i.pinKey}U0027` === pinKey
+                  )
+                )(tPatch.inputs),
+            })(pin);
+
+            return R.merge(pinFlags, pin);
+          }),
+          tPatch
+        ),
+      R.over(
+        R.lensProp('inputs'),
+        R.map(pin =>
+          R.assoc(
+            'isTemplatableCustomTypePin',
+            isTemplatableCustomTypePin(pin),
+            pin
+          )
+        )
+      )
+    ),
+    toposortedTPatches
+  );
+};
+
 const createTPatches = def(
   'createTPatches :: PatchPath -> Project -> Project -> [TPatch]',
   (entryPath, project, originalProject) =>
     R.compose(
+      assignPinFlags,
       // Include constructor patches for custom types
       // that are used without an explicit constructor.
       // Otherwise, generated source code won't have
