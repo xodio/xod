@@ -309,7 +309,7 @@ module TestCase = {
         source(nodeAliases),
         "",
         "#define INJECT(probe, value) \\",
-        "        (probe).output_VAL = (value); \\",
+        "        (probe)._output_VAL = (value); \\",
         "        (probe).state.shouldRaise = false; \\",
         "        MARK_DIRTY_##probe;",
         "",

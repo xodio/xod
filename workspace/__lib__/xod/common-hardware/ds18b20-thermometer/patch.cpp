@@ -1,8 +1,6 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_UPD
 
-#pragma XOD error_raise enable
-
 /*
  *  Datasheet can be found at
  *  https://cdn-shop.adafruit.com/datasheets/DS18B20.pdf
@@ -130,14 +128,10 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
+
     if (!isInputDirty<input_UPD>(ctx))
         return;
-
-    auto port = getValue<input_PORT>(ctx);
-    if (!isValidDigitalPort(port)) {
-        raiseError(ctx); // Invalid port
-        return;
-    }
 
     Number tc;
     bool success = readTemperature(port, &tc);

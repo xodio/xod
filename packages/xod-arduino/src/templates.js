@@ -5,9 +5,12 @@ import { unquote } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { def } from './types';
+import parseImplementation from './parseImplementation';
 
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
+import patchPinTypesTpl from '../platform/patchPinTypes.tpl.cpp';
+import patchTpl from '../platform/patch.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
 
@@ -280,13 +283,74 @@ Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
+// TODO: better name!
+const isTemplatableCustomTypePin = R.prop('isTemplatableCustomTypePin');
+Handlebars.registerHelper(
+  'isTemplatableCustomTypePin',
+  isTemplatableCustomTypePin
+);
+
+Handlebars.registerHelper(
+  'templatableCustomTypeInputs',
+  R.filter(isTemplatableCustomTypePin)
+);
+
+Handlebars.registerHelper(
+  'containsTemplatableCustomTypeInputs',
+  R.pipe(R.filter(isTemplatableCustomTypePin), R.isEmpty, R.not)
+);
+
+const isConstantType = type => XP.CONSTANT_PIN_TYPES.includes(type);
+
+Handlebars.registerHelper('isConstantType', isConstantType);
+
+const isConstantPin = ({ type }) => isConstantType(type);
+
+Handlebars.registerHelper('constantInputs', R.filter(isConstantPin));
+
+Handlebars.registerHelper(
+  'containsConstantInputs',
+  R.pipe(R.filter(isConstantPin), R.isEmpty, R.not)
+);
+
+Handlebars.registerHelper(
+  'indent',
+  R.compose(
+    R.join('\n'),
+    R.map(R.unless(R.isEmpty, str => `    ${str}`)),
+    R.split('\n')
+  )
+);
+
+Handlebars.registerHelper({
+  eq: (v1, v2) => v1 === v2,
+  ne: (v1, v2) => v1 !== v2,
+  lt: (v1, v2) => v1 < v2,
+  gt: (v1, v2) => v1 > v2,
+  lte: (v1, v2) => v1 <= v2,
+  gte: (v1, v2) => v1 >= v2,
+  and(...args) {
+    return Array.prototype.every.call(args, Boolean);
+  },
+  or(...args) {
+    return Array.prototype.slice.call(args, 0, -1).some(Boolean);
+  },
+});
+
 // A helper to quickly introduce a new filtered {{each ...}} loop
 function registerHandlebarsFilterLoopHelper(name, predicate) {
-  Handlebars.registerHelper(name, (list, block) =>
-    R.compose(R.join(''), R.map(node => block.fn(node)), R.filter(predicate))(
-      list
-    )
-  );
+  Handlebars.registerHelper(name, (list, block) => {
+    const filteredList = R.filter(predicate, list);
+    const lastIndex = filteredList.length - 1;
+
+    return filteredList
+      .map((node, index) =>
+        block.fn(node, {
+          data: { index, first: index === 0, last: index === lastIndex },
+        })
+      )
+      .join('');
+  });
 }
 
 registerHandlebarsFilterLoopHelper(
@@ -320,6 +384,10 @@ registerHandlebarsFilterLoopHelper(
   'eachNonPulse',
   R.complement(R.propEq('type', XP.PIN_TYPE.PULSE))
 );
+registerHandlebarsFilterLoopHelper(
+  'eachNonPulseOrConstant',
+  ({ type }) => type !== XP.PIN_TYPE.PULSE && !isConstantType(type)
+);
 
 export const withTetheringInetNode = R.find(
   R.both(
@@ -347,7 +415,9 @@ const renderingOptions = {
 const templates = {
   config: Handlebars.compile(configTpl, renderingOptions),
   patchContext: Handlebars.compile(patchContextTpl, renderingOptions),
+  patchPinTypes: Handlebars.compile(patchPinTypesTpl, renderingOptions),
   implList: Handlebars.compile(implListTpl, renderingOptions),
+  patchImpl: Handlebars.compile(patchTpl, renderingOptions),
   program: Handlebars.compile(programTpl, renderingOptions),
 };
 
@@ -364,14 +434,33 @@ export const renderPatchContext = def(
   'renderPatchContext :: TPatch -> String',
   templates.patchContext
 );
-export const renderImpl = def('renderImpl :: TPatch -> String', data => {
-  const ctx = R.applySpec({
-    patchPath: R.prop('patchPath'),
-    GENERATED_CODE: renderPatchContext,
-  })(data);
 
-  const patchImpl = R.prop('impl', data);
-  return Handlebars.compile(patchImpl, renderingOptions)(ctx);
+export const renderPatchPinTypes = def(
+  'renderPatchPinTypes :: TPatch -> String',
+  templates.patchPinTypes
+);
+
+export const renderImpl = def('renderImpl :: TPatch -> String', tPatch => {
+  const patchImpl = R.prop('impl', tPatch);
+
+  const patchPinTypes = renderPatchPinTypes(tPatch);
+  const generatedCode = renderPatchContext(tPatch);
+
+  const parsedImpl = R.compose(
+    parseImplementation,
+    R.replace(/ValueType<(input|output)_(...)>::T/g, 'TypeOf$2')
+  )(patchImpl);
+
+  const ctx = R.merge(
+    {
+      patch: tPatch,
+      generatedCode,
+      patchPinTypes,
+    },
+    parsedImpl
+  );
+
+  return templates.patchImpl(ctx);
 });
 export const renderImplList = def(
   'renderImplList :: [TPatch] -> String',

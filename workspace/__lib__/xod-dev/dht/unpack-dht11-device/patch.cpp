@@ -1,10 +1,11 @@
 
-struct State {
-};
+struct State {};
+
+static const uint8_t constant_output_OUT = remove_pointer<TypeOfDEV>::type::port;
 
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    auto dev = getValue<input_DEV>(ctx);
-    emitValue<output_OUT>(ctx, dev->port);
+    // only to trigger evaluation of downstream nodes
+    emitValue<output_OUT>(ctx, constant_output_OUT);
 }

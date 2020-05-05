@@ -1,6 +1,5 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_UPD
-#pragma XOD error_raise enable
 
 {{#global}}
 #include <LiquidCrystal.h>
@@ -24,6 +23,13 @@ void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
 }
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_RS), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_EN), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_D4), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_D5), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_D6), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_D7), "must be a valid digital port");
+
     if (!isInputDirty<input_UPD>(ctx))
         return;
 
@@ -36,18 +42,6 @@ void evaluate(Context ctx) {
         auto d5Port = getValue<input_D5>(ctx);
         auto d6Port = getValue<input_D6>(ctx);
         auto d7Port = getValue<input_D7>(ctx);
-
-        if (
-            !isValidDigitalPort(rsPort) ||
-            !isValidDigitalPort(enPort) ||
-            !isValidDigitalPort(d4Port) ||
-            !isValidDigitalPort(d5Port) ||
-            !isValidDigitalPort(d6Port) ||
-            !isValidDigitalPort(d7Port)
-        ) {
-            raiseError(ctx);
-            return;
-        }
 
         state->lcd = lcd = new LiquidCrystal(
             (int)getValue<input_RS>(ctx),

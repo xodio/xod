@@ -9,6 +9,11 @@ import {
 
 export { PIN_TYPE };
 
+/**
+ * Types that are could not be redefined at runtime.
+ */
+export const CONSTANT_PIN_TYPES = [PIN_TYPE.PORT];
+
 export const IDENTIFIER_RULES = `Only a-z, 0-9 and - are allowed.
   Name must not begin or end with a hypen,
   or contain more than one hypen in a row`;

@@ -1,4 +1,3 @@
-#pragma XOD error_raise enable
 
 struct State {
 };
@@ -11,13 +10,10 @@ struct Type {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_CS), "must be a valid digital port");
+
     auto mac = getValue<input_MAC>(ctx);
     auto csPort = getValue<input_CS>(ctx);
-
-    if (!isValidDigitalPort(csPort)) {
-        raiseError(ctx);
-        return;
-    }
 
     Type dev;
     dev.mac = mac;

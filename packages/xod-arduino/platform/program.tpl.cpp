@@ -12,11 +12,15 @@ namespace xod {
 // Define/allocate persistent storages (state, timeout, output data) for all nodes
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
+
+// outputs of constant nodes
 {{#each nodes}}
 {{~ mergePins }}
-{{#eachNonPulse outputs }}
+{{~#if patch.isConstant}}
+{{~#eachNonPulse outputs ~}}
 {{ decltype type value }} node_{{ ../id }}_output_{{ pinKey }} = {{ cppValue type value }};
-{{/eachNonPulse}}
+{{/eachNonPulse ~}}
+{{/if~}}
 {{/each}}
 
 #pragma GCC diagnostic pop
@@ -53,20 +57,31 @@ TransactionState g_transaction;
 
 {{#each nodes}}
 {{#unless patch.isConstant}}
-{{ ns patch }}::Node node_{{ id }} = {
-  {{#if patch.raisesErrors}}
-    {{#each outputs}}
-    false, // {{ pinKey }} has no errors on start
-    {{/each}}
-  {{/if}}
-  {{#if patch.usesTimeouts}}
-    0, // timeoutAt
-  {{/if}}
-  {{#eachNonPulse outputs}}
-    node_{{ ../id }}_output_{{ pinKey }}, // output {{ pinKey }} default
-  {{/eachNonPulse}}
-    {{ ns patch }}::State() // state default
-};
+
+typedef {{ ns patch }}{{#if (or (containsConstantInputs inputs) (containsTemplatableCustomTypeInputs inputs))~}}
+<
+  {{~#each (constantInputs inputs)~}}
+    {{~#if fromPatch.isConstant~}}
+      node_{{ fromNodeId }}_output_{{ fromPinKey }}
+    {{~else~}}
+      TypeOfNode{{ fromNodeId }}::constant_output_{{ fromPinKey }}{{!-- // TODO: a proper name? --}}
+    {{~/if~}}
+    {{~#unless @last}}, {{/unless}}
+  {{~/each~}}
+  {{~#if (and (containsConstantInputs inputs) (containsTemplatableCustomTypeInputs inputs))}}, {{/if}}
+  {{~#each (templatableCustomTypeInputs inputs)~}}
+    TypeOfNode{{ fromNodeId }}::TypeOf{{ fromPinKey }}
+    {{~#unless @last}}, {{/unless}}
+  {{~/each~}}
+>
+{{~/if}} TypeOfNode{{ id }};
+{{!-- // TODO: templating goes here --}}
+TypeOfNode{{ id }} node_{{ id }} = TypeOfNode{{ id }}(
+{{~#eachNonPulseOrConstant outputs~}}
+  {{ cppValue type value }}
+  {{~#unless @last}}, {{/unless}}
+{{~/eachNonPulseOrConstant~}}
+);
 {{/unless}}
 {{/each}}
 
@@ -101,16 +116,16 @@ void handleDebugProtocolMessages() {
                 {
                 {{#switchByTweakType patch.patchPath}}
                   {{#case "number"}}
-                    node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseFloat();
+                    node_{{ id }}._output_OUT = XOD_DEBUG_SERIAL.parseFloat();
                   {{/case}}
                   {{#case "byte"}}
-                    node_{{ id }}.output_OUT = XOD_DEBUG_SERIAL.parseInt();
+                    node_{{ id }}._output_OUT = XOD_DEBUG_SERIAL.parseInt();
                   {{/case}}
                   {{#case "pulse"}}
                     {{!-- nothing to do here, only marking output as dirty is required --}}
                   {{/case}}
                   {{#case "boolean"}}
-                    node_{{ id }}.output_OUT = (bool)XOD_DEBUG_SERIAL.parseInt();
+                    node_{{ id }}._output_OUT = (bool)XOD_DEBUG_SERIAL.parseInt();
                   {{/case}}
                   {{#case "string"}}
                     XOD_DEBUG_SERIAL.read(); // consume the ':' separator that was left after parsing node id
@@ -118,7 +133,7 @@ void handleDebugProtocolMessages() {
                     node_{{ id }}.state.buff[readChars] = '\0';
                   {{/case}}
                   {{#case "xod/color/color"}}
-                    node_{{ id }}.output_OUT = {
+                    node_{{ id }}._output_OUT = {
                       /* RGB */
                       (uint8_t)XOD_DEBUG_SERIAL.parseInt(),
                       (uint8_t)XOD_DEBUG_SERIAL.parseInt(),
@@ -156,8 +171,7 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN({{ id }});
 
-            {{ns patch }}::ContextObject ctxObj;
-            ctxObj._node = &node_{{ id }};
+            TypeOfNode{{ id }}::ContextObject ctxObj;
           {{#each inputs}}
             {{#if isDirtyable}}
             ctxObj._isInputDirty_{{ pinKey }} = false;
@@ -171,10 +185,10 @@ void handleDefers() {
               // initial value constexpr in case of a constant. It’s
               // because store no Node structures at the global level
             --}}
-            {{#unless (isPulse type)}}
+            {{#unless (or (isPulse type) (isConstantType type))}}
             ctxObj._input_{{ pinKey }} = node_{{ fromNodeId }}
-                {{~#if fromPatch.isConstant }}_{{else}}.{{/if~}}
-                output_{{ fromPinKey }};
+                {{~#unless fromPatch.isConstant }}.{{/unless~}}
+                _output_{{ fromPinKey }};
             {{/unless}}
           {{/eachLinkedInput}}
 
@@ -192,7 +206,7 @@ void handleDefers() {
             ctxObj._isOutputDirty_{{ pinKey }} = false;
           {{/eachDirtyablePin}}
 
-            {{ns patch }}::NodeErrors previousErrors = node_{{ id }}.errors;
+            TypeOfNode{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
 
             {{!--
               // Сlean errors from pulse outputs
@@ -201,7 +215,7 @@ void handleDefers() {
             node_{{ ../id }}.errors.output_{{ pinKey }} = false;
             {{/eachPulseOutput}}
 
-            {{ ns patch }}::evaluate(&ctxObj);
+            node_{{ id }}.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}
@@ -324,8 +338,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN({{ id }});
 
-            {{ns patch }}::ContextObject ctxObj;
-            ctxObj._node = &node_{{ id }};
+            TypeOfNode{{ id }}::ContextObject ctxObj;
           {{#if patch.usesNodeId}}
             ctxObj._nodeId = {{ id }};
           {{/if}}
@@ -348,10 +361,10 @@ void runTransaction() {
               // initial value constexpr in case of a constant. It’s
               // because store no Node structures at the global level
             --}}
-            {{#unless (isPulse type)}}
+            {{#unless (or (isPulse type) (isConstantType type))}}
             ctxObj._input_{{ pinKey }} = node_{{ fromNodeId }}
-                {{~#if fromPatch.isConstant }}_{{else}}.{{/if~}}
-                output_{{ fromPinKey }};
+                {{~#unless fromPatch.isConstant }}.{{/unless~}}
+                _output_{{ fromPinKey }};
             {{/unless}}
           {{/eachLinkedInput}}
 
@@ -392,7 +405,7 @@ void runTransaction() {
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
-            {{ns patch }}::NodeErrors previousErrors = node_{{ id }}.errors;
+            TypeOfNode{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
 
             {{#unless patch.isDefer}}
             {{!--
@@ -404,7 +417,7 @@ void runTransaction() {
             {{/unless}}
           {{/if}}
 
-            {{ ns patch }}::evaluate(&ctxObj);
+            node_{{ id }}.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
           {{#eachDirtyablePin outputs}}

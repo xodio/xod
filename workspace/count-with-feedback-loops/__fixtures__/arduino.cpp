@@ -852,6 +852,16 @@ template<typename T> struct always_false {
     enum { value = 0 };
 };
 
+template<typename T> struct identity {
+  typedef T type;
+};
+
+template<typename T> struct remove_pointer                    {typedef T type;};
+template<typename T> struct remove_pointer<T*>                {typedef T type;};
+template<typename T> struct remove_pointer<T* const>          {typedef T type;};
+template<typename T> struct remove_pointer<T* volatile>       {typedef T type;};
+template<typename T> struct remove_pointer<T* const volatile> {typedef T type;};
+
 //----------------------------------------------------------------------------
 // Forward declarations
 //----------------------------------------------------------------------------
@@ -914,22 +924,7 @@ bool isEarlyDeferPass() {
     return g_isEarlyDeferPass;
 }
 
-template<typename ContextT>
-void setTimeout(ContextT* ctx, TimeMs timeout) {
-    ctx->_node->timeoutAt = transactionTime() + timeout;
-}
-
-template<typename ContextT>
-void clearTimeout(ContextT* ctx) {
-    detail::clearTimeout(ctx->_node);
-}
-
-template<typename ContextT>
-bool isTimedOut(const ContextT* ctx) {
-    return detail::isTimedOut(ctx->_node);
-}
-
-bool isValidDigitalPort(uint8_t port) {
+constexpr bool isValidDigitalPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_DIGITAL_PINS)
     return port < NUM_DIGITAL_PINS;
 #else
@@ -937,7 +932,7 @@ bool isValidDigitalPort(uint8_t port) {
 #endif
 }
 
-bool isValidAnalogPort(uint8_t port) {
+constexpr bool isValidAnalogPort(uint8_t port) {
 #if defined(__AVR__) && defined(NUM_ANALOG_INPUTS)
     return port >= A0 && port < A0 + NUM_ANALOG_INPUTS;
 #else
@@ -977,1270 +972,1621 @@ void loop() {
  *
  =============================================================================*/
 
-namespace xod {
-
 //-----------------------------------------------------------------------------
 // xod/core/cast-to-pulse(boolean) implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_to_pulse__boolean {
 
-struct State {
-  bool state = false;
-};
+namespace xod {
+struct xod__core__cast_to_pulse__boolean {
 
-struct Node {
+    typedef Logic TypeOfIN;
+
+    typedef Pulse TypeOfOUT;
+
+    struct State {
+      bool state = false;
+    };
+
+    struct input_IN { };
+    struct output_OUT { };
+
+    static const identity<TypeOfIN> getValueType(input_IN) {
+      return identity<TypeOfIN>();
+    }
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
+
     State state;
+
+    xod__core__cast_to_pulse__boolean () {
+    }
+
+    struct ContextObject {
+
+        TypeOfIN _input_IN;
+
+        bool _isOutputDirty_OUT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN" \
+                " output_OUT");
+    }
+
+    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+        return ctx->_input_IN;
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    void evaluate(Context ctx) {
+        State* state = getState(ctx);
+        auto newValue = getValue<input_IN>(ctx);
+
+        if (newValue == true && state->state == false)
+            emitValue<output_OUT>(ctx, 1);
+
+        state->state = newValue;
+    }
+
 };
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Logic; };
-template<> struct ValueType<output_OUT> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-
-    Logic _input_IN;
-
-    bool _isOutputDirty_OUT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Logic getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> Pulse getValue<output_OUT>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_OUT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    auto newValue = getValue<input_IN>(ctx);
-
-    if (newValue == true && state->state == false)
-        emitValue<output_OUT>(ctx, 1);
-
-    state->state = newValue;
-}
-
-} // namespace xod__core__cast_to_pulse__boolean
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__continuously {
 
-struct State {
-};
+namespace xod {
+struct xod__core__continuously {
 
-struct Node {
-    TimeMs timeoutAt;
+    typedef Pulse TypeOfTICK;
+
+    struct State {
+    };
+
+    struct output_TICK { };
+
+    static const identity<TypeOfTICK> getValueType(output_TICK) {
+      return identity<TypeOfTICK>();
+    }
+
+    TimeMs timeoutAt = 0;
+
     State state;
+
+    xod__core__continuously () {
+    }
+
+    struct ContextObject {
+
+        bool _isOutputDirty_TICK : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+        this->timeoutAt = transactionTime() + timeout;
+    }
+
+    void clearTimeout(__attribute__((unused)) Context ctx) {
+        detail::clearTimeout(this);
+    }
+
+    bool isTimedOut(__attribute__((unused)) const Context ctx) {
+        return detail::isTimedOut(this);
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                "" \
+                " output_TICK");
+    }
+
+    TypeOfTICK getValue(Context ctx, identity<output_TICK>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_TICK");
+    }
+
+    void emitValue(Context ctx, TypeOfTICK val, identity<output_TICK>) {
+        ctx->_isOutputDirty_TICK = true;
+    }
+
+    void evaluate(Context ctx) {
+        emitValue<output_TICK>(ctx, 1);
+        setTimeout(ctx, 0);
+    }
+
 };
-
-struct output_TICK { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<output_TICK> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-
-    bool _isOutputDirty_TICK : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            "" \
-            " output_TICK");
-}
-
-template<> Pulse getValue<output_TICK>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_TICK");
-}
-
-template<> void emitValue<output_TICK>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_TICK = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    emitValue<output_TICK>(ctx, 1);
-    setTimeout(ctx, 0);
-}
-
-} // namespace xod__core__continuously
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/boot implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__boot {
 
-struct State {
-};
+namespace xod {
+struct xod__core__boot {
 
-struct Node {
+    typedef Pulse TypeOfBOOT;
+
+    struct State {
+    };
+
+    struct output_BOOT { };
+
+    static const identity<TypeOfBOOT> getValueType(output_BOOT) {
+      return identity<TypeOfBOOT>();
+    }
+
     State state;
+
+    xod__core__boot () {
+    }
+
+    struct ContextObject {
+
+        bool _isOutputDirty_BOOT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                "" \
+                " output_BOOT");
+    }
+
+    TypeOfBOOT getValue(Context ctx, identity<output_BOOT>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_BOOT");
+    }
+
+    void emitValue(Context ctx, TypeOfBOOT val, identity<output_BOOT>) {
+        ctx->_isOutputDirty_BOOT = true;
+    }
+
+    void evaluate(Context ctx) {
+        emitValue<output_BOOT>(ctx, 1);
+    }
+
 };
-
-struct output_BOOT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<output_BOOT> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-
-    bool _isOutputDirty_BOOT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            "" \
-            " output_BOOT");
-}
-
-template<> Pulse getValue<output_BOOT>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_BOOT");
-}
-
-template<> void emitValue<output_BOOT>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_BOOT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    emitValue<output_BOOT>(ctx, 1);
-}
-
-} // namespace xod__core__boot
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/any implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__any {
 
-struct State {
-};
+namespace xod {
+struct xod__core__any {
 
-struct Node {
+    typedef Pulse TypeOfIN1;
+    typedef Pulse TypeOfIN2;
+
+    typedef Pulse TypeOfOUT;
+
+    struct State {
+    };
+
+    struct input_IN1 { };
+    struct input_IN2 { };
+    struct output_OUT { };
+
+    static const identity<TypeOfIN1> getValueType(input_IN1) {
+      return identity<TypeOfIN1>();
+    }
+    static const identity<TypeOfIN2> getValueType(input_IN2) {
+      return identity<TypeOfIN2>();
+    }
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
+
     State state;
+
+    xod__core__any () {
+    }
+
+    struct ContextObject {
+
+        bool _isInputDirty_IN1;
+        bool _isInputDirty_IN2;
+
+        bool _isOutputDirty_OUT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN1 input_IN2" \
+                " output_OUT");
+    }
+
+    TypeOfIN1 getValue(Context ctx, identity<input_IN1>) {
+        return Pulse();
+    }
+    TypeOfIN2 getValue(Context ctx, identity<input_IN2>) {
+        return Pulse();
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_IN1 input_IN2");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_IN1>) {
+        return ctx->_isInputDirty_IN1;
+    }
+    bool isInputDirty(Context ctx, identity<input_IN2>) {
+        return ctx->_isInputDirty_IN2;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    void evaluate(Context ctx) {
+        bool p1 = isInputDirty<input_IN1>(ctx);
+        bool p2 = isInputDirty<input_IN2>(ctx);
+        if (p1 || p2)
+            emitValue<output_OUT>(ctx, true);
+    }
+
 };
-
-struct input_IN1 { };
-struct input_IN2 { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN1> { using T = Pulse; };
-template<> struct ValueType<input_IN2> { using T = Pulse; };
-template<> struct ValueType<output_OUT> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-
-    bool _isInputDirty_IN1;
-    bool _isInputDirty_IN2;
-
-    bool _isOutputDirty_OUT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN1 input_IN2" \
-            " output_OUT");
-}
-
-template<> Pulse getValue<input_IN1>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<input_IN2>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<output_OUT>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_IN1 input_IN2");
-    return false;
-}
-
-template<> bool isInputDirty<input_IN1>(Context ctx) {
-    return ctx->_isInputDirty_IN1;
-}
-template<> bool isInputDirty<input_IN2>(Context ctx) {
-    return ctx->_isInputDirty_IN2;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_OUT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    bool p1 = isInputDirty<input_IN1>(ctx);
-    bool p2 = isInputDirty<input_IN2>(ctx);
-    if (p1 || p2)
-        emitValue<output_OUT>(ctx, true);
-}
-
-} // namespace xod__core__any
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/clock implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__clock {
 
-struct State {
-  TimeMs nextTrig;
-};
+namespace xod {
+struct xod__core__clock {
 
-struct Node {
-    TimeMs timeoutAt;
-    State state;
-};
+    typedef Logic TypeOfEN;
+    typedef Number TypeOfIVAL;
+    typedef Pulse TypeOfRST;
 
-struct input_EN { };
-struct input_IVAL { };
-struct input_RST { };
-struct output_TICK { };
+    typedef Pulse TypeOfTICK;
 
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_EN> { using T = Logic; };
-template<> struct ValueType<input_IVAL> { using T = Number; };
-template<> struct ValueType<input_RST> { using T = Pulse; };
-template<> struct ValueType<output_TICK> { using T = Pulse; };
+    struct State {
+      TimeMs nextTrig;
+    };
 
-struct ContextObject {
-    Node* _node;
+    struct input_EN { };
+    struct input_IVAL { };
+    struct input_RST { };
+    struct output_TICK { };
 
-    Logic _input_EN;
-    Number _input_IVAL;
-
-    bool _isInputDirty_EN;
-    bool _isInputDirty_RST;
-
-    bool _isOutputDirty_TICK : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_EN input_IVAL input_RST" \
-            " output_TICK");
-}
-
-template<> Logic getValue<input_EN>(Context ctx) {
-    return ctx->_input_EN;
-}
-template<> Number getValue<input_IVAL>(Context ctx) {
-    return ctx->_input_IVAL;
-}
-template<> Pulse getValue<input_RST>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<output_TICK>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_EN input_RST");
-    return false;
-}
-
-template<> bool isInputDirty<input_EN>(Context ctx) {
-    return ctx->_isInputDirty_EN;
-}
-template<> bool isInputDirty<input_RST>(Context ctx) {
-    return ctx->_isInputDirty_RST;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_TICK");
-}
-
-template<> void emitValue<output_TICK>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_TICK = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    TimeMs tNow = transactionTime();
-    auto ival = getValue<input_IVAL>(ctx);
-    if (ival < 0) ival = 0;
-    TimeMs dt = ival * 1000;
-    TimeMs tNext = tNow + dt;
-
-    auto isEnabled = getValue<input_EN>(ctx);
-    auto isRstDirty = isInputDirty<input_RST>(ctx);
-
-    if (isTimedOut(ctx) && isEnabled && !isRstDirty) {
-        emitValue<output_TICK>(ctx, 1);
-        state->nextTrig = tNext;
-        setTimeout(ctx, dt);
+    static const identity<TypeOfEN> getValueType(input_EN) {
+      return identity<TypeOfEN>();
+    }
+    static const identity<TypeOfIVAL> getValueType(input_IVAL) {
+      return identity<TypeOfIVAL>();
+    }
+    static const identity<TypeOfRST> getValueType(input_RST) {
+      return identity<TypeOfRST>();
+    }
+    static const identity<TypeOfTICK> getValueType(output_TICK) {
+      return identity<TypeOfTICK>();
     }
 
-    if (isRstDirty || isInputDirty<input_EN>(ctx)) {
-        // Handle enable/disable/reset
-        if (!isEnabled) {
-            // Disable timeout loop on explicit false on EN
-            state->nextTrig = 0;
-            clearTimeout(ctx);
-        } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
-            // Start timeout from scratch
+    TimeMs timeoutAt = 0;
+
+    State state;
+
+    xod__core__clock () {
+    }
+
+    struct ContextObject {
+
+        TypeOfEN _input_EN;
+        TypeOfIVAL _input_IVAL;
+
+        bool _isInputDirty_EN;
+        bool _isInputDirty_RST;
+
+        bool _isOutputDirty_TICK : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+        this->timeoutAt = transactionTime() + timeout;
+    }
+
+    void clearTimeout(__attribute__((unused)) Context ctx) {
+        detail::clearTimeout(this);
+    }
+
+    bool isTimedOut(__attribute__((unused)) const Context ctx) {
+        return detail::isTimedOut(this);
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_EN input_IVAL input_RST" \
+                " output_TICK");
+    }
+
+    TypeOfEN getValue(Context ctx, identity<input_EN>) {
+        return ctx->_input_EN;
+    }
+    TypeOfIVAL getValue(Context ctx, identity<input_IVAL>) {
+        return ctx->_input_IVAL;
+    }
+    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+        return Pulse();
+    }
+    TypeOfTICK getValue(Context ctx, identity<output_TICK>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_EN input_RST");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_EN>) {
+        return ctx->_isInputDirty_EN;
+    }
+    bool isInputDirty(Context ctx, identity<input_RST>) {
+        return ctx->_isInputDirty_RST;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_TICK");
+    }
+
+    void emitValue(Context ctx, TypeOfTICK val, identity<output_TICK>) {
+        ctx->_isOutputDirty_TICK = true;
+    }
+
+    void evaluate(Context ctx) {
+        State* state = getState(ctx);
+        TimeMs tNow = transactionTime();
+        auto ival = getValue<input_IVAL>(ctx);
+        if (ival < 0) ival = 0;
+        TimeMs dt = ival * 1000;
+        TimeMs tNext = tNow + dt;
+
+        auto isEnabled = getValue<input_EN>(ctx);
+        auto isRstDirty = isInputDirty<input_RST>(ctx);
+
+        if (isTimedOut(ctx) && isEnabled && !isRstDirty) {
+            emitValue<output_TICK>(ctx, 1);
             state->nextTrig = tNext;
             setTimeout(ctx, dt);
         }
-    }
-}
 
-} // namespace xod__core__clock
+        if (isRstDirty || isInputDirty<input_EN>(ctx)) {
+            // Handle enable/disable/reset
+            if (!isEnabled) {
+                // Disable timeout loop on explicit false on EN
+                state->nextTrig = 0;
+                clearTimeout(ctx);
+            } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
+                // Start timeout from scratch
+                state->nextTrig = tNext;
+                setTimeout(ctx, dt);
+            }
+        }
+    }
+
+};
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/delay implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__delay {
 
-struct State {
-};
+namespace xod {
+struct xod__core__delay {
 
-struct Node {
-    TimeMs timeoutAt;
-    Logic output_ACT;
-    State state;
-};
+    typedef Number TypeOfT;
+    typedef Pulse TypeOfSET;
+    typedef Pulse TypeOfRST;
 
-struct input_T { };
-struct input_SET { };
-struct input_RST { };
-struct output_DONE { };
-struct output_ACT { };
+    typedef Pulse TypeOfDONE;
+    typedef Logic TypeOfACT;
 
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_T> { using T = Number; };
-template<> struct ValueType<input_SET> { using T = Pulse; };
-template<> struct ValueType<input_RST> { using T = Pulse; };
-template<> struct ValueType<output_DONE> { using T = Pulse; };
-template<> struct ValueType<output_ACT> { using T = Logic; };
+    struct State {
+    };
 
-struct ContextObject {
-    Node* _node;
+    struct input_T { };
+    struct input_SET { };
+    struct input_RST { };
+    struct output_DONE { };
+    struct output_ACT { };
 
-    Number _input_T;
-
-    bool _isInputDirty_SET;
-    bool _isInputDirty_RST;
-
-    bool _isOutputDirty_DONE : 1;
-    bool _isOutputDirty_ACT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_T input_SET input_RST" \
-            " output_DONE output_ACT");
-}
-
-template<> Number getValue<input_T>(Context ctx) {
-    return ctx->_input_T;
-}
-template<> Pulse getValue<input_SET>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<input_RST>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<output_DONE>(Context ctx) {
-    return Pulse();
-}
-template<> Logic getValue<output_ACT>(Context ctx) {
-    return ctx->_node->output_ACT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_SET input_RST");
-    return false;
-}
-
-template<> bool isInputDirty<input_SET>(Context ctx) {
-    return ctx->_isInputDirty_SET;
-}
-template<> bool isInputDirty<input_RST>(Context ctx) {
-    return ctx->_isInputDirty_RST;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_DONE output_ACT");
-}
-
-template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_DONE = true;
-}
-template<> void emitValue<output_ACT>(Context ctx, Logic val) {
-    ctx->_node->output_ACT = val;
-    ctx->_isOutputDirty_ACT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    if (isInputDirty<input_RST>(ctx)) {
-        clearTimeout(ctx);
-        emitValue<output_ACT>(ctx, false);
-    } else if (isInputDirty<input_SET>(ctx)) {
-        TimeMs dt = getValue<input_T>(ctx) * 1000;
-        setTimeout(ctx, dt);
-        emitValue<output_ACT>(ctx, true);
-    } else if (isTimedOut(ctx)) {
-        emitValue<output_DONE>(ctx, true);
-        emitValue<output_ACT>(ctx, false);
+    static const identity<TypeOfT> getValueType(input_T) {
+      return identity<TypeOfT>();
     }
-}
+    static const identity<TypeOfSET> getValueType(input_SET) {
+      return identity<TypeOfSET>();
+    }
+    static const identity<TypeOfRST> getValueType(input_RST) {
+      return identity<TypeOfRST>();
+    }
+    static const identity<TypeOfDONE> getValueType(output_DONE) {
+      return identity<TypeOfDONE>();
+    }
+    static const identity<TypeOfACT> getValueType(output_ACT) {
+      return identity<TypeOfACT>();
+    }
 
-} // namespace xod__core__delay
+    TimeMs timeoutAt = 0;
+
+    TypeOfACT _output_ACT;
+
+    State state;
+
+    xod__core__delay (TypeOfACT output_ACT) {
+        _output_ACT = output_ACT;
+    }
+
+    struct ContextObject {
+
+        TypeOfT _input_T;
+
+        bool _isInputDirty_SET;
+        bool _isInputDirty_RST;
+
+        bool _isOutputDirty_DONE : 1;
+        bool _isOutputDirty_ACT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+        this->timeoutAt = transactionTime() + timeout;
+    }
+
+    void clearTimeout(__attribute__((unused)) Context ctx) {
+        detail::clearTimeout(this);
+    }
+
+    bool isTimedOut(__attribute__((unused)) const Context ctx) {
+        return detail::isTimedOut(this);
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_T input_SET input_RST" \
+                " output_DONE output_ACT");
+    }
+
+    TypeOfT getValue(Context ctx, identity<input_T>) {
+        return ctx->_input_T;
+    }
+    TypeOfSET getValue(Context ctx, identity<input_SET>) {
+        return Pulse();
+    }
+    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+        return Pulse();
+    }
+    TypeOfDONE getValue(Context ctx, identity<output_DONE>) {
+        return Pulse();
+    }
+    TypeOfACT getValue(Context ctx, identity<output_ACT>) {
+        return this->_output_ACT;
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_SET input_RST");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_SET>) {
+        return ctx->_isInputDirty_SET;
+    }
+    bool isInputDirty(Context ctx, identity<input_RST>) {
+        return ctx->_isInputDirty_RST;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_DONE output_ACT");
+    }
+
+    void emitValue(Context ctx, TypeOfDONE val, identity<output_DONE>) {
+        ctx->_isOutputDirty_DONE = true;
+    }
+    void emitValue(Context ctx, TypeOfACT val, identity<output_ACT>) {
+        this->_output_ACT = val;
+        ctx->_isOutputDirty_ACT = true;
+    }
+
+    void evaluate(Context ctx) {
+        if (isInputDirty<input_RST>(ctx)) {
+            clearTimeout(ctx);
+            emitValue<output_ACT>(ctx, false);
+        } else if (isInputDirty<input_SET>(ctx)) {
+            TimeMs dt = getValue<input_T>(ctx) * 1000;
+            setTimeout(ctx, dt);
+            emitValue<output_ACT>(ctx, true);
+        } else if (isTimedOut(ctx)) {
+            emitValue<output_DONE>(ctx, true);
+            emitValue<output_ACT>(ctx, false);
+        }
+    }
+
+};
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/count implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__count {
 
-struct State {
-};
+namespace xod {
+struct xod__core__count {
 
-struct Node {
-    Number output_OUT;
+    typedef Number TypeOfSTEP;
+    typedef Pulse TypeOfINC;
+    typedef Pulse TypeOfRST;
+
+    typedef Number TypeOfOUT;
+
+    struct State {
+    };
+
+    struct input_STEP { };
+    struct input_INC { };
+    struct input_RST { };
+    struct output_OUT { };
+
+    static const identity<TypeOfSTEP> getValueType(input_STEP) {
+      return identity<TypeOfSTEP>();
+    }
+    static const identity<TypeOfINC> getValueType(input_INC) {
+      return identity<TypeOfINC>();
+    }
+    static const identity<TypeOfRST> getValueType(input_RST) {
+      return identity<TypeOfRST>();
+    }
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
+
+    TypeOfOUT _output_OUT;
+
     State state;
+
+    xod__core__count (TypeOfOUT output_OUT) {
+        _output_OUT = output_OUT;
+    }
+
+    struct ContextObject {
+
+        TypeOfSTEP _input_STEP;
+
+        bool _isInputDirty_INC;
+        bool _isInputDirty_RST;
+
+        bool _isOutputDirty_OUT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_STEP input_INC input_RST" \
+                " output_OUT");
+    }
+
+    TypeOfSTEP getValue(Context ctx, identity<input_STEP>) {
+        return ctx->_input_STEP;
+    }
+    TypeOfINC getValue(Context ctx, identity<input_INC>) {
+        return Pulse();
+    }
+    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+        return Pulse();
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return this->_output_OUT;
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_INC input_RST");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_INC>) {
+        return ctx->_isInputDirty_INC;
+    }
+    bool isInputDirty(Context ctx, identity<input_RST>) {
+        return ctx->_isInputDirty_RST;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        this->_output_OUT = val;
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    void evaluate(Context ctx) {
+        Number count = getValue<output_OUT>(ctx);
+
+        if (isInputDirty<input_RST>(ctx))
+            count = 0;
+        else if (isInputDirty<input_INC>(ctx))
+            count += getValue<input_STEP>(ctx);
+
+        emitValue<output_OUT>(ctx, count);
+    }
+
 };
-
-struct input_STEP { };
-struct input_INC { };
-struct input_RST { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_STEP> { using T = Number; };
-template<> struct ValueType<input_INC> { using T = Pulse; };
-template<> struct ValueType<input_RST> { using T = Pulse; };
-template<> struct ValueType<output_OUT> { using T = Number; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_STEP;
-
-    bool _isInputDirty_INC;
-    bool _isInputDirty_RST;
-
-    bool _isOutputDirty_OUT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_STEP input_INC input_RST" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_STEP>(Context ctx) {
-    return ctx->_input_STEP;
-}
-template<> Pulse getValue<input_INC>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<input_RST>(Context ctx) {
-    return Pulse();
-}
-template<> Number getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_INC input_RST");
-    return false;
-}
-
-template<> bool isInputDirty<input_INC>(Context ctx) {
-    return ctx->_isInputDirty_INC;
-}
-template<> bool isInputDirty<input_RST>(Context ctx) {
-    return ctx->_isInputDirty_RST;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Number val) {
-    ctx->_node->output_OUT = val;
-    ctx->_isOutputDirty_OUT = true;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    Number count = getValue<output_OUT>(ctx);
-
-    if (isInputDirty<input_RST>(ctx))
-        count = 0;
-    else if (isInputDirty<input_INC>(ctx))
-        count += getValue<input_STEP>(ctx);
-
-    emitValue<output_OUT>(ctx, count);
-}
-
-} // namespace xod__core__count
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/greater implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__greater {
 
-//#pragma XOD dirtieness disable
+namespace xod {
+struct xod__core__greater {
 
-struct State {
-};
+    typedef Number TypeOfIN1;
+    typedef Number TypeOfIN2;
 
-struct Node {
-    Logic output_OUT;
+    typedef Logic TypeOfOUT;
+
+    //#pragma XOD dirtieness disable
+
+    struct State {
+    };
+
+    struct input_IN1 { };
+    struct input_IN2 { };
+    struct output_OUT { };
+
+    static const identity<TypeOfIN1> getValueType(input_IN1) {
+      return identity<TypeOfIN1>();
+    }
+    static const identity<TypeOfIN2> getValueType(input_IN2) {
+      return identity<TypeOfIN2>();
+    }
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
+
+    TypeOfOUT _output_OUT;
+
     State state;
+
+    xod__core__greater (TypeOfOUT output_OUT) {
+        _output_OUT = output_OUT;
+    }
+
+    struct ContextObject {
+
+        TypeOfIN1 _input_IN1;
+        TypeOfIN2 _input_IN2;
+
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN1 input_IN2" \
+                " output_OUT");
+    }
+
+    TypeOfIN1 getValue(Context ctx, identity<input_IN1>) {
+        return ctx->_input_IN1;
+    }
+    TypeOfIN2 getValue(Context ctx, identity<input_IN2>) {
+        return ctx->_input_IN2;
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return this->_output_OUT;
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        this->_output_OUT = val;
+    }
+
+    void evaluate(Context ctx) {
+        auto lhs = getValue<input_IN1>(ctx);
+        auto rhs = getValue<input_IN2>(ctx);
+        emitValue<output_OUT>(ctx, lhs > rhs);
+    }
+
 };
-
-struct input_IN1 { };
-struct input_IN2 { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN1> { using T = Number; };
-template<> struct ValueType<input_IN2> { using T = Number; };
-template<> struct ValueType<output_OUT> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_IN1;
-    Number _input_IN2;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN1 input_IN2" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_IN1>(Context ctx) {
-    return ctx->_input_IN1;
-}
-template<> Number getValue<input_IN2>(Context ctx) {
-    return ctx->_input_IN2;
-}
-template<> Logic getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Logic val) {
-    ctx->_node->output_OUT = val;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    auto lhs = getValue<input_IN1>(ctx);
-    auto rhs = getValue<input_IN2>(ctx);
-    emitValue<output_OUT>(ctx, lhs > rhs);
-}
-
-} // namespace xod__core__greater
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/cast-to-string(number) implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__cast_to_string__number {
 
-//#pragma XOD dirtieness disable
+namespace xod {
+struct xod__core__cast_to_string__number {
 
-struct State {
-    char str[16];
-    CStringView view;
-    State() : view(str) { }
-};
+    typedef Number TypeOfIN;
 
-struct Node {
-    XString output_OUT;
+    typedef XString TypeOfOUT;
+
+    //#pragma XOD dirtieness disable
+
+    struct State {
+        char str[16];
+        CStringView view;
+        State() : view(str) { }
+    };
+
+    struct input_IN { };
+    struct output_OUT { };
+
+    static const identity<TypeOfIN> getValueType(input_IN) {
+      return identity<TypeOfIN>();
+    }
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
+
+    TypeOfOUT _output_OUT;
+
     State state;
+
+    xod__core__cast_to_string__number (TypeOfOUT output_OUT) {
+        _output_OUT = output_OUT;
+    }
+
+    struct ContextObject {
+
+        TypeOfIN _input_IN;
+
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN" \
+                " output_OUT");
+    }
+
+    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+        return ctx->_input_IN;
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return this->_output_OUT;
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        this->_output_OUT = val;
+    }
+
+    void evaluate(Context ctx) {
+        auto state = getState(ctx);
+        auto num = getValue<input_IN>(ctx);
+        formatNumber(num, 2, state->str);
+        emitValue<output_OUT>(ctx, XString(&state->view));
+    }
+
 };
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Number; };
-template<> struct ValueType<output_OUT> { using T = XString; };
-
-struct ContextObject {
-    Node* _node;
-
-    Number _input_IN;
-
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Number getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> XString getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, XString val) {
-    ctx->_node->output_OUT = val;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    auto num = getValue<input_IN>(ctx);
-    formatNumber(num, 2, state->str);
-    emitValue<output_OUT>(ctx, XString(&state->view));
-}
-
-} // namespace xod__core__cast_to_string__number
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/common-hardware/text-lcd-16x2 implementation
 //-----------------------------------------------------------------------------
-namespace xod__common_hardware__text_lcd_16x2 {
-
-//#pragma XOD evaluate_on_pin disable
-//#pragma XOD evaluate_on_pin enable input_UPD
-//#pragma XOD error_raise enable
-
-// --- Enter global namespace ---
-}}
 #include <LiquidCrystal.h>
 
 namespace xod {
-namespace xod__common_hardware__text_lcd_16x2 {
-// --- Back to local namespace ---
-struct State {
-    LiquidCrystal* lcd;
-};
+template <uint8_t constant_input_RS, uint8_t constant_input_EN, uint8_t constant_input_D4, uint8_t constant_input_D5, uint8_t constant_input_D6, uint8_t constant_input_D7>
+struct xod__common_hardware__text_lcd_16x2 {
 
-union NodeErrors {
-    struct {
-        bool output_DONE : 1;
+    typedef uint8_t TypeOfRS;
+    typedef uint8_t TypeOfEN;
+    typedef uint8_t TypeOfD4;
+    typedef uint8_t TypeOfD5;
+    typedef uint8_t TypeOfD6;
+    typedef uint8_t TypeOfD7;
+    typedef XString TypeOfL1;
+    typedef XString TypeOfL2;
+    typedef Pulse TypeOfUPD;
+
+    typedef Pulse TypeOfDONE;
+
+    //#pragma XOD evaluate_on_pin disable
+    //#pragma XOD evaluate_on_pin enable input_UPD
+
+    struct State {
+        LiquidCrystal* lcd;
     };
 
-    ErrorFlags flags;
-};
+    struct input_RS { };
+    struct input_EN { };
+    struct input_D4 { };
+    struct input_D5 { };
+    struct input_D6 { };
+    struct input_D7 { };
+    struct input_L1 { };
+    struct input_L2 { };
+    struct input_UPD { };
+    struct output_DONE { };
 
-struct Node {
-    NodeErrors errors;
-    State state;
-};
-
-struct input_RS { };
-struct input_EN { };
-struct input_D4 { };
-struct input_D5 { };
-struct input_D6 { };
-struct input_D7 { };
-struct input_L1 { };
-struct input_L2 { };
-struct input_UPD { };
-struct output_DONE { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_RS> { using T = uint8_t; };
-template<> struct ValueType<input_EN> { using T = uint8_t; };
-template<> struct ValueType<input_D4> { using T = uint8_t; };
-template<> struct ValueType<input_D5> { using T = uint8_t; };
-template<> struct ValueType<input_D6> { using T = uint8_t; };
-template<> struct ValueType<input_D7> { using T = uint8_t; };
-template<> struct ValueType<input_L1> { using T = XString; };
-template<> struct ValueType<input_L2> { using T = XString; };
-template<> struct ValueType<input_UPD> { using T = Pulse; };
-template<> struct ValueType<output_DONE> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-
-    uint8_t _input_RS;
-    uint8_t _input_EN;
-    uint8_t _input_D4;
-    uint8_t _input_D5;
-    uint8_t _input_D6;
-    uint8_t _input_D7;
-    XString _input_L1;
-    XString _input_L2;
-
-    bool _isInputDirty_UPD;
-
-    bool _isOutputDirty_DONE : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2 input_UPD" \
-            " output_DONE");
-}
-
-template<> uint8_t getValue<input_RS>(Context ctx) {
-    return ctx->_input_RS;
-}
-template<> uint8_t getValue<input_EN>(Context ctx) {
-    return ctx->_input_EN;
-}
-template<> uint8_t getValue<input_D4>(Context ctx) {
-    return ctx->_input_D4;
-}
-template<> uint8_t getValue<input_D5>(Context ctx) {
-    return ctx->_input_D5;
-}
-template<> uint8_t getValue<input_D6>(Context ctx) {
-    return ctx->_input_D6;
-}
-template<> uint8_t getValue<input_D7>(Context ctx) {
-    return ctx->_input_D7;
-}
-template<> XString getValue<input_L1>(Context ctx) {
-    return ctx->_input_L1;
-}
-template<> XString getValue<input_L2>(Context ctx) {
-    return ctx->_input_L2;
-}
-template<> Pulse getValue<input_UPD>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<output_DONE>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_UPD");
-    return false;
-}
-
-template<> bool isInputDirty<input_UPD>(Context ctx) {
-    return ctx->_isInputDirty_UPD;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_DONE");
-}
-
-template<> void emitValue<output_DONE>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_DONE = true;
-    ctx->_node->errors.output_DONE = false;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-template<typename OutputT> void raiseError(Context ctx) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_DONE");
-}
-
-template<> void raiseError<output_DONE>(Context ctx) {
-    ctx->_node->errors.output_DONE = true;
-    ctx->_isOutputDirty_DONE = true;
-}
-
-void raiseError(Context ctx) {
-    ctx->_node->errors.output_DONE = true;
-    ctx->_isOutputDirty_DONE = true;
-}
-
-void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
-    lcd->setCursor(0, lineIndex);
-    uint8_t whitespace = 16;
-    for (auto it = str->iterate(); it; ++it, --whitespace)
-        lcd->write(*it);
-
-    // Clear the rest of the line
-    while (whitespace--)
-        lcd->write(' ');
-}
-
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
-        return;
-
-    State* state = getState(ctx);
-    auto lcd = state->lcd;
-    if (!state->lcd) {
-        auto rsPort = getValue<input_RS>(ctx);
-        auto enPort = getValue<input_EN>(ctx);
-        auto d4Port = getValue<input_D4>(ctx);
-        auto d5Port = getValue<input_D5>(ctx);
-        auto d6Port = getValue<input_D6>(ctx);
-        auto d7Port = getValue<input_D7>(ctx);
-
-        if (
-            !isValidDigitalPort(rsPort) ||
-            !isValidDigitalPort(enPort) ||
-            !isValidDigitalPort(d4Port) ||
-            !isValidDigitalPort(d5Port) ||
-            !isValidDigitalPort(d6Port) ||
-            !isValidDigitalPort(d7Port)
-        ) {
-            raiseError(ctx);
-            return;
-        }
-
-        state->lcd = lcd = new LiquidCrystal(
-            (int)getValue<input_RS>(ctx),
-            (int)getValue<input_EN>(ctx),
-            (int)getValue<input_D4>(ctx),
-            (int)getValue<input_D5>(ctx),
-            (int)getValue<input_D6>(ctx),
-            (int)getValue<input_D7>(ctx));
-
-        lcd->begin(16, 2);
+    static const identity<TypeOfRS> getValueType(input_RS) {
+      return identity<TypeOfRS>();
+    }
+    static const identity<TypeOfEN> getValueType(input_EN) {
+      return identity<TypeOfEN>();
+    }
+    static const identity<TypeOfD4> getValueType(input_D4) {
+      return identity<TypeOfD4>();
+    }
+    static const identity<TypeOfD5> getValueType(input_D5) {
+      return identity<TypeOfD5>();
+    }
+    static const identity<TypeOfD6> getValueType(input_D6) {
+      return identity<TypeOfD6>();
+    }
+    static const identity<TypeOfD7> getValueType(input_D7) {
+      return identity<TypeOfD7>();
+    }
+    static const identity<TypeOfL1> getValueType(input_L1) {
+      return identity<TypeOfL1>();
+    }
+    static const identity<TypeOfL2> getValueType(input_L2) {
+      return identity<TypeOfL2>();
+    }
+    static const identity<TypeOfUPD> getValueType(input_UPD) {
+      return identity<TypeOfUPD>();
+    }
+    static const identity<TypeOfDONE> getValueType(output_DONE) {
+      return identity<TypeOfDONE>();
     }
 
-    printLine(lcd, 0, getValue<input_L1>(ctx));
-    printLine(lcd, 1, getValue<input_L2>(ctx));
+    State state;
 
-    emitValue<output_DONE>(ctx, 1);
-}
+    xod__common_hardware__text_lcd_16x2 () {
+    }
 
-} // namespace xod__common_hardware__text_lcd_16x2
+    struct ContextObject {
+
+        TypeOfL1 _input_L1;
+        TypeOfL2 _input_L2;
+
+        bool _isInputDirty_UPD;
+
+        bool _isOutputDirty_DONE : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_RS input_EN input_D4 input_D5 input_D6 input_D7 input_L1 input_L2 input_UPD" \
+                " output_DONE");
+    }
+
+    TypeOfRS getValue(Context ctx, identity<input_RS>) {
+        return constant_input_RS;
+    }
+    TypeOfEN getValue(Context ctx, identity<input_EN>) {
+        return constant_input_EN;
+    }
+    TypeOfD4 getValue(Context ctx, identity<input_D4>) {
+        return constant_input_D4;
+    }
+    TypeOfD5 getValue(Context ctx, identity<input_D5>) {
+        return constant_input_D5;
+    }
+    TypeOfD6 getValue(Context ctx, identity<input_D6>) {
+        return constant_input_D6;
+    }
+    TypeOfD7 getValue(Context ctx, identity<input_D7>) {
+        return constant_input_D7;
+    }
+    TypeOfL1 getValue(Context ctx, identity<input_L1>) {
+        return ctx->_input_L1;
+    }
+    TypeOfL2 getValue(Context ctx, identity<input_L2>) {
+        return ctx->_input_L2;
+    }
+    TypeOfUPD getValue(Context ctx, identity<input_UPD>) {
+        return Pulse();
+    }
+    TypeOfDONE getValue(Context ctx, identity<output_DONE>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_UPD");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_UPD>) {
+        return ctx->_isInputDirty_UPD;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_DONE");
+    }
+
+    void emitValue(Context ctx, TypeOfDONE val, identity<output_DONE>) {
+        ctx->_isOutputDirty_DONE = true;
+    }
+
+    void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {
+        lcd->setCursor(0, lineIndex);
+        uint8_t whitespace = 16;
+        for (auto it = str->iterate(); it; ++it, --whitespace)
+            lcd->write(*it);
+
+        // Clear the rest of the line
+        while (whitespace--)
+            lcd->write(' ');
+    }
+
+    void evaluate(Context ctx) {
+        static_assert(isValidDigitalPort(constant_input_RS), "must be a valid digital port");
+        static_assert(isValidDigitalPort(constant_input_EN), "must be a valid digital port");
+        static_assert(isValidDigitalPort(constant_input_D4), "must be a valid digital port");
+        static_assert(isValidDigitalPort(constant_input_D5), "must be a valid digital port");
+        static_assert(isValidDigitalPort(constant_input_D6), "must be a valid digital port");
+        static_assert(isValidDigitalPort(constant_input_D7), "must be a valid digital port");
+
+        if (!isInputDirty<input_UPD>(ctx))
+            return;
+
+        State* state = getState(ctx);
+        auto lcd = state->lcd;
+        if (!state->lcd) {
+            auto rsPort = getValue<input_RS>(ctx);
+            auto enPort = getValue<input_EN>(ctx);
+            auto d4Port = getValue<input_D4>(ctx);
+            auto d5Port = getValue<input_D5>(ctx);
+            auto d6Port = getValue<input_D6>(ctx);
+            auto d7Port = getValue<input_D7>(ctx);
+
+            state->lcd = lcd = new LiquidCrystal(
+                (int)getValue<input_RS>(ctx),
+                (int)getValue<input_EN>(ctx),
+                (int)getValue<input_D4>(ctx),
+                (int)getValue<input_D5>(ctx),
+                (int)getValue<input_D6>(ctx),
+                (int)getValue<input_D7>(ctx));
+
+            lcd->begin(16, 2);
+        }
+
+        printLine(lcd, 0, getValue<input_L1>(ctx));
+        printLine(lcd, 1, getValue<input_L2>(ctx));
+
+        emitValue<output_DONE>(ctx, 1);
+    }
+
+};
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/defer(pulse) implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__defer__pulse {
 
-//#pragma XOD error_catch enable
-//#pragma XOD error_raise enable
+namespace xod {
+struct xod__core__defer__pulse {
 
-struct State {
-    bool shouldRaiseAtTheNextDeferOnlyRun = false;
-    bool shouldPulseAtTheNextDeferOnlyRun = false;
-};
+    typedef Pulse TypeOfIN;
 
-union NodeErrors {
-    struct {
-        bool output_OUT : 1;
+    typedef Pulse TypeOfOUT;
+
+    //#pragma XOD error_catch enable
+    //#pragma XOD error_raise enable
+
+    struct State {
+        bool shouldRaiseAtTheNextDeferOnlyRun = false;
+        bool shouldPulseAtTheNextDeferOnlyRun = false;
     };
 
-    ErrorFlags flags;
-};
+    struct input_IN { };
+    struct output_OUT { };
 
-struct Node {
-    NodeErrors errors;
-    TimeMs timeoutAt;
-    State state;
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Pulse; };
-template<> struct ValueType<output_OUT> { using T = Pulse; };
-
-struct ContextObject {
-    Node* _node;
-    uint8_t _error_input_IN;
-
-    bool _isInputDirty_IN;
-
-    bool _isOutputDirty_OUT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Pulse getValue<input_IN>(Context ctx) {
-    return Pulse();
-}
-template<> Pulse getValue<output_OUT>(Context ctx) {
-    return Pulse();
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_IN");
-    return false;
-}
-
-template<> bool isInputDirty<input_IN>(Context ctx) {
-    return ctx->_isInputDirty_IN;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Pulse val) {
-    ctx->_isOutputDirty_OUT = true;
-    if (isEarlyDeferPass()) ctx->_node->errors.output_OUT = false;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-template<typename OutputT> void raiseError(Context ctx) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->errors.output_OUT = true;
-    ctx->_isOutputDirty_OUT = true;
-}
-
-void raiseError(Context ctx) {
-    ctx->_node->errors.output_OUT = true;
-    ctx->_isOutputDirty_OUT = true;
-}
-
-template<typename InputT> uint8_t getError(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_IN");
-    return 0;
-}
-
-template<> uint8_t getError<input_IN>(Context ctx) {
-    return ctx->_error_input_IN;
-}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-
-    if (isEarlyDeferPass()) {
-        if (state->shouldRaiseAtTheNextDeferOnlyRun) {
-            raiseError<output_OUT>(ctx);
-            state->shouldRaiseAtTheNextDeferOnlyRun = false;
-        }
-
-        if (state->shouldPulseAtTheNextDeferOnlyRun) {
-            emitValue<output_OUT>(ctx, true);
-            state->shouldPulseAtTheNextDeferOnlyRun = false;
-        }
-    } else {
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        } else if (isInputDirty<input_IN>(ctx)) {
-            state->shouldPulseAtTheNextDeferOnlyRun = true;
-        }
-
-        setTimeout(ctx, 0);
+    static const identity<TypeOfIN> getValueType(input_IN) {
+      return identity<TypeOfIN>();
     }
-}
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
 
-} // namespace xod__core__defer__pulse
+    union NodeErrors {
+        struct {
+            bool output_OUT : 1;
+        };
+
+        ErrorFlags flags = 0;
+    };
+
+    NodeErrors errors = {};
+    TimeMs timeoutAt = 0;
+
+    State state;
+
+    xod__core__defer__pulse () {
+    }
+
+    struct ContextObject {
+        uint8_t _error_input_IN;
+
+        bool _isInputDirty_IN;
+
+        bool _isOutputDirty_OUT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+        this->timeoutAt = transactionTime() + timeout;
+    }
+
+    void clearTimeout(__attribute__((unused)) Context ctx) {
+        detail::clearTimeout(this);
+    }
+
+    bool isTimedOut(__attribute__((unused)) const Context ctx) {
+        return detail::isTimedOut(this);
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN" \
+                " output_OUT");
+    }
+
+    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+        return Pulse();
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return Pulse();
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_IN");
+        return false;
+    }
+
+    bool isInputDirty(Context ctx, identity<input_IN>) {
+        return ctx->_isInputDirty_IN;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        ctx->_isOutputDirty_OUT = true;
+        if (isEarlyDeferPass()) this->errors.output_OUT = false;
+    }
+
+    template<typename OutputT> void raiseError(Context ctx) {
+        raiseError(ctx, identity<OutputT>());
+    }
+
+    template<typename OutputT> void raiseError(Context ctx, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void raiseError(Context ctx, identity<output_OUT>) {
+        this->errors.output_OUT = true;
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    void raiseError(Context ctx) {
+        this->errors.output_OUT = true;
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    template<typename InputT> uint8_t getError(Context ctx) {
+        return getError(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> uint8_t getError(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_IN");
+        return 0;
+    }
+
+    uint8_t getError(Context ctx, identity<input_IN>) {
+        return ctx->_error_input_IN;
+    }
+
+    void evaluate(Context ctx) {
+        auto state = getState(ctx);
+
+        if (isEarlyDeferPass()) {
+            if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+                raiseError<output_OUT>(ctx);
+                state->shouldRaiseAtTheNextDeferOnlyRun = false;
+            }
+
+            if (state->shouldPulseAtTheNextDeferOnlyRun) {
+                emitValue<output_OUT>(ctx, true);
+                state->shouldPulseAtTheNextDeferOnlyRun = false;
+            }
+        } else {
+            if (getError<input_IN>(ctx)) {
+                state->shouldRaiseAtTheNextDeferOnlyRun = true;
+            } else if (isInputDirty<input_IN>(ctx)) {
+                state->shouldPulseAtTheNextDeferOnlyRun = true;
+            }
+
+            setTimeout(ctx, 0);
+        }
+    }
+
+};
+} // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/defer(boolean) implementation
 //-----------------------------------------------------------------------------
-namespace xod__core__defer__boolean {
 
-//#pragma XOD error_catch enable
-//#pragma XOD error_raise enable
+namespace xod {
+struct xod__core__defer__boolean {
 
-struct State {
-    bool shouldRaiseAtTheNextDeferOnlyRun = false;
-};
+    typedef Logic TypeOfIN;
 
-union NodeErrors {
-    struct {
-        bool output_OUT : 1;
+    typedef Logic TypeOfOUT;
+
+    //#pragma XOD error_catch enable
+    //#pragma XOD error_raise enable
+
+    struct State {
+        bool shouldRaiseAtTheNextDeferOnlyRun = false;
     };
 
-    ErrorFlags flags;
-};
+    struct input_IN { };
+    struct output_OUT { };
 
-struct Node {
-    NodeErrors errors;
-    TimeMs timeoutAt;
-    Logic output_OUT;
-    State state;
-};
-
-struct input_IN { };
-struct output_OUT { };
-
-template<typename PinT> struct ValueType { using T = void; };
-template<> struct ValueType<input_IN> { using T = Logic; };
-template<> struct ValueType<output_OUT> { using T = Logic; };
-
-struct ContextObject {
-    Node* _node;
-    uint8_t _error_input_IN;
-
-    Logic _input_IN;
-
-    bool _isOutputDirty_OUT : 1;
-};
-
-using Context = ContextObject*;
-
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            " input_IN" \
-            " output_OUT");
-}
-
-template<> Logic getValue<input_IN>(Context ctx) {
-    return ctx->_input_IN;
-}
-template<> Logic getValue<output_OUT>(Context ctx) {
-    return ctx->_node->output_OUT;
-}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "");
-    return false;
-}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void emitValue<output_OUT>(Context ctx, Logic val) {
-    ctx->_node->output_OUT = val;
-    ctx->_isOutputDirty_OUT = true;
-    if (isEarlyDeferPass()) ctx->_node->errors.output_OUT = false;
-}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
-}
-
-template<typename OutputT> void raiseError(Context ctx) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            " output_OUT");
-}
-
-template<> void raiseError<output_OUT>(Context ctx) {
-    ctx->_node->errors.output_OUT = true;
-    ctx->_isOutputDirty_OUT = true;
-}
-
-void raiseError(Context ctx) {
-    ctx->_node->errors.output_OUT = true;
-    ctx->_isOutputDirty_OUT = true;
-}
-
-template<typename InputT> uint8_t getError(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            " input_IN");
-    return 0;
-}
-
-template<> uint8_t getError<input_IN>(Context ctx) {
-    return ctx->_error_input_IN;
-}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-
-    if (isEarlyDeferPass()) {
-        if (state->shouldRaiseAtTheNextDeferOnlyRun) {
-            raiseError<output_OUT>(ctx);
-            state->shouldRaiseAtTheNextDeferOnlyRun = false;
-        } else {
-            emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
-        }
-    } else {
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        } else {
-            // save the value for reemission on deferred-only evaluation pass
-            emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
-        }
-
-        setTimeout(ctx, 0);
+    static const identity<TypeOfIN> getValueType(input_IN) {
+      return identity<TypeOfIN>();
     }
-}
+    static const identity<TypeOfOUT> getValueType(output_OUT) {
+      return identity<TypeOfOUT>();
+    }
 
-} // namespace xod__core__defer__boolean
+    union NodeErrors {
+        struct {
+            bool output_OUT : 1;
+        };
 
+        ErrorFlags flags = 0;
+    };
+
+    NodeErrors errors = {};
+    TimeMs timeoutAt = 0;
+
+    TypeOfOUT _output_OUT;
+
+    State state;
+
+    xod__core__defer__boolean (TypeOfOUT output_OUT) {
+        _output_OUT = output_OUT;
+    }
+
+    struct ContextObject {
+        uint8_t _error_input_IN;
+
+        TypeOfIN _input_IN;
+
+        bool _isOutputDirty_OUT : 1;
+    };
+
+    using Context = ContextObject*;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
+    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+        this->timeoutAt = transactionTime() + timeout;
+    }
+
+    void clearTimeout(__attribute__((unused)) Context ctx) {
+        detail::clearTimeout(this);
+    }
+
+    bool isTimedOut(__attribute__((unused)) const Context ctx) {
+        return detail::isTimedOut(this);
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+        return getValue(ctx, identity<PinT>());
+    }
+
+    template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+        static_assert(always_false<PinT>::value,
+                "Invalid pin descriptor. Expected one of:" \
+                " input_IN" \
+                " output_OUT");
+    }
+
+    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+        return ctx->_input_IN;
+    }
+    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+        return this->_output_OUT;
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx) {
+        return isInputDirty(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                "");
+        return false;
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+        emitValue(ctx, val, identity<OutputT>());
+    }
+
+    template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+        this->_output_OUT = val;
+        ctx->_isOutputDirty_OUT = true;
+        if (isEarlyDeferPass()) this->errors.output_OUT = false;
+    }
+
+    template<typename OutputT> void raiseError(Context ctx) {
+        raiseError(ctx, identity<OutputT>());
+    }
+
+    template<typename OutputT> void raiseError(Context ctx, identity<OutputT>) {
+        static_assert(always_false<OutputT>::value,
+                "Invalid output descriptor. Expected one of:" \
+                " output_OUT");
+    }
+
+    void raiseError(Context ctx, identity<output_OUT>) {
+        this->errors.output_OUT = true;
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    void raiseError(Context ctx) {
+        this->errors.output_OUT = true;
+        ctx->_isOutputDirty_OUT = true;
+    }
+
+    template<typename InputT> uint8_t getError(Context ctx) {
+        return getError(ctx, identity<InputT>());
+    }
+
+    template<typename InputT> uint8_t getError(Context ctx, identity<InputT>) {
+        static_assert(always_false<InputT>::value,
+                "Invalid input descriptor. Expected one of:" \
+                " input_IN");
+        return 0;
+    }
+
+    uint8_t getError(Context ctx, identity<input_IN>) {
+        return ctx->_error_input_IN;
+    }
+
+    void evaluate(Context ctx) {
+        auto state = getState(ctx);
+
+        if (isEarlyDeferPass()) {
+            if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+                raiseError<output_OUT>(ctx);
+                state->shouldRaiseAtTheNextDeferOnlyRun = false;
+            } else {
+                emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
+            }
+        } else {
+            if (getError<input_IN>(ctx)) {
+                state->shouldRaiseAtTheNextDeferOnlyRun = true;
+            } else {
+                // save the value for reemission on deferred-only evaluation pass
+                emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
+            }
+
+            setTimeout(ctx, 0);
+        }
+    }
+
+};
 } // namespace xod
 
 
@@ -2258,43 +2604,19 @@ namespace xod {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 
+// outputs of constant nodes
 constexpr uint8_t node_1_output_VAL = 8;
-
 constexpr uint8_t node_2_output_VAL = 9;
-
 constexpr uint8_t node_3_output_VAL = 10;
-
 constexpr uint8_t node_4_output_VAL = 11;
-
 constexpr uint8_t node_5_output_VAL = 12;
-
 constexpr uint8_t node_6_output_VAL = 13;
-
 constexpr Number node_8_output_VAL = 1;
-
 constexpr Number node_10_output_VAL = 1;
-
 constexpr Logic node_11_output_VAL = true;
-
 constexpr Number node_12_output_VAL = 1;
-
 constexpr Number node_13_output_VAL = 1;
-
 constexpr Number node_14_output_VAL = 10;
-
-constexpr Logic node_17_output_ACT = false;
-
-constexpr Number node_18_output_OUT = 0;
-
-constexpr Number node_19_output_OUT = 0;
-
-constexpr Logic node_20_output_OUT = false;
-
-constexpr XString node_21_output_OUT = XString();
-
-constexpr XString node_22_output_OUT = XString();
-
-constexpr Logic node_25_output_OUT = false;
 
 #pragma GCC diagnostic pop
 
@@ -2365,63 +2687,47 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-xod__core__cast_to_pulse__boolean::Node node_0 = {
-    xod__core__cast_to_pulse__boolean::State() // state default
-};
-xod__core__continuously::Node node_7 = {
-    0, // timeoutAt
-    xod__core__continuously::State() // state default
-};
-xod__core__boot::Node node_9 = {
-    xod__core__boot::State() // state default
-};
-xod__core__any::Node node_15 = {
-    xod__core__any::State() // state default
-};
-xod__core__clock::Node node_16 = {
-    0, // timeoutAt
-    xod__core__clock::State() // state default
-};
-xod__core__delay::Node node_17 = {
-    0, // timeoutAt
-    node_17_output_ACT, // output ACT default
-    xod__core__delay::State() // state default
-};
-xod__core__count::Node node_18 = {
-    node_18_output_OUT, // output OUT default
-    xod__core__count::State() // state default
-};
-xod__core__count::Node node_19 = {
-    node_19_output_OUT, // output OUT default
-    xod__core__count::State() // state default
-};
-xod__core__greater::Node node_20 = {
-    node_20_output_OUT, // output OUT default
-    xod__core__greater::State() // state default
-};
-xod__core__cast_to_string__number::Node node_21 = {
-    node_21_output_OUT, // output OUT default
-    xod__core__cast_to_string__number::State() // state default
-};
-xod__core__cast_to_string__number::Node node_22 = {
-    node_22_output_OUT, // output OUT default
-    xod__core__cast_to_string__number::State() // state default
-};
-xod__common_hardware__text_lcd_16x2::Node node_23 = {
-    false, // DONE has no errors on start
-    xod__common_hardware__text_lcd_16x2::State() // state default
-};
-xod__core__defer__pulse::Node node_24 = {
-    false, // OUT has no errors on start
-    0, // timeoutAt
-    xod__core__defer__pulse::State() // state default
-};
-xod__core__defer__boolean::Node node_25 = {
-    false, // OUT has no errors on start
-    0, // timeoutAt
-    node_25_output_OUT, // output OUT default
-    xod__core__defer__boolean::State() // state default
-};
+typedef xod__core__cast_to_pulse__boolean TypeOfNode0;
+TypeOfNode0 node_0 = TypeOfNode0();
+
+typedef xod__core__continuously TypeOfNode7;
+TypeOfNode7 node_7 = TypeOfNode7();
+
+typedef xod__core__boot TypeOfNode9;
+TypeOfNode9 node_9 = TypeOfNode9();
+
+typedef xod__core__any TypeOfNode15;
+TypeOfNode15 node_15 = TypeOfNode15();
+
+typedef xod__core__clock TypeOfNode16;
+TypeOfNode16 node_16 = TypeOfNode16();
+
+typedef xod__core__delay TypeOfNode17;
+TypeOfNode17 node_17 = TypeOfNode17(false);
+
+typedef xod__core__count TypeOfNode18;
+TypeOfNode18 node_18 = TypeOfNode18(0);
+
+typedef xod__core__count TypeOfNode19;
+TypeOfNode19 node_19 = TypeOfNode19(0);
+
+typedef xod__core__greater TypeOfNode20;
+TypeOfNode20 node_20 = TypeOfNode20(false);
+
+typedef xod__core__cast_to_string__number TypeOfNode21;
+TypeOfNode21 node_21 = TypeOfNode21(XString());
+
+typedef xod__core__cast_to_string__number TypeOfNode22;
+TypeOfNode22 node_22 = TypeOfNode22(XString());
+
+typedef xod__common_hardware__text_lcd_16x2<node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL, node_6_output_VAL> TypeOfNode23;
+TypeOfNode23 node_23 = TypeOfNode23();
+
+typedef xod__core__defer__pulse TypeOfNode24;
+TypeOfNode24 node_24 = TypeOfNode24();
+
+typedef xod__core__defer__boolean TypeOfNode25;
+TypeOfNode25 node_25 = TypeOfNode25(false);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
@@ -2451,8 +2757,7 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN(24);
 
-            xod__core__defer__pulse::ContextObject ctxObj;
-            ctxObj._node = &node_24;
+            TypeOfNode24::ContextObject ctxObj;
             ctxObj._isInputDirty_IN = false;
 
             ctxObj._error_input_IN = 0;
@@ -2461,11 +2766,11 @@ void handleDefers() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__defer__pulse::NodeErrors previousErrors = node_24.errors;
+            TypeOfNode24::NodeErrors previousErrors = node_24.errors;
 
             node_24.errors.output_OUT = false;
 
-            xod__core__defer__pulse::evaluate(&ctxObj);
+            node_24.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2506,10 +2811,9 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN(25);
 
-            xod__core__defer__boolean::ContextObject ctxObj;
-            ctxObj._node = &node_25;
+            TypeOfNode25::ContextObject ctxObj;
 
-            ctxObj._input_IN = node_20.output_OUT;
+            ctxObj._input_IN = node_20._output_OUT;
 
             ctxObj._error_input_IN = 0;
 
@@ -2517,9 +2821,9 @@ void handleDefers() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__defer__boolean::NodeErrors previousErrors = node_25.errors;
+            TypeOfNode25::NodeErrors previousErrors = node_25.errors;
 
-            xod__core__defer__boolean::evaluate(&ctxObj);
+            node_25.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2589,17 +2893,16 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
 
-            xod__core__cast_to_pulse__boolean::ContextObject ctxObj;
-            ctxObj._node = &node_0;
+            TypeOfNode0::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN = node_25.output_OUT;
+            ctxObj._input_IN = node_25._output_OUT;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__cast_to_pulse__boolean::evaluate(&ctxObj);
+            node_0.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_0_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2614,8 +2917,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
 
-            xod__core__continuously::ContextObject ctxObj;
-            ctxObj._node = &node_7;
+            TypeOfNode7::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2623,7 +2925,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_TICK = false;
 
-            xod__core__continuously::evaluate(&ctxObj);
+            node_7.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_7_isOutputDirty_TICK = ctxObj._isOutputDirty_TICK;
@@ -2638,8 +2940,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
-            xod__core__boot::ContextObject ctxObj;
-            ctxObj._node = &node_9;
+            TypeOfNode9::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2647,7 +2948,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_BOOT = false;
 
-            xod__core__boot::evaluate(&ctxObj);
+            node_9.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_9_isOutputDirty_BOOT = ctxObj._isOutputDirty_BOOT;
@@ -2665,8 +2966,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
 
-            xod__core__any::ContextObject ctxObj;
-            ctxObj._node = &node_15;
+            TypeOfNode15::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2677,7 +2977,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__any::evaluate(&ctxObj);
+            node_15.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_15_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2692,8 +2992,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(16);
 
-            xod__core__clock::ContextObject ctxObj;
-            ctxObj._node = &node_16;
+            TypeOfNode16::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_EN = node_11_output_VAL;
@@ -2706,7 +3005,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_TICK = false;
 
-            xod__core__clock::evaluate(&ctxObj);
+            node_16.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_16_isOutputDirty_TICK = ctxObj._isOutputDirty_TICK;
@@ -2725,8 +3024,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(17);
 
-            xod__core__delay::ContextObject ctxObj;
-            ctxObj._node = &node_17;
+            TypeOfNode17::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_T = node_8_output_VAL;
@@ -2739,7 +3037,7 @@ void runTransaction() {
             ctxObj._isOutputDirty_DONE = false;
             ctxObj._isOutputDirty_ACT = false;
 
-            xod__core__delay::evaluate(&ctxObj);
+            node_17.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_17_isOutputDirty_DONE = ctxObj._isOutputDirty_DONE;
@@ -2759,8 +3057,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(18);
 
-            xod__core__count::ContextObject ctxObj;
-            ctxObj._node = &node_18;
+            TypeOfNode18::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_STEP = node_13_output_VAL;
@@ -2772,7 +3069,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__count::evaluate(&ctxObj);
+            node_18.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_18_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2791,8 +3088,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(19);
 
-            xod__core__count::ContextObject ctxObj;
-            ctxObj._node = &node_19;
+            TypeOfNode19::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_STEP = node_10_output_VAL;
@@ -2804,7 +3100,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__count::evaluate(&ctxObj);
+            node_19.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_19_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -2822,17 +3118,16 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(20);
 
-            xod__core__greater::ContextObject ctxObj;
-            ctxObj._node = &node_20;
+            TypeOfNode20::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN1 = node_18.output_OUT;
+            ctxObj._input_IN1 = node_18._output_OUT;
             ctxObj._input_IN2 = node_14_output_VAL;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
 
-            xod__core__greater::evaluate(&ctxObj);
+            node_20.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
 
@@ -2849,16 +3144,15 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(21);
 
-            xod__core__cast_to_string__number::ContextObject ctxObj;
-            ctxObj._node = &node_21;
+            TypeOfNode21::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN = node_18.output_OUT;
+            ctxObj._input_IN = node_18._output_OUT;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
 
-            xod__core__cast_to_string__number::evaluate(&ctxObj);
+            node_21.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
 
@@ -2874,16 +3168,15 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(22);
 
-            xod__core__cast_to_string__number::ContextObject ctxObj;
-            ctxObj._node = &node_22;
+            TypeOfNode22::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN = node_19.output_OUT;
+            ctxObj._input_IN = node_19._output_OUT;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
 
-            xod__core__cast_to_string__number::evaluate(&ctxObj);
+            node_22.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
 
@@ -2898,18 +3191,11 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(23);
 
-            xod__common_hardware__text_lcd_16x2::ContextObject ctxObj;
-            ctxObj._node = &node_23;
+            TypeOfNode23::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
-            ctxObj._input_RS = node_1_output_VAL;
-            ctxObj._input_EN = node_2_output_VAL;
-            ctxObj._input_D4 = node_3_output_VAL;
-            ctxObj._input_D5 = node_4_output_VAL;
-            ctxObj._input_D6 = node_5_output_VAL;
-            ctxObj._input_D7 = node_6_output_VAL;
-            ctxObj._input_L1 = node_21.output_OUT;
-            ctxObj._input_L2 = node_22.output_OUT;
+            ctxObj._input_L1 = node_21._output_OUT;
+            ctxObj._input_L2 = node_22._output_OUT;
 
             ctxObj._isInputDirty_UPD = g_transaction.node_7_isOutputDirty_TICK;
 
@@ -2917,44 +3203,20 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_DONE = false;
 
-            xod__common_hardware__text_lcd_16x2::NodeErrors previousErrors = node_23.errors;
-
-            node_23.errors.output_DONE = false;
-
-            xod__common_hardware__text_lcd_16x2::evaluate(&ctxObj);
+            node_23.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
-
-            if (previousErrors.flags != node_23.errors.flags) {
-                detail::printErrorToDebugSerial(23, node_23.errors.flags);
-
-                // if an error was just raised or cleared from an output,
-                // mark nearest downstream error catchers as dirty
-                if (node_23.errors.output_DONE != previousErrors.output_DONE) {
-                }
-
-                // if a pulse output was cleared from error, mark downstream nodes as dirty
-                // (no matter if a pulse was emitted or not)
-                if (previousErrors.output_DONE && !node_23.errors.output_DONE) {
-                }
-            }
 
             // mark downstream nodes dirty
         }
 
-        // propagate errors hold by the node outputs
-        if (node_23.errors.flags) {
-            if (node_23.errors.output_DONE) {
-            }
-        }
     }
     { // xod__core__defer__pulse #24
         if (g_transaction.node_24_isNodeDirty) {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(24);
 
-            xod__core__defer__pulse::ContextObject ctxObj;
-            ctxObj._node = &node_24;
+            TypeOfNode24::ContextObject ctxObj;
 
             ctxObj._error_input_IN = 0;
 
@@ -2966,9 +3228,9 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__defer__pulse::NodeErrors previousErrors = node_24.errors;
+            TypeOfNode24::NodeErrors previousErrors = node_24.errors;
 
-            xod__core__defer__pulse::evaluate(&ctxObj);
+            node_24.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_24_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -3005,21 +3267,20 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(25);
 
-            xod__core__defer__boolean::ContextObject ctxObj;
-            ctxObj._node = &node_25;
+            TypeOfNode25::ContextObject ctxObj;
 
             ctxObj._error_input_IN = 0;
 
             // copy data from upstream nodes into context
-            ctxObj._input_IN = node_20.output_OUT;
+            ctxObj._input_IN = node_20._output_OUT;
 
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__defer__boolean::NodeErrors previousErrors = node_25.errors;
+            TypeOfNode25::NodeErrors previousErrors = node_25.errors;
 
-            xod__core__defer__boolean::evaluate(&ctxObj);
+            node_25.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_25_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;

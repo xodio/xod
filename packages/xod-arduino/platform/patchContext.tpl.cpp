@@ -1,5 +1,29 @@
-{{!-- Template for GENERATED_CODE token inside each patch implementation --}}
 {{!-- Accepts TPatch context --}}
+
+{{#each outputs}}
+{{#if isOutputSelf }}
+typedef Type TypeOf{{ pinKey }};
+{{/if}}
+{{/each}}
+
+{{#each inputs}}
+struct input_{{ pinKey }} { };
+{{/each}}
+{{#each outputs}}
+struct output_{{ pinKey }} { };
+{{/each}}
+
+{{#each inputs}}
+static const identity<TypeOf{{ pinKey }}> getValueType(input_{{ pinKey }}) {
+  return identity<TypeOf{{ pinKey }}>();
+}
+{{/each}}
+{{#each outputs}}
+static const identity<TypeOf{{ pinKey }}> getValueType(output_{{ pinKey }}) {
+  return identity<TypeOf{{ pinKey }}>();
+}
+{{/each}}
+
 
 {{#if raisesErrors}}
 union NodeErrors {
@@ -9,41 +33,34 @@ union NodeErrors {
       {{/each}}
     };
 
-    ErrorFlags flags;
+    ErrorFlags flags = 0;
 };
 {{/if}}
 
-struct Node {
-  {{#if raisesErrors}}
-    NodeErrors errors;
-  {{/if}}
-  {{#if usesTimeouts}}
-    TimeMs timeoutAt;
-  {{/if}}
-  {{#eachNonPulse outputs}}
-    {{ cppType type }} output_{{ pinKey }};
-  {{/eachNonPulse}}
-    State state;
-};
+{{#if raisesErrors}}
+NodeErrors errors = {};
+{{/if}}
+{{#if usesTimeouts}}
+TimeMs timeoutAt = 0;
+{{/if}}
 
-{{#each inputs}}
-struct input_{{ pinKey }} { };
-{{/each}}
-{{#each outputs}}
-struct output_{{ pinKey }} { };
-{{/each}}
+{{#eachNonPulseOrConstant outputs}}
+TypeOf{{ pinKey }} _output_{{ pinKey }};
+{{/eachNonPulseOrConstant}}
 
-template<typename PinT> struct ValueType { using T = void; };
-{{#each inputs}}
-template<> struct ValueType<input_{{ pinKey }}> { using T = {{ cppType type }}; };
-{{/each}}
-{{#each outputs}}
-template<> struct ValueType<output_{{ pinKey }}> { using T = {{ cppType type }}; };
-{{/each}}
+State state;
 
+{{ ns this }} (
+  {{~#eachNonPulseOrConstant outputs ~}}
+    TypeOf{{ pinKey }} output_{{ pinKey }}{{#unless @last}}, {{/unless ~}}
+  {{/eachNonPulseOrConstant ~}}
+) {
+  {{#eachNonPulseOrConstant outputs}}
+    _output_{{ pinKey }} = output_{{ pinKey }};
+  {{/eachNonPulseOrConstant}}
+}
 
 struct ContextObject {
-    Node* _node;
   {{#if catchesErrors}}
     {{#each inputs}}
     uint8_t _error_input_{{ pinKey }};
@@ -53,9 +70,9 @@ struct ContextObject {
     uint16_t _nodeId;
   {{/if}}
 
-  {{#eachNonPulse inputs}}
-    {{ cppType type }} _input_{{ pinKey }};
-  {{/eachNonPulse}}
+  {{#eachNonPulseOrConstant inputs}}
+    TypeOf{{ pinKey }} _input_{{ pinKey }};
+  {{/eachNonPulseOrConstant}}
 
   {{#eachDirtyablePin inputs}}
     bool _isInputDirty_{{ pinKey }};
@@ -72,67 +89,8 @@ struct ContextObject {
 
 using Context = ContextObject*;
 
-template<typename PinT> typename ValueType<PinT>::T getValue(Context ctx) {
-    static_assert(always_false<PinT>::value,
-            "Invalid pin descriptor. Expected one of:" \
-            "{{#each inputs}} input_{{pinKey}}{{/each}}" \
-            "{{#each outputs}} output_{{pinKey}}{{/each}}");
-}
-
-{{#each inputs}}
-template<> {{ cppType type }} getValue<input_{{ pinKey }}>(Context ctx) {
-  {{#if (isPulse type)}}
-    return Pulse();
-  {{else}}
-    return ctx->_input_{{ pinKey }};
-  {{/if}}
-}
-{{/each}}
-{{#each outputs}}
-template<> {{ cppType type }} getValue<output_{{ pinKey }}>(Context ctx) {
-  {{#if (isPulse type)}}
-    return Pulse();
-  {{else}}
-    return ctx->_node->output_{{ pinKey }};
-  {{/if}}
-}
-{{/each}}
-
-template<typename InputT> bool isInputDirty(Context ctx) {
-    static_assert(always_false<InputT>::value,
-            "Invalid input descriptor. Expected one of:" \
-            "{{#eachDirtyablePin inputs}} input_{{pinKey}}{{/eachDirtyablePin}}");
-    return false;
-}
-
-{{#eachDirtyablePin inputs}}
-template<> bool isInputDirty<input_{{ pinKey }}>(Context ctx) {
-    return ctx->_isInputDirty_{{ pinKey }};
-}
-{{/eachDirtyablePin}}
-
-template<typename OutputT> void emitValue(Context ctx, typename ValueType<OutputT>::T val) {
-    static_assert(always_false<OutputT>::value,
-            "Invalid output descriptor. Expected one of:" \
-            "{{#each outputs}} output_{{pinKey}}{{/each}}");
-}
-
-{{#each outputs}}
-template<> void emitValue<output_{{ pinKey }}>(Context ctx, {{ cppType type }} val) {
-  {{#unless (isPulse type)}}
-    ctx->_node->output_{{ pinKey }} = val;
-  {{/unless}}
-  {{#if isDirtyable}}
-    ctx->_isOutputDirty_{{ pinKey }} = true;
-  {{/if}}
-  {{#if ../raisesErrors}}
-    {{#if ../isDefer}}if (isEarlyDeferPass()) {{/if}}ctx->_node->errors.output_{{ pinKey }} = false;
-  {{/if}}
-}
-{{/each}}
-
-State* getState(Context ctx) {
-    return &ctx->_node->state;
+State* getState(__attribute__((unused)) Context ctx) {
+    return &state;
 }
 
 {{#if usesNodeId}}
@@ -141,17 +99,109 @@ uint16_t getNodeId(Context ctx) {
 }
 {{/if}}
 
+{{#if usesTimeouts}}
+void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
+    this->timeoutAt = transactionTime() + timeout;
+}
 
-{{#if raisesErrors}}
-template<typename OutputT> void raiseError(Context ctx) {
+void clearTimeout(__attribute__((unused)) Context ctx) {
+    detail::clearTimeout(this);
+}
+
+bool isTimedOut(__attribute__((unused)) const Context ctx) {
+    return detail::isTimedOut(this);
+}
+{{/if}}
+
+template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
+    return getValue(ctx, identity<PinT>());
+}
+
+template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx, identity<PinT>) {
+    static_assert(always_false<PinT>::value,
+            "Invalid pin descriptor. Expected one of:" \
+            "{{#each inputs}} input_{{pinKey}}{{/each}}" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
+}
+
+{{#each inputs}}
+TypeOf{{ pinKey }} getValue(Context ctx, identity<input_{{ pinKey }}>) {
+{{#if (isConstantType type)}}
+    return constant_input_{{ pinKey }};
+{{else if (isPulse type)}}
+    return Pulse();
+{{else}}
+    return ctx->_input_{{ pinKey }};
+{{/if}}
+}
+{{/each}}
+{{#each outputs}}
+TypeOf{{ pinKey }} getValue(Context ctx, identity<output_{{ pinKey }}>) {
+{{#if (isConstantType type)}}
+    return constant_output_{{ pinKey }};
+{{else if (isPulse type)}}
+    return Pulse();
+{{else}}
+    return this->_output_{{ pinKey }};
+{{/if}}
+}
+{{/each}}
+
+template<typename InputT> bool isInputDirty(Context ctx) {
+    return isInputDirty(ctx, identity<InputT>());
+}
+
+template<typename InputT> bool isInputDirty(Context ctx, identity<InputT>) {
+    static_assert(always_false<InputT>::value,
+            "Invalid input descriptor. Expected one of:" \
+            "{{#eachDirtyablePin inputs}} input_{{pinKey}}{{/eachDirtyablePin}}");
+    return false;
+}
+
+{{#eachDirtyablePin inputs}}
+bool isInputDirty(Context ctx, identity<input_{{ pinKey }}>) {
+    return ctx->_isInputDirty_{{ pinKey }};
+}
+{{/eachDirtyablePin}}
+
+template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val) {
+    emitValue(ctx, val, identity<OutputT>());
+}
+
+template<typename OutputT> void emitValue(Context ctx, typename decltype(getValueType(OutputT()))::type val, identity<OutputT>) {
     static_assert(always_false<OutputT>::value,
             "Invalid output descriptor. Expected one of:" \
             "{{#each outputs}} output_{{pinKey}}{{/each}}");
 }
 
 {{#each outputs}}
-template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
-    ctx->_node->errors.output_{{ pinKey }} = true;
+void emitValue(Context ctx, TypeOf{{ pinKey }} val, identity<output_{{ pinKey }}>) {
+  {{#unless (or (isPulse type) (isConstantType type))}}
+    this->_output_{{ pinKey }} = val;
+  {{/unless}}
+  {{#if isDirtyable}}
+    ctx->_isOutputDirty_{{ pinKey }} = true;
+  {{/if}}
+  {{#if ../raisesErrors}}
+    {{#if ../isDefer}}if (isEarlyDeferPass()) {{/if}}this->errors.output_{{ pinKey }} = false;
+  {{/if}}
+}
+{{/each}}
+
+{{#if raisesErrors}}
+template<typename OutputT> void raiseError(Context ctx) {
+    raiseError(ctx, identity<OutputT>());
+}
+
+template<typename OutputT> void raiseError(Context ctx, identity<OutputT>) {
+    static_assert(always_false<OutputT>::value,
+            "Invalid output descriptor. Expected one of:" \
+            "{{#each outputs}} output_{{pinKey}}{{/each}}");
+}
+
+{{#each outputs}}
+void raiseError(Context ctx, identity<output_{{ pinKey }}>) {
+    this->errors.output_{{ pinKey }} = true;
   {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
   {{/if}}
@@ -160,19 +210,20 @@ template<> void raiseError<output_{{ pinKey }}>(Context ctx) {
 
 void raiseError(Context ctx) {
   {{#each outputs}}
-    ctx->_node->errors.output_{{ pinKey }} = true;
+    this->errors.output_{{ pinKey }} = true;
     {{#if isDirtyable}}
     ctx->_isOutputDirty_{{ pinKey }} = true;
     {{/if}}
   {{/each}}
 }
-
-{{/if}}
-
+{{/if}} {{!-- raisesErrors --}}
 
 {{#if catchesErrors}}
-
 template<typename InputT> uint8_t getError(Context ctx) {
+    return getError(ctx, identity<InputT>());
+}
+
+template<typename InputT> uint8_t getError(Context ctx, identity<InputT>) {
     static_assert(always_false<InputT>::value,
             "Invalid input descriptor. Expected one of:" \
             "{{#each inputs}} input_{{pinKey}}{{/each}}");
@@ -180,8 +231,8 @@ template<typename InputT> uint8_t getError(Context ctx) {
 }
 
 {{#each inputs}}
-template<> uint8_t getError<input_{{ pinKey }}>(Context ctx) {
+uint8_t getError(Context ctx, identity<input_{{ pinKey }}>) {
     return ctx->_error_input_{{ pinKey }};
 }
 {{/each}}
-{{/if}}
+{{/if}} {{!-- catchesErrors --}}

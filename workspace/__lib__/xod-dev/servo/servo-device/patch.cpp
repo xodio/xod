@@ -54,16 +54,12 @@ using Type = XServo*;
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
+    static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
+
     State* servo = getState(ctx);
 
-    auto port = getValue<input_PORT>(ctx);
-    if (!isValidDigitalPort(port)) {
-        raiseError(ctx);
-        return;
-    }
-
     servo->reattach(
-        port,
+        constant_input_PORT,
         getValue<input_Pmin>(ctx),
         getValue<input_Pmax>(ctx)
     );

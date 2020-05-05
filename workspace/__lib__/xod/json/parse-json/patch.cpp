@@ -1,5 +1,5 @@
 
-using xod::json_parser::ParserState;
+using ParserState = xod::json_parser::ParserState;
 
 enum class StackItem : uint8_t {
   OBJECT = 0,
@@ -17,52 +17,22 @@ struct ContextObject;
 // we only use buffer to validate numbers, booleans and `null`
 #define BUFFER_MAX_LENGTH 16
 
-class JsonParser {
-  private:
-    ParserState state;
-    StackItem stack[20];
-    int stackPos = 0;
+ParserState parserState;
+StackItem stack[20];
+int stackPos = 0;
 
-    bool doEmitWhitespace = false;
-    char buffer[BUFFER_MAX_LENGTH];
-    int bufferPos = 0;
-
-    void increaseBufferPointer();
-    void endString(ContextObject* ctx);
-    void endArray(ContextObject* ctx);
-    void startValue(ContextObject* ctx, char c);
-    void startKey();
-    void processEscapeCharacters(ContextObject* ctx, char c);
-    void startNumber(char c);
-    void startString();
-    void startObject();
-    void startArray();
-    void endNull(ContextObject* ctx);
-    void endFalse(ContextObject* ctx);
-    void endTrue(ContextObject* ctx);
-    void endDocument();
-    void endNumber();
-    void endObject(ContextObject* ctx);
-
-  public:
-    JsonParser();
-    void parse(ContextObject* ctx, char c);
-    void reset();
-};
+bool doEmitWhitespace = false;
+char buffer[BUFFER_MAX_LENGTH];
+int bufferPos = 0;
 
 struct State {
-    JsonParser parser;
     bool hasError = false;
 };
 
 {{ GENERATED_CODE }}
 
-JsonParser::JsonParser() {
-    reset();
-}
-
-void JsonParser::reset() {
-    state = ParserState::START_DOCUMENT;
+void reset() {
+    parserState = ParserState::START_DOCUMENT;
     bufferPos = 0;
 }
 
@@ -74,22 +44,22 @@ void raiseErrorUntilReset(Context ctx) {
   raiseError(ctx);
 }
 
-void JsonParser::parse(Context ctx, char c) {
+void parse(Context ctx, char c) {
     // valid whitespace characters in JSON (from RFC4627 for JSON) include:
     // space, horizontal tab, line feed or new line, and carriage return.
     // thanks:
     // http://stackoverflow.com/questions/16042274/definition-of-whitespace-in-json
     if ((c == ' ' || c == '\t' || c == '\n' || c == '\r')
-        && !(state == ParserState::IN_STRING || state == ParserState::START_ESCAPE
-            || state == ParserState::IN_NUMBER || state == ParserState::START_DOCUMENT)) {
+        && !(parserState == ParserState::IN_STRING || parserState == ParserState::START_ESCAPE
+            || parserState == ParserState::IN_NUMBER || parserState == ParserState::START_DOCUMENT)) {
       return;
     }
-    switch (state) {
+    switch (parserState) {
     case ParserState::IN_STRING:
       if (c == '"') {
         endString(ctx);
       } else if (c == '\\') {
-        state = ParserState::START_ESCAPE;
+        parserState = ParserState::START_ESCAPE;
       } else if ((c < 0x1f) || (c == 0x7f)) {
           // Unescaped control character encountered
           raiseErrorUntilReset(ctx);
@@ -122,7 +92,7 @@ void JsonParser::parse(Context ctx, char c) {
           // Expected ':' after key
           raiseErrorUntilReset(ctx);
       }
-      state = ParserState::AFTER_KEY;
+      parserState = ParserState::AFTER_KEY;
       break;
     case ParserState::AFTER_KEY:
       startValue(ctx, c);
@@ -139,7 +109,7 @@ void JsonParser::parse(Context ctx, char c) {
         if (c == '}') {
           endObject(ctx);
         } else if (c == ',') {
-          state = ParserState::IN_OBJECT;
+          parserState = ParserState::IN_OBJECT;
         } else {
             // Expected ',' or '}' while parsing object
             raiseErrorUntilReset(ctx);
@@ -148,7 +118,7 @@ void JsonParser::parse(Context ctx, char c) {
         if (c == ']') {
           endArray(ctx);
         } else if (c == ',') {
-          state = ParserState::IN_ARRAY;
+          parserState = ParserState::IN_ARRAY;
         } else {
             // Expected ',' or ']' while parsing array
             raiseErrorUntilReset(ctx);
@@ -236,26 +206,26 @@ void JsonParser::parse(Context ctx, char c) {
 
     if ((getState(ctx))->hasError) return;
 
-    ValueType<output_OUT1>::T parsed = {};
-    parsed.state = state;
+    TypeOfOUT1 parsed = {};
+    parsed.state = parserState;
     parsed.character = c;
     emitValue<output_OUT1>(ctx, parsed);
     emitValue<output_OUT2>(ctx, true);
 }
 
-void JsonParser::increaseBufferPointer() {
+void increaseBufferPointer() {
     bufferPos = min(bufferPos + 1, BUFFER_MAX_LENGTH - 1);
 }
 
-void JsonParser::endString(Context ctx) {
+void endString(Context ctx) {
     StackItem popped = stack[stackPos - 1];
     stackPos--;
     if (popped == StackItem::KEY) {
       buffer[bufferPos] = '\0';
-      state = ParserState::END_KEY;
+      parserState = ParserState::END_KEY;
     } else if (popped == StackItem::STRING) {
       buffer[bufferPos] = '\0';
-      state = ParserState::AFTER_VALUE;
+      parserState = ParserState::AFTER_VALUE;
     } else {
       // Unexpected end of string
       raiseErrorUntilReset(ctx);
@@ -263,7 +233,7 @@ void JsonParser::endString(Context ctx) {
     bufferPos = 0;
 }
 
-void JsonParser::startValue(Context ctx, char c) {
+void startValue(Context ctx, char c) {
     if (c == '[') {
       startArray();
     } else if (c == '{') {
@@ -273,15 +243,15 @@ void JsonParser::startValue(Context ctx, char c) {
     } else if (isFirstCharInNumber(c)) {
       startNumber(c);
     } else if (c == 't') {
-      state = ParserState::IN_TRUE;
+      parserState = ParserState::IN_TRUE;
       buffer[bufferPos] = c;
       increaseBufferPointer();
     } else if (c == 'f') {
-      state = ParserState::IN_FALSE;
+      parserState = ParserState::IN_FALSE;
       buffer[bufferPos] = c;
       increaseBufferPointer();
     } else if (c == 'n') {
-      state = ParserState::IN_NULL;
+      parserState = ParserState::IN_NULL;
       buffer[bufferPos] = c;
       increaseBufferPointer();
     } else {
@@ -290,39 +260,39 @@ void JsonParser::startValue(Context ctx, char c) {
     }
 }
 
-void JsonParser::endArray(Context ctx) {
+void endArray(Context ctx) {
     StackItem popped = stack[stackPos - 1];
     stackPos--;
     if (popped != StackItem::ARRAY) {
       // Unexpected end of array encountered
       raiseErrorUntilReset(ctx);
     }
-    state = ParserState::AFTER_ARRAY;
+    parserState = ParserState::AFTER_ARRAY;
     if (stackPos == 0) {
       endDocument();
     }
 }
 
-void JsonParser::startKey() {
+void startKey() {
     stack[stackPos] = StackItem::KEY;
     stackPos++;
-    state = ParserState::IN_STRING;
+    parserState = ParserState::IN_STRING;
 }
 
-void JsonParser::endObject(Context ctx) {
+void endObject(Context ctx) {
     StackItem popped = stack[stackPos - 1];
     stackPos--;
     if (popped != StackItem::OBJECT) {
       // Unexpected end of object encountered
       raiseErrorUntilReset(ctx);
     }
-    state = ParserState::AFTER_OBJECT;
+    parserState = ParserState::AFTER_OBJECT;
     if (stackPos == 0) {
       endDocument();
     }
 }
 
-void JsonParser::processEscapeCharacters(Context ctx, char c) {
+void processEscapeCharacters(Context ctx, char c) {
     if (c == '"') {
       buffer[bufferPos] = '"';
       increaseBufferPointer();
@@ -352,79 +322,83 @@ void JsonParser::processEscapeCharacters(Context ctx, char c) {
       raiseErrorUntilReset(ctx);
     }
 
-    state = ParserState::IN_STRING;
+    parserState = ParserState::IN_STRING;
 }
 
-void JsonParser::endNumber() {
+void endNumber() {
     buffer[bufferPos] = '\0';
     bufferPos = 0;
-    state = ParserState::AFTER_VALUE;
+    parserState = ParserState::AFTER_VALUE;
 }
 
-void JsonParser::endDocument() {
-    state = ParserState::DONE;
+void endDocument() {
+    parserState = ParserState::DONE;
 }
 
-void JsonParser::endTrue(Context ctx) {
+void endTrue(Context ctx) {
     buffer[bufferPos] = '\0';
     if (strcmp(buffer, "true") != 0) {
       // Expected "true"
       raiseErrorUntilReset(ctx);
     }
     bufferPos = 0;
-    state = ParserState::AFTER_VALUE;
+    parserState = ParserState::AFTER_VALUE;
 }
 
-void JsonParser::endFalse(Context ctx) {
+void endFalse(Context ctx) {
     buffer[bufferPos] = '\0';
     if (strcmp(buffer, "false") != 0) {
       // Expected "false"
       raiseErrorUntilReset(ctx);
     }
     bufferPos = 0;
-    state = ParserState::AFTER_VALUE;
+    parserState = ParserState::AFTER_VALUE;
 }
 
-void JsonParser::endNull(Context ctx) {
+void endNull(Context ctx) {
     buffer[bufferPos] = '\0';
     if (strcmp(buffer, "null") != 0) {
       // Expected "null"
       raiseErrorUntilReset(ctx);
     }
     bufferPos = 0;
-    state = ParserState::AFTER_VALUE;
+    parserState = ParserState::AFTER_VALUE;
 }
 
-void JsonParser::startArray() {
-    state = ParserState::START_ARRAY;
+void startArray() {
+    parserState = ParserState::START_ARRAY;
     stack[stackPos] = StackItem::ARRAY;
     stackPos++;
 }
 
-void JsonParser::startObject() {
-    state = ParserState::START_OBJECT;
+void startObject() {
+    parserState = ParserState::START_OBJECT;
     stack[stackPos] = StackItem::OBJECT;
     stackPos++;
 }
 
-void JsonParser::startString() {
+void startString() {
     stack[stackPos] = StackItem::STRING;
     stackPos++;
-    state = ParserState::IN_STRING;
+    parserState = ParserState::IN_STRING;
 }
 
-void JsonParser::startNumber(char c) {
-    state = ParserState::IN_NUMBER;
+void startNumber(char c) {
+    parserState = ParserState::IN_NUMBER;
     buffer[bufferPos] = c;
     increaseBufferPointer();
 }
 
 void evaluate(Context ctx) {
+    if (isSettingUp()) {
+      reset();
+    }
+
     auto state = getState(ctx);
 
     if (isInputDirty<input_RST>(ctx)) {
       state->hasError = false;
-      state->parser.reset();
+      reset();
     }
 
     if (state->hasError) {
@@ -436,5 +410,5 @@ void evaluate(Context ctx) {
     }
 
     auto c = getValue<input_IN1>(ctx);
-    state->parser.parse(ctx, c);
+    parse(ctx, c);
 }

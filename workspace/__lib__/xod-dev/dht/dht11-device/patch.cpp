@@ -1,6 +1,6 @@
 
 struct State {
-    uint8_t port = 0;
+    static const uint8_t port = constant_input_PORT;
 };
 
 using Type = State*;
@@ -9,6 +9,6 @@ using Type = State*;
 
 void evaluate(Context ctx) {
     auto dev = getState(ctx);
-    dev->port = getValue<input_PORT>(ctx);
+    // just to trigger downstream nodes
     emitValue<output_DEV>(ctx, dev);
 }

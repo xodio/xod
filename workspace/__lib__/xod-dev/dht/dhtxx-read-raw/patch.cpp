@@ -1,4 +1,3 @@
-#pragma XOD error_raise enable
 
 struct State {
     bool reading;
@@ -100,13 +99,11 @@ void enterIdleState(uint8_t port) {
 }
 
 void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    uint8_t port = (uint8_t)getValue<input_PORT>(ctx);
+    static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
-    if (!isValidDigitalPort(port)) {
-        raiseError(ctx); // Invalid port
-        return;
-    }
+    State* state = getState(ctx);
+    uint8_t port = constant_input_PORT;
+
     if (state->reading) {
         uint8_t data[5];
         auto status = readValues(port, data);
