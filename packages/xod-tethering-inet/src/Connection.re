@@ -19,42 +19,31 @@ module Port = {
   type t = int;
 
   let fromString = str =>
-    Int.fromString(str)
-    |> (
-      res =>
-        switch (res) {
-        | Some(a) when a > 0 => Result.Ok(a)
-        | _ => Result.Error(Error.INVALID_PORT(str))
-        }
-    );
+    switch (Int.fromString(str)) {
+    | Some(a) when a > 0 => Result.Ok(a)
+    | _ => Result.Error(Error.INVALID_PORT(str))
+    };
 };
+
 module KeepAlive = {
   type t = int;
 
   let fromString = str =>
-    Int.fromString(str)
-    |> (
-      res =>
-        switch (res) {
-        | Some(a) when a <= 7200 && a >= 0 => Result.Ok(a)
-        | Some(_) => Result.Error(Error.INVALID_KEEPALIVE(str))
-        | None => Result.Error(Error.INVALID_ARGUMENTS)
-        }
-    );
+    switch (Int.fromString(str)) {
+    | Some(a) when a <= 7200 && a >= 0 => Result.Ok(a)
+    | Some(_) => Result.Error(Error.INVALID_KEEPALIVE(str))
+    | None => Result.Error(Error.INVALID_ARGUMENTS)
+    };
 };
 module Link = {
   type t = int;
 
   let fromString = (str, allowFive) =>
-    Int.fromString(str)
-    |> (
-      res =>
-        switch (res) {
-        | Some(a) when a >= 0 && a <= (allowFive ? 5 : 4) => Result.Ok(a)
-        | Some(_) => Result.Error(Error.INVALID_LINKID(str))
-        | None => Result.Error(Error.INVALID_ARGUMENTS)
-        }
-    );
+    switch (Int.fromString(str)) {
+    | Some(a) when a >= 0 && a <= (allowFive ? 5 : 4) => Result.Ok(a)
+    | Some(_) => Result.Error(Error.INVALID_LINKID(str))
+    | None => Result.Error(Error.INVALID_ARGUMENTS)
+    };
 };
 
 type t =

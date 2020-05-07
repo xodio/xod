@@ -1,22 +1,11 @@
 open Belt;
 
-type t = {
-  execute: string => Js.Promise.t(string),
-  send: string => Js.Promise.t(string),
-  isMux: unit => bool,
-  listen: (Connection.Link.t, string => unit) => bool,
-  hasConnection: Connection.Link.t => bool,
-  hasConnections: unit => bool,
-  write: string => unit,
-  subscribe: (string => unit) => unit,
-};
-
 type openConnections = List.t((Connection.Link.t, Net.t));
 
 // :: (Link, Bytes to send, Bytes sent)
 type sending = (Connection.Link.t, int, int);
 
-type stateT = {
+type t = {
   mux: ref(bool),
   sending: ref(sending),
   connections: ref(openConnections),
@@ -24,7 +13,7 @@ type stateT = {
 };
 
 let getDefaultState = () => {
-  let state: stateT = {
+  let state: t = {
     mux: ref(false),
     sending: ref(((-1), 0, 0)),
     connections: ref([]),
@@ -48,7 +37,7 @@ let listen = (state, linkId, handler) =>
   ->Option.map(session => session->Net.on("data", handler))
   ->Option.isSome;
 
-let handleCommand = (state: stateT, cmd: Command.t): Js.Promise.t(string) =>
+let handleCommand = (state: t, cmd: Command.t): Js.Promise.t(string) =>
   switch (cmd) {
   | AT => resolve("OK")
   | CIPMUX(a) =>
@@ -232,23 +221,8 @@ let write = (state, data) =>
 let subscribe = (state, handler) =>
   state.events->(EventEmitter.on("data", handler))->ignore;
 
-let _create = (): t => {
-  let state = getDefaultState();
-  let o: t = {
-    send: send(state),
-    listen: listen(state),
-    hasConnection: hasConnection(state),
-    hasConnections: () => hasConnections(state),
-    isMux: () => isMux(state),
-    execute: execute(state),
-    write: write(state),
-    subscribe: subscribe(state),
-  };
-  o;
-};
-
 let create = (onDataHandler: string => unit): (string => unit) => {
-  let net = _create();
-  net.subscribe(onDataHandler);
-  net.write;
+  let state = getDefaultState();
+  subscribe(state, onDataHandler);
+  write(state);
 };
