@@ -1,0 +1,80 @@
+{
+  "description": "Writes a text data to a file on SD card. Possible errors: — Can't open a file — Initialization failed or no SD card — Can't write data to SD card.",
+  "nodes": [
+    {
+      "description": "File name to write to.",
+      "id": "B1bfAJY7FL",
+      "label": "FILE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "HJuTkYQYU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Perform file open, write, flush, close cycle.",
+      "id": "S1MCJFXt8",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Data to write.",
+      "id": "S1lM0JKmFL",
+      "label": "DATA",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "SDcard device.",
+      "id": "SkMTJY7YU",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/input-sd-device"
+    },
+    {
+      "description": "Fires when write is done.",
+      "id": "ryl1xK7KI",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "SDcard device.",
+      "id": "ryqyZKXFI",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "@/output-sd-device"
+    }
+  ]
+}
