@@ -56,6 +56,17 @@ const Serial = {
     }),
 };
 
+// Time object provides a way to pass the millis() into simulation
+// It used only in Simulation, because Tabtests may mock the time
+// for testing purposes.
+const Time = {
+  value: 0,
+  get: () => Time.value,
+  set: newT => {
+    Time.value = newT;
+  },
+};
+
 let wasmInstance;
 _self.onmessage = e => {
   switch (e.data.type) {
@@ -92,6 +103,11 @@ _self.onmessage = e => {
       // eslint-disable-next-line no-undef
       wasmInstance = new Module(opts);
       wasmInstance.Serial = Serial;
+      wasmInstance.Time = Time;
+      // Make Time updating each millisecond
+      setInterval(() => {
+        wasmInstance.Time.value += 1;
+      }, 1);
       return;
     }
     case 'serial:send': {
