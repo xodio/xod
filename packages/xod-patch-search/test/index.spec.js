@@ -68,7 +68,7 @@ describe('xod-patch-search/index', () => {
     it('searches: "temp"', () =>
       assert.equal(
         search(indexData, 'temp')[1].item.path,
-        'xod/units/c-to-f' // Cause this node has a `temperature` in the description
+        'xod/graphics/temperature-16x16-rgb'
       ));
 
     it('searches: "therm"', () => {

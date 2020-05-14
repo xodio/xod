@@ -1,0 +1,24 @@
+{
+  "description": "The \"Wi-Fi\" black and white icon. 16x16 pixels.",
+  "nodes": [
+    {
+      "id": "HylR3jcQPL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "S1CnicQPI",
+      "label": "BMP",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/output-bitmap"
+    }
+  ]
+}
