@@ -23,7 +23,10 @@ const noop = () => {};
  * @param {Object} config Plain-object representation of `.cli-config.yml`
  */
 const ArduinoCli = (pathToBin, config = null) => {
-  let { path: configPath, config: cfg } = configure(config);
+  const configureVal = configure(config);
+  let configPath = configureVal.path;
+  let cfg = configureVal.config;
+  const configDir = configureVal.dir;
   let runningProcesses = [];
 
   const appendProcess = proc => {
@@ -34,7 +37,7 @@ const ArduinoCli = (pathToBin, config = null) => {
   };
 
   const runWithProgress = async (onProgress, args) => {
-    const spawnArgs = R.concat([`--config-file=${configPath}`], args);
+    const spawnArgs = R.concat([`--config-file=${configDir}`], args);
     const proc = spawn(pathToBin, spawnArgs, {
       stdio: ['inherit', 'pipe', 'pipe'],
     });
@@ -47,23 +50,21 @@ const ArduinoCli = (pathToBin, config = null) => {
     return proc.then(R.prop('stdout'));
   };
 
-  const sketch = name => resolve(cfg.sketchbook_path, name);
+  const sketch = name => resolve(cfg.directories.user, name);
 
   const runAndParseJson = args => runWithProgress(noop, args).then(JSON.parse);
 
   const listCores = () =>
     runWithProgress(noop, ['core', 'list', '--format=json'])
-      .then(R.when(R.isEmpty, R.always('{}')))
-      .then(JSON.parse)
-      .then(R.propOr([], 'Platforms'))
-      .then(R.map(R.over(R.lensProp('ID'), R.replace(/(@.+)$/, ''))));
+      .then(R.when(R.isEmpty, R.always('[]')))
+      .then(JSON.parse);
 
   const listBoardsWith = (listCmd, boardsGetter) =>
     Promise.all([
       listCores(),
       runAndParseJson(['board', listCmd, '--format=json']),
     ]).then(([cores, boards]) =>
-      patchBoardsWithOptions(cfg.arduino_data, cores, boardsGetter(boards))
+      patchBoardsWithOptions(cfg.directories.data, cores, boardsGetter(boards))
     );
 
   const getConfig = () =>
@@ -87,7 +88,8 @@ const ArduinoCli = (pathToBin, config = null) => {
     },
     listConnectedBoards: () => listBoardsWith('list', R.prop('serialBoards')),
     listInstalledBoards: () => listBoardsWith('listall', R.prop('boards')),
-    listAvailableBoards: () => listAvailableBoards(getConfig, cfg.arduino_data),
+    listAvailableBoards: () =>
+      listAvailableBoards(getConfig, cfg.directories.data),
     compile: (onProgress, fqbn, sketchName, verbose = false) =>
       runWithProgress(onProgress, [
         'compile',
@@ -109,7 +111,7 @@ const ArduinoCli = (pathToBin, config = null) => {
         // TODO:
         // Get rid of `remove` the staging directory when
         // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
-        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+        remove(resolve(cfg.directories.data, 'staging')).then(() =>
           runWithProgress(parseProgressLog(onProgress), [
             'core',
             'download',
@@ -120,7 +122,7 @@ const ArduinoCli = (pathToBin, config = null) => {
         // TODO:
         // Get rid of `remove` the staging directory when
         // arduino-cli fix issue https://github.com/arduino/arduino-cli/issues/43
-        remove(resolve(cfg.arduino_data, 'staging')).then(() =>
+        remove(resolve(cfg.directories.data, 'staging')).then(() =>
           runWithProgress(parseProgressLog(onProgress), [
             'core',
             'install',
@@ -141,7 +143,7 @@ const ArduinoCli = (pathToBin, config = null) => {
     version: () => runAndParseJson(['version']).then(R.prop('version')),
     createSketch: sketchName =>
       runWithProgress(noop, ['sketch', 'new', sketchName]).then(
-        R.always(resolve(cfg.sketchbook_path, sketchName, `${sketchName}.ino`))
+        R.always(resolve(cfg.directories.user, sketchName, `${sketchName}.ino`))
       ),
     setPackageIndexUrls: urls => setPackageIndexUrls(configPath, urls),
   };

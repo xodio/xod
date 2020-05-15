@@ -338,8 +338,10 @@ export const createCli = async (
   }
 
   const cli = arduinoCli(arduinoCliPath, {
-    arduino_data: packagesDirPath,
-    sketchbook_path: sketchDir,
+    directories: {
+      user: sketchDir,
+      data: packagesDirPath,
+    },
   });
 
   await syncAdditionalPackages(wsPath, cli);
@@ -348,7 +350,7 @@ export const createCli = async (
 };
 
 /**
- * Updates path to the `arduino_data` in the arduino-cli `.cli-config.yml`
+ * Updates path to the `directories.data` in the arduino-cli `arduino-cli.yaml`
  * and prepares `__packages__` directory in the user's workspace if needed.
  *
  * We have to call this function when user changes workspace to make all
@@ -362,7 +364,11 @@ export const switchWorkspace = async (cli, wsBundledPath, newWsPath) => {
     wsBundledPath,
     newWsPath
   );
-  const newConfig = R.assoc('arduino_data', packagesDirPath, oldConfig);
+  const newConfig = R.assocPath(
+    ['directories', 'data'],
+    packagesDirPath,
+    oldConfig
+  );
   const result = cli.updateConfig(newConfig);
   await syncAdditionalPackages(newWsPath, cli);
   return result;

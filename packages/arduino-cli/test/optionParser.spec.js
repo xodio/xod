@@ -96,15 +96,15 @@ const cpuFrequencyOptions = {
 const boards = [
   {
     name: 'Generic ESP8266 Module',
-    fqbn: 'esp8266:esp8266:generic',
+    FQBN: 'esp8266:esp8266:generic',
   },
   {
     name: 'Amperka WiFi Slot',
-    fqbn: 'esp8266:esp8266:wifi_slot',
+    FQBN: 'esp8266:esp8266:wifi_slot',
   },
   {
     name: 'Arduino Due',
-    fqbn: 'arduino:sam:due',
+    FQBN: 'arduino:sam:due',
   },
   {
     name: 'Arduino/Genuino Uno (not installed)',
@@ -114,11 +114,11 @@ const boards = [
   },
   {
     name: 'Generic Fictional Board',
-    fqbn: 'fictional:fake:generic',
+    FQBN: 'fictional:fake:generic',
   },
   {
     name: 'Another Fictional Board',
-    fqbn: 'fictional:fake:another_one',
+    FQBN: 'fictional:fake:another_one',
   },
 ];
 
