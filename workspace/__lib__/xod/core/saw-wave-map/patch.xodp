@@ -103,7 +103,7 @@
   ],
   "nodes": [
     {
-      "description": "The number of a funcion cycle. Starts from 0.",
+      "description": "The number of a function cycle. Starts from 0.",
       "id": "B1a7B_O1z",
       "label": "N",
       "position": {
@@ -175,6 +175,15 @@
         "y": 2
       },
       "type": "@/divide"
+    },
+    {
+      "id": "rJ18kR4TI",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/deprecated"
     },
     {
       "id": "rJPb9Kdyz",

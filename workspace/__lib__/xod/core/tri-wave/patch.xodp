@@ -81,6 +81,16 @@
   ],
   "nodes": [
     {
+      "description": "Use `xod/waves/tri-wave` instead",
+      "id": "BJbzk0NT8",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "Continuously"
       },
@@ -107,7 +117,7 @@
       "boundLiterals": {
         "__out__": "True"
       },
-      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effectively that means the generator is paused. Set to `true` again to continue generation.\n",
       "id": "HJ4Sc5FJG",
       "label": "EN",
       "position": {

@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "A collection of nodes that generate wave signals",
+  "license": "AGPL",
+  "name": "waves",
+  "version": "0.34.0"
+}

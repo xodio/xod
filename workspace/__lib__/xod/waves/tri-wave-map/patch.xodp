@@ -1,0 +1,55 @@
+{
+  "nodes": [
+    {
+      "id": "BJBQqPQiOG",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HJkXG6E6L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.5"
+      },
+      "description": "Peak position, from 0 to 1.\n1 for sawtooth, 0.5 for triangle, 0 for reverse sawtooth.",
+      "id": "HkxX5P7idf",
+      "label": "PP",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "r1Xqv7o_G",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJtxzAVpI",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

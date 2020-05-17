@@ -61,6 +61,16 @@
       "type": "xod/patch-nodes/output-number"
     },
     {
+      "description": "Use `xod/waves/square-wave` instead",
+      "id": "r1PRAaET8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "0.5"
       },

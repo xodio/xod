@@ -120,7 +120,7 @@
       "boundLiterals": {
         "__out__": "True"
       },
-      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effectively that means the generator is paused. Set to `true` again to continue generation.\n",
       "id": "SJbuWY3FkG",
       "label": "EN",
       "position": {
@@ -172,6 +172,16 @@
         "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Use `xod/waves/sine-wave` instead",
+      "id": "ryHXyA4T8",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
     }
   ]
 }

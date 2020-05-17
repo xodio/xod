@@ -84,14 +84,14 @@
       }
     },
     {
-      "id": "rJmwqk9g8",
+      "id": "rJPc3XK6I",
       "input": {
         "nodeId": "HkMwqJcgU",
         "pinKey": "BJlzICOSv1-"
       },
       "output": {
-        "nodeId": "rJ3L9JclL",
-        "pinKey": "BJB_WYnYyM"
+        "nodeId": "By4q3Xt6L",
+        "pinKey": "HyaDDeM_M"
       }
     },
     {
@@ -133,6 +133,18 @@
     },
     {
       "boundLiterals": {
+        "HylpvPgMOM": "0.5"
+      },
+      "id": "By4q3Xt6L",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 5
+      },
+      "type": "xod/waves/sine-wave"
+    },
+    {
+      "boundLiterals": {
         "HJCWLAdSwyW": "1",
         "rkpbU0OrwyZ": "3"
       },
@@ -159,18 +171,6 @@
         "y": 4
       },
       "type": "@/pattern"
-    },
-    {
-      "boundLiterals": {
-        "HyMdZFnYkf": "0.5"
-      },
-      "id": "rJ3L9JclL",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 5
-      },
-      "type": "xod/core/sine-wave"
     },
     {
       "id": "rkR-jk9eI",

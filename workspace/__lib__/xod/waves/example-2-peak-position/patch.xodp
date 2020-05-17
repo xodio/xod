@@ -1,0 +1,127 @@
+{
+  "comments": [
+    {
+      "content": "try different values between 0 and 1 and see how it affects the wave shape",
+      "id": "rJnEElB6L",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "ByWpXxH6L",
+      "input": {
+        "nodeId": "B1s3mgSaL",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "BJNlMJrTU",
+        "pinKey": "r1ljgpXjOM"
+      }
+    },
+    {
+      "id": "Hkx6mlH6I",
+      "input": {
+        "nodeId": "HkSCWera8",
+        "pinKey": "r1g7J3-ii7"
+      },
+      "output": {
+        "nodeId": "B1s3mgSaL",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "SyfXXyBTI",
+      "input": {
+        "nodeId": "BJNlMJrTU",
+        "pinKey": "HkBzTQjuf"
+      },
+      "output": {
+        "nodeId": "HkZmX1SpL",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "rkA0WeHpI",
+      "input": {
+        "nodeId": "SymbCWJr6L",
+        "pinKey": "BJZY_6J1L"
+      },
+      "output": {
+        "nodeId": "HkSCWera8",
+        "pinKey": "BJyghZosm"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "0.5"
+      },
+      "id": "B1s3mgSaL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "boundLiterals": {
+        "rk-jxTQsuz": "2"
+      },
+      "id": "BJNlMJrTU",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "@/tri-wave"
+    },
+    {
+      "boundLiterals": {
+        "HJgyhboim": "0.4"
+      },
+      "id": "HkSCWera8",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/color/color-hsl"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.5"
+      },
+      "id": "HkZmX1SpL",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "boundLiterals": {
+        "rJ2uOpk1L": "4",
+        "ryD_dp118": "D2"
+      },
+      "id": "SymbCWJr6L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "xod-dev/ws2812/ws2812-mono"
+    }
+  ]
+}
