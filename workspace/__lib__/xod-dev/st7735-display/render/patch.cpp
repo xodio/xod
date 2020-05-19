@@ -15,7 +15,9 @@ void evaluate(Context ctx) {
         return;
 
     auto gfx = getValue<input_GFX>(ctx);
-    gfx->render(dev);
+
+    if (gfx)
+        gfx->render(dev);
 
     emitValue<output_DONE>(ctx, 1);
 }
