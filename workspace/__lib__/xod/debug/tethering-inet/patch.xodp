@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {
+      "id": "Hk2l1SSHL",
+      "position": {
+        "units": "slots",
+        "x": -4,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SyveJHHBL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -4,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

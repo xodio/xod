@@ -1,6 +1,13 @@
 import { INTRODUCTION } from './messages';
 import { LOG_TAB_TYPE, SESSION_TYPE } from './constants';
 
+export const DEFAULT_TETHERING_INET_STATE = {
+  nodeId: null,
+  sender: null,
+  chunksToSend: [],
+  transmitter: () => {},
+};
+
 export default {
   isVisible: false,
   activeSession: SESSION_TYPE.NONE,
@@ -37,4 +44,5 @@ export default {
   interactiveErroredNodePins: {},
   pinsAffectedByErrorRaisers: {},
   globals: {},
+  tetheringInet: DEFAULT_TETHERING_INET_STATE,
 };

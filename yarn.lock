@@ -1039,6 +1039,11 @@ add-stream@^1.0.0:
   resolved "https://registry.yarnpkg.com/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
   integrity sha1-anmQQ3ynNtXhKI25K9MmbV9csqo=
 
+address@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
+  integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
+
 agent-base@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.1.2.tgz#80fa6cde440f4dcf9af2617cf246099b5d99f0c8"
@@ -5669,6 +5674,21 @@ dns-packet@^1.0.1:
     ip "^1.1.0"
     safe-buffer "^5.0.1"
 
+dns-packet@^1.1.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/dns-packet/-/dns-packet-1.3.1.tgz#12aa426981075be500b910eedcd0b47dd7deda5a"
+  integrity sha512-0UxfQkMhYAUaZI+xrNZOz/as5KgDU0M/fQ9b6SpkyLbk3GEswDi6PADJVaYJradtRVsRIlF1zLyOodbcTCDzUg==
+  dependencies:
+    ip "^1.1.0"
+    safe-buffer "^5.0.1"
+
+dns-socket@^1.6.1:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/dns-socket/-/dns-socket-1.6.3.tgz#5268724fad4aa46ad9c5ca4ffcd16e1de5342aab"
+  integrity sha512-/mUy3VGqIP69dAZjh2xxHXcpK9wk2Len1Dxz8mWAdrIgFC8tnR/aQAyU4a+UTXzOcTvEvGBdp1zFiwnpWKaXng==
+  dependencies:
+    dns-packet "^1.1.0"
+
 dns-txt@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/dns-txt/-/dns-txt-2.0.2.tgz#b91d806f5d27188e4ab3e7d107d881a1cc4642b6"
@@ -8655,6 +8675,13 @@ internal-ip@1.2.0:
   integrity sha1-rp+/k7mEh4eF1QqN4bNWlWBYz1w=
   dependencies:
     meow "^3.3.0"
+
+internet-available@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/internet-available/-/internet-available-1.0.0.tgz#6b83ed3ef7a053fd24c6dd3dcd153e8557e197c2"
+  integrity sha1-a4PtPvegU/0kxt09zRU+hVfhl8I=
+  dependencies:
+    dns-socket "^1.6.1"
 
 interpret@^1.0.0:
   version "1.0.4"
@@ -16113,6 +16140,11 @@ tar@^4.0.1:
     minizlib "^1.0.4"
     mkdirp "^0.5.0"
     yallist "^3.0.2"
+
+tcp-ping@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/tcp-ping/-/tcp-ping-0.1.1.tgz#02dd7f42b5bf7d7cb78d5b7aacefa155fd8f7c0c"
+  integrity sha1-At1/QrW/fXy3jVt6rO+hVf2PfAw=
 
 temp-dir@^1.0.0:
   version "1.0.0"

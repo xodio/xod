@@ -20,6 +20,9 @@ import {
   MARK_DEBUG_SESSION_OUTDATED,
   SELECT_DEBUGGER_TAB,
   LINE_SENT_TO_SERIAL,
+  TETHERING_INET_CREATED,
+  TETHERING_INET_CHUNKS_ADDED,
+  TETHERING_INET_CHUNK_SENT,
 } from './actionTypes';
 
 import * as EAT from '../editor/actionTypes';
@@ -36,7 +39,7 @@ import {
   createOutgoingLogMessage,
 } from './utils';
 
-import initialState from './state';
+import { default as initialState, DEFAULT_TETHERING_INET_STATE } from './state';
 
 const MAX_LOG_CHARACTERS = 10000;
 
@@ -501,10 +504,33 @@ export default (state = initialState, action) => {
         R.assoc('watchNodeValues', {}),
         R.assoc('nodeIdsMap', {}),
         R.assoc('globals', {}),
-        R.assoc('activeSession', SESSION_TYPE.NONE)
+        R.assoc('activeSession', SESSION_TYPE.NONE),
+        R.assoc('tetheringInet', DEFAULT_TETHERING_INET_STATE)
       )(state);
     case MARK_DEBUG_SESSION_OUTDATED:
       return R.assoc('isOutdated', true, state);
+    case TETHERING_INET_CREATED:
+      return R.over(
+        R.lensProp('tetheringInet'),
+        R.compose(
+          R.assoc('nodeId', action.payload.nodeId),
+          R.assoc('sender', action.payload.sender),
+          R.assoc('transmitter', action.payload.transmitter)
+        ),
+        state
+      );
+    case TETHERING_INET_CHUNKS_ADDED:
+      return R.over(
+        R.lensPath(['tetheringInet', 'chunksToSend']),
+        R.concat(R.__, action.payload),
+        state
+      );
+    case TETHERING_INET_CHUNK_SENT:
+      return R.over(
+        R.lensPath(['tetheringInet', 'chunksToSend']),
+        R.tail,
+        state
+      );
 
     case EAT.TABTEST_RUN_REQUESTED:
       return R.compose(
@@ -588,6 +614,7 @@ export default (state = initialState, action) => {
         R.assoc('pinsAffectedByErrorRaisers', {}),
         R.assoc('globals', {}),
         R.assoc('isPreparingSimulation', false),
+        R.assoc('tetheringInet', DEFAULT_TETHERING_INET_STATE),
         hideProgressBar
       )(state);
     case EAT.SIMULATION_ERROR:
@@ -598,6 +625,7 @@ export default (state = initialState, action) => {
         R.assoc('activeSession', SESSION_TYPE.NONE),
         R.assoc('isPreparingSimulation', false),
         R.assoc('globals', {}),
+        R.assoc('tetheringInet', DEFAULT_TETHERING_INET_STATE),
         hideProgressBar,
         showDebuggerPane
       )(state);

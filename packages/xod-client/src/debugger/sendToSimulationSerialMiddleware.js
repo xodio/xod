@@ -12,6 +12,7 @@ import {
 } from './selectors';
 import * as editorSelectors from '../editor/selectors';
 
+import { LINE_SENT_TO_SERIAL } from './actionTypes';
 import { NODE_PROPERTY_UPDATED } from '../project/actionTypes';
 import {
   TWEAK_PULSE_SENT,
@@ -26,6 +27,7 @@ export default ({ getState }) => next => action => {
     action.type === NODE_PROPERTY_UPDATED ||
     action.type === TWEAK_PULSE_SENT ||
     action.type === NODE_PROPERTY_UPDATING;
+
   if (isTweakActionType && isSimulationRunning(state)) {
     const { id: nodeId, value = '', patchPath } = action.payload;
     const nodeType = R.compose(
@@ -57,6 +59,11 @@ export default ({ getState }) => next => action => {
       const worker = editorSelectors.simulationWorker(state);
       worker.sendToWasm(msg);
     }
+  }
+
+  if (action.type === LINE_SENT_TO_SERIAL && isSimulationRunning(state)) {
+    const worker = editorSelectors.simulationWorker(state);
+    worker.sendToWasm(action.payload);
   }
 
   return result;

@@ -30,6 +30,8 @@ import {
   getPinsAffectedByErrorRaisers,
   listGlobals,
   extendTProjectWithGlobals,
+  hasTetheringInternetNode,
+  getTetheringInetNodeId,
   LIVENESS,
 } from 'xod-arduino';
 
@@ -50,12 +52,15 @@ import {
 } from '../../editor/messages';
 import { USERNAME_NEEDED_FOR_LITERAL } from '../../user/messages';
 import { PROJECT_NAME_NEEDED_FOR_LITERAL } from '../../project/messages';
+import { DO_NOT_USE_TETHERING_INTERNET_IN_BROWSER } from '../../debugger/messages';
 
 import formatErrorMessage from '../formatErrorMessage';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.isBrowser = false; // by default
 
     this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(
       this
@@ -115,6 +120,12 @@ export default class App extends React.Component {
 
     let sessionGlobals = []; // TODO: Refactor
     eitherToPromise(eitherTProject)
+      .then(
+        tProject =>
+          this.isBrowser && hasTetheringInternetNode(tProject)
+            ? Promise.reject(DO_NOT_USE_TETHERING_INTERNET_IN_BROWSER)
+            : tProject
+      )
       .then(tProject => {
         const globalsInProject = listGlobals(tProject);
         return this.getGlobals(globalsInProject).then(globals => {
@@ -130,6 +141,7 @@ export default class App extends React.Component {
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
           nodePinKeysMap: getNodePinKeysMap,
+          tetheringInetNodeId: getTetheringInetNodeId,
           pinsAffectedByErrorRaisers: tProj =>
             R.compose(
               foldMaybe(
@@ -141,7 +153,13 @@ export default class App extends React.Component {
         })
       )
       .then(
-        ({ code, nodeIdsMap, nodePinKeysMap, pinsAffectedByErrorRaisers }) =>
+        ({
+          code,
+          nodeIdsMap,
+          nodePinKeysMap,
+          pinsAffectedByErrorRaisers,
+          tetheringInetNodeId,
+        }) =>
           this.props.actions.runSimulation(
             explodeMaybe(
               'currentPatchPath already folded in `transformProjectForTranspiler`',
@@ -151,7 +169,8 @@ export default class App extends React.Component {
             nodePinKeysMap,
             code,
             pinsAffectedByErrorRaisers,
-            sessionGlobals
+            sessionGlobals,
+            tetheringInetNodeId
           )
       )
       .catch(

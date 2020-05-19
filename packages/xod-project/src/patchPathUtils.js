@@ -319,3 +319,6 @@ export const getStringTweakLength = R.pipe(
   R.nth(1),
   n => parseInt(n, 10)
 );
+
+// :: PatchPath -> Boolean
+export const isTetheringInetPatchPath = R.equals(CONST.TETHERING_INET_PATH);

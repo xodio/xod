@@ -1,0 +1,175 @@
+{
+  "links": [
+    {
+      "id": "BJ9plCkUL",
+      "input": {
+        "nodeId": "BJZUal0kII",
+        "pinKey": "rklUo8jA-Q"
+      },
+      "output": {
+        "nodeId": "rJtneCyIU",
+        "pinKey": "S1sqHqebm7"
+      }
+    },
+    {
+      "id": "BJM8alAy8U",
+      "input": {
+        "nodeId": "rJ8TlRyU8",
+        "pinKey": "HJi_30PZX"
+      },
+      "output": {
+        "nodeId": "BJZUal0kII",
+        "pinKey": "SkSGwoAZQ"
+      }
+    },
+    {
+      "id": "By78TeRy8L",
+      "input": {
+        "nodeId": "rJ8TlRyU8",
+        "pinKey": "r1NYhRDZ7"
+      },
+      "output": {
+        "nodeId": "BJZUal0kII",
+        "pinKey": "SkYZwiRbm"
+      }
+    },
+    {
+      "id": "HJVITx0kL8",
+      "input": {
+        "nodeId": "S1g8ae0y8I",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "rJ8TlRyU8",
+        "pinKey": "S1s7pCDbQ"
+      }
+    },
+    {
+      "id": "SJLSnnRYU",
+      "input": {
+        "nodeId": "rJ8TlRyU8",
+        "pinKey": "HyvKhAv-7"
+      },
+      "output": {
+        "nodeId": "Bkm7hhRK8",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "SJkpgCyI8",
+      "input": {
+        "nodeId": "rJtneCyIU",
+        "pinKey": "S1SP9lW7X"
+      },
+      "output": {
+        "nodeId": "rJ62xR1I8",
+        "pinKey": "SyveJHHBL"
+      }
+    },
+    {
+      "id": "SkEmhn0YI",
+      "input": {
+        "nodeId": "rJtneCyIU",
+        "pinKey": "H1e9S9e-mQ"
+      },
+      "output": {
+        "nodeId": "Bkm7hhRK8",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "SkFalRk8L",
+      "input": {
+        "nodeId": "BJZUal0kII",
+        "pinKey": "B18iIoA-m"
+      },
+      "output": {
+        "nodeId": "rJtneCyIU",
+        "pinKey": "H15S9xWQX"
+      }
+    },
+    {
+      "id": "rJsalR1UU",
+      "input": {
+        "nodeId": "BJZUal0kII",
+        "pinKey": "BJhHwoRb7"
+      },
+      "output": {
+        "nodeId": "rJtneCyIU",
+        "pinKey": "SJGl9r9l-m7"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "rkZ8oIj0-m": "\"{\"iso\":\"\""
+      },
+      "id": "BJZUal0kII",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/stream/pass-from-sequence"
+    },
+    {
+      "id": "Bkm7hhRK8",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "@/tweak-pulse"
+    },
+    {
+      "id": "S1g8ae0y8I",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "@/watch"
+    },
+    {
+      "id": "rJ62xR1I8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": -0.25
+      },
+      "type": "@/tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "HkAv2Av-X": "24"
+      },
+      "id": "rJ8TlRyU8",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 3
+      },
+      "type": "xod/stream/accumulate-string"
+    },
+    {
+      "boundLiterals": {
+        "H1e9S9e-mQ": "On Boot",
+        "HJzqrceZQm": "\"/httpbin/now\"",
+        "S1geqrqgWmX": "\"api.xod.io\""
+      },
+      "id": "rJtneCyIU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/net/http-request"
+    }
+  ]
+}

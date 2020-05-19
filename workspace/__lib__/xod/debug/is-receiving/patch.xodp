@@ -1,0 +1,92 @@
+{
+  "description": "Waits for the incoming data packages with the defined timeout in seconds.\n\nPossible error:\n- Do not receive any incoming data within the defined timeout",
+  "nodes": [
+    {
+      "description": "A tethering internet",
+      "id": "B1E6kwQ6H8",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-tethering-inet"
+    },
+    {
+      "description": "Pulses when Socket have available bytes",
+      "id": "B1x6kPXpBU",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Begin waiting of the incoming package data",
+      "id": "BJQp1DX6B8",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "H1n-0v0SU",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "Hkf6JvXaBU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "30"
+      },
+      "description": "How long to wait the next data package in seconds.",
+      "id": "HkmKJrprU",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "rJ-ayvQ6BI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when all the data was readen",
+      "id": "ry6kwX6rL",
+      "label": "END",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    }
+  ]
+}

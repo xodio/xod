@@ -1,4 +1,7 @@
+import { maybeProp } from 'xod-func-tools';
+
 import * as AT from './actionTypes';
+import { tetheringInetChunksToSend } from './selectors';
 
 export const toggleDebugger = () => ({
   type: AT.TOGGLE_DEBUGGER_PANEL,
@@ -36,7 +39,8 @@ export const startDebuggerSession = (
   nodePinKeysMap,
   pinsAffectedByErrorRaisers,
   currentPatchPath,
-  globals
+  globals,
+  tetheringInetNodeId
 ) => ({
   type: AT.DEBUG_SESSION_STARTED,
   payload: {
@@ -46,6 +50,7 @@ export const startDebuggerSession = (
     pinsAffectedByErrorRaisers,
     patchPath: currentPatchPath,
     globals,
+    tetheringInetNodeId,
   },
 });
 
@@ -79,3 +84,25 @@ export const sendToSerial = line => ({
   type: AT.LINE_SENT_TO_SERIAL,
   payload: line,
 });
+
+export const tetheringInetCreated = (nodeId, sender, transmitter) => ({
+  type: AT.TETHERING_INET_CREATED,
+  payload: {
+    nodeId,
+    sender,
+    transmitter,
+  },
+});
+
+export const tetheringInetChunksAdded = chunk => ({
+  type: AT.TETHERING_INET_CHUNKS_ADDED,
+  payload: chunk,
+});
+
+export const tetheringInetChunkSent = () => (dispatch, getState) => {
+  const chunksToSend = tetheringInetChunksToSend(getState());
+  dispatch({
+    type: AT.TETHERING_INET_CHUNK_SENT,
+  });
+  return maybeProp(0, chunksToSend);
+};
