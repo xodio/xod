@@ -29,6 +29,6 @@ struct State {
 
 void evaluate(Context ctx) {
     auto state = getState(ctx);
-    state->myBitmap = new Bitmap(icon, 2, 16, 16, 0x0000);
+    state->myBitmap = new (state->mem) Bitmap(icon, 2, 16, 16, 0x0000);
     emitValue<output_BMP>(ctx, state->myBitmap);
 }
