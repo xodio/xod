@@ -8,6 +8,7 @@ import popupsReducer from './popups/reducer';
 import uploadReducer from './upload/reducer';
 
 import stopDebuggerOnTabCloseMiddleware from './debugger/stopDebuggerOnTabCloseMiddleware';
+import tetheringInetMiddleware from './debugger/tetheringInetMiddleware';
 import sendToSerialMiddleware from './debugger/sendToSerialMiddleware';
 import autoupdateMiddleware from './view/autoupdateMiddleware';
 import installLibMiddleware from './view/installLibMiddleware';
@@ -24,6 +25,7 @@ const extraMiddlewares = [
   installLibMiddleware,
   autoupdateMiddleware,
   arduinoDependenciesMiddleware,
+  tetheringInetMiddleware,
 ];
 
 ReactDOM.render(

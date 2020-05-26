@@ -820,13 +820,13 @@ export const runSimulation = (
   nodePinKeysMap,
   code,
   pinsAffectedByErrorRaisers,
-  globals
+  globals,
+  tetheringInetNodeId
 ) => (dispatch, getState) => {
   dispatch({ type: ActionType.SIMULATION_GENERATED_CPP });
-
+  const state = getState();
   const ABORT_ERROR_TYPE = 'ABORT_BY_USER';
-  const shouldContinue = () =>
-    DebuggerSelectors.isPreparingSimulation(getState());
+  const shouldContinue = () => DebuggerSelectors.isPreparingSimulation(state);
   const abortOrPass = fn => x => {
     if (!shouldContinue()) {
       return Promise.reject(createError(ABORT_ERROR_TYPE, {}));
@@ -834,7 +834,7 @@ export const runSimulation = (
     return fn(x);
   };
 
-  const accessToken = foldMaybe(null, R.identity, getAccessToken(getState()));
+  const accessToken = foldMaybe(null, R.identity, getAccessToken(state));
 
   XCC.compileSimulation(HOSTNAME, accessToken, code)
     .then(
@@ -854,6 +854,7 @@ export const runSimulation = (
               pinsAffectedByErrorRaisers,
               patchPath: simulationPatchPath,
               globals,
+              tetheringInetNodeId,
             },
           });
 

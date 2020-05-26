@@ -1,0 +1,78 @@
+{
+  "description": "Read a single byte of the response from an opened connection\n\nPossible errors:\n— Can't receive a data from the socket\n— No available bytes to read",
+  "nodes": [
+    {
+      "description": "A tethering internet",
+      "id": "BJ5nbeFSL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-tethering-inet"
+    },
+    {
+      "id": "By4TZeKSI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "H1gvzRvAB8",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Pulses when the byte is read",
+      "id": "Hyxk3ZgtrL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Read the byte",
+      "id": "SJ-JhZgtr8",
+      "label": "READ",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "r1doblFBI",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    },
+    {
+      "description": "The last read byte",
+      "id": "ryJ3bgKSL",
+      "label": "CHAR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}

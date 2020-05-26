@@ -1929,3 +1929,11 @@ export const samePatchValidity = def(
   'samePatchValidity :: Patch -> Patch -> Boolean',
   R.allPass([sameNodesList, sameLinksList, sameNodeTypes, sameNodeBoundValues])
 );
+
+/**
+ * Finds a node by predicate in the patch.
+ */
+export const findNodeBy = def(
+  'findNodeBy :: (Node -> Boolean) -> Patch -> Maybe Node',
+  (predicate, patch) => R.compose(Maybe, R.find(predicate), listNodes)(patch)
+);

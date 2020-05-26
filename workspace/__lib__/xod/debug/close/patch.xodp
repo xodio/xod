@@ -1,0 +1,70 @@
+{
+  "description": "Closes connection",
+  "nodes": [
+    {
+      "description": "Pulses when the connection is closed",
+      "id": "B1eXvb_0BL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Never"
+      },
+      "description": "Close the connection",
+      "id": "By-QPWu0SU",
+      "label": "CLS",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "Hk7P-_0SU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A socket",
+      "id": "SJNmmuCSL",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
+    },
+    {
+      "id": "SyGQPWOAB8",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "An internet connection",
+      "id": "rkX7PWORrU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    }
+  ]
+}

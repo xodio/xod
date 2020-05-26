@@ -76,6 +76,7 @@ export const createErrorMessage = err => ({
   message: err.message,
   stack: err.stack,
 });
+
 //------------------------------------------------------------------------------
 //
 // Message parser

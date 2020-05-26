@@ -6635,14 +6635,20 @@ xod__core__defer__number::Node node_204 = {
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
-void handleTweaks() {
-    if (XOD_DEBUG_SERIAL.available() > 0 && XOD_DEBUG_SERIAL.find("+XOD:", 5)) {
+void handleDebugProtocolMessages() {
+    bool rewindToEol = true;
+
+    if (
+      XOD_DEBUG_SERIAL.available() > 0 &&
+      XOD_DEBUG_SERIAL.find("+XOD:", 5)
+    ) {
         int tweakedNodeId = XOD_DEBUG_SERIAL.parseInt();
 
         switch (tweakedNodeId) {
         }
 
-        XOD_DEBUG_SERIAL.find('\n');
+        if (rewindToEol)
+            XOD_DEBUG_SERIAL.find('\n');
     }
 }
 } // namespace detail
@@ -6827,7 +6833,7 @@ void runTransaction() {
     XOD_TRACE_LN(g_transactionTime);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
-    detail::handleTweaks();
+    detail::handleDebugProtocolMessages();
 #endif
 
     // Check for timeouts

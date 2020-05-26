@@ -1,0 +1,59 @@
+{
+  "description": "Checks that tethering internet initialized and answers for AT commands",
+  "nodes": [
+    {
+      "id": "B1xhXPIHU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when answer received",
+      "id": "H10rNPLH8",
+      "label": "OK",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Perform the check",
+      "id": "HyciQvUSU",
+      "label": "KICK",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "HylC-CP0SI",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "rJac7vUHI",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    }
+  ]
+}

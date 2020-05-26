@@ -1,0 +1,259 @@
+{
+  "description": "Read a response from an opened connection as a stream of bytes until it closes\n\nPossible errors:\n— Can't receive a data from the socket\n— No available bytes to read",
+  "links": [
+    {
+      "id": "B1uMD76H8",
+      "input": {
+        "nodeId": "B18qzX6B8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SJixD7arI",
+        "pinKey": "ry6kwX6rL"
+      }
+    },
+    {
+      "id": "BJEfDQprU",
+      "input": {
+        "nodeId": "SJixD7arI",
+        "pinKey": "BJQp1DX6B8"
+      },
+      "output": {
+        "nodeId": "Bkgm8QTHL",
+        "pinKey": "HJhXDIY9-"
+      }
+    },
+    {
+      "id": "ByfQUQ6S8",
+      "input": {
+        "nodeId": "Bkgm8QTHL",
+        "pinKey": "BJI7P8t9Z"
+      },
+      "output": {
+        "nodeId": "Hk-fXNKSL",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HJAxwQpr8",
+      "input": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "r1doblFBI"
+      },
+      "output": {
+        "nodeId": "SJixD7arI",
+        "pinKey": "B1E6kwQ6H8"
+      }
+    },
+    {
+      "id": "HJ_7Q4FHU",
+      "input": {
+        "nodeId": "B1HaWEtH8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "BJ5nbeFSL"
+      }
+    },
+    {
+      "id": "HyPmUXTHL",
+      "input": {
+        "nodeId": "Hk-fXNKSL",
+        "pinKey": "ByU7LRuSPkW"
+      },
+      "output": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "Hyxk3ZgtrL"
+      }
+    },
+    {
+      "id": "SyaeD76B8",
+      "input": {
+        "nodeId": "SJixD7arI",
+        "pinKey": "Hkf6JvXaBU"
+      },
+      "output": {
+        "nodeId": "HyXBaZ4KBL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Symm7EKSU",
+      "input": {
+        "nodeId": "Bkj6bEKHI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "Hyxk3ZgtrL"
+      }
+    },
+    {
+      "id": "rkUXXVKHL",
+      "input": {
+        "nodeId": "SJ4S6-VtSI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "ryJ3bgKSL"
+      }
+    },
+    {
+      "id": "rkvqf7Tr8",
+      "input": {
+        "nodeId": "BkbBTWVYHI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B18qzX6B8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry7fm4tSI",
+      "input": {
+        "nodeId": "Hk-fXNKSL",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "HJMHTZNYB8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryrzPmaHU",
+      "input": {
+        "nodeId": "r1nRMEFBL",
+        "pinKey": "SJ-JhZgtr8"
+      },
+      "output": {
+        "nodeId": "SJixD7arI",
+        "pinKey": "B1x6kPXpBU"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B18qzX6B8",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "B1HaWEtH8",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "@/output-tethering-inet"
+    },
+    {
+      "description": "Pulses when reading done",
+      "id": "BkbBTWVYHI",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Bkgm8QTHL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/core/defer"
+    },
+    {
+      "description": "Pulses when the new byte is read",
+      "id": "Bkj6bEKHI",
+      "label": "PUSH",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "Bkl4M0wRSI",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "description": "Begin reading",
+      "id": "HJMHTZNYB8",
+      "label": "READ",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "Hk-fXNKSL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/any"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "HyXBaZ4KBL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    },
+    {
+      "description": "The last read byte",
+      "id": "SJ4S6-VtSI",
+      "label": "CHAR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "SJixD7arI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "@/is-receiving"
+    },
+    {
+      "id": "r1nRMEFBL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "@/receive-byte"
+    }
+  ]
+}

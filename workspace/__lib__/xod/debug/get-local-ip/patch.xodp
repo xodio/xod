@@ -1,0 +1,70 @@
+{
+  "description": "Requests local IP from Tethering Internet, that connected to some network.\n\nPossible errors:\n— Can't get local IP address",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "Never"
+      },
+      "description": "Send request for local IP address",
+      "id": "B1ZYjLdCrU",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BJzYoL_ArL",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "ByFsId0HL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A local IP address",
+      "id": "HkXZvORHU",
+      "label": "IP",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/net/output-ip-address"
+    },
+    {
+      "description": "Pulses when IP address received",
+      "id": "S1xFi8u0BU",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "rJQYj8dRrU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "description": "Open a TCP connection to the specified server.\n\nPossible errors:\n— Can't open TCP connection",
+  "nodes": [
+    {
+      "id": "Bkw_kSrSL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The socket connected",
+      "id": "H1R1Q_Rr8",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/net/output-socket"
+    },
+    {
+      "description": "Open the connection",
+      "id": "HyWtFyHBSL",
+      "label": "CONN",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "80"
+      },
+      "description": "A destination server port number",
+      "id": "HyetYJSrHU",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Server name or IP address",
+      "id": "S1GFKJBSBL",
+      "label": "HOST",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "SJ7VWxYSI",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-tethering-inet"
+    },
+    {
+      "description": "Pulses when the TCP connection is successfully open",
+      "id": "SJttyrSBU",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A tethering internet",
+      "id": "Sy6DyHSS8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-tethering-inet"
+    },
+    {
+      "id": "r1-MADRHU",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}
