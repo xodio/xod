@@ -1,7 +1,7 @@
 {
   "comments": [
     {
-      "content": "## 👆 Ways to add node\n\nAlternatively to double-clicking you can also press the “I” key or hit Edit → Add Node.\n\nIf you don’t remember the name of a node, try to find it in Project Browser. Once you spot it there, drag’n’drop the item to the patch board or hit Place in its context menu.",
+      "content": "## 👆 Ways to add node\n\nAlternatively to double-clicking you can also press the “I” key or hit Edit → Insert Node.\n\nIf you don’t remember the name of a node, try to find it in Project Browser. Once you spot it there, drag’n’drop the item to the patch board or hit Place in its context menu.",
       "id": "BJJH5p-cV",
       "position": {
         "units": "slots",
