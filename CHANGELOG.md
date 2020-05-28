@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Introduce [tethering internet](https://xod.io/docs/guide/tethering-inet) to provide internet to device/simulation via PC (#1979, #1985)
+
+### Bug fixes
+
+* [ide] Fix positioning of the ColorPicker widget when Inspector is docked to right (#1971)
+* [ide] Fix scrolling of Project Browser and Inspector when they are the only section in a sidebar (#1972)
+* [ide] Fix typos in the built-in tutorial. Thanks, @bartek-w! (#1990, #1991)
+
+### New nodes
+
+* [xod/graphics](https://xod.io/libs/xod/graphics) — a library to create graphics and graphic interfaces. Check out https://xod.io/docs/guide/#xod-graphics for details (#1988)
+* [xod-dev/st7735-display](https://xod.io/libs/xod-dev/st7735-display) — support of ST7735 based TFT displays (#1988)
+* [xod-dev/ssd1306-display](https://xod.io/libs/xod-dev/ssd1306-display) — support of SSD1306 based monochrome I2C displays (#1988)
+
 <a name="0.33.0"></a>
 
 ## 0.33.0 (2010-02-18)
