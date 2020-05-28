@@ -5,5 +5,5 @@
   "description": "Nodes to control RC hobby servos",
   "license": "AGPL-3.0",
   "name": "servo",
-  "version": "0.33.0"
+  "version": "0.34.0"
 }

@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## Not yet released
+<a name="0.34.0"></a>
+
+## 0.34.0 (2020-05-28)
 
 ### Features and enhancements
 
@@ -22,7 +24,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 <a name="0.33.0"></a>
 
-## 0.33.0 (2010-02-18)
+## 0.33.0 (2020-02-18)
 
 ### Features and enhancements
 

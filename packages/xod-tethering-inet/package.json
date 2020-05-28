@@ -1,6 +1,6 @@
 {
   "name": "xod-tethering-inet",
-  "version": "0.1.0",
+  "version": "0.34.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build:re": "bsb -make-world",
@@ -17,7 +17,7 @@
   "main": "src/AtInternet.bs.js",
   "dependencies": {
     "address": "^1.1.2",
-    "belt-holes": "^0.29.0",
+    "belt-holes": "^0.34.0",
     "internet-available": "^1.0.0",
     "tcp-ping": "^0.1.1"
   },
