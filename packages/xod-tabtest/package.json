@@ -1,6 +1,6 @@
 {
   "name": "xod-tabtest",
-  "version": "0.33.0",
+  "version": "0.34.0",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build:lib": "node ./tools/loadTabtestLibPatches.js",
@@ -17,16 +17,16 @@
   "license": "AGPL-3.0",
   "main": "src/Tabtest_Js.bs.js",
   "dependencies": {
-    "belt-holes": "^0.29.0",
-    "xod-arduino": "^0.33.0",
-    "xod-func-tools": "^0.32.0",
-    "xod-project": "^0.33.0"
+    "belt-holes": "^0.34.0",
+    "xod-arduino": "^0.34.0",
+    "xod-func-tools": "^0.34.0",
+    "xod-project": "^0.34.0"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.9",
     "bs-platform": "7.1.1",
     "ramda": "^0.24.1",
-    "xod-fs": "^0.33.0"
+    "xod-fs": "^0.34.0"
   },
   "jest": {
     "testMatch": [
