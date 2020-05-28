@@ -1,0 +1,89 @@
+{
+  "description": "Represents a line with a custom style.",
+  "nodes": [
+    {
+      "id": "S14b4Iwh-8",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "description": "Y coordinate of the end point of the line on the canvas.",
+      "id": "S1j0CIxf8",
+      "label": "Y1",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkG-VIwhZU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SkXbELD3bI",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "description": "X coordinate of the end point of the line on the canvas.",
+      "id": "SyGoRAUlz8",
+      "label": "X1",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "X coordinate of the start point of the line on the canvas.",
+      "id": "r1ejR0UeMU",
+      "label": "X0",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Stroke color.",
+      "id": "r1qVIP3b8",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "description": "Y coordinate of the start point of the line on the canvas.",
+      "id": "rkbi0RIgGU",
+      "label": "Y0",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

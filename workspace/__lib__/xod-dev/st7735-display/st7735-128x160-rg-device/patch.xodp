@@ -1,0 +1,127 @@
+{
+  "description": "Device node for an ST7735 based TFT LCD 128x160 display of the \"RG\" type connected through a hardware SPI interface. ",
+  "links": [
+    {
+      "id": "BJuJYrx7U",
+      "input": {
+        "nodeId": "BJ-aZ1Gg7I",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "H1VJtHlQI",
+        "pinKey": "H1mTs_Sg78"
+      }
+    },
+    {
+      "id": "H1k5yvW78",
+      "input": {
+        "nodeId": "BygnH7lm8",
+        "pinKey": "r1e5QB7xQI"
+      },
+      "output": {
+        "nodeId": "HJx6KyD-Q8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyeZc1wb78",
+      "input": {
+        "nodeId": "BygnH7lm8",
+        "pinKey": "H1W97S7eXI"
+      },
+      "output": {
+        "nodeId": "HypK1v-Q8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJZc1wW7L",
+      "input": {
+        "nodeId": "BygnH7lm8",
+        "pinKey": "rkqmS7eQU"
+      },
+      "output": {
+        "nodeId": "S1Z6FyvWQ8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkr1YHg7U",
+      "input": {
+        "nodeId": "H1VJtHlQI",
+        "pinKey": "BkZToOHlQ8"
+      },
+      "output": {
+        "nodeId": "BygnH7lm8",
+        "pinKey": "HyRfu09iS"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "The display device.",
+      "id": "BJ-aZ1Gg7I",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "@/output-st7735-device"
+    },
+    {
+      "id": "BygnH7lm8",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/st7735-device"
+    },
+    {
+      "id": "H1VJtHlQI",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "@/init-rg"
+    },
+    {
+      "description": "The \"chip select\" board port of the SPI interface the display is connected to.",
+      "id": "HJx6KyD-Q8",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "D255"
+      },
+      "description": "The \"reset input\" board port the display is connected to.  It can be named RESET, RES. If the display does not have a reset port leave the D255 default value at the RST pin.",
+      "id": "HypK1v-Q8",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
+      "id": "S1Z6FyvWQ8",
+      "label": "DC",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    }
+  ]
+}

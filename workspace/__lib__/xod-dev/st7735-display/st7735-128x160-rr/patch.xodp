@@ -1,0 +1,205 @@
+{
+  "description": "A quick-start node drives an ST7735 based TFT LCD 128x160 display of the \"RR\" type connected through a hardware SPI interface. ",
+  "links": [
+    {
+      "id": "B1n0SkvWX8",
+      "input": {
+        "nodeId": "H1EAS1P-QL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryX0rJwZ7I",
+        "pinKey": "Sy5I-fD-8"
+      }
+    },
+    {
+      "id": "BJjCS1DbQI",
+      "input": {
+        "nodeId": "r1xCH1P-Q8",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "SyCSyPbQI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByjIyw-mU",
+      "input": {
+        "nodeId": "ryX0rJwZ7I",
+        "pinKey": "B1A5A05iS"
+      },
+      "output": {
+        "nodeId": "By8UywZmU",
+        "pinKey": "SkWA71GgmL"
+      }
+    },
+    {
+      "id": "BypcywWQI",
+      "input": {
+        "nodeId": "By8UywZmU",
+        "pinKey": "B1ZBc1DZXL"
+      },
+      "output": {
+        "nodeId": "SJvArkv-7U",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJcRr1wbQU",
+      "input": {
+        "nodeId": "ryX0rJwZ7I",
+        "pinKey": "B1-SZGw-I"
+      },
+      "output": {
+        "nodeId": "r1xCH1P-Q8",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "Hkh5JDbQL",
+      "input": {
+        "nodeId": "By8UywZmU",
+        "pinKey": "BklBcJvW7U"
+      },
+      "output": {
+        "nodeId": "H1ICBkvbX8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJxackDZ7I",
+      "input": {
+        "nodeId": "By8UywZmU",
+        "pinKey": "r1Hckwb7L"
+      },
+      "output": {
+        "nodeId": "H1SCSywWXL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryRCS1DWQ8",
+      "input": {
+        "nodeId": "r1xCH1P-Q8",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "B1GAByvW78",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryTCHkvZXI",
+      "input": {
+        "nodeId": "ryX0rJwZ7I",
+        "pinKey": "rJRQX8QbU"
+      },
+      "output": {
+        "nodeId": "SyCSyPbQI",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Makes the display react to incoming changes of a tree of graphic elements while `ACT` is true",
+      "id": "B1GAByvW78",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "By8UywZmU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/st7735-128x160-rr-device"
+    },
+    {
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "H1EAS1P-QL",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The \"chip select\" board port of the SPI interface the display is connected to.",
+      "id": "H1ICBkvbX8",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "D255"
+      },
+      "description": "The \"reset input\" board port the display is connected to.  It can be named RESET, RES. If the display does not have a reset port leave the D255 default value at the RST pin.",
+      "id": "H1SCSywWXL",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
+      "id": "SJvArkv-7U",
+      "label": "DC",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "A tree of graphic elements created using the xod/graphics library.",
+      "id": "SyCSyPbQI",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/graphics/input-graphics"
+    },
+    {
+      "id": "r1xCH1P-Q8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "ryX0rJwZ7I",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "@/render"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "description": "Emits a pulse every time input value changes.",
+  "nodes": [
+    {
+      "id": "HJEC2meXI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SJxEC27e7U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "Sk9A2mlmU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/graphics/input-graphics"
+    }
+  ]
+}

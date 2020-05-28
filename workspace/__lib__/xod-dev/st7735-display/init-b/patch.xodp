@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "description": "The display device.",
+      "id": "B1ETvPHgmL",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-st7735-device"
+    },
+    {
+      "description": "The display device.",
+      "id": "BygpwPSeQU",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-st7735-device"
+    },
+    {
+      "id": "rJb6DDHlm8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "ryzUvrlQI",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

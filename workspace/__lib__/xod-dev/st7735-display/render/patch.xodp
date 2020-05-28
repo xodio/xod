@@ -1,0 +1,69 @@
+{
+  "description": "Renders a tree of graphic elements and display them on the device.",
+  "nodes": [
+    {
+      "description": "Triggers a new rendering process.",
+      "id": "B1-SZGw-I",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "The display device.",
+      "id": "B1A5A05iS",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-st7735-device"
+    },
+    {
+      "id": "Hy7rcR09oH",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Pulses when the rendering process is done.",
+      "id": "Sy5I-fD-8",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A tree of graphic elements created using the xod/graphics library.",
+      "id": "rJRQX8QbU",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/graphics/input-graphics"
+    },
+    {
+      "description": "The display device.",
+      "id": "rkq5A0qsS",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-st7735-device"
+    }
+  ]
+}

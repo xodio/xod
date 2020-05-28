@@ -1,0 +1,205 @@
+{
+  "description": "A quick-start node drives an ST7735 based TFT LCD 128x160 display of the \"RG\" type connected through a hardware SPI interface. ",
+  "links": [
+    {
+      "id": "B11gj4JwZXL",
+      "input": {
+        "nodeId": "SJgsEkwWmL",
+        "pinKey": "H13R3IvGB"
+      },
+      "output": {
+        "nodeId": "SJQsN1wb7U",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1sjVyw-mI",
+      "input": {
+        "nodeId": "SyVjNyPbQL",
+        "pinKey": "B1-SZGw-I"
+      },
+      "output": {
+        "nodeId": "SJgsEkwWmL",
+        "pinKey": "H1fx68wzB"
+      }
+    },
+    {
+      "id": "By_HywZX8",
+      "input": {
+        "nodeId": "SyVjNyPbQL",
+        "pinKey": "B1A5A05iS"
+      },
+      "output": {
+        "nodeId": "rJ7HkvbQ8",
+        "pinKey": "BJ-aZ1Gg7I"
+      }
+    },
+    {
+      "id": "HyCoNywZmL",
+      "input": {
+        "nodeId": "SyVjNyPbQL",
+        "pinKey": "rJRQX8QbU"
+      },
+      "output": {
+        "nodeId": "r1jV1PW7I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkBbTKDUI",
+      "input": {
+        "nodeId": "BkG-TFD8I",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyVjNyPbQL",
+        "pinKey": "Sy5I-fD-8"
+      }
+    },
+    {
+      "id": "SkwsJwZmU",
+      "input": {
+        "nodeId": "rJ7HkvbQ8",
+        "pinKey": "HypK1v-Q8"
+      },
+      "output": {
+        "nodeId": "By8oNkwWQL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1UsyPWQ8",
+      "input": {
+        "nodeId": "rJ7HkvbQ8",
+        "pinKey": "HJx6KyD-Q8"
+      },
+      "output": {
+        "nodeId": "HkviEJvb7I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkeUjJvZQU",
+      "input": {
+        "nodeId": "rJ7HkvbQ8",
+        "pinKey": "S1Z6FyvWQ8"
+      },
+      "output": {
+        "nodeId": "ByOsN1D-7L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rknoE1vZXI",
+      "input": {
+        "nodeId": "SJgsEkwWmL",
+        "pinKey": "BytC28DfH"
+      },
+      "output": {
+        "nodeId": "r1jV1PW7I",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "Pulses to acknowledge changes in the tree of graphic elements.",
+      "id": "BkG-TFD8I",
+      "label": "ACK",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "D255"
+      },
+      "description": "The \"reset input\" board port the display is connected to.  It can be named RESET, RES. If the display does not have a reset port leave the D255 default value at the RST pin.",
+      "id": "By8oNkwWQL",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
+      "id": "ByOsN1D-7L",
+      "label": "DC",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The \"chip select\" board port of the SPI interface the display is connected to.",
+      "id": "HkviEJvb7I",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Makes the display react to incoming changes of a tree of graphic elements while `ACT` is true",
+      "id": "SJQsN1wb7U",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "SJgsEkwWmL",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/core/act"
+    },
+    {
+      "id": "SyVjNyPbQL",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "@/render"
+    },
+    {
+      "description": "A tree of graphic elements created using the xod/graphics library.",
+      "id": "r1jV1PW7I",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/graphics/input-graphics"
+    },
+    {
+      "id": "rJ7HkvbQ8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/st7735-128x160-rg-device"
+    }
+  ]
+}

@@ -85,13 +85,21 @@ typedef unsigned long TimeMs;
 typedef uint8_t ErrorFlags;
 
 struct Pulse {
-  Pulse() {}
-  Pulse(bool) {}
-  Pulse(int) {}
+    Pulse() {}
+    Pulse(bool) {}
+    Pulse(int) {}
 };
 
 struct XColor {
-  uint8_t r, g, b;
+    constexpr XColor()
+        : r(0)
+        , g(0)
+        , b(0) {}
+    constexpr XColor(uint8_t cr, uint8_t cg, uint8_t cb)
+        : r(cr)
+        , g(cg)
+        , b(cb) {}
+    uint8_t r, g, b;
 };
 
 } // namespace xod

@@ -1,0 +1,111 @@
+{
+  "description": "Represents a triangle with a custom style.",
+  "nodes": [
+    {
+      "id": "B1Uq5WirM8",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "id": "Bkfc9-jSf8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "X coordinate of the first point of the triangle on the canvas.",
+      "id": "H1x95ZiBf8",
+      "label": "X0",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the first point of the triangle on the canvas.",
+      "id": "HJmccboSzL",
+      "label": "Y0",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the second point of the triangle on the canvas.",
+      "id": "HkEq9boSGI",
+      "label": "Y1",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "X coordinate of the second point of the triangle on the canvas.",
+      "id": "HkrqcZjBfL",
+      "label": "X1",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "Hy55-iHfU",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "description": "Triangle color.",
+      "id": "SymoZiSMI",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "description": "Y coordinate of the third point of the triangle on the canvas.",
+      "id": "Syw95WiSGI",
+      "label": "Y2",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "X coordinate of the third point of the triangle on the canvas.",
+      "id": "r1-ccbirfU",
+      "label": "X2",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

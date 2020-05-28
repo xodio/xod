@@ -1,0 +1,78 @@
+{
+  "description": "Represents a filled circle with a custom style.",
+  "nodes": [
+    {
+      "description": "Fill color.",
+      "id": "BkBniLOnZU",
+      "label": "C",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/color/input-color"
+    },
+    {
+      "description": "Radius of the circle.",
+      "id": "HkZjv45bfU",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S173sIO2-8",
+      "label": "GFX",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-graphics"
+    },
+    {
+      "id": "r1N3jI_nZI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "r1Z2oL_hbI",
+      "label": "GFX'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-graphics"
+    },
+    {
+      "description": "X coordinate of the center point of the circle on the canvas.",
+      "id": "r1iPEcZzU",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Y coordinate of the center point of the circle on the canvas.",
+      "id": "rygjwV9WGU",
+      "label": "Y",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

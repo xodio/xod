@@ -1,0 +1,127 @@
+{
+  "description": "Device node for an ST7735 based TFT LCD 128x160 display of the \"G\" type connected through a hardware SPI interface. ",
+  "links": [
+    {
+      "id": "H1iRuHe7I",
+      "input": {
+        "nodeId": "rkbUg1feQI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkI0uBlQ8",
+        "pinKey": "B1z0Y_Se7I"
+      }
+    },
+    {
+      "id": "HJGBwUWXI",
+      "input": {
+        "nodeId": "HkI0uBlQ8",
+        "pinKey": "SkxRKOrl7L"
+      },
+      "output": {
+        "nodeId": "SkrjB7xmI",
+        "pinKey": "HyRfu09iS"
+      }
+    },
+    {
+      "id": "S1PKyvZQI",
+      "input": {
+        "nodeId": "SkrjB7xmI",
+        "pinKey": "r1e5QB7xQI"
+      },
+      "output": {
+        "nodeId": "H1e4tJvb7L",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1lFF1P-X8",
+      "input": {
+        "nodeId": "SkrjB7xmI",
+        "pinKey": "H1W97S7eXI"
+      },
+      "output": {
+        "nodeId": "rJNFkvbm8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryFtyvb7U",
+      "input": {
+        "nodeId": "SkrjB7xmI",
+        "pinKey": "rkqmS7eQU"
+      },
+      "output": {
+        "nodeId": "SybVYJv-XU",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "The \"chip select\" board port of the SPI interface the display is connected to.",
+      "id": "H1e4tJvb7L",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "HkI0uBlQ8",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "@/init-g"
+    },
+    {
+      "id": "SkrjB7xmI",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/st7735-device"
+    },
+    {
+      "description": "The \"data/command\" board port the display is connected to. It can be named D/C, DC, A0. ",
+      "id": "SybVYJv-XU",
+      "label": "DC",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "D255"
+      },
+      "description": "The \"reset input\" board port the display is connected to.  It can be named RESET, RES. If the display does not have a reset port leave the D255 default value at the RST pin.",
+      "id": "rJNFkvbm8",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "The display device.",
+      "id": "rkbUg1feQI",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "@/output-st7735-device"
+    }
+  ]
+}

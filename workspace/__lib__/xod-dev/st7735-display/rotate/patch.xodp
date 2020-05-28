@@ -1,0 +1,72 @@
+{
+  "description": "Rotates the screen of the display to one of four positions: 0° vertical, 90° horizontal, 180° vertical, and 270° horizontal.",
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "0d"
+      },
+      "description": "Rotation value. Sets the rotation angle. Lies in the range [0, 3] where: 0 is 0° vertical position; 1 is 90° horizontal position; 2 is 180° vertical position; 3 is 270° horizontal position.",
+      "id": "HJiaCwCEI",
+      "label": "R",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "description": "The display device.",
+      "id": "HkpEmJbDL",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-st7735-device"
+    },
+    {
+      "description": "The display device.",
+      "id": "SJOHQ1ZwL",
+      "label": "DEV'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-st7735-device"
+    },
+    {
+      "description": "Pulses when the screen rotation is done.",
+      "id": "rJMG60wC4U",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Triggers a new screen rotation.",
+      "id": "rkzpRw0EL",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "ryZzpCv048",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}
