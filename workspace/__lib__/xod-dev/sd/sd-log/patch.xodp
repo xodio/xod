@@ -1,0 +1,169 @@
+{
+  "description": "Quickstart node. Appends lines of text to a file on SD card. Possible errors: — Can't open a file — Initialization failed or no SD card — Can't write data to SD card.",
+  "links": [
+    {
+      "id": "ByDS8YQt8",
+      "input": {
+        "nodeId": "rkrMUKmtU",
+        "pinKey": "S1lM0JKmFL"
+      },
+      "output": {
+        "nodeId": "HJSB8FQY8",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "H1OSIKmFU",
+      "input": {
+        "nodeId": "HJSB8FQY8",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "r1xHXUtmF8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S18z8FmYL",
+      "input": {
+        "nodeId": "rkrMUKmtU",
+        "pinKey": "SkMTJY7YU"
+      },
+      "output": {
+        "nodeId": "BJIk8KmFL",
+        "pinKey": "Sy6VT_7tL"
+      }
+    },
+    {
+      "id": "S1FQLY7F8",
+      "input": {
+        "nodeId": "rkrMUKmtU",
+        "pinKey": "B1bfAJY7FL"
+      },
+      "output": {
+        "nodeId": "B1bBXIYQYI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkgcmUK7KL",
+      "input": {
+        "nodeId": "rkrMUKmtU",
+        "pinKey": "S1MCJFXt8"
+      },
+      "output": {
+        "nodeId": "rkrm8KmKL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SydNLY7YI",
+      "input": {
+        "nodeId": "BJIk8KmFL",
+        "pinKey": "ByHVa_XtL"
+      },
+      "output": {
+        "nodeId": "By4E8K7K8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryPo8t7YI",
+      "input": {
+        "nodeId": "H14i8t7YL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkrMUKmtU",
+        "pinKey": "ryl1xK7KI"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "File name to append to.",
+      "id": "B1bBXIYQYI",
+      "label": "FILE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "BJIk8KmFL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/sd-device"
+    },
+    {
+      "description": "CS (chip select) pin the SD card reader is connected to. Also known as SS (slave select).",
+      "id": "By4E8K7K8",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "description": "Fires when write is done.",
+      "id": "H14i8t7YL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "BkeKcj6ZZ": "\"\\n\""
+      },
+      "id": "HJSB8FQY8",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -1
+      },
+      "type": "xod/core/concat"
+    },
+    {
+      "description": "Line to append.",
+      "id": "r1xHXUtmF8",
+      "label": "LINE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "rkrMUKmtU",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "@/write-file"
+    },
+    {
+      "description": "Perform file open, write, flush, close cycle.",
+      "id": "rkrm8KmKL",
+      "label": "W",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

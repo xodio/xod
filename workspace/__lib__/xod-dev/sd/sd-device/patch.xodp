@@ -1,0 +1,36 @@
+{
+  "description": "Constructs an SDcard device.",
+  "nodes": [
+    {
+      "description": "CS (chip select) pin the SD card reader is connected to. Also known as SS (slave select).",
+      "id": "ByHVa_XtL",
+      "label": "CS",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": -2
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "HklSN6uQYU",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": -1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "SDcard device.",
+      "id": "Sy6VT_7tL",
+      "label": "DEV",
+      "position": {
+        "units": "slots",
+        "x": -12,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

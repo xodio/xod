@@ -35,6 +35,15 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "id": "Hycz91D5U",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "description": "Line to append",
       "id": "SJ1CkNggf",
       "label": "LINE",

@@ -1,0 +1,9 @@
+{
+  "authors": [
+    "XOD"
+  ],
+  "description": "Nodes to work with SDcards",
+  "license": "AGPL-3.0",
+  "name": "sd",
+  "version": "0.33.0"
+}
