@@ -252,7 +252,7 @@ Handlebars.registerHelper('cppValue', (type, value) =>
 );
 
 const hasUpstreamErrorRaisers = nodeOrInput =>
-  nodeOrInput.upstreamErrorRaisers.length > 0;
+  R.pathOr(0, ['upstreamErrorRaisers', 'length'], nodeOrInput) > 0;
 
 Handlebars.registerHelper('hasUpstreamErrorRaisers', hasUpstreamErrorRaisers);
 
