@@ -162,7 +162,7 @@ void WS2812::fill(XColor color) {
   show();
 }
 
-void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail = false) {
+void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail) {
   cli();
   // If fromTail is true
   // Skip pixels by filling them with black color
@@ -178,7 +178,7 @@ void WS2812::fill(XColor color, uint32_t pixelCount, bool fromTail = false) {
   show();
 }
 
-void WS2812::fillPattern(Pattern* pat, uint32_t shift = 0) {
+void WS2812::fillPattern(Pattern* pat, uint32_t shift) {
     PatternNode* first = pat->first();
     PatternNode* cur = first;
     uint32_t _shift = (uint32_t) shift % _length;
