@@ -11,10 +11,10 @@ A javascript wrapper over the [arduino-cli](https://github.com/arduino/arduino-c
 3.  Create an instance and pass the path to the installed `arduino-cli` and config:
     ```js
     const cli = arduinoCli('/bin/arduino-cli', {
-      directories:{
+      directories: {
         user: '~/arduino-cli/sketches',
         data: '~/arduino-cli/data',
-      }
+      },
     });
     ```
     It will create a config file for the `arduino-cli` in your OS temp directory and pass it to any command you'll call later.
