@@ -142,7 +142,7 @@ const ArduinoCli = (pathToBin, config = null) => {
     },
     version: () => runAndParseJson(['version']).then(R.prop('version')),
     createSketch: sketchName =>
-      runWithProgress(noop, ['sketch', 'new', sketchName]).then(
+      runWithProgress(noop, ['sketch', 'new', sketch(sketchName)]).then(
         R.always(resolve(cfg.directories.user, sketchName, `${sketchName}.ino`))
       ),
     setPackageIndexUrls: urls => setPackageIndexUrls(configPath, urls),
