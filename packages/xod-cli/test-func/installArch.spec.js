@@ -28,7 +28,7 @@ const its = wd => {
         assert.equal(ctx.stdout, '', 'stdout must be empty');
         assert.include(
           ctx.stderr,
-          'Error: invalid item',
+          'Invalid argument passed: invalid item',
           'stderr must contain error'
         );
         assert.notEqual(process.exitCode, 0, 'exit code must be non-zero');
