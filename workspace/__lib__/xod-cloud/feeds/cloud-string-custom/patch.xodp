@@ -1,0 +1,291 @@
+{
+  "description": "Gets a string value from the feed.",
+  "links": [
+    {
+      "id": "B1Vd87uaU",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "ry-r7rXO6I"
+      },
+      "output": {
+        "nodeId": "H14nEW_JaU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJ7OLmO6I",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "H1DrmHXOTU"
+      },
+      "output": {
+        "nodeId": "ryh34Z_1aU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BJL5L7d6L",
+      "input": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "HyvKhAv-7"
+      },
+      "output": {
+        "nodeId": "Syz3EWOkp8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByUOImO68",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "SkLSXrXupL"
+      },
+      "output": {
+        "nodeId": "ByjnNWuypU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByiPL7OpU",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "Sk0mrXuTL"
+      },
+      "output": {
+        "nodeId": "ByCnVZu1aL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ByvKLX_pU",
+      "input": {
+        "nodeId": "SkQn4Z_J6U",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "HyorQBQ_6I"
+      }
+    },
+    {
+      "id": "H1sOUX_a8",
+      "input": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "r1NYhRDZ7"
+      },
+      "output": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "HJaUrmda8"
+      }
+    },
+    {
+      "id": "Skn_U7OaL",
+      "input": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "HJi_30PZX"
+      },
+      "output": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "H1a4S7OaI"
+      }
+    },
+    {
+      "id": "r1BdImu6I",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "r1OSXSXu68"
+      },
+      "output": {
+        "nodeId": "Bkah4W_ka8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1PqWuyTI",
+      "input": {
+        "nodeId": "ByIcWO1TU",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "S1s7pCDbQ"
+      }
+    },
+    {
+      "id": "rJg9ZOk6U",
+      "input": {
+        "nodeId": "rJKwbd16L",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "SkwBVl_bX"
+      }
+    },
+    {
+      "id": "rJz_IQ_T8",
+      "input": {
+        "nodeId": "ByldwLm_pU",
+        "pinKey": "HkgHQrQdpL"
+      },
+      "output": {
+        "nodeId": "Syz3EWOkp8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rk3cPdkpU",
+      "input": {
+        "nodeId": "S1prWOk68",
+        "pinKey": "HkAv2Av-X"
+      },
+      "output": {
+        "nodeId": "HJSqD_yp8",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "=XOD_USERNAME"
+      },
+      "description": "XOD Cloud username. Used for the full feed path construction",
+      "id": "Bkah4W_ka8",
+      "label": "USER",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "ByCnVZu1aL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "ByIcWO1TU",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "=XOD_TOKEN"
+      },
+      "description": "XOD Cloud API Token",
+      "id": "ByjnNWuypU",
+      "label": "TOK",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "ByldwLm_pU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/feeds-request"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "=XOD_PROJECT"
+      },
+      "description": "XOD Cloud project name. Used for the full feed path construction",
+      "id": "H14nEW_JaU",
+      "label": "PROJ",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "16"
+      },
+      "description": "The capacity of the string buffer. Defines the maximum length. Must be a constant value. Any changes during program execution will be ignored.",
+      "id": "HJSqD_yp8",
+      "label": "CAP",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1prWOk68",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 2
+      },
+      "type": "xod/stream/accumulate-string"
+    },
+    {
+      "description": "Pulses when the value is successfully stored",
+      "id": "SkQn4Z_J6U",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Request the value from the cloud",
+      "id": "Syz3EWOkp8",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when string reached maximum length and pushed character was ignored",
+      "id": "rJKwbd16L",
+      "label": "FULL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Feed path starting from the project name. The full feed path will be `<USER>/<PROJ>/<FEED>`.",
+      "id": "ryh34Z_1aU",
+      "label": "FEED",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}

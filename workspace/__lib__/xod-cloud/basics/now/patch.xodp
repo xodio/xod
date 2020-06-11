@@ -1,0 +1,270 @@
+{
+  "description": "Gets a current datetime from a XOD Cloud API.",
+  "links": [
+    {
+      "id": "ByHqBqLnU",
+      "input": {
+        "nodeId": "H1m9BcL2L",
+        "pinKey": "B18iIoA-m"
+      },
+      "output": {
+        "nodeId": "Sk-t4rqL3L",
+        "pinKey": "SkDiRgZQX"
+      }
+    },
+    {
+      "id": "ByHtVHcU3I",
+      "input": {
+        "nodeId": "Sk-t4rqL3L",
+        "pinKey": "Bk5vjCxW7Q"
+      },
+      "output": {
+        "nodeId": "r1lFErc828",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1flL5Un8",
+      "input": {
+        "nodeId": "ry31Lc83I",
+        "pinKey": "ryzE3DO83I"
+      },
+      "output": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "B1GszSOU38"
+      }
+    },
+    {
+      "id": "Hk8tgey6L",
+      "input": {
+        "nodeId": "Sk0OelypI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "BJTWS_Lh8"
+      }
+    },
+    {
+      "id": "HkIqBcUh8",
+      "input": {
+        "nodeId": "H1m9BcL2L",
+        "pinKey": "rklUo8jA-Q"
+      },
+      "output": {
+        "nodeId": "Sk-t4rqL3L",
+        "pinKey": "rJrPsAgWXm"
+      }
+    },
+    {
+      "id": "S1ghI582U",
+      "input": {
+        "nodeId": "SkJnLc82I",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyF4Hq828",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJhRHc8hL",
+      "input": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "ryNpbr_L3U"
+      },
+      "output": {
+        "nodeId": "H1m9BcL2L",
+        "pinKey": "SkSGwoAZQ"
+      }
+    },
+    {
+      "id": "SkbnI5I3L",
+      "input": {
+        "nodeId": "H1m9BcL2L",
+        "pinKey": "BJhHwoRb7"
+      },
+      "output": {
+        "nodeId": "SkJnLc82I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Sy6Rr9Uh8",
+      "input": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "H1faWHuInL"
+      },
+      "output": {
+        "nodeId": "H1m9BcL2L",
+        "pinKey": "SkYZwiRbm"
+      }
+    },
+    {
+      "id": "SyNFNHqInI",
+      "input": {
+        "nodeId": "Sk-t4rqL3L",
+        "pinKey": "rkxwo0lWmm"
+      },
+      "output": {
+        "nodeId": "HyF4Hq828",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r101U9L2L",
+      "input": {
+        "nodeId": "ry31Lc83I",
+        "pinKey": "HJbV2vdL3I"
+      },
+      "output": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "HJWjGBdIhL"
+      }
+    },
+    {
+      "id": "rJkeL5LhI",
+      "input": {
+        "nodeId": "ry31Lc83I",
+        "pinKey": "HJg4hvuL3L"
+      },
+      "output": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "SkofSOLh8"
+      }
+    },
+    {
+      "id": "rJmn8cIn8",
+      "input": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "HympbBOLh8"
+      },
+      "output": {
+        "nodeId": "SkJnLc82I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry2eL5I28",
+      "input": {
+        "nodeId": "ryFe8qI3U",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ry31Lc83I",
+        "pinKey": "rys3POU3L"
+      }
+    },
+    {
+      "id": "ryxeI9U3L",
+      "input": {
+        "nodeId": "ry31Lc83I",
+        "pinKey": "HkNnPd8nI"
+      },
+      "output": {
+        "nodeId": "BJsCSqU2I",
+        "pinKey": "ByeifH_82L"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJsCSqU2I",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/stream/parse-u32"
+    },
+    {
+      "boundLiterals": {
+        "rkZ8oIj0-m": "\"\\n\\r\\n\""
+      },
+      "id": "H1m9BcL2L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/stream/pass-from-sequence"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Request the current datettime.",
+      "id": "HyF4Hq828",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "HkPwjCgZmX": "\"api.xod.io\"",
+        "SkWvi0lWQ7": "\"/httpbin/now/unix\""
+      },
+      "id": "Sk-t4rqL3L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/net/http-get"
+    },
+    {
+      "description": "Pulses when the datetime received.",
+      "id": "Sk0OelypI",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "SkJnLc82I",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "r1lFErc828",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "ry31Lc83I",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/datetime/from-posix"
+    },
+    {
+      "description": "A current datetime.",
+      "id": "ryFe8qI3U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "xod/datetime/output-datetime"
+    }
+  ]
+}
