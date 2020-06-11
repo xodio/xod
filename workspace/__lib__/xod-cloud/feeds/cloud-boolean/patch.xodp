@@ -1,0 +1,130 @@
+{
+  "description": "Gets a boolean value from the feed.",
+  "links": [
+    {
+      "id": "Bk9or_J6U",
+      "input": {
+        "nodeId": "B1nqSu1aL",
+        "pinKey": "B1z-efOk6L"
+      },
+      "output": {
+        "nodeId": "ryMGird1a8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyPiHuJTU",
+      "input": {
+        "nodeId": "B1nqSu1aL",
+        "pinKey": "SyRbeMuyTI"
+      },
+      "output": {
+        "nodeId": "r1VMird16I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HyYjBu1aU",
+      "input": {
+        "nodeId": "HJbzoSd1TL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1nqSu1aL",
+        "pinKey": "Hk7ZxGd1TU"
+      }
+    },
+    {
+      "id": "SysiH_kT8",
+      "input": {
+        "nodeId": "B1nqSu1aL",
+        "pinKey": "BJhZez_yTU"
+      },
+      "output": {
+        "nodeId": "S1xGsHOJp8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ryGGUuk6U",
+      "input": {
+        "nodeId": "SJyzI_ypL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1nqSu1aL",
+        "pinKey": "Hy6y8_k68"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1nqSu1aL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/cloud-boolean-custom"
+    },
+    {
+      "description": "Pulses when the value is successfully stored",
+      "id": "HJbzoSd1TL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"my-value\""
+      },
+      "description": "Feed path starting from the project name. The full feed path will be `<username>/<projectname>/<FEED>`",
+      "id": "S1xGsHOJp8",
+      "label": "FEED",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SJyzI_ypL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "r1VMird16I",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Request the value from the cloud",
+      "id": "ryMGird1a8",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
