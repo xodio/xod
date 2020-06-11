@@ -1,0 +1,65 @@
+{
+  "description": "Constructs a datetime value from a POSIX time format represented as 4 bytes.",
+  "nodes": [
+    {
+      "description": "Most significant byte",
+      "id": "HJbV2vdL3I",
+      "label": "B3",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "HJg4hvuL3L",
+      "label": "B2",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "HkNnPd8nI",
+      "label": "B1",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "SkVTPuL2I",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "rys3POU3L",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-datetime"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "ryzE3DO83I",
+      "label": "B0",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}

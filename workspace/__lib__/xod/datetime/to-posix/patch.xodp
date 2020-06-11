@@ -1,0 +1,65 @@
+{
+  "description": "Transforms a datetime into a POSIX time format represented as 4 bytes.",
+  "nodes": [
+    {
+      "id": "Bk7f_u8hU",
+      "label": "B2",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "S1jzu_83I",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "rJbXzOuLhI",
+      "label": "B3",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Least significant byte",
+      "id": "rkMQzOuLnI",
+      "label": "B0",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rkdf_uI2U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-datetime"
+    },
+    {
+      "id": "ryemGddU28",
+      "label": "B1",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}
