@@ -217,6 +217,10 @@ public:
                 _serial->print((char)*it);
             }
         }
+        // Ensure the latest line of request sent
+        if (!nextLine) {
+            _serial->println();
+        }
 
         _serial->flush();
 
