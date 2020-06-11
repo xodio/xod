@@ -1,0 +1,148 @@
+{
+  "comments": [
+    {
+      "content": "# Internet Tethering\n\nThere is a large class of applications known as IoT (Internet of Things) when the hardware connects to the Internet to send or receive data from some server. For example, log the temperature and moisture for smart greenhouses, get the current time, weather, send third-party service API request, and so on.\n\nIn this chapter, we are going to fetch the current date/time from the XOD Cloud API.\n\nThe `xod-cloud/basics/now` node sends a request to the XOD Cloud, parses the response, and outputs it as a `datetime` type value.\n\nThis node has an input pin `INET`. This pin has to be connected to an internet provider. The Internet can be provided:\n\n- by the controller board\n  (such as ESP8266)\n- by an extension module\n  (such as W5500 Ethernet Shield)\n- **by your PC**. This trick is known as Internet tethering and works in simulation and debug modes",
+      "id": "HyGHq2IhU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "Note, we’ve placed a `select` node here to get a reasonable value until we receive the result from the cloud. Otherwise, we would get a default datetime value, which is equal to `1970-01-01 00:00:00`, and it might be confusing.\n\n## Excercise\nUpdate the current datetime value by sending pulses.\n1. Place a `tweak-pulse` node.\n2. Link it to the `INIT` pin\n3. To make a value in the `watch` node properly, you need to provide the third possible value `\"Waiting pulse\"`. Drag the handle of the `select` node to the right to add one more pair of input pins\n4. Bind `\"Waiting pulse\"` and \"On Boot\" to the latest pair of pins.\n5. Link `tweak-pulse` to the `S2` pin\n6. Simulate the patch and send pulse using the `tweak-pulse` node.",
+      "id": "S1aXcWd6U",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 1
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "Ska3H5DCL",
+      "input": {
+        "nodeId": "H1Bjn28h8",
+        "pinKey": "r1lFErc828"
+      },
+      "output": {
+        "nodeId": "HyhhS5wR8",
+        "pinKey": "SyveJHHBL"
+      }
+    },
+    {
+      "id": "r1Mpo-_TI",
+      "input": {
+        "nodeId": "SkxnjWOp8",
+        "pinKey": "S10qrR6UZ"
+      },
+      "output": {
+        "nodeId": "H1v2hnL3L",
+        "pinKey": "BkvDEzR1Om"
+      }
+    },
+    {
+      "id": "rJX6sWdpU",
+      "input": {
+        "nodeId": "SkxnjWOp8",
+        "pinKey": "rkmiHCaIZ"
+      },
+      "output": {
+        "nodeId": "H1Bjn28h8",
+        "pinKey": "Sk0OelypI"
+      }
+    },
+    {
+      "id": "ry9nn2Lh8",
+      "input": {
+        "nodeId": "H1v2hnL3L",
+        "pinKey": "Hy_D4G0JOX"
+      },
+      "output": {
+        "nodeId": "H1Bjn28h8",
+        "pinKey": "ryFe8qI3U"
+      }
+    },
+    {
+      "id": "ryH3oW_68",
+      "input": {
+        "nodeId": "B1an3hU3L",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "SkxnjWOp8",
+        "pinKey": "S1yaHC6UW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1an3hU3L",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 4
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 5
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "HyF4Hq828": "On Boot"
+      },
+      "id": "H1Bjn28h8",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod-cloud/basics/now"
+    },
+    {
+      "id": "H1v2hnL3L",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/datetime/format-timestamp"
+    },
+    {
+      "id": "HyhhS5wR8",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 0
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "rJUjrCTUb": "On Boot",
+        "rygjH06LW": "\"Fetching...\""
+      },
+      "id": "SkxnjWOp8",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 3
+      },
+      "type": "xod/core/select"
+    }
+  ]
+}

@@ -1,0 +1,239 @@
+{
+  "comments": [
+    {
+      "content": "Now you got a remote analog gauge for the data that you send to the cloud. You can place it on your desktop and watch for the moisture in your greenhouse located far away.\n\nYou might build another device to switch a water pump in response to the same data feed changes. Moreover, you could send the status of the water pump to the cloud to see if the pump is working.",
+      "id": "SyoB37C3I",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 5
+      },
+      "size": {
+        "height": 2,
+        "units": "slots",
+        "width": 8
+      }
+    },
+    {
+      "content": "# Feed Messaging\n\nIn this chapter, we’ll make an analog gauge for the data that is pushed to the cloud in the same way you already saw in one of the previous chapters.\n\nThe `xod-cloud/feeds` standard library provides nodes to retrieve the last value from your feed with different types: `cloud-boolean`, `cloud-string`, and `cloud-number`. Since we're sending number values, we pick `cloud-number`.\n\nOn the left side, nodes react to the data changes by rotating a servo. On the right side, you see nodes to update the value and check out how your servo responds.\n\nNote that on both sides, we named the feed as \"moisture\", they should match. Usually, the moisture is measured as a percentage. So we expect values in a range from 0.00 to 1.00. If you use another range, place the `map` node before the `VAL` input of a `servo` node.\n\n## Excercise\n\n1. Bind a proper `PORT` to the `servo` node\n2. Upload the program with the debug mode turned on.\n3. Update `tweak-number` value and check out how your servo responds.\n4. Place a `map` node between `cloud-number` and `servo` if needed.",
+      "id": "r1z3ULah8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "Use the `tweak-number` node to update the value.",
+      "id": "rJ8BqQR2L",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "B1BWr57RhU",
+      "input": {
+        "nodeId": "BkM-rq702I",
+        "pinKey": "rJfEHhF5r"
+      },
+      "output": {
+        "nodeId": "SJxbH97AnL",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "ByG9CqwRU",
+      "input": {
+        "nodeId": "Hk_Aq9DAU",
+        "pinKey": "r1bBAVNAh8"
+      },
+      "output": {
+        "nodeId": "S1dnUITnL",
+        "pinKey": "SyveJHHBL"
+      }
+    },
+    {
+      "id": "ByXbH5XR38",
+      "input": {
+        "nodeId": "BkWS5mCn8",
+        "pinKey": "BkjI-COLb"
+      },
+      "output": {
+        "nodeId": "SJxbH97AnL",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "S1I-r5X0h8",
+      "input": {
+        "nodeId": "BkM-rq702I",
+        "pinKey": "r1m2IKiY5r"
+      },
+      "output": {
+        "nodeId": "BkWS5mCn8",
+        "pinKey": "ByAIWR_UZ"
+      }
+    },
+    {
+      "id": "S1_oC9PCI",
+      "input": {
+        "nodeId": "Hk_Aq9DAU",
+        "pinKey": "S1rCENRnL"
+      },
+      "output": {
+        "nodeId": "rJPiAqPCI",
+        "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "SJtiRqwRL",
+      "input": {
+        "nodeId": "rJPiAqPCI",
+        "pinKey": "ryv7IRdSP1b"
+      },
+      "output": {
+        "nodeId": "S1co57ChU",
+        "pinKey": "HJU8CE2lW"
+      }
+    },
+    {
+      "id": "SkCt05wRL",
+      "input": {
+        "nodeId": "SySEqQA28",
+        "pinKey": "Bk5lexBtE"
+      },
+      "output": {
+        "nodeId": "Hk_Aq9DAU",
+        "pinKey": "BJHJB4R2U"
+      }
+    },
+    {
+      "id": "rJ4ZS57RhU",
+      "input": {
+        "nodeId": "BkM-rq702I",
+        "pinKey": "rJgh8tjF9r"
+      },
+      "output": {
+        "nodeId": "Hy-WB9Q038",
+        "pinKey": "SyveJHHBL"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "ryZ28tst5B": "\"moisture\""
+      },
+      "id": "BkM-rq702I",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 4
+      },
+      "type": "xod-cloud/feeds/cloud-store"
+    },
+    {
+      "id": "BkWS5mCn8",
+      "position": {
+        "units": "slots",
+        "x": 18,
+        "y": 3
+      },
+      "type": "xod/core/pulse-on-change"
+    },
+    {
+      "boundLiterals": {
+        "H1GSAN40nI": "\"moisture\""
+      },
+      "id": "Hk_Aq9DAU",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod-cloud/feeds/cloud-number"
+    },
+    {
+      "id": "Hy-WB9Q038",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 2
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "30"
+      },
+      "id": "S1co57ChU",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "id": "S1dnUITnL",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 1
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "0.25"
+      },
+      "id": "SJxbH97AnL",
+      "position": {
+        "units": "slots",
+        "x": 17,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "id": "SySEqQA28",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 4
+      },
+      "type": "xod-dev/servo/servo"
+    },
+    {
+      "boundLiterals": {
+        "ByU7LRuSPkW": "On Boot"
+      },
+      "id": "rJPiAqPCI",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 2
+      },
+      "type": "xod/core/any"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "comments": [
+    {
+      "content": "Here are these nodes:\n\n- `xod-dev/esp8266-mcu/connect`\n- `xod-dev/esp8266/connect`\n- `xod-dev/w5500/ethernet-shield`\n\n## Excercise\n\n1.  Replace the `tethering-inet` node with a suitable one from the list above.\n2. Bind the appropriate values to the node inputs such as the name of your WiFi access point and password.\n3. Bind the `PORT` value to `servo` node.\n4. Upload the patch without debug mode.\n\nNote that you need to log in and generate a XOD Cloud API key for the project if you haven't done it before (hit Edit → Project Preferences).\n\nThe servo rotates to the angle that corresponds to the latest \"moisture\" value. Now you can open the chapter `015-xod-cloud` again, run the simulation and control your gauge from XOD IDE over the cloud. Or you can make another device, which updates this value automatically.\n\n---\n\nIn some cases, you might need to make an advanced configuration of the connected module or ethernet-shield. Check out examples in the library or read an article about [ethernet-shield advanced configuration](https://xod.io/docs/guide/w5500-advanced/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial).",
+      "id": "S1CmLCCh8",
+      "position": {
+        "units": "slots",
+        "x": 15,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "# Stand-alone Internet\n\nIt's time to make your device autonomous. \n\nHere is the program from the previous chapter. The program has a `tethering-inet` node that depends on PC and works only in the debug mode. To make a stand-alone device, replace it with another node that provides the internet using some hardware module, shield, or the native microcontroller features.\n\nFor such purposes XOD has a few standard libraries:\n\n- [`xod-dev/esp8266-mcu`](https://xod.io/libs/xod-dev/esp8266-mcu/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) — if you run the program on ESP8266,\n- [`xod-dev/esp8266`](https://xod.io/libs/xod-dev/esp8266/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) — if you run the program on the microcontroller without onboard WiFi module, but using an ESP8266 as an AT command modem,\n- [`xod-dev/w5500`](https://xod.io/libs/xod-dev/w5500/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) — if you have an ethernet shield based on W5500 chipset.\n\nEach of the libraries has a set of some low-level networking nodes. But for the current case, you only need the internet provider node.",
+      "id": "rkMW2eVC28",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJlOvpA2U",
+      "input": {
+        "nodeId": "r1KwvpChI",
+        "pinKey": "r1bBAVNAh8"
+      },
+      "output": {
+        "nodeId": "BJZ3lNAh8",
+        "pinKey": "SyveJHHBL"
+      }
+    },
+    {
+      "id": "SknPwaChL",
+      "input": {
+        "nodeId": "Bkg-heN028",
+        "pinKey": "Bk5lexBtE"
+      },
+      "output": {
+        "nodeId": "r1KwvpChI",
+        "pinKey": "BJHJB4R2U"
+      }
+    },
+    {
+      "id": "SyUuwTRnL",
+      "input": {
+        "nodeId": "r1KwvpChI",
+        "pinKey": "S1rCENRnL"
+      },
+      "output": {
+        "nodeId": "HJbZ2eN03U",
+        "pinKey": "HJU8CE2lW"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJZ3lNAh8",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "boundLiterals": {
+        "BkXK1eBYV": "D5"
+      },
+      "id": "Bkg-heN028",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 3
+      },
+      "type": "xod-dev/servo/servo"
+    },
+    {
+      "boundLiterals": {
+        "B13SCNhl-": "5"
+      },
+      "id": "HJbZ2eN03U",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 1
+      },
+      "type": "xod/core/clock"
+    },
+    {
+      "boundLiterals": {
+        "H1GSAN40nI": "\"moisture\""
+      },
+      "id": "r1KwvpChI",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod-cloud/feeds/cloud-number"
+    }
+  ]
+}
