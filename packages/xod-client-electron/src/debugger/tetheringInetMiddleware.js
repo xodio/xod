@@ -46,7 +46,7 @@ const splitDataOnChunks = R.curry((maxChunkSize, nodeId, data) => {
         R.compose(
           R.map(formatChunk),
           R.splitEvery(dataMaxLength),
-          R.slice(R.__, -1, data),
+          R.slice(R.__, data.length, data),
           R.add(1),
           R.indexOf(':')
         ),
