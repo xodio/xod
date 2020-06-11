@@ -1,0 +1,100 @@
+{
+  "description": "Read an unsigned integer number from a stream of characters and returns it as 4 bytes. Stop when a non-numeric character was encountered",
+  "nodes": [
+    {
+      "description": "Least significant byte",
+      "id": "B1GszSOU38",
+      "label": "B0",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Pulses when the non-numerical character was encountered",
+      "id": "BJTWS_Lh8",
+      "label": "END",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "ByeifH_82L",
+      "label": "B1",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Push a new character to process",
+      "id": "H1faWHuInL",
+      "label": "PUSH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Most significant byte",
+      "id": "HJWjGBdIhL",
+      "label": "B3",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "description": "Reset the parsed unsigned integer to 0 and start over",
+      "id": "HympbBOLh8",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SkofSOLh8",
+      "label": "B2",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    },
+    {
+      "id": "rkxa-SOUh8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "The next character to be processed",
+      "id": "ryNpbr_L3U",
+      "label": "CHAR",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}
