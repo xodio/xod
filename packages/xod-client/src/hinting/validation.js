@@ -261,6 +261,14 @@ const shortValidators = {
       deducedPinTypes,
       prevErrors
     ),
+  // Validate only the cloned patch
+  [PAT.PATCH_CLONE]: (action, project, deducedPinTypes, prevErrors) =>
+    R.compose(setAssocPolicy, validateChangedPatches)(
+      action.payload.patchPath,
+      project,
+      deducedPinTypes,
+      prevErrors
+    ),
 
   // Optimizations
 

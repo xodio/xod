@@ -18,6 +18,7 @@ import {
   PROJECT_NAME_NEEDED_TO_GENERATE_APIKEY,
   CANT_GET_TOKEN_WITHOUT_APIKEY,
   CANT_GET_TOKEN_BECAUSE_OF_WRONG_APIKEY,
+  cantCloneNoPatchFound,
 } from './messages';
 import { getProject } from './selectors';
 import {
@@ -156,7 +157,7 @@ export const renamePatch = (oldPatchPath, newBaseName) => (
   const state = getState();
 
   if (newPatchPath !== oldPatchPath && isPatchPathTaken(state, newPatchPath)) {
-    return dispatch(addError(PROJECT_BROWSER_ERRORS.PATCH_NAME_TAKEN));
+    return dispatch(addError());
   }
 
   return dispatch({
@@ -166,6 +167,30 @@ export const renamePatch = (oldPatchPath, newBaseName) => (
       oldPatchPath,
     },
   });
+};
+
+export const clonePatch = originalPatchPath => (dispatch, getState) => {
+  const project = getProject(getState());
+  const patchExists = foldMaybe(
+    false,
+    R.T,
+    XP.getPatchByPath(originalPatchPath, project)
+  );
+
+  const newPatchPath = XP.getClonePatchPath(originalPatchPath, project);
+
+  if (patchExists) {
+    dispatch({
+      type: ActionType.PATCH_CLONE,
+      payload: {
+        patchPath: newPatchPath,
+        originalPatchPath,
+      },
+    });
+    return;
+  }
+
+  dispatch(addError(cantCloneNoPatchFound(originalPatchPath)));
 };
 
 export const deletePatch = patchPath => ({

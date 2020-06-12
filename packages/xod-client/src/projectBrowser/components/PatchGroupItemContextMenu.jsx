@@ -36,6 +36,15 @@ const PatchGroupItemContextMenu = props => {
     </MenuItem>
   ) : null;
 
+  const clonePatch = (
+    <MenuItem
+      onClick={onContextMenuItemClick(props.onPatchClone)}
+      attributes={{ 'data-id': 'clone' }}
+    >
+      {trigger.isLocalPatch ? 'Clone' : 'Clone to My Project'}
+    </MenuItem>
+  );
+
   const cls = cn('ContextMenu ContextMenu--PatchGroupItem', {
     // It's a hack to prevent rendering contextmenu
     // after click something with wrong menu items
@@ -60,6 +69,7 @@ const PatchGroupItemContextMenu = props => {
         <span className="accelerator">click&times;2</span>
         Open
       </MenuItem>
+      {clonePatch}
       {renamePatch}
       {deletePatch}
       <MenuItem divider />
@@ -87,6 +97,7 @@ PatchGroupItemContextMenu.propTypes = {
   onPatchDelete: PropTypes.func.isRequired,
   onPatchRename: PropTypes.func.isRequired,
   onPatchHelp: PropTypes.func.isRequired,
+  onPatchClone: PropTypes.func.isRequired,
 };
 
 export default connectMenu(PATCH_GROUP_CONTEXT_MENU_ID)(
