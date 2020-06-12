@@ -16,6 +16,10 @@ export default {
     title: "Can't update patch",
     note: `Can't find the patch in the project with specified path: "${patchPath}"`,
   }),
+  CANT_CLONE_PATCH__PATCH_NOT_FOUN_BY_PATH: ({ patchPath }) => ({
+    title: "Can't clone patch",
+    note: `Can't find the patch in the project with specified path: "${patchPath}"`,
+  }),
 
   // Generics, Abstracts and etc
   ALL_TYPES_MUST_BE_RESOLVED: ({ patchPath, currentPatchPath, trace }) => ({

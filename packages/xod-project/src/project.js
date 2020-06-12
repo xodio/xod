@@ -954,6 +954,57 @@ export const updatePatch = def(
     )(patchPath, project)
 );
 
+/**
+ * Returns a new PatchPath for the cloned copy of a Patch.
+ * The new PatchPath is always:
+ * - local (@/patchPath)
+ * - will have a suffix "-copy"
+ * - may have an index suffix, such as "-copy2", in case that the project has
+ *   one or more patches with the same name and suffix
+ *
+ * For example, if User clones "xod/core/clock" patch few times he'll get copies
+ * with patch paths:
+ * - "@/clock-copy"
+ * - "@/clock-copy2"
+ * - "@/clock-copy3"
+ */
+export const getClonePatchPath = def(
+  'getClonePatchPath :: PatchPath -> Project -> PatchPath',
+  (patchPath, project) =>
+    R.compose(
+      newPatchPath =>
+        R.compose(
+          R.ifElse(
+            R.equals(0),
+            R.always(newPatchPath),
+            R.compose(R.concat(newPatchPath), R.toString, R.add(1))
+          ),
+          R.length,
+          R.filter(R.compose(R.startsWith(newPatchPath), Patch.getPatchPath)),
+          listLocalPatches
+        )(project),
+      R.ifElse(
+        R.test(/-copy(\d+)?$/),
+        R.replace(/-copy(\d+)?$/, '-copy'),
+        R.concat(R.__, '-copy')
+      ),
+      PatchPathUtils.convertToLocalPath
+    )(patchPath)
+);
+
+/**
+ * Clones any Patch with a new PatchPath without rebasing.
+ */
+export const clonePatch = def(
+  'clonePatch :: PatchPath -> PatchPath -> Project -> Either Error Project',
+  (patchPath, newPatchPath, project) =>
+    R.compose(
+      R.map(assocPatch(newPatchPath, R.__, project)),
+      failOnNothing('CANT_CLONE_PATCH__PATCH_NOT_FOUN_BY_PATH', { patchPath }),
+      getPatchByPath(patchPath)
+    )(project)
+);
+
 // =============================================================================
 //
 // Getters with traversing through project

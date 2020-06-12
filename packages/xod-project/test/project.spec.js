@@ -970,6 +970,140 @@ describe('Project', () => {
       }, eitherUpdatedProject);
     });
   });
+  describe('cloning patches', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        '@/my-patch': {
+          nodes: { a: { type: 'another/one/external' } },
+        },
+        '@/my-patch-2': {
+          nodes: { a: { type: '@/my-patch' } },
+        },
+        '@/twice': {},
+        '@/twice-copy': {},
+        '@/triple': {},
+        '@/triple-copy': {},
+        '@/triple-copy2': {},
+        'another/one/patch': {},
+        'another/one/external': {
+          nodes: { a: { type: 'another/one/patch' } },
+        },
+      },
+    });
+    describe('getClonePatchPath', () => {
+      it('should return a new patch path with the right suffix', () => {
+        // Without index suffix
+        assert.equal(
+          Project.getClonePatchPath('@/my-patch', project),
+          '@/my-patch-copy'
+        );
+        assert.equal(
+          Project.getClonePatchPath('another/one/patch', project),
+          '@/patch-copy'
+        );
+        // With index suffix
+        assert.equal(
+          Project.getClonePatchPath('@/twice', project),
+          '@/twice-copy2'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/twice-copy', project),
+          '@/twice-copy2'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/triple-copy', project),
+          '@/triple-copy3'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/triple-copy2', project),
+          '@/triple-copy3'
+        );
+      });
+    });
+    describe('clonePatch', () => {
+      it('should return Either.Left if patch not found (local)', () => {
+        assert.isTrue(
+          Project.clonePatch('@/unexisting', '@/does-not-matter', project)
+            .isLeft
+        );
+      });
+      it('should return Either.Left if patch not found (library)', () => {
+        assert.isTrue(
+          Project.clonePatch(
+            'another/one/unexisting',
+            '@/does-not-matter',
+            project
+          ).isLeft
+        );
+      });
+      it('should clone a local patch', () => {
+        const newProject = R.compose(
+          R.chain(Project.clonePatch('@/my-patch-copy', '@/my-patch-copy3')),
+          R.chain(Project.clonePatch('@/my-patch', '@/my-patch-copy2')),
+          Project.clonePatch('@/my-patch', '@/my-patch-copy')
+        )(project);
+
+        Helper.expectEitherRight(proj => {
+          // Test that all copies exists with the right suffix
+          const patchPaths = R.compose(
+            R.map(Patch.getPatchPath),
+            Project.listLocalPatches
+          )(proj);
+          assert.includeMembers(patchPaths, [
+            '@/my-patch',
+            '@/my-patch-copy',
+            '@/my-patch-copy2',
+            '@/my-patch-copy3',
+          ]);
+
+          // Test that the copy contains the same nodes
+          const originalPatchNodes = R.compose(
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/my-patch')
+          )(project);
+          const clonedPatchNodes = R.compose(
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/my-patch-copy3')
+          )(proj);
+          assert.sameMembers(clonedPatchNodes, originalPatchNodes);
+        }, newProject);
+      });
+      it('should clone a library patch', () => {
+        const newProject = R.compose(
+          R.chain(Project.clonePatch('@/external-copy', '@/external-copy3')),
+          R.chain(
+            Project.clonePatch('another/one/external', '@/external-copy2')
+          ),
+          Project.clonePatch('another/one/external', '@/external-copy')
+        )(project);
+
+        Helper.expectEitherRight(proj => {
+          // Test that all copies exists with the right suffix
+          const patchPaths = R.compose(
+            R.map(Patch.getPatchPath),
+            Project.listGenuinePatches
+          )(proj);
+          assert.includeMembers(patchPaths, [
+            'another/one/external',
+            '@/external-copy',
+            '@/external-copy2',
+            '@/external-copy3',
+          ]);
+
+          // Test that the copy contains the same nodes
+          const originalPatchNodes = R.compose(
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('another/one/external')
+          )(project);
+          const clonedPatchNodes = R.compose(
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/external-copy3')
+          )(proj);
+          assert.sameMembers(clonedPatchNodes, originalPatchNodes);
+        }, newProject);
+      });
+    });
+  });
 
   // lists
   describe('lists', () => {
