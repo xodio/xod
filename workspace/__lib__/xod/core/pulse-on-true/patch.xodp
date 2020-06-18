@@ -1,5 +1,5 @@
 {
-  "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
+  "description": "Emits a pulse on a rising edge, i.e. when false changes to true. Does not pulse on program start even if initial input value is true.",
   "nodes": [
     {
       "id": "__in__",
@@ -15,7 +15,7 @@
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 3
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -23,8 +23,8 @@
       "id": "noNativeImpl",
       "position": {
         "units": "slots",
-        "x": 4.05,
-        "y": 1.15
+        "x": 0,
+        "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
     },
@@ -32,7 +32,7 @@
       "id": "rJDYFADyE",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 2,
         "y": 1
       },
       "type": "xod/patch-nodes/tabtest"

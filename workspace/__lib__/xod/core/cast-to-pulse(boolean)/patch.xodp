@@ -1,14 +1,47 @@
 {
-  "description": "Emits a pulse on a rising edge, i.e. when false changes to true",
+  "description": "Emits a pulse on a rising edge, i.e. when false changes to true. Does not pulse on program start even if initial input value is true.",
+  "links": [
+    {
+      "id": "H1DXzUKTI",
+      "input": {
+        "nodeId": "__out__",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HySmGLY6U",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry8XzUK6I",
+      "input": {
+        "nodeId": "HySmGLY6U",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "__in__",
+        "pinKey": "__out__"
+      }
+    }
+  ],
   "nodes": [
     {
       "id": "BkQJ_jz5M",
       "position": {
         "units": "slots",
-        "x": 5,
+        "x": 2,
         "y": 1
       },
       "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "HySmGLY6U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/pulse-on-true"
     },
     {
       "id": "__in__",
@@ -24,18 +57,9 @@
       "position": {
         "units": "slots",
         "x": 0,
-        "y": 3
+        "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
-    },
-    {
-      "id": "noNativeImpl",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
     }
   ]
 }
