@@ -280,6 +280,8 @@ public:
         // TODO: MUX
         printPrefix();
         writeCmd(CIPCLOSE, EOL);
+        _connected = false;
+        _pkgSize = 0;
         return readCmd(OK, ERROR) == 1;
     }
 };

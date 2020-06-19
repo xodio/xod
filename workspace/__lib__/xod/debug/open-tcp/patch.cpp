@@ -13,6 +13,10 @@ void evaluate(Context ctx) {
         return;
 
     auto inet = getValue<input_INET>(ctx);
+
+    // Do nothing if TCP connection is already opened
+    if (inet->isConnected()) return;
+
     auto host = getValue<input_HOST>(ctx);
     uint32_t port = (uint32_t)getValue<input_PORT>(ctx);
 
