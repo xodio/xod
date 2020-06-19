@@ -1,4 +1,5 @@
 IN	OUT
+true	no-pulse	// do not pulse even if initial state is true
 false	no-pulse
 true	pulse
 true	no-pulse

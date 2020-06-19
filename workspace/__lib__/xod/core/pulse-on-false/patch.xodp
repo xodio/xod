@@ -1,5 +1,5 @@
 {
-  "description": "Emits a pulse on a falling edge, i.e. when `true` changes to `false`",
+  "description": "Emits a pulse on a falling edge, i.e. when true changes to false. Does not pulse on program start even if initial input value is false.",
   "links": [
     {
       "id": "HJXReAuIZ",
@@ -13,14 +13,25 @@
       }
     },
     {
-      "id": "SyV0eAuLZ",
+      "id": "HkSb7IYpU",
       "input": {
-        "nodeId": "BJxRgAO8-",
+        "nodeId": "SyQbXLtaL",
         "pinKey": "__in__"
       },
       "output": {
         "nodeId": "r1R2gRu8Z",
         "pinKey": "r1if8ROSDJ-"
+      }
+    },
+    {
+      "id": "SkvWmUtaL",
+      "input": {
+        "nodeId": "BJxRgAO8-",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyQbXLtaL",
+        "pinKey": "__out__"
       }
     }
   ],
@@ -29,8 +40,8 @@
       "id": "BJxRgAO8-",
       "position": {
         "units": "slots",
-        "x": 0.25,
-        "y": 2.15
+        "x": 0,
+        "y": 3
       },
       "type": "xod/patch-nodes/output-pulse"
     },
@@ -38,8 +49,8 @@
       "id": "H1v3lCu8-",
       "position": {
         "units": "slots",
-        "x": 0.25,
-        "y": 0.15
+        "x": 0,
+        "y": 0
       },
       "type": "xod/patch-nodes/input-boolean"
     },
@@ -53,11 +64,20 @@
       "type": "xod/patch-nodes/tabtest"
     },
     {
+      "id": "SyQbXLtaL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/pulse-on-true"
+    },
+    {
       "id": "r1R2gRu8Z",
       "position": {
         "units": "slots",
-        "x": 0.25,
-        "y": 1.15
+        "x": 0,
+        "y": 1
       },
       "type": "@/not"
     }
