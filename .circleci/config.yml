@@ -1,256 +1,282 @@
-# CircleCI 2.0
-version: 2
+# External environment variables:
+# GCLOUD_SERVICE_KEY - The gcloud service key
+# GOOGLE_COMPUTE_ZONE - The Google compute zone to connect
+# GOOGLE_PROJECT_ID - The Google project ID to connect
+# CSC_LINK - The HTTPS link to certificate (*.p12 or *.pfx file)
+# CSC_KEY_PASSWORD - The password to decrypt the certificate given in CSC_LINK
+
+version: 2.1
 
 # Reusable definitions shared between Linux and macOS
 defs:
   release-filters: &release-filters
-    branches:
-      only:
-        - /^prerelease-(patch|minor)-.*/
-    tags:
-      only:
-        - /^v\d+\.\d+\.\d+/
-
-  cache:
-    cache-node_modules: &cache-node_modules
-      key: node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
-      paths:
-        - node_modules
-
-    restore-node_modules: &restore-node_modules
-      keys:
-        - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
-        # if cache for exact version of `yarn.lock` is not present then
-        # load any most recent one
-        - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}
-
-  machines:
-    docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:10-v2
-
-  steps:
-    step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
-      name: Install arduino-cli
-      command: |
-        curl -s --create-dirs -o "$HOME/arduino-cli.zip" "http://downloads.arduino.cc/PR/arduino-cli/arduino-cli-25-PR91-osx.zip" \
-        && unzip "$HOME/arduino-cli.zip" -d "$HOME" \
-        && mv "$HOME/arduino-cli-25-PR91-osx" "$HOME/arduino-cli" \
-        && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
-        && mkdir "/tmp/arduino-cli" \
-        && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
-
-    step-install-arduino-cli-on-linux: &step-install-arduino-cli-on-linux
-      name: Install arduino-cli
-      command: |
-        curl -s --create-dirs -o "$HOME/arduino-cli.tar.bz2" "http://downloads.arduino.cc/PR/arduino-cli/arduino-cli-25-PR91-linux64.tar.bz2" \
-        && tar xvjf "$HOME/arduino-cli.tar.bz2" -C "$HOME" \
-        && mv "$HOME/arduino-cli-25-PR91-linux64" "$HOME/arduino-cli" \
-        && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
-        && mkdir "/tmp/arduino-cli" \
-        && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
-
-    step-install: &step-install
-      name: Install Node modules
-      # to always instal some essential tools(electron-builder etc)
-      command: NODE_ENV=development yarn install --force
-
-    step-bump-version: &step-bump-version
-      name: Bump version
-      command: |
-        if [[ $CIRCLE_BRANCH =~ ^prerelease-(patch|minor)- ]]; then
-          yarn lerna publish --skip-git --skip-npm --canary --cd-version ${BASH_REMATCH[1]} --yes
-        fi
-
-    step-build: &step-build
-      name: Build
-      command: yarn build
-
-    step-verify-git-clean: &step-verify-git-clean
-      name: Verify that previous step made no side-effects
-      command: ./tools/verify-git-clean.sh
+    branches: { only: [/^prerelease-(patch|minor)-.*/] }
+    tags: { only: [/^v\d+\.\d+\.\d+/] }
 
     step-build-electron: &step-build-electron
       name: Build electron IDE app
       command: yarn build:electron
-
-    step-lint: &step-lint
-      name: Lint
-      # run prettier on md files separately because of https://github.com/prettier/eslint-plugin-prettier/issues/67
-      command: yarn lint && yarn prettier-md-check
-
-    step-test: &step-test
-      name: Unit tests
-      command: yarn test
-
-    step-test-func: &step-test-func
-      name: Functional tests
-      command: yarn test-func
 
     step-dist-electron: &step-dist-electron
       name: Build electron IDE distro
       command: yarn dist:electron
       no_output_timeout: 30m
 
+#==============================================================================
+#
+# Executors
+#
+#==============================================================================
+
+executors:
+  cloud-sdk: { docker: [image: google/cloud-sdk] }
+  docker-custom-nodejs: { docker: [image: xodio/cci-node:10-v2] }
+  macos: { macos: { xcode: '10.0.0' } }
+
+#==============================================================================
+#
+# Orbs
+#
+#==============================================================================
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.6.1
+  jq: circleci/jq@1.9.0
+
+#==============================================================================
+#
+# Commands
+#
+#==============================================================================
+commands:
+  prepare:
+    description: Checkout, restore cache, install, install arduino-cli, save cache
+    parameters:
+      install_arduino_cli: { type: boolean, default: false }
+      save_cache: { type: boolean, default: false }
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node_modules from cache
+          keys:
+            - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
+            # if cache for exact version of `yarn.lock` is not present then
+            # load any most recent one
+            - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}
+      - run:
+          name: Install arduino-cli
+          command: |
+            if [[ <<parameters.install_arduino_cli>> -ne true ]]; then exit 0; fi
+            : "${XOD_ARDUINO_CLI:=/tmp/arduino-cli/arduino-cli}"
+            ./tools/install-arduinocli.sh
+            cp $XOD_ARDUINO_CLI "./packages/xod-client-electron/arduino-cli"
+            echo "export XOD_ARDUINO_CLI=\"${XOD_ARDUINO_CLI}\"" >> $BASH_ENV
+      - run:
+          name: Install Node modules
+          command: NODE_ENV=development yarn install --force
+      - when:
+          condition: <<parameters.save_cache>>
+          steps:
+            - save_cache:
+                name: Save node_modules to cache
+                key: node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
+                paths: [node_modules]
+
+  verify_git_clean:
+    description: Verify there is no unexpected changes in the repository
+    steps:
+      - run:
+          name: Verify there is no unexpected changes in the repository
+          command: ./tools/verify-git-clean.sh
+
+  verify:
+    description: Build, lint, test, verify
+    steps:
+      - run:
+          name: Build
+          command: yarn build
+      - verify_git_clean
+      - run:
+          name: Lint
+          # run prettier on md files separately because of
+          # https://github.com/prettier/eslint-plugin-prettier/issues/67
+          command: yarn lint && yarn prettier-md-check
+      - run:
+          name: Test
+          command: yarn test
+      - run:
+          name: Functional tests
+          command: yarn test-func
+      - verify_git_clean
+
+  lerna-bump-version-on-prerelease-branch:
+    description: Bump version on prerelease branch
+    steps:
+      - run:
+          name: Bump version on prerelease branch
+          command: |
+            if [[ $CIRCLE_BRANCH =~ ^prerelease-(patch|minor)- ]]; then
+              yarn lerna publish --skip-git --skip-npm --canary --cd-version ${BASH_REMATCH[1]} --yes
+            fi
+
+  build_browser:
+    description: Build browser package and store dist
+    parameters:
+      dest: { type: string }
+      pkg: { type: string, default: ./packages/xod-client-browser }
+    steps:
+      - prepare
+      - lerna-bump-version-on-prerelease-branch
+      - run: { name: Build browser version, command: yarn build:browser }
+      - run:
+          name: Save build artifacts
+          command: |
+            mkdir -p "<< parameters.dest >>"
+            mv "<< parameters.pkg >>/dist" "<< parameters.dest >>"
+            echo $VERSION > "<< parameters.dest >>/VERSION"
+            cp "<< parameters.pkg >>/Dockerfile" "<< parameters.dest >>/"
+            cp "<< parameters.pkg >>/package.json" "<< parameters.dest >>/"
+      - persist_to_workspace: { root: ./, paths: [<< parameters.dest >>] }
+      - run: tar cf ./dist.tar "<< parameters.dest >>"
+      - store_artifacts: { path: ./dist.tar }
+
+  image_tag_from_gcr:
+    description: Get image tags from GCR and save it to $IMAGE_TAGS and max semver to $IMAGE_TAG
+    parameters:
+      image_name: { type: string, default: $IMAGE_NAME }
+      google-project-id: { default: $GOOGLE_PROJECT_ID, type: string }
+      grep_pipe: { type: string, default: '' }
+    steps:
+      - run:
+          name: 'Get $IMAGE_TAG from << parameters.image_name >>'
+          command: |
+            IMAGE_TAGS=$(gcloud container images list-tags "gcr.io/<< parameters.google-project-id >>/<< parameters.image_name >>" --format=json | jq -r '.[]|.tags|.[]')
+            IMAGE_TAG=$(printf "$IMAGE_TAGS" <<parameters.grep_pipe>> | head -n 1 | tr -d '\n' || echo '')
+            echo "export IMAGE_TAGS=\"$IMAGE_TAGS\"" >> $BASH_ENV
+            echo "export IMAGE_TAG=\"$IMAGE_TAG\"" >> $BASH_ENV
+
+  build_push_browser_container:
+    description: Build and publish browser container
+    parameters: { env: { type: string } }
+    steps:
+      - attach_workspace: { at: dist }
+      - jq/install
+      - run:
+          name: Load env variables
+          command: |
+            PACKAGE_VERSION=$(jq -r ".version" "./dist/browser-<< parameters.env >>/package.json")
+
+            # defaults for production
+            IMAGE_NAME="site-ide"
+            VERSION=$PACKAGE_VERSION
+
+            if [[ "<<parameters.env>>"" -eq "staging" ]]; then
+              # default for staging on master
+              IMAGE_NAME="site-ide-staging"
+              VERSION=$PACKAGE_VERSION.$CIRCLE_BUILD_NUM
+
+              # when PR
+              if [[ "${CIRCLE_BRANCH}" -ne "master" ]]; then
+                VERSION=$PACKAGE_VERSION.$CIRCLE_BUILD_NUM-pr-$CIRCLE_BRANCH
+              fi
+            fi
+            echo "export VERSION=\"$VERSION\"" >> $BASH_ENV
+            echo "export IMAGE_NAME=\"$IMAGE_NAME\"" >> $BASH_ENV
+      - setup_remote_docker
+      - gcp-gcr/gcr-auth
+      - image_tag_from_gcr
+      - run:
+          name: Fail if image tag already exists
+          command: |
+            if printf $IMAGE_TAGS | grep $VERSION; then
+              echo "Tag $VERSION exists!" && exit 1
+            fi
+      - gcp-gcr/build-image:
+          dockerfile: ./dist/browser-<< parameters.env >>/Dockerfile
+          path: ./dist/browser-<< parameters.env >>
+          image: $IMAGE_NAME
+          tag: $VERSION 
+      - gcp-gcr/push-image: { image: $IMAGE_NAME, tag: $VERSION }
+      
+#==============================================================================
+#
+# Jobs
+#
+#==============================================================================
 jobs:
   #--------------------------------------------------------------------
   # Verify jobs
   #--------------------------------------------------------------------
-  verify-linux:
-    docker: *docker-custom-nodejs
-    environment:
-      DISPLAY: ":99.0"
-      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+  verify_linux:
+    executor: docker-custom-nodejs
+    environment: { DISPLAY: ':99.0', NODE_ENV: development }
     steps:
       - run:
           name: Running X virtual framebuffer
           command: Xvfb :99 -screen 0 1280x1024x24
           background: true
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install
-      - run: *step-install-arduino-cli-on-linux
-      - save_cache: *cache-node_modules
-      - run: *step-build
-      - run: *step-verify-git-clean
-      - run: *step-lint
-      - run: *step-test
-      - run: *step-test-func
-      - run: *step-verify-git-clean
+      - prepare: { install_arduino_cli: true, save_cache: true }
+      - verify
 
-  verify-macos:
-    macos:
-      xcode: "10.0.0"
-    environment:
-      YARN_CACHE_FOLDER: /tmp/yarn-cache
-      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+  verify_macos:
+    executor: macos
+    environment: { NODE_ENV: development, YARN_CACHE_FOLDER: /tmp/yarn-cache }
     steps:
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install-arduino-cli-on-mac
-      - run: *step-install
-      - save_cache: *cache-node_modules
-      - run: *step-build
-      - run: *step-verify-git-clean
-      - run: *step-lint
-      - run: *step-test
-      - run: *step-test-func
-      - run: *step-verify-git-clean
+      - prepare: { install_arduino_cli: true, save_cache: true }
+      - verify
 
-  test-cpp:
-    docker: *docker-custom-nodejs
-    environment:
-      XOD_OUTPUT: /tmp/tabtests-cpp
+  test_cpp:
+    executor: docker-custom-nodejs
+    environment: { NODE_ENV: development, XOD_OUTPUT: /tmp/tabtests-cpp }
     steps:
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install
-      - run:
-          name: Build CLI
-          command: yarn build:cli
+      - prepare
+      - run: { name: Build CLI, command: yarn build:cli }
       - run:
           name: Generate tabtests
           command: |
             ls -d workspace/__lib__/xod/* workspace/test/* | xargs -n 1 \
               yarn xodc tabtest --no-build | cat
-      - run:
-          name: Build tabtests
-          command: make -C $XOD_OUTPUT
-      - run:
-          name: Run tabtests
-          command: make -C $XOD_OUTPUT test
+      - run: { name: Build tabtests, command: make -C $XOD_OUTPUT }
+      - run: { name: Run tabtests, command: make -C $XOD_OUTPUT test }
 
   #--------------------------------------------------------------------
-  # Distro jobs
+  # Browser version jobs
   #--------------------------------------------------------------------
-  dist-linux:
-    docker: *docker-custom-nodejs
-    environment:
-      NODE_ENV: production
-      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+  build_browser_staging:
+    executor: docker-custom-nodejs
+    environment: { NODE_ENV: production, XOD_HOSTNAME: xod.show }
     steps:
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install-arduino-cli-on-linux
-      - run: *step-install
-      - run: *step-bump-version
-      - run: *step-build-electron
-      - run: *step-dist-electron
-      - run:
-          name: Store version tag
-          command: |
-            PKG=./packages/xod-client-electron
-            QUERY="console.log('v' + require('$PKG/package.json').version)"
-            node -e "$QUERY" > $PKG/dist/TAG
-            echo "Tag set to: $PKG/dist/TAG"
-      - persist_to_workspace:
-          root: packages/xod-client-electron/dist
-          paths:
-            - TAG
-            - latest-linux.yml
-            - "*.deb"
-            - "*.rpm"
+      - build_browser: { dest: ./browser-staging }
 
-  dist-macos:
-    macos:
-      xcode: "10.0.0"
-    environment:
-      NODE_ENV: production
-      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
+  build_browser_production:
+    executor: docker-custom-nodejs
+    environment: { NODE_ENV: production, XOD_HOSTNAME: xod.io }
     steps:
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install-arduino-cli-on-mac
-      - run: *step-install
-      - run: *step-bump-version
-      - run: *step-build-electron
-      - run: *step-dist-electron
-      - persist_to_workspace:
-          root: packages/xod-client-electron/dist
-          paths:
-            - latest-mac.yml
-            - "*.dmg"
-            - "*.zip"
+      - build_browser: { dest: ./browser-production }
 
-  #--------------------------------------------------------------------
-  # Upload distros job
-  #--------------------------------------------------------------------
-  upload-distros:
-    docker:
-      - image: google/cloud-sdk:alpine
+  build_push_browser_staging_container:
+    executor: cloud-sdk
     steps:
-      - attach_workspace:
-          at: dist
-      - run:
-          name: Authenticate GCloud
-          command: |
-            echo "$GOOGLE_CLOUD_STORAGE_CONFIG" | base64 -d > /tmp/gsc.json
-            gcloud auth activate-service-account --key-file /tmp/gsc.json
-      - run:
-          name: Upload to Google Cloud Storage
-          command: |
-            TAG=$(cat dist/TAG)
-            GS_PATH=gs://releases.xod.io/$TAG
-            echo "Uploading with tag: $TAG"
-            gsutil -m cp -a public-read dist/* $GS_PATH
-            # Adjust metadata to give proper filenames for download
-            # (otherwise they are dirname%3Ffilename where %3F is a slash)
-            ls dist -1 | xargs -n 1 -I {} \
-              gsutil setmeta -h 'Content-Disposition: attachment; filename="{}"' $GS_PATH/{}
+      - build_push_browser_container:
+          env: staging
+
+  build_push_browser_production_container:
+    executor: cloud-sdk
+    steps:
+      - build_push_browser_container:
+          env: production
 
   #--------------------------------------------------------------------
   # Docker image building jobs
   #--------------------------------------------------------------------
-  dockerize-ide:
-    docker: *docker-custom-nodejs
+  legacy_dockerize_ide:
+    executor: docker-custom-nodejs
     environment:
       NODE_ENV: production
-      IMAGE_NAME: "xodio/site-ide"
-      PKG: "./packages/xod-client-browser"
+      IMAGE_NAME: 'xodio/site-ide'
+      PKG: './packages/xod-client-browser'
     steps:
-      - checkout
-      - restore_cache: *restore-node_modules
-      - run: *step-install
-      - run: *step-bump-version
+      - prepare
+      - lerna-bump-version-on-prerelease-branch
       - run:
           name: Querying version tag
           command: |
@@ -276,13 +302,13 @@ jobs:
       - persist_to_workspace:
           root: packages/xod-client-browser/image
           paths:
-            - "IMAGE_TAG"
-            - "*.tar"
+            - 'IMAGE_TAG'
+            - '*.tar'
 
   #--------------------------------------------------------------------
   # Docker push
   #--------------------------------------------------------------------
-  push-docker-images:
+  legacy_push_docker_images:
     docker:
       - image: docker
     steps:
@@ -298,6 +324,74 @@ jobs:
             docker login -u xodbot -p $DOCKER_PASS
             docker push $(cat image/IMAGE_TAG)
 
+  #--------------------------------------------------------------------
+  # Distro jobs
+  #--------------------------------------------------------------------
+  legacy_dist_linux:
+    executor: docker-custom-nodejs
+    environment:
+      NODE_ENV: production
+    steps:
+      - prepare: { install_arduino_cli: true }
+      - lerna-bump-version-on-prerelease-branch
+      - run: *step-build-electron
+      - run: *step-dist-electron
+      - run:
+          name: Store version tag
+          command: |
+            PKG=./packages/xod-client-electron
+            QUERY="console.log('v' + require('$PKG/package.json').version)"
+            node -e "$QUERY" > $PKG/dist/TAG
+            echo "Tag set to: $PKG/dist/TAG"
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - TAG
+            - latest-linux.yml
+            - '*.deb'
+            - '*.rpm'
+
+  legacy_dist_macos:
+    executor: macos
+    environment:
+      NODE_ENV: production
+    steps:
+      - prepare: { install_arduino_cli: true }
+      - lerna-bump-version-on-prerelease-branch
+      - run: *step-build-electron
+      - run: *step-dist-electron
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - latest-mac.yml
+            - '*.dmg'
+            - '*.zip'
+
+  #--------------------------------------------------------------------
+  # Upload distros job
+  #--------------------------------------------------------------------
+  legacy_upload_distros:
+    executor: cloud-sdk
+    steps:
+      - attach_workspace:
+          at: dist
+      - run:
+          name: Authenticate GCloud
+          command: |
+            echo "$GOOGLE_CLOUD_STORAGE_CONFIG" | base64 -d > /tmp/gsc.json
+            gcloud auth activate-service-account --key-file /tmp/gsc.json
+      - run:
+          name: Upload to Google Cloud Storage
+          command: |
+            TAG=$(cat dist/TAG)
+            GS_PATH=gs://releases.xod.io/$TAG
+            echo "Uploading with tag: $TAG"
+            gsutil -m cp -a public-read dist/* $GS_PATH
+            # Adjust metadata to give proper filenames for download
+            # (otherwise they are dirname%3Ffilename where %3F is a slash)
+            ls dist -1 | xargs -n 1 -I {} \
+              gsutil setmeta -h 'Content-Disposition: attachment; filename="{}"' $GS_PATH/{}
+
 #==============================================================================
 #
 # Workflows
@@ -305,25 +399,43 @@ jobs:
 #==============================================================================
 workflows:
   version: 2
-  branch:
+  verify_build_publish:
     jobs:
-      - verify-linux
-      - verify-macos
-      - test-cpp
-      - dockerize-ide:
-          filters: *release-filters
-      - push-docker-images:
-          filters: *release-filters
-          requires: [ dockerize-ide, verify-linux, test-cpp ]
-      - dist-linux:
-          filters: *release-filters
-      - dist-macos:
-          filters: *release-filters
-      - upload-distros:
-          filters: *release-filters
-          requires:
-            - verify-linux
-            - verify-macos
-            - test-cpp
-            - dist-linux
-            - dist-macos
+      # tests
+      # - verify_linux
+      # - verify_macos
+      # - test_cpp
+
+      # build browser
+      - build_browser_staging #:
+      # requires: [verify_linux, verify_macos, test_cpp]
+      - build_browser_production #:
+
+        # requires: [verify_linux, verify_macos, test_cpp]
+        # filters: *release-filters
+      # build browser images and push
+      - build_push_browser_staging_container:
+          requires: [build_browser_staging]
+      - build_push_browser_production_container:
+          requires: [build_browser_production]
+      # - legacy_dockerize_ide:
+      #     filters: *release-filters
+      #     requires: [verify_linux]
+      # - legacy_push_docker_images:
+      #     filters: *release-filters
+      #     requires: [ legacy_dockerize_ide, verify_linux, test_cpp ]
+      # - legacy_dist_linux:
+      #     filters: *release-filters
+      #     requires: [verify_linux, test_cpp]
+      # - legacy_dist_macos:
+      #     filters: *release-filters
+      #     requires: [verify_macos, test_cpp]
+      # - legacy_upload_distros:
+      #     filters: *release-filters
+      #     requires:
+      #       - legacy_dist_linux
+      #       - legacy_dist_macos
+# TODO: docker image build fail if version exists
+# TODO: dist fail if version exists
+# CIRCLE_USERNAME=knopki
+# dist store artifacts
