@@ -365,6 +365,7 @@ class ProjectBrowser extends React.Component {
           onPatchDelete={this.props.actions.requestDelete}
           onPatchRename={this.props.actions.requestRename}
           onPatchHelp={this.onPatchHelpClicked}
+          onPatchClone={this.props.actions.clonePatch}
         />
         <ContextMenu id={FILTER_CONTEXT_MENU_ID}>
           <MenuItem onClick={this.props.actions.toggleDeprecatedFilter}>
@@ -408,6 +409,7 @@ ProjectBrowser.propTypes = {
     addPatch: PropTypes.func.isRequired,
     renamePatch: PropTypes.func.isRequired,
     deletePatch: PropTypes.func.isRequired,
+    clonePatch: PropTypes.func.isRequired,
     startDraggingPatch: PropTypes.func.isRequired,
     closeAllPopups: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
@@ -448,6 +450,7 @@ const mapDispatchToProps = dispatch => ({
       addPatch: ProjectActions.addPatch,
       renamePatch: ProjectActions.renamePatch,
       deletePatch: ProjectActions.deletePatch,
+      clonePatch: ProjectActions.clonePatch,
 
       closeAllPopups: PopupActions.hideAllPopups,
 

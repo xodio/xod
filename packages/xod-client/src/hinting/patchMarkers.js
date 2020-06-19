@@ -42,6 +42,9 @@ const doesAnyNodeDeleted = R.allPass([
 ]);
 
 // :: Action -> Boolean
+const doesPatchCloned = R.propEq('type', PAT.PATCH_CLONE);
+
+// :: Action -> Boolean
 export const shallUpdatePatchMarkers = R.anyPass([
   // Update on loading a project
   isLoadingProjectAction,
@@ -53,6 +56,8 @@ export const shallUpdatePatchMarkers = R.anyPass([
   // Without checking for deleting only marker nodes,
   // because it worst by performance
   doesAnyNodeDeleted,
+  // Update on cloning a patch
+  doesPatchCloned,
 ]);
 
 // :: Patch -> PatchMarkers

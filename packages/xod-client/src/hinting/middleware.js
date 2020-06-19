@@ -52,7 +52,7 @@ export default store => next => action => {
     : prevSearchIndex;
   const willUpdateSearchIndex = notEquals(prevSearchIndex, nextSearchIndex);
 
-  // Patch Flags
+  // Patch Markers
   const prevPatchMarkers = getPatchMarkers(newState);
   const nextPatchMarkers = shallUpdatePatchMarkers(action)
     ? getNewPatchMarkers(prevPatchMarkers, newProject, action)

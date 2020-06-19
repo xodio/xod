@@ -175,6 +175,11 @@ export default (state = {}, action) => {
       return explodeEither(XP.rebasePatch(newPatchPath, oldPatchPath, state));
     }
 
+    case AT.PATCH_CLONE: {
+      const { patchPath, originalPatchPath } = action.payload;
+      return explodeEither(XP.clonePatch(originalPatchPath, patchPath, state));
+    }
+
     case AT.PATCH_DELETE: {
       const { patchPath } = action.payload;
 

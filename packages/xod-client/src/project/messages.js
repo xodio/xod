@@ -50,3 +50,8 @@ export const CANT_GET_TOKEN_BECAUSE_OF_WRONG_APIKEY = {
   solution:
     'Open Project Preferences to generate a new API key or enter existing one.',
 };
+
+export const cantCloneNoPatchFound = patchPath => ({
+  title: 'Cannot clone patch',
+  note: `Patch with path "${patchPath}" not found in the project`,
+});
