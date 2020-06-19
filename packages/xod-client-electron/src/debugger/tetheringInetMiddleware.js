@@ -73,6 +73,15 @@ const createListener = (dispatch, transmit, nodeId) =>
 
 const isReadOkResponse = R.startsWith(ACK);
 
+// In case that the connection is closed before than all request has been received
+// there is no reason to continue sending the response data.
+const clearQueueOnCloseConnection = R.curry((dispatch, command) =>
+  R.when(
+    R.equals('AT+CIPCLOSE'),
+    R.compose(dispatch, client.tetheringInetClearChunks)
+  )(command)
+);
+
 export default ({ getState, dispatch }) => next => action => {
   const state = getState();
   const result = next(action);
@@ -86,7 +95,10 @@ export default ({ getState, dispatch }) => next => action => {
     const worker = action.payload.worker;
     const transmit = createTransmitter(dispatch, worker.sendToWasm);
     const listener = createListener(dispatch, transmit, nodeId);
-    const write = AtNet.create(listener);
+    const write = R.compose(
+      AtNet.create(listener),
+      R.tap(clearQueueOnCloseConnection(dispatch))
+    );
     dispatch(
       client.tetheringInetCreated(
         action.payload.tetheringInetNodeId,

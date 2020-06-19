@@ -23,6 +23,7 @@ import {
   TETHERING_INET_CREATED,
   TETHERING_INET_CHUNKS_ADDED,
   TETHERING_INET_CHUNK_SENT,
+  TETHERING_INET_CLEAR_CHUNKS,
 } from './actionTypes';
 
 import * as EAT from '../editor/actionTypes';
@@ -531,6 +532,8 @@ export default (state = initialState, action) => {
         R.tail,
         state
       );
+    case TETHERING_INET_CLEAR_CHUNKS:
+      return R.assocPath(['tetheringInet', 'chunksToSend'], [], state);
 
     case EAT.TABTEST_RUN_REQUESTED:
       return R.compose(
