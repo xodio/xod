@@ -13,6 +13,7 @@ import parseProgressLog from './parseProgressLog';
 const spawn = (bin, args, options) =>
   promisifyChildProcess(crossSpawn(bin, args, options), {
     encoding: 'utf8',
+    maxBuffer: 10 * 1024 * 1024,
   });
 
 const noop = () => {};
