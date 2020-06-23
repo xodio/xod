@@ -518,8 +518,7 @@ export const compile = async (onProgress, cli, payload) => {
           tab: 'compiler',
         }),
       payload.board.fqbn,
-      sketchName,
-      true
+      sketchName
     )
     .catch(wrapCompileError);
 

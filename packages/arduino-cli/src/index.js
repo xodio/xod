@@ -37,7 +37,10 @@ const ArduinoCli = (pathToBin, config = null) => {
   };
 
   const runWithProgress = async (onProgress, args) => {
-    const spawnArgs = R.concat([`--config-file=${configDir}`], args);
+    const spawnArgs = R.compose(
+      R.concat([`--config-file=${configDir}`]),
+      R.reject(R.isEmpty)
+    )(args);
     const proc = spawn(pathToBin, spawnArgs, {
       stdio: ['inherit', 'pipe', 'pipe'],
     });
@@ -94,7 +97,7 @@ const ArduinoCli = (pathToBin, config = null) => {
       runWithProgress(onProgress, [
         'compile',
         `--fqbn=${fqbn}`,
-        `${verbose ? '--verbose' : ''}`,
+        verbose ? '--verbose' : '',
         sketch(sketchName),
       ]),
     upload: (onProgress, port, fqbn, sketchName, verbose = false) =>
@@ -102,7 +105,7 @@ const ArduinoCli = (pathToBin, config = null) => {
         'upload',
         `--fqbn=${fqbn}`,
         `--port=${port}`,
-        `${verbose ? '--verbose' : ''}`,
+        verbose ? '--verbose' : '',
         '-t',
         sketch(sketchName),
       ]),
