@@ -21,8 +21,10 @@ describe('Arduino Cli', () => {
 
   const tmpDir = resolve(__dirname, 'tmp');
   const cfg = {
-    sketchbook_path: resolve(tmpDir, 'sketchbook'),
-    arduino_data: resolve(tmpDir, 'data'),
+    directories: {
+      user: resolve(tmpDir, 'sketchbook'),
+      data: resolve(tmpDir, 'data'),
+    },
   };
 
   describe('Initializes arduino-cli', () => {
@@ -31,15 +33,15 @@ describe('Arduino Cli', () => {
       arduinoCli(PATH_TO_CLI)
         .dumpConfig()
         .then(res => {
-          assert.include(res.sketchbook_path, '/sketchbook');
-          assert.include(res.arduino_data, '/data');
+          assert.include(res.directories.user, '/sketchbook');
+          assert.include(res.directories.data, '/data');
         }));
     it('with custom config', () =>
       arduinoCli(PATH_TO_CLI, cfg)
         .dumpConfig()
         .then(res => {
-          assert.strictEqual(res.sketchbook_path, cfg.sketchbook_path);
-          assert.strictEqual(res.arduino_data, cfg.arduino_data);
+          assert.strictEqual(res.directories.user, cfg.directories.user);
+          assert.strictEqual(res.directories.data, cfg.directories.data);
         }));
   });
 
@@ -49,16 +51,16 @@ describe('Arduino Cli', () => {
       const cli = arduinoCli(PATH_TO_CLI, cfg);
       const curConf = await cli.dumpConfig();
 
-      assert.strictEqual(curConf.sketchbook_path, cfg.sketchbook_path);
-      assert.strictEqual(curConf.arduino_data, cfg.arduino_data);
+      assert.strictEqual(curConf.directories.user, cfg.directories.user);
+      assert.strictEqual(curConf.directories.data, cfg.directories.data);
 
       const newDataDir = resolve(tmpDir, 'newData');
-      const newConf = R.assoc('arduino_data', newDataDir, curConf);
+      const newConf = R.assocPath(['directories', 'data'], newDataDir, curConf);
       cli.updateConfig(newConf);
       const updatedConf = await cli.dumpConfig();
 
-      assert.strictEqual(updatedConf.sketchbook_path, cfg.sketchbook_path);
-      assert.strictEqual(updatedConf.arduino_data, newDataDir);
+      assert.strictEqual(updatedConf.directories.user, cfg.directories.user);
+      assert.strictEqual(updatedConf.directories.data, newDataDir);
 
       return cli;
     });
@@ -83,7 +85,7 @@ describe('Arduino Cli', () => {
         .then(() => cli.core.updateIndex())
         .then(() =>
           fse.pathExists(
-            resolve(cfg.arduino_data, 'package_esp8266com_index.json')
+            resolve(cfg.directories.data, 'package_esp8266com_index.json')
           )
         )
         .then(assert.isTrue);
@@ -102,7 +104,7 @@ describe('Arduino Cli', () => {
       cli.core
         .updateIndex()
         .then(() =>
-          fse.pathExists(resolve(cfg.arduino_data, 'package_index.json'))
+          fse.pathExists(resolve(cfg.directories.data, 'package_index.json'))
         )
         .then(assert.isTrue));
     it('Returns empty list of installed packages', () =>
@@ -121,7 +123,7 @@ describe('Arduino Cli', () => {
         .then(() =>
           fse.pathExists(
             resolve(
-              cfg.arduino_data,
+              cfg.directories.data,
               'packages',
               'arduino',
               'hardware',

@@ -146,6 +146,7 @@ const parseDisableRts = R.compose(
 
 /**
  * Loads `boards.txt` of installed cores and patches Board objects with options.
+ * Normalises 'FQBN' to 'fqbn' for compatability across xod packages.
  *
  * :: Path -> [Core] -> [InstalledBoard | AvailableBoard] -> [InstalledBoard | AvailableBoard]
  */
@@ -170,9 +171,10 @@ export const patchBoardsWithOptions = R.curry(
     );
 
     return R.map(board => {
-      if (!R.has('fqbn', board)) return board;
+      if (!R.has('FQBN', board)) return board;
 
-      const fqbnParts = board.fqbn.split(':');
+      const fqbn = board.FQBN;
+      const fqbnParts = fqbn.split(':');
       const coreId = R.compose(R.join(':'), R.init)(fqbnParts);
       const boardId = R.last(fqbnParts);
 
@@ -192,8 +194,9 @@ export const patchBoardsWithOptions = R.curry(
         {
           options,
           disableRts,
+          fqbn,
         },
-        board
+        R.omit(['FQBN'], board)
       );
     }, boards);
   }

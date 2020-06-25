@@ -5,7 +5,6 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import arduinoCli from 'arduino-cli';
 import { createError } from 'xod-func-tools';
-import * as cpx from 'cpx';
 
 import {
   ARDUINO_LIBRARIES_DIRNAME,
@@ -61,20 +60,16 @@ const getLibsDir = p => path.join(p, ARDUINO_LIBRARIES_DIRNAME);
 const parseExtraTxtContent = R.compose(R.reject(R.isEmpty), R.split(/\r\n|\n/));
 
 // :: Path -> Path -> Promise Path -> Error
-const copy = async (from, to) =>
-  new Promise((resolve, reject) => {
-    cpx.copy(from, to, err => {
-      if (err) return reject(err);
-      return resolve(to);
-    });
+const copy = (from, to) =>
+  fse.pathExists(from).then(exist => {
+    if (exist) return fse.copy(from, to).then(() => to);
+    return fse.ensureDir(to).then(() => to);
   });
-
-const recWildcard = p => path.join(p, '**');
 
 // :: Path -> Path -> Path -> Promise Path Error
 const copyLibraries = async (bundledLibDir, userLibDir, sketchbookLibDir) => {
-  await copy(recWildcard(bundledLibDir), sketchbookLibDir);
-  await copy(recWildcard(userLibDir), sketchbookLibDir);
+  await copy(bundledLibDir, sketchbookLibDir);
+  await copy(userLibDir, sketchbookLibDir);
   return sketchbookLibDir;
 };
 
@@ -137,7 +132,7 @@ const copyPackageIndexes = async (wsBundledPath, wsPackageDir) => {
 const copyLibrariesToSketchbook = async (cli, wsBundledPath, ws) => {
   const sketchbookLibDir = await R.composeP(
     p => path.join(p, ARDUINO_CLI_LIBRARIES_DIRNAME),
-    R.prop('sketchbook_path'),
+    R.path(['directories', 'user']),
     cli.dumpConfig
   )();
   const bundledLibPath = getLibsDir(wsBundledPath);
@@ -338,8 +333,10 @@ export const createCli = async (
   }
 
   const cli = arduinoCli(arduinoCliPath, {
-    arduino_data: packagesDirPath,
-    sketchbook_path: sketchDir,
+    directories: {
+      user: sketchDir,
+      data: packagesDirPath,
+    },
   });
 
   await syncAdditionalPackages(wsPath, cli);
@@ -348,7 +345,7 @@ export const createCli = async (
 };
 
 /**
- * Updates path to the `arduino_data` in the arduino-cli `.cli-config.yml`
+ * Updates path to the `directories.data` in the arduino-cli `arduino-cli.yaml`
  * and prepares `__packages__` directory in the user's workspace if needed.
  *
  * We have to call this function when user changes workspace to make all
@@ -362,7 +359,11 @@ export const switchWorkspace = async (cli, wsBundledPath, newWsPath) => {
     wsBundledPath,
     newWsPath
   );
-  const newConfig = R.assoc('arduino_data', packagesDirPath, oldConfig);
+  const newConfig = R.assocPath(
+    ['directories', 'data'],
+    packagesDirPath,
+    oldConfig
+  );
   const result = cli.updateConfig(newConfig);
   await syncAdditionalPackages(newWsPath, cli);
   return result;
@@ -517,8 +518,7 @@ export const compile = async (onProgress, cli, payload) => {
           tab: 'compiler',
         }),
       payload.board.fqbn,
-      sketchName,
-      true
+      sketchName
     )
     .catch(wrapCompileError);
 
