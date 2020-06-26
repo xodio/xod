@@ -31,6 +31,7 @@ export {
   isJumperPatchPath,
   isBuiltInLibName,
   getExpandedVariadicPatchPath,
+  getSpecializationSuffix,
 } from './internal/patchPathUtils';
 
 // :: String -> Identifier

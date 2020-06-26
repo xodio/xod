@@ -33,6 +33,10 @@ const patchBaseNameRegExp = new RegExp(
   `^${alphanumericWithHypens}${types}${maybeVariadicLevel}$`
 );
 
+const specializationSuffixRegExp = new RegExp(
+  `\\(${alphanumericWithHypensAndCommans}\\)`
+);
+
 const specializationPatchBasenameRegExp = new RegExp(
   `^${alphanumericWithHypens}\\(${alphanumericWithHypensAndCommans}\\)${maybeVariadicLevel}$`
 );
@@ -140,7 +144,15 @@ export const isSpecializationPatchBasename = R.test(
   specializationPatchBasenameRegExp
 );
 
+// :: PatchPath -> Boolean
 export const isExpandedVariadicPatchBasename = R.both(
   R.test(variadicBasenameRegExp),
   isValidPatchBasename
+);
+
+// :: PatchPath -> String
+export const getSpecializationSuffix = R.compose(
+  R.defaultTo(''),
+  R.nth(0),
+  R.match(specializationSuffixRegExp)
 );

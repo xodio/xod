@@ -984,6 +984,22 @@ describe('Project', () => {
         '@/triple': {},
         '@/triple-copy': {},
         '@/triple-copy2': {},
+        '@/over-ten': {},
+        '@/over-ten-copy': {},
+        '@/over-ten-copy2': {},
+        '@/over-ten-copy3': {},
+        '@/over-ten-copy4': {},
+        '@/over-ten-copy5': {},
+        '@/over-ten-copy6': {},
+        '@/over-ten-copy7': {},
+        '@/over-ten-copy8': {},
+        '@/over-ten-copy9': {},
+        '@/over-ten-copy10': {},
+        '@/over-ten-copy11': {},
+        '@/with-spec(color)': {},
+        '@/with-spec-and(color)': {},
+        '@/with-spec-and-copy(color)': {},
+        '@/with-spec-and-copy2(color)': {},
         'another/one/patch': {},
         'another/one/external': {
           nodes: { a: { type: 'another/one/patch' } },
@@ -1017,6 +1033,27 @@ describe('Project', () => {
         assert.equal(
           Project.getClonePatchPath('@/triple-copy2', project),
           '@/triple-copy3'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/over-ten-copy', project),
+          '@/over-ten-copy12'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/over-ten-copy11', project),
+          '@/over-ten-copy12'
+        );
+        // With specialization
+        assert.equal(
+          Project.getClonePatchPath('@/with-spec(color)', project),
+          '@/with-spec-copy(color)'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/with-spec-and(color)', project),
+          '@/with-spec-and-copy3(color)'
+        );
+        assert.equal(
+          Project.getClonePatchPath('@/with-spec-and-copy2(color)', project),
+          '@/with-spec-and-copy3(color)'
         );
       });
     });
