@@ -961,6 +961,7 @@ export const updatePatch = def(
  * - will have a suffix "-copy"
  * - may have an index suffix, such as "-copy2", in case that the project has
  *   one or more patches with the same name and suffix
+ * - may have a specialization suffix after "-copyN", such as "(color)"
  *
  * For example, if User clones "xod/core/clock" patch few times he'll get copies
  * with patch paths:
@@ -970,8 +971,13 @@ export const updatePatch = def(
  */
 export const getClonePatchPath = def(
   'getClonePatchPath :: PatchPath -> Project -> PatchPath',
-  (patchPath, project) =>
-    R.compose(
+  (patchPath, project) => {
+    const specializationSuffix = PatchPathUtils.getSpecializationSuffix(
+      patchPath
+    );
+
+    return R.compose(
+      R.concat(R.__, specializationSuffix),
       newPatchPath =>
         R.compose(
           R.ifElse(
@@ -983,13 +989,16 @@ export const getClonePatchPath = def(
           R.filter(R.compose(R.startsWith(newPatchPath), Patch.getPatchPath)),
           listLocalPatches
         )(project),
-      R.ifElse(
-        R.test(/-copy(\d+)?$/),
-        R.replace(/-copy(\d+)?$/, '-copy'),
-        R.concat(R.__, '-copy')
-      ),
+      // Ensure the patch path ends with `-copy` without specialization suffix
+      // `@/buzz` -> `@/buzz-copy`
+      // `@/buzz-copy` -> `@/buzz-copy`
+      // `@/buzz-copy2` -> `@/buzz-copy`
+      // `@/buzz(color)` -> `@/buzz-copy`
+      // `@/buzz-copy7(color)` -> `@/buzz-copy`
+      R.replace(/(-copy(?:\d+)?)?(\([a-z0-9-]+\))?$/, '-copy'),
       PatchPathUtils.convertToLocalPath
-    )(patchPath)
+    )(patchPath);
+  }
 );
 
 /**
