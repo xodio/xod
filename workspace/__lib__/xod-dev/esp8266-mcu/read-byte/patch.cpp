@@ -12,7 +12,10 @@ void evaluate(Context ctx) {
     if (!isInputDirty<input_READ>(ctx))
         return;
 
-    auto client = getValue<input_SOCK>(ctx);
+    auto socketIdx = getValue<input_SOCK>(ctx);
+    auto inet = getValue<input_INET>(ctx);
+    auto client = inet.sockets[socketIdx];
+
     int b = client->read();
     if (b < 0) {
         emitValue<output_NA>(ctx, 1);

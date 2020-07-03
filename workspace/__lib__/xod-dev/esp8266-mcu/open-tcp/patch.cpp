@@ -17,10 +17,36 @@ struct State {
 // clang-format on
 
 void evaluate(Context ctx) {
+    auto state = getState(ctx);
+
+    if (isSettingUp()) {
+        // Put the pointer to WiFiClient in the sockets array once on the setup
+        auto inet = getValue<input_INET>(ctx);
+        // Find a free index
+        uint8_t socketIdx = 0;
+        uint8_t maxIdx = sizeof(inet.sockets) / sizeof(*inet.sockets);
+        while (socketIdx < maxIdx) {
+            auto curPointer = inet.sockets[socketIdx];
+            if (curPointer == nullptr || curPointer == &state->client) break;
+            socketIdx++;
+        }
+        if (socketIdx >= maxIdx) {
+            // No free sockets available
+            raiseError(ctx);
+        } else {
+            // Store the pointer
+            inet.sockets[socketIdx] = &state->client;
+            // And emit the index and updated INET once
+            emitValue<output_SOCK>(ctx, socketIdx);
+            emitValue<output_INETU0027>(ctx, inet);
+        }
+        return;
+    }
+
     if (!isInputDirty<input_CONN>(ctx))
         return;
 
-    auto serverName = getValue<input_SRV>(ctx);
+    auto serverName = getValue<input_HOST>(ctx);
     auto len = length(serverName);
     char serverNameBuff[len + 1];
     dump(serverName, serverNameBuff);
@@ -28,12 +54,9 @@ void evaluate(Context ctx) {
 
     auto port = getValue<input_PORT>(ctx);
 
-    auto state = getState(ctx);
     if (state->client.connect(serverNameBuff, port)) {
         emitValue<output_DONE>(ctx, 1);
     } else {
         raiseError(ctx);
     }
-
-    emitValue<output_SOCK>(ctx, &state->client);
 }

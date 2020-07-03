@@ -24,6 +24,28 @@
       }
     },
     {
+      "id": "ByOqqS50L",
+      "input": {
+        "nodeId": "S1Dc9S5A8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJMIsjQMQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Bypa5HcRL",
+      "input": {
+        "nodeId": "B1FpqH5AL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "S1Dc9S5A8",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "ByslctGf7",
       "input": {
         "nodeId": "BJN-og_zzm",
@@ -32,6 +54,50 @@
       "output": {
         "nodeId": "B1bRgdMMX",
         "pinKey": "rJRkr0xfX"
+      }
+    },
+    {
+      "id": "HkPezwqAU",
+      "input": {
+        "nodeId": "Byq1fP90U",
+        "pinKey": "rkW8SftM7"
+      },
+      "output": {
+        "nodeId": "rJMIsjQMQ",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Hy-xGvcC8",
+      "input": {
+        "nodeId": "Byq1fP90U",
+        "pinKey": "Bkfix0w5b7"
+      },
+      "output": {
+        "nodeId": "S1lZAxOMfm",
+        "pinKey": "S1nVLAgMX"
+      }
+    },
+    {
+      "id": "HyGxzPq0U",
+      "input": {
+        "nodeId": "rJb-iluMG7",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Byq1fP90U",
+        "pinKey": "HyloeRvqZX"
+      }
+    },
+    {
+      "id": "HyYgGPqR8",
+      "input": {
+        "nodeId": "Byq1fP90U",
+        "pinKey": "BJOL9baMX"
+      },
+      "output": {
+        "nodeId": "HJaAFbTzQ",
+        "pinKey": "__out__"
       }
     },
     {
@@ -112,17 +178,6 @@
       }
     },
     {
-      "id": "ry-M2FMMX",
-      "input": {
-        "nodeId": "rJb-iluMG7",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "S1lZAxOMfm",
-        "pinKey": "S1nVLAgMX"
-      }
-    },
-    {
       "id": "ryM-0xdffX",
       "input": {
         "nodeId": "S1lZAxOMfm",
@@ -135,6 +190,17 @@
     }
   ],
   "nodes": [
+    {
+      "description": "An internet connection",
+      "id": "B1FpqH5AL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 4
+      },
+      "type": "@/output-esp8266-inet"
+    },
     {
       "id": "B1bRgdMMX",
       "position": {
@@ -178,6 +244,15 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "id": "Byq1fP90U",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 3
+      },
+      "type": "@/close"
+    },
+    {
       "id": "H15J-_zMQ",
       "position": {
         "units": "slots",
@@ -192,10 +267,19 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": -1,
+        "x": 0,
         "y": 0
       },
       "type": "xod/net/input-socket"
+    },
+    {
+      "id": "S1Dc9S5A8",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/jumper"
     },
     {
       "id": "S1lZAxOMfm",
@@ -221,7 +305,7 @@
       "label": "INET",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": -1,
         "y": 0
       },
       "type": "@/input-esp8266-inet"

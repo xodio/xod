@@ -24,7 +24,7 @@
     {
       "description": "Send the message",
       "id": "SkLcRqIZm",
-      "label": "SND",
+      "label": "SEND",
       "position": {
         "units": "slots",
         "x": 8,
@@ -33,15 +33,48 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "description": "An internet connection",
+      "id": "SylEIOUcAI",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-w5500-inet"
+    },
+    {
+      "description": "An internet connection",
+      "id": "r1NIOL9AL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-w5500-inet"
+    },
+    {
       "description": "Pulses when the message is successfully  sent",
       "id": "r1NYAqIZ7",
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 5,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "rJW4Iu85CI",
+      "label": "SOCK'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/net/output-socket"
     },
     {
       "description": "A socket",

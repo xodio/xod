@@ -8,12 +8,16 @@
 struct State {
 };
 
-using Type = ESP8266WiFiClass*;
+struct Type {
+  ESP8266WiFiClass* wifi;
+  WiFiClient *sockets[5];
+};
 
 // clang-format off
 {{ GENERATED_CODE }}
 // clang-format on
 
 void evaluate(Context ctx) {
-    emitValue<output_OUT>(ctx, &WiFi);
+    Type inet = { &WiFi, { nullptr, nullptr, nullptr, nullptr, nullptr } };
+    emitValue<output_OUT>(ctx, inet);
 }

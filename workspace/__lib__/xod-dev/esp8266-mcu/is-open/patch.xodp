@@ -16,10 +16,10 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 1,
         "y": 0
       },
-      "type": "@/input-socket"
+      "type": "xod/net/input-socket"
     },
     {
       "description": "Pulses if the connection is open",
@@ -53,6 +53,17 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "ry4YMYoC8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
     }
   ]
 }

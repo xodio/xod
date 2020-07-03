@@ -18,4 +18,5 @@ void evaluate(Context ctx) {
     auto client = EthernetClient(getValue<input_SOCK>(ctx));
     client.stop();
     emitValue<output_DONE>(ctx, 1);
+    emitValue<output_INETU0027>(ctx, getValue<input_INET>(ctx));
 }

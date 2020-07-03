@@ -1,0 +1,91 @@
+{
+  "description": "Read a response from an opened connection as a stream of bytes until it closes",
+  "nodes": [
+    {
+      "id": "H1afbPqRL",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "description": "Begin reading",
+      "id": "HJ-lZwcCL",
+      "label": "BGN",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "HJWaMWvqAL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "description": "Pulses when a new byte is read",
+      "id": "HyEblWwcC8",
+      "label": "RCV",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SJe6MWP9A8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "description": "Pulses when the connection is closed",
+      "id": "SkUWe-w5CL",
+      "label": "CLS",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "r1PXbPqAU",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    },
+    {
+      "description": "The last read byte",
+      "id": "rJXWlZv5CL",
+      "label": "CHAR",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-byte"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"
@@ -29,10 +29,21 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": -0.05,
+        "x": 2,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SJus9S5R8",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-esp8266-inet"
     },
     {
       "description": "An internet connection",
@@ -40,7 +51,7 @@
       "label": "INET",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 0,
         "y": 0
       },
       "type": "@/input-esp8266-inet"

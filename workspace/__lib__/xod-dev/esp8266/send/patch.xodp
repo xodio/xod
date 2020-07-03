@@ -7,7 +7,7 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"
@@ -20,6 +20,17 @@
         "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "A socket",
+      "id": "Bye4zsScCI",
+      "label": "SOCK'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/net/output-socket"
     },
     {
       "description": "Send the message",
@@ -49,10 +60,21 @@
       "label": "INET",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 0,
         "y": 0
       },
       "type": "@/input-esp8266-inet"
+    },
+    {
+      "description": "An internet connection",
+      "id": "r1NzoHcCL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-esp8266-inet"
     },
     {
       "description": "Pulses when the message is successfully sent",
@@ -60,7 +82,7 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": -0.05,
+        "x": 4,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"

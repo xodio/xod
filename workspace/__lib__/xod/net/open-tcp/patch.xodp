@@ -2,42 +2,11 @@
   "description": "Open a TCP connection to the specified server.\n\nPossible errors:\n— Can't open TCP connection",
   "nodes": [
     {
-      "description": "The socket connected",
-      "id": "BkCXYbaMX",
-      "label": "SOCK",
-      "position": {
-        "units": "slots",
-        "x": 2,
-        "y": 2
-      },
-      "type": "xod/net/output-socket"
-    },
-    {
-      "id": "H1MhKxI9Z7",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
-    },
-    {
-      "description": "Pulses when the TCP connection is successfully open",
-      "id": "H1nYg85WQ",
-      "label": "DONE",
-      "position": {
-        "units": "slots",
-        "x": 4,
-        "y": 2
-      },
-      "type": "xod/patch-nodes/output-pulse"
-    },
-    {
       "boundLiterals": {
         "__out__": "80"
       },
       "description": "A destination server port number",
-      "id": "HyPkZLq-m",
+      "id": "B1nXeDc0I",
       "label": "PORT",
       "position": {
         "units": "slots",
@@ -47,30 +16,50 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Pulses when the TCP connection is successfully open",
+      "id": "Bkm3QlDq0L",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
       "description": "An internet connection",
-      "id": "S1NpqHcCL",
+      "id": "H1qQo890U",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "description": "An internet connection",
+      "id": "S1m4sLq0I",
       "label": "INET'",
       "position": {
         "units": "slots",
         "x": 0,
         "y": 2
       },
-      "type": "@/output-esp8266-inet"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
-      "description": "Open the connection",
-      "id": "SJm3Yx85b7",
-      "label": "CONN",
+      "id": "SJ8Kxw5CU",
       "position": {
         "units": "slots",
-        "x": 6,
-        "y": 0
+        "x": 0,
+        "y": 1
       },
-      "type": "xod/patch-nodes/input-pulse"
+      "type": "xod/patch-nodes/abstract"
     },
     {
       "description": "Server name or IP address",
-      "id": "rJhjx85W7",
+      "id": "Sy-hmewq0U",
       "label": "HOST",
       "position": {
         "units": "slots",
@@ -80,15 +69,26 @@
       "type": "xod/patch-nodes/input-string"
     },
     {
-      "description": "An internet connection",
-      "id": "rkofqomfm",
-      "label": "INET",
+      "description": "The socket connected",
+      "id": "SyYjewc0U",
+      "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
+        "y": 2
+      },
+      "type": "@/output-socket"
+    },
+    {
+      "description": "Open the connection",
+      "id": "rJe2XgP9RL",
+      "label": "CONN",
+      "position": {
+        "units": "slots",
+        "x": 6,
         "y": 0
       },
-      "type": "@/input-esp8266-inet"
+      "type": "xod/patch-nodes/input-pulse"
     }
   ]
 }

@@ -24,15 +24,48 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "A socket",
+      "id": "S1lTWGI50I",
+      "label": "SOCK'",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 2
+      },
+      "type": "xod/net/output-socket"
+    },
+    {
       "description": "Send the message",
       "id": "SJf6BU2PKQ",
-      "label": "SND",
+      "label": "SEND",
       "position": {
         "units": "slots",
         "x": 6,
         "y": -0.05
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "Sk6-zIqRU",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 2
+      },
+      "type": "@/output-esp8266-mcu-inet"
+    },
+    {
+      "description": "An internet connection",
+      "id": "r1v-ML9CU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
     },
     {
       "description": "A socket",
@@ -43,7 +76,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-socket"
+      "type": "xod/net/input-socket"
     },
     {
       "id": "rJeprU3vYX",
