@@ -1773,6 +1773,17 @@ describe('Project', () => {
             ['number', 'string'],
             ['pulse']
           ),
+          // specialization for local custom type without specizalization suffix
+          'some/lib/when-either-changes': Helper.createSpecializationPatch(
+            ['some/lib/custom-type', 'string'],
+            ['pulse']
+          ),
+          // wrong specialization for custom type without specizalization suffix
+          // because such specialization should be only for the local custom type
+          'another/lib/when-either-changes': Helper.createSpecializationPatch(
+            ['some/lib/custom-type', 'string'],
+            ['pulse']
+          ),
         },
       });
 
@@ -1789,11 +1800,13 @@ describe('Project', () => {
           'someone/other-lib/when-either-changes(number,string)',
           project
         ),
+        Project.getPatchByPathUnsafe('some/lib/when-either-changes', project),
       ];
       const actual = Project.listAbstractPatchSpecializations(
         Project.getPatchByPathUnsafe('@/when-either-changes', project),
         project
       );
+
       assert.sameMembers(actual, expected);
     });
   });

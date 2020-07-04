@@ -2036,34 +2036,64 @@ describe('Patch', () => {
         );
       });
 
-      it('should check patch basename', () => {
+      it('should check suffix in parens if specialization has custom types from another library', () => {
         Helper.expectEitherError(
-          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(number,string)","abstractPatchPath":"@/default-patch-path"}',
+          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(esp8266-inet,string)","abstractPatchPath":"@/default-patch-path"}',
           Patch.checkSpecializationMatchesAbstraction(
             abstractPatch,
             Helper.createSpecializationPatch(
-              ['number', 'boolean', 'string'],
-              ['number', 'pulse']
+              ['xod-dev/esp8266/esp8266-inet', 'boolean', 'string'],
+              ['xod-dev/esp8266/esp8266-inet', 'pulse']
+            )
+          )
+        );
+        Helper.expectEitherError(
+          'SPECIALIZATION_HAS_WRONG_NAME {"expectedSpecializationBaseName":"default-patch-path(custom-type,esp8266-inet)","abstractPatchPath":"@/default-patch-path"}',
+          Patch.checkSpecializationMatchesAbstraction(
+            abstractPatch,
+            Helper.createSpecializationPatch(
+              ['@/custom-type', 'boolean', 'xod-dev/esp8266/esp8266-inet'],
+              ['@/custom-type', 'pulse']
             )
           )
         );
       });
 
       it('should leave valid patch untouched', () => {
-        const validSpecializationPatch = Patch.setPatchPath(
-          '@/default-patch-path(number,string)',
-          Helper.createSpecializationPatch(
-            ['number', 'boolean', 'string'],
-            ['number', 'pulse']
-          )
-        );
+        const check = (patchPath, inputs, outputs) => {
+          const validSpecializationPatch = Patch.setPatchPath(
+            patchPath,
+            Helper.createSpecializationPatch(inputs, outputs)
+          );
 
-        Helper.expectEitherRight(
-          R.equals(validSpecializationPatch),
-          Patch.checkSpecializationMatchesAbstraction(
-            abstractPatch,
-            validSpecializationPatch
-          )
+          Helper.expectEitherRight(
+            R.equals(validSpecializationPatch),
+            Patch.checkSpecializationMatchesAbstraction(
+              abstractPatch,
+              validSpecializationPatch
+            )
+          );
+        };
+
+        check(
+          '@/default-patch-path(number,string)',
+          ['number', 'boolean', 'string'],
+          ['number', 'pulse']
+        );
+        check(
+          '@/default-patch-path(color,string)',
+          ['xod/color/color', 'boolean', 'string'],
+          ['xod/color/color', 'pulse']
+        );
+        check(
+          '@/default-patch-path',
+          ['@/my-type', 'boolean', 'string'],
+          ['@/my-type', 'pulse']
+        );
+        check(
+          'xod/color/default-patch-path',
+          ['xod/color/color', 'boolean', 'string'],
+          ['xod/color/color', 'pulse']
         );
       });
     });
