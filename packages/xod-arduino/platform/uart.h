@@ -6,7 +6,12 @@
  *
  =============================================================================*/
 
+
+#if ARDUINO_API_VERSION >= 10001
+class arduino::HardwareSerial;
+#else
 class HardwareSerial;
+#endif
 class SoftwareSerial;
 
 namespace xod {

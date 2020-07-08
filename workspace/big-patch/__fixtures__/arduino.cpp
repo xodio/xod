@@ -455,7 +455,12 @@ void* operator new(size_t, T* ptr) noexcept {
  *
  =============================================================================*/
 
+
+#if ARDUINO_API_VERSION >= 10001
+class arduino::HardwareSerial;
+#else
 class HardwareSerial;
+#endif
 class SoftwareSerial;
 
 namespace xod {
@@ -6346,8 +6351,8 @@ xod__core__concat::Node node_126 = {
 xod__core__any::Node node_127 = {
     xod__core__any::State() // state default
 };
-xod__core__cast_to_pulse__boolean::Node node_128 = {
-    xod__core__cast_to_pulse__boolean::State() // state default
+xod__core__pulse_on_true::Node node_128 = {
+    xod__core__pulse_on_true::State() // state default
 };
 xod__core__flip_flop::Node node_129 = {
     node_129_output_MEM, // output MEM default
@@ -6401,8 +6406,8 @@ xod__core__clock::Node node_142 = {
     0, // timeoutAt
     xod__core__clock::State() // state default
 };
-xod__core__cast_to_pulse__boolean::Node node_143 = {
-    xod__core__cast_to_pulse__boolean::State() // state default
+xod__core__pulse_on_true::Node node_143 = {
+    xod__core__pulse_on_true::State() // state default
 };
 xod__core__flip_flop::Node node_144 = {
     node_144_output_MEM, // output MEM default
@@ -8407,7 +8412,7 @@ void runTransaction() {
         }
 
     }
-    { // xod__core__cast_to_pulse__boolean #128
+    { // xod__core__pulse_on_true #128
 
         if (g_transaction.node_128_hasUpstreamError) {
             g_transaction.node_135_hasUpstreamError = true;
@@ -8415,7 +8420,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(128);
 
-            xod__core__cast_to_pulse__boolean::ContextObject ctxObj;
+            xod__core__pulse_on_true::ContextObject ctxObj;
             ctxObj._node = &node_128;
 
             // copy data from upstream nodes into context
@@ -8425,7 +8430,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__cast_to_pulse__boolean::evaluate(&ctxObj);
+            xod__core__pulse_on_true::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_128_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
@@ -8870,7 +8875,7 @@ void runTransaction() {
         }
 
     }
-    { // xod__core__cast_to_pulse__boolean #143
+    { // xod__core__pulse_on_true #143
 
         if (g_transaction.node_143_hasUpstreamError) {
             g_transaction.node_150_hasUpstreamError = true;
@@ -8878,7 +8883,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(143);
 
-            xod__core__cast_to_pulse__boolean::ContextObject ctxObj;
+            xod__core__pulse_on_true::ContextObject ctxObj;
             ctxObj._node = &node_143;
 
             // copy data from upstream nodes into context
@@ -8888,7 +8893,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            xod__core__cast_to_pulse__boolean::evaluate(&ctxObj);
+            xod__core__pulse_on_true::evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
             g_transaction.node_143_isOutputDirty_OUT = ctxObj._isOutputDirty_OUT;
