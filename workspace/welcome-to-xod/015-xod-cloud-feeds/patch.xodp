@@ -1,0 +1,127 @@
+{
+  "comments": [
+    {
+      "content": "Now we’re going to store data in the cloud. In one of the next sections of the tutorial, we’ll retrieve the data and react to it.\n\nYou can see a `cloud-store` node here. This node stores data to your private feed. The feed is log-like storage of your data. The name of the feed is a path, like a path in URL or your filesystem. For example, `bob/smart-home-project/room1/temperature`.\nThe `cloud-store` node prepends the username and project name automatically to the path. That's why we bound the `\"moisture\"` value to the `FEED` input instead of a full path.\n\nThe program is ready, but to make it work, you have to do a few things related to authorization.\n\n## Excercise\n\n1. Log in into your XOD account in the Account Pane (hit View → Toggle Account Pane).\n2. Open Project Preferences (hit Edit → Project Preferences). Ensure that the project has a name and click the \"Generate\" button next to the \"XOD Cloud API Key\" input.\n3. Run a simulation and change the value of a `tweak-number` node several times.\n4. Open the [feeds](https://xod.io/feeds/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) page and check out the data stored in the feed named `YOUR_USERNAME/welcome-to-xod/moisture`.",
+      "id": "S1Xo6Npn8",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": 0
+      },
+      "size": {
+        "height": 7,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "# XOD Cloud Feeds\n\nThe basic Internet-of-Things applications is mostly about collecting some data and storing it in the cloud, or reacting to the data changes.\n\nIt can improve a production process on factories, lower the defect rate, and so on. Also, it integrates into a life of ordinary people: smart fridges, homes, greenhouses, wearable electronics, etc.\n\nSome systems have their servers to collect the data. Still, for the individuals, maintaining such infrastructure is too complicated and expensive. Here comes the [XOD Cloud](https://xod.io/docs/guide/getting-started-with-feeds/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial) service. Using it you can store and retrieve any data.\n\nXOD provides the standard library called `xod-cloud/feeds` to work with cloud feeds easily. It has nodes to store and retrieve data.\n\nYou can see all your stored data at [https://xod.io/feeds/](https://xod.io/feeds/?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)",
+      "id": "SJ9QOpLnU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "size": {
+        "height": 5,
+        "units": "slots",
+        "width": 7
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "BJQitEpnI",
+      "input": {
+        "nodeId": "HyMoFEThU",
+        "pinKey": "BkjI-COLb"
+      },
+      "output": {
+        "nodeId": "Hyg5KV63I",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "BkB0-mRnL",
+      "input": {
+        "nodeId": "SyDrb703I",
+        "pinKey": "r1m2IKiY5r"
+      },
+      "output": {
+        "nodeId": "HyMoFEThU",
+        "pinKey": "ByAIWR_UZ"
+      }
+    },
+    {
+      "id": "HJ5BWXA2I",
+      "input": {
+        "nodeId": "SyDrb703I",
+        "pinKey": "rJfEHhF5r"
+      },
+      "output": {
+        "nodeId": "Hyg5KV63I",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "SkKr-7ChI",
+      "input": {
+        "nodeId": "SyDrb703I",
+        "pinKey": "rJgh8tjF9r"
+      },
+      "output": {
+        "nodeId": "ryCXuTIn8",
+        "pinKey": "SyveJHHBL"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HyMoFEThU",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/core/pulse-on-change"
+    },
+    {
+      "boundLiterals": {
+        "ByfGSDjQE": "1"
+      },
+      "id": "Hyg5KV63I",
+      "position": {
+        "units": "slots",
+        "x": 11,
+        "y": 0
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 2
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "boundLiterals": {
+        "ryZ28tst5B": "\"moisture\""
+      },
+      "id": "SyDrb703I",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod-cloud/feeds/cloud-store"
+    },
+    {
+      "id": "ryCXuTIn8",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/debug/tethering-inet"
+    }
+  ]
+}

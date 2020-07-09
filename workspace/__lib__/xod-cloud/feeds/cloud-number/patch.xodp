@@ -1,0 +1,130 @@
+{
+  "description": "Gets a number value from the feed.",
+  "links": [
+    {
+      "id": "BkoC4ECh8",
+      "input": {
+        "nodeId": "SyWRVVA3I",
+        "pinKey": "r1Z-y-4CnU"
+      },
+      "output": {
+        "nodeId": "H1GSAN40nI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HylJBV0hL",
+      "input": {
+        "nodeId": "SyWRVVA3I",
+        "pinKey": "rkuZJ-NA3U"
+      },
+      "output": {
+        "nodeId": "r1bBAVNAh8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1kkrNR2L",
+      "input": {
+        "nodeId": "HkmBC4V0nU",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyWRVVA3I",
+        "pinKey": "HJrWyb40nL"
+      }
+    },
+    {
+      "id": "SkL1HNR2U",
+      "input": {
+        "nodeId": "BJHJB4R2U",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyWRVVA3I",
+        "pinKey": "SJ2G4N0hU"
+      }
+    },
+    {
+      "id": "r1ARNNR2I",
+      "input": {
+        "nodeId": "SyWRVVA3I",
+        "pinKey": "H1byZERnU"
+      },
+      "output": {
+        "nodeId": "S1rCENRnL",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "BJHJB4R2U",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"my-value\""
+      },
+      "description": "Feed path starting from the project name. The full feed path will be `<username>/<projectname>/<FEED>`",
+      "id": "H1GSAN40nI",
+      "label": "FEED",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Pulses when the value is successfully stored",
+      "id": "HkmBC4V0nU",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Request the value from the cloud",
+      "id": "S1rCENRnL",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SyWRVVA3I",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/cloud-number-custom"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "r1bBAVNAh8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    }
+  ]
+}

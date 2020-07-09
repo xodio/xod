@@ -1,0 +1,277 @@
+{
+  "description": "Gets an external IP using a XOD Cloud API.",
+  "links": [
+    {
+      "id": "B1tuSWrSh8",
+      "input": {
+        "nodeId": "HkWOSWrB28",
+        "pinKey": "Bk5vjCxW7Q"
+      },
+      "output": {
+        "nodeId": "B1OS-rS3I",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "BkldfHBnU",
+      "input": {
+        "nodeId": "rJ8drZHr2I",
+        "pinKey": "r1NYhRDZ7"
+      },
+      "output": {
+        "nodeId": "HJ8vMrS2L",
+        "pinKey": "r1XBwQCWQ"
+      }
+    },
+    {
+      "id": "By0vMrS2U",
+      "input": {
+        "nodeId": "HJ8vMrS2L",
+        "pinKey": "BJYbP7CZm"
+      },
+      "output": {
+        "nodeId": "HkzOS-BrhL",
+        "pinKey": "SkSGwoAZQ"
+      }
+    },
+    {
+      "id": "Byxx_HZrrh8",
+      "input": {
+        "nodeId": "rJ8drZHr2I",
+        "pinKey": "HyvKhAv-7"
+      },
+      "output": {
+        "nodeId": "Hy4_HWHShU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "H1WOfSrn8",
+      "input": {
+        "nodeId": "HJ8vMrS2L",
+        "pinKey": "r1CWwm0b7"
+      },
+      "output": {
+        "nodeId": "HkzOS-BrhL",
+        "pinKey": "SkYZwiRbm"
+      }
+    },
+    {
+      "id": "S1WgOr-SSnI",
+      "input": {
+        "nodeId": "Syv_rWrSn8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rJ8drZHr2I",
+        "pinKey": "S1s7pCDbQ"
+      }
+    },
+    {
+      "id": "r1ourbSBhI",
+      "input": {
+        "nodeId": "HkzOS-BrhL",
+        "pinKey": "B18iIoA-m"
+      },
+      "output": {
+        "nodeId": "HkWOSWrB28",
+        "pinKey": "SkDiRgZQX"
+      }
+    },
+    {
+      "id": "r1y_MrB2U",
+      "input": {
+        "nodeId": "rJ8drZHr2I",
+        "pinKey": "HJi_30PZX"
+      },
+      "output": {
+        "nodeId": "HJ8vMrS2L",
+        "pinKey": "By5Vv7C-7"
+      }
+    },
+    {
+      "id": "rJ0_HWHB28",
+      "input": {
+        "nodeId": "B1XuB-SH3U",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "BJluSWHrhU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJjo-Br3L",
+      "input": {
+        "nodeId": "S1HuBWBS2I",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkWOSWrB28",
+        "pinKey": "SyKDiAgbXQ"
+      }
+    },
+    {
+      "id": "rJm_MHHhU",
+      "input": {
+        "nodeId": "HJ8vMrS2L",
+        "pinKey": "S1a8PX0Wm"
+      },
+      "output": {
+        "nodeId": "Hy4_HWHShU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkquBWSH38",
+      "input": {
+        "nodeId": "HkWOSWrB28",
+        "pinKey": "rkxwo0lWmm"
+      },
+      "output": {
+        "nodeId": "BJluSWHrhU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "ry6_BZrH3U",
+      "input": {
+        "nodeId": "HkzOS-BrhL",
+        "pinKey": "BJhHwoRb7"
+      },
+      "output": {
+        "nodeId": "Hy4_HWHShU",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rynuBbHHhU",
+      "input": {
+        "nodeId": "HkzOS-BrhL",
+        "pinKey": "rklUo8jA-Q"
+      },
+      "output": {
+        "nodeId": "HkWOSWrB28",
+        "pinKey": "rJrPsAgWXm"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "description": "An established internet connection",
+      "id": "B1OS-rS3I",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "B1XuB-SH3U",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Get the external IP.",
+      "id": "BJluSWHrhU",
+      "label": "INIT",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "S1bGvmAWQ": "'\"'"
+      },
+      "id": "HJ8vMrS2L",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 4
+      },
+      "type": "xod/stream/pass-until"
+    },
+    {
+      "boundLiterals": {
+        "HkPwjCgZmX": "\"api.xod.io\"",
+        "SkWvi0lWQ7": "\"/httpbin/ip\""
+      },
+      "id": "HkWOSWrB28",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/net/http-get"
+    },
+    {
+      "boundLiterals": {
+        "rkZ8oIj0-m": "\"origin\":\"\""
+      },
+      "id": "HkzOS-BrhL",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/stream/pass-from-sequence"
+    },
+    {
+      "id": "Hy4_HWHShU",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "description": "Pulses when the IP is received.",
+      "id": "S1HuBWBS2I",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The external IP address.",
+      "id": "Syv_rWrSn8",
+      "label": "IP",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 6
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundLiterals": {
+        "HkAv2Av-X": "15"
+      },
+      "id": "rJ8drZHr2I",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 5
+      },
+      "type": "xod/stream/accumulate-string"
+    }
+  ]
+}

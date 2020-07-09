@@ -217,6 +217,10 @@ public:
                 _serial->print((char)*it);
             }
         }
+        // Ensure the latest line of request sent
+        if (!nextLine) {
+            _serial->println();
+        }
 
         _serial->flush();
 
@@ -276,6 +280,8 @@ public:
         // TODO: MUX
         printPrefix();
         writeCmd(CIPCLOSE, EOL);
+        _connected = false;
+        _pkgSize = 0;
         return readCmd(OK, ERROR) == 1;
     }
 };

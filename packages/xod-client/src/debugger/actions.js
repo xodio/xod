@@ -106,3 +106,7 @@ export const tetheringInetChunkSent = () => (dispatch, getState) => {
   });
   return maybeProp(0, chunksToSend);
 };
+
+export const tetheringInetClearChunks = () => ({
+  type: AT.TETHERING_INET_CLEAR_CHUNKS,
+});

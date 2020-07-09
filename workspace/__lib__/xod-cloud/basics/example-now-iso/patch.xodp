@@ -1,0 +1,80 @@
+{
+  "links": [
+    {
+      "id": "B1G_6NBnI",
+      "input": {
+        "nodeId": "ryZupVrn8",
+        "pinKey": "Sywf6EBhU"
+      },
+      "output": {
+        "nodeId": "SkghDaVShL",
+        "pinKey": "SyveJHHBL"
+      }
+    },
+    {
+      "id": "H1mO64S38",
+      "input": {
+        "nodeId": "ryZupVrn8",
+        "pinKey": "rJlwfT4r2I"
+      },
+      "output": {
+        "nodeId": "Bkm3w6Vr3I",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "ry4uTErnI",
+      "input": {
+        "nodeId": "SkM3va4BhI",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "ryZupVrn8",
+        "pinKey": "r1jBTESnU"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bkm3w6Vr3I",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-pulse"
+    },
+    {
+      "id": "SkM3va4BhI",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "SkghDaVShL",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "id": "ryZupVrn8",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "@/now-iso"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "content": "# Custom Types\n\nIn addition to the primitive data types, XOD has more complicated _custom_ types. Custom types can consist of other types or wrap C++ classes.\n\nConsider custom type values like black boxes that can't do anything on their own. An author of the custom type always puts some nodes which operate on such custom type values. Use these to perform actions on custom type value, query the custom type data, or create and update the custom type values.\n\n## Datetime\n\nOn this patch, you see the `datetime` node, which takes few numbers and outputs a value of a custom type `xod/datetime/datetime`.\n\nThis type contains a so-called POSIX timestamp inside. The `xod/datetime` library provides nodes to manipulate the `datetime` and format it to in arbitrary way.\n\n- The `datetime` node is one of the *type constructors*. Note that the minimum value is 1st January of the 1970 year. It's a starting point of the Unix epoch.\n- The `add-seconds` node shifts the date by adding some number of seconds.\n- The `format-timestamp` node outputs the datetime in the default format.\n\nBind the current time and start the simulation.",
+      "id": "B1DHY9UnL",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "height": 8,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "## Excercise\n\nFormat the same datetime as \"24.03.2019 9:47 am\".\n\n1. Replace `format-timestamp` with the `unpack-datetime` node.\n2. Place an `am-pm` node and link it with the `HOUR` output.\n3. Place `if-else` node, link it with `AM` output and bind strings: \"am\"  for `T` and \"pm\" for `F`.\n4. Construct a new datetime format using `concat` nodes as it is inside the `format-timestamp` node, including the \"am\"/\"pm\" suffix feature. \n\nRun the simulation and check it out.\n\nAdd or subtract some hours using the `tweak-number` node that is already on the patch, to ensure that \"am\" and \"pm\" suffix works.\n\n---\n\nYou'll discover that XOD uses custom types extensivelly. They encapsulate different hardware devices, interfaces, protocols, and so on.\n\nIf you want to learn how to implement your custom type, read the guide: \"[Defining Custom Types](https://xod.io/docs/guide/custom-types/)\".",
+      "id": "H1_-AcInI",
+      "position": {
+        "units": "slots",
+        "x": 17,
+        "y": 0
+      },
+      "size": {
+        "height": 6,
+        "units": "slots",
+        "width": 7
+      }
+    },
+    {
+      "content": "^\nAdd/Subtract hours",
+      "id": "S1rbyi8h8",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      }
+    }
+  ],
+  "links": [
+    {
+      "id": "H1c0s5L2L",
+      "input": {
+        "nodeId": "Bk5TsqI2U",
+        "pinKey": "HJRLHWQw7"
+      },
+      "output": {
+        "nodeId": "HJwCjcL28",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "HyHu2cLh8",
+      "input": {
+        "nodeId": "rkV_hc8hU",
+        "pinKey": "Hy_D4G0JOX"
+      },
+      "output": {
+        "nodeId": "Bk5TsqI2U",
+        "pinKey": "Sk18BWmwX"
+      }
+    },
+    {
+      "id": "Hysaj5I3U",
+      "input": {
+        "nodeId": "Bk5TsqI2U",
+        "pinKey": "Syb8BW7wm"
+      },
+      "output": {
+        "nodeId": "rJM499I3L",
+        "pinKey": "r1ZqKlXPX"
+      }
+    },
+    {
+      "id": "SydCj5Ln8",
+      "input": {
+        "nodeId": "HJwCjcL28",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "Bye0sqL3U",
+        "pinKey": "ByfGSDjQE"
+      }
+    },
+    {
+      "id": "SyqOhq8hI",
+      "input": {
+        "nodeId": "S1Ddh5L2L",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "rkV_hc8hU",
+        "pinKey": "BkvDEzR1Om"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "Bk5TsqI2U",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 3
+      },
+      "type": "xod/datetime/add-seconds"
+    },
+    {
+      "id": "Bye0sqL3U",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 1
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 3
+      },
+      "type": "xod/debug/tweak-number"
+    },
+    {
+      "boundLiterals": {
+        "SJ4zUC_BD1-": "3600"
+      },
+      "id": "HJwCjcL28",
+      "position": {
+        "units": "slots",
+        "x": 10,
+        "y": 2
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "S1Ddh5L2L",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 6
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "boundLiterals": {
+        "r1f2FeXP7": "1",
+        "ryjoteXwm": "1970"
+      },
+      "id": "rJM499I3L",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 0
+      },
+      "type": "xod/datetime/datetime"
+    },
+    {
+      "id": "rkV_hc8hU",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 4
+      },
+      "type": "xod/datetime/format-timestamp"
+    }
+  ]
+}

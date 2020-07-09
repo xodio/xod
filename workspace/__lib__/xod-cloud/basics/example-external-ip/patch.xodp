@@ -1,0 +1,80 @@
+{
+  "links": [
+    {
+      "id": "BJhT-HrnU",
+      "input": {
+        "nodeId": "ByZV6-BShI",
+        "pinKey": "HkXK-dGob"
+      },
+      "output": {
+        "nodeId": "HJtT-SSnU",
+        "pinKey": "Syv_rWrSn8"
+      }
+    },
+    {
+      "id": "rJoTbrB38",
+      "input": {
+        "nodeId": "HJtT-SSnU",
+        "pinKey": "BJluSWHrhU"
+      },
+      "output": {
+        "nodeId": "rkzVpbHr38",
+        "pinKey": "Bkf4BDsmV"
+      }
+    },
+    {
+      "id": "ry5TZBS2I",
+      "input": {
+        "nodeId": "HJtT-SSnU",
+        "pinKey": "B1OS-rS3I"
+      },
+      "output": {
+        "nodeId": "SJx4pbHrn8",
+        "pinKey": "SyveJHHBL"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ByZV6-BShI",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "size": {
+        "height": 1,
+        "units": "slots",
+        "width": 4
+      },
+      "type": "xod/debug/watch"
+    },
+    {
+      "id": "HJtT-SSnU",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "@/external-ip"
+    },
+    {
+      "id": "SJx4pbHrn8",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/debug/tethering-inet"
+    },
+    {
+      "id": "rkzVpbHr38",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/debug/tweak-pulse"
+    }
+  ]
+}

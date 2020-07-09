@@ -1,0 +1,177 @@
+{
+  "description": "Gets a string value from the feed.",
+  "links": [
+    {
+      "id": "HklTWOJT8",
+      "input": {
+        "nodeId": "H1-UnbukaU",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "SkQn4Z_J6U"
+      }
+    },
+    {
+      "id": "HyITZ_JaL",
+      "input": {
+        "nodeId": "SJEpWOkaU",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "ByIcWO1TU"
+      }
+    },
+    {
+      "id": "SJ-C-ukTU",
+      "input": {
+        "nodeId": "H1Cpbuya8",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "rJKwbd16L"
+      }
+    },
+    {
+      "id": "SkR2-OkpL",
+      "input": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "Syz3EWOkp8"
+      },
+      "output": {
+        "nodeId": "HyG82Zd1TL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SyXjDOJ6U",
+      "input": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "HJSqD_yp8"
+      },
+      "output": {
+        "nodeId": "BJZjPOya8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "Syo2ZdJaI",
+      "input": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "ByCnVZu1aL"
+      },
+      "output": {
+        "nodeId": "BkV82bu1a8",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rya3-OJaI",
+      "input": {
+        "nodeId": "HJqhZ_JTU",
+        "pinKey": "ryh34Z_1aU"
+      },
+      "output": {
+        "nodeId": "ryeU2-d16I",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "16"
+      },
+      "description": "The capacity of the string buffer. Defines the maximum length. Must be a constant value. Any changes during program execution will be ignored.",
+      "id": "BJZjPOya8",
+      "label": "CAP",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "An established internet connection",
+      "id": "BkV82bu1a8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "description": "Pulses when the value is successfully stored",
+      "id": "H1-UnbukaU",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Pulses when string reached maximum length and pushed character was ignored",
+      "id": "H1Cpbuya8",
+      "label": "FULL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "id": "HJqhZ_JTU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/cloud-string-custom"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "On Boot"
+      },
+      "description": "Request the value from the cloud",
+      "id": "HyG82Zd1TL",
+      "label": "DO",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "SJEpWOkaU",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "\"my-value\""
+      },
+      "description": "Feed path starting from the project name. The full feed path will be `<username>/<projectname>/<FEED>`",
+      "id": "ryeU2-d16I",
+      "label": "FEED",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    }
+  ]
+}
