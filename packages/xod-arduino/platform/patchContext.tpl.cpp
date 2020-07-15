@@ -175,8 +175,9 @@ template<typename OutputT> void emitValue(Context ctx, typename decltype(getValu
 }
 
 {{#each outputs}}
-void emitValue(Context ctx, typeof_{{ pinKey }} val, identity<output_{{ pinKey }}>) {
-  {{#unless (or (isPulse type) (isConstantType type))}}
+void emitValue(Context ctx, typeof_{{ pinKey }} val, identity<output_{{ pinKey }}>) {{#if (isConstantType type)}}__attribute__((deprecated("No need to emitValue from constant outputs."))) {{/if}}{
+{{#unless (isConstantType type)}}
+  {{#unless (isPulse type)}}
     this->_output_{{ pinKey }} = val;
   {{/unless}}
   {{#if isDirtyable}}
@@ -185,6 +186,7 @@ void emitValue(Context ctx, typeof_{{ pinKey }} val, identity<output_{{ pinKey }
   {{#if ../raisesErrors}}
     {{#if ../isDefer}}if (isEarlyDeferPass()) {{/if}}this->errors.output_{{ pinKey }} = false;
   {{/if}}
+{{/unless}}
 }
 {{/each}}
 

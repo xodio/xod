@@ -1244,13 +1244,12 @@ struct xod_dev__dht__unpack_dht11_device {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
-        ctx->_isOutputDirty_OUT = true;
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) __attribute__((deprecated("No need to emitValue from constant outputs."))) {
     }
 
     void evaluate(Context ctx) {
-        // only to trigger evaluation of downstream nodes
-        emitValue<output_OUT>(ctx, constant_output_OUT);
+        // We don't need to worry about emitting from constant outputs.
+        // Outputs will be always dirty on boot, and then the value will never change anyway.
     }
 
 };

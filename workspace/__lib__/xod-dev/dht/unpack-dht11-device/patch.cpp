@@ -6,6 +6,6 @@ static const uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::por
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    // only to trigger evaluation of downstream nodes
-    emitValue<output_OUT>(ctx, constant_output_OUT);
+    // We don't need to worry about emitting from constant outputs.
+    // Outputs will be always dirty on boot, and then the value will never change anyway.
 }
