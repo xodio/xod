@@ -64,19 +64,19 @@ typedef {{ ns patch }}{{#if (or (containsConstantInputs inputs) (containsTemplat
     {{~#if fromPatch.isConstant~}}
       node_{{ fromNodeId }}_output_{{ fromPinKey }}
     {{~else~}}
-      TypeOfNode{{ fromNodeId }}::constant_output_{{ fromPinKey }}{{!-- // TODO: a proper name? --}}
+      Node_{{ fromNodeId }}::constant_output_{{ fromPinKey }}{{!-- // TODO: a proper name? --}}
     {{~/if~}}
     {{~#unless @last}}, {{/unless}}
   {{~/each~}}
   {{~#if (and (containsConstantInputs inputs) (containsTemplatableCustomTypeInputs inputs))}}, {{/if}}
   {{~#each (templatableCustomTypeInputs inputs)~}}
-    TypeOfNode{{ fromNodeId }}::TypeOf{{ fromPinKey }}
+    Node_{{ fromNodeId }}::typeof_{{ fromPinKey }}
     {{~#unless @last}}, {{/unless}}
   {{~/each~}}
 >
-{{~/if}} TypeOfNode{{ id }};
+{{~/if}} Node_{{ id }};
 {{!-- // TODO: templating goes here --}}
-TypeOfNode{{ id }} node_{{ id }} = TypeOfNode{{ id }}(
+Node_{{ id }} node_{{ id }} = Node_{{ id }}(
 {{~#eachNonPulseOrConstant outputs~}}
   {{ cppValue type value }}
   {{~#unless @last}}, {{/unless}}
@@ -171,7 +171,7 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN({{ id }});
 
-            TypeOfNode{{ id }}::ContextObject ctxObj;
+            Node_{{ id }}::ContextObject ctxObj;
           {{#each inputs}}
             {{#if isDirtyable}}
             ctxObj._isInputDirty_{{ pinKey }} = false;
@@ -206,7 +206,7 @@ void handleDefers() {
             ctxObj._isOutputDirty_{{ pinKey }} = false;
           {{/eachDirtyablePin}}
 
-            TypeOfNode{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
+            Node_{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
 
             {{!--
               // Сlean errors from pulse outputs
@@ -338,7 +338,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN({{ id }});
 
-            TypeOfNode{{ id }}::ContextObject ctxObj;
+            Node_{{ id }}::ContextObject ctxObj;
           {{#if patch.usesNodeId}}
             ctxObj._nodeId = {{ id }};
           {{/if}}
@@ -405,7 +405,7 @@ void runTransaction() {
           {{/eachDirtyablePin}}
 
           {{#if patch.raisesErrors}}
-            TypeOfNode{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
+            Node_{{ id }}::NodeErrors previousErrors = node_{{ id }}.errors;
 
             {{#unless patch.isDefer}}
             {{!--

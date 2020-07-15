@@ -975,7 +975,7 @@ namespace xod {
 template <uint8_t constant_input_PORT>
 struct xod_dev__dht__dht11_device {
 
-    typedef uint8_t TypeOfPORT;
+    typedef uint8_t typeof_PORT;
 
     struct State {
         static const uint8_t port = constant_input_PORT;
@@ -983,23 +983,23 @@ struct xod_dev__dht__dht11_device {
 
     using Type = State*;
 
-    typedef Type TypeOfDEV;
+    typedef Type typeof_DEV;
 
     struct input_PORT { };
     struct output_DEV { };
 
-    static const identity<TypeOfPORT> getValueType(input_PORT) {
-      return identity<TypeOfPORT>();
+    static const identity<typeof_PORT> getValueType(input_PORT) {
+      return identity<typeof_PORT>();
     }
-    static const identity<TypeOfDEV> getValueType(output_DEV) {
-      return identity<TypeOfDEV>();
+    static const identity<typeof_DEV> getValueType(output_DEV) {
+      return identity<typeof_DEV>();
     }
 
-    TypeOfDEV _output_DEV;
+    typeof_DEV _output_DEV;
 
     State state;
 
-    xod_dev__dht__dht11_device (TypeOfDEV output_DEV) {
+    xod_dev__dht__dht11_device (typeof_DEV output_DEV) {
         _output_DEV = output_DEV;
     }
 
@@ -1025,10 +1025,10 @@ struct xod_dev__dht__dht11_device {
                 " output_DEV");
     }
 
-    TypeOfPORT getValue(Context ctx, identity<input_PORT>) {
+    typeof_PORT getValue(Context ctx, identity<input_PORT>) {
         return constant_input_PORT;
     }
-    TypeOfDEV getValue(Context ctx, identity<output_DEV>) {
+    typeof_DEV getValue(Context ctx, identity<output_DEV>) {
         return this->_output_DEV;
     }
 
@@ -1053,7 +1053,7 @@ struct xod_dev__dht__dht11_device {
                 " output_DEV");
     }
 
-    void emitValue(Context ctx, TypeOfDEV val, identity<output_DEV>) {
+    void emitValue(Context ctx, typeof_DEV val, identity<output_DEV>) {
         this->_output_DEV = val;
         ctx->_isOutputDirty_DEV = true;
     }
@@ -1074,15 +1074,15 @@ struct xod_dev__dht__dht11_device {
 namespace xod {
 struct xod__core__continuously {
 
-    typedef Pulse TypeOfTICK;
+    typedef Pulse typeof_TICK;
 
     struct State {
     };
 
     struct output_TICK { };
 
-    static const identity<TypeOfTICK> getValueType(output_TICK) {
-      return identity<TypeOfTICK>();
+    static const identity<typeof_TICK> getValueType(output_TICK) {
+      return identity<typeof_TICK>();
     }
 
     TimeMs timeoutAt = 0;
@@ -1126,7 +1126,7 @@ struct xod__core__continuously {
                 " output_TICK");
     }
 
-    TypeOfTICK getValue(Context ctx, identity<output_TICK>) {
+    typeof_TICK getValue(Context ctx, identity<output_TICK>) {
         return Pulse();
     }
 
@@ -1151,7 +1151,7 @@ struct xod__core__continuously {
                 " output_TICK");
     }
 
-    void emitValue(Context ctx, TypeOfTICK val, identity<output_TICK>) {
+    void emitValue(Context ctx, typeof_TICK val, identity<output_TICK>) {
         ctx->_isOutputDirty_TICK = true;
     }
 
@@ -1168,23 +1168,23 @@ struct xod__core__continuously {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-template <typename TypeOfDEV>
+template <typename typeof_DEV>
 struct xod_dev__dht__unpack_dht11_device {
 
-    typedef uint8_t TypeOfOUT;
+    typedef uint8_t typeof_OUT;
 
     struct State {};
 
-    static const uint8_t constant_output_OUT = remove_pointer<TypeOfDEV>::type::port;
+    static const uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
 
     struct input_DEV { };
     struct output_OUT { };
 
-    static const identity<TypeOfDEV> getValueType(input_DEV) {
-      return identity<TypeOfDEV>();
+    static const identity<typeof_DEV> getValueType(input_DEV) {
+      return identity<typeof_DEV>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
     State state;
@@ -1194,7 +1194,7 @@ struct xod_dev__dht__unpack_dht11_device {
 
     struct ContextObject {
 
-        TypeOfDEV _input_DEV;
+        typeof_DEV _input_DEV;
 
         bool _isOutputDirty_OUT : 1;
     };
@@ -1216,10 +1216,10 @@ struct xod_dev__dht__unpack_dht11_device {
                 " output_OUT");
     }
 
-    TypeOfDEV getValue(Context ctx, identity<input_DEV>) {
+    typeof_DEV getValue(Context ctx, identity<input_DEV>) {
         return ctx->_input_DEV;
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return constant_output_OUT;
     }
 
@@ -1244,7 +1244,7 @@ struct xod_dev__dht__unpack_dht11_device {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
     }
 
@@ -1264,14 +1264,14 @@ namespace xod {
 template <uint8_t constant_input_PORT>
 struct xod_dev__dht__dhtxx_read_raw {
 
-    typedef uint8_t TypeOfPORT;
-    typedef Pulse TypeOfDO;
+    typedef uint8_t typeof_PORT;
+    typedef Pulse typeof_DO;
 
-    typedef Number TypeOfD0;
-    typedef Number TypeOfD1;
-    typedef Number TypeOfD2;
-    typedef Number TypeOfD3;
-    typedef Pulse TypeOfDONE;
+    typedef Number typeof_D0;
+    typedef Number typeof_D1;
+    typedef Number typeof_D2;
+    typedef Number typeof_D3;
+    typedef Pulse typeof_DONE;
 
     struct State {
         bool reading;
@@ -1285,26 +1285,26 @@ struct xod_dev__dht__dhtxx_read_raw {
     struct output_D3 { };
     struct output_DONE { };
 
-    static const identity<TypeOfPORT> getValueType(input_PORT) {
-      return identity<TypeOfPORT>();
+    static const identity<typeof_PORT> getValueType(input_PORT) {
+      return identity<typeof_PORT>();
     }
-    static const identity<TypeOfDO> getValueType(input_DO) {
-      return identity<TypeOfDO>();
+    static const identity<typeof_DO> getValueType(input_DO) {
+      return identity<typeof_DO>();
     }
-    static const identity<TypeOfD0> getValueType(output_D0) {
-      return identity<TypeOfD0>();
+    static const identity<typeof_D0> getValueType(output_D0) {
+      return identity<typeof_D0>();
     }
-    static const identity<TypeOfD1> getValueType(output_D1) {
-      return identity<TypeOfD1>();
+    static const identity<typeof_D1> getValueType(output_D1) {
+      return identity<typeof_D1>();
     }
-    static const identity<TypeOfD2> getValueType(output_D2) {
-      return identity<TypeOfD2>();
+    static const identity<typeof_D2> getValueType(output_D2) {
+      return identity<typeof_D2>();
     }
-    static const identity<TypeOfD3> getValueType(output_D3) {
-      return identity<TypeOfD3>();
+    static const identity<typeof_D3> getValueType(output_D3) {
+      return identity<typeof_D3>();
     }
-    static const identity<TypeOfDONE> getValueType(output_DONE) {
-      return identity<TypeOfDONE>();
+    static const identity<typeof_DONE> getValueType(output_DONE) {
+      return identity<typeof_DONE>();
     }
 
     union NodeErrors {
@@ -1322,14 +1322,14 @@ struct xod_dev__dht__dhtxx_read_raw {
     NodeErrors errors = {};
     TimeMs timeoutAt = 0;
 
-    TypeOfD0 _output_D0;
-    TypeOfD1 _output_D1;
-    TypeOfD2 _output_D2;
-    TypeOfD3 _output_D3;
+    typeof_D0 _output_D0;
+    typeof_D1 _output_D1;
+    typeof_D2 _output_D2;
+    typeof_D3 _output_D3;
 
     State state;
 
-    xod_dev__dht__dhtxx_read_raw (TypeOfD0 output_D0, TypeOfD1 output_D1, TypeOfD2 output_D2, TypeOfD3 output_D3) {
+    xod_dev__dht__dhtxx_read_raw (typeof_D0 output_D0, typeof_D1 output_D1, typeof_D2 output_D2, typeof_D3 output_D3) {
         _output_D0 = output_D0;
         _output_D1 = output_D1;
         _output_D2 = output_D2;
@@ -1376,25 +1376,25 @@ struct xod_dev__dht__dhtxx_read_raw {
                 " output_D0 output_D1 output_D2 output_D3 output_DONE");
     }
 
-    TypeOfPORT getValue(Context ctx, identity<input_PORT>) {
+    typeof_PORT getValue(Context ctx, identity<input_PORT>) {
         return constant_input_PORT;
     }
-    TypeOfDO getValue(Context ctx, identity<input_DO>) {
+    typeof_DO getValue(Context ctx, identity<input_DO>) {
         return Pulse();
     }
-    TypeOfD0 getValue(Context ctx, identity<output_D0>) {
+    typeof_D0 getValue(Context ctx, identity<output_D0>) {
         return this->_output_D0;
     }
-    TypeOfD1 getValue(Context ctx, identity<output_D1>) {
+    typeof_D1 getValue(Context ctx, identity<output_D1>) {
         return this->_output_D1;
     }
-    TypeOfD2 getValue(Context ctx, identity<output_D2>) {
+    typeof_D2 getValue(Context ctx, identity<output_D2>) {
         return this->_output_D2;
     }
-    TypeOfD3 getValue(Context ctx, identity<output_D3>) {
+    typeof_D3 getValue(Context ctx, identity<output_D3>) {
         return this->_output_D3;
     }
-    TypeOfDONE getValue(Context ctx, identity<output_DONE>) {
+    typeof_DONE getValue(Context ctx, identity<output_DONE>) {
         return Pulse();
     }
 
@@ -1423,27 +1423,27 @@ struct xod_dev__dht__dhtxx_read_raw {
                 " output_D0 output_D1 output_D2 output_D3 output_DONE");
     }
 
-    void emitValue(Context ctx, TypeOfD0 val, identity<output_D0>) {
+    void emitValue(Context ctx, typeof_D0 val, identity<output_D0>) {
         this->_output_D0 = val;
         ctx->_isOutputDirty_D0 = true;
         this->errors.output_D0 = false;
     }
-    void emitValue(Context ctx, TypeOfD1 val, identity<output_D1>) {
+    void emitValue(Context ctx, typeof_D1 val, identity<output_D1>) {
         this->_output_D1 = val;
         ctx->_isOutputDirty_D1 = true;
         this->errors.output_D1 = false;
     }
-    void emitValue(Context ctx, TypeOfD2 val, identity<output_D2>) {
+    void emitValue(Context ctx, typeof_D2 val, identity<output_D2>) {
         this->_output_D2 = val;
         ctx->_isOutputDirty_D2 = true;
         this->errors.output_D2 = false;
     }
-    void emitValue(Context ctx, TypeOfD3 val, identity<output_D3>) {
+    void emitValue(Context ctx, typeof_D3 val, identity<output_D3>) {
         this->_output_D3 = val;
         ctx->_isOutputDirty_D3 = true;
         this->errors.output_D3 = false;
     }
-    void emitValue(Context ctx, TypeOfDONE val, identity<output_DONE>) {
+    void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
         this->errors.output_DONE = false;
     }
@@ -1663,17 +1663,17 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__continuously TypeOfNode1;
-TypeOfNode1 node_1 = TypeOfNode1();
+typedef xod__core__continuously Node_1;
+Node_1 node_1 = Node_1();
 
-typedef xod_dev__dht__dht11_device<node_0_output_VAL> TypeOfNode2;
-TypeOfNode2 node_2 = TypeOfNode2({ /* xod-dev/dht/dht11-device */ });
+typedef xod_dev__dht__dht11_device<node_0_output_VAL> Node_2;
+Node_2 node_2 = Node_2({ /* xod-dev/dht/dht11-device */ });
 
-typedef xod_dev__dht__unpack_dht11_device<TypeOfNode2::TypeOfDEV> TypeOfNode3;
-TypeOfNode3 node_3 = TypeOfNode3();
+typedef xod_dev__dht__unpack_dht11_device<Node_2::typeof_DEV> Node_3;
+Node_3 node_3 = Node_3();
 
-typedef xod_dev__dht__dhtxx_read_raw<TypeOfNode3::constant_output_OUT> TypeOfNode4;
-TypeOfNode4 node_4 = TypeOfNode4(0, 0, 0, 0);
+typedef xod_dev__dht__dhtxx_read_raw<Node_3::constant_output_OUT> Node_4;
+Node_4 node_4 = Node_4(0, 0, 0, 0);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
@@ -1731,7 +1731,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(1);
 
-            TypeOfNode1::ContextObject ctxObj;
+            Node_1::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -1754,7 +1754,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(2);
 
-            TypeOfNode2::ContextObject ctxObj;
+            Node_2::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -1777,7 +1777,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(3);
 
-            TypeOfNode3::ContextObject ctxObj;
+            Node_3::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_DEV = node_2._output_DEV;
@@ -1801,7 +1801,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(4);
 
-            TypeOfNode4::ContextObject ctxObj;
+            Node_4::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -1815,7 +1815,7 @@ void runTransaction() {
             ctxObj._isOutputDirty_D3 = false;
             ctxObj._isOutputDirty_DONE = false;
 
-            TypeOfNode4::NodeErrors previousErrors = node_4.errors;
+            Node_4::NodeErrors previousErrors = node_4.errors;
 
             node_4.errors.output_DONE = false;
 

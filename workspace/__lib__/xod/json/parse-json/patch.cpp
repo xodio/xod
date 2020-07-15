@@ -206,7 +206,7 @@ void parse(Context ctx, char c) {
 
     if ((getState(ctx))->hasError) return;
 
-    TypeOfOUT1 parsed = {};
+    typeof_OUT1 parsed = {};
     parsed.state = parserState;
     parsed.character = c;
     emitValue<output_OUT1>(ctx, parsed);

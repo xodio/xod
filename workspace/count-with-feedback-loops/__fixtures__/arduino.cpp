@@ -979,9 +979,9 @@ void loop() {
 namespace xod {
 struct xod__core__cast_to_pulse__boolean {
 
-    typedef Logic TypeOfIN;
+    typedef Logic typeof_IN;
 
-    typedef Pulse TypeOfOUT;
+    typedef Pulse typeof_OUT;
 
     struct State {
       bool state = false;
@@ -990,11 +990,11 @@ struct xod__core__cast_to_pulse__boolean {
     struct input_IN { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN> getValueType(input_IN) {
-      return identity<TypeOfIN>();
+    static const identity<typeof_IN> getValueType(input_IN) {
+      return identity<typeof_IN>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
     State state;
@@ -1004,7 +1004,7 @@ struct xod__core__cast_to_pulse__boolean {
 
     struct ContextObject {
 
-        TypeOfIN _input_IN;
+        typeof_IN _input_IN;
 
         bool _isOutputDirty_OUT : 1;
     };
@@ -1026,10 +1026,10 @@ struct xod__core__cast_to_pulse__boolean {
                 " output_OUT");
     }
 
-    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+    typeof_IN getValue(Context ctx, identity<input_IN>) {
         return ctx->_input_IN;
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return Pulse();
     }
 
@@ -1054,7 +1054,7 @@ struct xod__core__cast_to_pulse__boolean {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
     }
 
@@ -1078,15 +1078,15 @@ struct xod__core__cast_to_pulse__boolean {
 namespace xod {
 struct xod__core__continuously {
 
-    typedef Pulse TypeOfTICK;
+    typedef Pulse typeof_TICK;
 
     struct State {
     };
 
     struct output_TICK { };
 
-    static const identity<TypeOfTICK> getValueType(output_TICK) {
-      return identity<TypeOfTICK>();
+    static const identity<typeof_TICK> getValueType(output_TICK) {
+      return identity<typeof_TICK>();
     }
 
     TimeMs timeoutAt = 0;
@@ -1130,7 +1130,7 @@ struct xod__core__continuously {
                 " output_TICK");
     }
 
-    TypeOfTICK getValue(Context ctx, identity<output_TICK>) {
+    typeof_TICK getValue(Context ctx, identity<output_TICK>) {
         return Pulse();
     }
 
@@ -1155,7 +1155,7 @@ struct xod__core__continuously {
                 " output_TICK");
     }
 
-    void emitValue(Context ctx, TypeOfTICK val, identity<output_TICK>) {
+    void emitValue(Context ctx, typeof_TICK val, identity<output_TICK>) {
         ctx->_isOutputDirty_TICK = true;
     }
 
@@ -1174,15 +1174,15 @@ struct xod__core__continuously {
 namespace xod {
 struct xod__core__boot {
 
-    typedef Pulse TypeOfBOOT;
+    typedef Pulse typeof_BOOT;
 
     struct State {
     };
 
     struct output_BOOT { };
 
-    static const identity<TypeOfBOOT> getValueType(output_BOOT) {
-      return identity<TypeOfBOOT>();
+    static const identity<typeof_BOOT> getValueType(output_BOOT) {
+      return identity<typeof_BOOT>();
     }
 
     State state;
@@ -1212,7 +1212,7 @@ struct xod__core__boot {
                 " output_BOOT");
     }
 
-    TypeOfBOOT getValue(Context ctx, identity<output_BOOT>) {
+    typeof_BOOT getValue(Context ctx, identity<output_BOOT>) {
         return Pulse();
     }
 
@@ -1237,7 +1237,7 @@ struct xod__core__boot {
                 " output_BOOT");
     }
 
-    void emitValue(Context ctx, TypeOfBOOT val, identity<output_BOOT>) {
+    void emitValue(Context ctx, typeof_BOOT val, identity<output_BOOT>) {
         ctx->_isOutputDirty_BOOT = true;
     }
 
@@ -1255,10 +1255,10 @@ struct xod__core__boot {
 namespace xod {
 struct xod__core__any {
 
-    typedef Pulse TypeOfIN1;
-    typedef Pulse TypeOfIN2;
+    typedef Pulse typeof_IN1;
+    typedef Pulse typeof_IN2;
 
-    typedef Pulse TypeOfOUT;
+    typedef Pulse typeof_OUT;
 
     struct State {
     };
@@ -1267,14 +1267,14 @@ struct xod__core__any {
     struct input_IN2 { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN1> getValueType(input_IN1) {
-      return identity<TypeOfIN1>();
+    static const identity<typeof_IN1> getValueType(input_IN1) {
+      return identity<typeof_IN1>();
     }
-    static const identity<TypeOfIN2> getValueType(input_IN2) {
-      return identity<TypeOfIN2>();
+    static const identity<typeof_IN2> getValueType(input_IN2) {
+      return identity<typeof_IN2>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
     State state;
@@ -1307,13 +1307,13 @@ struct xod__core__any {
                 " output_OUT");
     }
 
-    TypeOfIN1 getValue(Context ctx, identity<input_IN1>) {
+    typeof_IN1 getValue(Context ctx, identity<input_IN1>) {
         return Pulse();
     }
-    TypeOfIN2 getValue(Context ctx, identity<input_IN2>) {
+    typeof_IN2 getValue(Context ctx, identity<input_IN2>) {
         return Pulse();
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return Pulse();
     }
 
@@ -1345,7 +1345,7 @@ struct xod__core__any {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
     }
 
@@ -1366,11 +1366,11 @@ struct xod__core__any {
 namespace xod {
 struct xod__core__clock {
 
-    typedef Logic TypeOfEN;
-    typedef Number TypeOfIVAL;
-    typedef Pulse TypeOfRST;
+    typedef Logic typeof_EN;
+    typedef Number typeof_IVAL;
+    typedef Pulse typeof_RST;
 
-    typedef Pulse TypeOfTICK;
+    typedef Pulse typeof_TICK;
 
     struct State {
       TimeMs nextTrig;
@@ -1381,17 +1381,17 @@ struct xod__core__clock {
     struct input_RST { };
     struct output_TICK { };
 
-    static const identity<TypeOfEN> getValueType(input_EN) {
-      return identity<TypeOfEN>();
+    static const identity<typeof_EN> getValueType(input_EN) {
+      return identity<typeof_EN>();
     }
-    static const identity<TypeOfIVAL> getValueType(input_IVAL) {
-      return identity<TypeOfIVAL>();
+    static const identity<typeof_IVAL> getValueType(input_IVAL) {
+      return identity<typeof_IVAL>();
     }
-    static const identity<TypeOfRST> getValueType(input_RST) {
-      return identity<TypeOfRST>();
+    static const identity<typeof_RST> getValueType(input_RST) {
+      return identity<typeof_RST>();
     }
-    static const identity<TypeOfTICK> getValueType(output_TICK) {
-      return identity<TypeOfTICK>();
+    static const identity<typeof_TICK> getValueType(output_TICK) {
+      return identity<typeof_TICK>();
     }
 
     TimeMs timeoutAt = 0;
@@ -1403,8 +1403,8 @@ struct xod__core__clock {
 
     struct ContextObject {
 
-        TypeOfEN _input_EN;
-        TypeOfIVAL _input_IVAL;
+        typeof_EN _input_EN;
+        typeof_IVAL _input_IVAL;
 
         bool _isInputDirty_EN;
         bool _isInputDirty_RST;
@@ -1441,16 +1441,16 @@ struct xod__core__clock {
                 " output_TICK");
     }
 
-    TypeOfEN getValue(Context ctx, identity<input_EN>) {
+    typeof_EN getValue(Context ctx, identity<input_EN>) {
         return ctx->_input_EN;
     }
-    TypeOfIVAL getValue(Context ctx, identity<input_IVAL>) {
+    typeof_IVAL getValue(Context ctx, identity<input_IVAL>) {
         return ctx->_input_IVAL;
     }
-    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+    typeof_RST getValue(Context ctx, identity<input_RST>) {
         return Pulse();
     }
-    TypeOfTICK getValue(Context ctx, identity<output_TICK>) {
+    typeof_TICK getValue(Context ctx, identity<output_TICK>) {
         return Pulse();
     }
 
@@ -1482,7 +1482,7 @@ struct xod__core__clock {
                 " output_TICK");
     }
 
-    void emitValue(Context ctx, TypeOfTICK val, identity<output_TICK>) {
+    void emitValue(Context ctx, typeof_TICK val, identity<output_TICK>) {
         ctx->_isOutputDirty_TICK = true;
     }
 
@@ -1527,12 +1527,12 @@ struct xod__core__clock {
 namespace xod {
 struct xod__core__delay {
 
-    typedef Number TypeOfT;
-    typedef Pulse TypeOfSET;
-    typedef Pulse TypeOfRST;
+    typedef Number typeof_T;
+    typedef Pulse typeof_SET;
+    typedef Pulse typeof_RST;
 
-    typedef Pulse TypeOfDONE;
-    typedef Logic TypeOfACT;
+    typedef Pulse typeof_DONE;
+    typedef Logic typeof_ACT;
 
     struct State {
     };
@@ -1543,35 +1543,35 @@ struct xod__core__delay {
     struct output_DONE { };
     struct output_ACT { };
 
-    static const identity<TypeOfT> getValueType(input_T) {
-      return identity<TypeOfT>();
+    static const identity<typeof_T> getValueType(input_T) {
+      return identity<typeof_T>();
     }
-    static const identity<TypeOfSET> getValueType(input_SET) {
-      return identity<TypeOfSET>();
+    static const identity<typeof_SET> getValueType(input_SET) {
+      return identity<typeof_SET>();
     }
-    static const identity<TypeOfRST> getValueType(input_RST) {
-      return identity<TypeOfRST>();
+    static const identity<typeof_RST> getValueType(input_RST) {
+      return identity<typeof_RST>();
     }
-    static const identity<TypeOfDONE> getValueType(output_DONE) {
-      return identity<TypeOfDONE>();
+    static const identity<typeof_DONE> getValueType(output_DONE) {
+      return identity<typeof_DONE>();
     }
-    static const identity<TypeOfACT> getValueType(output_ACT) {
-      return identity<TypeOfACT>();
+    static const identity<typeof_ACT> getValueType(output_ACT) {
+      return identity<typeof_ACT>();
     }
 
     TimeMs timeoutAt = 0;
 
-    TypeOfACT _output_ACT;
+    typeof_ACT _output_ACT;
 
     State state;
 
-    xod__core__delay (TypeOfACT output_ACT) {
+    xod__core__delay (typeof_ACT output_ACT) {
         _output_ACT = output_ACT;
     }
 
     struct ContextObject {
 
-        TypeOfT _input_T;
+        typeof_T _input_T;
 
         bool _isInputDirty_SET;
         bool _isInputDirty_RST;
@@ -1609,19 +1609,19 @@ struct xod__core__delay {
                 " output_DONE output_ACT");
     }
 
-    TypeOfT getValue(Context ctx, identity<input_T>) {
+    typeof_T getValue(Context ctx, identity<input_T>) {
         return ctx->_input_T;
     }
-    TypeOfSET getValue(Context ctx, identity<input_SET>) {
+    typeof_SET getValue(Context ctx, identity<input_SET>) {
         return Pulse();
     }
-    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+    typeof_RST getValue(Context ctx, identity<input_RST>) {
         return Pulse();
     }
-    TypeOfDONE getValue(Context ctx, identity<output_DONE>) {
+    typeof_DONE getValue(Context ctx, identity<output_DONE>) {
         return Pulse();
     }
-    TypeOfACT getValue(Context ctx, identity<output_ACT>) {
+    typeof_ACT getValue(Context ctx, identity<output_ACT>) {
         return this->_output_ACT;
     }
 
@@ -1653,10 +1653,10 @@ struct xod__core__delay {
                 " output_DONE output_ACT");
     }
 
-    void emitValue(Context ctx, TypeOfDONE val, identity<output_DONE>) {
+    void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
     }
-    void emitValue(Context ctx, TypeOfACT val, identity<output_ACT>) {
+    void emitValue(Context ctx, typeof_ACT val, identity<output_ACT>) {
         this->_output_ACT = val;
         ctx->_isOutputDirty_ACT = true;
     }
@@ -1685,11 +1685,11 @@ struct xod__core__delay {
 namespace xod {
 struct xod__core__count {
 
-    typedef Number TypeOfSTEP;
-    typedef Pulse TypeOfINC;
-    typedef Pulse TypeOfRST;
+    typedef Number typeof_STEP;
+    typedef Pulse typeof_INC;
+    typedef Pulse typeof_RST;
 
-    typedef Number TypeOfOUT;
+    typedef Number typeof_OUT;
 
     struct State {
     };
@@ -1699,30 +1699,30 @@ struct xod__core__count {
     struct input_RST { };
     struct output_OUT { };
 
-    static const identity<TypeOfSTEP> getValueType(input_STEP) {
-      return identity<TypeOfSTEP>();
+    static const identity<typeof_STEP> getValueType(input_STEP) {
+      return identity<typeof_STEP>();
     }
-    static const identity<TypeOfINC> getValueType(input_INC) {
-      return identity<TypeOfINC>();
+    static const identity<typeof_INC> getValueType(input_INC) {
+      return identity<typeof_INC>();
     }
-    static const identity<TypeOfRST> getValueType(input_RST) {
-      return identity<TypeOfRST>();
+    static const identity<typeof_RST> getValueType(input_RST) {
+      return identity<typeof_RST>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
-    TypeOfOUT _output_OUT;
+    typeof_OUT _output_OUT;
 
     State state;
 
-    xod__core__count (TypeOfOUT output_OUT) {
+    xod__core__count (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
     struct ContextObject {
 
-        TypeOfSTEP _input_STEP;
+        typeof_STEP _input_STEP;
 
         bool _isInputDirty_INC;
         bool _isInputDirty_RST;
@@ -1747,16 +1747,16 @@ struct xod__core__count {
                 " output_OUT");
     }
 
-    TypeOfSTEP getValue(Context ctx, identity<input_STEP>) {
+    typeof_STEP getValue(Context ctx, identity<input_STEP>) {
         return ctx->_input_STEP;
     }
-    TypeOfINC getValue(Context ctx, identity<input_INC>) {
+    typeof_INC getValue(Context ctx, identity<input_INC>) {
         return Pulse();
     }
-    TypeOfRST getValue(Context ctx, identity<input_RST>) {
+    typeof_RST getValue(Context ctx, identity<input_RST>) {
         return Pulse();
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return this->_output_OUT;
     }
 
@@ -1788,7 +1788,7 @@ struct xod__core__count {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
         ctx->_isOutputDirty_OUT = true;
     }
@@ -1814,10 +1814,10 @@ struct xod__core__count {
 namespace xod {
 struct xod__core__greater {
 
-    typedef Number TypeOfIN1;
-    typedef Number TypeOfIN2;
+    typedef Number typeof_IN1;
+    typedef Number typeof_IN2;
 
-    typedef Logic TypeOfOUT;
+    typedef Logic typeof_OUT;
 
     //#pragma XOD dirtieness disable
 
@@ -1828,28 +1828,28 @@ struct xod__core__greater {
     struct input_IN2 { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN1> getValueType(input_IN1) {
-      return identity<TypeOfIN1>();
+    static const identity<typeof_IN1> getValueType(input_IN1) {
+      return identity<typeof_IN1>();
     }
-    static const identity<TypeOfIN2> getValueType(input_IN2) {
-      return identity<TypeOfIN2>();
+    static const identity<typeof_IN2> getValueType(input_IN2) {
+      return identity<typeof_IN2>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
-    TypeOfOUT _output_OUT;
+    typeof_OUT _output_OUT;
 
     State state;
 
-    xod__core__greater (TypeOfOUT output_OUT) {
+    xod__core__greater (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
     struct ContextObject {
 
-        TypeOfIN1 _input_IN1;
-        TypeOfIN2 _input_IN2;
+        typeof_IN1 _input_IN1;
+        typeof_IN2 _input_IN2;
 
     };
 
@@ -1870,13 +1870,13 @@ struct xod__core__greater {
                 " output_OUT");
     }
 
-    TypeOfIN1 getValue(Context ctx, identity<input_IN1>) {
+    typeof_IN1 getValue(Context ctx, identity<input_IN1>) {
         return ctx->_input_IN1;
     }
-    TypeOfIN2 getValue(Context ctx, identity<input_IN2>) {
+    typeof_IN2 getValue(Context ctx, identity<input_IN2>) {
         return ctx->_input_IN2;
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return this->_output_OUT;
     }
 
@@ -1901,7 +1901,7 @@ struct xod__core__greater {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
     }
 
@@ -1921,9 +1921,9 @@ struct xod__core__greater {
 namespace xod {
 struct xod__core__cast_to_string__number {
 
-    typedef Number TypeOfIN;
+    typedef Number typeof_IN;
 
-    typedef XString TypeOfOUT;
+    typedef XString typeof_OUT;
 
     //#pragma XOD dirtieness disable
 
@@ -1936,24 +1936,24 @@ struct xod__core__cast_to_string__number {
     struct input_IN { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN> getValueType(input_IN) {
-      return identity<TypeOfIN>();
+    static const identity<typeof_IN> getValueType(input_IN) {
+      return identity<typeof_IN>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
-    TypeOfOUT _output_OUT;
+    typeof_OUT _output_OUT;
 
     State state;
 
-    xod__core__cast_to_string__number (TypeOfOUT output_OUT) {
+    xod__core__cast_to_string__number (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
     struct ContextObject {
 
-        TypeOfIN _input_IN;
+        typeof_IN _input_IN;
 
     };
 
@@ -1974,10 +1974,10 @@ struct xod__core__cast_to_string__number {
                 " output_OUT");
     }
 
-    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+    typeof_IN getValue(Context ctx, identity<input_IN>) {
         return ctx->_input_IN;
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return this->_output_OUT;
     }
 
@@ -2002,7 +2002,7 @@ struct xod__core__cast_to_string__number {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
     }
 
@@ -2025,17 +2025,17 @@ namespace xod {
 template <uint8_t constant_input_RS, uint8_t constant_input_EN, uint8_t constant_input_D4, uint8_t constant_input_D5, uint8_t constant_input_D6, uint8_t constant_input_D7>
 struct xod__common_hardware__text_lcd_16x2 {
 
-    typedef uint8_t TypeOfRS;
-    typedef uint8_t TypeOfEN;
-    typedef uint8_t TypeOfD4;
-    typedef uint8_t TypeOfD5;
-    typedef uint8_t TypeOfD6;
-    typedef uint8_t TypeOfD7;
-    typedef XString TypeOfL1;
-    typedef XString TypeOfL2;
-    typedef Pulse TypeOfUPD;
+    typedef uint8_t typeof_RS;
+    typedef uint8_t typeof_EN;
+    typedef uint8_t typeof_D4;
+    typedef uint8_t typeof_D5;
+    typedef uint8_t typeof_D6;
+    typedef uint8_t typeof_D7;
+    typedef XString typeof_L1;
+    typedef XString typeof_L2;
+    typedef Pulse typeof_UPD;
 
-    typedef Pulse TypeOfDONE;
+    typedef Pulse typeof_DONE;
 
     //#pragma XOD evaluate_on_pin disable
     //#pragma XOD evaluate_on_pin enable input_UPD
@@ -2055,35 +2055,35 @@ struct xod__common_hardware__text_lcd_16x2 {
     struct input_UPD { };
     struct output_DONE { };
 
-    static const identity<TypeOfRS> getValueType(input_RS) {
-      return identity<TypeOfRS>();
+    static const identity<typeof_RS> getValueType(input_RS) {
+      return identity<typeof_RS>();
     }
-    static const identity<TypeOfEN> getValueType(input_EN) {
-      return identity<TypeOfEN>();
+    static const identity<typeof_EN> getValueType(input_EN) {
+      return identity<typeof_EN>();
     }
-    static const identity<TypeOfD4> getValueType(input_D4) {
-      return identity<TypeOfD4>();
+    static const identity<typeof_D4> getValueType(input_D4) {
+      return identity<typeof_D4>();
     }
-    static const identity<TypeOfD5> getValueType(input_D5) {
-      return identity<TypeOfD5>();
+    static const identity<typeof_D5> getValueType(input_D5) {
+      return identity<typeof_D5>();
     }
-    static const identity<TypeOfD6> getValueType(input_D6) {
-      return identity<TypeOfD6>();
+    static const identity<typeof_D6> getValueType(input_D6) {
+      return identity<typeof_D6>();
     }
-    static const identity<TypeOfD7> getValueType(input_D7) {
-      return identity<TypeOfD7>();
+    static const identity<typeof_D7> getValueType(input_D7) {
+      return identity<typeof_D7>();
     }
-    static const identity<TypeOfL1> getValueType(input_L1) {
-      return identity<TypeOfL1>();
+    static const identity<typeof_L1> getValueType(input_L1) {
+      return identity<typeof_L1>();
     }
-    static const identity<TypeOfL2> getValueType(input_L2) {
-      return identity<TypeOfL2>();
+    static const identity<typeof_L2> getValueType(input_L2) {
+      return identity<typeof_L2>();
     }
-    static const identity<TypeOfUPD> getValueType(input_UPD) {
-      return identity<TypeOfUPD>();
+    static const identity<typeof_UPD> getValueType(input_UPD) {
+      return identity<typeof_UPD>();
     }
-    static const identity<TypeOfDONE> getValueType(output_DONE) {
-      return identity<TypeOfDONE>();
+    static const identity<typeof_DONE> getValueType(output_DONE) {
+      return identity<typeof_DONE>();
     }
 
     State state;
@@ -2093,8 +2093,8 @@ struct xod__common_hardware__text_lcd_16x2 {
 
     struct ContextObject {
 
-        TypeOfL1 _input_L1;
-        TypeOfL2 _input_L2;
+        typeof_L1 _input_L1;
+        typeof_L2 _input_L2;
 
         bool _isInputDirty_UPD;
 
@@ -2118,34 +2118,34 @@ struct xod__common_hardware__text_lcd_16x2 {
                 " output_DONE");
     }
 
-    TypeOfRS getValue(Context ctx, identity<input_RS>) {
+    typeof_RS getValue(Context ctx, identity<input_RS>) {
         return constant_input_RS;
     }
-    TypeOfEN getValue(Context ctx, identity<input_EN>) {
+    typeof_EN getValue(Context ctx, identity<input_EN>) {
         return constant_input_EN;
     }
-    TypeOfD4 getValue(Context ctx, identity<input_D4>) {
+    typeof_D4 getValue(Context ctx, identity<input_D4>) {
         return constant_input_D4;
     }
-    TypeOfD5 getValue(Context ctx, identity<input_D5>) {
+    typeof_D5 getValue(Context ctx, identity<input_D5>) {
         return constant_input_D5;
     }
-    TypeOfD6 getValue(Context ctx, identity<input_D6>) {
+    typeof_D6 getValue(Context ctx, identity<input_D6>) {
         return constant_input_D6;
     }
-    TypeOfD7 getValue(Context ctx, identity<input_D7>) {
+    typeof_D7 getValue(Context ctx, identity<input_D7>) {
         return constant_input_D7;
     }
-    TypeOfL1 getValue(Context ctx, identity<input_L1>) {
+    typeof_L1 getValue(Context ctx, identity<input_L1>) {
         return ctx->_input_L1;
     }
-    TypeOfL2 getValue(Context ctx, identity<input_L2>) {
+    typeof_L2 getValue(Context ctx, identity<input_L2>) {
         return ctx->_input_L2;
     }
-    TypeOfUPD getValue(Context ctx, identity<input_UPD>) {
+    typeof_UPD getValue(Context ctx, identity<input_UPD>) {
         return Pulse();
     }
-    TypeOfDONE getValue(Context ctx, identity<output_DONE>) {
+    typeof_DONE getValue(Context ctx, identity<output_DONE>) {
         return Pulse();
     }
 
@@ -2174,7 +2174,7 @@ struct xod__common_hardware__text_lcd_16x2 {
                 " output_DONE");
     }
 
-    void emitValue(Context ctx, TypeOfDONE val, identity<output_DONE>) {
+    void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
     }
 
@@ -2237,9 +2237,9 @@ struct xod__common_hardware__text_lcd_16x2 {
 namespace xod {
 struct xod__core__defer__pulse {
 
-    typedef Pulse TypeOfIN;
+    typedef Pulse typeof_IN;
 
-    typedef Pulse TypeOfOUT;
+    typedef Pulse typeof_OUT;
 
     //#pragma XOD error_catch enable
     //#pragma XOD error_raise enable
@@ -2252,11 +2252,11 @@ struct xod__core__defer__pulse {
     struct input_IN { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN> getValueType(input_IN) {
-      return identity<TypeOfIN>();
+    static const identity<typeof_IN> getValueType(input_IN) {
+      return identity<typeof_IN>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
     union NodeErrors {
@@ -2312,10 +2312,10 @@ struct xod__core__defer__pulse {
                 " output_OUT");
     }
 
-    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+    typeof_IN getValue(Context ctx, identity<input_IN>) {
         return Pulse();
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return Pulse();
     }
 
@@ -2344,7 +2344,7 @@ struct xod__core__defer__pulse {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
         if (isEarlyDeferPass()) this->errors.output_OUT = false;
     }
@@ -2418,9 +2418,9 @@ struct xod__core__defer__pulse {
 namespace xod {
 struct xod__core__defer__boolean {
 
-    typedef Logic TypeOfIN;
+    typedef Logic typeof_IN;
 
-    typedef Logic TypeOfOUT;
+    typedef Logic typeof_OUT;
 
     //#pragma XOD error_catch enable
     //#pragma XOD error_raise enable
@@ -2432,11 +2432,11 @@ struct xod__core__defer__boolean {
     struct input_IN { };
     struct output_OUT { };
 
-    static const identity<TypeOfIN> getValueType(input_IN) {
-      return identity<TypeOfIN>();
+    static const identity<typeof_IN> getValueType(input_IN) {
+      return identity<typeof_IN>();
     }
-    static const identity<TypeOfOUT> getValueType(output_OUT) {
-      return identity<TypeOfOUT>();
+    static const identity<typeof_OUT> getValueType(output_OUT) {
+      return identity<typeof_OUT>();
     }
 
     union NodeErrors {
@@ -2450,18 +2450,18 @@ struct xod__core__defer__boolean {
     NodeErrors errors = {};
     TimeMs timeoutAt = 0;
 
-    TypeOfOUT _output_OUT;
+    typeof_OUT _output_OUT;
 
     State state;
 
-    xod__core__defer__boolean (TypeOfOUT output_OUT) {
+    xod__core__defer__boolean (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
     struct ContextObject {
         uint8_t _error_input_IN;
 
-        TypeOfIN _input_IN;
+        typeof_IN _input_IN;
 
         bool _isOutputDirty_OUT : 1;
     };
@@ -2495,10 +2495,10 @@ struct xod__core__defer__boolean {
                 " output_OUT");
     }
 
-    TypeOfIN getValue(Context ctx, identity<input_IN>) {
+    typeof_IN getValue(Context ctx, identity<input_IN>) {
         return ctx->_input_IN;
     }
-    TypeOfOUT getValue(Context ctx, identity<output_OUT>) {
+    typeof_OUT getValue(Context ctx, identity<output_OUT>) {
         return this->_output_OUT;
     }
 
@@ -2523,7 +2523,7 @@ struct xod__core__defer__boolean {
                 " output_OUT");
     }
 
-    void emitValue(Context ctx, TypeOfOUT val, identity<output_OUT>) {
+    void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
         ctx->_isOutputDirty_OUT = true;
         if (isEarlyDeferPass()) this->errors.output_OUT = false;
@@ -2687,47 +2687,47 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__cast_to_pulse__boolean TypeOfNode0;
-TypeOfNode0 node_0 = TypeOfNode0();
+typedef xod__core__cast_to_pulse__boolean Node_0;
+Node_0 node_0 = Node_0();
 
-typedef xod__core__continuously TypeOfNode7;
-TypeOfNode7 node_7 = TypeOfNode7();
+typedef xod__core__continuously Node_7;
+Node_7 node_7 = Node_7();
 
-typedef xod__core__boot TypeOfNode9;
-TypeOfNode9 node_9 = TypeOfNode9();
+typedef xod__core__boot Node_9;
+Node_9 node_9 = Node_9();
 
-typedef xod__core__any TypeOfNode15;
-TypeOfNode15 node_15 = TypeOfNode15();
+typedef xod__core__any Node_15;
+Node_15 node_15 = Node_15();
 
-typedef xod__core__clock TypeOfNode16;
-TypeOfNode16 node_16 = TypeOfNode16();
+typedef xod__core__clock Node_16;
+Node_16 node_16 = Node_16();
 
-typedef xod__core__delay TypeOfNode17;
-TypeOfNode17 node_17 = TypeOfNode17(false);
+typedef xod__core__delay Node_17;
+Node_17 node_17 = Node_17(false);
 
-typedef xod__core__count TypeOfNode18;
-TypeOfNode18 node_18 = TypeOfNode18(0);
+typedef xod__core__count Node_18;
+Node_18 node_18 = Node_18(0);
 
-typedef xod__core__count TypeOfNode19;
-TypeOfNode19 node_19 = TypeOfNode19(0);
+typedef xod__core__count Node_19;
+Node_19 node_19 = Node_19(0);
 
-typedef xod__core__greater TypeOfNode20;
-TypeOfNode20 node_20 = TypeOfNode20(false);
+typedef xod__core__greater Node_20;
+Node_20 node_20 = Node_20(false);
 
-typedef xod__core__cast_to_string__number TypeOfNode21;
-TypeOfNode21 node_21 = TypeOfNode21(XString());
+typedef xod__core__cast_to_string__number Node_21;
+Node_21 node_21 = Node_21(XString());
 
-typedef xod__core__cast_to_string__number TypeOfNode22;
-TypeOfNode22 node_22 = TypeOfNode22(XString());
+typedef xod__core__cast_to_string__number Node_22;
+Node_22 node_22 = Node_22(XString());
 
-typedef xod__common_hardware__text_lcd_16x2<node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL, node_6_output_VAL> TypeOfNode23;
-TypeOfNode23 node_23 = TypeOfNode23();
+typedef xod__common_hardware__text_lcd_16x2<node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL, node_6_output_VAL> Node_23;
+Node_23 node_23 = Node_23();
 
-typedef xod__core__defer__pulse TypeOfNode24;
-TypeOfNode24 node_24 = TypeOfNode24();
+typedef xod__core__defer__pulse Node_24;
+Node_24 node_24 = Node_24();
 
-typedef xod__core__defer__boolean TypeOfNode25;
-TypeOfNode25 node_25 = TypeOfNode25(false);
+typedef xod__core__defer__boolean Node_25;
+Node_25 node_25 = Node_25(false);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)
 namespace detail {
@@ -2757,7 +2757,7 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN(24);
 
-            TypeOfNode24::ContextObject ctxObj;
+            Node_24::ContextObject ctxObj;
             ctxObj._isInputDirty_IN = false;
 
             ctxObj._error_input_IN = 0;
@@ -2766,7 +2766,7 @@ void handleDefers() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            TypeOfNode24::NodeErrors previousErrors = node_24.errors;
+            Node_24::NodeErrors previousErrors = node_24.errors;
 
             node_24.errors.output_OUT = false;
 
@@ -2811,7 +2811,7 @@ void handleDefers() {
             XOD_TRACE_F("Trigger defer node #");
             XOD_TRACE_LN(25);
 
-            TypeOfNode25::ContextObject ctxObj;
+            Node_25::ContextObject ctxObj;
 
             ctxObj._input_IN = node_20._output_OUT;
 
@@ -2821,7 +2821,7 @@ void handleDefers() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            TypeOfNode25::NodeErrors previousErrors = node_25.errors;
+            Node_25::NodeErrors previousErrors = node_25.errors;
 
             node_25.evaluate(&ctxObj);
 
@@ -2893,7 +2893,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(0);
 
-            TypeOfNode0::ContextObject ctxObj;
+            Node_0::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_25._output_OUT;
@@ -2917,7 +2917,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(7);
 
-            TypeOfNode7::ContextObject ctxObj;
+            Node_7::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2940,7 +2940,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(9);
 
-            TypeOfNode9::ContextObject ctxObj;
+            Node_9::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2966,7 +2966,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(15);
 
-            TypeOfNode15::ContextObject ctxObj;
+            Node_15::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
 
@@ -2992,7 +2992,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(16);
 
-            TypeOfNode16::ContextObject ctxObj;
+            Node_16::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_EN = node_11_output_VAL;
@@ -3024,7 +3024,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(17);
 
-            TypeOfNode17::ContextObject ctxObj;
+            Node_17::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_T = node_8_output_VAL;
@@ -3057,7 +3057,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(18);
 
-            TypeOfNode18::ContextObject ctxObj;
+            Node_18::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_STEP = node_13_output_VAL;
@@ -3088,7 +3088,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(19);
 
-            TypeOfNode19::ContextObject ctxObj;
+            Node_19::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_STEP = node_10_output_VAL;
@@ -3118,7 +3118,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(20);
 
-            TypeOfNode20::ContextObject ctxObj;
+            Node_20::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN1 = node_18._output_OUT;
@@ -3144,7 +3144,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(21);
 
-            TypeOfNode21::ContextObject ctxObj;
+            Node_21::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_18._output_OUT;
@@ -3168,7 +3168,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(22);
 
-            TypeOfNode22::ContextObject ctxObj;
+            Node_22::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_IN = node_19._output_OUT;
@@ -3191,7 +3191,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(23);
 
-            TypeOfNode23::ContextObject ctxObj;
+            Node_23::ContextObject ctxObj;
 
             // copy data from upstream nodes into context
             ctxObj._input_L1 = node_21._output_OUT;
@@ -3216,7 +3216,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(24);
 
-            TypeOfNode24::ContextObject ctxObj;
+            Node_24::ContextObject ctxObj;
 
             ctxObj._error_input_IN = 0;
 
@@ -3228,7 +3228,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            TypeOfNode24::NodeErrors previousErrors = node_24.errors;
+            Node_24::NodeErrors previousErrors = node_24.errors;
 
             node_24.evaluate(&ctxObj);
 
@@ -3267,7 +3267,7 @@ void runTransaction() {
             XOD_TRACE_F("Eval node #");
             XOD_TRACE_LN(25);
 
-            TypeOfNode25::ContextObject ctxObj;
+            Node_25::ContextObject ctxObj;
 
             ctxObj._error_input_IN = 0;
 
@@ -3278,7 +3278,7 @@ void runTransaction() {
             // where it can be modified from `raiseError` and `emitValue`
             ctxObj._isOutputDirty_OUT = false;
 
-            TypeOfNode25::NodeErrors previousErrors = node_25.errors;
+            Node_25::NodeErrors previousErrors = node_25.errors;
 
             node_25.evaluate(&ctxObj);
 

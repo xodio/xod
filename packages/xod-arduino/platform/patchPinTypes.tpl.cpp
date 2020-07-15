@@ -5,7 +5,7 @@
 --}}
 {{#each inputs}}
 {{#unless isTemplatableCustomTypePin}}
-typedef {{ cppType type }} TypeOf{{ pinKey }};
+typedef {{ cppType type }} typeof_{{ pinKey }};
 {{/unless}}
 {{/each}}
 
@@ -16,9 +16,9 @@ typedef {{ cppType type }} TypeOf{{ pinKey }};
 --}}
 {{#each outputs}}
 {{#unless (or isTemplatableCustomTypePin isOutputSelf) }}
-typedef {{ cppType type }} TypeOf{{ pinKey }};
+typedef {{ cppType type }} typeof_{{ pinKey }};
 {{/unless}}
 {{#if (and isTemplatableCustomTypePin shortCirquitInputKey )}}
-typedef TypeOf{{ shortCirquitInputKey  }} TypeOf{{ pinKey }};
+typedef typeof_{{ shortCirquitInputKey  }} typeof_{{ pinKey }};
 {{/if}}
 {{/each}}

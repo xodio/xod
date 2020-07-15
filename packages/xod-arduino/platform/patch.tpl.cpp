@@ -9,7 +9,7 @@ template <
   {{~/each~}}
   {{~#if (and (containsConstantInputs patch.inputs) (containsTemplatableCustomTypeInputs patch.inputs))}}, {{/if}}
   {{~#each (templatableCustomTypeInputs patch.inputs)~}}
-    typename TypeOf{{ pinKey }}
+    typename typeof_{{ pinKey }}
     {{~#unless @last}}, {{/unless}}
   {{~/each~}}
 >

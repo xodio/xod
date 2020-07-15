@@ -448,7 +448,7 @@ export const renderImpl = def('renderImpl :: TPatch -> String', tPatch => {
 
   const parsedImpl = R.compose(
     parseImplementation,
-    R.replace(/ValueType<(input|output)_(...)>::T/g, 'TypeOf$2')
+    R.replace(/ValueType<(input|output)_(...)>::T/g, 'typeof_$2')
   )(patchImpl);
 
   const ctx = R.merge(

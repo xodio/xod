@@ -1,7 +1,7 @@
 
 struct State {};
 
-static const uint8_t constant_output_OUT = remove_pointer<TypeOfDEV>::type::port;
+static const uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
 
 {{ GENERATED_CODE }}
 

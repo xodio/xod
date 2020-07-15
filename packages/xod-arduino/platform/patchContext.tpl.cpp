@@ -2,7 +2,7 @@
 
 {{#each outputs}}
 {{#if isOutputSelf }}
-typedef Type TypeOf{{ pinKey }};
+typedef Type typeof_{{ pinKey }};
 {{/if}}
 {{/each}}
 
@@ -14,13 +14,13 @@ struct output_{{ pinKey }} { };
 {{/each}}
 
 {{#each inputs}}
-static const identity<TypeOf{{ pinKey }}> getValueType(input_{{ pinKey }}) {
-  return identity<TypeOf{{ pinKey }}>();
+static const identity<typeof_{{ pinKey }}> getValueType(input_{{ pinKey }}) {
+  return identity<typeof_{{ pinKey }}>();
 }
 {{/each}}
 {{#each outputs}}
-static const identity<TypeOf{{ pinKey }}> getValueType(output_{{ pinKey }}) {
-  return identity<TypeOf{{ pinKey }}>();
+static const identity<typeof_{{ pinKey }}> getValueType(output_{{ pinKey }}) {
+  return identity<typeof_{{ pinKey }}>();
 }
 {{/each}}
 
@@ -45,14 +45,14 @@ TimeMs timeoutAt = 0;
 {{/if}}
 
 {{#eachNonPulseOrConstant outputs}}
-TypeOf{{ pinKey }} _output_{{ pinKey }};
+typeof_{{ pinKey }} _output_{{ pinKey }};
 {{/eachNonPulseOrConstant}}
 
 State state;
 
 {{ ns this }} (
   {{~#eachNonPulseOrConstant outputs ~}}
-    TypeOf{{ pinKey }} output_{{ pinKey }}{{#unless @last}}, {{/unless ~}}
+    typeof_{{ pinKey }} output_{{ pinKey }}{{#unless @last}}, {{/unless ~}}
   {{/eachNonPulseOrConstant ~}}
 ) {
   {{#eachNonPulseOrConstant outputs}}
@@ -71,7 +71,7 @@ struct ContextObject {
   {{/if}}
 
   {{#eachNonPulseOrConstant inputs}}
-    TypeOf{{ pinKey }} _input_{{ pinKey }};
+    typeof_{{ pinKey }} _input_{{ pinKey }};
   {{/eachNonPulseOrConstant}}
 
   {{#eachDirtyablePin inputs}}
@@ -125,7 +125,7 @@ template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(C
 }
 
 {{#each inputs}}
-TypeOf{{ pinKey }} getValue(Context ctx, identity<input_{{ pinKey }}>) {
+typeof_{{ pinKey }} getValue(Context ctx, identity<input_{{ pinKey }}>) {
 {{#if (isConstantType type)}}
     return constant_input_{{ pinKey }};
 {{else if (isPulse type)}}
@@ -136,7 +136,7 @@ TypeOf{{ pinKey }} getValue(Context ctx, identity<input_{{ pinKey }}>) {
 }
 {{/each}}
 {{#each outputs}}
-TypeOf{{ pinKey }} getValue(Context ctx, identity<output_{{ pinKey }}>) {
+typeof_{{ pinKey }} getValue(Context ctx, identity<output_{{ pinKey }}>) {
 {{#if (isConstantType type)}}
     return constant_output_{{ pinKey }};
 {{else if (isPulse type)}}
@@ -175,7 +175,7 @@ template<typename OutputT> void emitValue(Context ctx, typename decltype(getValu
 }
 
 {{#each outputs}}
-void emitValue(Context ctx, TypeOf{{ pinKey }} val, identity<output_{{ pinKey }}>) {
+void emitValue(Context ctx, typeof_{{ pinKey }} val, identity<output_{{ pinKey }}>) {
   {{#unless (or (isPulse type) (isConstantType type))}}
     this->_output_{{ pinKey }} = val;
   {{/unless}}
