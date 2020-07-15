@@ -417,6 +417,18 @@ void runTransaction() {
             {{/unless}}
           {{/if}}
 
+            {{!--
+              // TODO: Short-circuit all PINNAME -> PINNAME' or only templatable custom types?
+              // (then it will probably require change when computing shortCirquitInputKey)
+            --}}
+          {{#each outputs}}
+            {{#if (and isTemplatableCustomTypePin shortCirquitInputKey )}}
+            if (isSettingUp()) {
+                node_{{ ../id }}.emitValue<Node_{{ ../id }}::output_{{ pinKey }}>(&ctxObj, node_{{ ../id }}.getValue<Node_{{ ../id }}::input_{{ shortCirquitInputKey }}>(&ctxObj));
+            }
+            {{~/if}}
+          {{/each}}
+
             node_{{ id }}.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction

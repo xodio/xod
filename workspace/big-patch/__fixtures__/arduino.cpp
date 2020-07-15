@@ -10965,6 +10965,9 @@ void runTransaction() {
             ctxObj._isOutputDirty_DEVU0027 = false;
             ctxObj._isOutputDirty_ACK = false;
 
+            if (isSettingUp()) {
+                node_201.emitValue<Node_201::output_DEVU0027>(&ctxObj, node_201.getValue<Node_201::input_DEV>(&ctxObj));
+            }
             node_201.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
