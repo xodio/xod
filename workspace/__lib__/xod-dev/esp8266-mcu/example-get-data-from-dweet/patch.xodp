@@ -399,7 +399,7 @@
       "id": "r1F8u4ttm",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 8,
         "y": 9
       },
       "type": "xod/math/map-clip"

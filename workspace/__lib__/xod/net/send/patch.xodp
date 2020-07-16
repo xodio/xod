@@ -1,0 +1,91 @@
+{
+  "description": "Send a message through an opened TCP connection\n\nPossible errors:\n— Can't send the data to the socket",
+  "nodes": [
+    {
+      "description": "Send the message",
+      "id": "HJ-ccxvqCL",
+      "label": "SEND",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Pulses when the message is successfully sent",
+      "id": "HJBc9evqRL",
+      "label": "DONE",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "The message to send",
+      "id": "HyG95lPcRL",
+      "label": "MSG",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "An internet connection",
+      "id": "HymAgP5CL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-t1"
+    },
+    {
+      "description": "A socket",
+      "id": "S1kpxvqR8",
+      "label": "SOCK'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "@/output-socket"
+    },
+    {
+      "id": "SkHagvqR8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/abstract"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SyjTlwc08",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "description": "A socket",
+      "id": "ry_newqA8",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    }
+  ]
+}

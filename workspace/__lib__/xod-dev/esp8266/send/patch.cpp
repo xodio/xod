@@ -24,4 +24,7 @@ void evaluate(Context ctx) {
     } else {
         raiseError(ctx);
     }
+
+    emitValue<output_INETU0027>(ctx, inet);
+    emitValue<output_SOCKU0027>(ctx, getValue<input_SOCK>(ctx));
 }

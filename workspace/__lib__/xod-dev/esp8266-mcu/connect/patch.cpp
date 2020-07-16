@@ -55,8 +55,9 @@ void evaluate(Context ctx) {
             }
         } else {
             emitValue<output_DONE>(ctx, true);
-            // DEV and INET are both actually just a pointer to WiFi from ESP8266WiFi.h
-            emitValue<output_INET>(ctx, (ValueType<output_INET>::T)device);
+            ValueType<output_INET>::T inet;
+            inet.wifi = device;
+            emitValue<output_INET>(ctx, inet);
         }
     }
 }

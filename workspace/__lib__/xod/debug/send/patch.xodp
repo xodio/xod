@@ -7,10 +7,21 @@
       "label": "SEND",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 6,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "H1z958cA8",
+      "label": "SOCK'",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/net/output-socket"
     },
     {
       "description": "The message to send",
@@ -18,10 +29,21 @@
       "label": "MSG",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "A socket",
+      "id": "HyOYqU5RU",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/net/input-socket"
     },
     {
       "id": "SJ5GRPArL",
@@ -69,7 +91,7 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 4,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"

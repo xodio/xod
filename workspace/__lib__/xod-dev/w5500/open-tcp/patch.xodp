@@ -7,7 +7,7 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 4,
+        "x": 7,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
@@ -18,7 +18,7 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 1,
+        "x": 4,
         "y": 2
       },
       "type": "xod/net/output-socket"
@@ -51,7 +51,7 @@
       },
       "description": "Server name",
       "id": "S10pBvSb7",
-      "label": "SRV",
+      "label": "HOST",
       "position": {
         "units": "slots",
         "x": 4,
@@ -67,6 +67,17 @@
         "y": 1
       },
       "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SkOZ_8q0U",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-w5500-inet"
     },
     {
       "boundLiterals": {

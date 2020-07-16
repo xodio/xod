@@ -1139,7 +1139,6 @@ export const listAbstractPatchSpecializations = def(
   'listAbstractPatchSpecializations :: Patch -> Project -> [Patch]',
   (abstractPatch, project) => {
     const expectedBaseNameStart = R.compose(
-      name => `${name}(`,
       PatchPathUtils.getBaseName,
       Patch.getPatchPath
     )(abstractPatch);

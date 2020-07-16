@@ -52,7 +52,7 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"
@@ -63,7 +63,7 @@
       "label": "INET",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 0,
         "y": 0
       },
       "type": "@/input-esp8266-inet"

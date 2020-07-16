@@ -2,6 +2,17 @@
   "description": "Open a TCP connection to the specified server\n\nPossible errors:\n— Can't open TCP connection",
   "nodes": [
     {
+      "description": "An internet connection",
+      "id": "BkytZ89AU",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-esp8266-mcu-inet"
+    },
+    {
       "description": "Open the connection",
       "id": "ByZE6AjDt7",
       "label": "CONN",
@@ -27,10 +38,10 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 3,
         "y": 2
       },
-      "type": "@/output-socket"
+      "type": "xod/net/output-socket"
     },
     {
       "description": "An internet connection",
@@ -49,7 +60,7 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 3,
+        "x": 6,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
@@ -74,7 +85,7 @@
       },
       "description": "Server name",
       "id": "ryQ46CovFm",
-      "label": "SRV",
+      "label": "HOST",
       "position": {
         "units": "slots",
         "x": 3,

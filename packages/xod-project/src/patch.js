@@ -1698,27 +1698,40 @@ export const checkSpecializationMatchesAbstraction = def(
     const abstractPatchBaseName = R.compose(getBaseName, getPatchPath)(
       abstractPatch
     );
-    const expectedSpecializationBaseName = R.compose(
-      getSpecializationPatchPath(abstractPatchBaseName),
+
+    const specializationTypes = R.compose(
       R.map(R.nth(1)),
       R.sortBy(R.head),
       R.toPairs,
       // something like { t1: 'number', t2: 'string', etc }
-      R.map(
-        R.pipe(
-          R.head,
-          R.nth(1),
-          Pin.getPinType,
-          normalizeTypeNameForAbstractsResolution
-        )
-      ),
+      R.map(R.pipe(R.head, R.nth(1), Pin.getPinType)),
       R.groupBy(R.pipe(R.nth(0), Pin.getPinType))
     )(genericPinPairs);
+
+    const specializationPatchLibrary = R.compose(getLibraryName, getPatchPath)(
+      specializationPatch
+    );
+    const typeInTheSameLibrary = R.compose(
+      R.all(R.equals(specializationPatchLibrary)),
+      R.map(getLibraryName),
+      R.reject(Utils.isBuiltInType)
+    )(specializationTypes);
+
+    const expectedSpecializationBaseName = R.compose(
+      getSpecializationPatchPath(abstractPatchBaseName),
+      R.map(normalizeTypeNameForAbstractsResolution)
+    )(specializationTypes);
     const actualSpecializationBaseName = R.compose(getBaseName, getPatchPath)(
       specializationPatch
     );
 
-    if (expectedSpecializationBaseName !== actualSpecializationBaseName) {
+    if (
+      !(
+        typeInTheSameLibrary &&
+        actualSpecializationBaseName === abstractPatchBaseName
+      ) &&
+      expectedSpecializationBaseName !== actualSpecializationBaseName
+    ) {
       return fail('SPECIALIZATION_HAS_WRONG_NAME', {
         expectedSpecializationBaseName,
         abstractPatchPath,

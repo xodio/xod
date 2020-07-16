@@ -132,14 +132,25 @@ const findOrCreateSpecialization = R.curry(
     const expectedSpecializationName = R.compose(
       PPU.getSpecializationPatchPath(PPU.getBaseName(genericNodeType)),
       R.map(PPU.normalizeTypeNameForAbstractsResolution),
-      R.map(R.nth(1))
+      R.pluck(1)
+    )(deducedTypesForGenericPins);
+
+    const genericBaseName = R.compose(PPU.getLocalPath, PPU.getBaseName)(
+      genericNodeType
+    );
+    const customTypeSpecializationNodesWithoutSuffix = R.compose(
+      R.map(library => PPU.resolvePatchPath(genericBaseName, library)),
+      R.reject(Utils.isBuiltInType),
+      R.pluck(1)
     )(deducedTypesForGenericPins);
 
     const matchingSpecializations = R.compose(
       R.filter(
         R.compose(
-          R.equals(expectedSpecializationName),
-          PPU.getBaseName,
+          R.either(
+            R.compose(R.equals(expectedSpecializationName), PPU.getBaseName),
+            R.contains(R.__, customTypeSpecializationNodesWithoutSuffix)
+          ),
           Patch.getPatchPath
         )
       ),

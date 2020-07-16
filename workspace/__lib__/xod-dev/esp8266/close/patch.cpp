@@ -15,4 +15,5 @@ void evaluate(Context ctx) {
     auto inet = getValue<input_INET>(ctx);
     inet.wifi->releaseTCP();
     emitValue<output_DONE>(ctx, 1);
+    emitValue<output_INETU0027>(ctx, inet);
 }

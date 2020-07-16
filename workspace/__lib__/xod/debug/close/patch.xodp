@@ -7,7 +7,7 @@
       "label": "DONE",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
         "y": 2
       },
       "type": "xod/patch-nodes/output-pulse"
@@ -41,10 +41,21 @@
       "label": "SOCK",
       "position": {
         "units": "slots",
-        "x": 0,
+        "x": 2,
         "y": 0
       },
       "type": "xod/net/input-socket"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SkTjFL5CU",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "@/output-tethering-inet"
     },
     {
       "id": "SyGQPWOAB8",
@@ -61,7 +72,7 @@
       "label": "INET",
       "position": {
         "units": "slots",
-        "x": 2,
+        "x": 0,
         "y": 0
       },
       "type": "@/input-tethering-inet"

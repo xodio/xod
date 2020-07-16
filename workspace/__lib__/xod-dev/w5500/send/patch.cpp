@@ -1,5 +1,5 @@
 #pragma XOD evaluate_on_pin disable
-#pragma XOD evaluate_on_pin enable input_SND
+#pragma XOD evaluate_on_pin enable input_SEND
 #pragma XOD error_raise enable
 
 {{#global}}
@@ -13,10 +13,11 @@ struct State {
 {{ GENERATED_CODE }}
 
 void evaluate(Context ctx) {
-    if (!isInputDirty<input_SND>(ctx))
+    if (!isInputDirty<input_SEND>(ctx))
         return;
 
-    auto client = EthernetClient(getValue<input_SOCK>(ctx));
+    auto socket = getValue<input_SOCK>(ctx);
+    auto client = EthernetClient(socket);
     auto msg = getValue<input_MSG>(ctx);
 
     size_t lastWriteSize;
@@ -32,4 +33,6 @@ void evaluate(Context ctx) {
     client.flush();
 
     emitValue<output_DONE>(ctx, 1);
+    emitValue<output_SOCKU0027>(ctx, socket);
+    emitValue<output_SOCKU0027>(ctx, getValue<input_INET>(ctx));
 }

@@ -68,6 +68,17 @@
       }
     },
     {
+      "id": "HJevSOI90I",
+      "input": {
+        "nodeId": "SJvBOIqAL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hkz7dI5CU",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Hk64m6uvfm",
       "input": {
         "nodeId": "HJfVXa_vMX",
@@ -145,6 +156,17 @@
       }
     },
     {
+      "id": "SkgSSuI9AL",
+      "input": {
+        "nodeId": "HJfVXa_vMX",
+        "pinKey": "r1kAPUqCU"
+      },
+      "output": {
+        "nodeId": "H1HHOLq0I",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "SyxgNm6uDfQ",
       "input": {
         "nodeId": "r1uVX6OvMm",
@@ -163,6 +185,17 @@
       },
       "output": {
         "nodeId": "r1hbfSmNX",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rkvVdUqRL",
+      "input": {
+        "nodeId": "H1eGQOLqRI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hkz7dI5CU",
         "pinKey": "__out__"
       }
     },
@@ -240,6 +273,27 @@
       "type": "xod/patch-nodes/from-bus"
     },
     {
+      "id": "H1HHOLq0I",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 4
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "description": "An internet connection",
+      "id": "H1eGQOLqRI",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 6
+      },
+      "type": "@/output-w5500-inet"
+    },
+    {
       "id": "HJfVXa_vMX",
       "position": {
         "units": "slots",
@@ -247,6 +301,17 @@
         "y": 5
       },
       "type": "@/close"
+    },
+    {
+      "description": "An internet connection",
+      "id": "Hkz7dI5CU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-w5500-inet"
     },
     {
       "id": "S1rzGSQ47",
@@ -275,6 +340,16 @@
         "y": 4
       },
       "type": "xod/core/any"
+    },
+    {
+      "id": "SJvBOIqAL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
     },
     {
       "id": "SkVmp_wMQ",

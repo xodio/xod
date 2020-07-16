@@ -2,17 +2,6 @@
   "description": "Performs an HTTP request and returns the response as a stream of characters\n\nPossible errors:\n— Can't open TCP connection\n— Can't send data to the socket",
   "links": [
     {
-      "id": "B1KLlAk8L",
-      "input": {
-        "nodeId": "rkeeIZe0yIL",
-        "pinKey": "__in__"
-      },
-      "output": {
-        "nodeId": "H1BUlCyL8",
-        "pinKey": "B1eXvb_0BL"
-      }
-    },
-    {
       "id": "B1NVe01LI",
       "input": {
         "nodeId": "SyMElAyU8",
@@ -90,17 +79,6 @@
       }
     },
     {
-      "id": "H1BZWRyII",
-      "input": {
-        "nodeId": "H1BUlCyL8",
-        "pinKey": "SJNmmuCSL"
-      },
-      "output": {
-        "nodeId": "S1l7lR1IL",
-        "pinKey": "H1R1Q_Rr8"
-      }
-    },
-    {
       "id": "H1UElAyII",
       "input": {
         "nodeId": "SyMElAyU8",
@@ -131,17 +109,6 @@
       "output": {
         "nodeId": "S1pUZl01IL",
         "pinKey": "__out__"
-      }
-    },
-    {
-      "id": "HkOIlC18L",
-      "input": {
-        "nodeId": "H1BUlCyL8",
-        "pinKey": "By-QPWu0SU"
-      },
-      "output": {
-        "nodeId": "SJQHgAJUI",
-        "pinKey": "BkbBTWVYHI"
       }
     },
     {
@@ -244,14 +211,36 @@
       }
     },
     {
-      "id": "ryUUxCkUU",
+      "id": "rkjxsL9AU",
       "input": {
-        "nodeId": "H1BUlCyL8",
-        "pinKey": "rkX7PWORrU"
+        "nodeId": "SyMElAyU8",
+        "pinKey": "HyOYqU5RU"
+      },
+      "output": {
+        "nodeId": "S1l7lR1IL",
+        "pinKey": "H1R1Q_Rr8"
+      }
+    },
+    {
+      "id": "ry2liL9RL",
+      "input": {
+        "nodeId": "SJQHgAJUI",
+        "pinKey": "H1n75UqAI"
+      },
+      "output": {
+        "nodeId": "SyMElAyU8",
+        "pinKey": "H1z958cA8"
+      }
+    },
+    {
+      "id": "ryL-oI9RU",
+      "input": {
+        "nodeId": "rkeeIZe0yIL",
+        "pinKey": "__in__"
       },
       "output": {
         "nodeId": "SJQHgAJUI",
-        "pinKey": "B1HaWEtH8"
+        "pinKey": "BkbBTWVYHI"
       }
     }
   ],
@@ -295,15 +284,6 @@
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
-    },
-    {
-      "id": "H1BUlCyL8",
-      "position": {
-        "units": "slots",
-        "x": 11,
-        "y": 4
-      },
-      "type": "@/close"
     },
     {
       "boundLiterals": {
@@ -357,7 +337,7 @@
       "id": "SJQHgAJUI",
       "position": {
         "units": "slots",
-        "x": 7,
+        "x": 8,
         "y": 4
       },
       "type": "@/receive"

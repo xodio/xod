@@ -22,6 +22,17 @@
       "type": "xod/patch-nodes/output-pulse"
     },
     {
+      "description": "An internet connection",
+      "id": "SJVrb8cCU",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
+    },
+    {
       "description": "A socket",
       "id": "SJiGWTPKm",
       "label": "SOCK",
@@ -30,7 +41,18 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-socket"
+      "type": "xod/net/input-socket"
+    },
+    {
+      "description": "An internet connection",
+      "id": "r18LZIqCL",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 2
+      },
+      "type": "@/output-esp8266-mcu-inet"
     },
     {
       "description": "Close the connection",

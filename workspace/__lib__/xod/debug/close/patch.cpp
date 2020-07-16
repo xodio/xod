@@ -17,4 +17,6 @@ void evaluate(Context ctx) {
     } else {
         raiseError(ctx);
     }
+
+    emitValue<output_INETU0027>(ctx, inet);
 }

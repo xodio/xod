@@ -2,6 +2,28 @@
   "description": "Read a response from an opened connection as a stream of bytes until it closes",
   "links": [
     {
+      "id": "B1eclCO3CL",
+      "input": {
+        "nodeId": "SJT1-TwtQ",
+        "pinKey": "ry4YMYoC8"
+      },
+      "output": {
+        "nodeId": "r19gRu3CL",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "B1lWxfLcA8",
+      "input": {
+        "nodeId": "r1WeGU9CL",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SkVJM890I",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "B1xvVG3Jc7",
       "input": {
         "nodeId": "HkwNGhk5m",
@@ -43,6 +65,28 @@
       "output": {
         "nodeId": "Hy0U-TPKQ",
         "pinKey": "ByHmL0uHPk-"
+      }
+    },
+    {
+      "id": "HJGWxGI9AI",
+      "input": {
+        "nodeId": "ryJCZ8qRI",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ByW-eM8908",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJwxMIqAI",
+      "input": {
+        "nodeId": "SkKr-6PYm",
+        "pinKey": "SJVrb8cCU"
+      },
+      "output": {
+        "nodeId": "SkNefUq0L",
+        "pinKey": "__out__"
       }
     },
     {
@@ -123,6 +167,17 @@
       }
     },
     {
+      "id": "SyepUpOo0I",
+      "input": {
+        "nodeId": "By60xaPYQ",
+        "pinKey": "rJjSTdiAI"
+      },
+      "output": {
+        "nodeId": "B1aUTOoR8",
+        "pinKey": "__out__"
+      }
+    },
+    {
       "id": "Symd-Tvt7",
       "input": {
         "nodeId": "rkANu2hwtQ",
@@ -191,6 +246,16 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
+      "id": "B1aUTOoR8",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
       "id": "B1b8WpvKm",
       "position": {
         "units": "slots",
@@ -212,6 +277,7 @@
     {
       "description": "Pulses when a new byte is read",
       "id": "BktNOnnDYQ",
+      "label": "RCV",
       "position": {
         "units": "slots",
         "x": 2,
@@ -227,6 +293,16 @@
         "y": 2
       },
       "type": "@/read-byte"
+    },
+    {
+      "id": "ByW-eM8908",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/from-bus"
     },
     {
       "id": "HkwNGhk5m",
@@ -260,6 +336,7 @@
     {
       "description": "The last read byte",
       "id": "HyNOn3vt7",
+      "label": "CHAR",
       "position": {
         "units": "slots",
         "x": 1,
@@ -296,6 +373,16 @@
       "type": "@/close"
     },
     {
+      "id": "SkNefUq0L",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
       "id": "SkP8WpPKX",
       "position": {
         "units": "slots",
@@ -303,6 +390,17 @@
         "y": 4
       },
       "type": "xod/core/defer"
+    },
+    {
+      "description": "An internet connection",
+      "id": "SkVJM890I",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 0
+      },
+      "type": "@/input-esp8266-mcu-inet"
     },
     {
       "description": "A socket",
@@ -313,7 +411,7 @@
         "x": 0,
         "y": 0
       },
-      "type": "@/input-socket"
+      "type": "xod/net/input-socket"
     },
     {
       "id": "Syme-6wFm",
@@ -322,6 +420,16 @@
         "units": "slots",
         "x": 0,
         "y": 2
+      },
+      "type": "xod/patch-nodes/from-bus"
+    },
+    {
+      "id": "r19gRu3CL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 3
       },
       "type": "xod/patch-nodes/from-bus"
     },
@@ -336,6 +444,16 @@
       "type": "xod/patch-nodes/from-bus"
     },
     {
+      "id": "r1WeGU9CL",
+      "label": "INET",
+      "position": {
+        "units": "slots",
+        "x": -2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/to-bus"
+    },
+    {
       "description": "Pulses when the connection is closed",
       "id": "rkANu2hwtQ",
       "label": "CLS",
@@ -345,6 +463,17 @@
         "y": 6
       },
       "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "An internet connection",
+      "id": "ryJCZ8qRI",
+      "label": "INET'",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 6
+      },
+      "type": "@/output-esp8266-mcu-inet"
     }
   ]
 }

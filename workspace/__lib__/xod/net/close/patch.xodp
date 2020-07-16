@@ -3,29 +3,18 @@
   "nodes": [
     {
       "description": "An internet connection",
-      "id": "BJaAvLcAL",
+      "id": "Bk-eFZPqAU",
       "label": "INET'",
-      "position": {
-        "units": "slots",
-        "x": -2,
-        "y": 2
-      },
-      "type": "@/output-w5500-inet"
-    },
-    {
-      "description": "Pulses when the connection is closed",
-      "id": "BJsYpQtZm",
-      "label": "DONE",
       "position": {
         "units": "slots",
         "x": 0,
         "y": 2
       },
-      "type": "xod/patch-nodes/output-pulse"
+      "type": "xod/patch-nodes/output-t1"
     },
     {
       "description": "Close the connection",
-      "id": "SJldxXCv-m",
+      "id": "Bk5_WDc0L",
       "label": "CLS",
       "position": {
         "units": "slots",
@@ -36,34 +25,45 @@
     },
     {
       "description": "An internet connection",
-      "id": "r1kAPUqCU",
+      "id": "SylltZvqCL",
       "label": "INET",
-      "position": {
-        "units": "slots",
-        "x": -2,
-        "y": 0
-      },
-      "type": "@/input-w5500-inet"
-    },
-    {
-      "description": "The socket",
-      "id": "rJ53A_vzQ",
-      "label": "SOCK",
       "position": {
         "units": "slots",
         "x": 0,
         "y": 0
       },
-      "type": "xod/net/input-socket"
+      "type": "xod/patch-nodes/input-t1"
     },
     {
-      "id": "rybOeQRDb7",
+      "description": "Pulses when the connection is closed",
+      "id": "Sylq_-w9C8",
+      "label": "DONE",
       "position": {
         "units": "slots",
-        "x": -0.05,
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "A socket",
+      "id": "r1lKZP5CU",
+      "label": "SOCK",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-socket"
+    },
+    {
+      "id": "rJStZDqRI",
+      "position": {
+        "units": "slots",
+        "x": 0,
         "y": 1
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "type": "xod/patch-nodes/abstract"
     }
   ]
 }

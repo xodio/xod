@@ -17,7 +17,7 @@ void evaluate(Context ctx) {
         return;
 
     auto client = EthernetClient();
-    auto serverName = getValue<input_SRV>(ctx);
+    auto serverName = getValue<input_HOST>(ctx);
     auto port = getValue<input_PORT>(ctx);
 
     auto len = length(serverName);
@@ -32,4 +32,5 @@ void evaluate(Context ctx) {
     }
 
     emitValue<output_SOCK>(ctx, client.getSocketNumber());
+    emitValue<output_INETU0027>(ctx, getValue<input_INET>(ctx));
 }

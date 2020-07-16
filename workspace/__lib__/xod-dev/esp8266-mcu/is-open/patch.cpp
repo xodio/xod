@@ -12,7 +12,9 @@ void evaluate(Context ctx) {
     if (!isInputDirty<input_CHK>(ctx))
         return;
 
-    auto client = getValue<input_SOCK>(ctx);
+    auto socketIdx = getValue<input_SOCK>(ctx);
+    auto inet = getValue<input_INET>(ctx);
+    auto client = inet.sockets[socketIdx];
 
     if (client->connected()) {
         emitValue<output_Y>(ctx, 1);
