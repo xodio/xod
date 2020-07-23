@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { failOnFalse, maybePath } from 'xod-func-tools';
+import { failOnFalse, maybePath, isAmong } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
@@ -266,7 +266,14 @@ const internalTerminalRegExp = new RegExp(
 );
 
 // :: PatchPath -> Boolean
-export const isInternalTerminalNodeType = R.test(internalTerminalRegExp);
+export const isInternalTerminalPatchPath = R.test(internalTerminalRegExp);
+
+// :: PatchPath -> Boolean
+export const isInternalGenericPatchPath = R.compose(
+  isAmong([CONST.PIN_TYPE.T1, CONST.PIN_TYPE.T2, CONST.PIN_TYPE.T3]),
+  R.nth(1),
+  R.match(internalTerminalRegExp)
+);
 
 // :: PatchPath -> Boolean
 export const isTerminalSelf = R.equals(CONST.OUTPUT_SELF_PATH);
