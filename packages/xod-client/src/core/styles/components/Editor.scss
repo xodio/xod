@@ -5,6 +5,8 @@
   flex-direction: row;
   align-items: stretch;
 
+  height: 100%;
+
   &.leftSidebarMaximized, &.rightSidebarMaximized {
     .Workarea {
       max-width: calc(100% - #{$sidebar-width});

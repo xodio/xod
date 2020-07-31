@@ -113,6 +113,7 @@ class ColorPinWidget extends React.Component {
         </span>
         <ColorPickerWidget
           widgetId={this.props.elementId}
+          selectorPointingAt={`.PinWidget[data-pinlabel="${this.props.label}"]`}
           isVisible={
             this.props.visibleColorPickerWidgetId === this.props.elementId
           }
