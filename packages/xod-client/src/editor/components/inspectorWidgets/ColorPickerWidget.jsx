@@ -39,7 +39,7 @@ class ColorPickerWidget extends React.Component {
       <PointingPopup
         className="ColorPickerWidget"
         isVisible={this.props.isVisible}
-        selectorPointingAt={`#${this.props.widgetId}`}
+        selectorPointingAt={this.props.selectorPointingAt}
         hidePopup={this.props.onClose}
       >
         <ColorPicker
@@ -55,6 +55,7 @@ class ColorPickerWidget extends React.Component {
 ColorPickerWidget.propTypes = {
   color: colorPropType,
   isVisible: PropTypes.bool.isRequired,
+  selectorPointingAt: PropTypes.string,
   widgetId: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
