@@ -240,14 +240,13 @@ export const MANAGED_ATTACHMENT_FILENAMES = {
 };
 
 const IMPL_TEMPLATE = `
-struct State {
-};
+node {
+    // Number internalState;
 
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    //auto inValue = getValue<input_IN>(ctx);
-    //emitValue<output_OUT>(ctx, inValue);
+    void evaluate(Context ctx) {
+        //auto inValue = getValue<input_IN>(ctx);
+        //emitValue<output_OUT>(ctx, inValue);
+    }
 }
 `;
 
