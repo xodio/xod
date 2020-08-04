@@ -997,8 +997,6 @@ struct xod_dev__dht__dht11_device {
 
     typeof_DEV _output_DEV;
 
-    State state;
-
     xod_dev__dht__dht11_device (typeof_DEV output_DEV) {
         _output_DEV = output_DEV;
     }
@@ -1009,10 +1007,6 @@ struct xod_dev__dht__dht11_device {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1058,6 +1052,12 @@ struct xod_dev__dht__dht11_device {
         ctx->_isOutputDirty_DEV = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto dev = getState(ctx);
         // just to trigger downstream nodes
@@ -1087,8 +1087,6 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__continuously () {
     }
 
@@ -1098,10 +1096,6 @@ struct xod__core__continuously {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -1155,6 +1149,12 @@ struct xod__core__continuously {
         ctx->_isOutputDirty_TICK = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
         setTimeout(ctx, 0);
@@ -1187,8 +1187,6 @@ struct xod_dev__dht__unpack_dht11_device {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod_dev__dht__unpack_dht11_device () {
     }
 
@@ -1200,10 +1198,6 @@ struct xod_dev__dht__unpack_dht11_device {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1245,6 +1239,12 @@ struct xod_dev__dht__unpack_dht11_device {
     }
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) __attribute__((deprecated("No need to emitValue from constant outputs."))) {
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1326,8 +1326,6 @@ struct xod_dev__dht__dhtxx_read_raw {
     typeof_D2 _output_D2;
     typeof_D3 _output_D3;
 
-    State state;
-
     xod_dev__dht__dhtxx_read_raw (typeof_D0 output_D0, typeof_D1 output_D1, typeof_D2 output_D2, typeof_D3 output_D3) {
         _output_D0 = output_D0;
         _output_D1 = output_D1;
@@ -1347,10 +1345,6 @@ struct xod_dev__dht__dhtxx_read_raw {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -1489,6 +1483,12 @@ struct xod_dev__dht__dhtxx_read_raw {
         ctx->_isOutputDirty_D3 = true;
         this->errors.output_DONE = true;
         ctx->_isOutputDirty_DONE = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     enum DhtStatus

@@ -992,8 +992,6 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__continuously () {
     }
 
@@ -1003,10 +1001,6 @@ struct xod__core__continuously {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -1060,6 +1054,12 @@ struct xod__core__continuously {
         ctx->_isOutputDirty_TICK = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
         setTimeout(ctx, 0);
@@ -1096,8 +1096,6 @@ struct xod__core__system_time {
 
     typeof_TIME _output_TIME;
 
-    State state;
-
     xod__core__system_time (typeof_TIME output_TIME) {
         _output_TIME = output_TIME;
     }
@@ -1109,10 +1107,6 @@ struct xod__core__system_time {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1161,6 +1155,12 @@ struct xod__core__system_time {
         this->_output_TIME = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         emitValue<output_TIME>(ctx, millis() / 1000.f);
     }
@@ -1199,8 +1199,6 @@ struct xod__core__cast_to_string__number {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__cast_to_string__number (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -1212,10 +1210,6 @@ struct xod__core__cast_to_string__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1258,6 +1252,12 @@ struct xod__core__cast_to_string__number {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1340,8 +1340,6 @@ struct xod__common_hardware__text_lcd_16x2 {
       return identity<typeof_DONE>();
     }
 
-    State state;
-
     xod__common_hardware__text_lcd_16x2 () {
     }
 
@@ -1356,10 +1354,6 @@ struct xod__common_hardware__text_lcd_16x2 {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1430,6 +1424,12 @@ struct xod__common_hardware__text_lcd_16x2 {
 
     void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void printLine(LiquidCrystal* lcd, uint8_t lineIndex, XString str) {

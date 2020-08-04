@@ -992,8 +992,6 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__continuously () {
     }
 
@@ -1003,10 +1001,6 @@ struct xod__core__continuously {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -1060,6 +1054,12 @@ struct xod__core__continuously {
         ctx->_isOutputDirty_TICK = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
         setTimeout(ctx, 0);
@@ -1108,8 +1108,6 @@ struct xod__gpio__digital_read {
 
     typeof_SIG _output_SIG;
 
-    State state;
-
     xod__gpio__digital_read (typeof_SIG output_SIG) {
         _output_SIG = output_SIG;
     }
@@ -1123,10 +1121,6 @@ struct xod__gpio__digital_read {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1185,6 +1179,12 @@ struct xod__gpio__digital_read {
         ctx->_isOutputDirty_DONE = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
@@ -1236,8 +1236,6 @@ struct xod__core__branch {
       return identity<typeof_F>();
     }
 
-    State state;
-
     xod__core__branch () {
     }
 
@@ -1252,10 +1250,6 @@ struct xod__core__branch {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1313,6 +1307,12 @@ struct xod__core__branch {
         ctx->_isOutputDirty_F = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         if (!isInputDirty<input_TRIG>(ctx))
             return;
@@ -1363,8 +1363,6 @@ struct xod__core__flip_flop {
 
     typeof_MEM _output_MEM;
 
-    State state;
-
     xod__core__flip_flop (typeof_MEM output_MEM) {
         _output_MEM = output_MEM;
     }
@@ -1379,10 +1377,6 @@ struct xod__core__flip_flop {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1444,6 +1438,12 @@ struct xod__core__flip_flop {
         ctx->_isOutputDirty_MEM = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         bool oldState = getValue<output_MEM>(ctx);
         bool newState = oldState;
@@ -1503,8 +1503,6 @@ struct xod__gpio__digital_write {
       return identity<typeof_DONE>();
     }
 
-    State state;
-
     xod__gpio__digital_write () {
     }
 
@@ -1518,10 +1516,6 @@ struct xod__gpio__digital_write {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1574,6 +1568,12 @@ struct xod__gpio__digital_write {
 
     void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {

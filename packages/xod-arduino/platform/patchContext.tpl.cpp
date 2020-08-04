@@ -48,8 +48,6 @@ TimeMs timeoutAt = 0;
 typeof_{{ pinKey }} _output_{{ pinKey }};
 {{/eachNonPulseOrConstant}}
 
-State state;
-
 {{ ns this }} (
   {{~#eachNonPulseOrConstant outputs ~}}
     typeof_{{ pinKey }} output_{{ pinKey }}{{#unless @last}}, {{/unless ~}}
@@ -88,10 +86,6 @@ struct ContextObject {
 };
 
 using Context = ContextObject*;
-
-State* getState(__attribute__((unused)) Context ctx) {
-    return &state;
-}
 
 {{#if usesNodeId}}
 uint16_t getNodeId(Context ctx) {

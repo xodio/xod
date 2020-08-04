@@ -1,3 +1,5 @@
-// stuff before generated code statement
-{{ GENERATED_CODE}}
-// stuff after generated code statement
+// before defnode
+defnode {
+  // inside defnode
+}
+// after defnode

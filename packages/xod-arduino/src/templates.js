@@ -5,11 +5,15 @@ import { unquote } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import { def } from './types';
+
 import parseImplementation from './parseImplementation';
+import parseLegacyImplementation from './parseLegacyImplementation';
 
 import configTpl from '../platform/configuration.tpl.cpp';
 import patchContextTpl from '../platform/patchContext.tpl.cpp';
 import patchPinTypesTpl from '../platform/patchPinTypes.tpl.cpp';
+import patchTemplateDefinitionTpl from '../platform/patchTemplateDefinition.tpl.cpp';
+import legacyPatchTpl from '../platform/patch.legacy.tpl.cpp';
 import patchTpl from '../platform/patch.tpl.cpp';
 import implListTpl from '../platform/implList.tpl.cpp';
 import programTpl from '../platform/program.tpl.cpp';
@@ -389,6 +393,11 @@ registerHandlebarsFilterLoopHelper(
   ({ type }) => type !== XP.PIN_TYPE.PULSE && !isConstantType(type)
 );
 
+Handlebars.registerPartial(
+  'patchTemplateDefinition',
+  patchTemplateDefinitionTpl
+);
+
 export const withTetheringInetNode = R.find(
   R.both(
     R.pipe(R.path(['patch', 'patchPath']), XP.isTetheringInetPatchPath),
@@ -418,6 +427,7 @@ const templates = {
   patchPinTypes: Handlebars.compile(patchPinTypesTpl, renderingOptions),
   implList: Handlebars.compile(implListTpl, renderingOptions),
   patchImpl: Handlebars.compile(patchTpl, renderingOptions),
+  legacyPatchImpl: Handlebars.compile(legacyPatchTpl, renderingOptions),
   program: Handlebars.compile(programTpl, renderingOptions),
 };
 
@@ -440,16 +450,34 @@ export const renderPatchPinTypes = def(
   templates.patchPinTypes
 );
 
+const generatedCodeRegEx = /^\s*{{\s*GENERATED_CODE\s*}}\s*$/gm;
+
 export const renderImpl = def('renderImpl :: TPatch -> String', tPatch => {
-  const patchImpl = R.prop('impl', tPatch);
-
-  const patchPinTypes = renderPatchPinTypes(tPatch);
+  const impl = R.prop('impl', tPatch);
   const generatedCode = renderPatchContext(tPatch);
+  const patchPinTypes = renderPatchPinTypes(tPatch);
 
-  const parsedImpl = R.compose(
-    parseImplementation,
-    R.replace(/ValueType<(input|output)_(...)>::T/g, 'typeof_$2')
-  )(patchImpl);
+  const isLegacyImplementation = R.test(generatedCodeRegEx, impl);
+
+  if (isLegacyImplementation) {
+    const parsedImpl = R.compose(
+      parseLegacyImplementation,
+      R.replace(/ValueType<(input|output)_(...)>::T/g, 'typeof_$2')
+    )(impl);
+
+    const ctx = R.merge(
+      {
+        patch: tPatch,
+        generatedCode,
+        patchPinTypes,
+      },
+      parsedImpl
+    );
+
+    return templates.legacyPatchImpl(ctx);
+  }
+
+  const parsedImpl = parseImplementation(impl);
 
   const ctx = R.merge(
     {

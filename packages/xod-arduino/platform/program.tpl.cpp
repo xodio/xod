@@ -64,7 +64,7 @@ typedef {{ ns patch }}{{#if (or (containsConstantInputs inputs) (containsTemplat
     {{~#if fromPatch.isConstant~}}
       node_{{ fromNodeId }}_output_{{ fromPinKey }}
     {{~else~}}
-      Node_{{ fromNodeId }}::constant_output_{{ fromPinKey }}{{!-- // TODO: a proper name? --}}
+      Node_{{ fromNodeId }}::constant_output_{{ fromPinKey }}
     {{~/if~}}
     {{~#unless @last}}, {{/unless}}
   {{~/each~}}

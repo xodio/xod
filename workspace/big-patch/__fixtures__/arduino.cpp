@@ -1024,8 +1024,6 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
 
     typeof_DEV _output_DEV;
 
-    State state;
-
     xod_dev__text_lcd__text_lcd_i2c_device (typeof_DEV output_DEV) {
         _output_DEV = output_DEV;
     }
@@ -1040,10 +1038,6 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1114,6 +1108,12 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
     void raiseError(Context ctx) {
         this->errors.output_DEV = true;
         ctx->_isOutputDirty_DEV = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1234,8 +1234,6 @@ struct xod_dev__servo__servo_device {
 
     typeof_DEV _output_DEV;
 
-    State state;
-
     xod_dev__servo__servo_device (typeof_DEV output_DEV) {
         _output_DEV = output_DEV;
     }
@@ -1249,10 +1247,6 @@ struct xod_dev__servo__servo_device {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1325,6 +1319,12 @@ struct xod_dev__servo__servo_device {
         ctx->_isOutputDirty_DEV = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
@@ -1362,8 +1362,6 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__continuously () {
     }
 
@@ -1373,10 +1371,6 @@ struct xod__core__continuously {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -1430,6 +1424,12 @@ struct xod__core__continuously {
         ctx->_isOutputDirty_TICK = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
         setTimeout(ctx, 0);
@@ -1456,8 +1456,6 @@ struct xod__core__boot {
       return identity<typeof_BOOT>();
     }
 
-    State state;
-
     xod__core__boot () {
     }
 
@@ -1467,10 +1465,6 @@ struct xod__core__boot {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1510,6 +1504,12 @@ struct xod__core__boot {
 
     void emitValue(Context ctx, typeof_BOOT val, identity<output_BOOT>) {
         ctx->_isOutputDirty_BOOT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1552,8 +1552,6 @@ struct xod__core__multiply {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__multiply (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -1566,10 +1564,6 @@ struct xod__core__multiply {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1617,6 +1611,12 @@ struct xod__core__multiply {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -1651,8 +1651,6 @@ struct xod__core__pulse_on_change__boolean {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__pulse_on_change__boolean () {
     }
 
@@ -1664,10 +1662,6 @@ struct xod__core__pulse_on_change__boolean {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1710,6 +1704,12 @@ struct xod__core__pulse_on_change__boolean {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1758,8 +1758,6 @@ struct xod__core__divide {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__divide (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -1772,10 +1770,6 @@ struct xod__core__divide {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1823,6 +1817,12 @@ struct xod__core__divide {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -1857,8 +1857,6 @@ struct xod__core__cast_to_pulse__boolean {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__cast_to_pulse__boolean () {
     }
 
@@ -1870,10 +1868,6 @@ struct xod__core__cast_to_pulse__boolean {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -1916,6 +1910,12 @@ struct xod__core__cast_to_pulse__boolean {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1971,8 +1971,6 @@ struct xod__gpio__analog_read {
 
     typeof_VAL _output_VAL;
 
-    State state;
-
     xod__gpio__analog_read (typeof_VAL output_VAL) {
         _output_VAL = output_VAL;
     }
@@ -1986,10 +1984,6 @@ struct xod__gpio__analog_read {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2048,6 +2042,12 @@ struct xod__gpio__analog_read {
         ctx->_isOutputDirty_DONE = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         static_assert(isValidAnalogPort(constant_input_PORT), "must be a valid analog port");
 
@@ -2102,8 +2102,6 @@ struct xod__gpio__digital_read_pullup {
 
     typeof_SIG _output_SIG;
 
-    State state;
-
     xod__gpio__digital_read_pullup (typeof_SIG output_SIG) {
         _output_SIG = output_SIG;
     }
@@ -2117,10 +2115,6 @@ struct xod__gpio__digital_read_pullup {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2179,6 +2173,12 @@ struct xod__gpio__digital_read_pullup {
         ctx->_isOutputDirty_DONE = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
@@ -2226,8 +2226,6 @@ struct xod__core__subtract {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__subtract (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2240,10 +2238,6 @@ struct xod__core__subtract {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2291,6 +2285,12 @@ struct xod__core__subtract {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -2329,8 +2329,6 @@ struct xod__core__any {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__any () {
     }
 
@@ -2343,10 +2341,6 @@ struct xod__core__any {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2399,6 +2393,12 @@ struct xod__core__any {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -2459,8 +2459,6 @@ struct xod__math__map {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__math__map (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2476,10 +2474,6 @@ struct xod__math__map {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2536,6 +2530,12 @@ struct xod__math__map {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto x = getValue<input_X>(ctx);
         auto sMin = getValue<input_Smin>(ctx);
@@ -2578,8 +2578,6 @@ struct xod__core__not {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__not (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2591,10 +2589,6 @@ struct xod__core__not {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2639,6 +2633,12 @@ struct xod__core__not {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto x = getValue<input_IN>(ctx);
         emitValue<output_OUT>(ctx, !x);
@@ -2679,8 +2679,6 @@ struct xod__core__less {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__less (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2693,10 +2691,6 @@ struct xod__core__less {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2744,6 +2738,12 @@ struct xod__core__less {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto lhs = getValue<input_IN1>(ctx);
         auto rhs = getValue<input_IN2>(ctx);
@@ -2784,8 +2784,6 @@ struct xod__core__cast_to_string__number {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__cast_to_string__number (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2797,10 +2795,6 @@ struct xod__core__cast_to_string__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -2843,6 +2837,12 @@ struct xod__core__cast_to_string__number {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -2889,8 +2889,6 @@ struct xod__core__debounce__boolean {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__debounce__boolean (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -2904,10 +2902,6 @@ struct xod__core__debounce__boolean {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -2968,6 +2962,12 @@ struct xod__core__debounce__boolean {
         ctx->_isOutputDirty_OUT = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         State* state = getState(ctx);
         bool x = getValue<input_ST>(ctx);
@@ -3019,8 +3019,6 @@ struct xod__core__greater {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__greater (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -3033,10 +3031,6 @@ struct xod__core__greater {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3084,6 +3078,12 @@ struct xod__core__greater {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto lhs = getValue<input_IN1>(ctx);
         auto rhs = getValue<input_IN2>(ctx);
@@ -3122,8 +3122,6 @@ struct xod__core__gate__pulse {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__gate__pulse () {
     }
 
@@ -3137,10 +3135,6 @@ struct xod__core__gate__pulse {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3192,6 +3186,12 @@ struct xod__core__gate__pulse {
         ctx->_isOutputDirty_OUT = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         if (getValue<input_EN>(ctx) && isInputDirty<input_IN>(ctx))
             emitValue<output_OUT>(ctx, true);
@@ -3238,8 +3238,6 @@ struct xod__core__if_else__number {
 
     typeof_R _output_R;
 
-    State state;
-
     xod__core__if_else__number (typeof_R output_R) {
         _output_R = output_R;
     }
@@ -3253,10 +3251,6 @@ struct xod__core__if_else__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3307,6 +3301,12 @@ struct xod__core__if_else__number {
         this->_output_R = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto cond = getValue<input_COND>(ctx);
         auto trueVal = getValue<input_T>(ctx);
@@ -3351,8 +3351,6 @@ struct xod__core__concat {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__concat (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -3365,10 +3363,6 @@ struct xod__core__concat {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3416,6 +3410,12 @@ struct xod__core__concat {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto state = getState(ctx);
         auto head = getValue<input_IN1>(ctx);
@@ -3452,8 +3452,6 @@ struct xod__core__pulse_on_true {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__pulse_on_true () {
     }
 
@@ -3465,10 +3463,6 @@ struct xod__core__pulse_on_true {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3511,6 +3505,12 @@ struct xod__core__pulse_on_true {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -3559,8 +3559,6 @@ struct xod__core__and {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__and (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -3573,10 +3571,6 @@ struct xod__core__and {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3622,6 +3616,12 @@ struct xod__core__and {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -3671,8 +3671,6 @@ struct xod__core__if_else__string {
 
     typeof_R _output_R;
 
-    State state;
-
     xod__core__if_else__string (typeof_R output_R) {
         _output_R = output_R;
     }
@@ -3686,10 +3684,6 @@ struct xod__core__if_else__string {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3738,6 +3732,12 @@ struct xod__core__if_else__string {
 
     void emitValue(Context ctx, typeof_R val, identity<output_R>) {
         this->_output_R = val;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -3791,8 +3791,6 @@ struct xod_dev__text_lcd__set_backlight {
 
     typeof_DEVU0027 _output_DEVU0027;
 
-    State state;
-
     xod_dev__text_lcd__set_backlight (typeof_DEVU0027 output_DEVU0027) {
         _output_DEVU0027 = output_DEVU0027;
     }
@@ -3809,10 +3807,6 @@ struct xod_dev__text_lcd__set_backlight {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3874,6 +3868,12 @@ struct xod_dev__text_lcd__set_backlight {
         ctx->_isOutputDirty_DONE = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto t = getValue<input_DEV>(ctx);
         if (isInputDirty<input_DO>(ctx)) {
@@ -3915,8 +3915,6 @@ struct xod__math__cube {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__math__cube (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -3928,10 +3926,6 @@ struct xod__math__cube {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -3976,6 +3970,12 @@ struct xod__math__cube {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         Number x = getValue<input_IN>(ctx);
         emitValue<output_OUT>(ctx, x * x * x);
@@ -4009,8 +4009,6 @@ struct xod__core__pulse_on_change__number {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__pulse_on_change__number () {
     }
 
@@ -4022,10 +4020,6 @@ struct xod__core__pulse_on_change__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4068,6 +4062,12 @@ struct xod__core__pulse_on_change__number {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -4119,8 +4119,6 @@ struct xod__core__flip_flop {
 
     typeof_MEM _output_MEM;
 
-    State state;
-
     xod__core__flip_flop (typeof_MEM output_MEM) {
         _output_MEM = output_MEM;
     }
@@ -4135,10 +4133,6 @@ struct xod__core__flip_flop {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4200,6 +4194,12 @@ struct xod__core__flip_flop {
         ctx->_isOutputDirty_MEM = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         bool oldState = getValue<output_MEM>(ctx);
         bool newState = oldState;
@@ -4254,8 +4254,6 @@ struct xod__core__or {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__or (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -4268,10 +4266,6 @@ struct xod__core__or {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4319,6 +4313,12 @@ struct xod__core__or {
         this->_output_OUT = val;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto a = getValue<input_IN1>(ctx);
         auto b = getValue<input_IN2>(ctx);
@@ -4341,10 +4341,6 @@ struct xod__core__clock {
 
     typedef Pulse typeof_TICK;
 
-    struct State {
-      TimeMs nextTrig;
-    };
-
     struct input_EN { };
     struct input_IVAL { };
     struct input_RST { };
@@ -4365,8 +4361,6 @@ struct xod__core__clock {
 
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__clock () {
     }
 
@@ -4382,10 +4376,6 @@ struct xod__core__clock {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -4455,8 +4445,9 @@ struct xod__core__clock {
         ctx->_isOutputDirty_TICK = true;
     }
 
+    TimeMs nextTrig;
+
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         TimeMs tNow = transactionTime();
         auto ival = getValue<input_IVAL>(ctx);
         if (ival < 0) ival = 0;
@@ -4468,7 +4459,7 @@ struct xod__core__clock {
 
         if (isTimedOut(ctx) && isEnabled && !isRstDirty) {
             emitValue<output_TICK>(ctx, 1);
-            state->nextTrig = tNext;
+            nextTrig = tNext;
             setTimeout(ctx, dt);
         }
 
@@ -4476,11 +4467,11 @@ struct xod__core__clock {
             // Handle enable/disable/reset
             if (!isEnabled) {
                 // Disable timeout loop on explicit false on EN
-                state->nextTrig = 0;
+                nextTrig = 0;
                 clearTimeout(ctx);
-            } else if (state->nextTrig < tNow || state->nextTrig > tNext) {
+            } else if (nextTrig < tNow || nextTrig > tNext) {
                 // Start timeout from scratch
-                state->nextTrig = tNext;
+                nextTrig = tNext;
                 setTimeout(ctx, dt);
             }
         }
@@ -4533,8 +4524,6 @@ struct xod__core__if_error__string {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__if_error__string (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -4550,10 +4539,6 @@ struct xod__core__if_error__string {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4641,6 +4626,12 @@ struct xod__core__if_error__string {
         return ctx->_error_input_DEF;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto defError = getError<input_DEF>(ctx);
 
@@ -4693,8 +4684,6 @@ struct xod__gpio__pwm_write {
       return identity<typeof_DONE>();
     }
 
-    State state;
-
     xod__gpio__pwm_write () {
     }
 
@@ -4708,10 +4697,6 @@ struct xod__gpio__pwm_write {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4764,6 +4749,12 @@ struct xod__gpio__pwm_write {
 
     void emitValue(Context ctx, typeof_DONE val, identity<output_DONE>) {
         ctx->_isOutputDirty_DONE = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     #ifdef PWMRANGE
@@ -4828,8 +4819,6 @@ struct xod__core__count {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__count (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -4845,10 +4834,6 @@ struct xod__core__count {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -4905,6 +4890,12 @@ struct xod__core__count {
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -4973,8 +4964,6 @@ struct xod__core__square_wave {
     typeof_OUT _output_OUT;
     typeof_N _output_N;
 
-    State state;
-
     xod__core__square_wave (typeof_OUT output_OUT, typeof_N output_N) {
         _output_OUT = output_OUT;
         _output_N = output_N;
@@ -4993,10 +4982,6 @@ struct xod__core__square_wave {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -5074,6 +5059,12 @@ struct xod__core__square_wave {
         ctx->_isOutputDirty_N = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         State* state = getState(ctx);
         TimeMs t = transactionTime();
@@ -5148,8 +5139,6 @@ struct xod__core__pulse_on_change__string {
       return identity<typeof_OUT>();
     }
 
-    State state;
-
     xod__core__pulse_on_change__string () {
     }
 
@@ -5161,10 +5150,6 @@ struct xod__core__pulse_on_change__string {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5207,6 +5192,12 @@ struct xod__core__pulse_on_change__string {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         ctx->_isOutputDirty_OUT = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     uint8_t crc8(XString str) {
@@ -5278,8 +5269,6 @@ struct xod__core__buffer__number {
 
     typeof_MEM _output_MEM;
 
-    State state;
-
     xod__core__buffer__number (typeof_MEM output_MEM) {
         _output_MEM = output_MEM;
     }
@@ -5294,10 +5283,6 @@ struct xod__core__buffer__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5350,6 +5335,12 @@ struct xod__core__buffer__number {
         ctx->_isOutputDirty_MEM = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         if (!isInputDirty<input_UPD>(ctx))
             return;
@@ -5388,8 +5379,6 @@ struct xod__core__cast_to_number__boolean {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__cast_to_number__boolean (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -5401,10 +5390,6 @@ struct xod__core__cast_to_number__boolean {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5447,6 +5432,12 @@ struct xod__core__cast_to_number__boolean {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -5493,8 +5484,6 @@ struct xod__core__branch {
       return identity<typeof_F>();
     }
 
-    State state;
-
     xod__core__branch () {
     }
 
@@ -5509,10 +5498,6 @@ struct xod__core__branch {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5570,6 +5555,12 @@ struct xod__core__branch {
         ctx->_isOutputDirty_F = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         if (!isInputDirty<input_TRIG>(ctx))
             return;
@@ -5618,8 +5609,6 @@ struct ____play_note {
       return identity<typeof_UPD>();
     }
 
-    State state;
-
     ____play_note () {
     }
 
@@ -5633,10 +5622,6 @@ struct ____play_note {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5685,6 +5670,12 @@ struct ____play_note {
         static_assert(always_false<OutputT>::value,
                 "Invalid output descriptor. Expected one of:" \
                 "");
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -5769,8 +5760,6 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
 
     typeof_DEVU0027 _output_DEVU0027;
 
-    State state;
-
     xod_dev__text_lcd__print_at__text_lcd_i2c_device (typeof_DEVU0027 output_DEVU0027) {
         _output_DEVU0027 = output_DEVU0027;
     }
@@ -5790,10 +5779,6 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -5892,6 +5877,12 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
         ctx->_isOutputDirty_DONE = true;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void printAt(LiquidCrystal_I2C* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
         lcd->setCursor(posIndex, rowIndex);
         uint8_t whitespace = len;
@@ -5973,8 +5964,6 @@ struct xod_dev__servo__rotate {
 
     typeof_DEVU0027 _output_DEVU0027;
 
-    State state;
-
     xod_dev__servo__rotate (typeof_DEVU0027 output_DEVU0027) {
         _output_DEVU0027 = output_DEVU0027;
     }
@@ -5991,10 +5980,6 @@ struct xod_dev__servo__rotate {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
         return getValue(ctx, identity<PinT>());
@@ -6054,6 +6039,12 @@ struct xod_dev__servo__rotate {
     }
     void emitValue(Context ctx, typeof_ACK val, identity<output_ACK>) {
         ctx->_isOutputDirty_ACK = true;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -6116,8 +6107,6 @@ struct xod__core__defer__number {
 
     typeof_OUT _output_OUT;
 
-    State state;
-
     xod__core__defer__number (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
@@ -6131,10 +6120,6 @@ struct xod__core__defer__number {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -6228,6 +6213,12 @@ struct xod__core__defer__number {
         return ctx->_error_input_IN;
     }
 
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
+    }
+
     void evaluate(Context ctx) {
         auto state = getState(ctx);
 
@@ -6293,8 +6284,6 @@ struct xod__core__defer__pulse {
     NodeErrors errors = {};
     TimeMs timeoutAt = 0;
 
-    State state;
-
     xod__core__defer__pulse () {
     }
 
@@ -6307,10 +6296,6 @@ struct xod__core__defer__pulse {
     };
 
     using Context = ContextObject*;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
 
     void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
         this->timeoutAt = transactionTime() + timeout;
@@ -6405,6 +6390,12 @@ struct xod__core__defer__pulse {
 
     uint8_t getError(Context ctx, identity<input_IN>) {
         return ctx->_error_input_IN;
+    }
+
+    State state;
+
+    State* getState(__attribute__((unused)) Context ctx) {
+        return &state;
     }
 
     void evaluate(Context ctx) {
