@@ -1175,7 +1175,7 @@ struct xod_dev__dht__unpack_dht11_device {
 
     struct State {};
 
-    static const uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
+    static constexpr uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
 
     struct input_DEV { };
     struct output_OUT { };
