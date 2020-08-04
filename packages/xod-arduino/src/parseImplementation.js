@@ -18,15 +18,15 @@ const findClosingBracket = (str, fromPos = 0) => {
   return -1;
 };
 
-const nodetypesRegExp = /\bnodetypes\s*{/;
+const metaRegExp = /\bmeta\s*{/;
 
-const extractNodetypes = impl => {
-  const match = impl.match(nodetypesRegExp);
+const extractMeta = impl => {
+  const match = impl.match(metaRegExp);
 
   if (!match) {
     return {
-      implWithoutNodetypes: impl,
-      nodetypes: '',
+      implWithoutMeta: impl,
+      meta: '',
     };
   }
 
@@ -35,17 +35,17 @@ const extractNodetypes = impl => {
   const closingBracketIndex = findClosingBracket(impl, openingBracketIndex);
 
   return {
-    implWithoutNodetypes:
+    implWithoutMeta:
       impl.slice(0, declarationStartIndex) +
       impl.slice(closingBracketIndex + 1),
-    nodetypes: impl.slice(openingBracketIndex, closingBracketIndex),
+    meta: impl.slice(openingBracketIndex, closingBracketIndex),
   };
 };
 
-const defnodeRegExp = /\bdefnode\s*{/;
+const nodeRegExp = /\bnode\s*{/;
 
-const parseDefnode = impl => {
-  const match = impl.match(defnodeRegExp);
+const parseNodeDefiniton = impl => {
+  const match = impl.match(nodeRegExp);
 
   const declarationStartIndex = match.index;
   const openingBracketIndex = match.index + match[0].length;
@@ -54,24 +54,26 @@ const parseDefnode = impl => {
     closingBracketIndex + (impl[closingBracketIndex + 1] === ';' ? 2 : 1);
 
   return {
-    beforeDefnode: impl.slice(0, declarationStartIndex),
-    insideDefnode: impl.slice(openingBracketIndex, closingBracketIndex),
-    afterDefnode: impl.slice(declarationEndIndex),
+    beforeNodeDefinition: impl.slice(0, declarationStartIndex),
+    insideNodeDefinition: impl.slice(openingBracketIndex, closingBracketIndex),
+    afterNodeDefinition: impl.slice(declarationEndIndex),
   };
 };
 
-// Impl -> { beforeDefnode: String, insideDefnode: String, afterDefnode: String, nodetypes: String }
+// Impl -> { beforeNodeDefinition: String, insideNodeDefinition: String, afterNodeDefinition: String, meta: String }
 export default impl => {
-  const { implWithoutNodetypes, nodetypes } = extractNodetypes(impl);
+  const { implWithoutMeta, meta } = extractMeta(impl);
 
-  const { beforeDefnode, insideDefnode, afterDefnode } = parseDefnode(
-    implWithoutNodetypes
-  );
+  const {
+    beforeNodeDefinition,
+    insideNodeDefinition,
+    afterNodeDefinition,
+  } = parseNodeDefiniton(implWithoutMeta);
 
   return {
-    beforeDefnode,
-    insideDefnode,
-    afterDefnode,
-    nodetypes,
+    beforeNodeDefinition,
+    insideNodeDefinition,
+    afterNodeDefinition,
+    meta,
   };
 };

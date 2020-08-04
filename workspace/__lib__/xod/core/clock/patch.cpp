@@ -1,5 +1,5 @@
 
-defnode {
+node {
     TimeMs nextTrig;
 
     void evaluate(Context ctx) {

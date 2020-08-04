@@ -1,16 +1,16 @@
-{{ beforeDefnode }}
+{{ beforeNodeDefinition }}
 
 namespace xod {
 {{> patchTemplateDefinition}}
 struct {{ ns patch }} {
 {{ indent patchPinTypes }}
 
-{{ nodetypes }}
+{{ meta }}
 
 {{ indent generatedCode }}
 
-{{ insideDefnode }}
+{{ insideNodeDefinition }}
 };
 } // namespace xod
 
-{{ afterDefnode }}
+{{ afterNodeDefinition }}

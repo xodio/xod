@@ -5,31 +5,32 @@ import { assert } from 'chai';
 import parseImplementation from '../src/parseImplementation';
 
 describe('parseImplementation', () => {
-  it('extracts code before, inside, and after `defnode`', () => {
+  it('extracts code before, inside, and after node definition', () => {
     const fixture = fs.readFileSync(
       path.join(__dirname, './fixtures/impl-basic.cpp'),
       'utf-8'
     );
 
     const expected = {
-      afterDefnode: '\n// after defnode\n',
-      beforeDefnode: '// before defnode\n',
-      insideDefnode: '\n  // inside defnode\n',
-      nodetypes: '',
+      afterNodeDefinition: '\n// after node definition\n',
+      beforeNodeDefinition: '// before node definition\n',
+      insideNodeDefinition: '\n  // inside node definition\n',
+      meta: '',
     };
     assert.deepEqual(parseImplementation(fixture), expected);
   });
-  it('also extracts nodetypes', () => {
+  it('also extracts meta', () => {
     const fixture = fs.readFileSync(
-      path.join(__dirname, './fixtures/impl-with-nodetypes.cpp'),
+      path.join(__dirname, './fixtures/impl-with-meta.cpp'),
       'utf-8'
     );
 
     const expected = {
-      afterDefnode: '\n// after defnode\n',
-      beforeDefnode: '// before\n\n// between nodetypes and defnode\n',
-      insideDefnode: '\n  // inside defnode\n',
-      nodetypes: '\n  // inside nodetypes\n',
+      afterNodeDefinition: '\n// after node definition\n',
+      beforeNodeDefinition: '// before\n',
+      insideNodeDefinition:
+        '\n  // before meta\n  \n  // inside node definition\n',
+      meta: '\n    // inside meta\n  ',
     };
     assert.deepEqual(parseImplementation(fixture), expected);
   });
