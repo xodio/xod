@@ -11,6 +11,7 @@ import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
 import { getCastPatchPath, getTerminalPath } from '../src/patchPathUtils';
+import autoresolveTypes from '../src/autoresolveTypes';
 
 const createImplAttachment = Attachment.createAttachmentManagedByMarker(
   CONST.NOT_IMPLEMENTED_IN_XOD_PATH
@@ -1271,6 +1272,99 @@ describe('Flatten', () => {
             }),
           ]);
         }, flatProject);
+      });
+    });
+
+    describe('for custom types', () => {
+      // To create cast nodes algorithm also needs auto resolving types
+      // So this is not just pure test of `flatten` function, but a compose
+      // of `flatten` and `autoresolveTypes` functions.
+      const project = Helper.loadXodball(
+        './fixtures/cast-custom-types.xodball'
+      );
+
+      const testCreatingCastNode = (
+        patchPath,
+        expectedNodeIds,
+        expectedCastNodeId
+      ) => {
+        const flatProject = flatten(project, patchPath);
+
+        Helper.expectEitherRight(newProject => {
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe(patchPath)
+          )(newProject);
+
+          assert.sameMembers(nodeIds, expectedNodeIds);
+          const castNodeType = R.compose(
+            Node.getNodeType,
+            Patch.getNodeByIdUnsafe(expectedCastNodeId),
+            Project.getPatchByPathUnsafe(patchPath)
+          )(newProject);
+          assert.equal(castNodeType, 'xod/color/format-color');
+        }, flatProject);
+      };
+
+      it('works the same with autoresolve before flatten and without', () => {
+        const patchPath = '@/test-nested-t1';
+        const justFlatten = flatten(project, patchPath);
+        const withAutoresolve = R.chain(
+          R.compose(flatten(R.__, patchPath)),
+          autoresolveTypes(patchPath, project)
+        );
+
+        const listPatchNodeTypes = R.compose(
+          R.map(Node.getNodeType),
+          Patch.listNodes,
+          Project.getPatchByPathUnsafe(patchPath)
+        );
+
+        Helper.expectEitherRight(fProject => {
+          Helper.expectEitherRight(aProject => {
+            const fNodes = listPatchNodeTypes(fProject);
+            const aNodes = listPatchNodeTypes(aProject);
+            assert.sameMembers(fNodes, aNodes);
+          }, withAutoresolve);
+        }, justFlatten);
+      });
+
+      it('should create cast node on a link between types color->string', () =>
+        testCreatingCastNode(
+          '@/test-same-level',
+          ['hsl-node', 'watch-node', 'hsl-node-to-watch-node-pin-input-string'],
+          'hsl-node-to-watch-node-pin-input-string'
+        ));
+
+      it('should create cast node, when a custom type nested beyond generic pins (color->t1->string)', () =>
+        testCreatingCastNode(
+          '@/test-nested-t1',
+          [
+            't1-nested~hsl-node',
+            'watch-node',
+            't1-nested~hsl-node-to-watch-node-pin-input-string',
+          ],
+          't1-nested~hsl-node-to-watch-node-pin-input-string'
+        ));
+
+      it('should create cast node, when a custom type nested using the same type (color->color->string)', () =>
+        testCreatingCastNode(
+          '@/test-nested-color',
+          [
+            'color-nested~nested-again~hsl-node',
+            'watch-node',
+            'color-nested~nested-again~hsl-node-to-watch-node-pin-input-string',
+          ],
+          'color-nested~nested-again~hsl-node-to-watch-node-pin-input-string'
+        ));
+
+      it('should return Either.Left if custom type does not have a cast node', () => {
+        const flatProject = flatten(project, '@/test-no-cast-node');
+        Helper.expectEitherError(
+          'INCOMPATIBLE_PINS__CANT_CAST_TYPES_DIRECTLY {"fromType":"xod/net/ip-address","toType":"string","patchPath":"@/untitled-patch","trace":["@/untitled-patch"]}',
+          flatProject
+        );
       });
     });
 

@@ -9,6 +9,7 @@ import {
   failOnNothing,
   prependTraceToError,
   foldMaybe,
+  isAmong,
 } from 'xod-func-tools';
 
 import * as CONST from './constants';
@@ -77,7 +78,13 @@ LinkWrapper.prototype.get = baseGet;
 
 // :: Node -> Boolean
 const isInternalTerminalNode = R.compose(
-  PatchPathUtils.isInternalTerminalNodeType,
+  PatchPathUtils.isInternalTerminalPatchPath,
+  Node.getNodeType
+);
+
+// :: Node -> Boolean
+const isGenericInternalTerminal = R.compose(
+  PatchPathUtils.isInternalGenericPatchPath,
   Node.getNodeType
 );
 
@@ -626,6 +633,132 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
   return [newNodes, newLinks];
 };
 
+const isLinkOutputNodeIdOneOf = R.curry((terminalNodeIds, link) =>
+  R.compose(isAmong(terminalNodeIds), Link.getLinkOutputNodeId)(link)
+);
+
+// It collects the full chain of nodeIds and links from the lowermost to
+// uppermost links.
+// Links collected in order from lowermost to uppermost.
+// NodeIds collected to omit Nodes that replaced with a new link.
+// If the last link in array linked with terminal node — it calls recursively.
+// :: [NodeId] -> [Link] -> [[NodeId], [Link]]
+const traverseUpAndCollectTerminalChain = R.curry(
+  (terminalNodeIds, links, collected) => {
+    const curLink = R.compose(R.last, R.last)(collected);
+
+    if (isLinkOutputNodeIdOneOf(terminalNodeIds, curLink)) {
+      // collect nodeId + next link & run recursion
+      const nextNodeId = Link.getLinkOutputNodeId(curLink);
+      const nextLink = R.find(
+        R.compose(R.equals(nextNodeId), Link.getLinkInputNodeId),
+        links
+      );
+      return R.compose(
+        traverseUpAndCollectTerminalChain(terminalNodeIds, links),
+        R.over(R.lensIndex(0), R.append(nextNodeId)),
+        R.over(R.lensIndex(1), R.append(nextLink))
+      )(collected);
+    }
+    return collected;
+  }
+);
+
+// Replaces generic internal terminals (`xod/internal/terminal-t1`) with
+// cast node if needed or just create a direct link from uppermost output pin
+// to the lowermost input pin, which are connected through any amount of internal
+// generic terminals (any nesting level).
+// :: Project -> [[PatchPath, Patch]] -> [[Node], [Link]] -> [[Node], [Link]]
+const replaceGenericTerminalsWithCastNodes = R.curry(
+  (project, patchTuples, [nodes, links]) => {
+    const terminalNodeIds = R.compose(
+      R.map(Node.getNodeId),
+      R.filter(R.both(isInternalTerminalNode, isGenericInternalTerminal))
+    )(nodes);
+
+    if (terminalNodeIds.length === 0) return [nodes, links];
+
+    const linksConnectedToTerminals = R.filter(
+      R.compose(
+        linkNodeIds => R.any(R.contains(R.__, linkNodeIds), terminalNodeIds),
+        Link.getLinkNodeIds
+      ),
+      links
+    );
+
+    const lowermostTerminalLinks = R.filter(
+      R.compose(
+        R.complement(R.contains)(R.__, terminalNodeIds),
+        Link.getLinkInputNodeId
+      ),
+      linksConnectedToTerminals
+    );
+
+    // For each lowermost link find the full chain to the uppermost link and
+    // colleact all links and NodeIds in the arrays.
+    // Links collected in order from lowermost to uppermost, so first and last
+    // links in array will be used to create a new link.
+    // NodeIds collected to omit Nodes that replaced with a new link.
+    // :: [[NodeId, Link]]
+    const terminalChains = R.map(lowermostLink =>
+      traverseUpAndCollectTerminalChain(
+        terminalNodeIds,
+        linksConnectedToTerminals,
+        [[], [lowermostLink]]
+      )
+    )(lowermostTerminalLinks);
+
+    const directLinks = R.compose(
+      R.reject(R.isNil),
+      R.map(([_, _links]) => {
+        if (_links.length <= 1) return null;
+
+        const lowermost = R.head(_links);
+        const uppermost = R.last(_links);
+
+        const lowermostId = Link.getLinkId(lowermost);
+        const uppermostId = Link.getLinkId(uppermost);
+
+        const inputPinKey = Link.getLinkInputPinKey(lowermost);
+        const inputNodeId = Link.getLinkInputNodeId(lowermost);
+        const outputPinKey = Link.getLinkOutputPinKey(uppermost);
+        const outputNodeId = Link.getLinkOutputNodeId(uppermost);
+
+        return R.compose(
+          R.assoc('id', `${uppermostId}-to-${lowermostId}`),
+          Link.createLink
+        )(inputPinKey, inputNodeId, outputPinKey, outputNodeId);
+      })
+    )(terminalChains);
+
+    const nodeIdsToOmit = R.compose(R.flatten, R.pluck(0))(terminalChains);
+    const linkIdsToOmit = R.compose(
+      R.map(Link.getLinkId),
+      R.flatten,
+      R.pluck(1)
+    )(terminalChains);
+
+    const nodesWithoutTerminals = R.reject(
+      R.compose(R.contains(R.__, nodeIdsToOmit), Node.getNodeId),
+      nodes
+    );
+    const linksWithoutTerminalLinks = R.reject(
+      R.compose(R.contains(R.__, linkIdsToOmit), Link.getLinkId),
+      links
+    );
+
+    const newNodesAndLinks = R.map(
+      splitLinkWithCastNode(project, patchTuples, nodesWithoutTerminals),
+      directLinks
+    );
+
+    return R.converge(R.pair, [
+      R.compose(R.concat(nodesWithoutTerminals), R.reject(R.isNil), R.pluck(0)),
+      R.compose(R.concat(linksWithoutTerminalLinks), R.flatten, R.pluck(1)),
+    ])(newNodesAndLinks);
+  }
+);
+
 /**
  * It replaces links with casting nodes and new links.
  *
@@ -643,6 +776,7 @@ const removeTerminalsAndPassPins = ([nodes, links]) => {
 const createCastNodes = R.curry((project, patchTuples, nodes, links) =>
   R.compose(
     removeTerminalsAndPassPins,
+    replaceGenericTerminalsWithCastNodes(project, patchTuples),
     R.converge((newNodes, newLinks) => [newNodes, newLinks], [
       R.compose(R.concat(nodes), R.reject(R.isNil), R.pluck(0)),
       R.compose(R.flatten, R.pluck(1)),

@@ -1,0 +1,559 @@
+{
+  "name": "custom-type-cast-nodes",
+  "patches": {
+    "@/nested-1": {
+      "links": {
+        "B1zB5XBaL": {
+          "id": "B1zB5XBaL",
+          "input": {
+            "nodeId": "output-color",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "hsl-node",
+            "pinKey": "output-color"
+          }
+        }
+      },
+      "nodes": {
+        "hsl-node": {
+          "id": "hsl-node",
+          "position": {
+            "x": 2,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/color-hsl"
+        },
+        "output-color": {
+          "id": "output-color",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/output-color"
+        }
+      },
+      "path": "@/nested-1"
+    },
+    "@/nested-2": {
+      "links": {
+        "Skh1_NST8": {
+          "id": "Skh1_NST8",
+          "input": {
+            "nodeId": "output-color",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "nested-again",
+            "pinKey": "output-color"
+          }
+        }
+      },
+      "nodes": {
+        "nested-again": {
+          "id": "nested-again",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/nested-1"
+        },
+        "output-color": {
+          "id": "output-color",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/output-color"
+        }
+      },
+      "path": "@/nested-2"
+    },
+    "@/nested-t1": {
+      "links": {
+        "Hy3ZuNrTU": {
+          "id": "Hy3ZuNrTU",
+          "input": {
+            "nodeId": "output-t1",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "hsl-node",
+            "pinKey": "output-color"
+          }
+        }
+      },
+      "nodes": {
+        "output-t1": {
+          "id": "output-t1",
+          "position": {
+            "x": 0,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "hsl-node": {
+          "id": "hsl-node",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/color-hsl"
+        }
+      },
+      "path": "@/nested-t1"
+    },
+    "@/test-nested-color": {
+      "links": {
+        "HkkeONBTI": {
+          "id": "HkkeONBTI",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "color-nested",
+            "pinKey": "output-color"
+          }
+        }
+      },
+      "nodes": {
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        },
+        "color-nested": {
+          "id": "color-nested",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/nested-2"
+        }
+      },
+      "path": "@/test-nested-color"
+    },
+    "@/test-nested-t1": {
+      "links": {
+        "H1Afu4ST8": {
+          "id": "H1Afu4ST8",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "t1-nested",
+            "pinKey": "output-t1"
+          }
+        }
+      },
+      "nodes": {
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "size": {
+            "height": 1,
+            "width": 4,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        },
+        "t1-nested": {
+          "id": "t1-nested",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "@/nested-t1"
+        }
+      },
+      "path": "@/test-nested-t1"
+    },
+    "@/test-same-level": {
+      "links": {
+        "SJuoDEB6U": {
+          "id": "SJuoDEB6U",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "hsl-node",
+            "pinKey": "output-color"
+          }
+        }
+      },
+      "nodes": {
+        "hsl-node": {
+          "id": "hsl-node",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/color-hsl"
+        },
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "size": {
+            "height": 1,
+            "width": 3,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        }
+      },
+      "path": "@/test-same-level"
+    },
+    "@/no-cast-node": {
+      "links": {
+        "SyM2_nSgP": {
+          "id": "SyM2_nSgP",
+          "input": {
+            "nodeId": "output-t1",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "ip-node",
+            "pinKey": "output-ip"
+          }
+        }
+      },
+      "nodes": {
+        "output-t1": {
+          "id": "output-t1",
+          "position": {
+            "x": 2,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-t1"
+        },
+        "ip-node": {
+          "id": "ip-node",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/net/ip-address"
+        }
+      },
+      "path": "@/no-cast-node"
+    },
+    "@/test-no-cast-node": {
+      "links": {
+        "SyAnOhSgD": {
+          "id": "SyAnOhSgD",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "no-cast-node",
+            "pinKey": "output-t1"
+          }
+        }
+      },
+      "nodes": {
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        },
+        "no-cast-node": {
+          "id": "no-cast-node",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "@/no-cast-node"
+        }
+      },
+      "path": "@/test-no-cast-node"
+    },
+    "xod/color/color": {
+      "description": "Color type constructor",
+      "nodes": {
+        "output-self": {
+          "id": "output-self",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "path": "xod/color/color"
+    },
+    "xod/color/color-hsl": {
+      "description": "Constructs a color value from hue, saturation, and lightness values (HSL model)",
+      "nodes": {
+        "output-color": {
+          "id": "output-color",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 2
+          },
+          "type": "xod/color/output-color"
+        },
+        "input-hue": {
+          "description": "0 is for red, 0.33 for green, 0.66 for blue, and 0.99 is for red again. Some systems use degrees for the hue component. The value of 1.0 corresponds to 360° of such systems. When out out of [0; 1) range only the fractional part is taken into account",
+          "id": "input-hue",
+          "label": "H",
+          "position": {
+            "units": "slots",
+            "x": -0.05,
+            "y": -0.05
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "input-sat": {
+          "boundLiterals": {
+            "__out__": "1"
+          },
+          "description": "Saturation. Should be in the range [0, 1]. 0.0 corresponds to fully-gray shade and 1.0 to saturated color shade. Values out of the range are truncated to 0 or 1",
+          "id": "input-sat",
+          "label": "S",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "input-lightness": {
+          "boundLiterals": {
+            "__out__": "0.5"
+          },
+          "description": "Lightness. Should be in the range [0, 1]. 0.0 corresponds to black; 0.5 to pure color; 1.0 to white. Values out of the range are truncated to 0 or 1",
+          "id": "input-lightness",
+          "label": "L",
+          "position": {
+            "units": "slots",
+            "x": 4,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "path": "xod/color/color-hsl"
+    },
+    "xod/color/format-color": {
+      "description": "Formats a color as a 6-digit hexadecimal value (ex.: \"FF3300\")",
+      "nodes": {
+        "output-string": {
+          "id": "output-string",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 2
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "input-color": {
+          "id": "input-color",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/color/input-color"
+        },
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 0,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "path": "xod/color/format-color"
+    },
+    "xod/debug/watch": {
+      "description": "Shows incoming values in the realtime, when a debug session is active",
+      "nodes": {
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 1,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "input-string": {
+          "id": "input-string",
+          "position": {
+            "units": "slots",
+            "x": 1,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-string"
+        }
+      },
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "path": "xod/debug/watch"
+    },
+    "xod/net/ip-address": {
+      "description": "Assembles an IP address from 4 octets",
+      "path": "xod/net/ip-address",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "nodes": {
+        "BJ-GeebB-Q": {
+          "boundLiterals": {
+            "__out__": "0d"
+          },
+          "description": "3rd octet",
+          "id": "BJ-GeebB-Q",
+          "position": {
+            "units": "slots",
+            "x": 3,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/input-byte"
+        },
+        "HyMxxWSWQ": {
+          "boundLiterals": {
+            "__out__": "0d"
+          },
+          "description": "2nd octet",
+          "id": "HyMxxWSWQ",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/input-byte"
+        },
+        "r1wK2bgbQ": {
+          "id": "r1wK2bgbQ",
+          "position": {
+            "units": "slots",
+            "x": 1,
+            "y": 2
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "output-ip": {
+          "description": "IP address",
+          "id": "output-ip",
+          "position": {
+            "units": "slots",
+            "x": 1,
+            "y": 3
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "ryMGggZH-Q": {
+          "boundLiterals": {
+            "__out__": "0d"
+          },
+          "description": "1st octet",
+          "id": "ryMGggZH-Q",
+          "position": {
+            "units": "slots",
+            "x": 1,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/input-byte"
+        },
+        "ryefxxZBZm": {
+          "boundLiterals": {
+            "__out__": "0d"
+          },
+          "description": "4th octet",
+          "id": "ryefxxZBZm",
+          "position": {
+            "units": "slots",
+            "x": 4,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/input-byte"
+        }
+      }
+    }
+  }
+}
