@@ -970,6 +970,8 @@ void loop() {
 //-----------------------------------------------------------------------------
 // xod-dev/text-lcd/text-lcd-i2c-device implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_raise enable
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -979,12 +981,6 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
     typedef uint8_t typeof_ADDR;
     typedef Number typeof_COLS;
     typedef Number typeof_ROWS;
-
-    //#pragma XOD error_raise enable
-
-    struct State {
-        uint8_t mem[sizeof(LiquidCrystal_I2C)];
-    };
 
     struct Type {
         LiquidCrystal_I2C* lcd;
@@ -1110,15 +1106,9 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
         ctx->_isOutputDirty_DEV = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    uint8_t mem[sizeof(LiquidCrystal_I2C)];
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
-
         uint8_t addr = getValue<input_ADDR>(ctx);
         uint8_t rows = (uint8_t) getValue<input_ROWS>(ctx);
         uint8_t cols = (uint8_t) getValue<input_COLS>(ctx);
@@ -1131,7 +1121,8 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
         Type t;
         t.rows = rows;
         t.cols = cols;
-        t.lcd = new (state->mem) LiquidCrystal_I2C(addr, cols, rows);
+        // do we need `&` here?
+        t.lcd = new (mem) LiquidCrystal_I2C(addr, cols, rows);
         t.lcd->begin();
 
         emitValue<output_DEV>(ctx, t);
@@ -1143,6 +1134,8 @@ struct xod_dev__text_lcd__text_lcd_i2c_device {
 //-----------------------------------------------------------------------------
 // xod-dev/servo/servo-device implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_raise enable
+
 #include <Servo.h>
 
 namespace xod {
@@ -1153,13 +1146,11 @@ struct xod_dev__servo__servo_device {
     typedef Number typeof_Pmin;
     typedef Number typeof_Pmax;
 
-    //#pragma XOD error_raise enable
-
     /*
-      A wrapper around the stock Servo object because we need to keep some details
-      which the original object hides in private fields. This over-protection leads
-      to increased RAM usage to duplicate the data. A pull request to the original
-      library asking to add field read methods would be nice.
+    A wrapper around the stock Servo object because we need to keep some details
+    which the original object hides in private fields. This over-protection leads
+    to increased RAM usage to duplicate the data. A pull request to the original
+    library asking to add field read methods would be nice.
     */
     class XServo : public Servo {
       protected:
@@ -1199,7 +1190,6 @@ struct xod_dev__servo__servo_device {
         }
     };
 
-    using State = XServo;
     using Type = XServo*;
 
     typedef Type typeof_DEV;
@@ -1319,24 +1309,18 @@ struct xod_dev__servo__servo_device {
         ctx->_isOutputDirty_DEV = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    XServo servo;
 
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
-        State* servo = getState(ctx);
-
-        servo->reattach(
+        servo.reattach(
             constant_input_PORT,
             getValue<input_Pmin>(ctx),
             getValue<input_Pmax>(ctx)
         );
 
-        emitValue<output_DEV>(ctx, servo);
+        emitValue<output_DEV>(ctx, &servo);
     }
 
 };
@@ -1350,9 +1334,6 @@ namespace xod {
 struct xod__core__continuously {
 
     typedef Pulse typeof_TICK;
-
-    struct State {
-    };
 
     struct output_TICK { };
 
@@ -1424,12 +1405,6 @@ struct xod__core__continuously {
         ctx->_isOutputDirty_TICK = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
         setTimeout(ctx, 0);
@@ -1446,9 +1421,6 @@ namespace xod {
 struct xod__core__boot {
 
     typedef Pulse typeof_BOOT;
-
-    struct State {
-    };
 
     struct output_BOOT { };
 
@@ -1506,12 +1478,6 @@ struct xod__core__boot {
         ctx->_isOutputDirty_BOOT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         emitValue<output_BOOT>(ctx, 1);
     }
@@ -1522,6 +1488,7 @@ struct xod__core__boot {
 //-----------------------------------------------------------------------------
 // xod/core/multiply implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__multiply {
@@ -1530,11 +1497,6 @@ struct xod__core__multiply {
     typedef Number typeof_IN2;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -1611,12 +1573,6 @@ struct xod__core__multiply {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -1636,10 +1592,6 @@ struct xod__core__pulse_on_change__boolean {
     typedef Logic typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-        bool sample = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -1706,20 +1658,15 @@ struct xod__core__pulse_on_change__boolean {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool sample = false;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         int8_t newValue = (int8_t) getValue<input_IN>(ctx);
 
-        if (!isSettingUp() && newValue != state->sample)
+        if (!isSettingUp() && newValue != sample)
             emitValue<output_OUT>(ctx, 1);
 
-        state->sample = newValue;
+        sample = newValue;
     }
 
 };
@@ -1728,6 +1675,7 @@ struct xod__core__pulse_on_change__boolean {
 //-----------------------------------------------------------------------------
 // xod/core/divide implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__divide {
@@ -1736,11 +1684,6 @@ struct xod__core__divide {
     typedef Number typeof_IN2;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -1817,12 +1760,6 @@ struct xod__core__divide {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -1842,10 +1779,6 @@ struct xod__core__cast_to_pulse__boolean {
     typedef Logic typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-      bool state = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -1912,20 +1845,15 @@ struct xod__core__cast_to_pulse__boolean {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool state = false;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         auto newValue = getValue<input_IN>(ctx);
 
-        if (newValue == true && state->state == false)
+        if (newValue == true && state == false)
             emitValue<output_OUT>(ctx, 1);
 
-        state->state = newValue;
+        state = newValue;
     }
 
 };
@@ -1934,6 +1862,8 @@ struct xod__core__cast_to_pulse__boolean {
 //-----------------------------------------------------------------------------
 // xod/gpio/analog-read implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
 template <uint8_t constant_input_PORT>
@@ -1944,12 +1874,6 @@ struct xod__gpio__analog_read {
 
     typedef Number typeof_VAL;
     typedef Pulse typeof_DONE;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_UPD
-
-    struct State {
-    };
 
     struct input_PORT { };
     struct input_UPD { };
@@ -2042,12 +1966,6 @@ struct xod__gpio__analog_read {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         static_assert(isValidAnalogPort(constant_input_PORT), "must be a valid analog port");
 
@@ -2065,6 +1983,8 @@ struct xod__gpio__analog_read {
 //-----------------------------------------------------------------------------
 // xod/gpio/digital-read-pullup implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
 template <uint8_t constant_input_PORT>
@@ -2075,12 +1995,6 @@ struct xod__gpio__digital_read_pullup {
 
     typedef Logic typeof_SIG;
     typedef Pulse typeof_DONE;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_UPD
-
-    struct State {
-    };
 
     struct input_PORT { };
     struct input_UPD { };
@@ -2173,12 +2087,6 @@ struct xod__gpio__digital_read_pullup {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
@@ -2196,6 +2104,7 @@ struct xod__gpio__digital_read_pullup {
 //-----------------------------------------------------------------------------
 // xod/core/subtract implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__subtract {
@@ -2204,11 +2113,6 @@ struct xod__core__subtract {
     typedef Number typeof_IN2;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -2285,12 +2189,6 @@ struct xod__core__subtract {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto x = getValue<input_IN1>(ctx);
         auto y = getValue<input_IN2>(ctx);
@@ -2311,9 +2209,6 @@ struct xod__core__any {
     typedef Pulse typeof_IN2;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -2395,12 +2290,6 @@ struct xod__core__any {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         bool p1 = isInputDirty<input_IN1>(ctx);
         bool p2 = isInputDirty<input_IN2>(ctx);
@@ -2414,6 +2303,7 @@ struct xod__core__any {
 //-----------------------------------------------------------------------------
 // xod/math/map implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__math__map {
@@ -2425,11 +2315,6 @@ struct xod__math__map {
     typedef Number typeof_Tmax;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_X { };
     struct input_Smin { };
@@ -2530,12 +2415,6 @@ struct xod__math__map {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto x = getValue<input_X>(ctx);
         auto sMin = getValue<input_Smin>(ctx);
@@ -2553,6 +2432,7 @@ struct xod__math__map {
 //-----------------------------------------------------------------------------
 // xod/core/not implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__not {
@@ -2560,11 +2440,6 @@ struct xod__core__not {
     typedef Logic typeof_IN;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -2633,12 +2508,6 @@ struct xod__core__not {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto x = getValue<input_IN>(ctx);
         emitValue<output_OUT>(ctx, !x);
@@ -2650,6 +2519,7 @@ struct xod__core__not {
 //-----------------------------------------------------------------------------
 // xod/core/less implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__less {
@@ -2658,10 +2528,6 @@ struct xod__core__less {
     typedef Number typeof_IN2;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {};
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -2738,12 +2604,6 @@ struct xod__core__less {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto lhs = getValue<input_IN1>(ctx);
         auto rhs = getValue<input_IN2>(ctx);
@@ -2756,6 +2616,7 @@ struct xod__core__less {
 //-----------------------------------------------------------------------------
 // xod/core/cast-to-string(number) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__cast_to_string__number {
@@ -2763,14 +2624,6 @@ struct xod__core__cast_to_string__number {
     typedef Number typeof_IN;
 
     typedef XString typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-        char str[16];
-        CStringView view;
-        State() : view(str) { }
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -2839,17 +2692,17 @@ struct xod__core__cast_to_string__number {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    char str[16];
+    CStringView view;
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
+        if (isSettingUp()) {
+            view = CStringView(str);
+        }
+
         auto num = getValue<input_IN>(ctx);
-        formatNumber(num, 2, state->str);
-        emitValue<output_OUT>(ctx, XString(&state->view));
+        formatNumber(num, 2, str);
+        emitValue<output_OUT>(ctx, XString(&view));
     }
 
 };
@@ -2866,10 +2719,6 @@ struct xod__core__debounce__boolean {
     typedef Number typeof_Ts;
 
     typedef Logic typeof_OUT;
-
-    struct State {
-        bool state = false;
-    };
 
     struct input_ST { };
     struct input_Ts { };
@@ -2962,18 +2811,13 @@ struct xod__core__debounce__boolean {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool state = false;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         bool x = getValue<input_ST>(ctx);
 
-        if (x != state->state) {
-            state->state = x;
+        if (x != state) {
+            state = x;
             TimeMs dt = getValue<input_Ts>(ctx) * 1000;
             setTimeout(ctx, dt);
         }
@@ -2989,6 +2833,7 @@ struct xod__core__debounce__boolean {
 //-----------------------------------------------------------------------------
 // xod/core/greater implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__greater {
@@ -2997,11 +2842,6 @@ struct xod__core__greater {
     typedef Number typeof_IN2;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -3078,12 +2918,6 @@ struct xod__core__greater {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto lhs = getValue<input_IN1>(ctx);
         auto rhs = getValue<input_IN2>(ctx);
@@ -3104,9 +2938,6 @@ struct xod__core__gate__pulse {
     typedef Logic typeof_EN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-    };
 
     struct input_IN { };
     struct input_EN { };
@@ -3186,12 +3017,6 @@ struct xod__core__gate__pulse {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         if (getValue<input_EN>(ctx) && isInputDirty<input_IN>(ctx))
             emitValue<output_OUT>(ctx, true);
@@ -3203,6 +3028,7 @@ struct xod__core__gate__pulse {
 //-----------------------------------------------------------------------------
 // xod/core/if-else(number) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__if_else__number {
@@ -3212,11 +3038,6 @@ struct xod__core__if_else__number {
     typedef Number typeof_F;
 
     typedef Number typeof_R;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_COND { };
     struct input_T { };
@@ -3301,12 +3122,6 @@ struct xod__core__if_else__number {
         this->_output_R = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto cond = getValue<input_COND>(ctx);
         auto trueVal = getValue<input_T>(ctx);
@@ -3320,6 +3135,7 @@ struct xod__core__if_else__number {
 //-----------------------------------------------------------------------------
 // xod/core/concat implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__concat {
@@ -3328,12 +3144,6 @@ struct xod__core__concat {
     typedef XString typeof_IN2;
 
     typedef XString typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-        ConcatListView<char> view;
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -3410,18 +3220,13 @@ struct xod__core__concat {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    ConcatListView<char> view;
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
         auto head = getValue<input_IN1>(ctx);
         auto tail = getValue<input_IN2>(ctx);
-        state->view = ConcatListView<char>(head, tail);
-        emitValue<output_OUT>(ctx, XString(&state->view));
+        view = ConcatListView<char>(head, tail);
+        emitValue<output_OUT>(ctx, XString(&view));
     }
 
 };
@@ -3437,10 +3242,6 @@ struct xod__core__pulse_on_true {
     typedef Logic typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-      bool state = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -3507,20 +3308,15 @@ struct xod__core__pulse_on_true {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool state = false;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         auto newValue = getValue<input_IN>(ctx);
 
-        if (!isSettingUp() && newValue == true && state->state == false)
+        if (!isSettingUp() && newValue == true && state == false)
             emitValue<output_OUT>(ctx, 1);
 
-        state->state = newValue;
+        state = newValue;
     }
 
 };
@@ -3529,6 +3325,7 @@ struct xod__core__pulse_on_true {
 //-----------------------------------------------------------------------------
 // xod/core/and implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__and {
@@ -3537,11 +3334,6 @@ struct xod__core__and {
     typedef Logic typeof_IN2;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -3618,12 +3410,6 @@ struct xod__core__and {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto a = getValue<input_IN1>(ctx);
         auto b = getValue<input_IN2>(ctx);
@@ -3636,6 +3422,7 @@ struct xod__core__and {
 //-----------------------------------------------------------------------------
 // xod/core/if-else(string) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__if_else__string {
@@ -3645,11 +3432,6 @@ struct xod__core__if_else__string {
     typedef XString typeof_F;
 
     typedef XString typeof_R;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_COND { };
     struct input_T { };
@@ -3734,12 +3516,6 @@ struct xod__core__if_else__string {
         this->_output_R = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto cond = getValue<input_COND>(ctx);
         auto trueVal = getValue<input_T>(ctx);
@@ -3763,9 +3539,6 @@ struct xod_dev__text_lcd__set_backlight {
 
     typedef xod_dev__text_lcd__text_lcd_i2c_device::Type typeof_DEVU0027;
     typedef Pulse typeof_DONE;
-
-    struct State {
-    };
 
     struct input_DEV { };
     struct input_BL { };
@@ -3868,12 +3641,6 @@ struct xod_dev__text_lcd__set_backlight {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto t = getValue<input_DEV>(ctx);
         if (isInputDirty<input_DO>(ctx)) {
@@ -3890,6 +3657,7 @@ struct xod_dev__text_lcd__set_backlight {
 //-----------------------------------------------------------------------------
 // xod/math/cube implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__math__cube {
@@ -3897,11 +3665,6 @@ struct xod__math__cube {
     typedef Number typeof_IN;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -3970,12 +3733,6 @@ struct xod__math__cube {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         Number x = getValue<input_IN>(ctx);
         emitValue<output_OUT>(ctx, x * x * x);
@@ -3994,10 +3751,6 @@ struct xod__core__pulse_on_change__number {
     typedef Number typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-        Number sample = NAN;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -4064,20 +3817,15 @@ struct xod__core__pulse_on_change__number {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    Number sample = NAN;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         auto newValue = getValue<input_IN>(ctx);
 
-        if (!isSettingUp() && newValue != state->sample)
+        if (!isSettingUp() && newValue != sample)
             emitValue<output_OUT>(ctx, 1);
 
-        state->sample = newValue;
+        sample = newValue;
     }
 
 };
@@ -4095,9 +3843,6 @@ struct xod__core__flip_flop {
     typedef Pulse typeof_RST;
 
     typedef Logic typeof_MEM;
-
-    struct State {
-    };
 
     struct input_SET { };
     struct input_TGL { };
@@ -4194,12 +3939,6 @@ struct xod__core__flip_flop {
         ctx->_isOutputDirty_MEM = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         bool oldState = getValue<output_MEM>(ctx);
         bool newState = oldState;
@@ -4224,6 +3963,7 @@ struct xod__core__flip_flop {
 //-----------------------------------------------------------------------------
 // xod/core/or implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__or {
@@ -4232,11 +3972,6 @@ struct xod__core__or {
     typedef Logic typeof_IN2;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN1 { };
     struct input_IN2 { };
@@ -4311,12 +4046,6 @@ struct xod__core__or {
 
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) {
         this->_output_OUT = val;
-    }
-
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -4483,6 +4212,8 @@ struct xod__core__clock {
 //-----------------------------------------------------------------------------
 // xod/core/if-error(string) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_raise enable
+//#pragma XOD error_catch enable
 
 namespace xod {
 struct xod__core__if_error__string {
@@ -4491,12 +4222,6 @@ struct xod__core__if_error__string {
     typedef XString typeof_DEF;
 
     typedef XString typeof_OUT;
-
-    //#pragma XOD error_raise enable
-    //#pragma XOD error_catch enable
-
-    struct State {
-    };
 
     struct input_IN { };
     struct input_DEF { };
@@ -4626,12 +4351,6 @@ struct xod__core__if_error__string {
         return ctx->_error_input_DEF;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto defError = getError<input_DEF>(ctx);
 
@@ -4649,6 +4368,8 @@ struct xod__core__if_error__string {
 //-----------------------------------------------------------------------------
 // xod/gpio/pwm-write implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
 template <uint8_t constant_input_PORT>
@@ -4659,12 +4380,6 @@ struct xod__gpio__pwm_write {
     typedef Pulse typeof_UPD;
 
     typedef Pulse typeof_DONE;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_UPD
-
-    struct State {
-    };
 
     struct input_PORT { };
     struct input_DUTY { };
@@ -4751,12 +4466,6 @@ struct xod__gpio__pwm_write {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     #ifdef PWMRANGE
     static constexpr Number pwmRange = PWMRANGE;
     #else
@@ -4795,9 +4504,6 @@ struct xod__core__count {
     typedef Pulse typeof_RST;
 
     typedef Number typeof_OUT;
-
-    struct State {
-    };
 
     struct input_STEP { };
     struct input_INC { };
@@ -4892,12 +4598,6 @@ struct xod__core__count {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         Number count = getValue<output_OUT>(ctx);
 
@@ -4926,12 +4626,6 @@ struct xod__core__square_wave {
 
     typedef Logic typeof_OUT;
     typedef Number typeof_N;
-
-    struct State {
-        bool wasEnabled;
-        TimeMs timeToSwitch;
-        TimeMs nextSwitchTime;
-    };
 
     struct input_T { };
     struct input_DUTY { };
@@ -5059,14 +4753,11 @@ struct xod__core__square_wave {
         ctx->_isOutputDirty_N = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool wasEnabled;
+    TimeMs timeToSwitch;
+    TimeMs nextSwitchTime;
 
     void evaluate(Context ctx) {
-        State* state = getState(ctx);
         TimeMs t = transactionTime();
 
         bool enabled = getValue<input_EN>(ctx);
@@ -5079,36 +4770,36 @@ struct xod__core__square_wave {
             emitValue<output_N>(ctx, 0);
             clearTimeout(ctx);
             // enforce rescheduling at the next stage if enabled
-            state->wasEnabled = false;
+            wasEnabled = false;
         }
 
-        if (enabled && !state->wasEnabled) {
+        if (enabled && !wasEnabled) {
             // just enabled/resumed
-            state->timeToSwitch = (period * duty) * 1000.0;
-            setTimeout(ctx, state->timeToSwitch);
-            state->nextSwitchTime = t + state->timeToSwitch;
+            timeToSwitch = (period * duty) * 1000.0;
+            setTimeout(ctx, timeToSwitch);
+            nextSwitchTime = t + timeToSwitch;
             emitValue<output_OUT>(ctx, true);
-        } else if (!enabled && state->wasEnabled) {
+        } else if (!enabled && wasEnabled) {
             // just paused
             // TODO: we can get rid of storing nextSwitchTime if API would
             // have a function to fetch current scheduled time for a ctx
-            state->timeToSwitch = state->nextSwitchTime - t;
+            timeToSwitch = nextSwitchTime - t;
             clearTimeout(ctx);
         } else if (isTimedOut(ctx)) {
             // switch time
             auto newValue = !getValue<output_OUT>(ctx);
             auto k = newValue ? duty : (1.0 - duty);
-            state->timeToSwitch = period * k * 1000.0;
+            timeToSwitch = period * k * 1000.0;
 
-            setTimeout(ctx, state->timeToSwitch);
-            state->nextSwitchTime = t + state->timeToSwitch;
+            setTimeout(ctx, timeToSwitch);
+            nextSwitchTime = t + timeToSwitch;
 
             emitValue<output_OUT>(ctx, newValue);
             if (newValue)
                 emitValue<output_N>(ctx, getValue<output_N>(ctx) + 1);
         }
 
-        state->wasEnabled = enabled;
+        wasEnabled = enabled;
     }
 
 };
@@ -5124,10 +4815,6 @@ struct xod__core__pulse_on_change__string {
     typedef XString typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    struct State {
-        uint8_t prev = 0;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -5194,11 +4881,7 @@ struct xod__core__pulse_on_change__string {
         ctx->_isOutputDirty_OUT = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    uint8_t prev = 0;
 
     uint8_t crc8(XString str) {
         uint8_t result = 0;
@@ -5221,15 +4904,14 @@ struct xod__core__pulse_on_change__string {
     }
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
         auto str = getValue<input_IN>(ctx);
 
         uint8_t current = crc8(str);
 
-        if (!isSettingUp() && current != state->prev)
+        if (!isSettingUp() && current != prev)
             emitValue<output_OUT>(ctx, 1);
 
-        state->prev = current;
+        prev = current;
     }
 
 };
@@ -5238,6 +4920,8 @@ struct xod__core__pulse_on_change__string {
 //-----------------------------------------------------------------------------
 // xod/core/buffer(number) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
 struct xod__core__buffer__number {
@@ -5246,12 +4930,6 @@ struct xod__core__buffer__number {
     typedef Pulse typeof_UPD;
 
     typedef Number typeof_MEM;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_UPD
-
-    struct State {
-    };
 
     struct input_NEW { };
     struct input_UPD { };
@@ -5335,12 +5013,6 @@ struct xod__core__buffer__number {
         ctx->_isOutputDirty_MEM = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         if (!isInputDirty<input_UPD>(ctx))
             return;
@@ -5354,6 +5026,7 @@ struct xod__core__buffer__number {
 //-----------------------------------------------------------------------------
 // xod/core/cast-to-number(boolean) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 struct xod__core__cast_to_number__boolean {
@@ -5361,11 +5034,6 @@ struct xod__core__cast_to_number__boolean {
     typedef Logic typeof_IN;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -5434,12 +5102,6 @@ struct xod__core__cast_to_number__boolean {
         this->_output_OUT = val;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         emitValue<output_OUT>(ctx, getValue<input_IN>(ctx) ? 1.0 : 0.0);
     }
@@ -5450,6 +5112,8 @@ struct xod__core__cast_to_number__boolean {
 //-----------------------------------------------------------------------------
 // xod/core/branch implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_TRIG
 
 namespace xod {
 struct xod__core__branch {
@@ -5459,12 +5123,6 @@ struct xod__core__branch {
 
     typedef Pulse typeof_T;
     typedef Pulse typeof_F;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_TRIG
-
-    struct State {
-    };
 
     struct input_GATE { };
     struct input_TRIG { };
@@ -5553,12 +5211,6 @@ struct xod__core__branch {
     }
     void emitValue(Context ctx, typeof_F val, identity<output_F>) {
         ctx->_isOutputDirty_F = true;
-    }
-
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -5709,9 +5361,6 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
 
     typedef xod_dev__text_lcd__text_lcd_i2c_device::Type typeof_DEVU0027;
     typedef Pulse typeof_DONE;
-
-    struct State {
-    };
 
     struct input_DEV { };
     struct input_ROW { };
@@ -5877,12 +5526,6 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void printAt(LiquidCrystal_I2C* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
         lcd->setCursor(posIndex, rowIndex);
         uint8_t whitespace = len;
@@ -5924,6 +5567,8 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
 //-----------------------------------------------------------------------------
 // xod-dev/servo/rotate implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD evaluate_on_pin disable
+//#pragma XOD evaluate_on_pin enable input_DO
 
 namespace xod {
 template <typename typeof_DEV>
@@ -5934,11 +5579,6 @@ struct xod_dev__servo__rotate {
 
     typedef typeof_DEV typeof_DEVU0027;
     typedef Pulse typeof_ACK;
-
-    //#pragma XOD evaluate_on_pin disable
-    //#pragma XOD evaluate_on_pin enable input_DO
-
-    struct State { };
 
     struct input_DEV { };
     struct input_VAL { };
@@ -6041,12 +5681,6 @@ struct xod_dev__servo__rotate {
         ctx->_isOutputDirty_ACK = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
     void evaluate(Context ctx) {
         auto xservo = getValue<input_DEV>(ctx);
 
@@ -6069,6 +5703,8 @@ struct xod_dev__servo__rotate {
 //-----------------------------------------------------------------------------
 // xod/core/defer(number) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_catch enable
+//#pragma XOD error_raise enable
 
 namespace xod {
 struct xod__core__defer__number {
@@ -6076,13 +5712,6 @@ struct xod__core__defer__number {
     typedef Number typeof_IN;
 
     typedef Number typeof_OUT;
-
-    //#pragma XOD error_catch enable
-    //#pragma XOD error_raise enable
-
-    struct State {
-        bool shouldRaiseAtTheNextDeferOnlyRun = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -6213,25 +5842,19 @@ struct xod__core__defer__number {
         return ctx->_error_input_IN;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool shouldRaiseAtTheNextDeferOnlyRun = false;
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
-
         if (isEarlyDeferPass()) {
-            if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+            if (shouldRaiseAtTheNextDeferOnlyRun) {
                 raiseError<output_OUT>(ctx);
-                state->shouldRaiseAtTheNextDeferOnlyRun = false;
+                shouldRaiseAtTheNextDeferOnlyRun = false;
             } else {
                 emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
             }
         } else {
             if (getError<input_IN>(ctx)) {
-                state->shouldRaiseAtTheNextDeferOnlyRun = true;
+                shouldRaiseAtTheNextDeferOnlyRun = true;
             } else {
                 // save the value for reemission on deferred-only evaluation pass
                 emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
@@ -6247,6 +5870,8 @@ struct xod__core__defer__number {
 //-----------------------------------------------------------------------------
 // xod/core/defer(pulse) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_catch enable
+//#pragma XOD error_raise enable
 
 namespace xod {
 struct xod__core__defer__pulse {
@@ -6254,14 +5879,6 @@ struct xod__core__defer__pulse {
     typedef Pulse typeof_IN;
 
     typedef Pulse typeof_OUT;
-
-    //#pragma XOD error_catch enable
-    //#pragma XOD error_raise enable
-
-    struct State {
-        bool shouldRaiseAtTheNextDeferOnlyRun = false;
-        bool shouldPulseAtTheNextDeferOnlyRun = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -6392,30 +6009,25 @@ struct xod__core__defer__pulse {
         return ctx->_error_input_IN;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool shouldRaiseAtTheNextDeferOnlyRun = false;
+    bool shouldPulseAtTheNextDeferOnlyRun = false;
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
-
         if (isEarlyDeferPass()) {
-            if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+            if (shouldRaiseAtTheNextDeferOnlyRun) {
                 raiseError<output_OUT>(ctx);
-                state->shouldRaiseAtTheNextDeferOnlyRun = false;
+                shouldRaiseAtTheNextDeferOnlyRun = false;
             }
 
-            if (state->shouldPulseAtTheNextDeferOnlyRun) {
+            if (shouldPulseAtTheNextDeferOnlyRun) {
                 emitValue<output_OUT>(ctx, true);
-                state->shouldPulseAtTheNextDeferOnlyRun = false;
+                shouldPulseAtTheNextDeferOnlyRun = false;
             }
         } else {
             if (getError<input_IN>(ctx)) {
-                state->shouldRaiseAtTheNextDeferOnlyRun = true;
+                shouldRaiseAtTheNextDeferOnlyRun = true;
             } else if (isInputDirty<input_IN>(ctx)) {
-                state->shouldPulseAtTheNextDeferOnlyRun = true;
+                shouldPulseAtTheNextDeferOnlyRun = true;
             }
 
             setTimeout(ctx, 0);

@@ -5,7 +5,7 @@ namespace xod {
 struct {{ ns patch }} {
 {{ indent patchPinTypes }}
 
-{{ meta }}
+{{ unindent meta }}
 
 {{ indent generatedCode }}
 

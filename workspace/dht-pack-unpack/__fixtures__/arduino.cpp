@@ -1076,9 +1076,6 @@ struct xod__core__continuously {
 
     typedef Pulse typeof_TICK;
 
-    struct State {
-    };
-
     struct output_TICK { };
 
     static const identity<typeof_TICK> getValueType(output_TICK) {
@@ -1147,12 +1144,6 @@ struct xod__core__continuously {
 
     void emitValue(Context ctx, typeof_TICK val, identity<output_TICK>) {
         ctx->_isOutputDirty_TICK = true;
-    }
-
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
     }
 
     void evaluate(Context ctx) {

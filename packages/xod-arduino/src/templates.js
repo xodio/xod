@@ -326,6 +326,8 @@ Handlebars.registerHelper(
   )
 );
 
+Handlebars.registerHelper('unindent', str => str.replace(/^( {1,4}|\t)/gm, ''));
+
 Handlebars.registerHelper({
   eq: (v1, v2) => v1 === v2,
   ne: (v1, v2) => v1 !== v2,

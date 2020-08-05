@@ -1,22 +1,20 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_DO
 
-struct State { };
+node {
+    void evaluate(Context ctx) {
+        auto xservo = getValue<input_DEV>(ctx);
 
-{{ GENERATED_CODE }}
+        if (isSettingUp()) {
+            // Short-circuit DEV and DEV'
+            emitValue<output_DEVU0027>(ctx, xservo);
+        }
 
-void evaluate(Context ctx) {
-    auto xservo = getValue<input_DEV>(ctx);
+        if (!isInputDirty<input_DO>(ctx))
+            return;
 
-    if (isSettingUp()) {
-        // Short-circuit DEV and DEV'
-        emitValue<output_DEVU0027>(ctx, xservo);
+        auto angle = getValue<input_VAL>(ctx);
+        xservo->write01(angle);
+        emitValue<output_ACK>(ctx, 1);
     }
-
-    if (!isInputDirty<input_DO>(ctx))
-        return;
-
-    auto angle = getValue<input_VAL>(ctx);
-    xservo->write01(angle);
-    emitValue<output_ACK>(ctx, 1);
 }
