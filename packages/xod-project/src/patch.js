@@ -329,6 +329,7 @@ export const canBindToOutputs = def(
         isTerminalPatchPath,
         isTweakPath,
         isAmong(R.values(CONST.CONST_NODETYPES)),
+        isBindableCustomType,
       ]),
       getPatchPath
     ),
@@ -359,7 +360,6 @@ const createPinFromTerminalNode = R.curry((patch, node, order) => {
     (direction === CONST.PIN_DIRECTION.INPUT
       ? true // input pins of built-in types are always bindable
       : canBindToOutputs(patch) &&
-        !isOutputSelf &&
         type !== CONST.PIN_TYPE.PULSE &&
         !Utils.isGenericType(type));
   const defaultValue = Node.getBoundValue(
