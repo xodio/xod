@@ -39,7 +39,7 @@ const ArduinoCli = (pathToBin, config = null) => {
 
   const runWithProgress = async (onProgress, args) => {
     const spawnArgs = R.compose(
-      R.concat([`--config-file=${configDir}`]),
+      R.concat([`--config-file`, configDir]),
       R.reject(R.isEmpty)
     )(args);
     const proc = spawn(pathToBin, spawnArgs, {
@@ -144,7 +144,10 @@ const ArduinoCli = (pathToBin, config = null) => {
       upgrade: onProgress =>
         runWithProgress(parseProgressLog(onProgress), ['core', 'upgrade']),
     },
-    version: () => runAndParseJson(['version']).then(R.prop('version')),
+    version: () =>
+      runAndParseJson(['version', '--format=json']).then(
+        R.prop('VersionString')
+      ),
     createSketch: sketchName =>
       runWithProgress(noop, ['sketch', 'new', sketch(sketchName)]).then(
         R.always(resolve(cfg.directories.user, sketchName, `${sketchName}.ino`))
