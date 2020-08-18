@@ -52,7 +52,9 @@ private:
     int16_t _width = 0;
     int16_t _height = 0;
 
-    void sendCommand(uint8_t command);
+    void _sendCommand(uint8_t command);
+    void _sendCommand(uint8_t command, uint8_t value);
+    void _sendCommand(uint8_t command, uint8_t value1, uint8_t value2);
 };
 
 #endif // X_SSD1306_H
