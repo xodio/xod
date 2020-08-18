@@ -1,3 +1,4 @@
+#pragma XOD require "https://github.com/adafruit/Adafruit_BusIO"
 #pragma XOD require "https://github.com/adafruit/Adafruit-PN532"
 
 // clang-format off
