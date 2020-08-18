@@ -1359,6 +1359,25 @@ describe('Flatten', () => {
           'color-nested~nested-again~hsl-node-to-watch-node-pin-input-string'
         ));
 
+      it('should not create a cast node for a custom type if it not needed', () => {
+        const flatProject = flatten(project, '@/test-wrapped-i2c');
+        Helper.expectEitherRight(newProject => {
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/test-wrapped-i2c')
+          )(newProject);
+
+          const links = R.compose(
+            Patch.listLinks,
+            Project.getPatchByPathUnsafe('@/test-wrapped-i2c')
+          )(newProject);
+
+          assert.sameMembers(['wrapped-i2c-node~test-node'], nodeIds);
+          assert.isEmpty(links);
+        }, flatProject);
+      });
+
       it('should return Either.Left if custom type does not have a cast node', () => {
         const flatProject = flatten(project, '@/test-no-cast-node');
         Helper.expectEitherError(
