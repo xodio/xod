@@ -1,22 +1,17 @@
-
-struct State {
+node {
     Iterator<char> it = Iterator<char>::nil();
-};
 
-{{ GENERATED_CODE }}
+    void evaluate(Context ctx) {
+        if (isInputDirty<input_IN>(ctx)) {
+            auto str = getValue<input_IN>(ctx);
+            it = str.iterate();
+        }
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-
-    if (isInputDirty<input_IN>(ctx)) {
-        auto str = getValue<input_IN>(ctx);
-        state->it = str.iterate();
-    }
-
-    if (state->it) {
-        emitValue<output_OUT1>(ctx, *state->it);
-        emitValue<output_OUT2>(ctx, true);
-        ++(state->it);
-        setTimeout(ctx, 0);
+        if (it) {
+            emitValue<output_OUT1>(ctx, *it);
+            emitValue<output_OUT2>(ctx, true);
+            ++it;
+            setTimeout(ctx, 0);
+        }
     }
 }
