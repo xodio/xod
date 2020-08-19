@@ -10,7 +10,7 @@ import {
 export { PIN_TYPE };
 
 /**
- * Types that are could not be redefined at runtime.
+ * Types that are cannot be redefined at runtime.
  */
 export const CONSTANT_PIN_TYPES = [PIN_TYPE.PORT];
 
@@ -241,11 +241,20 @@ export const MANAGED_ATTACHMENT_FILENAMES = {
 
 const IMPL_TEMPLATE = `
 node {
-    // Number internalState;
+    // Internal state variables defined at this level persists across evaluations
+    Number foo;
+    uint8_t bar = 5;
 
     void evaluate(Context ctx) {
-        //auto inValue = getValue<input_IN>(ctx);
-        //emitValue<output_OUT>(ctx, inValue);
+        bar += 42;
+        
+        if (isSettingUp()) {
+            // This run once
+            foo = (Number)(bar + 1);
+        }
+        
+        auto inValue = getValue<input_IN>(ctx);
+        emitValue<output_OUT>(ctx, inValue);
     }
 }
 `;

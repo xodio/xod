@@ -1,5 +1,5 @@
 node {
-    void printAt(LiquidCrystal* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
+    static void printAt(LiquidCrystal* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
         lcd->setCursor(posIndex, rowIndex);
         uint8_t whitespace = len;
         for (auto it = str.iterate(); it && whitespace > 0; ++it, --whitespace)
