@@ -1,56 +1,61 @@
+namespace xod {
+namespace mutex {
+    using NodeId = uint16_t;
+    /*
+      Represents some resource that should be owned/controlled exclusively by a node
+      to perform a non-instant task.
 
-using NodeId = uint16_t;
+      An example is a node which slowly rotates a motor shaft. The process is long
+      (several seconds) and a particular rotation node can lock the motor resource
+      so that other sibling rotation nodes can’t cause a conflict until the job is
+      done and the motor resource is unlocked.
+    */
+    class Mutex {
+      public:
+        static constexpr NodeId NO_LOCK = 0xFFFF;
 
-/*
-  Represents some resource that should be owned/controlled exclusively by a node
-  to perform a non-instant task.
+        bool lockFor(NodeId nodeId) {
+            if (isLocked())
+                return false;
 
-  An example is a node which slowly rotates a motor shaft. The process is long
-  (several seconds) and a particular rotation node can lock the motor resource
-  so that other sibling rotation nodes can’t cause a conflict until the job is
-  done and the motor resource is unlocked.
-*/
-class Mutex {
-  public:
-    static constexpr NodeId NO_LOCK = 0xFFFF;
+            _lockedFor = nodeId;
+            return true;
+        }
 
-    bool lockFor(NodeId nodeId) {
-        if (isLocked())
-            return false;
+        bool unlock(NodeId nodeId) {
+            if (!isLockedFor(nodeId))
+                return false;
 
-        _lockedFor = nodeId;
-        return true;
+            forceUnlock();
+            return true;
+        }
+
+        void forceUnlock() {
+            _lockedFor = NO_LOCK;
+        }
+
+        bool isLocked() const {
+            return _lockedFor != NO_LOCK;
+        }
+
+        bool isLockedFor(NodeId nodeId) const {
+            return _lockedFor == nodeId;
+        }
+
+      protected:
+        NodeId _lockedFor = NO_LOCK;
+    };
+} // namespace mutex
+} // namespace xod
+
+node {
+    meta {
+      using Type = xod::mutex::Mutex*;
     }
 
-    bool unlock(NodeId nodeId) {
-        if (!isLockedFor(nodeId))
-            return false;
+    xod::mutex::Mutex mux;
 
-        forceUnlock();
-        return true;
+    void evaluate(Context ctx) {
+        emitValue<output_OUT>(ctx, &mux);
     }
-
-    void forceUnlock() {
-        _lockedFor = NO_LOCK;
-    }
-
-    bool isLocked() const {
-        return _lockedFor != NO_LOCK;
-    }
-
-    bool isLockedFor(NodeId nodeId) const {
-        return _lockedFor == nodeId;
-    }
-
-  protected:
-    NodeId _lockedFor = NO_LOCK;
-};
-
-using State = Mutex;
-using Type = Mutex*;
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    emitValue<output_OUT>(ctx, getState(ctx));
 }
