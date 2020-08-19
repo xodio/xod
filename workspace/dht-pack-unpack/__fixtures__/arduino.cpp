@@ -455,7 +455,12 @@ void* operator new(size_t, T* ptr) noexcept {
  *
  =============================================================================*/
 
+
+#if ARDUINO_API_VERSION >= 10001
+class arduino::HardwareSerial;
+#else
 class HardwareSerial;
+#endif
 class SoftwareSerial;
 
 namespace xod {
@@ -977,11 +982,11 @@ struct xod_dev__dht__dht11_device {
 
     typedef uint8_t typeof_PORT;
 
-    struct State {
-        static const uint8_t port = constant_input_PORT;
+    struct Dht11Device {
+        static constexpr uint8_t port = constant_input_PORT;
     };
 
-    using Type = State*;
+    using Type = Dht11Device*;
 
     typedef Type typeof_DEV;
 
@@ -1052,17 +1057,7 @@ struct xod_dev__dht__dht11_device {
         ctx->_isOutputDirty_DEV = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
-
-    void evaluate(Context ctx) {
-        auto dev = getState(ctx);
-        // just to trigger downstream nodes
-        emitValue<output_DEV>(ctx, dev);
-    }
+    void evaluate(Context ctx) {}
 
 };
 } // namespace xod

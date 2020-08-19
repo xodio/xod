@@ -455,7 +455,12 @@ void* operator new(size_t, T* ptr) noexcept {
  *
  =============================================================================*/
 
+
+#if ARDUINO_API_VERSION >= 10001
+class arduino::HardwareSerial;
+#else
 class HardwareSerial;
+#endif
 class SoftwareSerial;
 
 namespace xod {
@@ -5526,7 +5531,7 @@ struct xod_dev__text_lcd__print_at__text_lcd_i2c_device {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    void printAt(LiquidCrystal_I2C* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
+    static void printAt(LiquidCrystal_I2C* lcd, uint8_t rowIndex, uint8_t posIndex, uint8_t len, XString str) {
         lcd->setCursor(posIndex, rowIndex);
         uint8_t whitespace = len;
         for (auto it = str.iterate(); it && whitespace > 0; ++it, --whitespace)
@@ -8371,6 +8376,9 @@ void runTransaction() {
             ctxObj._isOutputDirty_DEVU0027 = false;
             ctxObj._isOutputDirty_DONE = false;
 
+            if (isSettingUp()) {
+                node_123.emitValue<Node_123::output_DEVU0027>(&ctxObj, node_123.getValue<Node_123::input_DEV>(&ctxObj));
+            }
             node_123.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
@@ -10008,6 +10016,9 @@ void runTransaction() {
 
             node_183.errors.output_DONE = false;
 
+            if (isSettingUp()) {
+                node_183.emitValue<Node_183::output_DEVU0027>(&ctxObj, node_183.getValue<Node_183::input_DEV>(&ctxObj));
+            }
             node_183.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction
@@ -10400,6 +10411,9 @@ void runTransaction() {
 
             node_196.errors.output_DONE = false;
 
+            if (isSettingUp()) {
+                node_196.emitValue<Node_196::output_DEVU0027>(&ctxObj, node_196.getValue<Node_196::input_DEV>(&ctxObj));
+            }
             node_196.evaluate(&ctxObj);
 
             // transfer possibly modified dirtiness state from context to g_transaction

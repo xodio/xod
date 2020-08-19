@@ -1,14 +1,12 @@
 
-struct State {
-    static const uint8_t port = constant_input_PORT;
-};
+node {
+    meta {
+        struct Dht11Device {
+            static constexpr uint8_t port = constant_input_PORT;
+        };
 
-using Type = State*;
+        using Type = Dht11Device*;
+    }
 
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    auto dev = getState(ctx);
-    // just to trigger downstream nodes
-    emitValue<output_DEV>(ctx, dev);
+    void evaluate(Context ctx) {}
 }
