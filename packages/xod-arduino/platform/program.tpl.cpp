@@ -75,7 +75,6 @@ typedef {{ ns patch }}{{#if (or (containsConstantInputs inputs) (containsTemplat
   {{~/each~}}
 >
 {{~/if}} Node_{{ id }};
-{{!-- // TODO: templating goes here --}}
 Node_{{ id }} node_{{ id }} = Node_{{ id }}(
 {{~#eachNonPulseOrConstant outputs~}}
   {{ cppValue type value }}
@@ -417,12 +416,8 @@ void runTransaction() {
             {{/unless}}
           {{/if}}
 
-            {{!--
-              // TODO: Short-circuit all PINNAME -> PINNAME' or only templatable custom types?
-              // (then it will probably require change when computing shortCirquitInputKey)
-            --}}
           {{#each outputs}}
-            {{#if (and isTemplatableCustomTypePin shortCirquitInputKey )}}
+            {{#if shortCirquitInputKey }}
             if (isSettingUp()) {
                 node_{{ ../id }}.emitValue<Node_{{ ../id }}::output_{{ pinKey }}>(&ctxObj, node_{{ ../id }}.getValue<Node_{{ ../id }}::input_{{ shortCirquitInputKey }}>(&ctxObj));
             }

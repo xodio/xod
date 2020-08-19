@@ -287,7 +287,6 @@ Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
-// TODO: better name!
 const isTemplatableCustomTypePin = R.prop('isTemplatableCustomTypePin');
 Handlebars.registerHelper(
   'isTemplatableCustomTypePin',
