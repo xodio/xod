@@ -1,47 +1,36 @@
-
-// clang-format off
-{{#global}}
 #include <Rectangle.h>
-{{/global}}
-// clang-format on
 
-struct State {
+node {
     uint8_t mem[sizeof(RectangleSolid)];
     RectangleSolid* rectangleSolidColored;
-    int16_t x, y, w, h;
+    int16_t _x, _y, _w, _h;
     XColor fillColor;
-};
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+    void evaluate(Context ctx) {
+        auto gfx = getValue<input_GFX>(ctx);
+        fillColor = getValue<input_C>(ctx);
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
+        int16_t x = (int16_t)getValue<input_X>(ctx);
+        int16_t y = (int16_t)getValue<input_Y>(ctx);
+        int16_t w = (int16_t)getValue<input_W>(ctx);
+        int16_t h = (int16_t)getValue<input_H>(ctx);
 
-    auto gfx = getValue<input_GFX>(ctx);
-    state->fillColor = getValue<input_C>(ctx);
+        if (isSettingUp()) {
+            rectangleSolidColored = new (mem) RectangleSolid(gfx);
+        }
 
-    int16_t x = (int16_t)getValue<input_X>(ctx);
-    int16_t y = (int16_t)getValue<input_Y>(ctx);
-    int16_t w = (int16_t)getValue<input_W>(ctx);
-    int16_t h = (int16_t)getValue<input_H>(ctx);
+        if (isSettingUp() || x != _x || y != _y || w != _w || h != _h || isInputDirty<input_C>(ctx)) {
+            _x = x;
+            _y = y;
+            _w = w;
+            _h = h;
+            rectangleSolidColored->setPosition(x, y, w, h);
+            rectangleSolidColored->setStyle(&fillColor);
+            emitValue<output_GFXU0027>(ctx, rectangleSolidColored);
+        }
 
-    if (isSettingUp()) {
-        state->rectangleSolidColored = new (state->mem) RectangleSolid(gfx);
-    }
-
-    if (isSettingUp() || x != state->x || y != state->y || w != state->w || h != state->h || isInputDirty<input_C>(ctx)) {
-        state->x = x;
-        state->y = y;
-        state->w = w;
-        state->h = h;
-        state->rectangleSolidColored->setPosition(x, y, w, h);
-        state->rectangleSolidColored->setStyle(&state->fillColor);
-        emitValue<output_GFXU0027>(ctx, state->rectangleSolidColored);
-    }
-
-    if (isInputDirty<input_GFX>(ctx)) {
-        emitValue<output_GFXU0027>(ctx, state->rectangleSolidColored);
+        if (isInputDirty<input_GFX>(ctx)) {
+            emitValue<output_GFXU0027>(ctx, rectangleSolidColored);
+        }
     }
 }
