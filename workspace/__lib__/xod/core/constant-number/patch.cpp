@@ -1,6 +1,3 @@
-struct State {};
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
+node {
+    void evaluate(Context ctx) {}
 }
