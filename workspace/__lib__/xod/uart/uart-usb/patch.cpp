@@ -1,3 +1,6 @@
+namespace xod {
+namespace uart_usb {
+
 class UsbUart : public Uart {
 private:
     Serial_ _serial;
@@ -55,34 +58,31 @@ void UsbUart::flush() {
     _serial.flush();
 }
 
-template <typename T>
-struct ChooseUartWrapper {
-    using UartT = HardwareUart;
-};
-template <>
-struct ChooseUartWrapper<Serial_> {
-    using UartT = UsbUart;
-};
+} // namespace uart_usb
+} // namespace xod
 
-struct State {
+node {
+    template <typename T>
+    struct ChooseUartWrapper {
+        using UartT = HardwareUart;
+    };
+    template <>
+    struct ChooseUartWrapper<Serial_> {
+        using UartT = uart_usb::UsbUart;
+    };
+
     uint8_t mem[sizeof(ChooseUartWrapper<typeof SerialUSB>::UartT)];
     ChooseUartWrapper<typeof SerialUSB>::UartT* uart;
-};
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+    void evaluate(Context ctx) {
+        if (isSettingUp()) {
+            uart = new (mem) ChooseUartWrapper<typeof SerialUSB>::UartT(SerialUSB, (uint32_t)getValue<input_BAUD>(ctx));
+            emitValue<output_UART>(ctx, uart);
+        }
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-
-    if (isSettingUp()) {
-        state->uart = new (state->mem) ChooseUartWrapper<typeof SerialUSB>::UartT(SerialUSB, (uint32_t)getValue<input_BAUD>(ctx));
-        emitValue<output_UART>(ctx, state->uart);
-    }
-
-    if (isInputDirty<input_INIT>(ctx)) {
-        state->uart->begin();
-        emitValue<output_DONE>(ctx, 1);
+        if (isInputDirty<input_INIT>(ctx)) {
+            uart->begin();
+            emitValue<output_DONE>(ctx, 1);
+        }
     }
 }
