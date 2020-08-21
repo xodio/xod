@@ -2,23 +2,18 @@
 #pragma XOD evaluate_on_pin enable input_SEND
 #pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_SEND>(ctx))
+            return;
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
-
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_SEND>(ctx))
-        return;
-
-    auto uart = getValue<input_UART>(ctx);
-    uint8_t byte = getValue<input_BYTE>(ctx);
-    bool res = uart->writeByte(byte);
-    if (res) {
-        emitValue<output_DONE>(ctx, 1);
-    } else {
-        raiseError(ctx); // No bytes written
+        auto uart = getValue<input_UART>(ctx);
+        uint8_t byte = getValue<input_BYTE>(ctx);
+        bool res = uart->writeByte(byte);
+        if (res) {
+            emitValue<output_DONE>(ctx, 1);
+        } else {
+            raiseError(ctx); // No bytes written
+        }
     }
 }

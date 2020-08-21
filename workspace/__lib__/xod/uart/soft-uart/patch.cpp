@@ -1,9 +1,7 @@
-// clang-format off
-{{#global}}
 #include <SoftwareSerial.h>
-{{/global}}
-// clang-format on
 
+namespace xod {
+namespace uart_software {
 class SoftwareUart : public Uart {
 private:
     SoftwareSerial _serial;
@@ -63,28 +61,25 @@ void SoftwareUart::flush() {
     _serial.flush();
 }
 
-struct State {
-    uint8_t mem[sizeof(SoftwareUart)];
-    SoftwareUart* uart;
-};
+} // namespace uart_software
+} // namespace xod
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+node {
+    uint8_t mem[sizeof(uart_software::SoftwareUart)];
+    uart_software::SoftwareUart* uart;
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
+    void evaluate(Context ctx) {
+        if (isSettingUp()) {
+            uint8_t rx = getValue<input_RX>(ctx);
+            uint8_t tx = getValue<input_TX>(ctx);
+            long baud = (long)getValue<input_BAUD>(ctx);
+            uart = new (mem) uart_software::SoftwareUart(rx, tx, baud);
+            emitValue<output_UART>(ctx, uart);
+        }
 
-    if (isSettingUp()) {
-        uint8_t rx = getValue<input_RX>(ctx);
-        uint8_t tx = getValue<input_TX>(ctx);
-        long baud = (long)getValue<input_BAUD>(ctx);
-        state->uart = new (state->mem) SoftwareUart(rx, tx, baud);
-        emitValue<output_UART>(ctx, state->uart);
-    }
-
-    if (isInputDirty<input_INIT>(ctx)) {
-        state->uart->begin();
-        emitValue<output_DONE>(ctx, 1);
+        if (isInputDirty<input_INIT>(ctx)) {
+            uart->begin();
+            emitValue<output_DONE>(ctx, 1);
+        }
     }
 }
