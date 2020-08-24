@@ -654,6 +654,9 @@ const traverseUpAndCollectTerminalChain = R.curry(
         R.compose(R.equals(nextNodeId), Link.getLinkInputNodeId),
         links
       );
+      // If the uppermost node has no input link — return collected data
+      if (!nextLink) return collected;
+
       return R.compose(
         traverseUpAndCollectTerminalChain(terminalNodeIds, links),
         R.over(R.lensIndex(0), R.append(nextNodeId)),

@@ -554,6 +554,117 @@
           "type": "xod/patch-nodes/input-byte"
         }
       }
+    },
+    "@/test-wrapped-i2c": {
+      "nodes": {
+        "wrapped-i2c-node": {
+          "id": "wrapped-i2c-node",
+          "position": {
+            "x": -2,
+            "y": -1,
+            "units": "slots"
+          },
+          "type": "@/wrapped-i2c"
+        }
+      },
+      "path": "@/main"
+    },
+    "@/wrapped-i2c": {
+      "links": {
+        "terminal-to-node": {
+          "id": "terminal-to-node",
+          "input": {
+            "nodeId": "test-node",
+            "pinKey": "input-i2c"
+          },
+          "output": {
+            "nodeId": "input-i2c-terminal",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "test-node": {
+          "id": "test-node",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/i2c/test"
+        },
+        "input-i2c-terminal": {
+          "id": "input-i2c-terminal",
+          "label": "I2C",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/i2c/input-i2c"
+        }
+      },
+      "path": "@/wrapped-i2c"
+    },
+    "xod/i2c/i2c": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "nodes": {
+        "output-self": {
+          "id": "output-self",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 2
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/i2c/i2c"
+    },
+    "xod/i2c/test": {
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "// implementation"
+        }
+      ],
+      "nodes": {
+        "input-i2c": {
+          "id": "input-i2c",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 2
+          },
+          "type": "xod/i2c/input-i2c"
+        },
+        "niix": {
+          "id": "niix",
+          "position": {
+            "units": "slots",
+            "x": 2,
+            "y": 1
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "xod/i2c/test"
     }
   }
 }
