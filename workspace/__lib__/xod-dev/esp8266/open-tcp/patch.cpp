@@ -2,32 +2,27 @@
 #pragma XOD evaluate_on_pin enable input_CONN
 #pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_CONN>(ctx))
+            return;
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+        auto host = getValue<input_HOST>(ctx);
+        char _host[length(host) + 1] = { 0 };
+        dump(host, _host);
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_CONN>(ctx))
-        return;
+        uint32_t port = (uint32_t)getValue<input_PORT>(ctx);
 
-    auto host = getValue<input_HOST>(ctx);
-    char _host[length(host) + 1] = { 0 };
-    dump(host, _host);
+        auto inet = getValue<input_INET>(ctx);
+        bool res = inet.wifi->createTCP(_host, port);
 
-    uint32_t port = (uint32_t)getValue<input_PORT>(ctx);
+        if (res) {
+            emitValue<output_SOCK>(ctx, 0);
+            emitValue<output_DONE>(ctx, 1);
+        } else {
+            raiseError(ctx);
+        }
 
-    auto inet = getValue<input_INET>(ctx);
-    bool res = inet.wifi->createTCP(_host, port);
-
-    if (res) {
-        emitValue<output_SOCK>(ctx, 0);
-        emitValue<output_DONE>(ctx, 1);
-    } else {
-        raiseError(ctx);
+        emitValue<output_INETU0027>(ctx, inet);
     }
-
-    emitValue<output_INETU0027>(ctx, inet);
 }
