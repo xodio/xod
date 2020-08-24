@@ -1,14 +1,14 @@
+node {
+    meta {
+      struct Type {
+         static constexpr typeof_PORT port = constant_input_PORT;
+      };
+    }
 
-struct State {
-    uint8_t port = 0;
-};
+    void evaluate(Context ctx) {
+        static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
-using Type = State*;
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    auto dev = getState(ctx);
-    dev->port = getValue<input_PORT>(ctx);
-    emitValue<output_DEV>(ctx, dev);
+        // just to trigger downstream nodes
+        emitValue<output_DEV>(ctx, {});
+    }
 }
