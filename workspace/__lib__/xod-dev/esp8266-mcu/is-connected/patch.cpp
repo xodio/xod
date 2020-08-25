@@ -1,18 +1,8 @@
+node {
+    void evaluate(Context ctx) {
+        auto device = getValue<input_DEV>(ctx);
 
-// clang-format off
-{{#global}}
-#include <ESP8266WiFi.h>
-{{/global}}
-// clang-format on
-
-struct State {
-};
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    auto device = getValue<input_DEV>(ctx);
-
-    emitValue<output_OUT>(ctx, device->status() == WL_CONNECTED);
-    emitValue<output_DONE>(ctx, 1);
+        emitValue<output_OUT>(ctx, device->status() == WL_CONNECTED);
+        emitValue<output_DONE>(ctx, 1);
+    }
 }
