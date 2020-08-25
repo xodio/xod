@@ -665,6 +665,138 @@
         }
       },
       "path": "xod/i2c/test"
+    },
+    "@/test-unlinked-lowermost-terminal": {
+      "links": {
+        "original1": {
+          "id": "original1",
+          "input": {
+            "nodeId": "testNode",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "colorHslNode",
+            "pinKey": "output-color"
+          }
+        },
+        "toWatch": {
+          "id": "toWatch",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "testNode",
+            "pinKey": "output-string"
+          }
+        }
+      },
+      "nodes": {
+        "testNode": {
+          "id": "testNode",
+          "position": {
+            "x": -8,
+            "y": -1,
+            "units": "slots"
+          },
+          "type": "@/unlinked-custom-terminal"
+        },
+        "colorHslNode": {
+          "id": "colorHslNode",
+          "position": {
+            "x": -8,
+            "y": -2,
+            "units": "slots"
+          },
+          "type": "xod/color/color-hsl"
+        },
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": -8,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        }
+      },
+      "path": "@/test-unlinked-lowermost-terminal"
+    },
+    "@/unlinked-custom-terminal": {
+      "links": {
+        "toFormatColor": {
+          "id": "toFormatColor",
+          "input": {
+            "nodeId": "formatColorNode",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "input-color",
+            "pinKey": "__out__"
+          }
+        },
+        "toOutputString": {
+          "id": "toOutputString",
+          "input": {
+            "nodeId": "output-string",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "formatColorNode",
+            "pinKey": "output-string"
+          }
+        },
+        "toOutputColor": {
+          "id": "toOutputColor",
+          "input": {
+            "nodeId": "output-color",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "input-color",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "output-color": {
+          "id": "output-color",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/color/output-color"
+        },
+        "formatColorNode": {
+          "id": "formatColorNode",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/format-color"
+        },
+        "input-color": {
+          "id": "input-color",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/input-color"
+        },
+        "output-string": {
+          "id": "output-string",
+          "position": {
+            "x": 2,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-string"
+        }
+      },
+      "path": "@/unlinked-custom-terminal"
     }
   }
 }

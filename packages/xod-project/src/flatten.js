@@ -645,7 +645,7 @@ const isLinkOutputNodeIdOneOf = R.curry((terminalNodeIds, link) =>
 // :: [NodeId] -> [Link] -> [[NodeId], [Link]]
 const traverseUpAndCollectTerminalChain = R.curry(
   (terminalNodeIds, links, collected) => {
-    const curLink = R.compose(R.last, R.last)(collected);
+    const curLink = R.last(collected[1]);
 
     if (isLinkOutputNodeIdOneOf(terminalNodeIds, curLink)) {
       // collect nodeId + next link & run recursion
@@ -683,16 +683,26 @@ const replaceGenericTerminalsWithCastNodes = R.curry(
 
     const linksConnectedToTerminals = R.filter(
       R.compose(
-        linkNodeIds => R.any(R.contains(R.__, linkNodeIds), terminalNodeIds),
+        linkNodeIds => R.any(isAmong(linkNodeIds), terminalNodeIds),
         Link.getLinkNodeIds
       ),
       links
     );
 
     const lowermostTerminalLinks = R.filter(
-      R.compose(
-        R.complement(R.contains)(R.__, terminalNodeIds),
-        Link.getLinkInputNodeId
+      R.either(
+        // link inputs into non terminal node
+        R.compose(
+          R.complement(isAmong(terminalNodeIds)),
+          Link.getLinkInputNodeId
+        ),
+        // or into terminal node, which not have a links below
+        R.compose(
+          R.not,
+          R.find(R.__, links),
+          Link.isLinkOutputNodeIdEquals,
+          Link.getLinkInputNodeId
+        )
       ),
       linksConnectedToTerminals
     );
@@ -742,14 +752,13 @@ const replaceGenericTerminalsWithCastNodes = R.curry(
     )(terminalChains);
 
     const nodesWithoutTerminals = R.reject(
-      R.compose(R.contains(R.__, nodeIdsToOmit), Node.getNodeId),
+      R.compose(isAmong(nodeIdsToOmit), Node.getNodeId),
       nodes
     );
     const linksWithoutTerminalLinks = R.reject(
-      R.compose(R.contains(R.__, linkIdsToOmit), Link.getLinkId),
+      R.compose(isAmong(linkIdsToOmit), Link.getLinkId),
       links
     );
-
     const newNodesAndLinks = R.map(
       splitLinkWithCastNode(project, patchTuples, nodesWithoutTerminals),
       directLinks
