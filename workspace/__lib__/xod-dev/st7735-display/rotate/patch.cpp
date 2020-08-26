@@ -1,21 +1,16 @@
+node {
+    void evaluate(Context ctx) {
+        auto dev = getValue<input_DEV>(ctx);
 
-struct State {};
+        if (isSettingUp())
+            emitValue<output_DEVU0027>(ctx, dev);
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+        if (!isInputDirty<input_DO>(ctx))
+            return;
 
-void evaluate(Context ctx) {
-    auto dev = getValue<input_DEV>(ctx);
+        uint8_t rotation = getValue<input_R>(ctx);
+        dev->setRotation(rotation);
 
-    if (isSettingUp())
-        emitValue<output_DEVU0027>(ctx, dev);
-
-    if (!isInputDirty<input_DO>(ctx))
-        return;
-
-    uint8_t rotation = getValue<input_R>(ctx);
-    dev->setRotation(rotation);
-
-    emitValue<output_DONE>(ctx, 1);
+        emitValue<output_DONE>(ctx, 1);
+    }
 }
