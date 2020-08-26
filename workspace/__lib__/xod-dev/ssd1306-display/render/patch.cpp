@@ -1,25 +1,20 @@
+node {
+    void evaluate(Context ctx) {
+        auto dev = getValue<input_DEV>(ctx);
 
-struct State {};
+        if (isSettingUp())
+            emitValue<output_DEVU0027>(ctx, dev);
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+        if (!isInputDirty<input_DO>(ctx))
+            return;
 
-void evaluate(Context ctx) {
-    auto dev = getValue<input_DEV>(ctx);
+        auto gfx = getValue<input_GFX>(ctx);
 
-    if (isSettingUp())
-        emitValue<output_DEVU0027>(ctx, dev);
+        if (gfx) {
+            gfx->render(dev);
+            dev->sendBuffer();
+        }
 
-    if (!isInputDirty<input_DO>(ctx))
-        return;
-
-    auto gfx = getValue<input_GFX>(ctx);
-
-    if (gfx) {
-        gfx->render(dev);
-        dev->sendBuffer();
+        emitValue<output_DONE>(ctx, 1);
     }
-
-    emitValue<output_DONE>(ctx, 1);
 }
