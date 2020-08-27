@@ -2,39 +2,36 @@
 #pragma XOD evaluate_on_pin enable input_CONN
 #pragma XOD error_raise enable
 
-{{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>
-{{/global}}
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_CONN>(ctx))
+            return;
 
-{{ GENERATED_CODE }}
+        auto dev = getValue<input_DEV>(ctx);
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_CONN>(ctx))
-        return;
+        Ethernet.init(dev.cs);
+        typeof_INET inet;
 
-    auto dev = getValue<input_DEV>(ctx);
+        #if defined(WIZ550io_WITH_MACADDRESS)
+        #define MACADRESS
+        #else
+        #define MACADRESS dev.mac
+        #endif
 
-    Ethernet.init(dev.cs);
-    ValueType<output_INET>::T inet;
+        if (Ethernet.begin(MACADRESS) == 0) {
+            inet.ip = (uint32_t)0;
+            inet.isConnected = false;
+            raiseError(ctx);
+            return;
+        } else {
+            inet.ip = (uint32_t)Ethernet.localIP();
+            inet.isConnected = true;
+            emitValue<output_DONE>(ctx, 1);
+        }
 
-#if defined(WIZ550io_WITH_MACADDRESS)
-    if (Ethernet.begin() == 0) {
-#else
-    if (Ethernet.begin(dev.mac) == 0) {
-#endif
-        inet.ip = (uint32_t)0;
-        inet.isConnected = false;
-        raiseError(ctx);
-        return;
-    } else {
-        inet.ip = (uint32_t)Ethernet.localIP();
-        inet.isConnected = true;
-        emitValue<output_DONE>(ctx, 1);
+        emitValue<output_INET>(ctx, inet);
     }
-
-    emitValue<output_INET>(ctx, inet);
 }
