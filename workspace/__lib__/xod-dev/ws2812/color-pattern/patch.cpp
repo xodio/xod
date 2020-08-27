@@ -1,15 +1,13 @@
-{{#global}}
 #include <XColorPattern.h>
-{{/global}}
 
-struct State {
+node {
+    meta {
+        using Type = Pattern*;
+    }
+
     Pattern pattern;
-};
-using Type = Pattern*;
 
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    emitValue<output_PAT>(ctx, &(state->pattern));
+    void evaluate(Context ctx) {
+        emitValue<output_PAT>(ctx, &pattern);
+    }
 }
