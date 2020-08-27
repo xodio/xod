@@ -1,25 +1,20 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_CHK
 
-{{#global}}
 #include <SPI.h>
 #include <Ethernet2.h>
-{{/global}}
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_CHK>(ctx))
+            return;
 
-{{ GENERATED_CODE }}
+        auto client = EthernetClient(getValue<input_SOCK>(ctx));
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_CHK>(ctx))
-        return;
-
-    auto client = EthernetClient(getValue<input_SOCK>(ctx));
-
-    if (client.available()) {
-        emitValue<output_Y>(ctx, 1);
-    } else {
-        emitValue<output_N>(ctx, 1);
+        if (client.available()) {
+            emitValue<output_Y>(ctx, 1);
+        } else {
+            emitValue<output_N>(ctx, 1);
+        }
     }
 }
