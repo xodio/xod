@@ -1408,6 +1408,31 @@ describe('Flatten', () => {
         }, flatProject);
       });
 
+      it('should pass bound values to nested castable custom type terminals', () => {
+        const flatProject = flatten(project, '@/test-nested-input-color');
+        Helper.expectEitherRight(newProject => {
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/test-nested-input-color')
+          )(newProject);
+
+          const links = R.compose(
+            Patch.listLinks,
+            Project.getPatchByPathUnsafe('@/test-nested-input-color')
+          )(newProject);
+
+          assert.sameMembers(
+            [
+              'nested-format-color~format-color-1',
+              'nested-format-color~format-color-2',
+            ],
+            nodeIds
+          );
+          assert.isEmpty(links);
+        }, flatProject);
+      });
+
       it('should return Either.Left if custom type does not have a cast node', () => {
         const flatProject = flatten(project, '@/test-no-cast-node');
         Helper.expectEitherError(

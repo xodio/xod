@@ -654,8 +654,10 @@ const traverseUpAndCollectTerminalChain = R.curry(
         R.compose(R.equals(nextNodeId), Link.getLinkInputNodeId),
         links
       );
-      // If the uppermost node has no input link — return collected data
-      if (!nextLink) return collected;
+      // If the upper terminal node has no input link — return tuple of empty lists
+      // to avoid removing this chain of terminals, because it will be done in the
+      // further step with passing bound values
+      if (!nextLink) return [[], []];
 
       return R.compose(
         traverseUpAndCollectTerminalChain(terminalNodeIds, links),
