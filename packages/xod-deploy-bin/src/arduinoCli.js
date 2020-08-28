@@ -11,6 +11,7 @@ import {
   ARDUINO_CLI_LIBRARIES_DIRNAME,
   ARDUINO_PACKAGES_DIRNAME,
   BUNDLED_ADDITIONAL_URLS,
+  MIGRATE_BUNDLED_ADDITIONAL_URLS,
   ARDUINO_EXTRA_URLS_FILENAME,
 } from './constants';
 
@@ -77,6 +78,20 @@ const copyLibraries = async (bundledLibDir, userLibDir, sketchbookLibDir) => {
 const getExtraTxtPath = wsPath =>
   path.join(wsPath, ARDUINO_PACKAGES_DIRNAME, ARDUINO_EXTRA_URLS_FILENAME);
 
+// :: [String] -> [String]
+const migrateBundledAdditionalUrls = R.map(oldUrl => {
+  const idx = R.findIndex(
+    R.compose(R.equals(oldUrl), R.nth(0)),
+    MIGRATE_BUNDLED_ADDITIONAL_URLS
+  );
+  if (idx === -1) return oldUrl;
+  return MIGRATE_BUNDLED_ADDITIONAL_URLS[idx][1];
+});
+
+// :: [String] -> [String]
+const ensureBundledAdditionalUrls = urls =>
+  R.compose(R.concat(R.__, urls), R.difference(BUNDLED_ADDITIONAL_URLS))(urls);
+
 // :: Path -> Promise Path Error
 const ensureExtraTxt = async wsPath => {
   const extraTxtFilePath = getExtraTxtPath(wsPath);
@@ -93,8 +108,8 @@ const ensureExtraTxt = async wsPath => {
     const extraUrls = parseExtraTxtContent(extraTxtContents);
     const newContents = R.compose(
       R.join(os.EOL),
-      R.concat(R.__, extraUrls),
-      R.difference(BUNDLED_ADDITIONAL_URLS)
+      ensureBundledAdditionalUrls,
+      migrateBundledAdditionalUrls
     )(extraUrls);
     await fse.writeFile(extraTxtFilePath, newContents);
   }
