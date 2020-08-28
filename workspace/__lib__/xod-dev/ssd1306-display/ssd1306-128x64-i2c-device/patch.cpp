@@ -34,6 +34,7 @@ void evaluate(Context ctx) {
 
     dev->begin();
     dev->clearScreen();
+    dev->sendBuffer();
 
     emitValue<output_DEV>(ctx, dev);
 }
