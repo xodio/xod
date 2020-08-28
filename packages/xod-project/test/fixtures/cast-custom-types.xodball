@@ -665,6 +665,261 @@
         }
       },
       "path": "xod/i2c/test"
+    },
+    "@/test-unlinked-lowermost-terminal": {
+      "links": {
+        "original1": {
+          "id": "original1",
+          "input": {
+            "nodeId": "testNode",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "colorHslNode",
+            "pinKey": "output-color"
+          }
+        },
+        "toWatch": {
+          "id": "toWatch",
+          "input": {
+            "nodeId": "watch-node",
+            "pinKey": "input-string"
+          },
+          "output": {
+            "nodeId": "testNode",
+            "pinKey": "output-string"
+          }
+        }
+      },
+      "nodes": {
+        "testNode": {
+          "id": "testNode",
+          "position": {
+            "x": -8,
+            "y": -1,
+            "units": "slots"
+          },
+          "type": "@/unlinked-custom-terminal"
+        },
+        "colorHslNode": {
+          "id": "colorHslNode",
+          "position": {
+            "x": -8,
+            "y": -2,
+            "units": "slots"
+          },
+          "type": "xod/color/color-hsl"
+        },
+        "watch-node": {
+          "id": "watch-node",
+          "position": {
+            "x": -8,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/debug/watch"
+        }
+      },
+      "path": "@/test-unlinked-lowermost-terminal"
+    },
+    "@/unlinked-custom-terminal": {
+      "links": {
+        "toFormatColor": {
+          "id": "toFormatColor",
+          "input": {
+            "nodeId": "formatColorNode",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "input-color",
+            "pinKey": "__out__"
+          }
+        },
+        "toOutputString": {
+          "id": "toOutputString",
+          "input": {
+            "nodeId": "output-string",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "formatColorNode",
+            "pinKey": "output-string"
+          }
+        },
+        "toOutputColor": {
+          "id": "toOutputColor",
+          "input": {
+            "nodeId": "output-color",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "input-color",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "output-color": {
+          "id": "output-color",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/color/output-color"
+        },
+        "formatColorNode": {
+          "id": "formatColorNode",
+          "position": {
+            "x": 2,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/format-color"
+        },
+        "input-color": {
+          "id": "input-color",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/input-color"
+        },
+        "output-string": {
+          "id": "output-string",
+          "position": {
+            "x": 2,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-string"
+        }
+      },
+      "path": "@/unlinked-custom-terminal"
+    },
+    "@/test-nested-input-color": {
+      "nodes": {
+        "nested-format-color": {
+          "boundLiterals": {
+            "input-color-1": "#0000FF",
+            "input-color-2": "#FF0000"
+          },
+          "id": "nested-format-color",
+          "position": {
+            "x": -5,
+            "y": -1,
+            "units": "slots"
+          },
+          "type": "@/nested-format-color"
+        }
+      },
+      "path": "@/test-nested-input-color"
+    },
+    "@/nested-format-color": {
+      "links": {
+        "ByAbAISQv": {
+          "id": "ByAbAISQv",
+          "input": {
+            "nodeId": "format-color-1",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "input-color-1",
+            "pinKey": "__out__"
+          }
+        },
+        "H1MG0IBQv": {
+          "id": "H1MG0IBQv",
+          "input": {
+            "nodeId": "output-string-1",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "format-color-2",
+            "pinKey": "output-string"
+          }
+        },
+        "SJLMAIH7w": {
+          "id": "SJLMAIH7w",
+          "input": {
+            "nodeId": "output-string-2",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "format-color-1",
+            "pinKey": "output-string"
+          }
+        },
+        "SJqbR8BQw": {
+          "id": "SJqbR8BQw",
+          "input": {
+            "nodeId": "format-color-2",
+            "pinKey": "input-color"
+          },
+          "output": {
+            "nodeId": "input-color-2",
+            "pinKey": "__out__"
+          }
+        }
+      },
+      "nodes": {
+        "input-color-1": {
+          "id": "input-color-1",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/input-color"
+        },
+        "format-color-1": {
+          "id": "format-color-1",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/format-color"
+        },
+        "output-string-1": {
+          "id": "output-string-1",
+          "position": {
+            "x": 1,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "input-color-2": {
+          "id": "input-color-2",
+          "position": {
+            "x": 1,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/color/input-color"
+        },
+        "output-string-2": {
+          "id": "output-string-2",
+          "position": {
+            "x": 3,
+            "y": 2,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "format-color-2": {
+          "id": "format-color-2",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "type": "xod/color/format-color"
+        }
+      },
+      "path": "@/nested-format-color"
     }
   }
 }

@@ -7,6 +7,7 @@ import * as Helper from './helpers';
 import * as Project from '../src/project';
 import * as Patch from '../src/patch';
 import * as Node from '../src/node';
+import * as Link from '../src/link';
 import * as Attachment from '../src/attachment';
 import * as CONST from '../src/constants';
 import flatten, { extractPatches, extractLeafPatches } from '../src/flatten';
@@ -1374,6 +1375,60 @@ describe('Flatten', () => {
           )(newProject);
 
           assert.sameMembers(['wrapped-i2c-node~test-node'], nodeIds);
+          assert.isEmpty(links);
+        }, flatProject);
+      });
+
+      it('should get rid of output terminals without output links', () => {
+        const flatProject = flatten(
+          project,
+          '@/test-unlinked-lowermost-terminal'
+        );
+        Helper.expectEitherRight(newProject => {
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/test-unlinked-lowermost-terminal')
+          )(newProject);
+
+          const linkIds = R.compose(
+            R.map(Link.getLinkId),
+            Patch.listLinks,
+            Project.getPatchByPathUnsafe('@/test-unlinked-lowermost-terminal')
+          )(newProject);
+
+          assert.sameMembers(
+            ['testNode~formatColorNode', 'colorHslNode', 'watch-node'],
+            nodeIds
+          );
+          assert.sameMembers(
+            ['toWatch', 'original1-to-testNode~toFormatColor'],
+            linkIds
+          );
+        }, flatProject);
+      });
+
+      it('should pass bound values to nested castable custom type terminals', () => {
+        const flatProject = flatten(project, '@/test-nested-input-color');
+        Helper.expectEitherRight(newProject => {
+          const nodeIds = R.compose(
+            R.map(Node.getNodeId),
+            Patch.listNodes,
+            Project.getPatchByPathUnsafe('@/test-nested-input-color')
+          )(newProject);
+
+          const links = R.compose(
+            Patch.listLinks,
+            Project.getPatchByPathUnsafe('@/test-nested-input-color')
+          )(newProject);
+
+          assert.sameMembers(
+            [
+              'nested-format-color~format-color-1',
+              'nested-format-color~format-color-2',
+            ],
+            nodeIds
+          );
           assert.isEmpty(links);
         }, flatProject);
       });
