@@ -58,7 +58,7 @@ TransactionState g_transaction;
 {{#each nodes}}
 {{#unless patch.isConstant}}
 
-typedef {{ ns patch }}{{#if (or (containsConstantInputs inputs) (containsTemplatableCustomTypeInputs inputs))~}}
+typedef {{ ns patch }}::Node{{#if (or (containsConstantInputs inputs) (containsTemplatableCustomTypeInputs inputs))~}}
 <
   {{~#each (constantInputs inputs)~}}
     {{~#if fromPatch.isConstant~}}

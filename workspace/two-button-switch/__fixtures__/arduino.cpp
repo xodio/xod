@@ -975,9 +975,9 @@ void loop() {
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__continuously {
+namespace xod__core__continuously {
+struct Node {
 
     typedef Pulse typeof_TICK;
 
@@ -989,7 +989,7 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    xod__core__continuously () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1057,6 +1057,7 @@ struct xod__core__continuously {
     }
 
 };
+} // namespace xod__core__continuously
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1066,8 +1067,9 @@ struct xod__core__continuously {
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
+namespace xod__gpio__digital_read {
 template <uint8_t constant_input_PORT>
-struct xod__gpio__digital_read {
+struct Node {
 
     typedef uint8_t typeof_PORT;
     typedef Pulse typeof_UPD;
@@ -1095,7 +1097,7 @@ struct xod__gpio__digital_read {
 
     typeof_SIG _output_SIG;
 
-    xod__gpio__digital_read (typeof_SIG output_SIG) {
+    Node (typeof_SIG output_SIG) {
         _output_SIG = output_SIG;
     }
 
@@ -1178,6 +1180,7 @@ struct xod__gpio__digital_read {
     }
 
 };
+} // namespace xod__gpio__digital_read
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1187,7 +1190,8 @@ struct xod__gpio__digital_read {
 //#pragma XOD evaluate_on_pin enable input_TRIG
 
 namespace xod {
-struct xod__core__branch {
+namespace xod__core__branch {
+struct Node {
 
     typedef Logic typeof_GATE;
     typedef Pulse typeof_TRIG;
@@ -1213,7 +1217,7 @@ struct xod__core__branch {
       return identity<typeof_F>();
     }
 
-    xod__core__branch () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1296,6 +1300,7 @@ struct xod__core__branch {
     }
 
 };
+} // namespace xod__core__branch
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1303,7 +1308,8 @@ struct xod__core__branch {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__flip_flop {
+namespace xod__core__flip_flop {
+struct Node {
 
     typedef Pulse typeof_SET;
     typedef Pulse typeof_TGL;
@@ -1331,7 +1337,7 @@ struct xod__core__flip_flop {
 
     typeof_MEM _output_MEM;
 
-    xod__core__flip_flop (typeof_MEM output_MEM) {
+    Node (typeof_MEM output_MEM) {
         _output_MEM = output_MEM;
     }
 
@@ -1425,6 +1431,7 @@ struct xod__core__flip_flop {
     }
 
 };
+} // namespace xod__core__flip_flop
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1434,8 +1441,9 @@ struct xod__core__flip_flop {
 //#pragma XOD evaluate_on_pin enable input_UPD
 
 namespace xod {
+namespace xod__gpio__digital_write {
 template <uint8_t constant_input_PORT>
-struct xod__gpio__digital_write {
+struct Node {
 
     typedef uint8_t typeof_PORT;
     typedef Logic typeof_SIG;
@@ -1461,7 +1469,7 @@ struct xod__gpio__digital_write {
       return identity<typeof_DONE>();
     }
 
-    xod__gpio__digital_write () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1541,6 +1549,7 @@ struct xod__gpio__digital_write {
     }
 
 };
+} // namespace xod__gpio__digital_write
 } // namespace xod
 
 
@@ -1592,25 +1601,25 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__continuously Node_3;
+typedef xod__core__continuously::Node Node_3;
 Node_3 node_3 = Node_3();
 
-typedef xod__gpio__digital_read<node_0_output_VAL> Node_4;
+typedef xod__gpio__digital_read::Node<node_0_output_VAL> Node_4;
 Node_4 node_4 = Node_4(false);
 
-typedef xod__gpio__digital_read<node_1_output_VAL> Node_5;
+typedef xod__gpio__digital_read::Node<node_1_output_VAL> Node_5;
 Node_5 node_5 = Node_5(false);
 
-typedef xod__core__branch Node_6;
+typedef xod__core__branch::Node Node_6;
 Node_6 node_6 = Node_6();
 
-typedef xod__core__branch Node_7;
+typedef xod__core__branch::Node Node_7;
 Node_7 node_7 = Node_7();
 
-typedef xod__core__flip_flop Node_8;
+typedef xod__core__flip_flop::Node Node_8;
 Node_8 node_8 = Node_8(false);
 
-typedef xod__gpio__digital_write<node_2_output_VAL> Node_9;
+typedef xod__gpio__digital_write::Node<node_2_output_VAL> Node_9;
 Node_9 node_9 = Node_9();
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)

@@ -1,16 +1,26 @@
-{{ beforeNodeDefinition }}
-
+{{#each implBlocks}}
+{{#if (eq type "global")}}
+{{ contents }}
+{{else if (eq type "nodespace")}}
 namespace xod {
-{{> patchTemplateDefinition}}
-struct {{ ns patch }} {
-{{ indent patchPinTypes }}
+namespace {{ ns ../patch }} {
+{{ contents }}
+} // namespace {{ ns ../patch }}
+} // namespace xod
+{{else if (eq type "node")}}
+namespace xod {
+namespace {{ ns ../patch }} {
+{{> patchTemplateDefinition .. }}
+struct Node {
+{{ indent ../patchPinTypes }}
 
 {{ unindent meta }}
 
-{{ indent generatedCode }}
+{{ indent ../generatedCode }}
 
-{{ insideNodeDefinition }}
+{{ contents }}
 };
+} // namespace {{ ns ../patch }}
 } // namespace xod
-
-{{ afterNodeDefinition }}
+{{/if}}
+{{/each}}

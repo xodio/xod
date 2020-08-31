@@ -93,7 +93,7 @@ const cppType = def(
     R.has(R.__, builtInTypeNames),
     R.prop(R.__, builtInTypeNames),
     // it is a custom type
-    R.pipe(patchPathToNSName, ns => `${ns}::Type`)
+    R.pipe(patchPathToNSName, ns => `${ns}::Node::Type`)
   )
 );
 
@@ -478,18 +478,12 @@ export const renderImpl = def('renderImpl :: TPatch -> String', tPatch => {
     return templates.legacyPatchImpl(ctx);
   }
 
-  const parsedImpl = parseImplementation(impl);
-
-  const ctx = R.merge(
-    {
-      patch: tPatch,
-      generatedCode,
-      patchPinTypes,
-    },
-    parsedImpl
-  );
-
-  return templates.patchImpl(ctx);
+  return templates.patchImpl({
+    patch: tPatch,
+    generatedCode,
+    patchPinTypes,
+    implBlocks: parseImplementation(impl),
+  });
 });
 export const renderImplList = def(
   'renderImplList :: [TPatch] -> String',

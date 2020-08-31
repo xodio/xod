@@ -977,8 +977,9 @@ void loop() {
 //-----------------------------------------------------------------------------
 
 namespace xod {
+namespace xod_dev__dht__dht11_device {
 template <uint8_t constant_input_PORT>
-struct xod_dev__dht__dht11_device {
+struct Node {
 
     typedef uint8_t typeof_PORT;
 
@@ -1002,7 +1003,7 @@ struct xod_dev__dht__dht11_device {
 
     typeof_DEV _output_DEV;
 
-    xod_dev__dht__dht11_device (typeof_DEV output_DEV) {
+    Node (typeof_DEV output_DEV) {
         _output_DEV = output_DEV;
     }
 
@@ -1060,14 +1061,15 @@ struct xod_dev__dht__dht11_device {
     void evaluate(Context ctx) {}
 
 };
+} // namespace xod_dev__dht__dht11_device
 } // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__continuously {
+namespace xod__core__continuously {
+struct Node {
 
     typedef Pulse typeof_TICK;
 
@@ -1079,7 +1081,7 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    xod__core__continuously () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1147,6 +1149,7 @@ struct xod__core__continuously {
     }
 
 };
+} // namespace xod__core__continuously
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1154,8 +1157,9 @@ struct xod__core__continuously {
 //-----------------------------------------------------------------------------
 
 namespace xod {
+namespace xod_dev__dht__unpack_dht11_device {
 template <typename typeof_DEV>
-struct xod_dev__dht__unpack_dht11_device {
+struct Node {
 
     typedef uint8_t typeof_OUT;
 
@@ -1173,7 +1177,7 @@ struct xod_dev__dht__unpack_dht11_device {
       return identity<typeof_OUT>();
     }
 
-    xod_dev__dht__unpack_dht11_device () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1239,6 +1243,7 @@ struct xod_dev__dht__unpack_dht11_device {
     }
 
 };
+} // namespace xod_dev__dht__unpack_dht11_device
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1246,8 +1251,9 @@ struct xod_dev__dht__unpack_dht11_device {
 //-----------------------------------------------------------------------------
 
 namespace xod {
+namespace xod_dev__dht__dhtxx_read_raw {
 template <uint8_t constant_input_PORT>
-struct xod_dev__dht__dhtxx_read_raw {
+struct Node {
 
     typedef uint8_t typeof_PORT;
     typedef Pulse typeof_DO;
@@ -1312,7 +1318,7 @@ struct xod_dev__dht__dhtxx_read_raw {
     typeof_D2 _output_D2;
     typeof_D3 _output_D3;
 
-    xod_dev__dht__dhtxx_read_raw (typeof_D0 output_D0, typeof_D1 output_D1, typeof_D2 output_D2, typeof_D3 output_D3) {
+    Node (typeof_D0 output_D0, typeof_D1 output_D1, typeof_D2 output_D2, typeof_D3 output_D3) {
         _output_D0 = output_D0;
         _output_D1 = output_D1;
         _output_D2 = output_D2;
@@ -1605,6 +1611,7 @@ struct xod_dev__dht__dhtxx_read_raw {
     }
 
 };
+} // namespace xod_dev__dht__dhtxx_read_raw
 } // namespace xod
 
 
@@ -1648,16 +1655,16 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__continuously Node_1;
+typedef xod__core__continuously::Node Node_1;
 Node_1 node_1 = Node_1();
 
-typedef xod_dev__dht__dht11_device<node_0_output_VAL> Node_2;
+typedef xod_dev__dht__dht11_device::Node<node_0_output_VAL> Node_2;
 Node_2 node_2 = Node_2({ /* xod-dev/dht/dht11-device */ });
 
-typedef xod_dev__dht__unpack_dht11_device<Node_2::typeof_DEV> Node_3;
+typedef xod_dev__dht__unpack_dht11_device::Node<Node_2::typeof_DEV> Node_3;
 Node_3 node_3 = Node_3();
 
-typedef xod_dev__dht__dhtxx_read_raw<Node_3::constant_output_OUT> Node_4;
+typedef xod_dev__dht__dhtxx_read_raw::Node<Node_3::constant_output_OUT> Node_4;
 Node_4 node_4 = Node_4(0, 0, 0, 0);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)

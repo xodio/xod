@@ -975,9 +975,9 @@ void loop() {
 //-----------------------------------------------------------------------------
 // xod/core/cast-to-pulse(boolean) implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__cast_to_pulse__boolean {
+namespace xod__core__cast_to_pulse__boolean {
+struct Node {
 
     typedef Logic typeof_IN;
 
@@ -993,7 +993,7 @@ struct xod__core__cast_to_pulse__boolean {
       return identity<typeof_OUT>();
     }
 
-    xod__core__cast_to_pulse__boolean () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1060,14 +1060,15 @@ struct xod__core__cast_to_pulse__boolean {
     }
 
 };
+} // namespace xod__core__cast_to_pulse__boolean
 } // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__continuously {
+namespace xod__core__continuously {
+struct Node {
 
     typedef Pulse typeof_TICK;
 
@@ -1079,7 +1080,7 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    xod__core__continuously () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1147,14 +1148,15 @@ struct xod__core__continuously {
     }
 
 };
+} // namespace xod__core__continuously
 } // namespace xod
 
 //-----------------------------------------------------------------------------
 // xod/core/boot implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__boot {
+namespace xod__core__boot {
+struct Node {
 
     typedef Pulse typeof_BOOT;
 
@@ -1164,7 +1166,7 @@ struct xod__core__boot {
       return identity<typeof_BOOT>();
     }
 
-    xod__core__boot () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1219,6 +1221,7 @@ struct xod__core__boot {
     }
 
 };
+} // namespace xod__core__boot
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1226,7 +1229,8 @@ struct xod__core__boot {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__any {
+namespace xod__core__any {
+struct Node {
 
     typedef Pulse typeof_IN1;
     typedef Pulse typeof_IN2;
@@ -1247,7 +1251,7 @@ struct xod__core__any {
       return identity<typeof_OUT>();
     }
 
-    xod__core__any () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1321,6 +1325,7 @@ struct xod__core__any {
     }
 
 };
+} // namespace xod__core__any
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1328,7 +1333,8 @@ struct xod__core__any {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__clock {
+namespace xod__core__clock {
+struct Node {
 
     typedef Logic typeof_EN;
     typedef Number typeof_IVAL;
@@ -1356,7 +1362,7 @@ struct xod__core__clock {
 
     TimeMs timeoutAt = 0;
 
-    xod__core__clock () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1473,6 +1479,7 @@ struct xod__core__clock {
     }
 
 };
+} // namespace xod__core__clock
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1480,7 +1487,8 @@ struct xod__core__clock {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__delay {
+namespace xod__core__delay {
+struct Node {
 
     typedef Number typeof_T;
     typedef Pulse typeof_SET;
@@ -1518,7 +1526,7 @@ struct xod__core__delay {
 
     typeof_ACT _output_ACT;
 
-    xod__core__delay (typeof_ACT output_ACT) {
+    Node (typeof_ACT output_ACT) {
         _output_ACT = output_ACT;
     }
 
@@ -1631,6 +1639,7 @@ struct xod__core__delay {
     }
 
 };
+} // namespace xod__core__delay
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1638,7 +1647,8 @@ struct xod__core__delay {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__count {
+namespace xod__core__count {
+struct Node {
 
     typedef Number typeof_STEP;
     typedef Pulse typeof_INC;
@@ -1666,7 +1676,7 @@ struct xod__core__count {
 
     typeof_OUT _output_OUT;
 
-    xod__core__count (typeof_OUT output_OUT) {
+    Node (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
@@ -1751,6 +1761,7 @@ struct xod__core__count {
     }
 
 };
+} // namespace xod__core__count
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1759,7 +1770,8 @@ struct xod__core__count {
 //#pragma XOD dirtieness disable
 
 namespace xod {
-struct xod__core__greater {
+namespace xod__core__greater {
+struct Node {
 
     typedef Number typeof_IN1;
     typedef Number typeof_IN2;
@@ -1782,7 +1794,7 @@ struct xod__core__greater {
 
     typeof_OUT _output_OUT;
 
-    xod__core__greater (typeof_OUT output_OUT) {
+    Node (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
@@ -1848,6 +1860,7 @@ struct xod__core__greater {
     }
 
 };
+} // namespace xod__core__greater
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1856,7 +1869,8 @@ struct xod__core__greater {
 //#pragma XOD dirtieness disable
 
 namespace xod {
-struct xod__core__cast_to_string__number {
+namespace xod__core__cast_to_string__number {
+struct Node {
 
     typedef Number typeof_IN;
 
@@ -1874,7 +1888,7 @@ struct xod__core__cast_to_string__number {
 
     typeof_OUT _output_OUT;
 
-    xod__core__cast_to_string__number (typeof_OUT output_OUT) {
+    Node (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
@@ -1943,6 +1957,7 @@ struct xod__core__cast_to_string__number {
     }
 
 };
+} // namespace xod__core__cast_to_string__number
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1951,8 +1966,9 @@ struct xod__core__cast_to_string__number {
 #include <LiquidCrystal.h>
 
 namespace xod {
+namespace xod__common_hardware__text_lcd_16x2 {
 template <uint8_t constant_input_RS, uint8_t constant_input_EN, uint8_t constant_input_D4, uint8_t constant_input_D5, uint8_t constant_input_D6, uint8_t constant_input_D7>
-struct xod__common_hardware__text_lcd_16x2 {
+struct Node {
 
     typedef uint8_t typeof_RS;
     typedef uint8_t typeof_EN;
@@ -2015,7 +2031,7 @@ struct xod__common_hardware__text_lcd_16x2 {
       return identity<typeof_DONE>();
     }
 
-    xod__common_hardware__text_lcd_16x2 () {
+    Node () {
     }
 
     struct ContextObject {
@@ -2157,6 +2173,7 @@ struct xod__common_hardware__text_lcd_16x2 {
     }
 
 };
+} // namespace xod__common_hardware__text_lcd_16x2
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -2166,7 +2183,8 @@ struct xod__common_hardware__text_lcd_16x2 {
 //#pragma XOD error_raise enable
 
 namespace xod {
-struct xod__core__defer__pulse {
+namespace xod__core__defer__pulse {
+struct Node {
 
     typedef Pulse typeof_IN;
 
@@ -2193,7 +2211,7 @@ struct xod__core__defer__pulse {
     NodeErrors errors = {};
     TimeMs timeoutAt = 0;
 
-    xod__core__defer__pulse () {
+    Node () {
     }
 
     struct ContextObject {
@@ -2327,14 +2345,17 @@ struct xod__core__defer__pulse {
     }
 
 };
+} // namespace xod__core__defer__pulse
 } // namespace xod
+;
 
 //-----------------------------------------------------------------------------
 // xod/core/defer(boolean) implementation
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__defer__boolean {
+namespace xod__core__defer__boolean {
+struct Node {
 
     typedef Logic typeof_IN;
 
@@ -2370,7 +2391,7 @@ struct xod__core__defer__boolean {
 
     typeof_OUT _output_OUT;
 
-    xod__core__defer__boolean (typeof_OUT output_OUT) {
+    Node (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
@@ -2505,6 +2526,7 @@ struct xod__core__defer__boolean {
     }
 
 };
+} // namespace xod__core__defer__boolean
 } // namespace xod
 
 
@@ -2605,46 +2627,46 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__cast_to_pulse__boolean Node_0;
+typedef xod__core__cast_to_pulse__boolean::Node Node_0;
 Node_0 node_0 = Node_0();
 
-typedef xod__core__continuously Node_7;
+typedef xod__core__continuously::Node Node_7;
 Node_7 node_7 = Node_7();
 
-typedef xod__core__boot Node_9;
+typedef xod__core__boot::Node Node_9;
 Node_9 node_9 = Node_9();
 
-typedef xod__core__any Node_15;
+typedef xod__core__any::Node Node_15;
 Node_15 node_15 = Node_15();
 
-typedef xod__core__clock Node_16;
+typedef xod__core__clock::Node Node_16;
 Node_16 node_16 = Node_16();
 
-typedef xod__core__delay Node_17;
+typedef xod__core__delay::Node Node_17;
 Node_17 node_17 = Node_17(false);
 
-typedef xod__core__count Node_18;
+typedef xod__core__count::Node Node_18;
 Node_18 node_18 = Node_18(0);
 
-typedef xod__core__count Node_19;
+typedef xod__core__count::Node Node_19;
 Node_19 node_19 = Node_19(0);
 
-typedef xod__core__greater Node_20;
+typedef xod__core__greater::Node Node_20;
 Node_20 node_20 = Node_20(false);
 
-typedef xod__core__cast_to_string__number Node_21;
+typedef xod__core__cast_to_string__number::Node Node_21;
 Node_21 node_21 = Node_21(XString());
 
-typedef xod__core__cast_to_string__number Node_22;
+typedef xod__core__cast_to_string__number::Node Node_22;
 Node_22 node_22 = Node_22(XString());
 
-typedef xod__common_hardware__text_lcd_16x2<node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL, node_6_output_VAL> Node_23;
+typedef xod__common_hardware__text_lcd_16x2::Node<node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL, node_6_output_VAL> Node_23;
 Node_23 node_23 = Node_23();
 
-typedef xod__core__defer__pulse Node_24;
+typedef xod__core__defer__pulse::Node Node_24;
 Node_24 node_24 = Node_24();
 
-typedef xod__core__defer__boolean Node_25;
+typedef xod__core__defer__boolean::Node Node_25;
 Node_25 node_25 = Node_25(false);
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)

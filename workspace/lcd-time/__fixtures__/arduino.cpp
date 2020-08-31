@@ -975,9 +975,9 @@ void loop() {
 //-----------------------------------------------------------------------------
 // xod/core/continuously implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
-struct xod__core__continuously {
+namespace xod__core__continuously {
+struct Node {
 
     typedef Pulse typeof_TICK;
 
@@ -989,7 +989,7 @@ struct xod__core__continuously {
 
     TimeMs timeoutAt = 0;
 
-    xod__core__continuously () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1057,6 +1057,7 @@ struct xod__core__continuously {
     }
 
 };
+} // namespace xod__core__continuously
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1064,7 +1065,8 @@ struct xod__core__continuously {
 //-----------------------------------------------------------------------------
 
 namespace xod {
-struct xod__core__system_time {
+namespace xod__core__system_time {
+struct Node {
 
     typedef Pulse typeof_UPD;
 
@@ -1087,7 +1089,7 @@ struct xod__core__system_time {
 
     typeof_TIME _output_TIME;
 
-    xod__core__system_time (typeof_TIME output_TIME) {
+    Node (typeof_TIME output_TIME) {
         _output_TIME = output_TIME;
     }
 
@@ -1157,6 +1159,7 @@ struct xod__core__system_time {
     }
 
 };
+} // namespace xod__core__system_time
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1165,7 +1168,8 @@ struct xod__core__system_time {
 //#pragma XOD dirtieness disable
 
 namespace xod {
-struct xod__core__cast_to_string__number {
+namespace xod__core__cast_to_string__number {
+struct Node {
 
     typedef Number typeof_IN;
 
@@ -1183,7 +1187,7 @@ struct xod__core__cast_to_string__number {
 
     typeof_OUT _output_OUT;
 
-    xod__core__cast_to_string__number (typeof_OUT output_OUT) {
+    Node (typeof_OUT output_OUT) {
         _output_OUT = output_OUT;
     }
 
@@ -1252,6 +1256,7 @@ struct xod__core__cast_to_string__number {
     }
 
 };
+} // namespace xod__core__cast_to_string__number
 } // namespace xod
 
 //-----------------------------------------------------------------------------
@@ -1260,8 +1265,9 @@ struct xod__core__cast_to_string__number {
 #include <LiquidCrystal.h>
 
 namespace xod {
+namespace xod__common_hardware__text_lcd_16x2 {
 template <uint8_t constant_input_RS, uint8_t constant_input_EN, uint8_t constant_input_D4, uint8_t constant_input_D5, uint8_t constant_input_D6, uint8_t constant_input_D7>
-struct xod__common_hardware__text_lcd_16x2 {
+struct Node {
 
     typedef uint8_t typeof_RS;
     typedef uint8_t typeof_EN;
@@ -1324,7 +1330,7 @@ struct xod__common_hardware__text_lcd_16x2 {
       return identity<typeof_DONE>();
     }
 
-    xod__common_hardware__text_lcd_16x2 () {
+    Node () {
     }
 
     struct ContextObject {
@@ -1466,6 +1472,7 @@ struct xod__common_hardware__text_lcd_16x2 {
     }
 
 };
+} // namespace xod__common_hardware__text_lcd_16x2
 } // namespace xod
 
 
@@ -1512,16 +1519,16 @@ struct TransactionState {
 
 TransactionState g_transaction;
 
-typedef xod__core__continuously Node_7;
+typedef xod__core__continuously::Node Node_7;
 Node_7 node_7 = Node_7();
 
-typedef xod__core__system_time Node_8;
+typedef xod__core__system_time::Node Node_8;
 Node_8 node_8 = Node_8(0);
 
-typedef xod__core__cast_to_string__number Node_9;
+typedef xod__core__cast_to_string__number::Node Node_9;
 Node_9 node_9 = Node_9(XString());
 
-typedef xod__common_hardware__text_lcd_16x2<node_0_output_VAL, node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL> Node_10;
+typedef xod__common_hardware__text_lcd_16x2::Node<node_0_output_VAL, node_1_output_VAL, node_2_output_VAL, node_3_output_VAL, node_4_output_VAL, node_5_output_VAL> Node_10;
 Node_10 node_10 = Node_10();
 
 #if defined(XOD_DEBUG) || defined(XOD_SIMULATION)

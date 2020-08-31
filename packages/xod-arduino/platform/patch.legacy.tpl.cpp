@@ -1,8 +1,9 @@
 {{ globals }}
 
 namespace xod {
+namespace {{ ns patch }} {
 {{> patchTemplateDefinition}}
-struct {{ ns patch }} {
+struct Node {
 {{ indent patchPinTypes }}
 
 {{ indent beforeNodeImplementation }}
@@ -17,4 +18,5 @@ struct {{ ns patch }} {
 
 {{ indent insideNodeImplementation }}
 };
+} // namespace {{ ns patch }}
 } // namespace xod

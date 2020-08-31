@@ -48,7 +48,7 @@ TimeMs timeoutAt = 0;
 typeof_{{ pinKey }} _output_{{ pinKey }};
 {{/eachNonPulseOrConstant}}
 
-{{ ns this }} (
+Node (
   {{~#eachNonPulseOrConstant outputs ~}}
     typeof_{{ pinKey }} output_{{ pinKey }}{{#unless @last}}, {{/unless ~}}
   {{/eachNonPulseOrConstant ~}}
