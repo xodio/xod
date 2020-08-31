@@ -6,6 +6,7 @@ import { action } from '@storybook/addon-actions';
 
 import Debugger from '../src/debugger/containers/Debugger';
 import DebuggerReducer from '../src/debugger/reducer';
+import EditorReducer from '../src/editor/reducer';
 import { getLogForCurrentTab } from '../src/debugger/selectors';
 import {
   addMessagesToDebuggerLog,
@@ -23,20 +24,22 @@ import '../src/core/styles/main.scss';
 const createStore = () =>
   createReduxStore(
     combineReducers({
+      editor: EditorReducer,
       debugger: DebuggerReducer,
     })
   );
 
 const addMessages = store => {
+  const now = Date.now();
   store.dispatch(
     addMessagesToDebuggerLog([
       {
         type: 'log',
-        message: 'Just a simple log message, that readed from Serial',
+        message: `${now}: Just a simple log message, that readed from Serial`,
       },
       {
         type: 'log',
-        message: 'Just another log message',
+        message: `${now}: Just another log message`,
       },
       {
         type: 'xod',
@@ -122,14 +125,17 @@ const startDebugSession = store => {
         type: 'system',
         message: 'Debug session has been started! (system message)',
       },
-      {}
+      {},
+      {},
+      {},
+      '@/main'
     )
   );
 };
 
 // Container that shows Log length
 const LogLength = connect(state => ({ log: getLogForCurrentTab(state) }))(
-  ({ log }) => <div>Log length: {log.length}</div>
+  ({ log }) => <div style={{ color: '#fff' }}>Log length: {log.length}</div>
 );
 
 // =============================================================================
@@ -147,6 +153,8 @@ const idle = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        onRunSimulationClick={() => {}}
+        stopDebuggerSession={() => {}}
       />
     ));
 };
@@ -161,6 +169,8 @@ const uploading = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        onRunSimulationClick={() => {}}
+        stopDebuggerSession={() => {}}
       />
     ));
 };
@@ -187,6 +197,8 @@ const uploadingSuccess = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        onRunSimulationClick={() => {}}
+        stopDebuggerSession={() => {}}
       />
     ));
 };
@@ -213,6 +225,8 @@ const uploadingFail = () => {
       <Debugger
         onUploadClick={action('onUploadClick')}
         onUploadAndDebugClick={action('onUploadAndDebugClick')}
+        onRunSimulationClick={() => {}}
+        stopDebuggerSession={() => {}}
       />
     ));
 };
@@ -221,16 +235,20 @@ const running = () => {
   const store = createStore();
   startDebugSession(store);
   setInterval(() => addMessages(store), 100);
-  setInterval(() => addError(store), 3000);
+  // setInterval(() => addError(store), 5000);
 
   storiesOf('Debugger', module)
     .addDecorator(story => <Provider store={store}>{story()}</Provider>)
     .add('running', () => (
       <div>
         <LogLength />
+        <button onClick={() => addError(store)}>Add error</button>
+        <p />
         <Debugger
           onUploadClick={action('onUploadClick')}
           onUploadAndDebugClick={action('onUploadAndDebugClick')}
+          onRunSimulationClick={() => {}}
+          stopDebuggerSession={() => {}}
         />
       </div>
     ));
@@ -257,7 +275,7 @@ const longMessages = () => {
       status: 'failed',
     },
   });
-  for (let i = 0; i < 300; i += 1) {
+  for (let i = 0; i < 100; i += 1) {
     addMessages(store);
 
     if (i % 10 === 0) {
@@ -281,6 +299,8 @@ const longMessages = () => {
         <Debugger
           onUploadClick={action('onUploadClick')}
           onUploadAndDebugClick={action('onUploadAndDebugClick')}
+          onRunSimulationClick={() => {}}
+          stopDebuggerSession={() => {}}
         />
       </div>
     ));
