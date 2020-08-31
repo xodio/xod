@@ -9,18 +9,19 @@ import * as R from 'ramda';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const SCROLLED_DOWN_THRESHOLD = 0;
+
 /* eslint-disable no-param-reassign */
 const hasOverflow = el => el.clientHeight < el.scrollHeight;
 const isScrolledDown = (el, threshold) => {
-  const bottom = el.scrollTop + el.clientHeight;
-  return bottom >= el.scrollHeight - threshold;
+  const actualScrollTop = el.scrollTop;
+  const bottomScrollTop = el.scrollHeight - el.clientHeight - threshold;
+  return actualScrollTop >= bottomScrollTop;
 };
 const isScrolledUp = el => el.scrollTop === 0;
 const scrollDown = el => (el.scrollTop = el.scrollHeight - el.clientHeight);
 const scrollDownBy = (amount, el) => (el.scrollTop += amount);
 /* eslint-enable no-param-reassign */
-
-const isScrolledDownThreshold = 0;
 
 class Autoscroll extends React.PureComponent {
   constructor(props) {
@@ -28,18 +29,16 @@ class Autoscroll extends React.PureComponent {
     this._isScrolledDown = true; /* whether the user has scrolled down */
     this._el = null;
     this._scrollHeight = null;
-    this._isScrolledUp = null;
   }
   componentDidMount() {
     this.scrollDownIfNeeded();
   }
   componentWillUpdate() {
     this._scrollHeight = this._el.scrollHeight;
-    this._isScrolledUp = isScrolledUp(this._el);
   }
   componentDidUpdate() {
     /* if the list is scrolled all the way up and new items are added, preserve the current scroll position */
-    if (this._isScrolledUp && this._scrollHeight !== null) {
+    if (isScrolledUp(this._el) && this._scrollHeight !== null) {
       /* the scroll height increased by this much during the update */
       const difference = this._el.scrollHeight - this._scrollHeight;
       this._scrollHeight = null;
@@ -53,11 +52,12 @@ class Autoscroll extends React.PureComponent {
   }
   scrollDown() {
     scrollDown(this._el);
+    this._isScrolledDown = true;
   }
   handleScroll(e) {
     const nextIsScrolledDown = isScrolledDown(
       this._el,
-      isScrolledDownThreshold
+      SCROLLED_DOWN_THRESHOLD
     );
     if (
       !nextIsScrolledDown &&
