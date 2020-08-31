@@ -31,9 +31,15 @@ class Log extends React.PureComponent {
     }, 0);
   }
 
-  onFollowLog() {
+  componentDidUpdate() {
+    if (this.props.log.length === 0) {
+      this.onFollowLog(false);
+    }
+  }
+
+  onFollowLog(addSkipMessage = true) {
     this.scrollToBottom();
-    this.props.stopSkippingNewLogLines();
+    this.props.stopSkippingNewLogLines(addSkipMessage);
   }
 
   scrollToBottom() {
