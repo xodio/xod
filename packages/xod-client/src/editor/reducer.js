@@ -25,6 +25,8 @@ import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
 import { getInitialPatchOffset } from '../project/utils';
 
+import { default as initialState } from './state';
+
 // =============================================================================
 //
 // Utils
@@ -371,7 +373,7 @@ const openDebuggerTab = R.curry((patchPath, state) => {
 //
 // =============================================================================
 
-const editorReducer = (state = {}, action) => {
+const editorReducer = (state = initialState, action) => {
   switch (action.type) {
     //
     // selection management

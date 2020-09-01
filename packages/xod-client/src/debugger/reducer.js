@@ -402,9 +402,13 @@ export default (state = initialState, action) => {
       return R.compose(
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
-        addMessageToDebuggerLog(
-          createSystemMessage(
-            `Skipped ${state.numberOfSkippedSerialLogLines} lines`
+        R.when(
+          ({ numberOfSkippedSerialLogLines }) =>
+            action.payload.force || numberOfSkippedSerialLogLines > 0,
+          addMessageToDebuggerLog(
+            createSystemMessage(
+              `Skipped ${state.numberOfSkippedSerialLogLines} lines`
+            )
           )
         )
       )(state);

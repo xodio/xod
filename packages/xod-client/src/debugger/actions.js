@@ -20,8 +20,9 @@ export const startSkippingNewLogLines = () => ({
   type: AT.DEBUGGER_LOG_START_SKIPPING_NEW_LINES,
 });
 
-export const stopSkippingNewLogLines = () => ({
+export const stopSkippingNewLogLines = (force = true) => ({
   type: AT.DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES,
+  payload: { force },
 });
 
 export const toggleCapturingDebuggerProtocolMessages = () => ({
