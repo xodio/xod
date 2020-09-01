@@ -18,14 +18,36 @@
   "description": "Generates `N` switches of output boolean signal. Useful to flash/blink/flip/switch something for several times in a row.",
   "links": [
     {
-      "id": "B1zL-0t1M",
+      "id": "B1QVnQY68",
       "input": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "ByEPkpYkM"
+        "nodeId": "r1Is6RFkG",
+        "pinKey": "__in__"
       },
       "output": {
-        "nodeId": "rJSSW0Y1f",
-        "pinKey": "HkyxURuSPyW"
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "Hk7Fo6aNp8"
+      }
+    },
+    {
+      "id": "B1wmhXYa8",
+      "input": {
+        "nodeId": "BkE-fCKJG",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "SJfYoapVaU"
+      }
+    },
+    {
+      "id": "BJyG3mtaL",
+      "input": {
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "BkHYoTT4TI"
+      },
+      "output": {
+        "nodeId": "BJQLDRtJf",
+        "pinKey": "ByHmL0uHPk-"
       }
     },
     {
@@ -62,14 +84,25 @@
       }
     },
     {
-      "id": "H18-f0tJz",
+      "id": "HJ143Qta8",
       "input": {
-        "nodeId": "BkE-fCKJG",
-        "pinKey": "__in__"
+        "nodeId": "rJO3UCFkG",
+        "pinKey": "HkqmLAOrD1W"
       },
       "output": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "S1aYu6KJf"
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "Hk7Fo6aNp8"
+      }
+    },
+    {
+      "id": "HJhX3mF6I",
+      "input": {
+        "nodeId": "S15nBCF1G",
+        "pinKey": "S1dG8AOBPJW"
+      },
+      "output": {
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "SJfYoapVaU"
       }
     },
     {
@@ -84,14 +117,14 @@
       }
     },
     {
-      "id": "HyTjpRY1G",
+      "id": "S1HbhXKTU",
       "input": {
-        "nodeId": "r1Is6RFkG",
-        "pinKey": "__in__"
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "rkKiaaETU"
       },
       "output": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "S1dK16FJf"
+        "nodeId": "Hkgc2CK1z",
+        "pinKey": "BJK85RY1G"
       }
     },
     {
@@ -128,28 +161,6 @@
       }
     },
     {
-      "id": "SJpi3RFyG",
-      "input": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "rJS8ypK1z"
-      },
-      "output": {
-        "nodeId": "Hkgc2CK1z",
-        "pinKey": "Hy-vqRtJG"
-      }
-    },
-    {
-      "id": "Sk6600tJf",
-      "input": {
-        "nodeId": "S15nBCF1G",
-        "pinKey": "S1dG8AOBPJW"
-      },
-      "output": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "S1aYu6KJf"
-      }
-    },
-    {
       "id": "SkDs2CYyG",
       "input": {
         "nodeId": "Hkgc2CK1z",
@@ -172,25 +183,14 @@
       }
     },
     {
-      "id": "SkjinAFyG",
+      "id": "Skvbnmt6I",
       "input": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "BJ5HJ6t1f"
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "Sy4Yi6a4pI"
       },
       "output": {
         "nodeId": "Hkgc2CK1z",
-        "pinKey": "BJK85RY1G"
-      }
-    },
-    {
-      "id": "SknCCAYyG",
-      "input": {
-        "nodeId": "rJO3UCFkG",
-        "pinKey": "HkqmLAOrD1W"
-      },
-      "output": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "S1dK16FJf"
+        "pinKey": "Hy-vqRtJG"
       }
     },
     {
@@ -205,6 +205,17 @@
       }
     },
     {
+      "id": "r1F-hXKTL",
+      "input": {
+        "nodeId": "HJe-3mY6L",
+        "pinKey": "HJxKop6EaL"
+      },
+      "output": {
+        "nodeId": "rJSSW0Y1f",
+        "pinKey": "HkyxURuSPyW"
+      }
+    },
+    {
       "id": "rJjPD0KkG",
       "input": {
         "nodeId": "BJQLDRtJf",
@@ -212,17 +223,6 @@
       },
       "output": {
         "nodeId": "HkIkG0tJz",
-        "pinKey": "ByHmL0uHPk-"
-      }
-    },
-    {
-      "id": "rk6wvCYkM",
-      "input": {
-        "nodeId": "HJ5XbRFJz",
-        "pinKey": "ryQdyTYkz"
-      },
-      "output": {
-        "nodeId": "BJQLDRtJf",
         "pinKey": "ByHmL0uHPk-"
       }
     },
@@ -293,13 +293,13 @@
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "id": "HJ5XbRFJz",
+      "id": "HJe-3mY6L",
       "position": {
         "units": "slots",
         "x": 3,
         "y": 4
       },
-      "type": "@/square-wave"
+      "type": "xod/waves/square-wave"
     },
     {
       "id": "HkIkG0tJz",

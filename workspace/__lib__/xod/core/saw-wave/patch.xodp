@@ -149,10 +149,20 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
+      "description": "Use `xod/waves/saw-wave` instead",
+      "id": "Sy0lJ04TL",
+      "position": {
+        "units": "slots",
+        "x": 13,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
+    },
+    {
       "boundLiterals": {
         "__out__": "True"
       },
-      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effictively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effectively that means the generator is paused. Set to `true` again to continue generation.\n",
       "id": "SyapDuu1G",
       "label": "EN",
       "position": {

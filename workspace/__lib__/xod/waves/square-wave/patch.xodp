@@ -1,0 +1,89 @@
+{
+  "description": "Generates square wave signal",
+  "nodes": [
+    {
+      "description": "Resets the wave phase and `N` to zero.",
+      "id": "BkHYoTT4TI",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "id": "BkZYippVaI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Enabled or not. When set to `false` pauses generation preserving the current phase. When set to `true` again continues counting from the saved phase.\n",
+      "id": "HJxKop6EaL",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "The number of current cycle.  Starts from 0. The cycle is considered to start with the `true` value.",
+      "id": "Hk7Fo6aNp8",
+      "label": "N",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "The signal value: `true` or `false`. When the phase is at switch boundary, the value is the same as `EN`, i.e. `false` if paused and `true` if active.",
+      "id": "SJfYoapVaU",
+      "label": "OUT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-boolean"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "0.5"
+      },
+      "description": "Duty cycle. Ratio of `true` signal duration to the whole `IVAL`.",
+      "id": "Sy4Yi6a4pI",
+      "label": "DUTY",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "Time interval between switches to `true`, i.e. the period of the square wave.",
+      "id": "rkKiaaETU",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "links": [
+    {
+      "id": "ByjSUkrpU",
+      "input": {
+        "nodeId": "BJ_BUyHTL",
+        "pinKey": "BkzTvDlGdf"
+      },
+      "output": {
+        "nodeId": "HyNrLJSaU",
+        "pinKey": "SJfYoapVaU"
+      }
+    },
+    {
+      "id": "Hkbt_IyBaL",
+      "input": {
+        "nodeId": "SyFOUJBpL",
+        "pinKey": "BJZY_6J1L"
+      },
+      "output": {
+        "nodeId": "r1xK_U1ra8",
+        "pinKey": "BJyghZosm"
+      }
+    },
+    {
+      "id": "rkTu8kHaL",
+      "input": {
+        "nodeId": "r1xK_U1ra8",
+        "pinKey": "HJgyhboim"
+      },
+      "output": {
+        "nodeId": "BJ_BUyHTL",
+        "pinKey": "HyaDDeM_M"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HylpvPgMOM": "3"
+      },
+      "id": "BJ_BUyHTL",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "@/sine-wave"
+    },
+    {
+      "boundLiterals": {
+        "rkKiaaETU": "0.9"
+      },
+      "id": "HyNrLJSaU",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/square-wave"
+    },
+    {
+      "boundLiterals": {
+        "rJ2uOpk1L": "4",
+        "ryD_dp118": "D2"
+      },
+      "id": "SyFOUJBpL",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 4
+      },
+      "type": "xod-dev/ws2812/ws2812-mono"
+    },
+    {
+      "id": "r1xK_U1ra8",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/color/color-hsl"
+    }
+  ]
+}

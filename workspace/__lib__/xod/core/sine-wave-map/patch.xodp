@@ -129,7 +129,7 @@
       "type": "xod/patch-nodes/input-number"
     },
     {
-      "description": "The number of a funcion cycle. Starts from 0.",
+      "description": "The number of a function cycle. Starts from 0.",
       "id": "H1z-fVnFyz",
       "label": "N",
       "position": {
@@ -184,6 +184,15 @@
         "y": 5
       },
       "type": "xod/math/map"
+    },
+    {
+      "id": "r145yANpI",
+      "position": {
+        "units": "slots",
+        "x": 12,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/deprecated"
     },
     {
       "description": "The function value in [0, 1] range. Starts from 0.",

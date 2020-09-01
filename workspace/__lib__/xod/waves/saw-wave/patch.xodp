@@ -1,0 +1,138 @@
+{
+  "description": "Generates sawtooth wave signal",
+  "links": [
+    {
+      "id": "B1FgjpVpI",
+      "input": {
+        "nodeId": "HkEkipVp8",
+        "pinKey": "BJ4ixaQjOf"
+      },
+      "output": {
+        "nodeId": "H1m-sPgGdM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "S1PgsT4p8",
+      "input": {
+        "nodeId": "HkEkipVp8",
+        "pinKey": "Syjea7idG"
+      },
+      "output": {
+        "nodeId": "rkSWsDxz_G",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJLls6ETU",
+      "input": {
+        "nodeId": "HkEkipVp8",
+        "pinKey": "HJHig6QidG"
+      },
+      "output": {
+        "nodeId": "B1G-jwgz_M",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJmxopNa8",
+      "input": {
+        "nodeId": "HkEkipVp8",
+        "pinKey": "rk-jxTQsuz"
+      },
+      "output": {
+        "nodeId": "H1gboDlzOM",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r16gipVa8",
+      "input": {
+        "nodeId": "SkZowlzOM",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HkEkipVp8",
+        "pinKey": "r1ljgpXjOM"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "Enabled or not. If set to `false` pulses on `UPD` do not change the output value. Effectively that means the generator is paused. Set to `true` again to continue generation.\n",
+      "id": "B1G-jwgz_M",
+      "label": "EN",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "1"
+      },
+      "description": "An interval between wave peaks, i.e. the period of the signal",
+      "id": "H1gboDlzOM",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Continuously"
+      },
+      "description": "Triggers the generator update. It will update the output values.",
+      "id": "H1m-sPgGdM",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "HkBzTQjuf": "1"
+      },
+      "id": "HkEkipVp8",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/tri-wave"
+    },
+    {
+      "description": "The signal value in [0, 1] range. Starts from 0.",
+      "id": "SkZowlzOM",
+      "label": "OUT",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "description": "Resets the current `OUT` and `N` to zero.",
+      "id": "rkSWsDxz_G",
+      "label": "RST",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "links": [
+    {
+      "id": "BkVCbo7tTI",
+      "input": {
+        "nodeId": "BJRbomFaI",
+        "pinKey": "B1GfLR_SPk-"
+      },
+      "output": {
+        "nodeId": "r1bAbsmYT8",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "SkVGoXFTI",
+      "input": {
+        "nodeId": "BJRbomFaI",
+        "pinKey": "SJ4zUC_BD1-"
+      },
+      "output": {
+        "nodeId": "ByfZjQFaI",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1HA-sQYTL",
+      "input": {
+        "nodeId": "B1zRZjXFTI",
+        "pinKey": "HJiwJ33LW"
+      },
+      "output": {
+        "nodeId": "BJRbomFaI",
+        "pinKey": "BkQzLCurwJZ"
+      }
+    },
+    {
+      "id": "r1X0Zj7tpL",
+      "input": {
+        "nodeId": "rkgRWoXK68",
+        "pinKey": "BJlzICOSv1-"
+      },
+      "output": {
+        "nodeId": "B1zRZjXFTI",
+        "pinKey": "Bkpwy22I-"
+      }
+    },
+    {
+      "id": "rkMMj7K6L",
+      "input": {
+        "nodeId": "SkgGWsQK68",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkgRWoXK68",
+        "pinKey": "H12bIR_SPyZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1zRZjXFTI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/math/cos"
+    },
+    {
+      "boundLiterals": {
+        "B1GfLR_SPk-": "0",
+        "SJ4zUC_BD1-": "0"
+      },
+      "id": "BJRbomFaI",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/core/multiply"
+    },
+    {
+      "id": "ByfZjQFaI",
+      "label": "X",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "SkgGWsQK68",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 5
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "6.283185307179"
+      },
+      "id": "r1bAbsmYT8",
+      "label": "2𝜋",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/constant-number"
+    },
+    {
+      "id": "rkWIOqimD",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "boundLiterals": {
+        "HJCWLAdSwyW": "-1",
+        "rkpbU0OrwyZ": "1",
+        "ry1z8CuBDy-": "1"
+      },
+      "id": "rkgRWoXK68",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 4
+      },
+      "type": "xod/math/map"
+    }
+  ]
+}
