@@ -231,7 +231,11 @@ const selectingMode = {
   onNodeDoubleClick(api, nodeId, patchPath) {
     if (R.contains(patchPath, R.keys(XP.MANAGED_ATTACHMENT_FILENAMES))) {
       api.props.actions.openAttachmentEditor(patchPath);
-    } else if (XP.isConstantNodeType(patchPath) || XP.isTweakPath(patchPath)) {
+    } else if (
+      XP.isConstantNodeType(patchPath) ||
+      XP.isTweakPath(patchPath) ||
+      XP.isBindableCustomType(patchPath)
+    ) {
       api.props.actions.focusBoundValue(nodeId, api.props.patchPath);
     } else {
       api.props.actions.switchPatch(patchPath);

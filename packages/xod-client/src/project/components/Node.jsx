@@ -116,6 +116,7 @@ class Node extends React.Component {
       [XP.isTerminalPatchPath, () => <TerminalNodeBody {...this.props} />],
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
       [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
+      [XP.isBindableCustomType, () => <ConstantNodeBody {...this.props} />],
       [XP.isTweakPath, () => <TweakNodeBody {...this.props} />],
       [isBusNodeType, () => <BusNodeBody {...this.props} />],
       [XP.isJumperPatchPath, () => <JumperNodeBody {...this.props} />],
