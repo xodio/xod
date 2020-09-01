@@ -1063,6 +1063,7 @@ struct Node {
 //-----------------------------------------------------------------------------
 // xod/core/system-time implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD dirtieness disable
 
 namespace xod {
 namespace xod__core__system_time {
@@ -1071,11 +1072,6 @@ struct Node {
     typedef Pulse typeof_UPD;
 
     typedef Number typeof_TIME;
-
-    //#pragma XOD dirtieness disable
-
-    struct State {
-    };
 
     struct input_UPD { };
     struct output_TIME { };
@@ -1146,12 +1142,6 @@ struct Node {
 
     void emitValue(Context ctx, typeof_TIME val, identity<output_TIME>) {
         this->_output_TIME = val;
-    }
-
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1243,13 +1233,9 @@ struct Node {
     }
 
     char str[16];
-    CStringView view;
+    CStringView view = CStringView(str);
 
     void evaluate(Context ctx) {
-        if (isSettingUp()) {
-            view = CStringView(str);
-        }
-
         auto num = getValue<input_IN>(ctx);
         formatNumber(num, 2, str);
         emitValue<output_OUT>(ctx, XString(&view));

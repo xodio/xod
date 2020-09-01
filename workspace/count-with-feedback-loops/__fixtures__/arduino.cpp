@@ -1485,7 +1485,6 @@ struct Node {
 //-----------------------------------------------------------------------------
 // xod/core/delay implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
 namespace xod__core__delay {
 struct Node {
@@ -1496,9 +1495,6 @@ struct Node {
 
     typedef Pulse typeof_DONE;
     typedef Logic typeof_ACT;
-
-    struct State {
-    };
 
     struct input_T { };
     struct input_SET { };
@@ -1616,12 +1612,6 @@ struct Node {
     void emitValue(Context ctx, typeof_ACT val, identity<output_ACT>) {
         this->_output_ACT = val;
         ctx->_isOutputDirty_ACT = true;
-    }
-
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
     }
 
     void evaluate(Context ctx) {
@@ -1944,13 +1934,9 @@ struct Node {
     }
 
     char str[16];
-    CStringView view;
+    CStringView view = CStringView(str);
 
     void evaluate(Context ctx) {
-        if (isSettingUp()) {
-            view = CStringView(str);
-        }
-
         auto num = getValue<input_IN>(ctx);
         formatNumber(num, 2, str);
         emitValue<output_OUT>(ctx, XString(&view));
@@ -2352,6 +2338,8 @@ struct Node {
 //-----------------------------------------------------------------------------
 // xod/core/defer(boolean) implementation
 //-----------------------------------------------------------------------------
+//#pragma XOD error_catch enable
+//#pragma XOD error_raise enable
 
 namespace xod {
 namespace xod__core__defer__boolean {
@@ -2360,13 +2348,6 @@ struct Node {
     typedef Logic typeof_IN;
 
     typedef Logic typeof_OUT;
-
-    //#pragma XOD error_catch enable
-    //#pragma XOD error_raise enable
-
-    struct State {
-        bool shouldRaiseAtTheNextDeferOnlyRun = false;
-    };
 
     struct input_IN { };
     struct output_OUT { };
@@ -2497,25 +2478,19 @@ struct Node {
         return ctx->_error_input_IN;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool shouldRaiseAtTheNextDeferOnlyRun = false;
 
     void evaluate(Context ctx) {
-        auto state = getState(ctx);
-
         if (isEarlyDeferPass()) {
-            if (state->shouldRaiseAtTheNextDeferOnlyRun) {
+            if (shouldRaiseAtTheNextDeferOnlyRun) {
                 raiseError<output_OUT>(ctx);
-                state->shouldRaiseAtTheNextDeferOnlyRun = false;
+                shouldRaiseAtTheNextDeferOnlyRun = false;
             } else {
                 emitValue<output_OUT>(ctx, getValue<output_OUT>(ctx));
             }
         } else {
             if (getError<input_IN>(ctx)) {
-                state->shouldRaiseAtTheNextDeferOnlyRun = true;
+                shouldRaiseAtTheNextDeferOnlyRun = true;
             } else {
                 // save the value for reemission on deferred-only evaluation pass
                 emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));

@@ -975,7 +975,6 @@ void loop() {
 //-----------------------------------------------------------------------------
 // xod-dev/dht/dht11-device implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
 namespace xod_dev__dht__dht11_device {
 template <uint8_t constant_input_PORT>
@@ -983,11 +982,9 @@ struct Node {
 
     typedef uint8_t typeof_PORT;
 
-    struct Dht11Device {
-        static constexpr uint8_t port = constant_input_PORT;
-    };
-
-    using Type = Dht11Device*;
+  struct Type {
+     static constexpr typeof_PORT port = constant_input_PORT;
+  };
 
     typedef Type typeof_DEV;
 
@@ -1058,7 +1055,12 @@ struct Node {
         ctx->_isOutputDirty_DEV = true;
     }
 
-    void evaluate(Context ctx) {}
+    void evaluate(Context ctx) {
+        static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
+
+        // just to trigger downstream nodes
+        emitValue<output_DEV>(ctx, {});
+    }
 
 };
 } // namespace xod_dev__dht__dht11_device
@@ -1155,17 +1157,12 @@ struct Node {
 //-----------------------------------------------------------------------------
 // xod-dev/dht/unpack-dht11-device implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
 namespace xod_dev__dht__unpack_dht11_device {
 template <typename typeof_DEV>
 struct Node {
 
     typedef uint8_t typeof_OUT;
-
-    struct State {};
-
-    static constexpr uint8_t constant_output_OUT = remove_pointer<typeof_DEV>::type::port;
 
     struct input_DEV { };
     struct output_OUT { };
@@ -1231,11 +1228,7 @@ struct Node {
     void emitValue(Context ctx, typeof_OUT val, identity<output_OUT>) __attribute__((deprecated("No need to emitValue from constant outputs."))) {
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    static constexpr uint8_t constant_output_OUT = typeof_DEV::port;
 
     void evaluate(Context ctx) {
         // We don't need to worry about emitting from constant outputs.
@@ -1249,7 +1242,6 @@ struct Node {
 //-----------------------------------------------------------------------------
 // xod-dev/dht/dhtxx-read-raw implementation
 //-----------------------------------------------------------------------------
-
 namespace xod {
 namespace xod_dev__dht__dhtxx_read_raw {
 template <uint8_t constant_input_PORT>
@@ -1263,10 +1255,6 @@ struct Node {
     typedef Number typeof_D2;
     typedef Number typeof_D3;
     typedef Pulse typeof_DONE;
-
-    struct State {
-        bool reading;
-    };
 
     struct input_PORT { };
     struct input_DO { };
@@ -1477,11 +1465,7 @@ struct Node {
         ctx->_isOutputDirty_DONE = true;
     }
 
-    State state;
-
-    State* getState(__attribute__((unused)) Context ctx) {
-        return &state;
-    }
+    bool reading;
 
     enum DhtStatus
     {
@@ -1579,10 +1563,9 @@ struct Node {
     void evaluate(Context ctx) {
         static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
-        State* state = getState(ctx);
         uint8_t port = constant_input_PORT;
 
-        if (state->reading) {
+        if (reading) {
             uint8_t data[5];
             auto status = readValues(port, data);
 
@@ -1597,14 +1580,14 @@ struct Node {
             }
 
             enterIdleState(port);
-            state->reading = false;
+            reading = false;
         } else if (isInputDirty<input_DO>(ctx)) {
             // initiate request for data
             pinMode(port, OUTPUT);
             digitalWrite(port, LOW);
             // for request we should keep the line low for 18+ ms
             setTimeout(ctx, 18);
-            state->reading = true;
+            reading = true;
         } else {
             enterIdleState(port);
         }
