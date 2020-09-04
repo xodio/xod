@@ -1,15 +1,12 @@
-{{#global}}
 #include <Wire.h>
-{{/global}}
 
-struct State {
-};
+node {
+    meta {
+        using Type = TwoWire*;
+    }
 
-using Type = TwoWire*;
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    Wire.begin();
-    emitValue<output_OUT>(ctx, &Wire);
+    void evaluate(Context ctx) {
+        Wire.begin();
+        emitValue<output_OUT>(ctx, &Wire);
+    }
 }

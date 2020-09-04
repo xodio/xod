@@ -2,29 +2,24 @@
 #pragma XOD evaluate_on_pin enable input_SEND
 #pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_SEND>(ctx))
+            return;
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+        auto req = getValue<input_MSG>(ctx);
+        auto inet = getValue<input_INET>(ctx);
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_SEND>(ctx))
-        return;
+        char _req[length(req) + 1] = { 0 };
+        dump(req, _req);
 
-    auto req = getValue<input_MSG>(ctx);
-    auto inet = getValue<input_INET>(ctx);
+        if (inet.wifi->send(_req)) {
+            emitValue<output_DONE>(ctx, 1);
+        } else {
+            raiseError(ctx);
+        }
 
-    char _req[length(req) + 1] = { 0 };
-    dump(req, _req);
-
-    if (inet.wifi->send(_req)) {
-        emitValue<output_DONE>(ctx, 1);
-    } else {
-        raiseError(ctx);
+        emitValue<output_INETU0027>(ctx, inet);
+        emitValue<output_SOCKU0027>(ctx, getValue<input_SOCK>(ctx));
     }
-
-    emitValue<output_INETU0027>(ctx, inet);
-    emitValue<output_SOCKU0027>(ctx, getValue<input_SOCK>(ctx));
 }

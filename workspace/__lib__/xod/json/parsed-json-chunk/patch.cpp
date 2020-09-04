@@ -1,5 +1,3 @@
-
-{{#global}}
 namespace xod {
 namespace json_parser {
 
@@ -25,17 +23,15 @@ enum class ParserState : int8_t {
 
 } // namespace json_parser
 } // namespace xod
-{{/global}}
 
-struct State {};
-
-struct Type {
-    xod::json_parser::ParserState state;
-    uint8_t character;
-};
-
-{{ GENERATED_CODE }}
-
-void evaluate(Context ctx) {
-    // not intended to be called
+node {
+    meta {
+        struct Type {
+            xod::json_parser::ParserState state;
+            uint8_t character;
+        };
+    }
+    void evaluate(Context ctx) {
+        // not intended to be called
+    }
 }

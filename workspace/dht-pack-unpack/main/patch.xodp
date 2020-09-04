@@ -1,0 +1,58 @@
+{
+  "links": [
+    {
+      "id": "HJu5fAZ3L",
+      "input": {
+        "nodeId": "ryB9zAbhI",
+        "pinKey": "HJMBihlj1G"
+      },
+      "output": {
+        "nodeId": "By9XzCb3I",
+        "pinKey": "HkKoDGFLH"
+      }
+    },
+    {
+      "id": "ryRXMAb3I",
+      "input": {
+        "nodeId": "By9XzCb3I",
+        "pinKey": "r14iDMFIH"
+      },
+      "output": {
+        "nodeId": "ry4zzCZ2L",
+        "pinKey": "rJPekGtLB"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "By9XzCb3I",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": -1
+      },
+      "type": "xod-dev/dht/unpack-dht11-device"
+    },
+    {
+      "boundLiterals": {
+        "BJJxJGFUH": "D11"
+      },
+      "id": "ry4zzCZ2L",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": -2
+      },
+      "type": "xod-dev/dht/dht11-device"
+    },
+    {
+      "id": "ryB9zAbhI",
+      "position": {
+        "units": "slots",
+        "x": -3,
+        "y": 0
+      },
+      "type": "xod-dev/dht/dhtxx-read-raw"
+    }
+  ]
+}

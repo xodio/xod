@@ -2,22 +2,17 @@
 #pragma XOD evaluate_on_pin enable input_KICK
 #pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_KICK>(ctx))
+            return;
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
-
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_KICK>(ctx))
-        return;
-
-    auto dev = getValue<input_DEV>(ctx);
-    bool res = dev.wifi->kick();
-    if (res) {
-        emitValue<output_OK>(ctx, 1);
-    } else {
-        raiseError(ctx);
+        auto dev = getValue<input_DEV>(ctx);
+        bool res = dev.wifi->kick();
+        if (res) {
+            emitValue<output_OK>(ctx, 1);
+        } else {
+            raiseError(ctx);
+        }
     }
 }

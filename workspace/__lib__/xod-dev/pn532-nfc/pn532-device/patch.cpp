@@ -1,41 +1,32 @@
 #pragma XOD require "https://github.com/adafruit/Adafruit_BusIO"
 #pragma XOD require "https://github.com/adafruit/Adafruit-PN532"
 
-// clang-format off
-{{#global}}
 #include <Adafruit_PN532.h>
-{{/global}}
-// clang-format on
 
-struct State {
-    uint8_t mem[sizeof(Adafruit_PN532)];
-};
-
-using Type = Adafruit_PN532*;
-
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
-
-void evaluate(Context ctx) {
-    if (!isSettingUp()) return;
-
-    auto state = getState(ctx);
-    auto irq = getValue<input_IRQ>(ctx);
-
-    Type nfc = new (state->mem) Adafruit_PN532(irq, NOT_A_PORT);
-
-    // Initialize the device
-    nfc->begin();
-    // Ensure the device is working
-    uint32_t versiondata = nfc->getFirmwareVersion();
-    if (!versiondata) {
-      raiseError(ctx);
-      return;
+node {
+    meta {
+        using Type = Adafruit_PN532*;
     }
-    // Configure the device
-    nfc->setPassiveActivationRetries(0x01);
-    nfc->SAMConfig();
 
-    emitValue<output_DEV>(ctx, nfc);
+    static_assert(isValidDigitalPort(constant_input_IRQ), "must be a valid digital port");
+
+    Adafruit_PN532 nfc = Adafruit_PN532(constant_input_IRQ, NOT_A_PORT);
+
+    void evaluate(Context ctx) {
+        if (!isSettingUp()) return;
+
+        // Initialize the device
+        nfc.begin();
+        // Ensure the device is working
+        uint32_t versiondata = nfc.getFirmwareVersion();
+        if (!versiondata) {
+          raiseError(ctx);
+          return;
+        }
+        // Configure the device
+        nfc.setPassiveActivationRetries(0x01);
+        nfc.SAMConfig();
+
+        emitValue<output_DEV>(ctx, &nfc);
+    }
 }

@@ -2,32 +2,27 @@
 #pragma XOD evaluate_on_pin enable input_CONN
 #pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        if (!isInputDirty<input_CONN>(ctx))
+            return;
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+        auto device = getValue<input_DEV>(ctx);
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_CONN>(ctx))
-        return;
+        auto ssid = getValue<input_SSID>(ctx);
+        char _ssid[length(ssid) + 1] = { 0 };
+        dump(ssid, _ssid);
 
-    auto device = getValue<input_DEV>(ctx);
+        auto password = getValue<input_PWD>(ctx);
+        char _password[length(password) + 1] = { 0 };
+        dump(password, _password);
 
-    auto ssid = getValue<input_SSID>(ctx);
-    char _ssid[length(ssid) + 1] = { 0 };
-    dump(ssid, _ssid);
+        bool done = device.wifi->connect(_ssid, _password);
 
-    auto password = getValue<input_PWD>(ctx);
-    char _password[length(password) + 1] = { 0 };
-    dump(password, _password);
-
-    bool done = device.wifi->connect(_ssid, _password);
-
-    if (done) {
-        emitValue<output_DONE>(ctx, 1);
-    } else {
-        raiseError(ctx); // Connection failed
+        if (done) {
+            emitValue<output_DONE>(ctx, 1);
+        } else {
+            raiseError(ctx); // Connection failed
+        }
     }
 }

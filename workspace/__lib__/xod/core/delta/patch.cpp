@@ -2,27 +2,24 @@
 #pragma XOD evaluate_on_pin enable input_RST input_UPD
 #pragma XOD dirtieness disable output_OUT
 
-struct State {
+node {
     Number refValue = 0;
-};
 
-{{ GENERATED_CODE }}
+    void evaluate(Context ctx) {
+        auto inValue = getValue<input_IN>(ctx);
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
-    auto inValue = getValue<input_IN>(ctx);
+        if (isInputDirty<input_RST>(ctx)) {
+            refValue = inValue;
+            emitValue<output_OUT>(ctx, 0);
+            return;
+        }
 
-    if (isInputDirty<input_RST>(ctx)) {
-        state->refValue = inValue;
-        emitValue<output_OUT>(ctx, 0);
-        return;
+        if (!isInputDirty<input_UPD>(ctx)) {
+          return;
+        }
+
+        auto outValue = inValue - refValue;
+        emitValue<output_OUT>(ctx, outValue);
+        refValue = inValue;
     }
-
-    if (!isInputDirty<input_UPD>(ctx)) {
-      return;
-    }
-
-    auto outValue = inValue - state->refValue;
-    emitValue<output_OUT>(ctx, outValue);
-    state->refValue = inValue;
 }

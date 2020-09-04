@@ -1,44 +1,32 @@
-
-// clang-format off
-{{#global}}
 #include <Point.h>
-{{/global}}
-// clang-format on
-
-struct State {
+node {
     uint8_t mem[sizeof(Point)];
     Point* pointColored;
-    int16_t x, y;
+    int16_t _x, _y;
     XColor strokeColor;
-};
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+    void evaluate(Context ctx) {
+        auto gfx = getValue<input_GFX>(ctx);
 
-void evaluate(Context ctx) {
+        strokeColor = getValue<input_C>(ctx);
 
-    auto state = getState(ctx);
-    auto gfx = getValue<input_GFX>(ctx);
+        int16_t x = (int16_t)getValue<input_X>(ctx);
+        int16_t y = (int16_t)getValue<input_Y>(ctx);
 
-    state->strokeColor = getValue<input_C>(ctx);
+        if (isSettingUp()) {
+            pointColored = new (mem) Point(gfx);
+        }
 
-    int16_t x = (int16_t)getValue<input_X>(ctx);
-    int16_t y = (int16_t)getValue<input_Y>(ctx);
+        if (isSettingUp() || x != _x || y != _y || isInputDirty<input_C>(ctx)) {
+            _x = x;
+            _y = y;
+            pointColored->setPosition(x, y);
+            pointColored->setStyle(&strokeColor);
+            emitValue<output_GFXU0027>(ctx, pointColored);
+        }
 
-    if (isSettingUp()) {
-        state->pointColored = new (state->mem) Point(gfx);
-    }
-
-    if (isSettingUp() || state->x != x || state->y != y || isInputDirty<input_C>(ctx)) {
-        state->x = x;
-        state->y = y;
-        state->pointColored->setPosition(x, y);
-        state->pointColored->setStyle(&state->strokeColor);
-        emitValue<output_GFXU0027>(ctx, state->pointColored);
-    }
-
-    if (isInputDirty<input_GFX>(ctx)) {
-        emitValue<output_GFXU0027>(ctx, state->pointColored);
+        if (isInputDirty<input_GFX>(ctx)) {
+            emitValue<output_GFXU0027>(ctx, pointColored);
+        }
     }
 }

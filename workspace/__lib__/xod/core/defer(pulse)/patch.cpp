@@ -1,33 +1,29 @@
 #pragma XOD error_catch enable
 #pragma XOD error_raise enable
 
-struct State {
+node {
     bool shouldRaiseAtTheNextDeferOnlyRun = false;
     bool shouldPulseAtTheNextDeferOnlyRun = false;
-};
 
-{{ GENERATED_CODE }}
+    void evaluate(Context ctx) {
+        if (isEarlyDeferPass()) {
+            if (shouldRaiseAtTheNextDeferOnlyRun) {
+                raiseError<output_OUT>(ctx);
+                shouldRaiseAtTheNextDeferOnlyRun = false;
+            }
 
-void evaluate(Context ctx) {
-    auto state = getState(ctx);
+            if (shouldPulseAtTheNextDeferOnlyRun) {
+                emitValue<output_OUT>(ctx, true);
+                shouldPulseAtTheNextDeferOnlyRun = false;
+            }
+        } else {
+            if (getError<input_IN>(ctx)) {
+                shouldRaiseAtTheNextDeferOnlyRun = true;
+            } else if (isInputDirty<input_IN>(ctx)) {
+                shouldPulseAtTheNextDeferOnlyRun = true;
+            }
 
-    if (isEarlyDeferPass()) {
-        if (state->shouldRaiseAtTheNextDeferOnlyRun) {
-            raiseError<output_OUT>(ctx);
-            state->shouldRaiseAtTheNextDeferOnlyRun = false;
+            setTimeout(ctx, 0);
         }
-
-        if (state->shouldPulseAtTheNextDeferOnlyRun) {
-            emitValue<output_OUT>(ctx, true);
-            state->shouldPulseAtTheNextDeferOnlyRun = false;
-        }
-    } else {
-        if (getError<input_IN>(ctx)) {
-            state->shouldRaiseAtTheNextDeferOnlyRun = true;
-        } else if (isInputDirty<input_IN>(ctx)) {
-            state->shouldPulseAtTheNextDeferOnlyRun = true;
-        }
-
-        setTimeout(ctx, 0);
     }
-}
+};

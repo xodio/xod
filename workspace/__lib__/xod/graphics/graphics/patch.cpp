@@ -1,16 +1,9 @@
-
-// clang-format off
-{{#global}}
 #include <XGraphics.h>
-{{/global}}
-// clang-format on
 
-struct State {};
+node {
+    meta {
+        using Type = XGraphics*;
+    }
 
-using Type = XGraphics*;
-
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
-
-void evaluate(Context ctx) {}
+    void evaluate(Context ctx) {}
+}

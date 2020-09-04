@@ -1,28 +1,25 @@
 
-struct State {
-    uint8_t r = 0;
-    uint8_t g = 0;
-    uint8_t b = 0;
-};
+node {
+    uint8_t _r = 0;
+    uint8_t _g = 0;
+    uint8_t _b = 0;
 
-{{ GENERATED_CODE }}
+    bool isColorEqual(uint8_t r, uint8_t g, uint8_t b) {
+        return (
+            _r == r &&
+            _g == g &&
+            _b == b
+        );
+    }
 
-bool isColorEqual(State* state, uint8_t r, uint8_t g, uint8_t b) {
-    return (
-        state->r == r &&
-        state->g == g &&
-        state->b == b
-    );
-}
+    void evaluate(Context ctx) {
+        auto newColor = getValue<input_IN>(ctx);
 
-void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    auto newColor = getValue<input_IN>(ctx);
+        if (!isSettingUp() && !isColorEqual(newColor.r, newColor.g, newColor.b));
+            emitValue<output_OUT>(ctx, 1);
 
-    if (!isSettingUp() && !isColorEqual(state, newColor.r, newColor.g, newColor.b));
-        emitValue<output_OUT>(ctx, 1);
-
-    state->r = newColor.r;
-    state->g = newColor.g;
-    state->b = newColor.b;
+        _r = newColor.r;
+        _g = newColor.g;
+        _b = newColor.b;
+    }
 }

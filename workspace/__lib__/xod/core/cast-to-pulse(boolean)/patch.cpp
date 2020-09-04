@@ -1,15 +1,12 @@
-struct State {
-  bool state = false;
-};
+node {
+    bool state = false;
 
-{{ GENERATED_CODE }}
+    void evaluate(Context ctx) {
+        auto newValue = getValue<input_IN>(ctx);
 
-void evaluate(Context ctx) {
-    State* state = getState(ctx);
-    auto newValue = getValue<input_IN>(ctx);
+        if (newValue == true && state == false)
+            emitValue<output_OUT>(ctx, 1);
 
-    if (newValue == true && state->state == false)
-        emitValue<output_OUT>(ctx, 1);
-
-    state->state = newValue;
+        state = newValue;
+    }
 }

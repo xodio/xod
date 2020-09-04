@@ -1,24 +1,16 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_UPD
-#pragma XOD error_raise enable
 
-struct State {
-};
+node {
+    void evaluate(Context ctx) {
+        static_assert(isValidDigitalPort(constant_input_PORT), "must be a valid digital port");
 
-{{ GENERATED_CODE }}
+        if (!isInputDirty<input_UPD>(ctx))
+            return;
 
-void evaluate(Context ctx) {
-    if (!isInputDirty<input_UPD>(ctx))
-        return;
-
-    const uint8_t port = getValue<input_PORT>(ctx);
-    if (!isValidDigitalPort(port)) {
-        raiseError<output_DONE>(ctx);
-        return;
+        ::pinMode(constant_input_PORT, OUTPUT);
+        const bool val = getValue<input_SIG>(ctx);
+        ::digitalWrite(constant_input_PORT, val);
+        emitValue<output_DONE>(ctx, 1);
     }
-
-    ::pinMode(port, OUTPUT);
-    const bool val = getValue<input_SIG>(ctx);
-    ::digitalWrite(port, val);
-    emitValue<output_DONE>(ctx, 1);
 }

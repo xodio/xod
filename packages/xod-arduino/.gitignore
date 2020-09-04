@@ -1,3 +1,5 @@
+**/*.ne.js
+
 test-cpp/run-tests
 test-cpp/run-tests.dSYM
 .pio-build

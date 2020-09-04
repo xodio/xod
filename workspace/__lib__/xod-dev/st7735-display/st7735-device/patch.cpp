@@ -1,40 +1,18 @@
-
-// clang-format off
-{{#global}}
 #include <XST7735.h>
-{{/global}}
-// clang-format on
 
-struct State {
-    uint8_t mem[sizeof(ST7735)];
-    ST7735* dev;
-};
+node {
+    meta {
+        using Type = ST7735*;
+    }
 
-using Type = ST7735*;
+    static_assert(isValidDigitalPort(constant_input_CS), "must be a valid digital port");
+    static_assert(isValidDigitalPort(constant_input_DC), "must be a valid digital port");
+    static_assert(constant_input_RST == 255 || isValidDigitalPort(constant_input_RST), "must be a valid digital port");
 
-// clang-format off
-{{ GENERATED_CODE }}
-// clang-format on
+    ST7735 dev = ST7735(constant_input_CS, constant_input_DC, constant_input_RST);
 
-void evaluate(Context ctx) {
-    if (!isSettingUp())
-        return;
-
-    auto state = getState(ctx);
-
-    const uint8_t cs = getValue<input_CS>(ctx);
-    const uint8_t dc = getValue<input_DC>(ctx);
-    const uint8_t rst = getValue<input_RST>(ctx);
-
-    state->dev = new (state->mem) ST7735(cs, dc, rst);
-
-    emitValue<output_DEV>(ctx, state->dev);
-}
-
-template <uint8_t cs, uint8_t dc, uint8_t rst>
-void evaluateTmpl(Context ctx) {
-    static_assert(isValidDigitalPort(cs), "must be a valid digital port");
-    static_assert(isValidDigitalPort(dc), "must be a valid digital port");
-    static_assert(rst == 255 || isValidDigitalPort(rst), "must be a valid digital port");
-    evaluate(ctx);
+    void evaluate(Context ctx) {
+        if (!isSettingUp()) return;
+        emitValue<output_DEV>(ctx, &dev);
+    }
 }
