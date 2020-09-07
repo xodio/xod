@@ -6,7 +6,7 @@ import windowStateKeeper from 'electron-window-state';
 import { URL } from 'url';
 import * as R from 'ramda';
 import * as xdb from 'xod-deploy-bin';
-import { tapP } from 'xod-func-tools';
+import { tapP, createError } from 'xod-func-tools';
 
 import {
   URL_ACTION_PROTOCOL,
@@ -291,6 +291,39 @@ const onReady = () => {
       .then(wsPath => Promise.all([wsPath, xdb.prepareSketchDir()]))
       .then(([wsPath, sketchDir]) =>
         xdb.createCli(getPathToBundledWorkspace(), wsPath, sketchDir, IS_DEV)
+      )
+      .then(
+        R.when(
+          () => IS_DEV,
+          arduinoCli =>
+            arduinoCli
+              .version()
+              .then(v => {
+                // eslint-disable-next-line no-console
+                console.log('Arduino-cli bin: ', arduinoCli.getPathToBin());
+                // eslint-disable-next-line no-console
+                console.log('Arduino-cli version: ', v);
+                return arduinoCli.dumpConfig();
+              })
+              .then(cfg => {
+                // eslint-disable-next-line no-console
+                console.log(
+                  'Arduino-cli sketchbook directory:',
+                  cfg.directories.user
+                );
+                return arduinoCli;
+              })
+              .catch(err =>
+                Promise.reject(
+                  createError('ARDUINO_CLI_EXITED_WITH_CODE', {
+                    message: err.message,
+                    stdout: err.stdout,
+                    stderr: err.stderr,
+                    path: arduinoCli.getPathToBin(),
+                  })
+                )
+              )
+        )
       )
       .then(arduinoCli => {
         arduinoCliInstance = arduinoCli;
