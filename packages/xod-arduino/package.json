@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
     "build:nearley": "nearleyc src/implementationGrammar.ne -o src/implementationGrammar.ne.js",
@@ -31,14 +31,14 @@
     "ramda-fantasy": "^0.8.0",
     "sanctuary-def": "^0.14.0",
     "xod-func-tools": "^0.34.0",
-    "xod-project": "^0.34.0"
+    "xod-project": "^0.35.0"
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",
     "bs-platform": "7.1.1",
     "chai": "^4.1.2",
     "onchange": "^5.2.0",
-    "xod-fs": "^0.34.0"
+    "xod-fs": "^0.35.0"
   },
   "files": [
     "dist",
