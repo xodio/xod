@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Introduce constant types and new C++ implementation syntax. (#2007)
+* [core] Make color-type outputs bindable (#2011)
+* [ide] Add ability to clone a patch from library to a local project (#1999, #2003)
+* [nodes] Make `pulse-on-*` nodes behave consistently and not trigger on start (#2002)
+* [core] Upgrade bundled arduino-cli to v0.12.0. Thanks, @quinkennedy! (#1986, #2012, #2029)
+* [core] Use upstream ESP8266 package index instead of being locked to v2.4.3 (#2026)
+* [core] Improved resolution of abstract nodes to allow specializations without the type suffix for types defined in the same library (#2004)
+* [nodes] Unify interfaces of nodes in `xod-dev/esp8266`, `xod-dev/esp8266-mcu`, `xod-dev/w5500` and `xod/debug` to use abstract nodes from `xod/net` (#2004)
+
+### Bug fixes
+
+* [ide] Fix inconsistent behaviour of "Follow Log" feature in Debugger pane (#2027)
+* [nodes] Fix compiling of `xod-dev/ws2812` on ESP8266 (#1994)
+* [core] Fix an uncaught exception when transpiling a patch with a “dangling” defer node (#1995)
+* [c++] Fix forward declaration of HardwareSerial for megaAVR architecture (#2006)
+* [core] Fix creating cast nodes for custom types (#2008, #2023, #2025)
+* [nodes] Add missing dependency for xod-dev/pn532-nfc (#2024)
+* [nodes] Fix `renderScanlinePart` behaviour in `xod-dev/ssd1306-display` (#2022)
+
+### New nodes
+
+* [xod/waves](https://xod.io/libs/xod/waves) — a collection of nodes that generate wave signals (#2000)
+* [xod-cloud/basics](https://xod.io/libs/xod-cloud/basics) — library that has nodes to get a DateTime and external IP (#1998)
+* Add `parse-u32` and `parse-number` nodes to [xod/stream](https://xod.io/libs/xod/stream) library (#1998)
+* Add `from-posix` and `to-posix` nodes to [xod/datetime](https://xod.io/libs/xod/datetime) library (#1998)
+* Add `cloud-string`, `cloud-number` and `cloud-boolean` nodes to [xod-cloud/feeds](https://xod.io/libs/xod-cloud/feeds) library (#1998)
+
 <a name="0.34.0"></a>
 
 ## 0.34.0 (2020-05-28)
