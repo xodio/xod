@@ -32,7 +32,7 @@ defs:
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
       name: Install arduino-cli
       command: |
-        curl -L -s --create-dirs -o "$HOME/arduino-cli.tar.gz" "https://github.com/arduino/arduino-cli/releases/download/0.10.0/arduino-cli_0.10.0_macOS_64bit.tar.gz" \
+        curl -L -s --create-dirs -o "$HOME/arduino-cli.tar.gz" "https://github.com/arduino/arduino-cli/releases/download/0.12.0/arduino-cli_0.12.0_macOS_64bit.tar.gz" \
         && tar xvf "$HOME/arduino-cli.tar.gz" -C "$HOME" \
         && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
         && mkdir "/tmp/arduino-cli" \
@@ -41,7 +41,7 @@ defs:
     step-install-arduino-cli-on-linux: &step-install-arduino-cli-on-linux
       name: Install arduino-cli
       command: |
-        curl -L -s --create-dirs -o "$HOME/arduino-cli.tar.gz" "https://github.com/arduino/arduino-cli/releases/download/0.10.0/arduino-cli_0.10.0_Linux_64bit.tar.gz" \
+        curl -L -s --create-dirs -o "$HOME/arduino-cli.tar.gz" "https://github.com/arduino/arduino-cli/releases/download/0.12.0/arduino-cli_0.12.0_Linux_64bit.tar.gz" \
         && tar xvf "$HOME/arduino-cli.tar.gz" -C "$HOME" \
         && cp "$HOME/arduino-cli" "./packages/xod-client-electron/arduino-cli" \
         && mkdir "/tmp/arduino-cli" \

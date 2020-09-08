@@ -53,6 +53,12 @@ export default {
       : 'This is a bug, report it to XOD developers',
   }),
 
+  ARDUINO_CLI_EXITED_WITH_CODE: ({ path, message, stdout, stderr }) => ({
+    title: 'arduino-cli exited with error',
+    note: [message, stderr, stdout].filter(s => s !== '').join(' '),
+    solution: `Check your arduino-cli: ${path}`,
+  }),
+
   ARDUINO_PACKAGES_UPDATED: () => ({
     title: 'All Arduino packages updated',
     persistent: true,

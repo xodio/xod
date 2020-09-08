@@ -11,6 +11,11 @@ const exit = process.exit;
 // save tty status
 const isTTY = process.stdout.isTTY;
 
+// Since 0.12.0 arduino-cli stores compiled binaries in
+// `outputPath/build/arduino.avr.uno` directory.
+const getBinPath = (outputPath, fqbn) =>
+  path.resolve(outputPath, 'build', fqbn.replace(/:/g, '.'));
+
 const compile = (wd, myWSPath, outputPath) => {
   const stdMock = test.stdout().stderr();
 
@@ -118,8 +123,42 @@ const compile = (wd, myWSPath, outputPath) => {
           await getFilesFromPath(outputPath, 'ino'),
           'source file is must'
         );
+        const binPath = getBinPath(outputPath, 'esp8266:esp8266:wifi_slot');
         assert.isNotEmpty(
-          await getFilesFromPath(outputPath, 'hex|bin|elf'),
+          await getFilesFromPath(binPath, 'hex|bin|elf'),
+          'firmware file is must'
+        );
+      }
+    );
+
+  stdMock
+    .env({ XOD_WORKSPACE: myWSPath })
+    .command([
+      'compile',
+      '--board',
+      'esp8266:esp8266:wifi_slot',
+      '--output',
+      outputPath,
+      'bundle/workspace/blink',
+      '@/main',
+    ])
+    .it(
+      `compile patch with fqbn as argument, stdout is empty, stderr with messages, zero exit code`,
+      async ctx => {
+        assert.equal(ctx.stdout, '', 'stdout must be empty');
+        assert.include(
+          ctx.stderr,
+          'The sketch and compiled firmware',
+          'stderr with messages'
+        );
+        assert.equal(process.exitCode, 0, 'exit code must be zero');
+        assert.isNotEmpty(
+          await getFilesFromPath(outputPath, 'ino'),
+          'source file is must'
+        );
+        const binPath = getBinPath(outputPath, 'esp8266:esp8266:wifi_slot');
+        assert.isNotEmpty(
+          await getFilesFromPath(binPath, 'hex|bin|elf'),
           'firmware file is must'
         );
       }
@@ -144,8 +183,10 @@ const compile = (wd, myWSPath, outputPath) => {
           await getFilesFromPath(outputPath, 'ino'),
           'source file is must'
         );
+
+        const binPath = getBinPath(outputPath, 'esp8266:esp8266:wifi_slot');
         assert.isNotEmpty(
-          await getFilesFromPath(outputPath, 'hex|bin|elf'),
+          await getFilesFromPath(binPath, 'hex|bin|elf'),
           'firmware file is must'
         );
       }

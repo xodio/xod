@@ -75,6 +75,7 @@ const ArduinoCli = (pathToBin, config = null) => {
     runWithProgress(noop, ['config', 'dump']).then(YAML.parse);
 
   return {
+    getPathToBin: () => pathToBin,
     killProcesses: () => {
       R.forEach(proc => {
         proc.kill('SIGTERM');
