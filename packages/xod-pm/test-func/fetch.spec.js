@@ -82,7 +82,22 @@ describe('fetching data', () => {
       ).then(projectsMap => {
         assert.sameMembers(
           R.compose(R.map(getProjectName), R.values)(projectsMap),
-          ['bits', 'common-hardware', 'core', 'gpio', 'i2c', 'math', 'units']
+          [
+            'common-hardware',
+            'gpio',
+            'core',
+            'math',
+            'waves',
+            'ws2812',
+            'color',
+            'bits',
+            'debug',
+            'net',
+            'json',
+            'stream',
+            'i2c',
+            'units',
+          ]
         );
       }));
     it('returns rejected Promise with error code "CANT_PARSE_LIBRARY_REQUEST" for bad request', () =>
