@@ -21,7 +21,7 @@ nodespace {
     };
 }
 node {
-    Bitmap myBitmap = Bitmap(icon, 2, 16, 16 0x0000);
+    Bitmap myBitmap = Bitmap(icon, 2, 16, 16, 0x0000);
 
     void evaluate(Context ctx) {
         emitValue<output_BMP>(ctx, &myBitmap);
