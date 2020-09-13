@@ -134,7 +134,7 @@ void evaluate(Context ctx) {
         return;
 
     Number tc;
-    bool success = readTemperature(port, &tc);
+    bool success = readTemperature(constant_input_PORT, &tc);
     if (!success) {
         raiseError(ctx); // Initialization sequence error
         return;
