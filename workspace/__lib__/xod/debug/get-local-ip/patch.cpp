@@ -7,7 +7,7 @@ node {
             return;
 
         auto inet = getValue<input_INET>(ctx);
-        ValueType<output_IP>::T ip = inet->getIP();
+        typeof_IP ip = inet->getIP();
         if (ip == 0) {
             raiseError(ctx);
             return;
