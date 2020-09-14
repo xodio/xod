@@ -10,9 +10,13 @@ const lexer = moo.compile({
   char: /'(?:\\'|[^'\r\n])*?'/,
   lParen: "{",
   rParen: "}",
-  keyword: ["nodespace", "node", "meta"],
   NL: { match: /\n/, lineBreaks: true },
-  otherCode: /[^ \t\n\{\}]+/
+  otherCode: {
+    match: /[^ \t\n\{\}]+/,
+    type: moo.keywords({
+      keyword: ["node", "nodespace", "meta"]
+    })
+  }
 });
 
 const value = R.path([0, "value"]);

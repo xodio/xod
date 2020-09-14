@@ -14,7 +14,8 @@ describe('parseImplementation', () => {
     const expected = [
       {
         type: 'global',
-        contents: '// before node definition',
+        contents:
+          '// before node definition\nuint16_t nodeId = 42;\nauto nodespaceFoo = bar();\nauto metaTag = "meta";\n',
       },
       {
         type: 'global',
