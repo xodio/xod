@@ -12,3 +12,4 @@ The directory contains vendoring copies of some Arduino Libraries used in native
 * `Graphics` -- custom library. Implements basic graphic functions in XOD.
 * `ST7735` -- custom library. It is used to drive ST7735 chip-based TFT LCD displays controlled by SPI.
 * `SSD1306` -- custom library. It is used to drive SSD1306 chip-based monochrome TFT LCDs controlled by I2C.
+* `ESP32Servo` -- https://github.com/madhephaestus/ESP32Servo includes class ESP32PWM to work with PWM channels and attach pins and `analogWrite`
