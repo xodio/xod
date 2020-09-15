@@ -433,13 +433,15 @@ export const listBoards = async (wsPath, cli) => {
       available: res[1],
     }))
     .catch(async err => {
-      if (R.propEq('code', 6, err)) {
-        // Catch error produced by arduino-cli, but actually it's not an error:
+      if (R.propEq('code', 'ENOENT', err)) {
         // When User added a new URL into `extra.txt` file it causes that
         // arduino-cli tries to read new JSON but it's not existing yet
         // so it fails with error "no such file or directory"
         // To avoid this and make a good UX, we'll force call `updateIndexes`
-        return updateIndexesInternal(wsPath, cli).then(() => listBoards(cli));
+        // and then run `listBoards` again.
+        return updateIndexesInternal(wsPath, cli).then(() =>
+          listBoards(wsPath, cli)
+        );
       }
 
       throw createError('UPDATE_INDEXES_ERROR_BROKEN_FILE', {

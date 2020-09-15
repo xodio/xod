@@ -1143,7 +1143,11 @@ struct Node {
 //-----------------------------------------------------------------------------
 //#pragma XOD error_raise enable
 
+#ifdef ESP32
+#include <ESP32Servo.h>
+#else
 #include <Servo.h>
+#endif
 
 namespace xod {
 namespace xod_dev__servo__servo_device {
@@ -4430,6 +4434,10 @@ struct Node {
 //#pragma XOD evaluate_on_pin disable
 //#pragma XOD evaluate_on_pin enable input_UPD
 
+#ifdef ESP32
+#include <analogWrite.h>
+#endif
+
 namespace xod {
 namespace xod__gpio__pwm_write {
 template <uint8_t constant_input_PORT>
@@ -4538,14 +4546,13 @@ struct Node {
         if (!isInputDirty<input_UPD>(ctx))
             return;
 
-        const uint8_t port = getValue<input_PORT>(ctx);
-
         auto duty = getValue<input_DUTY>(ctx);
         duty = duty > 1 ? 1 : (duty < 0 ? 0 : duty);
         int val = (int)(duty * pwmRange);
 
-        ::pinMode(port, OUTPUT);
-        ::analogWrite(port, val);
+        pinMode(constant_input_PORT, OUTPUT);
+        analogWrite(constant_input_PORT, val);
+
         emitValue<output_DONE>(ctx, 1);
     }
 
