@@ -1,6 +1,10 @@
 #pragma XOD error_raise enable
 
+#ifdef ESP32
+#include <ESP32Servo.h>
+#else
 #include <Servo.h>
+#endif
 
 node {
     meta {
