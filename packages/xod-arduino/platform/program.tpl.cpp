@@ -88,7 +88,7 @@ Node_{{ id }} node_{{ id }} = Node_{{ id }}(
 namespace detail {
 void handleDebugProtocolMessages() {
     {{#withTetheringInetNode nodes}}
-    bool tetheringInetNodeReceivingData = xod__debug__tethering_inet::TetheringInternet::isReceiving();
+    bool tetheringInetNodeReceivingData = xod::tethering_inet::TetheringInternet::isReceiving();
     {{/withTetheringInetNode}}
     bool rewindToEol = true;
 
@@ -104,7 +104,7 @@ void handleDebugProtocolMessages() {
         switch (tweakedNodeId) {
           {{#withTetheringInetNode nodes}}
             case {{ id }}:
-              xod__debug__tethering_inet::TetheringInternet::beginReceiving(XOD_DEBUG_SERIAL.parseInt());
+              xod::tethering_inet::TetheringInternet::beginReceiving(XOD_DEBUG_SERIAL.parseInt());
               rewindToEol = false;
               XOD_DEBUG_SERIAL.read(); // :
               // The rest of data should be read by nodes
