@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.1"></a>
+
+## 0.35.1 (2020-09-15)
+
+### Bug fixes
+
+* [core] Make sure implementation keywords are always detected correctly (#2035)
+* [c++] Fix TetheringInternet namespace in generated code (#2036)
+* [nodes] Fix typo in `xod/debug/get-local-ip` implementation (#2036)
+* [nodes] Fix typo in `xod/common-hardware/ds18b20-thermometer` implementation (#2034)
+* [nodes] Fix typo in `xod/graphics/humidity-16x16-rgba` implementation (#2032)
+
 <a name="0.35.0"></a>
 
 ## 0.35.0 (2020-09-08)
