@@ -7,6 +7,24 @@ import { def } from './types';
 
 import { byteLiteralToDecimal } from './templates';
 
+// Convert char literals to decimal byte literals
+// E.G. `'a'` -> `97d`
+const charLiteralToByteLiteral = R.when(
+  XP.isLikeCharLiteral,
+  R.compose(
+    R.concat(R.__, 'd'),
+    R.toString,
+    a => a.charCodeAt(0),
+    R.nth(1),
+    R.match(XP.charLiteralRegExp)
+  )
+);
+
+const formatByteLiteral = R.compose(
+  byteLiteralToDecimal,
+  charLiteralToByteLiteral
+);
+
 export default def(
   'formatTweakMessage :: PatchPath -> NodeId -> DataValue -> String',
   (nodeType, nodeId, value) => {
@@ -17,7 +35,7 @@ export default def(
       case XP.PIN_TYPE.BOOLEAN:
         return `${prefix}:${value === 'True' ? '1' : '0'}\r\n`;
       case XP.PIN_TYPE.BYTE:
-        return `${prefix}:${byteLiteralToDecimal(value)}\r\n`;
+        return `${prefix}:${formatByteLiteral(value)}\r\n`;
       case XP.PIN_TYPE.PULSE:
         return `${prefix}\r\n`;
       case XP.PIN_TYPE.STRING:
