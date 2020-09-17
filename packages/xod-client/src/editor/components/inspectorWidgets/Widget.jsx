@@ -38,6 +38,7 @@ class Widget extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
+    this.updateValue = this.updateValue.bind(this);
 
     this.shouldComponentUpdate = deepSCU.bind(this);
   }
@@ -62,6 +63,10 @@ class Widget extends React.Component {
       this.props.commitOnChange || forceCommit ? this.commit.bind(this) : noop;
 
     this.setState({ value }, commitCallback);
+  }
+
+  updateValue(newValue) {
+    this.setState({ value: newValue });
   }
 
   commit(valueUpdateCallback = noop) {
