@@ -97,6 +97,8 @@ const cppType = def(
   )
 );
 
+const escapeCppString = str => R.replace(/"/g, '\\"', unquote(str));
+
 // Formats a plain JS string into C++ string object
 const cppStringLiteral = def(
   'cppStringLiteral :: String -> String',
@@ -111,7 +113,7 @@ const cppStringLiteral = def(
       R.tail, // `XOD_LITERAL`
     ],
     // All other strings: "Hello, world"
-    [R.T, str => `XStringCString("${R.replace(/"/g, '\\"', unquote(str))}")`],
+    [R.T, str => `XStringCString("${escapeCppString(str)}")`],
   ])
 );
 
@@ -258,6 +260,8 @@ Handlebars.registerHelper('cppValue', (type, value) =>
   })(value)
 );
 
+Handlebars.registerHelper('escapeCppString', escapeCppString);
+
 const hasUpstreamErrorRaisers = nodeOrInput =>
   R.pathOr(0, ['upstreamErrorRaisers', 'length'], nodeOrInput) > 0;
 
@@ -284,6 +288,14 @@ const isLinkedTweakNode = R.both(
 );
 
 Handlebars.registerHelper('isLinkedTweakNode', isLinkedTweakNode);
+
+const isTweakStringNode = R.pipe(
+  R.path(['patch', 'patchPath']),
+  XP.getTweakType,
+  R.equals(XP.PIN_TYPE.STRING)
+);
+
+Handlebars.registerHelper('isTweakStringNode', isTweakStringNode);
 
 Handlebars.registerHelper('isPulse', R.equals(XP.PIN_TYPE.PULSE));
 
@@ -371,6 +383,7 @@ registerHandlebarsFilterLoopHelper(
   R.path(['patch', 'usesTimeouts'])
 );
 registerHandlebarsFilterLoopHelper('eachLinkedTweakNode', isLinkedTweakNode);
+registerHandlebarsFilterLoopHelper('eachTweakStringNode', isTweakStringNode);
 registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));
 registerHandlebarsFilterLoopHelper(
   'eachNonlinkedInput',

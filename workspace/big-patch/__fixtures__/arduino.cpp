@@ -7120,6 +7120,12 @@ void handleDebugProtocolMessages() {
 } // namespace detail
 #endif
 
+// Copy values bound to `tweak-string`s outputs
+// directly into buffers instead of wasting memory
+// on XStringCString with initial values
+void initializeTweakStrings() {
+}
+
 void handleDefers() {
     {
         if (g_transaction.node_202_isNodeDirty) {
@@ -7305,13 +7311,15 @@ void runTransaction() {
     g_transaction.node_203_isNodeDirty |= detail::isTimedOut(&node_203);
     g_transaction.node_204_isNodeDirty |= detail::isTimedOut(&node_204);
 
-    // defer-* nodes are always at the very bottom of the graph, so no one will
-    // recieve values emitted by them. We must evaluate them before everybody
-    // else to give them a chance to emit values.
-    //
-    // If trigerred, keep only output dirty, not the node itself, so it will
-    // evaluate on the regular pass only if it receives a new value again.
-    if (!isSettingUp()) {
+    if (isSettingUp()) {
+        initializeTweakStrings();
+    } else {
+        // defer-* nodes are always at the very bottom of the graph, so no one will
+        // recieve values emitted by them. We must evaluate them before everybody
+        // else to give them a chance to emit values.
+        //
+        // If trigerred, keep only output dirty, not the node itself, so it will
+        // evaluate on the regular pass only if it receives a new value again.
         g_isEarlyDeferPass = true;
         handleDefers();
         g_isEarlyDeferPass = false;

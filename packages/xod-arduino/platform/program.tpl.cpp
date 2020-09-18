@@ -76,10 +76,14 @@ typedef {{ ns patch }}::Node{{#if (or (containsConstantInputs inputs) (containsT
 >
 {{~/if}} Node_{{ id }};
 Node_{{ id }} node_{{ id }} = Node_{{ id }}(
+{{~#if (isTweakStringNode this) ~}}
+  XString()
+{{~else~}}
 {{~#eachNonPulseOrConstant outputs~}}
   {{ cppValue type value }}
   {{~#unless @last}}, {{/unless}}
 {{~/eachNonPulseOrConstant~}}
+{{~/if~}}
 );
 {{/unless}}
 {{/each}}
@@ -155,6 +159,15 @@ void handleDebugProtocolMessages() {
 }
 } // namespace detail
 #endif
+
+// Copy values bound to `tweak-string`s outputs
+// directly into buffers instead of wasting memory
+// on XStringCString with initial values
+void initializeTweakStrings() {
+  {{#eachTweakStringNode nodes}}
+    strncpy(node_{{ id }}.state.buff, "{{#each outputs}}{{ escapeCppString value }}{{/each}}", {{ getStringTweakLength patch.patchPath }});
+  {{/eachTweakStringNode}}
+}
 
 void handleDefers() {
   {{#eachDeferNode nodes}}
@@ -293,13 +306,15 @@ void runTransaction() {
     g_transaction.node_{{id}}_isNodeDirty |= detail::isTimedOut(&node_{{id}});
   {{/eachNodeUsingTimeouts}}
 
-    // defer-* nodes are always at the very bottom of the graph, so no one will
-    // recieve values emitted by them. We must evaluate them before everybody
-    // else to give them a chance to emit values.
-    //
-    // If trigerred, keep only output dirty, not the node itself, so it will
-    // evaluate on the regular pass only if it receives a new value again.
-    if (!isSettingUp()) {
+    if (isSettingUp()) {
+        initializeTweakStrings();
+    } else {
+        // defer-* nodes are always at the very bottom of the graph, so no one will
+        // recieve values emitted by them. We must evaluate them before everybody
+        // else to give them a chance to emit values.
+        //
+        // If trigerred, keep only output dirty, not the node itself, so it will
+        // evaluate on the regular pass only if it receives a new value again.
         g_isEarlyDeferPass = true;
         handleDefers();
         g_isEarlyDeferPass = false;
