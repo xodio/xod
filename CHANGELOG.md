@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [nodes] Ensure compatibility `xod-dev/servo` and `xod/gpio` with ESP32 boards (#2038)
+* [ide] Make possible to send char literals to `tweak-byte`s in live session (#2041)
+* [c++] Optimise memory consumption of `tweak-string` nodes (#2042)
+
+### Bug fixes
+
+* [ide] Fix loading of a newly added package index file in extra.txt (#2038)
+* [ide] Fix hotkeys in Inspector Pin widgets (#2040)
+* [nodes] Fix `tweak-string` nodes (#2042)
+
 <a name="0.35.1"></a>
 
 ## 0.35.1 (2020-09-15)
