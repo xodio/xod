@@ -5,7 +5,7 @@
   "license": "AGPL-3.0",
   "main": "src-babel/app/main.js",
   "name": "xod-client-electron",
-  "version": "0.35.1",
+  "version": "0.35.2",
   "scripts": {
     "build:workspace": "cpx \"../../workspace/**/*\" \"src-babel/workspace\"",
     "build:gui": "webpack --colors",
@@ -44,13 +44,13 @@
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "serialport": "^7.0.2",
-    "xod-arduino": "^0.35.1",
-    "xod-client": "^0.35.1",
-    "xod-deploy": "^0.35.0",
-    "xod-deploy-bin": "^0.35.0",
-    "xod-fs": "^0.35.0",
+    "xod-arduino": "^0.35.2",
+    "xod-client": "^0.35.2",
+    "xod-deploy": "^0.35.2",
+    "xod-deploy-bin": "^0.35.2",
+    "xod-fs": "^0.35.2",
     "xod-func-tools": "^0.34.0",
-    "xod-project": "^0.35.0",
+    "xod-project": "^0.35.2",
     "xod-tethering-inet": "^0.34.0"
   },
   "devDependencies": {
