@@ -253,3 +253,8 @@ export const isValidLiteral = def(
   'isValidLiteral :: DataValue -> Boolean',
   R.pipe(getTypeFromLiteral, Either.isRight)
 );
+
+export const isConstantType = def(
+  'isConstantType :: DataType -> Boolean',
+  isAmong(CONST.CONSTANT_PIN_TYPES)
+);
