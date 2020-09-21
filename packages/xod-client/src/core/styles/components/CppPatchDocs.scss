@@ -44,6 +44,27 @@
     &.port { color: $color-datatype-port }
   }
 
+  .constant-notice {
+    display: block;
+    margin-top: .5em;
+    font-size: $font-size-s;
+
+    .fa { margin-left: 1px; }
+
+    code {
+      display: block;
+      padding: 0.4em;
+      background: $coal;
+      border-radius: 2px;
+
+      font-size: $font-size-m;
+
+      .keyword { color: #E67CDC; }
+      .type { color: $apricot-light; }
+      .variable { color: $blueberry; }
+    }
+  }
+
   a {
     color: $color-canvas-selected;
     cursor: pointer;
