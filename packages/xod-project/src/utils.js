@@ -187,9 +187,11 @@ export const isValidNumberDataValue = R.test(numberDataTypeRegExp);
 
 export const isValidPortLiteral = R.test(/^(P[A-F]|A|D)\d{0,3}$/g);
 
+export const charLiteralRegExp = /^'\\?(.)'$/;
+
 export const isLikeCharLiteral = def(
   'isLikeCharLiteral :: String -> Boolean',
-  R.test(/^'\\?.'$/)
+  R.test(charLiteralRegExp)
 );
 
 const unescapedCharLiterals = ["'''", "'\\'"];

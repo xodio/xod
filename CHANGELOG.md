@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.2"></a>
+
+## 0.35.2 (2020-09-18)
+
+### Features and enhancements
+
+* [nodes] Ensure compatibility `xod-dev/servo` and `xod/gpio` with ESP32 boards (#2038)
+* [ide] Make possible to send char literals to `tweak-byte`s in live session (#2041)
+* [c++] Optimise memory consumption of `tweak-string` nodes (#2042)
+
+### Bug fixes
+
+* [ide] Fix loading of a newly added package index file in extra.txt (#2038)
+* [ide] Fix hotkeys in Inspector Pin widgets (#2040)
+* [nodes] Fix `tweak-string` nodes (#2042)
+
+<a name="0.35.1"></a>
+
+## 0.35.1 (2020-09-15)
+
+### Bug fixes
+
+* [core] Make sure implementation keywords are always detected correctly (#2035)
+* [c++] Fix TetheringInternet namespace in generated code (#2036)
+* [nodes] Fix typo in `xod/debug/get-local-ip` implementation (#2036)
+* [nodes] Fix typo in `xod/common-hardware/ds18b20-thermometer` implementation (#2034)
+* [nodes] Fix typo in `xod/graphics/humidity-16x16-rgba` implementation (#2032)
+
 <a name="0.35.0"></a>
 
 ## 0.35.0 (2020-09-08)

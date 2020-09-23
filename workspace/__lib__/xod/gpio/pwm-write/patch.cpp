@@ -1,6 +1,10 @@
 #pragma XOD evaluate_on_pin disable
 #pragma XOD evaluate_on_pin enable input_UPD
 
+#ifdef ESP32
+#include <analogWrite.h>
+#endif
+
 node {
     #ifdef PWMRANGE
     static constexpr Number pwmRange = PWMRANGE;
@@ -14,14 +18,13 @@ node {
         if (!isInputDirty<input_UPD>(ctx))
             return;
 
-        const uint8_t port = getValue<input_PORT>(ctx);
-
         auto duty = getValue<input_DUTY>(ctx);
         duty = duty > 1 ? 1 : (duty < 0 ? 0 : duty);
         int val = (int)(duty * pwmRange);
 
-        ::pinMode(port, OUTPUT);
-        ::analogWrite(port, val);
+        pinMode(constant_input_PORT, OUTPUT);
+        analogWrite(constant_input_PORT, val);
+
         emitValue<output_DONE>(ctx, 1);
     }
 }

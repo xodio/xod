@@ -1,2 +1,5 @@
 .github/ISSUE_TEMPLATE/
 packages/xod-cli/README.md
+workspace/__ardulib__/*/
+packages/xod-cli/bundle/
+packages/xod-client-electron/src-babel/
