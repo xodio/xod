@@ -145,8 +145,8 @@ export default {
   }),
   CONSTRUCTOR_PATCH_MUST_BE_NIIX: ({ trace }) => ({
     title: 'Invalid constructor patch',
-    note: 'Constructor patches must be implemented in C++',
-    solution: 'Add a not-implemented-in-xod node and provide an implementation',
+    note: 'Constructor patches must be implemented in C++ or have a record marker node',
+    solution: 'Add a not-implemented-in-xod node and provide an implementation or place record marker node',
     trace,
   }),
 

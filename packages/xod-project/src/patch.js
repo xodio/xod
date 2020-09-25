@@ -1760,6 +1760,24 @@ export const isConstructorPatch = def(
   )
 );
 
+export const isRecordPatch = def(
+  'isRecordPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.equals(CONST.RECORD_MARKER_PATH)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
+export const isUnpackRecordPatch = def(
+  'isUnpackRecordPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.equals(CONST.UNPACK_RECORD_MARKER_PATH)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
 export const validateConstructorPatch = def(
   'validateConstructorPatch :: Patch -> Either Error Patch',
   patch =>
@@ -1773,7 +1791,7 @@ export const validateConstructorPatch = def(
             () => fail('CONSTRUCTOR_PATCH_CANT_HAVE_GENERIC_PINS', {}),
           ],
           [
-            R.complement(isPatchNotImplementedInXod),
+            R.complement(R.either(isPatchNotImplementedInXod, isRecordPatch)),
             () => fail('CONSTRUCTOR_PATCH_MUST_BE_NIIX', {}),
           ],
           [R.T, Either.of],

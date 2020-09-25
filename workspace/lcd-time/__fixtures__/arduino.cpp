@@ -862,6 +862,8 @@ template<typename T> struct remove_pointer<T* const>          {typedef T type;};
 template<typename T> struct remove_pointer<T* volatile>       {typedef T type;};
 template<typename T> struct remove_pointer<T* const volatile> {typedef T type;};
 
+template <typename T, typename M> M get_member_type(M T:: *);
+
 //----------------------------------------------------------------------------
 // Forward declarations
 //----------------------------------------------------------------------------

@@ -221,7 +221,69 @@ const getPatches = memoizeOnlyLast(project => {
     R.filter(Patch.isConstructorPatch)
   )(genuinePatches);
 
-  return R.mergeAll([genuinePatches, BUILT_IN_PATCHES, customTypeTerminals]);
+  const recordTypePatches = R.compose(
+    R.indexBy(Patch.getPatchPath),
+    R.chain(recordPatch => {
+      const type = Patch.getPatchPath(recordPatch);
+      const inputTypeTerminal = PatchPathUtils.getTerminalPath(
+        CONST.PIN_DIRECTION.INPUT,
+        type
+      );
+
+      const nodesForUnpackPatch = R.compose(
+        R.reject(R.isNil),
+        R.map(node =>
+          R.compose(
+            fn => fn(node),
+            R.cond([
+              // * :: NodeType -> (NodeType -> Node -> Node)
+              // output-self -> input-patchPath
+              [
+                R.equals(CONST.OUTPUT_SELF_PATH),
+                () => Node.setNodeType(inputTypeTerminal),
+              ],
+              // output-* -> NULL (??)
+              [PatchPathUtils.isOutputTerminalPath, () => R.always(null)],
+              // input-* -> output-*
+              [
+                PatchPathUtils.isInputTerminalPath,
+                R.compose(
+                  Node.setNodeType(R.__),
+                  PatchPathUtils.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT),
+                  PatchPathUtils.getTerminalDataType
+                ),
+              ],
+              // record -> unpack-record
+              [
+                R.equals(CONST.RECORD_MARKER_PATH),
+                () => Node.setNodeType(CONST.UNPACK_RECORD_MARKER_PATH),
+              ],
+              // omit other nodes
+              [R.T, () => R.always(null)],
+            ]),
+            Node.getNodeType
+          )(node)
+        ),
+        Patch.listNodes
+      )(recordPatch);
+
+      const unpackPatch = R.compose(
+        Patch.upsertNodes(nodesForUnpackPatch),
+        Patch.setPatchPath(PatchPathUtils.getUnpackRecordPath(type)),
+        Patch.createPatch
+      )();
+      return [recordPatch, unpackPatch];
+    }),
+    R.values,
+    R.filter(Patch.isRecordPatch)
+  )(genuinePatches);
+
+  return R.mergeAll([
+    genuinePatches,
+    BUILT_IN_PATCHES,
+    customTypeTerminals,
+    recordTypePatches,
+  ]);
 });
 
 /**
@@ -894,25 +956,39 @@ export const rebasePatch = def(
     validatePatchRebase(newPath, oldPath, project).map(proj => {
       // we just checked that it exists in `validatePatchRebase`
       const oldPatch = getPatchByPathUnsafe(oldPath, proj);
-
+      // { [oldPath] : newPath }
+      // :: Map PatchPath PatchPath
       const pathReplacementsMap = R.compose(
-        R.merge({ [oldPath]: newPath }),
-        R.ifElse(
+        R.assoc(oldPath, newPath),
+        R.fromPairs,
+        R.chain(([cond, fn]) => R.ifElse(cond, fn, R.always([]))(oldPatch))
+      )([
+        // if we are renaming a constructor patch,
+        // update corresponding terminals as well,
+        // because their names depend on it
+        [
           Patch.isConstructorPatch,
-          // if we are renaming a constructor patch,
-          // update corresponding terminals as well,
-          // because their names depend on it
           () =>
-            R.compose(
-              R.fromPairs,
-              R.map(direction => [
+            R.map(
+              direction => [
                 PatchPathUtils.getTerminalPath(direction, oldPath),
                 PatchPathUtils.getTerminalPath(direction, newPath),
-              ])
-            )([CONST.PIN_DIRECTION.INPUT, CONST.PIN_DIRECTION.OUTPUT]),
-          R.always({})
-        )
-      )(oldPatch);
+              ],
+              [CONST.PIN_DIRECTION.INPUT, CONST.PIN_DIRECTION.OUTPUT]
+            ),
+        ],
+        // if we are renaming a record patch,
+        // update dependent patches (unpack) as well
+        [
+          Patch.isRecordPatch,
+          () => [
+            [
+              PatchPathUtils.getUnpackRecordPath(oldPath),
+              PatchPathUtils.getUnpackRecordPath(newPath),
+            ],
+          ],
+        ],
+      ]);
 
       // TODO: Think about refactoring that piece of code :-D
       // Patch -> Patch

@@ -172,6 +172,16 @@ export const getTerminalPath = R.curry((direction, type) => {
   return `${constructorLibraryName}/${direction}-${constructorBaseName}`;
 });
 
+// :: PatchPath -> PatchPath
+export const getUnpackRecordPath = R.compose(
+  // basename => `@/unpack-${basename}`,
+  // PatchPathUtils.getBaseName
+  R.converge((lib, basename) => `${lib}/unpack-${basename}`, [
+    getLibraryName,
+    getBaseName,
+  ])
+);
+
 export const normalizeTypeNameForAbstractsResolution = R.unless(
   t => isBuiltInType(t),
   // for complex types matching is done by

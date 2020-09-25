@@ -9,7 +9,10 @@ type pinWithOwnerNode = (Pin.t, Node.t);
  */
 
 let isCompositionPatch = patch =>
-  !Patch.isNotImplementedInXod(patch) && !Patch.isTerminal(patch);
+  !Patch.isNotImplementedInXod(patch)
+  && !Patch.isTerminal(patch)
+  && !Patch.isRecord(patch)
+  && !Patch.isUnpackRecord(patch);
 
 let getUpstreamPinWithOwnerNodeFromInputPin:
   (Pin.t, Node.t, Patch.t, Project.t) => option(pinWithOwnerNode) =
@@ -75,18 +78,24 @@ let drillDownAndGetTerminalsInputPin:
   (pin, patchToDrillDown, project) => {
     let pinKey = Pin.getKey(pin);
     let _terminalNode = patchToDrillDown->(Patch.getNodeById(pinKey));
-    _terminalNode
-    ->(
-        Option.flatMap(terminalNode =>
-          (terminalNode->Node.getType |> Project.getPatchByPath(project))
-          ->(
-              Option.flatMap(terminalPatch =>
-                terminalPatch->Patch.listInputPins->List.head
-              )
-            )
-          ->(Option.map(terminalInputPin => (terminalInputPin, terminalNode)))
-        )
-      );
+    _terminalNode->(
+                     Option.flatMap(terminalNode =>
+                       (
+                         terminalNode->Node.getType
+                         |> Project.getPatchByPath(project)
+                       )
+                       ->(
+                           Option.flatMap(terminalPatch =>
+                             terminalPatch->Patch.listInputPins->List.head
+                           )
+                         )
+                       ->(
+                           Option.map(terminalInputPin =>
+                             (terminalInputPin, terminalNode)
+                           )
+                         )
+                     )
+                   );
   };
 
 let listOf: 'a => list('a) = a => [a];

@@ -86,6 +86,8 @@ export {
   convertPatchDimensionsToSlots,
   convertPatchDimensionsToPixels,
   findNodeBy,
+  isRecordPatch,
+  isUnpackRecordPatch,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,

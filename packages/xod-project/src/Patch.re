@@ -6,118 +6,120 @@ type t = Js.Types.obj_val;
 
 type path = PatchPath.t;
 
-[@bs.module ".."] external create : unit => t = "createPatch";
+[@bs.module ".."] external create: unit => t = "createPatch";
 
-[@bs.module ".."] external getPath : t => path = "getPatchPath";
+[@bs.module ".."] external getPath: t => path = "getPatchPath";
 
-[@bs.module ".."] external _assocNode : (Node.t, t) => t = "assocNode";
+[@bs.module ".."] external _assocNode: (Node.t, t) => t = "assocNode";
 
 let assocNode = (patch, node) => _assocNode(node, patch);
 
-[@bs.module ".."] external _dissocNode : (Node.id, t) => t = "dissocNode";
+[@bs.module ".."] external _dissocNode: (Node.id, t) => t = "dissocNode";
 
 let dissocNode = (patch, nodeId) => _dissocNode(nodeId, patch);
 
-[@bs.module ".."] external _listNodes : t => array(Node.t) = "listNodes";
+[@bs.module ".."] external _listNodes: t => array(Node.t) = "listNodes";
 
 [@bs.module ".."]
-external _getNodeById : (Node.id, t) => XodFuncTools.Maybe.t(Node.t) =
+external _getNodeById: (Node.id, t) => XodFuncTools.Maybe.t(Node.t) =
   "getNodeById";
 
 let getNodeById = (patch, nodeId) =>
   _getNodeById(nodeId, patch) |> Maybe.toOption;
 
 [@bs.module ".."]
-external _upsertNodes : (array(Node.t), t) => t = "upsertNodes";
+external _upsertNodes: (array(Node.t), t) => t = "upsertNodes";
 
 let upsertNodes = (patch, nodes) =>
   _upsertNodes(List.toArray(nodes), patch);
 
-let listNodes = patch => _listNodes(patch) |. List.fromArray;
+let listNodes = patch => _listNodes(patch)->List.fromArray;
 
-[@bs.module ".."] external _assocLink : (Link.t, t) => t = "assocLink";
+[@bs.module ".."] external _assocLink: (Link.t, t) => t = "assocLink";
 
 let assocLink = (patch, link) => _assocLink(link, patch);
 
 [@bs.module ".."]
-external _upsertLinks : (array(Link.t), t) => t = "upsertLinks";
+external _upsertLinks: (array(Link.t), t) => t = "upsertLinks";
 
 let upsertLinks = (patch, links) =>
   _upsertLinks(List.toArray(links), patch);
 
-[@bs.module ".."] external _listLinks : t => array(Link.t) = "listLinks";
+[@bs.module ".."] external _listLinks: t => array(Link.t) = "listLinks";
 
-let listLinks = patch => _listLinks(patch) |. List.fromArray;
+let listLinks = patch => _listLinks(patch)->List.fromArray;
 
-[@bs.module ".."] external _listPins : t => array(Pin.t) = "listPins";
+[@bs.module ".."] external _listPins: t => array(Pin.t) = "listPins";
 
-let listPins = patch => _listPins(patch) |. List.fromArray;
+let listPins = patch => _listPins(patch)->List.fromArray;
 
-[@bs.module ".."] external _omitLinks : (array(Link.t), t) => t = "omitLinks";
+[@bs.module ".."] external _omitLinks: (array(Link.t), t) => t = "omitLinks";
 
 let omitLinks = (patch, links) => _omitLinks(List.toArray(links), patch);
 
 [@bs.module ".."]
-external _getPinByKey : (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
+external _getPinByKey: (Pin.key, t) => Maybe.t(Pin.t) = "getPinByKey";
 
 let getPinByKey = (patch, pinKey) =>
   _getPinByKey(pinKey, patch) |> Maybe.toOption;
 
 [@bs.module ".."]
-external _getVariadicPinByKey : (Node.t, Pin.key, t) => Maybe.t(Pin.t) = "getVariadicPinByKey";
+external _getVariadicPinByKey: (Node.t, Pin.key, t) => Maybe.t(Pin.t) =
+  "getVariadicPinByKey";
 
 let getVariadicPinByKey = (patch, node, pinKey) =>
   _getVariadicPinByKey(node, pinKey, patch) |> Maybe.toOption;
 
 let listInputPins = patch =>
-  patch |. listPins |. List.keep(pin => Pin.getDirection(pin) == Pin.Input);
+  patch->listPins->(List.keep(pin => Pin.getDirection(pin) == Pin.Input));
 
 let listOutputPins = patch =>
-  patch |. listPins |. List.keep(pin => Pin.getDirection(pin) == Pin.Output);
+  patch->listPins->(List.keep(pin => Pin.getDirection(pin) == Pin.Output));
 
 /* TODO: is it defined anywhere already? */
 let identity = a => a;
 
-let findPinByLabel = (patch, label, ~normalize, ~direction) : option(Pin.t) =>
+let findPinByLabel = (patch, label, ~normalize, ~direction): option(Pin.t) =>
   listPins(patch)
-  |. (normalize ? Pin.normalizeLabels : identity)
-  |. List.keep(pin => Pin.getLabel(pin) == label)
-  |. (
-    pins =>
-      switch (direction) {
-      | None => pins
-      | Some(dir) => List.keep(pins, pin => Pin.getDirection(pin) == dir)
-      }
-  )
-  |. (
-    pins =>
-      switch (pins) {
-      | [onlyPin] => Some(onlyPin)
-      | _ => None
-      }
-  );
+  ->(normalize ? Pin.normalizeLabels : identity)
+  ->(List.keep(pin => Pin.getLabel(pin) == label))
+  ->(
+      pins =>
+        switch (direction) {
+        | None => pins
+        | Some(dir) => List.keep(pins, pin => Pin.getDirection(pin) == dir)
+        }
+    )
+  ->(
+      pins =>
+        switch (pins) {
+        | [onlyPin] => Some(onlyPin)
+        | _ => None
+        }
+    );
 
 [@bs.module ".."]
-external _getAttachments : t => array(Attachment.t) = "getPatchAttachments";
+external _getAttachments: t => array(Attachment.t) = "getPatchAttachments";
 
-let getAttachments = t => _getAttachments(t) |. List.fromArray;
+let getAttachments = t => _getAttachments(t)->List.fromArray;
 
 let getTabtestContent = t =>
   getAttachments(t)
-  |. List.keep(Attachment.isTabtest)
-  |. List.head
-  |. Option.map(Attachment.getContent);
+  ->(List.keep(Attachment.isTabtest))
+  ->List.head
+  ->(Option.map(Attachment.getContent));
 
-let hasTabtest = t => getAttachments(t) |. List.some(Attachment.isTabtest);
-
-[@bs.module ".."]
-external isNotImplementedInXod : t => bool = "isPatchNotImplementedInXod";
+let hasTabtest = t => getAttachments(t)->(List.some(Attachment.isTabtest));
 
 [@bs.module ".."]
-external isAbstract : t => bool = "isAbstractPatch";
+external isNotImplementedInXod: t => bool = "isPatchNotImplementedInXod";
 
-let isTerminal = patch => patch |. getPath |. PatchPath.isTerminal;
-let isJumper = patch => patch |. getPath |. PatchPath.isJumper;
-let isBus = patch => patch |. getPath |. PatchPath.isBus;
-let isFromBus = patch => patch |. getPath |. PatchPath.isFromBus;
-let isToBus = patch => patch |. getPath |. PatchPath.isToBus;
+[@bs.module ".."] external isRecord: t => bool = "isRecordPatch";
+[@bs.module ".."] external isUnpackRecord: t => bool = "isUnpackRecordPatch";
+
+let isTerminal = patch => patch->getPath->PatchPath.isTerminal;
+let isJumper = patch => patch->getPath->PatchPath.isJumper;
+let isBus = patch => patch->getPath->PatchPath.isBus;
+let isFromBus = patch => patch->getPath->PatchPath.isFromBus;
+let isToBus = patch => patch->getPath->PatchPath.isToBus;
+[@bs.module ".."] external isAbstract: t => bool = "isAbstractPatch";

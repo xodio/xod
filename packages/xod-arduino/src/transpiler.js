@@ -118,14 +118,31 @@ export const commentXodPragmas = def(
   R.replace(/^\s*#\s*pragma\s+XOD\s/gm, '//#pragma XOD ')
 );
 
+const GENERATIVE_IMPLEMENTATION = '';
+const getPatchImpl = def(
+  'getPatchImpl :: Patch -> String',
+  R.cond([
+    // exceptions
+    [XP.isRecordPatch, R.always(GENERATIVE_IMPLEMENTATION)],
+    [XP.isUnpackRecordPatch, R.always(GENERATIVE_IMPLEMENTATION)],
+    [
+      R.T,
+      patch =>
+        R.compose(
+          explodeMaybe(
+            `Implementation for ${XP.getPatchPath(patch)} not found`
+          ),
+          XP.getImpl
+        )(patch),
+    ],
+  ])
+);
+
 const convertPatchToTPatch = def(
   'convertPatchToTPatch :: Patch -> TPatch',
   patch => {
     const patchPath = XP.getPatchPath(patch);
-    const impl = explodeMaybe(
-      `Implementation for ${patchPath} not found`,
-      XP.getImpl(patch)
-    );
+    const impl = getPatchImpl(patch);
 
     const isDirtyable = pin =>
       XP.getPinType(pin) === XP.PIN_TYPE.PULSE ||
@@ -166,6 +183,8 @@ const convertPatchToTPatch = def(
     const isThisIsThat = {
       isDefer: XP.isDeferNodeType(patchPath),
       isConstant: XP.isConstantNodeType(patchPath),
+      isRecord: XP.isRecordPatch(patch),
+      isUnpackRecord: XP.isUnpackRecordPatch(patch),
       usesTimeouts: areTimeoutsEnabled(impl),
       usesSetImmediate: isSetImmediateEnabled(impl),
       catchesErrors: doesCatchErrors(impl),
@@ -435,10 +454,7 @@ const getTNodeOutputDestinations = def(
               : exceptionPinKeys.some(pk => inputPinKeys.includes(pk)); // if at least one input is whitelisted
           },
           getEvaluateOnPinSettings,
-          explodeMaybe(
-            `Implementation for ${XP.getPatchPath(patch)} not found`
-          ),
-          XP.getImpl
+          getPatchImpl
         )(patch);
 
         return {
