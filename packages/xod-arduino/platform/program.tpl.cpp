@@ -147,7 +147,11 @@ void handleDebugProtocolMessages() {
                     rewindToEol = true;
                     // to run evaluate and mark all downstream nodes as dirty
                     g_transaction.node_{{ id }}_isNodeDirty = true;
-                    g_transaction.node_{{ id }}_isOutputDirty_OUT = true;
+                    {{#each outputs}}
+                    {{#if (shouldOutputStoreDirtyness this)}}
+                    g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }} = true;
+                    {{/if}}
+                    {{/each}}
                 }
                 break;
           {{/eachLinkedTweakNode}}
@@ -411,7 +415,7 @@ void runTransaction() {
             // initialize temporary output dirtyness state in the context,
             // where it can be modified from `raiseError` and `emitValue`
           {{#eachDirtyablePin outputs}}
-            ctxObj._isOutputDirty_{{ pinKey }} = {{#if (isLinkedTweakNode ../this) ~}}
+            ctxObj._isOutputDirty_{{ pinKey }} = {{#if (doesTweakNodeOutputDirtienessUsed ../this this) ~}}
                                                    g_transaction.node_{{ ../id }}_isOutputDirty_{{ pinKey }}
                                                  {{~else~}}
                                                    false
