@@ -1,6 +1,6 @@
 {
   "name": "xod-client-browser",
-  "version": "0.35.2",
+  "version": "0.35.3",
   "description": "XOD project: Client browser application",
   "scripts": {
     "build:tutorial-project": "node ./tools/loadTutorialProject.js",
@@ -24,8 +24,8 @@
     "redux": "^3.0.5",
     "redux-thunk": "^2.1.0",
     "url-parse": "^1.2.0",
-    "xod-arduino": "^0.35.2",
-    "xod-client": "^0.35.2",
+    "xod-arduino": "^0.35.3",
+    "xod-client": "^0.35.3",
     "xod-func-tools": "^0.34.0",
     "xod-project": "^0.35.2"
   },

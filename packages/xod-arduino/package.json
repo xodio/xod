@@ -1,6 +1,6 @@
 {
   "name": "xod-arduino",
-  "version": "0.35.2",
+  "version": "0.35.3",
   "description": "XOD project: Arduino transpiler",
   "scripts": {
     "build:nearley": "nearleyc src/implementationGrammar.ne -o src/implementationGrammar.ne.js",

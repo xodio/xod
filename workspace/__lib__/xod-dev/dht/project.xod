@@ -2,5 +2,5 @@
   "description": "Nodes to work with DHT11 or DHT21 sensors, or compatible sensors: RHT01, DHT22, DHT33, DHT44, AM2301, HM2301, AM2302, AM2303, RHT02, RHT03, RHT04, RHT05.",
   "license": "AGPL-3.0",
   "name": "dht",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }

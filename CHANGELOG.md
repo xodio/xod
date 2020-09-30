@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.35.3"></a>
+
+## 0.35.3 (2020-09-30)
+
+### Bug fixes
+
+* [c++] Fix dirtiness propagation of outputs of tweak nodes (#2048)
+
 <a name="0.35.2"></a>
 
 ## 0.35.2 (2020-09-18)

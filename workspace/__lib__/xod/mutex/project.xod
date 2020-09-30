@@ -5,5 +5,5 @@
   "description": "Library to work with mutually exclusive resources. Useful to avoid conflicts between nodes controlling long-running processes.",
   "license": "AGPL-3.0",
   "name": "mutex",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }

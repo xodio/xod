@@ -5,5 +5,5 @@
   "description": "Nodes to get some basic data from the XOD Cloud API",
   "license": "AGPL-3.0",
   "name": "basics",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }
