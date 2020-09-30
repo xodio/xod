@@ -2,5 +2,5 @@
   "description": "Nodes to work with gyroscopes, accelerometers and barometers based on chips by STMicroelectronics: L3G4200, L3GD20H, LIS331DLH, LIS331HH, LIS3DH, LPS331.",
   "license": "AGPL-3.0",
   "name": "st-mems",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }

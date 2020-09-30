@@ -5,5 +5,5 @@
   "description": "Nodes to process sequences of bytes one by one",
   "license": "AGPL-3.0",
   "name": "stream",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }
