@@ -788,6 +788,7 @@ export const validatePatchContents = def(
       .chain(checkForInvalidBoundValues(project))
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validateConstructorPatch)
+      .chain(Patch.validateRecordPatch)
       .chain(Patch.validatePatchForVariadics)
       .chain(Patch.validateBuses)
 );

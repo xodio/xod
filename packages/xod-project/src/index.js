@@ -73,6 +73,7 @@ export {
   doesPatchHaveGenericPins,
   validateAbstractPatch,
   validateConstructorPatch,
+  validateRecordPatch,
   isDeprecatedPatch,
   getDeprecationReason,
   isUtilityPatch,

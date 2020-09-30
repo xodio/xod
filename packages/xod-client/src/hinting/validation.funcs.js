@@ -57,6 +57,13 @@ export const getConstructorMarkersErrorMap = getMarkerNodesErrorMap(
 );
 
 // :: Patch -> Map NodeId (Map ErrorType [Error])
+export const getRecordMarkersErrorMap = getMarkerNodesErrorMap(
+  R.pipe(XP.getNodeType, R.equals(XP.RECORD_MARKER_PATH)),
+  XP.validateRecordPatch,
+  'validateRecordPatch'
+);
+
+// :: Patch -> Map NodeId (Map ErrorType [Error])
 export const getBusesErrorMap = (patch, _project) =>
   R.compose(
     R.map(R.objOf('validateBuses')),
@@ -169,6 +176,7 @@ export const defaultValidateFunctions = {
     getVariadicMarkersErrorMap,
     getAbstractMarkersErrorMap,
     getConstructorMarkersErrorMap,
+    getRecordMarkersErrorMap,
     getBusesErrorMap,
   ],
   pins: [validateBoundValues],

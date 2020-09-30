@@ -2187,5 +2187,134 @@ describe('Patch', () => {
         );
       });
     });
+
+    describe('validateRecordPatch', () => {
+      const validRecordPatchTemplate = {
+        nodes: {
+          inputNumber: {
+            type: `${TERMINALS_LIB_NAME}/input-number`,
+          },
+          inputString: {
+            type: `${TERMINALS_LIB_NAME}/input-string`,
+          },
+          record: {
+            type: CONST.RECORD_MARKER_PATH,
+          },
+          outputSelf: {
+            type: CONST.OUTPUT_SELF_PATH,
+          },
+        },
+      };
+      const overNodes = R.over(R.lensProp('nodes'));
+
+      it('should ignore regular patches', () => {
+        const patch = Helper.defaultizePatch({
+          nodes: {
+            foo: {
+              type: PPU.getLocalPath('whatever'),
+            },
+          },
+        });
+
+        Helper.expectEitherRight(
+          R.equals(patch),
+          Patch.validateRecordPatch(patch)
+        );
+      });
+
+      it('should return Either.Right for a valid record patch', () => {
+        const patch = Helper.defaultizePatch(validRecordPatchTemplate);
+
+        Helper.expectEitherRight(
+          R.equals(patch),
+          Patch.validateRecordPatch(patch)
+        );
+      });
+
+      it('should check that record patch has no NIIX node', () => {
+        const recordPatchWithNiix = Helper.defaultizePatch(
+          R.mergeDeepRight(validRecordPatchTemplate, {
+            nodes: {
+              niix: {
+                type: CONST.NOT_IMPLEMENTED_IN_XOD_PATH,
+              },
+            },
+          })
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_CANT_HAVE_NIIX_NODE {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatchWithNiix)
+        );
+      });
+
+      it('should check that record patch has output-self node', () => {
+        const recordPatch = Helper.defaultizePatch(
+          overNodes(R.omit(['outputSelf']), validRecordPatchTemplate)
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_MUST_BE_A_CONSTRUCTOR {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatch)
+        );
+      });
+
+      it('should check that record patch has pulse terminals', () => {
+        const recordPatch = Helper.defaultizePatch(
+          R.mergeDeepRight(validRecordPatchTemplate, {
+            nodes: {
+              inputPulse: {
+                type: `${TERMINALS_LIB_NAME}/input-pulse`,
+              },
+            },
+          })
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_CANT_STORE_PULSES {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatch)
+        );
+      });
+
+      it('should check that record patch has only one output and it`s output-self', () => {
+        const recordPatch = Helper.defaultizePatch(
+          R.mergeDeepRight(validRecordPatchTemplate, {
+            nodes: {
+              outputNumbr: {
+                type: `${TERMINALS_LIB_NAME}/output-number`,
+              },
+            },
+          })
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_MUST_HAVE_ONLY_OUTPUT_SELF {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatch)
+        );
+      });
+
+      it('should check that record patch has at least two inputs', () => {
+        const recordPatchOneInput = Helper.defaultizePatch(
+          overNodes(R.omit(['inputNumber']), validRecordPatchTemplate)
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatchOneInput)
+        );
+
+        const recordPatchNoInputs = Helper.defaultizePatch(
+          overNodes(
+            R.omit(['inputNumber', 'inputString']),
+            validRecordPatchTemplate
+          )
+        );
+
+        Helper.expectEitherError(
+          'RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS {"trace":["@/default-patch-path"]}',
+          Patch.validateRecordPatch(recordPatchNoInputs)
+        );
+      });
+    });
   });
 });

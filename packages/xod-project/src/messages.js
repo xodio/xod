@@ -145,8 +145,39 @@ export default {
   }),
   CONSTRUCTOR_PATCH_MUST_BE_NIIX: ({ trace }) => ({
     title: 'Invalid constructor patch',
-    note: 'Constructor patches must be implemented in C++ or have a record marker node',
-    solution: 'Add a not-implemented-in-xod node and provide an implementation or place record marker node',
+    note:
+      'Constructor patches must be implemented in C++ or have a record marker node',
+    solution:
+      'Add a not-implemented-in-xod node and provide an implementation or place record marker node',
+    trace,
+  }),
+  RECORD_PATCH_MUST_BE_A_CONSTRUCTOR: ({ trace }) => ({
+    title: 'Invalid record patch',
+    note: 'Record patch must be have an output-self node',
+    trace,
+  }),
+  RECORD_PATCH_CANT_HAVE_NIIX_NODE: ({ trace }) => ({
+    title: 'Invalid record patch',
+    note: "Record patches can't have a not-implemented-in-xod node",
+    solution: 'Remove either the not-implemented-in-xod or record marker node',
+    trace,
+  }),
+  RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS: ({ trace }) => ({
+    title: 'Invalid record patch',
+    note: 'Record patch must have at least two inputs',
+    solution: 'Add more input terminals',
+    trace,
+  }),
+  RECORD_PATCH_CANT_STORE_PULSES: ({ trace }) => ({
+    title: 'Invalid record patch',
+    note: "Record patches can't have pulse inputs",
+    solution: 'Remove pulse input terminals',
+    trace,
+  }),
+  RECORD_PATCH_MUST_HAVE_ONLY_OUTPUT_SELF: ({ trace }) => ({
+    title: 'Invalid record patch',
+    note: 'Record patches must have only one output terminal: output-self',
+    solution: 'Remove all output terminals except output-self node',
     trace,
   }),
 
