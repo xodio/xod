@@ -5,5 +5,5 @@
   "description": "General types and operations to manage network connections",
   "license": "AGPL-3.0",
   "name": "net",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }

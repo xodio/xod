@@ -1,5 +1,5 @@
 {
   "description": "My fork of \"xod/i2c\"",
   "name": "i2c",
-  "version": "0.35.2"
+  "version": "0.35.3"
 }
