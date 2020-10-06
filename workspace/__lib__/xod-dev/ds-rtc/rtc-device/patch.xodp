@@ -2,6 +2,15 @@
   "description": "Constructs an rtc-device value for a DS1302/DS1307/DS3231 RTC board",
   "nodes": [
     {
+      "id": "H1OIS6YLw",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/record"
+    },
+    {
       "id": "S1FPmmHD7",
       "label": "DEV",
       "position": {
@@ -10,15 +19,6 @@
         "y": 2
       },
       "type": "xod/patch-nodes/output-self"
-    },
-    {
-      "id": "r1UYfXrwQ",
-      "position": {
-        "units": "slots",
-        "x": 3,
-        "y": 1
-      },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
     },
     {
       "boundLiterals": {
