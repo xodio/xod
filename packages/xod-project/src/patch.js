@@ -1819,12 +1819,12 @@ export const validateRecordPatch = def(
           ],
           [
             R.compose(
-              R.lt(R.__, 2),
+              R.equals(0),
               R.length,
               R.filter(Node.isInputPinNode),
               listNodes
             ),
-            () => fail('RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS', {}),
+            () => fail('RECORD_PATCH_MUST_HAVE_AT_LEAST_ONE_INPUT', {}),
           ],
           [
             R.compose(

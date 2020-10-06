@@ -2294,15 +2294,6 @@ describe('Patch', () => {
       });
 
       it('should check that record patch has at least two inputs', () => {
-        const recordPatchOneInput = Helper.defaultizePatch(
-          overNodes(R.omit(['inputNumber']), validRecordPatchTemplate)
-        );
-
-        Helper.expectEitherError(
-          'RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS {"trace":["@/default-patch-path"]}',
-          Patch.validateRecordPatch(recordPatchOneInput)
-        );
-
         const recordPatchNoInputs = Helper.defaultizePatch(
           overNodes(
             R.omit(['inputNumber', 'inputString']),
@@ -2311,7 +2302,7 @@ describe('Patch', () => {
         );
 
         Helper.expectEitherError(
-          'RECORD_PATCH_MUST_HAVE_AT_LEASE_TWO_INPUTS {"trace":["@/default-patch-path"]}',
+          'RECORD_PATCH_MUST_HAVE_AT_LEAST_ONE_INPUT {"trace":["@/default-patch-path"]}',
           Patch.validateRecordPatch(recordPatchNoInputs)
         );
       });
