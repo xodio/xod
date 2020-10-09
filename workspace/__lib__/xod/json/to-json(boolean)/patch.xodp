@@ -1,0 +1,60 @@
+{
+  "description": "Formats a boolean as a string.",
+  "links": [
+    {
+      "id": "ByRL4sn8v",
+      "input": {
+        "nodeId": "rJpL4shLP",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "B1OL4inLD",
+        "pinKey": "S13xLCuHvkW"
+      }
+    },
+    {
+      "id": "H1KLNs3LP",
+      "input": {
+        "nodeId": "B1OL4inLD",
+        "pinKey": "S1yZIA_rDJZ"
+      },
+      "output": {
+        "nodeId": "SJ-UNshUv",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "r1AgIROHDJW": "\"false\"",
+        "ryTeUROHD1b": "\"true\""
+      },
+      "id": "B1OL4inLD",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/if-else"
+    },
+    {
+      "id": "SJ-UNshUv",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "id": "rJpL4shLP",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}

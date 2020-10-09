@@ -1,0 +1,91 @@
+{
+  "description": "Enquotes a string to be a valid JSON string litral. If the string contains quotes it should be escaped first.",
+  "links": [
+    {
+      "id": "B1EWEshLw",
+      "input": {
+        "nodeId": "ryw2Xo3LD",
+        "pinKey": "BkeKcj6ZZ-$1"
+      },
+      "output": {
+        "nodeId": "Bkh2Qo2Lw",
+        "pinKey": "B1x2RV3eZ"
+      }
+    },
+    {
+      "id": "B1SpQshLP",
+      "input": {
+        "nodeId": "ryw2Xo3LD",
+        "pinKey": "BkeKcj6ZZ"
+      },
+      "output": {
+        "nodeId": "HJW3mj38v",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SJC3mjnUw",
+      "input": {
+        "nodeId": "HJNn7i38D",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "ryw2Xo3LD",
+        "pinKey": "rksccsp-W"
+      }
+    },
+    {
+      "id": "SJSb4shUD",
+      "input": {
+        "nodeId": "ryw2Xo3LD",
+        "pinKey": "Hkqu9oaWb"
+      },
+      "output": {
+        "nodeId": "Bkh2Qo2Lw",
+        "pinKey": "B1x2RV3eZ"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1x2RV3eZ": "\"\"\""
+      },
+      "id": "Bkh2Qo2Lw",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/core/constant-string"
+    },
+    {
+      "id": "HJNn7i38D",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "HJW3mj38v",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "arityLevel": 2,
+      "id": "ryw2Xo3LD",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/concat"
+    }
+  ]
+}

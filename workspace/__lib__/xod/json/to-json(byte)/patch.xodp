@@ -1,0 +1,79 @@
+{
+  "description": "Formats byte as a string in a decimal representation.",
+  "links": [
+    {
+      "id": "BJgQ8s3Lw",
+      "input": {
+        "nodeId": "B1kmIj3LD",
+        "pinKey": "S113G_ZJm"
+      },
+      "output": {
+        "nodeId": "ryCWUinLv",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HkC7IjnLv",
+      "input": {
+        "nodeId": "SkpX8onUP",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyIQ8j2Lv",
+        "pinKey": "r1H_oipZb"
+      }
+    },
+    {
+      "id": "SkOm8jnIw",
+      "input": {
+        "nodeId": "HyIQ8j2Lv",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "B1kmIj3LD",
+        "pinKey": "Sk43MO-Jm"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "B1kmIj3LD",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/bits/u8-to-number"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "0"
+      },
+      "id": "HyIQ8j2Lv",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/core/format-number"
+    },
+    {
+      "id": "SkpX8onUP",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "ryCWUinLv",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-byte"
+    }
+  ]
+}
