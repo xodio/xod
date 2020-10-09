@@ -175,8 +175,16 @@ export const getTerminalPath = R.curry((direction, type) => {
 // :: PatchPath -> PatchPath
 export const getUnpackRecordPath = R.compose(
   // basename => `@/unpack-${basename}`,
-  // PatchPathUtils.getBaseName
   R.converge((lib, basename) => `${lib}/unpack-${basename}`, [
+    getLibraryName,
+    getBaseName,
+  ])
+);
+
+// :: PatchPath -> PatchPath
+export const getToJsonRecordPath = R.compose(
+  // basename => `@/to-json(${basename})`,
+  R.converge((lib, basename) => `${lib}/to-json(${basename})`, [
     getLibraryName,
     getBaseName,
   ])

@@ -28,6 +28,11 @@ import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
 import { deducePinTypes } from './TypeDeduction_Js.bs';
+import { getGenuinePatches } from './internal/project';
+import {
+  createUnpackRecordPatch,
+  createToJsonRecordSpecialization,
+} from './computablePatches';
 
 import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
@@ -199,7 +204,7 @@ const generateCustomTypeTerminalDescription = (constructorPath, direction) =>
 // :: Project -> Map PatchPath Patch
 const getPatches = memoizeOnlyLast(project => {
   // those are not built-in or auto-generated patches
-  const genuinePatches = R.prop('patches', project);
+  const genuinePatches = getGenuinePatches(project);
 
   const customTypeTerminals = R.compose(
     R.indexBy(Patch.getPatchPath),
@@ -223,57 +228,19 @@ const getPatches = memoizeOnlyLast(project => {
 
   const recordTypePatches = R.compose(
     R.indexBy(Patch.getPatchPath),
-    R.chain(recordPatch => {
-      const type = Patch.getPatchPath(recordPatch);
-      const inputTypeTerminal = PatchPathUtils.getTerminalPath(
-        CONST.PIN_DIRECTION.INPUT,
-        type
-      );
-
-      const nodesForUnpackPatch = R.compose(
-        R.reject(R.isNil),
-        R.map(node =>
-          R.compose(
-            fn => fn(node),
-            R.cond([
-              // * :: NodeType -> (NodeType -> Node -> Node)
-              // output-self -> input-patchPath
-              [
-                R.equals(CONST.OUTPUT_SELF_PATH),
-                () => Node.setNodeType(inputTypeTerminal),
-              ],
-              // output-* -> NULL (??)
-              [PatchPathUtils.isOutputTerminalPath, () => R.always(null)],
-              // input-* -> output-*
-              [
-                PatchPathUtils.isInputTerminalPath,
-                R.compose(
-                  Node.setNodeType(R.__),
-                  PatchPathUtils.getTerminalPath(CONST.PIN_DIRECTION.OUTPUT),
-                  PatchPathUtils.getTerminalDataType
-                ),
-              ],
-              // record -> unpack-record
-              [
-                R.equals(CONST.RECORD_MARKER_PATH),
-                () => Node.setNodeType(CONST.UNPACK_RECORD_MARKER_PATH),
-              ],
-              // omit other nodes
-              [R.T, () => R.always(null)],
-            ]),
-            Node.getNodeType
-          )(node)
-        ),
-        Patch.listNodes
-      )(recordPatch);
-
-      const unpackPatch = R.compose(
-        Patch.upsertNodes(nodesForUnpackPatch),
-        Patch.setPatchPath(PatchPathUtils.getUnpackRecordPath(type)),
-        Patch.createPatch
-      )();
-      return [recordPatch, unpackPatch];
-    }),
+    foldEither(
+      () => [],
+      R.chain(recordPatch =>
+        catMaybies([
+          // unpack-my-record
+          createUnpackRecordPatch(recordPatch),
+          // to-json(my-record)
+          createToJsonRecordSpecialization(recordPatch, project),
+        ])
+      )
+    ),
+    R.sequence(Either.of),
+    R.map(Patch.validateRecordPatch),
     R.values,
     R.filter(Patch.isRecordPatch)
   )(genuinePatches);
