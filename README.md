@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/xodio/xod/tree/master.svg?style=shield)](https://circleci.com/gh/xodio/xod/tree/master) [![AppVeyor](https://ci.appveyor.com/api/projects/status/vk5ngjb4xw4m60ks?svg=true)](https://ci.appveyor.com/project/xod/xod)
 
-XOD is a visual programming language for microcontrollers. This repository contains sources for XOD language core, XOD IDE and XOD standard library.
+XOD is a visual programming language for microcontrollers. This repository contains sources for the XOD language core, XOD IDE, and XOD standard library.
 
 ![Xoding demo](./.github/xoding.gif)
 
@@ -14,9 +14,9 @@ Documentation and tutorials are at <https://xod.io/docs/>.
 
 ## Building from source
 
-XOD is written in JavaScript and ReasonML. You need Node.js and Yarn to build from source. Make sure they are available on your system.
+XOD is written in JavaScript and ReasonML. You need Node.js and Yarn to build from the source. Make sure they are available on your system.
 
-Clone the repository and set working directory to its root. Then run:
+Clone the repository and set the working directory to its root. Then run:
 
 ```bash
 # Install all JavaScript and ReasonML dependencies
@@ -29,21 +29,21 @@ yarn build
 To start the desktop IDE run:
 
 ```bash
-yarn start:electron
+yarn start: electron
 ```
 
 Alternatively, run browser-based IDE:
 
 ```bash
-yarn dev:browser
+yarn dev: browser
 # IDE is available at <http://localhost:8080>
 ```
 
 ## Directory structure
 
-The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and split up in few directories:
+The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and split up into few directories:
 
-* `packages/` — most of source code is here; navigate to a particular package to see it’s own `README` and get an idea what it is for
+* `packages/` — most of the source code is here; navigate to a particular package to see it’s own `README` and get an idea what it is for
 * `tools/` — utility scripts to assist build process and routine maintenance tasks
 * `workspace/` — XOD standard library, default projects, and end-to-end fixtures
 
@@ -52,19 +52,19 @@ The project is managed as a [Lerna](https://github.com/lerna/lerna) monorepo and
 You can run several commands on source files. They are available as yarn subcommands:
 
 * `yarn build` — build, transpile, pack all
-* `yarn build:electron` — build desktop IDE only
+* `yarn build: electron` — build desktop IDE only
 * `yarn build:cli` — build CLI tools only
-* `yarn dev:browser` — run dev-version of browser IDE on localhost
-* `yarn dist:electron` — build OS-specific distributive of desktop IDE
+* `yarn dev: browser` — run dev-version of browser IDE on localhost
+* `yarn dist: electron` — build OS-specific distributive of desktop IDE
 * `yarn test` — run unit tests
 * `yarn test-cpp` — run C++ code tests
 * `yarn test-func` — run functional tests
 * `yarn tabtest` — run standard library tabular tests
 * `yarn lint` — run the linter to check code style
-* `yarn verify` — build, lint, test; run this prior to a pull request
+* `yarn verify` — build, lint, test; run this before a pull request
 * `yarn start:electron` — starts desktop IDE
 * `yarn start:spectron-repl` — starts functional tests environment
-* `yarn storybook` — starts React components viewer for visual inspection
+* `yarn storybook` — starts to React components viewer for visual inspection
 * `yarn clean` — remove build artifacts and installed `node_modules`
 
 Note that dependencies between tasks are not resolved. `test` and `start:*` expect that the project is already built.
@@ -107,7 +107,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU Affero General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-As a special exception, the copyright holders give permission to link the code of portions of this program with the OpenSSL library under certain conditions as described in each individual source file and distribute linked combinations including the program with the OpenSSL library. You must comply with the GNU Affero General Public License in all respects for all of the code used other than as permitted herein. If you modify file(s) with this exception, you may extend this exception to your version of the file(s), but you are not obligated to do so. If you do not wish to do so, delete this exception statement from your version. If you delete this exception statement from all source files in the program, then also delete it in the license file.
+As a special exception, the copyright holders permission to link the code of portions of this program with the OpenSSL library under certain conditions as described in each individual source file and distribute linked combinations including the program with the OpenSSL library. You must comply with the GNU Affero General Public License in all respects for all of the code used other than as permitted herein. If you modify the file(s) with this exception, you may extend this exception to your version of the file(s), but you are not obligated to do so. If you do not wish to do so, delete this exception statement from your version. If you delete this exception statement from all source files in the program, then also delete it in the license file.
 
 ## Contributing
 
