@@ -111,6 +111,7 @@ export {
   isOutputPin,
   isTerminalPin,
   normalizeEmptyPinLabels,
+  normalizeEmptyPinLabelsOppositeDirection,
   cppEscape,
   isPinBindable,
   isPulsePin,

@@ -984,7 +984,7 @@ struct Node {
     typedef uint8_t typeof_IN;
 
     struct Type {
-        typeof_IN _0;
+        typeof_IN field_IN;
     };
 
     typedef Type typeof_OUT;
@@ -1061,7 +1061,7 @@ struct Node {
     void evaluate(Context ctx) {
         Type record;
 
-        record._0 = getValue<input_IN>(ctx);
+        record.field_IN = getValue<input_IN>(ctx);
 
         emitValue<output_OUT>(ctx, record);
     }
@@ -1084,10 +1084,10 @@ struct Node {
     typedef ____another_record::Node::Type typeof_AREC;
 
     struct Type {
-        static constexpr typeof_PORT _0 = constant_input_PORT;
-        typeof_N _1;
-        typeof_STR _2;
-        typeof_AREC _3;
+        static constexpr typeof_PORT field_PORT = constant_input_PORT;
+        typeof_N field_N;
+        typeof_STR field_STR;
+        typeof_AREC field_AREC;
     };
 
     typedef Type typeof_OUT;
@@ -1187,9 +1187,9 @@ struct Node {
     void evaluate(Context ctx) {
         Type record;
 
-        record._1 = getValue<input_N>(ctx);
-        record._2 = getValue<input_STR>(ctx);
-        record._3 = getValue<input_AREC>(ctx);
+        record.field_N = getValue<input_N>(ctx);
+        record.field_STR = getValue<input_STR>(ctx);
+        record.field_AREC = getValue<input_AREC>(ctx);
 
         emitValue<output_OUT>(ctx, record);
     }
@@ -1321,12 +1321,12 @@ struct Node {
     // Define types for templatable custom outputs
 
     // Define constant outputs
-        static constexpr typeof_PORT constant_output_PORT = typeof_IN::_0;
+    static constexpr typeof_PORT constant_output_PORT = typeof_IN::field_PORT;
     void evaluate(Context ctx) {
         auto record = getValue<input_IN>(ctx);
-        emitValue<output_N>(ctx, record._1);
-        emitValue<output_STR>(ctx, record._2);
-        emitValue<output_AREC>(ctx, record._3);
+        emitValue<output_N>(ctx, record.field_N);
+        emitValue<output_STR>(ctx, record.field_STR);
+        emitValue<output_AREC>(ctx, record.field_AREC);
     }
 
 };
@@ -1418,7 +1418,7 @@ struct Node {
     // Define constant outputs
     void evaluate(Context ctx) {
         auto record = getValue<input_IN>(ctx);
-        emitValue<output_OUT>(ctx, record._0);
+        emitValue<output_OUT>(ctx, record.field_IN);
     }
 
 };

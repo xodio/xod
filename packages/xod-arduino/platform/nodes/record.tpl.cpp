@@ -3,7 +3,7 @@ node {
         struct Type {
             {{#each inputs}}
             {{#if (isConstantType type)}}static constexpr {{/if~}}
-            typeof_{{ pinKey }} _{{ @index }}
+            typeof_{{ pinKey }} field_{{ pinKey }}
             {{~#if (isConstantType type)}} = constant_input_{{ pinKey }}{{/if}};
             {{/each}}
         };
@@ -14,7 +14,7 @@ node {
 
         {{#each inputs}}
         {{#unless (isConstantType type)}}
-        record._{{ @index }} = getValue<input_{{ pinKey }}>(ctx);
+        record.field_{{ pinKey }} = getValue<input_{{ pinKey }}>(ctx);
         {{/unless}}
         {{/each}}
 

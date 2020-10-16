@@ -148,11 +148,40 @@ const convertPatchToTPatch = def(
       XP.getPinType(pin) === XP.PIN_TYPE.PULSE ||
       isDirtienessEnabled(impl, `${pin.direction}_${pin.label}`);
 
+    // Additional field for Patch outputs `recordField`
+    // used only in code generation for unpack record patch.
+    // It uses normalization of empty pin labels with opposite
+    // directions, so if the unpack record patch has few outputs
+    // with empty labels it will be normalized to `IN1`, `IN2` and so on.
+    // This labels will be used in record proprty accessors (`record.IN1`),
+    // while the outputs of unpack patch will be `OUT1` as usual.
+    //
+    // :: Map PinKey PinLabel
+    // where PinLabel is normalized record field
+    const recordFields = R.ifElse(
+      () => XP.isUnpackRecordPatch(patch),
+      R.compose(
+        R.fromPairs,
+        R.map(pin => [XP.getPinKey(pin), XP.getPinLabel(pin)]),
+        R.map(R.over(pinLabelLens, cppEscape)),
+        XP.normalizeEmptyPinLabelsOppositeDirection,
+        XP.listOutputPins
+      ),
+      R.always({})
+    )(patch);
+    // :: PinKey -> Nullable PinLabel
+    const getRecordField = R.ifElse(
+      R.has(R.__, recordFields),
+      R.prop(R.__, recordFields),
+      R.always(null)
+    );
+
     const outputs = R.compose(
       R.map(
         R.applySpec({
           type: XP.getPinType,
           pinKey: XP.getPinLabel,
+          recordField: R.compose(getRecordField, XP.getPinKey),
           value: R.compose(XP.defaultValueOfType, XP.getPinType),
           isDirtyable,
           isDirtyOnBoot: R.compose(
