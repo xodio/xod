@@ -21,6 +21,7 @@ import { LIVENESS } from './constants';
 
 import {
   areTimeoutsEnabled,
+  isSetImmediateEnabled,
   isNodeIdEnabled,
   doesRaiseErrors,
   isDirtienessEnabled,
@@ -166,6 +167,7 @@ const convertPatchToTPatch = def(
       isDefer: XP.isDeferNodeType(patchPath),
       isConstant: XP.isConstantNodeType(patchPath),
       usesTimeouts: areTimeoutsEnabled(impl),
+      usesSetImmediate: isSetImmediateEnabled(impl),
       catchesErrors: doesCatchErrors(impl),
       raisesErrors: doesRaiseErrors(impl),
       usesNodeId: isNodeIdEnabled(impl),

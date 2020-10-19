@@ -1354,7 +1354,7 @@ struct Node {
       return identity<typeof_TICK>();
     }
 
-    TimeMs timeoutAt = 0;
+    bool isSetImmediate = false;
 
     Node () {
     }
@@ -1366,16 +1366,8 @@ struct Node {
 
     using Context = ContextObject*;
 
-    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
-        this->timeoutAt = transactionTime() + timeout;
-    }
-
-    void clearTimeout(__attribute__((unused)) Context ctx) {
-        detail::clearTimeout(this);
-    }
-
-    bool isTimedOut(__attribute__((unused)) const Context ctx) {
-        return detail::isTimedOut(this);
+    void setImmediate() {
+      this->isSetImmediate = true;
     }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
@@ -1420,7 +1412,7 @@ struct Node {
 
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
-        setTimeout(ctx, 0);
+        setImmediate();
     }
 
 };
@@ -1989,6 +1981,12 @@ struct Node {
         ctx->_isOutputDirty_DONE = true;
     }
 
+// reading from analog input too frequently may affect WiFi connection on ESP8266
+// see https://github.com/krzychb/EspScopeA0/tree/master/Bravo#results
+#ifdef ESP8266
+    TimeMs lastReadTime = 0;
+#endif
+
     void evaluate(Context ctx) {
         static_assert(isValidAnalogPort(constant_input_PORT), "must be a valid analog port");
 
@@ -1996,7 +1994,14 @@ struct Node {
             return;
 
         ::pinMode(constant_input_PORT, INPUT);
+#ifdef ESP8266
+        if (transactionTime() - lastReadTime > 4) {
+            lastReadTime = transactionTime();
+            emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+        }
+#else
         emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+#endif
         emitValue<output_DONE>(ctx, 1);
     }
 
@@ -5821,7 +5826,7 @@ struct Node {
     };
 
     NodeErrors errors = {};
-    TimeMs timeoutAt = 0;
+    bool isSetImmediate = false;
 
     typeof_OUT _output_OUT;
 
@@ -5839,16 +5844,8 @@ struct Node {
 
     using Context = ContextObject*;
 
-    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
-        this->timeoutAt = transactionTime() + timeout;
-    }
-
-    void clearTimeout(__attribute__((unused)) Context ctx) {
-        detail::clearTimeout(this);
-    }
-
-    bool isTimedOut(__attribute__((unused)) const Context ctx) {
-        return detail::isTimedOut(this);
+    void setImmediate() {
+      this->isSetImmediate = true;
     }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
@@ -5949,7 +5946,7 @@ struct Node {
                 emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
             }
 
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 
@@ -5991,7 +5988,7 @@ struct Node {
     };
 
     NodeErrors errors = {};
-    TimeMs timeoutAt = 0;
+    bool isSetImmediate = false;
 
     Node () {
     }
@@ -6006,16 +6003,8 @@ struct Node {
 
     using Context = ContextObject*;
 
-    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
-        this->timeoutAt = transactionTime() + timeout;
-    }
-
-    void clearTimeout(__attribute__((unused)) Context ctx) {
-        detail::clearTimeout(this);
-    }
-
-    bool isTimedOut(__attribute__((unused)) const Context ctx) {
-        return detail::isTimedOut(this);
+    void setImmediate() {
+      this->isSetImmediate = true;
     }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
@@ -6122,7 +6111,7 @@ struct Node {
                 shouldPulseAtTheNextDeferOnlyRun = true;
             }
 
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 
@@ -7169,7 +7158,6 @@ void handleDefers() {
             g_transaction.node_116_isNodeDirty |= g_transaction.node_202_isOutputDirty_OUT;
 
             g_transaction.node_202_isNodeDirty = false;
-            detail::clearTimeout(&node_202);
         }
 
         // propagate the error hold by the defer node
@@ -7226,7 +7214,6 @@ void handleDefers() {
             g_transaction.node_132_isNodeDirty |= g_transaction.node_203_isOutputDirty_OUT;
 
             g_transaction.node_203_isNodeDirty = false;
-            detail::clearTimeout(&node_203);
         }
 
         // propagate the error hold by the defer node
@@ -7277,7 +7264,6 @@ void handleDefers() {
             g_transaction.node_155_isNodeDirty |= g_transaction.node_204_isOutputDirty_OUT;
 
             g_transaction.node_204_isNodeDirty = false;
-            detail::clearTimeout(&node_204);
         }
 
         // propagate the error hold by the defer node
@@ -7300,16 +7286,28 @@ void runTransaction() {
 #endif
 
     // Check for timeouts
-    g_transaction.node_79_isNodeDirty |= detail::isTimedOut(&node_79);
     g_transaction.node_109_isNodeDirty |= detail::isTimedOut(&node_109);
     g_transaction.node_113_isNodeDirty |= detail::isTimedOut(&node_113);
     g_transaction.node_137_isNodeDirty |= detail::isTimedOut(&node_137);
     g_transaction.node_139_isNodeDirty |= detail::isTimedOut(&node_139);
     g_transaction.node_142_isNodeDirty |= detail::isTimedOut(&node_142);
     g_transaction.node_150_isNodeDirty |= detail::isTimedOut(&node_150);
-    g_transaction.node_202_isNodeDirty |= detail::isTimedOut(&node_202);
-    g_transaction.node_203_isNodeDirty |= detail::isTimedOut(&node_203);
-    g_transaction.node_204_isNodeDirty |= detail::isTimedOut(&node_204);
+    if (node_79.isSetImmediate) {
+      node_79.isSetImmediate = false;
+      g_transaction.node_79_isNodeDirty = true;
+    }
+    if (node_202.isSetImmediate) {
+      node_202.isSetImmediate = false;
+      g_transaction.node_202_isNodeDirty = true;
+    }
+    if (node_203.isSetImmediate) {
+      node_203.isSetImmediate = false;
+      g_transaction.node_203_isNodeDirty = true;
+    }
+    if (node_204.isSetImmediate) {
+      node_204.isSetImmediate = false;
+      g_transaction.node_204_isNodeDirty = true;
+    }
 
     if (isSettingUp()) {
         initializeTweakStrings();
@@ -10851,16 +10849,12 @@ void runTransaction() {
     // Clear dirtieness and timeouts for all nodes and pins
     memset(&g_transaction, 0, sizeof(g_transaction));
 
-    detail::clearStaleTimeout(&node_79);
     detail::clearStaleTimeout(&node_109);
     detail::clearStaleTimeout(&node_113);
     detail::clearStaleTimeout(&node_137);
     detail::clearStaleTimeout(&node_139);
     detail::clearStaleTimeout(&node_142);
     detail::clearStaleTimeout(&node_150);
-    detail::clearStaleTimeout(&node_202);
-    detail::clearStaleTimeout(&node_203);
-    detail::clearStaleTimeout(&node_204);
 
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());

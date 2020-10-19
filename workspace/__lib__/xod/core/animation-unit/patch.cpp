@@ -19,7 +19,7 @@ node {
             emitValue<output_OUT>(ctx, 0);
             emitValue<output_ACT>(ctx, true);
             prevTime = now;
-            setTimeout(ctx, 0);
+            setImmediate();
             return;
         }
 
@@ -44,7 +44,7 @@ node {
                 emitValue<output_OUT>(ctx, out);
                 emitValue<output_ACT>(ctx, true);
                 prevTime = now;
-                setTimeout(ctx, 0);
+                setImmediate();
             }
         }
     }

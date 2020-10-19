@@ -11,7 +11,7 @@ node {
             emitValue<output_OUT1>(ctx, *it);
             emitValue<output_OUT2>(ctx, true);
             ++it;
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 }

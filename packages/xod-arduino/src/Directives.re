@@ -117,6 +117,11 @@ let areTimeoutsEnabled = code =>
   |. Code.lastPragmaEndis("timeouts")
   |. Endis.toBoolean(Code.doesReferSymbol("setTimeout", code));
 
+let isSetImmediateEnabled = code =>
+  code
+  |. Code.lastPragmaEndis("immediate")
+  |. Endis.toBoolean(Code.doesReferSymbol("setImmediate", code));
+
 let isNodeIdEnabled = code =>
   code
   |. Code.lastPragmaEndis("nodeid")

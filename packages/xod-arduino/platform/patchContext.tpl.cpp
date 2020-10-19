@@ -43,6 +43,9 @@ NodeErrors errors = {};
 {{#if usesTimeouts}}
 TimeMs timeoutAt = 0;
 {{/if}}
+{{#if usesSetImmediate}}
+bool isSetImmediate = false;
+{{/if}}
 
 {{#eachNonPulseOrConstant outputs}}
 typeof_{{ pinKey }} _output_{{ pinKey }};
@@ -104,6 +107,11 @@ void clearTimeout(__attribute__((unused)) Context ctx) {
 
 bool isTimedOut(__attribute__((unused)) const Context ctx) {
     return detail::isTimedOut(this);
+}
+{{/if}}
+{{#if usesSetImmediate}}
+void setImmediate() {
+  this->isSetImmediate = true;
 }
 {{/if}}
 

@@ -23,7 +23,7 @@ node {
                 shouldPulseAtTheNextDeferOnlyRun = true;
             }
 
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 };

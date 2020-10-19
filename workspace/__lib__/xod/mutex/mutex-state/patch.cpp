@@ -27,7 +27,7 @@ node {
 
         if (active) {
             emitValue<output_LOOP>(ctx, 1);
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 }
