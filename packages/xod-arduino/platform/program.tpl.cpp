@@ -274,7 +274,6 @@ void handleDefers() {
           {{/each}}
 
             g_transaction.node_{{id}}_isNodeDirty = false;
-            detail::clearTimeout(&node_{{ id }});
         }
 
         // propagate the error hold by the defer node
@@ -305,6 +304,13 @@ void runTransaction() {
   {{#eachNodeUsingTimeouts nodes}}
     g_transaction.node_{{id}}_isNodeDirty |= detail::isTimedOut(&node_{{id}});
   {{/eachNodeUsingTimeouts}}
+  {{#eachNodeUsingSetImmediate nodes}}
+    if (node_{{id}}.isSetImmediate) {
+      node_{{id}}.isSetImmediate = false;
+      g_transaction.node_{{id}}_isNodeDirty = true;
+    }
+  {{/eachNodeUsingSetImmediate}}
+  
 
     if (isSettingUp()) {
         initializeTweakStrings();

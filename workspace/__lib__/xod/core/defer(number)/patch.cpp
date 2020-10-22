@@ -20,7 +20,7 @@ node {
                 emitValue<output_OUT>(ctx, getValue<input_IN>(ctx));
             }
 
-            setTimeout(ctx, 0);
+            setImmediate();
         }
     }
 };

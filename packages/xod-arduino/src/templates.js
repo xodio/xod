@@ -382,6 +382,10 @@ registerHandlebarsFilterLoopHelper(
   'eachNodeUsingTimeouts',
   R.path(['patch', 'usesTimeouts'])
 );
+registerHandlebarsFilterLoopHelper(
+  'eachNodeUsingSetImmediate',
+  R.path(['patch', 'usesSetImmediate'])
+);
 registerHandlebarsFilterLoopHelper('eachLinkedTweakNode', isLinkedTweakNode);
 registerHandlebarsFilterLoopHelper('eachTweakStringNode', isTweakStringNode);
 registerHandlebarsFilterLoopHelper('eachLinkedInput', R.has('fromNodeId'));

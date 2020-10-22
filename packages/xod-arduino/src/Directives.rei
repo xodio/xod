@@ -19,6 +19,17 @@ module Pragma: {
 let areTimeoutsEnabled: code => bool;
 
 /**
+  Returns whether a C++ code requires immediate timeouts storage, i.e., does it relate on
+  `setImmediate` API. Prefers an explicit declaration:
+
+    #pragma XOD immediate disable
+
+  If no pragma found, looks for `setImmediate` call in the code and returns true
+  if it is found.
+ */
+let isSetImmediateEnabled: code => bool;
+
+/**
   Returns whether a C++ code requires node ID access. Prefers an explicit
   declaration
 

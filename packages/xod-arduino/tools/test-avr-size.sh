@@ -4,40 +4,27 @@ set -e
 
 echo "Testing size of fixtures compiled for AVR platform..."
 
+ARDUINO_CLI=${XOD_ARDUINO_CLI:-"arduino-cli"}
+
 SELF_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 WS_DIR="$SELF_DIR/../../../workspace"
-BUILD_DIR="$SELF_DIR/../.pio-build"
-
-AVR_SIZE=~/.platformio/packages/toolchain-atmelavr/bin/avr-size
-
-mkdir -p $BUILD_DIR
 
 test_size () {
   echo "$1..."
 
-  platformio ci \
-    --board=uno \
-    --build-dir=$BUILD_DIR \
-    --keep-build-dir \
-    --project-option="lib_extra_dirs = $WS_DIR/__ardulib__" \
-    --verbose \
-    $WS_DIR/$1/__fixtures__/arduino.cpp \
-    > /dev/null
+  BUILD_DIR="/tmp/test-avr-size/$1"
 
-  AVR_SIZE_OUTPUT=$($AVR_SIZE -d -C --mcu=atmega328p $BUILD_DIR/.pioenvs/uno/firmware.elf)
+  mkdir -p $BUILD_DIR
+  cp $WS_DIR/$1/__fixtures__/arduino.cpp $BUILD_DIR/$1.ino
+
+  SIZE_OUTPUT=$($ARDUINO_CLI compile --fqbn arduino:avr:uno --libraries $WS_DIR/__ardulib__ $BUILD_DIR)
+
   EXPECTED_OUTPUT="\
-AVR Memory Usage
-----------------
-Device: atmega328p
+Sketch uses $2 of program storage space. Maximum is 32256 bytes.
+Global variables use $3 of dynamic memory, leaving $4 bytes for local variables. Maximum is 2048 bytes."
 
-Program:$2
-(.text + .data + .bootloader)
-
-Data:$3
-(.data + .bss + .noinit)"
-
-  if [[ $AVR_SIZE_OUTPUT =~ "$EXPECTED_OUTPUT" ]]; then
+  if [[ $SIZE_OUTPUT =~ "$EXPECTED_OUTPUT" ]]; then
     echo "+ OK"
   else
     echo "- FAIL"
@@ -48,7 +35,7 @@ Data:$3
     echo
     echo "Actual ======================================================="
     echo
-    echo "$AVR_SIZE_OUTPUT"
+    echo "$SIZE_OUTPUT"
     echo
     echo "If the size became better, fix expectation in"
     echo "packages/xod-arduino/tools/test-avr-size.sh script,"
@@ -57,5 +44,5 @@ Data:$3
   fi
 }
 
-test_size "blink" "    1556 bytes (4.7% Full)" "         28 bytes (1.4% Full)"
-test_size "big-patch" "   25588 bytes (78.1% Full)" "        909 bytes (44.4% Full)"
+test_size "blink" "1444 bytes (4%)" "25 bytes (1%)" "2023"
+test_size "big-patch" "25456 bytes (78%)" "877 bytes (42%)" "1171"

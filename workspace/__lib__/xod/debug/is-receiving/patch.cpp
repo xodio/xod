@@ -13,7 +13,7 @@ node {
 
         if (isInputDirty<input_UPD>(ctx)) {
             startTime = transactionTime();
-            setTimeout(ctx, 0);
+            setImmediate();
             return;
         }
 
@@ -22,12 +22,12 @@ node {
             if (shouldWait && inet->isConnected()) {
                 // No incoming data, but we're still waiting for data
                 if (!inet->isReceiving()) {
-                    setTimeout(ctx, 0);
+                    setImmediate();
                     return;
                 }
                 // Receiving data
                 received = true;
-                setTimeout(ctx, 0);
+                setImmediate();
                 emitValue<output_Y>(ctx, 1);
                 return;
             } else {

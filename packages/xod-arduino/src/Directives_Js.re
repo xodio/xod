@@ -16,6 +16,8 @@ let getEvaluateOnPinSettings = code =>
 
 let areTimeoutsEnabled = Directives.areTimeoutsEnabled;
 
+let isSetImmediateEnabled = Directives.isSetImmediateEnabled;
+
 let stripCppComments = Directives.stripCppComments;
 
 let findXodPragmas = code =>

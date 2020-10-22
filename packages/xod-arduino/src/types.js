@@ -73,6 +73,7 @@ export const TPatch = Model('TPatch', {
   isDefer: $.Boolean,
   isConstant: $.Boolean,
   usesTimeouts: $.Boolean,
+  usesSetImmediate: $.Boolean,
   catchesErrors: $.Boolean,
   raisesErrors: $.Boolean,
   usesNodeId: $.Boolean,

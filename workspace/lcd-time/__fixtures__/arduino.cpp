@@ -987,7 +987,7 @@ struct Node {
       return identity<typeof_TICK>();
     }
 
-    TimeMs timeoutAt = 0;
+    bool isSetImmediate = false;
 
     Node () {
     }
@@ -999,16 +999,8 @@ struct Node {
 
     using Context = ContextObject*;
 
-    void setTimeout(__attribute__((unused)) Context ctx, TimeMs timeout) {
-        this->timeoutAt = transactionTime() + timeout;
-    }
-
-    void clearTimeout(__attribute__((unused)) Context ctx) {
-        detail::clearTimeout(this);
-    }
-
-    bool isTimedOut(__attribute__((unused)) const Context ctx) {
-        return detail::isTimedOut(this);
+    void setImmediate() {
+      this->isSetImmediate = true;
     }
 
     template<typename PinT> typename decltype(getValueType(PinT()))::type getValue(Context ctx) {
@@ -1053,7 +1045,7 @@ struct Node {
 
     void evaluate(Context ctx) {
         emitValue<output_TICK>(ctx, 1);
-        setTimeout(ctx, 0);
+        setImmediate();
     }
 
 };
@@ -1558,7 +1550,10 @@ void runTransaction() {
 #endif
 
     // Check for timeouts
-    g_transaction.node_7_isNodeDirty |= detail::isTimedOut(&node_7);
+    if (node_7.isSetImmediate) {
+      node_7.isSetImmediate = false;
+      g_transaction.node_7_isNodeDirty = true;
+    }
 
     if (isSettingUp()) {
         initializeTweakStrings();
@@ -1671,8 +1666,6 @@ void runTransaction() {
 
     // Clear dirtieness and timeouts for all nodes and pins
     memset(&g_transaction, 0, sizeof(g_transaction));
-
-    detail::clearStaleTimeout(&node_7);
 
     XOD_TRACE_F("Transaction completed, t=");
     XOD_TRACE_LN(millis());

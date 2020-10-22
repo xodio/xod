@@ -17,12 +17,23 @@ defs:
       paths:
         - node_modules
 
+    cache-arduino15: &cache-arduino15
+      # update cache only if package_index.json changed
+      key: arduino15-v1-{{ arch }}-{{ .Branch }}-{{ checksum "~/.arduino15/package_index.json" }}
+      paths:
+        - ~/.arduino15/staging # only archives
+
     restore-node_modules: &restore-node_modules
       keys:
         - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ checksum "yarn.lock" }}
         # if cache for exact version of `yarn.lock` is not present then
         # load any most recent one
         - node_modules-{{ arch }}-{{ checksum ".circleci/cache-version" }}
+
+    restore-arduino15: &restore-arduino15
+      keys:
+        - arduino15-v1-{{ arch }}-{{ .Branch }}-
+        - arduino15-v1-{{ arch }}-
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
@@ -138,10 +149,20 @@ jobs:
     docker: *docker-custom-nodejs
     environment:
       XOD_OUTPUT: /tmp/tabtests-cpp
+      XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install
+      - run: *step-install-arduino-cli-on-linux
+      - restore_cache: *restore-arduino15
+      - run:
+          name: Install arduino:avr platform for arduino-cli
+          command: $XOD_ARDUINO_CLI core install arduino:avr
+      - save_cache: *cache-arduino15
+      - run:
+          name: Test AVR Size
+          command: ./packages/xod-arduino/tools/test-avr-size.sh
       - run:
           name: Build CLI
           command: yarn build:cli
