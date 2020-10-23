@@ -10,6 +10,7 @@ import { HotKeys } from 'react-hotkeys';
 import * as XP from 'xod-project';
 import client from 'xod-client';
 import { foldEither, notNil } from 'xod-func-tools';
+import { LIVENESS } from 'xod-arduino';
 
 import packageJson from '../../package.json';
 import PopupInstallApp from '../components/PopupInstallApp';
@@ -275,6 +276,13 @@ class App extends client.App {
       ]),
       submenu(items.deploy, [
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
+        ...(process.env.IS_DEV
+          ? [
+              onClick(items.showCodeWithDebug, () =>
+                this.onShowCodeArduino(LIVENESS.DEBUG)
+              ),
+            ]
+          : []),
         onClick(items.uploadToArduino, this.onUpload),
         onClick(items.runSimulation, this.onRunSimulation),
       ]),

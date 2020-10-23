@@ -103,6 +103,9 @@ const rawItems = {
   showCodeForArduino: {
     label: 'Show Code for Arduino',
   },
+  showCodeWithDebug: {
+    label: 'Show Code with Debug',
+  },
   uploadToArduino: {
     label: 'Upload to Arduino...',
   },

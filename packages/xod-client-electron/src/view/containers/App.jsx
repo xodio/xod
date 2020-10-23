@@ -61,7 +61,7 @@ import {
   proceedPackageUpgrade,
 } from '../../arduinoDependencies/actions';
 import { loadWorkspacePath } from '../../app/workspaceActions';
-import { getPathToBundledWorkspace } from '../../app/utils';
+import { getPathToBundledWorkspace, IS_DEV } from '../../app/utils';
 
 import getLibraryNames from '../../arduinoDependencies/getLibraryNames';
 
@@ -677,6 +677,13 @@ class App extends client.App {
       ]),
       submenu(items.deploy, [
         onClick(items.showCodeForArduino, this.onShowCodeArduino),
+        ...(IS_DEV
+          ? [
+              onClick(items.showCodeWithDebug, () =>
+                this.onShowCodeArduino(LIVENESS.DEBUG)
+              ),
+            ]
+          : []),
         onClick(items.uploadToArduino, this.onUploadToArduinoClicked),
         onClick(items.runSimulation, this.onRunSimulation),
         onClick(

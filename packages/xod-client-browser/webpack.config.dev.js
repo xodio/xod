@@ -1,5 +1,6 @@
 const path = require('path');
 /* eslint-disable import/no-extraneous-dependencies */
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 /* eslint-enable import/no-extraneous-dependencies */
 const baseConfig = require('./webpack.config.js');
@@ -18,4 +19,9 @@ module.exports = merge.smart(baseConfig, {
     contentBase: pkgpath('dist'),
     compress: true,
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.IS_DEV': true,
+    }),
+  ],
 });
