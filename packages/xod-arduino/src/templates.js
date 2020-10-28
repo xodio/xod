@@ -28,6 +28,9 @@ import memoryH from '../platform/memory.h';
 import stlH from '../platform/stl.h';
 import runtimeCpp from '../platform/runtime.cpp';
 
+import recordImplementation from '../platform/nodes/record.tpl.cpp';
+import unpackRecordImplementation from '../platform/nodes/unpackRecord.tpl.cpp';
+
 // =============================================================================
 //
 // Utils and helpers
@@ -456,6 +459,13 @@ const templates = {
   patchImpl: Handlebars.compile(patchTpl, renderingOptions),
   legacyPatchImpl: Handlebars.compile(legacyPatchTpl, renderingOptions),
   program: Handlebars.compile(programTpl, renderingOptions),
+  nodes: {
+    record: Handlebars.compile(recordImplementation, renderingOptions),
+    unpackRecord: Handlebars.compile(
+      unpackRecordImplementation,
+      renderingOptions
+    ),
+  },
 };
 
 // =============================================================================
@@ -480,7 +490,11 @@ export const renderPatchPinTypes = def(
 const generatedCodeRegEx = /^\s*{{\s*GENERATED_CODE\s*}}\s*$/gm;
 
 export const renderImpl = def('renderImpl :: TPatch -> String', tPatch => {
-  const impl = R.prop('impl', tPatch);
+  const impl = R.cond([
+    [R.prop('isRecord'), templates.nodes.record],
+    [R.prop('isUnpackRecord'), templates.nodes.unpackRecord],
+    [R.T, R.prop('impl')],
+  ])(tPatch);
   const generatedCode = renderPatchContext(tPatch);
   const patchPinTypes = renderPatchPinTypes(tPatch);
 

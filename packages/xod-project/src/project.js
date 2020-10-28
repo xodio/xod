@@ -28,6 +28,11 @@ import * as PatchPathUtils from './patchPathUtils';
 import { def } from './types';
 import * as Utils from './utils';
 import { deducePinTypes } from './TypeDeduction_Js.bs';
+import { getGenuinePatches } from './internal/project';
+import {
+  createUnpackRecordPatch,
+  createToJsonRecordSpecialization,
+} from './computablePatches';
 
 import BUILT_IN_PATCHES from '../dist/built-in-patches.json';
 
@@ -199,7 +204,7 @@ const generateCustomTypeTerminalDescription = (constructorPath, direction) =>
 // :: Project -> Map PatchPath Patch
 const getPatches = memoizeOnlyLast(project => {
   // those are not built-in or auto-generated patches
-  const genuinePatches = R.prop('patches', project);
+  const genuinePatches = getGenuinePatches(project);
 
   const customTypeTerminals = R.compose(
     R.indexBy(Patch.getPatchPath),
@@ -221,7 +226,31 @@ const getPatches = memoizeOnlyLast(project => {
     R.filter(Patch.isConstructorPatch)
   )(genuinePatches);
 
-  return R.mergeAll([genuinePatches, BUILT_IN_PATCHES, customTypeTerminals]);
+  const recordTypePatches = R.compose(
+    R.indexBy(Patch.getPatchPath),
+    foldEither(
+      () => [],
+      R.chain(recordPatch =>
+        catMaybies([
+          // unpack-my-record
+          createUnpackRecordPatch(recordPatch),
+          // to-json(my-record)
+          createToJsonRecordSpecialization(recordPatch, project),
+        ])
+      )
+    ),
+    R.sequence(Either.of),
+    R.map(Patch.validateRecordPatch),
+    R.values,
+    R.filter(Patch.isRecordPatch)
+  )(genuinePatches);
+
+  return R.mergeAll([
+    genuinePatches,
+    BUILT_IN_PATCHES,
+    customTypeTerminals,
+    recordTypePatches,
+  ]);
 });
 
 /**
@@ -726,6 +755,7 @@ export const validatePatchContents = def(
       .chain(checkForInvalidBoundValues(project))
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validateConstructorPatch)
+      .chain(Patch.validateRecordPatch)
       .chain(Patch.validatePatchForVariadics)
       .chain(Patch.validateBuses)
 );
@@ -894,25 +924,39 @@ export const rebasePatch = def(
     validatePatchRebase(newPath, oldPath, project).map(proj => {
       // we just checked that it exists in `validatePatchRebase`
       const oldPatch = getPatchByPathUnsafe(oldPath, proj);
-
+      // { [oldPath] : newPath }
+      // :: Map PatchPath PatchPath
       const pathReplacementsMap = R.compose(
-        R.merge({ [oldPath]: newPath }),
-        R.ifElse(
+        R.assoc(oldPath, newPath),
+        R.fromPairs,
+        R.chain(([cond, fn]) => R.ifElse(cond, fn, R.always([]))(oldPatch))
+      )([
+        // if we are renaming a constructor patch,
+        // update corresponding terminals as well,
+        // because their names depend on it
+        [
           Patch.isConstructorPatch,
-          // if we are renaming a constructor patch,
-          // update corresponding terminals as well,
-          // because their names depend on it
           () =>
-            R.compose(
-              R.fromPairs,
-              R.map(direction => [
+            R.map(
+              direction => [
                 PatchPathUtils.getTerminalPath(direction, oldPath),
                 PatchPathUtils.getTerminalPath(direction, newPath),
-              ])
-            )([CONST.PIN_DIRECTION.INPUT, CONST.PIN_DIRECTION.OUTPUT]),
-          R.always({})
-        )
-      )(oldPatch);
+              ],
+              [CONST.PIN_DIRECTION.INPUT, CONST.PIN_DIRECTION.OUTPUT]
+            ),
+        ],
+        // if we are renaming a record patch,
+        // update dependent patches (unpack) as well
+        [
+          Patch.isRecordPatch,
+          () => [
+            [
+              PatchPathUtils.getUnpackRecordPath(oldPath),
+              PatchPathUtils.getUnpackRecordPath(newPath),
+            ],
+          ],
+        ],
+      ]);
 
       // TODO: Think about refactoring that piece of code :-D
       // Patch -> Patch

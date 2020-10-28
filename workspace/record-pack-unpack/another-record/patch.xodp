@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": "BJiBWJ58P",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-byte"
+    },
+    {
+      "id": "S1zIWy5Lw",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "rk0HWy9Lv",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/record"
+    }
+  ]
+}

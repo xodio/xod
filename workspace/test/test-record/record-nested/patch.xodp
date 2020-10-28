@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    {
+      "id": "BJXxj64Uw",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "H1dgiaNID",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/record"
+    },
+    {
+      "id": "H1yei6EIw",
+      "label": "REC",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-record"
+    },
+    {
+      "id": "rJoeoaEIv",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    }
+  ]
+}

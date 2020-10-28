@@ -1,0 +1,63 @@
+{
+  "links": [
+    {
+      "id": "rJbhS6tLP",
+      "input": {
+        "nodeId": "ryssBaKUw",
+        "pinKey": "ByDPwJxu7"
+      },
+      "output": {
+        "nodeId": "HJenr6tLP",
+        "pinKey": "r1ZqKlXPX"
+      }
+    },
+    {
+      "id": "rypjHpK8D",
+      "input": {
+        "nodeId": "ryssBaKUw",
+        "pinKey": "SJsba7HDQ"
+      },
+      "output": {
+        "nodeId": "SyvjSatLw",
+        "pinKey": "S1FPmmHD7"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "HJgzhKxmvm": "5",
+        "HygQhYlQw7": "55",
+        "S1-M2YemPQ": "13",
+        "SkQnYg7wQ": "23",
+        "r1f2FeXP7": "10",
+        "ryjoteXwm": "2020"
+      },
+      "id": "HJenr6tLP",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/datetime/datetime"
+    },
+    {
+      "id": "SyvjSatLw",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/rtc-device"
+    },
+    {
+      "id": "ryssBaKUw",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/write"
+    }
+  ]
+}

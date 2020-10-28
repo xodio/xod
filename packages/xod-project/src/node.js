@@ -191,10 +191,10 @@ export const setNodeSize = def(
 /**
  * @function setNodeArityLevel
  * @param {Node} node
- * @returns {ArityLevel}
+ * @returns {Node}
  */
 export const setNodeArityLevel = def(
-  'setNodeArityLevel :: ArityLevel -> Node -> ArityLevel',
+  'setNodeArityLevel :: ArityLevel -> Node -> Node',
   R.assoc('arityLevel')
 );
 

@@ -41,6 +41,7 @@ describe('xod-arduino transpiler', () => {
     specify('blink', () => testFixture('blink'));
     specify('two-button-switch', () => testFixture('two-button-switch'));
     specify('lcd-time', () => testFixture('lcd-time'));
+    specify('record-pack-unpack', () => testFixture('record-pack-unpack'));
     specify('count-with-feedback-loops', () =>
       testFixture('count-with-feedback-loops')
     );

@@ -241,6 +241,21 @@ const getPinLabelByDirection = def(
 );
 
 /**
+ * Returns a default Pin label by opposite direction.
+ * Useful when label is empty, but we need to name
+ * a label somehow. So output Pin with empty label
+ * becomes a Pin with label "IN".
+ */
+const getPinLabelByOppositeDirection = def(
+  'getPinLabelByOppositeDirection :: Pin -> PinLabel',
+  R.compose(
+    R.prop(R.__, CONST.PIN_LABEL_BY_DIRECTION),
+    R.prop(R.__, CONST.OPPOSITE_DIRECTION),
+    getPinDirection
+  )
+);
+
+/**
  * Gives pins with empty labels unique names
  * E.G.,
  * - "" (input) -> "IN1"
@@ -266,6 +281,38 @@ export const normalizeEmptyPinLabels = def(
         ),
         R.groupBy(getPinLabel),
         R.map(pin => setPinLabel(getPinLabelByDirection(pin), pin))
+      )
+    ),
+    R.partition(isPinLabelEmpty)
+  )
+);
+
+/**
+ * Gives pins with empty labels unique names BUT using opposite direction
+ * E.G.,
+ * - "" (input) -> "OUT1"
+ * - "" (input) -> "OUT2"
+ * - "" (output) -> "IN"
+ */
+export const normalizeEmptyPinLabelsOppositeDirection = def(
+  'normalizeEmptyPinLabelsOppositeDirection :: [Pin] -> [Pin]',
+  R.compose(
+    R.unnest,
+    R.over(
+      R.lensIndex(0),
+      R.compose(
+        R.unnest,
+        R.values,
+        R.map(
+          R.when(
+            R.compose(R.gt(R.__, 1), R.length),
+            R.addIndex(R.map)((pin, idx) =>
+              setPinLabel(`${getPinLabel(pin)}${idx + 1}`, pin)
+            )
+          )
+        ),
+        R.groupBy(getPinLabel),
+        R.map(pin => setPinLabel(getPinLabelByOppositeDirection(pin), pin))
       )
     ),
     R.partition(isPinLabelEmpty)

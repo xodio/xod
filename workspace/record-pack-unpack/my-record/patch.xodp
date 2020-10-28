@@ -1,0 +1,62 @@
+{
+  "nodes": [
+    {
+      "id": "B11w-1cLD",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/record"
+    },
+    {
+      "id": "BJmw-yqLv",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "id": "S137WkcUw",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "r1sVWy98D",
+      "label": "STR",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "ryIIWyq8D",
+      "label": "AREC",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "@/input-another-record"
+    },
+    {
+      "id": "ryz4-kqIP",
+      "label": "N",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

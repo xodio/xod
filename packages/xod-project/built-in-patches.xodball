@@ -9,6 +9,25 @@
       "description": "Deprecates a patch which contains this node. Use it to archive outdated patch nodes. The projects which already uses the deprecated node will not break. Only a warning message will be shown. Use the marker node description to provide a deprecation reason and migration hint, it will be shown along the warning to end-users. For new projects, deprecated nodes are unlisted by default, so usage of such nodes by library users is discouraged.",
       "path": "@/deprecated"
     },
+    "@/record": {
+      "description": "Transforms the patch to a record type constructor.",
+      "path": "@/record"
+    },
+    "@/unpack-record": {
+      "description": "Node that marks a generated unpack patch for the record for further code generation and processing.",
+      "path": "@/unpack-record",
+      "nodes": {
+        "utilityMarker": {
+          "id": "utilityMarker",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "units": "slots"
+          },
+          "type": "xod/patch-nodes/utility"
+        }
+      }
+    },
     "@/from-bus": {
       "description": "Defines an attachment point to a patch-level data bus with the name defined by this node label.",
       "nodes": {

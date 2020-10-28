@@ -73,6 +73,7 @@ export {
   doesPatchHaveGenericPins,
   validateAbstractPatch,
   validateConstructorPatch,
+  validateRecordPatch,
   isDeprecatedPatch,
   getDeprecationReason,
   isUtilityPatch,
@@ -86,6 +87,8 @@ export {
   convertPatchDimensionsToSlots,
   convertPatchDimensionsToPixels,
   findNodeBy,
+  isRecordPatch,
+  isUnpackRecordPatch,
 } from './patch';
 export {
   getFilename as getAttachmentFilename,
@@ -108,6 +111,7 @@ export {
   isOutputPin,
   isTerminalPin,
   normalizeEmptyPinLabels,
+  normalizeEmptyPinLabelsOppositeDirection,
   cppEscape,
   isPinBindable,
   isPulsePin,

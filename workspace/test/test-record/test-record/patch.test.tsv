@@ -1,0 +1,4 @@
+IN1	IN2	IN3	OUT1	OUT2	OUT3
+23	42d	true	23	42d	true
+10	42d	false	10	42d	false
+70.523	2d	false	70.523	2d	false

@@ -45,6 +45,8 @@ let getTabtestContent: t => option(string);
 let hasTabtest: t => bool;
 
 let isNotImplementedInXod: t => bool;
+let isRecord: t => bool;
+let isUnpackRecord: t => bool;
 
 let isAbstract: t => bool;
 let isTerminal: t => bool;

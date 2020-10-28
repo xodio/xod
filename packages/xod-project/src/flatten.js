@@ -96,6 +96,8 @@ const isLeafPatchWithImplsOrTerminal = def(
     Patch.isPatchNotImplementedInXod,
     Patch.isTerminalPatch,
     R.pipe(Patch.getPatchPath, R.equals(CONST.NOT_IMPLEMENTED_IN_XOD_PATH)),
+    Patch.isRecordPatch,
+    Patch.isUnpackRecordPatch,
   ])
 );
 

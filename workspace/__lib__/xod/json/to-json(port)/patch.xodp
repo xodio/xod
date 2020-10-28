@@ -1,0 +1,55 @@
+{
+  "links": [
+    {
+      "id": "ByFbZZGDv",
+      "input": {
+        "nodeId": "HJBW-bzDw",
+        "pinKey": "HJW3mj38v"
+      },
+      "output": {
+        "nodeId": "HyxklbGwP",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "SkqZW-zvD",
+      "input": {
+        "nodeId": "rkEyxbMwv",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJBW-bzDw",
+        "pinKey": "HJNn7i38D"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HJBW-bzDw",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/to-json(string)"
+    },
+    {
+      "id": "HyxklbGwP",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rkEyxbMwv",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    }
+  ]
+}

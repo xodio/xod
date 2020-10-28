@@ -1,0 +1,59 @@
+{
+  "description": "Formats a number as a string with four digits after the dot.",
+  "links": [
+    {
+      "id": "S1WYQsnUv",
+      "input": {
+        "nodeId": "Hk1YXs2LD",
+        "pinKey": "BJlHojaWZ"
+      },
+      "output": {
+        "nodeId": "S1n_7snLw",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r1vt7s3Uw",
+      "input": {
+        "nodeId": "HJItQjh8v",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Hk1YXs2LD",
+        "pinKey": "r1H_oipZb"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HJItQjh8v",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "boundLiterals": {
+        "HJTIija-W": "4"
+      },
+      "id": "Hk1YXs2LD",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/core/format-number"
+    },
+    {
+      "id": "S1n_7snLw",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    }
+  ]
+}

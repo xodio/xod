@@ -1760,6 +1760,24 @@ export const isConstructorPatch = def(
   )
 );
 
+export const isRecordPatch = def(
+  'isRecordPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.equals(CONST.RECORD_MARKER_PATH)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
+export const isUnpackRecordPatch = def(
+  'isUnpackRecordPatch :: Patch -> Boolean',
+  R.compose(
+    R.any(R.equals(CONST.UNPACK_RECORD_MARKER_PATH)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
+);
+
 export const validateConstructorPatch = def(
   'validateConstructorPatch :: Patch -> Either Error Patch',
   patch =>
@@ -1773,8 +1791,66 @@ export const validateConstructorPatch = def(
             () => fail('CONSTRUCTOR_PATCH_CANT_HAVE_GENERIC_PINS', {}),
           ],
           [
-            R.complement(isPatchNotImplementedInXod),
+            R.complement(R.either(isPatchNotImplementedInXod, isRecordPatch)),
             () => fail('CONSTRUCTOR_PATCH_MUST_BE_NIIX', {}),
+          ],
+          [R.T, Either.of],
+        ]),
+        Either.of
+      )
+    )(patch)
+);
+
+export const validateRecordPatch = def(
+  'validateRecordPatch :: Patch -> Either Error Patch',
+  patch =>
+    R.compose(
+      prependTraceToError(getPatchPath(patch)),
+      R.ifElse(
+        isRecordPatch,
+        R.cond([
+          [
+            isPatchNotImplementedInXod,
+            () => fail('RECORD_PATCH_CANT_HAVE_NIIX_NODE', {}),
+          ],
+          [
+            R.complement(isConstructorPatch),
+            () => fail('RECORD_PATCH_MUST_BE_A_CONSTRUCTOR', {}),
+          ],
+          [
+            R.compose(
+              R.equals(0),
+              R.length,
+              R.filter(Node.isInputPinNode),
+              listNodes
+            ),
+            () => fail('RECORD_PATCH_MUST_HAVE_AT_LEAST_ONE_INPUT', {}),
+          ],
+          [
+            R.compose(
+              R.any(
+                R.pipe(Node.getPinNodeDataType, R.equals(CONST.PIN_TYPE.PULSE))
+              ),
+              R.filter(Node.isInputPinNode),
+              listNodes
+            ),
+            () => fail('RECORD_PATCH_CANT_STORE_PULSES', {}),
+          ],
+          [
+            R.compose(
+              R.not,
+              R.both(
+                R.pipe(R.length, R.equals(1)),
+                R.pipe(
+                  R.nth(0),
+                  Node.getNodeType,
+                  R.equals(CONST.OUTPUT_SELF_PATH)
+                )
+              ),
+              R.filter(Node.isOutputPinNode),
+              listNodes
+            ),
+            () => fail('RECORD_PATCH_MUST_HAVE_ONLY_OUTPUT_SELF', {}),
           ],
           [R.T, Either.of],
         ]),

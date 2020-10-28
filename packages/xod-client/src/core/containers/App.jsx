@@ -93,7 +93,7 @@ export default class App extends React.Component {
     this.props.actions.fetchGrant(/* startup */ true);
   }
 
-  onShowCodeArduino() {
+  onShowCodeArduino(liveness = LIVENESS.NONE) {
     R.compose(
       foldEither(
         R.compose(
@@ -104,7 +104,7 @@ export default class App extends React.Component {
       ),
       R.map(transpile),
       this.transformProjectForTranspiler
-    )(LIVENESS.NONE);
+    )(liveness);
   }
 
   onRunSimulation() {
