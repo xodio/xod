@@ -1,6 +1,6 @@
 {
   "name": "xod-cloud-compile",
-  "version": "0.35.2",
+  "version": "0.35.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "ramda": "^0.24.1",
     "string-to-arraybuffer": "^1.0.2",
     "xod-func-tools": "^0.34.0",
-    "xod-tabtest": "^0.35.2"
+    "xod-tabtest": "^0.35.3"
   },
   "devDependencies": {
     "babel-plugin-inline-import": "^2.0.4",

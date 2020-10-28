@@ -1,6 +1,6 @@
 {
   "name": "xod-tabtest",
-  "version": "0.35.2",
+  "version": "0.35.3",
   "scripts": {
     "refmt": "find src/ test/ -name '*.re*' -exec refmt --in-place {} +",
     "build:lib": "node ./tools/loadTabtestLibPatches.js",
@@ -18,7 +18,7 @@
   "main": "src/Tabtest_Js.bs.js",
   "dependencies": {
     "belt-holes": "^0.34.0",
-    "xod-arduino": "^0.35.2",
+    "xod-arduino": "^0.35.3",
     "xod-func-tools": "^0.34.0",
     "xod-project": "^0.35.2"
   },
