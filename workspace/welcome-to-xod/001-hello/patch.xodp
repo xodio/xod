@@ -15,6 +15,20 @@
       }
     },
     {
+      "content": "## Alternative tutorial\n\nIf you want to learn programming microcontrollers with XOD by making a smart and pretty looking tabletop device, check out the [Amperka&nbsp;Colony Kit](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial).\n\n[![Colony Kit from Amperka](https://xod.io/docs/tutorial/001-hello/colony-kit.png)](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)\n\nIt contains a mictocontroller, sensots, actuators, and a paper guide with an exciting story inside.",
+      "id": "SJmjeGOdw",
+      "position": {
+        "units": "slots",
+        "x": 14,
+        "y": -2
+      },
+      "size": {
+        "height": 4,
+        "units": "slots",
+        "width": 6
+      }
+    },
+    {
       "content": "# Welcome to XOD, Maker! \n\nIn XOD, we do not use text to code; we use visual objects instead.\n\nThis large gray area with boxes is your program. It's called a *patch*. Patches are like documents or source files in other systems.\n\nSeveral related patches form a *project*. Currently you are working on a project named `welcome-to-xod`.\n\n## Exercise\n\nLet’s learn how to navigate a project.\n\n1. On the left-hand side, you will find a list of patches grouped by a project or library name. The list is called a *Project Browser*. The first item in it is `welcome-to-xod`. Expand the project by clicking on it.\n\n2. As you can see, the tutorial consists of many patches. Right now, you are in the patch `001-hello`. The next chapter of the tutorial is in the patch `002-simulate`. Double-click it, and let's meet there!",
       "id": "ry7eOGTwE",
       "position": {

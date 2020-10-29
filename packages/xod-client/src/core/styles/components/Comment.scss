@@ -121,6 +121,11 @@
       border-bottom: 1px solid $grey-bright;
       margin: $line-height 0;
     }
+
+    img {
+      max-width: 100%;
+      border-radius: 4px;
+    }
   }
 
   &:hover {
