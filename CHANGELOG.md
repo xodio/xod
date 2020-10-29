@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [core] Introduce records — an easy way to pack multiple data fields into a custom type and to serialize it to JSON. Check out [the guide article](https://xod.io/docs/guide/records/) for details (#2051)
+* [c++] Introduce [`setImmediate`](https://xod.io/docs/reference/node-cpp-api/#setImmediate) API, that greatly optimises cases that require sheduling evaluation right after the current transaction completes (#2056)
+* [ide] Add information about constant types in C++ cheatsheet in the sidebar (#2045)
+
+### Bug fixes
+
+* [nodes] Make xod graphics bitmaps compile on non-avr boards (#2053)
+* [nodes] Fix `xod-dev/esp8266-mcu/lan-ip` implementation (#2050)
+
+### New nodes
+
+* Add `to-json` abstract node and specialisations for primitive data types to [xod/json](https://xod.io/libs/xod/json) library (#2051)
+
 <a name="0.35.3"></a>
 
 ## 0.35.3 (2020-09-30)
