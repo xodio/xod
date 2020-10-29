@@ -1,6 +1,6 @@
 {
   "name": "xod-deploy-bin",
-  "version": "0.35.2",
+  "version": "0.36.0",
   "description": "XOD wrapper over arduino-cli wrapper",
   "main": "dist/index.js",
   "scripts": {
