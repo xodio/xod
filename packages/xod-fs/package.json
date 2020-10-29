@@ -1,6 +1,6 @@
 {
   "name": "xod-fs",
-  "version": "0.35.2",
+  "version": "0.36.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "recursive-readdir": "^2.1.0",
     "sanctuary-def": "^0.14.0",
     "xod-func-tools": "^0.34.0",
-    "xod-project": "^0.35.2"
+    "xod-project": "^0.36.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
