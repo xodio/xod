@@ -714,6 +714,14 @@ export const focusBoundValue = (nodeId, patchPath) => ({
   },
 });
 
+export const focusLabel = (nodeId, patchPath) => ({
+  type: ActionType.FOCUS_LABEL,
+  payload: {
+    nodeId,
+    patchPath,
+  },
+});
+
 export const abortTabtest = () => (dispatch, getState) => {
   const worker = Selectors.tabtestWorker(getState());
   if (worker) worker.terminate();

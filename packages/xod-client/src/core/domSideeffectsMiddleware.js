@@ -1,19 +1,22 @@
 import waitForElement from 'wait-for-element';
-import { FOCUS_BOUND_VALUE } from '../editor/actionTypes';
+import { FOCUS_BOUND_VALUE, FOCUS_LABEL } from '../editor/actionTypes';
+
+const CONTROL_SELECTORS = {
+  // Select widget control with a tricky selector instead of ID, because
+  // some constant nodes has a generated id of the terminal Node
+  [FOCUS_BOUND_VALUE]: '.PinWidget input, .PinWidget select',
+  [FOCUS_LABEL]: '#widget_label',
+};
 
 export default _ => next => action => {
-  if (action.type === FOCUS_BOUND_VALUE) {
+  if (Object.prototype.hasOwnProperty.call(CONTROL_SELECTORS, action.type)) {
     // First of all, do the stuff in reducers to show inspector pane.
     const n = next(action);
     // Wait for updated Inspector, because it could appeared
     // or it changed entirely on new selection
     waitForElement('.Inspector-container')
       .then(__ => {
-        // Select widget control with a tricky selector instead of ID, because
-        // some constant nodes has a generated id of the terminal Node
-        const ctrl = document.querySelector(
-          '.PinWidget input, .PinWidget select'
-        );
+        const ctrl = document.querySelector(CONTROL_SELECTORS[action.type]);
         if (!ctrl) return;
         if (ctrl.setSelectionRange)
           ctrl.setSelectionRange(0, ctrl.value.length);

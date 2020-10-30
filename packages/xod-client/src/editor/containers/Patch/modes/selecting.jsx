@@ -237,6 +237,11 @@ const selectingMode = {
       XP.isBindableCustomType(patchPath)
     ) {
       api.props.actions.focusBoundValue(nodeId, api.props.patchPath);
+    } else if (
+      XP.isBusPatchPath(patchPath) ||
+      XP.isTerminalPatchPath(patchPath)
+    ) {
+      api.props.actions.focusLabel(nodeId, api.props.patchPath);
     } else {
       api.props.actions.switchPatch(patchPath);
     }

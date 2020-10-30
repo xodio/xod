@@ -633,6 +633,7 @@ const editorReducer = (state = initialState, action) => {
       );
 
     case EAT.FOCUS_BOUND_VALUE:
+    case EAT.FOCUS_LABEL:
       // maximize Inspector panel to focus & select widget's input
       return R.assocPath(
         ['panels', PANEL_IDS.INSPECTOR, 'maximized'],
