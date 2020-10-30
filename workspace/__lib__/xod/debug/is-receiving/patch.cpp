@@ -4,6 +4,7 @@
 node {
     bool received = false;
     TimeMs startTime = 0;
+    bool isWaiting = false;
 
     void evaluate(Context ctx) {
         auto inet = getValue<input_INET>(ctx);
@@ -14,10 +15,10 @@ node {
         if (isInputDirty<input_UPD>(ctx)) {
             startTime = transactionTime();
             setImmediate();
-            return;
+            isWaiting = true;
         }
 
-        if (isTimedOut(ctx)) {
+        if (isWaiting) {
             bool shouldWait = startTime + (t * 1000) > transactionTime();
             if (shouldWait && inet->isConnected()) {
                 // No incoming data, but we're still waiting for data
@@ -27,10 +28,11 @@ node {
                 }
                 // Receiving data
                 received = true;
+                startTime = transactionTime();
                 setImmediate();
                 emitValue<output_Y>(ctx, 1);
-                return;
             } else {
+                isWaiting = false;
                 // No more incoming data
                 if (received && !inet->isReceiving()) {
                     received = false;
@@ -39,7 +41,6 @@ node {
                 }
                 // Timeout error
                 raiseError(ctx);
-                return;
             }
         }
     }
