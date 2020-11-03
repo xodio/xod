@@ -14,10 +14,19 @@ import { bindApi, getOffsetMatrix } from '../modeUtils';
 
 const debuggingMode = R.merge(selectingMode, {
   onNodeDoubleClick(api, nodeId, patchPath) {
-    if (patchPath === XP.NOT_IMPLEMENTED_IN_XOD_PATH) {
-      api.props.actions.openImplementationEditor();
-    } else if (XP.isConstantNodeType(patchPath) || XP.isTweakPath(patchPath)) {
+    if (R.contains(patchPath, R.keys(XP.MANAGED_ATTACHMENT_FILENAMES))) {
+      api.props.actions.openAttachmentEditor(patchPath);
+    } else if (
+      XP.isConstantNodeType(patchPath) ||
+      XP.isTweakPath(patchPath) ||
+      XP.isBindableCustomType(patchPath)
+    ) {
       api.props.actions.focusBoundValue(nodeId, api.props.patchPath);
+    } else if (
+      XP.isBusPatchPath(patchPath) ||
+      XP.isTerminalPatchPath(patchPath)
+    ) {
+      api.props.actions.focusLabel(nodeId, api.props.patchPath);
     } else {
       api.props.actions.drillDown(patchPath, nodeId);
     }

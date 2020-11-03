@@ -378,6 +378,7 @@ const mapDispatchToProps = dispatch => ({
       splitLinksToBuses: EditorActions.splitLinksToBuses,
       addBusNode: ProjectActions.addBusNode,
       focusBoundValue: EditorActions.focusBoundValue,
+      focusLabel: EditorActions.focusLabel,
     },
     dispatch
   ),
