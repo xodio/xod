@@ -36,22 +36,6 @@ class ProjectBrowserPopups extends React.PureComponent {
     return this.props.selectedPatchName;
   }
 
-  renderPatchCreatingPopup() {
-    return (
-      <PopupPrompt
-        key="new_patch"
-        title="Create new patch"
-        onConfirm={this.props.onPatchCreate}
-        onClose={this.props.onCloseAllPopups}
-        inputMask={patchBasenameMask}
-        inputValidator={isValidUserDefinedPatchBasename}
-        helpText={PATCH_BASENAME_RULES}
-      >
-        Type the name for new patch:
-      </PopupPrompt>
-    );
-  }
-
   renderPatchRenamingPopup() {
     const selectedPatchName = this.getSelectedPatchName();
 
@@ -93,9 +77,6 @@ class ProjectBrowserPopups extends React.PureComponent {
     if (isPopupVisible(POPUP_ID.DELETING_PATCH, this.props.popups)) {
       return this.renderPatchDeletingPopup();
     }
-    if (isPopupVisible(POPUP_ID.CREATING_PATCH, this.props.popups)) {
-      return this.renderPatchCreatingPopup();
-    }
 
     return null;
   }
@@ -107,7 +88,6 @@ ProjectBrowserPopups.propTypes = {
   popups: PropTypes.object,
   projectName: PropTypes.string,
 
-  onPatchCreate: PropTypes.func.isRequired,
   onPatchRename: PropTypes.func.isRequired,
   onPatchDelete: PropTypes.func.isRequired,
 

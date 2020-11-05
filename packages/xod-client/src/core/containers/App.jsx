@@ -19,6 +19,8 @@ import {
   Project,
   isValidIdentifier,
   IDENTIFIER_RULES,
+  isValidUserDefinedPatchBasename,
+  PATCH_BASENAME_RULES,
   getPatchByPath,
   getProjectName,
 } from 'xod-project';
@@ -36,7 +38,10 @@ import {
 } from 'xod-arduino';
 
 import { isInputTarget } from '../../utils/browser';
-import { lowercaseKebabMask } from '../../utils/inputFormatting';
+import {
+  lowercaseKebabMask,
+  patchBasenameMask,
+} from '../../utils/inputFormatting';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 
 import PopupPrompt from '../../utils/components/PopupPrompt';
@@ -285,6 +290,24 @@ export default class App extends React.Component {
     );
   }
 
+  renderPatchCreatingPopup() {
+    if (!this.props.popups.createPatch) return null;
+
+    return (
+      <PopupPrompt
+        key="new_patch"
+        title="Create new patch"
+        onConfirm={this.props.actions.addPatch}
+        onClose={this.props.actions.hideAllPopups}
+        inputMask={patchBasenameMask}
+        inputValidator={isValidUserDefinedPatchBasename}
+        helpText={PATCH_BASENAME_RULES}
+      >
+        Type the name for new patch:
+      </PopupPrompt>
+    );
+  }
+
   render() {
     return <div />;
   }
@@ -314,6 +337,7 @@ App.propTypes = {
     createPatch: PropTypes.func.isRequired,
     publishProject: PropTypes.func.isRequired,
     addComment: PropTypes.func.isRequired,
+    addPatch: PropTypes.func.isRequired,
     undoCurrentPatch: PropTypes.func.isRequired,
     redoCurrentPatch: PropTypes.func.isRequired,
     setMode: PropTypes.func.isRequired,
@@ -352,6 +376,7 @@ App.actions = {
   publishProject: actions.publishProject,
   createPatch: actions.requestCreatePatch,
   addComment: actions.addComment,
+  addPatch: actions.addPatch,
   undoCurrentPatch: actions.undoCurrentPatch,
   redoCurrentPatch: actions.redoCurrentPatch,
   setMode: actions.setMode,

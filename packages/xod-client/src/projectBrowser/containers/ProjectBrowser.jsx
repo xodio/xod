@@ -344,7 +344,6 @@ class ProjectBrowser extends React.Component {
           popups={this.props.popups}
           onPatchDelete={this.props.actions.deletePatch}
           onPatchRename={this.props.actions.renamePatch}
-          onPatchCreate={this.props.actions.addPatch}
           onCloseAllPopups={this.props.actions.closeAllPopups}
         />
         <SidebarPanel
@@ -406,7 +405,6 @@ ProjectBrowser.propTypes = {
     requestDelete: PropTypes.func.isRequired,
     setSelection: PropTypes.func.isRequired,
     removeSelection: PropTypes.func.isRequired,
-    addPatch: PropTypes.func.isRequired,
     renamePatch: PropTypes.func.isRequired,
     deletePatch: PropTypes.func.isRequired,
     clonePatch: PropTypes.func.isRequired,
@@ -447,7 +445,6 @@ const mapDispatchToProps = dispatch => ({
       removeSelection: ProjectBrowserActions.removeSelection,
 
       addNode: ProjectActions.addNode,
-      addPatch: ProjectActions.addPatch,
       renamePatch: ProjectActions.renamePatch,
       deletePatch: ProjectActions.deletePatch,
       clonePatch: ProjectActions.clonePatch,

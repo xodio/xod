@@ -375,6 +375,7 @@ class App extends client.App {
         {this.renderPopupProjectPreferences()}
         {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
+        {this.renderPatchCreatingPopup()}
       </HotKeys>
     );
   }
@@ -397,6 +398,7 @@ const mapStateToProps = R.applySpec({
   isSimulationAbortable: client.isSimulationAbortable,
   popups: {
     createProject: client.getPopupVisibility(client.POPUP_ID.CREATING_PROJECT),
+    createPatch: client.getPopupVisibility(client.POPUP_ID.CREATING_PATCH),
     showCode: client.getPopupVisibility(client.POPUP_ID.SHOWING_CODE),
     projectPreferences: client.getPopupVisibility(
       client.POPUP_ID.EDITING_PROJECT_PREFERENCES

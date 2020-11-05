@@ -984,6 +984,7 @@ class App extends client.App {
         {this.renderPopupPublishProject()}
         {this.renderPopupCreateNewProject()}
         {this.renderPopupCheckArduinoPackageUpdates()}
+        {this.renderPatchCreatingPopup()}
         <PopupSetWorkspace
           workspace={this.state.workspace}
           isClosable={R.propOr(
@@ -1097,6 +1098,7 @@ const mapStateToProps = R.applySpec({
     updateArduinoPackages: client.getPopupVisibility(
       client.POPUP_ID.UPDATE_ARDUINO_PACKAGES_POPUP
     ),
+    createPatch: client.getPopupVisibility(client.POPUP_ID.CREATING_PATCH),
   },
   popupsData: {
     projectSelection: client.getPopupData(client.POPUP_ID.OPENING_PROJECT),
