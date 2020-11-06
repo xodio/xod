@@ -8,7 +8,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { HotKeys, FocusTrap } from 'react-hotkeys';
+import { FocusTrap } from 'react-hotkeys';
 import * as XP from 'xod-project';
 import debounce from 'throttle-debounce/debounce';
 
@@ -19,7 +19,6 @@ import * as DebuggerSelectors from '../../debugger/selectors';
 import * as EditorSelectors from '../selectors';
 
 import { isInputTarget } from '../../utils/browser';
-import { COMMAND } from '../../utils/constants';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
 import { FOCUS_AREAS, TAB_TYPES, SIDEBAR_IDS } from '../constants';
 
@@ -45,7 +44,6 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getHotkeyHandlers = this.getHotkeyHandlers.bind(this);
     this.toggleHelp = this.toggleHelp.bind(this);
     this.onAddNode = this.onAddNode.bind(this);
     this.onInstallLibrary = this.onInstallLibrary.bind(this);
@@ -82,19 +80,6 @@ class Editor extends React.Component {
   }
   onLibSuggesterFocus() {
     this.props.actions.setFocusedArea(FOCUS_AREAS.LIB_SUGGESTER);
-  }
-
-  getHotkeyHandlers() {
-    return {
-      [COMMAND.HIDE_HELPBOX]: () => this.props.actions.hideHelpbox(),
-      [COMMAND.TOGGLE_HELP]: this.toggleHelp,
-      [COMMAND.INSERT_NODE]: event => {
-        if (isInputTarget(event)) return;
-        this.showSuggester(null);
-      },
-      [COMMAND.PAN_TO_ORIGIN]: this.props.actions.panToOrigin,
-      [COMMAND.PAN_TO_CENTER]: this.props.actions.panToCenter,
-    };
   }
 
   toggleHelp(e) {
@@ -261,8 +246,7 @@ class Editor extends React.Component {
     )(this.props.panelsSettings);
 
     return (
-      <HotKeys
-        handlers={this.getHotkeyHandlers()}
+      <div
         className={cn('Editor', {
           leftSidebarMaximized: areSidebarsMaximized[SIDEBAR_IDS.LEFT],
           rightSidebarMaximized: areSidebarsMaximized[SIDEBAR_IDS.RIGHT],
@@ -301,7 +285,7 @@ class Editor extends React.Component {
           onAutohideClick={this.props.actions.togglePanelAutohide}
         />
         <Tooltip />
-      </HotKeys>
+      </div>
     );
   }
 }
@@ -342,8 +326,6 @@ Editor.propTypes = {
     togglePanelAutohide: PropTypes.func.isRequired,
     hideHelpbox: PropTypes.func.isRequired,
     showHelpbox: PropTypes.func.isRequired,
-    panToOrigin: PropTypes.func.isRequired,
-    panToCenter: PropTypes.func.isRequired,
     runTabtest: PropTypes.func.isRequired,
   }),
 };
@@ -387,10 +369,8 @@ const mapDispatchToProps = dispatch => ({
       minimizePanel: Actions.minimizePanel,
       movePanel: Actions.movePanel,
       togglePanelAutohide: Actions.togglePanelAutohide,
-      hideHelpbox: Actions.hideHelpbox,
       showHelpbox: Actions.showHelpbox,
-      panToOrigin: Actions.setCurrentPatchOffsetToOrigin,
-      panToCenter: Actions.setCurrentPatchOffsetToCenter,
+      hideHelpbox: Actions.hideHelpbox,
       runTabtest: Actions.runTabtest,
     },
     dispatch
