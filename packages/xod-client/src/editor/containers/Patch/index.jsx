@@ -379,6 +379,7 @@ const mapDispatchToProps = dispatch => ({
       addBusNode: ProjectActions.addBusNode,
       addTerminalNode: ProjectActions.addTerminalNode,
       addConstantNode: ProjectActions.addConstantNode,
+      addInteractiveNode: ProjectActions.addInteractiveNode,
       focusBoundValue: EditorActions.focusBoundValue,
       focusLabel: EditorActions.focusLabel,
     },

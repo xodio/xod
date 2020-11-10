@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import { failOnFalse, maybePath, isAmong } from 'xod-func-tools';
 
 import { def } from './types';
@@ -335,6 +336,18 @@ export const getSpecializationPatchPath = R.curry(
 
 const tweakPathRegExp = new RegExp(
   `^xod/debug/tweak-(${bindableTypes.join('|')})`
+);
+
+// :: DataType -> Maybe PatchPath
+export const getTweakPatchPath = R.ifElse(
+  R.both(isAmong(bindableTypes), R.complement(isGenericType)),
+  type =>
+    Maybe.of(
+      type === CONST.PIN_TYPE.STRING
+        ? 'xod/debug/tweak-string-16'
+        : `xod/debug/tweak-${type}`
+    ),
+  Maybe.Nothing
 );
 
 // :: PatchPath -> Boolean

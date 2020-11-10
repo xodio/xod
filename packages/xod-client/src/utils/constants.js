@@ -34,6 +34,7 @@ export const COMMAND = {
   MAKE_BUS: 'makeBus',
   MAKE_TERMINAL: 'makeTerminal',
   MAKE_CONSTANT: 'makeConstant',
+  MAKE_INTERACTIVE: 'makeInteractive',
 };
 
 export const HOTKEY = {
@@ -63,6 +64,7 @@ export const HOTKEY = {
   [COMMAND.MAKE_BUS]: ['b'],
   [COMMAND.MAKE_TERMINAL]: ['t'],
   [COMMAND.MAKE_CONSTANT]: ['c'],
+  [COMMAND.MAKE_INTERACTIVE]: ['w'],
 
   [COMMAND.PAN_TO_ORIGIN]: ['home'],
   [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+home',

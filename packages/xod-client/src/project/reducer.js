@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import * as XP from 'xod-project';
 import { explodeEither, foldMaybe, maybeProp } from 'xod-func-tools';
 import { getLibName } from 'xod-pm';
@@ -501,6 +502,30 @@ export default (state = {}, action) => {
                 )(position, newNodeType);
               },
               XP.getConstantNodeType(pin.type)
+            );
+          }
+          case NODE_KIND.INTERACTIVE: {
+            const newNodeType =
+              pin.direction === XP.PIN_DIRECTION.INPUT
+                ? XP.getTweakPatchPath(pin.type)
+                : Maybe.of(XP.WATCH_NODETYPE);
+
+            return foldMaybe(
+              state,
+              type => {
+                const outputPinKey = R.compose(
+                  foldMaybe('__out__', XP.getPinKey),
+                  R.chain(maybeProp(0)),
+                  R.map(XP.listOutputPins),
+                  XP.getPatchByPath(type)
+                )(state);
+
+                return R.compose(
+                  XP.setBoundValue(outputPinKey, pin.value),
+                  XP.createNode
+                )(position, type);
+              },
+              newNodeType
             );
           }
           default:

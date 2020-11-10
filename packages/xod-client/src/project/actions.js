@@ -393,6 +393,7 @@ const addLinkedNode = nodeKind => (
 export const addBusNode = addLinkedNode(NODE_KIND.BUS);
 export const addTerminalNode = addLinkedNode(NODE_KIND.TERMINAL);
 export const addConstantNode = addLinkedNode(NODE_KIND.CONSTANT);
+export const addInteractiveNode = addLinkedNode(NODE_KIND.INTERACTIVE);
 
 export const setApiKey = apiKey => ({
   type: ActionType.PROJECT_SET_API_KEY,
