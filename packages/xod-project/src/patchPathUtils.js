@@ -3,7 +3,7 @@ import { failOnFalse, maybePath, isAmong } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
-import { isBuiltInType } from './utils';
+import { isBuiltInType, isGenericType } from './utils';
 import {
   isPathLocal,
   isPathLibrary,
@@ -260,6 +260,16 @@ const constantNodeRegExp = new RegExp(
 
 // :: PatchPath -> Boolean
 export const isConstantNodeType = R.test(constantNodeRegExp);
+
+// :: DataType -> Maybe PatchPath
+export const getConstantNodeType = R.compose(
+  Maybe.toMaybe,
+  R.cond([
+    [isGenericType, R.always(null)],
+    [isBuiltInType, R.prop(R.__, CONST.CONST_NODETYPES)],
+    [R.T, R.identity],
+  ])
+);
 
 //
 // utils for 'internal' terminals (used only in flatten)

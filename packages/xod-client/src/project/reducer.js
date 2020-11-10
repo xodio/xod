@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import * as XP from 'xod-project';
-import { explodeEither } from 'xod-func-tools';
+import { explodeEither, foldMaybe, maybeProp } from 'xod-func-tools';
 import { getLibName } from 'xod-pm';
 
 import * as AT from './actionTypes';
@@ -19,6 +19,7 @@ import {
 import {
   NODE_PROPERTY_KIND,
   NODE_PROPERTY_KEY,
+  NODE_KIND,
   MAIN_PATCH_PATH,
 } from './constants';
 
@@ -103,20 +104,23 @@ const assocPatchListAndMigrate = R.curry((patches, project) =>
 );
 
 const addLinkedNode = R.curry(
-  (type, { patchPath, pinKey, nodeId, position, node, pin }, state) => {
-    const label = XP.isPinNode(node)
-      ? XP.getNodeLabel(node)
-      : XP.getPinLabel(pin);
-
-    const newNode = R.compose(XP.setNodeLabel(label), XP.createNode)(
-      position,
-      type
-    );
+  (newNode, { patchPath, pinKey, nodeId, pin }, state) => {
+    const newPinKey = R.compose(
+      foldMaybe('__out__', XP.getPinKey),
+      R.chain(maybeProp(0)),
+      R.map(
+        pin.direction === XP.PIN_DIRECTION.INPUT
+          ? XP.listOutputPins
+          : XP.listInputPins
+      ),
+      XP.getPatchByPath(R.__, state),
+      XP.getNodeType
+    )(newNode);
 
     const link =
       pin.direction === XP.PIN_DIRECTION.INPUT
-        ? XP.createLink(pinKey, nodeId, '__out__', XP.getNodeId(newNode))
-        : XP.createLink('__in__', XP.getNodeId(newNode), pinKey, nodeId);
+        ? XP.createLink(pinKey, nodeId, newPinKey, XP.getNodeId(newNode))
+        : XP.createLink(newPinKey, XP.getNodeId(newNode), pinKey, nodeId);
 
     const conflictingLinks = R.compose(
       XP.listLinksByPin(
@@ -452,23 +456,59 @@ export default (state = {}, action) => {
       );
     }
 
-    case AT.ADD_BUS_NODE: {
-      const { pin } = action.payload;
+    case AT.ADD_LINKED_NODE: {
+      const { nodeKind, node, pin, position } = action.payload;
 
-      const busNodeType =
-        pin.direction === XP.PIN_DIRECTION.INPUT
-          ? XP.FROM_BUS_PATH
-          : XP.TO_BUS_PATH;
+      const newNode = (() => {
+        switch (nodeKind) {
+          case NODE_KIND.BUS: {
+            const newNodeType =
+              pin.direction === XP.PIN_DIRECTION.INPUT
+                ? XP.FROM_BUS_PATH
+                : XP.TO_BUS_PATH;
+            const label = XP.isPinNode(node)
+              ? XP.getNodeLabel(node)
+              : XP.getPinLabel(pin);
+            return R.compose(XP.setNodeLabel(label), XP.createNode)(
+              position,
+              newNodeType
+            );
+          }
+          case NODE_KIND.TERMINAL: {
+            const newNodeType = XP.getTerminalPath(pin.direction, pin.type);
+            const label = XP.isPinNode(node)
+              ? XP.getNodeLabel(node)
+              : XP.getPinLabel(pin);
+            return R.compose(XP.setNodeLabel(label), XP.createNode)(
+              position,
+              newNodeType
+            );
+          }
+          case NODE_KIND.CONSTANT: {
+            return foldMaybe(
+              state,
+              newNodeType => {
+                const outputPinKey = R.compose(
+                  foldMaybe('__out__', XP.getPinKey),
+                  R.chain(maybeProp(0)),
+                  R.map(XP.listOutputPins),
+                  XP.getPatchByPath(newNodeType)
+                )(state);
 
-      return addLinkedNode(busNodeType, action.payload, state);
-    }
+                return R.compose(
+                  XP.setBoundValue(outputPinKey, pin.value),
+                  XP.createNode
+                )(position, newNodeType);
+              },
+              XP.getConstantNodeType(pin.type)
+            );
+          }
+          default:
+            return R.compose(XP.createNode)(position, pin.type);
+        }
+      })();
 
-    case AT.ADD_TERMINAL_NODE: {
-      const { pin } = action.payload;
-
-      const type = XP.getTerminalPath(pin.direction, pin.type);
-
-      return addLinkedNode(type, action.payload, state);
+      return addLinkedNode(newNode, action.payload, state);
     }
 
     //
