@@ -62,11 +62,28 @@ const linkingMode = {
     );
     api.goToDefaultMode();
   },
+  onCreateTerminal(api) {
+    const { nodeId, pinKey } = api.props.linkingPin;
+    const node = api.props.nodes[nodeId];
+
+    const mouseSlotPosition = pixelPositionToSlots(
+      snapPositionToSlots(api.state.mousePosition)
+    );
+
+    api.props.actions.addTerminalNode(
+      api.props.patchPath,
+      mouseSlotPosition,
+      node,
+      pinKey
+    );
+    api.goToDefaultMode();
+  },
   onBackgroundClick: abort,
   getHotkeyHandlers(api) {
     return {
       [COMMAND.DESELECT]: () => abort(api),
       [COMMAND.MAKE_BUS]: bindApi(api, this.onCreateBus),
+      [COMMAND.MAKE_TERMINAL]: bindApi(api, this.onCreateTerminal),
     };
   },
   render(api) {

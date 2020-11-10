@@ -102,6 +102,42 @@ const assocPatchListAndMigrate = R.curry((patches, project) =>
   )
 );
 
+const addLinkedNode = R.curry(
+  (type, { patchPath, pinKey, nodeId, position, node, pin }, state) => {
+    const label = XP.isPinNode(node)
+      ? XP.getNodeLabel(node)
+      : XP.getPinLabel(pin);
+
+    const newNode = R.compose(XP.setNodeLabel(label), XP.createNode)(
+      position,
+      type
+    );
+
+    const link =
+      pin.direction === XP.PIN_DIRECTION.INPUT
+        ? XP.createLink(pinKey, nodeId, '__out__', XP.getNodeId(newNode))
+        : XP.createLink('__in__', XP.getNodeId(newNode), pinKey, nodeId);
+
+    const conflictingLinks = R.compose(
+      XP.listLinksByPin(
+        XP.getLinkInputPinKey(link),
+        XP.getLinkInputNodeId(link)
+      ),
+      XP.getPatchByPathUnsafe(patchPath)
+    )(state);
+
+    return R.over(
+      XP.lensPatch(patchPath),
+      R.pipe(
+        XP.omitLinks(conflictingLinks),
+        XP.assocNode(newNode),
+        XP.assocLink(link)
+      ),
+      state
+    );
+  }
+);
+
 export default (state = {}, action) => {
   switch (action.type) {
     //
@@ -417,47 +453,22 @@ export default (state = {}, action) => {
     }
 
     case AT.ADD_BUS_NODE: {
-      const {
-        patchPath,
-        pinKey,
-        pinDirection,
-        nodeId,
-        label,
-        position,
-      } = action.payload;
+      const { pin } = action.payload;
 
       const busNodeType =
-        pinDirection === XP.PIN_DIRECTION.INPUT
+        pin.direction === XP.PIN_DIRECTION.INPUT
           ? XP.FROM_BUS_PATH
           : XP.TO_BUS_PATH;
 
-      const busNode = R.compose(XP.setNodeLabel(label), XP.createNode)(
-        position,
-        busNodeType
-      );
+      return addLinkedNode(busNodeType, action.payload, state);
+    }
 
-      const link =
-        pinDirection === XP.PIN_DIRECTION.INPUT
-          ? XP.createLink(pinKey, nodeId, '__out__', XP.getNodeId(busNode))
-          : XP.createLink('__in__', XP.getNodeId(busNode), pinKey, nodeId);
+    case AT.ADD_TERMINAL_NODE: {
+      const { pin } = action.payload;
 
-      const conflictingLinks = R.compose(
-        XP.listLinksByPin(
-          XP.getLinkInputPinKey(link),
-          XP.getLinkInputNodeId(link)
-        ),
-        XP.getPatchByPathUnsafe(patchPath)
-      )(state);
+      const type = XP.getTerminalPath(pin.direction, pin.type);
 
-      return R.over(
-        XP.lensPatch(patchPath),
-        R.pipe(
-          XP.omitLinks(conflictingLinks),
-          XP.assocNode(busNode),
-          XP.assocLink(link)
-        ),
-        state
-      );
+      return addLinkedNode(type, action.payload, state);
     }
 
     //

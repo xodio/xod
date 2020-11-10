@@ -371,25 +371,29 @@ export const changeNodeSpecialization = (nodeId, newNodeType) => (
   );
 };
 
-export const addBusNode = (patchPath, position, renderableNode, pinKey) => {
-  const pin = renderableNode.pins[pinKey];
+export const addBusNode = (patchPath, position, fromNode, fromPinKey) => ({
+  type: ActionType.ADD_BUS_NODE,
+  payload: {
+    patchPath,
+    pinKey: fromPinKey,
+    nodeId: XP.getNodeId(fromNode),
+    node: fromNode,
+    pin: fromNode.pins[fromPinKey],
+    position,
+  },
+});
 
-  const label = XP.isPinNode(renderableNode)
-    ? XP.getNodeLabel(renderableNode)
-    : XP.getPinLabel(pin);
-
-  return {
-    type: ActionType.ADD_BUS_NODE,
-    payload: {
-      patchPath,
-      pinKey,
-      pinDirection: pin.direction,
-      nodeId: XP.getNodeId(renderableNode),
-      label,
-      position,
-    },
-  };
-};
+export const addTerminalNode = (patchPath, position, fromNode, fromPinKey) => ({
+  type: ActionType.ADD_TERMINAL_NODE,
+  payload: {
+    patchPath,
+    pinKey: fromPinKey,
+    nodeId: XP.getNodeId(fromNode),
+    node: fromNode,
+    pin: fromNode.pins[fromPinKey],
+    position,
+  },
+});
 
 export const setApiKey = apiKey => ({
   type: ActionType.PROJECT_SET_API_KEY,

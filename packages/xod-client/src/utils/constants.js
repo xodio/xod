@@ -32,6 +32,7 @@ export const COMMAND = {
   INSERT_NODE: 'insertNode',
 
   MAKE_BUS: 'makeBus',
+  MAKE_TERMINAL: 'makeTerminal',
 };
 
 export const HOTKEY = {
@@ -59,6 +60,7 @@ export const HOTKEY = {
   [COMMAND.INSERT_NODE]: ['i'],
 
   [COMMAND.MAKE_BUS]: ['b'],
+  [COMMAND.MAKE_TERMINAL]: ['t'],
 
   [COMMAND.PAN_TO_ORIGIN]: ['home'],
   [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+home',
