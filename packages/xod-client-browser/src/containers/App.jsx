@@ -48,11 +48,13 @@ class App extends client.App {
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
-    this.hotkeyHandlers = {
-      [client.COMMAND.NEW_PROJECT]: this.onCreateProject,
-      [client.COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
-      [client.COMMAND.REDO]: this.props.actions.redoCurrentPatch,
-    };
+    this.hotkeyHandlers = R.merge(
+      {
+        [client.COMMAND.NEW_PROJECT]: this.onCreateProject,
+        [client.COMMAND.ADD_PATCH]: this.props.actions.createPatch,
+      },
+      this.defaultHotkeyHandlers
+    );
 
     this.urlActions = {
       [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorial,

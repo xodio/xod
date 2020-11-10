@@ -37,7 +37,7 @@ import {
   LIVENESS,
 } from 'xod-arduino';
 
-import { isInputTarget } from '../../utils/browser';
+import { isInputTarget, elementHasFocusFunction } from '../../utils/browser';
 import {
   lowercaseKebabMask,
   patchBasenameMask,
@@ -58,6 +58,7 @@ import {
 import { USERNAME_NEEDED_FOR_LITERAL } from '../../user/messages';
 import { PROJECT_NAME_NEEDED_FOR_LITERAL } from '../../project/messages';
 import { DO_NOT_USE_TETHERING_INTERNET_IN_BROWSER } from '../../debugger/messages';
+import { COMMAND } from '../../utils/constants';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -71,6 +72,19 @@ export default class App extends React.Component {
       this
     );
     this.getGlobals = this.getGlobals.bind(this);
+
+    this.defaultHotkeyHandlers = {
+      [COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
+      [COMMAND.REDO]: this.props.actions.redoCurrentPatch,
+      [COMMAND.HIDE_HELPBOX]: this.props.actions.hideHelpbox,
+      [COMMAND.TOGGLE_HELP]: this.props.actions.toggleHelp,
+      [COMMAND.INSERT_NODE]: event => {
+        if (isInputTarget(event)) return;
+        this.props.actions.showSuggester(null);
+      },
+      [COMMAND.PAN_TO_ORIGIN]: this.props.actions.panToOrigin,
+      [COMMAND.PAN_TO_CENTER]: this.props.actions.panToCenter,
+    };
 
     /**
      * We have to handle some hotkeys, because:
@@ -96,6 +110,33 @@ export default class App extends React.Component {
     document.addEventListener('copy', this.props.actions.copyEntities);
     document.addEventListener('paste', this.props.actions.pasteEntities);
     this.props.actions.fetchGrant(/* startup */ true);
+
+    // TODO: Replace with ref and `React.createRef`
+    //       after updating React >16.3
+    const appEl = document.getElementById('App');
+
+    if (elementHasFocusFunction(appEl)) appEl.focus();
+
+    /**
+     * Listen capturing focusout on any element inside body element
+     * and if element unfocused to the body element — focus on the `App`
+     * component to make sure main hotkeys will work anytime.
+     */
+    document.body.addEventListener(
+      'focusout',
+      // We need a timeout here to await while focus changed on the some element
+      () =>
+        setTimeout(() => {
+          // If focused changed to the body element — focus to the App
+          if (
+            document.activeElement === document.body &&
+            elementHasFocusFunction(appEl)
+          ) {
+            appEl.focus();
+          }
+        }, 0),
+      true
+    );
   }
 
   onShowCodeArduino(liveness = LIVENESS.NONE) {
@@ -309,7 +350,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    return <div />;
+    return <div id="App" />;
   }
 }
 
@@ -353,6 +394,7 @@ App.propTypes = {
     toggleDebugger: PropTypes.func.isRequired,
     logDebugger: PropTypes.func.isRequired,
     clearDebugger: PropTypes.func.isRequired,
+    showSuggester: PropTypes.func.isRequired,
     showLibSuggester: PropTypes.func.isRequired,
     toggleAccountPane: PropTypes.func.isRequired,
     fetchGrant: PropTypes.func.isRequired,
@@ -362,6 +404,9 @@ App.propTypes = {
     abortSimulation: PropTypes.func.isRequired,
     generateApiKey: PropTypes.func.isRequired,
     renewApiToken: PropTypes.func.isRequired,
+    hideHelpbox: PropTypes.func.isRequired,
+    panToOrigin: PropTypes.func.isRequired,
+    panToCenter: PropTypes.func.isRequired,
     /* eslint-enable react/no-unused-prop-types */
   }),
 };
@@ -394,7 +439,6 @@ App.actions = {
   startSerialSession: actions.startSerialSession,
   stopDebuggerSession: actions.stopDebuggerSession,
   toggleDebugger: actions.toggleDebugger,
-  showSuggester: actions.showSuggester,
   logDebugger: actions.addMessagesToDebuggerLog,
   clearDebugger: actions.clearDebuggerLog,
   cutEntities: actions.cutEntities,
@@ -402,6 +446,7 @@ App.actions = {
   pasteEntities: actions.pasteEntities,
   setCurrentPatchOffsetToOrigin: actions.setCurrentPatchOffsetToOrigin,
   setCurrentPatchOffsetToCenter: actions.setCurrentPatchOffsetToCenter,
+  showSuggester: actions.showSuggester,
   showLibSuggester: actions.showLibSuggester,
   toggleAccountPane: actions.toggleAccountPane,
   fetchGrant: actions.fetchGrant,
@@ -412,4 +457,7 @@ App.actions = {
   abortSimulation: actions.abortSimulation,
   generateApiKey: actions.generateApiKey,
   renewApiToken: actions.renewApiToken,
+  hideHelpbox: actions.hideHelpbox,
+  panToOrigin: actions.setCurrentPatchOffsetToOrigin,
+  panToCenter: actions.setCurrentPatchOffsetToCenter,
 };

@@ -191,10 +191,7 @@ class App extends client.App {
       this.showError(error);
     });
 
-    this.hotkeyHandlers = {
-      [client.COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
-      [client.COMMAND.REDO]: this.props.actions.redoCurrentPatch,
-    };
+    this.hotkeyHandlers = this.defaultHotkeyHandlers;
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
