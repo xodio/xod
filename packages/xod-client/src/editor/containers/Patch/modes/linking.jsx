@@ -1,5 +1,6 @@
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
+import * as XP from 'xod-project';
 
 import { COMMAND } from '../../../../utils/constants';
 
@@ -62,11 +63,77 @@ const linkingMode = {
     );
     api.goToDefaultMode();
   },
+  onCreateTerminal(api) {
+    const { nodeId, pinKey } = api.props.linkingPin;
+    const node = api.props.nodes[nodeId];
+
+    const mouseSlotPosition = pixelPositionToSlots(
+      snapPositionToSlots(api.state.mousePosition)
+    );
+
+    api.props.actions.addTerminalNode(
+      api.props.patchPath,
+      mouseSlotPosition,
+      node,
+      pinKey
+    );
+    api.goToDefaultMode();
+  },
+  onCreateConstant(api) {
+    const { nodeId, pinKey } = api.props.linkingPin;
+
+    const node = api.props.nodes[nodeId];
+    const pin = node.pins[pinKey];
+    if (
+      pin.direction === XP.PIN_DIRECTION.OUTPUT ||
+      pin.type === XP.PIN_TYPE.PULSE ||
+      XP.isGenericType(pin.type)
+    )
+      return;
+
+    const mouseSlotPosition = pixelPositionToSlots(
+      snapPositionToSlots(api.state.mousePosition)
+    );
+    api.props.actions.addConstantNode(
+      api.props.patchPath,
+      mouseSlotPosition,
+      node,
+      pinKey
+    );
+    api.goToDefaultMode();
+  },
+  onCreateTweakOrWatch(api) {
+    const { nodeId, pinKey } = api.props.linkingPin;
+    const node = api.props.nodes[nodeId];
+    const pin = node.pins[pinKey];
+
+    const isInput = pin.direction === XP.PIN_DIRECTION.INPUT;
+    const isOutputPulse = !isInput && pin.type === XP.PIN_TYPE.PULSE;
+    const isGenericInput = isInput && XP.isGenericType(pin.type);
+    const isCustomInput = isInput && !XP.isBuiltInType(pin.type);
+    // Do not create watches for output pulses,
+    // tweaks for generic inputs and custom types
+    if (isOutputPulse || isGenericInput || isCustomInput) return;
+
+    const mouseSlotPosition = pixelPositionToSlots(
+      snapPositionToSlots(api.state.mousePosition)
+    );
+    api.props.actions.addInteractiveNode(
+      api.props.patchPath,
+      mouseSlotPosition,
+      node,
+      pinKey
+    );
+    api.goToDefaultMode();
+  },
   onBackgroundClick: abort,
   getHotkeyHandlers(api) {
     return {
       [COMMAND.DESELECT]: () => abort(api),
       [COMMAND.MAKE_BUS]: bindApi(api, this.onCreateBus),
+      [COMMAND.MAKE_TERMINAL]: bindApi(api, this.onCreateTerminal),
+      [COMMAND.MAKE_CONSTANT]: bindApi(api, this.onCreateConstant),
+      [COMMAND.MAKE_INTERACTIVE]: bindApi(api, this.onCreateTweakOrWatch),
     };
   },
   render(api) {

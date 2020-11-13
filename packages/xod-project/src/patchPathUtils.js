@@ -1,9 +1,10 @@
 import * as R from 'ramda';
+import { Maybe } from 'ramda-fantasy';
 import { failOnFalse, maybePath, isAmong } from 'xod-func-tools';
 
 import { def } from './types';
 import * as CONST from './constants';
-import { isBuiltInType } from './utils';
+import { isBuiltInType, isGenericType } from './utils';
 import {
   isPathLocal,
   isPathLibrary,
@@ -261,6 +262,16 @@ const constantNodeRegExp = new RegExp(
 // :: PatchPath -> Boolean
 export const isConstantNodeType = R.test(constantNodeRegExp);
 
+// :: DataType -> Maybe PatchPath
+export const getConstantNodeType = R.compose(
+  Maybe.toMaybe,
+  R.cond([
+    [isGenericType, R.always(null)],
+    [isBuiltInType, R.prop(R.__, CONST.CONST_NODETYPES)],
+    [R.T, R.identity],
+  ])
+);
+
 //
 // utils for 'internal' terminals (used only in flatten)
 //
@@ -325,6 +336,18 @@ export const getSpecializationPatchPath = R.curry(
 
 const tweakPathRegExp = new RegExp(
   `^xod/debug/tweak-(${bindableTypes.join('|')})`
+);
+
+// :: DataType -> Maybe PatchPath
+export const getTweakPatchPath = R.ifElse(
+  R.both(isAmong(bindableTypes), R.complement(isGenericType)),
+  type =>
+    Maybe.of(
+      type === CONST.PIN_TYPE.STRING
+        ? 'xod/debug/tweak-string-16'
+        : `xod/debug/tweak-${type}`
+    ),
+  Maybe.Nothing
 );
 
 // :: PatchPath -> Boolean

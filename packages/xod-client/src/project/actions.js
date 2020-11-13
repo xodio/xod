@@ -4,6 +4,7 @@ import { publish } from 'xod-pm';
 
 import { foldMaybe, rejectWithCode } from 'xod-func-tools';
 
+import { NODE_KIND } from './constants';
 import { addConfirmation, addError } from '../messages/actions';
 import { PROJECT_BROWSER_ERRORS } from '../projectBrowser/messages';
 import * as ActionType from './actionTypes';
@@ -371,25 +372,28 @@ export const changeNodeSpecialization = (nodeId, newNodeType) => (
   );
 };
 
-export const addBusNode = (patchPath, position, renderableNode, pinKey) => {
-  const pin = renderableNode.pins[pinKey];
+const addLinkedNode = nodeKind => (
+  patchPath,
+  position,
+  fromNode,
+  fromPinKey
+) => ({
+  type: ActionType.ADD_LINKED_NODE,
+  payload: {
+    nodeKind,
+    patchPath,
+    pinKey: fromPinKey,
+    nodeId: XP.getNodeId(fromNode),
+    node: fromNode,
+    pin: fromNode.pins[fromPinKey],
+    position,
+  },
+});
 
-  const label = XP.isPinNode(renderableNode)
-    ? XP.getNodeLabel(renderableNode)
-    : XP.getPinLabel(pin);
-
-  return {
-    type: ActionType.ADD_BUS_NODE,
-    payload: {
-      patchPath,
-      pinKey,
-      pinDirection: pin.direction,
-      nodeId: XP.getNodeId(renderableNode),
-      label,
-      position,
-    },
-  };
-};
+export const addBusNode = addLinkedNode(NODE_KIND.BUS);
+export const addTerminalNode = addLinkedNode(NODE_KIND.TERMINAL);
+export const addConstantNode = addLinkedNode(NODE_KIND.CONSTANT);
+export const addInteractiveNode = addLinkedNode(NODE_KIND.INTERACTIVE);
 
 export const setApiKey = apiKey => ({
   type: ActionType.PROJECT_SET_API_KEY,
