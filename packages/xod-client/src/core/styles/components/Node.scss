@@ -173,6 +173,24 @@ $error-disappear-time: 250ms;
     transition: color $error-disappear-time;
   }
 
+  .bus-node {
+    .nodeLabelContainer {
+      margin: 0 1px;
+      height: 100%;
+    }
+    .nodeLabel {
+      font-family: $font-family-condensed;
+      font-weight: 500;
+      font-size: 11px;
+      padding-left: 1px;
+      padding-right: 1px;
+    }
+  }
+
+  .hotspot {
+    fill: transparent;
+  }
+
   &.is-hovered {
     .jumper-line, .outline {
       stroke: $color-highlight;
