@@ -134,6 +134,7 @@ module.exports = pkgDir => ({
     new webpack.NoEmitOnErrorsPlugin(),
     new CopyWebpackPlugin([
       { from: findup('node_modules/xod-client/src/core/assets/index.html') },
+      { from: findup('node_modules/xod-client/src/core/assets/favicon.ico') },
     ]),
   ].concat(
     IS_DEV ? [] : [
