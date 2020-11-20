@@ -35,6 +35,9 @@ export const COMMAND = {
   MAKE_TERMINAL: 'makeTerminal',
   MAKE_CONSTANT: 'makeConstant',
   MAKE_INTERACTIVE: 'makeInteractive',
+
+  UPLOAD: 'upload',
+  UPLOAD_WITH_DEBUG: 'uploadWithDebug',
 };
 
 export const HOTKEY = {
@@ -58,7 +61,7 @@ export const HOTKEY = {
 
   [COMMAND.HIDE_HELPBOX]: 'escape',
   [COMMAND.TOGGLE_HELP]: ['h'],
-  [COMMAND.TOGGLE_DEBUGGER]: ['ctrl+shift+u'],
+  [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+d',
   [COMMAND.INSERT_NODE]: ['i'],
 
   [COMMAND.MAKE_BUS]: ['b'],
@@ -68,6 +71,8 @@ export const HOTKEY = {
 
   [COMMAND.PAN_TO_ORIGIN]: ['home'],
   [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+home',
+
+  [COMMAND.UPLOAD_WITH_DEBUG]: 'CmdOrCtrl+shift+u',
 };
 
 export const ELECTRON_ACCELERATOR = {
@@ -92,10 +97,13 @@ export const ELECTRON_ACCELERATOR = {
   [COMMAND.SAVE_COPY_AS]: 'CmdOrCtrl+Shift+Alt+S',
 
   [COMMAND.HIDE_HELPBOX]: 'Escape',
-  [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+Shift+U',
+  [COMMAND.TOGGLE_DEBUGGER]: 'CmdOrCtrl+D',
 
   [COMMAND.PAN_TO_ORIGIN]: 'Home',
   [COMMAND.PAN_TO_CENTER]: 'CmdOrCtrl+Home',
+
+  [COMMAND.UPLOAD]: 'CmdOrCtrl+u',
+  [COMMAND.UPLOAD_WITH_DEBUG]: 'CmdOrCtrl+shift+u',
 };
 
 export const KEYCODE = {
