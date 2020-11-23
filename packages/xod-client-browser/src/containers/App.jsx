@@ -52,6 +52,10 @@ class App extends client.App {
       {
         [client.COMMAND.NEW_PROJECT]: this.onCreateProject,
         [client.COMMAND.ADD_PATCH]: this.props.actions.createPatch,
+        [client.COMMAND.TOGGLE_DEBUGGER]: e => {
+          e.preventDefault();
+          this.props.actions.toggleDebugger();
+        },
       },
       this.defaultHotkeyHandlers
     );

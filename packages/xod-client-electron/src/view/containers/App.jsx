@@ -191,7 +191,13 @@ class App extends client.App {
       this.showError(error);
     });
 
-    this.hotkeyHandlers = this.defaultHotkeyHandlers;
+    this.hotkeyHandlers = R.merge(
+      {
+        [client.COMMAND.UPLOAD_WITH_DEBUG]: this
+          .onUploadToArduinoAndDebugClicked,
+      },
+      this.defaultHotkeyHandlers
+    );
 
     this.urlActions = {
       // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
