@@ -97,10 +97,14 @@ export const getBBoxTopLeftPosition = R.compose(
 
 // :: Patch -> Project -> Node -> Size
 const getNodeSize = R.curry((currentPatch, project, node) =>
-  R.compose(calcutaleNodeSizeFromPins, R.values, XP.getPinsForNode)(
-    node,
-    currentPatch,
-    project
+  R.maxBy(
+    R.prop('width'),
+    XP.getNodeSize(node),
+    R.compose(calcutaleNodeSizeFromPins, R.values, XP.getPinsForNode)(
+      node,
+      currentPatch,
+      project
+    )
   )
 );
 
