@@ -5,6 +5,7 @@ import { isAmong, foldMaybe, notNil } from 'xod-func-tools';
 import { createIndexData } from 'xod-patch-search';
 
 import * as PAT from '../project/actionTypes';
+import { RECOVER_STATE } from '../core/actionTypes';
 
 // PatchSearchData :: { path: String, keywords: [String], desription: String, fullDescription: string }
 
@@ -43,6 +44,7 @@ export const shallUpdatePatchSearchData = R.curry((project, action) =>
   R.propSatisfies(
     R.complement(
       isAmong([
+        RECOVER_STATE,
         PAT.PROJECT_UPDATE_META,
         PAT.NODE_CHANGE_ARITY_LEVEL,
         PAT.NODE_RESIZE,

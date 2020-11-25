@@ -45,6 +45,7 @@ class App extends client.App {
     this.onStopDebuggerSessionClicked = this.onStopDebuggerSessionClicked.bind(
       this
     );
+    this.onFirstRun = this.onFirstRun.bind(this);
 
     this.hideInstallAppPopup = this.hideInstallAppPopup.bind(this);
 
@@ -63,10 +64,20 @@ class App extends client.App {
     this.urlActions = {
       [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorial,
     };
+  }
 
+  componentDidMount() {
+    super.componentDidMount();
     document.addEventListener('click', this.onDocumentClick);
+  }
+  componentWillUnmount() {
+    super.componentWillUnmount();
+    document.removeEventListener('click', this.onDocumentClick);
+  }
 
-    props.actions.openProject(props.tutorialProject);
+  onFirstRun() {
+    super.onFirstRun();
+    this.props.actions.openProject(this.props.tutorialProject);
   }
 
   onDocumentClick(e) {
@@ -428,4 +439,6 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  withRef: true,
+})(App);

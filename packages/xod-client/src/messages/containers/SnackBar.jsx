@@ -100,7 +100,7 @@ class SnackBar extends React.Component {
               key={messageData.id}
               message={messageData}
               onClickMessageButton={this.onButtonClicked}
-              onCloseMessage={this.onCloseMessage}
+              onCloseMessage={id => this.onCloseMessage(id)}
             />
           ),
         };

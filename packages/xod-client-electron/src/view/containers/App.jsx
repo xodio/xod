@@ -149,6 +149,46 @@ class App extends client.App {
 
     this.initNativeMenu();
 
+    this.hotkeyHandlers = R.merge(
+      {
+        [client.COMMAND.UPLOAD_WITH_DEBUG]: this
+          .onUploadToArduinoAndDebugClicked,
+      },
+      this.defaultHotkeyHandlers
+    );
+
+    this.urlActions = {
+      // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
+      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
+    };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const props = this.props;
+    // Custom checks for some props
+    // All other props will be checked for ===
+    const propChecks = {
+      currentPatchPath: (prev, next) => prev.equals(next), // Maybe.equals
+      popups: R.equals,
+      popupsData: R.equals,
+    };
+    const propEquality = R.mapObjIndexed((val, key) =>
+      R.ifElse(
+        R.has(key),
+        R.pipe(R.prop(key), check => check(val, nextProps[key])),
+        () => val === nextProps[key]
+      )(propChecks)
+    )(props);
+
+    return (
+      R.any(R.equals(false), R.values(propEquality)) ||
+      !R.equals(this.state, nextState)
+    );
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+
     // Reactions on messages from Main Process
     ipcRenderer.on(EVENTS.PROJECT_PATH_CHANGED, (event, projectPath) =>
       this.setState({ projectPath })
@@ -190,18 +230,6 @@ class App extends client.App {
       this.showError(error);
     });
 
-    this.hotkeyHandlers = R.merge(
-      {
-        [client.COMMAND.UPLOAD_WITH_DEBUG]: this
-          .onUploadToArduinoAndDebugClicked,
-      },
-      this.defaultHotkeyHandlers
-    );
-
-    this.urlActions = {
-      // actionPathName: params => this.props.actions.someAction(params.foo, params.bar),
-      [client.URL_ACTION_TYPES.OPEN_TUTORIAL]: this.onOpenTutorialProject,
-    };
     ipcRenderer.on(EVENTS.XOD_URL_CLICKED, (event, { actionName, params }) => {
       const action = this.urlActions[actionName];
 
@@ -238,26 +266,12 @@ class App extends client.App {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const props = this.props;
-    // Custom checks for some props
-    // All other props will be checked for ===
-    const propChecks = {
-      currentPatchPath: (prev, next) => prev.equals(next), // Maybe.equals
-      popups: R.equals,
-      popupsData: R.equals,
-    };
-    const propEquality = R.mapObjIndexed((val, key) =>
-      R.ifElse(
-        R.has(key),
-        R.pipe(R.prop(key), check => check(val, nextProps[key])),
-        () => val === nextProps[key]
-      )(propChecks)
-    )(props);
-
-    return (
-      R.any(R.equals(false), R.values(propEquality)) ||
-      !R.equals(this.state, nextState)
+  componentWillUnmount() {
+    super.componentWillUnmount();
+    // Unsubscribe from all ipc events
+    R.map(
+      eventName => ipcRenderer.removeAllListeners(eventName),
+      ipcRenderer.eventNames()
     );
   }
 
@@ -1146,4 +1160,6 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps, null, {
+  withRef: true,
+})(App);

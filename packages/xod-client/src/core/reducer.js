@@ -1,4 +1,4 @@
-import { merge } from 'ramda';
+import * as R from 'ramda';
 import { combineReducers } from 'redux';
 
 import userReducer from '../user/reducer';
@@ -17,12 +17,19 @@ import keepIntegrityAfterNavigatingHistory from './keepIntegrityAfterNavigatingH
 import trackLastSavedChanges from './trackLastSavedChanges';
 import initialProjectState from '../project/state';
 
+import { RECOVER_STATE } from './actionTypes';
+
 // :: [(s -> a -> s)] -> s -> a -> s
 const pipeReducers = (...reducers) => (state, action) =>
-  reducers.reduce((s, r) => r(s, action), state);
+  action.type === RECOVER_STATE
+    ? action.payload
+    : reducers.reduce((s, r) => r(s, action), state);
+
+const lastActionsReducer = (prevActions = [], newAction) =>
+  R.compose(R.slice(-3, Infinity), R.append(newAction))(prevActions);
 
 const combineRootReducers = extraReducers => {
-  const reducers = merge(
+  const reducers = R.merge(
     {
       user: userReducer,
       project: projectReducer,
@@ -36,6 +43,7 @@ const combineRootReducers = extraReducers => {
       debugger: debuggerReducer,
       hinting: hintingReducer,
       workers: workersReducer,
+      lastActions: lastActionsReducer,
     },
     extraReducers
   );

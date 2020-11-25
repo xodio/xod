@@ -4,6 +4,7 @@ import { foldMaybe, catMaybies } from 'xod-func-tools';
 
 import * as PAT from '../project/actionTypes';
 import * as EAT from '../editor/actionTypes';
+import { RECOVER_STATE } from '../core/actionTypes';
 
 import {
   defaultValidateFunction,
@@ -98,6 +99,7 @@ import { bulkActionChangesTerminalNodes } from './actionUtils';
  *      )
  */
 const shallValidateFunctions = {
+  [RECOVER_STATE]: R.F,
   [PAT.BULK_MOVE_NODES_AND_COMMENTS]: (action, project) => {
     // Could change validity only when moving terminals or `output-self` marker
     const nodeIds = action.payload.nodeIds;

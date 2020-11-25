@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createStore } from 'redux';
-import { Provider } from 'react-redux';
 
 import generateReducers from '../reducer';
 import { default as defaultInitialState } from '../state';
@@ -9,6 +8,8 @@ import composeMiddlewares from '../middlewares';
 
 import { loadPanelSettings } from '../../editor/utils';
 import { setSidebarLayout } from '../../editor/actions';
+
+import Catcher from './Catcher';
 
 export default class Root extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class Root extends React.Component {
   }
 
   render() {
-    return <Provider store={this.store}>{this.props.children}</Provider>;
+    return <Catcher store={this.store}>{this.props.children}</Catcher>;
   }
 }
 

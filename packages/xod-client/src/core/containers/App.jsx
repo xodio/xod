@@ -62,17 +62,21 @@ import { COMMAND } from '../../utils/constants';
 import { PANEL_IDS } from '../../editor/constants';
 
 import formatErrorMessage from '../formatErrorMessage';
+import initialProjectState from '../../project/state';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
+    this.appRef = null;
     this.isBrowser = false; // by default
 
     this.transformProjectForTranspiler = this.transformProjectForTranspiler.bind(
       this
     );
     this.getGlobals = this.getGlobals.bind(this);
+    this.onSelectAll = this.onSelectAll.bind(this);
+    this.onFocusOut = this.onFocusOut.bind(this);
 
     this.defaultHotkeyHandlers = {
       [COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
@@ -87,6 +91,20 @@ export default class App extends React.Component {
       [COMMAND.PAN_TO_CENTER]: this.props.actions.panToCenter,
     };
 
+    // When the parent component <Catcher> catches an error
+    // the <App> container will be constructed again,
+    // however the redux state still unrecovered,
+    // so <App> should open the initial (empty) project
+    // to be shown beneath the "Recovering" spinner
+    // until the state will be recovered.
+    this.props.actions.openProject(initialProjectState);
+  }
+
+  componentDidMount() {
+    document.addEventListener('cut', this.props.actions.cutEntities);
+    document.addEventListener('copy', this.props.actions.copyEntities);
+    document.addEventListener('paste', this.props.actions.pasteEntities);
+
     /**
      * We have to handle some hotkeys, because:
      * - Browser IDE should prevent default event handling
@@ -94,50 +112,49 @@ export default class App extends React.Component {
      *   "...some keybindings cannot be overridden on Windows/Linux because they are hard-coded in Chrome."
      *   See details: https://github.com/electron/electron/issues/7165 and related issues
      */
-    document.addEventListener('keydown', event => {
-      // Prevent selecting all contents with "Ctrl+a" or "Command+a"
-      const key = event.keyCode || event.which;
-      const mod = event.metaKey || event.ctrlKey;
-
-      // CmdOrCtrl+A
-      if (mod && key === 65 && !isInputTarget(event)) {
-        event.preventDefault();
-        this.props.actions.selectAll();
-      }
-    });
-  }
-  componentDidMount() {
-    document.addEventListener('cut', this.props.actions.cutEntities);
-    document.addEventListener('copy', this.props.actions.copyEntities);
-    document.addEventListener('paste', this.props.actions.pasteEntities);
-    this.props.actions.fetchGrant(/* startup */ true);
+    document.addEventListener('keydown', this.onSelectAll);
 
     // TODO: Replace with ref and `React.createRef`
     //       after updating React >16.3
-    const appEl = document.getElementById('App');
-
-    if (elementHasFocusFunction(appEl)) appEl.focus();
+    this.appRef = document.getElementById('App');
+    if (elementHasFocusFunction(this.appRef)) this.appRef.focus();
 
     /**
      * Listen capturing focusout on any element inside body element
      * and if element unfocused to the body element — focus on the `App`
      * component to make sure main hotkeys will work anytime.
      */
-    document.body.addEventListener(
-      'focusout',
-      // We need a timeout here to await while focus changed on the some element
-      () =>
-        setTimeout(() => {
-          // If focused changed to the body element — focus to the App
-          if (
-            document.activeElement === document.body &&
-            elementHasFocusFunction(appEl)
-          ) {
-            appEl.focus();
-          }
-        }, 0),
-      true
-    );
+    document.body.addEventListener('focusout', this.onFocusOut, true);
+  }
+
+  componentWillUnmount() {
+    // In case that IDE crashes with some error it will reconstruct
+    // the <App> container, so we have to clear the document events
+    // to avoid duplicating of handlers
+    document.removeEventListener('cut', this.props.actions.cutEntities);
+    document.removeEventListener('copy', this.props.actions.copyEntities);
+    document.removeEventListener('paste', this.props.actions.pasteEntities);
+    document.removeEventListener('keydown', this.selectAll);
+    document.body.removeEventListener('focusout', this.onFocusOut, true);
+  }
+
+  // This method will be called once on the first run of the IDE
+  onFirstRun() {
+    this.props.actions.fetchGrant(/* startup */ true);
+  }
+
+  onFocusOut() {
+    // We need a timeout here to await while focus changed on the some element
+    setTimeout(() => {
+      // If focused changed to the body element — focus to the App
+      if (
+        document.activeElement === document.body &&
+        this.appRef &&
+        elementHasFocusFunction(this.appRef)
+      ) {
+        this.appRef.focus();
+      }
+    }, 0);
   }
 
   onShowCodeArduino(liveness = LIVENESS.NONE) {
@@ -152,6 +169,18 @@ export default class App extends React.Component {
       R.map(transpile),
       this.transformProjectForTranspiler
     )(liveness);
+  }
+
+  onSelectAll(event) {
+    // Prevent selecting all contents with "Ctrl+a" or "Command+a"
+    const key = event.keyCode || event.which;
+    const mod = event.metaKey || event.ctrlKey;
+
+    // CmdOrCtrl+A
+    if (mod && key === 65 && !isInputTarget(event)) {
+      event.preventDefault();
+      this.props.actions.selectAll();
+    }
   }
 
   onRunSimulation() {
