@@ -70,6 +70,11 @@ export const getAllNodes = async page => {
   return elementHandles.map(eh => new Node(page, eh));
 };
 
+export const getAllNodeIds = async page => {
+  const nodes = await getAllNodes(page);
+  return Promise.all(nodes.map(node => node.getId()));
+};
+
 export const getSelectedNodes = async page => {
   const elementHandles = await page.$$('.Node.is-selected');
   return elementHandles.map(eh => new Node(page, eh));

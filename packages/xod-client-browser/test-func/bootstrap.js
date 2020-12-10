@@ -1,17 +1,38 @@
 /* global browser */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import puppeteer from 'puppeteer';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+/* eslint-enable import/no-extraneous-dependencies */
+
 import { assert } from 'chai';
 import R from 'ramda';
+import config from '../webpack.config.test';
 
-const { startServer, stopServer } = require('../tools/staticServer');
+import { PORT } from './server.config';
 
 const globalVariables = R.pick(['browser', 'assert'], global);
 
-before(async () => {
-  await startServer();
+const startServer = () =>
+  new Promise((resolve, reject) => {
+    const compiler = webpack(config);
+    const server = new WebpackDevServer(compiler);
+    // Replace the next line with `compiler.hooks.done.tap('onDone', ...`
+    // after upgrading webpack to version >4
+    compiler.plugin('done', () => {
+      resolve(server);
+    });
+    server.listen(PORT, 'localhost', err => {
+      if (err) {
+        console.error(err); // eslint-disable-line no-console
+        reject(err);
+      }
+    });
+  });
 
+before(async () => {
+  global.server = await startServer();
   global.assert = assert;
   global.browser = await puppeteer.launch({
     args: [
@@ -25,7 +46,7 @@ before(async () => {
 
 after(() => {
   browser.close();
-  stopServer();
+  global.server.close(() => {});
 
   global.browser = globalVariables.browser;
   global.assert = globalVariables.assert;
