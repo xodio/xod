@@ -1,5 +1,5 @@
 # CircleCI 2.0
-version: 2
+version: 2.1
 
 # Reusable definitions shared between Linux and macOS
 defs:
@@ -40,6 +40,10 @@ defs:
       - image: xodio/cci-node:10-v2
 
   steps:
+    step-install-node: &step-install-node
+      node-version: "v10.13.0"
+      install-npm: false
+
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
       name: Install arduino-cli
       command: |
@@ -100,6 +104,9 @@ defs:
       command: yarn dist:electron
       no_output_timeout: 30m
 
+orbs:
+  node: circleci/node@4.1.0
+
 jobs:
   #--------------------------------------------------------------------
   # Verify jobs
@@ -133,6 +140,7 @@ jobs:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
+      - node/install: *step-install-node
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-arduino-cli-on-mac
@@ -216,6 +224,7 @@ jobs:
       NODE_ENV: production
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
+      - node/install: *step-install-node
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-arduino-cli-on-mac
