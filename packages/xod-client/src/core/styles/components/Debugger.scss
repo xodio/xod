@@ -144,6 +144,30 @@
         border-bottom: 2px solid $cyan;
       }
     }
+
+    .tab-action {
+      float: right;
+      display: inline-block;
+
+      .fa {
+        color: $chalk;
+        border: 0;
+        background: transparent;
+
+        cursor: pointer;
+        height: 26px;
+        padding: 4px .5ex 4px;
+
+        &:hover {
+          background-color: $dark;
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          color: $grey-bright;
+        }
+      }
+    }
   }
 
   .container {
@@ -227,7 +251,7 @@
       top: 1px;
       width: 26px;
       background: linear-gradient(
-        to right, 
+        to right,
         rgba(255,255,255,0) 0%,
         $blackberry-shadow 35%,
         $blackberry-shadow 100%
