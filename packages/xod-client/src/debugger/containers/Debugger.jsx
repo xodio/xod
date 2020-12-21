@@ -11,7 +11,15 @@ import { Maybe } from 'ramda-fantasy';
 
 import { LOG_TAB_TYPE } from '../constants';
 import * as selectors from '../selectors';
+import { addError, addConfirmation } from '../../messages/actions';
 import * as DA from '../actions';
+import {
+  LOG_COPIED,
+  LOG_COPY_NOT_SUPPORTED,
+  logCopyError,
+  logSaveError,
+} from '../messages';
+
 import Log from './Log';
 import SerialInput from '../components/SerialInput';
 
@@ -44,6 +52,52 @@ const TAB_ORDER = [
 ];
 
 class Debugger extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.onCopyLogClicked = this.onCopyLogClicked.bind(this);
+    this.onSaveLogClicked = this.onSaveLogClicked.bind(this);
+  }
+
+  onCopyLogClicked() {
+    const copy = R.path(['navigator', 'clipboard', 'writeText'], window);
+    if (!copy) {
+      this.props.actions.addError(LOG_COPY_NOT_SUPPORTED);
+      return;
+    }
+
+    window.navigator.clipboard.writeText(this.props.log).then(
+      () => {
+        this.props.actions.addConfirmation(LOG_COPIED);
+      },
+      err => {
+        this.props.actions.addError(logCopyError(err));
+      }
+    );
+  }
+
+  onSaveLogClicked() {
+    const tabLabel = TAB_NAMES[this.props.currentTab];
+    const defaultFilename = R.compose(R.concat(R.__, '-log.txt'), R.toLower)(
+      tabLabel
+    );
+
+    try {
+      const data = new window.Blob([this.props.log], { type: 'text/plain' });
+      const file = window.URL.createObjectURL(data);
+
+      const link = document.createElement('a');
+      link.download = defaultFilename;
+      link.href = file;
+      link.click();
+
+      // We need to manually revoke the object URL to avoid memory leaks.
+      window.URL.revokeObjectURL(file);
+    } catch (err) {
+      this.props.actions.addError(logSaveError(err));
+    }
+  }
+
   renderControlsForExpandedState() {
     const {
       isExpanded,
@@ -79,11 +133,40 @@ class Debugger extends React.Component {
     );
   }
 
+  renderTabActions() {
+    const isDisabled = R.isEmpty(this.props.log);
+    return (
+      <React.Fragment>
+        <li role="menuitem" key="save" className="tab-action">
+          <Icon
+            name="save"
+            Component="button"
+            size="lg"
+            onClick={this.onSaveLogClicked}
+            title="Download Log"
+            disabled={isDisabled}
+          />
+        </li>
+        <li role="menuitem" key="copy" className="tab-action">
+          <Icon
+            name="copy"
+            Component="button"
+            size="lg"
+            onClick={this.onCopyLogClicked}
+            title="Copy Log"
+            disabled={isDisabled}
+          />
+        </li>
+      </React.Fragment>
+    );
+  }
+
   renderTabSelector() {
     const { currentTab, actions } = this.props;
 
     return (
       <ul role="menu" className="tab-selector">
+        {this.renderTabActions()}
         {TAB_ORDER.map(tabName => (
           <li // eslint-disable-line jsx-a11y/no-static-element-interactions
             role="menuitem"
@@ -232,6 +315,7 @@ class Debugger extends React.Component {
 }
 
 Debugger.propTypes = {
+  log: PropTypes.string.isRequired,
   maybeUploadProgress: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   isConnectedToSerial: PropTypes.bool.isRequired,
@@ -247,6 +331,7 @@ Debugger.propTypes = {
 };
 
 const mapStateToProps = R.applySpec({
+  log: selectors.getLogForCurrentTab,
   maybeUploadProgress: selectors.getUploadProgress,
   currentTab: selectors.getCurrentDebuggerTab,
   isExpanded: selectors.isDebuggerVisible,
@@ -267,6 +352,8 @@ const mapDispatchToProps = dispatch => ({
       selectTab: DA.selectDebuggerTab,
       abortTabtest: EditorActions.abortTabtest,
       abortSimulation: EditorActions.abortSimulation,
+      addError,
+      addConfirmation,
     },
     dispatch
   ),

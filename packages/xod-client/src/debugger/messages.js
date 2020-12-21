@@ -48,3 +48,23 @@ export const DO_NOT_USE_TETHERING_INTERNET_IN_BROWSER = {
   solution:
     'Install the desktop version of the XOD IDE to reveal all features of XOD',
 };
+
+export const LOG_COPIED = {
+  title: `Copied`,
+};
+export const LOG_COPY_NOT_SUPPORTED = {
+  title: 'Bad browser',
+  solution:
+    'Install the desktop IDE or use the latest version of Google Chrome / Firefox.',
+};
+export const logCopyError = error => ({
+  title: `Cannot copy log`,
+  note: error.message,
+  solution: 'Please, report the issue to the XOD developers ',
+});
+
+export const logSaveError = error => ({
+  title: `Cannot save log`,
+  note: error.message,
+  solution: 'Please, report the issue to the XOD developers ',
+});
