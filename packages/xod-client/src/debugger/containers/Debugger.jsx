@@ -145,6 +145,7 @@ class Debugger extends React.Component {
             onClick={this.onSaveLogClicked}
             title="Download Log"
             disabled={isDisabled}
+            className="save-log"
           />
         </li>
         <li role="menuitem" key="copy" className="tab-action">
@@ -155,6 +156,7 @@ class Debugger extends React.Component {
             onClick={this.onCopyLogClicked}
             title="Copy Log"
             disabled={isDisabled}
+            className="copy-log"
           />
         </li>
       </React.Fragment>
