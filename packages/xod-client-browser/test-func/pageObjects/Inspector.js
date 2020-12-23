@@ -1,16 +1,27 @@
 import BasePageObject from './BasePageObject';
+import Input from './Input';
 
 class Inspector extends BasePageObject {
   async setPinValue(pinName, value) {
-    const inputElementHandle = await this.elementHandle.$(
-      `.PinWidget[data-pinlabel="${pinName}"] input`
+    const pinInput = new Input(
+      this.page,
+      await this.elementHandle.$(`.PinWidget[data-pinlabel="${pinName}"] input`)
     );
-    await this.page.evaluate(input => {
-      // eslint-disable-next-line no-param-reassign
-      input.value = '';
-    }, inputElementHandle);
-    await inputElementHandle.type(value);
-    await inputElementHandle.press('Enter');
+    await pinInput.type(value);
+    await pinInput.pressEnter();
+  }
+
+  async getDescriptionElement() {
+    return new Input(
+      this.page,
+      await this.elementHandle.$('.DescriptionWidget textarea')
+    );
+  }
+
+  async setDescription(value) {
+    const input = this.getDescriptionElement();
+    await input.type(value);
+    await input.pressEnter();
   }
 }
 
