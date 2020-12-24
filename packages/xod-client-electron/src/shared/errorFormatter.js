@@ -18,8 +18,8 @@ const ERROR_FORMATTERS = {
   [EC.PORT_NOT_FOUND]: err =>
     composeMessage(
       'Serial port not found',
-      `Tried to use ${err.port.comName}, ` +
-        `but available ports are: ${R.map(R.prop('comName'), err.ports)}`
+      `Tried to use ${err.port.path}, ` +
+        `but available ports are: ${R.map(R.prop('path'), err.ports)}`
     ),
   [EC.UPLOAD_ERROR]: err => composeMessage('Upload failed', R.toString(err)),
   [EC.INDEX_LIST_ERROR]: err =>
