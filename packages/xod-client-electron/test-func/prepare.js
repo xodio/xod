@@ -45,10 +45,18 @@ export default function prepareSuite() {
         state.app = new Application({
           path: appPath,
           args: ['.'],
+          // see https://github.com/electron-userland/spectron/issues/353#issuecomment-522846725
+          // see https://github.com/RobCherry/docker-chromedriver/issues/15#issuecomment-430701229
+          chromeDriverArgs: [
+            'remote-debugging-port=9222',
+            'whitelisted-ips=',
+            'no-sandbox',
+          ],
         });
         process.env.USERDATA_DIR = process.env.HOME = state.tmpHomeDir = home;
+
+        return state.app.start();
       })
-      .then(() => state.app.start())
       .then(() => {
         state.page = Page.createPageObject(state.app.client);
         chaiAsPromised.transferPromiseness = state.app.transferPromiseness;

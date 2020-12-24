@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { HotKeys } from 'react-hotkeys';
 import EventListener from 'react-event-listener';
-import isDevelopment from 'electron-is-dev';
 import { ipcRenderer, remote as remoteElectron, shell } from 'electron';
 
 import client from 'xod-client';
@@ -221,7 +220,7 @@ class App extends client.App {
     // autoUpdater
     subscribeAutoUpdaterEvents(ipcRenderer, this);
 
-    if (isDevelopment) {
+    if (IS_DEV) {
       // Besause we can't control file dialogs in autotests
       ipcRenderer.on(TRIGGER_SAVE_AS, projectPath => {
         if (!projectPath) {
@@ -440,16 +439,16 @@ class App extends client.App {
 
   onOpenProjectClicked() {
     this.confirmUnsavedChanges(() => {
-      dialog.showOpenDialog(
-        {
+      dialog
+        .showOpenDialog({
           properties: ['openFile'],
           filters: getOpenDialogFileFilters(),
-        },
-        filePaths => {
-          if (!filePaths) return;
+        })
+        .then(({ canceled, filePaths }) => {
+          if (canceled) return;
+
           ipcRenderer.send(EVENTS.LOAD_PROJECT, filePaths[0]);
-        }
-      );
+        });
     });
   }
 
@@ -510,32 +509,36 @@ class App extends client.App {
   }
 
   onSaveAs(onAfterSave = noop) {
-    dialog.showSaveDialog(
-      createSaveDialogOptions(
-        'Save As...',
-        this.suggestProjectFilePath(),
-        'Save'
-      ),
-      filePath => {
-        if (!filePath) return;
+    dialog
+      .showSaveDialog(
+        createSaveDialogOptions(
+          'Save As...',
+          this.suggestProjectFilePath(),
+          'Save'
+        )
+      )
+      .then(({ canceled, filePath }) => {
+        if (canceled) return;
+
         this.saveAs(filePath, true, true)
           .then(onAfterSave)
           .catch(noop);
-      }
-    );
+      });
   }
   onSaveCopyAs() {
-    dialog.showSaveDialog(
-      createSaveDialogOptions(
-        'Save Copy As...',
-        this.suggestProjectFilePath(),
-        'Save a Copy'
-      ),
-      filePath => {
-        if (!filePath) return;
+    dialog
+      .showSaveDialog(
+        createSaveDialogOptions(
+          'Save Copy As...',
+          this.suggestProjectFilePath(),
+          'Save a Copy'
+        )
+      )
+      .then(({ canceled, filePath }) => {
+        if (canceled) return;
+
         this.saveAs(filePath, false, false).catch(noop);
-      }
-    );
+      });
   }
 
   showError(error) {
@@ -548,21 +551,23 @@ class App extends client.App {
       return;
     }
 
-    const clickedButtonId = dialog.showMessageBox({
-      message: 'Save changes to the current project before closing?',
-      detail: 'If you don’t save the project, changes will be lost',
-      type: 'warning',
-      buttons: ['Save', 'Discard', 'Cancel'],
-      cancelId: 2,
-    });
-
-    if (clickedButtonId === 0) {
-      // Save
-      this.onSave(onConfirm);
-    } else if (clickedButtonId === 1) {
-      // Discard
-      onConfirm();
-    }
+    dialog
+      .showMessageBox({
+        message: 'Save changes to the current project before closing?',
+        detail: 'If you don’t save the project, changes will be lost',
+        type: 'warning',
+        buttons: ['Save', 'Discard', 'Cancel'],
+        cancelId: 2,
+      })
+      .then(({ response }) => {
+        if (response === 0) {
+          // Save
+          this.onSave(onConfirm);
+        } else if (response === 1) {
+          // Discard
+          onConfirm();
+        }
+      });
   }
 
   onUploadConfigClose() {
@@ -811,7 +816,7 @@ class App extends client.App {
         Menu.setApplicationMenu(menu);
         // for testing purposes
         // see https://github.com/electron/spectron/issues/21
-        if (isDevelopment) {
+        if (IS_DEV) {
           subscribeToTriggerMainMenuRequests(ipcRenderer, finalTemplate);
         }
       },

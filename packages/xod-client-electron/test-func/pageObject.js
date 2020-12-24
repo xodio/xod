@@ -29,15 +29,20 @@ function scrollTo(client, containerSelector, childSelector) {
   );
 }
 
+async function waitForExist(client, selector, timeout) {
+  const el = await client.$(selector);
+  return el.waitForExist({ timeout });
+}
+
 function rendered(client) {
-  return assert.eventually.isTrue(client.waitForExist('.Editor', 5000));
+  return assert.eventually.isTrue(waitForExist(client, '.Editor', 5000));
 }
 
 // -----------------------------------------------------------------------------
 // Popup dialogs
 //-----------------------------------------------------------------------------
 function findPopup(client) {
-  return client.element('.PopupPrompt');
+  return client.$('.PopupPrompt');
 }
 
 function assertPopupShown(client, title) {
@@ -51,8 +56,16 @@ function assertNoPopups(client) {
   return assert.eventually.isFalse(findPopup(client).isVisible());
 }
 
-function confirmPopup(client) {
-  return findPopup(client).click('button.Button--primary');
+async function setPopupValue(client, value) {
+  const popup = await findPopup(client);
+  const input = await popup.$('input');
+  return input.setValue(value);
+}
+
+async function confirmPopup(client) {
+  const popup = await findPopup(client);
+  const confirmButton = await popup.$('button.Button--primary');
+  return confirmButton.click();
 }
 
 function getCodeboxValue(client) {
@@ -60,7 +73,7 @@ function getCodeboxValue(client) {
 }
 
 function closePopup(client) {
-  return client.element('.skylight-close-button').click();
+  return client.$('.skylight-close-button').click();
 }
 
 //-----------------------------------------------------------------------------
@@ -70,62 +83,76 @@ const getSelectorForPatchInProjectBrowser = nodeName =>
   `.PatchGroupItem[data-id="${nodeName}"]`;
 
 function findProjectBrowser(client) {
-  return client.element('.ProjectBrowser');
+  return client.$('.ProjectBrowser');
 }
 
 function assertProjectIsOpened(client, projectName) {
   const selector = `.PatchGroup__trigger.my .patch-group-trigger[data-id="${projectName}"`;
-  return assert.eventually.isTrue(client.waitForExist(selector, 15000));
+  return assert.eventually.isTrue(waitForExist(client, selector, 15000));
 }
 
-function clickAddPatch(client) {
-  return findProjectBrowser(client).click('button[title="Add patch"]');
+async function clickAddPatch(client) {
+  const projectBrowser = await findProjectBrowser(client);
+  const addPatchButton = await projectBrowser.$('button[title="Add patch"]');
+  return addPatchButton.click();
 }
 
-function findPatchGroup(client, groupTitle) {
-  const selector = `.PatchGroup=${groupTitle}`;
-  return findProjectBrowser(client)
-    .waitForExist(selector, 5000)
-    .then(() => client.element(selector));
+async function findPatchGroup(client, groupTitle) {
+  const projectBrowser = await findProjectBrowser(client);
+  const patchGroup = await projectBrowser.$(`.PatchGroup=${groupTitle}`);
+  await patchGroup.waitForExist({ timeout: 5000 });
+  return patchGroup;
 }
 
-function findPatchGroupItem(client, name) {
-  const selector = getSelectorForPatchInProjectBrowser(name);
-  return findProjectBrowser(client)
-    .waitForExist(selector, 5000)
-    .then(() => client.element(selector));
+async function findPatchGroupItem(client, name) {
+  const projectBrowser = await findProjectBrowser(client);
+  const patchGroupItem = await projectBrowser.$(
+    getSelectorForPatchInProjectBrowser(name)
+  );
+  await patchGroupItem.waitForExist({ timeout: 5000 });
+  return patchGroupItem;
 }
 
-function assertPatchGroupCollapsed(client, groupTitle) {
+async function assertPatchGroupCollapsed(client, groupTitle) {
+  const patchGroup = await findPatchGroup(client, groupTitle);
+
   return assert.eventually.include(
-    findPatchGroup(client, groupTitle).getAttribute('class'),
+    patchGroup.getAttribute('class'),
     'is-closed',
     `Expected patch group "${groupTitle}" to be collapsed, but it's expanded`
   );
 }
 
-function assertPatchGroupExpanded(client, groupTitle) {
+async function assertPatchGroupExpanded(client, groupTitle) {
+  const patchGroup = await findPatchGroup(client, groupTitle);
+
   return assert.eventually.include(
-    findPatchGroup(client, groupTitle).getAttribute('class'),
+    patchGroup.getAttribute('class'),
     'is-open',
     `Expected patch group "${groupTitle}" to be expanded, but it's collapsed`
   );
 }
 
-function assertNodeAvailableInProjectBrowser(client, nodeName) {
+async function assertNodeAvailableInProjectBrowser(client, nodeName) {
+  const projectBrowser = await findProjectBrowser(client);
+  const patchInProjectBrowser = await projectBrowser.$(
+    getSelectorForPatchInProjectBrowser(nodeName)
+  );
+
   return assert.eventually.isTrue(
-    findProjectBrowser(client).isVisible(
-      getSelectorForPatchInProjectBrowser(nodeName)
-    ),
+    patchInProjectBrowser.isDisplayed(),
     `Expected node "${nodeName}" to be available in the project browser`
   );
 }
 
-function assertNodeUnavailableInProjectBrowser(client, nodeName) {
+async function assertNodeUnavailableInProjectBrowser(client, nodeName) {
+  const projectBrowser = await findProjectBrowser(client);
+  const patchInProjectBrowser = await projectBrowser.$(
+    getSelectorForPatchInProjectBrowser(nodeName)
+  );
+
   return assert.eventually.isFalse(
-    findProjectBrowser(client).isVisible(
-      getSelectorForPatchInProjectBrowser(nodeName)
-    ),
+    patchInProjectBrowser.isDisplayed(),
     `Expected node "${nodeName}" to be unavailable in the project browser`
   );
 }
@@ -133,106 +160,125 @@ function assertNodeUnavailableInProjectBrowser(client, nodeName) {
 function scrollToPatchInProjectBrowser(client, name) {
   return scrollTo(
     client,
-    '.ProjectBrowser',
+    '.ProjectBrowser .inner-container',
     getSelectorForPatchInProjectBrowser(name)
   );
 }
 
-function selectPatchInProjectBrowser(client, name) {
-  const patch = findPatchGroupItem(client, name);
-  return hasClass('isSelected', patch).then(
-    selected =>
-      selected
-        ? Promise.resolve()
-        : client.click(getSelectorForPatchInProjectBrowser(name))
-  );
+async function selectPatchInProjectBrowser(client, name) {
+  const patch = await findPatchGroupItem(client, name);
+  const selected = await hasClass('isSelected', patch);
+
+  return selected ? Promise.resolve() : patch.click();
 }
 
-function openProjectBrowserPatchContextMenu(client, name) {
-  const selector = getSelectorForPatchInProjectBrowser(name);
+async function openProjectBrowserPatchContextMenu(client, name) {
+  await selectPatchInProjectBrowser(client, name);
 
-  return selectPatchInProjectBrowser(client, name)
-    .then(() => client.waitForVisible(`${selector} .contextmenu`))
-    .then(() => findPatchGroupItem(client, name).rightClick('.contextmenu'));
+  const selector = getSelectorForPatchInProjectBrowser(name);
+  const contextMenuIcon = await client.$(`${selector} .contextmenu`);
+  await contextMenuIcon.waitForExist({ timeout: 5000 });
+
+  return contextMenuIcon.click({ button: 'right' });
 }
 
 function findProjectBrowserPatchContextMenu(client) {
-  return client.element('.ContextMenu--PatchGroupItem');
+  return client.$('.ContextMenu--PatchGroupItem');
 }
 
-function openPatchFromProjectBrowser(client, name) {
-  return client.doubleClick(getSelectorForPatchInProjectBrowser(name));
-}
-
-function clickDeletePatchButton(client, name) {
-  return openProjectBrowserPatchContextMenu(client, name).then(() =>
-    findProjectBrowserPatchContextMenu(client).click(
-      '.react-contextmenu-item[data-id="delete"]'
-    )
+async function openPatchFromProjectBrowser(client, name) {
+  const patchInProjectBrowser = await client.$(
+    getSelectorForPatchInProjectBrowser(name)
   );
+
+  return patchInProjectBrowser.doubleClick();
+}
+
+async function clickDeletePatchButton(client, name) {
+  await openProjectBrowserPatchContextMenu(client, name);
+
+  const contextMenu = await findProjectBrowserPatchContextMenu(client);
+  const contextMenuItem = await contextMenu.$(
+    '.react-contextmenu-item[data-id="delete"]'
+  );
+
+  return contextMenuItem.click();
 }
 
 function assertPatchSelected(client, name) {
   return assert.eventually.include(
     client
-      .element(getSelectorForPatchInProjectBrowser(name))
-      .getAttribute('class'),
+      .$(getSelectorForPatchInProjectBrowser(name))
+      .then(el => el.getAttribute('class')),
     'isSelected'
   );
 }
 
-function clickAddNodeButton(client, name) {
-  return openProjectBrowserPatchContextMenu(client, name).then(() =>
-    findProjectBrowserPatchContextMenu(client).click(
-      '.react-contextmenu-item[data-id="place"]'
-    )
+async function clickAddNodeButton(client, name) {
+  await openProjectBrowserPatchContextMenu(client, name);
+
+  const contextMenu = await findProjectBrowserPatchContextMenu(client);
+  const placeMenuItem = await contextMenu.$(
+    '.react-contextmenu-item[data-id="place"]'
   );
+
+  return placeMenuItem.click();
 }
 
-function expandPatchGroup(client, groupTitle) {
-  return hasClass('is-open', findPatchGroup(client, groupTitle)).then(
-    opened =>
-      opened ? Promise.resolve() : findPatchGroup(client, groupTitle).click()
-  );
+async function expandPatchGroup(client, groupTitle) {
+  const patchGroup = await findPatchGroup(client, groupTitle);
+  const classList = await patchGroup.getAttribute('class');
+  const isOpen = R.contains('is-open', classList);
+
+  return isOpen ? Promise.resolve() : patchGroup.click();
 }
 
 //-----------------------------------------------------------------------------
 // LibSuggester
 //-----------------------------------------------------------------------------
 function findLibSuggester(client) {
-  return client.element('.Suggester-libs');
+  return client.$('.Suggester-libs');
 }
 
-function assertLibSuggesterShown(client) {
-  return assert.eventually.isTrue(findLibSuggester(client).isVisible());
+async function assertLibSuggesterShown(client) {
+  const libSuggester = await findLibSuggester(client);
+  return assert.eventually.isTrue(libSuggester.isDisplayed());
 }
 
-function assertLibsNotFound(client) {
+async function assertLibsNotFound(client) {
+  const libSuggester = await findLibSuggester(client);
+  const errorMessage = await libSuggester.$('.error');
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.error', 30000)
+    errorMessage.waitForExist({ timeout: 30000 })
   );
 }
 
-function assertLibraryFound(client) {
+async function assertLibraryFound(client) {
+  const libSuggester = await findLibSuggester(client);
+  const foundLibrary = await libSuggester.$('.Suggester-item--library');
   return assert.eventually.isTrue(
-    findLibSuggester(client).waitForExist('.Suggester-item--library', 30000)
+    foundLibrary.waitForExist({ timeout: 30000 })
   );
 }
 
 function installLibrary(client) {
-  return findLibSuggester(client).doubleClick('.Suggester-item--library');
+  return findLibSuggester(client).then(el =>
+    el.doubleClick('.Suggester-item--library')
+  );
 }
 
-function assertLibSuggesterHidden(client) {
-  return assert.eventually.isFalse(client.isExisting('.Suggester-libs'));
+async function assertLibSuggesterHidden(client) {
+  const libSuggester = await findLibSuggester(client);
+  return assert.eventually.isFalse(libSuggester.isExisting());
 }
 
 function assertProjectBrowserHasInstallingLib(client, libName) {
   const selector = '.PatchGroup--installing';
   return assert.eventually.equal(
     client
-      .waitForExist(selector, 10000)
-      .then(() => client.element('.PatchGroup--installing').getText('.name')),
+      .$(selector)
+      .then(el => el.waitForExist({ timeout: 10000 }).then(() => el.$('.name')))
+      .then(el => el.getText()),
     libName
   );
 }
@@ -241,7 +287,12 @@ function assertProjectBrowserHasInstallingLib(client, libName) {
 // Patch
 //-----------------------------------------------------------------------------
 function findNode(client, nodeType) {
-  return client.element(`.Node[data-label="${nodeType}"]`);
+  return client.$(`.Node[data-label="${nodeType}"]`);
+}
+
+async function isNodeVisible(client, nodeType) {
+  const node = await client.$(`.Node[data-label="${nodeType}"]`);
+  return node.isDisplayed();
 }
 
 function dragNode(client, nodeType, dx, dy) {
@@ -254,13 +305,13 @@ function dragNode(client, nodeType, dx, dy) {
 }
 
 function findPin(client, nodeType, pinLabel) {
-  return client.element(
+  return client.$(
     `.NodePinsOverlay[data-label="${nodeType}"] .PinOverlay[data-label="${pinLabel}"]`
   );
 }
 
 function findLink(client, type) {
-  return client.element(`.Link.${type}`);
+  return client.$(`.Link.${type}`);
 }
 
 function addNode(client, type, dragX, dragY) {
@@ -270,14 +321,18 @@ function addNode(client, type, dragX, dragY) {
     .then(() => dragNode(client, type, dragX, dragY));
 }
 
-function deletePatch(client, type) {
-  return client
-    .waitForVisible(getSelectorForPatchInProjectBrowser(type))
-    .then(() => scrollToPatchInProjectBrowser(client, type))
-    .then(() => clickDeletePatchButton(client, type))
-    .then(() =>
-      findProjectBrowser(client).click('.PopupConfirm button.Button--primary')
-    );
+async function deletePatch(client, type) {
+  // client.waitForVisible(getSelectorForPatchInProjectBrowser(type))
+
+  await scrollToPatchInProjectBrowser(client, type);
+  await clickDeletePatchButton(client, type);
+  const projectBrowser = await findProjectBrowser(client);
+  // TODO: why exactly do we search for in inside project browser?
+  const popupConfirmButton = await projectBrowser.$(
+    '.PopupConfirm button.Button--primary'
+  );
+
+  return popupConfirmButton.click();
 }
 
 function assertPinIsSelected(client, nodeType, pinLabel) {
@@ -299,27 +354,24 @@ function assertPinIsAcceptingLinks(client, nodeType, pinLabel) {
 //-----------------------------------------------------------------------------
 
 function findInspectorWidget(client, name) {
-  return client.element(`.Widget[title=${name}] input`);
+  return client.$(`.Widget[title=${name}] input`);
 }
 
-function bindValue(client, nodeType, pinLabel, value) {
-  return findNode(client, nodeType)
-    .click()
-    .then(() =>
-      findInspectorWidget(client, pinLabel)
-        .setValue(value)
-        .keys('Enter')
-    );
+async function bindValue(client, nodeType, pinLabel, value) {
+  const node = await findNode(client, nodeType);
+  await node.click();
+
+  const inspectorWidget = await findInspectorWidget(client, pinLabel);
+  await inspectorWidget.setValue(value);
+  return inspectorWidget.keys('Enter');
 }
 
 //-----------------------------------------------------------------------------
 // Tabs
 //-----------------------------------------------------------------------------
-function assertActiveTabHasTitle(client, expectedTitle) {
-  return assert.eventually.strictEqual(
-    client.getText('.TabsContainer .TabsItem.is-active .tab-name'),
-    expectedTitle
-  );
+async function assertActiveTabHasTitle(client, expectedTitle) {
+  const tab = await client.$('.TabsContainer .TabsItem.is-active .tab-name');
+  return assert.eventually.strictEqual(tab.getText(), expectedTitle);
 }
 
 function assertTabWithTitleDoesNotExist(client, expectedTitle) {
@@ -328,18 +380,19 @@ function assertTabWithTitleDoesNotExist(client, expectedTitle) {
   );
 }
 
-function assertNoPatchesAreOpen(client) {
-  return assert.eventually.isTrue(client.isVisible('.NoPatch'));
+async function assertNoPatchesAreOpen(client) {
+  const el = await client.$('.NoPatch');
+  return assert.eventually.isTrue(el.isDisplayed());
 }
 
 //-----------------------------------------------------------------------------
 // Messages
 //-----------------------------------------------------------------------------
 function waitUntilProjectSaved(client) {
-  return client.waitForExist('.SnackBarMessage*=Saved', 5000);
+  return waitForExist(client, '.SnackBarMessage*=Saved', 5000);
 }
 function waitUntilLibraryInstalled(client) {
-  return client.waitForExist('.SnackBarMessage*=Installed', 10000);
+  return waitForExist(client, '.SnackBarMessage*=Installed', 10000);
 }
 
 //-----------------------------------------------------------------------------
@@ -372,10 +425,12 @@ const API = {
   findInspectorWidget,
   findLink,
   findNode,
+  isNodeVisible,
   findPatchGroup,
   findPatchGroupItem,
   findPin,
   findPopup,
+  setPopupValue,
   getCodeboxValue,
   scrollTo,
   scrollToPatchInProjectBrowser,

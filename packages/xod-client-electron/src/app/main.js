@@ -111,6 +111,12 @@ function createWindow() {
     backgroundColor: '#FFF',
     webPreferences: {
       partition: 'persist:main',
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+      additionalArguments: [
+        IS_DEV ? 'ELECTRON_IS_DEV' : 'ELECTRON_IS_PACKAGED',
+      ],
     },
   });
 
@@ -125,7 +131,13 @@ function createWindow() {
   // Open the DevTools.
   // win.webContents.openDevTools();
 
-  contextMenu({ window: win });
+  contextMenu({
+    window: win,
+    // by default `electron-context-menu` uses
+    // `electron-is-dev` for autodetecting this,
+    // but it no longer works in Electron v10
+    showInspectElement: IS_DEV,
+  });
 
   const { webContents } = win;
 
@@ -191,19 +203,6 @@ const subscribeToRemoteAction = (processName, remoteAction) => {
 configureAutoUpdater(autoUpdater, log);
 
 const onReady = () => {
-  if (IS_DEV) {
-    require('devtron').install(); // eslint-disable-line global-require
-
-    const {
-      default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-      REDUX_DEVTOOLS,
-    } = require('electron-devtools-installer'); // eslint-disable-line global-require
-
-    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]).catch(
-      err => console.log(err) // eslint-disable-line no-console
-    );
-  }
   settings.setDefaults();
 
   subscribeToRemoteAction(EVENTS.SAVE_ALL, WA.subscribeToSaveAll(store));
