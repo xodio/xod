@@ -1,27 +1,38 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --experimental-repl-await
 
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-console */
+
+require('babel-register');
 const repl = require('repl');
 const Application = require('spectron').Application;
+const {
+  createPageObject,
+} = require('../packages/xod-client-electron/test-func/pageObject');
 
 const app = new Application({
   path: './node_modules/.bin/electron',
-  args: [
-    './packages/xod-client-electron',
-  ],
+  args: ['./packages/xod-client-electron'],
+  chromeDriverArgs: ['remote-debugging-port=9222'],
 });
 
 console.log('Starting XOD IDE...');
 
-app.start()
-  .then(function() {
+app
+  .start()
+  .then(() => {
     console.log('\nIDE started.\n');
-    console.log('Use `app` and `client` objects to control the application');
+    console.log(
+      'Use `app`, `client` and `page` objects to control the application'
+    );
     console.log('For reference see:');
     console.log('- https://github.com/electron/spectron');
     console.log('- http://webdriver.io/api.html');
     console.log('');
   })
-  .then(function() {
+  .then(() => {
+    const page = createPageObject(app.client);
+
     const r = repl.start('> ');
 
     Object.defineProperty(r.context, 'app', {
@@ -34,5 +45,11 @@ app.start()
       configurable: false,
       enumerable: true,
       value: app.client,
+    });
+
+    Object.defineProperty(r.context, 'page', {
+      configurable: false,
+      enumerable: true,
+      value: page,
     });
   });
