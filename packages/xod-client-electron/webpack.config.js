@@ -27,6 +27,19 @@ module.exports = merge.smart(getBaseConfig(__dirname), {
     bindings: 'commonjs bindings',
     serialport: 'commonjs serialport',
   },
+  module: {
+    rules: [
+      {
+        include: [/node_modules(\\|\/)mkdirp/],
+        test: /\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015'],
+          plugins: ['transform-object-rest-spread'],
+        },
+      },
+    ],
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

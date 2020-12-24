@@ -1,3 +1,5 @@
+image: Visual Studio 2017
+
 version: '{build}'
 
 platform:
@@ -14,9 +16,10 @@ init:
 - git config --system core.longpaths true
 
 install:
-- ps: Install-Product node 10 x64
-- npm install yarn@1.2.1 -g
-- yarn install
+- ps: Install-Product node 12 x64
+- npm install yarn@1.22.10 -g
+- yarn cache clean
+- yarn install --force
 - ps: . .\tools\install-arduinocli.ps1
 
 build_script:

@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 # Let the apt-get know we’re not interactive while building the image
 ARG DEBIAN_FRONTEND=noninteractive
@@ -42,6 +42,4 @@ RUN apt-get update \
         libxss1 \
         libxtst6 \
         rpm \
-        xvfb \
-        # to exaclty match version installed in macOS image
-        yarn=1.10.1-1
+        xvfb

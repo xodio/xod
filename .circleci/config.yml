@@ -37,13 +37,9 @@ defs:
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:10-v2
+      - image: xodio/cci-node:12
 
   steps:
-    step-install-node: &step-install-node
-      node-version: "v10.13.0"
-      install-npm: false
-
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
       name: Install arduino-cli
       command: |
@@ -135,12 +131,11 @@ jobs:
 
   verify-macos:
     macos:
-      xcode: "10.0.0"
+      xcode: "11.2.1"
     environment:
       YARN_CACHE_FOLDER: /tmp/yarn-cache
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
-      - node/install: *step-install-node
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-arduino-cli-on-mac
@@ -219,12 +214,11 @@ jobs:
 
   dist-macos:
     macos:
-      xcode: "10.0.0"
+      xcode: "11.2.1"
     environment:
       NODE_ENV: production
       XOD_ARDUINO_CLI: /tmp/arduino-cli/arduino-cli
     steps:
-      - node/install: *step-install-node
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install-arduino-cli-on-mac
