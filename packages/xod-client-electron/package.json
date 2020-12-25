@@ -14,7 +14,7 @@
     "clean:dist": "rimraf ./src-babel",
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "test": "electron-mocha ./test",
+    "test": "electron-mocha --no-sandbox --require babel-register --timeout 60000 ./test",
     "test-func": "mocha --opts test-func/mocha.opts test-func/**/*.spec.js"
   },
   "dependencies": {
@@ -61,7 +61,7 @@
     "electron": "10.1.1",
     "electron-builder": "^22.8.0",
     "electron-devtools-installer": "^3.1.1",
-    "electron-mocha": "^9.3.2",
+    "electron-mocha": "^10.0.0",
     "fsp": "^0.1.2"
   },
   "build": {
