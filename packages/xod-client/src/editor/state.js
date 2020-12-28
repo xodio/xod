@@ -56,5 +56,11 @@ export default {
       sidebar: SIDEBAR_IDS.RIGHT,
       size: 0.5,
     },
+    [PANEL_IDS.DEPLOYMENT]: {
+      index: 0,
+      maximized: false,
+      sidebar: SIDEBAR_IDS.BOTTOM,
+      size: 0.2,
+    },
   },
 };

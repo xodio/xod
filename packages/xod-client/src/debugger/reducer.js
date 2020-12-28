@@ -8,7 +8,6 @@ import {
   INSTALL_ARDUINO_DEPENDENCIES,
   CHECK_ARDUINO_DEPENDENCIES,
   UPGRADE_ARDUINO_DEPENDECIES,
-  TOGGLE_DEBUGGER_PANEL,
   DEBUGGER_LOG_ADD_MESSAGES,
   DEBUGGER_LOG_CLEAR,
   DEBUGGER_LOG_START_SKIPPING_NEW_LINES,
@@ -38,6 +37,7 @@ import {
   createFlasherMessage,
   createErrorMessage,
   createOutgoingLogMessage,
+  isErrorMessage,
 } from './utils';
 
 import { default as initialState, DEFAULT_TETHERING_INET_STATE } from './state';
@@ -177,8 +177,6 @@ const updateInteractiveErroredNodePins = R.curry((messageList, state) => {
   );
 });
 
-const showDebuggerPane = R.assoc('isVisible', true);
-
 const hideProgressBar = R.assoc('uploadProgress', null);
 
 const getMessageFromErrResponce = R.compose(
@@ -284,7 +282,6 @@ export default (state = initialState, action) => {
 
       if (status === STATUS.STARTED) {
         return R.compose(
-          type === CHECK_ARDUINO_DEPENDENCIES ? R.identity : showDebuggerPane,
           R.assoc('currentTab', LOG_TAB_TYPE.INSTALLER),
           R.assoc('currentStage', LOG_TAB_TYPE.INSTALLER),
           R.assoc('uploadProgress', 0),
@@ -333,8 +330,7 @@ export default (state = initialState, action) => {
           hideProgressBar,
           overStageError(state.currentStage)(
             appendMessage(createErrorMessage(payload.message))
-          ),
-          showDebuggerPane
+          )
         )(state);
       }
 
@@ -387,15 +383,12 @@ export default (state = initialState, action) => {
           hideProgressBar,
           overStageError(state.currentStage)(
             appendMessage(createErrorMessage(payload.message))
-          ),
-          showDebuggerPane
+          )
         )(state);
       }
 
       return state;
     }
-    case TOGGLE_DEBUGGER_PANEL:
-      return R.over(R.lensProp('isVisible'), R.not, state);
     case DEBUGGER_LOG_START_SKIPPING_NEW_LINES:
       return R.assoc('isSkippingNewSerialLogLines', true, state);
     case DEBUGGER_LOG_STOP_SKIPPING_NEW_LINES:
@@ -422,15 +415,11 @@ export default (state = initialState, action) => {
       const allMessages = action.payload;
 
       const [errorMessages, logMessages] = R.compose(
-        R.partition(R.propEq('type', UPLOAD_MSG_TYPE.ERROR)),
+        R.partition(isErrorMessage),
         state.isCapturingDebuggerProtocolMessages
           ? R.identity
           : R.reject(R.propEq('type', UPLOAD_MSG_TYPE.XOD))
       )(allMessages);
-
-      const showPanelOnErrorMessages = R.isEmpty(errorMessages)
-        ? R.identity
-        : showDebuggerPane;
 
       const addErrorMessage = R.isEmpty(errorMessages)
         ? R.identity
@@ -439,7 +428,6 @@ export default (state = initialState, action) => {
           );
 
       return R.compose(
-        showPanelOnErrorMessages,
         addErrorMessage,
         addMessagesOrIncrementSkippedLines(logMessages),
         updateInteractiveErroredNodePins(allMessages),
@@ -482,8 +470,7 @@ export default (state = initialState, action) => {
         ),
         R.assoc('activeSession', SESSION_TYPE.DEBUG),
         R.assoc('isOutdated', false),
-        R.assoc('globals', action.payload.globals),
-        showDebuggerPane
+        R.assoc('globals', action.payload.globals)
       )(state);
     }
     case SERIAL_SESSION_STARTED:
@@ -496,8 +483,7 @@ export default (state = initialState, action) => {
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('activeSession', SESSION_TYPE.SERIAL),
-        R.assoc('isOutdated', false),
-        showDebuggerPane
+        R.assoc('isOutdated', false)
       )(state);
     case DEBUG_SESSION_STOPPED:
       return R.compose(
@@ -573,8 +559,7 @@ export default (state = initialState, action) => {
         overStageError(LOG_TAB_TYPE.TESTER)(
           R.always(formatWasmError(action.payload))
         ),
-        hideProgressBar,
-        showDebuggerPane
+        hideProgressBar
       )(state);
 
     case EAT.SIMULATION_RUN_REQUESTED:
@@ -633,8 +618,7 @@ export default (state = initialState, action) => {
         R.assoc('isPreparingSimulation', false),
         R.assoc('globals', {}),
         R.assoc('tetheringInet', DEFAULT_TETHERING_INET_STATE),
-        hideProgressBar,
-        showDebuggerPane
+        hideProgressBar
       )(state);
 
     default:

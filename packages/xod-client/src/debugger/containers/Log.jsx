@@ -52,6 +52,7 @@ class Log extends React.PureComponent {
     const {
       log,
       error,
+      doNotSkipLines,
       isSkippingNewSerialLogLines,
       numberOfSkippedSerialLogLines,
       isSkipOnScrollEnabled,
@@ -64,7 +65,9 @@ class Log extends React.PureComponent {
         className={cn('log', { compact })}
         ref={el => (this.autoscrollRef = el)}
         onScrolledFromBottom={
-          isSkipOnScrollEnabled ? startSkippingNewLogLines : noop
+          isSkipOnScrollEnabled && !doNotSkipLines
+            ? startSkippingNewLogLines
+            : noop
         }
       >
         {log}
@@ -81,7 +84,12 @@ class Log extends React.PureComponent {
   }
 }
 
+Log.defaultProps = {
+  doNotSkipLines: false,
+};
+
 Log.propTypes = {
+  doNotSkipLines: PropTypes.bool.isRequired,
   log: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,
   isSkippingNewSerialLogLines: PropTypes.bool.isRequired,

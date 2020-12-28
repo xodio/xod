@@ -16,6 +16,7 @@ import {
   TAB_TYPES,
   PANEL_IDS,
 } from './constants';
+import { STATUS } from '../utils/constants';
 import {
   createSelectionEntity,
   getNewSelection,
@@ -24,6 +25,7 @@ import {
 import { setCurrentPatchOffset, switchPatchUnsafe } from './actions';
 
 import { getInitialPatchOffset } from '../project/utils';
+import { isErrorMessage } from '../debugger/utils';
 
 import { default as initialState } from './state';
 
@@ -367,6 +369,11 @@ const openDebuggerTab = R.curry((patchPath, state) => {
   )(state);
 });
 
+const showDebuggerPane = R.assocPath(
+  ['panels', PANEL_IDS.DEPLOYMENT, 'maximized'],
+  true
+);
+
 // =============================================================================
 //
 // Reducer
@@ -573,7 +580,10 @@ const editorReducer = (state = initialState, action) => {
     // debugger
     //
     case DAT.DEBUG_SESSION_STARTED:
-      return openDebuggerTab(action.payload.patchPath, state);
+      return R.compose(
+        openDebuggerTab(action.payload.patchPath),
+        showDebuggerPane
+      )(state);
     case DAT.DEBUG_SESSION_STOPPED:
       return closeTabById(DEBUGGER_TAB_ID, state);
     case DAT.DEBUG_DRILL_DOWN:
@@ -631,7 +641,31 @@ const editorReducer = (state = initialState, action) => {
         R.not,
         state
       );
-
+    //
+    // Show deployment pane on some actions
+    //
+    case DAT.INSTALL_ARDUINO_DEPENDENCIES:
+    case DAT.UPGRADE_ARDUINO_DEPENDECIES:
+    case DAT.CHECK_ARDUINO_DEPENDENCIES: {
+      const { type, meta: { status } } = action;
+      return type !== DAT.CHECK_ARDUINO_DEPENDENCIES &&
+        (status === STATUS.STARTED || status === STATUS.FAILED)
+        ? showDebuggerPane(state)
+        : state;
+    }
+    case DAT.UPLOAD: {
+      const { meta: { status } } = action;
+      return status === STATUS.FAILED ? showDebuggerPane(state) : state;
+    }
+    case DAT.DEBUGGER_LOG_ADD_MESSAGES: {
+      const errorMessages = R.filter(isErrorMessage, action.payload);
+      return errorMessages.length > 0 ? showDebuggerPane(state) : state;
+    }
+    case DAT.SERIAL_SESSION_STARTED:
+      return showDebuggerPane(state);
+    //
+    //
+    //
     case EAT.FOCUS_BOUND_VALUE:
     case EAT.FOCUS_LABEL:
       // maximize Inspector panel to focus & select widget's input
@@ -650,7 +684,8 @@ const editorReducer = (state = initialState, action) => {
     case EAT.TABTEST_ERROR:
       return R.compose(
         R.assoc('tabtestWorker', null),
-        R.assoc('isTabtestRunning', false)
+        R.assoc('isTabtestRunning', false),
+        showDebuggerPane
       )(state);
 
     case EAT.SIMULATION_LAUNCHED:
@@ -662,7 +697,8 @@ const editorReducer = (state = initialState, action) => {
     case EAT.SIMULATION_ERROR:
       return R.compose(
         R.assoc('simulationWorker', null),
-        closeTabById(DEBUGGER_TAB_ID)
+        closeTabById(DEBUGGER_TAB_ID),
+        showDebuggerPane
       )(state);
 
     case EAT.SHOW_COLORPICKER_WIDGET:

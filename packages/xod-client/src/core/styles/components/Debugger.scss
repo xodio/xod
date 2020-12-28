@@ -10,16 +10,20 @@
 }
 
 .Debugger {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
   bottom: 0;
-  height: 220px;
   width: 100%;
-  border-top: 2px solid $chrome-outlines;
+  border-top: 0;
   box-sizing: border-box;
 
   color: $sidebar-color-text;
 
   &.isCollapsed {
     height: 24px;
+    border-top: 2px solid $chrome-outlines;
   }
 
   .titlebar {
@@ -171,7 +175,9 @@
   }
 
   .container {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     position: relative;
     height: 165px;
 
@@ -180,7 +186,8 @@
   }
 
   .log {
-    height: 161px;
+    flex: 1;
+    // height: 161px;
 
     overflow-y: scroll;
     white-space: pre-wrap;
@@ -220,8 +227,6 @@
     }
 
     &.compact {
-      height: 143px;
-
       .skipped {
         bottom: 24px;
         padding: 0 28px 7px;
@@ -230,6 +235,7 @@
   }
 
   .SerialInput {
+    display: block;
     position: relative;
 
     input {

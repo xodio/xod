@@ -3,10 +3,6 @@ import { maybeProp } from 'xod-func-tools';
 import * as AT from './actionTypes';
 import { tetheringInetChunksToSend } from './selectors';
 
-export const toggleDebugger = () => ({
-  type: AT.TOGGLE_DEBUGGER_PANEL,
-});
-
 export const addMessagesToDebuggerLog = messages => ({
   type: AT.DEBUGGER_LOG_ADD_MESSAGES,
   payload: messages,

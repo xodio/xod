@@ -59,6 +59,7 @@ import { USERNAME_NEEDED_FOR_LITERAL } from '../../user/messages';
 import { PROJECT_NAME_NEEDED_FOR_LITERAL } from '../../project/messages';
 import { DO_NOT_USE_TETHERING_INTERNET_IN_BROWSER } from '../../debugger/messages';
 import { COMMAND } from '../../utils/constants';
+import { PANEL_IDS } from '../../editor/constants';
 
 import formatErrorMessage from '../formatErrorMessage';
 
@@ -438,7 +439,7 @@ App.actions = {
   startDebuggerSession: actions.startDebuggerSession,
   startSerialSession: actions.startSerialSession,
   stopDebuggerSession: actions.stopDebuggerSession,
-  toggleDebugger: actions.toggleDebugger,
+  toggleDebugger: () => actions.togglePanel(PANEL_IDS.DEPLOYMENT),
   logDebugger: actions.addMessagesToDebuggerLog,
   clearDebugger: actions.clearDebuggerLog,
   cutEntities: actions.cutEntities,
