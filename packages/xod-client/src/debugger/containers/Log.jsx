@@ -19,6 +19,7 @@ class Log extends React.PureComponent {
     this.autoscrollRef = null;
 
     this.onFollowLog = this.onFollowLog.bind(this);
+    this.onFollowLogClicked = this.onFollowLogClicked.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
@@ -31,8 +32,16 @@ class Log extends React.PureComponent {
     }, 0);
   }
 
-  componentDidUpdate() {
-    if (this.props.log.length === 0) {
+  componentDidUpdate(prevProps) {
+    // To trigger scroll to the bottom and follow log
+    // after resizing the parents component we're checking for
+    // change of `doNotSkipLines` property from `true` to `false`
+    const skipLinesJustTurnedOn =
+      prevProps.doNotSkipLines && !this.props.doNotSkipLines;
+    if (
+      this.props.log.length === 0 ||
+      (skipLinesJustTurnedOn && !this.props.isSkippingNewSerialLogLines)
+    ) {
       this.onFollowLog(false);
     }
   }
@@ -40,6 +49,10 @@ class Log extends React.PureComponent {
   onFollowLog(addSkipMessage = true) {
     this.scrollToBottom();
     this.props.stopSkippingNewLogLines(addSkipMessage);
+  }
+
+  onFollowLogClicked(_event) {
+    this.onFollowLog(true);
   }
 
   scrollToBottom() {
@@ -74,7 +87,10 @@ class Log extends React.PureComponent {
         {R.isEmpty(error) ? null : <div className="error">{error}</div>}
         {isSkipOnScrollEnabled && isSkippingNewSerialLogLines ? (
           <div className="skipped">
-            <button className="Button Button--small" onClick={this.onFollowLog}>
+            <button
+              className="Button Button--small"
+              onClick={this.onFollowLogClicked}
+            >
               Follow log ({numberOfSkippedSerialLogLines} new lines skipped)
             </button>
           </div>
