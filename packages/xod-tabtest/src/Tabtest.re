@@ -75,6 +75,7 @@ module Probe = {
 module Probes = {
   type t = list(Probe.t);
   let map = List.map;
+  let keepMap = List.keepMap;
   let keepToPinDirection = (probes, dir) =>
     List.keep(probes, probe =>
       probe->Probe.getTargetPin->Pin.getDirection == dir
@@ -85,7 +86,7 @@ module Probes = {
 
 /* TODO: smarter errors */
 let newError = (message: string): Js.Exn.t =>
-  try (Js.Exn.raiseError(message)) {
+  try(Js.Exn.raiseError(message)) {
   | Js.Exn.Error(e) => e
   };
 
@@ -169,8 +170,17 @@ module Cpp = {
     ["{", indented(children), "}"]->BeltHoles.String.joinLines;
   let catch2TestCase = (name, children) =>
     "TEST_CASE(" ++ enquote(name) ++ ") " ++ block(children);
-  let catch2Section = (name, children) =>
-    "SECTION(" ++ enquote(name) ++ ") " ++ block(children);
+  let catch2Section = (persistedValues, name, children) => {
+    let joinedPersistedValues =
+      List.length(persistedValues) > 0
+        ? BeltHoles.String.joinLines(persistedValues) ++ "\n" : "";
+
+    joinedPersistedValues
+    ++ "SECTION("
+    ++ enquote(name)
+    ++ ") "
+    ++ block(children);
+  };
   let requireEqual = (actual, expected) => {j|REQUIRE($actual == $expected);|j};
   let requireIsNan = value => {j|REQUIRE(isnan($value));|j};
 };
@@ -196,10 +206,42 @@ module TestCase = {
       {j|Approx((xod::Number) $x).margin($margin)|j};
     | x => {j|$x|j}
     };
+
+  let shouldValueBePersistedBetweenCases = (value: TabData.Value.t): bool =>
+    switch (value) {
+    | String(_) => true
+    | _ => false
+    };
+
+  let getPersistedValueName = (caseNumber: int, probeName: string): string => {j|injected_case$(caseNumber)_$(probeName)|j};
+
   /* Generates a block of code corresponding to a single TSV line check.
      Contains setup, evaluation, and assertion validation. It might
      be wrapped into Catch2 SECTION, the purpose is the same. */
   let generateSection = (record, probes, sectionIndex): Cpp.code => {
+    let humanReadableCaseNumber = sectionIndex + 1;
+    let persistedInjectedValues =
+      probes
+      ->Probes.keepInjecting
+      ->(
+          Probes.keepMap(probe => {
+            let name = probe->Probe.getTargetPin->Pin.getLabel;
+            let probeName = Strings.cppEscape(name);
+            switch (record->(TabData.Record.get(name))) {
+            | Some(RaisedError) => None
+            | Some(value) =>
+              if (shouldValueBePersistedBetweenCases(value)) {
+                let name =
+                  getPersistedValueName(humanReadableCaseNumber, probeName);
+                let literal = valueToLiteral(value);
+                Some({j|auto const $name = $literal;|j});
+              } else {
+                None;
+              }
+            | None => None
+            };
+          })
+        );
     let injectionStatements =
       probes
       ->Probes.keepInjecting
@@ -212,7 +254,10 @@ module TestCase = {
             | Some(Pulse(true)) => {j|INJECT_PULSE(probe_$probeName);|j}
             | Some(RaisedError) => {j|INJECT_ERROR(probe_$probeName);|j}
             | Some(value) =>
-              let literal = valueToLiteral(value);
+              let literal =
+                shouldValueBePersistedBetweenCases(value)
+                  ? getPersistedValueName(humanReadableCaseNumber, probeName)
+                  : valueToLiteral(value);
               {j|INJECT(probe_$probeName, $literal);|j};
             | None => {j|// No changes for $name|j}
             };
@@ -253,12 +298,11 @@ module TestCase = {
           })
         );
 
-    let humanReadableCaseNumber = sectionIndex + 1;
     Cpp.(
       catch2Section(
+        persistedInjectedValues,
         {j|Case $humanReadableCaseNumber|j},
         [
-          "",
           source(injectionStatements),
           setTimeStatement,
           sectionIndex == 0 ? "setup();" : "loop();",
