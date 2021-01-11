@@ -5,6 +5,7 @@ import * as R from 'ramda';
 import * as fse from 'fs-extra';
 import arduinoCli from 'arduino-cli';
 import { createError } from 'xod-func-tools';
+import { isWorkspaceValid, spawnWorkspaceFile } from 'xod-fs';
 
 import {
   ARDUINO_LIBRARIES_DIRNAME,
@@ -408,15 +409,31 @@ const updateIndexesInternal = (wsPath, cli) =>
   });
 
 /**
+ * It creates a workspace file and packages directory if needed.
+ *
+ * :: Path -> Path -> Promise Path Error
+ */
+const ensureWorkspace = (wsBundledPath, wsPath) =>
+  isWorkspaceValid(wsPath).catch(async e => {
+    if (e.errorCode === 'WORKSPACE_DIR_NOT_EXIST_OR_EMPTY') {
+      await prepareWorkspacePackagesDir(wsBundledPath, wsPath);
+      await spawnWorkspaceFile(wsPath);
+      return wsPath;
+    }
+    throw e;
+  });
+
+/**
  * Returns map of installed boards and boards that could be installed:
  * - Installed boards (boards, which are ready for deploy)
  *   { name :: String, fqbn :: String }
  * - Available boards (boards, which packages could be installed)
  *   { name :: String, package :: String, version :: String }
  *
- * :: Path -> ArduinoCli -> Promise { installed :: [InstalledBoard], available :: [AvailableBoard] } Error
+ * :: Path -> Path -> ArduinoCli -> Promise { installed :: [InstalledBoard], available :: [AvailableBoard] } Error
  */
-export const listBoards = async (wsPath, cli) => {
+export const listBoards = async (wsBundledPath, wsPath, cli) => {
+  await ensureWorkspace(wsBundledPath, wsPath);
   await syncAdditionalPackages(wsPath, cli);
 
   return Promise.all([
@@ -455,9 +472,10 @@ export const listBoards = async (wsPath, cli) => {
  * Updates package index json files.
  * Returns a list of just added URLs
  *
- * :: Path -> ArduinoCli -> Promise [URL] Error
+ * :: Path -> Path -> ArduinoCli -> Promise [URL] Error
  */
-export const updateIndexes = async (wsPath, cli) => {
+export const updateIndexes = async (wsBundledPath, wsPath, cli) => {
+  await ensureWorkspace(wsBundledPath, wsPath);
   const addedUrls = await syncAdditionalPackages(wsPath, cli);
 
   await updateIndexesInternal(wsPath, cli);
@@ -466,7 +484,7 @@ export const updateIndexes = async (wsPath, cli) => {
   // all new index files are valid, because `updateIndex`
   // only downloads index files without validating
   // Bug reported: https://github.com/arduino/arduino-cli/issues/81
-  await listBoards(wsPath, cli);
+  await listBoards(wsBundledPath, wsPath, cli);
 
   return addedUrls;
 };
