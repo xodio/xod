@@ -15,7 +15,7 @@
       }
     },
     {
-      "content": "## Alternative tutorial\n\nIf you want to learn programming microcontrollers with XOD by making a smart and pretty looking tabletop device, check out the [Amperka&nbsp;Colony Kit](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial).\n\n[![Colony Kit from Amperka](https://xod.io/docs/tutorial/001-hello/colony-kit.png)](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)\n\nIt contains a mictocontroller, sensots, actuators, and a paper guide with an exciting story inside.",
+      "content": "## Alternative tutorial\n\nIf you want to learn programming microcontrollers with XOD by making a smart and pretty looking tabletop device, check out the [Amperka&nbsp;Colony Kit](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial).\n\n[![Colony Kit from Amperka](https://xod.io/docs/tutorial/001-hello/colony-kit.png)](https://my.amperka.com/kits/colony-kit?utm_source=ide&utm_medium=ide_comment&utm_campaign=tutorial)\n\nIt contains a microcontroller, sensors, actuators, and a paper guide with an exciting story inside.",
       "id": "SJmjeGOdw",
       "position": {
         "units": "slots",
