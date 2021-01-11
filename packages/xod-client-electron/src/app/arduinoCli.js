@@ -3,6 +3,7 @@ import * as xdb from 'xod-deploy-bin';
 
 import subscribeIpc from './subscribeIpc';
 import { loadWorkspacePath } from './workspaceActions';
+import { getPathToBundledWorkspace } from './utils';
 import {
   LIST_BOARDS,
   UPLOAD_TO_ARDUINO,
@@ -34,7 +35,10 @@ export const upload = (onProgress, cli, payload) => {
 // =============================================================================
 export const subscribeListBoards = cli =>
   subscribeIpc(
-    () => loadWorkspacePath().then(ws => xdb.listBoards(ws, cli)),
+    () =>
+      loadWorkspacePath().then(ws =>
+        xdb.listBoards(getPathToBundledWorkspace(), ws, cli)
+      ),
     LIST_BOARDS
   );
 
@@ -46,7 +50,10 @@ export const subscribeUpload = cli =>
 
 export const subscribeUpdateIndexes = cli =>
   subscribeIpc(
-    () => loadWorkspacePath().then(ws => xdb.updateIndexes(ws, cli)),
+    () =>
+      loadWorkspacePath().then(ws =>
+        xdb.updateIndexes(getPathToBundledWorkspace(), ws, cli)
+      ),
     UPDATE_INDEXES
   );
 

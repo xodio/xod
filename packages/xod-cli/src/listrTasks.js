@@ -5,6 +5,8 @@ import { loadProject } from 'xod-fs';
 import { createError, foldEither } from 'xod-func-tools';
 import * as xdb from 'xod-deploy-bin';
 
+import { resolveBundledWorkspacePath } from './paths';
+
 export const loadProjectTask = (workspaces, projectPath) => ({
   title: 'Project loading',
   task: ctx =>
@@ -45,7 +47,11 @@ export const transpileTask = () => ({
 export const checkBoardTask = (workspace, fqbn) => ({
   title: 'Check board',
   task: async ctx => {
-    const boards = await xdb.listBoards(workspace, ctx.arduinoCli);
+    const boards = await xdb.listBoards(
+      resolveBundledWorkspacePath(),
+      workspace,
+      ctx.arduinoCli
+    );
     const board = last(filter(el => el.fqbn === fqbn, boards.installed));
 
     // toolchain not installed - handle it

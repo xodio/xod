@@ -45,7 +45,7 @@ class BoardsCommand extends BaseCommand {
         })),
         sortBy(prop('name')),
         b => mergeAvailableInstalled(b.available, b.installed)
-      )(await xdb.listBoards(workspace, aCli));
+      )(await xdb.listBoards(resolveBundledWorkspacePath(), workspace, aCli));
 
       const rows = quiet ? map(b => [b['Board Name'], b.FQBN])(boards) : boards;
 
