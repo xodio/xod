@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.36.1"></a>
+
+## 0.36.1 (2020-10-30)
+
+### Bug fixes
+
+* [nodes] Fix `xod/debug/is-receiving` implementation (#2061)
+* [nodes] Revert `xod/core/animation-unit` to use `setTimeout` API (#2061)
+
 <a name="0.36.0"></a>
 
 ## 0.36.0 (2020-10-29)
