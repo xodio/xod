@@ -61,6 +61,9 @@ app.setName('xod');
 
 configureAutoUpdater(autoUpdater, log);
 
+// to ensure compatibility with the old default
+settings.rewriteElectronSettingsFileName('Settings');
+
 if (process.env.USERDATA_DIR) {
   app.setPath('userData', process.env.USERDATA_DIR);
   settings.rewriteElectronSettingsFilePath(app.getPath('userData'));

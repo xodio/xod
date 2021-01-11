@@ -34,13 +34,16 @@ export const setDefaults = R.compose(
 /**
  * To make settings path changeble in dependency of env varialbe (E.G. for functional tests)
  * we have to call this function before electron app onReady called.
- * It accepts:
- * - a path to directory (could contain a homedir alias `~`)
- * - filename for settings file (default is `Settings`).
+ * It accepts a path to directory (could contain a homedir alias `~`)
  */
-export const rewriteElectronSettingsFilePath = (dir, fileName = 'Settings') => {
+export const rewriteElectronSettingsFilePath = dir => {
   electronSettings.configure({
     dir,
+  });
+};
+
+export const rewriteElectronSettingsFileName = fileName => {
+  electronSettings.configure({
     fileName,
   });
 };
