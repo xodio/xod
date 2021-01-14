@@ -81,7 +81,7 @@ class UploadCommand extends BaseCommand {
             ws: workspace,
             board: ctx.board,
             port: {
-              comName: port,
+              path: port,
             },
           }
         );

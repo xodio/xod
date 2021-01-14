@@ -12,9 +12,9 @@ class PopupSetWorkspace extends React.Component {
     this.changeWorkspace = this.changeWorkspace.bind(this);
   }
 
-  onChange(selection) {
-    if (selection && selection.length > 0) {
-      this.props.onChange(selection[0]);
+  onChange({ filePaths, canceled }) {
+    if (!canceled) {
+      this.props.onChange(filePaths[0]);
     }
   }
   onClose() {
@@ -49,14 +49,13 @@ class PopupSetWorkspace extends React.Component {
   }
 
   changeWorkspace() {
-    remote.dialog.showOpenDialog(
-      {
+    remote.dialog
+      .showOpenDialog({
         title: 'Choose workspace directory',
         properties: ['openDirectory'],
         buttonLabel: 'Choose directory',
-      },
-      this.onChange
-    );
+      })
+      .then(this.onChange);
   }
 
   render() {

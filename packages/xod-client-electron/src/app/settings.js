@@ -1,5 +1,3 @@
-import path from 'path';
-import { resolvePath } from 'xod-fs';
 import * as R from 'ramda';
 import electronSettings from 'electron-settings';
 
@@ -23,10 +21,10 @@ export const DEFAULT_SETTINGS = {
 
 // TODO: Add catching broken settings (if user opens settings file and break it)
 //       On catch — show error to user and fallback to default settings.
-export const load = () => R.merge(DEFAULT_SETTINGS, electronSettings.getAll());
+export const load = () => R.merge(DEFAULT_SETTINGS, electronSettings.getSync());
 
 // TODO: Add schema and validating on save to prevent errors
-export const save = settings => electronSettings.setAll(settings);
+export const save = settings => electronSettings.setSync(settings);
 
 export const setDefaults = R.compose(
   R.when(R.isEmpty, () => save(DEFAULT_SETTINGS)),
@@ -36,16 +34,18 @@ export const setDefaults = R.compose(
 /**
  * To make settings path changeble in dependency of env varialbe (E.G. for functional tests)
  * we have to call this function before electron app onReady called.
- * It accepts:
- * - a path to directory (could contain a homedir alias `~`)
- * - filename for settings file (default is `Settings`).
+ * It accepts a path to directory (could contain a homedir alias `~`)
  */
-export const rewriteElectronSettingsFilePath = (
-  dirPath,
-  fileName = 'Settings'
-) => {
-  const fullPath = path.join(resolvePath(dirPath), fileName);
-  electronSettings.setPath(fullPath);
+export const rewriteElectronSettingsFilePath = dir => {
+  electronSettings.configure({
+    dir,
+  });
+};
+
+export const rewriteElectronSettingsFileName = fileName => {
+  electronSettings.configure({
+    fileName,
+  });
 };
 
 // =============================================================================

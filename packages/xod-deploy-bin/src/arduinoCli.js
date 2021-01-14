@@ -575,7 +575,7 @@ export const compile = async (onProgress, cli, payload) => {
  *  },
  *  code: String,
  *  port: {
- *    comName: String,
+ *    path: String,
  *  }
  *  ws: Path,
  *  wsBundledPath: Path,
@@ -603,7 +603,7 @@ export const uploadThroughUSB = async (onProgress, cli, payload) => {
           message: stdout,
           tab: 'uploader',
         }),
-      payload.port.comName,
+      payload.port.path,
       payload.board.fqbn,
       sketchName,
       true

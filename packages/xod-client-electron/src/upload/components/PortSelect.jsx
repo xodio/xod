@@ -24,7 +24,7 @@ class PortSelect extends React.Component {
 
   onPortChanged(event) {
     const selectedPort = R.find(
-      R.propEq('comName', event.target.value),
+      R.propEq('path', event.target.value),
       this.state.ports
     );
     this.changePort(selectedPort);
@@ -54,7 +54,7 @@ class PortSelect extends React.Component {
               R.test(
                 /^(\/dev\/ttyUSB|\/dev\/tty.usb|\/dev\/cu.usb|\/dev\/ttyACM)/i
               ),
-              R.prop('comName')
+              R.prop('path')
             )
           )
         )(ports);
@@ -66,7 +66,7 @@ class PortSelect extends React.Component {
   }
 
   getSelectedPortName() {
-    return R.compose(R.propOr('', 'comName'))(this.props.selectedPort);
+    return R.compose(R.propOr('', 'path'))(this.props.selectedPort);
   }
 
   changePort(port) {
@@ -85,8 +85,8 @@ class PortSelect extends React.Component {
         value={this.getSelectedPortName()}
       >
         {this.state.ports.map(port => (
-          <option key={port.comName} value={port.comName}>
-            {port.comName} {port.manufacturer ? `(${port.manufacturer})` : ''}
+          <option key={port.path} value={port.path}>
+            {port.path} {port.manufacturer ? `(${port.manufacturer})` : ''}
           </option>
         ))}
       </select>

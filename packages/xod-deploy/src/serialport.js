@@ -8,8 +8,8 @@ import { tapP, delay as delayP } from 'xod-func-tools';
 // =============================================================================
 
 /**
- * PortInfo :: { comName: PortName }
- * Plain object, that contains comName (required field)
+ * PortInfo :: { path: PortName }
+ * Plain object, that contains `path` (required field)
  * and other fields, that provided by connected device.
  */
 
@@ -73,27 +73,23 @@ const flushPort = port =>
  * @type {Function}
  * @return {Promise<Port[], Error>} */
 // :: () -> [PortInfo]
-export const listPorts = () =>
-  new Promise((resolve, reject) => {
-    // serialport is a native module that can conflict in ABI versions
-    // with one built for Electron:
-    //
-    //   Error: The module '.../node_modules/serialport/build/Release/serialport.node'
-    //   was compiled against a different Node.js version using
-    //   NODE_MODULE_VERSION 53. This version of Node.js requires
-    //   NODE_MODULE_VERSION 51. Please try re-compiling or re-installing
-    //
-    // Localize it’s require so that the conflict never arise if we’re
-    // using CLI for things not related to serial port.
-    //
-    // eslint-disable-next-line global-require
-    const SerialPort = require('serialport');
+export const listPorts = () => {
+  // serialport is a native module that can conflict in ABI versions
+  // with one built for Electron:
+  //
+  //   Error: The module '.../node_modules/serialport/build/Release/serialport.node'
+  //   was compiled against a different Node.js version using
+  //   NODE_MODULE_VERSION 53. This version of Node.js requires
+  //   NODE_MODULE_VERSION 51. Please try re-compiling or re-installing
+  //
+  // Localize it’s require so that the conflict never arise if we’re
+  // using CLI for things not related to serial port.
+  //
+  // eslint-disable-next-line global-require
+  const SerialPort = require('serialport');
 
-    SerialPort.list((err, ports) => {
-      if (err) reject(err);
-      else resolve(ports);
-    });
-  });
+  return SerialPort.list();
+};
 
 // :: PortName -> PortOptions -> Promise Port Error
 export const openPort = (portName, opts = {}) =>
@@ -102,9 +98,11 @@ export const openPort = (portName, opts = {}) =>
     const SerialPort = require('serialport');
 
     try {
-      const port = new SerialPort(portName, opts);
-      port.on('error', reject);
-      port.on('open', () => resolve(port));
+      const port = new SerialPort(
+        portName,
+        opts,
+        err => (err ? reject(err) : resolve(port))
+      );
     } catch (err) {
       reject(err);
     }
@@ -113,10 +111,7 @@ export const openPort = (portName, opts = {}) =>
 // :: Port -> Promise Port Error
 export const closePort = port =>
   new Promise((resolve, reject) => {
-    port.close(err => {
-      if (err) reject(err);
-      resolve(port);
-    });
+    port.close(err => (err ? reject(err) : resolve(port)));
   });
 
 // :: PortName -> Boolean -> (String -> *) -> (* -> *) -> Promise Port Error
@@ -126,12 +121,6 @@ export const openAndReadPort = (portName, disableRts, onData, onClose) => {
 
   return openPort(portName, {
     baudRate: 115200,
-    // This is an undocumented option that is true by default
-    // and in Windows binding raises the DTR line when the device is opened
-    // (see https://github.com/node-serialport/node-serialport/issues/1678),
-    // which causes issues with some boards using CP2102 USB to Serial chip
-    hupcl: false,
-    rtscts: !disableRts,
   }).then(
     R.tap(port => {
       const parser = port.pipe(
@@ -169,14 +158,14 @@ export const waitNewPort = async initialPorts => {
   while (elapsed < 10000) {
     const afterPorts = await listPorts();
     const diff = R.differenceWith(
-      (a, b) => a.comName === b.comName,
+      (a, b) => a.path === b.path,
       afterPorts,
       beforePorts
     );
 
     if (diff.length > 0) {
       await delay(200)();
-      return diff[0].comName;
+      return diff[0].path;
     }
 
     beforePorts = afterPorts;

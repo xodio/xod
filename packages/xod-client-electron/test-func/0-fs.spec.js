@@ -63,7 +63,10 @@ describe('Test FS things', () => {
             ide.wsPath('blink.xodball'),
             'utf8'
           );
-          assert.equal(actualXodball, expectedXodball);
+          assert.deepEqual(
+            JSON.parse(actualXodball),
+            JSON.parse(expectedXodball)
+          );
         });
 
     // !!! Ideally, we should simulate clicking 'file -> save',
@@ -103,30 +106,33 @@ describe('Test FS things', () => {
         .emit(TRIGGER_MAIN_MENU_ITEM, ['File', 'Add Library...'])
         .then(() => ide.page.assertLibSuggesterShown()));
 
-    it('searches for nonexistent library', () =>
-      ide.page
-        .findLibSuggester()
-        .setValue('input', 'xod/nonexisting-library')
-        .then(ide.page.assertLibsNotFound));
+    it('searches for a nonexistent library', async () => {
+      const libSuggester = await ide.page.findLibSuggester();
+      const input = await libSuggester.$('input');
+      await input.setValue('xod/nonexisting-library');
 
-    it('searches for existing library', () =>
-      ide.page
-        .findLibSuggester()
-        .setValue('input', 'xod/core@0.11.0')
-        .then(ide.page.assertLibraryFound));
+      return ide.page.assertLibsNotFound();
+    });
 
-    it('double clicks on found library to install', () =>
-      ide.page
-        .installLibrary()
-        .then(() => ide.page.assertLibSuggesterHidden()));
+    it('searches for an existing library', async () => {
+      await ide.app.client.keys(['Escape']); // get rid of previously entered values
+      const libSuggester = await ide.page.findLibSuggester();
+      const input = await libSuggester.$('input');
+      await input.setValue('xod/core@0.11.0');
 
-    it('checks that installed xod/core does not have `concat-4` node', () =>
-      ide.page
-        .waitUntilLibraryInstalled()
-        .then(() => ide.page.expandPatchGroup('xod/core'))
-        .then(() =>
-          ide.page.assertNodeUnavailableInProjectBrowser('concat-4')
-        ));
+      return ide.page.assertLibraryFound();
+    });
+
+    it('double clicks on found library to install', async () => {
+      await ide.page.installLibrary();
+      await ide.page.waitUntilLibraryInstalled();
+      return ide.page.assertLibSuggesterHidden();
+    });
+
+    it('checks that installed xod/core does not have `concat-4` node', async () => {
+      await ide.page.expandPatchGroup('xod/core');
+      return ide.page.assertNodeUnavailableInProjectBrowser('concat-4');
+    });
 
     it('checks that library installed on the FS', () =>
       assert.eventually.isTrue(fse.pathExists(ide.libPath('xod/core'))));
@@ -150,24 +156,24 @@ describe('Test FS things', () => {
     });
 
     // Prepare local project changes
-    it('create new empty patch', () =>
-      ide.page
-        .clickAddPatch()
-        .then(() => ide.page.findPopup().setValue('input', 'my-patch'))
-        .then(() => ide.page.confirmPopup())
-        .then(() => ide.page.assertActiveTabHasTitle('my-patch'))
-        // TODO: if patch is empty — it is not saved!
-        .then(() => ide.page.expandPatchGroup('xod/patch-nodes'))
-        .then(() => ide.page.scrollToPatchInProjectBrowser('input-string'))
-        .then(() => ide.page.selectPatchInProjectBrowser('input-string'))
-        .then(() => ide.page.clickAddNodeButton('input-string'))
-        .then(() => ide.page.expandPatchGroup('xod/patch-nodes')));
+    it('create new empty patch', async () => {
+      await ide.page.clickAddPatch();
+      await ide.page.setPopupValue('my-patch');
+      await ide.page.confirmPopup();
+      await ide.page.assertActiveTabHasTitle('my-patch');
+      // TODO: if patch is empty — it is not saved!
+      await ide.page.expandPatchGroup('xod/patch-nodes');
+      await ide.page.scrollToPatchInProjectBrowser('input-string');
+      await ide.page.selectPatchInProjectBrowser('input-string');
+      await ide.page.clickAddNodeButton('input-string');
+      return ide.page.expandPatchGroup('xod/patch-nodes');
+    });
 
-    it('delete another patch (`main`)', () =>
-      ide.page
-        .expandPatchGroup('blink')
-        .then(() => ide.page.deletePatch('main'))
-        .then(() => ide.page.assertNodeUnavailableInProjectBrowser('main')));
+    it('delete another patch (`main`)', async () => {
+      await ide.page.expandPatchGroup('blink');
+      await ide.page.deletePatch('main');
+      return ide.page.assertNodeUnavailableInProjectBrowser('main');
+    });
 
     it('modify newly created patch (`my-patch`)', () =>
       ide.page
@@ -206,9 +212,7 @@ describe('Test FS things', () => {
         .then(() => ide.page.selectPatchInProjectBrowser('input-string'))
         .then(() => ide.page.clickAddNodeButton('input-string'))
         .then(() =>
-          assert.eventually.isTrue(
-            ide.page.findNode('input-string').isVisible()
-          )
+          assert.eventually.isTrue(ide.page.isNodeVisible('input-string'))
         ));
 
     it('put user file to the patch directory of already saved library', () =>
@@ -232,9 +236,7 @@ describe('Test FS things', () => {
         .then(() => ide.page.selectPatchInProjectBrowser('input-string'))
         .then(() => ide.page.clickAddNodeButton('input-string'))
         .then(() =>
-          assert.eventually.isTrue(
-            ide.page.findNode('input-string').isVisible()
-          )
+          assert.eventually.isTrue(ide.page.isNodeVisible('input-string'))
         ));
 
     // Calling Save Project and check all cases...

@@ -2,9 +2,13 @@ import path from 'path';
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { resolvePath } from 'xod-fs';
-import isDevelopment from 'electron-is-dev';
+import electron from 'electron';
 
-export const IS_DEV = isDevelopment || process.env.NODE_ENV === 'development';
+// see https://github.com/sindresorhus/electron-is-dev/issues/24#issuecomment-692379137
+export const IS_DEV =
+  (process.type === 'renderer'
+    ? process.argv.includes('ELECTRON_IS_DEV')
+    : !electron.app.isPackaged) || process.env.NODE_ENV === 'development';
 
 // for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
 // if we don't do this, we get empty objects on the other side instead of errors
