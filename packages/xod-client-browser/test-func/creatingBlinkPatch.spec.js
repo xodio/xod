@@ -17,6 +17,11 @@ import TranspiledCodePopup from './pageObjects/TranspiledCodePopup';
 const workspacePath = subPath =>
   path.resolve(__dirname, '../../../workspace/', subPath);
 
+const assertApproximateEqual = (actual, expected, tolerance, message) =>
+  assert.isTrue(Math.abs(actual - expected) <= tolerance, message);
+
+const NODE_POSITION_TOLERANCE = 2.5;
+
 describe('creating blink patch', () => {
   let page;
   let projectBrowser;
@@ -91,7 +96,18 @@ describe('creating blink patch', () => {
     await clockNode.drag(150, 10);
 
     const { x, y } = await clockNode.getBoundingClientRect();
-    assert.deepEqual({ x, y }, { x: 400.5, y: 142.5 });
+    assertApproximateEqual(
+      x,
+      400.5,
+      NODE_POSITION_TOLERANCE,
+      `X position of the Node should be 400.5±${NODE_POSITION_TOLERANCE}`
+    );
+    assertApproximateEqual(
+      y,
+      142.5,
+      NODE_POSITION_TOLERANCE,
+      `X position of the Node should be 400.5±${NODE_POSITION_TOLERANCE}`
+    );
   });
 
   it('adds rest of the nodes needed for blink patch', async () => {
