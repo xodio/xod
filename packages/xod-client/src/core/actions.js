@@ -1,5 +1,5 @@
 import { undoPatch, redoPatch } from '../project/actions';
-import { SHOW_CODE_REQUESTED } from './actionTypes';
+import { SHOW_CODE_REQUESTED, RECOVER_STATE } from './actionTypes';
 import { getCurrentPatchPath } from '../editor/selectors';
 import { isInput } from '../utils/browser';
 
@@ -22,6 +22,11 @@ export const redoCurrentPatch = () => (dispatch, getState) => {
 export const showCode = code => ({
   type: SHOW_CODE_REQUESTED,
   payload: { code },
+});
+
+export const recoverState = state => ({
+  type: RECOVER_STATE,
+  payload: state,
 });
 
 export * from '../user/actions';

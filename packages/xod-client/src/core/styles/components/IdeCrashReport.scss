@@ -1,0 +1,63 @@
+.IdeCrashReport {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  pointer-events: none;
+
+  &.is-shaded {
+    pointer-events: fill;
+    background: rgba($black, 0.6);
+  }
+
+  .Recovering {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20%;
+
+    color: $white;
+    text-align: center;
+
+    h2 { margin: 0.5em 0 0 0; }
+  }
+
+  .Message {
+    pointer-events: all;
+
+    background: $red;
+    color: $white;
+
+    height: 250px;
+
+    zIndex: 9999;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    box-sizing: border-box;
+    padding: 10px;
+
+    h1 {
+      font-size: $font-size-l;
+      margin: 0 0 .3em 0;
+    }
+    p {
+      font-size: $font-size-m;
+      margin: .3em 0;
+    }
+    a {
+      color: $white;
+      cursor: pointer;
+    }
+
+    textarea {
+      width: 100%;
+      height: 165px;
+    }
+  }
+}
