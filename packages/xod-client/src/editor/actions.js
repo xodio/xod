@@ -622,6 +622,7 @@ export const resizePanels = sizes => ({
   type: ActionType.RESIZE_PANELS,
   payload: sizes,
 });
+export const resizePanel = (name, size) => resizePanels({ [name]: size });
 export const minimizePanel = panelId => ({
   type: ActionType.MINIMIZE_PANEL,
   payload: {

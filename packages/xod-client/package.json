@@ -47,7 +47,7 @@
     "react-highlight-words": "^0.8.1",
     "react-hotkeys": "^1.1.4",
     "react-redux": "^4.0.6",
-    "react-reflex": "^2.2.7",
+    "react-reflex": "^2.2.9",
     "react-remarkable": "^1.1.3",
     "react-resize-detector": "^1.1.0",
     "react-skylight": "git+https://github.com/xodio/react-skylight.git#6dc266edc5198d0d1a6feb57f329826e782ec967",

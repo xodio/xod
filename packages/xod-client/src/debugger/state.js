@@ -9,7 +9,6 @@ export const DEFAULT_TETHERING_INET_STATE = {
 };
 
 export default {
-  isVisible: false,
   activeSession: SESSION_TYPE.NONE,
   isPreparingSimulation: false,
   isOutdated: false,

@@ -10,6 +10,7 @@ import { foldMaybe } from 'xod-func-tools';
 import { Maybe } from 'ramda-fantasy';
 
 import { LOG_TAB_TYPE } from '../constants';
+import { PANEL_IDS } from '../../editor/constants';
 import * as selectors from '../selectors';
 import { addError, addConfirmation } from '../../messages/actions';
 import * as DA from '../actions';
@@ -51,7 +52,7 @@ const TAB_ORDER = [
   LOG_TAB_TYPE.TESTER,
 ];
 
-class Debugger extends React.Component {
+class Debugger extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -196,6 +197,7 @@ class Debugger extends React.Component {
       isConnectedToSerial,
       stopDebuggerSession,
       currentTab,
+      isResizing,
     } = this.props;
 
     const uploadProgress = foldMaybe(
@@ -216,7 +218,6 @@ class Debugger extends React.Component {
     );
 
     const isDebuggerTab = currentTab === LOG_TAB_TYPE.DEBUGGER;
-
     return (
       <div className={cn('Debugger', { isCollapsed: !isExpanded })}>
         <div className="titlebar">
@@ -301,7 +302,7 @@ class Debugger extends React.Component {
           <React.Fragment>
             {this.renderTabSelector()}
             <div className="container">
-              <Log compact={isDebuggerTab} />
+              <Log compact={isDebuggerTab} doNotSkipLines={isResizing} />
               {isDebuggerTab ? (
                 <SerialInput
                   disabled={!isConnectedToSerial}
@@ -316,7 +317,12 @@ class Debugger extends React.Component {
   }
 }
 
+Debugger.defaultProps = {
+  isResizing: false,
+};
+
 Debugger.propTypes = {
+  isResizing: PropTypes.bool,
   log: PropTypes.string.isRequired,
   maybeUploadProgress: PropTypes.object.isRequired,
   isExpanded: PropTypes.bool.isRequired,
@@ -336,17 +342,21 @@ const mapStateToProps = R.applySpec({
   log: selectors.getLogForCurrentTab,
   maybeUploadProgress: selectors.getUploadProgress,
   currentTab: selectors.getCurrentDebuggerTab,
-  isExpanded: selectors.isDebuggerVisible,
+  isExpanded: EditorSelectors.isPanelMaximized(PANEL_IDS.DEPLOYMENT),
   isConnectedToSerial: selectors.isSessionActive,
   isCapturingDebuggerProtocolMessages:
     selectors.isCapturingDebuggerProtocolMessages,
   isTabtestRunning: EditorSelectors.isTabtestRunning,
   isSimulationAbortable: selectors.isSimulationAbortable,
 });
+
+const toggleDeploymentPane = () =>
+  EditorActions.togglePanel(PANEL_IDS.DEPLOYMENT);
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      toggleDebugger: DA.toggleDebugger,
+      toggleDebugger: toggleDeploymentPane,
       sendToSerial: DA.sendToSerial,
       toggleCapturingDebuggerProtocolMessages:
         DA.toggleCapturingDebuggerProtocolMessages,

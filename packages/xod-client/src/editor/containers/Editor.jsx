@@ -3,7 +3,7 @@ import React from 'react';
 import $ from 'sanctuary-def';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { $Maybe, explodeMaybe, foldMaybe } from 'xod-func-tools';
+import { $Maybe, explodeMaybe, foldMaybe, notEquals } from 'xod-func-tools';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ import * as EditorSelectors from '../selectors';
 
 import { isInputTarget } from '../../utils/browser';
 import sanctuaryPropType from '../../utils/sanctuaryPropType';
-import { FOCUS_AREAS, TAB_TYPES, SIDEBAR_IDS } from '../constants';
+import { FOCUS_AREAS, TAB_TYPES, SIDEBAR_IDS, PANEL_IDS } from '../constants';
 
 import Patch from './Patch';
 import CppImplementationEditor from '../components/CppImplementationEditor';
@@ -29,16 +29,21 @@ import NoPatch from '../components/NoPatch';
 import Suggester from '../components/Suggester';
 import PanelContextMenu from '../components/PanelContextMenu';
 import LibSuggester from '../components/LibSuggester';
-import Debugger from '../../debugger/containers/Debugger';
 import DebuggerTopPane from '../../debugger/containers/DebuggerTopPane';
 import Sidebar from './Sidebar';
 import SnackBar from '../../messages/containers/SnackBar';
 import Helpbox from './Helpbox';
 
 import Tooltip from '../../tooltip/components/Tooltip';
+import Workarea from './Workarea';
 
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
+
+const pickPropsToCheck = R.compose(
+  R.evolve({ panelSettings: R.map(R.omit(['size'])) }),
+  R.reject(R.is(Function))
+);
 
 class Editor extends React.Component {
   constructor(props) {
@@ -59,6 +64,10 @@ class Editor extends React.Component {
       300,
       this.props.actions.updatePatchAttachment
     );
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return notEquals(pickPropsToCheck(nextProps), pickPropsToCheck(this.props));
   }
 
   onAddNode(patchPath) {
@@ -264,17 +273,17 @@ class Editor extends React.Component {
             isDebugSessionOutdated={this.props.isDebugSessionOutdated}
             stopDebuggerSession={this.props.stopDebuggerSession}
           />
-          <div className="Workarea-inner">
-            {this.renderOpenedPatchTab()}
-            {this.renderOpenedAttachmentEditorTabs()}
-            <SnackBar />
-          </div>
-          <Debugger
+          <Workarea
             stopDebuggerSession={this.props.stopDebuggerSession}
             onUploadClick={this.props.onUploadClick}
             onUploadAndDebugClick={this.props.onUploadAndDebugClick}
             onRunSimulationClick={this.props.onRunSimulationClick}
-          />
+            windowSize={this.props.size}
+          >
+            {this.renderOpenedPatchTab()}
+            {this.renderOpenedAttachmentEditorTabs()}
+            <SnackBar />
+          </Workarea>
         </FocusTrap>
         <Sidebar id={SIDEBAR_IDS.RIGHT} windowSize={this.props.size} />
         <DragLayer />
@@ -344,6 +353,7 @@ const mapStateToProps = R.applySpec({
   isHelpboxVisible: EditorSelectors.isHelpboxVisible,
   isDebugSessionRunning: DebuggerSelectors.isDebugSession,
   isDebugSessionOutdated: DebuggerSelectors.isDebugSessionOutdated,
+  isDebugPanelExpanded: EditorSelectors.isPanelMaximized(PANEL_IDS.DEPLOYMENT),
   defaultNodePosition: EditorSelectors.getDefaultNodePlacePosition,
   isTabtestRunning: EditorSelectors.isTabtestRunning,
   panelsSettings: EditorSelectors.getAllPanelsSettings,

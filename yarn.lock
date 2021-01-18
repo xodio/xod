@@ -14114,10 +14114,10 @@ react-redux@^4.0.6, react-redux@^4.4.5:
     loose-envify "^1.1.0"
     prop-types "^15.5.4"
 
-react-reflex@^2.2.7:
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/react-reflex/-/react-reflex-2.2.7.tgz#ff1a0a73981224bc4935a018e3da1056cb000b99"
-  integrity sha1-/xoKc5gSJLxJNaAY49oQVssAC5k=
+react-reflex@^2.2.9:
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/react-reflex/-/react-reflex-2.2.9.tgz#e8cebe6c0f183da319c8c155d8d82096b1026770"
+  integrity sha512-NDn2fu7TuQlc0vKfIJW1gHa7n5SDj2fonfmpm9NzO1ql4je6mcqjTibeN0eyIAomcNwKAd5IPe8JOHKbK7pYYA==
   dependencies:
     babel-runtime "^6.23.0"
     lodash.throttle "^4.1.1"

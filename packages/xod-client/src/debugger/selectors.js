@@ -52,11 +52,6 @@ export const isSimulationAbortable = R.either(
   isSimulationRunning
 );
 
-export const isDebuggerVisible = R.compose(
-  R.prop('isVisible'),
-  getDebuggerState
-);
-
 export const isDebugSessionOutdated = R.compose(
   R.prop('isOutdated'),
   getDebuggerState

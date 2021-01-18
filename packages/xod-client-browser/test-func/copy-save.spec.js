@@ -1,4 +1,4 @@
-/* global browser:false, assert:false, navigator:false */
+/* global browser:false, assert:false, navigator:false, localStorage: false */
 import { tmpdir } from 'os';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
@@ -9,16 +9,26 @@ import getPage from './utils/getPage';
 import Debugger from './pageObjects/Debugger';
 
 describe('copy & save log', () => {
+  beforeEach(async () => {
+    const page = await getPage(browser);
+    // We have to clear the localStorage to ensure that the deployment
+    // pane will be in a default initial state
+    await page.evaluate(() => localStorage.clear());
+  });
   const openIdeAndDeploymentPane = async browser => {
     const page = await getPage(browser);
-    const debugPanel = await Debugger.findOnPage(page);
-
+    // TODO: Replace with `const` and do not find the DOM elment on the page
+    //       after opening it, when rerendering of the element will be fixed
+    let debugPanel = await Debugger.findOnPage(page);
     // Open debugger
     assert.isTrue(
       await debugPanel.isCollapsed(),
       'debugger panel is collapsed by default'
     );
+
     await debugPanel.click();
+    debugPanel = await Debugger.findOnPage(page); // TODO
+
     assert.isTrue(
       await debugPanel.isOpened(),
       'debugger panel is opened by click'

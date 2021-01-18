@@ -36,3 +36,5 @@ export const getTetheringInetNodeId = R.curry(
       XP.getPatchByPath(patchPath)
     )(project)
 );
+
+export const isErrorMessage = R.propEq('type', UPLOAD_MSG_TYPE.ERROR);
