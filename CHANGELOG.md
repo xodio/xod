@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## Not yet released
+
+### Features and enhancements
+
+* [ide] Make deployment pane resizable (#2081)
+* [ide] Copy and save logs from deployment pane (#2078, #2079)
+* [ide] Recover IDE from runtime exceptions (#2074)
+* [ide] Add hotkeys to show upload popup (#2073)
+* [ide] Show a favicon in the browser IDE (#2070)
+* [ide] Restyle bus nodes to avoid misclicks (#2069)
+* [ide] Add hotkeys to create terminal(`t`), constant(`c`), tweak and watch(`w`) nodes while linking (#2068)
+* [ide] Focus on label editor in Inspector when double-clicking terminal or bus nodes (#2063)
+* [ide] Move to Electron v10, node.js v12 (#2084)
+
+### Bug fixes
+
+* [ide] Fix workspace errors when user deleted a workspace (#2082)
+* [ide] Paste "expanded" nodes (such as constants, watches, tweaks) to the right position (#2071)
+* [ide] Fix hotkeys not working in some cases (#2067)
+* [ide] Show create new patch popup even when the project browser is hidden (#2066)
+* [nodes] Fix a typo in welcome-to-xod project (#2064)
+
 <a name="0.36.1"></a>
 
 ## 0.36.1 (2020-10-30)
