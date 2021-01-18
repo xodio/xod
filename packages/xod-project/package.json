@@ -1,6 +1,6 @@
 {
   "name": "xod-project",
-  "version": "0.36.0",
+  "version": "0.37.0",
   "description": "API functions to work on XOD project state",
   "keywords": [],
   "license": "AGPL-3.0",
