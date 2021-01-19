@@ -35,6 +35,8 @@ import {
   IS_DEV,
   getFilePathToOpen,
   getPathToBundledWorkspace,
+  setUserDataArg,
+  getUserDataDir,
 } from './utils';
 import * as WA from './workspaceActions';
 import {
@@ -61,12 +63,8 @@ app.setName('xod');
 
 configureAutoUpdater(autoUpdater, log);
 
-// to ensure compatibility with the old default
-settings.rewriteElectronSettingsFileName('Settings');
-
 if (process.env.USERDATA_DIR) {
   app.setPath('userData', process.env.USERDATA_DIR);
-  settings.rewriteElectronSettingsFilePath(app.getPath('userData'));
 }
 
 if (IS_DEV) {
@@ -119,6 +117,7 @@ function createWindow() {
       contextIsolation: false,
       additionalArguments: [
         IS_DEV ? 'ELECTRON_IS_DEV' : 'ELECTRON_IS_PACKAGED',
+        setUserDataArg(getUserDataDir()),
       ],
     },
   });
