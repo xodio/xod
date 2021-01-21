@@ -10,12 +10,39 @@ export const IS_DEV =
     ? process.argv.includes('ELECTRON_IS_DEV')
     : !electron.app.isPackaged) || process.env.NODE_ENV === 'development';
 
+const USERDATA_ARGNAME = '--userdata-dir=';
+
+// Utility to set the user data directory arguments for the renerer processes
+// from the main process on creating a renderer.
+export const setUserDataArg = userDataDir =>
+  `${USERDATA_ARGNAME}${userDataDir}`;
+
+export const getUserDataDir = () =>
+  process.type === 'renderer'
+    ? R.compose(
+        R.slice(USERDATA_ARGNAME.length, Infinity),
+        R.find(arg => arg.startsWith(USERDATA_ARGNAME))
+      )(process.argv)
+    : process.env.USERDATA_DIR || electron.app.getPath('userData');
+
+// =============================================================================
+//
+// IPC
+//
+// =============================================================================
+
 // for IPC. see https://electron.atom.io/docs/api/remote/#remote-objects
 // if we don't do this, we get empty objects on the other side instead of errors
 export const errorToPlainObject = R.when(
   R.is(Error),
   R.converge(R.pick, [Object.getOwnPropertyNames, R.identity])
 );
+
+// =============================================================================
+//
+// Cross-platform
+//
+// =============================================================================
 
 /**
  * It provides one iterface for getting file path, that
@@ -57,6 +84,8 @@ export const getFilePathToOpen = app => {
 
   return () => pathToOpen;
 };
+
+// =============================================================================
 
 /**
  * Returns Path to the resources directory root.
