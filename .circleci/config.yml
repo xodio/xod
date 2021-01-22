@@ -58,6 +58,14 @@ defs:
         && mkdir "/tmp/arduino-cli" \
         && cp "$HOME/arduino-cli" "/tmp/arduino-cli/arduino-cli"
 
+    step-install-arduino-cli-on-windows: &step-install-arduino-cli-on-windows
+      name: Install arduino-cli
+      command: |
+        curl -L -s --create-dirs -o "$HOME/arduino-cli.zip" "https://github.com/arduino/arduino-cli/releases/download/0.12.0/arduino-cli_0.12.0_Windows_64bit.zip" \
+        && unzip "$HOME/arduino-cli.zip" -d "$HOME" \
+        && cp "$HOME/arduino-cli.exe" "./packages/xod-client-electron/arduino-cli.exe"
+      shell: bash
+
     step-install: &step-install
       name: Install Node modules
       # to always instal some essential tools(electron-builder etc)
@@ -156,16 +164,13 @@ jobs:
           command: git config --global core.autocrlf input
       - run:
           command: git config --system core.longpaths true
+      - checkout
       - run:
           name: Install yarn
           command: npm install yarn@1.22.10 -g
-      - checkout
       - run:
           name: Install Node modules
           command: yarn
-      - run:
-          name: Install Node modules
-          command: yarn build
       - run: *step-build
       - run:
           name: Verify that previous step made no side-effects
@@ -256,6 +261,41 @@ jobs:
             - latest-mac.yml
             - "*.dmg"
             - "*.zip"
+
+  dist-windows:
+    executor:
+      name: win/default
+    steps:
+      - run:
+          command: git config --global core.autocrlf input
+      - run:
+          command: git config --system core.longpaths true
+      - checkout
+      - run:
+          name: Install yarn
+          command: npm install yarn@1.22.10 -g
+      - run: *step-install-arduino-cli-on-windows
+      - run:
+          name: Install Node modules
+          command: yarn
+      - run:
+          name: Bump version
+          command: |
+            if [[ $CIRCLE_BRANCH =~ ^prerelease-(patch|minor)- ]]; then
+              yarn lerna publish --skip-git --skip-npm --canary --cd-version ${BASH_REMATCH[1]} --yes
+            fi
+          shell: bash
+      - run:
+          name: Build electron IDE distro
+          command: NODE_ENV=production yarn build:electron && yarn dist:electron
+          shell: bash
+          no_output_timeout: 30m
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - latest.yml
+            - "*.exe"
+            - "*.blockmap"
 
   #--------------------------------------------------------------------
   # Upload distros job
@@ -366,11 +406,15 @@ workflows:
           filters: *release-filters
       - dist-macos:
           filters: *release-filters
+      - dist-windows:
+          filters: *release-filters          
       - upload-distros:
           filters: *release-filters
           requires:
             - verify-linux
             - verify-macos
+            - verify-windows
             - test-cpp
             - dist-linux
             - dist-macos
+            - dist-windows
