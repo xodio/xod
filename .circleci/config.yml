@@ -156,16 +156,13 @@ jobs:
           command: git config --global core.autocrlf input
       - run:
           command: git config --system core.longpaths true
+      - checkout
       - run:
           name: Install yarn
           command: npm install yarn@1.22.10 -g
-      - checkout
       - run:
           name: Install Node modules
           command: yarn
-      - run:
-          name: Install Node modules
-          command: yarn build
       - run: *step-build
       - run:
           name: Verify that previous step made no side-effects
@@ -256,6 +253,36 @@ jobs:
             - latest-mac.yml
             - "*.dmg"
             - "*.zip"
+
+  dist-windows:
+    executor:
+      name: win/default
+    steps:
+      - run:
+          command: git config --global core.autocrlf input
+      - run:
+          command: git config --system core.longpaths true
+      - checkout
+      - run:
+          name: Install yarn
+          command: npm install yarn@1.22.10 -g
+      - run:
+          name: Install arduino-cli
+          command: pwsh ./tools/install-arduinocli.ps1
+      - run:
+          name: Install Node modules
+          command: yarn
+      - run:
+          name: Build electron IDE distro
+          command: NODE_ENV=production yarn build:electron && yarn dist:electron
+          shell: bash
+          no_output_timeout: 30m
+      - persist_to_workspace:
+          root: packages/xod-client-electron/dist
+          paths:
+            - latest.yml
+            - "*.exe"
+            - "*.blockmap"
 
   #--------------------------------------------------------------------
   # Upload distros job
@@ -366,11 +393,14 @@ workflows:
           filters: *release-filters
       - dist-macos:
           filters: *release-filters
+      - dist-windows:
+          filters: *release-filters          
       - upload-distros:
           filters: *release-filters
           requires:
             - verify-linux
             - verify-macos
+            - verify-windows
             - test-cpp
             - dist-linux
             - dist-macos
