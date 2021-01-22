@@ -66,6 +66,16 @@ defs:
         && cp "$HOME/arduino-cli.exe" "./packages/xod-client-electron/arduino-cli.exe"
       shell: bash
 
+    step-configure-git-on-windows: &step-configure-git-on-windows
+      name: Configure git
+      command: |
+            git config --global core.autocrlf input
+            git config --system core.longpaths true
+
+    step-install-yarn-on-windows: &step-install-yarn-on-windows
+      name: Install yarn
+      command: npm install yarn@1.22.10 -g
+
     step-install: &step-install
       name: Install Node modules
       # to always instal some essential tools(electron-builder etc)
@@ -77,6 +87,7 @@ defs:
         if [[ $CIRCLE_BRANCH =~ ^prerelease-(patch|minor)- ]]; then
           yarn lerna publish --skip-git --skip-npm --canary --cd-version ${BASH_REMATCH[1]} --yes
         fi
+      shell: bash
 
     step-build: &step-build
       name: Build
@@ -85,6 +96,7 @@ defs:
     step-verify-git-clean: &step-verify-git-clean
       name: Verify that previous step made no side-effects
       command: ./tools/verify-git-clean.sh
+      shell: bash
 
     step-build-electron: &step-build-electron
       name: Build electron IDE app
@@ -160,22 +172,14 @@ jobs:
     executor:
       name: win/default
     steps:
-      - run:
-          command: git config --global core.autocrlf input
-      - run:
-          command: git config --system core.longpaths true
+      - run: *step-configure-git-on-windows
       - checkout
-      - run:
-          name: Install yarn
-          command: npm install yarn@1.22.10 -g
+      - run: *step-install-yarn-on-windows
       - run:
           name: Install Node modules
           command: yarn
       - run: *step-build
-      - run:
-          name: Verify that previous step made no side-effects
-          command: ./tools/verify-git-clean.sh
-          shell: bash
+      - run: *step-verify-git-clean
 
   test-cpp:
     docker: *docker-custom-nodejs
@@ -266,25 +270,14 @@ jobs:
     executor:
       name: win/default
     steps:
-      - run:
-          command: git config --global core.autocrlf input
-      - run:
-          command: git config --system core.longpaths true
+      - run: *step-configure-git-on-windows
       - checkout
-      - run:
-          name: Install yarn
-          command: npm install yarn@1.22.10 -g
+      - run: *step-install-yarn-on-windows
       - run: *step-install-arduino-cli-on-windows
       - run:
           name: Install Node modules
           command: yarn
-      - run:
-          name: Bump version
-          command: |
-            if [[ $CIRCLE_BRANCH =~ ^prerelease-(patch|minor)- ]]; then
-              yarn lerna publish --skip-git --skip-npm --canary --cd-version ${BASH_REMATCH[1]} --yes
-            fi
-          shell: bash
+      - run: *step-bump-version
       - run:
           name: Build electron IDE distro
           command: NODE_ENV=production yarn build:electron && yarn dist:electron
