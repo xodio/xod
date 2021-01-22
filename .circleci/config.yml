@@ -101,7 +101,7 @@ defs:
       no_output_timeout: 30m
 
 orbs:
-  node: circleci/node@4.1.0
+  win: circleci/windows@2.4.0
 
 jobs:
   #--------------------------------------------------------------------
@@ -147,6 +147,30 @@ jobs:
       - run: *step-test
       - run: *step-test-func
       - run: *step-verify-git-clean
+
+  verify-windows:
+    executor:
+      name: win/default
+    steps:
+      - run:
+          command: git config --global core.autocrlf input
+      - run:
+          command: git config --system core.longpaths true
+      - run:
+          name: Install yarn
+          command: npm install yarn@1.22.10 -g
+      - checkout
+      - run:
+          name: Install Node modules
+          command: yarn
+      - run:
+          name: Install Node modules
+          command: yarn build
+      - run: *step-build
+      - run:
+          name: Verify that previous step made no side-effects
+          command: ./tools/verify-git-clean.sh
+          shell: bash
 
   test-cpp:
     docker: *docker-custom-nodejs
@@ -331,6 +355,7 @@ workflows:
     jobs:
       - verify-linux
       - verify-macos
+      - verify-windows
       - test-cpp
       - dockerize-ide:
           filters: *release-filters
