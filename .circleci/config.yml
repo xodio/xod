@@ -282,6 +282,8 @@ jobs:
           name: Build electron IDE distro
           command: |
             $env:NODE_ENV="production"
+            $env:CSC_LINK=$env:CSC_LINK_WIN
+            $env:CSC_KEY_PASSWORD=$env:CSC_KEY_PASSWORD_WIN
             yarn build:electron
             yarn dist:electron
           no_output_timeout: 30m
