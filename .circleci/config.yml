@@ -280,8 +280,10 @@ jobs:
       - run: *step-bump-version
       - run:
           name: Build electron IDE distro
-          command: NODE_ENV=production yarn build:electron && yarn dist:electron
-          shell: bash
+          command: |
+            $env:NODE_ENV="production"
+            yarn build:electron
+            yarn dist:electron
           no_output_timeout: 30m
       - persist_to_workspace:
           root: packages/xod-client-electron/dist
