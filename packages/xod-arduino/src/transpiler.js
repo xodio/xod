@@ -823,6 +823,17 @@ export const getNodePinKeysMap = def(
   )
 );
 
+export const getTableLogNodeIds = def(
+  'getNodeIdsMap :: TProject -> [NodeId]',
+  R.compose(
+    R.map(R.prop('originalId')),
+    R.filter(
+      R.compose(R.propEq('patchPath', XP.TABLELOG_NODETYPE), R.prop('patch'))
+    ),
+    R.prop('nodes')
+  )
+);
+
 const getParentPatch = def(
   'getParentPatch :: NodeId -> Patch -> Project -> Maybe Patch',
   (fullNodeId, rootPatch, project) =>

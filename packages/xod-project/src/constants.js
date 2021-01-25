@@ -126,6 +126,7 @@ export const PULSE_CONST_NODETYPES = {
 };
 
 export const WATCH_NODETYPE = 'xod/debug/watch';
+export const TABLELOG_NODETYPE = 'xod/debug/table-log';
 
 // node types that prints values into Serial
 // to debug xod programm, it should be omitted
@@ -138,6 +139,7 @@ export const DEBUG_NODETYPES = [
   'xod/core/console-log',
   WATCH_NODETYPE,
   'xod/debug/console-log',
+  TABLELOG_NODETYPE,
 ];
 
 /**

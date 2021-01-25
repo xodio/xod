@@ -26,6 +26,7 @@ export {
   isValidPatchPath,
   isTerminalPatchPath,
   isWatchPatchPath,
+  isTableLogPatchPath,
   isFromBusPatchPath,
   isToBusPatchPath,
   isBusPatchPath,

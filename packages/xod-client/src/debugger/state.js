@@ -39,6 +39,10 @@ export default {
   currentStage: LOG_TAB_TYPE.COMPILER,
   nodeIdsMap: {},
   watchNodeValues: {},
+  tableLogNodeIds: [],
+  tableLogValues: {
+    // NodeId : [ /* Experiments history */ [[String]] ]
+  },
   uploadProgress: null,
   interactiveErroredNodePins: {},
   pinsAffectedByErrorRaisers: {},

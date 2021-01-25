@@ -1,5 +1,11 @@
 import * as R from 'ramda';
-import { renameKeys, invertMap, foldMaybe, maybePath } from 'xod-func-tools';
+import {
+  renameKeys,
+  invertMap,
+  foldMaybe,
+  maybePath,
+  isAmong,
+} from 'xod-func-tools';
 
 import { ERROR_CODES } from 'xod-cloud-compile';
 
@@ -132,16 +138,70 @@ const addMessagesOrIncrementSkippedLines = R.curry(
       : addMessageListToDebuggerLog(logMessages, state)
 );
 
-const updateWatchNodeValues = R.curry((messageList, state) => {
+const updateInteractiveNodeValues = R.curry((messageList, state) => {
   const MapToRekey = R.prop('nodeIdsMap', state);
-  return R.compose(
-    newValues =>
-      R.over(R.lensProp('watchNodeValues'), R.merge(R.__, newValues), state),
+  // All node ids that is not represented in `tableLogNodeIds` is `watch` nodes
+  const [tableLogMessages, watchNodeMessages] = R.compose(
+    R.map(R.fromPairs),
+    R.partition(R.compose(isAmong(state.tableLogNodeIds), R.nth(0))),
+    R.toPairs,
     renameKeys(MapToRekey),
-    R.map(R.compose(R.prop('content'), R.last)),
     R.groupBy(R.prop('nodeId')),
     R.filter(R.propEq('type', UPLOAD_MSG_TYPE.XOD))
   )(messageList);
+
+  const updateWatchNodeValues = R.compose(
+    newValues =>
+      R.over(R.lensProp('watchNodeValues'), R.merge(R.__, newValues)),
+    R.map(R.compose(R.prop('content'), R.last))
+  )(watchNodeMessages);
+
+  // Prepare data for table logs
+  const NEW_SHEET = String.fromCharCode(0xc); // TODO: Move somewhere
+  const newTableLogData = R.map(
+    R.compose(
+      R.reduce(
+        (acc, val) =>
+          val === NEW_SHEET
+            ? R.append([], acc)
+            : R.over(
+                R.lensIndex(acc.length - 1),
+                R.append(R.split('\t', val)),
+                acc
+              ),
+        [[]]
+      ),
+      R.pluck('content')
+    )
+  )(tableLogMessages);
+
+  const updateTableLogs = R.compose(
+    R.map(([nodeId, [dataToLastSheet, ...newSheets]]) =>
+      R.over(
+        R.lensProp(nodeId),
+        R.compose(
+          R.concat(R.__, newSheets),
+          sheets =>
+            R.over(
+              R.lensIndex(sheets.length - 1),
+              R.concat(R.__, dataToLastSheet),
+              sheets
+            ),
+          R.when(R.isEmpty, R.append([])),
+          R.defaultTo([])
+        )
+      )
+    ),
+    R.toPairs
+  )(newTableLogData);
+
+  return R.compose(
+    updateWatchNodeValues,
+    R.over(
+      R.lensProp('tableLogValues'),
+      R.reduce((acc, fn) => fn(acc), R.__, updateTableLogs)
+    )
+  )(state);
 });
 
 /* eslint-disable no-bitwise */
@@ -431,7 +491,7 @@ export default (state = initialState, action) => {
         addErrorMessage,
         addMessagesOrIncrementSkippedLines(logMessages),
         updateInteractiveErroredNodePins(allMessages),
-        updateWatchNodeValues(allMessages)
+        updateInteractiveNodeValues(allMessages)
       )(state);
     }
     case LINE_SENT_TO_SERIAL:
@@ -463,6 +523,7 @@ export default (state = initialState, action) => {
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
+        R.assoc('tableLogNodeIds', action.payload.tableLogNodeIds),
         R.assoc('nodePinKeysMap', action.payload.nodePinKeysMap),
         rekeyAndAssocPinsAffectedByErrorRaisers(
           invertedNodeIdsMap,
@@ -588,6 +649,7 @@ export default (state = initialState, action) => {
         R.assoc('isPreparingSimulation', false),
         R.assoc('isOutdated', false),
         R.assoc('uploadProgress', null),
+        R.assoc('tableLogNodeIds', action.payload.tableLogNodeIds),
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
         R.assoc('nodePinKeysMap', action.payload.nodePinKeysMap),
         R.assoc('globals', action.payload.globals),

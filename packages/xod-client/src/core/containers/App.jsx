@@ -29,6 +29,7 @@ import {
   transpile,
   getNodeIdsMap,
   getNodePinKeysMap,
+  getTableLogNodeIds,
   getPinsAffectedByErrorRaisers,
   listGlobals,
   extendTProjectWithGlobals,
@@ -217,6 +218,7 @@ export default class App extends React.Component {
           code: transpile,
           nodeIdsMap: getNodeIdsMap,
           nodePinKeysMap: getNodePinKeysMap,
+          tableLogNodeIds: getTableLogNodeIds,
           tetheringInetNodeId: getTetheringInetNodeId,
           pinsAffectedByErrorRaisers: tProj =>
             R.compose(
@@ -233,6 +235,7 @@ export default class App extends React.Component {
           code,
           nodeIdsMap,
           nodePinKeysMap,
+          tableLogNodeIds,
           pinsAffectedByErrorRaisers,
           tetheringInetNodeId,
         }) =>
@@ -243,6 +246,7 @@ export default class App extends React.Component {
             ),
             nodeIdsMap,
             nodePinKeysMap,
+            tableLogNodeIds,
             code,
             pinsAffectedByErrorRaisers,
             sessionGlobals,
