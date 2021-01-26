@@ -185,11 +185,13 @@ jobs:
     steps:
       - run: *step-configure-git-on-windows
       - checkout
+      - restore_cache: *restore-node_modules
       - run: *step-install-node-on-windows
       - run: *step-install-yarn-on-windows
       - run:
           name: Install Node modules
           command: yarn
+      - save_cache: *cache-node_modules
       - run: *step-build
       - run: *step-verify-git-clean
 
@@ -284,6 +286,7 @@ jobs:
     steps:
       - run: *step-configure-git-on-windows
       - checkout
+      - restore_cache: *restore-node_modules
       - run: *step-install-node-on-windows
       - run: *step-install-yarn-on-windows
       - run: *step-install-arduino-cli-on-windows
