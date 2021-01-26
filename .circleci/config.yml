@@ -146,6 +146,10 @@ jobs:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install
+      - run:
+          name: Ensure correct node versions are specified in .nvmrc and package.json
+          command: node ./tools/match-node-version-to-electron.js
+      - run: *step-verify-git-clean
       - run: *step-install-arduino-cli-on-linux
       - save_cache: *cache-node_modules
       - run: *step-build
