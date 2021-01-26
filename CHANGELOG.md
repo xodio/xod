@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.2"></a>
+
+## 0.37.2 (2021-01-25)
+
+### Bug fixes
+
+* [infra] Fix a bug in the release process that resulted in a bad windows build (#2090)
+
 <a name="0.37.1"></a>
 
 ## 0.37.1 (2021-01-20)
