@@ -86,5 +86,8 @@
   },
   "resolutions": {
     "**/ramda-fantasy/ramda": "^0.24.1"
+  },
+  "engines": {
+    "node": "12.16.3"
   }
 }
