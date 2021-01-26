@@ -37,7 +37,7 @@ defs:
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:12
+      - image: xodio/cci-node:12.16.3
 
   steps:
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
