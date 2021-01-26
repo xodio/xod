@@ -72,6 +72,16 @@ defs:
             git config --global core.autocrlf input
             git config --system core.longpaths true
 
+    step-install-node-on-mac: &step-install-node-on-mac
+      name: Install node
+      command: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+        NVM_DIR="$HOME/.nvm"
+        echo "export NVM_DIR=\"$HOME/.nvm\"" >> $BASH_ENV
+        echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+        \. "$NVM_DIR/nvm.sh" --no-use
+        nvm install
+
     step-install-node-on-windows: &step-install-node-on-windows
       name: Install node
       command: |
@@ -169,6 +179,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - save_cache: *cache-node_modules
@@ -268,6 +279,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - run: *step-bump-version
