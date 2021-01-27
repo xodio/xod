@@ -37,7 +37,7 @@ defs:
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:12
+      - image: xodio/cci-node:12.16.3
 
   steps:
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
@@ -72,11 +72,22 @@ defs:
             git config --global core.autocrlf input
             git config --system core.longpaths true
 
+    step-install-node-on-mac: &step-install-node-on-mac
+      name: Install node
+      command: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+        NVM_DIR="$HOME/.nvm"
+        echo "export NVM_DIR=\"$HOME/.nvm\"" >> $BASH_ENV
+        echo "[ -s \"$NVM_DIR/nvm.sh\" ] && \. \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+        \. "$NVM_DIR/nvm.sh" --no-use
+        nvm install
+
     step-install-node-on-windows: &step-install-node-on-windows
       name: Install node
       command: |
-            nvm install 12.12.0
-            nvm use 12.12.0
+            nvm install `cat .nvmrc`
+            nvm use `cat .nvmrc`
+      shell: bash
 
     step-install-yarn-on-windows: &step-install-yarn-on-windows
       name: Install yarn
@@ -146,6 +157,10 @@ jobs:
       - checkout
       - restore_cache: *restore-node_modules
       - run: *step-install
+      - run:
+          name: Ensure correct node versions are specified in .nvmrc and package.json
+          command: node ./tools/match-node-version-to-electron.js
+      - run: *step-verify-git-clean
       - run: *step-install-arduino-cli-on-linux
       - save_cache: *cache-node_modules
       - run: *step-build
@@ -164,6 +179,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - save_cache: *cache-node_modules
@@ -179,12 +195,14 @@ jobs:
       name: win/default
     steps:
       - run: *step-configure-git-on-windows
+      - checkout
+      - restore_cache: *restore-node_modules
       - run: *step-install-node-on-windows
       - run: *step-install-yarn-on-windows
-      - checkout
       - run:
           name: Install Node modules
           command: yarn
+      - save_cache: *cache-node_modules
       - run: *step-build
       - run: *step-verify-git-clean
 
@@ -261,6 +279,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-node_modules
+      - run: *step-install-node-on-mac
       - run: *step-install-arduino-cli-on-mac
       - run: *step-install
       - run: *step-bump-version
@@ -278,9 +297,10 @@ jobs:
       name: win/default
     steps:
       - run: *step-configure-git-on-windows
+      - checkout
+      - restore_cache: *restore-node_modules
       - run: *step-install-node-on-windows
       - run: *step-install-yarn-on-windows
-      - checkout
       - run: *step-install-arduino-cli-on-windows
       - run:
           name: Install Node modules
