@@ -19,7 +19,7 @@ defs:
 
     cache-arduino15: &cache-arduino15
       # update cache only if package_index.json changed
-      key: arduino15-v1-{{ arch }}-{{ .Branch }}-{{ checksum "~/.arduino15/package_index.json" }}
+      key: arduino15-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ .Branch }}-{{ checksum "~/.arduino15/package_index.json" }}
       paths:
         - ~/.arduino15/staging # only archives
 
@@ -32,12 +32,12 @@ defs:
 
     restore-arduino15: &restore-arduino15
       keys:
-        - arduino15-v1-{{ arch }}-{{ .Branch }}-
-        - arduino15-v1-{{ arch }}-
+        - arduino15-{{ arch }}-{{ checksum ".circleci/cache-version" }}-{{ .Branch }}-
+        - arduino15-{{ arch }}-{{ checksum ".circleci/cache-version" }}
 
   machines:
     docker-custom-nodejs: &docker-custom-nodejs
-      - image: xodio/cci-node:12.16.3
+      - image: xodio/cci-node:12.12.3-cimg
 
   steps:
     step-install-arduino-cli-on-mac: &step-install-arduino-cli-on-mac
