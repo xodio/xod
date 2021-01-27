@@ -345,7 +345,7 @@ const mapStateToProps = R.applySpec({
   focusedArea: EditorSelectors.getFocusedArea,
   draggedPreviewSize: EditorSelectors.getDraggedPreviewSize,
   isDebugSession: DebugSelectors.isDebugSession,
-  nodeValues: DebugSelectors.getWatchNodeValuesForCurrentPatch,
+  nodeValues: DebugSelectors.getInteractiveNodeValuesForCurrentPatch,
 });
 
 const mapDispatchToProps = dispatch => ({

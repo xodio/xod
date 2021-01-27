@@ -115,6 +115,7 @@ class Node extends React.Component {
     return R.cond([
       [XP.isTerminalPatchPath, () => <TerminalNodeBody {...this.props} />],
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
+      [XP.isTableLogPatchPath, () => <WatchNodeBody {...this.props} />],
       [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
       [XP.isBindableCustomType, () => <ConstantNodeBody {...this.props} />],
       [XP.isTweakPath, () => <TweakNodeBody {...this.props} />],
