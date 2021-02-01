@@ -39,6 +39,9 @@
       "type": "xod/debug/watch"
     },
     {
+      "boundLiterals": {
+        "r1l3XcR17": "A2"
+      },
       "id": "SkSOIt1ON",
       "position": {
         "units": "slots",
@@ -48,6 +51,9 @@
       "type": "xod/common-hardware/analog-sensor"
     },
     {
+      "boundLiterals": {
+        "B1oqkTnIb": "D11"
+      },
       "id": "rJJbwKy_E",
       "position": {
         "units": "slots",
