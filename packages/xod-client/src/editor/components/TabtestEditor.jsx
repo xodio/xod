@@ -99,6 +99,7 @@ const TabtestEditor = ({
       </div>
       <div className="tabtest-editor">
         <ReactDataSheet
+          className="with-header"
           data={cells}
           valueRenderer={R.prop('value')}
           overflow={'nowrap'}

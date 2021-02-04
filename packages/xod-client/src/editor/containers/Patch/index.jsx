@@ -382,6 +382,7 @@ const mapDispatchToProps = dispatch => ({
       addInteractiveNode: ProjectActions.addInteractiveNode,
       focusBoundValue: EditorActions.focusBoundValue,
       focusLabel: EditorActions.focusLabel,
+      openTableLogTab: EditorActions.openTableLogTab,
     },
     dispatch
   ),

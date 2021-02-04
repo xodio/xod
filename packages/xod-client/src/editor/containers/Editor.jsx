@@ -39,6 +39,7 @@ import Workarea from './Workarea';
 
 import Tabs from './Tabs';
 import DragLayer from './DragLayer';
+import TableLog from './TableLog';
 
 const pickPropsToCheck = R.compose(
   R.evolve({ panelSettings: R.map(R.omit(['size'])) }),
@@ -111,6 +112,11 @@ class Editor extends React.Component {
     return foldMaybe(
       <NoPatch />,
       tab => {
+        // Render <Patch /> component only for PATCH or DEBUGGER
+        // tab types
+        if (tab.type !== TAB_TYPES.PATCH && tab.type !== TAB_TYPES.DEBUGGER)
+          return null;
+
         // Do not render <Patch /> component if opened tab
         // is in EditingCppImplementation mode.
         if (tab.editedAttachment) return null;
@@ -139,12 +145,37 @@ class Editor extends React.Component {
     );
   }
 
+  renderTableLogTab() {
+    const { currentTab } = this.props;
+
+    return foldMaybe(
+      null,
+      tab => {
+        // Render only for TABLE_LOG tab type
+        if (tab.type !== TAB_TYPES.TABLE_LOG) return null;
+
+        return (
+          <TableLog
+            tabId={tab.id}
+            nodeId={tab.nodeId}
+            sheetIndex={tab.activeSheetIndex}
+          />
+        );
+      },
+      currentTab
+    );
+  }
+
   renderOpenedAttachmentEditorTabs() {
     return foldMaybe(
       null,
       currentTab => {
         const tabs = this.props.attachmentEditorTabs.map(
           ({ id, type, patchPath, editedAttachment }) => {
+            // Render only for PATCH or DEBUGGER tab types
+            if (type !== TAB_TYPES.PATCH && type !== TAB_TYPES.DEBUGGER)
+              return null;
+
             const patch = XP.getPatchByPathUnsafe(
               patchPath,
               this.props.project
@@ -154,11 +185,6 @@ class Editor extends React.Component {
               patch
             ).getOrElse(
               R.propOr('', editedAttachment, XP.MANAGED_ATTACHMENT_TEMPLATES)
-            );
-
-            const currentPatchPath = explodeMaybe(
-              'No currentPatchPath, but currentTab exists',
-              this.props.currentPatchPath
             );
 
             switch (editedAttachment) {
@@ -177,11 +203,9 @@ class Editor extends React.Component {
                     }
                     isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
                     isRunning={this.props.isTabtestRunning}
-                    onRunClick={() =>
-                      this.props.actions.runTabtest(currentPatchPath)
-                    }
+                    onRunClick={() => this.props.actions.runTabtest(patchPath)}
                     onClose={this.props.actions.closeAttachmentEditor}
-                    patchPath={currentPatchPath}
+                    patchPath={patchPath}
                   />
                 );
 
@@ -200,7 +224,7 @@ class Editor extends React.Component {
                     }
                     isInDebuggerTab={type === TAB_TYPES.DEBUGGER}
                     onClose={this.props.actions.closeAttachmentEditor}
-                    patchPath={currentPatchPath}
+                    patchPath={patchPath}
                   />
                 );
 
@@ -282,6 +306,7 @@ class Editor extends React.Component {
           >
             {this.renderOpenedPatchTab()}
             {this.renderOpenedAttachmentEditorTabs()}
+            {this.renderTableLogTab()}
             <SnackBar />
           </Workarea>
         </FocusTrap>

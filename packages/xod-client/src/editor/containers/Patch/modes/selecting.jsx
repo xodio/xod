@@ -231,6 +231,8 @@ const selectingMode = {
   onNodeDoubleClick(api, nodeId, patchPath) {
     if (R.contains(patchPath, R.keys(XP.MANAGED_ATTACHMENT_FILENAMES))) {
       api.props.actions.openAttachmentEditor(patchPath);
+    } else if (XP.isTableLogPatchPath(patchPath)) {
+      api.props.actions.openTableLogTab(nodeId);
     } else if (
       XP.isConstantNodeType(patchPath) ||
       XP.isTweakPath(patchPath) ||

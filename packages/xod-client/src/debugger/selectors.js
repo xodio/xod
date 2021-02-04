@@ -296,3 +296,20 @@ export const tetheringInetTransmitter = R.compose(
   R.path(['tetheringInet', 'transmitter']),
   getDebuggerState
 );
+
+// =============================================================================
+//
+// Table log
+//
+// =============================================================================
+
+export const getTableLogValues = R.compose(
+  R.prop('tableLogValues'),
+  getDebuggerState
+);
+
+export const getTableLogSources = R.compose(R.keys, getTableLogValues);
+
+export const getTableLogsByNodeId = R.curry((nodeId, state) =>
+  R.compose(R.pathOr([], ['tableLogValues', nodeId]), getDebuggerState)(state)
+);

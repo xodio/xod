@@ -64,9 +64,11 @@ export const CLIPBOARD_DATA_TYPE = 'text/xod-entities';
 export const TAB_TYPES = {
   PATCH: 'PATCH',
   DEBUGGER: 'DEBUGGER',
+  TABLE_LOG: 'TABLE_LOG',
 };
 
 export const DEBUGGER_TAB_ID = 'debugger';
+export const TABLE_LOG_TAB_ID = 'tablelog';
 
 export const PANEL_IDS = {
   PROJECT_BROWSER: 'PROJECT_BROWSER',

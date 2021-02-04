@@ -33,7 +33,7 @@ import {
 
 import * as EAT from '../editor/actionTypes';
 
-import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE, SESSION_TYPE } from './constants';
+import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE, SESSION_TYPE, NEW_SHEET } from './constants';
 import * as MSG from './messages';
 import { STATUS } from '../utils/constants';
 import { isXodErrorMessage } from './debugProtocol';
@@ -157,7 +157,6 @@ const updateInteractiveNodeValues = R.curry((messageList, state) => {
   )(watchNodeMessages);
 
   // Prepare data for table logs
-  const NEW_SHEET = String.fromCharCode(0xc); // TODO: Move somewhere
   const newTableLogData = R.map(
     R.compose(
       R.reduce(

@@ -940,3 +940,39 @@ export const tweakNodeProperty = (nodeId, kind, key, value) => (
     })
   );
 };
+
+export const openTableLogTab = nodeId => (dispatch, getState) => {
+  const sheets = DebuggerSelectors.getTableLogsByNodeId(nodeId, getState());
+  return dispatch({
+    type: ActionType.OPEN_TABLE_LOG_TAB,
+    payload: {
+      nodeId,
+      activeSheetIndex: sheets.length > 0 ? sheets.length - 1 : 0,
+    },
+  });
+};
+
+export const changeActiveSheet = R.curry((tabId, nodeId, newSheetIndex) => ({
+  type: ActionType.CHANGE_TABLE_LOG_SHEET,
+  payload: {
+    tabId,
+    nodeId,
+    newSheetIndex,
+  },
+}));
+
+export const changeTableLogSource = (tabId, nodeId) => (dispatch, getState) => {
+  const newSourceSheets = DebuggerSelectors.getTableLogsByNodeId(
+    nodeId,
+    getState()
+  );
+  const newSheetIndex = R.max(0, newSourceSheets.length - 1);
+  dispatch({
+    type: ActionType.CHANGE_TABLE_LOG_SHEET,
+    payload: {
+      tabId,
+      nodeId,
+      newSheetIndex,
+    },
+  });
+};
