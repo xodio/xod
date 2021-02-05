@@ -39,7 +39,10 @@ export default {
   currentStage: LOG_TAB_TYPE.COMPILER,
   nodeIdsMap: {},
   watchNodeValues: {},
-  tableLogNodeIds: [],
+  tableLogSources: {
+    // PatchPath : [NodeId]
+    // where PatchPath is a path of root patch that was compiled
+  },
   tableLogValues: {
     // NodeId : [ /* Experiments history */ [[String]] ]
   },

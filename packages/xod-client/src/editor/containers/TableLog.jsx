@@ -83,7 +83,7 @@ class TableLog extends React.Component {
 
   onSaveLogClicked() {
     const tsv = gridToTsv(this.getSheet());
-    const defaultFilename = `log-${this.props.nodeId}-${
+    const defaultFilename = `log-${this.getNodeLabel()}-${
       this.props.sheetIndex
     }.txt`;
 
@@ -116,6 +116,13 @@ class TableLog extends React.Component {
     return this.props.document.length;
   }
 
+  getNodeLabel() {
+    return R.compose(
+      R.propOr('unknown', 'label'),
+      R.find(R.propEq('nodeId', this.props.nodeId))
+    )(this.props.sources);
+  }
+
   isEmptySheet() {
     return this.getSheet().length === 0;
   }
@@ -136,9 +143,9 @@ class TableLog extends React.Component {
               disabled={hasNoSources}
             >
               {hasNoSources ? <option>No logs</option> : null}
-              {this.props.sources.map(nodeId => (
+              {this.props.sources.map(({ nodeId, label }) => (
                 <option key={nodeId} value={nodeId}>
-                  {nodeId}
+                  {label}
                 </option>
               ))}
             </select>
@@ -202,7 +209,7 @@ TableLog.propTypes = {
   // from parent
   tabId: PropTypes.string.isRequired,
   // connect
-  sources: PropTypes.arrayOf(PropTypes.string).isRequired,
+  sources: PropTypes.arrayOf(PropTypes.object).isRequired,
   document: PropTypes.array.isRequired,
   nodeId: PropTypes.string.isRequired,
   sheetIndex: PropTypes.number.isRequired,

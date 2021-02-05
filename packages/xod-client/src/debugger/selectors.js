@@ -11,6 +11,7 @@ import { DEBUGGER_TAB_ID } from '../editor/constants';
 import { SESSION_TYPE } from './constants';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
+import { getTableLogSourceLabels } from './utils';
 
 export const getDebuggerState = R.prop('debugger');
 
@@ -308,7 +309,19 @@ export const getTableLogValues = R.compose(
   getDebuggerState
 );
 
-export const getTableLogSources = R.compose(R.keys, getTableLogValues);
+const getTableLogSourcesRaw = R.compose(
+  R.prop('tableLogSources'),
+  getDebuggerState
+);
+
+// :: State -> [{ nodeId: NodeId, label: String }]
+export const getTableLogSources = state =>
+  R.compose(
+    R.unnest,
+    R.values,
+    R.mapObjIndexed(getTableLogSourceLabels(state.project)),
+    getTableLogSourcesRaw
+  )(state);
 
 export const getTableLogsByNodeId = R.curry((nodeId, state) =>
   R.compose(R.pathOr([], ['tableLogValues', nodeId]), getDebuggerState)(state)

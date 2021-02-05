@@ -33,7 +33,12 @@ import {
 
 import * as EAT from '../editor/actionTypes';
 
-import { UPLOAD_MSG_TYPE, LOG_TAB_TYPE, SESSION_TYPE, NEW_SHEET } from './constants';
+import {
+  UPLOAD_MSG_TYPE,
+  LOG_TAB_TYPE,
+  SESSION_TYPE,
+  NEW_SHEET,
+} from './constants';
 import * as MSG from './messages';
 import { STATUS } from '../utils/constants';
 import { isXodErrorMessage } from './debugProtocol';
@@ -140,10 +145,15 @@ const addMessagesOrIncrementSkippedLines = R.curry(
 
 const updateInteractiveNodeValues = R.curry((messageList, state) => {
   const MapToRekey = R.prop('nodeIdsMap', state);
+  const tableLogNodeIds = R.compose(
+    R.unnest,
+    R.values,
+    R.prop('tableLogSources')
+  )(state);
   // All node ids that is not represented in `tableLogNodeIds` is `watch` nodes
   const [tableLogMessages, watchNodeMessages] = R.compose(
     R.map(R.fromPairs),
-    R.partition(R.compose(isAmong(state.tableLogNodeIds), R.nth(0))),
+    R.partition(R.compose(isAmong(tableLogNodeIds), R.nth(0))),
     R.toPairs,
     renameKeys(MapToRekey),
     R.groupBy(R.prop('nodeId')),
@@ -202,6 +212,14 @@ const updateInteractiveNodeValues = R.curry((messageList, state) => {
     )
   )(state);
 });
+
+const updateTableLogSources = R.curry((patchPath, tableLogNodeIds, state_) =>
+  R.over(
+    R.lensPath(['tableLogSources', patchPath]),
+    R.compose(R.uniq, R.concat(tableLogNodeIds), R.defaultTo([])),
+    state_
+  )
+);
 
 /* eslint-disable no-bitwise */
 const filterPinKeysByBitmask = R.curry((pinKeys, bitmask) =>
@@ -522,7 +540,10 @@ export default (state = initialState, action) => {
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
-        R.assoc('tableLogNodeIds', action.payload.tableLogNodeIds),
+        updateTableLogSources(
+          action.payload.patchPath,
+          action.payload.tableLogNodeIds
+        ),
         R.assoc('nodePinKeysMap', action.payload.nodePinKeysMap),
         rekeyAndAssocPinsAffectedByErrorRaisers(
           invertedNodeIdsMap,
@@ -648,7 +669,11 @@ export default (state = initialState, action) => {
         R.assoc('isPreparingSimulation', false),
         R.assoc('isOutdated', false),
         R.assoc('uploadProgress', null),
-        R.assoc('tableLogNodeIds', action.payload.tableLogNodeIds),
+        updateTableLogSources(
+          action.payload.patchPath,
+          action.payload.tableLogNodeIds
+        ),
+
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
         R.assoc('nodePinKeysMap', action.payload.nodePinKeysMap),
         R.assoc('globals', action.payload.globals),
