@@ -942,14 +942,34 @@ export const tweakNodeProperty = (nodeId, kind, key, value) => (
 };
 
 export const openTableLogTab = nodeId => (dispatch, getState) => {
-  const sheets = DebuggerSelectors.getTableLogsByNodeId(nodeId, getState());
-  return dispatch({
-    type: ActionType.OPEN_TABLE_LOG_TAB,
-    payload: {
-      nodeId,
-      activeSheetIndex: sheets.length > 0 ? sheets.length - 1 : 0,
+  const state = getState();
+  return R.compose(
+    nodeIdToOpen => {
+      const sheets = DebuggerSelectors.getTableLogsByNodeId(
+        nodeIdToOpen,
+        state
+      );
+      return dispatch({
+        type: ActionType.OPEN_TABLE_LOG_TAB,
+        payload: {
+          nodeId: nodeIdToOpen,
+          activeSheetIndex: sheets.length > 0 ? sheets.length - 1 : 0,
+        },
+      });
     },
-  });
+    // In case there is no source with such NodeId
+    // (E.G. user just opened a project and drill-downed into `table-log` node)
+    // fallback to the input `nodeId` to open the tablelog tab anyway
+    foldMaybe(nodeId, R.identity),
+    R.ifElse(
+      R.contains(nodeId),
+      () => Maybe.of(nodeId),
+      R.compose(Maybe, R.find(R.endsWith(nodeId)))
+    ),
+    R.unnest,
+    R.values,
+    DebuggerSelectors.getTableLogSourcesRaw
+  )(state);
 };
 
 export const changeActiveSheet = R.curry((tabId, nodeId, newSheetIndex) => ({

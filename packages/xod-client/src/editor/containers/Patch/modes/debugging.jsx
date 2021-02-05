@@ -17,7 +17,14 @@ const debuggingMode = R.merge(selectingMode, {
     if (R.contains(patchPath, R.keys(XP.MANAGED_ATTACHMENT_FILENAMES))) {
       api.props.actions.openAttachmentEditor(patchPath);
     } else if (XP.isTableLogPatchPath(patchPath)) {
-      api.props.actions.openTableLogTab(nodeId);
+      const nestedNodeId = R.compose(
+        R.join('~'),
+        R.append(nodeId),
+        R.reject(R.isNil),
+        R.pluck('nodeId'),
+        R.take(api.props.chunkActiveIndex + 1)
+      )(api.props.chunks);
+      api.props.actions.openTableLogTab(nestedNodeId);
     } else if (
       XP.isConstantNodeType(patchPath) ||
       XP.isTweakPath(patchPath) ||

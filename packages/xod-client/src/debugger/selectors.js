@@ -309,7 +309,7 @@ export const getTableLogValues = R.compose(
   getDebuggerState
 );
 
-const getTableLogSourcesRaw = R.compose(
+export const getTableLogSourcesRaw = R.compose(
   R.prop('tableLogSources'),
   getDebuggerState
 );
@@ -324,5 +324,5 @@ export const getTableLogSources = state =>
   )(state);
 
 export const getTableLogsByNodeId = R.curry((nodeId, state) =>
-  R.compose(R.pathOr([], ['tableLogValues', nodeId]), getDebuggerState)(state)
+  R.compose(R.propOr([], nodeId), getTableLogValues)(state)
 );
