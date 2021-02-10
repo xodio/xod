@@ -213,6 +213,24 @@ const updateInteractiveNodeValues = R.curry((messageList, state) => {
   )(state);
 });
 
+const createNewTableLogSheet = R.curry((tableLogNodeIds, state) =>
+  R.over(
+    R.lensProp('tableLogValues'),
+    tableLogValues =>
+      R.compose(
+        R.merge(tableLogValues),
+        R.map(
+          R.unless(
+            R.compose(R.equals(0), R.length, R.defaultTo([]), R.last),
+            R.append([])
+          )
+        ),
+        R.pick(tableLogNodeIds)
+      )(tableLogValues),
+    state
+  )
+);
+
 const updateTableLogSources = R.curry((patchPath, tableLogNodeIds, state_) =>
   R.over(
     R.lensPath(['tableLogSources', patchPath]),
@@ -540,6 +558,7 @@ export default (state = initialState, action) => {
         R.assoc('isSkippingNewSerialLogLines', false),
         R.assoc('numberOfSkippedSerialLogLines', 0),
         R.assoc('nodeIdsMap', invertedNodeIdsMap),
+        createNewTableLogSheet(action.payload.tableLogNodeIds),
         updateTableLogSources(
           action.payload.patchPath,
           action.payload.tableLogNodeIds
@@ -669,6 +688,7 @@ export default (state = initialState, action) => {
         R.assoc('isPreparingSimulation', false),
         R.assoc('isOutdated', false),
         R.assoc('uploadProgress', null),
+        createNewTableLogSheet(action.payload.tableLogNodeIds),
         updateTableLogSources(
           action.payload.patchPath,
           action.payload.tableLogNodeIds
