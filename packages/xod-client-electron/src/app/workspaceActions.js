@@ -287,20 +287,18 @@ export const onIDELaunch = R.curry(
             }),
           getFileToOpen()
         )
-    )()
-      .catch(
-        catchInvalidWorkspace(err => {
-          const isHomeDir = oldPath !== newPath;
-          const forceCreate =
-            err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY;
-          if (isHomeDir && !forceCreate) {
-            return onCreateWorkspace(send, pathSaver, newPath);
-          }
-          requestCreateWorkspace(send, newPath, forceCreate);
-          return [];
-        })
-      )
-      .catch(handleError(send));
+    )().catch(
+      catchInvalidWorkspace(err => {
+        const isHomeDir = oldPath !== newPath;
+        const forceCreate =
+          err.errorCode === FS_ERROR_CODES.WORKSPACE_DIR_NOT_EMPTY;
+        if (isHomeDir && !forceCreate) {
+          return onCreateWorkspace(send, pathSaver, newPath);
+        }
+        requestCreateWorkspace(send, newPath, forceCreate);
+        return [];
+      })
+    );
   }
 );
 
