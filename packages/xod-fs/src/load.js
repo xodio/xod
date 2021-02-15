@@ -28,6 +28,36 @@ import {
   addMissingOptionsToPatchFileContents,
   addMissingOptionsToProjectFileContents,
 } from './convertTypes';
+
+// =============================================================================
+//
+// Validate loaded project
+//
+// xod-fs returns a `LoadResult` type, which contains a validated
+// and probably patched with some fixes Project and a list of warnings
+//
+// =============================================================================
+
+// :: Project -> Promise Project Error
+const validateLoadedProject = project =>
+  R.compose(
+    R.ifElse(
+      corrupted => corrupted.length,
+      patchPaths =>
+        Promise.reject(
+          XF.createError(ERROR_CODES.PROJECT_LOADED_WITH_INVALID_PATCH_PATHS, {
+            patchPaths,
+          })
+        ),
+      () => Promise.resolve(project)
+    ),
+    R.filter(
+      R.both(R.complement(XP.isPathLocal), R.complement(XP.isPathLibrary))
+    ),
+    R.map(XP.getPatchPath),
+    XP.listGenuinePatches
+  )(project);
+
 // =============================================================================
 //
 // Reading of files
@@ -220,9 +250,10 @@ export const loadProjectFromXodball = R.curry((workspaceDirs, xodballPath) =>
  * If other extension is passed into this function it will return
  * rejected Promise with Error. Otherwise, Promise Project.
  */
-// :: [Path] -> Path -> Promise Project Error
+// :: [Path] -> Path -> Promise Promise Error
 export const loadProject = R.uncurryN(2, workspaceDirs =>
   R.composeP(
+    validateLoadedProject,
     XP.migrateBoundValuesToBoundLiterals,
     R.ifElse(
       isExtname('.xodball'),
