@@ -827,6 +827,7 @@ export const runSimulation = (
   simulationPatchPath,
   nodeIdsMap,
   nodePinKeysMap,
+  tableLogNodeIds,
   code,
   pinsAffectedByErrorRaisers,
   globals,
@@ -860,6 +861,7 @@ export const runSimulation = (
               worker,
               nodeIdsMap,
               nodePinKeysMap,
+              tableLogNodeIds,
               pinsAffectedByErrorRaisers,
               patchPath: simulationPatchPath,
               globals,
@@ -937,4 +939,60 @@ export const tweakNodeProperty = (nodeId, kind, key, value) => (
       },
     })
   );
+};
+
+export const openTableLogTab = nodeId => (dispatch, getState) => {
+  const state = getState();
+  return R.compose(
+    nodeIdToOpen => {
+      const sheets = DebuggerSelectors.getTableLogsByNodeId(
+        nodeIdToOpen,
+        state
+      );
+      return dispatch({
+        type: ActionType.OPEN_TABLE_LOG_TAB,
+        payload: {
+          nodeId: nodeIdToOpen,
+          activeSheetIndex: sheets.length > 0 ? sheets.length - 1 : 0,
+        },
+      });
+    },
+    // In case there is no source with such NodeId
+    // (E.G. user just opened a project and drill-downed into `table-log` node)
+    // fallback to the input `nodeId` to open the tablelog tab anyway
+    foldMaybe(nodeId, R.identity),
+    R.ifElse(
+      R.contains(nodeId),
+      () => Maybe.of(nodeId),
+      R.compose(Maybe, R.find(R.endsWith(nodeId)))
+    ),
+    R.unnest,
+    R.values,
+    DebuggerSelectors.getTableLogSourcesRaw
+  )(state);
+};
+
+export const changeActiveSheet = R.curry((tabId, nodeId, newSheetIndex) => ({
+  type: ActionType.CHANGE_TABLE_LOG_SHEET,
+  payload: {
+    tabId,
+    nodeId,
+    newSheetIndex,
+  },
+}));
+
+export const changeTableLogSource = (tabId, nodeId) => (dispatch, getState) => {
+  const newSourceSheets = DebuggerSelectors.getTableLogsByNodeId(
+    nodeId,
+    getState()
+  );
+  const newSheetIndex = R.max(0, newSourceSheets.length - 1);
+  dispatch({
+    type: ActionType.CHANGE_TABLE_LOG_SHEET,
+    payload: {
+      tabId,
+      nodeId,
+      newSheetIndex,
+    },
+  });
 };

@@ -34,7 +34,6 @@ span.data-grid-container, span.data-grid-container:focus {
 }
 
 .data-grid-container .data-grid .cell.read-only {
-  background: whitesmoke;
   color: #999;
   text-align: center;
 }
@@ -92,7 +91,7 @@ span.data-grid-container, span.data-grid-container:focus {
   display: block;
 }
 
-.data-grid-container tr:first-child .cell {
+.data-grid.with-header tr:first-child .cell {
   font-weight: bold;
    text-align: right;
   background-color: $grey;

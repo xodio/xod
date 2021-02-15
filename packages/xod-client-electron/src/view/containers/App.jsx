@@ -23,6 +23,7 @@ import {
   transpile,
   getNodeIdsMap,
   getNodePinKeysMap,
+  getTableLogNodeIds,
   getPinsAffectedByErrorRaisers,
   getRequireUrls,
   listGlobals,
@@ -388,6 +389,7 @@ class App extends client.App {
             tProject => {
               const nodeIdsMap = getNodeIdsMap(tProject);
               const nodePinKeysMap = getNodePinKeysMap(tProject);
+              const tableLogNodeIds = getTableLogNodeIds(tProject);
               if (this.props.currentPatchPath.isNothing) return;
               const currentPatchPath = explodeMaybe(
                 'Imposible error: currentPatchPath is Nothing',
@@ -412,6 +414,7 @@ class App extends client.App {
                 client.createSystemMessage('Debug session started'),
                 nodeIdsMap,
                 nodePinKeysMap,
+                tableLogNodeIds,
                 pinsAffectedByErrorRaisers,
                 currentPatchPath,
                 sessionGlobals,

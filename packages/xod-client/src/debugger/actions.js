@@ -34,8 +34,9 @@ export const startDebuggerSession = (
   message,
   nodeIdsMap,
   nodePinKeysMap,
+  tableLogNodeIds,
   pinsAffectedByErrorRaisers,
-  currentPatchPath,
+  patchPath,
   globals,
   tetheringInetNodeId
 ) => ({
@@ -44,8 +45,9 @@ export const startDebuggerSession = (
     message,
     nodeIdsMap,
     nodePinKeysMap,
+    tableLogNodeIds,
     pinsAffectedByErrorRaisers,
-    patchPath: currentPatchPath,
+    patchPath,
     globals,
     tetheringInetNodeId,
   },

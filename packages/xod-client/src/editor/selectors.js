@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 import { Maybe } from 'ramda-fantasy';
 import { createSelector } from 'reselect';
-import { mapIndexed, foldMaybe } from 'xod-func-tools';
+import { mapIndexed, foldMaybe, maybeProp } from 'xod-func-tools';
 import * as XP from 'xod-project';
 
 import {
@@ -32,37 +32,49 @@ export const getCurrentTabId = R.pipe(getEditor, R.prop('currentTabId'), Maybe);
 
 export const getCurrentTab = createSelector(
   [getCurrentTabId, getTabs],
-  (maybeTabId, tabs) => maybeTabId.chain(R.compose(Maybe, R.prop(R.__, tabs)))
+  (maybeTabId, tabs) => R.chain(maybeProp(R.__, tabs))(maybeTabId)
 );
 
 export const getCurrentPatchPath = createSelector(
   getCurrentTab,
-  R.map(R.prop('patchPath'))
+  R.chain(maybeProp('patchPath'))
 );
 
 export const getCurrentPatchOffset = createSelector(
   getCurrentTab,
-  foldMaybe(DEFAULT_PANNING_OFFSET, R.prop('offset'))
+  foldMaybe(DEFAULT_PANNING_OFFSET, R.propOr(DEFAULT_PANNING_OFFSET, 'offset'))
 );
+
+const isTabTypeEq = R.curry((expected, tab) => tab.type === expected);
+
+const setTabLabel = R.assoc('label');
 
 // :: State -> EditorTabs
 export const getPreparedTabs = createSelector(
   [getCurrentTabId, getTabs],
   (maybeCurrentTabId, tabs) => {
     const currentTabId = foldMaybe(null, R.identity, maybeCurrentTabId);
-    return R.map(tab => {
-      const patchPath = tab.patchPath;
-
-      const label =
-        tab.type === TAB_TYPES.DEBUGGER
-          ? 'Debugger'
-          : XP.getBaseName(patchPath);
-
-      return R.merge(tab, {
-        label,
-        isActive: currentTabId === tab.id,
-      });
-    }, tabs);
+    return R.map(
+      R.compose(
+        tab => R.assoc('isActive', currentTabId === tab.id, tab),
+        R.cond([
+          [isTabTypeEq(TAB_TYPES.TABLE_LOG), setTabLabel('Table Logs')],
+          [isTabTypeEq(TAB_TYPES.DEBUGGER), setTabLabel('Debugger')],
+          [
+            isTabTypeEq(TAB_TYPES.PATCH),
+            tab =>
+              R.compose(
+                setTabLabel(R.__, tab),
+                XP.getBaseName,
+                R.prop('patchPath')
+              )(tab),
+          ],
+          // It should not be possible:
+          [R.T, setTabLabel('Unknown Tab Type')],
+        ])
+      ),
+      tabs
+    );
   }
 );
 

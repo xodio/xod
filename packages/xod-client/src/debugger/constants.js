@@ -24,3 +24,5 @@ export const SESSION_TYPE = {
   SERIAL: 'serial',
   SIMULATON: 'simulation',
 };
+
+export const NEW_SHEET = String.fromCharCode(0xc);

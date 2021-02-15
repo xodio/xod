@@ -3,6 +3,7 @@ export {
   transformProject,
   getNodeIdsMap,
   getNodePinKeysMap,
+  getTableLogNodeIds,
   getPinsAffectedByErrorRaisers,
   getRequireUrls,
   listGlobals,

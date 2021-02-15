@@ -11,6 +11,7 @@ import { DEBUGGER_TAB_ID } from '../editor/constants';
 import { SESSION_TYPE } from './constants';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
+import { getTableLogSourceLabels } from './utils';
 
 export const getDebuggerState = R.prop('debugger');
 
@@ -102,6 +103,11 @@ export const getWatchNodeValues = R.compose(
   getDebuggerState
 );
 
+export const geTableLogValues = R.compose(
+  R.prop('tableLogValues'),
+  getDebuggerState
+);
+
 export const getUploadProgress = R.compose(
   Maybe,
   R.prop('uploadProgress'),
@@ -128,14 +134,38 @@ export const getCurrentChunksPath = createSelector(
     }, maybeTabId)
 );
 
-export const getWatchNodeValuesForCurrentPatch = createSelector(
+// :: Number -> NodeId -> Map NodeId Any -> Map NodeId Any
+const filterOutValuesForCurrentPatch = R.curry(
+  (activeIndex, nodeIdPath, nodeIdValuesMap) =>
+    R.compose(
+      R.fromPairs,
+      R.when(
+        () => activeIndex !== 0,
+        R.map(R.over(R.lensIndex(0), R.replace(nodeIdPath, '')))
+      ),
+      R.filter(
+        R.compose(
+          R.ifElse(
+            () => activeIndex === 0,
+            R.complement(R.contains('~')),
+            R.startsWith(nodeIdPath)
+          ),
+          R.nth(0)
+        )
+      ),
+      R.toPairs
+    )(nodeIdValuesMap)
+);
+
+export const getInteractiveNodeValuesForCurrentPatch = createSelector(
   [
     getCurrentTabId,
     getWatchNodeValues,
+    geTableLogValues,
     getBreadcrumbChunks,
     getBreadcrumbActiveIndex,
   ],
-  (maybeTabId, nodeMap, chunks, activeIndex) =>
+  (maybeTabId, nodeMap, tableLogs, chunks, activeIndex) =>
     foldMaybe(
       {},
       tabId => {
@@ -143,24 +173,23 @@ export const getWatchNodeValuesForCurrentPatch = createSelector(
 
         const nodeIdPath = getChunksPath(activeIndex, chunks);
 
-        return R.compose(
-          R.fromPairs,
-          R.when(
-            () => activeIndex !== 0,
-            R.map(R.over(R.lensIndex(0), R.replace(nodeIdPath, '')))
-          ),
-          R.filter(
-            R.compose(
-              R.ifElse(
-                () => activeIndex === 0,
-                R.complement(R.contains('~')),
-                R.startsWith(nodeIdPath)
-              ),
-              R.nth(0)
-            )
-          ),
-          R.toPairs
-        )(nodeMap);
+        const watchNodeValues = filterOutValuesForCurrentPatch(
+          activeIndex,
+          nodeIdPath,
+          nodeMap
+        );
+
+        const tableLogValues = R.compose(
+          R.map(sheets => {
+            const lastSheetIndex = sheets.length > 0 ? sheets.length - 1 : 0;
+            return `Sheet #${sheets.length}, Row #${
+              sheets[lastSheetIndex].length
+            }`;
+          }),
+          filterOutValuesForCurrentPatch(activeIndex, nodeIdPath)
+        )(tableLogs);
+
+        return R.merge(watchNodeValues, tableLogValues);
       },
       maybeTabId
     )
@@ -267,4 +296,33 @@ export const tetheringInetChunksToSend = R.compose(
 export const tetheringInetTransmitter = R.compose(
   R.path(['tetheringInet', 'transmitter']),
   getDebuggerState
+);
+
+// =============================================================================
+//
+// Table log
+//
+// =============================================================================
+
+export const getTableLogValues = R.compose(
+  R.prop('tableLogValues'),
+  getDebuggerState
+);
+
+export const getTableLogSourcesRaw = R.compose(
+  R.prop('tableLogSources'),
+  getDebuggerState
+);
+
+// :: State -> [{ nodeId: NodeId, label: String }]
+export const getTableLogSources = state =>
+  R.compose(
+    R.unnest,
+    R.values,
+    R.mapObjIndexed(getTableLogSourceLabels(state.project)),
+    getTableLogSourcesRaw
+  )(state);
+
+export const getTableLogsByNodeId = R.curry((nodeId, state) =>
+  R.compose(R.propOr([], nodeId), getTableLogValues)(state)
 );

@@ -1897,4 +1897,52 @@ describe('Project', () => {
       );
     });
   });
+
+  describe('mapNestedNodes', () => {
+    const project = Helper.defaultizeProject({
+      patches: {
+        '@/a': {
+          nodes: {},
+        },
+        '@/b': {
+          nodes: {
+            a: { type: '@/a', label: 'A' },
+          },
+        },
+        '@/c': {
+          nodes: {
+            b: { type: '@/b', label: 'B' },
+          },
+        },
+        '@/d': {
+          nodes: {
+            c: { type: '@/c', label: 'C' },
+          },
+        },
+      },
+    });
+
+    it('returns Just with a result for only one node in a chain', () => {
+      const result = Project.mapNestedNodes(Node.getNodeLabel, project, '@/c', [
+        'b',
+      ]);
+      Helper.expectMaybeJust(result, ['B']);
+    });
+    it('returns Just with a result for few nodes in a chain', () => {
+      const result = Project.mapNestedNodes(Node.getNodeLabel, project, '@/d', [
+        'c',
+        'b',
+        'a',
+      ]);
+      Helper.expectMaybeJust(result, ['C', 'B', 'A']);
+    });
+    it('returns Nothing if one of the nodes not found', () => {
+      const result = Project.mapNestedNodes(Node.getNodeLabel, project, '@/d', [
+        'c',
+        'a', // wrong
+        'b',
+      ]);
+      Helper.expectMaybeNothing(result);
+    });
+  });
 });

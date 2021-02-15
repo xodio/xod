@@ -1398,3 +1398,34 @@ export const removeDebugNodes = def(
       getPatchDependencies(entryPatchPath)
     )(project)
 );
+
+/**
+ * Drill down through the node ids, started from rootPatchPath
+ * and execute the function (first argument) for each Node in the chain
+ * :: (Node -> A) -> Project -> PatchPath -> [NodeId] -> Maybe [A]
+ */
+export const mapNestedNodes = R.curry(
+  (fn, project, rootPatchPath, nodeIdsPath) =>
+    R.compose(
+      R.map(R.pluck('result')),
+      R.sequence(Maybe),
+      R.reduce((acc, curNodeId) => {
+        const maybeParentPatchPath =
+          acc.length === 0
+            ? Maybe.of({ patchPath: rootPatchPath })
+            : acc[acc.length - 1];
+        return R.compose(
+          R.append(R.__, acc),
+          R.map(
+            R.applySpec({
+              patchPath: Node.getNodeType,
+              result: fn,
+            })
+          ),
+          R.chain(Patch.getNodeById(curNodeId)),
+          R.chain(getPatchByPath(R.__, project)),
+          R.map(R.prop('patchPath'))
+        )(maybeParentPatchPath);
+      }, [])
+    )(nodeIdsPath)
+);
