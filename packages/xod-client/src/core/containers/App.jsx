@@ -82,7 +82,10 @@ export default class App extends React.Component {
       [COMMAND.UNDO]: this.props.actions.undoCurrentPatch,
       [COMMAND.REDO]: this.props.actions.redoCurrentPatch,
       [COMMAND.HIDE_HELPBOX]: this.props.actions.hideHelpbox,
-      [COMMAND.TOGGLE_HELP]: this.props.actions.toggleHelp,
+      [COMMAND.TOGGLE_HELP]: event => {
+        if (isInputTarget(event)) return;
+        this.props.actions.toggleHelp();
+      },
       [COMMAND.INSERT_NODE]: event => {
         if (isInputTarget(event)) return;
         this.props.actions.showSuggester(null);
