@@ -1,3 +1,12 @@
+@mixin scrollable-attachment($top, $scroll: scroll) {
+  position: absolute;
+  top: $top;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: $scroll;
+}
+
 .AttachmentEditors {
   display: flex;
   width: 100%;
@@ -16,15 +25,16 @@
   &.isActive {
     display: flex;
     flex-flow: column;
+    position: relative;
   }
 
   .cpp-editor {
     display: flex;
     flex-grow: 1;
+    position: relative;
 
     .ReactCodeMirror {
-      width: 100%;
-      height: auto;
+      @include scrollable-attachment(0, hidden);
     }
     .CodeMirror-line, .CodeMirror-line * {
       cursor: text;
@@ -35,13 +45,7 @@
   }
 
   .tabtest-editor {
-    position: absolute;
-    top: 40px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: scroll;
-
+    @include scrollable-attachment(40px);
     @include styled-scrollbar();
   }
 
