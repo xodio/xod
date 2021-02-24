@@ -31,6 +31,7 @@ export {
   isWorkspaceDir,
   getPathToXodProject,
 } from './find';
+export { default as messages } from './messages';
 
 export * from './constants';
 

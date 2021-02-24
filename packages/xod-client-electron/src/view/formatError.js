@@ -3,6 +3,7 @@ import { messages as xpMessages } from 'xod-project';
 import { messages as xdMessages } from 'xod-deploy';
 import { messages as xdbMessages } from 'xod-deploy-bin';
 import { messages as xardMessages } from 'xod-arduino';
+import { messages as xfMessages } from 'xod-fs';
 
 import uploadMessages from '../upload/messages';
 
@@ -11,6 +12,7 @@ export const formatErrorMessage = composeErrorFormatters([
   xdMessages,
   xdbMessages,
   xardMessages,
+  xfMessages,
   uploadMessages,
 ]);
 
