@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.37.3"></a>
+
+## 0.37.3 (2021-02-17)
+
+### Bug fixes
+
+* [ide] Prevent toggling helpbox by "h" key when interacting with text inputs (#2101)
+
 <a name="0.37.2"></a>
 
 ## 0.37.2 (2021-01-25)
