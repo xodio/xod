@@ -1,0 +1,41 @@
+{
+  "description": "Transforms micros to a string",
+  "nodes": [
+    {
+      "id": "HJR1uifqM",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    },
+    {
+      "id": "__in__",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-micros"
+    },
+    {
+      "id": "__out__",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "noNativeImpl",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    }
+  ]
+}

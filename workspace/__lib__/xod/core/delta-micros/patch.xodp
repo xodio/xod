@@ -1,0 +1,45 @@
+{
+  "description": "Outputs time difference in microseconds between the current and previous updates.",
+  "nodes": [
+    {
+      "description": "Time in microseconds",
+      "id": "S1dci4Szu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "@/input-micros"
+    },
+    {
+      "description": "Delta time in microseconds",
+      "id": "ryooiEHfd",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/output-micros"
+    },
+    {
+      "id": "Syy2iEBGd",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Triggers new update",
+      "id": "ryC6nNSMd",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}

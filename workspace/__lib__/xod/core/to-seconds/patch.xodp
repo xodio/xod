@@ -1,0 +1,32 @@
+{
+  "description": "Transforms micros to a Number as seconds. The value may lose accuracy.",
+  "nodes": [
+    {
+      "id": "HkqdI2iMu",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 0
+      },
+      "type": "@/input-micros"
+    },
+    {
+      "id": "ryROL3jz_",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "id": "SJbYIhsGO",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}
