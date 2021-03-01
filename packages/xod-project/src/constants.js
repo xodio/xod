@@ -2,9 +2,9 @@ import { mapObjIndexed } from 'ramda';
 
 import PIN_TYPE from './internal/pinTypes';
 import {
-  BINDABLE_CUSTOM_TYPE_CONSTRUCTORS,
+  CUSTOM_TYPE_CONSTRUCTORS,
   BINDABLE_CUSTOM_TYPE_DEFAULT_VALUES,
-  BINDABLE_CUSTOM_TYPES_CAST_NODES,
+  CUSTOM_TYPES_CAST_NODES,
 } from './custom-types';
 
 export { PIN_TYPE };
@@ -104,7 +104,7 @@ const STATIC_TYPES_CAST_NODES = mapObjIndexed((castsTo, fromType) =>
  */
 export const CAST_NODES = {
   ...STATIC_TYPES_CAST_NODES,
-  ...BINDABLE_CUSTOM_TYPES_CAST_NODES,
+  ...CUSTOM_TYPES_CAST_NODES,
 };
 
 // node types that provide a constant value
@@ -114,7 +114,7 @@ export const CONST_NODETYPES = {
   [PIN_TYPE.STRING]: 'xod/core/constant-string',
   [PIN_TYPE.BYTE]: 'xod/core/constant-byte',
   [PIN_TYPE.PORT]: 'xod/core/constant-port',
-  ...BINDABLE_CUSTOM_TYPE_CONSTRUCTORS,
+  ...CUSTOM_TYPE_CONSTRUCTORS,
 };
 
 // node types that provide a constant pulse,
