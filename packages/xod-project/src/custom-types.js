@@ -13,14 +13,25 @@ import PIN_TYPE from './internal/pinTypes';
 
 export const CUSTOM_TYPES_SPECS = {
   COLOR: {
-    isBindable: true,
     typeName: 'xod/color/color',
     nodeConstructor: 'xod/color/color',
-    defaultValue: '#000000',
-    validateLiteral: R.test(/^#[0-9A-F]{6}$/),
     casts: {
       [PIN_TYPE.STRING]: 'xod/color/format-color',
     },
+    ...{
+      isBindable: true,
+      // required fields:
+      defaultValue: '#000000',
+      validateLiteral: R.test(/^#[0-9A-F]{6}$/),
+    },
+  },
+  MICROS: {
+    typeName: 'xod/core/micros',
+    nodeConstructor: 'xod/core/micros',
+    casts: {
+      [PIN_TYPE.STRING]: 'xod/core/cast-to-string(micros)',
+    },
+    isBindable: false,
   },
 };
 
