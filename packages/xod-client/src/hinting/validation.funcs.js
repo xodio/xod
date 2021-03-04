@@ -23,7 +23,7 @@ const getMarkerNodesErrorMap = (predicate, validator, errorType) => patch => {
         mergeAllWithConcat,
         R.map(R.objOf(R.__, { [errorType]: [err] }))
       )(markerNodeIds),
-    R.always({ [errorType]: [] }),
+    R.always({}),
     validator(patch)
   );
 };
@@ -35,12 +35,30 @@ const getMarkerNodesErrorMap = (predicate, validator, errorType) => patch => {
 //
 // =============================================================================
 
-// :: Patch -> Map NodeId (Map ErrorType [Error])
-export const getVariadicMarkersErrorMap = getMarkerNodesErrorMap(
-  R.pipe(XP.getNodeType, XP.isVariadicPath),
-  XP.validatePatchForVariadics,
-  'validatePatchForVariadics'
-);
+// :: Patch -> Project -> Map NodeId (Map ErrorType [Error])
+export const getVariadicMarkersErrorMap = (patch, project) =>
+  R.compose(
+    foldEither(
+      err =>
+        R.compose(
+          R.fromPairs,
+          R.map(markerNodeId => [
+            markerNodeId,
+            { validatePatchForVariadics: [err] },
+          ]),
+          R.map(XP.getNodeId),
+          R.filter(
+            R.pipe(
+              XP.getNodeType,
+              R.either(XP.isVariadicPath, XP.isVariadicPassPath)
+            )
+          ),
+          XP.listNodes
+        )(patch),
+      R.always({})
+    ),
+    XP.validatePatchForVariadics
+  )(project, patch);
 
 // :: Patch -> Map NodeId (Map ErrorType [Error])
 export const getAbstractMarkersErrorMap = getMarkerNodesErrorMap(

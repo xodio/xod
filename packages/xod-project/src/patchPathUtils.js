@@ -208,11 +208,22 @@ const variadicRegExp = new RegExp(`^${PATCH_NODES_LIB_NAME}/variadic-([1-3])`);
 // :: PatchPath -> Boolean
 export const isVariadicPath = R.test(variadicRegExp);
 
+const variadicPassRegExp = new RegExp(
+  `^${PATCH_NODES_LIB_NAME}/variadic-pass-([1-3])`
+);
+
+// :: PatchPath -> Boolean
+export const isVariadicPassPath = R.test(variadicPassRegExp);
+
+const variadicOrPassRegExp = new RegExp(
+  `^${PATCH_NODES_LIB_NAME}/variadic-(?:pass-)?([1-3])`
+);
+
 // :: PatchPath -> ArityStep
 export const getArityStepFromPatchPath = R.compose(
   x => parseInt(x, 10),
   R.nth(1),
-  R.match(variadicRegExp)
+  R.match(variadicOrPassRegExp)
 );
 
 // :: NonZeroNaturalNumber -> PatchPath

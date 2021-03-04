@@ -324,6 +324,28 @@ export const addVariadicPinKeySuffix = def(
   (index, key) => `${key}-$${index}`
 );
 
+const parseVariadicPinKey = pinKey => {
+  const [, base, , indexStr = '0'] = R.match(
+    /([A-Za-z0-9_-]*)(-\$(\d+))?$/,
+    pinKey
+  );
+  return {
+    base,
+    index: parseInt(indexStr, 10),
+  };
+};
+
+export const variadicPinKeySuffixLens = R.lens(
+  R.pipe(parseVariadicPinKey, R.prop('index')),
+  (newIndex, pinKey) => {
+    const { base } = parseVariadicPinKey(pinKey);
+
+    if (newIndex === 0) return base;
+
+    return addVariadicPinKeySuffix(newIndex, base);
+  }
+);
+
 /**
  * (!) This function should be called only for variadic pins,
  * that should have an updated label.

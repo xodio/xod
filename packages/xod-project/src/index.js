@@ -63,7 +63,6 @@ export {
   listVariadicValuePins,
   listVariadicAccPins,
   listVariadicSharedPins,
-  validatePatchForVariadics,
   getArityStepFromPatch,
   isVariadicPatch,
   isAbstractPatch,
@@ -127,6 +126,7 @@ export {
   default as extractBoundInputsToConstNodes,
 } from './extractBoundInputsToConstNodes';
 export { default as expandVariadicNodes } from './expandVariadicNodes';
+export { default as expandVariadicPassNodes } from './expandVariadicPassNodes';
 export * from './patchPathUtils';
 export * from './versionUtils';
 export * from './xodball';
