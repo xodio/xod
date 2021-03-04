@@ -1,0 +1,65 @@
+{
+  "description": "When connected to a variadic-pass input, outputs arity level of parent node",
+  "links": [
+    {
+      "id": "ry2DSx3G_",
+      "input": {
+        "nodeId": "rkKPBe2G_",
+        "pinKey": "ry9mWx3fd"
+      },
+      "output": {
+        "nodeId": "B1DIHlhzu",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "r16wrx3fO",
+      "input": {
+        "nodeId": "HJTUBe3f_",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "rkKPBe2G_",
+        "pinKey": "SkLNbxnfO"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "HyCrHxnzO",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/variadic-pass-1"
+    },
+    {
+      "id": "B1DIHlhzu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-t1"
+    },
+    {
+      "id": "HJTUBe3f_",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "rkKPBe2G_",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/arity-level-internal"
+    }
+  ]
+}
