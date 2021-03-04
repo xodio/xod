@@ -1,0 +1,71 @@
+{
+  "description": "Attaches the interrupt to the specified port in the FALLING mode. It triggers whenever the pin goes from high to low. The change increments a counter and stores the time in microseconds of the latest interrupt. The node emits these values and a pulse as soon as possible, but not right at the moment when the interrupt occurred.",
+  "nodes": [
+    {
+      "description": "Board port to attach interrupt to. Board port to attach interrupt to. Note that not all pins support hardware interrupts. Refer to your board specs to learn which are compatible.",
+      "id": "SyCAZJ4Mu",
+      "label": "PORT",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-port"
+    },
+    {
+      "id": "rkW1fyNzO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Fires a pulse on the next transaction after the interrupt occurred.",
+      "id": "HJqYXgNfd",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-pulse"
+    },
+    {
+      "description": "Time in microseconds of the latest interrupt.",
+      "id": "ryriWbEG_",
+      "label": "T",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/core/output-micros"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "True"
+      },
+      "description": "When ACT is true the node is watching for interrupts.",
+      "id": "BkECrPcGd",
+      "label": "ACT",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-boolean"
+    },
+    {
+      "description": "The number of interrupts that occurred before the node fired a pulse.",
+      "id": "rkotDvcGd",
+      "label": "NUM",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    }
+  ]
+}

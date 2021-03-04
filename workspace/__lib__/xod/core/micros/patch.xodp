@@ -1,0 +1,35 @@
+{
+  "description": "Outputs time spent since the program start in microseconds.",
+  "nodes": [
+    {
+      "id": "S1Dx-ZNzd",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Time in microseconds.",
+      "id": "BJ5gWbEfu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-self"
+    },
+    {
+      "description": "Trigger updating the time in microseconds.",
+      "id": "S1DmXHHfu",
+      "label": "UPD",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    }
+  ]
+}
