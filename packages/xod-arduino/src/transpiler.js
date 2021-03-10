@@ -829,7 +829,7 @@ export const getTableLogNodeIds = def(
   R.compose(
     R.map(R.prop('originalId')),
     R.filter(
-      R.compose(R.propEq('patchPath', XP.TABLELOG_NODETYPE), R.prop('patch'))
+      R.compose(R.propEq('patchPath', XP.TSV_LOG_NODETYPE), R.prop('patch'))
     ),
     R.prop('nodes')
   )

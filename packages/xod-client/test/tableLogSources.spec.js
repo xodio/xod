@@ -4,6 +4,17 @@ import { defaultizeProject } from 'xod-project/test/helpers';
 
 import { getTableLogSourceLabels } from '../src/debugger/utils';
 
+const TABLE_LOG_NODES = {
+  'xod/debug/tsv-log': {},
+  'xod/debug/table-log': {
+    nodes: {
+      log: {
+        type: 'xod/debug/tsv-log',
+      },
+    },
+  },
+};
+
 describe('generate labels for table log sources', () => {
   const assertSameSources = (project, rootPatchPath, expectedLabelsForIds) => {
     const ids = R.keys(expectedLabelsForIds);
@@ -24,12 +35,12 @@ describe('generate labels for table log sources', () => {
     const project = defaultizeProject({
       patches: {
         '@/main': {},
-        'xod/debug/table-log': {},
+        ...TABLE_LOG_NODES,
       },
     });
 
     assertSameSources(project, '@/main', {
-      'a~n~t': '@/main > DELETED (a~n~t)',
+      'a~n~t~log': '@/main > DELETED (a~n~t~log)',
       t: '@/main > DELETED (t)',
     });
   });
@@ -63,14 +74,14 @@ describe('generate labels for table log sources', () => {
             },
           },
         },
-        'xod/debug/table-log': {},
+        ...TABLE_LOG_NODES,
       },
     });
 
     assertSameSources(project, '@/main', {
-      'a~n~t': '@/main > nested-1 > nested-2 > table-log',
-      'b~t': '@/main > nested-2 > table-log',
-      t: '@/main > table-log',
+      'a~n~t~log': '@/main > nested-1 > nested-2 > table-log',
+      'b~t~log': '@/main > nested-2 > table-log',
+      't~log': '@/main > table-log',
     });
   });
   it('should contain node labels if it is set', () => {
@@ -118,15 +129,15 @@ describe('generate labels for table log sources', () => {
             },
           },
         },
-        'xod/debug/table-log': {},
+        ...TABLE_LOG_NODES,
       },
     });
 
     assertSameSources(project, '@/main', {
-      'a~n~t': '@/main > Nested One > nested-2 > table-log',
-      'b~t': '@/main > Nested Two > table-log',
-      'c~n~t': '@/main > Nested Label > Log > table-log',
-      t: '@/main > My Table Log',
+      'a~n~t~log': '@/main > Nested One > nested-2 > table-log',
+      'b~t~log': '@/main > Nested Two > table-log',
+      'c~n~t~log': '@/main > Nested Label > Log > table-log',
+      't~log': '@/main > My Table Log',
     });
   });
   it('should add numbers to the duplicates on a correct nesting level', () => {
@@ -219,45 +230,49 @@ describe('generate labels for table log sources', () => {
             nd2: { type: '@/nested-double' },
           },
         },
-        'xod/debug/table-log': {},
+        ...TABLE_LOG_NODES,
       },
     });
 
     assertSameSources(project, '@/main', {
-      'a~n~t': '@/main > Nested > nested-2 > table-log',
-      'a2~n~t': '@/main > Nested #2 > nested-2 > table-log',
-      'a3~n~t': '@/main > nested-1 > nested-2 > table-log',
-      'b~n~t': '@/main > nested-label > Log > table-log',
-      'b2~n~t': '@/main > nested-label #2 > Log > table-log',
-      'd~t': '@/main > nested-double > table-log',
-      'd~t2': '@/main > nested-double > table-log #2',
-      'd2~t': '@/main > nested-double #2 > table-log',
-      'd2~t2': '@/main > nested-double #2 > table-log #2',
-      'd3~t': '@/main > Double Inside > table-log',
-      'd3~t2': '@/main > Double Inside > table-log #2',
-      'nc~n~n~t': '@/main > nested-complex > nested-1 > nested-2 > table-log',
-      'nc~n2~n~t':
+      'a~n~t~log': '@/main > Nested > nested-2 > table-log',
+      'a2~n~t~log': '@/main > Nested #2 > nested-2 > table-log',
+      'a3~n~t~log': '@/main > nested-1 > nested-2 > table-log',
+      'b~n~t~log': '@/main > nested-label > Log > table-log',
+      'b2~n~t~log': '@/main > nested-label #2 > Log > table-log',
+      'd~t~log': '@/main > nested-double > table-log',
+      'd~t2~log': '@/main > nested-double > table-log #2',
+      'd2~t~log': '@/main > nested-double #2 > table-log',
+      'd2~t2~log': '@/main > nested-double #2 > table-log #2',
+      'd3~t~log': '@/main > Double Inside > table-log',
+      'd3~t2~log': '@/main > Double Inside > table-log #2',
+      'nc~n~n~t~log':
+        '@/main > nested-complex > nested-1 > nested-2 > table-log',
+      'nc~n2~n~t~log':
         '@/main > nested-complex > nested-1 #2 > nested-2 > table-log',
-      'nc~nn~t': '@/main > nested-complex > nested-2 > table-log',
-      'nc~nn2~t': '@/main > nested-complex > nested-2 #2 > table-log',
-      'nc~nd~t': '@/main > nested-complex > nested-double > table-log',
-      'nc~nd~t2': '@/main > nested-complex > nested-double > table-log #2',
-      'nc~nd2~t': '@/main > nested-complex > nested-double #2 > table-log',
-      'nc~nd2~t2': '@/main > nested-complex > nested-double #2 > table-log #2',
-      'nc2~n~n~t':
+      'nc~nn~t~log': '@/main > nested-complex > nested-2 > table-log',
+      'nc~nn2~t~log': '@/main > nested-complex > nested-2 #2 > table-log',
+      'nc~nd~t~log': '@/main > nested-complex > nested-double > table-log',
+      'nc~nd~t2~log': '@/main > nested-complex > nested-double > table-log #2',
+      'nc~nd2~t~log': '@/main > nested-complex > nested-double #2 > table-log',
+      'nc~nd2~t2~log':
+        '@/main > nested-complex > nested-double #2 > table-log #2',
+      'nc2~n~n~t~log':
         '@/main > nested-complex #2 > nested-1 > nested-2 > table-log',
-      'nc2~n2~n~t':
+      'nc2~n2~n~t~log':
         '@/main > nested-complex #2 > nested-1 #2 > nested-2 > table-log',
-      'nc2~nn~t': '@/main > nested-complex #2 > nested-2 > table-log',
-      'nc2~nn2~t': '@/main > nested-complex #2 > nested-2 #2 > table-log',
-      'nc2~nd~t': '@/main > nested-complex #2 > nested-double > table-log',
-      'nc2~nd~t2': '@/main > nested-complex #2 > nested-double > table-log #2',
-      'nc2~nd2~t': '@/main > nested-complex #2 > nested-double #2 > table-log',
-      'nc2~nd2~t2':
+      'nc2~nn~t~log': '@/main > nested-complex #2 > nested-2 > table-log',
+      'nc2~nn2~t~log': '@/main > nested-complex #2 > nested-2 #2 > table-log',
+      'nc2~nd~t~log': '@/main > nested-complex #2 > nested-double > table-log',
+      'nc2~nd~t2~log':
+        '@/main > nested-complex #2 > nested-double > table-log #2',
+      'nc2~nd2~t~log':
+        '@/main > nested-complex #2 > nested-double #2 > table-log',
+      'nc2~nd2~t2~log':
         '@/main > nested-complex #2 > nested-double #2 > table-log #2',
-      t: '@/main > My Table Log',
-      t2: '@/main > My Table Log #2',
-      t3: '@/main > My Table Log #3',
+      't~log': '@/main > My Table Log',
+      't2~log': '@/main > My Table Log #2',
+      't3~log': '@/main > My Table Log #3',
     });
   });
 });
