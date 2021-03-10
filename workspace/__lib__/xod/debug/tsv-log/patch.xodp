@@ -1,0 +1,58 @@
+{
+  "description": "Collects values as table rows and tables as sheets. Useful to conduct measurement sessions and then analyze the data gathered in spreadsheet software.",
+  "nodes": [
+    {
+      "id": "B1iYZOzoZ",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Adds values to the latest sheet.",
+      "id": "rkWILuNyu",
+      "label": "PUSH",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "boundLiterals": {
+        "__out__": "Never"
+      },
+      "description": "Creates a new sheet.",
+      "id": "B1RI8OEyO",
+      "label": "NEW",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-pulse"
+    },
+    {
+      "description": "Values to add as a new table row. All values should be separated with tab character `\\t`.",
+      "id": "rkvDUOV1O",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "BJ8O98Imu",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}
