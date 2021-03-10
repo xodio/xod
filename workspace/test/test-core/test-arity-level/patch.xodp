@@ -1,0 +1,113 @@
+{
+  "links": [
+    {
+      "id": "BJ5oSGTzO",
+      "input": {
+        "nodeId": "SytiSzTGO",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HyziHf6Md",
+        "pinKey": "HJTUBe3f_"
+      }
+    },
+    {
+      "id": "HyZa3rGazO",
+      "input": {
+        "nodeId": "SJeanBM6GO",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "HJT2SfTf_",
+        "pinKey": "HJTUBe3f_"
+      }
+    },
+    {
+      "id": "BJ-fArM6MO",
+      "input": {
+        "nodeId": "H1xf0rf6zd",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "SyG0BMTzd",
+        "pinKey": "HJTUBe3f_"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "boundLiterals": {
+        "B1DIHlhzu": "\"foo\""
+      },
+      "id": "HyziHf6Md",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/core/arity-level"
+    },
+    {
+      "id": "SytiSzTGO",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "arityLevel": 2,
+      "boundLiterals": {
+        "B1DIHlhzu": "0"
+      },
+      "id": "HJT2SfTf_",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "xod/core/arity-level"
+    },
+    {
+      "id": "SJeanBM6GO",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "arityLevel": 6,
+      "boundLiterals": {
+        "B1DIHlhzu": "True"
+      },
+      "id": "SyG0BMTzd",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 1
+      },
+      "type": "xod/core/arity-level"
+    },
+    {
+      "id": "H1xf0rf6zd",
+      "position": {
+        "units": "slots",
+        "x": 8,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "B1MbIzTzd",
+      "position": {
+        "units": "slots",
+        "x": 16,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/tabtest"
+    }
+  ]
+}

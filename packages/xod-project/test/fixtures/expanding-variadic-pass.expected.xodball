@@ -1,0 +1,679 @@
+{
+  "patches": {
+    "@/main": {
+      "nodes": {
+        "HJBtpIRzu": {
+          "id": "HJBtpIRzu",
+          "type": "@/my-variadic-pass-$4",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "boundLiterals": {
+            "Hyo8pL0zu": "11",
+            "SkTITICfO": "12",
+            "Hyo8pL0zu-$1": "21",
+            "SkTITICfO-$1": "22",
+            "Hyo8pL0zu-$2": "31",
+            "SkTITICfO-$2": "32",
+            "Hyo8pL0zu-$3": "41",
+            "SkTITICfO-$3": "42"
+          }
+        }
+      },
+      "path": "@/main"
+    },
+    "@/my-variadic-pass": {
+      "nodes": {
+        "Skq3nUAGd": {
+          "id": "Skq3nUAGd",
+          "type": "@/my-nested-variadic-pass",
+          "position": {
+            "x": 3,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "rJMIpICz_": {
+          "id": "rJMIpICz_",
+          "type": "xod/patch-nodes/variadic-pass-2",
+          "position": {
+            "x": 6,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "Hyo8pL0zu": {
+          "id": "Hyo8pL0zu",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          }
+        },
+        "SkTITICfO": {
+          "id": "SkTITICfO",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 4,
+            "y": 1,
+            "units": "slots"
+          }
+        },
+        "rJ3d68AzO": {
+          "id": "rJ3d68AzO",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 3,
+            "y": 5,
+            "units": "slots"
+          }
+        }
+      },
+      "links": {
+        "S1VDTURGO": {
+          "id": "S1VDTURGO",
+          "output": {
+            "nodeId": "Hyo8pL0zu",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "Hk5io80G_"
+          }
+        },
+        "SyHPTIRf_": {
+          "id": "SyHPTIRf_",
+          "output": {
+            "nodeId": "SkTITICfO",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "HkH6nIAf_"
+          }
+        },
+        "ByRuT8CfO": {
+          "id": "ByRuT8CfO",
+          "output": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "ry-bhIRfu"
+          },
+          "input": {
+            "nodeId": "rJ3d68AzO",
+            "pinKey": "__in__"
+          }
+        }
+      },
+      "path": "@/my-variadic-pass"
+    },
+    "@/my-nested-variadic-pass": {
+      "nodes": {
+        "BJYOjU0fd": {
+          "id": "BJYOjU0fd",
+          "type": "@/foo",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "boundLiterals": {
+            "H10LiLCGu": "42",
+            "HJzkaICfu": "1337"
+          },
+          "arityLevel": 2
+        },
+        "Hk5io80G_": {
+          "id": "Hk5io80G_",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "ry-bhIRfu": {
+          "id": "ry-bhIRfu",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 4,
+            "units": "slots"
+          }
+        },
+        "HkH6nIAf_": {
+          "id": "HkH6nIAf_",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "rkOfaICMO": {
+          "id": "rkOfaICMO",
+          "type": "xod/patch-nodes/variadic-pass-2",
+          "position": {
+            "x": 7,
+            "y": 2,
+            "units": "slots"
+          }
+        }
+      },
+      "links": {
+        "Sy_W2UAMO": {
+          "id": "Sy_W2UAMO",
+          "output": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "rk7UiIRf_"
+          },
+          "input": {
+            "nodeId": "ry-bhIRfu",
+            "pinKey": "__in__"
+          }
+        },
+        "Skf7aUAG_": {
+          "id": "Skf7aUAG_",
+          "output": {
+            "nodeId": "Hk5io80G_",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "HJzkaICfu-$1"
+          }
+        },
+        "BkmQTU0f_": {
+          "id": "BkmQTU0f_",
+          "output": {
+            "nodeId": "HkH6nIAf_",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "H10LiLCGu-$1"
+          }
+        }
+      },
+      "path": "@/my-nested-variadic-pass"
+    },
+    "@/foo": {
+      "nodes": {
+        "SyjVsIRfO": {
+          "id": "SyjVsIRfO",
+          "type": "xod/patch-nodes/utility",
+          "position": {
+            "x": 8,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "B1vrs8AzO": {
+          "id": "B1vrs8AzO",
+          "type": "xod/patch-nodes/not-implemented-in-xod",
+          "position": {
+            "x": 1,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "BJTSsU0Mu": {
+          "id": "BJTSsU0Mu",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 1,
+            "y": 1,
+            "units": "slots"
+          },
+          "label": "ACC"
+        },
+        "rk7UiIRf_": {
+          "id": "rk7UiIRf_",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 1,
+            "y": 5,
+            "units": "slots"
+          }
+        },
+        "H10LiLCGu": {
+          "id": "H10LiLCGu",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 4,
+            "y": 1,
+            "units": "slots"
+          },
+          "label": "V1"
+        },
+        "rJJypU0GO": {
+          "id": "rJJypU0GO",
+          "type": "xod/patch-nodes/variadic-2",
+          "position": {
+            "x": 5,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "HJzkaICfu": {
+          "id": "HJzkaICfu",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 7,
+            "y": 1,
+            "units": "slots"
+          },
+          "label": "V2"
+        }
+      },
+      "path": "@/foo",
+      "attachments": [
+        {
+          "filename": "patch.cpp",
+          "encoding": "utf-8",
+          "content": "\nnode {\n    void evaluate(Context ctx) {}\n}\n"
+        }
+      ]
+    },
+    "@/my-variadic-pass-$4": {
+      "nodes": {
+        "Skq3nUAGd": {
+          "id": "Skq3nUAGd",
+          "type": "@/my-nested-variadic-pass-$4",
+          "position": {
+            "x": 3,
+            "y": 3,
+            "units": "slots"
+          }
+        },
+        "Hyo8pL0zu": {
+          "id": "Hyo8pL0zu",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 3,
+            "y": 1,
+            "units": "slots"
+          }
+        },
+        "SkTITICfO": {
+          "id": "SkTITICfO",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 4,
+            "y": 1,
+            "units": "slots"
+          }
+        },
+        "rJ3d68AzO": {
+          "id": "rJ3d68AzO",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 3,
+            "y": 5,
+            "units": "slots"
+          }
+        },
+        "Hyo8pL0zu-$1": {
+          "id": "Hyo8pL0zu-$1",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 5,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "SkTITICfO-$1": {
+          "id": "SkTITICfO-$1",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 6,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "Hyo8pL0zu-$2": {
+          "id": "Hyo8pL0zu-$2",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 7,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "SkTITICfO-$2": {
+          "id": "SkTITICfO-$2",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 8,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "Hyo8pL0zu-$3": {
+          "id": "Hyo8pL0zu-$3",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 9,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "SkTITICfO-$3": {
+          "id": "SkTITICfO-$3",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 10,
+            "y": 0,
+            "units": "slots"
+          }
+        }
+      },
+      "links": {
+        "S1VDTURGO": {
+          "id": "S1VDTURGO",
+          "output": {
+            "nodeId": "Hyo8pL0zu",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "Hk5io80G_"
+          }
+        },
+        "SyHPTIRf_": {
+          "id": "SyHPTIRf_",
+          "output": {
+            "nodeId": "SkTITICfO",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "HkH6nIAf_"
+          }
+        },
+        "ByRuT8CfO": {
+          "id": "ByRuT8CfO",
+          "output": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "ry-bhIRfu"
+          },
+          "input": {
+            "nodeId": "rJ3d68AzO",
+            "pinKey": "__in__"
+          }
+        },
+        "BywLCLCfO": {
+          "id": "BywLCLCfO",
+          "output": {
+            "nodeId": "Hyo8pL0zu-$1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "Hk5io80G_-$1"
+          }
+        },
+        "BklD8CL0zd": {
+          "id": "BklD8CL0zd",
+          "output": {
+            "nodeId": "SkTITICfO-$1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "HkH6nIAf_-$1"
+          }
+        },
+        "ryWPI0LCzu": {
+          "id": "ryWPI0LCzu",
+          "output": {
+            "nodeId": "Hyo8pL0zu-$2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "Hk5io80G_-$2"
+          }
+        },
+        "SJzDL0UAfu": {
+          "id": "SJzDL0UAfu",
+          "output": {
+            "nodeId": "SkTITICfO-$2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "HkH6nIAf_-$2"
+          }
+        },
+        "HyQvLA8Rfd": {
+          "id": "HyQvLA8Rfd",
+          "output": {
+            "nodeId": "Hyo8pL0zu-$3",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "Hk5io80G_-$3"
+          }
+        },
+        "H1Ew808AGO": {
+          "id": "H1Ew808AGO",
+          "output": {
+            "nodeId": "SkTITICfO-$3",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "Skq3nUAGd",
+            "pinKey": "HkH6nIAf_-$3"
+          }
+        }
+      },
+      "path": "@/my-variadic-pass-$4"
+    },
+    "@/my-nested-variadic-pass-$4": {
+      "nodes": {
+        "BJYOjU0fd": {
+          "id": "BJYOjU0fd",
+          "type": "@/foo",
+          "position": {
+            "x": 0,
+            "y": 2,
+            "units": "slots"
+          },
+          "boundLiterals": {
+            "H10LiLCGu": "42",
+            "HJzkaICfu": "1337"
+          },
+          "arityLevel": 5
+        },
+        "Hk5io80G_": {
+          "id": "Hk5io80G_",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 3,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "ry-bhIRfu": {
+          "id": "ry-bhIRfu",
+          "type": "xod/patch-nodes/output-number",
+          "position": {
+            "x": 0,
+            "y": 4,
+            "units": "slots"
+          }
+        },
+        "HkH6nIAf_": {
+          "id": "HkH6nIAf_",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 4,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "Hk5io80G_-$1": {
+          "id": "Hk5io80G_-$1",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 5,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "HkH6nIAf_-$1": {
+          "id": "HkH6nIAf_-$1",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 6,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "Hk5io80G_-$2": {
+          "id": "Hk5io80G_-$2",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 7,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "HkH6nIAf_-$2": {
+          "id": "HkH6nIAf_-$2",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 8,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "Hk5io80G_-$3": {
+          "id": "Hk5io80G_-$3",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 9,
+            "y": 0,
+            "units": "slots"
+          }
+        },
+        "HkH6nIAf_-$3": {
+          "id": "HkH6nIAf_-$3",
+          "type": "xod/patch-nodes/input-number",
+          "position": {
+            "x": 10,
+            "y": 0,
+            "units": "slots"
+          }
+        }
+      },
+      "links": {
+        "Sy_W2UAMO": {
+          "id": "Sy_W2UAMO",
+          "output": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "rk7UiIRf_"
+          },
+          "input": {
+            "nodeId": "ry-bhIRfu",
+            "pinKey": "__in__"
+          }
+        },
+        "Skf7aUAG_": {
+          "id": "Skf7aUAG_",
+          "output": {
+            "nodeId": "Hk5io80G_",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "HJzkaICfu-$1"
+          }
+        },
+        "BkmQTU0f_": {
+          "id": "BkmQTU0f_",
+          "output": {
+            "nodeId": "HkH6nIAf_",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "H10LiLCGu-$1"
+          }
+        },
+        "SJHPU0LAzO": {
+          "id": "SJHPU0LAzO",
+          "output": {
+            "nodeId": "Hk5io80G_-$1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "HJzkaICfu-$2"
+          }
+        },
+        "Sy8w8RUAGu": {
+          "id": "Sy8w8RUAGu",
+          "output": {
+            "nodeId": "HkH6nIAf_-$1",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "H10LiLCGu-$2"
+          }
+        },
+        "HyDvIAI0Gu": {
+          "id": "HyDvIAI0Gu",
+          "output": {
+            "nodeId": "Hk5io80G_-$2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "HJzkaICfu-$3"
+          }
+        },
+        "H1uP8AURfu": {
+          "id": "H1uP8AURfu",
+          "output": {
+            "nodeId": "HkH6nIAf_-$2",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "H10LiLCGu-$3"
+          }
+        },
+        "S1KvURIRGO": {
+          "id": "S1KvURIRGO",
+          "output": {
+            "nodeId": "Hk5io80G_-$3",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "HJzkaICfu-$4"
+          }
+        },
+        "S1cw80LRG_": {
+          "id": "S1cw80LRG_",
+          "output": {
+            "nodeId": "HkH6nIAf_-$3",
+            "pinKey": "__out__"
+          },
+          "input": {
+            "nodeId": "BJYOjU0fd",
+            "pinKey": "H10LiLCGu-$4"
+          }
+        }
+      },
+      "path": "@/my-nested-variadic-pass-$4"
+    }
+  },
+  "name": ""
+}

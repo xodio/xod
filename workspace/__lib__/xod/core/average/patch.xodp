@@ -1,0 +1,116 @@
+{
+  "description": "Adds the input values together and divides by the number of values",
+  "links": [
+    {
+      "id": "Bk4hHl3Gd",
+      "input": {
+        "nodeId": "ByG2rlnfu",
+        "pinKey": "HkqmLAOrD1W"
+      },
+      "output": {
+        "nodeId": "rJG5SlhGu",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "HJv3SxnMd",
+      "input": {
+        "nodeId": "S10jrlhG_",
+        "pinKey": "B1DIHlhzu"
+      },
+      "output": {
+        "nodeId": "rJG5SlhGu",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rks2Bl2Mu",
+      "input": {
+        "nodeId": "Sytnrx3Mu",
+        "pinKey": "SkdIRuBD1b"
+      },
+      "output": {
+        "nodeId": "ByG2rlnfu",
+        "pinKey": "SyomIRurDJ-"
+      }
+    },
+    {
+      "id": "SJhhSe2Gd",
+      "input": {
+        "nodeId": "Sytnrx3Mu",
+        "pinKey": "BytUCdHD1-"
+      },
+      "output": {
+        "nodeId": "S10jrlhG_",
+        "pinKey": "HJTUBe3f_"
+      }
+    },
+    {
+      "id": "BJ62He2f_",
+      "input": {
+        "nodeId": "BJgjHe3Mu",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "Sytnrx3Mu",
+        "pinKey": "BkqLCOSw1W"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "rJG5SlhGu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "id": "S1wcrgnfu",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/variadic-pass-1"
+    },
+    {
+      "id": "BJgjHe3Mu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "S10jrlhG_",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "@/arity-level"
+    },
+    {
+      "id": "ByG2rlnfu",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/add"
+    },
+    {
+      "id": "Sytnrx3Mu",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "@/divide"
+    }
+  ]
+}

@@ -736,6 +736,118 @@ const checkPatchForDeadLinksAndPins = def(
   }
 );
 
+export const validatePatchForVariadics = def(
+  'validatePatchForVariadics :: Project -> Patch -> Either Error Patch',
+  (project, validatedPatch) => {
+    if (!Patch.isVariadicPatch(validatedPatch)) {
+      return Either.of(validatedPatch);
+    }
+
+    return Patch.computeVariadicPins(validatedPatch).chain(
+      ({ value: variadicPins }) => {
+        // `computeVariadicPins` checks for all possible errors in "regular" variadic patches.
+        // We only need to do additional checks for variadic-pass patches.
+        if (!Patch.isVariadicPassPatch(validatedPatch)) {
+          return Either.of(validatedPatch);
+        }
+
+        const normalizedPinLabelsByPinKey = R.compose(
+          R.map(Pin.getPinLabel),
+          R.indexBy(Pin.getPinKey),
+          Pin.normalizeEmptyPinLabels,
+          Patch.listPins
+        )(validatedPatch);
+
+        const variadicPassPinsByKey = R.indexBy(Pin.getPinKey, variadicPins);
+
+        return R.compose(
+          R.map(R.head),
+          R.sequence(Either.of),
+          R.map(link => {
+            const variadicPassPinLabel = R.compose(
+              R.prop(R.__, normalizedPinLabelsByPinKey),
+              Link.getLinkOutputNodeId
+            )(link);
+
+            return R.compose(
+              foldMaybe(
+                // If we got here, some variadic pins
+                // are connected to a dead node.
+                // That's a job for other validators.
+                Either.of(validatedPatch),
+                ([connectedNodeType, connectedPatch]) => {
+                  if (!Patch.isVariadicPatch(connectedPatch)) {
+                    return fail(
+                      'VARIADIC_PASS_CONNECTED_TO_NON_VARIADIC_NODE',
+                      {
+                        variadicPassPinLabel,
+                        connectedNodeType,
+                        trace: [Patch.getPatchPath(validatedPatch)],
+                      }
+                    );
+                  }
+
+                  const connectedPatchVariadicPins = Patch.computeVariadicPins(
+                    connectedPatch
+                  );
+
+                  if (Either.isLeft(connectedPatchVariadicPins)) {
+                    // That's a job for a validator of that particular patch
+                    return Either.of(validatedPatch);
+                  }
+
+                  return connectedPatchVariadicPins.chain(
+                    ({ value: variadicPinsOfConnectedNode }) => {
+                      const inputPinKey = R.compose(
+                        R.set(Pin.variadicPinKeySuffixLens, 0),
+                        Link.getLinkInputPinKey
+                      )(link);
+
+                      const isInputPinVariadic = R.compose(
+                        R.contains(inputPinKey),
+                        R.map(Pin.getPinKey)
+                      )(variadicPinsOfConnectedNode);
+
+                      if (isInputPinVariadic) return Either.of(validatedPatch);
+
+                      return fail(
+                        'VARIADIC_PASS_CONNECTED_TO_NON_VARIADIC_PIN',
+                        {
+                          variadicPassPinLabel,
+                          connectedNodeType,
+                          trace: [Patch.getPatchPath(validatedPatch)],
+                        }
+                      );
+                    }
+                  );
+                }
+              ),
+              R.chain(connectedNode => {
+                const connectedNodeType = Node.getNodeType(connectedNode);
+                const maybeConnectedPatch = getPatchByPath(
+                  connectedNodeType,
+                  project
+                );
+
+                return R.sequence(Maybe.of, [
+                  Maybe.of(connectedNodeType),
+                  maybeConnectedPatch,
+                ]);
+              }),
+              Patch.getNodeById(R.__, validatedPatch),
+              Link.getLinkInputNodeId
+            )(link);
+          }),
+          R.filter(
+            R.pipe(Link.getLinkOutputNodeId, R.has(R.__, variadicPassPinsByKey))
+          ),
+          Patch.listLinks
+        )(validatedPatch);
+      }
+    );
+  }
+);
+
 /**
  * Checks `patch` content to be valid:
  *
@@ -756,7 +868,7 @@ export const validatePatchContents = def(
       .chain(Patch.validateAbstractPatch)
       .chain(Patch.validateConstructorPatch)
       .chain(Patch.validateRecordPatch)
-      .chain(Patch.validatePatchForVariadics)
+      .chain(validatePatchForVariadics(project))
       .chain(Patch.validateBuses)
 );
 

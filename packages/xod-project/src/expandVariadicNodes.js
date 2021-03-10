@@ -22,7 +22,7 @@ const nodeIdLens = R.lens(Node.getNodeId, R.assoc('id'));
 
 // helpers for creating nodes inside expanded patch
 
-const createAdditionalValueTerminalGroups = (
+export const createAdditionalValueTerminalGroups = (
   patch,
   desiredArityLevel,
   originalTerminalNodes,

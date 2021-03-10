@@ -44,6 +44,7 @@ import {
   isBuiltInLibName,
   isLocalMarker,
   isVariadicPath,
+  isVariadicPassPath,
   isExpandedVariadicPatchBasename,
   getArityStepFromPatchPath,
   getSpecializationPatchPath,
@@ -1226,7 +1227,12 @@ export const patchListEqualsBy = def(
  */
 const findVariadicPatchPath = def(
   'findVariadicPatchPath :: Patch -> Maybe PatchPath',
-  R.compose(Maybe, R.find(isVariadicPath), R.map(Node.getNodeType), listNodes)
+  R.compose(
+    Maybe,
+    R.find(R.either(isVariadicPath, isVariadicPassPath)),
+    R.map(Node.getNodeType),
+    listNodes
+  )
 );
 
 /**
@@ -1235,6 +1241,11 @@ const findVariadicPatchPath = def(
 export const isVariadicPatch = def(
   'isVariadicPatch :: Patch -> Boolean',
   R.compose(Maybe.isJust, findVariadicPatchPath)
+);
+
+export const isVariadicPassPatch = def(
+  'isVariadicPassPatch :: Patch -> Boolean',
+  R.compose(foldMaybe(false, isVariadicPassPath), findVariadicPatchPath)
 );
 
 /**
@@ -1256,7 +1267,7 @@ const checkArityMarkersAmount = def(
   R.compose(
     R.equals(1),
     R.length,
-    R.filter(isVariadicPath),
+    R.filter(R.either(isVariadicPath, isVariadicPassPath)),
     R.map(Node.getNodeType),
     listNodes
   )
@@ -1277,10 +1288,12 @@ export const computeVariadicPins = def(
       return fail('TOO_MANY_VARIADIC_MARKERS', { trace: [patchPath] });
     }
 
+    const isVariadicPass = isVariadicPassPatch(patch);
+
     const outputs = listOutputPins(patch);
     const outputCount = outputs.length;
 
-    if (outputCount === 0) {
+    if (!isVariadicPass && outputCount === 0) {
       return fail('VARIADIC_HAS_NO_OUTPUTS', { trace: [patchPath] });
     }
 
@@ -1293,13 +1306,18 @@ export const computeVariadicPins = def(
       getArityStepFromPatch
     )(patch);
 
-    if (inputCount - arityStep < outputCount) {
-      const minInputs = R.add(outputCount, arityStep);
+    const notEnoughVariadicInputs = inputCount - arityStep < outputCount;
+    if (!isVariadicPass && notEnoughVariadicInputs) {
       return fail('NOT_ENOUGH_VARIADIC_INPUTS', {
         trace: [patchPath],
         arityStep,
         outputCount,
-        minInputs,
+        minInputs: outputCount + arityStep,
+      });
+    } else if (isVariadicPass && inputCount < arityStep) {
+      return fail('NOT_ENOUGH_VARIADIC_PASS_INPUTS', {
+        trace: [patchPath],
+        arityStep,
       });
     }
 
@@ -1309,30 +1327,30 @@ export const computeVariadicPins = def(
       R.slice(0, R.negate(arityStep))
     )(inputs);
 
-    const pinLabelsOfNonEqualPinTypes = R.compose(
-      R.reject(R.isNil),
-      mapIndexed((accPin, idx) => {
-        const curPinType = Pin.getPinType(accPin);
-        const outPinType = Pin.getPinType(outputs[idx]);
-        return curPinType === outPinType
-          ? null
-          : [Pin.getPinLabel(accPin), Pin.getPinLabel(outputs[idx])];
-      })
-    )(accPins);
+    if (!isVariadicPass) {
+      const pinLabelsOfNonEqualPinTypes = R.compose(
+        R.reject(R.isNil),
+        mapIndexed((accPin, idx) => {
+          const curPinType = Pin.getPinType(accPin);
+          const outPinType = Pin.getPinType(outputs[idx]);
+          return curPinType === outPinType
+            ? null
+            : [Pin.getPinLabel(accPin), Pin.getPinLabel(outputs[idx])];
+        })
+      )(accPins);
 
-    if (notEmpty(pinLabelsOfNonEqualPinTypes)) {
-      const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
-      const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
-      return fail('WRONG_VARIADIC_PIN_TYPES', {
-        trace: [patchPath],
-        accPinLabels,
-        outPinLabels,
-      });
+      if (notEmpty(pinLabelsOfNonEqualPinTypes)) {
+        const accPinLabels = R.pluck(0, pinLabelsOfNonEqualPinTypes);
+        const outPinLabels = R.pluck(1, pinLabelsOfNonEqualPinTypes);
+        return fail('WRONG_VARIADIC_PIN_TYPES', {
+          trace: [patchPath],
+          accPinLabels,
+          outPinLabels,
+        });
+      }
     }
 
-    const sharedPins = R.slice(0, R.negate(R.add(accPins.length, arityStep)))(
-      inputs
-    );
+    const sharedPins = R.slice(0, -(accPins.length + arityStep), inputs);
 
     return Either.of({
       acc: accPins,
@@ -1370,22 +1388,6 @@ export const listVariadicAccPins = def(
 export const listVariadicSharedPins = def(
   'listVariadicSharedPins :: Patch -> Either Error [Pin]',
   R.compose(R.pluck('shared'), computeVariadicPins)
-);
-
-/**
- * Checks a patch for variadic marker existence.
- * If it has variadic marker — compute and validate variadic Pins,
- * and then return Either Error Patch.
- * If not - just return Either.Right Patch.
- */
-export const validatePatchForVariadics = def(
-  'validatePatchForVariadics :: Patch -> Either Error Patch',
-  patch =>
-    R.ifElse(
-      isVariadicPatch,
-      R.compose(R.map(R.always(patch)), computeVariadicPins),
-      Either.of
-    )(patch)
 );
 
 /**

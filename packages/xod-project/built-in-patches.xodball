@@ -198,6 +198,18 @@
     "@/variadic-3": {
       "description": "Makes three rightmost inputs of the patch node containing this node variadic",
       "path": "@/variadic-3"
+    },
+    "@/variadic-pass-1": {
+      "description": "Makes the rightmost input of the patch node containing this node variadic, passing the arity level down to the variadic nodes to which they link",
+      "path": "@/variadic-pass-1"
+    },
+    "@/variadic-pass-2": {
+      "description": "Makes two rightmost inputs of the patch node containing this node variadic, passing the arity level down to the variadic nodes to which they link",
+      "path": "@/variadic-pass-2"
+    },
+    "@/variadic-pass-3": {
+      "description": "Makes three rightmost inputs of the patch node containing this node variadic, passing the arity level down to the variadic nodes to which they link",
+      "path": "@/variadic-pass-3"
     }
   }
 }

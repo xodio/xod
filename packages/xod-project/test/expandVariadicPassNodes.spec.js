@@ -12,18 +12,20 @@ const calculateNodeIdForStructuralComparison = node => {
   return `${type}~~~${label}~~~${position.x}_${position.y}`;
 };
 
-describe('expandVariadicNodes', () => {
-  it('expands a simple variadic patch', () => {
-    const project = H.loadXodball('./fixtures/expanding.xodball');
-    const expandedProject = XP.expandVariadicNodes('@/main', project);
+describe('expandVariadicPassNodes', () => {
+  it('expands a variadic-pass patch', () => {
+    const project = H.loadXodball('./fixtures/expanding-variadic-pass.xodball');
+    const expandedProject = XP.expandVariadicPassNodes('@/main', project);
 
     assert.deepEqual(
-      XP.getPatchByPathUnsafe('@/my-variadic', expandedProject),
-      XP.getPatchByPathUnsafe('@/my-variadic', project),
+      XP.getPatchByPathUnsafe('@/my-variadic-pass', expandedProject),
+      XP.getPatchByPathUnsafe('@/my-variadic-pass', project),
       'expanded patch should not change'
     );
 
-    const expected = H.loadXodball('./fixtures/expanding.expected.xodball');
+    const expected = H.loadXodball(
+      './fixtures/expanding-variadic-pass.expected.xodball'
+    );
 
     assert.sameMembers(
       XP.listPatchPaths(expandedProject),
@@ -36,19 +38,15 @@ describe('expandVariadicNodes', () => {
       'expanded node type should be updated'
     );
 
-    const expandedPatch = XP.getPatchByPathUnsafe(
-      '@/my-variadic-$5',
-      expandedProject
-    );
-    const expectedExpandedPatch = XP.getPatchByPathUnsafe(
-      '@/my-variadic-$5',
-      expected
-    );
-
     H.assertPatchesAreStructurallyEqual(
       calculateNodeIdForStructuralComparison,
-      expandedPatch,
-      expectedExpandedPatch
+      XP.getPatchByPathUnsafe('@/my-variadic-pass-$4', expected),
+      XP.getPatchByPathUnsafe('@/my-variadic-pass-$4', expected)
+    );
+    H.assertPatchesAreStructurallyEqual(
+      calculateNodeIdForStructuralComparison,
+      XP.getPatchByPathUnsafe('@/my-nested-variadic-pass-$4', expected),
+      XP.getPatchByPathUnsafe('@/my-nested-variadic-pass-$4', expected)
     );
   });
 });

@@ -202,6 +202,12 @@ export default {
     note: `A variadic-${arityStep} patch with ${outputCount} outputs should have at least ${minInputs} inputs`,
     trace,
   }),
+  NOT_ENOUGH_VARIADIC_PASS_INPUTS: ({ trace, arityStep }) => ({
+    title: 'Too few variadic inputs',
+    note: `A variadic-pass-${arityStep} patch should have at least ${arityStep} inputs`,
+    solution: 'Add inputs or delete the marker to continue.',
+    trace,
+  }),
   WRONG_VARIADIC_PIN_TYPES: ({ accPinLabels, outPinLabels, trace }) => ({
     title: 'Invalid variadic patch',
     note: `Types of inputs ${accPinLabels.join(
@@ -212,6 +218,24 @@ export default {
   VARIADIC_HAS_NO_OUTPUTS: ({ trace }) => ({
     title: 'Invalid variadic patch',
     note: `A variadic patch should have at least one output`,
+    trace,
+  }),
+  VARIADIC_PASS_CONNECTED_TO_NON_VARIADIC_NODE: ({
+    trace,
+    variadicPassPinLabel,
+    connectedNodeType,
+  }) => ({
+    title: 'Variadic input links to scalar node',
+    note: `A variadic-pass input ${variadicPassPinLabel} is linked to a non-variadic node ${connectedNodeType}`,
+    trace,
+  }),
+  VARIADIC_PASS_CONNECTED_TO_NON_VARIADIC_PIN: ({
+    trace,
+    variadicPassPinLabel,
+    connectedNodeType,
+  }) => ({
+    title: 'Variadic input links to scalar pin of a variadic node',
+    note: `A variadic-pass input ${variadicPassPinLabel} is linked to a non-variadic pin of node ${connectedNodeType}`,
     trace,
   }),
 
