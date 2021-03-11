@@ -47,6 +47,7 @@ import * as DebuggerSelectors from '../debugger/selectors';
 
 import { parseDebuggerMessage } from '../debugger/debugProtocol';
 import { addMessagesToDebuggerLog } from '../debugger/actions';
+import { removeLastNodeIdInChain } from '../debugger/utils';
 import runWasmWorker from '../workers/run';
 import { getAccessToken } from '../user/selectors';
 import { updateBalances } from '../user/actions';
@@ -964,7 +965,14 @@ export const openTableLogTab = nodeId => (dispatch, getState) => {
     R.ifElse(
       R.contains(nodeId),
       () => Maybe.of(nodeId),
-      R.compose(Maybe, R.find(R.endsWith(nodeId)))
+      R.compose(
+        Maybe,
+        // `tsv-log`, which is actually stores the table log values
+        // is encapsulated inside `table-log` node, which node id
+        // is passed in this function so we need to find nodeId
+        // with a prefix with unknown nodeId: `${nodeId}~someNodeId`
+        R.find(R.compose(R.endsWith(nodeId), removeLastNodeIdInChain))
+      )
     ),
     R.unnest,
     R.values,

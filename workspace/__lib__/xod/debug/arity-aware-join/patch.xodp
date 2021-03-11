@@ -1,0 +1,95 @@
+{
+  "description": "Joins multiple strings together inserting a delimiter between each pair. Unlike `xod/core/join` this one works fine with only one input string and in this case it leaves it as it is.",
+  "nodes": [
+    {
+      "description": "Utility pin to calculate the arity level of the node. Should not be linked anywhere and should have a bound value `0`.",
+      "id": "r1FfzR4mO",
+      "label": "AR",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-number"
+    },
+    {
+      "description": "Accumulator of the concatenated strings. In the common case it should have an empty string.",
+      "id": "Bkk7GANQ_",
+      "label": "ACC",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Strings to join",
+      "id": "BJ9rM047O",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "description": "Incremented arity level. See description for the `AR` input pin.",
+      "id": "ByKPGCEXu",
+      "label": "AR'",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-number"
+    },
+    {
+      "id": "HyluM0VX_",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 3
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "ryx2G0Nmu",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/variadic-1"
+    },
+    {
+      "id": "BJVhfA47d",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/not-implemented-in-xod"
+    },
+    {
+      "description": "Delimeter character or string",
+      "id": "H1HgQ047O",
+      "label": "D",
+      "position": {
+        "units": "slots",
+        "x": -1,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SyXL5CV7_",
+      "position": {
+        "units": "slots",
+        "x": 9,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}

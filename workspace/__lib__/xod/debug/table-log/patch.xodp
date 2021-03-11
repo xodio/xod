@@ -1,18 +1,55 @@
 {
   "description": "Collects values as table rows and tables as sheets. Useful to conduct measurement sessions and then analyze the data gathered in spreadsheet software.",
-  "nodes": [
+  "links": [
     {
-      "id": "B1iYZOzoZ",
-      "position": {
-        "units": "slots",
-        "x": 1,
-        "y": 1
+      "id": "HJTOc88Q_",
+      "input": {
+        "nodeId": "rkCPc8U7_",
+        "pinKey": "HJWUGvR4Q_"
       },
-      "type": "xod/patch-nodes/not-implemented-in-xod"
+      "output": {
+        "nodeId": "B1WTUcLLX_",
+        "pinKey": "__out__"
+      }
     },
     {
+      "id": "SkjgK5ILQO",
+      "input": {
+        "nodeId": "r1sw98LXO",
+        "pinKey": "rkvDUOV1O"
+      },
+      "output": {
+        "nodeId": "rkCPc8U7_",
+        "pinKey": "rkUMDCNm_"
+      }
+    },
+    {
+      "id": "BkMF9LL7O",
+      "input": {
+        "nodeId": "r1sw98LXO",
+        "pinKey": "rkWILuNyu"
+      },
+      "output": {
+        "nodeId": "BJ6U5UImd",
+        "pinKey": "__out__"
+      }
+    },
+    {
+      "id": "rJQF9IUmu",
+      "input": {
+        "nodeId": "r1sw98LXO",
+        "pinKey": "B1RI8OEyO"
+      },
+      "output": {
+        "nodeId": "Hkx6L5IUXd",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
       "description": "Adds values to the latest sheet.",
-      "id": "rkWILuNyu",
+      "id": "BJ6U5UImd",
       "label": "PUSH",
       "position": {
         "units": "slots",
@@ -26,24 +63,51 @@
         "__out__": "Never"
       },
       "description": "Creates a new sheet.",
-      "id": "B1RI8OEyO",
+      "id": "Hkx6L5IUXd",
       "label": "NEW",
       "position": {
         "units": "slots",
-        "x": 1,
+        "x": 2,
         "y": 0
       },
       "type": "xod/patch-nodes/input-pulse"
     },
     {
-      "description": "Values to add as a new table row. All values should be separated with tab character `\\t`.",
-      "id": "rkvDUOV1O",
+      "description": "Values to add as a new table row.",
+      "id": "B1WTUcLLX_",
       "position": {
         "units": "slots",
-        "x": 5,
+        "x": 4,
         "y": 0
       },
       "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "id": "SJWwcUU7u",
+      "position": {
+        "units": "slots",
+        "x": 6,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/variadic-pass-1"
+    },
+    {
+      "id": "r1sw98LXO",
+      "position": {
+        "units": "slots",
+        "x": 2,
+        "y": 2
+      },
+      "type": "@/tsv-log"
+    },
+    {
+      "id": "rkCPc8U7_",
+      "position": {
+        "units": "slots",
+        "x": 4,
+        "y": 1
+      },
+      "type": "@/tsv-join"
     }
   ]
 }

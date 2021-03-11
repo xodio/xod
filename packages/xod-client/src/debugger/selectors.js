@@ -11,7 +11,7 @@ import { DEBUGGER_TAB_ID } from '../editor/constants';
 import { SESSION_TYPE } from './constants';
 
 import { createMemoizedSelector } from '../utils/selectorTools';
-import { getTableLogSourceLabels } from './utils';
+import { getTableLogSourceLabels, removeLastNodeIdInChain } from './utils';
 
 export const getDebuggerState = R.prop('debugger');
 
@@ -186,7 +186,14 @@ export const getInteractiveNodeValuesForCurrentPatch = createSelector(
               sheets[lastSheetIndex].length
             }`;
           }),
-          filterOutValuesForCurrentPatch(activeIndex, nodeIdPath)
+          filterOutValuesForCurrentPatch(activeIndex, nodeIdPath),
+          // `tsv-log`, which is actually stores the data, encapsulated
+          // inside `table-log`, which label should be replaced with
+          // this value. So we have to cut the latest nodeId part from
+          // keys of table log values map
+          R.fromPairs,
+          R.map(R.over(R.lensIndex(0), removeLastNodeIdInChain)),
+          R.toPairs
         )(tableLogs);
 
         return R.merge(watchNodeValues, tableLogValues);

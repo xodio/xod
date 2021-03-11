@@ -11,6 +11,7 @@ import { noop } from '../../utils/ramda';
 import { isPinSelected } from '../../editor/utils';
 
 import RegularNodeBody from './nodeParts/RegularNodeBody';
+import TableLogNodeBody from './nodeParts/TableLogNodeBody';
 import WatchNodeBody from './nodeParts/WatchNodeBody';
 import TweakNodeBody from './nodeParts/TweakNodeBody';
 import TerminalNodeBody from './nodeParts/TerminalNodeBody';
@@ -115,7 +116,7 @@ class Node extends React.Component {
     return R.cond([
       [XP.isTerminalPatchPath, () => <TerminalNodeBody {...this.props} />],
       [XP.isWatchPatchPath, () => <WatchNodeBody {...this.props} />],
-      [XP.isTableLogPatchPath, () => <WatchNodeBody {...this.props} />],
+      [XP.isTableLogPatchPath, () => <TableLogNodeBody {...this.props} />],
       [XP.isConstantNodeType, () => <ConstantNodeBody {...this.props} />],
       [XP.isBindableCustomType, () => <ConstantNodeBody {...this.props} />],
       [XP.isTweakPath, () => <TweakNodeBody {...this.props} />],

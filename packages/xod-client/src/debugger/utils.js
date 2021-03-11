@@ -39,6 +39,9 @@ export const getTetheringInetNodeId = R.curry(
 
 export const isErrorMessage = R.propEq('type', UPLOAD_MSG_TYPE.ERROR);
 
+// `a~b~c` -> `a~b`
+export const removeLastNodeIdInChain = R.replace(/(~[^~]+)$/, '');
+
 // :: Project -> [NodeId] -> PatchPath -> [{ nodeId: NodeId, label: String }]
 export const getTableLogSourceLabels = R.curry(
   (project, sourceNodeIds, rootPatchPath) =>
@@ -98,7 +101,7 @@ export const getTableLogSourceLabels = R.curry(
             },
             R.applySpec({
               nodeId: R.always(nodeId),
-              chunks: R.identity,
+              chunks: R.init, // Get rid of last NodeId, which points to internal `tsv-log`
             })
           ),
           R.map(

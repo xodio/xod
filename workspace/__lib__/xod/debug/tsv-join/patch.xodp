@@ -1,0 +1,76 @@
+{
+  "links": [
+    {
+      "id": "BJs7vANXO",
+      "input": {
+        "nodeId": "rkUMDCNm_",
+        "pinKey": "__in__"
+      },
+      "output": {
+        "nodeId": "r1w7vA4XO",
+        "pinKey": "HyluM0VX_"
+      }
+    },
+    {
+      "id": "Sy1EvRVXd",
+      "input": {
+        "nodeId": "r1w7vA4XO",
+        "pinKey": "BJ9rM047O"
+      },
+      "output": {
+        "nodeId": "HJWUGvR4Q_",
+        "pinKey": "__out__"
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "id": "rkUMDCNm_",
+      "position": {
+        "units": "slots",
+        "x": 1,
+        "y": 2
+      },
+      "type": "xod/patch-nodes/output-string"
+    },
+    {
+      "id": "HJWUGvR4Q_",
+      "position": {
+        "units": "slots",
+        "x": 3,
+        "y": 0
+      },
+      "type": "xod/patch-nodes/input-string"
+    },
+    {
+      "boundLiterals": {
+        "H1HgQ047O": "\"\\t\""
+      },
+      "id": "r1w7vA4XO",
+      "position": {
+        "units": "slots",
+        "x": 0,
+        "y": 1
+      },
+      "type": "@/arity-aware-join"
+    },
+    {
+      "id": "B194PC4Qd",
+      "position": {
+        "units": "slots",
+        "x": 5,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/variadic-pass-1"
+    },
+    {
+      "id": "SJfO5UIXu",
+      "position": {
+        "units": "slots",
+        "x": 7,
+        "y": 1
+      },
+      "type": "xod/patch-nodes/utility"
+    }
+  ]
+}
