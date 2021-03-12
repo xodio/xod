@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.38.0"></a>
+
+## 0.38.0 (2021-03-12)
+
+### Features and enhancements
+
+* [core] Make possible to pass variadic pins to children variadic nodes (#2107)
+* [ide] Add table log feature: collect, view and save tabular data in live session mode (#2098, #2108)
+* [nodes] Add nodes to handle interrupts in [xod/gpio](https://xod.io/libs/xod/gpio) standard library (#2106)
+* [nodes] Add [xod/core/micros](https://xod.io/libs/xod/core/micros) node and some utilities for this type (#2106)
+* [nodes] Add `variadic-pass-*` marker nodes (#2107)
+* [nodes] Add [xod/debug/table-log](https://xod.io/libs/xod/debug/table-log) node to collect tabular data (#2098, #2108)
+
+### Bug fixes
+
+* [ide] Fix minor mistakes in welcome-to-xod project (#2096)
+* [ide] Prevent corrupting projects when workspace contains libaries with invalid names (#2099)
+* [ide] Fix scrollbars in C++ editor (#2104)
+
 <a name="0.37.3"></a>
 
 ## 0.37.3 (2021-02-17)
