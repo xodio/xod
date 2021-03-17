@@ -18,10 +18,10 @@ node {
 #ifdef ESP8266
         if (transactionTime() - lastReadTime > 4) {
             lastReadTime = transactionTime();
-            emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+            emitValue<output_VAL>(ctx, analogRead(constant_input_PORT) / 1023.);
         }
 #else
-        emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+        emitValue<output_VAL>(ctx, analogRead(constant_input_PORT) / 1023.);
 #endif
         emitValue<output_DONE>(ctx, 1);
     }

@@ -10,7 +10,7 @@ node {
 
         ::pinMode(constant_input_PORT, OUTPUT);
         const bool val = getValue<input_SIG>(ctx);
-        ::digitalWrite(constant_input_PORT, val);
+        digitalWrite(constant_input_PORT, val);
         emitValue<output_DONE>(ctx, 1);
     }
 }
