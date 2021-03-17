@@ -9,7 +9,7 @@ node {
             return;
 
         ::pinMode(constant_input_PORT, INPUT_PULLUP);
-        emitValue<output_SIG>(ctx, ::digitalRead(constant_input_PORT));
+        emitValue<output_SIG>(ctx, digitalRead(constant_input_PORT));
         emitValue<output_DONE>(ctx, 1);
     }
 }

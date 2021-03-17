@@ -1169,7 +1169,7 @@ struct Node {
             return;
 
         ::pinMode(constant_input_PORT, INPUT);
-        emitValue<output_SIG>(ctx, ::digitalRead(constant_input_PORT));
+        emitValue<output_SIG>(ctx, digitalRead(constant_input_PORT));
         emitValue<output_DONE>(ctx, 1);
     }
 
@@ -1538,7 +1538,7 @@ struct Node {
 
         ::pinMode(constant_input_PORT, OUTPUT);
         const bool val = getValue<input_SIG>(ctx);
-        ::digitalWrite(constant_input_PORT, val);
+        digitalWrite(constant_input_PORT, val);
         emitValue<output_DONE>(ctx, 1);
     }
 

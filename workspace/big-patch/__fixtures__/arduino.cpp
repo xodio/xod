@@ -1999,10 +1999,10 @@ struct Node {
 #ifdef ESP8266
         if (transactionTime() - lastReadTime > 4) {
             lastReadTime = transactionTime();
-            emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+            emitValue<output_VAL>(ctx, analogRead(constant_input_PORT) / 1023.);
         }
 #else
-        emitValue<output_VAL>(ctx, ::analogRead(constant_input_PORT) / 1023.);
+        emitValue<output_VAL>(ctx, analogRead(constant_input_PORT) / 1023.);
 #endif
         emitValue<output_DONE>(ctx, 1);
     }
@@ -2126,7 +2126,7 @@ struct Node {
             return;
 
         ::pinMode(constant_input_PORT, INPUT_PULLUP);
-        emitValue<output_SIG>(ctx, ::digitalRead(constant_input_PORT));
+        emitValue<output_SIG>(ctx, digitalRead(constant_input_PORT));
         emitValue<output_DONE>(ctx, 1);
     }
 
