@@ -68,7 +68,7 @@
     "lerna": "2.11.0",
     "mocha": "^3.3.0",
     "node-gyp": "^7.1.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "postcss": "^6.0.16",
     "postcss-loader": "^2.0.10",
     "prettier": "^1.11.1",
